@@ -1,0 +1,80 @@
+// Due maintenance
+class Due extends Condos {
+
+  // Due information
+  dueArray = Object;
+
+  // Show all dues
+  showAllDues(columnName, dueId) {
+
+    let html = `
+    <form action="/submit" method="POST">
+      <label class="label-due-${columnName} js-label-due-${columnName}"
+        for="dueId">
+          Forfall
+      </label>
+      <select class="select-due-${columnName} js-select-due-${columnName}" 
+      >
+    `;
+
+    dueArray.forEach((due) => {
+      if (due.dueId > 1) {
+        if (due.dueId === dueId) {
+
+          html += `
+          <option 
+            value="${due.dueId}"
+            selected
+            >
+            ${due.dueId} - ${due.dueText}
+          </option>
+        `;
+        } else {
+          html += `
+          <option 
+            value="${due.dueId}">
+            ${due.dueId} - ${due.dueText}
+          </option>
+        `;
+        }
+      }
+    });
+
+    html += `
+      </select >
+    </form>
+  `;
+
+    document.querySelector(`.js-div-due-${columnName}`).innerHTML = html;
+  }
+
+  // Get all dues from MySQL database
+  getDues(socket) {
+
+    const SQLquery = `
+      SELECT * FROM due
+      ORDER BY dueDate;
+    `;
+    socket.send(SQLquery);
+  }
+
+  // Find selected due id
+  getSelectedDueId(columnName) {
+
+    let dueId = 0;
+
+    // Check if HTML class exist
+    const className = `js-select-${this.applicationName}-${columnName}`;
+    if (isClassDefined(className)) {
+
+      dueId =
+        Number(document.querySelector(`.${className}`).value);
+    } else {
+
+      // Get last id in last object in due array
+      dueId = dueArray.at(-1).dueId;
+    }
+
+    return dueId;
+  }
+}

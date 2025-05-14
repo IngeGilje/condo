@@ -1,0 +1,4 @@
+
+class Remoteheating extends Condos {
+
+}

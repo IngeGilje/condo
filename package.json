@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "formidable": "^3.5.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.14.1",
+    "upper-case": "^2.0.2",
+    "ws": "^8.18.2"
+  }
+}

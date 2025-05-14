@@ -1,0 +1,98 @@
+
+class Budget extends Condos {
+
+  // Budget information
+  budgetArray = Array;
+
+  // Show all budgets
+  showAllBudgets(columnName, budgetId) {
+
+    let html = `
+    <form action="/submit" method="POST">
+      <label class="label-budget-${columnName} label-budget-${columnName}"
+        for="Budget">
+          Velg budsjett
+      </label>
+      <select class="select-budget-${columnName} select-budget-${columnName}" 
+      >
+    `;
+
+    // Check if budget array is empty
+    const numberOfRows = budgetArray.length;
+    if (numberOfRows > 1) {
+      budgetArray.forEach((budget) => {
+        if (budget.budgetId > 1) {
+          if (budget.budgetId === budgetId) {
+
+            html += `
+          <option 
+            value="${budget.budgetId}"
+            selected
+            >
+            ${budget.budgetId} - ${budget.text}
+          </option>
+        `;
+          } else {
+            html += `
+          <option 
+            value="${budget.budgetId}">
+            ${budget.budgetId} - ${budget.text}
+          </option>
+        `;
+          }
+        }
+      });
+
+    } else {
+
+      html += `
+        <option value="0" 
+          selected
+        >
+          Ingen budsjet
+        </option>
+      `;
+    }
+
+    html += `
+      </select >
+    </form>
+  `;
+
+    document.querySelector(`.div-budget-${columnName}`).innerHTML = html;
+  }
+
+  /*
+  // Get all budgets from MySQL database
+  getBudgets(socket) {
+
+    const SQLquery = `
+      SELECT * FROM budget
+      ORDER BY text;
+    `;
+    socket.send(SQLquery);
+  }
+  */
+
+  // Find selected budget id
+  getSelectedBudgetId(columnName) {
+
+    let budgetId = 0;
+
+    // Check if HTML class exist
+    const className = `select-${this.applicationName}-${columnName}`;
+    if (isClassDefined(className)) {
+
+      budgetId =
+        Number(document.querySelector(`.${className}`).value);
+      budgetId = (budgetId === 0) ? budgetArray.at(-1).budgetId : budgetId;
+    } else {
+
+      // Get last id in last object in budget array
+      budgetId = budgetArray.at(-1).budgetId;
+    }
+
+    return budgetId;
+  }
+}
+

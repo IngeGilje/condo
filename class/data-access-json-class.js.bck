@@ -1,0 +1,240 @@
+// Send messages to server
+// and receive messages from server
+class AccessCondoData {
+
+  // Condos object consists all information about all condos
+  condos = undefined;
+
+  constructor() {
+  }
+
+  // Get JSON string from disk file
+  // and make condos array of condo objects
+  makeCondosObject(inputValue) {
+
+    const socket = new WebSocket('ws://localhost:8080');
+    let jsonString = "";
+    // Handle connection
+    socket.onopen = () => {
+
+      // Send a message to the server
+      socket.send(inputValue);
+    };
+
+    // Handle incoming messages
+    socket.onmessage = (event) => {
+      if (event.data === undefined || event.data === "" || event.data === null) {
+        const jsonString = createCondoInfo();
+      } else {
+        // Create condos array of condo objects
+        this.condos = JSON.parse(event.data);
+      }
+    };
+
+    // Handle errors
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    }
+
+    // Handle disconnection
+    socket.onclose = () => {
+    }
+  }
+
+  // Create condos info array
+  // data structure
+  #createCondoInfo() {
+    const now = new Date();
+    const xmlDateTime = now.toISOString(); // Example output: "2025-02-12T14:30:00.123Z"
+
+    return `[{
+      "lastUpdated": "",
+      "condoId": "95A",
+      "firstName": "Fabiana",
+      "lastName": "Franco",
+      "boardMembership": [],
+      "street": "Laberget 95A",
+      "zip": "4020",
+      "city": "Stavanger",
+      "rent2024": [2591, 2591, 2591, 2591, 2591, 2591, 2591, 2591,
+                  2591, 2591, 2591, 2591],
+      "rentDueDate2024": ["15.01.2024","15.02.2024","15.03.2024","15.04.2024","15.05.2024", 
+                          "15.06.2024","15.07.2024","15.08.2024","15.09.2024","15.10.2024",
+                          "15.11.2024","15.12.2024"],
+      "rent2025": [2329, 2329, 2329, 2329, 2329, 2329, 2329, 2329,
+                  2329, 2329, 2329, 2329],
+      "rentDueDate2025": ["15.01.2025","15.02.2025","15.03.2025","15.04.2025","15.05.2025", 
+                          "15.06.2025","15.07.2025","15.08.2025","15.09.2025","15.10.2025",
+                          "15.11.2025","15.12.2025"],
+      "payment": [],
+      "paymentDate": []
+    },
+    {
+      "lastUpdated": "",
+      "condoId": "95B",
+      "firstName": "Inge",
+      "lastName": "Gilje",
+      "boardMembership": [],
+      "street": "Laberget 95B",
+      "zip": "4020",
+      "city": "Stavanger",
+      "rent2024": [3401, 3401, 3401, 3401, 3401, 3401, 3401, 3401,
+                   3401, 3401, 3401, 3401],
+      "rentDueDate2024": ["15.01.2024","15.02.2024","15.03.2024","15.04.2024","15.05.2024", 
+                          "15.06.2024","15.07.2024","15.08.2024","15.09.2024","15.10.2024",
+                          "15.11.2024","15.12.2024"],
+      "rent2025": [3139, 3139, 3139, 3139, 3139, 3139, 3139, 3139,
+                   3139, 3139, 3139, 3139],
+      "rentDueDate2025": ["15.01.2025","15.02.2025","15.03.2025","15.04.2025","15.05.2025", 
+                          "15.06.2025","15.07.2025","15.08.2025","15.09.2025","15.10.2025",
+                          "15.11.2025","15.12.2025"],
+      "payment": [],
+      "paymentDate": []
+    },
+    {
+      "lastUpdated": "",
+      "condoId": "97A",
+      "firstName": "Kristine",
+      "lastName": "Sømme",
+      "boardMembership": [],
+      "street": "Laberget 97A",
+      "zip": "4020",
+      "city": "Stavanger",
+      "rent2024": [2537, 2537, 2537, 2537, 2537, 2537, 2537,
+                   2537, 2537, 2537, 2537, 2537],
+      "rentDueDate2024": ["15.01.2024","15.02.2024","15.03.2024","15.04.2024","15.05.2024", 
+                          "15.06.2024","15.07.2024","15.08.2024","15.09.2024","15.10.2024",
+                          "15.11.2024","15.12.2024"],
+      "rent2025": [2275, 2275, 2275, 2275, 2275, 2275, 2275,
+                   2275, 2275, 2275, 2275, 2275],
+      "rentDueDate2025": ["15.01.2025","15.02.2025","15.03.2025","15.04.2025","15.05.2025", 
+                          "15.06.2025","15.07.2025","15.08.2025","15.09.2025","15.10.2025",
+                          "15.11.2025","15.12.2025"],
+      "payment": [],
+      "paymentDate": []
+    },
+    {
+      "lastUpdated": "",
+      "condoId": "97B",
+      "firstName": "Ladan",
+      "lastName": "Pazoki",
+      "boardMembership": [],
+      "street": "Laberget 97B",
+      "zip": "4020",
+      "city": "Stavanger",
+      "rent2024": [2245, 2245, 2245, 2245, 2245, 2245, 2245,
+                   2245, 2245, 2245, 2245, 2245],
+      "rentDueDate2024": ["15.01.2024","15.02.2024","15.03.2024","15.04.2024","15.05.2024", 
+                          "15.06.2024","15.07.2024","15.08.2024","15.09.2024","15.10.2024",
+                          "15.11.2024","15.12.2024"],
+      "rent2025": [1984, 1984, 1984, 1984, 1984, 1984, 1984,
+                   1984, 1984, 1984, 1984, 1984],
+      "rentDueDate2025": ["15.01.2025","15.02.2025","15.03.2025","15.04.2025","15.05.2025", 
+                          "15.06.2025","15.07.2025","15.08.2025","15.09.2025","15.10.2025",
+                          "15.11.2025","15.12.2025"],
+      "payment": [],
+      "paymentDate": []
+    },
+    {
+      "lastUpdated": "",
+      "condoId": "97C",
+      "firstName": "Oskar",
+      "lastName": "Fausk",
+      "boardMembership": [],
+      "street": "Laberget 97C",
+      "zip": "4020",
+      "city": "Stavanger",
+      "rent2024": [1811, 1811, 1811, 1811, 1811, 1811, 1811,
+                   1811, 1811, 1811, 1811, 1811],
+      "rentDueDate2024": ["15.01.2024","15.02.2024","15.03.2024","15.04.2024","15.05.2024", 
+                          "15.06.2024","15.07.2024","15.08.2024","15.09.2024","15.10.2024",
+                          "15.11.2024","15.12.2024"],
+      "rent2025": [1549, 1549, 1549, 1549, 1549, 1549, 1549,
+                   1549, 1549, 1549, 1549, 1549],
+      "rentDueDate2025": ["15.01.2025","15.02.2025","15.03.2025","15.04.2025","15.05.2025", 
+                          "15.06.2025","15.07.2025","15.08.2025","15.09.2025","15.10.2025",
+                          "15.11.2025","15.12.2025"],
+      "payment": [],
+      "paymentDate": []
+    },
+    {
+      "lastUpdated": "",
+      "condoId": "99A",
+      "firstName": "Åse",
+      "lastName": "Stapnes",
+      "boardMembership": [],
+      "street": "Laberget 99A",
+      "zip": "4020",
+      "city": "Stavanger",
+      "rent2024": [2543, 2543, 2543, 2543, 2543, 2543, 2543,
+                   2543, 2543, 2543, 2543, 2543],
+      "rentDueDate2024": ["15.01.2024","15.02.2024","15.03.2024","15.04.2024","15.05.2024", 
+                          "15.06.2024","15.07.2024","15.08.2024","15.09.2024","15.10.2024",
+                          "15.11.2024","15.12.2024"],
+      "rent2025": [2281, 2281, 2281, 2281, 2281, 2281, 2281,
+                   2281, 2281, 2281, 2281, 2281],
+      "rentDueDate2025": ["15.01.2025","15.02.2025","15.03.2025","15.04.2025","15.05.2025", 
+                          "15.06.2025","15.07.2025","15.08.2025","15.09.2025","15.10.2025",
+                          "15.11.2025","15.12.2025"],
+      "payment": [],
+      "paymentDate": []
+    },
+    {
+      "lastUpdated": "",
+      "condoId": "99B",
+      "firstName": "Birgit",
+      "lastName": "Schober",
+      "boardMembership": [],
+      "street": "Laberget 99B",
+      "zip": "4020",
+      "city": "Stavanger",
+      "rent2024": [3431, 3431, 3431, 3431, 3431, 3431, 3431,
+                   3431, 3431, 3431, 3431, 3431],
+      "rentDueDate2024": ["15.01.2024","15.02.2024","15.03.2024","15.04.2024","15.05.2024", 
+                          "15.06.2024","15.07.2024","15.08.2024","15.09.2024","15.10.2024",
+                          "15.11.2024","15.12.2024"],
+      "rent2025": [3169, 3169, 3169, 3169, 3169, 3169, 3169,
+                   3169, 3169, 3169, 3169, 3169],
+      "rentDueDate2025": ["15.01.2025","15.02.2025","15.03.2025","15.04.2025","15.05.2025", 
+                          "15.06.2025","15.07.2025","15.08.2025","15.09.2025","15.10.2025",
+                          "15.11.2025","15.12.2025"],
+      "payment": [],
+      "paymentDate": []
+    }
+  ]`;
+  }
+
+  #addCondoInfo() {
+    return `
+    {
+      "lastUpdated": "",
+      "condoId": "",
+      "firstName": "",
+      "lastName": "",
+      "boardMembership": [],
+      "rent2024": [],
+      "rentDueDate": [],
+      "payment": [],
+      "paymentDate": []
+    }
+    `;
+  }
+
+  // Check Server Status
+  checkServerStatus(url) {
+    const checkServerStatus = async (url) => {
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+        });
+
+        if (response.ok) {
+            response.status;
+        } else {
+        }
+      } catch (error) {
+        console.error('Server is not reachable:', error.message);
+      }
+    };
+  }
+}

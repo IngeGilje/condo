@@ -1,0 +1,78 @@
+// Define europe format class
+class EuropeFormat {
+
+  // Constructor to initialize the object
+  constructor() {
+  }
+
+  // Check for valid European date (dd.mm.yyyy)
+  checkEuropeanDate(euroDate) {
+
+    // Regular expression for dd.dd.yyyy format
+    const datePattern = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.(\d{4})$/;
+
+    // Check if it matches the format
+    const matchFormat = (datePattern.test(euroDate))
+      ? true
+      : false
+
+    return matchFormat;
+  }
+
+  // Find current date (dd.mm.yyyy)
+  findCurrentDate() {
+
+    let today = String(new Date());
+    let day = Number(today.slice(8, 10));
+    today = new Date();
+    const year = String(today.getFullYear());
+    let month = today.getMonth() + 1; // Months are zero-indexed
+    month = (month < 10)
+      ? '0' + String(month)
+      : String(month)
+
+    day = (day < 10)
+      ? day = '0' + String(day)
+      : String(day)
+
+    return `${day}.${month}.${year}`;  // Output in dd.mm.yyyy format
+  }
+
+  // Format number (12123.12) to norwegian amount (12 123,12)
+  formatNumberToNorAmount(amount) {
+
+    if (amount !== 0) {
+      const formatter = new Intl.NumberFormat("nb-NO", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      // replace , with . (norwegian format)
+      let formatedAmount = "";
+      formatedAmount = formatter.format(amount);
+      amount = formatedAmount.replace('.', ',');
+      return amount;
+
+    } else {
+      return "";
+    }
+  }
+
+  // Format norwegian number (12 345,12) to number (123456.12)
+  formatNorNumberToNumber(number) {
+
+    const formatedNumber = number.replace(',', '.');
+    number = formatedNumber.replace(/\s+/g, "");
+    return number;
+  }
+
+  // Format norwegian date (11.05.1983) to number (19830511)
+  formatNorDateToNumber(norDate) {
+
+    const number = norDate.substring(6,) +
+      norDate.substring(3, 5) + norDate.substring(0, 2);
+
+    return number;
+  }
+
+}

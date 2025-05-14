@@ -1,0 +1,113 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    
+    {
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Login",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-login.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Leilighet",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-condo.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Bruker",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-user.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Konto",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-account.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Forfall",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-due.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Månedsleie",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-monthlyfee.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Inntekter",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-income.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Betaling",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-payment.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Oversikt",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-overview.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Fjernvarme",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-remoteheating.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Budsjett",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-budget.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Sameie",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-condominium.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Bankkonto",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-bankaccount.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Kontobevegelser",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\condo-accountmovement.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Test",
+      "file": "c:\\inetpub\\wwwroot\\Condo\\test.html",
+    },
+    {
+      "name": "Debug current Script in Console",
+      "type": "node",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    }
+  ]
+}
