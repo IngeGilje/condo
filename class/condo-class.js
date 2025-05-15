@@ -2,7 +2,6 @@
 class Condos {
 
   // local- or webserver
-  
   #localServer = true;
   
   // All year from 2020 until 2039
