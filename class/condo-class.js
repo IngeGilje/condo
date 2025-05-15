@@ -1,6 +1,9 @@
 // class for all applications for the condo system
 class Condos {
 
+  // local- or webserver
+  #localServer = true;
+  
   // All year from 2020 until 2039
   #yearArray = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029,
     2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039];
@@ -990,4 +993,9 @@ function truncateText(text, className) {
       + marginLeft + marginRight;
   }
   return text;
+}
+
+function checkUserPassword(user, password) {
+
+  return true;
 }

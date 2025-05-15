@@ -1,6 +1,10 @@
 // Condo maintenance
 
-const socket = new WebSocket('ws://localhost:8080');
+// connection to a server
+let socket;
+(localServer) 
+? socket = new WebSocket('ws://localhost:8080')
+: socket = new WebSocket('ws://ingegilje.no:8080');
 
 // Activate objects
 const objUser = new User('user');

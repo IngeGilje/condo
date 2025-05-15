@@ -23,15 +23,30 @@ const databaseName = "condos";
 let messageToClient = undefined; // Message to send to client
 let connected2MySQL = false; // Not connected to mysql database
 
-// Create a connection to the database
-const connection = mysql.createConnection(
-  {
-    host: 'localhost',
-    user: 'Inge',
-    password: 'Vinter-2025',
-    database: "condos"
-  }
-);
+// Connecting to mySQL
+let connection;
+if (localServer) {
+  // Create a connection to the database
+  const connection = mysql.createConnection(
+    {
+      host: 'localhost',
+      user: 'Inge',
+      password: 'Vinter-2025',
+      database: "condos"
+    }
+  );
+}
+if (!localServer) {
+  // Create a connection to the database
+  const connection = mysql.createConnection(
+    {
+      host: '127.0.0.1',
+      user: 'Inge',
+      password: 'Sommer--2025',
+      database: "condos"
+    }
+  );
+}
 
 server.on('connection', (socket) => {
 
@@ -46,7 +61,7 @@ server.on('connection', (socket) => {
     // Received message from server
     const sqlQuery = message.toString();
     console.log(sqlQuery);
-    
+
     // SQL querying
     queryingSQL(sqlQuery);
 
