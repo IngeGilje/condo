@@ -1,0 +1,21 @@
+{
+  "folders": [
+	{
+		"path": "../.vscode"
+	},
+	{
+		"path": ".."
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "condo",
+    "files.exclude": {
+      "**/*.bck": true,
+      "**/*.json": true
+    },
+    "search.exclude": {
+      "**/*.bck": true,
+      "**/*.json": true
+    }
+  }
+}
