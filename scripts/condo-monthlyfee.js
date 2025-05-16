@@ -12,9 +12,9 @@ const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 menu();
 objMonthlyFee.markSelectedMenu('Månedsavgift');
@@ -182,7 +182,7 @@ function createEvents() {
       }
     }
   });
- }
+}
 
 function updateMontlyamountRows() {
 
@@ -309,10 +309,12 @@ function showLeadingText() {
   objDue.showInput('monthlyfee-amount', '* Månedsavgift', 10, '');
 
   // show update button
-  objDue.showButton('monthlyfee-update', 'Oppdater');
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objDue.showButton('monthlyfee-update', 'Oppdater');
 
-  // show delete button
-  objDue.showButton('monthlyfee-delete', 'Slett');
+    // show delete button
+    objDue.showButton('monthlyfee-delete', 'Slett');
+  }
 }
 
 // Check for valid values

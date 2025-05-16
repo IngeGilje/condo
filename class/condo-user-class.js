@@ -67,20 +67,20 @@ class User extends Condos {
   // Find selected user id
   getSelectedUserId(classValue) {
 
-    let user = 0;
+    let userId= 0;
 
     // Check if HTML class exist
     if (isClassDefined(classValue)) {
 
-      user =
+      userId =
         Number(document.querySelector(`.${classValue}`).value);
-      user = (user === 0) ? userArray.at(-1).user : user;
+      userId = (userId === 0) ? userArray.at(-1).userId : userId;
     } else {
 
       // Get last id in last object in user array
-      user = userArray.at(-1).userId;
+      userId = userArray.at(-1).userId;
     }
-    return user;
+    return userId;
   }
 }
 

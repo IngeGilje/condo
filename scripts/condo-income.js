@@ -10,9 +10,9 @@ const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 let isEventsCreated = false;
 
@@ -289,8 +289,8 @@ function updateIncomeRow() {
 
       // Client sends a request to the server
       socket.send(SQLquery);
-      
-       SQLquery = `
+
+      SQLquery = `
         INSERT INTO accountmovement (
           tableName,
           user,
@@ -351,16 +351,18 @@ function showLeadingText(incomeId) {
   objIncome.showInput('income-text', '* Tekst', 255, '');
 
   // show update button
-  objIncome.showButton('income-update', 'Oppdater');
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objIncome.showButton('income-update', 'Oppdater');
 
-  // show new button
-  objIncome.showButton('income-new', 'Ny');
+    // show new button
+    objIncome.showButton('income-new', 'Ny');
 
-  // show delete button
-  objIncome.showButton('income-delete', 'Slett');
+    // show delete button
+    objIncome.showButton('income-delete', 'Slett');
 
-  // show cancel button
-  objIncome.showButton('income-cancel', 'Avbryt');
+    // show cancel button
+    objIncome.showButton('income-cancel', 'Avbryt');
+  }
 }
 
 // Show values for income

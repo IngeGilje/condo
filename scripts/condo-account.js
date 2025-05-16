@@ -10,9 +10,9 @@ let isEventsCreated = false;
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 menu();
 
@@ -317,16 +317,18 @@ function showLeadingText(accountId) {
   objAccount.showInput('account-accountName', '* Kontonavn', 50, '');
 
   // update button
-  objAccount.showButton('account-update', 'Oppdater');
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objAccount.showButton('account-update', 'Oppdater');
 
-  // new button
-  objAccount.showButton('account-new', 'Ny');
+    // new button
+    objAccount.showButton('account-new', 'Ny');
 
-  // delete button
-  objAccount.showButton('account-delete', 'Slett');
+    // delete button
+    objAccount.showButton('account-delete', 'Slett');
 
-  // cancel button
-  objAccount.showButton('account-cancel', 'Avbryt');
+    // cancel button
+    objAccount.showButton('account-cancel', 'Avbryt');
+  }
 }
 
 // Show all values for account

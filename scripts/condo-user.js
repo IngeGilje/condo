@@ -8,9 +8,9 @@ const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 let isEventsCreated = false;
 
@@ -20,10 +20,19 @@ objUser.markSelectedMenu('Bruker');
 // Send a message to the server
 socket.onopen = () => {
 
+  /*
   // Send a request to the server to get all users
   const SQLquery = `
     SELECT * FROM user
     ORDER BY userId;
+  `;
+  socket.send(SQLquery);
+  */
+
+  // Send a request to the server to get all condos
+  const SQLquery = `
+    SELECT * FROM condo
+    ORDER BY condoId;
   `;
   socket.send(SQLquery);
 };
@@ -34,26 +43,6 @@ socket.onmessage = (event) => {
   let message = event.data;
 
   // Create condo array including objets
-  if (message.includes('"tableName":"user"')) {
-
-    // user table
-    console.log('userTable');
-
-    // array including objects with condo information
-    userArray = JSON.parse(message);
-
-    // Check user/password
-    (objUser.validateUser(objUserPassword.user, objUserPassword.password)) ? '' : window.location.href('condo-login.html');
-
-    // Sends a request to the server to get all condos
-    const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY condoId;
-    `;
-    socket.send(SQLquery);
-  }
-
-  // Create condo array including objets
   if (message.includes('"tableName":"condo"')) {
 
     // user table
@@ -62,11 +51,28 @@ socket.onmessage = (event) => {
     // array including objects with user information
     condoArray = JSON.parse(message);
 
-    // Show all leading text
-    const userId = objUser.getSelectedUserId('select-user-userId');
+    // Send a request to the server to get all condos
+    const SQLquery = `
+    SELECT * FROM user
+    ORDER BY userId;
+  `;
+    socket.send(SQLquery);
+  }
+
+  // Create condo array including objets
+  if (message.includes('"tableName":"user"')) {
+
+    // user table
+    console.log('userTable');
+
+    // array including objects with condo information
+    userArray = JSON.parse(message);
+
+    // Show all leading texts
+    let userId = objUser.getSelectedUserId('select-user-userId');
     showLeadingText(userId);
 
-    // Show all values for user
+    // Show all values for all user
     showValues(userId);
 
     // Make events
@@ -106,7 +112,9 @@ function createEvents() {
 
   // Select User
   document.addEventListener('change', (event) => {
+
     if (event.target.classList.contains('select-user-userId')) {
+
       let userId = Number(document.querySelector('.select-user-userId').value);
       userId = (userId !== 0) ? userId : userArray.at(-1).userId;
       if (userId) {
@@ -118,10 +126,14 @@ function createEvents() {
   // Update
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-user-update')) {
-      if (updateUser()) {
 
-        let userId = Number(document.querySelector('.select-user-userId').value);
-        userId = (userId !== 0) ? userId : userArray.at(-1).userId;
+      // user id
+      let userId =
+        Number(document.querySelector('.select-user-userId').value);
+
+      if (updateUser(userId)) {
+
+        userId = (userId === 0) ? userArray.at(-1).userId : userId;
         showValues(userId);
       }
     }
@@ -139,10 +151,12 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-user-delete')) {
 
-      deleteUserRow();
+      const userId =
+        Number(document.querySelector('.select-user-userId').value);
+      //objUser.getSelectedUserId('select-user-userId');
+      deleteUserRow(userId);
 
-      // Sends a request to the server to get all user
-      //objUser.getUsers(socket);
+      // Sends a request to the server to get all users
       const SQLquery = `
         SELECT * FROM user
         ORDER BY userId;
@@ -166,15 +180,15 @@ function createEvents() {
   });
 }
 
-function updateUser() {
+function updateUser(userId) {
 
   let isUpdated = false;
 
-  if (validateValues()) {
+  if (validateValues(userId)) {
 
     // user id
-    const userId =
-      Number(document.querySelector('.select-user-userId').value);
+    //const userId =
+    //  Number(document.querySelector('.select-user-userId').value);
 
     // e-mail
     const email =
@@ -196,9 +210,9 @@ function updateUser() {
     const phone =
       document.querySelector('.input-user-phone').value;
 
-    // securitylevel
-    const securitylevel =
-      Number(document.querySelector('.select-user-securitylevel').value);
+    // securityLevel
+    const securityLevel =
+      Number(document.querySelector('.select-user-securityLevel').value);
 
     // password
     const password =
@@ -224,7 +238,7 @@ function updateUser() {
             firstName = '${firstName}',
             lastName = '${lastName}',
             phone = '${phone}',
-            securitylevel = ${securitylevel},
+            securityLevel = ${securityLevel},
             password = '${password}'
           WHERE userId = ${userId}
           ;
@@ -242,7 +256,7 @@ function updateUser() {
           firstName,
           lastName,
           phone,
-          securitylevel,
+          securityLevel,
           password) 
         VALUES (
           'user',
@@ -253,7 +267,7 @@ function updateUser() {
           '${firstName}',
           '${lastName}',
           '${phone}',
-          ${securitylevel},
+          ${securityLevel},
           '${password}'
         );
       `;
@@ -276,11 +290,11 @@ function updateUser() {
   return isUpdated;
 }
 
-function deleteUserRow() {
+function deleteUserRow(userId) {
 
   let SQLquery = "";
 
-  const userId = Number(document.querySelector('.select-user-userId').value);
+  //const userId = Number(document.querySelector('.select-user-userId').value);
   if (userId > 1) {
 
     // Check if user exist
@@ -290,12 +304,12 @@ function deleteUserRow() {
       // Delete table
       SQLquery = `
         DELETE FROM user
-        WHERE userId = '${userId}';
+        WHERE userId = ${userId};
       `;
 
+      // Client sends a request to the server
+      socket.send(SQLquery);
     }
-    // Client sends a request to the server
-    socket.send(SQLquery);
 
     // Get user
     SQLquery = `
@@ -303,6 +317,8 @@ function deleteUserRow() {
       ORDER BY userId;
     `;
     socket.send(SQLquery);
+
+    resetValues();
   }
 }
 
@@ -328,23 +344,25 @@ function showLeadingText(userId) {
   // Phone
   objUser.showInput('user-phone', 'Telefonnummer', 20, '');
 
-  // Select securitylevel
-  objUser.selectNumber('user-securitylevel', 1, 9, 5, 'Sikkerhetsnivå');
+  // Select securityLevel
+  objUser.selectNumber('user-securityLevel', 1, 9, 5, 'Sikkerhetsnivå');
 
   // passord
   objUser.showInput('user-password', '* Passord', 50, '');
 
   // update button
-  objUser.showButton('user-update', 'Oppdater');
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objUser.showButton('user-update', 'Oppdater');
 
-  // new button
-  objUser.showButton('user-new', 'Ny');
+    // new button
+    objUser.showButton('user-new', 'Ny');
 
-  // delete button
-  objUser.showButton('user-delete', 'Slett');
+    // delete button
+    objUser.showButton('user-delete', 'Slett');
 
-  // cancel button
-  objUser.showButton('user-cancel', 'Avbryt');
+    // cancel button
+    objUser.showButton('user-cancel', 'Avbryt');
+  }
 }
 
 // Show all values for user
@@ -377,9 +395,9 @@ function showValues(userId) {
       document.querySelector('.input-user-phone').value =
         userArray[objectNumberUser].phone;
 
-      // show securitylevel
-      document.querySelector('.select-user-securitylevel').value =
-        userArray[objectNumberUser].securitylevel;
+      // show securityLevel
+      document.querySelector('.select-user-securityLevel').value =
+        userArray[objectNumberUser].securityLevel;
 
       // password
       document.querySelector('.input-user-password').value =
@@ -389,7 +407,7 @@ function showValues(userId) {
 }
 
 // Check for valid values
-function validateValues() {
+function validateValues(userId) {
 
   // Check email
   const eMail = document.querySelector('.input-user-email').value;
@@ -413,10 +431,10 @@ function validateValues() {
   const phone = document.querySelector('.input-user-phone').value;
   const validPhone = objUser.validateText(phone, "label-user-phone", "Telefonnummer");
 
-  const securitylevel =
-    Number(document.querySelector('.select-user-securitylevel').value);
+  const securityLevel =
+    Number(document.querySelector('.select-user-securityLevel').value);
   const validSecuritylevel =
-    checkNumber(securitylevel, 1, 9, "user-securitylevel", "Sikkerhetsnivå");
+    checkNumber(securityLevel, 1, 9, "user-securityLevel", "Sikkerhetsnivå");
 
   // Check password
   const password = document.querySelector('.input-user-password').value;
@@ -447,8 +465,8 @@ function resetValues() {
   document.querySelector('.input-user-phone').value =
     '';
 
-  // securitylevel
-  document.querySelector('.select-user-securitylevel').value =
+  // securityLevel
+  document.querySelector('.select-user-securityLevel').value =
     0;
 
   // reset password
@@ -475,7 +493,7 @@ CREATE TABLE user (
   firstName VARCHAR(50) NOT NULL,
   lastName VARCHAR(50) NOT NULL,
   phone VARCHAR(20) NOT NULL,
-  securitylevel INT,
+  securityLevel INT,
   password VARCHAR(50) NOT NULL
   );
 INSERT INTO user(
@@ -487,7 +505,7 @@ INSERT INTO user(
   firstName,
   lastName,
   phone,
-  securitylevel,
+  securityLevel,
   password) 
 VALUES (
   'user',

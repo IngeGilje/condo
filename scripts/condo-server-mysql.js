@@ -19,12 +19,11 @@ const WebSocket = require('ws');
 const server = new WebSocket.Server({ port: 8080 });
 
 // Constants for database handling
-const mysql = require('mysql2');
-const databaseName = "condos";
 let messageToClient = undefined; // Message to send to client
 let connected2MySQL = false; // Not connected to mysql database
 
 // Connecting to mySQL
+const mysql = require('mysql2');
 let connection;
 if (localServer) {
   connection = mysql.createConnection(
@@ -103,7 +102,6 @@ function queryingSQL(query) {
   (connected2MySQL) ? '' : connectToMySql();
 
   if (connected2MySQL) {
-
     connection.query(query, (error, results) => {
       if (error) {
         console.error(error);

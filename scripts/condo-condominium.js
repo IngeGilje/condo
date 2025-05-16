@@ -10,9 +10,9 @@ objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 let isEventsCreated = false;
 
@@ -328,16 +328,18 @@ function showLeadingText(condominiumId) {
   objBankAccount.showAllBankAccounts('bankAccountId', bankAccountId);
 
   // show update button
-  objCondominium.showButton('condominium-update', 'Oppdater');
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objCondominium.showButton('condominium-update', 'Oppdater');
 
-  // show new button
-  objCondominium.showButton('condominium-new', 'Ny');
+    // show new button
+    objCondominium.showButton('condominium-new', 'Ny');
 
-  // show delete button
-  objCondominium.showButton('condominium-delete', 'Slett');
+    // show delete button
+    objCondominium.showButton('condominium-delete', 'Slett');
 
-  // cancel button
-  objCondominium.showButton('condominium-cancel', 'Avbryt');
+    // cancel button
+    objCondominium.showButton('condominium-cancel', 'Avbryt');
+  }
 }
 
 // Show all values for condominium

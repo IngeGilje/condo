@@ -6,11 +6,13 @@ const objLogIn = new Login('login');
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 let isEventsCreated = false;
+
+localStorage.removeItem("savedUser");
 
 // Send a message to the server
 socket.onopen = () => {
@@ -77,12 +79,20 @@ function createEvents() {
       const password =
         document.querySelector('.input-password').value;
 
-      // Save user and password
-      localStorage.setItem('savedUser', JSON.stringify({ user, password }));
+      const objectNumberUser = userArray.findIndex(userRow => userRow.user === user);
+      if (objectNumberUser > 0) {
 
-      (objLogIn.validateUser(user, password))
-        ? window.location.href = 'condo/condo-income.html'
-        : resetValues();
+        const securityLevel =
+          userArray[objectNumberUser].securityLevel;
+
+        // Save user and password
+        localStorage.setItem('savedUser', JSON.stringify({ user, password, securityLevel }));
+        const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
+
+        (objLogIn.validateUser(user, password))
+          ? window.location.href = 'condo/condo-income.html'
+          : resetValues();
+      }
     }
   });
 }

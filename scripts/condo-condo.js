@@ -8,9 +8,9 @@ const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 let isEventsCreated = false;
 
@@ -294,16 +294,18 @@ function showLeadingText(condoId) {
   objCondo.showInput('condo-city', '* Poststed', 50, '');
 
   // show update button
-  objCondo.showButton('condo-update', 'Oppdater');
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objCondo.showButton('condo-update', 'Oppdater');
 
-  // show new button
-  objCondo.showButton('condo-new', 'Ny');
+    // show new button
+    objCondo.showButton('condo-new', 'Ny');
 
-  // show delete button
-  objCondo.showButton('condo-delete', 'Slett');
+    // show delete button
+    objCondo.showButton('condo-delete', 'Slett');
 
-  // cancel button
-  objCondo.showButton('condo-cancel', 'Avbryt');
+    // cancel button
+    objCondo.showButton('condo-cancel', 'Avbryt');
+  }
 }
 
 // Show all values for condo

@@ -9,9 +9,9 @@ const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 let isEventsCreated = false;
 
@@ -318,16 +318,18 @@ function showLeadingText(bankAccountId) {
   objBankAccount.showInput('bankaccount-bankAccountName', '* Kontonavn', 50, '');
 
   // update button
-  objBankAccount.showButton('bankaccount-update', 'Oppdater');
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objBankAccount.showButton('bankaccount-update', 'Oppdater');
 
-  // new button
-  objBankAccount.showButton('bankaccount-new', 'Ny');
+    // new button
+    objBankAccount.showButton('bankaccount-new', 'Ny');
 
-  // delete button
-  objBankAccount.showButton('bankaccount-delete', 'Slett');
+    // delete button
+    objBankAccount.showButton('bankaccount-delete', 'Slett');
 
-  // cancel button
-  objBankAccount.showButton('bankaccount-cancel', 'Avbryt');
+    // cancel button
+    objBankAccount.showButton('bankaccount-cancel', 'Avbryt');
+  }
 }
 
 // Show all values for bankAccount

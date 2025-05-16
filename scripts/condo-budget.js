@@ -9,9 +9,9 @@ const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 let isEventsCreated = false;
 
 menu();
@@ -307,17 +307,18 @@ function showLeadingText(budgetId) {
   objBudget.showInput('budget-text', '* Tekst', 255, '');
 
   // show update button
-  objBudget.showButton('budget-update', 'Oppdater');
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objBudget.showButton('budget-update', 'Oppdater');
 
-  // show new button
-  objBudget.showButton('budget-new', 'Ny');
+    // show new button
+    objBudget.showButton('budget-new', 'Ny');
 
-  // show delete button
-  objBudget.showButton('budget-delete', 'Slett');
+    // show delete button
+    objBudget.showButton('budget-delete', 'Slett');
 
-  // cancel button
-  objBudget.showButton('budget-cancel', 'Avbryt');
-
+    // cancel button
+    objBudget.showButton('budget-cancel', 'Avbryt');
+  }
 }
 
 // Show values for budget

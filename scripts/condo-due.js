@@ -11,9 +11,9 @@ const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 menu();
 objDue.markSelectedMenu('Forfall');
@@ -341,16 +341,18 @@ function showLeadingText(dueId) {
   objDue.showInput('due-text', '* Tekst', 255, '');
 
   // show update button
-  objDue.showButton('due-update', 'Oppdater');
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objDue.showButton('due-update', 'Oppdater');
 
-  // show new button
-  objDue.showButton('due-new', 'Ny');
+    // show new button
+    objDue.showButton('due-new', 'Ny');
 
-  // show delete button
-  objDue.showButton('due-delete', 'Slett');
+    // show delete button
+    objDue.showButton('due-delete', 'Slett');
 
-  // show cancel button
-  objDue.showButton('due-cancel', 'Avbryt');
+    // show cancel button
+    objDue.showButton('due-cancel', 'Avbryt');
+  }
 }
 
 // Check for valid values
