@@ -2,7 +2,7 @@
 class Condos {
 
   // local- or webserver
-  #localServer = true;
+  localServer = true;
   
   // All year from 2020 until 2039
   #yearArray = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029,

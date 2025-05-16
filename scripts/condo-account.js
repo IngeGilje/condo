@@ -1,11 +1,5 @@
 // maintenance of accounts
 
-// connection to a server
-let socket;
-(localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
-
 // Activate Account class
 const objUser = new User('user');
 const objAccount = new Account('account');
@@ -13,6 +7,12 @@ const objBankAccount = new BankAccount('bankaccount');
 let objUserPassword = Object;
 
 let isEventsCreated = false;
+
+// Connection to a server
+let socket;
+(objUser.localServer) 
+? socket = new WebSocket('ws://localhost:8080')
+: socket = new WebSocket('ws://ingegilje.no:8080');
 
 menu();
 

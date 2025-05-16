@@ -1,14 +1,14 @@
 // Login
 
-// connection to a server
-let socket;
-(localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
-
 // Activate user class
 const objUser = new User('user');
 const objLogIn = new Login('login');
+
+// Connection to a server
+let socket;
+(objUser.localServer) 
+? socket = new WebSocket('ws://localhost:8080')
+: socket = new WebSocket('ws://ingegilje.no:8080');
 
 let isEventsCreated = false;
 
