@@ -4,7 +4,7 @@
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 
-const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
@@ -231,7 +231,7 @@ function updateUser(userId) {
       SQLquery = `
           UPDATE user
           SET 
-            user = '${objUserPassword.user}',
+            user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             email = '${email}',
             condoId = ${condoId},
@@ -260,7 +260,7 @@ function updateUser(userId) {
           password) 
         VALUES (
           'user',
-          '${objUserPassword.user}',
+          '${objUserPassword.email}',
           '${lastUpdate}',
           '${email}',
           ${condoId},
@@ -274,7 +274,6 @@ function updateUser(userId) {
     }
 
     // Client sends a request to the server
-    console.log(SQLquery);
     socket.send(SQLquery);
 
     document.querySelector('.select-user-userId').disabled =

@@ -6,7 +6,7 @@ const objCondominium = new Condominium('condominium');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 
-objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
+objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
@@ -56,7 +56,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.user, objUserPassword.password)) ? '' : window.location.href('condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all accounts
@@ -230,7 +230,7 @@ function updateCondominium(condominiumId) {
       SQLquery = `
         UPDATE condominium
         SET 
-          user = '${objUserPassword.user}',
+          user = '${objUserPassword.email}',
           lastUpdate = '${lastUpdate}',
           condominiumName = '${condominiumName}',
           street = '${street}',
@@ -262,7 +262,7 @@ function updateCondominium(condominiumId) {
           bankAccount)
         VALUES (
           'condominium',
-          '${objUserPassword.user}',
+          '${objUserPassword.email}',
           '${lastUpdate}',
           '${condominiumName}',
           '${street}',

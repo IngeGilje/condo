@@ -7,13 +7,13 @@ const objIncome = new Income('income');
 const objDue = new Due('due');
 const objCondo = new Condo('condo');
 
-const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 let isEventsCreated = false;
 
@@ -45,7 +45,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.user, objUserPassword.password)) ? '' : window.location.href('condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -206,52 +206,52 @@ function showValues() {
         if (due.condoId === condoId || condoId === 999999999) {
           if (Number(due.date) >= fromDate && (Number(due.date) <= toDate)) {
 
-          // date
-          htmlColumnDueDate +=
-            `
+            // date
+            htmlColumnDueDate +=
+              `
             <div class="leftCell">
           `;
-          htmlColumnDueDate +=
-            convertToEurDateFormat(due.date);
-          htmlColumnDueDate +=
-            `
+            htmlColumnDueDate +=
+              convertToEurDateFormat(due.date);
+            htmlColumnDueDate +=
+              `
               </div>
             `;
 
-          // amount
-          htmlColumnDueAmount +=
-            `
+            // amount
+            htmlColumnDueAmount +=
+              `
               <div class="rightCell">
             `;
-          htmlColumnDueAmount +=
-            formatFromOreToKroner(due.amount);
-          htmlColumnDueAmount +=
-            `
+            htmlColumnDueAmount +=
+              formatFromOreToKroner(due.amount);
+            htmlColumnDueAmount +=
+              `
             </div>
           `;
 
-          // Text has to fit into the column
-          due.text = truncateText(due.text, 'div-overview-columnDueText');
-          htmlColumnDueText +=
-            `
+            // Text has to fit into the column
+            due.text = truncateText(due.text, 'div-overview-columnDueText');
+            htmlColumnDueText +=
+              `
               <div 
                 class="leftCell"
                 style="text-align: left;"
               >
             `;
-          htmlColumnDueText +=
-            due.text;
-          htmlColumnDueText +=
-            `
+            htmlColumnDueText +=
+              due.text;
+            htmlColumnDueText +=
+              `
             </div>
           `;
 
-          // Accomulate
-          // due
-          const formatedAmount = due.amount.replace(',', '.');
-          sumColumnDue += Number(formatedAmount);
+            // Accomulate
+            // due
+            const formatedAmount = due.amount.replace(',', '.');
+            sumColumnDue += Number(formatedAmount);
+          }
         }
-      }
       }
     });
 

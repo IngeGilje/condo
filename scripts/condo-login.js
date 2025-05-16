@@ -12,7 +12,7 @@ let socket;
 
 let isEventsCreated = false;
 
-localStorage.removeItem("savedUser");
+localStorage.removeItem("user");
 
 // Send a message to the server
 socket.onopen = () => {
@@ -74,23 +74,24 @@ function createEvents() {
     if (event.target.classList.contains('button-link')) {
 
       // validate password
-      const user =
+
+      const email =
         document.querySelector('.input-email').value;
       const password =
         document.querySelector('.input-password').value;
 
-      const objectNumberUser = userArray.findIndex(userRow => userRow.user === user);
+      // Security level
+      const objectNumberUser = userArray.findIndex(userRow => userRow.email === email);
       if (objectNumberUser > 0) {
 
         const securityLevel =
           userArray[objectNumberUser].securityLevel;
 
-        // Save user and password
-        localStorage.setItem('savedUser', JSON.stringify({ user, password, securityLevel }));
-        const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
+        // Save email/user, password and security level
+        localStorage.setItem('user', JSON.stringify({ email, password, securityLevel }));
 
-        (objLogIn.validateUser(user, password))
-          ? window.location.href = 'condo/condo-income.html'
+        (objLogIn.validateUser(email, password))
+          ? window.location.href = 'file:///C:/inetpub/wwwroot/condo/condo-income.html'
           : resetValues();
       }
     }
@@ -108,7 +109,7 @@ function showLeadingText() {
   objUser.showLeadingTextInput('password', 'Passord', 50, '🔑 Passord');
 
   // login button
-  objLogIn.showPageButton('condo/condo-income.html', 'program');
+  objLogIn.showPageButton('file:///C:/inetpub/wwwroot/condo/condo-income.html', 'program');
 }
 
 // reset values
@@ -122,5 +123,5 @@ function resetValues() {
   document.querySelector('.input-password').value =
     '';
 
-  localStorage.removeItem("savedUser");
+  localStorage.removeItem("user");
 }

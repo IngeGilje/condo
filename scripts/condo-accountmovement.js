@@ -7,13 +7,13 @@ const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 const objAccountMovement = new AccountMovement('accountmovement');
 
-const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
-(objUser.localServer) 
-? socket = new WebSocket('ws://localhost:8080')
-: socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.localServer)
+  ? socket = new WebSocket('ws://localhost:8080')
+  : socket = new WebSocket('ws://ingegilje.no:8080');
 
 let isEventsCreated = false;
 
@@ -45,9 +45,9 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.user, objUserPassword.password))
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password))
       ? ''
-      : window.location.href('condo-login.html');
+      : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos

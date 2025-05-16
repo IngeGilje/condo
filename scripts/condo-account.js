@@ -43,8 +43,8 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
-    (objUser.validateUser(objUserPassword.user, objUserPassword.password)) ? '' : window.location.href('condo-login.html');
+    objUserPassword = JSON.parse(localStorage.getItem('user'));
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
 
     // username and password is ok
     const SQLquery = `
@@ -224,7 +224,7 @@ function updateAccount() {
         SQLquery = `
           UPDATE account
           SET 
-            user = '${objUserPassword.user}',
+            user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             bankAccountId = ${bankAccountId},
             name = '${name}',
@@ -246,7 +246,7 @@ function updateAccount() {
         ) 
         VALUES (
           'account',
-          '${objUserPassword.user}',
+          '${objUserPassword.email}',
           '${lastUpdate}',
           ${bankAccountId},
           '${name}',

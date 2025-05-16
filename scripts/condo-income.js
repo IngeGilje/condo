@@ -6,7 +6,7 @@ const objAccount = new Account('account');
 const objUser = new User('user');
 const objIncome = new Income('income');
 
-const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
@@ -44,7 +44,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.user, objUserPassword.password)) ? '' : window.location.href('condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -251,7 +251,7 @@ function updateIncomeRow() {
       SQLquery = `
         UPDATE income
         SET 
-          user = '${objUserPassword.user}',
+          user = '${objUserPassword.email}',
           lastUpdate = '${lastUpdate}',
           condoId = ${condoId},
           accountId = ${accountId},
@@ -277,7 +277,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'income',
-          '${objUserPassword.user}',
+          '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
           ${accountId},
@@ -302,7 +302,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'accountmovement',
-          '${objUserPassword.user}',
+          '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
           ${accountId},

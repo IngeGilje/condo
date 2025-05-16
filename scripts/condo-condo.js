@@ -4,7 +4,7 @@
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 
-const objUserPassword = JSON.parse(localStorage.getItem('savedUser'));
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
@@ -56,7 +56,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.user, objUserPassword.password)) ? '' : window.location.href('condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -222,7 +222,7 @@ function updateCondoRow(condoId) {
       SQLquery = `
         UPDATE condo
         SET 
-          user = '${objUserPassword.user}',
+          user = '${objUserPassword.email}',
           lastUpdate = '${lastUpdate}',
           condoName = '${condoName}',
           street = '${street}',
@@ -246,7 +246,7 @@ function updateCondoRow(condoId) {
           city)
         VALUES (
           'condo',
-          '${objUserPassword.user}',
+          '${objUserPassword.email}',
           '${lastUpdate}',
           '${condoName}',
           '${street}',
