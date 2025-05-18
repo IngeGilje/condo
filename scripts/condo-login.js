@@ -91,7 +91,7 @@ function createEvents() {
         localStorage.setItem('user', JSON.stringify({ email, password, securityLevel }));
 
         (objLogIn.validateUser(email, password))
-          ? window.location.href = 'file:///C:/inetpub/wwwroot/condo/condo-income.html'
+          ? window.location.href = 'http://localhost/condo/condo-income.html'
           : resetValues();
       }
     }
@@ -109,7 +109,7 @@ function showLeadingText() {
   objUser.showLeadingTextInput('password', 'Passord', 50, '🔑 Passord');
 
   // login button
-  objLogIn.showPageButton('file:///C:/inetpub/wwwroot/condo/condo-income.html', 'program');
+  objLogIn.showPageButton('program', 'program');
 }
 
 // reset values

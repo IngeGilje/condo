@@ -44,7 +44,9 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) 
+    ? '' 
+    : window.location.href('http://localhost/condo/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -352,6 +354,7 @@ function showLeadingText(incomeId) {
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
+    
     objIncome.showButton('income-update', 'Oppdater');
 
     // show new button
