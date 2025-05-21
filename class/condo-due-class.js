@@ -9,12 +9,21 @@ class Due extends Condos {
   showAllDues(className, dueId) {
 
     let html = `
-    <form action="/submit" method="POST">
-      <label class="label-${className}"
-        for="onthlyPaymentId">
+    <form 
+      id="monthlyPaymentId"
+      action="/submit"
+      method="POST"
+    >
+      <label 
+        id="monthlyPaymentId"
+        class="label-${className}"
+        for="monthlyPaymentId"
+      >
           Velg forfall
       </label>
-      <select class="select-${className}" 
+      <select 
+        class="select-${className}" 
+        id="monthlyPaymentId"
       >
     `;
 

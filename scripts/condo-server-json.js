@@ -12,7 +12,7 @@ const fileName = "data.json";
 const filePath = path.join(directoryName, fileName);
 
 // Connect server (Node.js program)
-const server = new WebSocket.Server({ port: 8080 });
+const server = new WebSocket.Server({ port: 5000 });
 
 server.on('connection', (ws) => {
 
@@ -65,7 +65,7 @@ server.on('connection', (ws) => {
   });
 });
 
-console.log('WebSocket server is running on ws://localhost:8080');
+console.log('WebSocket server is running on ws://localhost:5000');
 
 // Get JSON String
 function getJSONString() {

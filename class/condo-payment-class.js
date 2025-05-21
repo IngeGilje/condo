@@ -8,12 +8,22 @@ class Payment extends Condos {
   showAllPayments(columnName, paymentId) {
 
     let html = `
-    <form action="/submit" method="POST">
-      <label class="label-payment-${columnName} label-payment-${columnName}"
-        for="Payment">
+    <form 
+      id="Payment"
+      action="/submit" 
+      method="POST"
+    >
+      <label 
+        class="label-payment-${columnName}
+        label-payment-${columnName}"
+        for="Payment"
+        id="Payment"
+      >
           Velg betaling
       </label>
-      <select class="select-payment-${columnName} select-payment-${columnName}" 
+      <select 
+        id="Payment"
+        class="select-payment-${columnName}" 
       >
     `;
 

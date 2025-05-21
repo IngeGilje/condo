@@ -8,13 +8,23 @@ class BankAccount extends Condos {
   showAllBankAccounts(columnName, bankAccountId) {
 
     let html = `
-      <form action="/submit" method="POST">
-        <label class="label-bankaccount-${columnName} label-bankaccount-${columnName}"
-          for="bankAccountId">
-            Velg bankkonto
+      <form
+        id="bankAccountId"
+        action="/submit" 
+        method="POST"
+      >
+        <label 
+          class="label-bankaccount-${columnName} 
+          label-bankaccount-${columnName}"
+          for="bankAccountId"
+          id="bankAccountId"
+        >
+          Velg bankkonto
         </label>
-        <select class="select-bankaccount-${columnName} select-bankaccount-${columnName}" 
-          id="bankAccountId" name="bankAccountId"
+        <select 
+          class="select-bankaccount-${columnName}" 
+          name="bankAccountId"
+          id="bankAccountId"
         >
     `;
 

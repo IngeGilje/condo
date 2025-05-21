@@ -8,13 +8,20 @@ class AccountMovement extends Condos {
   showAllAccountMovements(columnName, accountMovementId) {
 
     let html = `
-      <form action="/submit" method="POST">
-    
-        <label class="label-${columnName}"
-          for="accountmovement">
+      <form 
+        id="accountmovement"
+        action="/submit" 
+        method="POST"
+      >
+        <label 
+          class="label-${columnName}"
+          for="accountmovement"
+          id="accountmovement"
+        >
             Velg kontobevegelse
         </label>
-        <select class="select-${columnName}" 
+        <select 
+          class="select-${columnName}" 
         >
     `;
 

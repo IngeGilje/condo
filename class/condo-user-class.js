@@ -8,13 +8,19 @@ class User extends Condos {
   showAllUsers(classValue, userId) {
 
     let html = `
-      <form action="/submit" method="POST">
+      <form 
+        id="user"
+        action="/submit"
+        method="POST"
+      >
         <label class="label-${classValue}"
+          id="user"
           for="user">
             Velg bruker
         </label>
         <select class="select-${classValue}" 
-          id="user" name="user"
+          id="user"
+          name="user"
         >
     `;
 

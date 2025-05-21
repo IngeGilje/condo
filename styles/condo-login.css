@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  background: url('http://localhost/condo/images/hinna-park-blur.jpg') no-repeat center center/cover;
+  background: url('c:/inetpub/wwwroot/condo/images/hinna-park-blur.jpg') no-repeat center center/cover;
   display: flex;
   justify-content: center;
   align-items: center;

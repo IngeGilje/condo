@@ -9,15 +9,21 @@ class Account extends Condos {
 
     let html = `
       <form
-        id= 
+        id="accountId"
         action="/submit" 
-        method="POST">
-        <label class="label-${className}"
-          for="accountId">
+        method="POST"
+      >
+        <label 
+          class="label-${className}"
+          for="accountId"
+          id="accountId"
+        >
             Velg konto
         </label>
-        <select class="select-${className}" 
-          id="accountId" name="accountId"
+        <select 
+          class="select-${className}" 
+          id="accountId"
+          name="accountId"
         >
     `;
 

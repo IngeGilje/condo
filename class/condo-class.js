@@ -1,8 +1,8 @@
 // class for all applications for the condo system
 class Condos {
 
-  // local- or webserver
-  localServer = true;
+  //test- or webserver
+  testServer = true;
 
   // All year from 2020 until 2039
   #yearArray = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029,
@@ -98,10 +98,10 @@ class Condos {
 
     let html = this.showLabel(columnName, labelText);
     html += `
-        <form
-          id="${columnName}"
-        >
-      `;
+      <form
+        id="${columnName}"
+      >
+    `;
     texts.forEach((text) => {
       html += `
         <input type="checkbox" 
@@ -387,8 +387,12 @@ class Condos {
   selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
 
     let html = `
-    <form action="/submit" method="POST">
-      <label class="label-${className}"
+    <form
+      id="selectedNumber"
+      action="/submit" method="POST"
+    >
+      <label 
+        class="label-${className}"
         for="selectedNumber">
           ${labelText}
       </label>
@@ -459,6 +463,51 @@ class Condos {
 
     return validUser;
   }
+
+  menu() {
+
+    console.log('this.testServer: ', this.testServer)
+    if (this.testServer) {
+      document.querySelector('.div-menu')
+        .innerHTML =
+        `
+          <a href="http://localhost/condo-login.html" class="a-menu-vertical-login">Login</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-user.html" class="a-menu-vertical-user">Bruker</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-condo.html" class="a-menu-vertical-condo">Leilighet</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-bankaccount.html" class="a-menu-vertical-bankaccount">Bankkonto</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-condominium.html" class="a-menu-vertical-condominium">Sameie</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-account.html" class="a-menu-vertical-account">Konto</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-income.html" class="a-menu-vertical-income">Innbetaling</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-payment.html" class="a-menu-vertical-payment">Betaling</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-due.html" class="a-menu-vertical-due">Forfall</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-monthlyfee.html" class="a-menu-vertical-monthlyfee">Månedsavgift</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-remoteheating.html" class="a-menu-vertical-remoteheating">Fjernvarme</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-budget.html" class="a-menu-vertical-budget">Budsjett</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-overview.html" class="a-menu-vertical-overview">Bet. oversikt</a>
+          <a href="C:/inetpub/wwwroot/condo/condo-accountmovement.html" class="a-menu-vertical-accountmovement">Kontobevegelser</a>
+        `;
+    }
+    if (!this.testServer) {
+      document.querySelector('.div-menu')
+        .innerHTML =
+        `
+          <a href="http://ingegilje.no/condo-login.html" class="a-menu-vertical-login">Login</a>
+          <a href="http://ingegilje.no/condo/condo-user.html" class="a-menu-vertical-user">Bruker</a>
+          <a href="http://ingegilje.no/condo/condo-condo.html" class="a-menu-vertical-condo">Leilighet</a>
+          <a href="http://ingegilje.no/condo/condo-bankaccount.html" class="a-menu-vertical-bankaccount">Bankkonto</a>
+          <a href="http://ingegilje.no/condo/condo-condominium.html" class="a-menu-vertical-condominium">Sameie</a>
+          <a href="http://ingegilje.no/condo/condo-account.html" class="a-menu-vertical-account">Konto</a>
+          <a href="http://ingegilje.no/condo/condo-income.html" class="a-menu-vertical-income">Innbetaling</a>
+          <a href="http://ingegilje.no/condo/condo-payment.html" class="a-menu-vertical-payment">Betaling</a>
+          <a href="http://ingegilje.no/condo/condo-due.html" class="a-menu-vertical-due">Forfall</a>
+          <a href="http://ingegilje.no/condo/condo-monthlyfee.html" class="a-menu-vertical-monthlyfee">Månedsavgift</a>
+          <a href="http://ingegilje.no/condo/condo-remoteheating.html" class="a-menu-vertical-remoteheating">Fjernvarme</a>
+          <a href="http://ingegilje.no/condo/condo-budget.html" class="a-menu-vertical-budget">Budsjett</a>
+          <a href="http://ingegilje.no/condo/condo-overview.html" class="a-menu-vertical-overview">Bet. oversikt</a>
+          <a href="http://ingegilje.no/condo/condo-accountmovement.html" class="a-menu-vertical-accountmovement">Kontobevegelser</a>
+        `;
+    }
+  }
 }
 
 // Check string includes  only digits
@@ -466,47 +515,50 @@ function isNumeric(string) {
   return !isNaN(string) && string.trim() !== "";
 }
 
+/*
 function menu() {
 
-  if (this.localServer) {
+  console.log('this.testServer: ', this.testServer)
+  if (this.testServer) {
     document.querySelector('.div-menu')
       .innerHTML = `
       <a href="http://localhost/condo-login.html" class="a-menu-vertical-login">Login</a>
-      <a href="http://localhost/condo/condo-user.html" class="a-menu-vertical-user">Bruker</a>
-      <a href="http://localhost/condo/condo-condo.html" class="a-menu-vertical-condo">Leilighet</a>
-      <a href="http://localhost/condo/condo-bankaccount.html" class="a-menu-vertical-bankaccount">Bankkonto</a>
-      <a href="http://localhost/condo/condo-condominium.html" class="a-menu-vertical-condominium">Sameie</a>
-      <a href="http://localhost/condo/condo-account.html" class="a-menu-vertical-account">Konto</a>
-      <a href="http://localhost/condo/condo-income.html" class="a-menu-vertical-income">Innbetaling</a>
-      <a href="http://localhost/condo/condo-payment.html" class="a-menu-vertical-payment">Betaling</a>
-      <a href="http://localhost/condo/condo-due.html" class="a-menu-vertical-due">Forfall</a>
-      <a href="http://localhost/condo/condo-monthlyfee.html" class="a-menu-vertical-monthlyfee">Månedsavgift</a>
-      <a href="http://localhost/condo/condo-remoteheating.html" class="a-menu-vertical-remoteheating">Fjernvarme</a>
-      <a href="http://localhost/condo/condo-budget.html" class="a-menu-vertical-budget">Budsjett</a>
-      <a href="http://localhost/condo/condo-overview.html" class="a-menu-vertical-overview">Bet. oversikt</a>
-      <a href="http://localhost/condo/condo-accountmovement.html" class="a-menu-vertical-accountmovement">Kontobevegelser</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-user.html" class="a-menu-vertical-user">Bruker</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-condo.html" class="a-menu-vertical-condo">Leilighet</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-bankaccount.html" class="a-menu-vertical-bankaccount">Bankkonto</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-condominium.html" class="a-menu-vertical-condominium">Sameie</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-account.html" class="a-menu-vertical-account">Konto</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-income.html" class="a-menu-vertical-income">Innbetaling</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-payment.html" class="a-menu-vertical-payment">Betaling</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-due.html" class="a-menu-vertical-due">Forfall</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-monthlyfee.html" class="a-menu-vertical-monthlyfee">Månedsavgift</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-remoteheating.html" class="a-menu-vertical-remoteheating">Fjernvarme</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-budget.html" class="a-menu-vertical-budget">Budsjett</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-overview.html" class="a-menu-vertical-overview">Bet. oversikt</a>
+      <a href="C:/inetpub/wwwroot/condo/condo-accountmovement.html" class="a-menu-vertical-accountmovement">Kontobevegelser</a>
     `;
   }
-  if (!this.localServer) {
+  if (!this.testServer) {
     document.querySelector('.div-menu')
       .innerHTML = `
-      <a href="/condo-login.html" class="a-menu-vertical-login">Login</a>
-      <a href="/condo/condo-user.html" class="a-menu-vertical-user">Bruker</a>
-      <a href="/condo/condo-condo.html" class="a-menu-vertical-condo">Leilighet</a>
-      <a href="/condo/condo-bankaccount.html" class="a-menu-vertical-bankaccount">Bankkonto</a>
-      <a href="/condo/condo-condominium.html" class="a-menu-vertical-condominium">Sameie</a>
-      <a href="/condo/condo-account.html" class="a-menu-vertical-account">Konto</a>
-      <a href="/condo/condo-income.html" class="a-menu-vertical-income">Innbetaling</a>
-      <a href="/condo/condo-payment.html" class="a-menu-vertical-payment">Betaling</a>
-      <a href="/condo/condo-due.html" class="a-menu-vertical-due">Forfall</a>
-      <a href="/condo/condo-monthlyfee.html" class="a-menu-vertical-monthlyfee">Månedsavgift</a>
-      <a href="/condo/condo-remoteheating.html" class="a-menu-vertical-remoteheating">Fjernvarme</a>
-      <a href="/condo/condo-budget.html" class="a-menu-vertical-budget">Budsjett</a>
-      <a href="/condo/condo-overview.html" class="a-menu-vertical-overview">Bet. oversikt</a>
-      <a href="/condo/condo-accountmovement.html" class="a-menu-vertical-accountmovement">Kontobevegelser</a>
+      <a href="http://ingegilje.no/condo-login.html" class="a-menu-vertical-login">Login</a>
+      <a href="http://ingegilje.no/condo/condo-user.html" class="a-menu-vertical-user">Bruker</a>
+      <a href="http://ingegilje.no/condo/condo-condo.html" class="a-menu-vertical-condo">Leilighet</a>
+      <a href="http://ingegilje.no/condo/condo-bankaccount.html" class="a-menu-vertical-bankaccount">Bankkonto</a>
+      <a href="http://ingegilje.no/condo/condo-condominium.html" class="a-menu-vertical-condominium">Sameie</a>
+      <a href="http://ingegilje.no/condo/condo-account.html" class="a-menu-vertical-account">Konto</a>
+      <a href="http://ingegilje.no/condo/condo-income.html" class="a-menu-vertical-income">Innbetaling</a>
+      <a href="http://ingegilje.no/condo/condo-payment.html" class="a-menu-vertical-payment">Betaling</a>
+      <a href="http://ingegilje.no/condo/condo-due.html" class="a-menu-vertical-due">Forfall</a>
+      <a href="http://ingegilje.no/condo/condo-monthlyfee.html" class="a-menu-vertical-monthlyfee">Månedsavgift</a>
+      <a href="http://ingegilje.no/condo/condo-remoteheating.html" class="a-menu-vertical-remoteheating">Fjernvarme</a>
+      <a href="http://ingegilje.no/condo/condo-budget.html" class="a-menu-vertical-budget">Budsjett</a>
+      <a href="http://ingegilje.no/condo/condo-overview.html" class="a-menu-vertical-overview">Bet. oversikt</a>
+      <a href="http://ingegilje.no/condo/condo-accountmovement.html" class="a-menu-vertical-accountmovement">Kontobevegelser</a>
     `;
   }
 }
+*/
 
 // Remove comma, periode and space
 function removeComma(amount) {

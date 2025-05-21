@@ -8,12 +8,21 @@ class Income extends Condos {
   showAllIncomes(columnName, incomeId) {
 
     let html = `
-    <form action="/submit" method="POST">
-      <label class="label-income-${columnName} label-income-${columnName}"
+    <form 
+      id="Income"
+      action="/submit"
+      method="POST"
+    >
+      <label 
+        id="Income"
+        class="label-income-${columnName} 
+        label-income-${columnName}"
         for="Income">
           Velg innbetaling
       </label>
-      <select class="select-income-${columnName} select-income-${columnName}" 
+      <select 
+        id="Income"
+        class="select-income-${columnName}" 
       >
     `;
 

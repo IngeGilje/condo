@@ -8,12 +8,21 @@ class Condominium extends Condos {
   showAllCondominiums(columnName, condominiumId) {
 
     let html = `
-    <form action="/submit" method="POST">
-      <label class="label-condominium-${columnName} label-condominium-${columnName}"
-        for="Condominium">
+    <form 
+      id="Condominium"
+      action="/submit" 
+      method="POST"
+    >
+      <label 
+        class="label-condominium-${columnName}"
+        for="Condominium"
+        id="Condominium"
+      >
           Velg sameie
       </label>
-      <select class="select-condominium-${columnName} select-condominium-${columnName}" 
+      <select 
+        class="select-condominium-${columnName}" 
+        id="Condominium"
       >
     `;
 

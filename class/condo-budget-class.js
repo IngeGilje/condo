@@ -8,12 +8,22 @@ class Budget extends Condos {
   showAllBudgets(columnName, budgetId) {
 
     let html = `
-    <form action="/submit" method="POST">
-      <label class="label-budget-${columnName} label-budget-${columnName}"
-        for="Budget">
-          Velg budsjett
+    <form 
+      id ="Budget"
+      action="/submit" 
+      method="POST"
+    >
+      <label 
+        class="label-budget-${columnName} 
+        label-budget-${columnName}"
+        for="Budget"
+        id ="Budget"
+      >
+        Velg budsjett
       </label>
-      <select class="select-budget-${columnName} select-budget-${columnName}" 
+      <select 
+        class="select-budget-${columnName}"
+        id ="Budget" 
       >
     `;
 

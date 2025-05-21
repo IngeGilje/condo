@@ -8,26 +8,17 @@ const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
-(objUser.localServer)
-  ? socket = new WebSocket('ws://localhost:8080')
-  : socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.testServer)
+  ? socket = new WebSocket('ws://localhost:5000')
+  : socket = new WebSocket('ws://ingegilje.no:5000');
 
 let isEventsCreated = false;
 
-menu();
+objUser.menu();
 objUser.markSelectedMenu('Bruker');
 
 // Send a message to the server
 socket.onopen = () => {
-
-  /*
-  // Send a request to the server to get all users
-  const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
-  socket.send(SQLquery);
-  */
 
   // Send a request to the server to get all condos
   const SQLquery = `

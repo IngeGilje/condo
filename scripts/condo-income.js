@@ -10,13 +10,13 @@ const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
-(objUser.localServer)
-  ? socket = new WebSocket('ws://localhost:8080')
-  : socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.testServer)
+  ? socket = new WebSocket('ws://localhost:5000')
+  : socket = new WebSocket('ws://ingegilje.no:5000');
 
 let isEventsCreated = false;
 
-menu();
+objIncome.menu();
 objIncome.markSelectedMenu('Innbetaling');
 
 // Send a message to the server
@@ -44,9 +44,9 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) 
-    ? '' 
-    : window.location.href('http://localhost/condo/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password))
+      ? ''
+      : window.location.href('http://localhost/condo/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -354,7 +354,7 @@ function showLeadingText(incomeId) {
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    
+
     objIncome.showButton('income-update', 'Oppdater');
 
     // show new button

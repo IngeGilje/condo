@@ -8,28 +8,14 @@ const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
-(objUser.localServer)
-  ? socket = new WebSocket('ws://localhost:8080')
-  : socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.testServer)
+  ? socket = new WebSocket('ws://localhost:5000')
+  : socket = new WebSocket('ws://ingegilje.no:5000');
 
 let isEventsCreated = false;
 
-menu();
+objCondo.menu();
 objCondo.markSelectedMenu('Leilighet');
-
-/*
-// Send a message to the server
-socket.onopen = () => {
-
-  // Sends a request to the server to get all condos
-  //objCondo.getCondos(socket);
-  const SQLquery = `
-    SELECT * FROM condo
-    ORDER BY condoName;
-  `;
-  socket.send(SQLquery);
-};
-*/
 
 // Send a message to the server
 socket.onopen = () => {

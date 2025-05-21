@@ -6,9 +6,9 @@ const objLogIn = new Login('login');
 
 // Connection to a server
 let socket;
-(objUser.localServer)
-  ? socket = new WebSocket('ws://localhost:8080')
-  : socket = new WebSocket('ws://ingegilje.no:8080');
+(objUser.testServer)
+  ? socket = new WebSocket('ws://localhost:5000')
+  : socket = new WebSocket('ws://ingegilje.no:5000');
 
 let isEventsCreated = false;
 
@@ -91,7 +91,7 @@ function createEvents() {
         localStorage.setItem('user', JSON.stringify({ email, password, securityLevel }));
 
         (objLogIn.validateUser(email, password))
-          ? window.location.href = 'http://localhost/condo/condo-income.html'
+          ? window.location.href = 'C:/inetpub/wwwroot/condo/condo-income.html'
           : resetValues();
       }
     }

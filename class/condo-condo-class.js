@@ -8,12 +8,20 @@ class Condo extends Condos {
   showAllCondos(columnName, condoId, alternativeSelect) {
 
     let html = `
-    <form action="/submit" method="POST">
-      <label class="label-${columnName}"
-        for="Condo">
+    <form 
+      id="Condo"
+      action="/submit" 
+      method="POST"
+    >
+      <label 
+        id="Condo"
+        class="label-${columnName}"
+        for="Condo"
+      >
           Velg leilighet
       </label>
-      <select class="select-${columnName}" 
+      <select 
+        class="select-${columnName}" 
       >
     `;
 

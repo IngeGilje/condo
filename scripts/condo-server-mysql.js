@@ -13,10 +13,30 @@ process.stdin.on("data", resetTimer);
 // Reset timer on any user interaction
 process.stdin.on("data", resetTimer);
 */
-const localServer = true;
+// Test- or web server
+const testServer = true;
 
+/*
 const WebSocket = require('ws');
-const server = new WebSocket.Server({ port: 8080 });
+const server = new WebSocket.Server({ port: 5000 });
+*/
+const WebSocket = require('ws');
+const server = new WebSocket.Server({ port: 5000 }, () => {
+  console.log('WebSocket server is listening on port 5000');
+});
+
+server.on('connection', (socket) => {
+  console.log('Client connected');
+
+  socket.on('message', (message) => {
+    console.log('Received:', message.toString());
+    socket.send(`Echo: ${message}`);
+  });
+
+  socket.on('close', () => {
+    console.log('Client disconnected');
+  });
+});
 
 // Constants for database handling
 let messageToClient = undefined; // Message to send to client
@@ -25,7 +45,7 @@ let connected2MySQL = false; // Not connected to mysql database
 // Connecting to mySQL
 const mysql = require('mysql2');
 let connection;
-if (localServer) {
+if (testServer) {
   connection = mysql.createConnection(
     {
       host: 'localhost',
@@ -35,7 +55,7 @@ if (localServer) {
     }
   );
 }
-if (!localServer) {
+if (!testServer) {
   connection = mysql.createConnection(
     {
       host: '127.0.0.1',
@@ -71,8 +91,6 @@ server.on('connection', (socket) => {
     }, 100);
   });
 });
-
-console.log('WebSocket server is running on ws://localhost:8080');
 
 // Connect to MySQL
 function connectToMySql() {
