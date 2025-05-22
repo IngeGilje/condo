@@ -9,27 +9,33 @@ const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
-(objUser.testServer)
-  ? socket = new WebSocket('ws://localhost:5000')
-  : socket = new WebSocket('ws://ingegilje.no:5000');
+switch (objUser.serverStatus) {
+
+  // Web server
+  case 1: {
+    socket = new WebSocket('ws://ingegilje.no:7000');
+    break;
+  }
+  // Test web server/ local web server
+  case 2: {
+    socket = new WebSocket('ws://localhost:7000');
+    break;
+  }
+  // Test server/ local test server
+  case 3: {
+    socket = new WebSocket('ws://localhost:7000');
+
+    break;
+  }
+  default:
+    break;
+}
+
 let isEventsCreated = false;
 
 objBudget.menu();
 objBudget.markSelectedMenu('Budsjett');
 
-/*
-// Send a message to the server
-socket.onopen = () => {
-
-  // Sends a request to the server to get all accounts
-  //objAccount.getAccounts(socket);
-  const SQLquery = `
-    SELECT * FROM account
-    ORDER BY accountId;
-  `;
-  socket.send(SQLquery);
-};
-*/
 // Send a message to the server
 socket.onopen = () => {
 

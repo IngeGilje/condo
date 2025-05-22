@@ -14,20 +14,19 @@ process.stdin.on("data", resetTimer);
 process.stdin.on("data", resetTimer);
 */
 // Test- or web server
-const testServer = true;
+// const serverStatus = 1; // Web server
+// const serverStatus = 2; // Test web server/ local web server
+// const serverStatus = 3; // Test server/ local test server
+const serverStatus = 3; // Test server/ local test server
 
-/*
 const WebSocket = require('ws');
-const server = new WebSocket.Server({ port: 5000 });
-*/
-const WebSocket = require('ws');
-const server = new WebSocket.Server({ port: 5000 }, () => {
-  console.log('WebSocket server is listening on port 5000');
+const server = new WebSocket.Server({ port: 7000 }, () => {
+  console.log('WebSocket server is listening on port 7000');
 });
 
 server.on('connection', (socket) => {
-  console.log('Client connected');
 
+  console.log('Client connected');
   socket.on('message', (message) => {
     console.log('Received:', message.toString());
     socket.send(`Echo: ${message}`);
@@ -45,25 +44,49 @@ let connected2MySQL = false; // Not connected to mysql database
 // Connecting to mySQL
 const mysql = require('mysql2');
 let connection;
-if (testServer) {
-  connection = mysql.createConnection(
-    {
-      host: 'localhost',
-      user: 'Inge',
-      password: 'Vinter-2025',
-      database: "condos"
-    }
-  );
-}
-if (!testServer) {
-  connection = mysql.createConnection(
-    {
-      host: '127.0.0.1',
-      user: 'Inge',
-      password: 'Sommer--2025',
-      database: "condos"
-    }
-  );
+switch (serverStatus) {
+
+  // Web server
+  case 1: {
+    connection = mysql.createConnection(
+      {
+        host: '127.0.0.1',
+        user: 'Inge',
+        password: 'Sommer--2025',
+        database: "condos"
+      }
+    );
+    console.log('Connected to webserver 127.0.0.1');
+    break;
+  }
+  // Test web server/ local web server
+  case 2: {
+    connection = mysql.createConnection(
+      {
+        host: '127.0.0.1',
+        user: 'Inge',
+        password: 'Sommer--2025',
+        database: "condos"
+      }
+    );
+    console.log('Connected to webserver 127.0.0.1');
+    break;
+  }
+  // Test server/ local test server
+  case 3: {
+    connection = mysql.createConnection(
+      {
+        host: 'localhost',
+        user: 'Inge',
+        password: 'Vinter-2025',
+        database: "condos"
+      }
+    );
+    console.log('Connected to webserver localhost');
+    break;
+  }
+  default:
+    break;
 }
 
 server.on('connection', (socket) => {
