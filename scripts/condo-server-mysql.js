@@ -19,10 +19,47 @@ process.stdin.on("data", resetTimer);
 // const serverStatus = 3; // Test server/ local test server
 const serverStatus = 3; // Test server/ local test server
 
+/*
 const WebSocket = require('ws');
 const server = new WebSocket.Server({ port: 7000 }, () => {
   console.log('WebSocket server is listening on port 7000');
 });
+*/
+
+let WebSocket;
+let server;
+
+switch (serverStatus) {
+
+  // Web server
+  case 1: {
+    WebSocket = require('ws');
+    server = new WebSocket.Server({ port: 7000 }, () => {
+      console.log('WebSocket server is listening on port 7000');
+    }); break;
+  }
+
+  // Test web server/ local web server
+  case 2: {
+    WebSocket = require('ws');
+    server = new WebSocket.Server({ port: 7000 }, () => {
+      console.log('WebSocket server is listening on port 7000');
+    }); socket = new WebSocket('ws://localhost:7000');
+    break;
+  }
+
+  // Test server/ local test server
+  case 3: {
+    WebSocket = require('ws');
+    server = new WebSocket.Server({ port: 6050 }, () => {
+      console.log('WebSocket server is listening on port 6050');
+    });
+    break;
+  }
+
+  default:
+    break;
+}
 
 server.on('connection', (socket) => {
 

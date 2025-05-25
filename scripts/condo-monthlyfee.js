@@ -26,8 +26,9 @@ switch (objUser.serverStatus) {
   }
   // Test server/ local test server
   case 3: {
-    socket = new WebSocket('ws://localhost:7000');
-
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const hostname = window.location.hostname || 'localhost';
+    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
     break;
   }
   default:
