@@ -75,7 +75,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all accounts
@@ -268,6 +268,7 @@ function updateCondominium(condominiumId) {
       SQLquery = `
         INSERT INTO condominium (
           tableName,
+          condominiumId,
           user,
           lastUpdate,
           condominiumName,
@@ -281,6 +282,7 @@ function updateCondominium(condominiumId) {
           bankAccount)
         VALUES (
           'condominium',
+          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${condominiumName}',
@@ -542,6 +544,7 @@ DROP TABLE condominium;
 CREATE TABLE condominium (
   condominiumId INT AUTO_INCREMENT PRIMARY KEY,
   tableName VARCHAR(50),
+  condominiumId INT,
   user VARCHAR (50),
   lastUpdate VarChar (40),
   condominiumName VARCHAR(50) NOT NULL,
@@ -552,10 +555,12 @@ CREATE TABLE condominium (
   phoneNumber VARCHAR(20),
   email VARCHAR(50),
   organization VARCHAR(9),
-  bankAccount VARCHAR(11)
+  bankAccount VARCHAR(11),
+  FOREIGN KEY (condominiumId) REFERENCES condonium(condoniumId)
 );
 INSERT INTO condominium (
   tableName,
+  condominiumId,
   user,
   lastUpdate,
   condominiumName,
@@ -569,6 +574,7 @@ INSERT INTO condominium (
   bankAccountId)
 VALUES (
   'condominium',
+  1,
   'Initiation',
   '2099-12-31T23:59:59.596Z',
   '',

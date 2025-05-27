@@ -62,7 +62,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all accounts
@@ -260,6 +260,7 @@ function updateBudgetRow(budgetId) {
       SQLquery = `
         INSERT INTO budget (
           tableName,
+          condominiumId,
           user,
           lastUpdate,
           accountId,
@@ -268,6 +269,7 @@ function updateBudgetRow(budgetId) {
           text)
         VALUES (
           'budget',
+          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},
@@ -455,6 +457,7 @@ DROP TABLE budget;
 CREATE TABLE budget (
   budgetId INT AUTO_INCREMENT PRIMARY KEY,
   tableName VARCHAR(50) NOT NULL,
+  condominiumId INT,
   user VARCHAR (50),
   lastUpdate VarChar (40),
   accountId INT,
@@ -464,6 +467,7 @@ CREATE TABLE budget (
 );
 INSERT INTO budget (
   tableName,
+  condominiumId,
   user,
   lastUpdate,
   accountId,
@@ -472,6 +476,7 @@ INSERT INTO budget (
   text)
 VALUES (
   'budget',
+  1,
   'Initiation',
   '2099-12-31T23:59:59.596Z',
   0,

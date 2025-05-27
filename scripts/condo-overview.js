@@ -64,7 +64,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -405,7 +405,7 @@ function showValues() {
         </div>
       `;
 
-    // Show monthly payment lines
+    // Show monthly payment rows
     document.querySelector('.div-overview-columnDueDate').innerHTML =
       htmlColumnDueDate;
     document.querySelector('.div-overview-columnDueAmount').innerHTML =
@@ -413,7 +413,7 @@ function showValues() {
     document.querySelector('.div-overview-columnDueText').innerHTML =
       htmlColumnDueText;
 
-    // Show income lines
+    // Show income rows
     document.querySelector('.div-overview-columnIncomeDate').innerHTML =
       htmlColumnIncomeDate;
     document.querySelector('.div-overview-columnIncomeAmount').innerHTML =

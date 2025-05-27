@@ -138,7 +138,7 @@ server.on('connection', (socket) => {
 
     // Received message from server
     const sqlQuery = message.toString();
-    console.log(sqlQuery);
+    //console.log(sqlQuery);
 
     // SQL querying
     queryingSQL(sqlQuery);

@@ -75,7 +75,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all accounts
@@ -260,12 +260,14 @@ function updateBankAccount() {
         SQLquery = `
         INSERT INTO bankaccount (
           tableName,
+          condominiumId,
           user,
           lastUpdate,
           bankAccountNumber,
           name) 
         VALUES (
           'bankaccount',
+          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${bankAccountNumber}',
@@ -416,19 +418,24 @@ DROP TABLE bankaccount;
 CREATE TABLE bankaccount (
   bankAccountId INT AUTO_INCREMENT PRIMARY KEY,
   tableName VARCHAR(50) NOT NULL,
+  condominiumId INT,
   user VARCHAR (50),
   lastUpdate VARCHAR (40),
   bankAccountNumber VARCHAR(11) NOT NULL,
-  name VARCHAR(50) NOT NULL
+  name VARCHAR(50) NOT NULL,
+  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
 );
+ALTER TABLE bankaccount ENGINE=InnoDB;
 INSERT INTO bankaccount(
   tableName,
+  condominiumId,
   user,
   lastUpdate,
   bankAccountNumber,
   name) 
 VALUES (
   'bankaccount',
+  1,
   'Initiation',
   '2099-12-31T23:59:59.596Z',
   '',

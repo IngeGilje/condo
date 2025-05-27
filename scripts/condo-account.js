@@ -61,7 +61,7 @@ socket.onmessage = (event) => {
 
     // Check user/password
     objUserPassword = JSON.parse(localStorage.getItem('user'));
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
 
     // username and password is ok
     const SQLquery = `
@@ -254,6 +254,7 @@ function updateAccount() {
         SQLquery = `
         INSERT INTO account (
           tableName,
+          condominiumId,
           user,
           lastUpdate,
           bankAccountId,
@@ -263,6 +264,7 @@ function updateAccount() {
         ) 
         VALUES (
           'account',
+          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${bankAccountId},
@@ -416,14 +418,18 @@ DROP TABLE account;
 CREATE TABLE account (
   accountId INT AUTO_INCREMENT PRIMARY KEY,
   tableName VARCHAR(50) NOT NULL,
+  condominiumId INT,
   user VARCHAR (50),
   lastUpdate VarChar (40),
   bankAccountId INT,
   name VARCHAR(50) NOT NULL,
-  accountType VARCHAR(1)
+  accountType VARCHAR(1),
+  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
 );
+ALTER TABLE account ENGINE=InnoDB;
 INSERT INTO account(
   tableName,
+  condominiumId,
   user,
   lastUpdate,
   bankAccountId,
@@ -431,6 +437,7 @@ INSERT INTO account(
   accountType) 
 VALUES (
   'account',
+  1,
   'Initiation',
   '2099-12-31T23:59:59.596Z',
   0,

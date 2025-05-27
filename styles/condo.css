@@ -1,6 +1,12 @@
-/* Define the grid container with 2 columns */
+/* body */
+.div-main {
+  background: url('http://localhost/condo/images/hinna-park-blur.jpg') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+}
+
+/* Define the grid container */
 .div-grid-user,
-.div-grid-condo,
 .div-grid-bankaccount,
 .div-grid-condominium,
 .div-grid-account,
@@ -20,7 +26,7 @@
   font-weight: 400;
 }
 
-/* 2 columns */
+/* grid container 2 columns */
 .div-grid-budget,
 .div-grid-bankaccount,
 .div-grid-account,
@@ -29,22 +35,26 @@
   grid-template-columns: 200px 200px;
 }
 
-/* 3 columns */
+/* grid container 3 columns */
 .div-grid-user,
 .div-grid-condo,
 .div-grid-condominium,
 .div-grid-payment {
-  /* Activate grid layout */
   grid-template-columns: 200px 200px 200px;
 }
 
-/* 4 columns */
+/* grid container 4 columns */
 .div-grid-monthlyfee {
-  /* Activate grid layout */
   grid-template-columns: 200px 200px 150px 150px;
 }
 
+/* grid container 5 columns */
+.div-grid-notInUse {
+  grid-template-columns: 200px 200px 150px 150px 150px;
+}
+
 /* Define the grid container with 6 columns*/
+.div-grid-income,
 .div-grid-accountmovement {
   grid-template-columns: 200px 200px 150px 150px 150px 150px;
 }
@@ -58,6 +68,11 @@
 .div-grid-overview {
   grid-template-columns: 200px 200px 100px 100px 150px 100px 100px 150px;
 }
+
+.div-income-columnIncomeId,
+.div-income-columnDate,
+.div-income-columnAmount,
+.div-income-columnText,
 
 .div-overview-columnDueDate,
 .div-overview-columnDueAmount,
@@ -79,26 +94,29 @@
   padding: 2px;
 }
 
+.div-income-columnIncomeId,
 .div-overview-columnDueDate,
 .div-remoteheating-columnDate {
   grid-column-start: 3;
 }
 
+.div-income-columnDate,
 .div-overview-columnDueAmount,
 .div-remoteheating-columnAmount {
   grid-column-start: 4;
 }
 
+.div-income-columnAmount,
 .div-overview-columnDueText,
 .div-remoteheating-columnNumberKWHour {
   grid-column-start: 5;
 }
 
+.div-income-columnText,
 .div-overview-columnIncomeDate,
 .div-remoteheating-columnPriceKWHour {
   grid-column-start: 6;
 }
-
 
 .div-overview-columnIncomeAmount {
   grid-column-start: 7;

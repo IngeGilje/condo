@@ -6,7 +6,7 @@ const fs = require('fs');
 // File handling
 let data = "";
 const path = require('path');
-const directoryName = "C:/inetpub/wwwroot/condo/data";
+const directoryName = "http://localhost/condo/data";
 const fileName = "data.json";
 // Specify the file path
 const filePath = path.join(directoryName, fileName);

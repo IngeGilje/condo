@@ -24,7 +24,7 @@ switch (objUser.serverStatus) {
   }
   // Test server/ local test server
   case 3: {
-   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const hostname = window.location.hostname || 'localhost';
     socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
     break;
@@ -63,7 +63,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -289,6 +289,7 @@ function updatePayment() {
       SQLquery = `
         INSERT INTO payment (
         tableName,
+        condominiumId,
         user,
         lastUpdate,
         accountId,
@@ -299,6 +300,7 @@ function updatePayment() {
         text)
         VALUES (
           'payment',
+          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},
@@ -316,6 +318,7 @@ function updatePayment() {
       SQLquery = `
         INSERT INTO accountmovement (
           tableName,
+          condominiumId,
           user,
           lastUpdate,
           accountId,
@@ -325,6 +328,7 @@ function updatePayment() {
           text)
         VALUES (
           'accountmovement',
+          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},
@@ -518,40 +522,3 @@ function resetValues() {
   //document.querySelector('.button-payment-cancel').disabled =
   //  true;
 }
-
-/*
-DROP TABLE payment;
-CREATE TABLE payment (
-  paymentId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50) NOT NULL,
-  user VARCHAR (50),
-  lastUpdate VarChar (40),
-  accountId INT,
-  condoId INT,
-  amount VARCHAR(10) NOT NULL,
-  numberKWHour VARCHAR(10),
-  date VARCHAR(10) NOT NULL,
-  text VARCHAR (255) NOT NULL
-);
-INSERT INTO payment (
-  tableName,
-  user,
-  lastUpdate,
-  accountId,
-  condoId,
-  amount,
-  numberKWHour,
-  date,
-  text)
-VALUES (
-  'payment',
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  0, 
-  0,
-  '',
-  '',
-  '',
-  ''
-);
-*/

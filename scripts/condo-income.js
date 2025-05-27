@@ -104,7 +104,7 @@ socket.onmessage = (event) => {
     // Get all income rows
     const SQLquery = `
       SELECT * FROM income
-      ORDER BY text;
+      ORDER BY date;
     `;
     socket.send(SQLquery);
   }
@@ -125,6 +125,9 @@ socket.onmessage = (event) => {
 
     // Show all values for income
     showValues(incomeId);
+
+    // show all rows for income
+    showIncome();
 
     // Make events
     if (!isEventsCreated) {
@@ -173,6 +176,7 @@ function createEvents() {
   // Select condo
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-condo-condoId')) {
+      showIncome();
     }
   });
 
@@ -182,6 +186,7 @@ function createEvents() {
 
       dueId = Number(event.target.value);
       showValues(dueId);
+      showIncome();
     };
   });
 
@@ -289,6 +294,7 @@ function updateIncomeRow() {
       SQLquery = `
         INSERT INTO income (
           tableName,
+          condominiumId,
           user,
           lastUpdate,
           condoId,
@@ -298,6 +304,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'income',
+          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
@@ -314,6 +321,7 @@ function updateIncomeRow() {
       SQLquery = `
         INSERT INTO accountmovement (
           tableName,
+          condominiumId,
           user,
           lastUpdate,
           condoId,
@@ -323,6 +331,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'accountmovement',
+          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
@@ -515,21 +524,124 @@ function resetValues() {
   //  true;
 }
 
+function showIncome() {
+
+  let sumColumnAmount = 0;
+
+  let htmlColumnIncomeId =
+    '<div class="columnHeaderRight">Id</div><br>';
+  let htmlColumnDate =
+    '<div class="columnHeaderRight">Betalingsdato</div><br>';
+  let htmlColumnAmount =
+    '<div class="columnHeaderRight">Beløp</div><br>';
+  let htmlColumnText =
+    '<div class="columnHeaderLeft">Tekst</div><br>';
+
+  incomeArray.forEach((income) => {
+
+    if (income.incomeId > 1) {
+
+      // Account
+      let accountId =
+        Number(document.querySelector(".select-income-accountId").value);
+      let condoId =
+        Number(document.querySelector(".select-income-condoId").value);
+      if (accountId === income.accountId && income.accountId === accountId) {
+
+        htmlColumnIncomeId +=
+          `
+          <div class="rightCell">
+            ${income.incomeId}
+          </div>
+        `;
+
+        const date =
+          convertToEurDateFormat(income.date);
+        htmlColumnDate +=
+          `
+          <div class="rightCell">
+            ${date}
+          </div>
+        `;
+        const amount =
+          formatFromOreToKroner(income.amount);
+        htmlColumnAmount +=
+          `
+          <div class="rightCell">
+            ${amount}
+          </div>
+        `;
+
+        // Text has to fit into the column
+        const text = truncateText(income.text, 'div-income-columnText');
+        htmlColumnText +=
+          `
+          <div
+            class="leftCell"
+            style="text-align: left;"
+          >
+            ${text}
+          </div>
+        `;
+
+        // Accomulate
+        // amount
+        sumColumnAmount += Number(income.amount);
+      }
+    }
+  });
+
+  // Sum row
+  htmlColumnIncomeId +=
+    `
+      <div>
+      </div>
+    `;
+
+  htmlColumnDate +=
+    `
+      <div>
+      </div>
+    `;
+
+  htmlColumnAmount +=
+    `
+      <div class="sumCellRight">
+    `;
+  htmlColumnAmount +=
+    formatFromOreToKroner(String(sumColumnAmount));
+  htmlColumnAmount +=
+    `
+      </div>
+    `;
+
+  document.querySelector(".div-income-columnIncomeId").innerHTML =
+    htmlColumnIncomeId;
+  document.querySelector(".div-income-columnDate").innerHTML =
+    htmlColumnDate;
+  document.querySelector(".div-income-columnAmount").innerHTML =
+    htmlColumnAmount;
+  document.querySelector(".div-income-columnText").innerHTML =
+    htmlColumnText;
+}
 /*
 DROP TABLE income;
 CREATE TABLE income (
   incomeId INT AUTO_INCREMENT PRIMARY KEY,
   tableName VARCHAR(50) NOT NULL,
+  condominiumId INT,
   user VARCHAR (50),
   lastUpdate VarChar (40),
   condoId INT,
   accountId INT,
-  income VARCHAR(10) NOT NULL,
+  amount VARCHAR(10) NOT NULL,
   date VARCHAR(10) NOT NULL,
-  text VARCHAR (255) NOT NULL
+  text VARCHAR (255) NOT NULL,
+  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
 );
 INSERT INTO income (
   tableName,
+  condominiumId,
   user,
   lastUpdate,
   condoId,
@@ -539,6 +651,7 @@ INSERT INTO income (
   text)
 VALUES (
   'income',
+  1,
   'Initiation',
   '2099-12-31T23:59:59.596Z',
   0,

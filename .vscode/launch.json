@@ -16,6 +16,12 @@
       "type": "chrome",
       "request": "launch",
       "name": "Login",
+      "file": "c:\\inetpub\\wwwroot\\condo-createtables.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Login",
       "file": "c:\\inetpub\\wwwroot\\condo-login.html",
     },
     {

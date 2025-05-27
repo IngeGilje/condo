@@ -66,7 +66,7 @@ socket.onmessage = (event) => {
     // Check user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password))
       ? ''
-      : window.location.href('file:///C:/inetpub/wwwroot/condo-login.html');
+      : window.location.href('file:///http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -374,16 +374,19 @@ DROP TABLE accountmovement;
 CREATE TABLE accountmovement (
   accountMovementId INT AUTO_INCREMENT PRIMARY KEY,
   tableName VARCHAR(50) NOT NULL,
+  condominiumId INT,
   user VARCHAR (50),
   lastUpdate VarChar (40),
   condoId INT,
   accountId INT,
   amount VARCHAR(10) NOT NULL,
   date VARCHAR(10) NOT NULL,
-  text VARCHAR (255) NOT NULL
+  text VARCHAR (255) NOT NULL,
+  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
 );
 INSERT INTO accountmovement (
   tableName,
+  condominiumId,
   user,
   lastUpdate,
   condoId,
@@ -393,6 +396,7 @@ INSERT INTO accountmovement (
   text)
 VALUES (
   'accountmovement',
+  1,
   'Initiation',
   '2099-12-31T23:59:59.596Z',
   0,

@@ -259,6 +259,7 @@ function updateUser(userId) {
       SQLquery = `
         INSERT INTO user (
           tableName,
+          condominiumId,
           user,
           lastUpdate,
           email,
@@ -270,6 +271,7 @@ function updateUser(userId) {
           password) 
         VALUES (
           'user',
+          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${email}',
@@ -489,43 +491,3 @@ function resetValues() {
   document.querySelector('.button-user-new').disabled =
     true;
 }
-
-/*
-DROP TABLE user;
-CREATE TABLE user (
-  userId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50) NOT NULL,
-  user VARCHAR(50) NOT NULL,
-  lastUpdate VARCHAR (40),
-  email VARCHAR(50) NOT NULL,
-  condoId INT,
-  firstName VARCHAR(50) NOT NULL,
-  lastName VARCHAR(50) NOT NULL,
-  phone VARCHAR(20) NOT NULL,
-  securityLevel INT,
-  password VARCHAR(50) NOT NULL
-  );
-INSERT INTO user(
-  tableName,
-  user,
-  lastUpdate,
-  email,
-  condoId,
-  firstName,
-  lastName,
-  phone,
-  securityLevel,
-  password) 
-VALUES (
-  'user',
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  '',
-  0,
-  '',
-  '',
-  '',
-  0,
-  ''
-  );
-*/
