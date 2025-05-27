@@ -653,15 +653,15 @@ socket.onopen = () => {
       VALUES (
         'user',
         1,
-        'Initiation',
+        'superuser@ingegilje.no',
         '${lastUpdate}',
-        '',
-        0,
-        '',
-        '',
-        '',
-        0,
-        ''
+        'superuser@ingegilje.no',
+        1,
+        'Super',
+        'User',
+        '12345678',
+        9,
+        'superuser'
       );
     `;
   socket.send(SQLquery);

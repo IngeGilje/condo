@@ -101,7 +101,7 @@ function createEvents() {
 
       // Security level
       const objectNumberUser = userArray.findIndex(userRow => userRow.email === email);
-      if (objectNumberUser > 0) {
+      if (objectNumberUser >= 0) {
 
         const securityLevel =
           userArray[objectNumberUser].securityLevel;
