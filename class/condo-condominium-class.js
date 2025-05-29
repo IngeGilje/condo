@@ -38,14 +38,14 @@ class Condominium extends Condos {
             value="${condominium.condominiumId}"
             selected
             >
-            ${condominium.condominiumId} - ${condominium.condominiumName}
+            ${condominium.condominiumId} - ${condominium.name}
           </option>
         `;
           } else {
             html += `
           <option 
             value="${condominium.condominiumId}">
-            ${condominium.condominiumId} - ${condominium.condominiumName}
+            ${condominium.condominiumId} - ${condominium.name}
           </option>
         `;
           }
@@ -57,7 +57,7 @@ class Condominium extends Condos {
         <option value="0" 
           selected
         >
-          Ingen leiligheter
+          Ingen sameier
         </option>
       `;
     }
@@ -67,16 +67,6 @@ class Condominium extends Condos {
     </form>
   `;
     document.querySelector(`.div-condominium-${columnName}`).innerHTML = html;
-  }
-
-  // Get all condominiums from MySQL database
-  getCondominiums(socket) {
-
-    const SQLquery = `
-      SELECT * FROM condominium
-      ORDER BY condominiumName;
-    `;
-    socket.send(SQLquery);
   }
 
   // Find selected condominium id

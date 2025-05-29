@@ -300,7 +300,7 @@ function updatePayment() {
         text)
         VALUES (
           'payment',
-          '${objCondonium.condoniumId}',
+          '${objUserPassword.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},
@@ -328,7 +328,7 @@ function updatePayment() {
           text)
         VALUES (
           'accountmovement',
-          '${objCondonium.condoniumId}',
+          '${objUserPassword.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},

@@ -5,7 +5,7 @@ class BankAccount extends Condos {
   bankAccountArray = Array;
 
   // Show all bankaccounts
-  showAllBankAccounts(columnName, bankAccountId) {
+  showAllBankAccounts(className, bankAccountId) {
 
     let html = `
       <form
@@ -14,15 +14,14 @@ class BankAccount extends Condos {
         method="POST"
       >
         <label 
-          class="label-bankaccount-${columnName} 
-          label-bankaccount-${columnName}"
+          class="label-${className}"
           for="bankAccountId"
           id="bankAccountId"
         >
           Velg bankkonto
         </label>
         <select 
-          class="select-bankaccount-${columnName}" 
+          class="select-${className}" 
           name="bankAccountId"
           id="bankAccountId"
         >
@@ -70,7 +69,7 @@ class BankAccount extends Condos {
     </form>
   `;
 
-    document.querySelector(`.div-bankaccount-${columnName}`).innerHTML =
+    document.querySelector(`.div-${className}`).innerHTML =
       html;
   }
 

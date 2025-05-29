@@ -38,18 +38,6 @@ let isEventsCreated = false;
 objCondominium.menu();
 objCondominium.markSelectedMenu('Sameie');
 
-/*
-// Send a message to the server
-socket.onopen = () => {
-
-  //objAccount.getAccounts(socket);
-  const SQLquery = `
-    SELECT * FROM account
-    ORDER BY accountId;
-  `;
-  socket.send(SQLquery);
-};
-*/
 // Send a message to the server
 socket.onopen = () => {
 
@@ -112,7 +100,13 @@ socket.onmessage = (event) => {
     // array including objects with condominium information
     bankAccountArray = JSON.parse(message);
 
-    objCondominium.getCondominiums(socket);
+    //objCondominium.getCondominiums(socket);
+    // Get all condominiums from MySQL database
+    const SQLquery = `
+      SELECT * FROM condominium
+      ORDER BY name;
+    `;
+    socket.send(SQLquery);
   }
 
   // Create condominium array including objets
@@ -145,7 +139,13 @@ socket.onmessage = (event) => {
     console.log('affectedRows');
 
     // Sends a request to the server to get all condos
-    objCondominium.getCondominiums(socket);
+    //objCondominium.getCondominiums(socket);
+    // Get all condominiums from MySQL database
+    const SQLquery = `
+      SELECT * FROM condominium
+      ORDER BY name;
+    `;
+    socket.send(SQLquery);
   }
 };
 
@@ -195,7 +195,13 @@ function condoEvents() {
       deleteCondominiumRow();
 
       // Sends a request to the server to get all condos
-      objCondominium.getCondominiums(socket);
+      //objCondominium.getCondominiums(socket);
+      // Get all condominiums from MySQL database
+    const SQLquery = `
+      SELECT * FROM condominium
+      ORDER BY name;
+    `;
+    socket.send(SQLquery);
     }
   });
 
@@ -204,7 +210,13 @@ function condoEvents() {
     if (event.target.classList.contains('button-condominium-cancel')) {
 
       // Sends a request to the server to get all condos
-      objCondominium.getCondominiums(socket);
+      //objCondominium.getCondominiums(socket);
+      // Get all condominiums from MySQL database
+    const SQLquery = `
+      SELECT * FROM condominium
+      ORDER BY name;
+    `;
+    socket.send(SQLquery);
     }
   });
 }
@@ -219,7 +231,7 @@ function updateCondominium(condominiumId) {
   if (validateValues()) {
 
     const condominiumName =
-      document.querySelector('.input-condominium-condominiumName').value;
+      document.querySelector('.input-condominium-name').value;
     const street =
       document.querySelector('.input-condominium-street').value;
     const postalCode =
@@ -235,7 +247,7 @@ function updateCondominium(condominiumId) {
     const organizationNumber =
       document.querySelector('.input-condominium-organizationNumber').value;
     const bankAccount =
-      document.querySelector('.select-bankaccount-bankAccountId').value;
+      document.querySelector('.select-condominium-bankAccountId').value;
 
     // current date
     const now = new Date();
@@ -251,7 +263,7 @@ function updateCondominium(condominiumId) {
         SET 
           user = '${objUserPassword.email}',
           lastUpdate = '${lastUpdate}',
-          condominiumName = '${condominiumName}',
+          name = '${condominiumName}',
           street = '${street}',
           address2 = '${address2}',
           postalCode = '${postalCode}', 
@@ -268,10 +280,9 @@ function updateCondominium(condominiumId) {
       SQLquery = `
         INSERT INTO condominium (
           tableName,
-          condominiumId,
           user,
           lastUpdate,
-          condominiumName,
+          name,
           street,
           address2,
           postalCode,
@@ -282,7 +293,6 @@ function updateCondominium(condominiumId) {
           bankAccount)
         VALUES (
           'condominium',
-          '${objCondonium.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${condominiumName}',
@@ -320,7 +330,7 @@ function showLeadingText(condominiumId) {
   objCondominium.showAllCondominiums('condominiumId', condominiumId);
 
   // Show condominium name
-  objCondominium.showInput('condominium-condominiumName', '* Navn', 50, '');
+  objCondominium.showInput('condominium-name', '* Navn', 50, '');
 
   // Show street name
   objCondominium.showInput('condominium-street', '* Gatenavn', 50, '');
@@ -346,7 +356,7 @@ function showLeadingText(condominiumId) {
   // bank account number
 
   const bankAccountId = bankAccountArray.at(-1).bankAccountId;
-  objBankAccount.showAllBankAccounts('bankAccountId', bankAccountId);
+  objBankAccount.showAllBankAccounts('condominium-bankAccountId', bankAccountId);
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -378,8 +388,8 @@ function showValues(condominiumId) {
         condominiumArray[objectNumberCondominium].condominiumId;
 
       // Condominium name
-      document.querySelector('.input-condominium-condominiumName').value =
-        condominiumArray[objectNumberCondominium].condominiumName;
+      document.querySelector('.input-condominium-name').value =
+        condominiumArray[objectNumberCondominium].name;
 
       // Show street
       document.querySelector('.input-condominium-street').value =
@@ -411,7 +421,7 @@ function showValues(condominiumId) {
 
       // Show bank account number
       const bankAccountId = condominiumArray[objectNumberCondominium].bankAccountId;
-      objCondominium.selectBankAccountId(bankAccountId, 'bankaccount-bankAccountId');
+      objCondominium.selectBankAccountId(bankAccountId, 'condominium-bankAccountId');
     }
   }
 }
@@ -422,7 +432,7 @@ function resetValues() {
   document.querySelector('.select-condominium-condominiumId').value =
     '';
 
-  document.querySelector('.input-condominium-condominiumName').value =
+  document.querySelector('.input-condominium-name').value =
     '';
 
   // Show street
@@ -454,7 +464,7 @@ function resetValues() {
     '';
 
   // Show bankaccount number
-  document.querySelector('.select-bankaccount-bankAccountId').value =
+  document.querySelector('.select-condominium-bankAccountId').value =
     '';
 
   document.querySelector('.select-condominium-condominiumId').disabled =
@@ -490,7 +500,13 @@ function deleteCondominiumRow() {
     socket.send(SQLquery);
 
     // Show updated condos
-    objCondominium.getCondominiums(socket);
+    //objCondominium.getCondominiums(socket);
+    // Get all condominiums from MySQL database
+    const SQLquery = `
+      SELECT * FROM condominium
+      ORDER BY name;
+    `;
+    socket.send(SQLquery);
   }
 }
 
@@ -498,8 +514,8 @@ function deleteCondominiumRow() {
 function validateValues() {
 
   // Check condominium name
-  const condominiumName = document.querySelector('.input-condominium-condominiumName').value;
-  const validCondominiumName = objCondominium.validateText(condominiumName, "label-condominium-condominiumName", "Navn");
+  const condominiumName = document.querySelector('.input-condominium-name').value;
+  const validCondominiumName = objCondominium.validateText(condominiumName, "label-condominium-name", "Navn");
 
   // Check street name
   const street = document.querySelector('.input-condominium-street').value;
@@ -521,9 +537,11 @@ function validateValues() {
   const organizationNumber = document.querySelector('.input-condominium-organizationNumber').value;
   const validOrganizationNumber = checkOrganizationNumber(organizationNumber, "condominium-organizationNumber", "organisasjonsnummer");
 
+  /*
   // Check bankaccount number
-  const bankAccount = document.querySelector('.select-bankaccount-bankAccountId').value;
+  const bankAccount = document.querySelector('.select-condominium-bankAccountId').value;
   const validbankAccount = checkBankAccount(bankAccount, "condominium-bankAccountId", "kontonummer");
+  */
 
   if (validCondominiumName
     && validStreet
@@ -531,62 +549,9 @@ function validateValues() {
     && validCity
     && validEmail
     && validOrganizationNumber
-    && validbankAccount
   ) {
     return true;
   } else {
     return false;
   }
 }
-
-/*
-DROP TABLE condominium;
-CREATE TABLE condominium (
-  condominiumId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50),
-  condominiumId INT,
-  user VARCHAR (50),
-  lastUpdate VarChar (40),
-  condominiumName VARCHAR(50) NOT NULL,
-  street VARCHAR(50) NOT NULL,
-  address2 VARCHAR(50),
-  postalCode VARCHAR(4) NOT NULL,
-  city VARCHAR(50) NOT NULL,
-  phoneNumber VARCHAR(20),
-  email VARCHAR(50),
-  organization VARCHAR(9),
-  bankAccount VARCHAR(11),
-  FOREIGN KEY (condominiumId) REFERENCES condonium(condoniumId)
-);
-INSERT INTO condominium (
-  tableName,
-  condominiumId,
-  user,
-  lastUpdate,
-  condominiumName,
-  street,
-  address2,
-  postalCode,
-  city,
-  phoneNumber,
-  email,
-  organization,
-  bankAccountId)
-VALUES (
-  'condominium',
-  1,
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  ''
-);
-*/

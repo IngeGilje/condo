@@ -304,7 +304,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'income',
-          '${objCondonium.condoniumId}',
+          '${objUserPassword.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
@@ -331,7 +331,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'accountmovement',
-          '${objCondonium.condoniumId}',
+          '${objUserPassword.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},

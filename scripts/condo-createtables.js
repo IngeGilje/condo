@@ -30,108 +30,94 @@ switch (objUser.serverStatus) {
 
 let isEventsCreated = false;
 
-objUser.menu();
-objUser.markSelectedMenu('Lage tabeller');
-
-const now = new Date();
-const lastUpdate = now.toISOString();
-
 // Send a message to the server
 socket.onopen = () => {
 
   let SQLquery = "";
 
+  const now = new Date();
+  const lastUpdate = now.toISOString();
+
   // Delete all foreign keys
 
   // Account
-  console.log('DROP FOREIGN KEY fk_condominium_account');
+  console.log('DROP FOREIGN KEY fk_condominiumId_accountId');
   SQLquery =
     `         
       ALTER TABLE account
-      DROP FOREIGN KEY fk_condominium_account;
+      DROP FOREIGN KEY fk_condominiumId_accountId;
     `;
   socket.send(SQLquery);
 
   // Account movement
-  console.log('DROP FOREIGN KEY fk_condominium_acountmovement');
+  console.log('DROP FOREIGN KEY fk_condominiumId_acountmovementId');
   SQLquery =
     `         
       ALTER TABLE accountmovement
-      DROP FOREIGN KEY fk_condominium_accountmovement;
+      DROP FOREIGN KEY fk_condominiumId_accountmovementId;
     `;
   socket.send(SQLquery);
 
   // Bank Account
-  console.log('DROP FOREIGN KEY fk_condominium_bankaccount');
+  console.log('DROP FOREIGN KEY fk_condominiumId_bankaccountId');
   SQLquery =
     `         
       ALTER TABLE bankaccount
-      DROP FOREIGN KEY fk_condominium_bankaccount;
+      DROP FOREIGN KEY fk_condominiumId_bankaccountId;
     `;
   socket.send(SQLquery);
 
   // Budget
-  console.log('DROP FOREIGN KEY fk_condominium_budget');
+  console.log('DROP FOREIGN KEY fk_condominiumId_budgetId');
   SQLquery =
     `         
       ALTER TABLE budget
-      DROP FOREIGN KEY fk_condominium_budget;
+      DROP FOREIGN KEY fk_condominiumId_budgetId;
     `;
   socket.send(SQLquery);
 
   // Condo
-  console.log('DROP FOREIGN KEY fk_condominium_condo');
+  console.log('DROP FOREIGN KEY fk_condominiumId_condoId');
   SQLquery =
     `         
       ALTER TABLE condo
-      DROP FOREIGN KEY fk_condominium_condo;
+      DROP FOREIGN KEY fk_condominiumId_condoId;
     `;
   socket.send(SQLquery);
-
-  /*
-  // Condominium
-  console.log('DROP FOREIGN KEY fk_condominium_condominium');
-  SQLquery =
-    `         
-      ALTER TABLE condominium
-      DROP FOREIGN KEY fk_condominium_condominium;
-    `;
-  socket.send(SQLquery);
-  */
 
   // Due
-  console.log('DROP FOREIGN KEY fk_condominium_due');
+  console.log('DROP FOREIGN KEY fk_condominiumId_dueId');
   SQLquery =
     `         
       ALTER TABLE due
-      DROP FOREIGN KEY fk_condominium_due;
+      DROP FOREIGN KEY fk_condominiumId_dueId;
     `;
   socket.send(SQLquery);
 
   // income
-  console.log('DROP FOREIGN KEY fk_condominium_income');
+  console.log('DROP FOREIGN KEY fk_condominiumId_incomeId');
   SQLquery =
     `         
       ALTER TABLE income
-      DROP FOREIGN KEY fk_condominium_income;
+      DROP FOREIGN KEY fk_condominiumId_incomeId;
     `;
   socket.send(SQLquery);
 
   // payment
-  console.log('DROP FOREIGN KEY fk_condominium_payment');
+  console.log('DROP FOREIGN KEY fk_condominiumId_paymentId');
   SQLquery =
     `         
       ALTER TABLE payment
-      DROP FOREIGN KEY fk_condominium_payment;
+      DROP FOREIGN KEY fk_condominiumId_paymentId;
     `;
   socket.send(SQLquery);
 
   // user
-  console.log('DROP FOREIGN KEY fk_condominium_user');
+  console.log('DROP FOREIGN KEY fk_condominiumId_userId');
   SQLquery =
     `         
        ALTER TABLE user
-      DROP FOREIGN KEY fk_condominium_user;
+      DROP FOREIGN KEY fk_condominiumId_userId;
     `;
   socket.send(SQLquery);
 
@@ -184,8 +170,6 @@ socket.onopen = () => {
       );
     `;
   socket.send(SQLquery);
-
-
 
   // Account Movement
   console.log('DROP accountmovement Table');
@@ -411,7 +395,7 @@ socket.onopen = () => {
         city VARCHAR(50) NOT NULL,
         phoneNumber VARCHAR(20),
         email VARCHAR(50),
-        organization VARCHAR(9)
+        organizationNumber VARCHAR(9)
       );
     `;
   socket.send(SQLquery);
@@ -430,7 +414,7 @@ socket.onopen = () => {
         city,
         phoneNumber,
         email,
-        organization
+        organizationNumber
       )
       VALUES (
         'condominium',
@@ -743,7 +727,7 @@ socket.onopen = () => {
   SQLquery =
     `         
       ALTER TABLE account
-      ADD CONSTRAINT fk_condominium_account
+      ADD CONSTRAINT fk_condominiumId_accountId
       FOREIGN KEY (condominiumId)
       REFERENCES condominium(condominiumId);
     `;
@@ -753,7 +737,7 @@ socket.onopen = () => {
   SQLquery =
     `         
       ALTER TABLE accountmovement
-      ADD CONSTRAINT fk_condominium_accountmovement
+      ADD CONSTRAINT fk_condominiumId_accountmovementId
       FOREIGN KEY (condominiumId)
       REFERENCES condominium(condominiumId);
     `;
@@ -763,7 +747,7 @@ socket.onopen = () => {
   SQLquery =
     `         
       ALTER TABLE bankaccount
-      ADD CONSTRAINT fk_condominium_bankaccount
+      ADD CONSTRAINT fk_condominiumId_bankaccountId
       FOREIGN KEY (condominiumId)
       REFERENCES condominium(condominiumId);
     `;
@@ -773,7 +757,7 @@ socket.onopen = () => {
   SQLquery =
     `         
       ALTER TABLE budget
-      ADD CONSTRAINT fk_condominium_budget
+      ADD CONSTRAINT fk_condominiumId_budgetId
       FOREIGN KEY (condominiumId)
       REFERENCES condominium(condominiumId);
     `;
@@ -783,7 +767,7 @@ socket.onopen = () => {
   SQLquery =
     `         
       ALTER TABLE condo
-      ADD CONSTRAINT fk_condominium_condo
+      ADD CONSTRAINT fk_condominiumId_condoId
       FOREIGN KEY (condominiumId)
       REFERENCES condominium(condominiumId);
     `;
@@ -793,7 +777,7 @@ socket.onopen = () => {
   SQLquery =
     `         
       ALTER TABLE due
-      ADD CONSTRAINT fk_condominium_due
+      ADD CONSTRAINT fk_condominiumId_dueId
       FOREIGN KEY (condominiumId)
       REFERENCES condominium(condominiumId);
     `;
@@ -803,7 +787,7 @@ socket.onopen = () => {
   SQLquery =
     `         
       ALTER TABLE income
-      ADD CONSTRAINT fk_condominium_income
+      ADD CONSTRAINT fk_condominiumId_incomeId
       FOREIGN KEY (condominiumId)
       REFERENCES condominium(condominiumId);
     `;
@@ -813,7 +797,7 @@ socket.onopen = () => {
   SQLquery =
     `         
       ALTER TABLE payment
-      ADD CONSTRAINT fk_condominium_payment
+      ADD CONSTRAINT fk_condominiumId_paymentId
       FOREIGN KEY (condominiumId)
       REFERENCES condominium(condominiumId);
     `;
@@ -823,7 +807,7 @@ socket.onopen = () => {
   SQLquery =
     `         
       ALTER TABLE user
-      ADD CONSTRAINT fk_condominium_user
+      ADD CONSTRAINT fk_condominiumId_userId
       FOREIGN KEY (condominiumId)
       REFERENCES condominium(condominiumId);
     `;

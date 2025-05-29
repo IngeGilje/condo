@@ -222,7 +222,7 @@ function updateAccount() {
       Number(document.querySelector('.select-account-accountId').value);
 
     // Bank account Id
-    const bankAccountId = document.querySelector('.select-bankaccount-bankAccountId').value;
+    const bankAccountId = document.querySelector('.select-account-bankAccountId').value;
 
     // Account Name
     const name = document.querySelector('.input-account-accountName').value;
@@ -264,7 +264,7 @@ function updateAccount() {
         ) 
         VALUES (
           'account',
-          '${objCondonium.condoniumId}',
+          '${objUserPassword.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${bankAccountId},
@@ -330,7 +330,7 @@ function showLeadingText(accountId) {
 
   // Show all bank accounts
   const bankAccountId = bankAccountArray.at(-1).bankAccountId;
-  objBankAccount.showAllBankAccounts('bankAccountId', bankAccountId);
+  objBankAccount.showAllBankAccounts('account-bankAccountId', bankAccountId);
 
   // account name
   objAccount.showInput('account-accountName', '* Kontonavn', 50, '');
@@ -366,7 +366,7 @@ function showValues(accountId) {
 
       // Select bank account
       const bankAccountId = accountArray[objectNumberAccount].bankAccountId;
-      objAccount.selectBankAccountId(bankAccountId, 'bankaccount-bankAccountId')
+      objAccount.selectBankAccountId(bankAccountId, 'account-bankAccountId')
 
       // account name
       document.querySelector('.input-account-accountName').value =
@@ -380,9 +380,9 @@ function validateValues() {
 
   // Check bank account
   const bankAccountId =
-    Number(document.querySelector('.select-bankaccount-bankAccountId').value);
+    Number(document.querySelector('.select-account-bankAccountId').value);
   const validBankAccountId =
-    checkNumber(bankAccountId, 1, 99999, "bankaccount-bankAccountId", "Vis konto");
+    checkNumber(bankAccountId, 1, 99999, "account-bankAccountId", "Vis konto");
 
   // Check account Name
   const name =

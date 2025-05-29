@@ -267,7 +267,7 @@ function updateBankAccount() {
           name) 
         VALUES (
           'bankaccount',
-          '${objCondonium.condoniumId}',
+          '${objUserPassword.condoniumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${bankAccountNumber}',
@@ -330,7 +330,7 @@ function deleteAccountRow() {
 function showLeadingText(bankAccountId) {
 
   // Show all bank accounts
-  objBankAccount.showAllBankAccounts('bankAccountId', bankAccountId);
+  objBankAccount.showAllBankAccounts('bankaccount-bankAccountId', bankAccountId);
 
   // Show bank account number
   objBankAccount.showInput('bankaccount-bankAccountNumber', '* Kontonummer', 11, '');

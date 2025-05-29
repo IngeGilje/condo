@@ -93,7 +93,6 @@ function createEvents() {
     if (event.target.classList.contains('button-link')) {
 
       // validate password
-
       const email =
         document.querySelector('.input-email').value;
       const password =
@@ -106,8 +105,11 @@ function createEvents() {
         const securityLevel =
           userArray[objectNumberUser].securityLevel;
 
+                  const condominiumId =
+          userArray[objectNumberUser].condominiumId;
+
         // Save email/user, password and security level
-        localStorage.setItem('user', JSON.stringify({ email, password, securityLevel }));
+        localStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
 
         (objLogIn.validateUser(email, password))
           ? window.location.href = 'http://localhost/condo/condo-income.html'
