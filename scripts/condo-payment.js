@@ -3,7 +3,7 @@
 // Activate objects
 const objUser = new User('user');
 const objPayment = new Payment('payment');
-const objCondo = new Condo('condo');
+//const objCondo = new Condo('condo');
 const objAccount = new Account('account');
 
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
@@ -63,17 +63,27 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
+
+    /*
     // Sends a request to the server to get all condos
     const SQLquery = `
       SELECT * FROM condo
       ORDER BY condoName;
     `;
     socket.send(SQLquery);
+    */
+   //objAccount.getAccounts(socket);
+    const SQLquery = `
+      SELECT * FROM account
+      ORDER BY accountId;
+    `;
+    socket.send(SQLquery);
   }
 
+  /*
   // Create condo array including objets
   if (message.includes('"tableName":"condo"')) {
 
@@ -90,6 +100,7 @@ socket.onmessage = (event) => {
     `;
     socket.send(SQLquery);
   }
+  */
 
   // Create account array including objets
   if (message.includes('"tableName":"account"')) {
@@ -195,7 +206,7 @@ function createEvents() {
 
       deletePaymentRow();
 
-      // Sends a request to the server to get all condos
+      // Sends a request to the server to get all payments
       const SQLquery = `
         SELECT * FROM payment
         ORDER BY paymentId;
@@ -208,7 +219,7 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-payment-cancel')) {
 
-      // Sends a request to the server to get all condos
+      // Sends a request to the server to get all payments
       const SQLquery = `
         SELECT * FROM payment
         ORDER BY paymentId;
@@ -220,7 +231,7 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-payment-cancel')) {
 
-      // Sends a request to the server to get all condos
+      // Sends a request to the server to get all payments
       const SQLquery = `
         SELECT * FROM payment
         ORDER BY paymentId;
@@ -247,8 +258,8 @@ function updatePayment() {
     const accountId =
       document.querySelector('.select-payment-accountId').value;
 
-    const condoId =
-      document.querySelector('.select-payment-condoId').value;
+    //const condoId =
+    //  document.querySelector('.select-payment-condoId').value;
 
     let amount =
       formatAmountToOre(document.querySelector('.input-payment-amount').value);
@@ -273,7 +284,6 @@ function updatePayment() {
           user = '${objUserPassword.email}',
           lastUpdate = '${lastUpdate}',
           accountId = ${accountId},
-          condoId = ${condoId},
           amount = '${amount}',
           numberKWHour = '${numberKWHour}',
           date = '${date}',
@@ -293,18 +303,16 @@ function updatePayment() {
         user,
         lastUpdate,
         accountId,
-        condoId,
         amount,
         numberKWHour,
         date,
         text)
         VALUES (
           'payment',
-          '${objUserPassword.condoniumId}',
+          '${objUserPassword.condominiumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},
-          ${condoId},
           '${amount}',
           '${numberKWHour}',
           '${date}', 
@@ -322,17 +330,15 @@ function updatePayment() {
           user,
           lastUpdate,
           accountId,
-          condoId,
           amount,
           date,
           text)
         VALUES (
           'accountmovement',
-          '${objUserPassword.condoniumId}',
+          '${objUserPassword.condominiumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},
-          ${condoId},
           '${amount}',
           '${date}', 
           '${text}'
@@ -368,9 +374,11 @@ function showLeadingText(paymentId) {
   const accountId = accountArray.at(-1).accountId;
   objAccount.showAllAccounts('payment-accountId', accountId);
 
+  /*
   // Show all condos
   const condoId = condoArray.at(-1).condoId;
   objCondo.showAllCondos('payment-condoId', condoId);
+  */
 
   // Show amount
   objPayment.showInput('payment-amount', '* Beløp', 10, '');
@@ -417,9 +425,11 @@ function showValues(paymentId) {
       const accountId = paymentArray[objectNumberPayment].accountId;
       objPayment.selectAccountId(accountId, 'payment-accountId')
 
+      /*
       // show selected condo Id
       const condoId = paymentArray[objectNumberPayment].condoId;
       objPayment.selectAccountId(condoId, 'payment-condoId')
+      */
 
       // show amount
       document.querySelector('.input-payment-amount').value =

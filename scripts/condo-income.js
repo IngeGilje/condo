@@ -118,7 +118,7 @@ socket.onmessage = (event) => {
     // array including objects with income information
     incomeArray = JSON.parse(message);
 
-    const incomeId = objIncome.getSelectedIncomeId('incomeId');
+    const incomeId = objIncome.getSelectedIncomeId('income-incomeId');
 
     // Show all leading text
     showLeadingText(incomeId);
@@ -165,6 +165,7 @@ socket.onclose = () => {
 // Make income events
 function createEvents() {
 
+  /*
   // Select income
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-income-incomeId')) {
@@ -172,13 +173,7 @@ function createEvents() {
       showValues(incomeId);
     }
   });
-
-  // Select condo
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-condo-condoId')) {
-      showIncome();
-    }
-  });
+  */
 
   // Select income id
   document.addEventListener('change', (event) => {
@@ -188,6 +183,20 @@ function createEvents() {
       showValues(dueId);
       showIncome();
     };
+  });
+
+  // Select account id
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-income-accountId')) {
+      showIncome();
+    }
+  });
+
+  // Select condo id
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-income-condoId')) {
+      showIncome();
+    }
   });
 
   // Update income
@@ -304,7 +313,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'income',
-          '${objUserPassword.condoniumId}',
+          '${objUserPassword.condominiumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
@@ -331,7 +340,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'accountmovement',
-          '${objUserPassword.condoniumId}',
+          '${objUserPassword.condominiumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
@@ -539,13 +548,13 @@ function showIncome() {
 
   incomeArray.forEach((income) => {
 
-    if (income.incomeId > 1) {
+    // Account
+    let accountId =
+      Number(document.querySelector(".select-income-accountId").value);
+    let condoId =
+      Number(document.querySelector(".select-income-condoId").value);
 
-      // Account
-      let accountId =
-        Number(document.querySelector(".select-income-accountId").value);
-      let condoId =
-        Number(document.querySelector(".select-income-condoId").value);
+    if (income.incomeId > 1) {
       if (accountId === income.accountId && income.accountId === accountId) {
 
         htmlColumnIncomeId +=

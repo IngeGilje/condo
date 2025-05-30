@@ -63,7 +63,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all accounts
@@ -246,8 +246,8 @@ function updateCondominium(condominiumId) {
       document.querySelector('.input-condominium-email').value;
     const organizationNumber =
       document.querySelector('.input-condominium-organizationNumber').value;
-    const bankAccount =
-      document.querySelector('.select-condominium-bankAccountId').value;
+    //const bankAccountId =
+    //  document.querySelector('.select-condominium-bankAccountId').value;
 
     // current date
     const now = new Date();
@@ -270,8 +270,7 @@ function updateCondominium(condominiumId) {
           city = '${city}',
           phoneNumber = '${phoneNumber}',
           email = '${email}',
-          organizationNumber = ${organizationNumber},
-          bankAccount = ${bankAccount}
+          organizationNumber = ${organizationNumber}
         WHERE condominiumId = ${condominiumId};
       `;
 
@@ -289,8 +288,7 @@ function updateCondominium(condominiumId) {
           city,
           phoneNumber,
           email,
-          organizationNumber,
-          bankAccount)
+          organizationNumber)
         VALUES (
           'condominium',
           '${objUserPassword.email}',
@@ -302,8 +300,7 @@ function updateCondominium(condominiumId) {
           '${city}',
           '${phoneNumber}',
           '${email}',
-          '${organizationNumber}',
-          '${bankAccount}'
+          '${organizationNumber}'
         );
       `;
     }
@@ -353,10 +350,9 @@ function showLeadingText(condominiumId) {
   // organization Number
   objCondominium.showInput('condominium-organizationNumber', '* Organisasjonsnummer', 9, '');
 
-  // bank account number
-
-  const bankAccountId = bankAccountArray.at(-1).bankAccountId;
-  objBankAccount.showAllBankAccounts('condominium-bankAccountId', bankAccountId);
+  // bank account Id
+  //const bankAccountId = bankAccountArray.at(-1).bankAccountId;
+  //objBankAccount.showAllBankAccounts('condominium-bankAccountId', bankAccountId);
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -419,9 +415,9 @@ function showValues(condominiumId) {
       document.querySelector('.input-condominium-organizationNumber').value =
         condominiumArray[objectNumberCondominium].organizationNumber;
 
-      // Show bank account number
-      const bankAccountId = condominiumArray[objectNumberCondominium].bankAccountId;
-      objCondominium.selectBankAccountId(bankAccountId, 'condominium-bankAccountId');
+      // Show bank account id
+      //const bankAccountId = condominiumArray[objectNumberCondominium].bankAccountId;
+      //objCondominium.selectBankAccountId(bankAccountId, 'condominium-bankAccountId');
     }
   }
 }
@@ -464,8 +460,8 @@ function resetValues() {
     '';
 
   // Show bankaccount number
-  document.querySelector('.select-condominium-bankAccountId').value =
-    '';
+  //document.querySelector('.select-condominium-bankAccountId').value =
+  //  '';
 
   document.querySelector('.select-condominium-condominiumId').disabled =
     true;

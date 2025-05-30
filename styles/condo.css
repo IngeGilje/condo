@@ -6,6 +6,7 @@
 }
 
 /* Define the grid container */
+.div-grid-condo,
 .div-grid-user,
 .div-grid-bankaccount,
 .div-grid-condominium,
@@ -27,6 +28,7 @@
 }
 
 /* grid container 2 columns */
+.div-grid-condo,
 .div-grid-budget,
 .div-grid-bankaccount,
 .div-grid-account,
@@ -37,7 +39,6 @@
 
 /* grid container 3 columns */
 .div-grid-user,
-.div-grid-condo,
 .div-grid-condominium,
 .div-grid-payment {
   grid-template-columns: 200px 200px 200px;

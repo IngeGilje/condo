@@ -66,7 +66,7 @@ socket.onmessage = (event) => {
     // Check user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password))
       ? ''
-      : window.location.href('file:///http://localhost/condo-login.html');
+      : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos

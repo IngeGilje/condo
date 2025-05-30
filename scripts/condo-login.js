@@ -105,7 +105,7 @@ function createEvents() {
         const securityLevel =
           userArray[objectNumberUser].securityLevel;
 
-                  const condominiumId =
+        const condominiumId =
           userArray[objectNumberUser].condominiumId;
 
         // Save email/user, password and security level

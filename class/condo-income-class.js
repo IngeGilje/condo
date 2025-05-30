@@ -85,12 +85,12 @@ class Income extends Condos {
   */
 
   // Find selected income id
-  getSelectedIncomeId(columnName) {
+  getSelectedIncomeId(className) {
 
     let incomeId = 0;
 
     // Check if HTML class exist
-    const className = `select-${this.applicationName}-${columnName}`;
+    className = `select-${className}`;
     if (isClassDefined(className)) {
 
       incomeId =

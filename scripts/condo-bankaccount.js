@@ -6,6 +6,7 @@ const objBankAccount = new BankAccount('bankaccount');
 const objAccount = new Account('account');
 
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
+console.log('objUserPassword.condominiumId:',objUserPassword.condominiumId);
 
 // Connection to a server
 let socket;
@@ -37,19 +38,6 @@ let isEventsCreated = false;
 objBankAccount.menu();
 objBankAccount.markSelectedMenu('Bankkonto');
 
-/*
-// Send a message to the server
-socket.onopen = () => {
-
-  // Sends a request to the server to get all accounts
-  //objAccount.getAccounts(socket);
-  const SQLquery = `
-    SELECT * FROM account
-    ORDER BY accountId;
-  `;
-  socket.send(SQLquery);
-};
-*/
 // Send a message to the server
 socket.onopen = () => {
 
@@ -75,11 +63,10 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all accounts
-    //objAccount.getAccounts(socket);
     const SQLquery = `
       SELECT * FROM account
       ORDER BY accountId;
@@ -130,11 +117,10 @@ socket.onmessage = (event) => {
 
       console.log('affectedRows');
 
-      // Sends a request to the server to get all bankaccounts
-      //objBankAccount.getAccounts(socket);
+      // Sends a request to the server to get all bank accounts
       const SQLquery = `
-        SELECT * FROM account
-        ORDER BY accountId;
+        SELECT * FROM bankaccount
+        ORDER BY bankaccountId;
       `;
       socket.send(SQLquery);
     }
@@ -191,13 +177,6 @@ function createEvents() {
 
       deleteAccountRow();
 
-      // Sends a request to the server to get all bank account
-      //objBankAccount.getBankAccounts(socket);
-      const SQLquery = `
-        SELECT * FROM bankaccount
-        ORDER BY name;
-      `;
-      socket.send(SQLquery);
     }
   });
 
@@ -267,7 +246,7 @@ function updateBankAccount() {
           name) 
         VALUES (
           'bankaccount',
-          '${objUserPassword.condoniumId}',
+          '${objUserPassword.condominiumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${bankAccountNumber}',
@@ -312,13 +291,12 @@ function deleteAccountRow() {
         WHERE bankAccountId = '${bankAccountId}';
       `;
 
+      // Client sends a request to the server
+      socket.send(SQLquery);
     }
-    // Client sends a request to the server
-    socket.send(SQLquery);
 
     // Get bank account
-    //objBankAccount.getBankAccounts(socket);
-    const SQLquery = `
+    SQLquery = `
       SELECT * FROM bankaccount
       ORDER BY name;
     `;
@@ -412,33 +390,3 @@ function resetValues() {
   //document.querySelector('.button-bankaccount-cancel').disabled =
   //  true;
 }
-
-/*
-DROP TABLE bankaccount;
-CREATE TABLE bankaccount (
-  bankAccountId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50) NOT NULL,
-  condominiumId INT,
-  user VARCHAR (50),
-  lastUpdate VARCHAR (40),
-  bankAccountNumber VARCHAR(11) NOT NULL,
-  name VARCHAR(50) NOT NULL,
-  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
-);
-ALTER TABLE bankaccount ENGINE=InnoDB;
-INSERT INTO bankaccount(
-  tableName,
-  condominiumId,
-  user,
-  lastUpdate,
-  bankAccountNumber,
-  name) 
-VALUES (
-  'bankaccount',
-  1,
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  '',
-  ''
-  );
-*/

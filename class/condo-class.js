@@ -501,7 +501,7 @@ class Condos {
         document.querySelector('.div-menu')
           .innerHTML =
             `
-             <a href="http://localhost/condo/condo-login.html" class="a-menu-vertical-login">Login</a>
+              <a href="http://localhost/condo/condo-login.html" class="a-menu-vertical-login">Login</a>
               <a href="http://localhost/condo/condo-condominium.html" class="a-menu-vertical-condominium">Sameie</a>
               <a href="http://localhost/condo/condo-condo.html" class="a-menu-vertical-condo">Leilighet</a>
               <a href="http://localhost/condo/condo-user.html" class="a-menu-vertical-user">Bruker</a>

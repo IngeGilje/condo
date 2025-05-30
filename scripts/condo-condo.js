@@ -61,7 +61,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('file:///http://localhost/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -252,7 +252,7 @@ function updateCondoRow(condoId) {
           city)
         VALUES (
           'condo',
-          '${objUserPassword.condoniumId}',
+          '${objUserPassword.condominiumId}',
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${condoName}',
@@ -474,41 +474,3 @@ function validateValues() {
     return false;
   }
 }
-
-/*
-DROP TABLE condo;
-CREATE TABLE condo (
-  condoId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50),
-  condominiumId INT,
-  user VARCHAR (50),
-  lastUpdate VarChar (40),
-  condoName VARCHAR(50) NOT NULL,
-  street VARCHAR(50) NOT NULL,
-  address2 VARCHAR(50),
-  postalCode VARCHAR(4) NOT NULL,
-  city VARCHAR(50) NOT NULL,
-  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
-);
-INSERT INTO condo (
-  tableName,
-  condominiumId,
-  user,
-  lastUpdate,
-  condoName,
-  street,
-  address2,
-  postalCode,
-  city)
-VALUES (
-  'condo',
-  1,
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  '',
-  '',
-  '',
-  '',
-  ''
-);
-*/

@@ -183,8 +183,7 @@ function createAllTables() {
         city VARCHAR(50) NOT NULL,
         phoneNumber VARCHAR(20),
         email VARCHAR(50),
-        organizationNumber VARCHAR(9),
-        bankAccountId INT 
+        organizationNumber VARCHAR(9)
       );
     `;
   socket.send(SQLquery);
@@ -279,14 +278,12 @@ function createAllTables() {
         user VARCHAR (50),
         lastUpdate VarChar (40),
         accountId INT,
-        condoId INT,
         amount VARCHAR(10) NOT NULL,
         numberKWHour VARCHAR(10),
         date VARCHAR(10) NOT NULL,
         text VARCHAR (255) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId),
-        FOREIGN KEY (accountId) REFERENCES account(accountId),
-        FOREIGN KEY (condoId) REFERENCES condo(condoId)
+        FOREIGN KEY (accountId) REFERENCES account(accountId)
       );
     `;
   socket.send(SQLquery);
@@ -527,7 +524,6 @@ function insertRowAllTables() {
         user,
         lastUpdate,
         accountId,
-        condoId,
         amount,
         numberKWHour,
         date,
@@ -538,7 +534,6 @@ function insertRowAllTables() {
         'Initiation',
         '${lastUpdate}',
         1, 
-        1,
         '',
         '',
         '',
