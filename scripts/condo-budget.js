@@ -269,7 +269,7 @@ function updateBudgetRow(budgetId) {
           text)
         VALUES (
           'budget',
-          '${objUserPassword.condominiumId}',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},

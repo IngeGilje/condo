@@ -167,7 +167,6 @@ function createEvents() {
       if (updateMontlyamountRows()) {
 
         // Sends a request to the server to get all due
-        //objDue.getDues(socket);
         const SQLquery = `
           SELECT * FROM due
           ORDER BY date;
@@ -204,7 +203,7 @@ function createEvents() {
 
 function updateMontlyamountRows() {
 
-  let SQLquery = '';
+  let SQLquery;
   let isUpdated = false;
 
   // Check for valid values
@@ -254,6 +253,7 @@ function updateMontlyamountRows() {
           text)
         VALUES(
           'due',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
@@ -416,12 +416,13 @@ function duesCondo(condoId) {
       // 20250115 -> 15.01.2025
       date = convertToEurDateFormat(String(due.date));
       htmlColumnDate +=
-        `<div 
-          class="rightCell"
-        >
-          ${date}
-        </div>
-        <br>`;
+        `
+          <div 
+            class="rightCell"
+          >
+            ${date}
+          </div>
+        `;
 
       // 1234567 -> 12345,67
       const amount = formatFromOreToKroner(due.amount);
@@ -429,12 +430,11 @@ function duesCondo(condoId) {
         amount;
       htmlColumnAmount +=
         `
-        <div 
-          class="rightCell"
-        >
-          ${amount}
-        </div>
-        <br>
+          <div 
+            class="rightCell"
+          >
+            ${amount}
+          </div>
       `;
       sumAmount += Number(due.amount);
     }
@@ -459,38 +459,3 @@ function duesCondo(condoId) {
   document.querySelector('.div-monthlyfee-columnAmount').innerHTML =
     htmlColumnAmount;
 }
-
-/*
-DROP TABLE due; 
-CREATE TABLE due (
-  dueId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50) NOT NULL,
-  condominiumId INT,
-  user VARCHAR (50),
-  lastUpdate VarChar (40),
-  condoId INT,
-  amount VARCHAR(10) NOT NULL,
-  date VARCHAR(10) NOT NULL,
-  text VARCHAR (255) NOT NULL,
-  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
-);
-INSERT INTO due (
-  tableName,
-  condominiumId,
-  user,
-  lastUpdate,
-  condoId,
-  amount,
-  date,
-  text)
-VALUES (
-  'due',
-  1,
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  0,
-  '',
-  '',
-  ''
-);
-*/

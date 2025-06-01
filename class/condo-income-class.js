@@ -72,18 +72,6 @@ class Income extends Condos {
      html;
   }
 
-  /*
-  // Get all incomes from MySQL database
-  getIncomes(socket) {
-
-    const SQLquery = `
-      SELECT * FROM income
-      ORDER BY text;
-    `;
-    socket.send(SQLquery);
-  }
-  */
-
   // Find selected income id
   getSelectedIncomeId(className) {
 

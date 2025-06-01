@@ -271,7 +271,7 @@ function updateUser(userId) {
           password) 
         VALUES (
           'user',
-          '${objUserPassword.condominiumId}',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${email}',

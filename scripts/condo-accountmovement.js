@@ -43,10 +43,11 @@ objAccountMovement.markSelectedMenu('Kontobevegelser');
 socket.onopen = () => {
 
   // Sends a request to the server to get all users
-  const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
+  const SQLquery =
+    `
+      SELECT * FROM user
+      ORDER BY userId;
+    `;
   socket.send(SQLquery);
 };
 
@@ -70,10 +71,11 @@ socket.onmessage = (event) => {
 
     // username and password is ok
     // Sends a request to the server to get all condos
-    const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY condoName;
-    `;
+    const SQLquery =
+      `
+        SELECT * FROM condo
+        ORDER BY condoName;
+      `;
     socket.send(SQLquery);
   }
 
@@ -86,10 +88,11 @@ socket.onmessage = (event) => {
     condoArray = JSON.parse(message);
 
     //objBankAccount.getBankAccounts(socket);
-    const SQLquery = `
-      SELECT * FROM bankaccount
-      ORDER BY name;
-    `;
+    const SQLquery =
+      `
+        SELECT * FROM bankaccount
+        ORDER BY name;
+      `;
     socket.send(SQLquery);
   }
 
@@ -102,10 +105,11 @@ socket.onmessage = (event) => {
     bankAccountArray = JSON.parse(message);
 
     //objAccount.getAccounts(socket);
-    const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
+    const SQLquery = 
+      `
+        SELECT * FROM account
+        ORDER BY accountId;
+      `;
     socket.send(SQLquery);
   }
 
@@ -117,12 +121,11 @@ socket.onmessage = (event) => {
 
     // array including objects with accountmovement information
     accountArray = JSON.parse(message);
-
-    //objAccountMovement.getAccountMovements(socket);
-    const SQLquery = `
-      SELECT * FROM accountmovement
-      ORDER BY text;
-    `;
+    const SQLquery =
+      `
+        SELECT * FROM accountmovement
+        ORDER BY date;
+      `;
     socket.send(SQLquery);
   }
 
@@ -151,10 +154,11 @@ socket.onmessage = (event) => {
 
     console.log('affectedRows');
     //objAccountMovement.getAccountMovements(socket);
-    const SQLquery = `
-      SELECT * FROM accountmovement
-      ORDER BY text;
-    `;
+    const SQLquery =
+      `
+        SELECT * FROM accountmovement
+        ORDER BY date;
+      `;
     socket.send(SQLquery);
   }
 };

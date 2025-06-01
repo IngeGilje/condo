@@ -252,7 +252,7 @@ function updateCondoRow(condoId) {
           city)
         VALUES (
           'condo',
-          '${objUserPassword.condominiumId}',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${condoName}',

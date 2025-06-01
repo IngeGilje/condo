@@ -37,19 +37,6 @@ switch (objUser.serverStatus) {
 objDue.menu();
 objDue.markSelectedMenu('Forfall');
 
-/*
-// Send a message to the server
-socket.onopen = () => {
-
-  // Sends a request to the server to get all condos
-  //objCondo.getCondos(socket);
-  const SQLquery = `
-    SELECT * FROM condo
-    ORDER BY condoName;
-  `;
-  socket.send(SQLquery);
-};
-*/
 // Send a message to the server
 socket.onopen = () => {
 
@@ -99,7 +86,7 @@ socket.onmessage = (event) => {
     //objDue.getDues(socket);
     const SQLquery = `
       SELECT * FROM due
-      ORDER BY date;
+      ORDER BY dueId;
     `;
     socket.send(SQLquery);
   }
@@ -180,7 +167,7 @@ function createEvents() {
         //objDue.getDues(socket);
         const SQLquery = `
           SELECT * FROM due
-          ORDER BY date;
+          ORDER BY dueId;
         `;
         socket.send(SQLquery);
       }
@@ -206,7 +193,7 @@ function createEvents() {
       //objDue.getDues(socket);
       const SQLquery = `
         SELECT * FROM due
-        ORDER BY date;
+        ORDER BY dueId;
       `;
       socket.send(SQLquery);
     }
@@ -220,7 +207,7 @@ function createEvents() {
       //objDue.getDues(socket);
       const SQLquery = `
         SELECT * FROM due
-        ORDER BY date;
+        ORDER BY dueId;
       `;
       socket.send(SQLquery);
     }
@@ -284,6 +271,7 @@ function updateDueRow(dueId) {
           text)
         VALUES(
           'due',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
@@ -300,7 +288,7 @@ function updateDueRow(dueId) {
     //objDue.getDues(socket);
     SQLquery = `
       SELECT * FROM due
-      ORDER BY date;
+      ORDER BY dueId;
     `;
     socket.send(SQLquery);
 
@@ -335,7 +323,7 @@ function deleteDueRow(dueId) {
     //objDue.getDues(socket);
     const SQLquery = `
       SELECT * FROM due
-      ORDER BY date;
+      ORDER BY dueId;
     `;
     socket.send(SQLquery);
   }

@@ -263,7 +263,7 @@ function updateAccount() {
         ) 
         VALUES (
           'account',
-          '${objUserPassword.condominiumId}',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${bankAccountId},

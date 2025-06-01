@@ -75,7 +75,7 @@ socket.onmessage = (event) => {
     `;
     socket.send(SQLquery);
     */
-   //objAccount.getAccounts(socket);
+    //objAccount.getAccounts(socket);
     const SQLquery = `
       SELECT * FROM account
       ORDER BY accountId;
@@ -309,7 +309,7 @@ function updatePayment() {
         text)
         VALUES (
           'payment',
-          '${objUserPassword.condominiumId}',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},
@@ -335,7 +335,7 @@ function updatePayment() {
           text)
         VALUES (
           'accountmovement',
-          '${objUserPassword.condominiumId}',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${accountId},

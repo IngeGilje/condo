@@ -6,7 +6,7 @@ const objBankAccount = new BankAccount('bankaccount');
 const objAccount = new Account('account');
 
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
-console.log('objUserPassword.condominiumId:',objUserPassword.condominiumId);
+console.log('objUserPassword.condominiumId:', objUserPassword.condominiumId);
 
 // Connection to a server
 let socket;
@@ -246,7 +246,7 @@ function updateBankAccount() {
           name) 
         VALUES (
           'bankaccount',
-          '${objUserPassword.condominiumId}',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${bankAccountNumber}',

@@ -2,6 +2,7 @@
 
 // Activate objects
 const objCondo = new Condo('condo');
+const objAccountMovement = new AccountMovement('accountmovement');
 const objAccount = new Account('account');
 const objUser = new User('user');
 const objIncome = new Income('income');
@@ -103,6 +104,23 @@ socket.onmessage = (event) => {
 
     // Get all income rows
     const SQLquery = `
+      SELECT * FROM accountmovement
+      ORDER BY accountmovementId;
+    `;
+    socket.send(SQLquery);
+  }
+
+  // Create accountmovement array including objets
+  if (message.includes('"tableName":"accountmovement"')) {
+
+    // accountmovement table
+    console.log('accountmovementTable');
+
+    // array including objects with accountmovement information
+    accountMovementArray = JSON.parse(message);
+
+    // Get all income rows
+    const SQLquery = `
       SELECT * FROM income
       ORDER BY date;
     `;
@@ -164,16 +182,6 @@ socket.onclose = () => {
 
 // Make income events
 function createEvents() {
-
-  /*
-  // Select income
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-income-incomeId')) {
-      const incomeId = Number(event.target.value);
-      showValues(incomeId);
-    }
-  });
-  */
 
   // Select income id
   document.addEventListener('change', (event) => {
@@ -282,6 +290,13 @@ function updateIncomeRow() {
     const objectNumberIncome = incomeArray.findIndex(income => income.incomeId === incomeId);
     if (objectNumberIncome > 0) {
 
+      // Find current values for income to update
+      const accountmovementCondoId = incomeArray[objectNumberIncome].condoId;
+      const accountmovementAccountId = incomeArray[objectNumberIncome].accountId;
+      const accountmovementAmount = incomeArray[objectNumberIncome].amount;
+      const accountmovementDate = incomeArray[objectNumberIncome].date;
+      const accountmovementText = incomeArray[objectNumberIncome].text;
+
       // Update income table
       SQLquery = `
         UPDATE income
@@ -298,6 +313,36 @@ function updateIncomeRow() {
 
       // Client sends a request to the server
       socket.send(SQLquery);
+
+      // Find accountmovement Id
+      const accountMovementId = getAccountMovementId(
+        accountmovementCondoId,
+        accountmovementAccountId,
+        accountmovementAmount,
+        accountmovementDate,
+        accountmovementText
+      );
+
+      if (accountMovementId >= 0) {
+        // Update accountmovement
+        SQLquery = `
+        UPDATE accountmovement
+        SET 
+          condominiumId = ${objUserPassword.condominiumId},
+          user = '${objUserPassword.email}',
+          lastUpdate = '${lastUpdate}',
+          condoId = ${condoId},
+          accountId = ${accountId},
+          amount = '${amount}',
+          date = '${date}',
+          text = '${text}'
+        WHERE accountMovementId = ${accountMovementId};
+      `;
+
+        // Client sends a request to the server
+        socket.send(SQLquery);
+      }
+
     } else {
 
       SQLquery = `
@@ -313,7 +358,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'income',
-          '${objUserPassword.condominiumId}',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
@@ -340,7 +385,7 @@ function updateIncomeRow() {
           text)
         VALUES (
           'accountmovement',
-          '${objUserPassword.condominiumId}',
+          ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
@@ -633,40 +678,20 @@ function showIncome() {
   document.querySelector(".div-income-columnText").innerHTML =
     htmlColumnText;
 }
-/*
-DROP TABLE income;
-CREATE TABLE income (
-  incomeId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50) NOT NULL,
-  condominiumId INT,
-  user VARCHAR (50),
-  lastUpdate VarChar (40),
-  condoId INT,
-  accountId INT,
-  amount VARCHAR(10) NOT NULL,
-  date VARCHAR(10) NOT NULL,
-  text VARCHAR (255) NOT NULL,
-  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
-);
-INSERT INTO income (
-  tableName,
-  condominiumId,
-  user,
-  lastUpdate,
-  condoId,
-  accountId,
-  amount,
-  date,
-  text)
-VALUES (
-  'income',
-  1,
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  0,
-  0, 
-  '',
-  '',
-  ''
-);
-*/
+
+// Find accountmovement Id
+function getAccountMovementId(condoId, accountId, amount, date, text) {
+
+  let accountmovementId = -1;
+  accountMovementArray.forEach((accountMovement) => {
+    if ((accountMovement.condoId === condoId)
+      && (accountMovement.accountId === accountId)
+      && (accountMovement.amount === amount)
+      && (accountMovement.date === date)
+      && (accountMovement.text === text)) {
+
+      accountmovementId = accountMovement.accountMovementId;
+    }
+  });
+  return accountmovementId;
+}
