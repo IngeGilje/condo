@@ -220,6 +220,10 @@ function updateUser(userId) {
     const phone =
       document.querySelector('.input-user-phone').value;
 
+    // bank account
+    const bankAccount =
+      document.querySelector('.input-user-bankAccount').value;
+
     // securityLevel
     const securityLevel =
       Number(document.querySelector('.select-user-securityLevel').value);
@@ -248,6 +252,7 @@ function updateUser(userId) {
             firstName = '${firstName}',
             lastName = '${lastName}',
             phone = '${phone}',
+            bankAccount = '${bankAccount}',
             securityLevel = ${securityLevel},
             password = '${password}'
           WHERE userId = ${userId}
@@ -267,6 +272,7 @@ function updateUser(userId) {
           firstName,
           lastName,
           phone,
+          bankAccount,
           securityLevel,
           password) 
         VALUES (
@@ -279,6 +285,7 @@ function updateUser(userId) {
           '${firstName}',
           '${lastName}',
           '${phone}',
+          '${bankAccount}',
           ${securityLevel},
           '${password}'
         );
@@ -355,6 +362,9 @@ function showLeadingText(userId) {
   // Phone
   objUser.showInput('user-phone', 'Telefonnummer', 20, '');
 
+  // BankAccount
+  objUser.showInput('user-bankAccount', 'Bankkonto', 11, '');
+
   // Select securityLevel
   objUser.selectNumber('user-securityLevel', 1, 9, 5, 'Sikkerhetsnivå');
 
@@ -406,6 +416,10 @@ function showValues(userId) {
       document.querySelector('.input-user-phone').value =
         userArray[objectNumberUser].phone;
 
+      // Show bankAccount
+      document.querySelector('.input-user-bankAccount').value =
+        userArray[objectNumberUser].bankAccount;
+
       // show securityLevel
       document.querySelector('.select-user-securityLevel').value =
         userArray[objectNumberUser].securityLevel;
@@ -442,6 +456,10 @@ function validateValues(userId) {
   const phone = document.querySelector('.input-user-phone').value;
   const validPhone = objUser.validateText(phone, "label-user-phone", "Telefonnummer");
 
+  // Check bank account
+  const bankAccount = document.querySelector('.input-user-bankAccount').value;
+  const validBankAccount = objUser.validateText(bankAccount, "label-user-bankAccount", "Bankkonto");
+
   const securityLevel =
     Number(document.querySelector('.select-user-securityLevel').value);
   const validSecuritylevel =
@@ -451,7 +469,7 @@ function validateValues(userId) {
   const password = document.querySelector('.input-user-password').value;
   const validpassword = objUser.validateText(password, "label-user-password", "Passord");
 
-  return (validPhone && validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
+  return (validBankAccount && validPhone && validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
 }
 
 function resetValues() {
@@ -460,15 +478,19 @@ function resetValues() {
   document.querySelector('.select-user-userId').value =
     0;
 
-  // reset email
+  // reset e-mail
   document.querySelector('.input-user-email').value =
     '';
 
-  // reset name
+  // reset condo Id
+  document.querySelector('.select-user-condoId').value =
+    0;
+
+  // reset first name
   document.querySelector('.input-user-firstName').value =
     '';
 
-  // reset name
+  // reset last name
   document.querySelector('.input-user-lastName').value =
     '';
 
@@ -482,6 +504,10 @@ function resetValues() {
 
   // reset password
   document.querySelector('.input-user-password').value =
+    '';
+
+  // reset bank account
+  document.querySelector('.input-user-bankAccount').value =
     '';
 
   document.querySelector('.select-user-userId').disabled =

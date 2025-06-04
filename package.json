@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "csv-parser": "^3.2.0",
     "formidable": "^3.5.2",
+    "fs": "^0.0.1-security",
     "mysql": "^2.18.1",
     "mysql2": "^3.14.1",
     "upper-case": "^2.0.2",

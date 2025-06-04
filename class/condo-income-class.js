@@ -5,7 +5,7 @@ class Income extends Condos {
   incomeArray = Array;
 
   // Show all incomes
-  showAllIncomes(columnName, incomeId) {
+  showAllIncomes(className, incomeId) {
 
     let html = `
     <form 
@@ -15,14 +15,14 @@ class Income extends Condos {
     >
       <label 
         id="Income"
-        class="label-income-${columnName} 
-        label-income-${columnName}"
+        class="label-${className} 
+        label-${className}"
         for="Income">
           Velg innbetaling
       </label>
       <select 
         id="Income"
-        class="select-income-${columnName}" 
+        class="select-${className}" 
       >
     `;
 
@@ -68,7 +68,7 @@ class Income extends Condos {
       </form>
     `;
 
-    document.querySelector(`.div-income-${columnName}`).innerHTML =
+    document.querySelector(`.div-${className}`).innerHTML =
      html;
   }
 

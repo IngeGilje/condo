@@ -81,7 +81,6 @@ socket.onmessage = (event) => {
     accountArray = JSON.parse(message);
 
     // Sends a request to the server to get all bank accounts
-    //objBankAccount.getBankAccounts(socket);
     const SQLquery = `
       SELECT * FROM bankaccount
       ORDER BY name;
@@ -207,10 +206,10 @@ function updateBankAccount() {
       Number(document.querySelector('.select-bankaccount-bankAccountId').value);
 
     // Bank Account number
-    const bankAccountNumber = document.querySelector('.input-bankaccount-bankAccountNumber').value;
+    const bankAccount = document.querySelector('.input-bankaccount-bankAccount').value;
 
     // BankAccount Name
-    const name = document.querySelector('.input-bankaccount-bankAccountName').value;
+    const name = document.querySelector('.input-bankaccount-name').value;
 
     if (bankAccountId >= 0) {
 
@@ -229,7 +228,7 @@ function updateBankAccount() {
           SET 
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
-            bankAccountNumber = '${bankAccountNumber}',
+            bankAccount = '${bankAccount}',
             name = '${name}'
           WHERE bankAccountId = ${bankAccountId};
         `;
@@ -242,14 +241,14 @@ function updateBankAccount() {
           condominiumId,
           user,
           lastUpdate,
-          bankAccountNumber,
+          bankAccount,
           name) 
         VALUES (
           'bankaccount',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
-          '${bankAccountNumber}',
+          '${bankAccount}',
           '${name}'
         );
       `;
@@ -277,8 +276,8 @@ function deleteAccountRow() {
   let SQLquery = "";
 
   const bankAccountId = Number(document.querySelector('.select-bankaccount-bankAccountId').value);
-  const bankAccountNumber = document.querySelector('.input-bankaccount-bankAccountNumber').value;
-  const name = document.querySelector('.input-bankaccount-bankAccountName').value;
+  const bankAccount = document.querySelector('.input-bankaccount-bankAccount').value;
+  const name = document.querySelector('.input-bankaccount-name').value;
   if (bankAccountId > 1) {
 
     // Check if bank account exist
@@ -311,10 +310,10 @@ function showLeadingText(bankAccountId) {
   objBankAccount.showAllBankAccounts('bankaccount-bankAccountId', bankAccountId);
 
   // Show bank account number
-  objBankAccount.showInput('bankaccount-bankAccountNumber', '* Kontonummer', 11, '');
+  objBankAccount.showInput('bankaccount-bankAccount', '* Kontonummer', 11, '');
 
   // bank account name
-  objBankAccount.showInput('bankaccount-bankAccountName', '* Kontonavn', 50, '');
+  objBankAccount.showInput('bankaccount-name', '* Kontonavn', 50, '');
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -346,11 +345,11 @@ function showValues(bankAccountId) {
       objBankAccount.selectBankAccountId(bankAccountId, 'bankaccount-bankAccountId');
 
       // bank account number
-      document.querySelector('.input-bankaccount-bankAccountNumber').value =
-        bankAccountArray[objectbankAccountId].bankAccountNumber;
+      document.querySelector('.input-bankaccount-bankAccount').value =
+        bankAccountArray[objectbankAccountId].bankAccount;
 
       // account name
-      document.querySelector('.input-bankaccount-bankAccountName').value =
+      document.querySelector('.input-bankaccount-name').value =
         bankAccountArray[objectbankAccountId].name;
     }
   }
@@ -360,14 +359,14 @@ function showValues(bankAccountId) {
 function validateValues() {
 
   // Check bank account number
-  const bankAccountNumber = document.querySelector('.input-bankaccount-bankAccountNumber').value;
-  const validBankAccountNumber = checkBankAccount(bankAccountNumber, "bankaccount-bankAccountNumber", "Kontonummer");
+  const bankAccount = document.querySelector('.input-bankaccount-bankAccount').value;
+  const validBankAccount = checkBankAccount(bankAccount, "bankaccount-bankAccount", "Kontonummer");
 
   // Check bankaccount Name
-  const name = document.querySelector('.input-bankaccount-bankAccountName').value;
-  const validName = objBankAccount.validateText(name, "label-bankaccount-bankAccountName", "Kontonavn");
+  const name = document.querySelector('.input-bankaccount-name').value;
+  const validName = objBankAccount.validateText(name, "label-bankaccount-name", "Kontonavn");
 
-  return (validName && validBankAccountNumber) ? true : false;
+  return (validName && validBankAccount) ? true : false;
 }
 
 function resetValues() {
@@ -376,10 +375,10 @@ function resetValues() {
   document.querySelector('.select-bankaccount-bankAccountId').value = '';
 
   // Bank account number
-  document.querySelector('.input-bankaccount-bankAccountNumber').value = '';
+  document.querySelector('.input-bankaccount-bankAccount').value = '';
 
   // Bank account Name
-  document.querySelector('.input-bankaccount-bankAccountName').value = '';
+  document.querySelector('.input-bankaccount-name').value = '';
 
   document.querySelector('.select-bankaccount-bankAccountId').disabled =
     true;

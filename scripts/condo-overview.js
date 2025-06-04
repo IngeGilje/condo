@@ -255,7 +255,6 @@ function showValues() {
               `
               <div 
                 class="leftCell"
-                style="text-align: left;"
               >
             `;
             htmlColumnDueText +=
@@ -321,7 +320,6 @@ function showValues() {
               `
                 <div
                   class="leftCell"
-                  style="text-align: left;"
                 >
                   ${income.text}
                 </div>

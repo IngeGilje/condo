@@ -67,40 +67,12 @@ socket.onmessage = (event) => {
 
     // username and password is ok
 
-    /*
-    // Sends a request to the server to get all condos
-    const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY condoName;
-    `;
-    socket.send(SQLquery);
-    */
-    //objAccount.getAccounts(socket);
     const SQLquery = `
       SELECT * FROM account
       ORDER BY accountId;
     `;
     socket.send(SQLquery);
   }
-
-  /*
-  // Create condo array including objets
-  if (message.includes('"tableName":"condo"')) {
-
-    console.log('condoTable');
-    // condo table
-
-    // array including objects with condo information
-    condoArray = JSON.parse(message);
-
-    //objAccount.getAccounts(socket);
-    const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
-    socket.send(SQLquery);
-  }
-  */
 
   // Create account array including objets
   if (message.includes('"tableName":"account"')) {
@@ -135,6 +107,8 @@ socket.onmessage = (event) => {
 
     // Show all values for payment
     showValues(paymentId);
+
+    showPayments();
 
     // Make events
     if (!isEventsCreated) {
@@ -182,7 +156,8 @@ function createEvents() {
 
   // Select account id
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-account-accountId')) {
+    if (event.target.classList.contains('select-payment-accountId')) {
+      showPayments();
     }
   });
 
@@ -368,7 +343,7 @@ function showLeadingText(paymentId) {
   // Show all payments
 
   // Show payment id
-  objPayment.showAllPayments('paymentId', paymentId);
+  objPayment.showAllPayments('payment-paymentId', paymentId);
 
   // Show all accounts
   const accountId = accountArray.at(-1).accountId;
@@ -531,4 +506,122 @@ function resetValues() {
     true;
   //document.querySelector('.button-payment-cancel').disabled =
   //  true;
+}
+
+function showPayments() {
+
+  let sumColumnAmount = 0;
+
+  // Column heading
+  let htmlColumnAccountId =
+    `
+      <div class="columnHeaderRight">
+        Id
+      </div>
+      <br>
+    `;
+
+  let htmlColumnDate =
+    `
+      <div class="columnHeaderRight">
+        Betingsdato
+      </div>
+      <br>
+    `;
+
+  let htmlColumnAmount =
+    `
+      <div class="columnHeaderRight">
+        Beløp
+      </div>
+      <br>
+    `;
+
+  let htmlColumnText =
+    `
+      <div class="columnHeaderLeft">
+        Tekst
+      </div>
+      <br>
+    `;
+
+  const accountId =
+    Number(document.querySelector(".select-payment-accountId").value);
+  paymentArray.forEach((payment) => {
+
+    if (payment.accountId === accountId) {
+
+      htmlColumnAccountId +=
+        `
+          <div class="rightCell">
+            ${payment.paymentId}
+          </div>
+        `;
+      const paymentDate =
+        convertToEurDateFormat(payment.date);
+      htmlColumnDate +=
+        `
+          <div class="rightCell">
+            ${paymentDate}
+          </div>
+        `;
+      const amount =
+        formatFromOreToKroner(payment.amount);
+      htmlColumnAmount +=
+        `
+          <div class="rightCell">
+            ${amount}
+          </div>
+        `;
+
+      // Text has to fit into the column
+      const paymentText =
+        truncateText(payment.text, 'div-payment-columnText');
+      htmlColumnText +=
+        `
+            <div class="leftCell">
+              ${paymentText}
+            </div>
+          `
+        ;
+
+      // Accomulate
+      // amount
+      sumColumnAmount += Number(payment.amount);
+    }
+  })
+
+   // Sum row
+  htmlColumnAccountId +=
+    `
+      <div>
+      </div>
+    `;
+
+  htmlColumnDate +=
+    `
+      <div>
+      </div>
+    `;
+
+  htmlColumnAmount +=
+    `
+      <div class="sumCellRight">
+    `;
+  htmlColumnAmount +=
+    formatFromOreToKroner(String(sumColumnAmount));
+  htmlColumnAmount +=
+    `
+      </div>
+    `;
+
+  // Show all rows
+  document.querySelector(".div-payment-columnIncomeId").innerHTML =
+    htmlColumnAccountId;
+  document.querySelector(".div-payment-columnDate").innerHTML =
+    htmlColumnDate;
+  document.querySelector(".div-payment-columnAmount").innerHTML =
+    htmlColumnAmount;
+  document.querySelector(".div-payment-columnText").innerHTML =
+    htmlColumnText;
 }

@@ -474,7 +474,7 @@ class Condos {
 
         document.querySelector('.div-menu')
           .innerHTML =
-            `
+          `
               <a href="http://ingegilje.no/condo/condo-login.html" class="a-menu-vertical-login">Login</a>
               <a href="http://ingegilje.no/condo/condo-condominium.html" class="a-menu-vertical-condominium">Sameie</a>
               <a href="http://ingegilje.no/condo/condo-condo.html" class="a-menu-vertical-condo">Leilighet</a>
@@ -489,18 +489,19 @@ class Condos {
               <a href="http://ingegilje.no/condo/condo-remoteheating.html" class="a-menu-vertical-remoteheating">Fjernvarme</a>
               <a href="http://ingegilje.no/condo/condo-overview.html" class="a-menu-vertical-overview">Bet. oversikt</a>
               <a href="http://ingegilje.no/condo/condo-accountmovement.html" class="a-menu-vertical-accountmovement">Kontobevegelser</a>
+              <a href="http://ingegilje.no/condo/condo-importfile.html" class="a-menu-vertical-importfile">Importer kontobevegelser</a>
             `;
         break;
       }
       // Test web server/ local web server
-      case 2: 
+      case 2:
 
       // Test server/ local test server
       case 3: {
 
         document.querySelector('.div-menu')
           .innerHTML =
-            `
+          `
               <a href="http://localhost/condo/condo-login.html" class="a-menu-vertical-login">Login</a>
               <a href="http://localhost/condo/condo-condominium.html" class="a-menu-vertical-condominium">Sameie</a>
               <a href="http://localhost/condo/condo-condo.html" class="a-menu-vertical-condo">Leilighet</a>
@@ -515,6 +516,7 @@ class Condos {
               <a href="http://localhost/condo/condo-remoteheating.html" class="a-menu-vertical-remoteheating">Fjernvarme</a>
               <a href="http://localhost/condo/condo-overview.html" class="a-menu-vertical-overview">Bet. oversikt</a>
               <a href="http://localhost/condo/condo-accountmovement.html" class="a-menu-vertical-accountmovement">Kontobevegelser</a>
+              <a href="http://localhost/condo/condo-importfile.html" class="a-menu-vertical-importfile">Importer kontobevegelser</a>
           `;
         break;
       }
@@ -526,7 +528,7 @@ class Condos {
   }
 }
 
-// Check string includes  only digits
+// Check string includes only digits
 function isNumeric(string) {
   return !isNaN(string) && string.trim() !== "";
 }
@@ -561,9 +563,9 @@ function validateEuroDateFormat(dateString) {
 
   // Validate that the date components match
   return (
-    date.getFullYear() === year &&
-    date.getMonth() === month - 1 &&
-    date.getDate() === day
+    date.getFullYear() === year
+    && date.getMonth() === month - 1
+    && date.getDate() === day
   );
 }
 
@@ -650,6 +652,7 @@ function checkNumber(number, min, max, className, labelText) {
 }
 
 // Check for valid norwegian date dd.mm.yyyy
+// Show error message
 function checkNorDate(dateString, className, labelText) {
 
   let isDateValid = true;
@@ -1042,4 +1045,13 @@ function truncateText(text, className) {
 function checkUserPassword(user, password) {
 
   return true;
+}
+
+// Check for valid amount (1 234,12 = true)
+function checkAmount(amount) {
+
+  amount = amount.replace(/\s+/g, '');
+  amount = String(amount).replace(/\./g, "");
+  amount.replace(/\,/g, "");
+  return isValidNumber(amount);
 }

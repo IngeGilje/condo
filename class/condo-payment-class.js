@@ -5,7 +5,7 @@ class Payment extends Condos {
   paymentArray = Array;
 
   // Show all payments
-  showAllPayments(columnName, paymentId) {
+  showAllPayments(className, paymentId) {
 
     let html = `
     <form 
@@ -14,8 +14,7 @@ class Payment extends Condos {
       method="POST"
     >
       <label 
-        class="label-payment-${columnName}
-        label-payment-${columnName}"
+        class="label-${className}"
         for="Payment"
         id="Payment"
       >
@@ -23,7 +22,7 @@ class Payment extends Condos {
       </label>
       <select 
         id="Payment"
-        class="select-payment-${columnName}" 
+        class="select-${className}" 
       >
     `;
 
@@ -46,7 +45,7 @@ class Payment extends Condos {
             html += `
           <option 
             value="${payment.paymentId}">
-            ${payment.paymentId} - ${payment.textext}
+            ${payment.paymentId} - ${payment.text}
           </option>
         `;
           }
@@ -69,20 +68,9 @@ class Payment extends Condos {
       </form>
     `;
 
-    document.querySelector(`.div-payment-${columnName}`).innerHTML = html;
+    document.querySelector(`.div-${className}`).innerHTML =
+      html;
   }
-
-  /*
-  // Get all payments from MySQL database
-  getPayments(socket) {
-
-    const SQLquery = `
-      SELECT * FROM payment
-      ORDER BY paymentText;
-    `;
-    socket.send(SQLquery);
-  }
-  */
 
   // Find selected payment id
   getSelectedPaymentId(columnName) {

@@ -42,7 +42,7 @@ socket.onopen = () => {
 
   createAllTables();
 
-  insertRowAllTables(); 
+  insertRowAllTables();
 }
 
 // Handle errors
@@ -84,7 +84,7 @@ function condoEvents() {
 
 function deleteAllTables() {
 
-  // 10 Account movement
+  // 11 Account movement
   console.log('DROP accountmovement Table');
   SQLquery =
     `
@@ -92,7 +92,7 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 9 Budget
+  // 10 Budget
   console.log('DROP budget Table');
   SQLquery =
     `
@@ -100,7 +100,7 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 8 Due
+  // 9 Due
   console.log('DROP due Table');
   SQLquery =
     `
@@ -108,7 +108,7 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 7 Income
+  // 8 Income
   console.log('DROP income Table');
   SQLquery =
     `
@@ -116,7 +116,7 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 6 Payment
+  // 7 Account
   console.log('DROP payment Table');
   SQLquery =
     `
@@ -124,7 +124,7 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 5 Account
+  // 6 Account
   console.log('DROP account Table');
   SQLquery =
     `
@@ -132,7 +132,15 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 4 Bank account
+  // 4 Supplier
+  console.log('DROP supplier Table');
+  SQLquery =
+    `
+      DROP TABLE supplier;
+    `;
+  socket.send(SQLquery);
+
+  // 5 Bank account
   console.log('DROP bankaccount Table');
   SQLquery =
     `
@@ -140,7 +148,7 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-   // 3 user
+  // 3 user
   console.log('DROP user Table');
   SQLquery =
     `
@@ -181,7 +189,7 @@ function createAllTables() {
         address2 VARCHAR(50),
         postalCode VARCHAR(4) NOT NULL,
         city VARCHAR(50) NOT NULL,
-        phoneNumber VARCHAR(20),
+        phone VARCHAR(20),
         email VARCHAR(50),
         organizationNumber VARCHAR(9)
       );
@@ -223,6 +231,7 @@ function createAllTables() {
         firstName VARCHAR(50) NOT NULL,
         lastName VARCHAR(50) NOT NULL,
         phone VARCHAR(20) NOT NULL,
+        bankAccount VARCHAR(11),
         securityLevel INT,
         password VARCHAR(50) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId),
@@ -231,7 +240,30 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 4 Bank account
+  // 4 supplier
+  console.log('CREATE supplier Table');
+  SQLquery =
+    `         
+      CREATE TABLE supplier (
+        supplierId INT AUTO_INCREMENT PRIMARY KEY,
+        tableName VARCHAR(50) NOT NULL,
+        condominiumId INT,
+        user VARCHAR(50) NOT NULL,
+        lastUpdate VARCHAR (40),
+        name VARCHAR(50) NOT NULL,
+        street VARCHAR(50) NOT NULL,
+        address2 VARCHAR(50),
+        postalCode VARCHAR(4) NOT NULL,
+        city VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL,
+        phone VARCHAR(20) NOT NULL,
+        bankAccount VARCHAR(11),
+        FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
+      );
+    `;
+  socket.send(SQLquery);
+
+  // 5 Bank account
   console.log('CREATE bankaccount Table');
   SQLquery =
     `         
@@ -241,14 +273,14 @@ function createAllTables() {
         condominiumId INT,
         user VARCHAR (50),
         lastUpdate VARCHAR (40),
-        bankAccountNumber VARCHAR(11) NOT NULL,
+        bankAccount VARCHAR(11) NOT NULL,
         name VARCHAR(50) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
   socket.send(SQLquery);
 
-  // 5 Account
+  // 6 Account
   console.log('CREATE account Table');
   SQLquery =
     `
@@ -267,7 +299,7 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 6 Payment
+  // 7 Account
   console.log('CREATE payment Table');
   SQLquery =
     `         
@@ -288,7 +320,7 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 7 Income
+  // 8 Income
   console.log('CREATE income Table');
   SQLquery =
     `         
@@ -310,7 +342,7 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 8 Due
+  // 9 Due
   console.log('CREATE due Table');
   SQLquery =
     `         
@@ -330,7 +362,7 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 9 Budget
+  // 10 Budget
   console.log('CREATE budget Table');
   SQLquery =
     `
@@ -350,7 +382,7 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 10 Account movement
+  // 11 Account movement
   console.log('CREATE accountmovement Table');
   SQLquery =
     `         
@@ -388,7 +420,7 @@ function insertRowAllTables() {
         address2,
         postalCode,
         city,
-        phoneNumber,
+        phone,
         email,
         organizationNumber
       )
@@ -450,6 +482,7 @@ function insertRowAllTables() {
         firstName,
         lastName,
         phone,
+        bankAccount,
         securityLevel,
         password) 
       VALUES (
@@ -461,14 +494,49 @@ function insertRowAllTables() {
         1,
         'Super',
         'User',
-        '12345678',
+        ''
+        '',
         9,
         'superuser'
       );
     `;
   socket.send(SQLquery);
 
-  // 4 Bank account
+  // 4 supplier
+  console.log('INSERT supplier Table');
+  SQLquery =
+    `         
+      INSERT INTO supplier(
+        tableName,
+        condominiumId,
+        user,
+        lastUpdate,
+        name,
+        street,
+        address2,
+        postalCode,
+        city,
+        email,
+        phone,
+        bankAccount) 
+      VALUES (
+        'supplier',
+        1,
+        'superuser@ingegilje.no',
+        '${lastUpdate}',
+        'superuser@ingegilje.no',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+      );
+    `;
+  socket.send(SQLquery);
+
+  // 5 Bank account
   console.log('INSERT bankaccount Table');
   SQLquery =
     `         
@@ -477,7 +545,7 @@ function insertRowAllTables() {
         condominiumId,
         user,
         lastUpdate,
-        bankAccountNumber,
+        bankAccount,
         name)
       VALUES(
         'bankaccount',
@@ -490,7 +558,7 @@ function insertRowAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 5 Account
+  // 6 Account
   console.log('INSERT account Table');
   SQLquery =
     `
@@ -514,7 +582,7 @@ function insertRowAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 6 Payment
+  // 7 Account
   console.log('INSERT payment Table');
   SQLquery =
     `         
@@ -542,7 +610,7 @@ function insertRowAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 7 Income
+  // 8 Income
   console.log('INSERT income Table');
   SQLquery =
     `         
@@ -570,7 +638,7 @@ function insertRowAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 8 Due
+  // 9 Due
   console.log('INSERT due Table');
   SQLquery =
     `         
@@ -596,7 +664,7 @@ function insertRowAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 9 Budget
+  // 10 Budget
   console.log('INSERT budget Table');
   SQLquery =
     `
@@ -622,7 +690,7 @@ function insertRowAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 10 Account movement
+  // 11 Account movement
   console.log('INSERT accountmovement Table');
   SQLquery =
     `         

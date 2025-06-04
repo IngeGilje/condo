@@ -6,6 +6,7 @@
 }
 
 /* Define the grid container */
+.div-grid-importfile,
 .div-grid-condo,
 .div-grid-user,
 .div-grid-bankaccount,
@@ -32,15 +33,13 @@
 .div-grid-budget,
 .div-grid-bankaccount,
 .div-grid-account,
-.div-grid-income,
 .div-grid-due {
   grid-template-columns: 200px 200px;
 }
 
 /* grid container 3 columns */
 .div-grid-user,
-.div-grid-condominium,
-.div-grid-payment {
+.div-grid-condominium {
   grid-template-columns: 200px 200px 200px;
 }
 
@@ -61,14 +60,35 @@
 }
 
 /* Define the grid container with 7 columns*/
+.div-grid-importfile {
+  grid-template-columns: 200px 200px 100px 50px 150px 150px 200px;
+}
+
+/* Define the grid container with 7 columns*/
 .div-grid-remoteheating {
   grid-template-columns: 200px 200px 150px 150px 150px 150px 150px;
+}
+
+/* Define the grid container with 7 columns*/
+.div-grid-payment {
+  grid-template-columns: 200px 200px 200px 50px 100px 100px 200px;
 }
 
 /* Define the grid container with 8 columns*/
 .div-grid-overview {
   grid-template-columns: 200px 200px 100px 100px 150px 100px 100px 150px;
 }
+
+.div-importfile-columnAccountingDate,
+.div-importfile-columnCondoName,
+.div-importfile-columnIncome,
+.div-importfile-columnPayment,
+.div-importfile-columnText,
+
+.div-payment-columnIncomeId,
+.div-payment-columnDate,
+.div-payment-columnAmount,
+.div-payment-columnText,
 
 .div-income-columnIncomeId,
 .div-income-columnDate,
@@ -95,30 +115,39 @@
   padding: 2px;
 }
 
+.div-importfile-columnAccountingDate,
 .div-income-columnIncomeId,
 .div-overview-columnDueDate,
 .div-remoteheating-columnDate {
   grid-column-start: 3;
 }
 
+.div-importfile-columnCondoName,
+.div-payment-columnIncomeId,
 .div-income-columnDate,
 .div-overview-columnDueAmount,
 .div-remoteheating-columnAmount {
   grid-column-start: 4;
 }
 
+.div-importfile-columnIncome,
+.div-payment-columnDate,
 .div-income-columnAmount,
 .div-overview-columnDueText,
 .div-remoteheating-columnNumberKWHour {
   grid-column-start: 5;
 }
 
+.div-importfile-columnPayment,
+.div-payment-columnAmount,
 .div-income-columnText,
 .div-overview-columnIncomeDate,
 .div-remoteheating-columnPriceKWHour {
   grid-column-start: 6;
 }
 
+.div-importfile-columnText,
+.div-payment-columnText,
 .div-overview-columnIncomeAmount {
   grid-column-start: 7;
 }
@@ -234,6 +263,7 @@
   grid-column-start: 7;
 }
 
+.a-menu-vertical-importfile,
 .a-menu-vertical-login,
 .a-menu-vertical-user,
 .a-menu-vertical-condo,
@@ -259,6 +289,7 @@
   font-size: 16px;
 }
 
+.a-menu-vertical-importfile-green,
 .a-menu-vertical-login-green,
 .a-menu-vertical-user-green,
 .a-menu-vertical-accountmovement-green,
@@ -312,6 +343,7 @@
 }
 
 /* label */
+.div-grid-importfile label,
 .div-grid-user label,
 .div-grid-condo label,
 .div-grid-bankaccount label,
@@ -359,6 +391,7 @@
 }
 
 /* input */
+.div-grid-importfile input,
 .div-grid-user input,
 .div-grid-condo input,
 .div-grid-bankaccount input,
@@ -431,6 +464,7 @@
 }
 
 /* select */
+.div-grid-importfile select,
 .div-grid-user select,
 .div-grid-condo select,
 .div-grid-bankaccount select,
@@ -521,6 +555,7 @@
 }
 
 /* button */
+.div-grid-importfile button,
 .div-grid-user button,
 .div-grid-condo button,
 .div-grid-bankaccount button,
@@ -545,6 +580,7 @@
 }
 
 /* Darker green on hover */
+.div-grid-importfile button:hover,
 .div-grid-user button:hover,
 .div-grid-condo button:hover,
 .div-grid-bankaccount button:hover,
@@ -562,6 +598,7 @@
 }
 
 /* Even darker green on click */
+.div-grid-importile button:active,
 .div-grid-user button:active,
 .div-grid-condo button:active,
 .div-grid-bankaccount button:active,
@@ -575,10 +612,14 @@
 .div-grid-budget button:active,
 .div-grid-overview button:active,
 .div-grid-accountmovement button:active {
-  background-color: #307533;;
+  background-color: #307533;
+  ;
 }
 
 /* Gray for disabled state */
+.div-grid-importfile select:disabled,
+.div-grid-importfile button:disabled,
+
 .div-grid-user select:disabled,
 .div-grid-user button:disabled,
 
@@ -697,8 +738,8 @@
 .label-accountmovement-text-red,
 
 .label-bankaccount-bankAccountId-red,
-.label-bankaccount-bankAccountNumber-red,
-.label-bankaccount-bankAccountName-red,
+.label-bankaccount-bankAccount-red,
+.label-bankaccount-name-red,
 
 .label-condominium-condominiumId-red,
 .label-condominium-name-red,
@@ -785,6 +826,7 @@
 .leftCell {
   border-bottom: 1px solid #eee;
 }
+
 .leftCell {
   text-align: left;
 }
@@ -797,9 +839,11 @@
 .sumCellRight {
   border-bottom: 4px double #eee;
 }
+
 .sumCellRight {
   text-align: right;
 }
+
 .sumCellLeft {
   text-align: left;
 }

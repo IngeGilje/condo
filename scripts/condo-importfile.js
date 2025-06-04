@@ -1,4 +1,4 @@
-// Income maintenance
+// Import of bank transaction file 
 
 // Activate objects
 const objCondo = new Condo('condo');
@@ -6,6 +6,10 @@ const objAccountMovement = new AccountMovement('accountmovement');
 const objAccount = new Account('account');
 const objUser = new User('user');
 const objIncome = new Income('income');
+const objImportFile = new ImportFile('importfile');
+
+let importFileArray = [];
+console.log('importFileArray:', importFileArray);
 
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
@@ -36,8 +40,8 @@ switch (objUser.serverStatus) {
 
 let isEventsCreated = false;
 
-objIncome.menu();
-objIncome.markSelectedMenu('Innbetaling');
+objImportFile.menu();
+objImportFile.markSelectedMenu('Importer kontobevegelser');
 
 // Send a message to the server
 socket.onopen = () => {
@@ -54,6 +58,14 @@ socket.onopen = () => {
 socket.onmessage = (event) => {
 
   let message = event.data;
+  console.log('Incomming message:', message);
+
+  // Create user array including objets
+  if (message.includes('"NOK"')) {
+    console.log('Dato;Rentedato;Beskrivelse;', message);
+    createImportFileArray(message);
+    showAccountMovement();
+  }
 
   // Create user array including objets
   if (message.includes('"tableName":"user"')) {
@@ -64,7 +76,7 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password))
+    (objUser.validateUser('inge.gilje@gmail.com', '12345'))
       ? ''
       : window.location.href('http://localhost/condo/condo-login.html');
 
@@ -136,7 +148,7 @@ socket.onmessage = (event) => {
     // array including objects with income information
     incomeArray = JSON.parse(message);
 
-    const incomeId = objIncome.getSelectedIncomeId('income-incomeId');
+    const incomeId = objIncome.getSelectedIncomeId('income-importfileId');
 
     // Show all leading text
     showLeadingText(incomeId);
@@ -145,7 +157,7 @@ socket.onmessage = (event) => {
     showValues(incomeId);
 
     // show all rows for income
-    showIncome();
+    //showAccountMovement();
 
     // Make events
     if (!isEventsCreated) {
@@ -183,49 +195,60 @@ socket.onclose = () => {
 // Make income events
 function createEvents() {
 
+  /*
   // Select income id
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-income-incomeId')) {
+    if (event.target.classList.contains('select-importfile-importfileId')) {
 
       dueId = Number(event.target.value);
       showValues(dueId);
-      showIncome();
+      //showAccountMovement();
     };
   });
+  */
 
+  /*
   // Select account id
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-income-accountId')) {
-      showIncome();
+    if (event.target.classList.contains('select-importfile-accountId')) {
+      //showAccountMovement();
     }
   });
+  */
 
+  /*
   // Select condo id
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-income-condoId')) {
-      showIncome();
+    if (event.target.classList.contains('select-importfile-condoId')) {
+      //showAccountMovement();
     }
   });
+  */
 
+  /*
   // Update income
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-income-update')) {
+    if (event.target.classList.contains('button-importfile-update')) {
 
       updateIncomeRow();
     };
   });
+  */
 
+  /*
   // New income
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-income-new')) {
+    if (event.target.classList.contains('button-importfile-new')) {
 
       resetValues();
     };
   });
+  */
 
+  /*
   // Delete income
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-income-delete')) {
+    if (event.target.classList.contains('button-importfile-delete')) {
 
       deleteIncomeRow();
 
@@ -239,10 +262,12 @@ function createEvents() {
 
     };
   });
+  */
 
+  /*
   // Cancel
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-income-cancel')) {
+    if (event.target.classList.contains('button-importfile-cancel')) {
 
       // Sends a request to the server to get all condos
       // Get all income rows
@@ -253,6 +278,16 @@ function createEvents() {
       socket.send(SQLquery);
     };
   });
+  */
+
+  // Start import of bank account movement text file
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-importfile-start')) {
+
+      // Sends a request to the server to get all bank account transaction
+      socket.send('Message: Test request');
+    };
+  });
 }
 
 function updateIncomeRow() {
@@ -261,7 +296,7 @@ function updateIncomeRow() {
   let isUpdated = false;
 
   // Check for valid income values
-  let incomeId = Number(document.querySelector('.select-income-incomeId').value);
+  let incomeId = Number(document.querySelector('.select-importfile-incomeId').value);
   if (validateValues(incomeId)) {
 
     incomeId = Number(incomeId);
@@ -269,22 +304,22 @@ function updateIncomeRow() {
     const lastUpdate = now.toISOString();
 
     const condoId =
-      Number(document.querySelector('.select-income-condoId').value);
+      Number(document.querySelector('.select-importfile-condoId').value);
 
     const accountId =
-      Number(document.querySelector('.select-income-accountId').value);
+      Number(document.querySelector('.select-importfile-accountId').value);
 
     // Check for valid income
     let amount =
-      document.querySelector('.input-income-amount').value;
+      document.querySelector('.input-importfile-amount').value;
     amount =
       formatAmountToOre(amount);
 
     const date =
-      convertDateToISOFormat(document.querySelector('.input-income-date').value);
+      convertDateToISOFormat(document.querySelector('.input-importfile-date').value);
 
     const text =
-      document.querySelector('.input-income-text').value;
+      document.querySelector('.input-importfile-text').value;
 
     // Check if income exist
     const objectNumberIncome = incomeArray.findIndex(income => income.incomeId === incomeId);
@@ -400,11 +435,11 @@ function updateIncomeRow() {
       socket.send(SQLquery);
     }
 
-    document.querySelector('.select-income-incomeId').disabled =
+    document.querySelector('.select-importfile-incomeId').disabled =
       false;
-    document.querySelector('.button-income-delete').disabled =
+    document.querySelector('.button-importfile-delete').disabled =
       false;
-    document.querySelector('.button-income-new').disabled =
+    document.querySelector('.button-importfile-new').disabled =
       false;
 
     isUpdated = true;
@@ -416,38 +451,41 @@ function updateIncomeRow() {
 function showLeadingText(incomeId) {
 
   // Show all incomes
-  objIncome.showAllIncomes('income-incomeId', incomeId);
+  //objIncome.showAllIncomes('income-incomeId', incomeId);
 
   // Show all condos
-  objCondo.showAllCondos('income-condoId', 0);
+  //objCondo.showAllCondos('income-condoId', 0);
 
   // Show all accounts
-  const accountId = accountArray.at(-1).accountId;
-  objAccount.showAllAccounts('income-accountId', accountId);
+  //const accountId = accountArray.at(-1).accountId;
+  //objAccount.showAllAccounts('income-accountId', accountId);
 
   // Show income date
-  objIncome.showInput('income-date', '* Dato', 10, 'dd.mm.åååå');
+  //objIncome.showInput('income-date', '* Dato', 10, 'dd.mm.åååå');
 
   // Show income
-  objIncome.showInput('income-amount', '* Beløp', 10, '');
+  //objIncome.showInput('income-amount', '* Beløp', 10, '');
 
   // income text
-  objIncome.showInput('income-text', '* Tekst', 255, '');
+  //objIncome.showInput('income-text', '* Tekst', 255, '');
 
   // show update button
-  if (Number(objUserPassword.securityLevel) >= 9) {
+  //if (Number(objUserPassword.securityLevel) >= 9) {
 
-    objIncome.showButton('income-update', 'Oppdater');
+  //objIncome.showButton('income-update', 'Oppdater');
 
-    // show new button
-    objIncome.showButton('income-new', 'Ny');
+  // show new button
+  //objIncome.showButton('income-new', 'Ny');
 
-    // show delete button
-    objIncome.showButton('income-delete', 'Slett');
+  // show delete button
+  //objIncome.showButton('income-delete', 'Slett');
 
-    // show cancel button
-    objIncome.showButton('income-cancel', 'Avbryt');
-  }
+  // show cancel button
+  //objIncome.showButton('income-cancel', 'Avbryt');
+
+  // show start button
+  objImportFile.showButton('importfile-start', 'Start import');
+  //}
 }
 
 // Show values for income
@@ -457,35 +495,35 @@ function showValues(incomeId) {
   if (incomeId > 1) {
 
     // Find object number in income array
-    const objectNumberIncome = incomeArray.findIndex(income => income.incomeId === incomeId);
-    if (objectNumberIncome >= 0) {
+    //const objectNumberIncome = incomeArray.findIndex(income => income.incomeId === incomeId);
+    //if (objectNumberIncome >= 0) {
 
-      // Show income Id
-      document.querySelector('.select-income-incomeId').value =
-        incomeArray[objectNumberIncome].incomeId;
+    // Show income Id
+    //document.querySelector('.select-income-incomeId').value =
+    //  incomeArray[objectNumberIncome].incomeId;
 
-      // Show condo Id
-      const condoId = incomeArray[objectNumberIncome].condoId;
-      objIncome.selectCondoId(condoId, 'income-condoId');
+    // Show condo Id
+    //const condoId = incomeArray[objectNumberIncome].condoId;
+    //objIncome.selectCondoId(condoId, 'income-condoId');
 
-      // Select account
-      const accountId = incomeArray[objectNumberIncome].accountId;
-      objIncome.selectAccountId(accountId, 'income-accountId');
+    // Select account
+    //const accountId = incomeArray[objectNumberIncome].accountId;
+    //objIncome.selectAccountId(accountId, 'income-accountId');
 
-      // show income
-      document.querySelector('.input-income-amount').value =
-        formatFromOreToKroner(incomeArray[objectNumberIncome].amount);
+    // show income
+    //document.querySelector('.input-income-amount').value =
+    //  formatFromOreToKroner(incomeArray[objectNumberIncome].amount);
 
-      // show income date
-      let date = incomeArray[objectNumberIncome].date;
-      const formatedIncomeDate = convertToEurDateFormat(date);
-      document.querySelector('.input-income-date').value =
-        formatedIncomeDate;
+    // show income date
+    //let date = incomeArray[objectNumberIncome].date;
+    //const formatedIncomeDate = convertToEurDateFormat(date);
+    //document.querySelector('.input-income-date').value =
+    //  formatedIncomeDate;
 
-      // show income text
-      document.querySelector('.input-income-text').value =
-        incomeArray[objectNumberIncome].text;
-    }
+    // show income text
+    //document.querySelector('.input-income-text').value =
+    //  incomeArray[objectNumberIncome].text;
+    //}
   }
 }
 
@@ -494,13 +532,13 @@ function deleteIncomeRow() {
   let SQLquery = "";
 
   // Check for valid income Id
-  const incomeId = Number(document.querySelector('.select-income-incomeId').value);
+  const incomeId = Number(document.querySelector('.select-importfile-incomeId').value);
 
   // Check for valid income Id
   if (incomeId > 0) {
 
     // Check if income exist
-    const objectNumberIncome = incomeArray.findIndex(income => income.incomeId === incomeId);
+    const objectNumberIncome = importFileArray.findIndex(income => income.incomeId === incomeId);
     if (objectNumberIncome >= 0) {
 
       // Delete table
@@ -511,7 +549,6 @@ function deleteIncomeRow() {
     }
     // Client sends a request to the server
     socket.send(SQLquery);
-    console.log(SQLquery);
 
     // Show updated incomes
     // Get all income rows
@@ -530,151 +567,176 @@ function validateValues(incomeId) {
 
   // Account id
   const accountId =
-    document.querySelector('.select-income-accountId').value;
+    document.querySelector('.select-importfile-accountId').value;
   const validAccount =
     checkNumber(accountId, 1, 99999, 'income-accountId', 'Velg konto');
 
   const condoId =
-    document.querySelector('.select-income-condoId').value;
+    document.querySelector('.select-importfile-condoId').value;
   const validCondo =
     checkNumber(condoId, 1, 99999, 'income-condoId', 'Velg konto');
 
   // Check income
   const income =
-    document.querySelector('.input-income-amount').value;
+    document.querySelector('.input-importfile-amount').value;
   const validIncome =
     checkAmount(income, 'income-amount', 'Beløp');
 
   const date =
-    document.querySelector('.input-income-date').value;
+    document.querySelector('.input-importfile-date').value;
   const validIncomeDate =
     checkNorDate(date, 'income-date', 'Dato');
 
   const text =
-    document.querySelector('.input-income-text').value;
+    document.querySelector('.input-importfile-text').value;
   const validIncomeText =
-    objIncome.validateText(text, 'label-income-text', 'Tekst');
+    objIncome.validateText(text, 'label-importfile-text', 'Tekst');
 
   return (validCondo && validAccount && validIncome && validIncomeDate && validIncomeText) ? true : false;
 }
 
 function resetValues() {
 
-  document.querySelector('.input-income-amount').value =
+  document.querySelector('.input-importfile-amount').value =
     '';
-  document.querySelector('.input-income-date').value =
+  document.querySelector('.input-importfile-date').value =
     '';
-  document.querySelector('.input-income-text').value =
+  document.querySelector('.input-importfile-text').value =
     '';
-  document.querySelector('.select-income-incomeId').value = '';
+  document.querySelector('.select-importfile-incomeId').value = '';
 
-  document.querySelector('.select-income-incomeId').disabled =
+  document.querySelector('.select-importfile-incomeId').disabled =
     true;
-  document.querySelector('.button-income-delete').disabled =
+  document.querySelector('.button-importfile-delete').disabled =
     true;
-  document.querySelector('.button-income-new').disabled =
+  document.querySelector('.button-importfile-new').disabled =
     true;
-  //document.querySelector('.button-income-cancel').disabled =
+  //document.querySelector('.button-importfile-cancel').disabled =
   //  true;
 }
 
-function showIncome() {
+function showAccountMovement() {
 
-  let sumColumnAmount = 0;
+  let sumColumnIncome = 0;
+  let sumColumnPayment = 0;
 
-  let htmlColumnIncomeId =
-    '<div class="columnHeaderRight">Id</div><br>';
-  let htmlColumnDate =
-    '<div class="columnHeaderRight">Betalingsdato</div><br>';
-  let htmlColumnAmount =
-    '<div class="columnHeaderRight">Beløp</div><br>';
+  let htmlColumnAccountingDate =
+    '<div class="columnHeaderRight">Dato</div><br>';
+  let htmlColumnCondoName =
+    '<div class="columnHeaderRight">Condo</div><br>';
+  let htmlColumnIncome =
+    '<div class="columnHeaderRight">Inntekt</div><br>';
+  let htmlColumnPayment =
+    '<div class="columnHeaderRight">Utgift</div><br>';
   let htmlColumnText =
     '<div class="columnHeaderLeft">Tekst</div><br>';
 
-  incomeArray.forEach((income) => {
+  importFileArray.forEach((importFile) => {
 
-    // Account
-    let accountId =
-      Number(document.querySelector(".select-income-accountId").value);
-    let condoId =
-      Number(document.querySelector(".select-income-condoId").value);
+    htmlColumnAccountingDate +=
+      `
+        <div class="rightCell">
+          ${importFile.accountingDate}
+        </div>
+      `;
 
-    if (income.incomeId > 1) {
-      if (income.accountId === accountId && income.condoId === condoId) {
+    // Condo name
+    let condoName = "-";
+    const objectNumberCondo = condoArray.findIndex(condo => condo.condoId === importFile.condoId);
+    if (objectNumberCondo > 0) {
 
-        htmlColumnIncomeId +=
-          `
-          <div class="rightCell">
-            ${income.incomeId}
-          </div>
-        `;
-
-        const date =
-          convertToEurDateFormat(income.date);
-        htmlColumnDate +=
-          `
-          <div class="rightCell">
-            ${date}
-          </div>
-        `;
-        const amount =
-          formatFromOreToKroner(income.amount);
-        htmlColumnAmount +=
-          `
-          <div class="rightCell">
-            ${amount}
-          </div>
-        `;
-
-        // Text has to fit into the column
-        const text = truncateText(income.text, 'div-income-columnText');
-        htmlColumnText +=
-          `
-          <div
-            class="leftCell"
-          >
-            ${text}
-          </div>
-        `;
-
-        // Accomulate
-        // amount
-        sumColumnAmount += Number(income.amount);
-      }
+      condoName = condoArray[objectNumberCondo].condoName;
     }
+
+    htmlColumnCondoName +=
+      `
+        <div class="rightCell">
+          ${condoName}
+        </div>
+      `;
+
+    const income =
+      formatFromOreToKroner(importFile.income);
+    htmlColumnIncome +=
+      `
+        <div class="rightCell">
+          ${income}
+        </div>
+      `;
+
+    const payment =
+      formatFromOreToKroner(importFile.payment);
+    htmlColumnPayment +=
+      `
+        <div class="rightCell">
+          ${payment}
+        </div>
+      `;
+
+    // Text has to fit into the column
+    let text = truncateText(importFile.text, 'div-importfile-columnText');
+    text = (text === "") ? "-" : text;
+    htmlColumnText +=
+      `
+        <div
+          class="leftCell"
+        >
+          ${text}
+        </div>
+      `;
+
+    // Accomulate
+    // income
+    const numericIncome = Number(importFile.income.replace(",", ".")) * 100;
+    sumColumnIncome += Number(numericIncome);
+
+    // payment
+    const numericPayment = Number(importFile.payment.replace(",", ".")) * 100;
+    sumColumnPayment += Number(numericPayment);
   });
 
   // Sum row
-  htmlColumnIncomeId +=
+  htmlColumnAccountingDate +=
     `
       <div>
       </div>
     `;
 
-  htmlColumnDate +=
-    `
-      <div>
-      </div>
-    `;
-
-  htmlColumnAmount +=
+  const income =
+    formatFromOreToKroner(sumColumnIncome);
+  htmlColumnIncome +=
     `
       <div class="sumCellRight">
-    `;
-  htmlColumnAmount +=
-    formatFromOreToKroner(String(sumColumnAmount));
-  htmlColumnAmount +=
-    `
+        ${income}
       </div>
     `;
 
-  document.querySelector(".div-income-columnIncomeId").innerHTML =
-    htmlColumnIncomeId;
-  document.querySelector(".div-income-columnDate").innerHTML =
-    htmlColumnDate;
-  document.querySelector(".div-income-columnAmount").innerHTML =
-    htmlColumnAmount;
-  document.querySelector(".div-income-columnText").innerHTML =
+  const payment =
+    formatFromOreToKroner(sumColumnPayment);
+  htmlColumnPayment +=
+    `
+      <div class="sumCellRight">
+        ${payment}
+      </div>
+    `;
+
+
+  htmlColumnText +=
+    `
+      <div>
+      </div>
+    `;
+
+  // Show columns
+  document.querySelector(".div-importfile-columnAccountingDate").innerHTML =
+    htmlColumnAccountingDate;
+  document.querySelector(".div-importfile-columnCondoName").innerHTML =
+    htmlColumnCondoName;
+  document.querySelector(".div-importfile-columnIncome").innerHTML =
+    htmlColumnIncome;
+  document.querySelector(".div-importfile-columnPayment").innerHTML =
+    htmlColumnPayment;
+  document.querySelector(".div-importfile-columnText").innerHTML =
     htmlColumnText;
 }
 
@@ -693,4 +755,42 @@ function getAccountMovementId(condoId, accountId, amount, date, text) {
     }
   });
   return accountmovementId;
+}
+
+// Create array for bank account movement
+function createImportFileArray(fileContent) {
+
+  console.log('importFileArray:', importFileArray)
+
+  const textFile = fileContent.split(/\r?\n/);
+  textFile.forEach((record) => {
+
+    console.log('record:', record);
+    [accountingDate, Rentedato, Beskrivelse, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, TilKonto, text] = record.split(';');
+
+    // Check for valid date
+    // validate the dd.mm.yyyy (European date format) format
+    if (validateEuroDateFormat(accountingDate)) {
+
+      // condo id
+      let condoId = 0;
+
+      // Condo name
+      const objectNumberUser = userArray.findIndex(user => user.bankAccount === fromBankAccount);
+      if (objectNumberUser > 0) {
+
+        condoId = userArray[objectNumberUser].condoId;
+      }
+
+      const objbBankAccountMovement = {
+        accountingDate: accountingDate,
+        condoId: condoId,
+        income: income,
+        payment: payment,
+        text: text
+      };
+
+      importFileArray.push(objbBankAccountMovement);
+    }
+  });
 }

@@ -66,7 +66,7 @@ server.on('connection', (socket) => {
   console.log('Client connected');
   socket.on('message', (message) => {
     console.log('Received:', message.toString());
-    socket.send(`Echo: ${message}`);
+    //socket.send(`Echo: ${message}`);
   });
 
   socket.on('close', () => {
@@ -75,7 +75,6 @@ server.on('connection', (socket) => {
 });
 
 // Constants for database handling
-let messageToClient = undefined; // Message to send to client
 let connected2MySQL = false; // Not connected to mysql database
 
 // Connecting to mySQL
@@ -136,19 +135,40 @@ server.on('connection', (socket) => {
   // Listen for messages from the client
   socket.on('message', (message) => {
 
-    // Received message from server
-    const sqlQuery = message.toString();
+    // Received message from client
+    const messageFromClient = message.toString();
+    console.log('message from client', messageFromClient);
+
     //console.log(sqlQuery);
+    if (!messageFromClient.includes('Message: Test request')) {
 
-    // SQL querying
-    queryingSQL(sqlQuery);
+      // SQL querying
+      queryingSQL(messageFromClient);
 
-    // Send a message to the client
-    setTimeout(() => {
-      if (messageToClient) {
+      // Send a message to the client
+      setTimeout(() => {
+        if (messageToClient) {
+          socket.send(messageToClient);
+        }
+      }, 100);
+    }
+
+    if (messageFromClient.includes('Message: Test request')) {
+
+      let messageToClient;
+
+      // Get text file from server
+      const fs = require('fs');
+
+      fs.readFile('transaksjonsliste.csv', 'utf8', (err, messageToClient) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log('Generated this text file:', messageToClient);
         socket.send(messageToClient);
-      }
-    }, 100);
+      });
+    }
   });
 });
 

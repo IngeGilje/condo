@@ -1,0 +1,18 @@
+Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til konto;Til
+01.06.2025;;"GIROGiro";2329,00;;Ikke tilgjengelig;Ikke tilgjengelig;;NOK;;;32062337272;
+31.05.2025;;"FAKT.TJ MOTTATT FAKT NETTBANK 5 TRANS(ER) TYPE 438 437";;-12,50;Ikke tilgjengelig;Ikke tilgjengelig;Gebyr;NOK;32062337272;;;
+30.05.2025;;"14167163956";;-40250,00;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;15033899685;Byggmester Rygg & Myrland AS
+20.05.2025;;"0040055";;-3901,00;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;36262590628;Lie Glass AS
+20.05.2025;;"Sameie 99a";2281,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32705753007;Åse Myklebust Stapnes;32062337272;
+16.05.2025;;"97A";2275,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32013972337;Kristine Sømme;32062337272;
+16.05.2025;;"95B";3139,00;;Ikke tilgjengelig;Ikke tilgjengelig;Mobilgiro m/meld. forf. i dag;NOK;32061703445;Inge Svein Gilje;32062337272;Hinna Park B3 sameie
+15.05.2025;;"ny månedsleiefra 1/2024";3431,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;12016029341;Birgit Ruth M A Schober;32062337272;Sameie Hinna Park B3-08
+13.05.2025;;"leil 301 Oskar Fausk 97C";1549,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;36264007849;Oskar Fausk;32062337272;Sameiet sin konto
+12.05.2025;;"Kundenummer: 60075222";10947,00;;Ikke tilgjengelig;Ikke tilgjengelig;Bedriftsterminal overførsel;NOK;32073195801;Lyse Marked AS;32062337272;Sameie Hinna Park B3-08
+07.05.2025;;"2 transaksjoner";;-11640,00;Ikke tilgjengelig;Ikke tilgjengelig;;NOK;32062337272;;;
+06.05.2025;;"Omkostninger BedriftsNett";;-102,00;Ikke tilgjengelig;Ikke tilgjengelig;Pris;NOK;32062337272;;32019999008;
+05.05.2025;;"800537080710208";;-791,82;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073969815;LYSE AS
+
+"DRIFT., 3206.23.37272"
+"Inngående saldo pr. 01.05.2025:";"291298.00";"NOK"
+"Utgående saldo pr. 01.06.2025:";"258222.68";"NOK"
