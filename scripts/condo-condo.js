@@ -143,10 +143,14 @@ function condoEvents() {
 
     if (event.target.classList.contains('button-condo-update')) {
 
+      /*
       const condoId = Number(document.querySelector('.select-condo-condoId').value);
       if (updateCondoRow(condoId)) {
         showValues(condoId);
       }
+      */
+      const condoId = Number(document.querySelector('.select-condo-condoId').value);
+      updateCondoRow(condoId);
     }
   });
 

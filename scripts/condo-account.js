@@ -127,7 +127,6 @@ socket.onmessage = (event) => {
     console.log('affectedRows');
 
     // Sends a request to the server to get all accounts
-    //objAccount.getAccounts(socket);
     const SQLquery = `
       SELECT * FROM account
       ORDER BY accountId;
@@ -165,9 +164,9 @@ function createEvents() {
 
       if (updateAccount()) {
 
-        let accountId = Number(document.querySelector('.select-account-accountId').value);
-        accountId = (accountId !== 0) ? accountId : accountArray.at(-1).accountId;
-        showValues(accountId);
+        //let accountId = Number(document.querySelector('.select-account-accountId').value);
+        //accountId = (accountId !== 0) ? accountId : accountArray.at(-1).accountId;
+        //showValues(accountId);
       }
     }
   });

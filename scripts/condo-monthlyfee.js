@@ -118,6 +118,13 @@ socket.onmessage = (event) => {
   if (message.includes('"affectedRows":1')) {
 
     console.log('affectedRows');
+
+    // Sends a request to the server to get all due
+    const SQLquery = `
+      SELECT * FROM due
+      ORDER BY date;
+    `;
+    socket.send(SQLquery);
   }
 };
 
@@ -164,6 +171,7 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-monthlyfee-update')) {
 
+      /*
       if (updateMontlyamountRows()) {
 
         // Sends a request to the server to get all due
@@ -173,6 +181,8 @@ function createEvents() {
         `;
         socket.send(SQLquery);
       }
+      */
+      updateMontlyamountRows();
     }
   });
 
@@ -363,7 +373,7 @@ function validateValues() {
   document.querySelector('.input-monthlyfee-amount').value =
     formatAmountToEuroFarmat(amount);
   const validAmount =
-    checkAmount(amount, "monthlyfee-amount", "Månedsavgift");
+    validateAmount(amount, "monthlyfee-amount", "Månedsavgift");
 
   return (validYear && validCondoId && validDay && validAmount) ? true : false;
 }

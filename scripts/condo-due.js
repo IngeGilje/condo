@@ -83,7 +83,6 @@ socket.onmessage = (event) => {
     condoArray = JSON.parse(message);
 
     // Sends a request to the server to get all due
-    //objDue.getDues(socket);
     const SQLquery = `
       SELECT * FROM due
       ORDER BY dueId;
@@ -123,6 +122,13 @@ socket.onmessage = (event) => {
   if (message.includes('"affectedRows":1')) {
 
     console.log('affectedRows');
+
+    const SQLquery =
+      `
+        SELECT * FROM due
+        ORDER BY dueId;
+      `;
+    socket.send(SQLquery);
   }
 };
 
@@ -160,17 +166,20 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-update')) {
 
+      /*
       const dueId = Number(document.querySelector('.select-due-dueId').value);
       if (updateDueRow(dueId)) {
 
         // Sends a request to the server to get all due
-        //objDue.getDues(socket);
         const SQLquery = `
           SELECT * FROM due
           ORDER BY dueId;
         `;
         socket.send(SQLquery);
       }
+      */
+      const dueId = Number(document.querySelector('.select-due-dueId').value);
+      updateDueRow(dueId);
     }
   });
 
@@ -382,7 +391,7 @@ function validateValues(dueId) {
   const amount =
     formatToNorAmount(document.querySelector('.input-due-amount').value);
   const validAmount =
-    checkAmount(amount, "due-amount", "Månedsbetaling");
+    validateAmount(amount, "due-amount", "Månedsbetaling");
 
   // Check text
   const text =

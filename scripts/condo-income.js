@@ -543,7 +543,7 @@ function validateValues(incomeId) {
   const income =
     document.querySelector('.input-income-amount').value;
   const validIncome =
-    checkAmount(income, 'income-amount', 'Beløp');
+    validateAmount(income, 'income-amount', 'Beløp');
 
   const date =
     document.querySelector('.input-income-date').value;

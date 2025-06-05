@@ -168,10 +168,10 @@ function createEvents() {
       showValues(budgetId);
       */
 
-      const budgetId = Number(document.querySelector('.select-budget-budgetId').value);
-      if (updateBudgetRow(budgetId)) {
-        showValues(budgetId);
-      }
+      //const budgetId = Number(document.querySelector('.select-budget-budgetId').value);
+      //if (updateBudgetRow(budgetId)) {
+      //  showValues(budgetId);
+      //}
     };
   });
 
@@ -188,7 +188,6 @@ function createEvents() {
     if (event.target.classList.contains('button-budget-delete')) {
 
       deleteBudgetRow();
-      //objBudget.getBudgets(socket);
       const SQLquery = `
         SELECT * FROM budget
         ORDER BY text;
@@ -201,7 +200,6 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-budget-cancel')) {
 
-      //objBudget.getBudgets(socket);
       const SQLquery = `
         SELECT * FROM budget
         ORDER BY text;
@@ -441,7 +439,7 @@ function validateValues() {
   document.querySelector('.input-budget-amount').value =
     formatAmountToOre(amount);
   const validAmount =
-    checkAmount(amount, "budget-amount", "Budsjett");
+    validateAmount(amount, "budget-amount", "Budsjett");
 
   // Check budget text
   const text =

@@ -6,6 +6,7 @@
 }
 
 /* Define the grid container */
+.div-grid-supplier,
 .div-grid-importfile,
 .div-grid-condo,
 .div-grid-user,
@@ -31,13 +32,14 @@
 /* grid container 2 columns */
 .div-grid-condo,
 .div-grid-budget,
-.div-grid-bankaccount,
 .div-grid-account,
 .div-grid-due {
   grid-template-columns: 200px 200px;
 }
 
 /* grid container 3 columns */
+.div-grid-bankaccount,
+.div-grid-supplier,
 .div-grid-user,
 .div-grid-condominium {
   grid-template-columns: 200px 200px 200px;
@@ -263,6 +265,7 @@
   grid-column-start: 7;
 }
 
+.a-menu-vertical-supplier,
 .a-menu-vertical-importfile,
 .a-menu-vertical-login,
 .a-menu-vertical-user,
@@ -289,6 +292,7 @@
   font-size: 16px;
 }
 
+.a-menu-vertical-supplier-green,
 .a-menu-vertical-importfile-green,
 .a-menu-vertical-login-green,
 .a-menu-vertical-user-green,
@@ -343,6 +347,7 @@
 }
 
 /* label */
+.div-grid-supplier label,
 .div-grid-importfile label,
 .div-grid-user label,
 .div-grid-condo label,
@@ -391,6 +396,7 @@
 }
 
 /* input */
+.div-grid-supplier input,
 .div-grid-importfile input,
 .div-grid-user input,
 .div-grid-condo input,
@@ -464,6 +470,7 @@
 }
 
 /* select */
+.div-grid-supplier select,
 .div-grid-importfile select,
 .div-grid-user select,
 .div-grid-condo select,
@@ -555,6 +562,7 @@
 }
 
 /* button */
+.div-grid-supplier button,
 .div-grid-importfile button,
 .div-grid-user button,
 .div-grid-condo button,
@@ -580,6 +588,7 @@
 }
 
 /* Darker green on hover */
+.div-grid-supplier button:hover,
 .div-grid-importfile button:hover,
 .div-grid-user button:hover,
 .div-grid-condo button:hover,
@@ -617,6 +626,9 @@
 }
 
 /* Gray for disabled state */
+.div-grid-supplier select:disabled,
+.div-grid-supplier button:disabled,
+
 .div-grid-importfile select:disabled,
 .div-grid-importfile button:disabled,
 
@@ -747,7 +759,7 @@
 .label-condominium-address2-red,
 .label-condominium-postalCode-red,
 .label-condominium-city-red,
-.label-condominium-phoneNumber-red,
+.label-condominium-phone-red,
 .label-condominium-email-red,
 .label-condominium-organizationNumber-red,
 .label-condominium-bankAccountId-red,

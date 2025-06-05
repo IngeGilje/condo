@@ -456,7 +456,7 @@ function validateValues() {
     document.querySelector('.input-payment-amount').value;
   document.querySelector('.input-payment-amount').value =
     formatToNorAmount(amount);
-  const validAmount = checkAmount(amount, 'payment-amount', 'Beløp');
+  const validAmount = validateAmount(amount, 'payment-amount', 'Beløp');
 
   let validNumberKWHour = true;
   const numberKWHour =
@@ -465,7 +465,7 @@ function validateValues() {
 
     document.querySelector('.input-payment-numberKWHour').value =
       formatToNorAmount(numberKWHour);
-    validNumberKWHour = checkAmount(numberKWHour, 'payment-numberKWHour', 'Kilowat/time');
+    validNumberKWHour = validateAmount(numberKWHour, 'payment-numberKWHour', 'Kilowat/time');
   } else {
 
     validNumberKWHour = true;
@@ -591,7 +591,7 @@ function showPayments() {
     }
   })
 
-   // Sum row
+  // Sum row
   htmlColumnAccountId +=
     `
       <div>

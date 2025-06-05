@@ -169,12 +169,12 @@ class Condos {
     `;
   }
 
-  // Check for valid text
+  // Valid text
   validateText(text, className, labelText) {
 
     let isTextValid = false;
 
-    // Check text
+    // Validate text
     if ((text.length < 3) || text === '') {
 
       // Invalid text
@@ -234,11 +234,12 @@ class Condos {
     return isValidPostalCode;
   }
 
+  // Validate E-mail
   validateEmail(eMail, className, labelText) {
 
     let isValideMail = false;
 
-    // Check valid eMail
+    // Validate eMail
     const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!(eMailRegex.test(eMail))) {
 
@@ -264,6 +265,36 @@ class Condos {
       isValideMail = true;
     }
     return isValideMail;
+  }
+
+  // validate bank account number
+  validateBankAccount(bankAccount, className, labelText) {
+
+    // Validate Bank Account Number
+    const bankAccountPattern = /^\d{11}$/;
+    if (!(bankAccountPattern.test(bankAccount))) {
+
+      // Invalid bank account number
+      if (isClassDefined(`label-${className}`)) {
+
+        document.querySelector(`.label-${className}`).outerHTML =
+          `<div class="label-${className}-red">
+            * Ugyldig ${labelText}
+          </div>`;
+      }
+      return false;
+    } else {
+
+      // Valid valid Organization Number
+      if (isClassDefined(`label-${className}-red`)) {
+
+        document.querySelector(`.label-${className}-red`).outerHTML =
+          `<div class="label-${className} label-${className}">
+            * ${labelText}
+          </div>`;
+      }
+      return true;
+    }
   }
 
   // Mark selected application in menu
@@ -467,6 +498,16 @@ class Condos {
   }
 
   menu() {
+    // 1 condominium
+    // 2 Condo 
+    // 3 user
+    // 4 Bank account
+    // 5 Account
+    // 6 supplier
+    // 7 Payment
+    // 8 Income
+    // 9 Due
+    // 10 Budget
     switch (this.serverStatus) {
 
       // Web server
@@ -481,6 +522,7 @@ class Condos {
               <a href="http://ingegilje.no/condo/condo-user.html" class="a-menu-vertical-user">Bruker</a>
               <a href="http://ingegilje.no/condo/condo-bankaccount.html" class="a-menu-vertical-bankaccount">Bankkonto</a>
               <a href="http://ingegilje.no/condo/condo-account.html" class="a-menu-vertical-account">Konto</a>
+              <a href="http://ingegilje.no/condo/condo-supplier.html" class="a-menu-vertical-supplier">Leverandør</a>
               <a href="http://ingegilje.no/condo/condo-payment.html" class="a-menu-vertical-payment">Betaling</a>
               <a href="http://ingegilje.no/condo/condo-income.html" class="a-menu-vertical-income">Innbetaling</a>
               <a href="http://ingegilje.no/condo/condo-due.html" class="a-menu-vertical-due">Forfall</a>
@@ -508,6 +550,7 @@ class Condos {
               <a href="http://localhost/condo/condo-user.html" class="a-menu-vertical-user">Bruker</a>
               <a href="http://localhost/condo/condo-bankaccount.html" class="a-menu-vertical-bankaccount">Bankkonto</a>
               <a href="http://localhost/condo/condo-account.html" class="a-menu-vertical-account">Konto</a>
+              <a href="http://localhost/condo/condo-supplier.html" class="a-menu-vertical-supplier">Leverandør</a>
               <a href="http://localhost/condo/condo-payment.html" class="a-menu-vertical-payment">Betaling</a>
               <a href="http://localhost/condo/condo-income.html" class="a-menu-vertical-income">Innbetaling</a>
               <a href="http://localhost/condo/condo-due.html" class="a-menu-vertical-due">Forfall</a>
@@ -517,7 +560,7 @@ class Condos {
               <a href="http://localhost/condo/condo-overview.html" class="a-menu-vertical-overview">Bet. oversikt</a>
               <a href="http://localhost/condo/condo-accountmovement.html" class="a-menu-vertical-accountmovement">Kontobevegelser</a>
               <a href="http://localhost/condo/condo-importfile.html" class="a-menu-vertical-importfile">Importer kontobevegelser</a>
-          `;
+            `;
         break;
       }
 
@@ -528,7 +571,7 @@ class Condos {
   }
 }
 
-// Check string includes only digits
+// Check if string includes only digits
 function isNumeric(string) {
   return !isNaN(string) && string.trim() !== "";
 }
@@ -544,7 +587,7 @@ function removeComma(amount) {
 // validate the dd.mm.yyyy (European date format) format
 function validateEuroDateFormat(dateString) {
 
-  // Regular expression to check the dd.mm.yyyy format
+  // Regular expression for valuating the dd.mm.yyyy format
   const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/;
   const match = dateString.match(regex);
 
@@ -584,8 +627,8 @@ function convertToEurDateFormat(date) {
   return formatedDate;
 }
 
-// Check for valid amount
-function checkAmount(amount, className, labelText) {
+// Validate amount
+function validateAmount(amount, className, labelText) {
 
   let isValidAmount = true;
 
@@ -616,7 +659,7 @@ function checkAmount(amount, className, labelText) {
   return isValidAmount;
 }
 
-// Check for valid number
+// Validate number
 function checkNumber(number, min, max, className, labelText) {
 
   let isValidNumber = true;
@@ -624,7 +667,7 @@ function checkNumber(number, min, max, className, labelText) {
   min = Number(min);
   max = Number(max);
 
-  // Check for valid number
+  // Validate number
   if (number < min && number > max) {
 
     // Invalid number
@@ -651,7 +694,7 @@ function checkNumber(number, min, max, className, labelText) {
   return isValidNumber;
 }
 
-// Check for valid norwegian date dd.mm.yyyy
+// Validate norwegian date dd.mm.yyyy format
 // Show error message
 function checkNorDate(dateString, className, labelText) {
 
@@ -664,7 +707,7 @@ function checkNorDate(dateString, className, labelText) {
   month = month.padStart(2, "0");
   dateString = day + '.' + month + '.' + year;
 
-  // Check for valid date
+  // Validate date
   if (!this.validateEuroDateFormat(dateString)) {
 
     // Invalid date
@@ -749,11 +792,12 @@ function findNameOfMonth(month) {
   return nameOfMonth;
 }
 
-function checkPhoneNumber(phoneNumber, className, labelText) {
+// Validate phone number
+function checkPhone(phone, className, labelText) {
 
-  // Check valid postal code
-  const phoneNumberPattern = /^\d{8}$/;
-  if (!(phoneNumberPattern.test(phoneNumber))) {
+  // Validate phone number
+  const phonePattern = /^\d{8}$/;
+  if (!(phonePattern.test(phone))) {
 
     // Invalid phone number
     if (this.isClassDefined(`label-${className}`)) {
@@ -778,9 +822,10 @@ function checkPhoneNumber(phoneNumber, className, labelText) {
   }
 }
 
+// Validate organization number
 function checkOrganizationNumber(organizationNumber, className, labelText) {
 
-  // Check valid Organization Number
+  // Validate organization number Organization Number
   const organizationNumberPattern = /^\d{9}$/;
   if (!(organizationNumberPattern.test(organizationNumber))) {
 
@@ -807,7 +852,8 @@ function checkOrganizationNumber(organizationNumber, className, labelText) {
   }
 }
 
-function checkBankAccount(bankAccount, className, labelText) {
+/*
+function validateBankAccount(bankAccount, className, labelText) {
 
   // Check valid Bank Account Number
   const bankAccountPattern = /^\d{11}$/;
@@ -835,6 +881,7 @@ function checkBankAccount(bankAccount, className, labelText) {
     return true;
   }
 }
+*/
 
 // Get current date in  European date format (dd.mm.yyyy)
 function getCurrentDate() {
@@ -1042,13 +1089,14 @@ function truncateText(text, className) {
   return text;
 }
 
+// Validate user/password
 function checkUserPassword(user, password) {
 
   return true;
 }
 
-// Check for valid amount (1 234,12 = true)
-function checkAmount(amount) {
+// Validate amount in the (1 234,12 = true) format
+function validateAmount(amount) {
 
   amount = amount.replace(/\s+/g, '');
   amount = String(amount).replace(/\./g, "");

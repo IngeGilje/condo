@@ -55,13 +55,13 @@ socket.onmessage = (event) => {
   // Create condo array including objets
   if (message.includes('"tableName":"condo"')) {
 
-    // user table
+    // condo table
     console.log('condoTable');
 
     // array including objects with user information
     condoArray = JSON.parse(message);
 
-    // Send a request to the server to get all condos
+    // Send a request to the server to get all users
     const SQLquery = `
     SELECT * FROM user
     ORDER BY userId;
@@ -75,7 +75,7 @@ socket.onmessage = (event) => {
     // user table
     console.log('userTable');
 
-    // array including objects with condo information
+    // array including objects with user information
     userArray = JSON.parse(message);
 
     // Show all leading texts
@@ -140,12 +140,7 @@ function createEvents() {
       // user id
       let userId =
         Number(document.querySelector('.select-user-userId').value);
-
-      if (updateUser(userId)) {
-
-        userId = (userId === 0) ? userArray.at(-1).userId : userId;
-        showValues(userId);
-      }
+      updateUser(userId);
     }
   });
 
@@ -392,7 +387,7 @@ function showValues(userId) {
   // Check for valid user Id
   if (userId > 1) {
 
-    // find object number for selected due Id 
+    // find object number for selected user Id 
     const objectNumberUser = userArray.findIndex(user => user.userId === userId);
     if (objectNumberUser >= 0) {
 

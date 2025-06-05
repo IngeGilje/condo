@@ -110,19 +110,19 @@ socket.onmessage = (event) => {
       createEvents();
       isEventsCreated = true;
     }
+  }
 
-    // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+  // Check for update, delete ...
+  if (message.includes('"affectedRows":1')) {
 
-      console.log('affectedRows');
+    console.log('affectedRows');
 
-      // Sends a request to the server to get all bank accounts
-      const SQLquery = `
+    // Sends a request to the server to get all bank accounts
+    const SQLquery = `
         SELECT * FROM bankaccount
-        ORDER BY bankaccountId;
+        ORDER BY bankAccountId;
       `;
-      socket.send(SQLquery);
-    }
+    socket.send(SQLquery);
   }
 };
 
@@ -154,10 +154,6 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-bankaccount-update')) {
       if (updateBankAccount()) {
-
-        let bankAccountId = Number(document.querySelector('.select-bankaccount-bankAccountId').value);
-        bankAccountId = (bankAccountId !== 0) ? bankAccountId : bankAccountArray.at(-1).bankAccountId;
-        showValues(bankAccountId);
       }
     }
   });
@@ -175,7 +171,6 @@ function createEvents() {
     if (event.target.classList.contains('button-bankaccount-delete')) {
 
       deleteAccountRow();
-
     }
   });
 
@@ -197,7 +192,6 @@ function createEvents() {
 function updateBankAccount() {
 
   let SQLquery = "";
-  let isUpdated = false;
 
   if (validateValues()) {
 
@@ -206,10 +200,20 @@ function updateBankAccount() {
       Number(document.querySelector('.select-bankaccount-bankAccountId').value);
 
     // Bank Account number
-    const bankAccount = document.querySelector('.input-bankaccount-bankAccount').value;
+    const bankAccount =
+      document.querySelector('.input-bankaccount-bankAccount').value;
 
     // BankAccount Name
-    const name = document.querySelector('.input-bankaccount-name').value;
+    const name =
+      document.querySelector('.input-bankaccount-name').value;
+
+    // Opening balance
+    const openingBalance =
+      document.querySelector('.input-bankaccount-openingBalance').value;
+
+    // Opening balance date
+    const openingBalanceDate =
+      document.querySelector('.input-bankaccount-openingBalanceDate').value;
 
     if (bankAccountId >= 0) {
 
@@ -229,7 +233,9 @@ function updateBankAccount() {
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             bankAccount = '${bankAccount}',
-            name = '${name}'
+            name = '${name}',
+            openingBalance = '${openingBalance}',
+            openingBalanceDate = '${openingBalanceDate}'
           WHERE bankAccountId = ${bankAccountId};
         `;
       } else {
@@ -242,14 +248,19 @@ function updateBankAccount() {
           user,
           lastUpdate,
           bankAccount,
-          name) 
+          name,
+          openingBalance, 
+          openingBalanceDate
+        ) 
         VALUES (
           'bankaccount',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${bankAccount}',
-          '${name}'
+          '${name}',
+          '${openingBalance}',
+          '${openingBalanceDate}'
         );
       `;
       }
@@ -263,12 +274,8 @@ function updateBankAccount() {
         false;
       document.querySelector('.button-bankaccount-new').disabled =
         false;
-      //document.querySelector('.button-bankaccount-cancel').disabled =
-      //  false;
-      isUpdated = true;
     }
   }
-  return isUpdated;
 }
 
 function deleteAccountRow() {
@@ -276,8 +283,6 @@ function deleteAccountRow() {
   let SQLquery = "";
 
   const bankAccountId = Number(document.querySelector('.select-bankaccount-bankAccountId').value);
-  const bankAccount = document.querySelector('.input-bankaccount-bankAccount').value;
-  const name = document.querySelector('.input-bankaccount-name').value;
   if (bankAccountId > 1) {
 
     // Check if bank account exist
@@ -315,6 +320,12 @@ function showLeadingText(bankAccountId) {
   // bank account name
   objBankAccount.showInput('bankaccount-name', '* Kontonavn', 50, '');
 
+  // Opening balance
+  objBankAccount.showInput('bankaccount-openingBalance', 'Inngående saldo', 10, '');
+
+  // Opening balance date
+  objBankAccount.showInput('bankaccount-openingBalanceDate', 'Dato', 10, '');
+
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
     objBankAccount.showButton('bankaccount-update', 'Oppdater');
@@ -344,13 +355,21 @@ function showValues(bankAccountId) {
       const bankAccountId = bankAccountArray[objectbankAccountId].bankAccountId;
       objBankAccount.selectBankAccountId(bankAccountId, 'bankaccount-bankAccountId');
 
+      // account name
+      document.querySelector('.input-bankaccount-name').value =
+        bankAccountArray[objectbankAccountId].name;
+
       // bank account number
       document.querySelector('.input-bankaccount-bankAccount').value =
         bankAccountArray[objectbankAccountId].bankAccount;
 
-      // account name
-      document.querySelector('.input-bankaccount-name').value =
-        bankAccountArray[objectbankAccountId].name;
+      // opening balance
+      document.querySelector('.input-bankaccount-openingBalance').value =
+        bankAccountArray[objectbankAccountId].openingBalance;
+
+      // opening balance date
+      document.querySelector('.input-bankaccount-openingBalanceDate').value =
+        bankAccountArray[objectbankAccountId].openingBalanceDate;
     }
   }
 }
@@ -360,25 +379,51 @@ function validateValues() {
 
   // Check bank account number
   const bankAccount = document.querySelector('.input-bankaccount-bankAccount').value;
-  const validBankAccount = checkBankAccount(bankAccount, "bankaccount-bankAccount", "Kontonummer");
+  const validBankAccount = objBankAccount.validateBankAccount(bankAccount, "bankaccount-bankAccount", "Kontonummer");
 
   // Check bankaccount Name
   const name = document.querySelector('.input-bankaccount-name').value;
   const validName = objBankAccount.validateText(name, "label-bankaccount-name", "Kontonavn");
 
-  return (validName && validBankAccount) ? true : false;
+  // Opening balance
+  let validOpeningBalance = true;
+  const openingBalance =
+    document.querySelector('.input-bankaccount-openingBalance').value;
+  if (openingBalance) {
+    validOpeningBalance = objBankAccount.validateAmount(openingBalance, "bankaccount-openingBalance", "Inng. saldo");
+  }
+  // Opening balance date
+  let validOpeningBalanceDate = true;
+  const openingBalanceDate =
+    document.querySelector('.input-bankaccount-openingBalanceDate').value;
+  if (openingBalanceDate) {
+    validOpeningBalanceDate = objBankAccount.alidateEuroDateFormat(openingBalanceDate, "label-bankaccount-openingBalance", "Dato");
+  }
+
+  return (validName && validBankAccount && validOpeningBalance && validOpeningBalanceDate) ? true : false;
 }
 
 function resetValues() {
 
   // Bank account Id
-  document.querySelector('.select-bankaccount-bankAccountId').value = '';
+  document.querySelector('.select-bankaccount-bankAccountId').value =
+    '';
 
   // Bank account number
-  document.querySelector('.input-bankaccount-bankAccount').value = '';
+  document.querySelector('.input-bankaccount-bankAccount').value =
+    '';
 
   // Bank account Name
-  document.querySelector('.input-bankaccount-name').value = '';
+  document.querySelector('.input-bankaccount-name').value =
+    '';
+
+  // Opening balance
+  document.querySelector('.input-bankaccount-openingBalance').value =
+    '';
+
+  // Opening balance date
+  document.querySelector('.input-bankaccount-openingBalanceDate').value =
+    '';
 
   document.querySelector('.select-bankaccount-bankAccountId').disabled =
     true;

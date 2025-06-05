@@ -116,7 +116,7 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 7 Account
+  // 7 Payment
   console.log('DROP payment Table');
   SQLquery =
     `
@@ -124,15 +124,7 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 6 Account
-  console.log('DROP account Table');
-  SQLquery =
-    `
-      DROP TABLE account;
-    `;
-  socket.send(SQLquery);
-
-  // 4 Supplier
+  // 6 supplier
   console.log('DROP supplier Table');
   SQLquery =
     `
@@ -140,7 +132,15 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 5 Bank account
+  // 5 Account
+  console.log('DROP account Table');
+  SQLquery =
+    `
+      DROP TABLE account;
+    `;
+  socket.send(SQLquery);
+
+  // 4 Bank account
   console.log('DROP bankaccount Table');
   SQLquery =
     `
@@ -156,7 +156,7 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 2 Condo table
+  // 2 Condo
   console.log('DROP condo Table');
   SQLquery =
     `
@@ -196,7 +196,7 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 2 Condo table
+  // 2 Condo
   console.log('CREATE condo Table');
   SQLquery =
     `         
@@ -240,30 +240,7 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 4 supplier
-  console.log('CREATE supplier Table');
-  SQLquery =
-    `         
-      CREATE TABLE supplier (
-        supplierId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
-        condominiumId INT,
-        user VARCHAR(50) NOT NULL,
-        lastUpdate VARCHAR (40),
-        name VARCHAR(50) NOT NULL,
-        street VARCHAR(50) NOT NULL,
-        address2 VARCHAR(50),
-        postalCode VARCHAR(4) NOT NULL,
-        city VARCHAR(50) NOT NULL,
-        email VARCHAR(50) NOT NULL,
-        phone VARCHAR(20) NOT NULL,
-        bankAccount VARCHAR(11),
-        FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
-      );
-    `;
-  socket.send(SQLquery);
-
-  // 5 Bank account
+  // 4 Bank account
   console.log('CREATE bankaccount Table');
   SQLquery =
     `         
@@ -275,12 +252,14 @@ function createAllTables() {
         lastUpdate VARCHAR (40),
         bankAccount VARCHAR(11) NOT NULL,
         name VARCHAR(50) NOT NULL,
+        openingBalance VARCHAR (10),
+        openingBalanceDate VARCHAR (10),
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
   socket.send(SQLquery);
 
-  // 6 Account
+  // 5 Account
   console.log('CREATE account Table');
   SQLquery =
     `
@@ -299,7 +278,32 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 7 Account
+  // 6 supplier
+  console.log('CREATE supplier Table');
+  SQLquery =
+    `         
+      CREATE TABLE supplier (
+        supplierId INT AUTO_INCREMENT PRIMARY KEY,
+        tableName VARCHAR(50) NOT NULL,
+        condominiumId INT,
+        user VARCHAR(50) NOT NULL,
+        lastUpdate VARCHAR (40),
+        name VARCHAR(50) NOT NULL,
+        street VARCHAR(50) NOT NULL,
+        address2 VARCHAR(50),
+        postalCode VARCHAR(4) NOT NULL,
+        city VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL,
+        phone VARCHAR(20) NOT NULL,
+        bankAccount VARCHAR(11),
+        accountId INT,
+        FOREIGN KEY (accountId) REFERENCES account(accountId),
+        FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
+      );
+    `;
+  socket.send(SQLquery);
+
+  // 7 payment
   console.log('CREATE payment Table');
   SQLquery =
     `         
@@ -440,7 +444,7 @@ function insertRowAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 2 Condo table
+  // 2 Condo
   console.log('INSERT condo Table');
   SQLquery =
     `         
@@ -484,7 +488,8 @@ function insertRowAllTables() {
         phone,
         bankAccount,
         securityLevel,
-        password) 
+        password
+      ) 
       VALUES (
         'user',
         1,
@@ -494,7 +499,7 @@ function insertRowAllTables() {
         1,
         'Super',
         'User',
-        ''
+        '',
         '',
         9,
         'superuser'
@@ -502,7 +507,59 @@ function insertRowAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 4 supplier
+  // 4 Bank account
+  console.log('INSERT bankaccount Table');
+  SQLquery =
+    `         
+      INSERT INTO bankaccount(
+        tableName,
+        condominiumId,
+        user,
+        lastUpdate,
+        bankAccount,
+        name,
+        openingBalance, 
+        openingBalanceDate
+      )
+      VALUES(
+        'bankaccount',
+        1,
+        'Initiation',
+        '${lastUpdate}',
+        '',
+        '',
+        0,
+        0
+      );
+    `;
+  socket.send(SQLquery);
+
+  // 5 Account
+  console.log('INSERT account Table');
+  SQLquery =
+    `
+      INSERT INTO account(
+        tableName,
+        condominiumId,
+        user,
+        lastUpdate,
+        bankAccountId,
+        name,
+        accountType
+      )
+      VALUES(
+        'account',
+        1,
+        'Initiation',
+        '${lastUpdate}',
+        1,
+        '',
+        ''
+      );
+    `;
+  socket.send(SQLquery);
+
+  // 6 supplier
   console.log('INSERT supplier Table');
   SQLquery =
     `         
@@ -518,7 +575,9 @@ function insertRowAllTables() {
         city,
         email,
         phone,
-        bankAccount) 
+        bankAccount,
+        accountId
+      ) 
       VALUES (
         'supplier',
         1,
@@ -531,58 +590,13 @@ function insertRowAllTables() {
         '',
         '',
         '',
-        ''
-      );
-    `;
-  socket.send(SQLquery);
-
-  // 5 Bank account
-  console.log('INSERT bankaccount Table');
-  SQLquery =
-    `         
-      INSERT INTO bankaccount(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        bankAccount,
-        name)
-      VALUES(
-        'bankaccount',
-        1,
-        'Initiation',
-        '${lastUpdate}',
         '',
-        ''
+        1
       );
     `;
   socket.send(SQLquery);
 
-  // 6 Account
-  console.log('INSERT account Table');
-  SQLquery =
-    `
-      INSERT INTO account(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        bankAccountId,
-        name,
-        accountType)
-      VALUES(
-        'account',
-        1,
-        'Initiation',
-        '${lastUpdate}',
-        1,
-        '',
-        ''
-      );
-    `;
-  socket.send(SQLquery);
-
-  // 7 Account
+  // 7 Payment
   console.log('INSERT payment Table');
   SQLquery =
     `         
@@ -707,7 +721,7 @@ function insertRowAllTables() {
       VALUES(
         'accountmovement',
         1,
-        'Initiation',
+        'superuser@ingegilje.no',
         '${lastUpdate}',
         1,
         1,

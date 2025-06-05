@@ -139,11 +139,9 @@ socket.onmessage = (event) => {
     console.log('affectedRows');
 
     // Sends a request to the server to get all condos
-    //objCondominium.getCondominiums(socket);
-    // Get all condominiums from MySQL database
     const SQLquery = `
       SELECT * FROM condominium
-      ORDER BY name;
+      ORDER BY condominiumId;
     `;
     socket.send(SQLquery);
   }
@@ -174,10 +172,14 @@ function condoEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-condominium-update')) {
 
+      /*
       const condominiumId = Number(document.querySelector('.select-condominium-condominiumId').value);
       if (updateCondominium(condominiumId)) {
         showValues(condominiumId);
       }
+      */
+      const condominiumId = Number(document.querySelector('.select-condominium-condominiumId').value);
+      updateCondominium(condominiumId);
     }
   });
 
@@ -195,13 +197,11 @@ function condoEvents() {
       deleteCondominiumRow();
 
       // Sends a request to the server to get all condos
-      //objCondominium.getCondominiums(socket);
-      // Get all condominiums from MySQL database
-    const SQLquery = `
+      const SQLquery = `
       SELECT * FROM condominium
       ORDER BY name;
     `;
-    socket.send(SQLquery);
+      socket.send(SQLquery);
     }
   });
 
@@ -210,13 +210,12 @@ function condoEvents() {
     if (event.target.classList.contains('button-condominium-cancel')) {
 
       // Sends a request to the server to get all condos
-      //objCondominium.getCondominiums(socket);
-      // Get all condominiums from MySQL database
-    const SQLquery = `
-      SELECT * FROM condominium
-      ORDER BY name;
-    `;
-    socket.send(SQLquery);
+      const SQLquery =
+        `
+          SELECT * FROM condominium
+          ORDER BY condominiumId;
+        `;
+      socket.send(SQLquery);
     }
   });
 }
@@ -240,8 +239,8 @@ function updateCondominium(condominiumId) {
       document.querySelector('.input-condominium-city').value;
     const address2 =
       document.querySelector('.input-condominium-address2').value;
-    const phoneNumber =
-      document.querySelector('.input-condominium-phoneNumber').value;
+    const phone =
+      document.querySelector('.input-condominium-phone').value;
     const email =
       document.querySelector('.input-condominium-email').value;
     const organizationNumber =
@@ -268,7 +267,7 @@ function updateCondominium(condominiumId) {
           address2 = '${address2}',
           postalCode = '${postalCode}', 
           city = '${city}',
-          phoneNumber = '${phoneNumber}',
+          phone = '${phone}',
           email = '${email}',
           organizationNumber = ${organizationNumber}
         WHERE condominiumId = ${condominiumId};
@@ -286,7 +285,7 @@ function updateCondominium(condominiumId) {
           address2,
           postalCode,
           city,
-          phoneNumber,
+          phone,
           email,
           organizationNumber)
         VALUES (
@@ -298,7 +297,7 @@ function updateCondominium(condominiumId) {
           '${address2}',
           '${postalCode}',
           '${city}',
-          '${phoneNumber}',
+          '${phone}',
           '${email}',
           '${organizationNumber}'
         );
@@ -341,8 +340,8 @@ function showLeadingText(condominiumId) {
   // City
   objCondominium.showInput('condominium-city', '* Poststed', 50, '');
 
-  // phoneNumber
-  objCondominium.showInput('condominium-phoneNumber', 'Telefonnummer', 20, '');
+  // phone
+  objCondominium.showInput('condominium-phone', 'Telefonnummer', 20, '');
 
   // email
   objCondominium.showInput('condominium-email', '* eMail', 50, '');
@@ -403,9 +402,9 @@ function showValues(condominiumId) {
       document.querySelector('.input-condominium-city').value =
         condominiumArray[objectNumberCondominium].city;
 
-      // Show phoneNumber number
-      document.querySelector('.input-condominium-phoneNumber').value =
-        condominiumArray[objectNumberCondominium].phoneNumber;
+      // Show phone
+      document.querySelector('.input-condominium-phone').value =
+        condominiumArray[objectNumberCondominium].phone;
 
       // Show email
       document.querySelector('.input-condominium-email').value =
@@ -447,8 +446,8 @@ function resetValues() {
   document.querySelector('.input-condominium-city').value =
     '';
 
-  // Show phoneNumber number
-  document.querySelector('.input-condominium-phoneNumber').value =
+  // Show phone number
+  document.querySelector('.input-condominium-phone').value =
     '';
 
   // Show email
@@ -536,7 +535,7 @@ function validateValues() {
   /*
   // Check bankaccount number
   const bankAccount = document.querySelector('.select-condominium-bankAccountId').value;
-  const validbankAccount = checkBankAccount(bankAccount, "condominium-bankAccountId", "kontonummer");
+  const validbankAccount = validateBankAccount(bankAccount, "condominium-bankAccountId", "kontonummer");
   */
 
   if (validCondominiumName
