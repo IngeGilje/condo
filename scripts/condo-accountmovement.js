@@ -7,7 +7,7 @@ const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 const objAccountMovement = new AccountMovement('accountmovement');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+//const objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
 let socket;
@@ -64,10 +64,9 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password))
-      ? ''
-      : window.location.href('http://localhost/condo-login.html');
+    // Validate user/password
+    objUserPassword = JSON.parse(localStorage.getItem('user'));
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -105,7 +104,7 @@ socket.onmessage = (event) => {
     bankAccountArray = JSON.parse(message);
 
     //objAccount.getAccounts(socket);
-    const SQLquery = 
+    const SQLquery =
       `
         SELECT * FROM account
         ORDER BY accountId;
@@ -138,7 +137,7 @@ socket.onmessage = (event) => {
     // array including objects with accountmovement information
     accountMovementArray = JSON.parse(message);
 
-    // Show all leading text
+    // Show leading text
     showLeadingText();
 
     // Make events
@@ -185,7 +184,8 @@ function createEvents() {
 
   // Search for account movement
   document.addEventListener('click', (event) => {
-    // Show all bank account movements
+
+    // Show bank account movements
     showAccountMovements();
   });
 }

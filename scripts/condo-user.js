@@ -78,7 +78,12 @@ socket.onmessage = (event) => {
     // array including objects with user information
     userArray = JSON.parse(message);
 
-    // Show all leading texts
+    // Validate user/password
+    objUserPassword = JSON.parse(localStorage.getItem('user'));
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
+
+    // username and password is ok
+    // Show leading texts
     let userId = objUser.getSelectedUserId('select-user-userId');
     showLeadingText(userId);
 
@@ -335,7 +340,7 @@ function deleteUserRow(userId) {
   }
 }
 
-// Show all leading text for user
+// Show leading text for user
 function showLeadingText(userId) {
 
   // Show all users
@@ -448,8 +453,8 @@ function validateValues(userId) {
   const validLastName = objUser.validateText(lastName, "label-user-lastName", "Etternavn");
 
   // Check phone
-  const phone = document.querySelector('.input-user-phone').value;
-  const validPhone = objUser.validateText(phone, "label-user-phone", "Telefonnummer");
+  //const phone = document.querySelector('.input-user-phone').value;
+  //const validPhone = objUser.validateText(phone, "label-user-phone", "Telefonnummer");
 
   // Check bank account
   const bankAccount = document.querySelector('.input-user-bankAccount').value;
@@ -464,7 +469,7 @@ function validateValues(userId) {
   const password = document.querySelector('.input-user-password').value;
   const validpassword = objUser.validateText(password, "label-user-password", "Passord");
 
-  return (validBankAccount && validPhone && validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
+  return (validBankAccount && validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
 }
 
 function resetValues() {

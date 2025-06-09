@@ -47,13 +47,15 @@ class Condos {
   showInput(className, labelText, maxlength, placeholder) {
 
     let html = this.showLabel(className, labelText);
-    html += `
-      <input type="text" 
-        class="input-${className}"
-        maxlength="${maxlength}"
-        placeholder="${placeholder}"
-      >
-    `;
+    html +=
+      `
+        <input 
+          type="text" 
+          class="input-${className}"
+          maxlength="${maxlength}"
+          placeholder="${placeholder}"
+        >
+      `;
     document.querySelector(`.div-${className}`)
       .innerHTML = html;
   }
@@ -62,13 +64,14 @@ class Condos {
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
 
     let html = this.showLeadingTextLabel(className, labelText);
-    html += `
-      <input type="text" 
-        class="input-${className}"
-        maxlength="${maxlength}"
-        placeholder="${placeholder}"
-      >
-    `;
+    html +=
+      `
+        <input type="text" 
+          class="input-${className}"
+          maxlength="${maxlength}"
+          placeholder="${placeholder}"
+        >
+      `;
     document.querySelector(`.div-${className}`)
       .innerHTML = html;
   }
@@ -87,12 +90,13 @@ class Condos {
   showButton(className, buttonText) {
 
     document.querySelector(`.div-${className}`)
-      .innerHTML = `
-    <button class="button-${className}"
-    >
-      ${buttonText}
-    </button>
-  `;
+      .innerHTML =
+      `
+          <button class="button-${className}"
+          >
+            ${buttonText}
+          </button>
+        `;
   }
 
   // Show checkbox
@@ -105,14 +109,15 @@ class Condos {
       >
     `;
     texts.forEach((text) => {
-      html += `
-        <input type="checkbox" 
-          class="input-${columnName}"
-          id="${text}"
-        >
-          ${text}
-        <br>
-      `;
+      html +=
+        `
+          <input type="checkbox" 
+            class="input-${columnName}"
+            id="${text}"
+          >
+            ${text}
+          <br>
+        `;
     });
 
     html += `
@@ -134,16 +139,17 @@ class Condos {
     `;
 
     texts.forEach((text) => {
-      html += `
-        ${text}
-        <input type="radio"
-          id="${text}"
-          name="${columnName}"
-          value="${columnName}"
-          class="input-radio-${text}"
-        >
-        <br>
-      `;
+      html +=
+        `
+          ${text}
+          <input type="radio"
+            id="${text}"
+            name="${columnName}"
+            value="${columnName}"
+            class="input-radio-${text}"
+          >
+          <br>
+        `;
     });
 
     html += `
@@ -157,16 +163,20 @@ class Condos {
   // Show read only input
   showInputReadOnly(className, labelText) {
 
-    document.querySelector(`.div-${className}`).innerHTML = `
-      <label class="label-${className}">
-        ${labelText}
-      </label>
+    document.querySelector(`.div-${className}`).innerHTML =
+      `
+        <label 
+          class="label-${className}"
+        >
+          ${labelText}
+        </label>
 
-      <input type="text" 
-        readonly
-        class="input-${className}}"
-      >
-    `;
+        <input 
+          type="text" 
+          readonly
+          class="input-${className}"
+        >
+      `;
   }
 
   // Valid text
@@ -471,12 +481,12 @@ class Condos {
 
     document.querySelector(`.div-${className}`).innerHTML =
       `
-      <a
-        class="button-link"
-      >
-        Login
-      </a>
-    `;
+        <a
+          class="button-link"
+        >
+          Login
+        </a>
+      `;
   }
 
   // Validate user
@@ -569,6 +579,37 @@ class Condos {
       }
     }
   }
+  // Validate amount
+  validateAmount(amount, className, labelText) {
+
+    let isValidAmount = true;
+
+    // 123456,78 -> 12345678
+    amount = removeComma(amount);
+    if (!isNumeric(amount)) {
+
+      // Invalid amount
+      if (isClassDefined(`label-${className}`)) {
+
+        document.querySelector(`.label-${className}`).outerHTML =
+          `<div class="label-${className}-red">
+            * Ugyldig ${labelText}
+          </div>`;
+      }
+      isValidAmount = false;
+    } else {
+
+      if (isClassDefined(`label-${className}-red`)) {
+
+        document.querySelector(`.label-${className}-red`).outerHTML =
+          `<div class="label-${className} label-${className}">
+            * ${labelText}
+          </div>`;
+      }
+      isValidAmount = true;
+    }
+    return isValidAmount;
+  }
 }
 
 // Check if string includes only digits
@@ -627,6 +668,7 @@ function convertToEurDateFormat(date) {
   return formatedDate;
 }
 
+/*
 // Validate amount
 function validateAmount(amount, className, labelText) {
 
@@ -658,6 +700,7 @@ function validateAmount(amount, className, labelText) {
   }
   return isValidAmount;
 }
+*/
 
 // Validate number
 function checkNumber(number, min, max, className, labelText) {
@@ -919,12 +962,21 @@ function formatFromOreToKroner(amount) {
   return formatToNorAmount(amount);
 }
 
-// Format norwegian number (12345,12) to number (123456.12)
+// Format norwegian number (12 345,67) to number (12345.67)
 function formatAmountToNumber(number) {
 
   const formatedNumber = number.replace(',', '.');
   number = formatedNumber.replace(/\s+/g, "");
   return number;
+}
+
+// Format norwegian kroner (12 345,67) to ore/number (1234567)
+function formatKronerToOre(amount) {
+
+  let formatedAmount = amount.replace(',', '');
+  amount = formatedAmount.replace('.', '');
+  formatedAmount = amount.replace(/\s+/g, "");
+  return formatedAmount;
 }
 
 // Format amount to euro format
@@ -1096,10 +1148,11 @@ function checkUserPassword(user, password) {
 }
 
 // Validate amount in the (1 234,12 = true) format
-function validateAmount(amount) {
+// This validateEuroAmount(amount) will never show any error message
+function validateEuroAmount(amount) {
 
   amount = amount.replace(/\s+/g, '');
   amount = String(amount).replace(/\./g, "");
-  amount.replace(/\,/g, "");
+  amount = amount.replace(/\,/g, "");
   return isValidNumber(amount);
 }

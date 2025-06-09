@@ -62,6 +62,11 @@ socket.onmessage = (event) => {
     // array including objects with user information
     userArray = JSON.parse(message);
 
+    // Validate user/password
+    objUserPassword = JSON.parse(localStorage.getItem('user'));
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
+
+    // username and password is ok
     // Send a request to the server to get all accounts
     const SQLquery = `
     SELECT * FROM account
@@ -96,7 +101,7 @@ socket.onmessage = (event) => {
     // array including objects with suplier information
     supplierArray = JSON.parse(message);
 
-    // Show all leading texts
+    // Show leading texts
     let supplierId = objSupplier.getSelectedSupplierId('select-supplier-supplierId');
     showLeadingText(supplierId);
 
@@ -353,7 +358,7 @@ function deleteSupplierRow(supplierId) {
   }
 }
 
-// Show all leading text for supplier
+// Show leading text for supplier
 function showLeadingText(supplierId) {
 
   // Show all suppliers
@@ -363,7 +368,7 @@ function showLeadingText(supplierId) {
   objSupplier.showInput('supplier-name', '* Navn', 50, '');
 
   // street
-  objSupplier.showInput('supplier-street', 'Gatenavn', 50, '');
+  objSupplier.showInput('supplier-street', 'Gateadresse', 50, '');
 
   // Address 2
   objSupplier.showInput('supplier-address2', 'Adresse 2', 50, '');
@@ -461,32 +466,6 @@ function validateValues(supplierId) {
   // Check name
   const name = document.querySelector('.input-supplier-name').value;
   const validName = objSupplier.validateText(name, "label-supplier-name", "Navn");
-
-  /*
-  // Check street
-  const street = document.querySelector('.input-supplier-street').value;
-  const validStreet = objSupplier.validateText(street, "label-supplier-street", "Gatenavn");
-
-  // Check address 2
-  const address2 = document.querySelector('.input-supplier-address2').value;
-  const validAddress2 = objSupplier.validateText(address2, "label-supplier-address2", "Adresse 2");
-
-  // Check postal code
-  const postalCode = document.querySelector('.input-supplier-postalCode').value;
-  const validPostalCode = objSupplier.validatePostalCode(postalCode, "label-supplier-postalCode", "Postnummer");
-
-  // Check city
-  const city = document.querySelector('.input-supplier-city').value;
-  const validCity = objSupplier.validateText(city, "label-supplier-city", "Poststed");
-
-  // Check email
-  const eMail = document.querySelector('.input-supplier-email').value;
-  const validEmail = objSupplier.validateEmail(eMail, "label-supplier-email", "E-mail(Bruker)");
-
-  // Check phone
-  const phone = document.querySelector('.input-supplier-phone').value;
-  const validPhone = objSupplier.validateText(phone, "label-supplier-phone", "Telefonnummer");
-  */
 
   // Validate bank account
   const bankAccount =

@@ -60,15 +60,14 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
+    // Validate user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
-    //objCondo.getCondos(socket);
     const SQLquery = `
       SELECT * FROM condo
-      ORDER BY condoName;
+      ORDER BY condoId;
     `;
     socket.send(SQLquery);
   }
@@ -88,7 +87,7 @@ socket.onmessage = (event) => {
     // Find selected condo id
     const condoId = objCondo.getSelectedCondoId('condoId');
 
-    // Show all leading text
+    // Show leading text
     showLeadingText(condoId);
 
     // Show all values for condo
@@ -110,7 +109,7 @@ socket.onmessage = (event) => {
     //objCondo.getCondos(socket);
     const SQLquery = `
       SELECT * FROM condo
-      ORDER BY condoName;
+      ORDER BY condoId;
     `;
     socket.send(SQLquery);
   }
@@ -132,8 +131,8 @@ function condoEvents() {
 
   // Select condo
   document.addEventListener('change', (event) => {
-
     if (event.target.classList.contains('select-condo-condoId')) {
+
       showValues(Number(event.target.value));
     }
   });
@@ -171,7 +170,7 @@ function condoEvents() {
       //objCondo.getCondos(socket);
       const SQLquery = `
         SELECT * FROM condo
-        ORDER BY condoName;
+        ORDER BY condoId;
       `;
       socket.send(SQLquery);
     }
@@ -185,7 +184,7 @@ function condoEvents() {
       //objCondo.getCondos(socket);
       const SQLquery = `
         SELECT * FROM condo
-        ORDER BY condoName;
+        ORDER BY condoId;
       `;
       socket.send(SQLquery);
     }
@@ -276,14 +275,13 @@ function updateCondoRow(condoId) {
       false;
     document.querySelector('.button-condo-new').disabled =
       false;
-    //document.querySelector('.button-condo-cancel').disabled =
-    //  false;
+
     isUpdated = true;
   }
   return isUpdated;
 }
 
-// Show all leading text for condo
+// Show leading text for condo
 function showLeadingText(condoId) {
 
   // Show all condos
@@ -293,7 +291,7 @@ function showLeadingText(condoId) {
   objCondo.showInput('condo-condoName', '* Navn', 50, '');
 
   // Show street name
-  objCondo.showInput('condo-street', '* Gatenavn', 50, '');
+  objCondo.showInput('condo-street', '* Gateadresse', 50, '');
 
   // Show address 2
   objCondo.showInput('condo-address2', 'Adresse 2', 50, '');
@@ -306,6 +304,7 @@ function showLeadingText(condoId) {
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
+
     objCondo.showButton('condo-update', 'Oppdater');
 
     // show new button
@@ -391,24 +390,12 @@ function resetValues() {
   document.querySelector('.input-condo-city').value =
     '';
 
-  /*
-  // Show phone number
-  document.querySelector('.input-condo-phone').value =
-    '';
-
-  // Show email
-  document.querySelector('.input-condo-email').value =
-    '';
-  */
-
   document.querySelector('.select-condo-condoId').disabled =
     true;
   document.querySelector('.button-condo-delete').disabled =
     true;
   document.querySelector('.button-condo-new').disabled =
     true;
-  //document.querySelector('.button-condo-cancel').disabled =
-  //  true;
 }
 
 function deleteCondoRow() {
@@ -437,7 +424,7 @@ function deleteCondoRow() {
     //objCondo.getCondos(socket);
     const SQLquery = `
       SELECT * FROM condo
-      ORDER BY condoName;
+      ORDER BY condoId;
     `;
     socket.send(SQLquery);
 

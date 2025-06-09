@@ -63,7 +63,7 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
+    // Validate user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
@@ -119,7 +119,7 @@ socket.onmessage = (event) => {
     // array including objects with payment information
     paymentArray = JSON.parse(message);
 
-    // Show all leading text
+    // Show leading text
     const condoId = objCondo.getSelectedCondoId('condoId')
     showLeadingText(condoId);
 
@@ -180,7 +180,7 @@ function createEvents() {
   });
 }
 
-// Show all leading text for payment
+// Show leading text for payment
 function showLeadingText(condoId) {
 
   // Show all condos

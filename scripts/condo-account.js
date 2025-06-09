@@ -59,7 +59,7 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
+    // Validate user/password
     objUserPassword = JSON.parse(localStorage.getItem('user'));
     (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
@@ -99,7 +99,7 @@ socket.onmessage = (event) => {
     // array including objects with account information
     accountArray = JSON.parse(message);
 
-    // Show all leading text
+    // Show leading text
     const accountId = objAccount.getSelectedAccountId('account-accountId');
     showLeadingText(accountId);
 
@@ -320,7 +320,7 @@ function deleteAccountRow() {
   }
 }
 
-// Show all leading text for account
+// Show leading text for account
 function showLeadingText(accountId) {
 
   // Show all accounts

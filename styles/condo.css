@@ -62,11 +62,6 @@
 }
 
 /* Define the grid container with 7 columns*/
-.div-grid-importfile {
-  grid-template-columns: 200px 200px 100px 50px 150px 150px 200px;
-}
-
-/* Define the grid container with 7 columns*/
 .div-grid-remoteheating {
   grid-template-columns: 200px 200px 150px 150px 150px 150px 150px;
 }
@@ -81,8 +76,15 @@
   grid-template-columns: 200px 200px 100px 100px 150px 100px 100px 150px;
 }
 
+/* Define the grid container with 9 columns*/
+.div-grid-importfile {
+  grid-template-columns: 200px 200px 100px 100px 50px 150px 150px 100px 200px;
+}
+
+.div-importfile-columnChange,
 .div-importfile-columnAccountingDate,
 .div-importfile-columnCondoName,
+.div-importfile-columnAccountName,
 .div-importfile-columnIncome,
 .div-importfile-columnPayment,
 .div-importfile-columnText,
@@ -117,14 +119,14 @@
   padding: 2px;
 }
 
-.div-importfile-columnAccountingDate,
+.div-importfile-columnChange,
 .div-income-columnIncomeId,
 .div-overview-columnDueDate,
 .div-remoteheating-columnDate {
   grid-column-start: 3;
 }
 
-.div-importfile-columnCondoName,
+.div-importfile-columnAccountingDate,
 .div-payment-columnIncomeId,
 .div-income-columnDate,
 .div-overview-columnDueAmount,
@@ -132,7 +134,7 @@
   grid-column-start: 4;
 }
 
-.div-importfile-columnIncome,
+.div-importfile-columnCondoName,
 .div-payment-columnDate,
 .div-income-columnAmount,
 .div-overview-columnDueText,
@@ -140,7 +142,7 @@
   grid-column-start: 5;
 }
 
-.div-importfile-columnPayment,
+.div-importfile-columnAccountName,
 .div-payment-columnAmount,
 .div-income-columnText,
 .div-overview-columnIncomeDate,
@@ -148,14 +150,19 @@
   grid-column-start: 6;
 }
 
-.div-importfile-columnText,
+.div-importfile-columnIncome,
 .div-payment-columnText,
 .div-overview-columnIncomeAmount {
   grid-column-start: 7;
 }
 
+.div-importfile-columnPayment,
 .div-overview-columnIncomeText {
   grid-column-start: 8;
+}
+
+.div-importfile-columnText {
+  grid-column-start: 9;
 }
 
 /* menu */
@@ -622,7 +629,6 @@
 .div-grid-overview button:active,
 .div-grid-accountmovement button:active {
   background-color: #307533;
-  ;
 }
 
 /* Gray for disabled state */
@@ -816,6 +822,7 @@
 }
 
 /* Column header */
+.columnHeaderCenter,
 .columnHeaderLeft,
 .columnHeaderRight {
   padding-top: 10px;
@@ -834,6 +841,11 @@
   text-align: right;
 }
 
+.columnHeaderCenter {
+  text-align: center;
+}
+
+.centerCell,
 .rightCell,
 .leftCell {
   border-bottom: 1px solid #eee;
@@ -847,6 +859,10 @@
   text-align: right;
 }
 
+.centerCell {
+  text-align: center;
+}
+
 .sumCellLeft,
 .sumCellRight {
   border-bottom: 4px double #eee;
@@ -858,4 +874,25 @@
 
 .sumCellLeft {
   text-align: left;
+}
+
+/* Look like button */
+.button-link {
+  display: inline-block;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 19px;
+  font-weight: 700;
+  background-color: #4CAF50;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.green {
+  background-color: #4CAF50;
+  opacity: 0.5;
+  color: white;
 }

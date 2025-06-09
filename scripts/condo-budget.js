@@ -61,12 +61,11 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
+    // Validate user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all accounts
-    //objAccount.getAccounts(socket);
     const SQLquery = `
       SELECT * FROM account
       ORDER BY accountId;
@@ -294,7 +293,7 @@ function updateBudgetRow(budgetId) {
   return isUpdated;
 }
 
-// Show all leading text for budget
+// Show leading text for budget
 function showLeadingText(budgetId) {
 
   // Show all budgets
@@ -439,7 +438,7 @@ function validateValues() {
   document.querySelector('.input-budget-amount').value =
     formatAmountToOre(amount);
   const validAmount =
-    validateAmount(amount, "budget-amount", "Budsjett");
+    objBudget.validateAmount(amount, "budget-amount", "Budsjett");
 
   // Check budget text
   const text =

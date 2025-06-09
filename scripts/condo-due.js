@@ -61,7 +61,7 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
+    // Validate user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
@@ -101,7 +101,7 @@ socket.onmessage = (event) => {
 
     const dueId = objDue.getSelectedDueId('dueId');
 
-    // Show all leading text
+    // Show leading text
     showLeadingText(dueId);
 
     // Show all values
@@ -338,7 +338,7 @@ function deleteDueRow(dueId) {
   }
 }
 
-// Show all leading text for due
+// Show leading text for due
 function showLeadingText(dueId) {
 
   // Show all dues
@@ -391,7 +391,7 @@ function validateValues(dueId) {
   const amount =
     formatToNorAmount(document.querySelector('.input-due-amount').value);
   const validAmount =
-    validateAmount(amount, "due-amount", "Månedsbetaling");
+    objDue.validateAmount(amount, "due-amount", "Månedsbetaling");
 
   // Check text
   const text =

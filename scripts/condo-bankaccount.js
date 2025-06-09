@@ -6,7 +6,6 @@ const objBankAccount = new BankAccount('bankaccount');
 const objAccount = new Account('account');
 
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
-console.log('objUserPassword.condominiumId:', objUserPassword.condominiumId);
 
 // Connection to a server
 let socket;
@@ -62,7 +61,7 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
+    // Validate user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
@@ -99,7 +98,7 @@ socket.onmessage = (event) => {
 
     const bankAccountId = objBankAccount.getSelectedBankAccountId('bankAccountId');
 
-    // Show all leading text
+    // Show leading text
     showLeadingText(bankAccountId);
 
     // Show all values for bankaccount
@@ -308,14 +307,14 @@ function deleteAccountRow() {
   }
 }
 
-// Show all leading text for account
+// Show leading text for account
 function showLeadingText(bankAccountId) {
 
   // Show all bank accounts
   objBankAccount.showAllBankAccounts('bankaccount-bankAccountId', bankAccountId);
 
   // Show bank account number
-  objBankAccount.showInput('bankaccount-bankAccount', '* Kontonummer', 11, '');
+  objBankAccount.showInput('bankaccount-bankAccount', '* Bankkontonummer', 11, '');
 
   // bank account name
   objBankAccount.showInput('bankaccount-name', '* Kontonavn', 50, '');
@@ -359,17 +358,17 @@ function showValues(bankAccountId) {
       document.querySelector('.input-bankaccount-name').value =
         bankAccountArray[objectbankAccountId].name;
 
-      // bank account number
+      // account number
       document.querySelector('.input-bankaccount-bankAccount').value =
         bankAccountArray[objectbankAccountId].bankAccount;
 
-      // opening balance
-      document.querySelector('.input-bankaccount-openingBalance').value =
-        bankAccountArray[objectbankAccountId].openingBalance;
-
       // opening balance date
       document.querySelector('.input-bankaccount-openingBalanceDate').value =
-        bankAccountArray[objectbankAccountId].openingBalanceDate;
+        convertToEurDateFormat(bankAccountArray[objectbankAccountId].openingBalanceDate);
+
+      // opening balance
+      document.querySelector('.input-bankaccount-openingBalance').value =
+        formatFromOreToKroner(bankAccountArray[objectbankAccountId].openingBalance);
     }
   }
 }
@@ -379,7 +378,7 @@ function validateValues() {
 
   // Check bank account number
   const bankAccount = document.querySelector('.input-bankaccount-bankAccount').value;
-  const validBankAccount = objBankAccount.validateBankAccount(bankAccount, "bankaccount-bankAccount", "Kontonummer");
+  const validBankAccount = objBankAccount.validateBankAccount(bankAccount, "bankaccount-bankAccount", "Bankkontonummer");
 
   // Check bankaccount Name
   const name = document.querySelector('.input-bankaccount-name').value;

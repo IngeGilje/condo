@@ -62,7 +62,7 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
+    // Validate user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
@@ -120,7 +120,7 @@ socket.onmessage = (event) => {
 
     const condominiumId = objCondominium.getSelectedCondominiumId('condominiumId');
 
-    // Show all leading text
+    // Show leading text
     showLeadingText(condominiumId);
 
     // Show all values for condominium
@@ -319,7 +319,7 @@ function updateCondominium(condominiumId) {
   return isUpdated;
 }
 
-// Show all leading text for condominium
+// Show leading text for condominium
 function showLeadingText(condominiumId) {
 
   // Show all condominiums
@@ -329,7 +329,7 @@ function showLeadingText(condominiumId) {
   objCondominium.showInput('condominium-name', '* Navn', 50, '');
 
   // Show street name
-  objCondominium.showInput('condominium-street', '* Gatenavn', 50, '');
+  objCondominium.showInput('condominium-street', '* Gateadresse', 50, '');
 
   // Show address 2
   objCondominium.showInput('condominium-address2', 'Adresse 2', 50, '');

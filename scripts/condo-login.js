@@ -58,7 +58,7 @@ socket.onmessage = (event) => {
     // array including objects with user information
     userArray = JSON.parse(message);
 
-    // Show all leading text
+    // Show leading text
     showLeadingText();
 
     // Make events
@@ -119,7 +119,7 @@ function createEvents() {
   });
 }
 
-// Show all leading text for login
+// Show leading text for login
 function showLeadingText() {
 
   // email

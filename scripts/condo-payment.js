@@ -62,7 +62,7 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
+    // Validate user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
@@ -102,7 +102,7 @@ socket.onmessage = (event) => {
 
     const paymentId = objPayment.getSelectedPaymentId('paymentId');
 
-    // Show all leading text
+    // Show leading text
     showLeadingText(paymentId);
 
     // Show all values for payment
@@ -337,7 +337,7 @@ function updatePayment() {
   return isUpdated;
 }
 
-// Show all leading text for payment
+// Show leading text for payment
 function showLeadingText(paymentId) {
 
   // Show all payments
@@ -456,7 +456,7 @@ function validateValues() {
     document.querySelector('.input-payment-amount').value;
   document.querySelector('.input-payment-amount').value =
     formatToNorAmount(amount);
-  const validAmount = validateAmount(amount, 'payment-amount', 'Beløp');
+  const validAmount = objPayment.validateAmount(amount, 'payment-amount', 'Beløp');
 
   let validNumberKWHour = true;
   const numberKWHour =
@@ -465,7 +465,7 @@ function validateValues() {
 
     document.querySelector('.input-payment-numberKWHour').value =
       formatToNorAmount(numberKWHour);
-    validNumberKWHour = validateAmount(numberKWHour, 'payment-numberKWHour', 'Kilowat/time');
+    validNumberKWHour = objPayment.validateAmount(numberKWHour, 'payment-numberKWHour', 'Kilowat/time');
   } else {
 
     validNumberKWHour = true;

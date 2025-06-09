@@ -63,7 +63,7 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Check user/password
+    // Validate user/password
     (objUser.validateUser(objUserPassword.email, objUserPassword.password))
       ? ''
       : window.location.href('http://localhost/condo/condo-login.html');
@@ -138,7 +138,7 @@ socket.onmessage = (event) => {
 
     const incomeId = objIncome.getSelectedIncomeId('income-incomeId');
 
-    // Show all leading text
+    // Show leading text
     showLeadingText(incomeId);
 
     // Show all values for income
@@ -412,7 +412,7 @@ function updateIncomeRow() {
   return isUpdated;
 }
 
-// Show all leading text for income
+// Show leading text for income
 function showLeadingText(incomeId) {
 
   // Show all incomes
@@ -543,7 +543,7 @@ function validateValues(incomeId) {
   const income =
     document.querySelector('.input-income-amount').value;
   const validIncome =
-    validateAmount(income, 'income-amount', 'Beløp');
+    objIncome.validateAmount(income, 'income-amount', 'Beløp');
 
   const date =
     document.querySelector('.input-income-date').value;
