@@ -424,13 +424,13 @@ function validateValues() {
   const accountId =
     document.querySelector('.select-budget-accountId').value;
   const validAccountId =
-    checkNumber(accountId, 1, 99999, "budget-accountId", "Konto");
+    validateNumber(accountId, 1, 99999, "budget-accountId", "Konto");
 
   // Check year
   const year =
     document.querySelector('.select-budget-year').value;
   const validYear =
-    checkNumber(year, 2020, 2099, "budget-year", "År");
+    validateNumber(year, 2020, 2099, "budget-year", "År");
 
   // Check amount
   const amount =

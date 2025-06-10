@@ -532,12 +532,12 @@ function validateValues(incomeId) {
   const accountId =
     document.querySelector('.select-income-accountId').value;
   const validAccount =
-    checkNumber(accountId, 1, 99999, 'income-accountId', 'Velg konto');
+    validateNumber(accountId, 1, 99999, 'income-accountId', 'Velg konto');
 
   const condoId =
     document.querySelector('.select-income-condoId').value;
   const validCondo =
-    checkNumber(condoId, 1, 99999, 'income-condoId', 'Velg konto');
+    validateNumber(condoId, 1, 99999, 'income-condoId', 'Velg konto');
 
   // Check income
   const income =

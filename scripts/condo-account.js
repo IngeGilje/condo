@@ -380,7 +380,7 @@ function validateValues() {
   const bankAccountId =
     Number(document.querySelector('.select-account-bankAccountId').value);
   const validBankAccountId =
-    checkNumber(bankAccountId, 1, 99999, "account-bankAccountId", "Vis konto");
+    validateNumber(bankAccountId, 1, 99999, "account-bankAccountId", "Vis konto");
 
   // Check account Name
   const name =

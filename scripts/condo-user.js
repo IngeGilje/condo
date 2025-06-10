@@ -442,7 +442,7 @@ function validateValues(userId) {
   const condoId =
     Number(document.querySelector('.select-user-condoId').value);
   const validCondoId =
-    checkNumber(condoId, 1, 99999, "user-condoId", "Vis leilighet");
+    validateNumber(condoId, 1, 99999, "user-condoId", "Vis leilighet");
 
   // Check first name
   const firstName = document.querySelector('.input-user-firstName').value;
@@ -463,7 +463,7 @@ function validateValues(userId) {
   const securityLevel =
     Number(document.querySelector('.select-user-securityLevel').value);
   const validSecuritylevel =
-    checkNumber(securityLevel, 1, 9, "user-securityLevel", "Sikkerhetsnivå");
+    validateNumber(securityLevel, 1, 9, "user-securityLevel", "Sikkerhetsnivå");
 
   // Check password
   const password = document.querySelector('.input-user-password').value;

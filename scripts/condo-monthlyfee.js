@@ -388,19 +388,19 @@ function validateValues() {
   const year =
     document.querySelector('.select-monthlyfee-year').value;
   const validYear =
-    checkNumber(year, 2020, 2099, 'monthlyfee-year', '* År');
+    validateNumber(year, 2020, 2099, 'monthlyfee-year', '* År');
 
   // Check for valid condo Id
   const condoId =
     document.querySelector('.select-monthlyfee-condoId').value;
   const validCondoId =
-    checkNumber(condoId, 1, 99999, 'monthlyfee-condoId', 'Leilighet');
+    validateNumber(condoId, 1, 99999, 'monthlyfee-condoId', 'Leilighet');
 
   // Check for valid day
   const day =
     document.querySelector('.select-monthlyfee-day').value;
   const validDay =
-    checkNumber(day, 1, 28, 'monthlyfee-day', '* Dag');
+    validateNumber(day, 1, 28, 'monthlyfee-day', '* Dag');
 
   // Check amount
   const amount =

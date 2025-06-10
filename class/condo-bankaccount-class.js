@@ -4,7 +4,7 @@ class BankAccount extends Condos {
   // bankaccount information
   bankAccountArray = Array;
 
-  // Show all bankaccounts
+  // Show bankaccounts
   showAllBankAccounts(className, bankAccountId) {
 
     let html = `

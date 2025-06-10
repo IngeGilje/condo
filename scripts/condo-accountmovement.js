@@ -222,12 +222,12 @@ function validateValues() {
   const accountId =
     document.querySelector('.select-accountmovement-accountId').value;
   const validAccountId =
-    checkNumber(accountId, 1, 99999, 'Konto');
+    validateNumber(accountId, 1, 99999, 'Konto');
 
   const condoId =
     document.querySelector('.select-accountmovement-condoId').value;
   const validCondoId =
-    checkNumber(condoId, 1, 99999, 'Leilighet');
+    validateNumber(condoId, 1, 99999, 'Leilighet');
 
   const fromDate =
     document.querySelector('.input-accountmovement-fromDate').value;

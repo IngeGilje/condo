@@ -668,42 +668,8 @@ function convertToEurDateFormat(date) {
   return formatedDate;
 }
 
-/*
-// Validate amount
-function validateAmount(amount, className, labelText) {
-
-  let isValidAmount = true;
-
-  // 123456,78 -> 12345678
-  amount = this.removeComma(amount);
-  if (!isNumeric(amount)) {
-
-    // Invalid amount
-    if (this.isClassDefined(`label-${className}`)) {
-
-      document.querySelector(`.label-${className}`).outerHTML =
-        `<div class="label-${className}-red">
-            * Ugyldig ${labelText}
-          </div>`;
-    }
-    isValidAmount = false;
-  } else {
-
-    if (this.isClassDefined(`label-${className}-red`)) {
-
-      document.querySelector(`.label-${className}-red`).outerHTML =
-        `<div class="label-${className} label-${className}">
-            * ${labelText}
-          </div>`;
-    }
-    isValidAmount = true;
-  }
-  return isValidAmount;
-}
-*/
-
 // Validate number
-function checkNumber(number, min, max, className, labelText) {
+function validateNumber(number, min, max, className, labelText) {
 
   let isValidNumber = true;
   number = Number(number);

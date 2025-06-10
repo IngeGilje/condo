@@ -68,7 +68,7 @@ socket.onmessage = (event) => {
   if (message.includes('"NOK"')) {
 
     createImportFileArray(message);
-    showAccountMovement();
+    showBankAccountMovement();
     showLeadingText();
     showValues(1);
   }
@@ -82,7 +82,9 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Validate user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
+    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) 
+    ? '' 
+    : window.location.href('http://localhost/condo-login.html');
 
     // username and password is ok
     // Sends a request to the server to get all condos
@@ -234,7 +236,9 @@ function createEvents() {
 
   // Select import file id
   document.addEventListener('change', (event) => {
+
     if (event.target.classList.contains('select-importfile-importFileId')) {
+
       const importFileId = Number(document.querySelector('.select-importfile-importFileId').value);
       if (importFileId > 0) {
         showValues(importFileId);
@@ -250,7 +254,7 @@ function createEvents() {
       const rowNumber =
         Number(document.querySelector(".select-importfile-importFileId").value);
 
-      showAccountMovement();
+      showBankAccountMovement();
       showValues(rowNumber);
     };
   });
@@ -259,8 +263,12 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-importfile-updateBankAccountMovements')) {
 
-      updateBankAccountMovement();
-    };
+      updateBankAccountMovements();
+      resetBankAccountMovements();
+      document.querySelector(".button-importfile-updateBankAccountMovements").remove();
+      document.querySelector(".button-importfile-updateImportArray").remove();
+      removeBankAccountImportLine();
+    }
   });
 }
 
@@ -381,7 +389,7 @@ function resetValues() {
     true;
 }
 
-function showAccountMovement() {
+function showBankAccountMovement() {
 
   let sumColumnIncome = 0;
   let sumColumnPayment = 0;
@@ -532,14 +540,51 @@ function showAccountMovement() {
   });
 
   // Sum row
+
+  // Opening balance
   htmlColumnChange +=
     `
-      <div>
+      <div class =
+        sumCellLeft
+      >
+       Utg.balanse 
       </div>
     `;
+
+  // Opening balance
+  const openingBalance =
+    getOpeningBalance();
+  const formatedOpeningBalance =
+    formatFromOreToKroner(openingBalance);
+  htmlColumnAccountName +=
+    `
+      <div class =
+        sumCellRight
+      >
+        ${formatedOpeningBalance}
+      </div>
+    `;
+
+  // Opening balance date
+  const openingBalanceDate =
+    getOpeningBalanceDate();
+  const formatedOpeningBalanceDate =
+    convertToEurDateFormat(openingBalanceDate);
   htmlColumnAccountingDate +=
     `
-      <div>
+      <div class =
+        sumCellRight
+      >
+        ${formatedOpeningBalanceDate}
+      </div>
+    `;
+
+  htmlColumnCondoName +=
+    `
+      <div class =
+        sumCellRight
+      >
+        -
       </div>
     `;
 
@@ -570,9 +615,18 @@ function showAccountMovement() {
       </div>
     `;
 
+  // Utgående balanse
+  let closingBalanse =
+    Number(openingBalance) + sumColumnIncome + sumColumnPayment;
+  closingBalanse =
+    formatFromOreToKroner(closingBalanse);
   htmlColumnText +=
-    `
-      <div>
+    `<div class=
+        "
+          sumCellRight
+        "
+      >
+        ${closingBalanse}
       </div>
     `;
 
@@ -675,7 +729,7 @@ function createImportFileArray(fileContent) {
 }
 
 // Update Bank Account Movement table
-function updateBankAccountMovement() {
+function updateBankAccountMovements() {
 
   importFileArray.forEach((record) => {
 
@@ -707,12 +761,14 @@ function updateIncomeRow(rowNumber) {
     const lastUpdate = now.toISOString();
 
     const condoId =
-      ((Number(importFileArray[rowNumber].condoId)) === 0)
+      (((Number(importFileArray[rowNumber].condoId)) === 0)
+        || ((importFileArray[rowNumber].condoId) === ''))
         ? 1
         : Number(importFileArray[rowNumber].condoId);
 
     const accountId =
-      ((Number(importFileArray[rowNumber].accountId)) === 0)
+      (((Number(importFileArray[rowNumber].accountId)) === 0)
+        || ((importFileArray[rowNumber].accountId) === ''))
         ? 1
         : Number(importFileArray[rowNumber].accountId);
 
@@ -724,67 +780,6 @@ function updateIncomeRow(rowNumber) {
 
     const text =
       importFileArray[rowNumber].text;
-
-    /*
-    // Check if income exist
-    const objectNumberIncome = incomeArray.findIndex(income => income.incomeId === incomeId);
-    if (objectNumberIncome > 0) {
-
-      // Find current values for income to update
-      const accountmovementCondoId = incomeArray[objectNumberIncome].condoId;
-      const accountmovementAccountId = incomeArray[objectNumberIncome].accountId;
-      const accountmovementAmount = incomeArray[objectNumberIncome].amount;
-      const accountmovementDate = incomeArray[objectNumberIncome].accountingDate;
-      const accountmovementText = incomeArray[objectNumberIncome].text;
-
-      // Update income table
-      SQLquery = `
-        UPDATE income
-        SET 
-          user = '${objUserPassword.email}',
-          lastUpdate = '${lastUpdate}',
-          condoId = ${condoId},
-          accountId = ${accountId},
-          amount = '${amount}',
-          date = '${date}',
-          text = '${text}'
-        WHERE incomeId = ${incomeId};
-      `;
-
-      // Client sends a request to the server
-      socket.send(SQLquery);
-
-      // Find accountmovement Id
-      const accountMovementId = getAccountMovementId(
-        accountmovementCondoId,
-        accountmovementAccountId,
-        accountmovementAmount,
-        accountmovementDate,
-        accountmovementText
-      );
-
-      if (accountMovementId >= 0) {
-        // Update accountmovement
-        SQLquery = `
-        UPDATE accountmovement
-        SET 
-          condominiumId = ${objUserPassword.condominiumId},
-          user = '${objUserPassword.email}',
-          lastUpdate = '${lastUpdate}',
-          condoId = ${condoId},
-          accountId = ${accountId},
-          amount = '${amount}',
-          date = '${date}',
-          text = '${text}'
-        WHERE accountMovementId = ${accountMovementId};
-      `;
-
-        // Client sends a request to the server
-        socket.send(SQLquery);
-      }
-
-    } else {
-    */
 
     SQLquery =
       `
@@ -861,12 +856,14 @@ function updatePaymentRow(rowNumber) {
     const lastUpdate = now.toISOString();
 
     const condoId =
-      ((Number(importFileArray[rowNumber].condoId)) === 0)
+      (((Number(importFileArray[rowNumber].condoId)) === 0)
+        || ((importFileArray[rowNumber].condoId) === ''))
         ? 1
         : Number(importFileArray[rowNumber].condoId);
 
     const accountId =
-      ((Number(importFileArray[rowNumber].accountId)) === 0)
+      (((Number(importFileArray[rowNumber].accountId)) === 0)
+        || ((importFileArray[rowNumber].accountId) === ''))
         ? 1
         : Number(importFileArray[rowNumber].accountId);
 
@@ -880,31 +877,6 @@ function updatePaymentRow(rowNumber) {
 
     const text =
       importFileArray[rowNumber].text;
-
-    /*
-    // Check if payment exist
-    const objectNumberPayment = paymentArray.findIndex(payment => payment.paymentId === paymentId);
-    if (objectNumberPayment > 0) {
-
-      // Update payment table
-      SQLquery = `
-        UPDATE payment
-        SET 
-          user = '${objUserPassword.email}',
-          lastUpdate = '${lastUpdate}',
-          accountId = ${accountId},
-          amount = '${amount}',
-          numberKWHour = '${numberKWHour}',
-          date = '${date}',
-          text = '${text}'
-        WHERE paymentId = ${paymentId};
-      `;
-
-      // Client sends a request to the server
-      socket.send(SQLquery);
-
-    } else {
-    */
 
     SQLquery = `
         INSERT INTO payment (
@@ -960,7 +932,7 @@ function updatePaymentRow(rowNumber) {
   }
 }
 
-// Opdate opening balance
+// Update opening balance
 function updateOpeningBalance() {
 
   let bankAccountId = 0;
@@ -1015,4 +987,100 @@ function updateOpeningBalance() {
       socket.send(SQLquery);
     }
   });
+}
+
+// Get opening balance
+function getOpeningBalance() {
+
+  openingBalance = 0;
+
+  textFile.forEach((record) => {
+
+    [accountingDate, Rentedato, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
+      record.split(';');
+
+    if (accountingDate.includes("DRIFT.")) {
+
+      // remove first and last " in text
+      accountingDate = accountingDate.replace(/\./g, "");
+      accountingDate = accountingDate.replace(/\"/g, "");
+      accountingDate = accountingDate.replace(/ /g, "");
+
+      [text, bankAccountNumber] =
+        accountingDate.split(',');
+
+      objBankAccountId =
+        (bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
+      openingBalance = bankAccountArray[objBankAccountId].openingBalance;
+    }
+  });
+
+  return openingBalance;
+}
+
+// Get opening balance date
+function getOpeningBalanceDate() {
+
+  openingBalance = 0;
+
+  textFile.forEach((record) => {
+
+    [accountingDate, Rentedato, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
+      record.split(';');
+
+    if (accountingDate.includes("DRIFT.")) {
+
+      // remove first and last " in text
+      accountingDate = accountingDate.replace(/\./g, "");
+      accountingDate = accountingDate.replace(/\"/g, "");
+      accountingDate = accountingDate.replace(/ /g, "");
+
+      [text, bankAccountNumber] =
+        accountingDate.split(',');
+
+      objBankAccountId =
+        (bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
+      openingBalanceDate = bankAccountArray[objBankAccountId].openingBalanceDate;
+    }
+  });
+
+  return openingBalanceDate;
+}
+
+// reset Bank Account Movements
+function resetBankAccountMovements() {
+
+  // Show columns
+  document.querySelector(".div-importfile-columnChange").innerHTML =
+    '';
+  document.querySelector(".div-importfile-columnAccountingDate").innerHTML =
+    '';
+  document.querySelector(".div-importfile-columnCondoName").innerHTML =
+    '';
+  document.querySelector(".div-importfile-columnAccountName").innerHTML =
+    '';
+  document.querySelector(".div-importfile-columnIncome").innerHTML =
+    '';
+  document.querySelector(".div-importfile-columnPayment").innerHTML =
+    '';
+  document.querySelector(".div-importfile-columnText").innerHTML =
+    '';
+}
+
+function removeBankAccountImportLine() {
+
+  document.querySelector(".select-importfile-importFileId").remove();
+  document.querySelector(".label-importfile-importFileId").remove();
+  document.querySelector(".select-importfile-condoId").remove();
+  document.querySelector(".label-importfile-condoId").remove();
+  document.querySelector(".select-importfile-accountId").remove();
+  document.querySelector(".label-importfile-accountId").remove();
+  document.querySelector(".input-importfile-date").remove();
+  document.querySelector(".label-importfile-date").remove();
+  document.querySelector(".input-importfile-income").remove();
+  document.querySelector(".label-importfile-income").remove();
+  document.querySelector(".input-importfile-payment").remove();
+  document.querySelector(".label-importfile-payment").remove();
+  document.querySelector(".input-importfile-text").remove();
+  document.querySelector(".label-importfile-text").remove();
 }

@@ -379,7 +379,7 @@ function validateValues(dueId) {
   const condoId =
     document.querySelector('.select-due-condoId').value;
   const validCondoId =
-    checkNumber(condoId, 1, 99999, 'due-condoId', 'Leilighet');
+    validateNumber(condoId, 1, 99999, 'due-condoId', 'Leilighet');
 
   // Check for valid date
   const date =
