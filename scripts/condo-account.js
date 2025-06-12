@@ -4,8 +4,8 @@
 const objUser = new User('user');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
-let objUserPassword = Object;
 
+/*
 let isEventsCreated = false;
 
 let socket;
@@ -37,113 +37,127 @@ objAccount.markSelectedMenu('Konto');
 
 // Send a message to the server
 socket.onopen = () => {
+*/
 
-  // Sends a request to the server to get all users
-  const SQLquery = `
+let isEventsCreated = false;
+
+objAccount.menu();
+objAccount.markSelectedMenu('Konto');
+
+let socket = connectingToServer();
+
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('account-login');
+} else {
+
+  // Send a message to the server
+  socket.onopen = () => {
+    // Sends a request to the server to get all users
+    const SQLquery = `
     SELECT * FROM user
     ORDER BY userId;
   `;
-  socket.send(SQLquery);
-};
-
-// Handle incoming messages from server
-socket.onmessage = (event) => {
-
-  let message = event.data;
-
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
-
-    console.log('userTable');
-
-    // user array including objects with user information
-    userArray = JSON.parse(message);
-
-    // Validate user/password
-    objUserPassword = JSON.parse(localStorage.getItem('user'));
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
-
-    // username and password is ok
-    const SQLquery = `
-    SELECT * FROM bankaccount
-    ORDER BY name;
-  `;
     socket.send(SQLquery);
-  }
+  };
 
-  // Create bank account array including objets
-  if (message.includes('"tableName":"bankaccount"')) {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-    // bank account table
+    let message = event.data;
 
-    console.log('bankaccountTable');
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    // array including objects with account information
-    bankAccountArray = JSON.parse(message);
+      console.log('userTable');
 
-    // Sends a request to the server to get all accounts
-    //objAccount.getAccounts(socket);
-    const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
-    socket.send(SQLquery);
-  }
+      // user array including objects with user information
+      userArray = JSON.parse(message);
 
-  // Create account array including objets
-  if (message.includes('"tableName":"account"')) {
-
-    console.log('accountTable');
-    // account table
-
-    // array including objects with account information
-    accountArray = JSON.parse(message);
-
-    // Show leading text
-    const accountId = objAccount.getSelectedAccountId('account-accountId');
-    showLeadingText(accountId);
-
-    // Show all values for account
-    showValues(accountId);
-
-    // Make events
-    if (!isEventsCreated) {
-      createEvents();
-      isEventsCreated = true;
+      // Sends a request to the server to get all bankaccounts
+      const SQLquery =
+        `
+          SELECT * FROM bankaccount
+          ORDER BY name;
+        `;
+      socket.send(SQLquery);
     }
-  }
 
-  // Check for update and delete
-  if (message.includes('"fieldCount":0')) {
+    // Create bank account array including objets
+    if (message.includes('"tableName":"bankaccount"')) {
 
-    // Query didn't return any fields
-    console.log('fieldCount');
-  }
+      // bank account table
 
-  // Check for update and delete
-  if (message.includes('"affectedRows":1')) {
+      console.log('bankaccountTable');
 
-    // One row was affected by the query
-    console.log('affectedRows');
+      // array including objects with account information
+      bankAccountArray = JSON.parse(message);
 
-    // Sends a request to the server to get all accounts
-    const SQLquery = `
+      // Sends a request to the server to get all accounts
+      const SQLquery = `
       SELECT * FROM account
       ORDER BY accountId;
     `;
-    socket.send(SQLquery);
+      socket.send(SQLquery);
+    }
+
+    // Create account array including objets
+    if (message.includes('"tableName":"account"')) {
+
+      console.log('accountTable');
+      // account table
+
+      // array including objects with account information
+      accountArray = JSON.parse(message);
+
+      // Show leading text
+      const accountId = objAccount.getSelectedAccountId('account-accountId');
+      showLeadingText(accountId);
+
+      // Show all values for account
+      showValues(accountId);
+
+      // Make events
+      if (!isEventsCreated) {
+        createEvents();
+        isEventsCreated = true;
+      }
+    }
+
+    // Check for update and delete
+    if (message.includes('"fieldCount":0')) {
+
+      // Query didn't return any fields
+      console.log('fieldCount');
+    }
+
+    // Check for update and delete
+    if (message.includes('"affectedRows":1')) {
+
+      // One row was affected by the query
+      console.log('affectedRows');
+
+      // Sends a request to the server to get all accounts
+      const SQLquery = `
+      SELECT * FROM account
+      ORDER BY accountId;
+    `;
+      socket.send(SQLquery);
+    }
+  };
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
   }
-};
 
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
+  // Handle disconnection
+  socket.onclose = () => {
+  }
 }
 
 // Make events for accounts

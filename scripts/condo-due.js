@@ -61,10 +61,6 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Validate user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
-
-    // username and password is ok
     // Sends a request to the server to get all condos
     const SQLquery = `
       SELECT * FROM condo

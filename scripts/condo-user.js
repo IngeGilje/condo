@@ -4,122 +4,106 @@
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
-
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
-
 let isEventsCreated = false;
 
-objUser.menu();
-objUser.markSelectedMenu('Bruker');
+objCondo.menu();
+objCondo.markSelectedMenu('Leilighet');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
 
-  // Send a request to the server to get all condos
-  const SQLquery = `
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('condo-login');
+} else {
+
+  let isEventsCreated = false;
+
+  objUser.menu();
+  objUser.markSelectedMenu('Bruker');
+
+  // Send a message to the server
+  socket.onopen = () => {
+
+    // Send a request to the server to get all condos
+    const SQLquery = `
     SELECT * FROM condo
     ORDER BY condoId;
   `;
-  socket.send(SQLquery);
-};
-
-// Handle incoming messages from server
-socket.onmessage = (event) => {
-
-  let message = event.data;
-
-  // Create condo array including objets
-  if (message.includes('"tableName":"condo"')) {
-
-    // condo table
-    console.log('condoTable');
-
-    // array including objects with user information
-    condoArray = JSON.parse(message);
-
-    // Send a request to the server to get all users
-    const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
     socket.send(SQLquery);
-  }
+  };
 
-  // Create condo array including objets
-  if (message.includes('"tableName":"user"')) {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-    // user table
-    console.log('userTable');
+    let message = event.data;
 
-    // array including objects with user information
-    userArray = JSON.parse(message);
+    // Create condo array including objets
+    if (message.includes('"tableName":"condo"')) {
 
-    // Validate user/password
-    objUserPassword = JSON.parse(localStorage.getItem('user'));
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
+      // condo table
+      console.log('condoTable');
 
-    // username and password is ok
-    // Show leading texts
-    let userId = objUser.getSelectedUserId('select-user-userId');
-    showLeadingText(userId);
+      // array including objects with condo information
+      condoArray = JSON.parse(message);
 
-    // Show all values for all user
-    showValues(userId);
-
-    // Make events
-    if (!isEventsCreated) {
-      createEvents();
-      isEventsCreated = true;
+      // Send a request to the server to get all users
+      const SQLquery =
+        `
+          SELECT * FROM user
+          ORDER BY userId;
+        `;
+      socket.send(SQLquery);
     }
-  }
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+    // Create condo array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    console.log('affectedRows');
+      // user table
+      console.log('userTable');
 
-    // Sends a request to the server to get all users
-    const SQLquery = `
+      // array including objects with user information
+      userArray = JSON.parse(message);
+
+      // Show leading texts
+      let userId = objUser.getSelectedUserId('select-user-userId');
+      showLeadingText(userId);
+
+      // Show all values for all user
+      showValues(userId);
+
+      // Make events
+      if (!isEventsCreated) {
+        createEvents();
+        isEventsCreated = true;
+      }
+    }
+
+    // Check for update, delete ...
+    if (message.includes('"affectedRows":1')) {
+
+      console.log('affectedRows');
+
+      // Sends a request to the server to get all users
+      const SQLquery = `
         SELECT * FROM user
         ORDER BY userId;
       `;
-    socket.send(SQLquery);
+      socket.send(SQLquery);
+    }
+  };
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
   }
-};
 
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
+  // Handle disconnection
+  socket.onclose = () => {
+  }
 }
 
 // Make events for users
@@ -196,10 +180,6 @@ function updateUser(userId) {
 
   if (validateValues(userId)) {
 
-    // user id
-    //const userId =
-    //  Number(document.querySelector('.select-user-userId').value);
-
     // e-mail
     const email =
       document.querySelector('.input-user-email').value;
@@ -220,7 +200,7 @@ function updateUser(userId) {
     const phone =
       document.querySelector('.input-user-phone').value;
 
-    // bank account
+    // bank account id
     const bankAccount =
       document.querySelector('.input-user-bankAccount').value;
 
@@ -362,7 +342,7 @@ function showLeadingText(userId) {
   // Phone
   objUser.showInput('user-phone', 'Telefonnummer', 20, '');
 
-  // BankAccount
+  // bank account
   objUser.showInput('user-bankAccount', 'Bankkonto', 11, '');
 
   // Select securityLevel
@@ -416,8 +396,8 @@ function showValues(userId) {
       document.querySelector('.input-user-phone').value =
         userArray[objectNumberUser].phone;
 
-      // Show bankAccount
-      document.querySelector('.input-user-bankAccount').value =
+      // Show bank account
+      document.querySelector('.select-user-bankAccount').value =
         userArray[objectNumberUser].bankAccount;
 
       // show securityLevel
@@ -438,7 +418,7 @@ function validateValues(userId) {
   const eMail = document.querySelector('.input-user-email').value;
   const validEmail = objUser.validateEmail(eMail, "label-user-email", "E-mail(Bruker)");
 
-  // Check bank condo Id
+  // Check condo Id
   const condoId =
     Number(document.querySelector('.select-user-condoId').value);
   const validCondoId =
@@ -457,8 +437,8 @@ function validateValues(userId) {
   //const validPhone = objUser.validateText(phone, "label-user-phone", "Telefonnummer");
 
   // Check bank account
-  const bankAccount = document.querySelector('.input-user-bankAccount').value;
-  const validBankAccount = objUser.validateText(bankAccount, "label-user-bankAccount", "Bankkonto");
+  const bankAccount = document.querySelector('.select-user-bankAccount').value;
+  const validBankAccount = objUser.validateNumber(bankAccount, "label-user-bankAccount", "Konto");
 
   const securityLevel =
     Number(document.querySelector('.select-user-securityLevel').value);
@@ -469,7 +449,7 @@ function validateValues(userId) {
   const password = document.querySelector('.input-user-password').value;
   const validpassword = objUser.validateText(password, "label-user-password", "Passord");
 
-  return (validBankAccount && validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
+  return (validAccount && validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
 }
 
 function resetValues() {
@@ -507,8 +487,8 @@ function resetValues() {
     '';
 
   // reset bank account
-  document.querySelector('.input-user-bankAccount').value =
-    '';
+  document.querySelector('.select-user-bankAccount').value =
+    0;
 
   document.querySelector('.select-user-userId').disabled =
     true;

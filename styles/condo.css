@@ -6,6 +6,7 @@
 }
 
 /* Define the grid container */
+.div-grid-userbankaccount,
 .div-grid-supplier,
 .div-grid-importfile,
 .div-grid-condo,
@@ -38,6 +39,7 @@
 }
 
 /* grid container 3 columns */
+.div-grid-userbankaccount,
 .div-grid-bankaccount,
 .div-grid-supplier,
 .div-grid-user,
@@ -76,16 +78,17 @@
   grid-template-columns: 200px 200px 100px 100px 150px 100px 100px 150px;
 }
 
-/* Define the grid container with 9 columns*/
+/* Define the grid container with 10 columns*/
 .div-grid-importfile {
-  grid-template-columns: 200px 200px 100px 100px 50px 150px 150px 100px 200px;
+  grid-template-columns: 200px 200px 50px 100px 50px 150px 150px 150px 100px 200px;
 }
 
-.div-importfile-columnChange,
+.div-importfile-columnLineNumber,
 .div-importfile-columnAccountingDate,
 .div-importfile-columnCondoName,
 .div-importfile-columnAccountName,
-.div-importfile-columnIncome,
+.div-importfile-columnFromBankAccount,
+.div-importfile-columnToBankAccount,
 .div-importfile-columnPayment,
 .div-importfile-columnText,
 
@@ -119,7 +122,7 @@
   padding: 2px;
 }
 
-.div-importfile-columnChange,
+.div-importfile-columnLineNumber,
 .div-income-columnIncomeId,
 .div-overview-columnDueDate,
 .div-remoteheating-columnDate {
@@ -150,19 +153,23 @@
   grid-column-start: 6;
 }
 
-.div-importfile-columnIncome,
+.div-importfile-columnFromBankAccount,
 .div-payment-columnText,
 .div-overview-columnIncomeAmount {
   grid-column-start: 7;
 }
 
-.div-importfile-columnPayment,
+.div-importfile-columnToBankAccount,
 .div-overview-columnIncomeText {
   grid-column-start: 8;
 }
 
-.div-importfile-columnText {
+.div-importfile-columnPayment {
   grid-column-start: 9;
+}
+
+.div-importfile-columnText {
+  grid-column-start: 10;
 }
 
 /* menu */
@@ -272,6 +279,7 @@
   grid-column-start: 7;
 }
 
+.a-menu-vertical-userbankaccount,
 .a-menu-vertical-supplier,
 .a-menu-vertical-importfile,
 .a-menu-vertical-login,
@@ -299,6 +307,7 @@
   font-size: 16px;
 }
 
+.a-menu-vertical-userbankaccount-green,
 .a-menu-vertical-supplier-green,
 .a-menu-vertical-importfile-green,
 .a-menu-vertical-login-green,
@@ -354,6 +363,7 @@
 }
 
 /* label */
+.div-grid-userbankaccount label,
 .div-grid-supplier label,
 .div-grid-importfile label,
 .div-grid-user label,
@@ -403,6 +413,8 @@
 }
 
 /* input */
+.a-condo-login,
+.div-grid-userbankaccount input,
 .div-grid-supplier input,
 .div-grid-importfile input,
 .div-grid-user input,
@@ -477,6 +489,7 @@
 }
 
 /* select */
+.div-grid-userbankaccount select,
 .div-grid-supplier select,
 .div-grid-importfile select,
 .div-grid-user select,
@@ -569,6 +582,7 @@
 }
 
 /* button */
+.div-grid-userbankaccount button,
 .div-grid-supplier button,
 .div-grid-importfile button,
 .div-grid-user button,
@@ -595,6 +609,7 @@
 }
 
 /* Darker green on hover */
+.div-grid-userbankaccount button:hover,
 .div-grid-supplier button:hover,
 .div-grid-importfile button:hover,
 .div-grid-user button:hover,
@@ -632,6 +647,9 @@
 }
 
 /* Gray for disabled state */
+.div-grid-userbankaccount select:disabled,
+.div-grid-userbankaccount button:disabled,
+
 .div-grid-supplier select:disabled,
 .div-grid-supplier button:disabled,
 
@@ -891,8 +909,17 @@
   transition: background-color 0.3s ease;
 }
 
+/* green back ground */
 .green {
   background-color: #4CAF50;
+  opacity: 0.5;
+  color: white;
+}
+
+/* red back ground */
+.a-condo-login,
+.red {
+  background-color: red;
   opacity: 0.5;
   color: white;
 }

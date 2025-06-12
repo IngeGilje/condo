@@ -62,10 +62,6 @@ socket.onmessage = (event) => {
     // user array including objects with user information
     userArray = JSON.parse(message);
 
-    // Validate user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
-
-    // username and password is ok
     // Sends a request to the server to get all accounts
     const SQLquery = `
     SELECT * FROM account
@@ -520,7 +516,7 @@ function validateValues() {
   const postalCode = document.querySelector('.input-condominium-postalCode').value;
   const validPostalCode = objCondominium.validatePostalCode(postalCode, "label-condominium-postalCode", "Postnummer");
 
-  // Check city
+  // Validate city
   const city = document.querySelector('.input-condominium-city').value;
   const validCity = objCondominium.validateText(city, "label-condominium-city", "Poststed");
 
@@ -531,12 +527,6 @@ function validateValues() {
   // Check organization number
   const organizationNumber = document.querySelector('.input-condominium-organizationNumber').value;
   const validOrganizationNumber = checkOrganizationNumber(organizationNumber, "condominium-organizationNumber", "organisasjonsnummer");
-
-  /*
-  // Check bankaccount number
-  const bankAccount = document.querySelector('.select-condominium-bankAccountId').value;
-  const validbankAccount = validateBankAccount(bankAccount, "condominium-bankAccountId", "kontonummer");
-  */
 
   if (validCondominiumName
     && validStreet

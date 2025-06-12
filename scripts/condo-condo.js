@@ -1,53 +1,22 @@
 // Condo maintenance
 
-// Activate objects
+// Activate Account class
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+let isEventsCreated = false;
+
+objCondo.menu();
+objCondo.markSelectedMenu('Leilighet');
+
+let socket = connectingToServer();
 
 // Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  document.querySelector('.div-condo-login').innerHTML =
-    `
-      <a 
-        href="http://localhost/condo/condo-login.html"
-      >
-        Login
-      </a>
-    `
+  showLoginError('condo-login');
 } else {
-
-  // Connection to a server
-  let socket;
-  switch (objUser.serverStatus) {
-
-    // Web server
-    case 1: {
-      socket = new WebSocket('ws://ingegilje.no:7000');
-      break;
-    }
-    // Test web server/ local web server
-    case 2: {
-      socket = new WebSocket('ws://localhost:7000');
-      break;
-    }
-    // Test server/ local test server
-    case 3: {
-      const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-      const hostname = window.location.hostname || 'localhost';
-      socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-      break;
-    }
-    default:
-      break;
-  }
-
-  let isEventsCreated = false;
-
-  objCondo.menu();
-  objCondo.markSelectedMenu('Leilighet');
 
   // Send a message to the server
   socket.onopen = () => {
@@ -73,7 +42,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // user array including objects with user information
       userArray = JSON.parse(message);
 
-      // username and password is ok
       // Sends a request to the server to get all condos
       const SQLquery = `
       SELECT * FROM condo
@@ -135,65 +103,64 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
+}
+// Make events for condo
+function condoEvents() {
 
-  // Make events for condo
-  function condoEvents() {
+  // Select condo
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-condo-condoId')) {
 
-    // Select condo
-    document.addEventListener('change', (event) => {
-      if (event.target.classList.contains('select-condo-condoId')) {
+      showValues(Number(event.target.value));
+    }
+  });
 
-        showValues(Number(event.target.value));
-      }
-    });
+  // Update condo
+  document.addEventListener('click', (event) => {
 
-    // Update condo
-    document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-condo-update')) {
 
-      if (event.target.classList.contains('button-condo-update')) {
+      const condoId = Number(document.querySelector('.select-condo-condoId').value);
+      updateCondoRow(condoId);
+    }
+  });
 
-        const condoId = Number(document.querySelector('.select-condo-condoId').value);
-        updateCondoRow(condoId);
-      }
-    });
+  // New condo
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-condo-new')) {
+      resetValues();
+    }
+  });
 
-    // New condo
-    document.addEventListener('click', (event) => {
-      if (event.target.classList.contains('button-condo-new')) {
-        resetValues();
-      }
-    });
+  // Delete condo
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-condo-delete')) {
 
-    // Delete condo
-    document.addEventListener('click', (event) => {
-      if (event.target.classList.contains('button-condo-delete')) {
+      deleteCondoRow();
 
-        deleteCondoRow();
-
-        // Sends a request to the server to get all condos
-        //objCondo.getCondos(socket);
-        const SQLquery = `
+      // Sends a request to the server to get all condos
+      //objCondo.getCondos(socket);
+      const SQLquery = `
         SELECT * FROM condo
         ORDER BY condoId;
       `;
-        socket.send(SQLquery);
-      }
-    });
+      socket.send(SQLquery);
+    }
+  });
 
-    // Cancel
-    document.addEventListener('click', (event) => {
-      if (event.target.classList.contains('button-condo-cancel')) {
+  // Cancel
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-condo-cancel')) {
 
-        // Sends a request to the server to get all condos
-        //objCondo.getCondos(socket);
-        const SQLquery = `
+      // Sends a request to the server to get all condos
+      //objCondo.getCondos(socket);
+      const SQLquery = `
         SELECT * FROM condo
         ORDER BY condoId;
       `;
-        socket.send(SQLquery);
-      }
-    });
-  }
+      socket.send(SQLquery);
+    }
+  });
 }
 
 function updateCondoRow(condoId) {
@@ -214,12 +181,6 @@ function updateCondoRow(condoId) {
       document.querySelector('.input-condo-city').value;
     const address2 =
       document.querySelector('.input-condo-address2').value;
-    /*
-    const phone =
-      document.querySelector('.input-condo-phone').value;
-    const email =
-      document.querySelector('.input-condo-email').value;
-    */
 
     // current date
     const now = new Date();
@@ -451,15 +412,9 @@ function validateValues() {
   const postalCode = document.querySelector('.input-condo-postalCode').value;
   const validPostalCode = objCondo.validatePostalCode(postalCode, "label-condo-postalCode", "Postnummer");
 
-  // Check city
+  // Validate city
   const city = document.querySelector('.input-condo-city').value;
   const validCity = objCondo.validateText(city, "label-condo-city", "Poststed");
-
-  /*
-  // Check email
-  const eMail = document.querySelector('.input-condo-email').value;
-  const validEmail = objCondo.validateEmail(eMail, "label-condo-email", "E-mail");
-  */
 
   if (validCondoName
     && validStreet

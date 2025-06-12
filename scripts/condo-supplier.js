@@ -62,11 +62,6 @@ socket.onmessage = (event) => {
     // array including objects with user information
     userArray = JSON.parse(message);
 
-    // Validate user/password
-    objUserPassword = JSON.parse(localStorage.getItem('user'));
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
-
-    // username and password is ok
     // Send a request to the server to get all accounts
     const SQLquery = `
     SELECT * FROM account

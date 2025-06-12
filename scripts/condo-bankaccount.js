@@ -5,137 +5,115 @@ const objUser = new User('user');
 const objBankAccount = new BankAccount('bankaccount');
 const objAccount = new Account('account');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
-
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
-
 let isEventsCreated = false;
 
 objBankAccount.menu();
 objBankAccount.markSelectedMenu('Bankkonto');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
 
-  // Sends a request to the server to get all users
-  const SQLquery = `
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('bankaccount-login');
+} else {
+
+  // Send a message to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get all users
+    const SQLquery = `
     SELECT * FROM user
     ORDER BY userId;
   `;
-  socket.send(SQLquery);
-};
+    socket.send(SQLquery);
+  };
 
-// Handle incoming messages from server
-socket.onmessage = (event) => {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-  let message = event.data;
+    let message = event.data;
 
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    console.log('userTable');
+      console.log('userTable');
 
-    // user array including objects with user information
-    userArray = JSON.parse(message);
+      // user array including objects with user information
+      userArray = JSON.parse(message);
 
-    // Validate user/password
-    (objUser.validateUser(objUserPassword.email, objUserPassword.password)) ? '' : window.location.href('http://localhost/condo-login.html');
-
-    // username and password is ok
-    // Sends a request to the server to get all accounts
-    const SQLquery = `
+      // Sends a request to the server to get all accounts
+      const SQLquery = `
       SELECT * FROM account
       ORDER BY accountId;
     `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create bankaccount array including objets
-  if (message.includes('"tableName":"account"')) {
+    // Create bankaccount array including objets
+    if (message.includes('"tableName":"account"')) {
 
-    // array including objects with account information
-    accountArray = JSON.parse(message);
+      // array including objects with account information
+      accountArray = JSON.parse(message);
 
-    // Sends a request to the server to get all bank accounts
-    const SQLquery = `
+      // Sends a request to the server to get all bank accounts
+      const SQLquery = `
       SELECT * FROM bankaccount
       ORDER BY name;
     `;
-    socket.send(SQLquery);
-  }
-
-  // Create bank account array including objets
-  if (message.includes('"tableName":"bankaccount"')) {
-
-    // bankaccount table
-    console.log('bankaccountTable');
-
-    // array including objects with bankaccount information
-    bankAccountArray = JSON.parse(message);
-
-    const bankAccountId = objBankAccount.getSelectedBankAccountId('bankAccountId');
-
-    // Show leading text
-    showLeadingText(bankAccountId);
-
-    // Show all values for bankaccount
-    showValues(bankAccountId);
-
-    // Make events
-    if (!isEventsCreated) {
-      createEvents();
-      isEventsCreated = true;
+      socket.send(SQLquery);
     }
-  }
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+    // Create bank account array including objets
+    if (message.includes('"tableName":"bankaccount"')) {
 
-    console.log('affectedRows');
+      // bankaccount table
+      console.log('bankaccountTable');
 
-    // Sends a request to the server to get all bank accounts
-    const SQLquery = `
+      // array including objects with bankaccount information
+      bankAccountArray = JSON.parse(message);
+
+      const bankAccountId = objBankAccount.getSelectedBankAccountId('bankAccountId');
+
+      // Show leading text
+      showLeadingText(bankAccountId);
+
+      // Show all values for bankaccount
+      showValues(bankAccountId);
+
+      // Make events
+      if (!isEventsCreated) {
+        createEvents();
+        isEventsCreated = true;
+      }
+    }
+
+    // Check for update, delete ...
+    if (message.includes('"affectedRows":1')) {
+
+      console.log('affectedRows');
+
+      // Sends a request to the server to get all bank accounts
+      const SQLquery = `
         SELECT * FROM bankaccount
         ORDER BY bankAccountId;
       `;
-    socket.send(SQLquery);
+      socket.send(SQLquery);
+    }
+  };
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
   }
-};
 
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
+  // Handle disconnection
+  socket.onclose = () => {
+  }
 }
-
-// Handle disconnection
-socket.onclose = () => {
-}
-
 // Make events for bankaccounts
 function createEvents() {
 
@@ -214,6 +192,14 @@ function updateBankAccount() {
     const openingBalanceDate =
       document.querySelector('.input-bankaccount-openingBalanceDate').value;
 
+    // Closing balance
+    const closingBalance =
+      document.querySelector('.input-bankaccount-closingBalance').value;
+
+    // Closing balance date
+    const closingBalanceDate =
+      document.querySelector('.input-bankaccount-closingBalanceDate').value;
+
     if (bankAccountId >= 0) {
 
       let SQLquery = '';
@@ -234,7 +220,9 @@ function updateBankAccount() {
             bankAccount = '${bankAccount}',
             name = '${name}',
             openingBalance = '${openingBalance}',
-            openingBalanceDate = '${openingBalanceDate}'
+            openingBalanceDate = '${openingBalanceDate}',
+            closingBalance = '${closingBalance}',
+            closingBalanceDate = '${closingBalanceDate}'
           WHERE bankAccountId = ${bankAccountId};
         `;
       } else {
@@ -249,7 +237,9 @@ function updateBankAccount() {
           bankAccount,
           name,
           openingBalance, 
-          openingBalanceDate
+          openingBalanceDate,
+          closingBalance, 
+          closingBalanceDate
         ) 
         VALUES (
           'bankaccount',
@@ -259,7 +249,9 @@ function updateBankAccount() {
           '${bankAccount}',
           '${name}',
           '${openingBalance}',
-          '${openingBalanceDate}'
+          '${openingBalanceDate}',
+          '${closingBalance}',
+          '${closingBalanceDate}'
         );
       `;
       }
@@ -325,6 +317,12 @@ function showLeadingText(bankAccountId) {
   // Opening balance date
   objBankAccount.showInput('bankaccount-openingBalanceDate', 'Dato', 10, '');
 
+  // Closing balance
+  objBankAccount.showInput('bankaccount-closingBalance', 'Utgående saldo', 10, '');
+
+  // Closing balance date
+  objBankAccount.showInput('bankaccount-closingBalanceDate', 'Dato', 10, '');
+
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
     objBankAccount.showButton('bankaccount-update', 'Oppdater');
@@ -369,6 +367,14 @@ function showValues(bankAccountId) {
       // opening balance
       document.querySelector('.input-bankaccount-openingBalance').value =
         formatFromOreToKroner(bankAccountArray[objectbankAccountId].openingBalance);
+
+      // closing balance date
+      document.querySelector('.input-bankaccount-closingBalanceDate').value =
+        convertToEurDateFormat(bankAccountArray[objectbankAccountId].closingBalanceDate);
+
+      // closing balance
+      document.querySelector('.input-bankaccount-closingBalance').value =
+        formatFromOreToKroner(bankAccountArray[objectbankAccountId].closingBalance);
     }
   }
 }
@@ -384,22 +390,7 @@ function validateValues() {
   const name = document.querySelector('.input-bankaccount-name').value;
   const validName = objBankAccount.validateText(name, "label-bankaccount-name", "Kontonavn");
 
-  // Opening balance
-  let validOpeningBalance = true;
-  const openingBalance =
-    document.querySelector('.input-bankaccount-openingBalance').value;
-  if (openingBalance) {
-    validOpeningBalance = objBankAccount.validateAmount(openingBalance, "bankaccount-openingBalance", "Inng. saldo");
-  }
-  // Opening balance date
-  let validOpeningBalanceDate = true;
-  const openingBalanceDate =
-    document.querySelector('.input-bankaccount-openingBalanceDate').value;
-  if (openingBalanceDate) {
-    validOpeningBalanceDate = objBankAccount.alidateEuroDateFormat(openingBalanceDate, "label-bankaccount-openingBalance", "Dato");
-  }
-
-  return (validName && validBankAccount && validOpeningBalance && validOpeningBalanceDate) ? true : false;
+  return (validName && validBankAccount) ? true : false;
 }
 
 function resetValues() {
@@ -422,6 +413,14 @@ function resetValues() {
 
   // Opening balance date
   document.querySelector('.input-bankaccount-openingBalanceDate').value =
+    '';
+
+  // Closing balance
+  document.querySelector('.input-bankaccount-closingBalance').value =
+    '';
+
+  // Closing balance date
+  document.querySelector('.input-bankaccount-closingBalanceDate').value =
     '';
 
   document.querySelector('.select-bankaccount-bankAccountId').disabled =
