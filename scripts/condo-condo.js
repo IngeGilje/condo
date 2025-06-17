@@ -4,6 +4,8 @@
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 
+testMode();
+
 let isEventsCreated = false;
 
 objCondo.menu();
@@ -60,7 +62,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       condoArray = JSON.parse(message);
 
       // Sort condo name
-      condoArray.sort((a, b) => a.condoName.localeCompare(b.condoName));
+      condoArray.sort((a, b) => a.name.localeCompare(b.name));
 
       // Find selected condo id
       const condoId = objCondo.getSelectedCondoId('condoId');
@@ -172,7 +174,7 @@ function updateCondoRow(condoId) {
   if (validateValues()) {
 
     const condoName =
-      document.querySelector('.input-condo-condoName').value;
+      document.querySelector('.input-condo-name').value;
     const street =
       document.querySelector('.input-condo-street').value;
     const postalCode =
@@ -198,7 +200,7 @@ function updateCondoRow(condoId) {
         SET 
           user = '${objUserPassword.email}',
           lastUpdate = '${lastUpdate}',
-          condoName = '${condoName}',
+          name = '${condoName}',
           street = '${street}',
           address2 = '${address2}',
           postalCode = '${postalCode}', 
@@ -214,7 +216,7 @@ function updateCondoRow(condoId) {
           condominiumId,
           user,
           lastUpdate,
-          condoName,
+          name,
           street,
           address2,
           postalCode,
@@ -254,7 +256,7 @@ function showLeadingText(condoId) {
   objCondo.showAllCondos('condo-condoId', condoId);
 
   // Show condo name
-  objCondo.showInput('condo-condoName', '* Navn', 50, '');
+  objCondo.showInput('condo-name', '* Navn', 50, '');
 
   // Show street name
   objCondo.showInput('condo-street', '* Gateadresse', 50, '');
@@ -299,8 +301,8 @@ function showValues(condoId) {
       objCondo.selectCondoId(condoId, 'condo-condoId')
 
       // Condo name
-      document.querySelector('.input-condo-condoName').value =
-        condoArray[objectNumberCondo].condoName;
+      document.querySelector('.input-condo-name').value =
+        condoArray[objectNumberCondo].name;
 
       // Show street
       document.querySelector('.input-condo-street').value =
@@ -337,7 +339,7 @@ function resetValues() {
   document.querySelector('.select-condo-condoId').value =
     '';
 
-  document.querySelector('.input-condo-condoName').value =
+  document.querySelector('.input-condo-name').value =
     '';
 
   // Show street
@@ -401,8 +403,10 @@ function deleteCondoRow() {
 function validateValues() {
 
   // Check condo name
-  const condoName = document.querySelector('.input-condo-condoName').value;
-  const validCondoName = objCondo.validateText(condoName, "label-condo-condoName", "Navn");
+  const condoName = 
+  document.querySelector('.input-condo-name').value;
+  const validCondoName = 
+  objCondo.validateText(condoName, "label-condo-name", "Navn");
 
   // Check street name
   const street = document.querySelector('.input-condo-street').value;

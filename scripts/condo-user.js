@@ -15,7 +15,7 @@ let socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('condo-login');
+  showLoginError('user-login');
 } else {
 
   let isEventsCreated = false;
@@ -200,10 +200,6 @@ function updateUser(userId) {
     const phone =
       document.querySelector('.input-user-phone').value;
 
-    // bank account id
-    const bankAccount =
-      document.querySelector('.input-user-bankAccount').value;
-
     // securityLevel
     const securityLevel =
       Number(document.querySelector('.select-user-securityLevel').value);
@@ -232,7 +228,6 @@ function updateUser(userId) {
             firstName = '${firstName}',
             lastName = '${lastName}',
             phone = '${phone}',
-            bankAccount = '${bankAccount}',
             securityLevel = ${securityLevel},
             password = '${password}'
           WHERE userId = ${userId}
@@ -252,7 +247,6 @@ function updateUser(userId) {
           firstName,
           lastName,
           phone,
-          bankAccount,
           securityLevel,
           password) 
         VALUES (
@@ -265,7 +259,6 @@ function updateUser(userId) {
           '${firstName}',
           '${lastName}',
           '${phone}',
-          '${bankAccount}',
           ${securityLevel},
           '${password}'
         );
@@ -342,9 +335,6 @@ function showLeadingText(userId) {
   // Phone
   objUser.showInput('user-phone', 'Telefonnummer', 20, '');
 
-  // bank account
-  objUser.showInput('user-bankAccount', 'Bankkonto', 11, '');
-
   // Select securityLevel
   objUser.selectNumber('user-securityLevel', 1, 9, 5, 'Sikkerhetsnivå');
 
@@ -396,10 +386,6 @@ function showValues(userId) {
       document.querySelector('.input-user-phone').value =
         userArray[objectNumberUser].phone;
 
-      // Show bank account
-      document.querySelector('.select-user-bankAccount').value =
-        userArray[objectNumberUser].bankAccount;
-
       // show securityLevel
       document.querySelector('.select-user-securityLevel').value =
         userArray[objectNumberUser].securityLevel;
@@ -432,14 +418,6 @@ function validateValues(userId) {
   const lastName = document.querySelector('.input-user-lastName').value;
   const validLastName = objUser.validateText(lastName, "label-user-lastName", "Etternavn");
 
-  // Check phone
-  //const phone = document.querySelector('.input-user-phone').value;
-  //const validPhone = objUser.validateText(phone, "label-user-phone", "Telefonnummer");
-
-  // Check bank account
-  const bankAccount = document.querySelector('.select-user-bankAccount').value;
-  const validBankAccount = objUser.validateNumber(bankAccount, "label-user-bankAccount", "Konto");
-
   const securityLevel =
     Number(document.querySelector('.select-user-securityLevel').value);
   const validSecuritylevel =
@@ -449,7 +427,7 @@ function validateValues(userId) {
   const password = document.querySelector('.input-user-password').value;
   const validpassword = objUser.validateText(password, "label-user-password", "Passord");
 
-  return (validAccount && validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
+  return (validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
 }
 
 function resetValues() {
@@ -485,10 +463,6 @@ function resetValues() {
   // reset password
   document.querySelector('.input-user-password').value =
     '';
-
-  // reset bank account
-  document.querySelector('.select-user-bankAccount').value =
-    0;
 
   document.querySelector('.select-user-userId').disabled =
     true;

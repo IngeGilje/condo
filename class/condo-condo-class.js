@@ -37,14 +37,14 @@ class Condo extends Condos {
                 value = "${condo.condoId}"
                 selected
               >
-                ${condo.condoId} - ${condo.condoName}
+                ${condo.condoId} - ${condo.name}
               </option >
             `;
           } else {
             html += `
               <option
                 value = "${condo.condoId}">
-                ${condo.condoId} - ${condo.condoName}
+                ${condo.condoId} - ${condo.name}
               </option >
             `;
           }
@@ -106,10 +106,10 @@ class Condo extends Condos {
 
   getCondoName(condoId, unKnown = 'Ukjent') {
 
-    let condoName = unKnown;
+    let condoName;
     const objectNumberCondo = condoArray.findIndex(condo => condo.condoId === condoId);
     if (objectNumberCondo > 0) {
-        condoName = condoArray[objectNumberCondo].condoName;
+        condoName = condoArray[objectNumberCondo].name;
     }
     return condoName;
   }

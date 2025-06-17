@@ -2,7 +2,7 @@
 class UserBankAccount extends Condos {
 
   // user bank account information
-  userBankAccountArray = Array;
+  userBankAccountArray = [];
 
   // Show all user bank accounts
   showAllUserBankAccounts(classValue, userBankAccountId) {
@@ -37,14 +37,14 @@ class UserBankAccount extends Condos {
               value="${userBankAccount.userBankAccountId}"
               selected
               >
-              ${userBankAccount.userBankAccountId} - ${userBankAccount.bankAccount}
+              ${userBankAccount.userBankAccountId} - ${userBankAccount.name}
             </option>
           `;
           } else {
             html += `
             <option 
               value="${userBankAccount.userBankAccountId}">
-              ${userBankAccount.userBankAccountId} - ${userBankAccount.bankAccount}
+              ${userBankAccount.userBankAccountId} - ${userBankAccount.name}
             </option>
           `;
           }

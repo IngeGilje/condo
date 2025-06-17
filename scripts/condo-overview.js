@@ -66,7 +66,7 @@ socket.onmessage = (event) => {
     // Sends a request to the server to get all condos
     const SQLquery = `
       SELECT * FROM condo
-      ORDER BY condoName;
+      ORDER BY name;
     `;
     socket.send(SQLquery);
   }

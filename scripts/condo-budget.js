@@ -5,132 +5,115 @@ const objUser = new User('user');
 const objBudget = new Budget('budget');
 const objAccount = new Account('account');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
-
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
-
 let isEventsCreated = false;
 
-objBudget.menu();
-objBudget.markSelectedMenu('Budsjett');
+objAccount.menu();
+objAccount.markSelectedMenu('Budsjett');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
 
-  // Sends a request to the server to get all users
-  const SQLquery = `
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('bankaccount-login');
+} else {
+
+  // Send a message to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get all users
+    const SQLquery = `
     SELECT * FROM user
     ORDER BY userId;
   `;
-  socket.send(SQLquery);
-};
+    socket.send(SQLquery);
+  };
 
-// Handle incoming messages from server
-socket.onmessage = (event) => {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-  let message = event.data;
+    let message = event.data;
 
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    console.log('userTable');
+      console.log('userTable');
 
-    // user array including objects with user information
-    userArray = JSON.parse(message);
+      // user array including objects with user information
+      userArray = JSON.parse(message);
 
-    // Sends a request to the server to get all accounts
-    const SQLquery = `
+      // Sends a request to the server to get all accounts
+      const SQLquery = `
       SELECT * FROM account
       ORDER BY accountId;
     `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create account array including objets
-  if (message.includes('"tableName":"account"')) {
+    // Create account array including objets
+    if (message.includes('"tableName":"account"')) {
 
-    console.log('accountTable');
-    // account table
+      console.log('accountTable');
+      // account table
 
-    // array including objects with account information
-    accountArray = JSON.parse(message);
+      // array including objects with account information
+      accountArray = JSON.parse(message);
 
-    // Sends a request to the server to get all budgets
-    //objBudget.getBudgets(socket);
-    const SQLquery = `
+      // Sends a request to the server to get all budgets
+      //objBudget.getBudgets(socket);
+      const SQLquery = `
       SELECT * FROM budget
       ORDER BY text;
     `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create budget array including objets
-  if (message.includes('"tableName":"budget"')) {
+    // Create budget array including objets
+    if (message.includes('"tableName":"budget"')) {
 
-    // budget table
+      // budget table
 
-    // array including objects with budget information
-    budgetArray = JSON.parse(message);
+      // array including objects with budget information
+      budgetArray = JSON.parse(message);
 
-    const budgetId = objBudget.getSelectedBudgetId('budgetId');
-    showLeadingText(budgetId);
-    showValues(budgetId);
+      const budgetId = objBudget.getSelectedBudgetId('budgetId');
+      showLeadingText(budgetId);
+      showValues(budgetId);
 
-    // Make events
-    if (!isEventsCreated) {
+      // Make events
+      if (!isEventsCreated) {
 
-      createEvents();
-      isEventsCreated = true;
+        createEvents();
+        isEventsCreated = true;
+      }
+    }
+
+    // Check for update, delete ...
+    if (message.includes('"affectedRows":1')) {
+
+      console.log('affectedRows');
+
+      // Sends a request to the server to get all budgets
+      //objBudget.getBudgets(socket);
+      const SQLquery = `
+      SELECT * FROM budget
+      ORDER BY text;
+    `;
+      socket.send(SQLquery);
     }
   }
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+  // Handle errors
+  socket.onerror = (error) => {
 
-    console.log('affectedRows');
-
-    // Sends a request to the server to get all budgets
-    //objBudget.getBudgets(socket);
-    const SQLquery = `
-      SELECT * FROM budget
-      ORDER BY text;
-    `;
-    socket.send(SQLquery);
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
   }
-}
 
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
+  // Handle disconnection
+  socket.onclose = () => {
+  }
 }
 
 // Make budget events

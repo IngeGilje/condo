@@ -5,39 +5,6 @@ const objUser = new User('user');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 
-/*
-let isEventsCreated = false;
-
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
-
-objAccount.menu();
-objAccount.markSelectedMenu('Konto');
-
-// Send a message to the server
-socket.onopen = () => {
-*/
 
 let isEventsCreated = false;
 
@@ -238,14 +205,17 @@ function updateAccount() {
     const bankAccountId = document.querySelector('.select-account-bankAccountId').value;
 
     // Account Name
-    const name = document.querySelector('.input-account-accountName').value;
+    const accountName = document.querySelector('.input-account-accountName').value;
 
     if (accountId >= 0) {
 
-      const now = new Date();
-      const lastUpdate = now.toISOString();
+      const now =
+       new Date();
+      const lastUpdate = 
+      now.toISOString();
 
-      const objectNumberAccount = accountArray.findIndex(account => account.accountId === accountId);
+      const objectNumberAccount = 
+      accountArray.findIndex(account => account.accountId === accountId);
 
       // Check if account number exist
       if (objectNumberAccount >= 0) {
@@ -257,7 +227,7 @@ function updateAccount() {
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             bankAccountId = ${bankAccountId},
-            name = '${name}',
+            name = '${accountName}',
             accountType = ''
           WHERE accountId = ${accountId};
         `;
@@ -280,7 +250,7 @@ function updateAccount() {
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${bankAccountId},
-          '${name}',
+          '${accountName}',
           ''
         );
       `;
@@ -309,7 +279,7 @@ function deleteAccountRow() {
 
   // Check for valid account number
   const accountId = Number(document.querySelector('.select-account-accountId').value);
-  const name = document.querySelector('.input-account-accountName').value;
+  const accountName = document.querySelector('.input-account-accountName').value;
   if (accountId !== 1) {
 
     // Check if account number exist
@@ -397,7 +367,7 @@ function validateValues() {
     validateNumber(bankAccountId, 1, 99999, "account-bankAccountId", "Vis konto");
 
   // Check account Name
-  const name =
+  const accountName =
     document.querySelector('.input-account-accountName').value;
   const validName =
     objAccount.validateText(name, "label-account-accountName", "Kontonavn");

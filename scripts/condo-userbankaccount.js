@@ -4,6 +4,8 @@
 const objUser = new User('user');
 const objUserBankAccount = new UserBankAccount('userbankaccount');
 
+testMode();
+
 let isEventsCreated = false;
 
 objUserBankAccount.menu();
@@ -18,8 +20,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   showLoginError('userbankaccount-login');
 } else {
 
-  let isEventsCreated = false;
-
   objUserBankAccount.menu();
   objUserBankAccount.markSelectedMenu('Bankkonto for bruker');
 
@@ -27,10 +27,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   socket.onopen = () => {
 
     // Send a request to the server to get all user bank accounts
-    const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
+    const SQLquery =
+      `
+        SELECT * FROM user
+        ORDER BY userId;
+      `;
     socket.send(SQLquery);
   };
 
@@ -52,7 +53,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM userbankaccount
-          ORDER BY userbankaccountId;
+          ORDER BY userBankAccountId;
         `;
       socket.send(SQLquery);
     }
@@ -60,7 +61,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Create user array including objets
     if (message.includes('"tableName":"userbankaccount"')) {
 
-      // user table
+      // user bank account table
       console.log('userBankAccountTable');
 
       // array including objects with user information
@@ -86,7 +87,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       console.log('affectedRows');
 
-      // Sends a request to the server to get all users
+      // Sends a request to the server to get all user bank accounts
       const SQLquery = `
         SELECT * FROM userbankaccount
         ORDER BY userBankAccountId;
@@ -115,7 +116,7 @@ function createEvents() {
 
     if (event.target.classList.contains('select-userbankaccount-userBankAccountId')) {
 
-      let userBankAccountId = Number(document.querySelector('.select-userbankaccount-userId').value);
+      let userBankAccountId = Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
       userBankAccountId = (userBankAccountId !== 0) ? userBankAccountId : userBankAccountArray.at(-1).userBankAccountId;
       if (userBankAccountId) {
         showValues(userBankAccountId);
@@ -123,18 +124,16 @@ function createEvents() {
     }
   });
 
-  // Update
+  // Update bank account
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-userbankaccount-update')) {
 
-      // user id
-      let userBankAccountId =
-        Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
-      updateUser(userBankAccountId);
+      // update user bank account
+      updateUserBankAccount();
     }
   });
 
-  // New user
+  // New user bank account
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-userbankaccount-new')) {
 
@@ -142,7 +141,7 @@ function createEvents() {
     }
   });
 
-  // Delete user
+  // Delete user bank account
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-userbankaccount-delete')) {
 
@@ -173,19 +172,21 @@ function createEvents() {
   });
 }
 
-function updateUser(userId) {
+function updateUserBankAccount() {
 
-  let isUpdated = false;
-
-  if (validateValues(userId)) {
+  if (validateValues()) {
 
     // user Bank Account Id
     const userBankAccountId =
-      document.querySelector('.input-userbankaccount-userBankAccountId').value;
+      Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
 
     // user id
     const userId =
       Number(document.querySelector('.select-userbankaccount-userId').value);
+
+    // name
+    const bankAccountName =
+      document.querySelector('.input-userbankaccount-name').value;
 
     // bank account
     const bankAccount =
@@ -195,10 +196,10 @@ function updateUser(userId) {
     const now = new Date();
     const lastUpdate = now.toISOString();
 
-    const objectNumberUser = userArray.findIndex(user => user.userId === userId);
+    const objectNumberUserBankAccount = userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
-    // Check if first name exist
-    if (objectNumberUser >= 0) {
+    // Check if user bank account exist
+    if (objectNumberUserBankAccount >= 0) {
 
       // Update table
       SQLquery =
@@ -207,76 +208,47 @@ function updateUser(userId) {
           SET 
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
-            email = '${email}',
             userId = ${userId},
-            bankAccount = '${bankAccount}',
+            name = '${bankAccountName}',
+            bankAccount = '${bankAccount}'
           WHERE userBankAccountId = ${userBankAccountId}
           ;
         `;
     } else {
 
       // Insert new record
-      SQLquery = `
-        INSERT INTO userBankAccount (
-          tableName,
-          condominiumId,
-          user,
-          lastUpdate,
-          userId,
-          bankAccount
-        ) 
-        VALUES (
-          'user',
-          ${objUserPassword.condominiumId},
-          '${objUserPassword.email}',
-          '${lastUpdate}',
-          ${userId},
-          '${bankAccount}'
-        );
-      `;
+      SQLquery =
+        `
+          INSERT INTO userBankAccount (
+            tableName,
+            condominiumId,
+            user,
+            lastUpdate,
+            userId,
+            name,
+            bankAccount
+          ) 
+          VALUES (
+            'userbankaccount',
+            ${objUserPassword.condominiumId},
+            '${objUserPassword.email}',
+            '${lastUpdate}',
+            ${userId},
+            '${bankAccountName}',
+            '${bankAccount}'
+          );
+        `;
     }
 
     // Client sends a request to the server
     socket.send(SQLquery);
 
-    document.querySelector('.select-userbankaccount-userId').disabled =
+    document.querySelector('.select-userbankaccount-userBankAccountId').disabled =
       false;
     document.querySelector('.button-userbankaccount-delete').disabled =
       false;
     document.querySelector('.button-userbankaccount-new').disabled =
       false;
-    isUpdated = true;
-  }
-}
-
-function deleteUserRow(userBankAccountId) {
-
-  let SQLquery;
-
-  if (userBankAccountId > 1) {
-
-    // Check if user bank account exist
-    const objectNumberUserBankAccount = userArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
-    if (objectNumberUserBankAccount >= 0) {
-
-      // Delete table
-      SQLquery = `
-        DELETE FROM userbankaccount
-        WHERE userBankAccountId = ${userBankAccountId};
-      `;
-
-      // Client sends a request to the server
-      socket.send(SQLquery);
-    }
-
-    // Get user bank account
-    SQLquery = `
-      SELECT * FROM userbankaccount
-      ORDER BY userBankAccountId;
-    `;
-    socket.send(SQLquery);
-
-    resetValues();
   }
 }
 
@@ -289,6 +261,9 @@ function showLeadingText(userBankAccountId) {
   // Show all users
   const userId = userArray.at(-1).userId;
   objUser.showAllUsers('userbankaccount-userId', userBankAccountId);
+
+  // name
+  objUserBankAccount.showInput('userbankaccount-name', 'Navn', 50, '');
 
   // bank account
   objUserBankAccount.showInput('userbankaccount-bankAccount', 'Bankkonto', 11, '');
@@ -311,26 +286,30 @@ function showLeadingText(userBankAccountId) {
 // Show all values for user bank account
 function showValues(userBankAccountId) {
 
-  // Check for valid user user bank account
+  // Check for valid user bank account
   if (userBankAccountId > 1) {
 
     // find object number for selected user bank accountId
-    const objectNumberUserBankAccount = userBankAccountArray.findIndex(user => userBankAccount.userBankAccountId === userBankAccountId);
+    const objectNumberUserBankAccount = userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (objectNumberUserBankAccount >= 0) {
 
       // Select userId
       document.querySelector('.select-userbankaccount-userId').value =
         userBankAccountArray[objectNumberUserBankAccount].userId;
 
+      // Show bank account name
+      document.querySelector('.input-userbankaccount-name').value =
+        userBankAccountArray[objectNumberUserBankAccount].name;
+
       // Show bank account
       document.querySelector('.input-userbankaccount-bankAccount').value =
-        userArray[objectNumberUserBankAccount].bankAccount;
+        userBankAccountArray[objectNumberUserBankAccount].bankAccount;
     }
   }
 }
 
 // Check for valid values
-function validateValues(userBankAccountId) {
+function validateValues() {
 
   // Check user Id
   const userId =
@@ -338,13 +317,19 @@ function validateValues(userBankAccountId) {
   const validUserId =
     validateNumber(userId, 1, 99999, "userbankaccount-userId", "Vis bankkonto");
 
-  // Check bank account
-  const bankAccount = 
-  document.querySelector('.input-userbankaccount-bankAccount').value;
-   const validBankAccount =
-    objUserBankAccount.validateBankAccount(bankAccount, "input-supplier-bankAccount", "Bankkonto");
+  // Check name
+  const userBankAccountName =
+    document.querySelector('.input-userbankaccount-name').value;
+  const validUserBankAccountName =
+    objUserBankAccount.validateText(userBankAccountName, "input-userbankaccount-name", "Navn");
 
-  return (validUserId && validBankAccount) ? true : false;
+  // Check bank account
+  const bankAccount =
+    document.querySelector('.input-userbankaccount-bankAccount').value;
+  const validBankAccount =
+    objUserBankAccount.validateBankAccount(bankAccount, "input-userbankaccount-bankAccount", "Bankkonto");
+
+  return (validUserId && validBankAccount && validUserBankAccountName) ? true : false;
 }
 
 function resetValues() {
@@ -357,11 +342,15 @@ function resetValues() {
   document.querySelector('.select-userbankaccount-userId').value =
     0;
 
-  // reset account number
+  // reset bank account name
+  document.querySelector('.input-userbankaccount-name').value =
+    '';
+
+  // reset bank account number
   document.querySelector('.input-userbankaccount-bankAccount').value =
     '';
 
-  document.querySelector('.select-userbankaccount-userId').disabled =
+  document.querySelector('.select-userbankaccount-userBankAccountId').disabled =
     true;
   document.querySelector('.button-userbankaccount-delete').disabled =
     true;

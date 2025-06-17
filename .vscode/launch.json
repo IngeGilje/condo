@@ -26,8 +26,26 @@
     {
       "type": "chrome",
       "request": "launch",
+      "name": "Sameie",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-condominium.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
       "name": "Leilighet",
       "file": "c:\\inetpub\\wwwroot\\condo\\condo-condo.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Bankkonto",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-bankaccount.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Konto",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-account.html",
     },
     {
       "type": "chrome",
@@ -38,8 +56,26 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Konto",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-account.html",
+      "name": "Bankonto for bruker",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-userbankaccount.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Leverandør",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-supplier.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Betaling",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-payment.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Inntekter",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-income.html",
     },
     {
       "type": "chrome",
@@ -56,20 +92,8 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Inntekter",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-income.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Betaling",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-payment.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Oversikt",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-overview.html",
+      "name": "Budsjett",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-budget.html",
     },
     {
       "type": "chrome",
@@ -80,20 +104,8 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Budsjett",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-budget.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Sameie",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-condominium.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Bankkonto",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-bankaccount.html",
+      "name": "Betalingsoversikt",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-overview.html",
     },
     {
       "type": "chrome",
@@ -112,13 +124,6 @@
       "request": "launch",
       "name": "Test",
       "file": "c:\\inetpub\\wwwroot\\condo\\test.html",
-    },
-    {
-      "name": "Debug current Script in Console",
-      "type": "node",
-      "request": "launch",
-      "program": "${file}",
-      "console": "integratedTerminal"
     }
   ]
 }

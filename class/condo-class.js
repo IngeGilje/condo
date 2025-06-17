@@ -55,12 +55,15 @@ class Condos {
           maxlength="${maxlength}"
           placeholder="${placeholder}"
         >
+        <p
+          class="p-importfile-fileName"
+        </p>
       `;
-    document.querySelector(`.div-${className}`)
-      .innerHTML = html;
+    document.querySelector(`.div-${className}`).innerHTML =
+      html;
   }
 
-  // Show leading text forinput
+  // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
 
     let html = this.showLeadingTextLabel(className, labelText);
@@ -79,11 +82,11 @@ class Condos {
   // Show label
   showLabel(className, labelText) {
     return `
-      <label
-        class="label-${className}">
-        ${labelText}
-      </label>
-    `;
+        <label
+          class="label-${className}">
+          ${labelText}
+        </label>
+      `;
   }
 
   // Show button
@@ -103,11 +106,12 @@ class Condos {
   showCheckbox(columnName, labelText, ...texts) {
 
     let html = this.showLabel(columnName, labelText);
-    html += `
-      <form
-        id="${columnName}"
-      >
-    `;
+    html +=
+      `
+        <form
+          id="${columnName}"
+        >
+      `;
     texts.forEach((text) => {
       html +=
         `
@@ -120,9 +124,10 @@ class Condos {
         `;
     });
 
-    html += `
-      </form>
-    `;
+    html +=
+      `
+        </form>
+      `;
     document.querySelector(`.div-${columnName}`)
       .innerHTML = html;
   }
@@ -132,12 +137,12 @@ class Condos {
 
     let html =
       `
-          <form
-            id="${columnName}"
-          >
-          <div class = "div-radio-${columnName}"
-          >
-        `;
+        <form
+          id="${columnName}"
+        >
+        <div class = "div-radio-${columnName}"
+        >
+      `;
 
     texts.forEach((text) => {
       html +=
@@ -289,9 +294,10 @@ class Condos {
       if (isClassDefined(`label-${className}`)) {
 
         document.querySelector(`.label-${className}`).outerHTML =
-          `<div class="label-${className}-red">
-            * Ugyldig ${labelText}
-          </div>`;
+          ` <div class="label-${className}-red">
+              * Ugyldig ${labelText}
+            </div>
+          `;
       }
       return false;
     } else {
@@ -308,17 +314,35 @@ class Condos {
     }
   }
 
+  // select file
+  showInputFile(className) {
+
+    document.querySelector(`.div-${className}`).innerHTML =
+      `
+        <input
+          type="file"
+          id="fileInput"
+          class="input-importfile-fileName"
+        >
+        <p 
+          id="fileName"
+          class="p-importfile-fileName"
+        >
+        </p>
+      `;
+  }
+
   // Mark selected application in menu
   markSelectedMenu(text) {
 
     document.querySelector(`.a-menu-vertical-${this.applicationName}`).outerHTML =
       `
-        <div 
-          class='a-menu-vertical-${this.applicationName}-green'
-        >
-          ${text}
-        </div>
-      `;
+      <div 
+        class='a-menu-vertical-${this.applicationName}-green'
+      >
+        ${text}
+      </div>
+    `;
   }
 
   showAllYears(className, selectedYear) {
@@ -333,8 +357,10 @@ class Condos {
           for="selectedYear">
             År
         </label>
-        <select class="select-${className}" 
-          id="selectedYear" name="selectedYear"
+        <select 
+          class="select-${className}" 
+          id="selectedYear"
+          name="selectedYear"
         >
       `;
 
@@ -345,7 +371,7 @@ class Condos {
           <option 
             value="${year}"
             selected
-            >
+          >
             ${year}
           </option>
         `;
@@ -563,16 +589,16 @@ class Condos {
             Leilighet
           </a>
 
-          <a href="${url}condo/condo-bankaccount.html"
-            class="a-menu-vertical-bankaccount"
-          >
-            Bankkonto
-          </a>
-
           <a href="${url}condo/condo-account.html"
             class="a-menu-vertical-account"
           >
             Konto
+          </a>
+
+          <a href="${url}condo/condo-bankaccount.html"
+            class="a-menu-vertical-bankaccount"
+          >
+            Bankkonto
           </a>
 
           <a href="${url}condo/condo-user.html"
@@ -679,6 +705,40 @@ class Condos {
       isValidAmount = true;
     }
     return isValidAmount;
+  }
+
+  // Show input file
+  showInputFile(className, labelText, maxlength, placeholder) {
+
+    let html = this.showLabel(className, labelText);
+    html +=
+      `
+        <input
+          type="file"
+          class="input-${className}"
+          placeholder="${placeholder}"
+          accept=".txt,.csv" 
+        >
+      `;
+    document.querySelector(`.div-${className}`)
+      .innerHTML = html;
+  }
+
+  // get text file name
+  getFileName(className) {
+
+    const fileInput = document.querySelector(`.input-'${className}`);
+    const fileNameDisplay = document.getElementById(`.input-'${className}`);
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        fileNameDisplay.textContent = `Selected file: ${fileName}`;
+      } else {
+        fileNameDisplay.textContent = 'No file selected';
+      }
+    });
+
   }
 }
 
@@ -1242,5 +1302,35 @@ function removeIframe() {
   const iframe = document.getElementById("div-condo-login");
   if (iframe) {
     iframe.remove();
+  }
+}
+
+function testMode() {
+
+  switch (objUser.serverStatus) {
+
+    // Web server
+    case 1: {
+
+      break;
+    }
+    // Test web server/ local web server
+    case 2:
+    // Test server/ local test server
+    case 3: {
+
+      localStorage.removeItem("user");
+
+      // Save email/user, password and security level
+      const email = 'superuser@ingegilje.no';
+      const password = 'superuser';
+      const securityLevel = 9;
+      const condominiumId = 1;
+      localStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
+      break;
+    }
+    default: {
+      break;
+    }
   }
 }

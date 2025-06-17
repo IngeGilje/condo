@@ -139,8 +139,7 @@ server.on('connection', (socket) => {
     const messageFromClient = message.toString();
     console.log('message from client', messageFromClient);
 
-    //console.log(sqlQuery);
-    if (!messageFromClient.includes('Message: Test request')) {
+    if (!messageFromClient.includes('Name of importfile:')) {
 
       // SQL querying
       queryingSQL(messageFromClient);
@@ -153,14 +152,17 @@ server.on('connection', (socket) => {
       }, 100);
     }
 
-    if (messageFromClient.includes('Message: Test request')) {
+    if (messageFromClient.includes('Name of importfile:')) {
 
       let messageToClient;
 
       // Get text file from server
       const fs = require('fs');
 
-      fs.readFile('transaksjonsliste.csv', 'utf8', (err, messageToClient) => {
+      // 012345678901234567890
+      // Name of importfile: C://inetpub//wwwroot//condo//scripts//transaksjonsliste.csv';
+      let importFileName = messageFromClient.slice(20);
+      fs.readFile(importFileName, 'utf8', (err, messageToClient) => {
         if (err) {
           console.error(err);
           return;

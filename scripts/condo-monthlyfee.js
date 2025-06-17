@@ -64,7 +64,7 @@ socket.onmessage = (event) => {
     // Sends a request to the server to get all condos
     const SQLquery = `
       SELECT * FROM condo
-      ORDER BY condoName;
+      ORDER BY name;
     `;
     socket.send(SQLquery);
   }
@@ -251,7 +251,8 @@ function updateMonthlyFee() {
     const array =
       condoArray.find(condo => condo.condoId === condoId);
 
-    condoName = array.condoName;
+    condoName =
+     array.name;
 
     const day =
       Number(document.querySelector('.select-monthlyfee-day').value);
@@ -264,9 +265,11 @@ function updateMonthlyFee() {
 
       const stringDay = (day < 10) ? String(`0${day}`) : String(`${day}`);
       const stringMonth = (month < 10) ? String(`0${month}`) : String(`${month}`);
-      const date = String(year) + stringMonth + stringDay;
+      const date = 
+        String(year) + stringMonth + stringDay;
 
-      const text = String(condoName) + '-' + findNameOfMonth(month);
+      const text = 
+        String(name) + '-' + findNameOfMonth(month);
 
       SQLquery = `
         INSERT INTO due(

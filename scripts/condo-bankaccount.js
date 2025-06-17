@@ -181,7 +181,7 @@ function updateBankAccount() {
       document.querySelector('.input-bankaccount-bankAccount').value;
 
     // BankAccount Name
-    const name =
+    const bankAccountName =
       document.querySelector('.input-bankaccount-name').value;
 
     // Opening balance
@@ -218,7 +218,7 @@ function updateBankAccount() {
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             bankAccount = '${bankAccount}',
-            name = '${name}',
+            name = '${bankAccountName}',
             openingBalance = '${openingBalance}',
             openingBalanceDate = '${openingBalanceDate}',
             closingBalance = '${closingBalance}',
@@ -247,7 +247,7 @@ function updateBankAccount() {
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${bankAccount}',
-          '${name}',
+          '${bankAccountName}',
           '${openingBalance}',
           '${openingBalanceDate}',
           '${closingBalance}',
@@ -387,7 +387,8 @@ function validateValues() {
   const validBankAccount = objBankAccount.validateBankAccount(bankAccount, "bankaccount-bankAccount", "Bankkontonummer");
 
   // Check bankaccount Name
-  const name = document.querySelector('.input-bankaccount-name').value;
+  const bankAccountName = 
+  document.querySelector('.input-bankaccount-name').value;
   const validName = objBankAccount.validateText(name, "label-bankaccount-name", "Kontonavn");
 
   return (validName && validBankAccount) ? true : false;

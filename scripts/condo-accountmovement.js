@@ -7,165 +7,149 @@ const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 const objAccountMovement = new AccountMovement('accountmovement');
 
-//const objUserPassword = JSON.parse(localStorage.getItem('user'));
-
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
+testMode();
 
 let isEventsCreated = false;
 
-objAccountMovement.menu();
-objAccountMovement.markSelectedMenu('Kontobevegelser');
+objUser.menu();
+objUser.markSelectedMenu('Kontobevegelser');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
 
-  // Sends a request to the server to get all users
-  const SQLquery =
-    `
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('accountmovement-login');
+} else {
+
+  // Send a message to the server
+  socket.onopen = () => {
+    // Sends a request to the server to get all users
+    const SQLquery =
+      `
       SELECT * FROM user
       ORDER BY userId;
     `;
-  socket.send(SQLquery);
-};
-
-// Handle incoming messages from server
-socket.onmessage = (event) => {
-
-  let message = event.data;
-
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
-
-    console.log('userTable');
-
-    // user array including objects with user information
-    userArray = JSON.parse(message);
-
-    // Sends a request to the server to get all condos
-    const SQLquery =
-      `
-        SELECT * FROM condo
-        ORDER BY condoName;
-      `;
     socket.send(SQLquery);
-  }
+  };
 
-  // Create condo array including objets
-  if (message.includes('"tableName":"condo"')) {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-    console.log('condoTable');
+    let message = event.data;
 
-    // array including objects with bank Account information
-    condoArray = JSON.parse(message);
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    //objBankAccount.getBankAccounts(socket);
-    const SQLquery =
-      `
+      console.log('userTable');
+
+      // user array including objects with user information
+      userArray = JSON.parse(message);
+
+      // Sends a request to the server to get all condos
+      const SQLquery =
+        `
+        SELECT * FROM condo
+        ORDER BY name;
+      `;
+      socket.send(SQLquery);
+    }
+
+    // Create condo array including objets
+    if (message.includes('"tableName":"condo"')) {
+
+      console.log('condoTable');
+
+      // array including objects with bank Account information
+      condoArray = JSON.parse(message);
+
+      //objBankAccount.getBankAccounts(socket);
+      const SQLquery =
+        `
         SELECT * FROM bankaccount
         ORDER BY name;
       `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create bank account array including objets
-  if (message.includes('"tableName":"bankaccount"')) {
+    // Create bank account array including objets
+    if (message.includes('"tableName":"bankaccount"')) {
 
-    console.log('bankAccountTable');
+      console.log('bankAccountTable');
 
-    // array including objects with bank account information
-    bankAccountArray = JSON.parse(message);
+      // array including objects with bank account information
+      bankAccountArray = JSON.parse(message);
 
-    //objAccount.getAccounts(socket);
-    const SQLquery =
-      `
+      //objAccount.getAccounts(socket);
+      const SQLquery =
+        `
         SELECT * FROM account
         ORDER BY accountId;
       `;
-    socket.send(SQLquery);
-  }
-
-  // Create account array including objets
-  if (message.includes('"tableName":"account"')) {
-
-    console.log('accountTable');
-    // accountmovement table
-
-    // array including objects with accountmovement information
-    accountArray = JSON.parse(message);
-    const SQLquery =
-      `
-        SELECT * FROM accountmovement
-        ORDER BY date;
-      `;
-    socket.send(SQLquery);
-  }
-
-  // Create accountmovement array including objets
-  if (message.includes('"tableName":"accountmovement"')) {
-
-    // accountmovement table
-    console.log('accountmovementTable');
-
-    // array including objects with accountmovement information
-    accountMovementArray = JSON.parse(message);
-
-    // Show leading text
-    showLeadingText();
-
-    // Make events
-    if (!isEventsCreated) {
-
-      createEvents();
-      isEventsCreated = true;
+      socket.send(SQLquery);
     }
-  }
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+    // Create account array including objets
+    if (message.includes('"tableName":"account"')) {
 
-    console.log('affectedRows');
-    //objAccountMovement.getAccountMovements(socket);
-    const SQLquery =
-      `
+      console.log('accountTable');
+      // accountmovement table
+
+      // array including objects with accountmovement information
+      accountArray = JSON.parse(message);
+      const SQLquery =
+        `
         SELECT * FROM accountmovement
         ORDER BY date;
       `;
-    socket.send(SQLquery);
+      socket.send(SQLquery);
+    }
+
+    // Create accountmovement array including objets
+    if (message.includes('"tableName":"accountmovement"')) {
+
+      // accountmovement table
+      console.log('accountmovementTable');
+
+      // array including objects with accountmovement information
+      accountMovementArray = JSON.parse(message);
+
+      // Show leading text
+      showLeadingText();
+
+      // Make events
+      if (!isEventsCreated) {
+
+        createEvents();
+        isEventsCreated = true;
+      }
+    }
+
+    // Check for update, delete ...
+    if (message.includes('"affectedRows":1')) {
+
+      console.log('affectedRows');
+      //objAccountMovement.getAccountMovements(socket);
+      const SQLquery =
+        `
+        SELECT * FROM accountmovement
+        ORDER BY date;
+      `;
+      socket.send(SQLquery);
+    }
+  };
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
   }
-};
 
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
+  // Handle disconnection
+  socket.onclose = () => {
+  }
 }
 
 // Make accountmovement events
@@ -351,7 +335,7 @@ function showAccountMovements() {
       `;
 
     // Show condo name
-    document.querySelector('.div-accountmovement-columnCondoName').innerHTML =
+    document.querySelector('.div-accountmovement-columnName').innerHTML =
       htmlColumnAccountMovementCondo;
 
     // Show bank account name

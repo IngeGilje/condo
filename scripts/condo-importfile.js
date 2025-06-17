@@ -1,15 +1,18 @@
 // Import of bank transaction file 
 
 // Activate objects
+const objUser = new User('user');
+const objCondominium = new Condominium('condominium');
 const objCondo = new Condo('condo');
 const objAccountMovement = new AccountMovement('accountmovement');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
-const objUser = new User('user');
 const objDue = new Due('due');
 const objIncome = new Income('income');
 const objSupplier = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
+
+testMode();
 
 let importFileArray = [];
 let textFile;
@@ -34,10 +37,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
 
     // Sends a request to the server to get all users
-    const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
+    const SQLquery =
+      `
+        SELECT * FROM user
+        ORDER BY userId;
+      `;
     socket.send(SQLquery);
   };
 
@@ -45,15 +49,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   socket.onmessage = (event) => {
 
     let message = event.data;
-
-    // Create user array including objets
-    if (message.includes('"NOK"')) {
-
-      createImportFileArray(message);
-      showBankAccountMovements();
-      showLeadingText();
-      showValues(1);
-    }
 
     // Create user array including objets
     if (message.includes('"tableName":"user"')) {
@@ -64,10 +59,45 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       userArray = JSON.parse(message);
 
       // Sends a request to the server to get all condos
-      const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY condoName;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM condominium
+          ORDER BY condominiumId;
+        `;
+      socket.send(SQLquery);
+    }
+
+    // Create condominium array including objets
+    if (message.includes('"tableName":"condominium"')) {
+
+      console.log('condominiumTable');
+
+      // user array including objects with user information
+      condominiumArray = JSON.parse(message);
+
+      // Sends a request to the server to get all user bank accounts
+      const SQLquery =
+        `
+          SELECT * FROM userbankaccount
+          ORDER BY userbankaccountId;
+        `;
+      socket.send(SQLquery);
+    }
+
+    // Create user bank account array including objets
+    if (message.includes('"tableName":"userbankaccount"')) {
+
+      console.log('userbankaccountTable');
+
+      // array including objects with user ank account information
+      userBankAccountArray = JSON.parse(message);
+
+      // Sends a request to the server to get all condos
+      const SQLquery =
+        `
+          SELECT * FROM condo
+          ORDER BY name;
+        `;
       socket.send(SQLquery);
     }
 
@@ -79,10 +109,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with condo information
       condoArray = JSON.parse(message);
 
-      const SQLquery = `
-      SELECT * FROM bankaccount
-      ORDER BY bankAccountId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM bankaccount
+          ORDER BY bankAccountId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -94,10 +125,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with bank account information
       bankAccountArray = JSON.parse(message);
 
-      const SQLquery = `
-      SELECT * FROM due
-      ORDER BY dueId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM due
+          ORDER BY dueId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -109,10 +141,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with due information
       dueArray = JSON.parse(message);
 
-      const SQLquery = `
-      SELECT * FROM supplier
-      ORDER BY supplierId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM supplier
+          ORDER BY supplierId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -124,10 +157,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with supplier information
       supplierArray = JSON.parse(message);
 
-      const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM account
+          ORDER BY accountId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -141,10 +175,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       accountArray = JSON.parse(message);
 
       // Get all income rows
-      const SQLquery = `
-      SELECT * FROM accountmovement
-      ORDER BY accountmovementId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM accountmovement
+          ORDER BY accountmovementId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -177,9 +212,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // Show leading text
       //showButtons();
 
-      // Sends a request to the server to get all bank account
-      // transactions
-      socket.send('Message: Test request');
+      //requestImportFile();
+
+      // Send a request to the server to get all bank account transactions
+      const objectNumberCondominium =
+        condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+      if (objectNumberCondominium >= 0) {
+
+        const importFileName = `${condominiumArray[objectNumberCondominium].importPath}//transaksjonsliste.csv`;
+        socket.send(`Name of importfile: ${importFileName}`);
+      }
+
+      //getImportFileName('importfile-importFileName');
 
       // Make events
       if (!isEventsCreated) {
@@ -187,41 +231,39 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         createEvents();
         isEventsCreated = true;
       }
-
-      // Check for update, delete ...
-      if (message.includes('"affectedRows":1')) {
-
-        console.log('affectedRows');
-      }
     }
 
-    // Handle errors
-    socket.onerror = (error) => {
+    // Create user array including objets
+    if (message.includes('Dato;Rentedato;Beskrivelse;Inn;Ut;')) {
 
-      // Close socket on error and let onclose handle reconnection
-      socket.close();
+      createImportFileArray(message);
+      showBankAccountMovements();
+      showLeadingText();
+      showValues(1);
     }
 
-    // Handle disconnection
-    socket.onclose = () => {
+    // Check for update, delete ...
+    if (message.includes('"affectedRows":1')) {
+
+      console.log('affectedRows');
     }
+  }
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
+  }
+
+  // Handle disconnection
+  socket.onclose = () => {
   }
 }
 
+
 // Make importfile events
 function createEvents() {
-
-  // Select import file id
-  document.addEventListener('change', (event) => {
-
-    if (event.target.classList.contains('select-importfile-importFileId')) {
-
-      const importFileId = Number(document.querySelector('.select-importfile-importFileId').value);
-      if (importFileId > 0) {
-        showValues(importFileId);
-      }
-    }
-  });
 
   // Update import file array
   document.addEventListener('click', (event) => {
@@ -377,7 +419,7 @@ function showBankAccountMovements() {
   let htmlColumnAccountingDate =
     '<div class="columnHeaderRight">Dato</div><br>';
   let htmlColumnCondoName =
-    '<div class="columnHeaderRight">Condo</div><br>';
+    '<div class="columnHeaderRight">Leilighet</div><br>';
   let htmlColumnAccountName =
     '<div class="columnHeaderRight">Konto</div><br>';
   let htmlColumnFromBankAccount =
@@ -419,10 +461,29 @@ function showBankAccountMovements() {
 
     // Condo name
     let condoName = "-";
-    const objectNumberCondo = condoArray.findIndex(condo => condo.condoId === importFile.condoId);
-    if (objectNumberCondo > 0) {
+    if (importFile.fromBankAccount === '32061703445') {
+      console.log('fromBankAccount:', importFile.fromBankAccount);
+    }
+    const objectNumberUserBankAccount =
+      userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === importFile.fromBankAccount);
+    if (objectNumberUserBankAccount > 0) {
 
-      condoName = condoArray[objectNumberCondo].condoName;
+      userId =
+        userBankAccountArray[objectNumberUserBankAccount].userId;
+      const objectNumberUser =
+        userArray.findIndex(user => user.userId === userId);
+      if (objectNumberUser > 0) {
+
+        condoId =
+          userArray[objectNumberUser].condoId;
+        const objectNumberCondo =
+          condoArray.findIndex(condo => condo.condoId === condoId);
+        if (objectNumberCondo > 0) {
+
+          condoName =
+            condoArray[objectNumberCondo].name;
+        }
+      }
     }
 
     htmlColumnCondoName +=
@@ -640,7 +701,7 @@ function showBankAccountMovements() {
     htmlColumnLineNumber;
   document.querySelector(".div-importfile-columnAccountingDate").innerHTML =
     htmlColumnAccountingDate;
-  document.querySelector(".div-importfile-columnCondoName").innerHTML =
+  document.querySelector(".div-importfile-columnName").innerHTML =
     htmlColumnCondoName;
   document.querySelector(".div-importfile-columnAccountName").innerHTML =
     htmlColumnAccountName;
@@ -1033,7 +1094,7 @@ function getOpeningBalance() {
 // Get opening balance date
 function getOpeningBalanceDate() {
 
-  letopeningBalanceDate;
+  let openingBalanceDate;
 
   textFile.forEach((record) => {
 
@@ -1067,7 +1128,7 @@ function resetBankAccountMovements() {
     '';
   document.querySelector(".div-importfile-columnAccountingDate").innerHTML =
     '';
-  document.querySelector(".div-importfile-columnCondoName").innerHTML =
+  document.querySelector(".div-importfile-columnName").innerHTML =
     '';
   document.querySelector(".div-importfile-columnAccountName").innerHTML =
     '';
@@ -1156,4 +1217,16 @@ function getAccountName(bankAccount) {
   }
 
   return (accountName === '') ? '-' : accountName;
+}
+
+// Send a request to the server to get all bank account transactions
+function requestImportFile() {
+
+  const objectNumberCondominium =
+    condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+  if (objectNumberCondominium >= 0) {
+
+    const importFileName = `${condominiumArray[objectNumberCondominium].importPath}//transaksjonsliste.csv`;
+    socket.send(`Name of importfile: ${importFileName}`);
+  }
 }

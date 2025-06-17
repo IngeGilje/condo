@@ -80,12 +80,12 @@
 
 /* Define the grid container with 10 columns*/
 .div-grid-importfile {
-  grid-template-columns: 200px 200px 50px 100px 50px 150px 150px 150px 100px 200px;
+  grid-template-columns: 200px 200px 50px 100px 100px 100px 150px 100px 100px 200px;
 }
 
 .div-importfile-columnLineNumber,
 .div-importfile-columnAccountingDate,
-.div-importfile-columnCondoName,
+.div-importfile-columnName,
 .div-importfile-columnAccountName,
 .div-importfile-columnFromBankAccount,
 .div-importfile-columnToBankAccount,
@@ -137,7 +137,7 @@
   grid-column-start: 4;
 }
 
-.div-importfile-columnCondoName,
+.div-importfile-columnName,
 .div-payment-columnDate,
 .div-income-columnAmount,
 .div-overview-columnDueText,
@@ -210,7 +210,7 @@
 .div-accountmovement-columnAmount,
 .div-accountmovement-columnDate,
 .div-accountmovement-columnBankAccountName,
-.div-accountmovement-columnCondoName {
+.div-accountmovement-columnName {
   grid-row-start: 1;
   grid-row-end: 20;
   display: block;
@@ -219,7 +219,7 @@
   padding: 2px;
 }
 
-.div-accountmovement-columnCondoName {
+.div-accountmovement-columnName {
   grid-column: 3;
 }
 
@@ -693,7 +693,7 @@
 .div-monthlyfee-columnDate-Header,
 .div-monthlyfee-columnAmount-Header,
 
-.label-accountmovement-columnCondoName-Header,
+.label-accountmovement-columnName-Header,
 .label-accountmovement-columnAccountName-Header,
 .label-accountmovement-columnDate-Header,
 .label-accountmovement-columnAmount-Header,
@@ -789,7 +789,7 @@
 .label-condominium-bankAccountId-red,
 
 .label-condo-condoId-red,
-.label-condo-condoName-red,
+.label-condo-name-red,
 .label-condo-street-red,
 .label-condo-postalCode-red,
 .label-condo-city-red,
@@ -922,4 +922,22 @@
   background-color: red;
   opacity: 0.5;
   color: white;
+}
+
+.file-input {
+  display: none;
+}
+
+.custom-file-label {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.file-name {
+  margin-left: 10px;
+  font-style: italic;
 }

@@ -168,12 +168,6 @@ function condoEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-condominium-update')) {
 
-      /*
-      const condominiumId = Number(document.querySelector('.select-condominium-condominiumId').value);
-      if (updateCondominium(condominiumId)) {
-        showValues(condominiumId);
-      }
-      */
       const condominiumId = Number(document.querySelector('.select-condominium-condominiumId').value);
       updateCondominium(condominiumId);
     }
@@ -241,8 +235,8 @@ function updateCondominium(condominiumId) {
       document.querySelector('.input-condominium-email').value;
     const organizationNumber =
       document.querySelector('.input-condominium-organizationNumber').value;
-    //const bankAccountId =
-    //  document.querySelector('.select-condominium-bankAccountId').value;
+    const importPath =
+      document.querySelector('.input-condominium-importPath').value;
 
     // current date
     const now = new Date();
@@ -265,7 +259,8 @@ function updateCondominium(condominiumId) {
           city = '${city}',
           phone = '${phone}',
           email = '${email}',
-          organizationNumber = ${organizationNumber}
+          organizationNumber = '${organizationNumber}',
+          importPath = '${importPath}'
         WHERE condominiumId = ${condominiumId};
       `;
 
@@ -283,7 +278,8 @@ function updateCondominium(condominiumId) {
           city,
           phone,
           email,
-          organizationNumber)
+          organizationNumber,
+          importPath)
         VALUES (
           'condominium',
           '${objUserPassword.email}',
@@ -295,7 +291,8 @@ function updateCondominium(condominiumId) {
           '${city}',
           '${phone}',
           '${email}',
-          '${organizationNumber}'
+          '${organizationNumber}',
+          '${importPath}'
         );
       `;
     }
@@ -345,10 +342,9 @@ function showLeadingText(condominiumId) {
   // organization Number
   objCondominium.showInput('condominium-organizationNumber', '* Organisasjonsnummer', 9, '');
 
-  // bank account Id
-  //const bankAccountId = bankAccountArray.at(-1).bankAccountId;
-  //objBankAccount.showAllBankAccounts('condominium-bankAccountId', bankAccountId);
-
+  // import path
+  objCondominium.showInput('condominium-importPath', '* Sti for filimport', 50, '');
+  
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
     objCondominium.showButton('condominium-update', 'Oppdater');
@@ -410,9 +406,9 @@ function showValues(condominiumId) {
       document.querySelector('.input-condominium-organizationNumber').value =
         condominiumArray[objectNumberCondominium].organizationNumber;
 
-      // Show bank account id
-      //const bankAccountId = condominiumArray[objectNumberCondominium].bankAccountId;
-      //objCondominium.selectBankAccountId(bankAccountId, 'condominium-bankAccountId');
+      // Show file import path
+      document.querySelector('.input-condominium-importPath').value =
+       condominiumArray[objectNumberCondominium].importPath;
     }
   }
 }
@@ -454,9 +450,9 @@ function resetValues() {
   document.querySelector('.input-condominium-organizationNumber').value =
     '';
 
-  // Show bankaccount number
-  //document.querySelector('.select-condominium-bankAccountId').value =
-  //  '';
+  // Show path for file to import
+  document.querySelector('.input-condominium-importPath').value =
+    '';
 
   document.querySelector('.select-condominium-condominiumId').disabled =
     true;
@@ -505,38 +501,53 @@ function deleteCondominiumRow() {
 function validateValues() {
 
   // Check condominium name
-  const condominiumName = document.querySelector('.input-condominium-name').value;
-  const validCondominiumName = objCondominium.validateText(condominiumName, "label-condominium-name", "Navn");
+  const condominiumName =
+    document.querySelector('.input-condominium-name').value;
+  const validCondominiumName =
+    objCondominium.validateText(condominiumName, "label-condominium-name", "Navn");
 
   // Check street name
-  const street = document.querySelector('.input-condominium-street').value;
-  const validStreet = objCondominium.validateText(street, "label-condominium-street", "Gateadresse");
+  const street =
+    document.querySelector('.input-condominium-street').value;
+  const validStreet =
+    objCondominium.validateText(street, "label-condominium-street", "Gateadresse");
 
   // Check postal code
-  const postalCode = document.querySelector('.input-condominium-postalCode').value;
-  const validPostalCode = objCondominium.validatePostalCode(postalCode, "label-condominium-postalCode", "Postnummer");
+  const postalCode =
+    document.querySelector('.input-condominium-postalCode').value;
+  const validPostalCode =
+    objCondominium.validatePostalCode(postalCode, "label-condominium-postalCode", "Postnummer");
 
   // Validate city
-  const city = document.querySelector('.input-condominium-city').value;
-  const validCity = objCondominium.validateText(city, "label-condominium-city", "Poststed");
+  const city =
+    document.querySelector('.input-condominium-city').value;
+  const validCity =
+    objCondominium.validateText(city, "label-condominium-city", "Poststed");
 
   // Check email
-  const eMail = document.querySelector('.input-condominium-email').value;
-  const validEmail = objCondominium.validateEmail(eMail, "label-condominium-email", "E-mail");
+  const eMail =
+    document.querySelector('.input-condominium-email').value;
+  const validEmail =
+    objCondominium.validateEmail(eMail, "label-condominium-email", "E-mail");
 
   // Check organization number
-  const organizationNumber = document.querySelector('.input-condominium-organizationNumber').value;
-  const validOrganizationNumber = checkOrganizationNumber(organizationNumber, "condominium-organizationNumber", "organisasjonsnummer");
+  const organizationNumber =
+    document.querySelector('.input-condominium-organizationNumber').value;
+  const validOrganizationNumber =
+    checkOrganizationNumber(organizationNumber, "condominium-organizationNumber", "Organisasjonsnummer");
 
-  if (validCondominiumName
+  // Check import path
+  const importPath =
+    document.querySelector('.input-condominium-importPath').value;
+  const validImportPath =
+    objCondominium.validateText(importPath, "condominium-importpath", "Sti for filimport");
+
+  return (validCondominiumName
     && validStreet
     && validPostalCode
     && validCity
     && validEmail
     && validOrganizationNumber
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+    && validImportPath
+  ) ? true : false;
 }

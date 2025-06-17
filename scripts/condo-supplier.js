@@ -208,7 +208,7 @@ function updateSupplier(supplierId) {
   if (validateValues(supplierId)) {
 
     // name
-    const name =
+    const supplierName =
       document.querySelector('.input-supplier-name').value;
 
     // street
@@ -259,7 +259,7 @@ function updateSupplier(supplierId) {
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             email = '${email}',
-            name = '${name}',
+            name = '${supplierName}',
             street = '${street}',
             address2 = '${address2}',
             postalcode = '${postalCode}',
@@ -295,7 +295,7 @@ function updateSupplier(supplierId) {
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
-          '${name}',
+          '${supplierName}',
           '${street}',
           '${address2}',
           '${postalCode}',
@@ -459,7 +459,7 @@ function showValues(supplierId) {
 function validateValues(supplierId) {
 
   // Check name
-  const name = document.querySelector('.input-supplier-name').value;
+  const supplierName = document.querySelector('.input-supplier-name').value;
   const validName = objSupplier.validateText(name, "label-supplier-name", "Navn");
 
   // Validate bank account
