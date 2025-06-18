@@ -389,7 +389,7 @@ function validateValues() {
   // Check bankaccount Name
   const bankAccountName = 
   document.querySelector('.input-bankaccount-name').value;
-  const validName = objBankAccount.validateText(name, "label-bankaccount-name", "Kontonavn");
+  const validName = objBankAccount.validateText(bankAccountName, "label-bankaccount-name", "Kontonavn");
 
   return (validName && validBankAccount) ? true : false;
 }

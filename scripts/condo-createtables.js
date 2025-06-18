@@ -105,19 +105,19 @@ function deleteAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 4 Bank account
-  console.log('DROP bankaccount Table');
-  SQLquery =
-    `
-      DROP TABLE bankaccount;
-    `;
-  socket.send(SQLquery);
-
-  // 3 Account
+  // 4 Account name
   console.log('DROP account Table');
   SQLquery =
     `
       DROP TABLE account;
+    `;
+  socket.send(SQLquery);
+
+  // 3 Bank account
+  console.log('DROP bankaccount Table');
+  SQLquery =
+    `
+      DROP TABLE bankaccount;
     `;
   socket.send(SQLquery);
 
@@ -182,23 +182,7 @@ function createAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 3 Account
-  console.log('CREATE account Table');
-  SQLquery =
-    `
-      CREATE TABLE account(
-        accountId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
-        condominiumId INT,
-        user VARCHAR(50),
-        lastUpdate VarChar(40),
-        name VARCHAR(50) NOT NULL,
-        FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
-      );
-    `;
-  socket.send(SQLquery);
-
-  // 4 Bank account
+  // 3 Bank account
   console.log('CREATE bankaccount Table');
   SQLquery =
     `         
@@ -210,12 +194,26 @@ function createAllTables() {
         lastUpdate VARCHAR (40),
         bankAccount VARCHAR(11) NOT NULL,
         name VARCHAR(50) NOT NULL,
-        accountId INT,
         openingBalance VARCHAR (10),
         openingBalanceDate VARCHAR (10),
         closingBalance VARCHAR (10),
         closingBalanceDate VARCHAR (10),
-        FOREIGN KEY (accountId) REFERENCES account(accountId),
+        FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
+      );
+    `;
+  socket.send(SQLquery);
+
+  // 4 Account name
+  console.log('CREATE account Table');
+  SQLquery =
+    `
+      CREATE TABLE account(
+        accountId INT AUTO_INCREMENT PRIMARY KEY,
+        tableName VARCHAR(50) NOT NULL,
+        condominiumId INT,
+        user VARCHAR(50),
+        lastUpdate VarChar(40),
+        name VARCHAR(50) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
@@ -255,10 +253,12 @@ function createAllTables() {
         user VARCHAR(50) NOT NULL,
         lastUpdate VARCHAR (40),
         userId INT,
+        accountId INT,
         name VARCHAR(50) NOT NULL,
         bankAccount VARCHAR(11) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId),
-        FOREIGN KEY (userId) REFERENCES user(userId)
+        FOREIGN KEY (userId) REFERENCES user(userId),
+        FOREIGN KEY (accountId) REFERENCES account(accountId)
       );
     `;
   socket.send(SQLquery);
@@ -438,11 +438,14 @@ function insertRowAllTables() {
       INSERT INTO condo (
         tableName,
         condominiumId,
+        user,
+        lastUpdate,
         name,
         street,
         address2,
         postalCode,
-        city)
+        city
+      )
       VALUES (
         'condo',
         1,
@@ -457,28 +460,7 @@ function insertRowAllTables() {
     `;
   socket.send(SQLquery);
 
-  // 3 Account
-  console.log('INSERT account Table');
-  SQLquery =
-    `
-      INSERT INTO account(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        name
-      )
-      VALUES(
-        'account',
-        1,
-        'Initiation',
-        '${lastUpdate}',
-        ''
-      );
-    `;
-  socket.send(SQLquery);
-
-   // 4 Bank account
+   // 3 Bank account
   console.log('INSERT bankaccount Table');
   SQLquery =
     `         
@@ -504,6 +486,27 @@ function insertRowAllTables() {
         '',
         '',
         '',
+        ''
+      );
+    `;
+  socket.send(SQLquery);
+
+  // 4 Account name
+  console.log('INSERT account Table');
+  SQLquery =
+    `
+      INSERT INTO account(
+        tableName,
+        condominiumId,
+        user,
+        lastUpdate,
+        name
+      )
+      VALUES(
+        'account',
+        1,
+        'Initiation',
+        '${lastUpdate}',
         ''
       );
     `;
@@ -552,6 +555,7 @@ function insertRowAllTables() {
         user,
         lastUpdate,
         userId,
+        accountId,
         name,
         bankAccount
       ) 
@@ -560,6 +564,7 @@ function insertRowAllTables() {
         1,
         'superuser@ingegilje.no',
         '${lastUpdate}',
+        1,
         1,
         'Ugyldig bank nummer',
         '12345678901'

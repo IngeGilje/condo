@@ -5,134 +5,119 @@ const objUser = new User('user');
 const objAccount = new Account('account');
 const objSupplier = new Supplier('supplier');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
-
-// Connection to a server
-let socket;
-switch (objSupplier.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
+testMode();
 
 let isEventsCreated = false;
 
 objSupplier.menu();
 objSupplier.markSelectedMenu('Leverandør');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
 
-  // Send a request to the server to get all users
-  const SQLquery = `
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('condo-login');
+} else {
+
+  // Send a message to the server
+  socket.onopen = () => {
+
+    // Send a request to the server to get all users
+    const SQLquery = `
     SELECT * FROM user
     ORDER BY userId;
   `;
-  socket.send(SQLquery);
-};
+    socket.send(SQLquery);
+  };
 
-// Handle incoming messages from server
-socket.onmessage = (event) => {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-  let message = event.data;
+    let message = event.data;
 
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    // user table
-    console.log('userTable');
+      // user table
+      console.log('userTable');
 
-    // array including objects with user information
-    userArray = JSON.parse(message);
+      // array including objects with user information
+      userArray = JSON.parse(message);
 
-    // Send a request to the server to get all accounts
-    const SQLquery = `
+      // Send a request to the server to get all accounts
+      const SQLquery = `
     SELECT * FROM account
     ORDER BY accountId;
   `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create account array including objets
-  if (message.includes('"tableName":"account"')) {
+    // Create account array including objets
+    if (message.includes('"tableName":"account"')) {
 
-    // account table
-    console.log('accountTable');
+      // account table
+      console.log('accountTable');
 
-    // array including objects with account information
-    accountArray = JSON.parse(message);
+      // array including objects with account information
+      accountArray = JSON.parse(message);
 
-    // Send a request to the server to get all suppliers
-    const SQLquery = `
+      // Send a request to the server to get all suppliers
+      const SQLquery = `
     SELECT * FROM supplier
     ORDER BY supplierId;
   `;
-    socket.send(SQLquery);
-  }
-
-  // Create supplier array including supplier objets
-  if (message.includes('"tableName":"supplier"')) {
-
-    // supplier table
-    console.log('supplierTable');
-
-    // array including objects with suplier information
-    supplierArray = JSON.parse(message);
-
-    // Show leading texts
-    let supplierId = objSupplier.getSelectedSupplierId('select-supplier-supplierId');
-    showLeadingText(supplierId);
-
-    // Show all values for all suppliers
-    showValues(supplierId);
-
-    // Make events
-    if (!isEventsCreated) {
-      createEvents();
-      isEventsCreated = true;
+      socket.send(SQLquery);
     }
-  }
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+    // Create supplier array including supplier objets
+    if (message.includes('"tableName":"supplier"')) {
 
-    console.log('affectedRows');
+      // supplier table
+      console.log('supplierTable');
 
-    // Sends a request to the server to get all users
-    const SQLquery = `
+      // array including objects with suplier information
+      supplierArray = JSON.parse(message);
+
+      // Show leading texts
+      let supplierId = objSupplier.getSelectedSupplierId('select-supplier-supplierId');
+      showLeadingText(supplierId);
+
+      // Show all values for all suppliers
+      showValues(supplierId);
+
+      // Make events
+      if (!isEventsCreated) {
+        createEvents();
+        isEventsCreated = true;
+      }
+    }
+
+    // Check for update, delete ...
+    if (message.includes('"affectedRows":1')) {
+
+      console.log('affectedRows');
+
+      // Sends a request to the server to get all users
+      const SQLquery = `
         SELECT * FROM supplier
         ORDER BY supplierId;
       `;
-    socket.send(SQLquery);
+      socket.send(SQLquery);
+    }
+  };
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
   }
-};
 
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
+  // Handle disconnection
+  socket.onclose = () => {
+  }
 }
 
 // Make events for suppliers
@@ -460,7 +445,7 @@ function validateValues(supplierId) {
 
   // Check name
   const supplierName = document.querySelector('.input-supplier-name').value;
-  const validName = objSupplier.validateText(name, "label-supplier-name", "Navn");
+  const validName = objSupplier.validateText(supplierName, "label-supplier-name", "Navn");
 
   // Validate bank account
   const bankAccount =

@@ -589,16 +589,16 @@ class Condos {
             Leilighet
           </a>
 
-          <a href="${url}condo/condo-account.html"
-            class="a-menu-vertical-account"
-          >
-            Konto
-          </a>
-
           <a href="${url}condo/condo-bankaccount.html"
             class="a-menu-vertical-bankaccount"
           >
             Bankkonto
+          </a>
+
+          <a href="${url}condo/condo-account.html"
+            class="a-menu-vertical-account"
+          >
+            Kontonavn
           </a>
 
           <a href="${url}condo/condo-user.html"
@@ -738,7 +738,109 @@ class Condos {
         fileNameDisplay.textContent = 'No file selected';
       }
     });
+  }
 
+  // get bank account name
+  getBankAccountName(bankAccountNumber) {
+
+    let bankAccountName;
+
+    if (bankAccountNumber === '32061703445') {
+      console.log(bankAccountNumber);
+    }
+
+    // Bank account name from bank account table 
+    const objNumberBankAccountNumber =
+      bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    if (objNumberBankAccountNumber > 0) {
+
+      bankAccountName = bankAccountArray[objNumberBankAccountNumber].name;
+    }
+
+    if (!bankAccountName) {
+
+      // Bank account name from supplier table
+      const objSupplierNumber =
+        supplierArray.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+      if (objSupplierNumber > 0) {
+
+        bankAccountName = supplierArray[objSupplierNumber].name;
+      }
+    }
+
+    if (!bankAccountName) {
+
+      // Bank account name from user bank account
+      const objUserBankAccountNumber =
+        userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+      if (objUserBankAccountNumber > 0) {
+
+        bankAccountName = userBankAccountArray[objUserBankAccountNumber].name;
+      }
+    }
+
+    bankAccountName = (bankAccountName) ? bankAccountName : bankAccountNumber;
+    return (bankAccountName) ? bankAccountName : "-";
+  }
+
+  // get account name
+  getAccountName(bankAccountNumber) {
+
+    let accountName;
+
+    // Account name from supplier/ account table
+    const objSupplierNumber =
+      supplierArray.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+    if (objSupplierNumber > 0) {
+
+      const accountId = supplierArray[objSupplierNumber].accountId;
+
+      const objNumberAccount =
+        accountArray.findIndex(account => account.accountId === accountId);
+      if (objNumberAccount > 0) {
+
+        accountName = accountArray[objNumberAccount].name;
+      }
+    }
+
+    // Account name from user bank account/ account table
+    const objUserBankAccountNumber =
+      userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+    if (objUserBankAccountNumber > 0) {
+
+      const accountId = userBankAccountArray[objUserBankAccountNumber].accountId;
+
+      const objNumberAccount =
+        accountArray.findIndex(account => account.accountId === accountId);
+      if (objNumberAccount > 0) {
+
+        accountName = accountArray[objNumberAccount].name;
+      }
+    }
+    return (accountName) ? accountName : "-";
+  }
+
+  // get account id
+  getAccountId(bankAccountNumber) {
+
+    let accountId;
+
+    // Account Id from supplier/ account table
+    const objSupplierNumber =
+      supplierArray.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+    if (objSupplierNumber > 0) {
+
+      accountId = supplierArray[objSupplierNumber].accountId;
+    }
+
+    // Account Id from user bank account/ account table
+    const objUserBankAccountNumber =
+      userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+    if (objUserBankAccountNumber > 0) {
+
+      accountId = userBankAccountArray[objUserBankAccountNumber].accountId;
+    }
+    return (accountId) ? accountId : 0;
   }
 }
 
@@ -1322,10 +1424,10 @@ function testMode() {
       localStorage.removeItem("user");
 
       // Save email/user, password and security level
-      const email = 'superuser@ingegilje.no';
-      const password = 'superuser';
+      const email = 'inge.gilje@gmail.com';
+      const password = '12345';
       const securityLevel = 9;
-      const condominiumId = 1;
+      const condominiumId = 2;
       localStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
       break;
     }

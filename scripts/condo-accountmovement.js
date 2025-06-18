@@ -269,18 +269,16 @@ function showAccountMovements() {
                 `;
 
               // bank account name
+              const bankAccount = Number(accountMovement.fromBankAccount);
+              const bankAccountName = objBankAccount.getBankAccountName(bankAccount);
               htmlColumnAccountMovementBankAccount +=
                 `
-                  <div class="leftCell">
+                  <div 
+                    class="leftCell"
+                  />
+                    ${bankAccountName}    
+                  </div>
                 `;
-              const accountId = Number(accountMovement.accountId);
-              const bankAccountName = objAccountMovement.getBankAccountName(accountId);
-              htmlColumnAccountMovementBankAccount +=
-                bankAccountName;
-              htmlColumnAccountMovementBankAccount +=
-                `
-                </div>
-              `;
 
               // date
               htmlColumnAccountMovementDate +=

@@ -316,7 +316,7 @@ function updateCondominium(condominiumId) {
 function showLeadingText(condominiumId) {
 
   // Show all condominiums
-  objCondominium.showAllCondominiums('condominiumId', condominiumId);
+  objCondominium.showAllCondominiums('condominium-condominiumId', condominiumId);
 
   // Show condominium name
   objCondominium.showInput('condominium-name', '* Navn', 50, '');

@@ -2,6 +2,7 @@
 
 // Activate objects
 const objUser = new User('user');
+const objAccount = new Account('account');
 const objUserBankAccount = new UserBankAccount('userbankaccount');
 
 testMode();
@@ -48,6 +49,24 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // array including objects with user information
       userArray = JSON.parse(message);
+
+      // Send a request to the server to get all user bank accounts
+      const SQLquery =
+        `
+          SELECT * FROM account
+          ORDER BY accountId;
+        `;
+      socket.send(SQLquery);
+    }
+
+    // Create account array including objets
+    if (message.includes('"tableName":"account"')) {
+
+      // account table
+      console.log('accountTable');
+
+      // array including objects with account information
+      accountArray = JSON.parse(message);
 
       // Send a request to the server to get all user bank accounts
       const SQLquery =
@@ -184,6 +203,10 @@ function updateUserBankAccount() {
     const userId =
       Number(document.querySelector('.select-userbankaccount-userId').value);
 
+    // account id
+    const accountId =
+      Number(document.querySelector('.select-userbankaccount-accountId').value);
+
     // name
     const bankAccountName =
       document.querySelector('.input-userbankaccount-name').value;
@@ -209,6 +232,7 @@ function updateUserBankAccount() {
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             userId = ${userId},
+            accountId = ${accountId},
             name = '${bankAccountName}',
             bankAccount = '${bankAccount}'
           WHERE userBankAccountId = ${userBankAccountId}
@@ -225,6 +249,7 @@ function updateUserBankAccount() {
             user,
             lastUpdate,
             userId,
+            accountId,
             name,
             bankAccount
           ) 
@@ -234,6 +259,7 @@ function updateUserBankAccount() {
             '${objUserPassword.email}',
             '${lastUpdate}',
             ${userId},
+            ${accountId},
             '${bankAccountName}',
             '${bankAccount}'
           );
@@ -261,6 +287,10 @@ function showLeadingText(userBankAccountId) {
   // Show all users
   const userId = userArray.at(-1).userId;
   objUser.showAllUsers('userbankaccount-userId', userBankAccountId);
+
+  // Show all accounts
+  const accountId = accountArray.at(-1).accountId;
+  objAccount.showAllAccounts('userbankaccount-accountId', accountId);
 
   // name
   objUserBankAccount.showInput('userbankaccount-name', 'Navn', 50, '');
@@ -297,6 +327,10 @@ function showValues(userBankAccountId) {
       document.querySelector('.select-userbankaccount-userId').value =
         userBankAccountArray[objectNumberUserBankAccount].userId;
 
+      // Select accountId
+      document.querySelector('.select-userbankaccount-accountId').value =
+        userBankAccountArray[objectNumberUserBankAccount].accountId;
+
       // Show bank account name
       document.querySelector('.input-userbankaccount-name').value =
         userBankAccountArray[objectNumberUserBankAccount].name;
@@ -317,6 +351,12 @@ function validateValues() {
   const validUserId =
     validateNumber(userId, 1, 99999, "userbankaccount-userId", "Vis bankkonto");
 
+  // Check account Id
+  const accountId =
+    Number(document.querySelector('.select-userbankaccount-accountId').value);
+  const validAccountId =
+    validateNumber(accountId, 1, 99999, "userbankaccount-accountId", "Vis konto");
+
   // Check name
   const userBankAccountName =
     document.querySelector('.input-userbankaccount-name').value;
@@ -329,7 +369,7 @@ function validateValues() {
   const validBankAccount =
     objUserBankAccount.validateBankAccount(bankAccount, "input-userbankaccount-bankAccount", "Bankkonto");
 
-  return (validUserId && validBankAccount && validUserBankAccountName) ? true : false;
+  return (validAccountId && validUserId && validBankAccount && validUserBankAccountName) ? true : false;
 }
 
 function resetValues() {
@@ -341,6 +381,11 @@ function resetValues() {
   // reset user Id
   document.querySelector('.select-userbankaccount-userId').value =
     0;
+
+  // reset account Id
+  document.querySelector('.select-userbankaccount-accountId').value =
+    0;
+
 
   // reset bank account name
   document.querySelector('.input-userbankaccount-name').value =

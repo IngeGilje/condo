@@ -5,7 +5,7 @@ class Condominium extends Condos {
   condominiumArray = Array;
 
   // Show all condominiums
-  showAllCondominiums(columnName, condominiumId) {
+  showAllCondominiums(className, condominiumId) {
 
     let html = `
     <form 
@@ -14,14 +14,14 @@ class Condominium extends Condos {
       method="POST"
     >
       <label 
-        class="label-condominium-${columnName}"
+        class="label-${className}"
         for="Condominium"
         id="Condominium"
       >
           Velg sameie
       </label>
       <select 
-        class="select-condominium-${columnName}" 
+        class="select-${className}" 
         id="Condominium"
       >
     `;
@@ -66,7 +66,7 @@ class Condominium extends Condos {
       </select >
     </form>
   `;
-    document.querySelector(`.div-condominium-${columnName}`).innerHTML = html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
   // Find selected condominium id

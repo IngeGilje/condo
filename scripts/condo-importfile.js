@@ -265,6 +265,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make importfile events
 function createEvents() {
 
+  // Show selected import file row
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-importfile-importFileId')) {
+
+      // Get row number import file array
+      const rowNumber =
+        Number(document.querySelector(".select-importfile-importFileId").value);
+
+      showValues(rowNumber);
+    };
+  });
+
   // Update import file array
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-importfile-updateImportArray')) {
@@ -273,7 +285,13 @@ function createEvents() {
       const rowNumber =
         Number(document.querySelector(".select-importfile-importFileId").value);
 
+      updateImportFileArray(rowNumber);
+
       showBankAccountMovements();
+
+      if (rowNumber === 26) {
+        console.log(rowNumber);
+      }
       showValues(rowNumber);
     };
   });
@@ -332,11 +350,11 @@ function showValues(rowNumber) {
     rowNumber = 0;
   }
 
-  // Show selected condo
+  // selected condo
   document.querySelector('.select-importfile-condoId').value =
     importFileArray[rowNumber].condoId;
 
-  // Show selected account
+  // selected account
   document.querySelector('.select-importfile-accountId').value =
     importFileArray[rowNumber].accountId;
 
@@ -415,34 +433,56 @@ function showBankAccountMovements() {
   let rowNumber = 0;
 
   let htmlColumnLineNumber =
-    '<div class="columnHeaderCenter">Linje</div><br>';
+    '<div class = "columnHeaderCenter">Linje</div><br>';
   let htmlColumnAccountingDate =
-    '<div class="columnHeaderRight">Dato</div><br>';
+    '<div class = "columnHeaderRight">Dato</div><br>';
   let htmlColumnCondoName =
-    '<div class="columnHeaderRight">Leilighet</div><br>';
+    '<div class = "columnHeaderRight">Leilighet</div><br>';
   let htmlColumnAccountName =
-    '<div class="columnHeaderRight">Konto</div><br>';
+    '<div class = "columnHeaderRight">Konto</div><br>';
   let htmlColumnFromBankAccount =
-    '<div class="columnHeaderRight">Fra b.konto</div><br>';
+    '<div class = "columnHeaderRight">Fra b.konto</div><br>';
   let htmlColumnToBankAccount =
-    '<div class="columnHeaderRight">Til b.konto</div><br>';
+    '<div class = "columnHeaderRight">Til b.konto</div><br>';
   let htmlColumnPayment =
-    '<div class="columnHeaderRight">Beløp</div><br>';
+    '<div class = "columnHeaderRight">Beløp</div><br>';
   let htmlColumnText =
-    '<div class="columnHeaderLeft">Tekst</div><br>';
+    '<div class = "columnHeaderLeft">Tekst</div><br>';
 
   importFileArray.forEach((importFile) => {
 
     rowNumber++;
 
-    //check if the number is odd
+    if (importFile.condoId === 2) {
+      console.log('condoId:', importFile.condoId);
+    }
+
+    /*
+    // get bankaccount from condominium
+    let bankAccountCondo;
+
+    const objBankAccountNumber =
+      bankAccountArray.findIndex(bankAccount => {
+        bankAccount.condominiumId === objUserPassword.condominiumId
+      })
+    if (objBankAccountNumber > 0) {
+
+      bankAccountCondo =
+        bankAccountArray[objBankAccountNumber].bankAccount;
+    }
+
+    let bankAccount =
+      (importFile.toBankAccount === bankAccountCondo)
+        ? importFile.fromBankAccount
+        : importFile.toBankAccount;
+    */
+
+    // check if the number is odd
     const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
     htmlColumnLineNumber +=
       `
         <div
-          class="centerCell 
-          ${colorClass}
-          "
+          class = "centerCell ${colorClass}"
         >
           ${rowNumber}
         </div>
@@ -451,98 +491,81 @@ function showBankAccountMovements() {
     htmlColumnAccountingDate +=
       `
         <div 
-          class="rightCell
-          ${colorClass}
-          "
+          class = "rightCell ${colorClass}"
         >
           ${importFile.accountingDate}
         </div>
       `;
 
     // Condo name
-    let condoName = "-";
-    if (importFile.fromBankAccount === '32061703445') {
-      console.log('fromBankAccount:', importFile.fromBankAccount);
-    }
-    const objectNumberUserBankAccount =
-      userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === importFile.fromBankAccount);
-    if (objectNumberUserBankAccount > 0) {
-
-      userId =
-        userBankAccountArray[objectNumberUserBankAccount].userId;
-      const objectNumberUser =
-        userArray.findIndex(user => user.userId === userId);
-      if (objectNumberUser > 0) {
-
-        condoId =
-          userArray[objectNumberUser].condoId;
-        const objectNumberCondo =
-          condoArray.findIndex(condo => condo.condoId === condoId);
-        if (objectNumberCondo > 0) {
-
-          condoName =
-            condoArray[objectNumberCondo].name;
-        }
-      }
-    }
-
+    const condoName =
+      getCondoName(importFile.condoId);
     htmlColumnCondoName +=
       `
         <div
-          class="rightCell
-          ${colorClass}
-          "
+          class = "rightCell ${colorClass} "
         >
           ${condoName}
         </div>
       `;
 
     // Account name
+    /*
     let accountName;
-    accountName = getAccountName(importFile.fromBankAccount);
-    if (accountName === '-') {
-
-      accountName = getAccountName(importFile.toBankAccount);
+    if (importFile.fromBankAccount) {
+      accountName =
+        objImportFile.getAccountName(importFile.fromBankAccount);
     }
+    if (accountName === '-' && importFile.toBankAccount) {
+      accountName =
+        objImportFile.getAccountName(importFile.toBankAccount);
+    }
+    */
+    accountName =
+      truncateText(importFile.accountName, 'div-importfile-columnAccountName');
+
     htmlColumnAccountName +=
       `
         <div
-          class="rightCell
-          ${colorClass}
-          "
+          class = "rightCell ${colorClass}"
         >
           ${accountName}
         </div>
       `;
 
-    let fromBankAccount =
-      getBankAccountName(importFile.fromBankAccount);
-
-    fromBankAccount = truncateText(fromBankAccount, 'div-importfile-columnFromBankAccount')
-
+    // get from bank account name 
+    /*
+    let bankAccountName =
+      objImportFile.getBankAccountName(importFile.fromBankAccount);
+    if (bankAccountName) {
+      bankAccountName =
+        truncateText(bankAccountName, 'div-importfile-columnFromBankAccount');
+    }
+    */
+    const fromBankAccountName =
+      truncateText(importFile.fromBankAccountName, 'div-importfile-columnFromBankAccount');
     htmlColumnFromBankAccount +=
       `
         <div 
-          class="rightCell
-          ${colorClass}"
-        >
-          ${fromBankAccount}
+          class = "rightCell ${colorClass}"
+        />
+          ${fromBankAccountName}
         </div>
       `;
 
-    let toBankAccount =
-      getBankAccountName(importFile.toBankAccount);
-
-    toBankAccount =
-      truncateText(toBankAccount, 'div-importfile-columnToBankAccount')
-
+    // get to bank account name
+    /* 
+    bankAccountName =
+      objImportFile.getBankAccountName(importFile.toBankAccount);
+    */
+    const toBankAccountName =
+      truncateText(importFile.toBankAccountName, 'div-importfile-columnToBankAccount');
     htmlColumnToBankAccount +=
       `
         <div 
-          class="rightCell
-          ${colorClass}"
-        >
-          ${toBankAccount}
+          class = "rightCell ${colorClass}"
+        />
+          ${toBankAccountName}
         </div>
       `;
 
@@ -556,12 +579,9 @@ function showBankAccountMovements() {
     }
     htmlColumnPayment +=
       `
-        <div class=
-          "
-            rightCell
-            ${colorClass}
-          "
-        >
+        <div 
+          class = "rightCell ${colorClass}"
+        />
           ${payment}
         </div>
       `;
@@ -572,12 +592,8 @@ function showBankAccountMovements() {
     htmlColumnText +=
       `
         <div
-          class=
-          "
-            leftCell
-            ${colorClass}
-          "
-        >
+          class = "leftCell ${colorClass}"
+        />
           ${text}
         </div>
       `;
@@ -598,8 +614,8 @@ function showBankAccountMovements() {
   // Opening balance
   htmlColumnLineNumber +=
     `
-      <div class =
-        sumCellLeft
+      <div 
+        class = "sumCellLeft"
       >
        Utg.balanse 
       </div>
@@ -612,8 +628,8 @@ function showBankAccountMovements() {
     formatFromOreToKroner(openingBalance);
   htmlColumnAccountName +=
     `
-      <div class =
-        sumCellRight
+      <div 
+        class = "sumCellRight"
       >
         ${formatedOpeningBalance}
       </div>
@@ -626,8 +642,8 @@ function showBankAccountMovements() {
     convertToEurDateFormat(openingBalanceDate);
   htmlColumnAccountingDate +=
     `
-      <div class =
-        sumCellRight
+      <div 
+        class = "sumCellRight"
       >
         ${formatedOpeningBalanceDate}
       </div>
@@ -635,8 +651,8 @@ function showBankAccountMovements() {
 
   htmlColumnCondoName +=
     `
-      <div class =
-        sumCellRight
+      <div 
+        class = "sumCellRight"
       >
         -
       </div>
@@ -645,10 +661,7 @@ function showBankAccountMovements() {
   htmlColumnFromBankAccount +=
     `
       <div
-        class=
-          "
-            sumCellRight
-          "
+        class = "sumCellRight"
       >
         -
       </div>
@@ -657,10 +670,7 @@ function showBankAccountMovements() {
   htmlColumnToBankAccount +=
     `
       <div
-        class=
-          "
-            sumCellRight
-          "
+        class = "sumCellRight"
       >
         -
       </div>
@@ -672,10 +682,8 @@ function showBankAccountMovements() {
     formatFromOreToKroner(sumColumnPayments);
   htmlColumnPayment +=
     `
-      <div class=
-        "
-          sumCellRight
-        "
+      <div 
+        class = "sumCellRight"
       >
         ${payments}
       </div>
@@ -687,10 +695,9 @@ function showBankAccountMovements() {
   closingBalanse =
     formatFromOreToKroner(closingBalanse);
   htmlColumnText +=
-    `<div class=
-        "
-          sumCellLeft
-        "
+    `
+      <div 
+        class = "sumCellLeft"
       >
         ${closingBalanse}
       </div>
@@ -747,56 +754,62 @@ function createImportFileArray(fileContent) {
     // validate the dd.mm.yyyy (European date format) format
     if (validateEuroDateFormat(accountingDate)) {
 
-      // condo id
-      let condoId = 0;
-      const objectNumberUser = userArray.findIndex(user => user.bankAccount === fromBankAccount);
-      if (objectNumberUser > 0) {
-
-        condoId = userArray[objectNumberUser].condoId;
-      }
-      if (condoId === 0) {
-
-        // Check the due table for amount (monthly fee)
-        let formatedIncome = formatKronerToOre(income);
-        const objectNumberDue = dueArray.findIndex(due => due.amount === formatedIncome);
-        if (objectNumberDue > 0) {
-          condoId = dueArray[objectNumberDue].condoId;
-        }
+      if (fromBankAccount === '32061703445') {
+        console.log('accountId:', fromBankAccount);
       }
 
-      // remove first and last " in text
-      text = text.replace(/^"|"$/g, '');
-      if (text === '') {
-
-        text = toAccount;
-      }
+      // Condo id
+      const condoId = getCondoId(fromBankAccount);
 
       // Account id
-      accountId = 0;
-      const objectNumberSupplier = supplierArray.findIndex(supplier => supplier.bankAccount === fromBankAccount);
-      if (objectNumberSupplier > 0) {
-
-        accountId = supplierArray[objectNumberSupplier].accountId;
+      //const accountId = getAccountId(fromBankAccount);
+      let accountId = 0;
+      if (fromBankAccount) {
+        accountId =
+          objImportFile.getAccountId(fromBankAccount);
+      }
+      if (accountId === 0 && toBankAccount) {
+        accountId =
+          objImportFile.getAccountId(toBankAccount);
       }
 
+      // Account Name
+      let accountName;
+      if (fromBankAccount) {
+        accountName =
+          objImportFile.getAccountName(fromBankAccount);
+      }
+      if (accountName === '-' && toBankAccount) {
+        accountName =
+          objImportFile.getAccountName(toBankAccount);
+      }
+
+      // get to bank account name 
+      toBankAccountName =
+        objImportFile.getBankAccountName(toBankAccount);
+
+      fromBankAccountName =
+        objImportFile.getBankAccountName(fromBankAccount);
+
       // From bank account
-
-
       importFileId++;
 
-      const objbBankAccountMovement = {
+      const objBankAccountMovement = {
         importFileId: importFileId,
         accountingDate: accountingDate,
         condoId: condoId,
         accountId: accountId,
+        accountName: accountName,
         fromBankAccount: fromBankAccount,
+        fromBankAccountName: fromBankAccountName,
         toBankAccount: toBankAccount,
+        toBankAccountName: toBankAccountName,
         income: income,
         payment: payment,
         text: text
       };
 
-      importFileArray.push(objbBankAccountMovement);
+      importFileArray.push(objBankAccountMovement);
     }
   });
 }
@@ -1189,36 +1202,6 @@ function getBankAccountName(bankAccountName) {
   return (bankAccountName === '') ? '-' : bankAccountName;
 }
 
-// get account name
-function getAccountName(bankAccount) {
-
-  let accountName = "-";
-
-  if (Number(bankAccount) > 987654321) {
-
-    // get account name from supplier
-    const objSupplierNumber = supplierArray.findIndex(supplier => supplier.bankAccount === bankAccount);
-    if (objSupplierNumber > 0) {
-
-      const accountId = Number(supplierArray[objSupplierNumber].accountId);
-      if (accountId > 0) {
-
-        const objAccountNumber = accountArray.findIndex(account => account.accountId === accountId);
-        if (objAccountNumber > 0) {
-
-          accountName = accountArray[objAccountNumber].name;
-        } else {
-
-          // get account name from user
-
-        }
-      }
-    }
-  }
-
-  return (accountName === '') ? '-' : accountName;
-}
-
 // Send a request to the server to get all bank account transactions
 function requestImportFile() {
 
@@ -1230,3 +1213,133 @@ function requestImportFile() {
     socket.send(`Name of importfile: ${importFileName}`);
   }
 }
+
+/*
+// get account Id
+function getAccountId(bankAccount) {
+
+  let accountId = 0;
+
+  if (Number(bankAccount) > 987654321) {
+
+    const objUserBankAccountNumber = userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+    if (objUserBankAccountNumber > 0) {
+
+      accountId = Number(userBankAccountArray[objUserBankAccountNumber].accountId);
+    }
+  }
+  return accountId;
+}
+*/
+
+// get condo Id
+function getCondoId(bankAccount) {
+
+  let condoId = 0;
+
+  if (Number(bankAccount) > 987654321) {
+
+    const objUserBankAccountNumber = userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+    if (objUserBankAccountNumber > 0) {
+
+      userId = Number(userBankAccountArray[objUserBankAccountNumber].userId);
+
+      if (userId >= 0) {
+
+        const objUserNumber = userArray.findIndex(user => user.userId === userId);
+        if (objUserNumber >= 0) {
+
+          condoId = Number(userArray[objUserNumber].condoId);
+        }
+      }
+    }
+  }
+  return condoId;
+}
+
+// Update import file array row
+function updateImportFileArray(rowNumber) {
+
+  // validate row number
+  if (rowNumber > 0) {
+    rowNumber--;
+  } else {
+    rowNumber = 0;
+  }
+  // condo Id
+  importFileArray[rowNumber].condoId =
+    Number(document.querySelector('.select-importfile-condoId').value);
+
+  // Account Id
+  importFileArray[rowNumber].accountId =
+    Number(document.querySelector('.select-importfile-accountId').value);
+
+  // Account Name
+  const accountId =
+    importFileArray[rowNumber].accountId;
+  const objNumberAccount =
+    accountArray.findIndex(account => account.accountId === accountId);
+  if (objNumberAccount >= 0) {
+    importFileArray[rowNumber].accountName =
+      accountArray[objNumberAccount].name;
+  }
+
+  // Acounting Date
+  importFileArray[rowNumber].accountingDate =
+    document.querySelector('.input-importfile-date').value;
+
+  // Income
+  importFileArray[rowNumber].income =
+    document.querySelector('.input-importfile-income').value;
+
+  // Payment
+  importFileArray[rowNumber].payment =
+    document.querySelector('.input-importfile-payment').value;
+
+  // Text
+  importFileArray[rowNumber].text =
+    document.querySelector('.input-importfile-text').value;
+}
+
+/*
+// get account id
+function getAccountId(bankAccount) {
+
+  let accountId = 0;
+
+  if (Number(bankAccount) > 987654321) {
+
+    // get account name from supplier
+    const objSupplierNumber = supplierArray.findIndex(supplier => supplier.bankAccount === bankAccount);
+    if (objSupplierNumber > 0) {
+
+      accountId = Number(supplierArray[objSupplierNumber].accountId);
+    }
+
+    const objUserBankAccount =
+      userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+    if (objUserBankAccount > 0) {
+
+      accountId = Number(userBankAccountArray[objUserBankAccount].accountId);
+    }
+  }
+
+  return accountId;
+}
+*/
+
+// Condo name
+function getCondoName(condoId) {
+
+  let condoName = "-";
+
+  const objectNumberCondo =
+    condoArray.findIndex(condo => condo.condoId === condoId);
+  if (objectNumberCondo > 0) {
+
+    condoName =
+      condoArray[objectNumberCondo].name;
+  }
+  return condoName;
+}
+

@@ -5,6 +5,7 @@ const objUser = new User('user');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 
+testMode();
 
 let isEventsCreated = false;
 
@@ -202,7 +203,7 @@ function updateAccount() {
       Number(document.querySelector('.select-account-accountId').value);
 
     // Bank account Id
-    const bankAccountId = document.querySelector('.select-account-bankAccountId').value;
+    //const bankAccountId = document.querySelector('.select-account-bankAccountId').value;
 
     // Account Name
     const accountName = document.querySelector('.input-account-accountName').value;
@@ -226,9 +227,7 @@ function updateAccount() {
           SET 
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
-            bankAccountId = ${bankAccountId},
-            name = '${accountName}',
-            accountType = ''
+            name = '${accountName}'
           WHERE accountId = ${accountId};
         `;
       } else {
@@ -240,18 +239,14 @@ function updateAccount() {
           condominiumId,
           user,
           lastUpdate,
-          bankAccountId,
-          name,
-          accountType
+          name
         ) 
         VALUES (
           'account',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
-          ${bankAccountId},
-          '${accountName}',
-          ''
+          '${accountName}'
         );
       `;
       }
@@ -265,8 +260,6 @@ function updateAccount() {
         false;
       document.querySelector('.button-account-new').disabled =
         false;
-      //document.querySelector('.button-account-cancel').disabled =
-      //false;
       isUpdated = true;
     }
   }
@@ -311,8 +304,8 @@ function showLeadingText(accountId) {
   objAccount.showAllAccounts('account-accountId', accountId);
 
   // Show all bank accounts
-  const bankAccountId = bankAccountArray.at(-1).bankAccountId;
-  objBankAccount.showAllBankAccounts('account-bankAccountId', bankAccountId);
+  //const bankAccountId = bankAccountArray.at(-1).bankAccountId;
+  //objBankAccount.showAllBankAccounts('account-bankAccountId', bankAccountId);
 
   // account name
   objAccount.showInput('account-accountName', '* Kontonavn', 50, '');
@@ -347,8 +340,8 @@ function showValues(accountId) {
       objAccount.selectAccountId(accountId, 'account-accountId');
 
       // Select bank account
-      const bankAccountId = accountArray[objectNumberAccount].bankAccountId;
-      objAccount.selectBankAccountId(bankAccountId, 'account-bankAccountId')
+      //const bankAccountId = accountArray[objectNumberAccount].bankAccountId;
+      //objAccount.selectBankAccountId(bankAccountId, 'account-bankAccountId')
 
       // account name
       document.querySelector('.input-account-accountName').value =
@@ -361,18 +354,18 @@ function showValues(accountId) {
 function validateValues() {
 
   // Check bank account
-  const bankAccountId =
-    Number(document.querySelector('.select-account-bankAccountId').value);
-  const validBankAccountId =
-    validateNumber(bankAccountId, 1, 99999, "account-bankAccountId", "Vis konto");
+  //const bankAccountId =
+  //  Number(document.querySelector('.select-account-bankAccountId').value);
+  //const validBankAccountId =
+  //  validateNumber(bankAccountId, 1, 99999, "account-bankAccountId", "Vis konto");
 
   // Check account Name
   const accountName =
     document.querySelector('.input-account-accountName').value;
   const validName =
-    objAccount.validateText(name, "label-account-accountName", "Kontonavn");
+    objAccount.validateText(accountName, "label-account-accountName", "Kontonavn");
 
-  return (validName && validBankAccountId) ? true : false;
+  return (validName) ? true : false;
 }
 
 function resetValues() {
@@ -391,39 +384,4 @@ function resetValues() {
     true;
   document.querySelector('.button-account-new').disabled =
     true;
-  //document.querySelector('.button-account-cancel').disabled =
-  //true;
 }
-
-/*
-DROP TABLE account;
-CREATE TABLE account (
-  accountId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50) NOT NULL,
-  condominiumId INT,
-  user VARCHAR (50),
-  lastUpdate VarChar (40),
-  bankAccountId INT,
-  name VARCHAR(50) NOT NULL,
-  accountType VARCHAR(1),
-  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
-);
-ALTER TABLE account ENGINE=InnoDB;
-INSERT INTO account(
-  tableName,
-  condominiumId,
-  user,
-  lastUpdate,
-  bankAccountId,
-  name,
-  accountType) 
-VALUES (
-  'account',
-  1,
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  0,
-  '',
-  ''
-  );
-*/

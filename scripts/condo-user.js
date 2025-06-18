@@ -2,9 +2,12 @@
 
 // Activate objects
 const objUser = new User('user');
+const objCondominium = new Condominium('condominium');
 const objCondo = new Condo('condo');
 
 let isEventsCreated = false;
+
+testMode();
 
 objCondo.menu();
 objCondo.markSelectedMenu('Leilighet');
@@ -28,8 +31,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     // Send a request to the server to get all condos
     const SQLquery = `
-    SELECT * FROM condo
-    ORDER BY condoId;
+    SELECT * FROM condominium
+    ORDER BY condominiumId;
   `;
     socket.send(SQLquery);
   };
@@ -38,6 +41,24 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   socket.onmessage = (event) => {
 
     let message = event.data;
+
+    // Create condominium array including objets
+    if (message.includes('"tableName":"condominium"')) {
+
+      // condominium table
+      console.log('condominiumTable');
+
+      // array including objects with condominium information
+      condominiumArray = JSON.parse(message);
+
+      // Send a request to the server to get all condominiums
+      const SQLquery =
+        `
+          SELECT * FROM condo
+          ORDER BY condoId;
+        `;
+      socket.send(SQLquery);
+    }
 
     // Create condo array including objets
     if (message.includes('"tableName":"condo"')) {
@@ -122,6 +143,14 @@ function createEvents() {
     }
   });
 
+  // Select condominium
+  document.addEventListener('change', (event) => {
+
+    if (event.target.classList.contains('select-user-condominiumId')) {
+
+    }
+  });
+
   // Update
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-user-update')) {
@@ -147,7 +176,6 @@ function createEvents() {
 
       const userId =
         Number(document.querySelector('.select-user-userId').value);
-      //objUser.getSelectedUserId('select-user-userId');
       deleteUserRow(userId);
 
       // Sends a request to the server to get all users
@@ -183,6 +211,10 @@ function updateUser(userId) {
     // e-mail
     const email =
       document.querySelector('.input-user-email').value;
+
+    // condominium id
+    const condominiumId =
+      Number(document.querySelector('.select-user-condominiumId').value);
 
     // condo id
     const condoId =
@@ -221,6 +253,7 @@ function updateUser(userId) {
       SQLquery = `
           UPDATE user
           SET 
+            condominiumId = ${condominiumId},
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             email = '${email}',
@@ -251,8 +284,8 @@ function updateUser(userId) {
           password) 
         VALUES (
           'user',
-          ${objUserPassword.condominiumId},
-          '${objUserPassword.email}',
+          ${condominiumId},
+          '${email}',
           '${lastUpdate}',
           '${email}',
           ${condoId},
@@ -285,7 +318,6 @@ function deleteUserRow(userId) {
 
   let SQLquery = "";
 
-  //const userId = Number(document.querySelector('.select-user-userId').value);
   if (userId > 1) {
 
     // Check if user exist
@@ -318,6 +350,10 @@ function showLeadingText(userId) {
 
   // Show all users
   objUser.showAllUsers('user-userId', userId);
+
+  // Show all condominiums
+  const condominiumId = condominiumArray.at(-1).condominiumId;
+  objCondominium.showAllCondominiums('user-condominiumId', condominiumId);
 
   // email
   objUser.showInput('user-email', '* E-mail(Bruker)', 50, '');
@@ -369,6 +405,10 @@ function showValues(userId) {
       // Show email
       document.querySelector('.input-user-email').value =
         userArray[objectNumberUser].email;
+
+      // Select condominiumId
+      document.querySelector('.select-user-condominiumId').value =
+        userArray[objectNumberUser].condominiumId;
 
       // Select condoId
       document.querySelector('.select-user-condoId').value =
@@ -434,6 +474,10 @@ function resetValues() {
 
   // user Id
   document.querySelector('.select-user-userId').value =
+    0;
+
+  // condominium Id
+  document.querySelector('.select-user-condominiumId').value =
     0;
 
   // reset e-mail
