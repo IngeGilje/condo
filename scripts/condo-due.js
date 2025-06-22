@@ -1,142 +1,164 @@
 // Due maintenance
 
-let isEventsCreated = false;
-
 // Activate objects
 const objUser = new User('user');
 const objCondo = new Condo('condo');
+const objAccount = new Account('account');
 const objDue = new Due('due');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+testMode();
 
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
+let isEventsCreated = false;
 
 objDue.menu();
 objDue.markSelectedMenu('Forfall');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
 
-  // Sends a request to the server to get all users
-  const SQLquery = `
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('condo-login');
+} else {
+
+  // Send a message to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get all users
+    const SQLquery = `
     SELECT * FROM user
     ORDER BY userId;
   `;
-  socket.send(SQLquery);
-};
+    socket.send(SQLquery);
+  };
 
-// Handle incoming messages from server
-socket.onmessage = (event) => {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-  let message = event.data;
+    let message = event.data;
 
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    console.log('userTable');
+      console.log('userTable');
 
-    // user array including objects with user information
-    userArray = JSON.parse(message);
+      // user array including objects with user information
+      userArray = JSON.parse(message);
 
-    // Sends a request to the server to get all condos
-    const SQLquery = `
+      // Sends a request to the server to get all condos
+      const SQLquery = `
       SELECT * FROM condo
       ORDER BY name;
     `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create condo array including objets
-  if (message.includes('"tableName":"condo"')) {
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    console.log('CondoTable');
-    // condo table
+      console.log('userTable');
 
-    // array including objects with condo information
-    condoArray = JSON.parse(message);
+      // user array including objects with user information
+      userArray = JSON.parse(message);
 
-    // Sends a request to the server to get all due
-    const SQLquery = `
+      // Sends a request to the server to get all condos
+      const SQLquery = `
+      SELECT * FROM condo
+      ORDER BY name;
+    `;
+      socket.send(SQLquery);
+    }
+    
+    // Create condo array including objets
+    if (message.includes('"tableName":"condo"')) {
+
+      // condo table
+      console.log('CondoTable');
+
+      // array including objects with condo information
+      condoArray = JSON.parse(message);
+
+      // Sends a request to the server to get all accounts
+      const SQLquery = `
+      SELECT * FROM account
+      ORDER BY accountId;
+    `;
+      socket.send(SQLquery);
+    }
+
+    // Create condo array including objets
+    if (message.includes('"tableName":"account"')) {
+
+      // account table
+      console.log('AccountTable');
+
+      // array including objects with account information
+      accountArray = JSON.parse(message);
+
+      // Sends a request to the server to get all dues
+      const SQLquery = `
       SELECT * FROM due
       ORDER BY dueId;
     `;
-    socket.send(SQLquery);
-  }
-
-  // Create  due array including objets
-  if (message.includes('"tableName":"due"')) {
-
-    // due table
-    console.log('dueTable');
-
-    // array including objects with due information
-    dueArray = JSON.parse(message);
-
-    const dueId = objDue.getSelectedDueId('dueId');
-
-    // Show leading text
-    showLeadingText(dueId);
-
-    // Show all values
-    showValues(dueId);
-
-    // Show due
-    const condoId = Number(document.querySelector('.select-due-condoId').value);
-
-    // Make events
-    if (!isEventsCreated) {
-
-      createEvents();
-      isEventsCreated = true;
+      socket.send(SQLquery);
     }
-  }
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+    // Create  due array including objets
+    if (message.includes('"tableName":"due"')) {
 
-    console.log('affectedRows');
+      // due table
+      console.log('dueTable');
 
-    const SQLquery =
-      `
+      // array including objects with due information
+      dueArray = JSON.parse(message);
+
+      const dueId = objDue.getSelectedDueId('dueId');
+
+      // Show leading text
+      showLeadingText(dueId);
+
+      // Show all values
+      showValues(dueId);
+
+      /*
+      // Show condoId
+      const condoId =
+       Number(document.querySelector('.select-due-condoId').value);
+      */
+
+      // Make events
+      if (!isEventsCreated) {
+
+        createEvents();
+        isEventsCreated = true;
+      }
+    }
+
+    // Check for update, delete ...
+    if (message.includes('"affectedRows":1')) {
+
+      console.log('affectedRows');
+
+      const SQLquery =
+        `
         SELECT * FROM due
         ORDER BY dueId;
       `;
-    socket.send(SQLquery);
+      socket.send(SQLquery);
+    }
+  };
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
   }
-};
 
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
+  // Handle disconnection
+  socket.onclose = () => {
+  }
 }
 
 // Make due events
@@ -162,24 +184,12 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-update')) {
 
-      /*
-      const dueId = Number(document.querySelector('.select-due-dueId').value);
-      if (updateDueRow(dueId)) {
-
-        // Sends a request to the server to get all due
-        const SQLquery = `
-          SELECT * FROM due
-          ORDER BY dueId;
-        `;
-        socket.send(SQLquery);
-      }
-      */
       const dueId = Number(document.querySelector('.select-due-dueId').value);
       updateDueRow(dueId);
     }
   });
 
-  // new umontly amount
+  // new mountly amount
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-new')) {
 
@@ -235,6 +245,9 @@ function updateDueRow(dueId) {
     const condoId =
       Number(document.querySelector('.select-due-condoId').value);
 
+    const accountId =
+      Number(document.querySelector('.select-due-accountId').value);
+
     const date =
       formatNorDateToNumber(document.querySelector('.input-due-date').value);
 
@@ -250,47 +263,50 @@ function updateDueRow(dueId) {
     const objectNumberDue = dueArray.findIndex(due => due.dueId === dueId);
     if (objectNumberDue >= 0) {
 
-      SQLquery = `
+      SQLquery =
+        `
         UPDATE due
-        SET 
-          user = '${objUserPassword.email}',
-          lastUpdate = '${lastUpdate}',
-          condoId = ${condoId},
-          amount = '${amount}',
-          date = '${date}',
-          text = '${text}'
-        WHERE dueId = ${dueId};
-      `;
+          SET 
+            user = '${objUserPassword.email}',
+            lastUpdate = '${lastUpdate}',
+            condoId = ${condoId},
+            accountId = ${accountId},
+            amount = '${amount}',
+            date = '${date}',
+            text = '${text}'
+          WHERE dueId = ${dueId};
+        `;
 
     } else {
 
-      SQLquery = `
-        INSERT INTO due (
-          tableName,
-          condominiumId,
-          user,
-          lastUpdate,
-          condoId,
-          amount,
-          date,
-          text)
-        VALUES(
-          'due',
-          ${objUserPassword.condominiumId},
-          '${objUserPassword.email}',
-          '${lastUpdate}',
-          ${condoId},
-          '${amount}',
-          '${date}',
-          '${text}'
-        );
-      `;
-
+      SQLquery =
+        `
+          INSERT INTO due (
+            tableName,
+            condominiumId,
+            user,
+            lastUpdate,
+            condoId,
+            accountId,
+            amount,
+            date,
+            text)
+          VALUES(
+            'due',
+            ${objUserPassword.condominiumId},
+            '${objUserPassword.email}',
+            '${lastUpdate}',
+            ${condoId},
+            ${accountId},
+            '${amount}',
+            '${date}',
+            '${text}'
+          );
+        `;
     }
     socket.send(SQLquery);
 
     // Sends a request to the server to get all dues
-    //objDue.getDues(socket);
     SQLquery = `
       SELECT * FROM due
       ORDER BY dueId;
@@ -303,8 +319,6 @@ function updateDueRow(dueId) {
       false;
     document.querySelector('.button-due-new').disabled =
       false;
-    //document.querySelector('.button-due-cancel').disabled =
-    //  false;
     isUpdated = true;
   }
   return isUpdated;
@@ -341,8 +355,14 @@ function showLeadingText(dueId) {
   objDue.showAllDues('due-dueId', dueId);
 
   // Show all condos
-  const condoId = condoArray.at(-1).condoId;
+  const condoId =
+    condoArray.at(-1).condoId;
   objCondo.showAllCondos('due-condoId', condoId);
+
+  // Show all accounts
+  const accountId =
+    accountArray.at(-1).accountId;
+  objAccount.showAllAccounts('due-accountId', accountId);
 
   // Show amount
   objDue.showInput('due-date', '* Dato', 10, '');
@@ -377,6 +397,12 @@ function validateValues(dueId) {
   const validCondoId =
     validateNumber(condoId, 1, 99999, 'due-condoId', 'Leilighet');
 
+  // Check for valid account Id
+  const accountId =
+    document.querySelector('.select-due-accountId').value;
+  const validAccountId =
+    validateNumber(condoId, 1, 99999, 'due-accountId', 'Konto');
+
   // Check for valid date
   const date =
     document.querySelector('.input-due-date').value;
@@ -395,10 +421,11 @@ function validateValues(dueId) {
   const validText =
     objDue.validateText(text, "label-due-text", "Tekst");
 
-  return (validCondoId && validDate && validAmount && validText) ? true : false;
+  return (validAccountId && validCondoId && validDate && validAmount && validText) ? true : false;
 }
 
-function findDueId(condoId, amount, date) {
+/*
+function findDueId(condoId, accountId, amount, date) {
 
   let dueId = 0
   dueArray.forEach((due) => {
@@ -406,6 +433,7 @@ function findDueId(condoId, amount, date) {
     if (due.dueId > 1
       && due.due === amount
       && due.date === date
+      && due.accountId === accountId
       && due.condoId === condoId) {
 
       dueId = due.dueId;
@@ -414,6 +442,7 @@ function findDueId(condoId, amount, date) {
 
   return dueId;
 }
+*/
 
 // Show values for due
 function showValues(dueId) {
@@ -429,10 +458,15 @@ function showValues(dueId) {
       document.querySelector('.select-due-dueId').value =
         dueArray[objectNumberDue].dueId;
 
-      // Show condo
+      // Show condo id
       const condoId =
         dueArray[objectNumberDue].condoId;
       objDue.selectCondoId(condoId, 'due-condoId');
+
+      // Show account id
+      const accountId =
+        dueArray[objectNumberDue].accountId;
+      objDue.selectAccountId(accountId, 'due-accountId');
 
       // Show due date
       const dueDate = convertToEurDateFormat(dueArray[objectNumberDue].date);
@@ -481,38 +515,3 @@ function resetValues() {
   //document.querySelector('.button-due-cancel').disabled =
   //  true;
 }
-
-/*
-DROP TABLE due; 
-CREATE TABLE due (
-  dueId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50) NOT NULL,
-  condominiumId INT,
-  user VARCHAR (50),
-  lastUpdate VarChar (40),
-  condoId INT,
-  amount VARCHAR(10) NOT NULL,
-  date VARCHAR(10) NOT NULL,
-  text VARCHAR (255) NOT NULL,
-  FOREIGN KEY (condominiumId) REFERENCES bankaccount(bankAccountId)
-);
-INSERT INTO due (
-  tableName,
-  condominiumId,
-  user,
-  lastUpdate,
-  condoId,
-  amount,
-  date,
-  text)
-VALUES (
-  'due',
-  1,
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  0,
-  '',
-  '',
-  ''
-);
-*/

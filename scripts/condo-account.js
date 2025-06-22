@@ -3,7 +3,6 @@
 // Activate Account class
 const objUser = new User('user');
 const objAccount = new Account('account');
-const objBankAccount = new BankAccount('bankaccount');
 
 testMode();
 
@@ -44,38 +43,20 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // user array including objects with user information
       userArray = JSON.parse(message);
 
-      // Sends a request to the server to get all bankaccounts
+      // Sends a request to the server to get all accounts
       const SQLquery =
         `
-          SELECT * FROM bankaccount
-          ORDER BY name;
+          SELECT * FROM account
+          ORDER BY accountId;
         `;
-      socket.send(SQLquery);
-    }
-
-    // Create bank account array including objets
-    if (message.includes('"tableName":"bankaccount"')) {
-
-      // bank account table
-
-      console.log('bankaccountTable');
-
-      // array including objects with account information
-      bankAccountArray = JSON.parse(message);
-
-      // Sends a request to the server to get all accounts
-      const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
       socket.send(SQLquery);
     }
 
     // Create account array including objets
     if (message.includes('"tableName":"account"')) {
 
-      console.log('accountTable');
       // account table
+      console.log('accountTable');
 
       // array including objects with account information
       accountArray = JSON.parse(message);
@@ -94,25 +75,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       }
     }
 
-    // Check for update and delete
+    // No rows were effected
     if (message.includes('"fieldCount":0')) {
 
       // Query didn't return any fields
       console.log('fieldCount');
     }
 
-    // Check for update and delete
+    // Check for update, delete ....
     if (message.includes('"affectedRows":1')) {
 
       // One row was affected by the query
       console.log('affectedRows');
-
-      // Sends a request to the server to get all accounts
-      const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
-      socket.send(SQLquery);
     }
   };
 
@@ -134,7 +108,8 @@ function createEvents() {
   // Select Account
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-account-accountId')) {
-      const accountId = Number(document.querySelector('.select-account-accountId').value);
+      const accountId =
+        Number(document.querySelector('.select-account-accountId').value);
       if (accountId) {
         showValues(accountId);
       }
@@ -146,9 +121,9 @@ function createEvents() {
 
       if (updateAccount()) {
 
-        //let accountId = Number(document.querySelector('.select-account-accountId').value);
-        //accountId = (accountId !== 0) ? accountId : accountArray.at(-1).accountId;
-        //showValues(accountId);
+        let accountId =
+          Number(document.querySelector('.select-account-accountId').value);
+        showValues(accountId);
       }
     }
   });
@@ -202,24 +177,21 @@ function updateAccount() {
     const accountId =
       Number(document.querySelector('.select-account-accountId').value);
 
-    // Bank account Id
-    //const bankAccountId = document.querySelector('.select-account-bankAccountId').value;
-
     // Account Name
     const accountName = document.querySelector('.input-account-accountName').value;
 
     if (accountId >= 0) {
 
       const now =
-       new Date();
-      const lastUpdate = 
-      now.toISOString();
+        new Date();
+      const lastUpdate =
+        now.toISOString();
 
-      const objectNumberAccount = 
-      accountArray.findIndex(account => account.accountId === accountId);
+      const objAccountNumberRow =
+        accountArray.findIndex(account => account.accountId === accountId);
 
       // Check if account number exist
-      if (objectNumberAccount >= 0) {
+      if (objAccountNumberRow >= 0) {
 
         // Update table
         SQLquery = `
@@ -271,13 +243,17 @@ function deleteAccountRow() {
   let SQLquery = "";
 
   // Check for valid account number
-  const accountId = Number(document.querySelector('.select-account-accountId').value);
-  const accountName = document.querySelector('.input-account-accountName').value;
+  const accountId =
+    Number(document.querySelector('.select-account-accountId').value);
+  const accountName =
+    document.querySelector('.input-account-accountName').value;
+
   if (accountId !== 1) {
 
     // Check if account number exist
-    const objectNumberAccount = accountArray.findIndex(account => account.accountId === accountId);
-    if (objectNumberAccount >= 0) {
+    const objAccountNumberRow =
+     accountArray.findIndex(account => account.accountId === accountId);
+    if (objAccountNumberRow >= 0) {
 
       // Delete table
       SQLquery = `
@@ -302,10 +278,6 @@ function showLeadingText(accountId) {
 
   // Show all accounts
   objAccount.showAllAccounts('account-accountId', accountId);
-
-  // Show all bank accounts
-  //const bankAccountId = bankAccountArray.at(-1).bankAccountId;
-  //objBankAccount.showAllBankAccounts('account-bankAccountId', bankAccountId);
 
   // account name
   objAccount.showInput('account-accountName', '* Kontonavn', 50, '');
@@ -332,32 +304,19 @@ function showValues(accountId) {
   if (accountId > 1) {
 
     // find object number for selected account 
-    const objectNumberAccount = accountArray.findIndex(account => account.accountId === accountId);
-    if (objectNumberAccount > 0) {
-
-      // Select account id
-      const accountId = accountArray[objectNumberAccount].accountId;
-      objAccount.selectAccountId(accountId, 'account-accountId');
-
-      // Select bank account
-      //const bankAccountId = accountArray[objectNumberAccount].bankAccountId;
-      //objAccount.selectBankAccountId(bankAccountId, 'account-bankAccountId')
+    const objAccountNumberRow =
+      accountArray.findIndex(account => account.accountId === accountId);
+    if (objAccountNumberRow > 0) {
 
       // account name
       document.querySelector('.input-account-accountName').value =
-        accountArray[objectNumberAccount].name;
+        accountArray[objAccountNumberRow].name;
     }
   }
 }
 
 // Check for valid values
 function validateValues() {
-
-  // Check bank account
-  //const bankAccountId =
-  //  Number(document.querySelector('.select-account-bankAccountId').value);
-  //const validBankAccountId =
-  //  validateNumber(bankAccountId, 1, 99999, "account-bankAccountId", "Vis konto");
 
   // Check account Name
   const accountName =

@@ -2,178 +2,162 @@
 
 // Activate objects
 const objCondo = new Condo('condo');
-const objAccountMovement = new AccountMovement('accountmovement');
+const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
 const objAccount = new Account('account');
 const objUser = new User('user');
 const objIncome = new Income('income');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
-
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
+testMode();
 
 let isEventsCreated = false;
 
 objIncome.menu();
-objIncome.markSelectedMenu('Innbetaling');
+objIncome.markSelectedMenu('Inntekt');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
 
-  // Sends a request to the server to get all users
-  const SQLquery = `
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('condo-login');
+} else {
+
+  // Send a message to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get all users
+    const SQLquery = `
     SELECT * FROM user
     ORDER BY userId;
   `;
-  socket.send(SQLquery);
-};
+    socket.send(SQLquery);
+  };
 
-// Handle incoming messages from server
-socket.onmessage = (event) => {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-  let message = event.data;
+    let message = event.data;
 
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    console.log('userTable');
+      console.log('userTable');
 
-    // user array including objects with user information
-    userArray = JSON.parse(message);
+      // user array including objects with user information
+      userArray = JSON.parse(message);
 
-    // Sends a request to the server to get all condos
-    const SQLquery = `
+      // Sends a request to the server to get all condos
+      const SQLquery = `
       SELECT * FROM condo
       ORDER BY name;
     `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create condo array including objets
-  if (message.includes('"tableName":"condo"')) {
+    // Create condo array including objets
+    if (message.includes('"tableName":"condo"')) {
 
-    console.log('condoTable');
+      console.log('condoTable');
 
-    // array including objects with condo information
-    condoArray = JSON.parse(message);
+      // array including objects with condo information
+      condoArray = JSON.parse(message);
 
-    //objAccount.getAccounts(socket);
-    const SQLquery = `
+      //objAccount.getAccounts(socket);
+      const SQLquery = `
       SELECT * FROM account
       ORDER BY accountId;
     `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create account array including objets
-  if (message.includes('"tableName":"account"')) {
+    // Create account array including objets
+    if (message.includes('"tableName":"account"')) {
 
-    // account table
-    console.log('accountTable');
+      // account table
+      console.log('accountTable');
 
-    // array including objects with account information
-    accountArray = JSON.parse(message);
+      // array including objects with account information
+      accountArray = JSON.parse(message);
 
-    // Get all income rows
-    const SQLquery = `
-      SELECT * FROM accountmovement
-      ORDER BY accountmovementId;
+      // Get all income rows
+      const SQLquery = `
+      SELECT * FROM bankaccountmovement
+      ORDER BY bankaccountmovementId;
     `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create accountmovement array including objets
-  if (message.includes('"tableName":"accountmovement"')) {
+    // Create bankaccountmovement array including objets
+    if (message.includes('"tableName":"bankaccountmovement"')) {
 
-    // accountmovement table
-    console.log('accountmovementTable');
+      // bankaccountmovement table
+      console.log('bankaccountmovementTable');
 
-    // array including objects with accountmovement information
-    accountMovementArray = JSON.parse(message);
+      // array including objects with bankaccountmovement information
+      bankAccountMovementArray = JSON.parse(message);
 
-    // Get all income rows
-    const SQLquery = `
+      // Get all income rows
+      const SQLquery = `
       SELECT * FROM income
       ORDER BY date;
     `;
-    socket.send(SQLquery);
-  }
-
-  // Create income array including objets
-  if (message.includes('"tableName":"income"')) {
-
-    // income table
-    console.log('incomeTable');
-
-    // array including objects with income information
-    incomeArray = JSON.parse(message);
-
-    const incomeId = objIncome.getSelectedIncomeId('income-incomeId');
-
-    // Show leading text
-    showLeadingText(incomeId);
-
-    // Show all values for income
-    showValues(incomeId);
-
-    // show all rows for income
-    showIncome();
-
-    // Make events
-    if (!isEventsCreated) {
-
-      createEvents();
-      isEventsCreated = true;
+      socket.send(SQLquery);
     }
-  }
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+    // Create income array including objets
+    if (message.includes('"tableName":"income"')) {
 
-    console.log('affectedRows');
+      // income table
+      console.log('incomeTable');
 
-    // Get all income rows
-    const SQLquery = `
+      // array including objects with income information
+      incomeArray = JSON.parse(message);
+
+      const incomeId = objIncome.getSelectedIncomeId('income-incomeId');
+
+      // Show leading text
+      showLeadingText(incomeId);
+
+      // Show all values for income
+      showValues(incomeId);
+
+      // show all rows for income
+      showIncome();
+
+      // Make events
+      if (!isEventsCreated) {
+
+        createEvents();
+        isEventsCreated = true;
+      }
+    }
+
+    // Check for update, delete ...
+    if (message.includes('"affectedRows":1')) {
+
+      console.log('affectedRows');
+
+      // Get all income rows
+      const SQLquery = `
         SELECT * FROM income
         ORDER BY date;
       `;
-    socket.send(SQLquery);
+      socket.send(SQLquery);
+    }
+  }
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
+  }
+
+  // Handle disconnection
+  socket.onclose = () => {
   }
 }
-
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
-}
-
 // Make income events
 function createEvents() {
 
@@ -308,8 +292,8 @@ function updateIncomeRow() {
       // Client sends a request to the server
       socket.send(SQLquery);
 
-      // Find accountmovement Id
-      const accountMovementId = getAccountMovementId(
+      // Find bankaccountmovement Id
+      const bankAccountMovementId = getAccountMovementId(
         accountmovementCondoId,
         accountmovementAccountId,
         accountmovementAmount,
@@ -317,10 +301,10 @@ function updateIncomeRow() {
         accountmovementText
       );
 
-      if (accountMovementId >= 0) {
-        // Update accountmovement
+      if (bankAccountMovementId >= 0) {
+        // Update bankaccountmovement
         SQLquery = `
-        UPDATE accountmovement
+        UPDATE bankaccountmovement
         SET 
           condominiumId = ${objUserPassword.condominiumId},
           user = '${objUserPassword.email}',
@@ -330,7 +314,7 @@ function updateIncomeRow() {
           amount = '${amount}',
           date = '${date}',
           text = '${text}'
-        WHERE accountMovementId = ${accountMovementId};
+        WHERE bankAccountMovementId = ${bankAccountMovementId};
       `;
 
         // Client sends a request to the server
@@ -367,7 +351,7 @@ function updateIncomeRow() {
       socket.send(SQLquery);
 
       SQLquery = `
-        INSERT INTO accountmovement (
+        INSERT INTO bankaccountmovement (
           tableName,
           condominiumId,
           user,
@@ -378,7 +362,7 @@ function updateIncomeRow() {
           date,
           text)
         VALUES (
-          'accountmovement',
+          'bankaccountmovement',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
@@ -413,11 +397,11 @@ function showLeadingText(incomeId) {
   objIncome.showAllIncomes('income-incomeId', incomeId);
 
   // Show all condos
-  objCondo.showAllCondos('income-condoId', 0);
+  objCondo.showAllCondos('income-condoId', 0, 'Alle');
 
   // Show all accounts
   const accountId = accountArray.at(-1).accountId;
-  objAccount.showAllAccounts('income-accountId', accountId);
+  objAccount.showAllAccounts('income-accountId', accountId,'Alle');
 
   // Show income date
   objIncome.showInput('income-date', '* Dato', 10, 'dd.mm.åååå');
@@ -672,19 +656,19 @@ function showIncome() {
     htmlColumnText;
 }
 
-// Find accountmovement Id
+// Find bankaccountmovement Id
 function getAccountMovementId(condoId, accountId, amount, date, text) {
 
-  let accountmovementId = -1;
-  accountMovementArray.forEach((accountMovement) => {
-    if ((accountMovement.condoId === condoId)
-      && (accountMovement.accountId === accountId)
-      && (accountMovement.amount === amount)
-      && (accountMovement.date === date)
-      && (accountMovement.text === text)) {
+  let bankAccountMovementId = -1;
+  bankAccountMovementArray.forEach((bankAccountMovement) => {
+    if ((bankAccountMovement.condoId === condoId)
+      && (bankAccountMovement.accountId === accountId)
+      && (bankAccountMovement.amount === amount)
+      && (bankAccountMovement.date === date)
+      && (bankAccountMovement.text === text)) {
 
-      accountmovementId = accountMovement.accountMovementId;
+      bankAccountMovementId = bankAccountMovement.bankAccountMovementId;
     }
   });
-  return accountmovementId;
+  return bankAccountMovementId;
 }

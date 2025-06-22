@@ -65,6 +65,8 @@ socket.onclose = () => {
 // Make events for users
 function createEvents() {
 
+  console.log('createEvents');
+  
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-link')) {
 

@@ -295,7 +295,7 @@ function updatePayment() {
       socket.send(SQLquery);
 
       SQLquery = `
-        INSERT INTO accountmovement (
+        INSERT INTO bankaccountmovement (
           tableName,
           condominiumId,
           user,
@@ -305,7 +305,7 @@ function updatePayment() {
           date,
           text)
         VALUES (
-          'accountmovement',
+          'bankaccountmovement',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',

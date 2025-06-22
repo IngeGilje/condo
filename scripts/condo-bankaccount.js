@@ -5,10 +5,12 @@ const objUser = new User('user');
 const objBankAccount = new BankAccount('bankaccount');
 const objAccount = new Account('account');
 
+testMode();
+
 let isEventsCreated = false;
 
 objBankAccount.menu();
-objBankAccount.markSelectedMenu('Bankkonto');
+objBankAccount.markSelectedMenu('Bankkonto sameie');
 
 let socket = connectingToServer();
 
@@ -120,6 +122,7 @@ function createEvents() {
   // Select BankAccount
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-bankaccount-bankAccountId')) {
+      
       let bankAccountId = Number(document.querySelector('.select-bankaccount-bankAccountId').value);
       bankAccountId = (bankAccountId !== 0) ? bankAccountId : bankAccountArray.at(-1).bankAccountId;
       if (bankAccountId) {
@@ -383,8 +386,10 @@ function showValues(bankAccountId) {
 function validateValues() {
 
   // Check bank account number
-  const bankAccount = document.querySelector('.input-bankaccount-bankAccount').value;
-  const validBankAccount = objBankAccount.validateBankAccount(bankAccount, "bankaccount-bankAccount", "Bankkontonummer");
+  const bankAccount =
+   document.querySelector('.input-bankaccount-bankAccount').value;
+  const validBankAccount =
+   objBankAccount.validateBankAccount(bankAccount, "label-bankaccount-bankAccount", "Bankkontonummer");
 
   // Check bankaccount Name
   const bankAccountName = 

@@ -21,9 +21,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   showLoginError('userbankaccount-login');
 } else {
 
-  objUserBankAccount.menu();
-  objUserBankAccount.markSelectedMenu('Bankkonto for bruker');
-
   // Send a message to the server
   socket.onopen = () => {
 
@@ -293,10 +290,10 @@ function showLeadingText(userBankAccountId) {
   objAccount.showAllAccounts('userbankaccount-accountId', accountId);
 
   // name
-  objUserBankAccount.showInput('userbankaccount-name', 'Navn', 50, '');
+  objUserBankAccount.showInput('userbankaccount-name', '* Navn', 50, '');
 
   // bank account
-  objUserBankAccount.showInput('userbankaccount-bankAccount', 'Bankkonto', 11, '');
+  objUserBankAccount.showInput('userbankaccount-bankAccount', '* Bankkonto', 11, '');
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -349,25 +346,25 @@ function validateValues() {
   const userId =
     Number(document.querySelector('.select-userbankaccount-userId').value);
   const validUserId =
-    validateNumber(userId, 1, 99999, "userbankaccount-userId", "Vis bankkonto");
+    validateNumber(userId, 1, 99999, "userbankaccount-userId", "bruker");
 
   // Check account Id
   const accountId =
     Number(document.querySelector('.select-userbankaccount-accountId').value);
   const validAccountId =
-    validateNumber(accountId, 1, 99999, "userbankaccount-accountId", "Vis konto");
+    validateNumber(accountId, 1, 99999, "userbankaccount-accountId", "konto");
 
   // Check name
   const userBankAccountName =
     document.querySelector('.input-userbankaccount-name').value;
   const validUserBankAccountName =
-    objUserBankAccount.validateText(userBankAccountName, "input-userbankaccount-name", "Navn");
+    objUserBankAccount.validateText(userBankAccountName, "label-userbankaccount-name", "Navn");
 
   // Check bank account
   const bankAccount =
     document.querySelector('.input-userbankaccount-bankAccount').value;
   const validBankAccount =
-    objUserBankAccount.validateBankAccount(bankAccount, "input-userbankaccount-bankAccount", "Bankkonto");
+    objUserBankAccount.validateBankAccount(bankAccount, "label-userbankaccount-bankAccount", "Bankkonto");
 
   return (validAccountId && validUserId && validBankAccount && validUserBankAccountName) ? true : false;
 }

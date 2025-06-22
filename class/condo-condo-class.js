@@ -7,22 +7,23 @@ class Condo extends Condos {
   // Show all condos
   showAllCondos(columnName, condoId, alternativeSelect) {
 
-    let html = `
-    <form 
-      id="Condo"
-      action="/submit" 
-      method="POST"
-    >
-      <label 
-        id="Condo"
-        class="label-${columnName}"
-        for="Condo"
-      >
-          Velg leilighet
-      </label>
-      <select 
-        class="select-${columnName}" 
-      >
+    let html =
+      `
+        <form 
+          id="Condo"
+          action="/submit" 
+          method="POST"
+        >
+          <label 
+            id="Condo"
+            class="label-${columnName}"
+            for="Condo"
+          >
+            Velg leilighet
+          </label>
+          <select 
+            class="select-${columnName}" 
+          >
     `;
 
     // Check if condo array is empty
@@ -32,45 +33,51 @@ class Condo extends Condos {
         if (condo.condoId > 1) {
           if (condo.condoId === condoId) {
 
-            html += `
-              <option
-                value = "${condo.condoId}"
-                selected
-              >
-                ${condo.condoId} - ${condo.name}
-              </option >
-            `;
+            html +=
+              `
+                <option
+                  value = "${condo.condoId}"
+                  selected
+                >
+                  ${condo.condoId} - ${condo.name}
+                </option >
+              `;
           } else {
-            html += `
-              <option
-                value = "${condo.condoId}">
-                ${condo.condoId} - ${condo.name}
-              </option >
-            `;
+            html +=
+              `
+                <option
+                  value = "${condo.condoId}">
+                  ${condo.condoId} - ${condo.name}
+                </option >
+              `;
           }
         }
       });
 
     } else {
 
-      html += `
-        <option value = "0"
-      selected
-        >
-        Ingen leiligheter
-        </option >
+      html += 
+        `
+          <option 
+            value = "0"
+            selected
+          >
+            Ingen leiligheter
+          </option >
         `;
     }
 
     // Alternative select
     if (alternativeSelect && (numberOfRows > 1)) {
-      html += `
-        <option 
-          value=999999999
-          selected
+
+      html +=
+        `
+          <option 
+            value=999999999
+            selected
           >
-          ${alternativeSelect}
-        </option>
+            ${alternativeSelect}
+          </option>
       `;
     }
 
@@ -104,12 +111,14 @@ class Condo extends Condos {
   }
 
 
-  getCondoName(condoId, unKnown = 'Ukjent') {
+  getCondoName(condoId) {
 
     let condoName;
     const objectNumberCondo = condoArray.findIndex(condo => condo.condoId === condoId);
     if (objectNumberCondo > 0) {
         condoName = condoArray[objectNumberCondo].name;
+    } else {
+      condoName = "-";
     }
     return condoName;
   }

@@ -7,25 +7,27 @@ class Account extends Condos {
   // Show all accounts
   showAllAccounts(className, accountId, alternativeSelect) {
 
-    let html = `
-      <form
-        id="accountId"
-        action="/submit" 
-        method="POST"
-      >
-        <label 
-          class="label-${className}"
-          for="accountId"
+    console.log('alternativeSelect',alternativeSelect);
+    let html =
+      `
+        <form
           id="accountId"
+          action="/submit" 
+          method="POST"
         >
+          <label 
+            class="label-${className}"
+            for="accountId"
+            id="accountId"
+          >
             Velg konto
-        </label>
-        <select 
-          class="select-${className}" 
-          id="accountId"
-          name="accountId"
-        >
-    `;
+          </label>
+          <select 
+            class="select-${className}" 
+            id="accountId"
+            name="accountId"
+          >
+      `;
 
     // Check if account movement array is empty
     const numberOfRows = accountArray.length;

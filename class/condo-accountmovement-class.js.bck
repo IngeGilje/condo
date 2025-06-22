@@ -1,22 +1,22 @@
 
-class AccountMovement extends Condos {
+class BankccountMovement extends Condos {
 
   // account movement information
-  accountMovementArray = Array;
+  bankAccountMovementArray = Array;
 
   // Show all account movements
-  showAllAccountMovements(columnName, accountMovementId) {
+  showAllAccountMovements(columnName, bankAccountMovementId) {
 
     let html = `
       <form 
-        id="accountmovement"
+        id="bankaccountmovement"
         action="/submit" 
         method="POST"
       >
         <label 
           class="label-${columnName}"
-          for="accountmovement"
-          id="accountmovement"
+          for="bankaccountmovement"
+          id="bankaccountmovement"
         >
             Velg kontobevegelse
         </label>
@@ -26,26 +26,26 @@ class AccountMovement extends Condos {
     `;
 
     // Check if account movement array is empty
-    const numberOfRows = accountMovementArray.length;
+    const numberOfRows = bankAccountMovementArray.length;
     if (numberOfRows > 1) {
-      accountMovementArray.forEach((accountMovement) => {
-        if (accountMovement.accountMovementId > 1) {
-          if (accountMovement.accountMovementId === accountMovementId) {
+      bankAccountMovementArray.forEach((BankAccountMovement) => {
+        if (bankAccountMovement.bankAccountMovementId > 1) {
+          if (bankAccountMovement.bankAccountMovementId === bankAccountMovementId) {
 
             html += `
               <option 
-                value="${accountMovement.accountMovementId}"
+                value="${bankAccountMovement.bankAccountMovementId}"
                 selected
                 >
-                ${accountMovement.accountMovementId} - ${accountMovement.text}
+                ${bankAccountMovement.bankAccountMovementId} - ${bankAccountMovement.text}
               </option>
             `;
           } else {
 
             html += `
               <option 
-                value="${accountMovement.accountMovementId}">
-                ${accountMovement.accountMovementId} - ${accountMovement.text}
+                value="${bankAccountMovement.bankAccountMovementId}">
+                ${bankAccountMovement.bankAccountMovementId} - ${bankAccountMovement.text}
               </option>
             `;
           }
@@ -57,7 +57,7 @@ class AccountMovement extends Condos {
         <option value="0" 
           selected
         >
-          Ingen kontobevegelser
+          Ingen bankkonto bevegelser
         </option>
       `;
     }
@@ -74,21 +74,21 @@ class AccountMovement extends Condos {
   // Find selected account movement id
   getSelectedAccountMovementId(columnName) {
 
-    let accountMovementId = 0;
+    let bankAccountMovementId = 0;
 
     // Check if HTML class exist
     const className = `select-${this.applicationName}-${columnName}`;
     if (isClassDefined(className)) {
 
-      accountMovementId =
+      bankAccountMovementId =
         Number(document.querySelector(`.${className}`).value);
     } else {
 
-      // Get last id in last object in accountmovement array
-      accountMovementId = accountMovementArray.at(-1).accountMovementId;
+      // Get last id in last object in bank account movement array
+      bankAccountMovementId = bankAccountMovementArray.at(-1).bankAccountMovementId;
     }
 
-    return accountMovementId;
+    return bankAccountMovementId;
   }
 }
 

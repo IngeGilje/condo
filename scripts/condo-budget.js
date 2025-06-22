@@ -2,13 +2,15 @@
 
 // Activate objects
 const objUser = new User('user');
-const objBudget = new Budget('budget');
 const objAccount = new Account('account');
+const objBudget = new Budget('budget');
 
 let isEventsCreated = false;
 
-objAccount.menu();
-objAccount.markSelectedMenu('Budsjett');
+testMode();
+
+objBudget.menu();
+objBudget.markSelectedMenu('Budsjett');
 
 let socket = connectingToServer();
 
@@ -77,7 +79,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with budget information
       budgetArray = JSON.parse(message);
 
-      const budgetId = objBudget.getSelectedBudgetId('budgetId');
+      const budgetId =
+       objBudget.getSelectedBudgetId('select-budget-budgetId');
       showLeadingText(budgetId);
       showValues(budgetId);
 
@@ -283,7 +286,9 @@ function showLeadingText(budgetId) {
   objAccount.showAllAccounts('budget-accountId', accountId);
 
   // Show years
-  objBudget.selectNumber('budget-year', 2020, 2030, 'År');
+  const today = new Date();
+  const year = today.getFullYear();
+  objBudget.selectNumber('budget-year', 2020, 2030, year, 'År');
 
   // amount
   objBudget.showInput('budget-amount', '* Budsjett', 10, '');

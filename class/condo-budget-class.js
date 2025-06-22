@@ -2,7 +2,7 @@
 class Budget extends Condos {
 
   // Budget information
-  budgetArray = Array;
+  budgetArray = [];
 
   // Show all budgets
   showAllBudgets(columnName, budgetId) {
@@ -72,25 +72,12 @@ class Budget extends Condos {
     document.querySelector(`.div-budget-${columnName}`).innerHTML = html;
   }
 
-  /*
-  // Get all budgets from MySQL database
-  getBudgets(socket) {
-
-    const SQLquery = `
-      SELECT * FROM budget
-      ORDER BY text;
-    `;
-    socket.send(SQLquery);
-  }
-  */
-
   // Find selected budget id
-  getSelectedBudgetId(columnName) {
+  getSelectedBudgetId(className) {
 
     let budgetId = 0;
 
     // Check if HTML class exist
-    const className = `select-${this.applicationName}-${columnName}`;
     if (isClassDefined(className)) {
 
       budgetId =

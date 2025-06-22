@@ -17,7 +17,7 @@ class UserBankAccount extends Condos {
           <label class="label-${classValue}"
             id="userBankAccountId"
             for="userBankAccountId">
-              Velg bruker bankkonto
+              Velg bankkonto for bruker
           </label>
           <select class="select-${classValue}" 
             id="userBankAccountId"

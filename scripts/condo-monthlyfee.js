@@ -1,148 +1,162 @@
 // Monthly fee maintenance
 
-let isEventsCreated = false;
-
 // Activate objects
 const objUser = new User('user');
 const objCondo = new Condo('condo');
-const objMonthlyFee = new MonthlyFee('monthlyfee');
+const objAccount = new Account('account');
 const objDue = new Due('due');
+const objMonthlyFee = new MonthlyFee('monthlyfee');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+testMode();
 
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
+let isEventsCreated = false;
 
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
 objMonthlyFee.menu();
 objMonthlyFee.markSelectedMenu('Månedsavgift');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
 
-  // Sends a request to the server to get all users
-  const SQLquery = `
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('condo-login');
+} else {
+
+  // Send a message to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get all users
+    const SQLquery = `
     SELECT * FROM user
     ORDER BY userId;
   `;
-  socket.send(SQLquery);
-};
+    socket.send(SQLquery);
+  };
 
-// Handle incoming messages from server
-socket.onmessage = (event) => {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-  let message = event.data;
+    let message = event.data;
 
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    console.log('userTable');
+      console.log('userTable');
 
-    // user array including objects with user information
-    userArray = JSON.parse(message);
+      // user array including objects with user information
+      userArray = JSON.parse(message);
 
-    // Sends a request to the server to get all condos
-    const SQLquery = `
+      // Sends a request to the server to get all condos
+      const SQLquery = `
       SELECT * FROM condo
       ORDER BY name;
     `;
-    socket.send(SQLquery);
-  }
+      socket.send(SQLquery);
+    }
 
-  // Create condo array including objets
-  if (message.includes('"tableName":"condo"')) {
+    // Create condo array including objets
+    if (message.includes('"tableName":"condo"')) {
 
-    console.log('CondoTable');
-    // condo table
+      console.log('CondoTable');
+      // condo table
 
-    // array including objects with condo information
-    condoArray = JSON.parse(message);
+      // array including objects with condo information
+      condoArray = JSON.parse(message);
 
-    // Sends a request to the server to get all due
-    const SQLquery = `
+      // Sends a request to the server to get all accounts
+      const SQLquery = `
+      SELECT * FROM account
+      ORDER BY accountId;
+    `;
+      socket.send(SQLquery);
+    }
+
+    // Create account array including objets
+    if (message.includes('"tableName":"account"')) {
+
+      // account table
+      console.log('AccountTable');
+
+      // array including objects with account information
+      accountArray = JSON.parse(message);
+
+      // Sends a request to the server to get all dues
+      const SQLquery = `
       SELECT * FROM due
       ORDER BY date;
     `;
-    socket.send(SQLquery);
-  }
-
-  // Create monthly amountArray array including objets
-  if (message.includes('"tableName":"due"')) {
-
-    // monthly amount table
-    console.log('dueTable');
-
-    // array including objects with monthly fee information
-    dueArray = JSON.parse(message);
-
-    // Show leading text
-    let condoId = 0;
-    if (isClassDefined('select-monthlyfee-condoId')) {
-      condoId =
-        Number(document.querySelector('.select-monthlyfee-condoId').value);
-    }
-    if (condoId === 0) {
-      condoId = condoArray.at(-1).condoId;
-      showLeadingText();
+      socket.send(SQLquery);
     }
 
-    // show all monthly amounts for selected condo id
-    //const condoId = Number(document.querySelector('.select-monthlyfee-condoId').value);
-    showMonthlyFee(condoId);
+    // Create monthly amountArray array including objets
+    if (message.includes('"tableName":"due"')) {
 
-    // Make events
-    if (!isEventsCreated) {
+      // monthly amount table
+      console.log('dueTable');
 
-      createEvents();
-      isEventsCreated = true;
+      // array including objects with monthly fee information
+      dueArray = JSON.parse(message);
+
+      // Show leading text
+      let condoId = 0;
+      if (isClassDefined('select-monthlyfee-condoId')) {
+        condoId =
+          Number(document.querySelector('.select-monthlyfee-condoId').value);
+      }
+      if (condoId === 0) {
+        condoId =
+          condoArray.at(-1).condoId;
+        showLeadingText();
+      }
+
+      // Account Id
+      let accountId = 0;
+      if (isClassDefined('select-monthlyfee-accountId')) {
+        accountId =
+          Number(document.querySelector('.select-monthlyfee-accountId').value);
+      }
+      if (accountId === 0) {
+        accountId =
+          accountArray.at(-1).accountId;
+      }
+
+      // show all monthly amounts for selected condo id
+      showMonthlyFee(condoId, accountId);
+
+      // Make events
+      if (!isEventsCreated) {
+
+        createEvents();
+        isEventsCreated = true;
+      }
     }
-  }
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+    // Check for update, delete ...
+    if (message.includes('"affectedRows":1')) {
 
-    console.log('affectedRows');
+      console.log('affectedRows');
 
-    // Sends a request to the server to get all due
-    const SQLquery = `
+      // Sends a request to the server to get all due
+      const SQLquery = `
       SELECT * FROM due
       ORDER BY date;
     `;
-    socket.send(SQLquery);
+      socket.send(SQLquery);
+    }
+  };
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
   }
-};
 
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
+  // Handle disconnection
+  socket.onclose = () => {
+  }
 }
-
-// Handle disconnection
-socket.onclose = () => {
-}
-
 // Make monthly amount events
 function createEvents() {
 
@@ -150,12 +164,30 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-monthlyfee-condoId')) {
 
-      const condoId = Number(event.target.value);
-      //showLeadingText();
-      showValues();
+      const condoId =
+        Number(event.target.value);
+      //showValues(dueId);
 
-      // Show all dues for condo id
-      showMonthlyFee(condoId);
+      const accountId =
+        Number(document.querySelector('.select-monthlyfee-accountId').value);
+
+      // Show all dues for condo id, account id
+      showMonthlyFee(condoId, accountId);
+    }
+  });
+
+  // Selected account Id
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-monthlyfee-accountId')) {
+
+      const accountId =
+        Number(event.target.value);
+
+      const condoId =
+        Number(document.querySelector('.select-monthlyfee-condoId').value);
+
+      // Show all dues for condo id, account id
+      showMonthlyFee(condoId, accountId);
     }
   });
 
@@ -177,17 +209,12 @@ function createEvents() {
 
       updateMonthlyFee();
       const condoId =
-        document.querySelector('.select-monthlyfee-condoId').value;
-      showMonthlyFee(condoId);
-    }
-  });
+        Number(document.querySelector('.select-monthlyfee-condoId').value);
 
-  // New monthly fee
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-monthlyfee-new')) {
+      const accountId =
+        Number(document.querySelector('.select-monthlyfee-accountId').value);
 
-      resetMonthlyFee();
-      resetValues();
+      showMonthlyFee(condoId, accountId);
     }
   });
 
@@ -247,12 +274,15 @@ function updateMonthlyFee() {
     const condoId =
       Number(document.querySelector('.select-monthlyfee-condoId').value);
 
+    const accountId =
+      Number(document.querySelector('.select-monthlyfee-accountId').value);
+
     // get condo name 
     const array =
       condoArray.find(condo => condo.condoId === condoId);
 
     condoName =
-     array.name;
+      array.name;
 
     const day =
       Number(document.querySelector('.select-monthlyfee-day').value);
@@ -265,11 +295,11 @@ function updateMonthlyFee() {
 
       const stringDay = (day < 10) ? String(`0${day}`) : String(`${day}`);
       const stringMonth = (month < 10) ? String(`0${month}`) : String(`${month}`);
-      const date = 
+      const date =
         String(year) + stringMonth + stringDay;
 
-      const text = 
-        String(name) + '-' + findNameOfMonth(month);
+      const text =
+        String(condoName) + '-' + findNameOfMonth(month);
 
       SQLquery = `
         INSERT INTO due(
@@ -278,6 +308,7 @@ function updateMonthlyFee() {
           user,
           lastUpdate,
           condoId,
+          accountId,
           amount,
           date,
           text)
@@ -287,6 +318,7 @@ function updateMonthlyFee() {
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
+          ${accountId},
           '${amount}',
           '${date}',
           '${text}'
@@ -297,10 +329,11 @@ function updateMonthlyFee() {
     }
     document.querySelector('.button-monthlyfee-delete').disabled =
       false;
-    document.querySelector('.button-monthlyfee-new').disabled =
-      false;
     document.querySelector('.select-monthlyfee-condoId').value =
       condoId;
+    document.querySelector('.select-monthlyfee-accountId').value =
+      accountId;
+
     isUpdated = true;
   }
   return isUpdated;
@@ -320,23 +353,30 @@ function deleteMonthlyFee() {
       Number(document.querySelector('.select-monthlyfee-day').value);
     const condoId =
       Number(document.querySelector('.select-monthlyfee-condoId').value);
+    const accountId =
+      Number(document.querySelector('.select-monthlyfee-accountId').value);
     let amount =
       formatAmountToOre(document.querySelector('.input-monthlyfee-amount').value);
 
     for (month = 1; month < 13; month++) {
 
-      const stringDay = (day < 10) ? String(`0${day}`) : String(`${day}`);
-      const stringMonth = (month < 10) ? String(`0${month}`) : String(`${month}`);
-      let date = String(year) + stringMonth + stringDay;
+      const stringDay =
+        (day < 10) ? String(`0${day}`) : String(`${day}`);
+      const stringMonth =
+        (month < 10) ? String(`0${month}`) : String(`${month}`);
+      let date =
+        String(year) + stringMonth + stringDay;
 
       // due id for deleting row
-      const dueId = findDueId(condoId, amount, date);
+      const dueId =
+        findDueId(condoId, accountId, amount, date);
 
       if (dueId > 1) {
-        SQLquery = `
-          DELETE FROM due 
-          WHERE dueId = ${dueId};
-        `;
+        SQLquery =
+          `
+            DELETE FROM due 
+            WHERE dueId = ${dueId};
+          `;
 
         socket.send(SQLquery);
         console.log(SQLquery);
@@ -352,11 +392,19 @@ function deleteMonthlyFee() {
 function showLeadingText() {
 
   // Show all condos
-  const condoId = condoArray.at(-1).condoId;
+  const condoId =
+    condoArray.at(-1).condoId;
   objCondo.showAllCondos('monthlyfee-condoId', condoId);
 
+  // Show all accounts
+  const accountId =
+    accountArray.at(-1).accountId;
+  objAccount.showAllAccounts('monthlyfee-accountId', accountId);
+
   // Show years
-  objDue.selectNumber('monthlyfee-year', 2020, 2030, 2025, 'År');
+  const today = new Date();
+  const year = today.getFullYear();
+  objDue.selectNumber('monthlyfee-year', 2020, 2030, year, 'År');
 
   // Show days
   objDue.selectNumber('monthlyfee-day', 1, 28, 15, 'Dag')
@@ -368,9 +416,6 @@ function showLeadingText() {
 
     // show update button
     objDue.showButton('monthlyfee-update', 'Oppdater');
-
-    // show new button
-    objDue.showButton('monthlyfee-new', 'Ny');
 
     // show delete button
     objDue.showButton('monthlyfee-delete', 'Slett');
@@ -395,6 +440,12 @@ function validateValues() {
   const validCondoId =
     validateNumber(condoId, 1, 99999, 'monthlyfee-condoId', 'Leilighet');
 
+  // Check for valid account Id
+  const accountId =
+    document.querySelector('.select-monthlyfee-accountId').value;
+  const validAccountId =
+    validateNumber(accountId, 1, 99999, 'monthlyfee-accountId', 'Konto');
+
   // Check for valid day
   const day =
     document.querySelector('.select-monthlyfee-day').value;
@@ -409,17 +460,19 @@ function validateValues() {
   const validAmount =
     objDue.validateAmount(amount, "monthlyfee-amount", "Månedsavgift");
 
-  return (validYear && validCondoId && validDay && validAmount) ? true : false;
+  return (validAccountId && validYear && validCondoId && validDay && validAmount) ? true : false;
 }
 
-function findDueId(condoId, amount, date) {
+function findDueId(condoId, accountId, amount, date) {
 
   let dueId = 0
   dueArray.forEach((due) => {
     if (due.dueId > 1
       && due.amount === amount
       && due.date === date
-      && due.condoId === condoId) {
+      && due.condoId === condoId
+      && due.accountId === accountId
+    ) {
 
       dueId = due.dueId;
     }
@@ -440,8 +493,6 @@ function resetMonthlyFee() {
     '';
 
   document.querySelector('.button-monthlyfee-delete').disabled =
-    true;
-  document.querySelector('.button-monthlyfee-new').disabled =
     true;
 }
 
@@ -465,24 +516,24 @@ function resetValues() {
 
   document.querySelector('.button-monthlyfee-delete').disabled =
     true;
-  document.querySelector('.button-monthlyfee-new').disabled =
-    true;
 }
 
 // show all monthly fees for selected condo id
-function showMonthlyFee(condoId) {
+function showMonthlyFee(condoId, accountId) {
 
   let sumAmount = 0;
+
   document.querySelector(".input-monthlyfee-amount").value =
     '';
 
   let htmlColumnDate =
-    `<div 
-      class = "columnHeaderRight"
-    >
-      Forfallsdato
-  </div>
-  <br>
+    `
+      <div 
+        class = "columnHeaderRight"
+      >
+        Forfallsdato
+    </div>
+    <br>
   `;
 
   let htmlColumnAmount =
@@ -496,7 +547,7 @@ function showMonthlyFee(condoId) {
 
   dueArray.forEach((due) => {
 
-    if (due.condoId > 1 && due.condoId === condoId) {
+    if (due.condoId === condoId && due.accountId === accountId) {
 
       // 20250115 -> 15.01.2025
       date = convertToEurDateFormat(String(due.date));
@@ -559,6 +610,10 @@ function showValues(dueId) {
       document.querySelector('.input-monthlyfee-condoId').value =
         dueArray[objectNumberDue].condoId;
 
+      // Account id
+      document.querySelector('.input-monthlyfee-accountId').value =
+        dueArray[objectNumberDue].accountId;
+
       // year
       document.querySelector('.input-monthlyfee-year').value =
         dueArray[objectNumberDue].year;
@@ -570,6 +625,9 @@ function showValues(dueId) {
       // Amount
       document.querySelector('.input-monthlyfee-amount').value =
         dueArray[objectNumberDue].amount;
+    } else {
+
+      resetValues();
     }
   }
 }

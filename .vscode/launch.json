@@ -111,7 +111,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Kontobevegelser",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-accountmovement.html",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-bankaccountmovement.html",
     },
     {
       "type": "chrome",

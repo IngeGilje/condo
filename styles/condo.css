@@ -21,7 +21,7 @@
 .div-grid-remoteheating,
 .div-grid-budget,
 .div-grid-overview,
-.div-grid-accountmovement {
+.div-grid-bankaccountmovement {
   display: grid;
   gap: 4px;
   padding: 20px;
@@ -31,6 +31,7 @@
 }
 
 /* grid container 2 columns */
+.div-grid-userbankaccount,
 .div-grid-condo,
 .div-grid-budget,
 .div-grid-account,
@@ -39,7 +40,6 @@
 }
 
 /* grid container 3 columns */
-.div-grid-userbankaccount,
 .div-grid-bankaccount,
 .div-grid-supplier,
 .div-grid-user,
@@ -59,7 +59,7 @@
 
 /* Define the grid container with 6 columns*/
 .div-grid-income,
-.div-grid-accountmovement {
+.div-grid-bankaccountmovement {
   grid-template-columns: 200px 200px 150px 150px 150px 150px;
 }
 
@@ -73,14 +73,14 @@
   grid-template-columns: 200px 200px 200px 50px 100px 100px 200px;
 }
 
-/* Define the grid container with 8 columns*/
+/* Define the grid container with 10 columns*/
 .div-grid-overview {
-  grid-template-columns: 200px 200px 100px 100px 150px 100px 100px 150px;
+  grid-template-columns: 200px 200px 75px 100px 100px 150px 75px 100px 100px 150px;
 }
 
 /* Define the grid container with 10 columns*/
 .div-grid-importfile {
-  grid-template-columns: 200px 200px 50px 100px 50px 100px 150px 150px 100px 200px;
+  grid-template-columns: 200px 200px 75px 100px 75px 150px 150px 150px 100px 200px;
 }
 
 .div-importfile-columnLineNumber,
@@ -102,9 +102,11 @@
 .div-income-columnAmount,
 .div-income-columnText,
 
+.div-overview-columnDueCondoName,
 .div-overview-columnDueDate,
 .div-overview-columnDueAmount,
 .div-overview-columnDueText,
+.div-overview-columnIncomeCondoName,
 .div-overview-columnIncomeDate,
 .div-overview-columnIncomeAmount,
 .div-overview-columnIncomeText,
@@ -122,52 +124,54 @@
   padding: 2px;
 }
 
+.div-overview-columnDueCondoName,
 .div-importfile-columnLineNumber,
 .div-income-columnIncomeId,
-.div-overview-columnDueDate,
 .div-remoteheating-columnDate {
   grid-column-start: 3;
 }
 
+.div-overview-columnDueDate,
 .div-importfile-columnAccountingDate,
 .div-payment-columnIncomeId,
 .div-income-columnDate,
-.div-overview-columnDueAmount,
 .div-remoteheating-columnAmount {
   grid-column-start: 4;
 }
 
+.div-overview-columnDueAmount,
 .div-importfile-columnName,
 .div-payment-columnDate,
 .div-income-columnAmount,
-.div-overview-columnDueText,
 .div-remoteheating-columnNumberKWHour {
   grid-column-start: 5;
 }
 
+.div-overview-columnDueText,
 .div-importfile-columnAccountName,
 .div-payment-columnAmount,
 .div-income-columnText,
-.div-overview-columnIncomeDate,
 .div-remoteheating-columnPriceKWHour {
   grid-column-start: 6;
 }
 
+.div-overview-columnIncomeCondoName,
 .div-importfile-columnFromBankAccount,
-.div-payment-columnText,
-.div-overview-columnIncomeAmount {
+.div-payment-columnText {
   grid-column-start: 7;
 }
 
-.div-importfile-columnToBankAccount,
-.div-overview-columnIncomeText {
+.div-overview-columnIncomeDate, 
+.div-importfile-columnToBankAccount {
   grid-column-start: 8;
 }
 
+.div-overview-columnIncomeAmount,
 .div-importfile-columnPayment {
   grid-column-start: 9;
 }
 
+.div-overview-columnIncomeText,
 .div-importfile-columnText {
   grid-column-start: 10;
 }
@@ -207,10 +211,10 @@
   grid-column-start: 4;
 }
 
-.div-accountmovement-columnAmount,
-.div-accountmovement-columnDate,
-.div-accountmovement-columnBankAccountName,
-.div-accountmovement-columnName {
+.div-bankaccountmovement-columnAmount,
+.div-bankaccountmovement-columnDate,
+.div-bankaccountmovement-columnBankAccountName,
+.div-bankaccountmovement-columnName {
   grid-row-start: 1;
   grid-row-end: 20;
   display: block;
@@ -219,19 +223,19 @@
   padding: 2px;
 }
 
-.div-accountmovement-columnName {
+.div-bankaccountmovement-columnName {
   grid-column: 3;
 }
 
-.div-accountmovement-columnBankAccountName {
+.div-bankaccountmovement-columnBankAccountName {
   grid-column: 4;
 }
 
-.div-accountmovement-columnDate {
+.div-bankaccountmovement-columnDate {
   grid-column: 5;
 }
 
-.div-accountmovement-columnAmount {
+.div-bankaccountmovement-columnAmount {
   grid-column: 6;
 }
 
@@ -295,7 +299,7 @@
 .a-menu-vertical-remoteheating,
 .a-menu-vertical-budget,
 .a-menu-vertical-overview,
-.a-menu-vertical-accountmovement {
+.a-menu-vertical-bankaccountmovement {
   display: block;
   color: #333;
   text-decoration: none;
@@ -312,7 +316,7 @@
 .a-menu-vertical-importfile-green,
 .a-menu-vertical-login-green,
 .a-menu-vertical-user-green,
-.a-menu-vertical-accountmovement-green,
+.a-menu-vertical-bankaccountmovement-green,
 .a-menu-vertical-bankaccount-green,
 .a-menu-vertical-condo-green,
 .a-menu-vertical-account-green,
@@ -378,7 +382,7 @@
 .div-grid-remoteheating label,
 .div-grid-budget label,
 .div-grid-overview label,
-.div-grid-accountmovement label {
+.div-grid-bankaccountmovement label {
   border-bottom-color: rgb(229, 229, 229);
   border-bottom-style: solid;
   border-bottom-width: 0px;
@@ -429,7 +433,7 @@
 .div-grid-remoteheating input,
 .div-grid-budget input,
 .div-grid-overview input,
-.div-grid-accountmovement input {
+.div-grid-bankaccountmovement input {
   appearance: auto;
   background-color: rgb(255, 255, 255);
   border-bottom-color: rgb(195, 204, 217);
@@ -504,7 +508,7 @@
 .div-grid-remoteheating select,
 .div-grid-budget select,
 .div-grid-overview select,
-.div-grid-accountmovement select {
+.div-grid-bankaccountmovement select {
   appearance: auto;
   background-color: rgb(255, 255, 255);
   border-bottom-color: rgb(195, 204, 217);
@@ -597,7 +601,7 @@
 .div-grid-remoteheating button,
 .div-grid-budget button,
 .div-grid-overview button,
-.div-grid-accountmovement button {
+.div-grid-bankaccountmovement button {
   width: 190px;
   padding: 10px;
   background-color: #4CAF50;
@@ -624,11 +628,12 @@
 .div-grid-remoteheating button:hover,
 .div-grid-budget button:hover,
 .div-grid-overview button:hover,
-.div-grid-accountmovement button:hover {
+.div-grid-bankaccountmovement button:hover {
   background-color: #3e9441;
 }
 
 /* Even darker green on click */
+.div-userbankaccount button:active
 .div-grid-importile button:active,
 .div-grid-user button:active,
 .div-grid-condo button:active,
@@ -642,7 +647,7 @@
 .div-grid-remoteheating button:active,
 .div-grid-budget button:active,
 .div-grid-overview button:active,
-.div-grid-accountmovement button:active {
+.div-grid-bankaccountmovement button:active {
   background-color: #307533;
 }
 
@@ -693,10 +698,10 @@
 .div-monthlyfee-columnDate-Header,
 .div-monthlyfee-columnAmount-Header,
 
-.label-accountmovement-columnName-Header,
-.label-accountmovement-columnAccountName-Header,
-.label-accountmovement-columnDate-Header,
-.label-accountmovement-columnAmount-Header,
+.label-bankaccountmovement-columnName-Header,
+.label-bankaccountmovement-columnAccountName-Header,
+.label-bankaccountmovement-columnDate-Header,
+.label-bankaccountmovement-columnAmount-Header,
 
 .div-remoteheating-date-Header,
 .div-remoteheating-payment-Header,
@@ -759,6 +764,11 @@
 }
 
 /* red */
+.label-userbankaccount-userId-red,
+.label-userbankaccount-accountId-red,
+.label-userbankaccount-name-red,
+.label-userbankaccount-bankAccount-red,
+
 .label-user-condoId-red,
 .label-user-firstName-red,
 .label-user-lastName-red,
@@ -767,11 +777,11 @@
 .label-user-password-red,
 .label-user-securityLevel-red,
 
-.label-accountmovement-accountMovementId-red,
-.label-accountmovement-amount-red,
-.label-accountmovement-fromDate-red,
-.label-accountmovement-toDate-red,
-.label-accountmovement-text-red,
+.label-bankaccountmovement-bankaccountmovementId-red,
+.label-bankaccountmovement-amount-red,
+.label-bankaccountmovement-fromDate-red,
+.label-bankaccountmovement-toDate-red,
+.label-bankaccountmovement-text-red,
 
 .label-bankaccount-bankAccountId-red,
 .label-bankaccount-bankAccount-red,
@@ -912,6 +922,13 @@
 /* green back ground */
 .green {
   background-color: #4CAF50;
+  opacity: 0.5;
+  color: white;
+}
+
+/* red back ground */
+.red {
+  background-color: #a82d3f;
   opacity: 0.5;
   color: white;
 }

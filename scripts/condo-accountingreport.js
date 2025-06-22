@@ -2,45 +2,27 @@
 
 // Activate objects
 const objUser = new User('user');
-const objOverview = new Overview('overview');
-const objIncome = new Income('income');
-const objDue = new Due('due');
-const objCondo = new Condo('condo');
+const objBankAccountMovement = new Condo('bankaccountmovement');
+const objAccountingReport = new AccountingReport('accountingreport');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
-
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
+testMode();
 
 let isEventsCreated = false;
 
-objOverview.menu();
-objOverview.markSelectedMenu('Bet. oversikt');
+objAccountingReport.menu();
+objAccountingReport.markSelectedMenu('Leilighet');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
+
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('condo-login');
+} else {
+
+  // Send a message to the server
+  socket.onopen = () => {
 
   // Sends a request to the server to get all users
   const SQLquery = `
