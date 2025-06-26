@@ -160,7 +160,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
       const SQLquery =
@@ -189,7 +189,7 @@ function createEvents() {
 
   // Select condo
   document.addEventListener('change', (event) => {
-    
+
     if (event.target.classList.contains('select-bankaccountmovement-condoId')) {
     }
   });
@@ -262,16 +262,19 @@ function showAccountMovements() {
     // Show account movement
 
     // Header
-    let htmlColumnAccountMovementCondo =
+    let htmlColumnCondoName =
       '<div class="columnHeaderLeft">Leilighet</div><br>';
-    let htmlColumnAccountMovementBankAccount =
+    let htmlColumnAccountName =
       '<div class="columnHeaderLeft">Konto</div><br>';
-    let htmlColumnAccountMovementDate =
+    let htmlColumnDate =
       '<div class="columnHeaderRight">Dato</div><br>';
-    let htmlColumnAccountMovementAmount =
-      '<div class="columnHeaderRight">Beløp</div><br>';
+    let htmlColumnIncome =
+      '<div class="columnHeaderRight">Inntekt</div><br>';
+    let htmlColumnPayment =
+      '<div class="columnHeaderRight">Utgift</div><br>';
 
-    let sumAmount = 0;
+    let sumIncome = 0;
+    let sumPayment = 0;
 
     let fromDate = document.querySelector('.input-bankaccountmovement-fromDate').value;
     fromDate = convertDateToISOFormat(fromDate);
@@ -288,10 +291,6 @@ function showAccountMovements() {
             if (bankAccountMovement.accountId === accountId || accountId === 999999999) {
 
               // condo name
-              htmlColumnAccountMovementCondo +=
-                `
-                  <div class="leftCell">
-                `;
               let condoName = "-";
               if (bankAccountMovement.condoId) {
                 const condoId =
@@ -299,56 +298,68 @@ function showAccountMovements() {
                 condoName =
                   objCondo.getCondoName(condoId);
               }
-
-              htmlColumnAccountMovementCondo +=
+              htmlColumnCondoName +=
                 `
+                  <div 
+                    class="leftCell"
+                  >
                     ${condoName}
-                  </div>
+                  </div >
                 `;
 
               // account name
               const accountName =
                 objBankAccount.getAccountName(bankAccountMovement.accountId);
-
-              htmlColumnAccountMovementBankAccount +=
+              htmlColumnAccountName +=
                 `
-                  <div 
+                  <div
                     class="leftCell"
-                  />
+                  >
                     ${accountName}    
-                  </div>
+                  </div >
                 `;
 
               // date
-              htmlColumnAccountMovementDate +=
-                `
-                <div
-                  class="rightCell"
-                >
-              `;
-              htmlColumnAccountMovementDate +=
+              const date =
                 convertToEurDateFormat(bankAccountMovement.date);
-              htmlColumnAccountMovementDate +=
-                `   
-                </div>
-              `;
-
-              // amount
-              htmlColumnAccountMovementAmount +=
+              htmlColumnDate +=
                 `
-              <div
-                class="rightCell"
-              >
-            `;
-              htmlColumnAccountMovementAmount +=
-                formatFromOreToKroner(bankAccountMovement.amount);
-              htmlColumnAccountMovementAmount +=
-                `   
-              </div>
-            `;
-              // accumulate amount
-              sumAmount += Number(bankAccountMovement.amount);
+                  <div
+                    class="rightCell"
+                  >
+                    ${date}
+                  </div >
+                `;
 
+              // income
+              const income =
+                formatOreToKroner(bankAccountMovement.income);
+              htmlColumnIncome +=
+                `
+                  <div
+                    class="rightCell"
+                  >
+                    ${income}
+                  </div>
+                `;
+
+              // payment
+              const payment =
+                formatOreToKroner(bankAccountMovement.payment);
+              htmlColumnPayment +=
+                `
+                  <div
+                    class="rightCell"
+                  >
+                    ${payment}
+                  </div>
+                `;
+
+              // accumulate
+              sumIncome +=
+                Number(bankAccountMovement.income);
+              sumPayment +=
+                Number(bankAccountMovement.payment);
             }
           }
         }
@@ -357,34 +368,48 @@ function showAccountMovements() {
 
     // Sum line
 
-    // amount
-    htmlColumnAccountMovementAmount +=
+    // income
+    income =
+      formatOreToKroner(sumIncome);
+    htmlColumnIncome +=
       `
-    <div
-      class="sumCellRight"
-    >
-  `;
-    htmlColumnAccountMovementAmount +=
-      formatFromOreToKroner(sumAmount);
-    htmlColumnAccountMovementAmount +=
-      `   
-        </div>
+        <div
+          class="sumCellRight"
+        >
+          ${income}
+        </div >
+      `;
+
+    // payment
+    payment =
+      formatOreToKroner(sumPayment);
+    htmlColumnPayment +=
+      `
+        <div
+          class="sumCellRight"
+        >
+          ${payment}
+        </div >
       `;
 
     // Show condo name
-    document.querySelector('.div-bankaccountmovement-columnName').innerHTML =
-      htmlColumnAccountMovementCondo;
+    document.querySelector('.div-bankaccountmovement-columnCondoName').innerHTML =
+      htmlColumnCondoName;
 
     // Show bank account name
-    document.querySelector('.div-bankaccountmovement-columnBankAccountName').innerHTML =
-      htmlColumnAccountMovementBankAccount;
+    document.querySelector('.div-bankaccountmovement-columnAccountName').innerHTML =
+      htmlColumnAccountName;
 
     // Show date
     document.querySelector('.div-bankaccountmovement-columnDate').innerHTML =
-      htmlColumnAccountMovementDate;
+      htmlColumnDate;
 
-    // Show amounts
-    document.querySelector('.div-bankaccountmovement-columnAmount').innerHTML =
-      htmlColumnAccountMovementAmount;
+    // Show income
+    document.querySelector('.div-bankaccountmovement-columnIncome').innerHTML =
+      htmlColumnIncome;
+
+    // Show payment
+    document.querySelector('.div-bankaccountmovement-columnPayment').innerHTML =
+      htmlColumnPayment;
   }
 }

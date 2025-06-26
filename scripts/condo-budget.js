@@ -1,6 +1,7 @@
 // Budget maintenance
 
 // Activate objects
+const today = new Date();
 const objUser = new User('user');
 const objAccount = new Account('account');
 const objBudget = new Budget('budget');
@@ -46,10 +47,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       userArray = JSON.parse(message);
 
       // Sends a request to the server to get all accounts
-      const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM account
+          ORDER BY accountId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -63,11 +65,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       accountArray = JSON.parse(message);
 
       // Sends a request to the server to get all budgets
-      //objBudget.getBudgets(socket);
-      const SQLquery = `
-      SELECT * FROM budget
-      ORDER BY text;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM budget
+          ORDER BY budgetId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -80,7 +82,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       budgetArray = JSON.parse(message);
 
       const budgetId =
-       objBudget.getSelectedBudgetId('select-budget-budgetId');
+        objBudget.getSelectedBudgetId('select-budget-budgetId');
+
       showLeadingText(budgetId);
       showValues(budgetId);
 
@@ -93,16 +96,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
 
       // Sends a request to the server to get all budgets
-      //objBudget.getBudgets(socket);
-      const SQLquery = `
-      SELECT * FROM budget
-      ORDER BY text;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM budget
+          ORDER BY budgetId;
+        `;
       socket.send(SQLquery);
     }
   }
@@ -142,17 +145,9 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-budget-update')) {
 
-      /*
-      let budgetId = Number(document.querySelector('.select-budget-budgetId').value);
-      budgetId = (budgetId !== 0) ? budgetId : budgetArray.at(-1).budgetId;
-      updateBudget(budgetId);
-      showValues(budgetId);
-      */
-
-      //const budgetId = Number(document.querySelector('.select-budget-budgetId').value);
-      //if (updateBudgetRow(budgetId)) {
-      //  showValues(budgetId);
-      //}
+      const budgetId =
+        Number(document.querySelector('.select-budget-budgetId').value);
+      updateBudgetRow(budgetId);
     };
   });
 
@@ -171,7 +166,7 @@ function createEvents() {
       deleteBudgetRow();
       const SQLquery = `
         SELECT * FROM budget
-        ORDER BY text;
+        ORDER BY budgetId;
       `;
       socket.send(SQLquery);
     };
@@ -183,7 +178,7 @@ function createEvents() {
 
       const SQLquery = `
         SELECT * FROM budget
-        ORDER BY text;
+        ORDER BY budgetId;
       `;
       socket.send(SQLquery);
     };
@@ -193,70 +188,72 @@ function createEvents() {
 function updateBudgetRow(budgetId) {
 
   let SQLquery = "";
-  let isUpdated = false;
 
   // Check for valid values
   if (validateValues()) {
 
     // Valid values
 
-    //const budgetId =
-    //  Number(document.querySelector('.select-budget-budgetId').value);
     const accountId =
       Number(document.querySelector('.select-budget-accountId').value);
     const year =
       Number(document.querySelector('.select-budget-year').value);
     let amount =
-      formatAmountToOre(document.querySelector('.input-budget-amount').value);
+      formatKronerToOre(document.querySelector('.input-budget-amount').value);
+    const now =
+      new Date();
+    const lastUpdate =
+      now.toISOString();
 
-    const now = new Date();
-    const lastUpdate = now.toISOString();
-
-    const text = document.querySelector('.input-budget-text').value;
+    const text =
+      document.querySelector('.input-budget-text').value;
 
     // Check if budget exist
-    const objectNumberBudget = budgetArray.findIndex(budget => budget.budgetId === budgetId);
-    if (objectNumberBudget > 0) {
+    const objBudgetRowNumber =
+      budgetArray.findIndex(budget => budget.budgetId === budgetId);
+    if (objBudgetRowNumber !== -1) {
 
       // Update budget table
-      SQLquery = `
-        UPDATE budget
-        SET
-          user = '${objUserPassword.email}', 
-          lastUpdate = '${lastUpdate}',
-          accountId = ${accountId},
-          amount = '${amount}',
-          year = '${year}',
-          text = '${text}'
-        WHERE budgetId = ${budgetId};
-      `;
+      SQLquery =
+        `
+          UPDATE budget
+          SET
+            user = '${objUserPassword.email}', 
+            lastUpdate = '${lastUpdate}',
+            accountId = ${accountId},
+            amount = '${amount}',
+            year = '${year}',
+            text = '${text}'
+          WHERE budgetId = ${budgetId};
+        `;
 
       // Client sends a request to the server for update
       socket.send(SQLquery);
 
     } else {
 
-      SQLquery = `
-        INSERT INTO budget (
-          tableName,
-          condominiumId,
-          user,
-          lastUpdate,
-          accountId,
-          amount,
-          year,
-          text)
-        VALUES (
-          'budget',
-          ${objUserPassword.condominiumId},
-          '${objUserPassword.email}',
-          '${lastUpdate}',
-          ${accountId},
-          '${amount}',
-          '${year}', 
-          '${text}'
-        );
-      `;
+      SQLquery =
+        `
+          INSERT INTO budget (
+            tableName,
+            condominiumId,
+            user,
+            lastUpdate,
+            accountId,
+            amount,
+            year,
+            text)
+          VALUES (
+            'budget',
+            ${objUserPassword.condominiumId},
+            '${objUserPassword.email}',
+            '${lastUpdate}',
+            ${accountId},
+            '${amount}',
+            '${year}', 
+            '${text}'
+          );
+        `;
 
       // Client sends a request to the server
       socket.send(SQLquery);
@@ -267,12 +264,8 @@ function updateBudgetRow(budgetId) {
         false;
       document.querySelector('.button-budget-new').disabled =
         false;
-      //document.querySelector('.button-budget-cancel').disabled =
-      //  false;
-      isUpdated = true;
     }
   }
-  return isUpdated;
 }
 
 // Show leading text for budget
@@ -282,12 +275,13 @@ function showLeadingText(budgetId) {
   objBudget.showAllBudgets('budgetId', budgetId);
 
   // Show all accounts
-  const accountId = accountArray.at(-1).accountId;
+  const accountId =
+    accountArray.at(-1).accountId;
   objAccount.showAllAccounts('budget-accountId', accountId);
 
   // Show years
-  const today = new Date();
-  const year = today.getFullYear();
+  const year =
+    today.getFullYear();
   objBudget.selectNumber('budget-year', 2020, 2030, year, 'År');
 
   // amount
@@ -314,34 +308,32 @@ function showLeadingText(budgetId) {
 // Show values for budget
 function showValues(budgetId) {
 
-  // Check for valid budget Id
-  if (budgetId > 1) {
+  // find object number for selected budget 
+  const objBudgetRowNumber =
+    budgetArray.findIndex(budget => budget.budgetId === budgetId);
+  if (objBudgetRowNumber !== -1) {
 
-    // Find object number in budget array
-    const objectNumberBudget = budgetArray.findIndex(budget => budget.budgetId === budgetId);
-    if (objectNumberBudget >= 0) {
+    // Select budget
+    const budgetId =
+      budgetArray[objBudgetRowNumber].budgetId;
+    objBudget.selectBudgetId(budgetId, 'budget-budgetId');
 
-      // Show selected budget Id
-      document.querySelector('.select-budget-budgetId').value =
-        budgetArray[objectNumberBudget].budgetId;
+    // Select account
+    const accountId =
+      budgetArray[objBudgetRowNumber].accountId;
+    objAccount.selectAccountId(accountId, 'budget-accountId');
 
-      // Show account
-      // Check if account id exist
-      const accountId = budgetArray[objectNumberBudget].accountId;
-      objBudget.selectAccountId(accountId, 'budget-accountId')
+    // Show select year
+    document.querySelector('.select-budget-year').value =
+      budgetArray[objBudgetRowNumber].year;
 
-      // Show select year
-      document.querySelector('.select-budget-year').value =
-        budgetArray[objectNumberBudget].year;
+    // Show amount
+    document.querySelector('.input-budget-amount').value =
+      formatOreToKroner(budgetArray[objBudgetRowNumber].amount);
 
-      // Show amount
-      document.querySelector('.input-budget-amount').value =
-        formatFromOreToKroner(budgetArray[objectNumberBudget].amount);
-
-      // budget text
-      document.querySelector('.input-budget-text').value =
-        budgetArray[objectNumberBudget].text;
-    }
+    // budget text
+    document.querySelector('.input-budget-text').value =
+      budgetArray[objBudgetRowNumber].text;
   }
 }
 
@@ -387,14 +379,16 @@ function deleteBudgetRow() {
   if (budgetId > 1) {
 
     // Check if budget id exist
-    const objectNumberBudget = budgetArray.findIndex(budget => budget.budgetId === budgetId);
-    if (objectNumberBudget >= 0) {
+    const objBudgetRowNumber =
+      budgetArray.findIndex(budget => budget.budgetId === budgetId);
+    if (objBudgetRowNumber !== -1) {
 
       // Delete table
-      SQLquery = `
-        DELETE FROM budget
-        WHERE budgetId = ${budgetId};
-      `;
+      SQLquery =
+        `
+          DELETE FROM budget
+          WHERE budgetId = ${budgetId};
+        `;
     }
     // Client sends a request to the server
     socket.send(SQLquery);
@@ -419,8 +413,8 @@ function validateValues() {
   // Check amount
   const amount =
     document.querySelector('.input-budget-amount').value;
-  document.querySelector('.input-budget-amount').value =
-    formatAmountToOre(amount);
+  //document.querySelector('.input-budget-amount').value =
+  //  formatKronerToOre(amount);
   const validAmount =
     objBudget.validateAmount(amount, "budget-amount", "Budsjett");
 
@@ -432,37 +426,3 @@ function validateValues() {
 
   return (validAmount && validText && validAccountId && validYear) ? true : false;
 }
-
-/*
-DROP TABLE budget;
-CREATE TABLE budget (
-  budgetId INT AUTO_INCREMENT PRIMARY KEY,
-  tableName VARCHAR(50) NOT NULL,
-  condominiumId INT,
-  user VARCHAR (50),
-  lastUpdate VarChar (40),
-  accountId INT,
-  budget VARCHAR(10) NOT NULL,
-  year VARCHAR(4) NOT NULL,
-  text VARCHAR (255) NOT NULL
-);
-INSERT INTO budget (
-  tableName,
-  condominiumId,
-  user,
-  lastUpdate,
-  accountId,
-  budget,
-  year,
-  text)
-VALUES (
-  'budget',
-  1,
-  'Initiation',
-  '2099-12-31T23:59:59.596Z',
-  0,
-  'budget', 
-  '9999',
-  'text'
-);
-*/

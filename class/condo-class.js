@@ -47,7 +47,7 @@ class Condos {
   showInput(className, labelText, maxlength, placeholder) {
 
     let html =
-     this.showLabel(className, labelText);
+      this.showLabel(className, labelText);
     html +=
       `
         <input 
@@ -400,11 +400,29 @@ class Condos {
   selectAccountId(accountId, className) {
 
     // Check if account id exist
-    const objectNumberAccount = accountArray.findIndex(account => account.accountId === accountId);
-    if (objectNumberAccount > 0) {
+    const objUserAccountNumber =
+      accountArray.findIndex(account => account.accountId === accountId);
+    if (objUserAccountNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
         accountId;
+      return true;
+    } else {
+
+      return false;
+    }
+  }
+
+  // Select budget
+  selectBudgetId(budgetId, className) {
+
+    // Check if budget id exist
+    const objBudgetNumber =
+      budgetArray.findIndex(budget => budget.budgetId === budgetId);
+    if (objBudgetNumber !== -1) {
+
+      document.querySelector(`.select-${className}`).value =
+        budgetId;
       return true;
     } else {
 
@@ -416,8 +434,9 @@ class Condos {
   selectBankAccountId(bankAccountId, className) {
 
     // Check if account id exist
-    const objectNumberBankAccount = bankAccountArray.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
-    if (objectNumberBankAccount > 0) {
+    const objBankAccountRowNumber =
+      bankAccountArray.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+    if (objBankAccountRowNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
         bankAccountId;
@@ -432,8 +451,9 @@ class Condos {
   selectCondoId(condoId, className) {
 
     // Check if condo id exist
-    const objectNumberCondo = condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objectNumberCondo > 0) {
+    const objCondoRowNumber =
+      condoArray.findIndex(condo => condo.condoId === condoId);
+    if (objCondoRowNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
         condoId;
@@ -448,8 +468,9 @@ class Condos {
   selectYear(year, className) {
 
     // Check if year
-    const objectNumberYear = this.yearArray.findIndex(year => year.year === year);
-    if (objectNumberYear > 0) {
+    const objYearRowNumber =
+      this.yearArray.findIndex(year => year.year === year);
+    if (objYearRowNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
         year;
@@ -674,6 +695,12 @@ class Condos {
           >
             Importer bankkontobevegelser
           </a>
+
+          <a href="${url}condo/condo-accountingreport.html"
+            class="a-menu-vertical-accountingreport"
+          >
+            Regnskapsrapport
+          </a>
         `;
   }
 
@@ -748,32 +775,32 @@ class Condos {
     let bankAccountName;
 
     // Bank account name from bank account table 
-    const objNumberBankAccountNumber =
+    const objBankAccountRowNumber =
       bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
-    if (objNumberBankAccountNumber > 0) {
+    if (objBankAccountRowNumber !== -1) {
 
-      bankAccountName = bankAccountArray[objNumberBankAccountNumber].name;
+      bankAccountName = bankAccountArray[objBankAccountRowNumber].name;
     }
 
     if (!bankAccountName) {
 
       // Bank account name from supplier table
-      const objSupplierNumber =
+      const objSupplierRowNumber =
         supplierArray.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
-      if (objSupplierNumber > 0) {
+      if (objSupplierRowNumber !== -1) {
 
-        bankAccountName = supplierArray[objSupplierNumber].name;
+        bankAccountName = supplierArray[objSupplierRowNumber].name;
       }
     }
 
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const objUserBankAccountNumber =
+      const objBankAccountRowNumber =
         userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
-      if (objUserBankAccountNumber > 0) {
+      if (objBankAccountRowNumber !== -1) {
 
-        bankAccountName = userBankAccountArray[objUserBankAccountNumber].name;
+        bankAccountName = userBankAccountArray[objBankAccountRowNumber].name;
       }
     }
 
@@ -787,43 +814,44 @@ class Condos {
     let accountId = 0;
 
     // To Bank Acoount <> Condominium Bank Account
-    let objBankAccountNumber =
+    let objBankAccountRowNumber =
       bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === toBankAccount);
-    if (objBankAccountNumber === -1) {
+    if (objBankAccountRowNumber === -1) {
 
-      const objUserBankAccountNumber =
+      const objBankAccountRowNumber =
         userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === toBankAccount);
-      if (objUserBankAccountNumber > 0) {
+      if (objBankAccountRowNumber !== -1) {
 
-        accountId = userBankAccountArray[objUserBankAccountNumber].accountId;
+        accountId = userBankAccountArray[objBankAccountRowNumber].accountId;
       }
       // get Account Id from supplier
-      const objSupplierNumber =
+      const objSupplierRowNumber =
         supplierArray.findIndex(supplier => supplier.bankAccount === toBankAccount);
-      if (objSupplierNumber > 0) {
+      if (objSupplierRowNumber !== -1) {
 
-        accountId = supplierArray[objSupplierNumber].accountId;
+        accountId = supplierArray[objSupplierRowNumber].accountId;
       }
     }
 
     // From Bank Acoount <> Condominium Bank Account
-    objBankAccountNumber =
+    objBankAccountRowNumber =
       bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === fromBankAccount);
 
-    if (objBankAccountNumber === -1) {
+    if (objBankAccountRowNumber === -1) {
 
-      const objUserBankAccountNumber =
+      // Bank Account does not exist
+      const objBankAccountRowNumber =
         userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
-      if (objUserBankAccountNumber > 0) {
+      if (objBankAccountRowNumber !== -1) {
 
-        accountId = userBankAccountArray[objUserBankAccountNumber].accountId;
+        accountId = userBankAccountArray[objBankAccountRowNumber].accountId;
       }
       // get Account Id from supplier
-      const objSupplierNumber =
+      const objSupplierRowNumber =
         supplierArray.findIndex(supplier => supplier.bankAccount === fromBankAccount);
-      if (objSupplierNumber > 0) {
+      if (objSupplierRowNumber !== -1) {
 
-        accountId = supplierArray[objSupplierNumber].accountId;
+        accountId = supplierArray[objSupplierRowNumber].accountId;
       }
     }
     return accountId;
@@ -835,11 +863,11 @@ class Condos {
     let accountName = "-";
 
     // Account name from account table
-    const objNumberAccount =
+    const objAccountRowNumber =
       accountArray.findIndex(account => account.accountId === accountId);
-    if (objNumberAccount >= 0) {
+    if (objAccountRowNumber !== -1) {
 
-      accountName = accountArray[objNumberAccount].name;
+      accountName = accountArray[objAccountRowNumber].name;
     }
 
     return (accountName) ? accountName : "-";
@@ -853,19 +881,20 @@ class Condos {
     // Check for valid bank account
     if (Number(fromBankAccount) > 987654321) {
 
-      const objUserBankAccountNumber =
+      const objBankAccountRowNumber =
         userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
-      if (objUserBankAccountNumber > 0) {
+      if (objBankAccountRowNumber !== -1) {
 
-        const userId = Number(userBankAccountArray[objUserBankAccountNumber].userId);
+        const userId = Number(userBankAccountArray[objBankAccountRowNumber].userId);
 
         if (userId >= 0) {
 
-          const objUserNumber = userArray.findIndex(user => user.userId === userId);
-          if (objUserNumber >= 0) {
+          const objUserRowNumber =
+            userArray.findIndex(user => user.userId === userId);
+          if (objUserRowNumber !== -1) {
 
             condoId =
-              Number(userArray[objUserNumber].condoId);
+              Number(userArray[objUserRowNumber].condoId);
           }
         }
       }
@@ -916,7 +945,7 @@ function validateEuroDateFormat(dateString) {
   );
 }
 
-// Format date  (European date format) to yyyymmdd ("Basic ISO 8601 format)
+// Format date dd.mm.yyyy (European date format) to yyyymmdd ("Basic ISO 8601 format)
 function convertDateToISOFormat(date) {
 
   const dateParts = date.split(".");
@@ -1152,7 +1181,7 @@ function formatToNorAmount(amount) {
 }
 
 // Format number (1234567) to norwegian amount (12345,67)
-function formatFromOreToKroner(amount) {
+function formatOreToKroner(amount) {
 
   amount = this.removeComma(String(amount));
   amount = String(Number(amount) / 100);
@@ -1171,16 +1200,40 @@ function formatAmountToNumber(number) {
 // Format norwegian kroner (12 345,67) to ore/number (1234567)
 function formatKronerToOre(amount) {
 
-  let formatedAmount = amount.replace(',', '');
-  amount = formatedAmount.replace('.', '');
-  formatedAmount = amount.replace(/\s+/g, "");
-  return formatedAmount;
+  let kroner = '';
+  let ore = '';
+
+  // check for decimal number
+  amount =
+    amount.replace(/\s+/g, "");
+  if (amount.includes('.')) {
+
+    // decimal number
+    [kroner, ore] = amount.split('.');
+    ore =
+      (ore.length === 1) ? ore + '0' : '00';
+
+  } else {
+    if (amount.includes(',')) {
+      [kroner, ore] = amount.split(',');
+      ore = (ore.length === 1) ? ore + '0' : ore.substring(0, 2);
+    } else {
+
+      // not decimal number
+      kroner =
+        amount;
+      ore =
+        "00";
+    }
+  }
+
+  return kroner + ore;
 }
 
 // Format amount to euro format
 function formatAmountToEuroFarmat(amount) {
   amount = formatAmountToOre(amount);
-  amount = formatFromOreToKroner(amount);
+  amount = formatOreToKroner(amount);
   return amount;
 }
 

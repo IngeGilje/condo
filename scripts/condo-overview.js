@@ -1,148 +1,137 @@
-// Search for amount movements
+// Search for bank account movements
 
 // Activate objects
+const today = new Date();
 const objUser = new User('user');
-const objOverview = new Overview('overview');
-const objIncome = new Income('income');
+const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
 const objDue = new Due('due');
 const objCondo = new Condo('condo');
+const objOverview = new Overview('overview');
 
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
-
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
-    break;
-  }
-  default:
-    break;
-}
+testMode();
 
 let isEventsCreated = false;
 
 objOverview.menu();
-objOverview.markSelectedMenu('Bet. oversikt');
+objOverview.markSelectedMenu('Bet.oversikt');
 
-// Send a message to the server
-socket.onopen = () => {
+let socket = connectingToServer();
 
-  // Sends a request to the server to get all users
-  const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
-  socket.send(SQLquery);
-};
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-// Handle incoming messages from server
-socket.onmessage = (event) => {
+  showLoginError('condo-login');
+} else {
 
-  let message = event.data;
+  // Send a message to the server
+  socket.onopen = () => {
 
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
-
-    console.log('userTable');
-
-    // user array including objects with user information
-    userArray = JSON.parse(message);
-
-    // Sends a request to the server to get all condos
-    const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY name;
-    `;
-    socket.send(SQLquery);
-  }
-
-  // Create condo array including objets
-  if (message.includes('"tableName":"condo"')) {
-
-    console.log('condoTable');
-    // condo table
-
-    // array including objects with condo information
-    condoArray = JSON.parse(message);
-
-    // Sends a request to the server to get all monthly payments
-    const SQLquery = `
-      SELECT * FROM due
-      ORDER BY date;
-    `;
-    socket.send(SQLquery);
-
-  }
-
-  // Create monthly payment array including objets
-  if (message.includes('"tableName":"due"')) {
-
-    // monthly payment table
-    console.log('dueTable');
-
-    // array including objects with due information
-    dueArray = JSON.parse(message);
-
-    // Sends a request to the server to get all incomes
-    // Get all income rows
-    const SQLquery = `
-        SELECT * FROM income
-        ORDER BY date;
+    // Sends a request to the server to get all users
+    const SQLquery =
+      `
+        SELECT * FROM user
+        ORDER BY userId;
       `;
     socket.send(SQLquery);
-  }
+  };
 
-  // Create income array including objets
-  if (message.includes('"tableName":"income"')) {
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
 
-    // income table
-    console.log('incomeTable');
+    let message = event.data;
 
-    // array including objects with income information
-    incomeArray = JSON.parse(message);
+    // Create user array including objets
+    if (message.includes('"tableName":"user"')) {
 
-    const incomeId = objIncome.getSelectedIncomeId('overview-income');
+      console.log('userTable');
 
-    // Show leading text
-    showLeadingText(incomeId);
+      // user array including objects with user information
+      userArray = JSON.parse(message);
 
-    // Make events
-    if (!isEventsCreated) {
-      createEvents();
-      isEventsCreated = true;
+      // Sends a request to the server to get all condos
+      const SQLquery =
+        `
+          SELECT * FROM condo
+          ORDER BY name;
+        `;
+      socket.send(SQLquery);
     }
+
+    // Create condo array including objets
+    if (message.includes('"tableName":"condo"')) {
+
+      console.log('condoTable');
+      // condo table
+
+      // array including objects with condo information
+      condoArray = JSON.parse(message);
+
+      // Sends a request to the server to get all monthly payments
+      const SQLquery =
+        `
+          SELECT * FROM due
+          ORDER BY date;
+        `;
+      socket.send(SQLquery);
+
+    }
+
+    // Create monthly payment array including objets
+    if (message.includes('"tableName":"due"')) {
+
+      // monthly payment table
+      console.log('dueTable');
+
+      // array including objects with due information
+      dueArray = JSON.parse(message);
+
+      // Sends a request to the server to get all bank account movements
+      // Get all bankaccountmovement. rows
+      const SQLquery =
+        `
+          SELECT * FROM bankaccountmovement
+          ORDER BY date;
+        `;
+      socket.send(SQLquery);
+    }
+
+    // Create bank account movement array including objets
+    if (message.includes('"tableName":"bankaccountmovement"')) {
+
+      // bank account movement table
+      console.log('bankaccountmovementTable');
+
+      // array including objects with bank account movement information
+      bankAccountMovementArray =
+        JSON.parse(message);
+
+      // Show leading text
+      showLeadingText();
+
+      // Make events
+      if (!isEventsCreated) {
+        createEvents();
+        isEventsCreated = true;
+      }
+    }
+
+    // Check for update, delete ...
+    if (message.includes('"affectedRows"')) {
+      console.log('affectedRows');
+    }
+  };
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
   }
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
-    console.log('affectedRows');
+  // Handle disconnection
+  socket.onclose = () => {
   }
-};
-
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
 }
 
 // Make overview events
@@ -160,7 +149,7 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-overview-search')) {
 
-      // Show all values for payment
+      // Show all values for bank account movements
       showValues();
     };
   });
@@ -174,7 +163,6 @@ function showLeadingText() {
 
   // Show from date
   objOverview.showInput('overview-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
-  today = new Date();
   const year = String(today.getFullYear());
   document.querySelector('.input-overview-fromDate').value =
     `01.01.${year}`;
@@ -189,7 +177,7 @@ function showLeadingText() {
 
 }
 
-// Show values for due and income for selected condo
+// Show values for due and bankaccountmovement. for selected condo
 function showValues() {
 
   // check for valid filter
@@ -205,9 +193,7 @@ function showValues() {
     let htmlColumnDueText =
       '<div class="columnHeaderLeft">Tekst</div><br>';
 
-
     // Filter
-    // 01.02.2025 -> 20250201
     let fromDate =
       convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value);
     let toDate =
@@ -234,15 +220,14 @@ function showValues() {
               `;
 
             // date
-            htmlColumnDueDate +=
-              `
-                <div 
-                class="rightCell">
-              `;
-            htmlColumnDueDate +=
+            const date =
               convertToEurDateFormat(due.date);
             htmlColumnDueDate +=
               `
+                <div 
+                  class="rightCell"
+                >
+                  ${date}
                 </div>
               `;
 
@@ -252,24 +237,21 @@ function showValues() {
                 <div class="rightCell">
               `;
             htmlColumnDueAmount +=
-              formatFromOreToKroner(due.amount);
+              formatOreToKroner(due.amount);
             htmlColumnDueAmount +=
               `
                 </div>
               `;
 
             // Text has to fit into the column
-            due.text = truncateText(due.text, 'div-overview-columnDueText');
+            const text =
+              truncateText(due.text, 'div-overview-columnDueText');
             htmlColumnDueText +=
               `
                 <div 
                   class="leftCell"
                 >
-              `;
-            htmlColumnDueText +=
-              due.text;
-            htmlColumnDueText +=
-              `
+                  ${text}
                 </div>
               `;
 
@@ -282,29 +264,29 @@ function showValues() {
       }
     });
 
-    // Show income
+    // Show bank account movement
 
     // Header
-    let htmlColumnIncomeCondoName =
+    let htmlBankAccountMovementCondoName =
       '<div class="columnHeaderRight">Leiliget</div><br>';
-    let htmlColumnIncomeDate =
+    let htmlBankAccountMovementDate =
       '<div class="columnHeaderRight">Betalingsdato</div><br>';
-    let htmlColumnIncomeAmount =
+    let htmlBankAccountMovementAmount =
       '<div class="columnHeaderRight">Beløp</div><br>';
-    let htmlColumnIncomeText =
+    let htmlBankAccountMovementText =
       '<div class="columnHeaderLeft">Tekst</div><br>';
 
-    let sumColumnIncome = 0;
+    let sumColumnBankAccountMovement = 0;
 
-    incomeArray.forEach((income) => {
-      if (income.incomeId > 1) {
-        if (Number(income.date) >= Number(fromDate) && Number(income.date) <= Number(toDate)) {
-          if (income.condoId === condoId || condoId === 999999999) {
+    bankAccountMovementArray.forEach((bankAccountMovement) => {
+      if (bankAccountMovement.bankAccountMovementId > 1) {
+        if (Number(bankAccountMovement.date) >= Number(fromDate) && Number(bankAccountMovement.date) <= Number(toDate)) {
+          if (bankAccountMovement.condoId === condoId || condoId === 999999999) {
 
             // condo name
             const condoName =
-              (income.condoId) ? objCondo.getCondoName(income.condoId) : "-";
-            htmlColumnIncomeCondoName +=
+              (bankAccountMovement.condoId) ? objCondo.getCondoName(bankAccountMovement.condoId) : "-";
+            htmlBankAccountMovementCondoName +=
               `
                 <div class="rightCell">
                   ${condoName}
@@ -312,49 +294,49 @@ function showValues() {
               `;
 
             // date
-            htmlColumnIncomeDate +=
+            const date =
+              convertToEurDateFormat(bankAccountMovement.date);
+            htmlBankAccountMovementDate +=
               `
-                <div class="rightCell">
-              `;
-            htmlColumnIncomeDate +=
-              convertToEurDateFormat(income.date);
-            htmlColumnIncomeDate +=
-              `
+                <div class="rightCell"
+                  ${date}
+                >
                 </div>
               `;
 
-            // amount
-            htmlColumnIncomeAmount +=
+            // income
+            const income =
+              formatOreToKroner(bankAccountMovement.income);
+            htmlBankAccountMovementAmount +=
               `
-                <div class="rightCell">
-              `;
-            htmlColumnIncomeAmount +=
-              formatFromOreToKroner(income.amount);
-            htmlColumnIncomeAmount +=
-              `
+                <div 
+                  class="rightCell"
+                >
+                  ${income}
                 </div>
               `;
 
             // Text has to fit into the column
-            income.text = truncateText(income.text, 'div-overview-columnIncomeText');
-            htmlColumnIncomeText +=
+            const bankAccountMovementText =
+              truncateText(bankAccountMovement.text, 'div-overview-columnBankAccountMovementText');
+            htmlBankAccountMovementText +=
               `
                 <div
                   class="leftCell"
                 >
-                  ${income.text}
+                  ${bankAccountMovementText}
                 </div>
               `;
 
             // Accomulate
-            // income
-            sumColumnIncome += Number(income.amount);
+            // bankaccountmovement.
+            sumColumnBankAccountMovement += Number(bankAccountMovement.amount);
           }
         }
       }
     });
 
-    // Show sum line
+    // Show total line
     htmlColumnDueCondoName +=
       `
       <div class="sumCellLeft">
@@ -375,7 +357,7 @@ function showValues() {
         <div class="sumCellRight">
       `;
     htmlColumnDueAmount +=
-      formatFromOreToKroner(String(sumColumnDue));
+      formatOreToKroner(String(sumColumnDue));
     htmlColumnDueAmount +=
       `
         </div>
@@ -393,39 +375,39 @@ function showValues() {
         </div>
       `;
 
-    // sum income
-    htmlColumnIncomeDate +=
+    // sum bank account movement.
+    htmlBankAccountMovementDate +=
       `
       <div class="sumCellRight">
     `;
-    htmlColumnIncomeDate +=
+    htmlBankAccountMovementDate +=
       '-';
-    htmlColumnIncomeDate +=
+    htmlBankAccountMovementDate +=
       `
       </div>
     `;
 
-    htmlColumnIncomeAmount +=
+    htmlBankAccountMovementAmount +=
       `
         <div class="sumCellRight">
       `;
-    htmlColumnIncomeAmount +=
-      formatFromOreToKroner(String(sumColumnIncome));
-    htmlColumnIncomeAmount +=
+    htmlBankAccountMovementAmount +=
+      formatOreToKroner(String(sumColumnBankAccountMovement));
+    htmlBankAccountMovementAmount +=
       `
         </div>
       `;
 
     // sum guilty
-    htmlColumnIncomeText +=
+    htmlBankAccountMovementText +=
       `
         <div class="sumCellLeft"
         >
       `;
-    const guilty = sumColumnDue - sumColumnIncome;
-    htmlColumnIncomeText +=
-      `Skyldig ` + formatFromOreToKroner(String(guilty));
-    htmlColumnIncomeText +=
+    const guilty = sumColumnDue - sumColumnBankAccountMovement;
+    htmlBankAccountMovementText +=
+      `Skyldig ` + formatOreToKroner(String(guilty));
+    htmlBankAccountMovementText +=
       `
         </div>
       `;
@@ -440,15 +422,15 @@ function showValues() {
     document.querySelector('.div-overview-columnDueText').innerHTML =
       htmlColumnDueText;
 
-    // Show income rows
-    document.querySelector('.div-overview-columnIncomeCondoName').innerHTML =
-      htmlColumnIncomeCondoName;
-    document.querySelector('.div-overview-columnIncomeDate').innerHTML =
-      htmlColumnIncomeDate;
-    document.querySelector('.div-overview-columnIncomeAmount').innerHTML =
-      htmlColumnIncomeAmount;
-    document.querySelector('.div-overview-columnIncomeText').innerHTML =
-      htmlColumnIncomeText;
+    // Show bankaccountmovement. rows
+    document.querySelector('.div-overview-columnBankAccountMovementCondoName').innerHTML =
+      htmlBankAccountMovementCondoName;
+    document.querySelector('.div-overview-columnBankAccountMovementDate').innerHTML =
+      htmlBankAccountMovementDate;
+    document.querySelector('.div-overview-columnBankAccountMovementAmount').innerHTML =
+      htmlBankAccountMovementAmount;
+    document.querySelector('.div-overview-columnBankAccountMovementText').innerHTML =
+      htmlBankAccountMovementText;
   }
 }
 

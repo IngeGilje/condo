@@ -38,15 +38,15 @@ const createIncomeTable =
 
 // 10 Due
 const createDueTable =
-  true;
+  false;
 
 // 11 Budget
 const createBudgetTable =
   false;
 
-// 12 Bank Account movement
+// 12 Bank account movement
 const createBankAccountMovementTable =
-  false;
+  true;
 
 // Activate Account class
 const objUser = new User('user');
@@ -89,13 +89,13 @@ function condoEvents() {
 
 function deleteAllTables() {
 
-  // 12 Bank Account movement
+  // 12 Bank account movement
   if (createBankAccountMovementTable) {
     console.log('DROP bankaccountmovement Table');
     SQLquery =
       `
-      DROP TABLE bankaccountmovement;
-    `;
+        DROP TABLE bankaccountmovement;
+      `;
     socket.send(SQLquery);
   }
 
@@ -455,7 +455,7 @@ function createAllTables() {
         user VARCHAR(50),
         lastUpdate VarChar(40),
         accountId INT,
-        budget VARCHAR(10) NOT NULL,
+        amount VARCHAR(10) NOT NULL,
         year VARCHAR(4) NOT NULL,
         text VARCHAR(255) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId),
@@ -478,7 +478,9 @@ function createAllTables() {
         lastUpdate VarChar (40),
         condoId INT,
         accountId INT,
-        amount VARCHAR(10) NOT NULL,
+        income VARCHAR(10) NOT NULL,
+        payment VARCHAR(10) NOT NULL,
+        numberKWHour VARCHAR(10) NOT NULL,
         date VARCHAR(10) NOT NULL,
         text VARCHAR (255) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
@@ -818,7 +820,7 @@ function insertRowAllTables() {
         user,
         lastUpdate,
         accountId,
-        budget,
+        amount,
         year,
         text)
       VALUES(
@@ -827,8 +829,8 @@ function insertRowAllTables() {
         'superuser@ingegilje.no',
         '${lastUpdate}',
         1,
-        'budget',
-        '9999',
+        '0',
+        '2025',
         'text'
       );
     `;
@@ -847,7 +849,9 @@ function insertRowAllTables() {
         lastUpdate,
         condoId,
         accountId,
-        amount,
+        income,
+        payment,
+        numberKWHour,
         date,
         text)
       VALUES(
@@ -857,6 +861,8 @@ function insertRowAllTables() {
         '${lastUpdate}',
         1,
         1,
+        '',
+        '',
         '',
         '',
         ''

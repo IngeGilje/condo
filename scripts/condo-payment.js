@@ -96,7 +96,8 @@ socket.onmessage = (event) => {
     // array including objects with payment information
     paymentArray = JSON.parse(message);
 
-    const paymentId = objPayment.getSelectedPaymentId('paymentId');
+    const paymentId =
+     objPayment.getSelectedPaymentId('paymentId');
 
     // Show leading text
     showLeadingText(paymentId);
@@ -114,15 +115,16 @@ socket.onmessage = (event) => {
   }
 
   // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+  if (message.includes('"affectedRows"')) {
 
     console.log('affectedRows');
 
     // Sends a request to the server to get all payments
-    const SQLquery = `
-      SELECT * FROM payment
-      ORDER BY paymentId;
-    `;
+    const SQLquery =
+      `
+        SELECT * FROM payment
+        ORDER BY paymentId;
+      `;
     socket.send(SQLquery);
   }
 };
@@ -245,22 +247,24 @@ function updatePayment() {
       document.querySelector('.input-payment-text').value;
 
     // Check if payment exist
-    const objectNumberPayment = paymentArray.findIndex(payment => payment.paymentId === paymentId);
-    if (objectNumberPayment > 0) {
+    const objPaymentRowNumber =
+      paymentArray.findIndex(payment => payment.paymentId === paymentId);
+    if (objPaymentRowNumber !== -1) {
 
       // Update payment table
-      SQLquery = `
-        UPDATE payment
-        SET 
-          user = '${objUserPassword.email}',
-          lastUpdate = '${lastUpdate}',
-          accountId = ${accountId},
-          amount = '${amount}',
-          numberKWHour = '${numberKWHour}',
-          date = '${date}',
-          text = '${text}'
-        WHERE paymentId = ${paymentId};
-      `;
+      SQLquery =
+        `
+          UPDATE payment
+          SET 
+            user = '${objUserPassword.email}',
+            lastUpdate = '${lastUpdate}',
+            accountId = ${accountId},
+            amount = '${amount}',
+            numberKWHour = '${numberKWHour}',
+            date = '${date}',
+            text = '${text}'
+          WHERE paymentId = ${paymentId};
+        `;
 
       // Client sends a request to the server
       socket.send(SQLquery);
@@ -385,38 +389,39 @@ function showValues(paymentId) {
   if (paymentId > 1) {
 
     // Find object number in payment array
-    const objectNumberPayment = paymentArray.findIndex(payment => payment.paymentId === paymentId);
-    if (objectNumberPayment >= 1) {
+    const objPaymentRowNumber =
+      paymentArray.findIndex(payment => payment.paymentId === paymentId);
+    if (objPaymentRowNumber !== -1) {
 
       // Show payment Id
       document.querySelector('.select-payment-paymentId').value =
-        paymentArray[objectNumberPayment].paymentId;
+        paymentArray[objPaymentRowNumber].paymentId;
 
       // show selected account Id
-      const accountId = paymentArray[objectNumberPayment].accountId;
+      const accountId = paymentArray[objPaymentRowNumber].accountId;
       objPayment.selectAccountId(accountId, 'payment-accountId')
 
       /*
       // show selected condo Id
-      const condoId = paymentArray[objectNumberPayment].condoId;
+      const condoId = paymentArray[objPaymentRowNumber].condoId;
       objPayment.selectAccountId(condoId, 'payment-condoId')
       */
 
       // show amount
       document.querySelector('.input-payment-amount').value =
-        formatFromOreToKroner(paymentArray[objectNumberPayment].amount);
+        formatOreToKroner(paymentArray[objPaymentRowNumber].amount);
 
       // kilowatt/hour
       document.querySelector('.input-payment-numberKWHour').value =
-        formatFromOreToKroner(paymentArray[objectNumberPayment].numberKWHour);
+        formatOreToKroner(paymentArray[objPaymentRowNumber].numberKWHour);
 
       // payment date
       document.querySelector('.input-payment-date').value =
-        convertToEurDateFormat(paymentArray[objectNumberPayment].date);
+        convertToEurDateFormat(paymentArray[objPaymentRowNumber].date);
 
       // payment text
       document.querySelector('.input-payment-text').value =
-        paymentArray[objectNumberPayment].text;
+        paymentArray[objPaymentRowNumber].text;
     }
   }
 }
@@ -430,14 +435,16 @@ function deletePaymentRow() {
   if (paymentId > 0) {
 
     // Check if payment exist
-    const objectNumberPayment = paymentArray.findIndex(payment => payment.paymentId === paymentId);
-    if (objectNumberPayment >= 0) {
+    const objPaymentRowNumber =
+      paymentArray.findIndex(payment => payment.paymentId === paymentId);
+    if (objPaymentRowNumber !== -1) {
 
       // Delete table
-      SQLquery = `
-        DELETE FROM payment
-        WHERE paymentId = ${paymentId};
-      `;
+      SQLquery =
+        `
+          DELETE FROM payment
+          WHERE paymentId = ${paymentId};
+        `;
     }
     // Client sends a request to the server
     socket.send(SQLquery);
@@ -562,7 +569,7 @@ function showPayments() {
           </div>
         `;
       const amount =
-        formatFromOreToKroner(payment.amount);
+        formatOreToKroner(payment.amount);
       htmlColumnAmount +=
         `
           <div class="rightCell">
@@ -605,7 +612,7 @@ function showPayments() {
       <div class="sumCellRight">
     `;
   htmlColumnAmount +=
-    formatFromOreToKroner(String(sumColumnAmount));
+    formatOreToKroner(String(sumColumnAmount));
   htmlColumnAmount +=
     `
       </div>

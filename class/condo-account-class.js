@@ -93,8 +93,9 @@ class Account extends Condos {
     if (isClassDefined(className)) {
 
       accountId =
-        Number(document.querySelector(`.select-${className}`).value);
-      accountId = (accountId === 0) ? accountArray.at(-1).accountId : accountId;
+        Number(document.querySelector(`.${className}`).value);
+      accountId =
+       (accountId === 0) ? accountArray.at(-1).accountId : accountId;
     } else {
 
       // Get last id in last object in account array

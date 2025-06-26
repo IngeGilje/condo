@@ -114,9 +114,10 @@ class Condo extends Condos {
   getCondoName(condoId) {
 
     let condoName;
-    const objectNumberCondo = condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objectNumberCondo > 0) {
-        condoName = condoArray[objectNumberCondo].name;
+    const objCondoRowNumber =
+     condoArray.findIndex(condo => condo.condoId === condoId);
+    if (objCondoRowNumber !== -1) {
+        condoName = condoArray[objCondoRowNumber].name;
     } else {
       condoName = "-";
     }

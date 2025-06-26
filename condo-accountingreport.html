@@ -3,7 +3,7 @@
 
 <head>
 
-  <title>Betaling</title>
+  <title>Regnskapsrapport</title>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,36 +14,28 @@
 <body>
   <!-- Grid consist of 10 columns -->
   <div class="div-main">
-    <div class="div-grid-overview">
+    <div class="div-grid-accountingreport">
 
       <div class="div-menu"></div>
-      <div class="div-overview-condoId"></div>
-      <!--due columns-->
-      <div class="div-overview-columnDueCondoName"></div>
-      <div class="div-overview-columnDueDate"></div>
-      <div class="div-overview-columnDueAmount"></div>
-      <div class="div-overview-columnDueText"></div>
-      <!--Income columns-->
-      <div class="div-overview-columnIncomeCondoName"></div>
-      <div class="div-overview-columnIncomeDate"></div>
-      <div class="div-overview-columnIncomeAmount"></div>
-      <div class="div-overview-columnIncomeText"></div>
+      <div class="div-accountingreport-fromDate"></div>
+      <div class="div-accountingreport-columnAccountName"></div>
+      <div class="div-accountingreport-columnBankAccountMovementAmount"></div>
+      <div class="div-accountingreport-columnBudgetAmount"></div>
+      <div class="div-accountingreport-columnDeviation"></div>
 
-      <div class="div-overview-fromDate"></div>
+      <div class="div-accountingreport-toDate"></div>
 
-      <div class="div-overview-toDate"></div>
-
-      <div class="div-overview-search"></div>
+      <div class="div-accountingreport-search"></div>
     </div>
   </div>
 
   <script src="class/condo-class.js"></script>
   <script src="class/condo-user-class.js"></script>
-  <script src="class/condo-income-class.js"></script>
-  <script src="class/condo-due-class.js"></script>
-  <script src="class/condo-condo-class.js"></script>
-  <script src="class/condo-overview-class.js"></script>
-  <script src="scripts/condo-overview.js"></script>
+  <script src="class/condo-budget-class.js"></script>
+   <script src="class/condo-account-class.js"></script>
+  <script src="class/condo-bankaccountmovement-class.js"></script>
+  <script src="class/condo-accountingreport-class.js"></script>
+  <script src="scripts/condo-accountingreport.js"></script>
 </body>
 
 </html>

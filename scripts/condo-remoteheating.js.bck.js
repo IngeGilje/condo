@@ -1,11 +1,11 @@
-// Overview of remote heating
+// Overview of payments
 
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 const objAccount = new Account('account');
-const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
+const objPayment = new Payment('payments');
 const objRemoteheating = new Remoteheating('remoteheating');
 
 testMode();
@@ -28,11 +28,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   socket.onopen = () => {
 
     // Sends a request to the server to get all users
-    const SQLquery =
-      `
-        SELECT * FROM user
-        ORDER BY userId;
-      `;
+    const SQLquery = `
+    SELECT * FROM user
+    ORDER BY userId;
+  `;
     socket.send(SQLquery);
   };
 
@@ -50,11 +49,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       userArray = JSON.parse(message);
 
       // Sends a request to the server to get all condos
-      const SQLquery =
-        `
-          SELECT * FROM condo
-          ORDER BY name;
-        `;
+      const SQLquery = `
+      SELECT * FROM condo
+      ORDER BY name;
+    `;
       socket.send(SQLquery);
     }
 
@@ -85,24 +83,22 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with account information
       accountArray = JSON.parse(message);
 
-      // Sends a request to the server to get all account moveents
-      const SQLquery =
-        `
-          SELECT * FROM bankaccountmovement
-          ORDER BY bankAccountMovementId;
-        `;
+      // Sends a request to the server to get all payments
+      const SQLquery = `
+      SELECT * FROM payment
+      ORDER BY paymentId;
+    `;
       socket.send(SQLquery);
     }
 
-    // Create bankaccountmovement array including objets
-    if (message.includes('"tableName":"bankaccountmovement"')) {
+    // Create payment array including objets
+    if (message.includes('"tableName":"payment"')) {
 
-      // bank account movement table
-      console.log('bankaccountmovementTable');
+      // payment table
+      console.log('paymentTable');
 
-      // array including objects with bank account movement information
-      bankAccountMovementArray =
-       JSON.parse(message);
+      // array including objects with payment information
+      paymentArray = JSON.parse(message);
 
       // Show leading text
       const condoId =
@@ -120,10 +116,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
+      //objPayment.getPayments(socket);
       const SQLquery =
         `
-          SELECT * FROM bankaccountmovement
-          ORDER BY bankAccountMovementId;
+          SELECT * FROM payment
+          ORDER BY paymentId;
         `;
       socket.send(SQLquery);
     }
@@ -167,7 +164,7 @@ function createEvents() {
   });
 }
 
-// Show leading text for bankaccountmovement
+// Show leading text for payment
 function showLeadingText(condoId) {
 
   // Show all condos
@@ -193,7 +190,7 @@ function showLeadingText(condoId) {
   objRemoteheating.showButton('remoteheating-search', 'Start søk');
 }
 
-// Show values for bankaccountmovement
+// Show values for payment
 function showValues() {
 
   // check for valid filter
@@ -214,7 +211,7 @@ function showValues() {
     let sumColumnAmount = 0;
     let sumColumnNumberKWHour = 0;
 
-    // Header bankaccountmovement
+    // Header payment
     let htmlColumnDate =
       '<div class="columnHeaderRight">Betalings dato</div><br>';
     let htmlColumnAmount =
@@ -229,11 +226,11 @@ function showValues() {
     // Make all columns
     let rowNumber =
       0;
-    bankAccountMovementArray.forEach((bankaccountmovement) => {
-      if (bankaccountmovement.bankAccountMovementId > 1) {
-        if (Number(bankaccountmovement.date) >= fromDate && Number(bankaccountmovement.date) <= toDate) {
-          if (bankaccountmovement.condoId === condoId || condoId === 999999999) {
-            if (bankaccountmovement.accountId === accountId || accountId === 999999999) {
+    paymentArray.forEach((payment) => {
+      if (payment.paymentId > 1) {
+        if (Number(payment.date) >= fromDate && Number(payment.date) <= toDate) {
+          if (payment.condoId === condoId || condoId === 999999999) {
+            if (payment.accountId === accountId || accountId === 999999999) {
 
               rowNumber++;
 
@@ -243,7 +240,7 @@ function showValues() {
 
               // date
               const date =
-                convertToEurDateFormat(bankaccountmovement.date);
+                convertToEurDateFormat(payment.date);
               htmlColumnDate +=
                 `
                   <div 
@@ -255,7 +252,7 @@ function showValues() {
 
               // amount
               let amount =
-                formatOreToKroner(bankaccountmovement.amount);
+                formatOreToKroner(payment.amount);
               htmlColumnAmount +=
                 `
                   <div 
@@ -267,7 +264,7 @@ function showValues() {
 
               // Number of kw/h
               let numberKWHour =
-                formatOreToKroner(bankaccountmovement.numberKWHour);
+                formatOreToKroner(payment.numberKWHour);
               htmlColumnNumberKWHour +=
                 `
                   <div 
@@ -279,9 +276,9 @@ function showValues() {
 
               // Price per KWHour
               amount =
-                Number(bankaccountmovement.amount);
+                Number(payment.amount);
               numberKWHour =
-                Number(bankaccountmovement.numberKWHour);
+                Number(payment.numberKWHour);
               if (amount && numberKWHour) {
                 priceKWHour =
                   formatOreToKroner(String(amount / numberKWHour) * 100);
@@ -299,7 +296,7 @@ function showValues() {
 
               // Text
               const text =
-                truncateText(bankaccountmovement.text, 'div-remoteheating-columnText');
+                truncateText(payment.text, 'div-remoteheating-columnText');
 
               htmlColumnText +=
                 `
@@ -312,10 +309,10 @@ function showValues() {
 
               // Accomulate
               // amount
-              sumColumnAmount += Number(bankaccountmovement.amount);
+              sumColumnAmount += Number(payment.amount);
 
               // KWHour
-              sumColumnNumberKWHour += Number(bankaccountmovement.numberKWHour);
+              sumColumnNumberKWHour += Number(payment.numberKWHour);
             }
           }
         }

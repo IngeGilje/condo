@@ -92,7 +92,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       userArray = JSON.parse(message);
 
       // Show leading texts
-      let userId = objUser.getSelectedUserId('select-user-userId');
+      let userId =
+       objUser.getSelectedUserId('select-user-userId');
       showLeadingText(userId);
 
       // Show all values for all user
@@ -106,15 +107,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
 
       // Sends a request to the server to get all users
-      const SQLquery = `
-    SELECT * FROM user
-        ORDER BY userId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM user
+          ORDER BY userId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -140,7 +142,8 @@ function createEvents() {
     if (event.target.classList.contains('select-user-userId')) {
 
       let userId = Number(document.querySelector('.select-user-userId').value);
-      userId = (userId !== 0) ? userId : userArray.at(-1).userId;
+      userId =
+        (userId !== 0) ? userId : userArray.at(-1).userId;
       if (userId) {
         showValues(userId);
       }
@@ -250,10 +253,11 @@ function updateUser(userId) {
     const now = new Date();
     const lastUpdate = now.toISOString();
 
-    const objectNumberUser = userArray.findIndex(user => user.userId === userId);
+    const objUserRowNumber =
+      userArray.findIndex(user => user.userId === userId);
 
     // Check if object exist
-    if (objectNumberUser >= 0) {
+    if (objUserRowNumber !== -1) {
 
       // Update table
       SQLquery =
@@ -329,8 +333,9 @@ function deleteUserRow(userId) {
   if (userId > 1) {
 
     // Check if user exist
-    const objectNumberUser = userArray.findIndex(user => user.userId === userId);
-    if (objectNumberUser >= 0) {
+    const objUserRowNumber =
+      userArray.findIndex(user => user.userId === userId);
+    if (objUserRowNumber !== -1) {
 
       // Delete table
       SQLquery = `
@@ -358,10 +363,6 @@ function showLeadingText(userId) {
 
   // Show all users
   objUser.showAllUsers('user-userId', userId);
-
-  // Show all condominiums
-  //const condominiumId = condominiumArray.at(-1).condominiumId;
-  //objCondominium.showAllCondominiums('user-condominiumId', condominiumId);
 
   // email
   objUser.showInput('user-email', '* E-mail(Bruker)', 50, '');
@@ -407,40 +408,37 @@ function showValues(userId) {
   if (userId > 1) {
 
     // find object number for selected user Id 
-    const objectNumberUser = userArray.findIndex(user => user.userId === userId);
-    if (objectNumberUser >= 0) {
+    const objUserRowNumber =
+      userArray.findIndex(user => user.userId === userId);
+    if (objUserRowNumber !== -1) {
 
       // Show email
       document.querySelector('.input-user-email').value =
-        userArray[objectNumberUser].email;
-
-      // Select condominiumId
-      //document.querySelector('.select-user-condominiumId').value =
-      //  userArray[objectNumberUser].condominiumId;
+        userArray[objUserRowNumber].email;
 
       // Select condoId
       document.querySelector('.select-user-condoId').value =
-        userArray[objectNumberUser].condoId;
+        userArray[objUserRowNumber].condoId;
 
       // first name
       document.querySelector('.input-user-firstName').value =
-        userArray[objectNumberUser].firstName;
+        userArray[objUserRowNumber].firstName;
 
       // last name
       document.querySelector('.input-user-lastName').value =
-        userArray[objectNumberUser].lastName;
+        userArray[objUserRowNumber].lastName;
 
       // Show phone number
       document.querySelector('.input-user-phone').value =
-        userArray[objectNumberUser].phone;
+        userArray[objUserRowNumber].phone;
 
       // show securityLevel
       document.querySelector('.select-user-securityLevel').value =
-        userArray[objectNumberUser].securityLevel;
+        userArray[objUserRowNumber].securityLevel;
 
       // password
       document.querySelector('.input-user-password').value =
-        userArray[objectNumberUser].password;
+        userArray[objUserRowNumber].password;
     }
   }
 }

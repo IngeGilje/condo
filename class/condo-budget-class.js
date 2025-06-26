@@ -7,24 +7,25 @@ class Budget extends Condos {
   // Show all budgets
   showAllBudgets(columnName, budgetId) {
 
-    let html = `
-    <form 
-      id ="Budget"
-      action="/submit" 
-      method="POST"
-    >
-      <label 
-        class="label-budget-${columnName} 
-        label-budget-${columnName}"
-        for="Budget"
-        id ="Budget"
-      >
-        Velg budsjett
-      </label>
-      <select 
-        class="select-budget-${columnName}"
-        id ="Budget" 
-      >
+    let html = 
+      `
+        <form 
+          id ="Budget"
+          action="/submit" 
+          method="POST"
+        >
+          <label 
+            class="label-budget-${columnName} 
+            label-budget-${columnName}"
+            for="Budget"
+            id ="Budget"
+          >
+            Velg budsjett
+          </label>
+          <select 
+            class="select-budget-${columnName}"
+            id ="Budget" 
+          >
     `;
 
     // Check if budget array is empty
@@ -59,7 +60,7 @@ class Budget extends Condos {
         <option value="0" 
           selected
         >
-          Ingen budsjet
+          Ingen budsjett
         </option>
       `;
     }

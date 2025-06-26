@@ -69,7 +69,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     `;
       socket.send(SQLquery);
     }
-    
+
     // Create condo array including objets
     if (message.includes('"tableName":"condo"')) {
 
@@ -113,7 +113,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with due information
       dueArray = JSON.parse(message);
 
-      const dueId = objDue.getSelectedDueId('dueId');
+      const dueId =
+       objDue.getSelectedDueId('dueId');
 
       // Show leading text
       showLeadingText(dueId);
@@ -136,15 +137,15 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
 
       const SQLquery =
         `
-        SELECT * FROM due
-        ORDER BY dueId;
-      `;
+          SELECT * FROM due
+          ORDER BY dueId;
+        `;
       socket.send(SQLquery);
     }
   };
@@ -260,12 +261,13 @@ function updateDueRow(dueId) {
     let SQLquery = "";
 
     // Check if due Id exist
-    const objectNumberDue = dueArray.findIndex(due => due.dueId === dueId);
-    if (objectNumberDue >= 0) {
+    const objDueRowNumber =
+      dueArray.findIndex(due => due.dueId === dueId);
+    if (objDueRowNumber !== -1) {
 
       SQLquery =
         `
-        UPDATE due
+          UPDATE due
           SET 
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
@@ -429,7 +431,7 @@ function findDueId(condoId, accountId, amount, date) {
 
   let dueId = 0
   dueArray.forEach((due) => {
-    due.due = formatFromOreToKroner(due.due);
+    due.due = formatOreToKroner(due.due);
     if (due.dueId > 1
       && due.due === amount
       && due.date === date
@@ -451,35 +453,36 @@ function showValues(dueId) {
   if (dueId > 1) {
 
     // Check if due Id exist
-    const objectNumberDue = dueArray.findIndex(due => due.dueId === dueId);
-    if (objectNumberDue >= 0) {
+    const objDueRowNumber =
+      dueArray.findIndex(due => due.dueId === dueId);
+    if (objDueRowNumber !== -1) {
 
       // Show due id
       document.querySelector('.select-due-dueId').value =
-        dueArray[objectNumberDue].dueId;
+        dueArray[objDueRowNumber].dueId;
 
       // Show condo id
       const condoId =
-        dueArray[objectNumberDue].condoId;
+        dueArray[objDueRowNumber].condoId;
       objDue.selectCondoId(condoId, 'due-condoId');
 
       // Show account id
       const accountId =
-        dueArray[objectNumberDue].accountId;
+        dueArray[objDueRowNumber].accountId;
       objDue.selectAccountId(accountId, 'due-accountId');
 
       // Show due date
-      const dueDate = convertToEurDateFormat(dueArray[objectNumberDue].date);
+      const dueDate = convertToEurDateFormat(dueArray[objDueRowNumber].date);
       document.querySelector('.input-due-date').value =
         dueDate;
 
       // Show amount
       document.querySelector('.input-due-amount').value =
-        formatFromOreToKroner(dueArray[objectNumberDue].amount);
+        formatOreToKroner(dueArray[objDueRowNumber].amount);
 
       // Show text
       document.querySelector('.input-due-text').value =
-        dueArray[objectNumberDue].text;
+        dueArray[objDueRowNumber].text;
     }
   }
 }

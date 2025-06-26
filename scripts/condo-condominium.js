@@ -114,7 +114,8 @@ socket.onmessage = (event) => {
     // array including objects with condominium information
     condominiumArray = JSON.parse(message);
 
-    const condominiumId = objCondominium.getSelectedCondominiumId('condominiumId');
+    const condominiumId =
+     objCondominium.getSelectedCondominiumId('condominiumId');
 
     // Show leading text
     showLeadingText(condominiumId);
@@ -130,15 +131,16 @@ socket.onmessage = (event) => {
   }
 
   // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+  if (message.includes('"affectedRows"')) {
 
     console.log('affectedRows');
 
     // Sends a request to the server to get all condos
-    const SQLquery = `
-      SELECT * FROM condominium
-      ORDER BY condominiumId;
-    `;
+    const SQLquery =
+      `
+        SELECT * FROM condominium
+        ORDER BY condominiumId;
+      `;
     socket.send(SQLquery);
   }
 };
@@ -243,8 +245,9 @@ function updateCondominium(condominiumId) {
     const lastUpdate = now.toISOString();
 
     // Check if condominium id exist
-    const objectNumberCondominium = condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (objectNumberCondominium >= 0) {
+    const objCondominimuRowNumber =
+      condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+    if (objCondominimuRowNumber !== -1) {
 
       // Update condominium table
       SQLquery = `
@@ -344,7 +347,7 @@ function showLeadingText(condominiumId) {
 
   // import path
   objCondominium.showInput('condominium-importPath', '* Sti for filimport', 50, '');
-  
+
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
     objCondominium.showButton('condominium-update', 'Oppdater');
@@ -367,48 +370,49 @@ function showValues(condominiumId) {
   if (condominiumId > 1) {
 
     // find object number for selected condominium id
-    const objectNumberCondominium = condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (objectNumberCondominium >= 0) {
+    const objCondominimuRowNumber =
+      condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+    if (objCondominimuRowNumber !== -1) {
 
       // Condominium id
       document.querySelector('.select-condominium-condominiumId').value =
-        condominiumArray[objectNumberCondominium].condominiumId;
+        condominiumArray[objCondominimuRowNumber].condominiumId;
 
       // Condominium name
       document.querySelector('.input-condominium-name').value =
-        condominiumArray[objectNumberCondominium].name;
+        condominiumArray[objCondominimuRowNumber].name;
 
       // Show street
       document.querySelector('.input-condominium-street').value =
-        condominiumArray[objectNumberCondominium].street;
+        condominiumArray[objCondominimuRowNumber].street;
 
       // Show address 2
       document.querySelector('.input-condominium-address2').value =
-        condominiumArray[objectNumberCondominium].address2;
+        condominiumArray[objCondominimuRowNumber].address2;
 
       // Show postal code
       document.querySelector('.input-condominium-postalCode').value =
-        condominiumArray[objectNumberCondominium].postalCode;
+        condominiumArray[objCondominimuRowNumber].postalCode;
 
       // Show city
       document.querySelector('.input-condominium-city').value =
-        condominiumArray[objectNumberCondominium].city;
+        condominiumArray[objCondominimuRowNumber].city;
 
       // Show phone
       document.querySelector('.input-condominium-phone').value =
-        condominiumArray[objectNumberCondominium].phone;
+        condominiumArray[objCondominimuRowNumber].phone;
 
       // Show email
       document.querySelector('.input-condominium-email').value =
-        condominiumArray[objectNumberCondominium].email;
+        condominiumArray[objCondominimuRowNumber].email;
 
       // Show organization number
       document.querySelector('.input-condominium-organizationNumber').value =
-        condominiumArray[objectNumberCondominium].organizationNumber;
+        condominiumArray[objCondominimuRowNumber].organizationNumber;
 
       // Show file import path
       document.querySelector('.input-condominium-importPath').value =
-       condominiumArray[objectNumberCondominium].importPath;
+        condominiumArray[objCondominimuRowNumber].importPath;
     }
   }
 }
@@ -474,8 +478,9 @@ function deleteCondominiumRow() {
   if (condominiumId > 1) {
 
     // Check if condominium exist
-    const objectNumberCondominium = condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (objectNumberCondominium >= 0) {
+    const objCondominimuRowNumber =
+      condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+    if (objCondominimuRowNumber !== -1) {
 
       // Delete table
       SQLquery = `

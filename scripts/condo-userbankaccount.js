@@ -99,7 +99,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
 
@@ -133,7 +133,8 @@ function createEvents() {
     if (event.target.classList.contains('select-userbankaccount-userBankAccountId')) {
 
       let userBankAccountId = Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
-      userBankAccountId = (userBankAccountId !== 0) ? userBankAccountId : userBankAccountArray.at(-1).userBankAccountId;
+      userBankAccountId =
+        (userBankAccountId !== 0) ? userBankAccountId : userBankAccountArray.at(-1).userBankAccountId;
       if (userBankAccountId) {
         showValues(userBankAccountId);
       }
@@ -216,10 +217,11 @@ function updateUserBankAccount() {
     const now = new Date();
     const lastUpdate = now.toISOString();
 
-    const objectNumberUserBankAccount = userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const objBankAccountRowNumber =
+      userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
     // Check if user bank account exist
-    if (objectNumberUserBankAccount >= 0) {
+    if (objBankAccountRowNumber !== -1) {
 
       // Update table
       SQLquery =
@@ -282,11 +284,13 @@ function showLeadingText(userBankAccountId) {
   objUserBankAccount.showAllUserBankAccounts('userbankaccount-userBankAccountId', userBankAccountId);
 
   // Show all users
-  const userId = userArray.at(-1).userId;
+  const userId =
+   userArray.at(-1).userId;
   objUser.showAllUsers('userbankaccount-userId', userBankAccountId);
 
   // Show all accounts
-  const accountId = accountArray.at(-1).accountId;
+  const accountId =
+   accountArray.at(-1).accountId;
   objAccount.showAllAccounts('userbankaccount-accountId', accountId);
 
   // name
@@ -317,24 +321,25 @@ function showValues(userBankAccountId) {
   if (userBankAccountId > 1) {
 
     // find object number for selected user bank accountId
-    const objectNumberUserBankAccount = userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
-    if (objectNumberUserBankAccount >= 0) {
+    const objBankAccountRowNumber =
+      userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    if (objBankAccountRowNumber !== -1) {
 
       // Select userId
       document.querySelector('.select-userbankaccount-userId').value =
-        userBankAccountArray[objectNumberUserBankAccount].userId;
+        userBankAccountArray[objBankAccountRowNumber].userId;
 
       // Select accountId
       document.querySelector('.select-userbankaccount-accountId').value =
-        userBankAccountArray[objectNumberUserBankAccount].accountId;
+        userBankAccountArray[objBankAccountRowNumber].accountId;
 
       // Show bank account name
       document.querySelector('.input-userbankaccount-name').value =
-        userBankAccountArray[objectNumberUserBankAccount].name;
+        userBankAccountArray[objBankAccountRowNumber].name;
 
       // Show bank account
       document.querySelector('.input-userbankaccount-bankAccount').value =
-        userBankAccountArray[objectNumberUserBankAccount].bankAccount;
+        userBankAccountArray[objBankAccountRowNumber].bankAccount;
     }
   }
 }

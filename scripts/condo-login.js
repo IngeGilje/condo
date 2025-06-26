@@ -45,7 +45,7 @@ socket.onmessage = (event) => {
   }
 
   // Check for update, delete ...
-  if (message.includes('"affectedRows":1')) {
+  if (message.includes('"affectedRows"')) {
 
     console.log('affectedRows');
   }
@@ -66,7 +66,7 @@ socket.onclose = () => {
 function createEvents() {
 
   console.log('createEvents');
-  
+
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-link')) {
 
@@ -77,14 +77,15 @@ function createEvents() {
         document.querySelector('.input-password').value;
 
       // Security level
-      const objectNumberUser = userArray.findIndex(userRow => userRow.email === email);
-      if (objectNumberUser >= 0) {
+      const objUserRowNumber =
+        userArray.findIndex(userRow => userRow.email === email);
+      if (objUserRowNumber !== -1) {
 
         const securityLevel =
-          userArray[objectNumberUser].securityLevel;
+          userArray[objUserRowNumber].securityLevel;
 
         const condominiumId =
-          userArray[objectNumberUser].condominiumId;
+          userArray[objUserRowNumber].condominiumId;
 
         // Save email/user, password and security level
         localStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));

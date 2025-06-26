@@ -74,9 +74,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       console.log('bankaccountTable');
 
       // array including objects with bankaccount information
-      bankAccountArray = JSON.parse(message);
+      bankAccountArray =
+       JSON.parse(message);
 
-      const bankAccountId = objBankAccount.getSelectedBankAccountId('bankAccountId');
+      const bankAccountId =
+       objBankAccount.getSelectedBankAccountId('bankAccountId');
 
       // Show leading text
       showLeadingText(bankAccountId);
@@ -92,15 +94,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
 
       // Sends a request to the server to get all bank accounts
-      const SQLquery = `
-        SELECT * FROM bankaccount
-        ORDER BY bankAccountId;
-      `;
+      const SQLquery =
+        `
+          SELECT * FROM bankaccount
+          ORDER BY bankAccountId;
+        `;
       socket.send(SQLquery);
     }
   };
@@ -122,9 +125,10 @@ function createEvents() {
   // Select BankAccount
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-bankaccount-bankAccountId')) {
-      
+
       let bankAccountId = Number(document.querySelector('.select-bankaccount-bankAccountId').value);
-      bankAccountId = (bankAccountId !== 0) ? bankAccountId : bankAccountArray.at(-1).bankAccountId;
+      bankAccountId =
+        (bankAccountId !== 0) ? bankAccountId : bankAccountArray.at(-1).bankAccountId;
       if (bankAccountId) {
         showValues(bankAccountId);
       }
@@ -209,10 +213,11 @@ function updateBankAccount() {
       const now = new Date();
       const lastUpdate = now.toISOString();
 
-      const objectbankAccountId = bankAccountArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
+      const objAccountRowNumber =
+        bankAccountArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
 
       // Check if bank account number exist
-      if (objectbankAccountId >= 0) {
+      if (objAccountRowNumber !== -1) {
 
         // Update table
         SQLquery = `
@@ -280,8 +285,9 @@ function deleteAccountRow() {
   if (bankAccountId > 1) {
 
     // Check if bank account exist
-    const objectbankAccountId = bankAccountArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
-    if (objectbankAccountId >= 0) {
+    const objAccountRowNumber =
+      bankAccountArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
+    if (objAccountRowNumber !== -1) {
 
       // Delete table
       SQLquery = `
@@ -348,36 +354,38 @@ function showValues(bankAccountId) {
   if (bankAccountId > 1) {
 
     // find object number for selected account 
-    const objectbankAccountId = bankAccountArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
-    if (objectbankAccountId >= 0) {
+    const objAccountRowNumber =
+      bankAccountArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
+    if (objAccountRowNumber !== -1) {
 
       // Select bank account
-      const bankAccountId = bankAccountArray[objectbankAccountId].bankAccountId;
+      const bankAccountId =
+        bankAccountArray[objAccountRowNumber].bankAccountId;
       objBankAccount.selectBankAccountId(bankAccountId, 'bankaccount-bankAccountId');
 
       // account name
       document.querySelector('.input-bankaccount-name').value =
-        bankAccountArray[objectbankAccountId].name;
+        bankAccountArray[objAccountRowNumber].name;
 
       // account number
       document.querySelector('.input-bankaccount-bankAccount').value =
-        bankAccountArray[objectbankAccountId].bankAccount;
+        bankAccountArray[objAccountRowNumber].bankAccount;
 
       // opening balance date
       document.querySelector('.input-bankaccount-openingBalanceDate').value =
-        convertToEurDateFormat(bankAccountArray[objectbankAccountId].openingBalanceDate);
+        convertToEurDateFormat(bankAccountArray[objAccountRowNumber].openingBalanceDate);
 
       // opening balance
       document.querySelector('.input-bankaccount-openingBalance').value =
-        formatFromOreToKroner(bankAccountArray[objectbankAccountId].openingBalance);
+        formatOreToKroner(bankAccountArray[objAccountRowNumber].openingBalance);
 
       // closing balance date
       document.querySelector('.input-bankaccount-closingBalanceDate').value =
-        convertToEurDateFormat(bankAccountArray[objectbankAccountId].closingBalanceDate);
+        convertToEurDateFormat(bankAccountArray[objAccountRowNumber].closingBalanceDate);
 
       // closing balance
       document.querySelector('.input-bankaccount-closingBalance').value =
-        formatFromOreToKroner(bankAccountArray[objectbankAccountId].closingBalance);
+        formatOreToKroner(bankAccountArray[objAccountRowNumber].closingBalance);
     }
   }
 }
@@ -387,13 +395,13 @@ function validateValues() {
 
   // Check bank account number
   const bankAccount =
-   document.querySelector('.input-bankaccount-bankAccount').value;
+    document.querySelector('.input-bankaccount-bankAccount').value;
   const validBankAccount =
-   objBankAccount.validateBankAccount(bankAccount, "label-bankaccount-bankAccount", "Bankkontonummer");
+    objBankAccount.validateBankAccount(bankAccount, "label-bankaccount-bankAccount", "Bankkontonummer");
 
   // Check bankaccount Name
-  const bankAccountName = 
-  document.querySelector('.input-bankaccount-name').value;
+  const bankAccountName =
+    document.querySelector('.input-bankaccount-name').value;
   const validName = objBankAccount.validateText(bankAccountName, "label-bankaccount-name", "Kontonavn");
 
   return (validName && validBankAccount) ? true : false;

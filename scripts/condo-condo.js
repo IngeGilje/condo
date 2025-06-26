@@ -65,7 +65,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       condoArray.sort((a, b) => a.name.localeCompare(b.name));
 
       // Find selected condo id
-      const condoId = objCondo.getSelectedCondoId('condoId');
+      const condoId =
+       objCondo.getSelectedCondoId('condoId');
 
       // Show leading text
       showLeadingText(condoId);
@@ -81,16 +82,17 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
 
       // Sends a request to the server to get all condos
       //objCondo.getCondos(socket);
-      const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY condoId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM condo
+          ORDER BY condoId;
+        `;
       socket.send(SQLquery);
     }
   };
@@ -122,7 +124,8 @@ function condoEvents() {
 
     if (event.target.classList.contains('button-condo-update')) {
 
-      const condoId = Number(document.querySelector('.select-condo-condoId').value);
+      const condoId =
+        Number(document.querySelector('.select-condo-condoId').value);
       updateCondoRow(condoId);
     }
   });
@@ -190,9 +193,9 @@ function updateCondoRow(condoId) {
       now.toISOString();
 
     // Check if condo id exist
-    const objectNumberCondo =
+    const objCondoRowNumber =
       condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objectNumberCondo >= 0) {
+    if (objCondoRowNumber !== -1) {
 
       // Update condo table
       SQLquery = `
@@ -293,41 +296,43 @@ function showValues(condoId) {
   if (condoId > 1) {
 
     // find object number for selected condo id
-    const objectNumberCondo = condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objectNumberCondo >= 0) {
+    const objCondoRowNumber =
+      condoArray.findIndex(condo => condo.condoId === condoId);
+    if (objCondoRowNumber !== -1) {
 
       // Condo id
-      const condoId = condoArray[objectNumberCondo].condoId;
+      const condoId =
+        condoArray[objCondoRowNumber].condoId;
       objCondo.selectCondoId(condoId, 'condo-condoId')
 
       // Condo name
       document.querySelector('.input-condo-name').value =
-        condoArray[objectNumberCondo].name;
+        condoArray[objCondoRowNumber].name;
 
       // Show street
       document.querySelector('.input-condo-street').value =
-        condoArray[objectNumberCondo].street;
+        condoArray[objCondoRowNumber].street;
 
       // Show address 2
       document.querySelector('.input-condo-address2').value =
-        condoArray[objectNumberCondo].address2;
+        condoArray[objCondoRowNumber].address2;
 
       // Show postal code
       document.querySelector('.input-condo-postalCode').value =
-        condoArray[objectNumberCondo].postalCode;
+        condoArray[objCondoRowNumber].postalCode;
 
       // Show city
       document.querySelector('.input-condo-city').value =
-        condoArray[objectNumberCondo].city;
+        condoArray[objCondoRowNumber].city;
 
       /*
       // Show phone number
       document.querySelector('.input-condo-phone').value =
-        condoArray[objectNumberCondo].phone;
+        condoArray[objCondoRowNumber].phone;
 
       // Show email
       document.querySelector('.input-condo-email').value =
-        condoArray[objectNumberCondo].email;
+        condoArray[objCondoRowNumber].email;
       */
     }
   }
@@ -371,13 +376,13 @@ function deleteCondoRow() {
   let SQLquery = "";
 
   // Check for valid condo Id
-
   const condoId = Number(document.querySelector('.select-condo-condoId').value);
   if (condoId > 1) {
 
     // Check if condo exist
-    const objectNumberCondo = condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objectNumberCondo >= 0) {
+    const objCondoRowNumber =
+      condoArray.findIndex(condo => condo.condoId === condoId);
+    if (objCondoRowNumber !== -1) {
 
       // Delete table
       SQLquery = `
@@ -403,10 +408,10 @@ function deleteCondoRow() {
 function validateValues() {
 
   // Check condo name
-  const condoName = 
-  document.querySelector('.input-condo-name').value;
-  const validCondoName = 
-  objCondo.validateText(condoName, "label-condo-name", "Navn");
+  const condoName =
+    document.querySelector('.input-condo-name').value;
+  const validCondoName =
+    objCondo.validateText(condoName, "label-condo-name", "Navn");
 
   // Check street name
   const street = document.querySelector('.input-condo-street').value;

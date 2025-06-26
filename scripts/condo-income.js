@@ -114,7 +114,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with income information
       incomeArray = JSON.parse(message);
 
-      const incomeId = objIncome.getSelectedIncomeId('income-incomeId');
+      const incomeId =
+       objIncome.getSelectedIncomeId('income-incomeId');
 
       // Show leading text
       showLeadingText(incomeId);
@@ -134,7 +135,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
 
@@ -265,15 +266,16 @@ function updateIncomeRow() {
       document.querySelector('.input-income-text').value;
 
     // Check if income exist
-    const objectNumberIncome = incomeArray.findIndex(income => income.incomeId === incomeId);
-    if (objectNumberIncome > 0) {
+    const objIncomeRowNumber =
+      incomeArray.findIndex(income => income.incomeId === incomeId);
+    if (objIncomeRowNumber !== -1) {
 
       // Find current values for income to update
-      const accountmovementCondoId = incomeArray[objectNumberIncome].condoId;
-      const accountmovementAccountId = incomeArray[objectNumberIncome].accountId;
-      const accountmovementAmount = incomeArray[objectNumberIncome].amount;
-      const accountmovementDate = incomeArray[objectNumberIncome].date;
-      const accountmovementText = incomeArray[objectNumberIncome].text;
+      const accountmovementCondoId = incomeArray[objIncomeRowNumber].condoId;
+      const accountmovementAccountId = incomeArray[objIncomeRowNumber].accountId;
+      const accountmovementAmount = incomeArray[objIncomeRowNumber].amount;
+      const accountmovementDate = incomeArray[objIncomeRowNumber].date;
+      const accountmovementText = incomeArray[objIncomeRowNumber].text;
 
       // Update income table
       SQLquery = `
@@ -401,7 +403,7 @@ function showLeadingText(incomeId) {
 
   // Show all accounts
   const accountId = accountArray.at(-1).accountId;
-  objAccount.showAllAccounts('income-accountId', accountId,'Alle');
+  objAccount.showAllAccounts('income-accountId', accountId, 'Alle');
 
   // Show income date
   objIncome.showInput('income-date', '* Dato', 10, 'dd.mm.åååå');
@@ -435,34 +437,35 @@ function showValues(incomeId) {
   if (incomeId > 1) {
 
     // Find object number in income array
-    const objectNumberIncome = incomeArray.findIndex(income => income.incomeId === incomeId);
-    if (objectNumberIncome >= 0) {
+    const objIncomeRowNumber =
+      incomeArray.findIndex(income => income.incomeId === incomeId);
+    if (objIncomeRowNumber !== -1) {
 
       // Show income Id
       document.querySelector('.select-income-incomeId').value =
-        incomeArray[objectNumberIncome].incomeId;
+        incomeArray[objIncomeRowNumber].incomeId;
 
       // Show condo Id
-      const condoId = incomeArray[objectNumberIncome].condoId;
+      const condoId = incomeArray[objIncomeRowNumber].condoId;
       objIncome.selectCondoId(condoId, 'income-condoId');
 
       // Select account
-      const accountId = incomeArray[objectNumberIncome].accountId;
+      const accountId = incomeArray[objIncomeRowNumber].accountId;
       objIncome.selectAccountId(accountId, 'income-accountId');
 
       // show income
       document.querySelector('.input-income-amount').value =
-        formatFromOreToKroner(incomeArray[objectNumberIncome].amount);
+        formatOreToKroner(incomeArray[objIncomeRowNumber].amount);
 
       // show income date
-      let date = incomeArray[objectNumberIncome].date;
+      let date = incomeArray[objIncomeRowNumber].date;
       const formatedIncomeDate = convertToEurDateFormat(date);
       document.querySelector('.input-income-date').value =
         formatedIncomeDate;
 
       // show income text
       document.querySelector('.input-income-text').value =
-        incomeArray[objectNumberIncome].text;
+        incomeArray[objIncomeRowNumber].text;
     }
   }
 }
@@ -478,14 +481,16 @@ function deleteIncomeRow() {
   if (incomeId > 0) {
 
     // Check if income exist
-    const objectNumberIncome = incomeArray.findIndex(income => income.incomeId === incomeId);
-    if (objectNumberIncome >= 0) {
+    const objIncomeRowNumber =
+      incomeArray.findIndex(income => income.incomeId === incomeId);
+    if (objIncomeRowNumber !== -1) {
 
       // Delete table
-      SQLquery = `
-        DELETE FROM income
-        WHERE incomeId = ${incomeId};
-      `;
+      SQLquery =
+        `
+          DELETE FROM income
+          WHERE incomeId = ${incomeId};
+        `;
     }
     // Client sends a request to the server
     socket.send(SQLquery);
@@ -596,7 +601,7 @@ function showIncome() {
           </div>
         `;
         const amount =
-          formatFromOreToKroner(income.amount);
+          formatOreToKroner(income.amount);
         htmlColumnAmount +=
           `
           <div class="rightCell">
@@ -640,7 +645,7 @@ function showIncome() {
       <div class="sumCellRight">
     `;
   htmlColumnAmount +=
-    formatFromOreToKroner(String(sumColumnAmount));
+    formatOreToKroner(String(sumColumnAmount));
   htmlColumnAmount +=
     `
       </div>

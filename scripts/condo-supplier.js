@@ -81,7 +81,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       supplierArray = JSON.parse(message);
 
       // Show leading texts
-      let supplierId = objSupplier.getSelectedSupplierId('select-supplier-supplierId');
+      let supplierId =
+       objSupplier.getSelectedSupplierId('select-supplier-supplierId');
       showLeadingText(supplierId);
 
       // Show all values for all suppliers
@@ -95,15 +96,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
 
       // Sends a request to the server to get all users
-      const SQLquery = `
-        SELECT * FROM supplier
-        ORDER BY supplierId;
-      `;
+      const SQLquery =
+        `
+          SELECT * FROM supplier
+          ORDER BY supplierId;
+        `;
       socket.send(SQLquery);
     }
   };
@@ -129,7 +131,8 @@ function createEvents() {
     if (event.target.classList.contains('select-supplier-supplierId')) {
 
       let supplierId = Number(document.querySelector('.select-supplier-supplierId').value);
-      supplierId = (supplierId !== 0) ? supplierId : supplierArray.at(-1).supplierId;
+      supplierId =
+        (supplierId !== 0) ? supplierId : supplierArray.at(-1).supplierId;
       if (supplierId) {
         showValues(supplierId);
       }
@@ -232,13 +235,15 @@ function updateSupplier(supplierId) {
     const now = new Date();
     const lastUpdate = now.toISOString();
 
-    const objectNumberSupplier = supplierArray.findIndex(supplier => supplier.supplierId === supplierId);
+    const objUserSupplierNumber =
+      supplierArray.findIndex(supplier => supplier.supplierId === supplierId);
 
     // Check if first name exist
-    if (objectNumberSupplier >= 0) {
+    if (objUserSupplierNumber !== -1) {
 
       // Update table
-      SQLquery = `
+      SQLquery =
+        `
           UPDATE supplier
           SET 
             user = '${objUserPassword.email}',
@@ -314,8 +319,9 @@ function deleteSupplierRow(supplierId) {
   if (supplierId > 1) {
 
     // Check if supplier exist
-    const objectNumberSupplier = supplierArray.findIndex(supplier => supplier.supplierId === supplierId);
-    if (objectNumberSupplier >= 0) {
+    const objUserSupplierNumber =
+      supplierArray.findIndex(supplier => supplier.supplierId === supplierId);
+    if (objUserSupplierNumber !== -1) {
 
       // Delete table
       SQLquery = `
@@ -393,48 +399,49 @@ function showValues(supplierId) {
   if (supplierId > 1) {
 
     // find object number for selected supplier Id 
-    const objectNumberSupplier = supplierArray.findIndex(supplier => supplier.supplierId === supplierId);
-    if (objectNumberSupplier >= 0) {
+    const objUserSupplierNumber =
+      supplierArray.findIndex(supplier => supplier.supplierId === supplierId);
+    if (objUserSupplierNumber !== -1) {
 
       // Select supplier Id
       document.querySelector('.select-supplier-supplierId').value =
-        supplierArray[objectNumberSupplier].supplierId;
+        supplierArray[objUserSupplierNumber].supplierId;
 
       // name
       document.querySelector('.input-supplier-name').value =
-        supplierArray[objectNumberSupplier].name;
+        supplierArray[objUserSupplierNumber].name;
 
       // street
       document.querySelector('.input-supplier-street').value =
-        supplierArray[objectNumberSupplier].street;
+        supplierArray[objUserSupplierNumber].street;
 
       // address 2
       document.querySelector('.input-supplier-address2').value =
-        supplierArray[objectNumberSupplier].address2;
+        supplierArray[objUserSupplierNumber].address2;
 
       // Postal code
       document.querySelector('.input-supplier-postalCode').value =
-        supplierArray[objectNumberSupplier].postalCode;
+        supplierArray[objUserSupplierNumber].postalCode;
 
       // city
       document.querySelector('.input-supplier-city').value =
-        supplierArray[objectNumberSupplier].city;
+        supplierArray[objUserSupplierNumber].city;
 
       // Show email
       document.querySelector('.input-supplier-email').value =
-        supplierArray[objectNumberSupplier].email;
+        supplierArray[objUserSupplierNumber].email;
 
       // Show phone
       document.querySelector('.input-supplier-phone').value =
-        supplierArray[objectNumberSupplier].phone;
+        supplierArray[objUserSupplierNumber].phone;
 
       // Show bankAccount
       document.querySelector('.input-supplier-bankAccount').value =
-        supplierArray[objectNumberSupplier].bankAccount;
+        supplierArray[objUserSupplierNumber].bankAccount;
 
       // Select account Id
       document.querySelector('.select-supplier-accountId').value =
-        supplierArray[objectNumberSupplier].accountId;
+        supplierArray[objUserSupplierNumber].accountId;
 
     }
   }

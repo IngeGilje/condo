@@ -9,7 +9,7 @@ testMode();
 let isEventsCreated = false;
 
 objAccount.menu();
-objAccount.markSelectedMenu('Konto');
+objAccount.markSelectedMenu('Kontonavn');
 
 let socket = connectingToServer();
 
@@ -61,8 +61,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with account information
       accountArray = JSON.parse(message);
 
-      // Show leading text
-      const accountId = objAccount.getSelectedAccountId('account-accountId');
+      // Account id
+      const accountId =
+        objAccount.getSelectedAccountId('select-account-accountId');
       showLeadingText(accountId);
 
       // Show all values for account
@@ -83,10 +84,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ....
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       // One row was affected by the query
       console.log('affectedRows');
+
+      // Sends a request to the server to get all accounts
+      const SQLquery =
+        `
+          SELECT * FROM account
+          ORDER BY accountId;
+        `;
+      socket.send(SQLquery);
     }
   };
 
@@ -119,12 +128,7 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-account-update')) {
 
-      if (updateAccount()) {
-
-        let accountId =
-          Number(document.querySelector('.select-account-accountId').value);
-        showValues(accountId);
-      }
+      updateAccount();
     }
   });
 
@@ -169,7 +173,6 @@ function createEvents() {
 function updateAccount() {
 
   let SQLquery = "";
-  let isUpdated = false;
 
   if (validateValues()) {
 
@@ -187,11 +190,11 @@ function updateAccount() {
       const lastUpdate =
         now.toISOString();
 
-      const objAccountNumberRow =
+      const objAccountRowNumber =
         accountArray.findIndex(account => account.accountId === accountId);
 
       // Check if account number exist
-      if (objAccountNumberRow >= 0) {
+      if (objAccountRowNumber !== -1) {
 
         // Update table
         SQLquery = `
@@ -232,10 +235,8 @@ function updateAccount() {
         false;
       document.querySelector('.button-account-new').disabled =
         false;
-      isUpdated = true;
     }
   }
-  return isUpdated;
 }
 
 function deleteAccountRow() {
@@ -251,9 +252,9 @@ function deleteAccountRow() {
   if (accountId !== 1) {
 
     // Check if account number exist
-    const objAccountNumberRow =
-     accountArray.findIndex(account => account.accountId === accountId);
-    if (objAccountNumberRow >= 0) {
+    const objAccountRowNumber =
+      accountArray.findIndex(account => account.accountId === accountId);
+    if (objAccountRowNumber !== -1) {
 
       // Delete table
       SQLquery = `
@@ -304,13 +305,13 @@ function showValues(accountId) {
   if (accountId > 1) {
 
     // find object number for selected account 
-    const objAccountNumberRow =
+    const objAccountRowNumber =
       accountArray.findIndex(account => account.accountId === accountId);
-    if (objAccountNumberRow > 0) {
+    if (objAccountRowNumber !== -1) {
 
       // account name
       document.querySelector('.input-account-accountName').value =
-        accountArray[objAccountNumberRow].name;
+        accountArray[objAccountRowNumber].name;
     }
   }
 }

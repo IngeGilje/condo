@@ -6,6 +6,7 @@
 }
 
 /* Define the grid container */
+.div-grid-accountingreport,
 .div-grid-userbankaccount,
 .div-grid-supplier,
 .div-grid-importfile,
@@ -52,18 +53,14 @@
   grid-template-columns: 200px 200px 150px 150px;
 }
 
-/* grid container 5 columns */
-.div-grid-notInUse {
-  grid-template-columns: 200px 200px 150px 150px 150px;
-}
-
 /* Define the grid container with 6 columns*/
-.div-grid-income,
-.div-grid-bankaccountmovement {
+.div-grid-accountingreport,
+.div-grid-income {
   grid-template-columns: 200px 200px 150px 150px 150px 150px;
 }
 
 /* Define the grid container with 7 columns*/
+.div-grid-bankaccountmovement,
 .div-grid-remoteheating {
   grid-template-columns: 200px 200px 150px 150px 150px 150px 150px;
 }
@@ -78,10 +75,15 @@
   grid-template-columns: 200px 200px 75px 100px 100px 150px 75px 100px 100px 150px;
 }
 
-/* Define the grid container with 10 columns*/
+/* Define the grid container with 11 columns*/
 .div-grid-importfile {
-  grid-template-columns: 200px 200px 75px 100px 75px 150px 150px 150px 100px 200px;
+  grid-template-columns: 200px 200px 75px 100px 75px 150px 150px 150px 100px 100px 200px;
 }
+
+.div-accountingreport-columnAccountName,
+.div-accountingreport-columnBankAccountMovementAmount,
+.div-accountingreport-columnBudgetAmount,
+.div-accountingreport-columnDeviation,
 
 .div-importfile-columnLineNumber,
 .div-importfile-columnAccountingDate,
@@ -89,6 +91,7 @@
 .div-importfile-columnAccountName,
 .div-importfile-columnFromBankAccount,
 .div-importfile-columnToBankAccount,
+.div-importfile-columnIncome,
 .div-importfile-columnPayment,
 .div-importfile-columnText,
 
@@ -106,10 +109,10 @@
 .div-overview-columnDueDate,
 .div-overview-columnDueAmount,
 .div-overview-columnDueText,
-.div-overview-columnIncomeCondoName,
-.div-overview-columnIncomeDate,
-.div-overview-columnIncomeAmount,
-.div-overview-columnIncomeText,
+.div-overview-columnBankAccountMovementCondoName,
+.div-overview-columnBankAccountMovementDate,
+.div-overview-columnBankAccountMovementAmount,
+.div-overview-columnBankAccountMovementText,
 
 .div-remoteheating-columnDate,
 .div-remoteheating-columnAmount,
@@ -123,7 +126,7 @@
   text-decoration: none;
   padding: 2px;
 }
-
+.div-accountingreport-columnAccountName,
 .div-overview-columnDueCondoName,
 .div-importfile-columnLineNumber,
 .div-income-columnIncomeId,
@@ -131,6 +134,7 @@
   grid-column-start: 3;
 }
 
+.div-accountingreport-columnBankAccountMovementAmount,
 .div-overview-columnDueDate,
 .div-importfile-columnAccountingDate,
 .div-payment-columnIncomeId,
@@ -139,6 +143,7 @@
   grid-column-start: 4;
 }
 
+.div-accountingreport-columnBudgetAmount,
 .div-overview-columnDueAmount,
 .div-importfile-columnName,
 .div-payment-columnDate,
@@ -147,6 +152,7 @@
   grid-column-start: 5;
 }
 
+.div-accountingreport-columnDeviation,
 .div-overview-columnDueText,
 .div-importfile-columnAccountName,
 .div-payment-columnAmount,
@@ -155,25 +161,29 @@
   grid-column-start: 6;
 }
 
-.div-overview-columnIncomeCondoName,
+.div-overview-columnBankAccountMovementCondoName,
 .div-importfile-columnFromBankAccount,
 .div-payment-columnText {
   grid-column-start: 7;
 }
 
-.div-overview-columnIncomeDate, 
+.div-overview-columnBankAccountMovementDate, 
 .div-importfile-columnToBankAccount {
   grid-column-start: 8;
 }
 
-.div-overview-columnIncomeAmount,
-.div-importfile-columnPayment {
+.div-overview-columnBankAccountMovementAmount,
+.div-importfile-columnIncome {
   grid-column-start: 9;
 }
 
-.div-overview-columnIncomeText,
-.div-importfile-columnText {
+.div-overview-columnBankAccountMovementText,
+.div-importfile-columnPayment {
   grid-column-start: 10;
+}
+
+.div-importfile-columnText {
+  grid-column-start: 11;
 }
 
 /* menu */
@@ -211,10 +221,11 @@
   grid-column-start: 4;
 }
 
-.div-bankaccountmovement-columnAmount,
+.div-bankaccountmovement-columnIncome,
+.div-bankaccountmovement-columnPayment,
 .div-bankaccountmovement-columnDate,
-.div-bankaccountmovement-columnBankAccountName,
-.div-bankaccountmovement-columnName {
+.div-bankaccountmovement-columnAccountName,
+.div-bankaccountmovement-columnCondoName {
   grid-row-start: 1;
   grid-row-end: 20;
   display: block;
@@ -223,11 +234,11 @@
   padding: 2px;
 }
 
-.div-bankaccountmovement-columnName {
+.div-bankaccountmovement-columnCondoName {
   grid-column: 3;
 }
 
-.div-bankaccountmovement-columnBankAccountName {
+.div-bankaccountmovement-columnAccountName {
   grid-column: 4;
 }
 
@@ -235,8 +246,12 @@
   grid-column: 5;
 }
 
-.div-bankaccountmovement-columnAmount {
+.div-bankaccountmovement-columnIncome {
   grid-column: 6;
+}
+
+.div-bankaccountmovement-columnPayment {
+  grid-column: 7;
 }
 
 .div-monthlyfee-columnDate {
@@ -283,6 +298,7 @@
   grid-column-start: 7;
 }
 
+.a-menu-vertical-accountingreport,
 .a-menu-vertical-userbankaccount,
 .a-menu-vertical-supplier,
 .a-menu-vertical-importfile,
@@ -311,6 +327,7 @@
   font-size: 16px;
 }
 
+.a-menu-vertical-accountingreport-green,
 .a-menu-vertical-userbankaccount-green,
 .a-menu-vertical-supplier-green,
 .a-menu-vertical-importfile-green,
@@ -367,6 +384,7 @@
 }
 
 /* label */
+.div-grid-accountingreport label,
 .div-grid-userbankaccount label,
 .div-grid-supplier label,
 .div-grid-importfile label,
@@ -418,6 +436,7 @@
 
 /* input */
 .a-condo-login,
+.div-grid-accountingreport input,
 .div-grid-userbankaccount input,
 .div-grid-supplier input,
 .div-grid-importfile input,
@@ -493,6 +512,7 @@
 }
 
 /* select */
+.div-grid-kaccountingreport select,
 .div-grid-userbankaccount select,
 .div-grid-supplier select,
 .div-grid-importfile select,
@@ -586,6 +606,7 @@
 }
 
 /* button */
+.div-grid-accountingreport button,
 .div-grid-userbankaccount button,
 .div-grid-supplier button,
 .div-grid-importfile button,
@@ -613,6 +634,7 @@
 }
 
 /* Darker green on hover */
+.div-grid-accountingreport button:hover,
 .div-grid-userbankaccount button:hover,
 .div-grid-supplier button:hover,
 .div-grid-importfile button:hover,
@@ -633,6 +655,7 @@
 }
 
 /* Even darker green on click */
+.div-accountingreport button:active
 .div-userbankaccount button:active
 .div-grid-importile button:active,
 .div-grid-user button:active,
@@ -652,6 +675,9 @@
 }
 
 /* Gray for disabled state */
+.div-grid-accountingreport select:disabled,
+.div-grid-accountingreport button:disabled,
+
 .div-grid-userbankaccount select:disabled,
 .div-grid-userbankaccount button:disabled,
 
@@ -698,10 +724,10 @@
 .div-monthlyfee-columnDate-Header,
 .div-monthlyfee-columnAmount-Header,
 
-.label-bankaccountmovement-columnName-Header,
+.label-bankaccountmovement-columnCondoName-Header,
 .label-bankaccountmovement-columnAccountName-Header,
 .label-bankaccountmovement-columnDate-Header,
-.label-bankaccountmovement-columnAmount-Header,
+.label-bankaccountmovement-columnIncome-Header,
 
 .div-remoteheating-date-Header,
 .div-remoteheating-payment-Header,
@@ -764,6 +790,9 @@
 }
 
 /* red */
+.label-accountingreport-fromDate-red,
+.label-accountingreport-toDate-red,
+
 .label-userbankaccount-userId-red,
 .label-userbankaccount-accountId-red,
 .label-userbankaccount-name-red,

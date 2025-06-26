@@ -133,7 +133,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
 
     // Check for update, delete ...
-    if (message.includes('"affectedRows":1')) {
+    if (message.includes('"affectedRows"')) {
 
       console.log('affectedRows');
 
@@ -561,7 +561,7 @@ function showMonthlyFee(condoId, accountId) {
         `;
 
       // 1234567 -> 12345,67
-      const amount = formatFromOreToKroner(due.amount);
+      const amount = formatOreToKroner(due.amount);
       document.querySelector(".input-monthlyfee-amount").value =
         amount;
       htmlColumnAmount +=
@@ -579,7 +579,7 @@ function showMonthlyFee(condoId, accountId) {
   // Sum line
 
   // 1234567 -> 12345,67
-  sumAmount = formatFromOreToKroner(String(sumAmount));
+  sumAmount = formatOreToKroner(String(sumAmount));
   htmlColumnAmount +=
     `
       <div 
@@ -603,28 +603,29 @@ function showValues(dueId) {
   if (dueId > 1) {
 
     // find object number for selected due id
-    const objectNumberDue = dueArray.findIndex(due => due.dueId === dueId);
-    if (objectNumberDue >= 0) {
+    const objDueRowNumber =
+      dueArray.findIndex(due => due.dueId === dueId);
+    if (objDueRowNumber !== -1) {
 
       // Condo id
       document.querySelector('.input-monthlyfee-condoId').value =
-        dueArray[objectNumberDue].condoId;
+        dueArray[objDueRowNumber].condoId;
 
       // Account id
       document.querySelector('.input-monthlyfee-accountId').value =
-        dueArray[objectNumberDue].accountId;
+        dueArray[objDueRowNumber].accountId;
 
       // year
       document.querySelector('.input-monthlyfee-year').value =
-        dueArray[objectNumberDue].year;
+        dueArray[objDueRowNumber].year;
 
       // Day
       document.querySelector('.input-monthlyfee-day').value =
-        dueArray[objectNumberDue].day;
+        dueArray[objDueRowNumber].day;
 
       // Amount
       document.querySelector('.input-monthlyfee-amount').value =
-        dueArray[objectNumberDue].amount;
+        dueArray[objDueRowNumber].amount;
     } else {
 
       resetValues();
