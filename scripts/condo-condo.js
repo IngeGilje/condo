@@ -133,6 +133,7 @@ function condoEvents() {
   // New condo
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-condo-new')) {
+
       resetValues();
     }
   });
@@ -143,13 +144,6 @@ function condoEvents() {
 
       deleteCondoRow();
 
-      // Sends a request to the server to get all condos
-      //objCondo.getCondos(socket);
-      const SQLquery = `
-        SELECT * FROM condo
-        ORDER BY condoId;
-      `;
-      socket.send(SQLquery);
     }
   });
 
@@ -158,7 +152,6 @@ function condoEvents() {
     if (event.target.classList.contains('button-condo-cancel')) {
 
       // Sends a request to the server to get all condos
-      //objCondo.getCondos(socket);
       const SQLquery = `
         SELECT * FROM condo
         ORDER BY condoId;
@@ -400,7 +393,6 @@ function deleteCondoRow() {
       ORDER BY condoId;
     `;
     socket.send(SQLquery);
-
   }
 }
 

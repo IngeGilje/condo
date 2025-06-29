@@ -114,7 +114,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       dueArray = JSON.parse(message);
 
       const dueId =
-       objDue.getSelectedDueId('dueId');
+        objDue.getSelectedDueId('dueId');
 
       // Show leading text
       showLeadingText(dueId);
@@ -409,7 +409,7 @@ function validateValues(dueId) {
   const date =
     document.querySelector('.input-due-date').value;
   const validDate =
-    checkNorDate(date, 'due-date', 'Dato');
+    validateNorDate(date, 'due-date', 'Dato');
 
   // Check amount
   const amount =

@@ -325,10 +325,10 @@ function showValues() {
 function validateValues() {
 
   let fromDate = document.querySelector('.input-accountingreport-fromDate').value;
-  const validFromDate = checkNorDate(fromDate, 'accountingreport-fromDate', 'Fra dato');
+  const validFromDate = validateNorDate(fromDate, 'accountingreport-fromDate', 'Fra dato');
 
   let toDate = document.querySelector('.input-accountingreport-toDate').value;
-  const validToDate = checkNorDate(toDate, 'accountingreport-toDate', 'Fra dato');
+  const validToDate = validateNorDate(toDate, 'accountingreport-toDate', 'Fra dato');
 
   // Check date interval
   fromDate = Number(convertDateToISOFormat(fromDate));

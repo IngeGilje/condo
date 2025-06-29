@@ -438,10 +438,10 @@ function showValues() {
 function validateValues() {
 
   let fromDate = document.querySelector('.input-overview-fromDate').value;
-  const validFromDate = checkNorDate(fromDate, 'overview-fromDate', 'Fra dato');
+  const validFromDate = validateNorDate(fromDate, 'overview-fromDate', 'Fra dato');
 
   let toDate = document.querySelector('.input-overview-toDate').value;
-  const validToDate = checkNorDate(toDate, 'overview-toDate', 'Fra dato');
+  const validToDate = validateNorDate(toDate, 'overview-toDate', 'Fra dato');
 
   // Check date interval
   fromDate = Number(convertDateToISOFormat(fromDate));

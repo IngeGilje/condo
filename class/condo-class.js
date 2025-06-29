@@ -704,7 +704,7 @@ class Condos {
         `;
   }
 
-  // Validate amount
+  // Validate norwegian amount
   validateAmount(amount, className, labelText) {
 
     let isValidAmount = true;
@@ -997,7 +997,7 @@ function validateNumber(number, min, max, className, labelText) {
 
 // Validate norwegian date dd.mm.yyyy format
 // Show error message
-function checkNorDate(dateString, className, labelText) {
+function validateNorDate(dateString, className, labelText) {
 
   let isDateValid = true;
 

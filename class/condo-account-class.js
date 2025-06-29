@@ -5,7 +5,7 @@ class Account extends Condos {
   accountArray = Array;
 
   // Show all accounts
-  showAllAccounts(className, accountId, alternativeSelect) {
+  showAllAccounts(className, accountId, alternativeSelect, alternativeSelect2) {
 
     console.log('alternativeSelect',alternativeSelect);
     let html =
@@ -55,6 +55,7 @@ class Account extends Condos {
         }
       });
     } else {
+
       html += `
       <option value="0" 
         selected
@@ -76,6 +77,18 @@ class Account extends Condos {
       `;
     }
 
+    // Alternative select
+    if (alternativeSelect2 && (numberOfRows > 1)) {
+      html += `
+        <option 
+          value=0
+          selected
+          >
+          ${alternativeSelect2}
+        </option>
+      `;
+    }
+
     html += `
       </select >
     </form>
@@ -84,7 +97,7 @@ class Account extends Condos {
     document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
-  // Find selected account id
+  // Get selected account id
   getSelectedAccountId(className) {
 
     let accountId = 0;

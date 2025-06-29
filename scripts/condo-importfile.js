@@ -191,7 +191,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       console.log('bankaccountmovementTable');
 
       // array including objects with bankaccountmovement information
-      bankAccountMovementArray = JSON.parse(message);
+      bankAccountMovementArray =
+        JSON.parse(message);
 
       // Get all income rows
       const SQLquery =
@@ -291,15 +292,15 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-importfile-updateBankAccountMovement')) {
 
-
       // Update bank account movements
       updateBankAccountMovements();
 
+      // Update opening balance
+      updateOpeningBalance();
+
       // Reset screen
       resetBankAccountMovements();
-      document.querySelector(".button-importfile-updateBankAccountMovement").remove();
-      document.querySelector(".button-importfile-updateImportArray").remove();
-      removeBankAccountImportLine();
+      removeBankAccountColumn();
     }
   });
 }
@@ -473,8 +474,6 @@ function showBankAccountMovements() {
       `;
 
     // Condo name
-    //const condoName =
-    //  objCondo.getCondoName(importFile.condoId);
     htmlColumnCondoName +=
       `
         <div
@@ -573,15 +572,12 @@ function showBankAccountMovements() {
     // Accomulate
 
     // income
-    const numericIncome =
-      Number(importFile.income.replace(",", ".")) * 100;
     sumColumnIncome +=
-      Number(numericIncome);
+      Number(importFile.income);
 
     // payment
-    const numericPayment =
-      Number(importFile.payment.replace(",", ".")) * 100;
-    sumColumnPayment += Number(numericPayment);
+    sumColumnPayment +=
+      Number(importFile.payment);
   });
 
   //Show sum row
@@ -798,7 +794,7 @@ function createImportFileArray(fileContent) {
         importFileId: importFileId,
         accountingDate: accountingDate,
         condoId: condoId,
-        condoNameu: condoName,
+        condoName: condoName,
         accountId: accountId,
         accountName: accountName,
         fromBankAccount: fromBankAccount,
@@ -833,10 +829,10 @@ function updateBankAccountMovements() {
       Number(importFile.accountId);
 
     const income =
-      formatKronerToOre(importFile.income);
+      Number(importFile.income);
 
     const payment =
-      formatKronerToOre(importFile.payment);
+      Number(importFile.payment);
 
     const date =
       convertDateToISOFormat(importFile.accountingDate);
@@ -876,9 +872,6 @@ function updateBankAccountMovements() {
     // Client sends a request to the server
     socket.send(SQLquery);
   })
-
-  // Update opening balance
-  updateOpeningBalance();
 }
 
 // Update opening balance
@@ -1022,21 +1015,26 @@ function resetBankAccountMovements() {
     '';
 }
 
-function removeBankAccountImportLine() {
+function removeBankAccountColumn() {
 
-  document.querySelector(".select-importfile-importFileId").remove();
   document.querySelector(".label-importfile-importFileId").remove();
-  document.querySelector(".select-importfile-condoId").remove();
+  document.querySelector(".select-importfile-importFileId").remove();
   document.querySelector(".label-importfile-condoId").remove();
-  document.querySelector(".select-importfile-accountId").remove();
+  document.querySelector(".select-importfile-condoId").remove();
   document.querySelector(".label-importfile-accountId").remove();
-  document.querySelector(".input-importfile-date").remove();
+  document.querySelector(".select-importfile-accountId").remove();
   document.querySelector(".label-importfile-date").remove();
-  document.querySelector(".input-importfile-income").remove();
+  document.querySelector(".input-importfile-date").remove();
   document.querySelector(".label-importfile-income").remove();
+  document.querySelector(".input-importfile-income").remove();
   document.querySelector(".label-importfile-payment").remove();
-  document.querySelector(".input-importfile-text").remove();
+  document.querySelector(".input-importfile-payment").remove();
   document.querySelector(".label-importfile-text").remove();
+  document.querySelector(".input-importfile-text").remove();
+
+  document.querySelector(".button-importfile-updateBankAccountMovement").remove();
+  document.querySelector(".button-importfile-updateImportArray").remove();
+
 }
 
 // Send a request to the server to get all bank account transactions

@@ -5,7 +5,7 @@ class Condo extends Condos {
   condoArray = Array;
 
   // Show all condos
-  showAllCondos(columnName, condoId, alternativeSelect) {
+  showAllCondos(columnName, condoId, alternativeSelect,alternativeSelect2) {
 
     let html =
       `
@@ -77,6 +77,20 @@ class Condo extends Condos {
             selected
           >
             ${alternativeSelect}
+          </option>
+      `;
+    }
+
+    // Do not select any condo
+    if (alternativeSelect2 && (numberOfRows > 1)) {
+
+      html +=
+        `
+          <option 
+            value=0
+            selected
+          >
+            ${alternativeSelect2}
           </option>
       `;
     }

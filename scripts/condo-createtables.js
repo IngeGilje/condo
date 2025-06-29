@@ -842,32 +842,33 @@ function insertRowAllTables() {
     console.log('INSERT bankaccountmovement Table');
     SQLquery =
       `         
-      INSERT INTO bankaccountmovement(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        condoId,
-        accountId,
-        income,
-        payment,
-        numberKWHour,
-        date,
-        text)
-      VALUES(
-        'bankaccountmovement',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        1,
-        1,
-        '',
-        '',
-        '',
-        '',
-        ''
-      );
-    `;
+        INSERT INTO bankaccountmovement(
+          tableName,
+          condominiumId,
+          user,
+          lastUpdate,
+          condoId,
+          accountId,
+          income,
+          payment,
+          numberKWHour,
+          date,
+          text
+        )
+        VALUES(
+          'bankaccountmovement',
+          1,
+          'superuser@ingegilje.no',
+          '${lastUpdate}',
+          1,
+          1,
+          '',
+          '',
+          '',
+          '',
+          ''
+        );
+      `;
     socket.send(SQLquery);
   }
 }

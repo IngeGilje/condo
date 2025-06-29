@@ -95,7 +95,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       console.log('bankaccountmovementTable');
 
       // array including objects with bankaccountmovement information
-      bankAccountMovementArray = JSON.parse(message);
+      bankAccountMovementArray =
+        JSON.parse(message);
 
       // Get all income rows
       const SQLquery = `
@@ -115,7 +116,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       incomeArray = JSON.parse(message);
 
       const incomeId =
-       objIncome.getSelectedIncomeId('income-incomeId');
+        objIncome.getSelectedIncomeId('income-incomeId');
 
       // Show leading text
       showLeadingText(incomeId);
@@ -446,11 +447,13 @@ function showValues(incomeId) {
         incomeArray[objIncomeRowNumber].incomeId;
 
       // Show condo Id
-      const condoId = incomeArray[objIncomeRowNumber].condoId;
+      const condoId =
+        incomeArray[objIncomeRowNumber].condoId;
       objIncome.selectCondoId(condoId, 'income-condoId');
 
       // Select account
-      const accountId = incomeArray[objIncomeRowNumber].accountId;
+      const accountId =
+        incomeArray[objIncomeRowNumber].accountId;
       objIncome.selectAccountId(accountId, 'income-accountId');
 
       // show income
@@ -458,7 +461,8 @@ function showValues(incomeId) {
         formatOreToKroner(incomeArray[objIncomeRowNumber].amount);
 
       // show income date
-      let date = incomeArray[objIncomeRowNumber].date;
+      let date =
+        incomeArray[objIncomeRowNumber].date;
       const formatedIncomeDate = convertToEurDateFormat(date);
       document.querySelector('.input-income-date').value =
         formatedIncomeDate;
@@ -531,7 +535,7 @@ function validateValues(incomeId) {
   const date =
     document.querySelector('.input-income-date').value;
   const validIncomeDate =
-    checkNorDate(date, 'income-date', 'Dato');
+    validateNorDate(date, 'income-date', 'Dato');
 
   const text =
     document.querySelector('.input-income-text').value;

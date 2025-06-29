@@ -97,7 +97,7 @@ socket.onmessage = (event) => {
     paymentArray = JSON.parse(message);
 
     const paymentId =
-     objPayment.getSelectedPaymentId('paymentId');
+      objPayment.getSelectedPaymentId('paymentId');
 
     // Show leading text
     showLeadingText(paymentId);
@@ -476,7 +476,7 @@ function validateValues() {
 
   const date =
     document.querySelector('.input-payment-date').value;
-  const validDate = checkNorDate(date, 'payment-date', 'Dato');
+  const validDate = validateNorDate(date, 'payment-date', 'Dato');
 
   const text =
     document.querySelector('.input-payment-text').value;
