@@ -417,7 +417,7 @@ function showValues(paymentId) {
 
       // payment date
       document.querySelector('.input-payment-date').value =
-        convertToEurDateFormat(paymentArray[objPaymentRowNumber].date);
+        formatToNorDate(paymentArray[objPaymentRowNumber].date);
 
       // payment text
       document.querySelector('.input-payment-text').value =
@@ -561,7 +561,7 @@ function showPayments() {
           </div>
         `;
       const paymentDate =
-        convertToEurDateFormat(payment.date);
+        formatToNorDate(payment.date);
       htmlColumnDate +=
         `
           <div class="rightCell">

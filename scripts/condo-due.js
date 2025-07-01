@@ -472,7 +472,8 @@ function showValues(dueId) {
       objDue.selectAccountId(accountId, 'due-accountId');
 
       // Show due date
-      const dueDate = convertToEurDateFormat(dueArray[objDueRowNumber].date);
+      const dueDate = 
+      formatToNorDate(dueArray[objDueRowNumber].date);
       document.querySelector('.input-due-date').value =
         dueDate;
 

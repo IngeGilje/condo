@@ -337,9 +337,9 @@ function validateValues() {
   validDateInterval = (fromDate <= toDate) ? true : false;
 
   fromDate =
-    convertToEurDateFormat(fromDate);
+    formatToNorDate(fromDate);
   toDate =
-    convertToEurDateFormat(toDate);
+    formatToNorDate(toDate);
 
 
   /*

@@ -456,7 +456,7 @@ function validateValues() {
   const amount =
     document.querySelector('.input-monthlyfee-amount').value;
   document.querySelector('.input-monthlyfee-amount').value =
-    formatAmountToEuroFarmat(amount);
+    formatAmountToEuroFormat(amount);
   const validAmount =
     objDue.validateAmount(amount, "monthlyfee-amount", "Månedsavgift");
 
@@ -550,7 +550,7 @@ function showMonthlyFee(condoId, accountId) {
     if (due.condoId === condoId && due.accountId === accountId) {
 
       // 20250115 -> 15.01.2025
-      date = convertToEurDateFormat(String(due.date));
+      date = formatToNorDate(String(due.date));
       htmlColumnDate +=
         `
           <div 

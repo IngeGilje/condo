@@ -75,10 +75,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // array including objects with bankaccount information
       bankAccountArray =
-       JSON.parse(message);
+        JSON.parse(message);
 
       const bankAccountId =
-       objBankAccount.getSelectedBankAccountId('bankAccountId');
+        objBankAccount.getSelectedBankAccountId('bankAccountId');
 
       // Show leading text
       showLeadingText(bankAccountId);
@@ -373,7 +373,7 @@ function showValues(bankAccountId) {
 
       // opening balance date
       document.querySelector('.input-bankaccount-openingBalanceDate').value =
-        convertToEurDateFormat(bankAccountArray[objAccountRowNumber].openingBalanceDate);
+        formatToNorDate(bankAccountArray[objAccountRowNumber].openingBalanceDate);
 
       // opening balance
       document.querySelector('.input-bankaccount-openingBalance').value =
@@ -381,7 +381,7 @@ function showValues(bankAccountId) {
 
       // closing balance date
       document.querySelector('.input-bankaccount-closingBalanceDate').value =
-        convertToEurDateFormat(bankAccountArray[objAccountRowNumber].closingBalanceDate);
+        formatToNorDate(bankAccountArray[objAccountRowNumber].closingBalanceDate);
 
       // closing balance
       document.querySelector('.input-bankaccount-closingBalance').value =

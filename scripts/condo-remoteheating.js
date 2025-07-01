@@ -102,11 +102,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // array including objects with bank account movement information
       bankAccountMovementArray =
-       JSON.parse(message);
+        JSON.parse(message);
 
       // Show leading text
       const condoId =
-       objCondo.getSelectedCondoId('condoId')
+        objCondo.getSelectedCondoId('condoId')
       showLeadingText(condoId);
 
       // Make events
@@ -243,7 +243,7 @@ function showValues() {
 
               // date
               const date =
-                convertToEurDateFormat(bankaccountmovement.date);
+                formatToNorDate(bankaccountmovement.date);
               htmlColumnDate +=
                 `
                   <div 

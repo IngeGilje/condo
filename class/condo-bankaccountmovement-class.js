@@ -58,7 +58,7 @@ class BankAccountMovement extends Condos {
         <option value="0" 
           selected
         >
-          Ingen bankkonto bevegelser
+          Ingen bankkonto transaksjoner
         </option>
       `;
     }
@@ -158,7 +158,7 @@ class BankAccountMovement extends Condos {
           value="0" 
           selected
         >
-          Ingen bankkontobevegelser
+          Ingen bankkonto transaksjoner
         </option>
     `;
     }

@@ -463,7 +463,7 @@ function showValues(incomeId) {
       // show income date
       let date =
         incomeArray[objIncomeRowNumber].date;
-      const formatedIncomeDate = convertToEurDateFormat(date);
+      const formatedIncomeDate = formatToNorDate(date);
       document.querySelector('.input-income-date').value =
         formatedIncomeDate;
 
@@ -597,7 +597,7 @@ function showIncome() {
         `;
 
         const date =
-          convertToEurDateFormat(income.date);
+          formatToNorDate(income.date);
         htmlColumnDate +=
           `
           <div class="rightCell">

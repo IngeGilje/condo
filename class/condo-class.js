@@ -93,14 +93,28 @@ class Condos {
   // Show button
   showButton(className, buttonText) {
 
-    document.querySelector(`.div-${className}`)
-      .innerHTML =
+    document.querySelector(`.div-${className}`).innerHTML =
       `
-          <button class="button-${className}"
-          >
-            ${buttonText}
-          </button>
-        `;
+        <button 
+          class="button-${className}"
+        >
+          ${buttonText}
+        </button>
+      `;
+  }
+
+  // Show button
+  showLabelButton(className, buttonText) {
+
+    document.querySelector(`.div-${className}`).innerHTML =
+      `
+
+        <button 
+          class="button-${className} buttonHeight"
+        >
+          ${buttonText}
+        </button>
+      `;
   }
 
   // Show checkbox
@@ -687,13 +701,13 @@ class Condos {
           <a href="${url}condo/condo-bankaccountmovement.html"
             class="a-menu-vertical-bankaccountmovement"
           >
-           Bankkonto bevegelser
+           Bankkonto transaksjoner
           </a>
 
           <a href="${url}condo/condo-importfile.html"
             class="a-menu-vertical-importfile"
           >
-            Importer bankkontobevegelser
+            Importer bankkonto transaksjoner
           </a>
 
           <a href="${url}condo/condo-accountingreport.html"
@@ -772,7 +786,7 @@ class Condos {
   // get bank account name
   getBankAccountName(bankAccountNumber) {
 
-    let bankAccountName;
+    let bankAccountName = '';
 
     // Bank account name from bank account table 
     const objBankAccountRowNumber =
@@ -804,7 +818,8 @@ class Condos {
       }
     }
 
-    bankAccountName = (bankAccountName) ? bankAccountName : bankAccountNumber;
+    bankAccountName =
+     (bankAccountName) ? bankAccountName : bankAccountNumber;
     return (bankAccountName) ? bankAccountName : "-";
   }
 
@@ -912,9 +927,13 @@ function isNumeric(string) {
 // Remove comma, periode and space
 function removeComma(amount) {
 
-  amount = amount.replace(/\s+/g, '');
-  amount = String(amount).replace(/\./g, "");
-  return amount.replace(/\,/g, "");
+  amount =
+    amount.replace(/\s+/g, '');
+  amount =
+    String(amount).replace(/\./g, "");
+  amount =
+    amount.replace(/\,/g, "");
+  return (amount === '000') ? '00' : amount;
 }
 
 // validate the dd.mm.yyyy (European date format) format
@@ -953,11 +972,13 @@ function convertDateToISOFormat(date) {
 }
 
 // Format date from yyyymmdd (Basic ISO 8601 format) -> dd.mm.yyyy (European date format)
-function convertToEurDateFormat(date) {
+function formatToNorDate(date) {
 
-  date = String(date);
-  const formatedDate = date.slice(6, 8) + '.' + date.slice(4, 6) + '.' + date.slice(0, 4);
-  return formatedDate;
+  date =
+    String(date);
+  const formatedDate =
+    date.slice(6, 8) + '.' + date.slice(4, 6) + '.' + date.slice(0, 4);
+  return (formatedDate.includes('..')) ? '' : formatedDate;
 }
 
 // Validate number
@@ -1231,9 +1252,11 @@ function formatKronerToOre(amount) {
 }
 
 // Format amount to euro format
-function formatAmountToEuroFarmat(amount) {
-  amount = formatAmountToOre(amount);
-  amount = formatOreToKroner(amount);
+function formatAmountToEuroFormat(amount) {
+  amount =
+    formatAmountToOre(amount);
+  amount =
+    formatOreToKroner(amount);
   return amount;
 }
 
@@ -1363,32 +1386,48 @@ function getTextWidth(text, font) {
 function truncateText(text, className) {
 
   // Initial values
-  const element = document.querySelector(`.${className}`);
-  const widthOfElement = element.offsetWidth;
-  const fontSize = window.getComputedStyle(element).fontSize;
+  const element =
+    document.querySelector(`.${className}`);
+  const widthOfElement =
+    element.offsetWidth;
+  const fontSize =
+    window.getComputedStyle(element).fontSize;
 
-  const computedStyle = window.getComputedStyle(element);
-  const fontFamily = computedStyle.fontFamily;
-  const paddingLeft = parseFloat(computedStyle.paddingLeft);
-  const paddingRight = parseFloat(computedStyle.paddingRight);
-  const borderLeft = parseFloat(computedStyle.borderLeftWidth);
-  const borderRight = parseFloat(computedStyle.borderRightWidth);
-  const marginLeft = parseFloat(computedStyle.marginLeft);
-  const marginRight = parseFloat(computedStyle.marginRight);
+  const computedStyle =
+    window.getComputedStyle(element);
+  const fontFamily =
+    computedStyle.fontFamily;
+  const paddingLeft =
+    parseFloat(computedStyle.paddingLeft);
+  const paddingRight =
+    parseFloat(computedStyle.paddingRight);
+  const borderLeft =
+    parseFloat(computedStyle.borderLeftWidth);
+  const borderRight =
+    parseFloat(computedStyle.borderRightWidth);
+  const marginLeft =
+    parseFloat(computedStyle.marginLeft);
+  const marginRight =
+    parseFloat(computedStyle.marginRight);
 
-  let lengthTextPx = getTextWidth(text, font =
-    `${fontSize} '${fontFamily}'`)
+  let lengthTextPx =
+    getTextWidth(text, font =
+      `${fontSize} '${fontFamily}'`)
     + paddingLeft + paddingRight
     + borderLeft + borderRight
     + marginLeft + marginRight;
 
   for (; lengthTextPx > widthOfElement;) {
-    text = text.slice(0, -1);
-    lengthTextPx = getTextWidth(text, font = `${fontSize} '${fontFamily}'`)
+    text =
+      text.slice(0, -1);
+    lengthTextPx =
+      getTextWidth(text, font = `${fontSize} '${fontFamily}'`)
       + paddingLeft + paddingRight
       + borderLeft + borderRight
       + marginLeft + marginRight;
   }
+
+  // This function is not correct, thats why
   return text;
 }
 

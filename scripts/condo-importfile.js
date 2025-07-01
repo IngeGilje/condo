@@ -9,7 +9,6 @@ const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 const objDue = new Due('due');
-const objIncome = new Income('income');
 const objSupplier = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
@@ -22,12 +21,13 @@ let isEventsCreated = false;
 
 // Mark selected menu
 objImportFile.menu();
-objImportFile.markSelectedMenu('Importer bankkontobevegelser');
+objImportFile.markSelectedMenu('Importer bankkonto transaksjoner');
 
 let socket = connectingToServer();
 
 // Validate user/password
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+const objUserPassword =
+ JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   showLoginError('importfile-login');
@@ -41,6 +41,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const SQLquery =
       `
         SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY userId;
       `;
     socket.send(SQLquery);
@@ -63,6 +64,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM condominium
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY condominiumId;
         `;
       socket.send(SQLquery);
@@ -74,12 +76,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       console.log('condominiumTable');
 
       // user array including objects with user information
-      condominiumArray = JSON.parse(message);
+      condominiumArray =
+        JSON.parse(message);
 
       // Sends a request to the server to get all user bank accounts
       const SQLquery =
         `
           SELECT * FROM userbankaccount
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY userbankaccountId;
         `;
       socket.send(SQLquery);
@@ -91,12 +95,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       console.log('userbankaccountTable');
 
       // array including objects with user ank account information
-      userBankAccountArray = JSON.parse(message);
+      userBankAccountArray =
+        JSON.parse(message);
 
       // Sends a request to the server to get all condos
       const SQLquery =
         `
           SELECT * FROM condo
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY name;
         `;
       socket.send(SQLquery);
@@ -113,6 +119,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM bankaccount
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY bankAccountId;
         `;
       socket.send(SQLquery);
@@ -124,11 +131,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       console.log('bankaccountTable');
 
       // array including objects with bank account information
-      bankAccountArray = JSON.parse(message);
+      bankAccountArray =
+        JSON.parse(message);
 
       const SQLquery =
         `
           SELECT * FROM due
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY dueId;
         `;
       socket.send(SQLquery);
@@ -145,6 +154,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM supplier
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY supplierId;
         `;
       socket.send(SQLquery);
@@ -161,6 +171,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM account
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY accountId;
         `;
       socket.send(SQLquery);
@@ -175,42 +186,24 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // array including objects with account information
       accountArray = JSON.parse(message);
 
-      // Get all income rows
+      // Get all bank account movement rows
       const SQLquery =
         `
           SELECT * FROM bankaccountmovement
-          ORDER BY bankaccountmovementId;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create bankaccountmovement array including objets
-    if (message.includes('"tableName":"bankaccountmovement"')) {
-
-      // bankaccountmovement table
-      console.log('bankaccountmovementTable');
-
-      // array including objects with bankaccountmovement information
-      bankAccountMovementArray =
-        JSON.parse(message);
-
-      // Get all income rows
-      const SQLquery =
-        `
-          SELECT * FROM income
-          ORDER BY date;
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY bankAccountMovementId;
         `;
       socket.send(SQLquery);
     }
 
     // Create income array including objets
-    if (message.includes('"tableName":"income"')) {
+    if (message.includes('"tableName":"bankaccountmovement"')) {
 
       // income table
-      console.log('incomeTable');
+      console.log('bankaccountmovementTable');
 
       // array including objects with income information
-      incomeArray = JSON.parse(message);
+      bankAccountMovementArray = JSON.parse(message);
 
       // Send a request to the server to get all bank account transactions
       const objCondominiumRowNumber =
@@ -235,7 +228,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       createImportFileArray(message);
       showBankAccountMovements();
       showLeadingText();
-      showValues(1);
+      //showValues();
     }
 
     // Check for update, delete ...
@@ -268,10 +261,11 @@ function createEvents() {
       const rowNumber =
         Number(document.querySelector(".select-importfile-importFileId").value);
 
-      showValues(rowNumber);
+      //showValues(rowNumber);
     };
   });
 
+  /*
   // Update import file array
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-importfile-updateImportArray')) {
@@ -287,6 +281,7 @@ function createEvents() {
       showValues(rowNumber);
     };
   });
+  */
 
   // Update bank account movements
   document.addEventListener('click', (event) => {
@@ -296,7 +291,7 @@ function createEvents() {
       updateBankAccountMovements();
 
       // Update opening balance
-      updateOpeningBalance();
+      updateOpeningClosingBalance();
 
       // Reset screen
       resetBankAccountMovements();
@@ -308,6 +303,7 @@ function createEvents() {
 // Show leading text for income
 function showLeadingText() {
 
+  /*
   // Show all all account movements to update
   objImportFile.showImportFile('importfile-importFileId', 0);
 
@@ -321,21 +317,23 @@ function showLeadingText() {
   objAccount.showAllAccounts('importfile-accountId', 0);
 
   // Show income
-  objImportFile.showInput('importfile-income', '* Inntekt', 10, '');
+  objImportFile.showInput('importfile-income', 'Inntekt', 10, '');
 
   // Show payment
-  objImportFile.showInput('importfile-payment', '* Utgift', 10, '');
+  objImportFile.showInput('importfile-payment', 'Utgift', 10, '');
 
   // Show text
   objImportFile.showInput('importfile-text', '* Tekst', 50, '');
 
   // Show button
   objImportFile.showButton('importfile-updateImportArray', 'Oppdater');
+  */
 
   // Show button for update of bank account movement
-  objImportFile.showButton('importfile-updateBankAccountMovement', 'Oppdater bankkonto bevegelser');
+  objImportFile.showButton('importfile-updateBankAccountMovement', 'Oppdater bankkonto transaksjoner');
 }
 
+/*
 // Show values for import file
 function showValues(rowNumber) {
 
@@ -370,6 +368,7 @@ function showValues(rowNumber) {
   document.querySelector('.input-importfile-text').value =
     importFileArray[rowNumber].text;
 }
+*/
 
 function deleteIncomeRow() {
 
@@ -398,12 +397,14 @@ function deleteIncomeRow() {
     // Get all income rows
     const SQLquery = `
       SELECT * FROM income
+      WHERE condominiumId = ${objUserPassword.condominiumId}
       ORDER BY date;
     `;
     socket.send(SQLquery);
   }
 }
 
+/*
 function resetValues() {
 
   document.querySelector('.select-importfile-income').value =
@@ -422,6 +423,7 @@ function resetValues() {
   document.querySelector('.button-importfile-new').disabled =
     true;
 }
+*/
 
 function showBankAccountMovements() {
 
@@ -454,7 +456,8 @@ function showBankAccountMovements() {
     rowNumber++;
 
     // check if the number is odd
-    const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
+    const colorClass =
+      (rowNumber % 2 !== 0) ? "green" : "";
     htmlColumnLineNumber +=
       `
         <div
@@ -485,7 +488,6 @@ function showBankAccountMovements() {
 
     accountName =
       truncateText(importFile.accountName, 'div-importfile-columnAccountName');
-
     if (importFile.accountId) {
 
       htmlColumnAccountName +=
@@ -613,33 +615,37 @@ function showBankAccountMovements() {
       <div 
         class = "sumCellRight"
       >
-        Utg.balanse 
+        -
       </div>
     `;
 
   // opening balance date
+  /*
   const closingBalanceDate =
     getClosingBalanceDate();
+  */
   htmlColumnFromBankAccount +=
     `
       <div
         class = "sumCellRight"
       >
-        ${closingBalanceDate}
+        -
       </div>
     `;
 
   // opening balance
+  /*
   let openingBalance =
     getOpeningBalance();
   openingBalance =
     formatOreToKroner(openingBalance);
+  */
   htmlColumnToBankAccount +=
     `
       <div
         class = "sumCellRight"
       >
-        ${openingBalance}
+        -
       </div>
     `;
 
@@ -666,6 +672,7 @@ function showBankAccountMovements() {
     `;
 
   // Utgående balanse
+  /*
   openingBalance = openingBalance.replace(" ", "");
   openingBalance = openingBalance.replace(",", "");
   let closingBalanse =
@@ -680,6 +687,7 @@ function showBankAccountMovements() {
         ${closingBalanse}
       </div>
     `;
+  */
 
   // Show columns
   document.querySelector(".div-importfile-columnLineNumber").innerHTML =
@@ -777,7 +785,10 @@ function createImportFileArray(fileContent) {
           text;
       }
 
-      // get to bank account name 
+      // To bank account
+      if (accountingDate === '31.05.2025') {
+        console.log('toBankAccount:', toBankAccount);
+      }
       toBankAccountName =
         objImportFile.getBankAccountName(toBankAccount);
 
@@ -786,9 +797,6 @@ function createImportFileArray(fileContent) {
 
       // From bank account
       importFileId++;
-      if (accountId === 1) {
-        console.log('accountId:', accountId, "-", amount);
-      }
 
       const objBankAccountMovement = {
         importFileId: importFileId,
@@ -874,19 +882,46 @@ function updateBankAccountMovements() {
   })
 }
 
-// Update opening balance
-function updateOpeningBalance() {
+// Update opening balance and closing balance
+function updateOpeningClosingBalance() {
 
-  let bankAccountId = 0;
+  let bankAccountId =
+    0;
+  let objBankAccountRowNumber =
+    0;
+  let bankAccountRowNumber =
+    0;
+
+  let totalIncome =
+    0;
+  let totalPayment =
+    0;
+
+  let currentOpeningBalance =
+    '';
+  let currentOpeningBalanceDate =
+    '';
+  let currentClosingBalance =
+    '';
+  let currentClosingBalanceDate =
+    '';
 
   textFile.forEach((record) => {
 
-    [accountingDate, openingBalance, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
+    [accountingDate, balance, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       record.split(';');
+
+    if (validateEuroDateFormat(accountingDate)) {
+
+      totalIncome +=
+        Number(formatKronerToOre(income));
+      totalPayment +=
+        Number(formatKronerToOre(payment));
+    }
 
     if (accountingDate.includes("DRIFT.")) {
 
-      // remove first and last " in text
+      // Remove first and last " in text
       accountingDate = accountingDate.replace(/\./g, "");
       accountingDate = accountingDate.replace(/\"/g, "");
       accountingDate = accountingDate.replace(/ /g, "");
@@ -894,39 +929,131 @@ function updateOpeningBalance() {
       [text, bankAccountNumber] =
         accountingDate.split(',');
 
-      bankAccountId =
+      // Get row number for bank account number in bank account array
+      objBankAccountRowNumber =
+        (bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
+
+      // Get row number for bank account number in bank account table
+      bankAccountRowNumber =
         (bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber) + 1);
+
+      bankAccountId =
+        bankAccountArray[objBankAccountRowNumber].bankAccountId;
+
+      // Get current opening and closing balance
+      currentOpeningBalance =
+        bankAccountArray[objBankAccountRowNumber].openingBalance;
+
+      currentOpeningBalanceDate =
+        bankAccountArray[objBankAccountRowNumber].openingBalanceDate;
+      currentOpeningBalanceDate =
+        (currentOpeningBalanceDate.includes('..')) ? '0' : currentOpeningBalanceDate;
+
+      currentClosingBalance =
+        bankAccountArray[objBankAccountRowNumber].closingBalance;
+
+      currentClosingBalanceDate =
+        bankAccountArray[objBankAccountRowNumber].closingBalanceDate;
+      currentClosingBalanceDate =
+        (currentClosingBalanceDate.includes('..')) ? '0' : currentClosingBalanceDate;
     }
 
+    // Update opening balance date
     if (accountingDate.includes("Inngående saldo pr.")) {
 
-      // Remove first and last "
-      openingBalance = openingBalance.replace(/^"|"$/g, '');
-      openingBalance = openingBalance.replace(".", "");
-
-      const norDate = accountingDate.match(/\d{2}\.\d{2}\.\d{4}/);
-      openingBalanceDate = norDate[0];
+      // Get date for opening balance date
+      let openingBalanceDate =
+        accountingDate.match(/\d{2}\.\d{2}\.\d{4}/);
+      openingBalanceDate =
+        openingBalanceDate[0];
 
       // dd.mm.yyyy -> yyyymmdd
-      openingBalanceDate = convertDateToISOFormat(openingBalanceDate);
+      openingBalanceDate =
+        convertDateToISOFormat(openingBalanceDate);
 
-      const now = new Date();
-      const lastUpdate = now.toISOString();
+      balance =
+        (balance.includes('Ingen data tilgjengelig')) ? '"0"' : balance;
 
-      // Update opening balance
-      SQLquery =
-        `
-          UPDATE bankaccount
-          SET 
-            user = '${objUserPassword.email}',
-            lastUpdate = '${lastUpdate}',
-            openingBalance = '${openingBalance}',
-            openingBalanceDate = '${openingBalanceDate}'
-          WHERE bankAccountId = ${bankAccountId};
-        `;
+      // remove first and last " in closing balance
+      let openingBalance =
+        balance.replace(/\./g, "");
+      openingBalance =
+        openingBalance.replace(/\"/g, "");
+      openingBalance =
+        openingBalance.replace(/ /g, "");
 
-      // Client sends a request to the server
-      socket.send(SQLquery);
+      const lastUpdate =
+        now.toISOString();
+
+      // Check for openening balance date
+      if (Number(currentOpeningBalanceDate) < Number(openingBalanceDate) || Number(currentOpeningBalanceDate === 0)) {
+
+        // Update opening balance
+        SQLquery =
+          `
+            UPDATE bankaccount
+            SET 
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}',
+              openingBalance = '${openingBalance}',
+              openingBalanceDate = '${openingBalanceDate}'
+            WHERE bankAccountId = ${bankAccountId};
+          `;
+
+        // Client sends a request to the server
+        socket.send(SQLquery);
+      }
+    }
+
+    // Update closing balance date
+    if (accountingDate.includes("Utgående saldo pr.")) {
+
+      // Get date for closing balance date
+      let closingBalanceDate =
+        accountingDate.match(/\d{2}\.\d{2}\.\d{4}/);
+      closingBalanceDate =
+        closingBalanceDate[0];
+
+      // dd.mm.yyyy -> yyyymmdd
+      closingBalanceDate =
+        convertDateToISOFormat(closingBalanceDate);
+
+      balance =
+        (balance.includes('Ingen data tilgjengelig')) ? '"0"' : balance;
+
+      // remove first and last " in closing balance
+      let closingBalance =
+        balance.replace(/\./g, "");
+      closingBalance =
+        closingBalance.replace(/\"/g, "");
+      closingBalance =
+        closingBalance.replace(/ /g, "");
+
+      const openingBalance =
+        Number(closingBalance) - (totalIncome + totalPayment);
+
+      const lastUpdate =
+        now.toISOString();
+
+      // Check for openening balance date
+      if (Number(currentClosingBalanceDate) > Number(closingBalanceDate) || Number(currentClosingBalanceDate) === 0) {
+
+        // Update opening balance
+        SQLquery =
+          `
+            UPDATE bankaccount
+            SET 
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}',
+              openingBalance = '${openingBalance}',
+              closingBalance = '${closingBalance}',
+              closingBalanceDate = '${closingBalanceDate}'
+            WHERE bankAccountId = ${bankAccountId};
+          `;
+
+        // Client sends a request to the server
+        socket.send(SQLquery);
+      }
     }
   });
 }
@@ -984,11 +1111,12 @@ function getClosingBalanceDate() {
 
     if (accountingDate.includes("Utgående saldo pr")) {
 
-      closingBalanceDate = accountingDate.match(/\d{2}\.\d{2}\.\d{4}/);
+      closingBalanceDate =
+        accountingDate.match(/\d{2}\.\d{2}\.\d{4}/);
     }
   });
 
-  return closingBalanceDate ? closingBalanceDate[0] : null;
+  return (closingBalanceDate) ? closingBalanceDate[0] : null;
 }
 
 // reset Bank Account Movements
@@ -1017,6 +1145,7 @@ function resetBankAccountMovements() {
 
 function removeBankAccountColumn() {
 
+  /*
   document.querySelector(".label-importfile-importFileId").remove();
   document.querySelector(".select-importfile-importFileId").remove();
   document.querySelector(".label-importfile-condoId").remove();
@@ -1031,9 +1160,10 @@ function removeBankAccountColumn() {
   document.querySelector(".input-importfile-payment").remove();
   document.querySelector(".label-importfile-text").remove();
   document.querySelector(".input-importfile-text").remove();
+  */
 
   document.querySelector(".button-importfile-updateBankAccountMovement").remove();
-  document.querySelector(".button-importfile-updateImportArray").remove();
+  //document.querySelector(".button-importfile-updateImportArray").remove();
 
 }
 
@@ -1044,11 +1174,12 @@ function requestImportFile() {
     condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
   if (objCondominiumRowNumber !== -1) {
 
-    const importFileName = `${condominiumArray[objCondominiumRowNumber].importPath}//transaksjonsliste.csv`;
+    const importFileName = `${condominiumArray[objCondominiumRowNumber].importPath} //transaksjonsliste.csv`;
     socket.send(`Name of importfile: ${importFileName}`);
   }
 }
 
+/*
 // Update import file array row
 function updateImportFileArray(rowNumber) {
 
@@ -1090,10 +1221,6 @@ function updateImportFileArray(rowNumber) {
   importFileArray[rowNumber].payment =
     document.querySelector('.input-importfile-payment').value;
 
-  // Income
-  importFileArray[rowNumber].income =
-    document.querySelector('.input-importfile-income').value;
-
   // Number Kilo Watt per Hour
   importFileArray[rowNumber].numberKWHour =
     document.querySelector('.input-importfile-numberKWHour').value;
@@ -1102,3 +1229,4 @@ function updateImportFileArray(rowNumber) {
   importFileArray[rowNumber].text =
     document.querySelector('.input-importfile-text').value;
 }
+*/

@@ -102,7 +102,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Show leading text
       const condoId =
-       objCondo.getSelectedCondoId('condoId')
+        objCondo.getSelectedCondoId('condoId')
       showLeadingText(condoId);
 
       // Make events
@@ -240,7 +240,7 @@ function showValues() {
 
               // date
               const date =
-                convertToEurDateFormat(payment.date);
+                formatToNorDate(payment.date);
               htmlColumnDate +=
                 `
                   <div 

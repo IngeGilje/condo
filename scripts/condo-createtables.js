@@ -30,11 +30,11 @@ const createSupplierTable =
 
 // 8 payment
 const createPaymentTable =
-  false;
+  true;
 
 // 9 Income
 const createIncomeTable =
-  false;
+  true;
 
 // 10 Due
 const createDueTable =

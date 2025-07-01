@@ -221,7 +221,7 @@ function showValues() {
 
             // date
             const date =
-              convertToEurDateFormat(due.date);
+              formatToNorDate(due.date);
             htmlColumnDueDate +=
               `
                 <div 
@@ -295,7 +295,7 @@ function showValues() {
 
             // date
             const date =
-              convertToEurDateFormat(bankAccountMovement.date);
+              formatToNorDate(bankAccountMovement.date);
             htmlBankAccountMovementDate +=
               `
                 <div class="rightCell"
@@ -449,8 +449,8 @@ function validateValues() {
 
   validDateInterval = (fromDate <= toDate) ? true : false;
 
-  fromDate = convertToEurDateFormat(fromDate);
-  toDate = convertToEurDateFormat(toDate);
+  fromDate = formatToNorDate(fromDate);
+  toDate = formatToNorDate(toDate);
 
 
   if (toDate !== '') {

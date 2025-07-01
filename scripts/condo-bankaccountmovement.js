@@ -15,7 +15,7 @@ testMode();
 let isEventsCreated = false;
 
 objBankAccountMovement.menu();
-objBankAccountMovement.markSelectedMenu('Bankkontobevegelser');
+objBankAccountMovement.markSelectedMenu('Bankkonto transaksjoner');
 
 let socket = connectingToServer();
 
@@ -301,7 +301,7 @@ function showLeadingTextSearch() {
     getCurrentDate();
 
   // show search button
-  objBankAccountMovement.showButton('bankaccountmovement-search', 'Søk');
+  objBankAccountMovement.showLabelButton('bankaccountmovement-search', 'Søk');
 }
 
 // Show values for bank Account MovementId
@@ -375,7 +375,7 @@ function showValuesMaint(bankAccountMovementId) {
       const date =
         bankAccountMovementArray[objBankAccountMovementRowNumber].date;
       document.querySelector('.input-bankaccountmovement-maintDate').value =
-        convertToEurDateFormat(date);
+        formatToNorDate(date);
 
       // Show income
       const income =
@@ -518,10 +518,12 @@ function showBankAccountMovements() {
               // account name
               const accountName =
                 objBankAccount.getAccountName(bankAccountMovement.accountId);
+              const colorClassAccountName =
+                (accountName === '-') ? 'red' : colorClass;
               htmlColumnAccountName +=
                 `
                   <div
-                    class="leftCell ${colorClass}"
+                    class="leftCell ${colorClassAccountName}"
                   >
                     ${accountName}    
                   </div >
@@ -529,7 +531,7 @@ function showBankAccountMovements() {
 
               // date
               const date =
-                convertToEurDateFormat(bankAccountMovement.date);
+                formatToNorDate(bankAccountMovement.date);
               htmlColumnDate +=
                 `
                   <div
@@ -710,7 +712,7 @@ function showAllSearchedBankAccountMovements(className, bankAccountMovementId, a
           value="0" 
           selected
         >
-          Ingen bankkontobevegelser
+          Ingen bankkonto transaksjoner
         </option>
       `;
   }
