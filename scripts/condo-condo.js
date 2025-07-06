@@ -1,6 +1,6 @@
 // Condo maintenance
 
-// Activate Account class
+// Activate classes
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 
@@ -11,7 +11,8 @@ let isEventsCreated = false;
 objCondo.menu();
 objCondo.markSelectedMenu('Leilighet');
 
-let socket = connectingToServer();
+let socket =
+  connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
@@ -20,96 +21,111 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   showLoginError('condo-login');
 } else {
 
-  // Send a message to the server
+  // Send a requests to the server
   socket.onopen = () => {
 
-    // Sends a request to the server to get all users
-    const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
-    socket.send(SQLquery);
+    // Sends a request to the server to get users
+    let SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+
+    // Sends a request to the server to get condos
+    SQLquery =
+      `
+        SELECT * FROM condo
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY name;
+      `;
+
+    updateMySql(SQLquery, 'condo', 'SELECT');
   };
 
   // Handle incoming messages from server
   socket.onmessage = (event) => {
 
-    let message = event.data;
+    let messageFromServer =
+      event.data;
+    console.log('Incoming message from server:', messageFromServer);
 
-    // Create user array including objets
-    if (message.includes('"tableName":"user"')) {
+    //Converts a JavaScript Object Notation (JSON) string into an object
+    const objInfo =
+      JSON.parse(messageFromServer);
 
-      console.log('userTable');
+    if (objInfo.CRUD === 'SELECT') {
+      switch (objInfo.tableName) {
+        case 'user':
 
-      // user array including objects with user information
-      userArray = JSON.parse(message);
+          // user table
+          console.log('userTable');
 
-      // Sends a request to the server to get all condos
-      const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY condoId;
-    `;
-      socket.send(SQLquery);
-    }
+          userArray =
+            objInfo.tableArray;
+          break;
 
-    // Create condo array including objets
-    if (message.includes('"tableName":"condo"')) {
+        case 'condo':
 
-      // condo table
-      console.log('condoTable');
+          // condo table
+          console.log('condoTable');
 
-      // array including objects with condo information
-      condoArray = JSON.parse(message);
+          // array including objects with condo information
+          condoArray =
+            objInfo.tableArray;
 
-      // Sort condo name
-      condoArray.sort((a, b) => a.name.localeCompare(b.name));
+          // Find selected condo id
+          const condoId =
+            objCondo.getSelectedCondoId('select-condo-condoId');
 
-      // Find selected condo id
-      const condoId =
-       objCondo.getSelectedCondoId('condoId');
+          // Show leading text
+          showLeadingText(condoId);
 
-      // Show leading text
-      showLeadingText(condoId);
+          // Show all values for condo
+          showValues(condoId);
 
-      // Show all values for condo
-      showValues(condoId);
-
-      // Make events
-      if (!isEventsCreated) {
-        condoEvents();
-        isEventsCreated = true;
+          // Make events
+          if (!isEventsCreated) {
+            createEvents();
+            isEventsCreated = true;
+          }
+          break;
       }
     }
 
-    // Check for update, delete ...
-    if (message.includes('"affectedRows"')) {
+    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
 
-      console.log('affectedRows');
+      switch (objInfo.tableName) {
+        case 'condo':
 
-      // Sends a request to the server to get all condos
-      //objCondo.getCondos(socket);
-      const SQLquery =
-        `
-          SELECT * FROM condo
-          ORDER BY condoId;
-        `;
-      socket.send(SQLquery);
+          // Sends a request to the server to get condos one more time
+          SQLquery =
+            `
+              SELECT * FROM condo
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+              ORDER BY condoId;
+            `;
+          updateMySql(SQLquery, 'condo', 'SELECT');
+          break;
+      };
     }
-  };
 
-  // Handle errors
-  socket.onerror = (error) => {
+    // Handle errors
+    socket.onerror = (error) => {
 
-    // Close socket on error and let onclose handle reconnection
-    socket.close();
-  }
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
 
-  // Handle disconnection
-  socket.onclose = () => {
+    // Handle disconnection
+    socket.onclose = () => {
+    }
   }
 }
+
 // Make events for condo
-function condoEvents() {
+function createEvents() {
 
   // Select condo
   document.addEventListener('change', (event) => {
@@ -154,9 +170,10 @@ function condoEvents() {
       // Sends a request to the server to get all condos
       const SQLquery = `
         SELECT * FROM condo
+        WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY condoId;
       `;
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'condo', 'SELECT');
     }
   });
 }
@@ -203,6 +220,7 @@ function updateCondoRow(condoId) {
           city = '${city}'
         WHERE condoId = ${condoId};
       `;
+      updateMySql(SQLquery, 'condo', 'UPDATE');
 
     } else {
 
@@ -229,9 +247,9 @@ function updateCondoRow(condoId) {
           '${city}'
         );
       `;
+
+      updateMySql(SQLquery, 'condo', 'INSERT');
     }
-    // Client sends a request to the server
-    socket.send(SQLquery);
 
     document.querySelector('.select-condo-condoId').disabled =
       false;
@@ -384,15 +402,16 @@ function deleteCondoRow() {
       `;
     }
     // Client sends a request to the server
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'condo', 'DELETE');
 
     // Show updated condos
     //objCondo.getCondos(socket);
     const SQLquery = `
       SELECT * FROM condo
+      WHERE condominiumId = ${objUserPassword.condominiumId}
       ORDER BY condoId;
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'condo', 'SELECT');
   }
 }
 

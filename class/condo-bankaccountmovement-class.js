@@ -28,7 +28,7 @@ class BankAccountMovement extends Condos {
     // Check if bank account movement array is empty
     const numberOfRows =
      bankAccountMovementArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       bankAccountMovementArray.forEach((BankAccountMovement) => {
         if (bankAccountMovement.bankAccountMovementId > 1) {
           if (bankAccountMovement.bankAccountMovementId === bankAccountMovementId) {
@@ -122,7 +122,7 @@ class BankAccountMovement extends Condos {
     // Check if bank account movement array is empty
     const numberOfRows = 
     bankAccountMovementArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       bankAccountMovementArray.forEach((bankaccountmovement) => {
         if (bankaccountmovement.bankAccountMovementId > 1) {
 
@@ -191,7 +191,7 @@ class BankAccountMovement extends Condos {
 
     let bankAccountMovementId = 0;
 
-    // Check if HTML class exist
+    // Check if class exist
     if (isClassDefined(className)) {
 
       bankAccountMovementId =

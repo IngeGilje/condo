@@ -27,7 +27,7 @@ class UserBankAccount extends Condos {
 
     // Check if user bank account array is empty
     const numberOfRows = userBankAccountArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       userBankAccountArray.forEach((userBankAccount) => {
         if (userBankAccount.userBankAccountId > 1) {
           if (userBankAccount.userBankAccountId === userBankAccountId) {

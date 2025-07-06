@@ -1,25 +1,47 @@
 // Login
 
 // Activate user class
-const objUser = new User('user');
-const objLogIn = new Login('login');
+const objUser =
+  new User('user');
+const objLogIn =
+  new Login('login');
 
-let isEventsCreated = false;
-let socket = connectingToServer();
+let isEventsCreated =
+  false;
+let socket =
+  connectingToServer();
 
 localStorage.removeItem("user");
 
+/*
 // Send a message to the server
 socket.onopen = () => {
 
   // Sends a request to the server to get all users
-  const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
+  const SQLquery = 
+    `
+      SELECT * FROM user
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      ORDER BY userId;
+    `;
   socket.send(SQLquery);
 };
+*/
+// Send a requests to the server
+socket.onopen = () => {
 
+  let SQLquery;
+
+  // Sends a request to the server to get users
+  SQLquery =
+    `
+      SELECT * FROM user
+      ORDER BY userId;
+    `;
+
+  updateMySql(SQLquery, 'user', 'SELECT');
+};
+/*
 // Handle incoming messages from server
 socket.onmessage = (event) => {
 
@@ -43,23 +65,65 @@ socket.onmessage = (event) => {
       isEventsCreated = true;
     }
   }
+  */
+// Handle incoming messages from server
+socket.onmessage = (event) => {
 
-  // Check for update, delete ...
-  if (message.includes('"affectedRows"')) {
+  let messageFromServer =
+    event.data;
+  console.log('Incoming message from server:', messageFromServer);
 
-    console.log('affectedRows');
+  // Converts a JavaScript Object Notation (JSON) string into an object
+  objInfo =
+    JSON.parse(messageFromServer);
+
+  if (objInfo.CRUD === 'SELECT') {
+    switch (objInfo.tableName) {
+      case 'user':
+
+        // condo table
+        console.log('userTable');
+
+        userArray =
+          objInfo.tableArray;
+
+        // Show leading text
+        showLeadingText();
+
+        // Make events
+        if (!isEventsCreated) {
+          createEvents();
+          isEventsCreated = true;
+        }
+        break;
+    }
   }
-};
+  if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
 
-// Handle errors
-socket.onerror = (error) => {
+    switch (objInfo.tableName) {
+      case 'user':
 
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
+        // Sends a request to the server to get accounts one more time
+        SQLquery =
+          `
+              SELECT * FROM user
+              ORDER BY userId;
+            `;
+        updateMySql(SQLquery, 'user', 'SELECT');
+        break;
+    };
+  };
 
-// Handle disconnection
-socket.onclose = () => {
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
+  }
+
+  // Handle disconnection
+  socket.onclose = () => {
+  }
 }
 
 // Make events for users

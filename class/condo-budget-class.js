@@ -30,7 +30,7 @@ class Budget extends Condos {
 
     // Check if budget array is empty
     const numberOfRows = budgetArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       budgetArray.forEach((budget) => {
         if (budget.budgetId > 1) {
           if (budget.budgetId === budgetId) {

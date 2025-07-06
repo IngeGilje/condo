@@ -1,71 +1,22 @@
-// Start the inactivity timer
-// backup: >mysqldump -u Inge -p condos > e:\backup.sql
-
-// Import the backup:
-//mysql -u [username] -p [database_name] < backup.sql
-let inactivityTimer;
-//resetTimer();
-
-/*
-// Reset timer on any user interaction
-process.stdin.on("data", resetTimer);
-
-// Reset timer on any user interaction
-process.stdin.on("data", resetTimer);
-*/
-// Test- or web server
-// const serverStatus = 1; // Web server
-// const serverStatus = 2; // Test web server/ local web server
-// const serverStatus = 3; // Test server/ local test server
-const serverStatus = 3; // Test server/ local test server
-
-/*
-const WebSocket = require('ws');
-const server = new WebSocket.Server({ port: 7000 }, () => {
-  console.log('WebSocket server is listening on port 7000');
-});
-*/
+// Test server
 
 let WebSocket;
 let server;
 
-switch (serverStatus) {
 
-  // Web server
-  case 1: {
-    WebSocket = require('ws');
-    server = new WebSocket.Server({ port: 7000 }, () => {
-      console.log('WebSocket server is listening on port 7000');
-    }); break;
-  }
+// Test server/ local test server
 
-  // Test web server/ local web server
-  case 2: {
-    WebSocket = require('ws');
-    server = new WebSocket.Server({ port: 7000 }, () => {
-      console.log('WebSocket server is listening on port 7000');
-    }); socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-
-  // Test server/ local test server
-  case 3: {
-    WebSocket = require('ws');
-    server = new WebSocket.Server({ port: 6050 }, () => {
-      console.log('WebSocket server is listening on port 6050');
-    });
-    break;
-  }
-
-  default:
-    break;
-}
+WebSocket = require('ws');
+server = new WebSocket.Server({ port: 1234 }, () => {
+  console.log('WebSocket server is listening on port 6050');
+});
 
 server.on('connection', (socket) => {
 
   console.log('Client connected');
   socket.on('message', (message) => {
     console.log('Received:', message.toString());
+    //socket.send(`Echo: ${message}`);
   });
 
   socket.on('close', () => {
@@ -197,6 +148,7 @@ function closeDatabase() {
 // Querying the database
 function queryingSQL(query) {
 
+  let numberOfRecords = 0;
   (connected2MySQL) ? '' : connectToMySql();
 
   if (connected2MySQL) {
@@ -209,15 +161,3 @@ function queryingSQL(query) {
     });
   }
 }
-
-/*
-// Close the application after 1 hour with no user activity
-function resetTimer() {
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(() => {
-
-      // Close the application
-      process.exit(); 
-  }, 10 * 60 * 60 * 1000); // 10 hours
-}
-*/

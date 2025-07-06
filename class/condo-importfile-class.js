@@ -28,7 +28,7 @@ class ImportFile extends Condos {
 
     // Check if file import array is empty
     const numberOfRows = importFileArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       importFileArray.forEach((importFile) => {
         if (importFile.importFileId >= 0) {
           if (importFile.importFileId === importFileId) {

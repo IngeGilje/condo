@@ -26,7 +26,7 @@ switch (objUser.serverStatus) {
   case 3: {
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
+    socket = new WebSocket(`${protocol}://${hostname}:5000`); break;
     break;
   }
   default:
@@ -42,10 +42,12 @@ objPayment.markSelectedMenu('Betaling');
 socket.onopen = () => {
 
   // Sends a request to the server to get all users
-  const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
+  const SQLquery = 
+    `
+      SELECT * FROM user
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      ORDER BY userId;
+    `;
   socket.send(SQLquery);
 };
 
@@ -63,10 +65,12 @@ socket.onmessage = (event) => {
     userArray = JSON.parse(message);
 
     // Sends a request to the server to get all accounts
-    const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
+    const SQLquery = 
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
     socket.send(SQLquery);
   }
 
@@ -80,10 +84,12 @@ socket.onmessage = (event) => {
     accountArray = JSON.parse(message);
 
     // Sends a request to the server to get all payments
-    const SQLquery = `
-      SELECT * FROM payment
-      ORDER BY paymentId;
-    `;
+    const SQLquery =
+      `
+        SELECT * FROM payment
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY paymentId;
+      `;
     socket.send(SQLquery);
   }
 
@@ -123,6 +129,7 @@ socket.onmessage = (event) => {
     const SQLquery =
       `
         SELECT * FROM payment
+        WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY paymentId;
       `;
     socket.send(SQLquery);
@@ -180,10 +187,12 @@ function createEvents() {
       deletePaymentRow();
 
       // Sends a request to the server to get all payments
-      const SQLquery = `
-        SELECT * FROM payment
-        ORDER BY paymentId;
-      `;
+      const SQLquery =
+        `
+          SELECT * FROM payment
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY paymentId;
+        `;
       socket.send(SQLquery);
     };
   });
@@ -193,10 +202,12 @@ function createEvents() {
     if (event.target.classList.contains('button-payment-cancel')) {
 
       // Sends a request to the server to get all payments
-      const SQLquery = `
-        SELECT * FROM payment
-        ORDER BY paymentId;
-      `;
+      const SQLquery =
+        `
+          SELECT * FROM payment
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY paymentId;
+        `;
       socket.send(SQLquery);
     };
   });
@@ -205,10 +216,12 @@ function createEvents() {
     if (event.target.classList.contains('button-payment-cancel')) {
 
       // Sends a request to the server to get all payments
-      const SQLquery = `
-        SELECT * FROM payment
-        ORDER BY paymentId;
-      `;
+      const SQLquery = 
+        `
+          SELECT * FROM payment
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY paymentId;
+        `;
       socket.send(SQLquery);
     };
   });

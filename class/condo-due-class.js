@@ -29,7 +29,7 @@ class Due extends Condos {
 
     // Check if monthly payment array is empty
     const numberOfRows = dueArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       dueArray.forEach((due) => {
         if (due.dueId > 1) {
           if (due.dueId === dueId) {
@@ -72,18 +72,6 @@ class Due extends Condos {
     document.querySelector(`.div-${className}`).innerHTML =
       html;
   }
-
-  /*
-  // Get all monthly payments from MySQL database
-  getDues(socket) {
-
-    const SQLquery = `
-      SELECT * FROM due
-      ORDER BY date;
-    `;
-    socket.send(SQLquery);
-  }
-  */
 
   // Find selected due id
   getSelectedDueId(columnName) {

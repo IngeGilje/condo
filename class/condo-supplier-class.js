@@ -26,7 +26,7 @@ class Supplier extends Condos {
 
     // Check if supplier array is empty
     const numberOfRows = supplierArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       supplierArray.forEach((supplier) => {
         if (supplier.supplierId > 1) {
           if (supplier.supplierId === supplierId) {

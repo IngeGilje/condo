@@ -21,113 +21,234 @@ let socket =
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('condo-login');
+  showLoginError('accountinreport-login');
 } else {
 
-  // Send a message to the server
+  // Send a requests to the server
   socket.onopen = () => {
 
-    // Sends a request to the server to get all users
-    const SQLquery =
+
+    let SQLquery;
+    let messageToServer;
+
+    // Sends a request to the server to get users
+    SQLquery =
       `
         SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY userId;
       `;
-    socket.send(SQLquery);
+
+    messageToServer =
+    {
+      tableName: "budget",
+      requestId: "requestId",
+      SQLquery: SQLquery
+    };
+
+    updateMySql(SQLquery, 'budget', 'SELECT');
+
+    // Sends a request to the server to get accounts
+    SQLquery =
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
+
+    updateMySql(SQLquery, 'account', 'SELECT');
+
+    // Sends a request to the server to get bank account movements
+    SQLquery =
+      `
+        SELECT * FROM bankaccountmovement
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY bankAccountMovementId;
+      `;
+
+    updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
   };
 
   // Handle incoming messages from server
   socket.onmessage = (event) => {
 
-    let message = event.data;
+    let messageFromServer =
+      event.data;
+    console.log('Incoming message from server:', messageFromServer);
 
-    // Create user array including objets
-    if (message.includes('"tableName":"user"')) {
+    //Converts a JavaScript Object Notation (JSON) string into an object
+    objInfo =
+      JSON.parse(messageFromServer);
 
-      console.log('userTable');
+    if (objInfo.CRUD === 'SELECT') {
+      switch (objInfo.tableName) {
+        case 'user':
 
-      // user array including objects with user information
-      userArray = JSON.parse(message);
+          // user table
+          console.log('userTable');
 
-      // Sends a request to the server to get all condos
-      const SQLquery =
-        `
-          SELECT * FROM bankaccountmovement
-          ORDER BY bankaccountmovementId;
-        `;
-      socket.send(SQLquery);
-    }
+          userArray =
+            objInfo.tableArray;
+          break;
 
-    // Create bank account movement array including objets
-    if (message.includes('"tableName":"bankaccountmovement"')) {
+        case 'account':
 
-      console.log('bankaccountmovementTable');
+          // account table
+          console.log('accountTable');
 
-      // user array including objects with user information
-      bankAccountMovementArray = JSON.parse(message);
+          accountArray =
+            objInfo.tableArray;
+          break;
 
-      // Sends a request to the server to get all condos
-      const SQLquery =
-        `
-          SELECT * FROM account
-          ORDER BY accountId;
-        `;
-      socket.send(SQLquery);
-    }
+        case 'bankaccountmovement':
 
-    // Create account array including objets
-    if (message.includes('"tableName":"account"')) {
+          // account table
+          console.log('bankaccountmovement');
 
-      console.log('accountTable');
+          bankAccountMovementArray =
+            objInfo.tableArray;
+          break;
 
-      // array including objects with account information
-      accountArray = JSON.parse(message);
+        case 'budget':
 
-      // Sends a request to the server to get all budgets
-      const SQLquery =
-        `
-          SELECT * FROM budget
-          ORDER BY budgetId;
-        `;
-      socket.send(SQLquery);
-    }
+          // budget table
+          console.log('budgetTable');
 
-    // Create bank account movements array including objets
-    if (message.includes('"tableName":"budget"')) {
+          // array including objects with budget information
+          budgetArray =
+            objInfo.tableArray;
 
-      // budget table
-      console.log('budgetTable');
+          // Find selected budget id
+          const budgetId =
+            objBudget.getSelectedBudgetId('select-accountingreport-budgetId');
 
-      // array including objects with budget information
-      budgetArray = JSON.parse(message);
+          // Show leading text
+          showLeadingText();
 
-      // Show leading text
-      showLeadingText();
-
-      // Make events
-      if (!isEventsCreated) {
-        createEvents();
-        isEventsCreated = true;
+          // Make events
+          if (!isEventsCreated) {
+            createEvents();
+            isEventsCreated = true;
+          }
+          break;
       }
     }
+    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
 
-    // Check for update, delete ...
-    if (message.includes('"affectedRows"')) {
-      console.log('affectedRows');
+      switch (objInfo.tableName) {
+        case 'budget':
+
+          // Sends a request to the server to get accounts one more time
+          SQLquery =
+            `
+              SELECT * FROM budget
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+              ORDER BY budgetId;
+            `;
+          updateMySql(SQLquery, 'budget', 'SELECT');
+          break;
+      };
     }
-  };
 
-  // Handle errors
-  socket.onerror = (error) => {
+    /*
+    // Handle incoming messages from server
+    socket.onmessage = (event) => {
+  
+      let message = event.data;
+  
+      // Create user array including objets
+      if (message.includes('"tableName":"user"')) {
+  
+        console.log('userTable');
+  
+        // user array including objects with user information
+        userArray = JSON.parse(message);
+  
+        // Sends a request to the server to get all condos
+        const SQLquery =
+          `
+            SELECT * FROM bankaccountmovement
+            WHERE condominiumId = ${objUserPassword.condominiumId}
+            ORDER BY bankaccountmovementId;
+          `;
+        socket.send(SQLquery);
+      }
+  
+      // Create bank account movement array including objets
+      if (message.includes('"tableName":"bankaccountmovement"')) {
+  
+        console.log('bankaccountmovementTable');
+  
+        // user array including objects with user information
+        bankAccountMovementArray = JSON.parse(message);
+  
+        // Sends a request to the server to get all condos
+        const SQLquery =
+          `
+            SELECT * FROM account
+            WHERE condominiumId = ${objUserPassword.condominiumId}
+            ORDER BY accountId;
+          `;
+        socket.send(SQLquery);
+      }
+  
+      // Create account array including objets
+      if (message.includes('"tableName":"account"')) {
+  
+        console.log('accountTable');
+  
+        // array including objects with account information
+        accountArray = JSON.parse(message);
+  
+        // Sends a request to the server to get all budgets
+        const SQLquery =
+          `
+            SELECT * FROM budget
+            WHERE condominiumId = ${objUserPassword.condominiumId}
+            ORDER BY budgetId;
+          `;
+        socket.send(SQLquery);
+      }
+  
+      // Create bank account movements array including objets
+      if (message.includes('"tableName":"budget"')) {
+  
+        // budget table
+        console.log('budgetTable');
+  
+        // array including objects with budget information
+        budgetArray = JSON.parse(message);
+  
+        // Show leading text
+        showLeadingText();
+  
+        // Make events
+        if (!isEventsCreated) {
+          createEvents();
+          isEventsCreated = true;
+        }
+      }
+  
+      // Check for update, delete ...
+      if (message.includes('"affectedRows"')) {
+        console.log('affectedRows');
+      }
+    };
+    */
 
-    // Close socket on error and let onclose handle reconnection
-    socket.close();
-  }
+    // Handle errors
+    socket.onerror = (error) => {
 
-  // Handle disconnection
-  socket.onclose = () => {
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
+
+    // Handle disconnection
+    socket.onclose = () => {
+    }
   }
 }
+
 // Make budget events
 function createEvents() {
 
@@ -158,7 +279,7 @@ function showLeadingText() {
   objAccountingReport.showButton('accountingreport-search', 'Start søk');
 }
 
-// Show values for due and income for selected condo
+// Show values for due and income for selected budget
 function showValues() {
 
   // check for valid filter

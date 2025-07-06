@@ -201,6 +201,7 @@
   grid-column-start: 8;
 }
 
+.div-overview-columnBankAccountMovementAmount,
 .div-importfile-columnIncome {
   grid-column-start: 9;
 }

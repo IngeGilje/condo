@@ -29,7 +29,7 @@ class BankAccount extends Condos {
 
     // Check if bank account array is empty
     const numberOfRows = bankAccountArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       bankAccountArray.forEach((bankaccount) => {
         if (bankaccount.bankAccountId > 1) {
           if (bankaccount.bankAccountId === bankAccountId) {

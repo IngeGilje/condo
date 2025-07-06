@@ -28,7 +28,7 @@ class Payment extends Condos {
 
     // Check if payment array is empty
     const numberOfRows = paymentArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       paymentArray.forEach((payment) => {
         if (payment.paymentId > 1) {
           if (payment.paymentId === paymentId) {

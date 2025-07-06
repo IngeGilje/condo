@@ -22,12 +22,133 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   showLoginError('bankaccount-login');
 } else {
 
+  // Send a requests to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get users
+    let SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+
+    // Sends a request to the server to get accounts
+    SQLquery =
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
+
+    updateMySql(SQLquery, 'account', 'SELECT');
+
+    // Sends a request to the server to get budgets
+    SQLquery =
+      `
+        SELECT * FROM budget
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY budgetId;
+      `;
+
+    updateMySql(SQLquery, 'budget', 'SELECT');
+  };
+
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
+
+    let messageFromServer =
+      event.data;
+    console.log('Incoming message from server:', messageFromServer);
+
+    //Converts a JavaScript Object Notation (JSON) string into an object
+    objInfo =
+      JSON.parse(messageFromServer);
+
+    if (objInfo.CRUD === 'SELECT') {
+      switch (objInfo.tableName) {
+        case 'user':
+
+          // condo table
+          console.log('userTable');
+
+          userArray =
+            objInfo.tableArray;
+          break;
+
+        case 'account':
+
+          // account table
+          console.log('accountTable');
+
+          accountArray =
+            objInfo.tableArray;
+          break;
+
+        case 'budget':
+
+          // budget table
+          console.log('budgetTable');
+
+          // array including objects with budget information
+          budgetArray =
+            objInfo.tableArray;
+
+          // Find selected budget id
+          const budgetId =
+            objBudget.getSelectedBudgetId('select-budget-budgetId');
+
+          showLeadingText(budgetId);
+
+          showValues(budgetId);
+
+          // Make events
+          if (!isEventsCreated) {
+
+            createEvents();
+            isEventsCreated = true;
+          }
+          break;
+      }
+    }
+
+    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+      switch (objInfo.tableName) {
+        case 'budget':
+
+          // Sends a request to the server to get budgets one more time
+          SQLquery =
+            `
+              SELECT * FROM budget
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+              ORDER BY budgetId;
+            `;
+          updateMySql(SQLquery, 'budget', 'SELECT');
+          break;
+      };
+    }
+
+    // Handle errors
+    socket.onerror = (error) => {
+
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
+
+    // Handle disconnection
+    socket.onclose = () => {
+    }
+  }
+  /*
   // Send a message to the server
   socket.onopen = () => {
 
     // Sends a request to the server to get all users
     const SQLquery = `
     SELECT * FROM user
+    WHERE condominiumId = ${objUserPassword.condominiumId}
     ORDER BY userId;
   `;
     socket.send(SQLquery);
@@ -50,6 +171,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM account
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY accountId;
         `;
       socket.send(SQLquery);
@@ -68,6 +190,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM budget
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY budgetId;
         `;
       socket.send(SQLquery);
@@ -104,23 +227,26 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM budget
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY budgetId;
         `;
       socket.send(SQLquery);
     }
-  }
 
-  // Handle errors
-  socket.onerror = (error) => {
+    // Handle errors
+    socket.onerror = (error) => {
 
-    // Close socket on error and let onclose handle reconnection
-    socket.close();
-  }
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
 
-  // Handle disconnection
-  socket.onclose = () => {
+    // Handle disconnection
+    socket.onclose = () => {
+    }
   }
+  */
 }
+
 
 // Make budget events
 function createEvents() {
@@ -166,9 +292,10 @@ function createEvents() {
       deleteBudgetRow();
       const SQLquery = `
         SELECT * FROM budget
+        WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY budgetId;
       `;
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'budget', 'SELECT');
     };
   });
 
@@ -178,9 +305,10 @@ function createEvents() {
 
       const SQLquery = `
         SELECT * FROM budget
+        WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY budgetId;
       `;
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'budget', 'SELECT');
     };
   });
 }
@@ -226,9 +354,7 @@ function updateBudgetRow(budgetId) {
             text = '${text}'
           WHERE budgetId = ${budgetId};
         `;
-
-      // Client sends a request to the server for update
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'budget', 'UPDATE');
 
     } else {
 
@@ -254,9 +380,7 @@ function updateBudgetRow(budgetId) {
             '${text}'
           );
         `;
-
-      // Client sends a request to the server
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'budget', 'INSERT');
 
       document.querySelector('.select-budget-budgetId').disabled =
         false;
@@ -391,7 +515,7 @@ function deleteBudgetRow() {
         `;
     }
     // Client sends a request to the server
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'budget', 'DELETE');
   }
 }
 

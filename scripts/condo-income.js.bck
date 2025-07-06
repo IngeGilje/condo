@@ -29,6 +29,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Sends a request to the server to get all users
     const SQLquery = `
     SELECT * FROM user
+    WHERE condominiumId = ${objUserPassword.condominiumId}
     ORDER BY userId;
   `;
     socket.send(SQLquery);
@@ -50,6 +51,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // Sends a request to the server to get all condos
       const SQLquery = `
       SELECT * FROM condo
+      WHERE condominiumId = ${objUserPassword.condominiumId}
       ORDER BY name;
     `;
       socket.send(SQLquery);
@@ -64,10 +66,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       condoArray = JSON.parse(message);
 
       //objAccount.getAccounts(socket);
-      const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
+      const SQLquery = 
+        `
+          SELECT * FROM account
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY accountId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -81,10 +85,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       accountArray = JSON.parse(message);
 
       // Get all income rows
-      const SQLquery = `
-      SELECT * FROM bankaccountmovement
-      ORDER BY bankaccountmovementId;
-    `;
+      const SQLquery = 
+        `
+          SELECT * FROM bankaccountmovement
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY bankaccountmovementId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -99,10 +105,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         JSON.parse(message);
 
       // Get all income rows
-      const SQLquery = `
-      SELECT * FROM income
-      ORDER BY date;
-    `;
+      const SQLquery = 
+        `
+          SELECT * FROM income
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY date;
+        `;
       socket.send(SQLquery);
     }
 
@@ -141,10 +149,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       console.log('affectedRows');
 
       // Get all income rows
-      const SQLquery = `
-        SELECT * FROM income
-        ORDER BY date;
-      `;
+      const SQLquery = 
+        `
+          SELECT * FROM income
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY date;
+        `;
       socket.send(SQLquery);
     }
   }
@@ -211,10 +221,12 @@ function createEvents() {
 
       // Sends a request to the server to get all condos
       // Get all income rows
-      const SQLquery = `
-        SELECT * FROM income
-        ORDER BY text;
-      `;
+      const SQLquery =
+        `
+          SELECT * FROM income
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY text;
+        `;
       socket.send(SQLquery);
 
     };
@@ -226,10 +238,12 @@ function createEvents() {
 
       // Sends a request to the server to get all condos
       // Get all income rows
-      const SQLquery = `
-        SELECT * FROM income
-        ORDER BY date;
-      `;
+      const SQLquery = 
+        `
+          SELECT * FROM income
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY date;
+        `;
       socket.send(SQLquery);
     };
   });
@@ -498,14 +512,15 @@ function deleteIncomeRow() {
     }
     // Client sends a request to the server
     socket.send(SQLquery);
-    console.log(SQLquery);
 
     // Show updated incomes
     // Get all income rows
-    const SQLquery = `
-      SELECT * FROM income
-      ORDER BY date;
-    `;
+    const SQLquery = 
+      `
+        SELECT * FROM income
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY date;
+      `;
     socket.send(SQLquery);
   }
 }

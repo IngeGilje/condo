@@ -28,7 +28,7 @@ class Condo extends Condos {
 
     // Check if condo array is empty
     const numberOfRows = condoArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       condoArray.forEach((condo) => {
         if (condo.condoId > 1) {
           if (condo.condoId === condoId) {

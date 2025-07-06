@@ -3,9 +3,9 @@
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
-const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
 const objDue = new Due('due');
 const objCondo = new Condo('condo');
+const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
 const objOverview = new Overview('overview');
 
 testMode();
@@ -24,6 +24,143 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   showLoginError('condo-login');
 } else {
 
+  // Send a requests to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get users
+    let SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+
+    // Sends a request to the server to get dues
+    SQLquery =
+      `
+        SELECT * FROM due
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY dueId;
+      `;
+
+    updateMySql(SQLquery, 'due', 'SELECT');
+
+    // Sends a request to the server to get condos
+    SQLquery =
+      `
+        SELECT * FROM condo
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY name;
+      `;
+
+    updateMySql(SQLquery, 'condo', 'SELECT');
+
+    // Sends a request to the server to get bank account movements
+    SQLquery =
+      `
+        SELECT * FROM bankaccountmovement
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY bankAccountMovementId;
+      `;
+
+    updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+  };
+
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
+
+    let messageFromServer =
+      event.data;
+    console.log('Incoming message from server:', messageFromServer);
+
+    //Converts a JavaScript Object Notation (JSON) string into an object
+    objInfo =
+      JSON.parse(messageFromServer);
+
+    if (objInfo.CRUD === 'SELECT') {
+      switch (objInfo.tableName) {
+        case 'user':
+
+          // user table
+          console.log('userTable');
+
+          userArray =
+            objInfo.tableArray;
+          break;
+
+        case 'due':
+
+          // due table
+          console.log('dueTable');
+
+          dueArray =
+            objInfo.tableArray;
+          break;
+
+        case 'condo':
+
+          // condo table
+          console.log('condoTable');
+
+          condoArray =
+            objInfo.tableArray;
+          break;
+
+        case 'bankaccountmovement':
+
+          // bank account movement table
+          console.log('bankaccountmovementTable');
+
+          // array including objects with bank account movement information
+          bankAccountMovementArray =
+            objInfo.tableArray;
+
+          // Show leading text bank account movement
+          showLeadingText();
+
+          // Show all values for 
+          showValues();
+
+          // Make events
+          if (!isEventsCreated) {
+            createEvents();
+            isEventsCreated = true;
+          }
+          break;
+      }
+    }
+
+    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+      switch (objInfo.tableName) {
+        case 'bank account movement':
+
+          // Sends a request to the server to get bank account movements one more time
+          SQLquery =
+            `
+              SELECT * FROM bankaccountmovement
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+              ORDER BY bankaccountmovementId;
+            `;
+          updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+          break;
+      };
+    }
+
+    // Handle errors
+    socket.onerror = (error) => {
+
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
+
+    // Handle disconnection
+    socket.onclose = () => {
+    }
+  }
+
+  /*
   // Send a message to the server
   socket.onopen = () => {
 
@@ -53,6 +190,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM condo
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY name;
         `;
       socket.send(SQLquery);
@@ -71,6 +209,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM due
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY date;
         `;
       socket.send(SQLquery);
@@ -91,6 +230,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM bankaccountmovement
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY date;
         `;
       socket.send(SQLquery);
@@ -120,7 +260,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     if (message.includes('"affectedRows"')) {
       console.log('affectedRows');
     }
-  };
+
 
   // Handle errors
   socket.onerror = (error) => {
@@ -132,6 +272,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
+  */
 }
 
 // Make overview events

@@ -28,10 +28,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   socket.onopen = () => {
 
     // Sends a request to the server to get all users
-    const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
+    const SQLquery = 
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
     socket.send(SQLquery);
   };
 
@@ -49,10 +51,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       userArray = JSON.parse(message);
 
       // Sends a request to the server to get all condos
-      const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY name;
-    `;
+      const SQLquery = 
+        `
+          SELECT * FROM condo
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY name;
+        `;
       socket.send(SQLquery);
     }
 
@@ -84,10 +88,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       accountArray = JSON.parse(message);
 
       // Sends a request to the server to get all payments
-      const SQLquery = `
-      SELECT * FROM payment
-      ORDER BY paymentId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM payment
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY paymentId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -120,6 +126,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM payment
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY paymentId;
         `;
       socket.send(SQLquery);

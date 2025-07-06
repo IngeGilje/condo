@@ -2,10 +2,166 @@
 
 // Activate Condominium class
 const objUser = new User('user');
-const objCondominium = new Condominium('condominium');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
+const objCondominium = new Condominium('condominium');
 
+testMode();
+
+let isEventsCreated = false;
+
+objCondominium.menu();
+objCondominium.markSelectedMenu('Sameie');
+
+let socket =
+  connectingToServer();
+
+// Validate user/password
+const objUserPassword = JSON.parse(localStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  showLoginError('condominium-login');
+} else {
+
+  // Send a requests to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get users
+    let SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+
+    // Sends a request to the server to get bankaccounts
+    SQLquery =
+      `
+        SELECT * FROM bankaccount
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY bankAccountId;
+      `;
+    updateMySql(SQLquery, 'bankaccount', 'SELECT');
+
+    // Sends a request to the server to get accounts
+    SQLquery =
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
+    updateMySql(SQLquery, 'bankaccount', 'SELECT');
+
+    // Sends a request to the server to get condominiums
+    SQLquery =
+      `
+        SELECT * FROM condominium
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY condominiumId;
+      `;
+
+    updateMySql(SQLquery, 'condominium', 'SELECT');
+  };
+
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
+
+    let messageFromServer =
+      event.data;
+    console.log('Message from server:', messageFromServer);
+
+    //Converts a JavaScript Object Notation (JSON) string into an object
+    objInfo =
+      JSON.parse(messageFromServer);
+
+    if (objInfo.CRUD === 'SELECT') {
+      switch (objInfo.tableName) {
+        case 'user':
+
+          // user table
+          console.log('userTable');
+
+          userArray =
+            objInfo.tableArray;
+          break;
+
+        case 'account':
+
+          // account table
+          console.log('accountTable');
+
+          accountArray =
+            objInfo.tableArray;
+          break;
+
+
+        case 'bankaccount':
+
+          // bankaccount table
+          console.log('bankaccountTable');
+
+          bankaccountArray =
+            objInfo.tableArray;
+          break;
+
+        case 'condominium':
+
+          // condominium table
+          console.log('condominiumTable');
+
+          // array including objects with condominium information
+          condominiumArray =
+            objInfo.tableArray;
+
+          // Find selected condominium id
+          const condominiumId =
+            objCondominium.getSelectedCondominiumId('select-condominium-condominiumId');
+
+          // Show leading text
+          showLeadingText(condominiumId);
+
+          // Show all values for condominium
+          showValues(condominiumId);
+
+          // Make events
+          if (!isEventsCreated) {
+            condominiumEvents();
+            isEventsCreated = true;
+          }
+          break;
+      }
+    }
+
+    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+      switch (objInfo.tableName) {
+        case 'condominium':
+
+          // Sends a request to the server to get condominiums one more time
+          SQLquery =
+            `
+              SELECT * FROM condominium
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+              ORDER BY condominiumId;
+            `;
+          updateMySql(SQLquery, 'condominium', 'SELECT');
+      };
+    }
+
+    // Handle errors
+    socket.onerror = (error) => {
+
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
+
+    // Handle disconnection
+    socket.onclose = () => {
+    }
+  }
+}
+/*
 objUserPassword = JSON.parse(localStorage.getItem('user'));
 
 // Connection to a server
@@ -26,7 +182,7 @@ switch (objUser.serverStatus) {
   case 3: {
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
+    socket = new WebSocket(`${protocol}://${hostname}:5000`); break;
     break;
   }
   default:
@@ -44,6 +200,7 @@ socket.onopen = () => {
   // Sends a request to the server to get all users
   const SQLquery = `
     SELECT * FROM user
+    WHERE condominiumId = ${objUserPassword.condominiumId}
     ORDER BY userId;
   `;
   socket.send(SQLquery);
@@ -65,6 +222,7 @@ socket.onmessage = (event) => {
     // Sends a request to the server to get all accounts
     const SQLquery = `
     SELECT * FROM account
+    WHERE condominiumId = ${objUserPassword.condominiumId}
     ORDER BY accountId;
   `;
     socket.send(SQLquery);
@@ -82,6 +240,7 @@ socket.onmessage = (event) => {
     //objBankAccount.getBankAccounts(socket);
     const SQLquery = `
       SELECT * FROM bankaccount
+      WHERE condominiumId = ${objUserPassword.condominiumId}
       ORDER BY name;
     `;
     socket.send(SQLquery);
@@ -100,6 +259,7 @@ socket.onmessage = (event) => {
     // Get all condominiums from MySQL database
     const SQLquery = `
       SELECT * FROM condominium
+      WHERE condominiumId = ${objUserPassword.condominiumId}
       ORDER BY name;
     `;
     socket.send(SQLquery);
@@ -139,11 +299,12 @@ socket.onmessage = (event) => {
     const SQLquery =
       `
         SELECT * FROM condominium
+        WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY condominiumId;
       `;
     socket.send(SQLquery);
   }
-};
+
 
 // Handle errors
 socket.onerror = (error) => {
@@ -155,9 +316,11 @@ socket.onerror = (error) => {
 // Handle disconnection
 socket.onclose = () => {
 }
+}
+*/
 
 // Make events for condominium
-function condoEvents() {
+function condominiumEvents() {
 
   // Select condominium
   document.addEventListener('change', (event) => {
@@ -170,7 +333,8 @@ function condoEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-condominium-update')) {
 
-      const condominiumId = Number(document.querySelector('.select-condominium-condominiumId').value);
+      const condominiumId =
+        Number(document.querySelector('.select-condominium-condominiumId').value);
       updateCondominium(condominiumId);
     }
   });
@@ -189,11 +353,13 @@ function condoEvents() {
       deleteCondominiumRow();
 
       // Sends a request to the server to get all condos
-      const SQLquery = `
-      SELECT * FROM condominium
-      ORDER BY name;
-    `;
-      socket.send(SQLquery);
+      const SQLquery =
+        `
+          SELECT * FROM condominium
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY name;
+        `;
+      updateMySql(SQLquery, 'condominium', 'SELECT');
     }
   });
 
@@ -205,9 +371,10 @@ function condoEvents() {
       const SQLquery =
         `
           SELECT * FROM condominium
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY condominiumId;
         `;
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'condominium', 'SELECT');
     }
   });
 }
@@ -218,7 +385,6 @@ function updateCondominium(condominiumId) {
   let isUpdated = false;
 
   // Check values
-  //const condominiumId = Number(document.querySelector('.select-condominium-condominiumId').value);
   if (validateValues()) {
 
     const condominiumName =
@@ -267,6 +433,7 @@ function updateCondominium(condominiumId) {
         WHERE condominiumId = ${condominiumId};
       `;
 
+      updateMySql(SQLquery, 'condominium', 'UPDATE');
     } else {
 
       SQLquery = `
@@ -298,9 +465,8 @@ function updateCondominium(condominiumId) {
           '${importPath}'
         );
       `;
+      updateMySql(SQLquery, 'condominium', 'INSERT');
     }
-    // Client sends a request to the server
-    socket.send(SQLquery);
 
     document.querySelector('.select-condominium-condominiumId').disabled =
       false;
@@ -487,18 +653,17 @@ function deleteCondominiumRow() {
         DELETE FROM condominium
         WHERE condominiumId = ${condominiumId};
       `;
+      updateMySql(SQLquery, 'condominium', 'SELECT');
     }
-    // Client sends a request to the server
-    socket.send(SQLquery);
 
-    // Show updated condos
-    //objCondominium.getCondominiums(socket);
     // Get all condominiums from MySQL database
-    const SQLquery = `
-      SELECT * FROM condominium
-      ORDER BY name;
-    `;
-    socket.send(SQLquery);
+    const SQLquery =
+      `
+        SELECT * FROM condominium
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY name;
+      `;
+    updateMySql(SQLquery, 'condominium', 'SELECT');
   }
 }
 
@@ -539,7 +704,7 @@ function validateValues() {
   const organizationNumber =
     document.querySelector('.input-condominium-organizationNumber').value;
   const validOrganizationNumber =
-    checkOrganizationNumber(organizationNumber, "condominium-organizationNumber", "Organisasjonsnummer");
+    validateOrganizationNumber(organizationNumber, "condominium-organizationNumber", "Organisasjonsnummer");
 
   // Check import path
   const importPath =

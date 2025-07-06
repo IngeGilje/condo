@@ -18,17 +18,139 @@ let socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('condo-login');
+  showLoginError('supplier-login');
 } else {
 
+  // Send a requests to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get users
+    let SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+
+    // Sends a request to the server to get accounts
+    SQLquery =
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
+    updateMySql(SQLquery, 'account', 'SELECT');
+
+    // Sends a request to the server to get suppliers
+    SQLquery =
+      `
+        SELECT * FROM supplier
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY supplierId;
+      `;
+
+    updateMySql(SQLquery, 'supplier', 'SELECT');
+  };
+
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
+
+    let messageFromServer =
+      event.data;
+    console.log('Incoming message from server:', messageFromServer);
+
+    //Converts a JavaScript Object Notation (JSON) string into an object
+    objInfo =
+      JSON.parse(messageFromServer);
+
+    if (objInfo.CRUD === 'SELECT') {
+      switch (objInfo.tableName) {
+        case 'user':
+
+          // user table
+          console.log('userTable');
+
+          userArray =
+            objInfo.tableArray;
+          break;
+
+        case 'account':
+
+          // user table
+          console.log('accountTable');
+
+          accountArray =
+            objInfo.tableArray;
+          break;
+
+        case 'supplier':
+
+          // supplier table
+          console.log('supplierTable');
+
+          // array including objects with supplier information
+          supplierArray =
+            objInfo.tableArray;
+
+          // Find selected supplier id
+          const supplierId =
+            objSupplier.getSelectedSupplierId('select-supplier-supplierId');
+
+          // Show leading text
+          showLeadingText(supplierId);
+
+          // Show all values for supplier
+          showValues(supplierId);
+
+          // Make events
+          if (!isEventsCreated) {
+            createEvents();
+            isEventsCreated = true;
+          }
+          break;
+      }
+    }
+
+    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+      switch (objInfo.tableName) {
+        case 'supplier':
+
+          // Sends a request to the server to get suppliers one more time
+          SQLquery =
+            `
+              SELECT * FROM supplier
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+              ORDER BY supplierId;
+            `;
+          updateMySql(SQLquery, 'supplier', 'SELECT');
+          break;
+      };
+    }
+
+    // Handle errors
+    socket.onerror = (error) => {
+
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
+
+    // Handle disconnection
+    socket.onclose = () => {
+    }
+  }
+  /*
   // Send a message to the server
   socket.onopen = () => {
 
     // Send a request to the server to get all users
-    const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
+    const SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
     socket.send(SQLquery);
   };
 
@@ -47,10 +169,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       userArray = JSON.parse(message);
 
       // Send a request to the server to get all accounts
-      const SQLquery = `
-    SELECT * FROM account
-    ORDER BY accountId;
-  `;
+      const SQLquery =
+        `
+          SELECT * FROM account
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY accountId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -64,10 +188,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       accountArray = JSON.parse(message);
 
       // Send a request to the server to get all suppliers
-      const SQLquery = `
-    SELECT * FROM supplier
-    ORDER BY supplierId;
-  `;
+      const SQLquery = 
+        `
+          SELECT * FROM supplier
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY supplierId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -104,11 +230,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM supplier
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY supplierId;
         `;
       socket.send(SQLquery);
     }
-  };
 
   // Handle errors
   socket.onerror = (error) => {
@@ -120,6 +246,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
+}
+  */
 }
 
 // Make events for suppliers
@@ -167,11 +295,13 @@ function createEvents() {
       deleteSupplierRow(supplierId);
 
       // Sends a request to the server to get all suppliers
-      const SQLquery = `
-        SELECT * FROM supplier
-        ORDER BY supplierId;
-      `;
-      socket.send(SQLquery);
+      const SQLquery =
+        `
+          SELECT * FROM supplier
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY supplierId;
+        `;
+     updateMySql(SQLquery, 'supplier', 'SELECT');
     }
   });
 
@@ -180,11 +310,13 @@ function createEvents() {
     if (event.target.classList.contains('button-supplier-cancel')) {
 
       // Sends a request to the server to get all user
-      const SQLquery = `
-        SELECT * FROM supplier
-        ORDER BY supplierId;
-      `;
-      socket.send(SQLquery);
+      const SQLquery =
+        `
+          SELECT * FROM supplier
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY supplierId;
+        `;
+     updateMySql(SQLquery, 'supplier', 'SELECT');
     }
   });
 }
@@ -261,6 +393,7 @@ function updateSupplier(supplierId) {
           WHERE supplierId = ${supplierId}
           ;
         `;
+      updateMySql(SQLquery, 'supplier', 'UPDATE');
     } else {
 
       // Insert new record
@@ -296,10 +429,9 @@ function updateSupplier(supplierId) {
           ${accountId}
         );
       `;
+      // Client sends a request to the server
+      updateMySql(SQLquery, 'supplier', 'INSERT');
     }
-
-    // Client sends a request to the server
-    socket.send(SQLquery);
 
     document.querySelector('.select-supplier-supplierId').disabled =
       false;
@@ -330,15 +462,17 @@ function deleteSupplierRow(supplierId) {
       `;
 
       // Client sends a request to the server
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'supplier', 'SELECT');
     }
 
     // Get supplier
-    SQLquery = `
-      SELECT * FROM supplier
-      ORDER BY supplierId;
-    `;
-    socket.send(SQLquery);
+    SQLquery =
+      `
+        SELECT * FROM supplier
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY supplierId;
+      `;
+    updateMySql(SQLquery, 'supplier', 'SELECT');
 
     resetValues();
   }

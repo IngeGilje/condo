@@ -26,7 +26,7 @@ class User extends Condos {
 
     // Check if user array is empty
     const numberOfRows = userArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       userArray.forEach((user) => {
         if (user.userId > 1) {
           if (user.userId === userId) {
@@ -89,4 +89,3 @@ class User extends Condos {
     return userId;
   }
 }
-

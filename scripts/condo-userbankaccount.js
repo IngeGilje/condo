@@ -21,6 +21,127 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   showLoginError('userbankaccount-login');
 } else {
 
+  // Send a requests to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get users
+    let SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+
+    // Sends a request to the server to get accounts
+    SQLquery =
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
+
+    updateMySql(SQLquery, 'account', 'SELECT');
+
+    // Sends a request to the server to get user bank accounts
+    SQLquery =
+      `
+        SELECT * FROM userbankaccount
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userBankAccountId;
+      `;
+
+    updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+  };
+
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
+
+    let messageFromServer =
+      event.data;
+    console.log('Incoming message from server:', messageFromServer);
+
+    //Converts a JavaScript Object Notation (JSON) string into an object
+    objInfo =
+      JSON.parse(messageFromServer);
+
+    if (objInfo.CRUD === 'SELECT') {
+      switch (objInfo.tableName) {
+        case 'user':
+
+          // user table
+          console.log('userTable');
+
+          userArray =
+            objInfo.tableArray;
+          break;
+
+        case 'account':
+
+          // account table
+          console.log('accountTable');
+
+          accountArray =
+            objInfo.tableArray;
+          break;
+
+        case 'userbankaccount':
+
+          // user bank account table
+          console.log('userBankAccountTable');
+
+          // array including objects with user bank account information
+          userBankAccountArray =
+            objInfo.tableArray;
+
+          // Find selected user Bank account id
+          const userBankAccountId =
+            objUserBankAccount.getSelectedUserBankAccountId('select-userbankaccount-userBankAccountId');
+
+          // Show leading text
+          showLeadingText(userBankAccountId);
+
+          // Show all values for user Bank Account
+          showValues(userBankAccountId);
+
+          // Make events
+          if (!isEventsCreated) {
+            createEvents();
+            isEventsCreated = true;
+          }
+          break;
+      }
+    }
+
+    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+      switch (objInfo.tableName) {
+        case 'userbankaccount':
+
+          // Sends a request to the server to get user bank accounts one more time
+          SQLquery =
+            `
+              SELECT * FROM userbankaccount
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+              ORDER BY userbankaccountId;
+            `;
+          updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+          break;
+      };
+    }
+
+    // Handle errors
+    socket.onerror = (error) => {
+
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
+
+    // Handle disconnection
+    socket.onclose = () => {
+    }
+  }
+  /*
   // Send a message to the server
   socket.onopen = () => {
 
@@ -28,6 +149,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const SQLquery =
       `
         SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY userId;
       `;
     socket.send(SQLquery);
@@ -51,6 +173,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM account
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY accountId;
         `;
       socket.send(SQLquery);
@@ -69,6 +192,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM userbankaccount
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY userBankAccountId;
         `;
       socket.send(SQLquery);
@@ -104,10 +228,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       console.log('affectedRows');
 
       // Sends a request to the server to get all user bank accounts
-      const SQLquery = `
-        SELECT * FROM userbankaccount
-        ORDER BY userBankAccountId;
-      `;
+      const SQLquery = 
+        `
+          SELECT * FROM userbankaccount
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY userBankAccountId;
+        `;
       socket.send(SQLquery);
     }
   };
@@ -122,6 +248,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
+    */
 }
 
 // Make events for user bank accountId
@@ -167,11 +294,13 @@ function createEvents() {
       deleteUserBankAccountRow(userBankAccountId);
 
       // Sends a request to the server to get all user bank account
-      const SQLquery = `
-        SELECT * FROM userbankaccount
-        ORDER BY userBankAccountId;
-      `;
-      socket.send(SQLquery);
+      const SQLquery =
+        `
+          SELECT * FROM userbankaccount
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY userBankAccountId;
+        `;
+      updateMySql(SQLquery, 'userbankaccount', 'SELECT');
     }
   });
 
@@ -180,11 +309,13 @@ function createEvents() {
     if (event.target.classList.contains('button-userbankaccount-cancel')) {
 
       // Sends a request to the server to get all user
-      const SQLquery = `
-        SELECT * FROM userbankaccount
-        ORDER BY userBankAccountId;
-      `;
-      socket.send(SQLquery);
+      const SQLquery =
+        `
+          SELECT * FROM userbankaccount
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY userBankAccountId;
+        `;
+      updateMySql(SQLquery, 'userbankaccount', 'SELECT');
     }
   });
 }
@@ -237,6 +368,7 @@ function updateUserBankAccount() {
           WHERE userBankAccountId = ${userBankAccountId}
           ;
         `;
+      updateMySql(SQLquery, 'userbankaccount', 'UPDATE');
     } else {
 
       // Insert new record
@@ -263,6 +395,7 @@ function updateUserBankAccount() {
             '${bankAccount}'
           );
         `;
+      updateMySql(SQLquery, 'userbankaccount', 'INSERT');
     }
 
     // Client sends a request to the server
@@ -285,12 +418,12 @@ function showLeadingText(userBankAccountId) {
 
   // Show all users
   const userId =
-   userArray.at(-1).userId;
+    userArray.at(-1).userId;
   objUser.showAllUsers('userbankaccount-userId', userBankAccountId);
 
   // Show all accounts
   const accountId =
-   accountArray.at(-1).accountId;
+    accountArray.at(-1).accountId;
   objAccount.showAllAccounts('userbankaccount-accountId', accountId);
 
   // name

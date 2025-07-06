@@ -656,18 +656,6 @@ class Condos {
             Leverandør
           </a>
 
-          <a href="${url}condo/condo-payment.html"
-            class="a-menu-vertical-payment"
-          >
-            Betaling
-          </a>
-
-          <a href="${url}condo/condo-income.html"
-            class="a-menu-vertical-income"
-          >
-            Innbetaling
-          </a>
-
           <a href="${url}condo/condo-due.html"
             class="a-menu-vertical-due"
           >
@@ -819,7 +807,7 @@ class Condos {
     }
 
     bankAccountName =
-     (bankAccountName) ? bankAccountName : bankAccountNumber;
+      (bankAccountName) ? bankAccountName : bankAccountNumber;
     return (bankAccountName) ? bankAccountName : "-";
   }
 
@@ -1145,7 +1133,7 @@ function checkPhone(phone, className, labelText) {
 }
 
 // Validate organization number
-function checkOrganizationNumber(organizationNumber, className, labelText) {
+function validateOrganizationNumber(organizationNumber, className, labelText) {
 
   // Validate organization number Organization Number
   const organizationNumberPattern = /^\d{9}$/;
@@ -1374,29 +1362,27 @@ function hideInput(className) {
     }
   }
 }
+/*
 function getTextWidth(text, font) {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  context.font = font;
-  const metrics = context.measureText(text);
+  const canvas =
+   document.createElement('canvas');
+  const context =
+   canvas.getContext('2d');
+  context.font =
+   font;
+  const metrics =
+   context.measureText(text);
   return metrics.width;
 }
+*/
 
 // Text must fit within the element
 function truncateText(text, className) {
 
-  // Initial values
   const element =
     document.querySelector(`.${className}`);
-  const widthOfElement =
-    element.offsetWidth;
-  const fontSize =
-    window.getComputedStyle(element).fontSize;
-
   const computedStyle =
     window.getComputedStyle(element);
-  const fontFamily =
-    computedStyle.fontFamily;
   const paddingLeft =
     parseFloat(computedStyle.paddingLeft);
   const paddingRight =
@@ -1405,29 +1391,52 @@ function truncateText(text, className) {
     parseFloat(computedStyle.borderLeftWidth);
   const borderRight =
     parseFloat(computedStyle.borderRightWidth);
+
+  // Width of an element
+  const widthOfElement =
+    element.offsetWidth
+    - paddingLeft
+    - paddingRight
+    - borderLeft
+    - borderRight;
+
+  const fontSize =
+    window.getComputedStyle(element).fontSize;
+  const fontFamily =
+    computedStyle.fontFamily;
+
   const marginLeft =
     parseFloat(computedStyle.marginLeft);
   const marginRight =
     parseFloat(computedStyle.marginRight);
 
-  let lengthTextPx =
+  /*
+  let lengthTextPx = Math.ceil(
     getTextWidth(text, font =
       `${fontSize} '${fontFamily}'`)
     + paddingLeft + paddingRight
     + borderLeft + borderRight
-    + marginLeft + marginRight;
+    + marginLeft + marginRight + 4);
+  */
+
+  let lengthTextPx =
+    Math.ceil(getTextWidth(text, font = `${fontSize} '${fontFamily}'`)
+      + paddingLeft + paddingRight
+      + borderLeft + borderRight
+      + marginLeft + marginRight
+      + 4);
 
   for (; lengthTextPx > widthOfElement;) {
     text =
       text.slice(0, -1);
     lengthTextPx =
-      getTextWidth(text, font = `${fontSize} '${fontFamily}'`)
-      + paddingLeft + paddingRight
-      + borderLeft + borderRight
-      + marginLeft + marginRight;
+      Math.ceil(getTextWidth(text, font = `${fontSize} '${fontFamily}'`)
+        + paddingLeft + paddingRight
+        + borderLeft + borderRight
+        + marginLeft + marginRight
+        + 4);
   }
 
-  // This function is not correct, thats why
   return text;
 }
 
@@ -1450,24 +1459,30 @@ function validateEuroAmount(amount) {
 // Connection to a server
 function connectingToServer() {
 
-  let socket;
   switch (objUser.serverStatus) {
 
     // Web server
     case 1: {
-      socket = new WebSocket('ws://ingegilje.no:7000');
+      socket =
+        new WebSocket('ws://ingegilje.no:7000');
       break;
     }
     // Test web server/ local web server
     case 2: {
-      socket = new WebSocket('ws://localhost:7000');
+      socket =
+        new WebSocket('ws://localhost:7000');
       break;
     }
     // Test server/ local test server
     case 3: {
-      const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-      const hostname = window.location.hostname || 'localhost';
-      socket = new WebSocket(`${protocol}://${hostname}:6050`); break;
+
+      const protocol =
+        window.location.protocol === 'https:' ? 'wss' : 'ws';
+      const hostname =
+        window.location.hostname || 'localhost';
+      socket =
+        new WebSocket(`${protocol}://${hostname}:5000`);
+
       break;
     }
     default:
@@ -1527,4 +1542,44 @@ function testMode() {
       break;
     }
   }
+}
+
+function getTextWidth(text, font = '16px Arial') {
+
+  // Create a canvas element (doesn't need to be in the DOM)
+  const canvas =
+    document.createElement('canvas');
+  const context =
+    canvas.getContext('2d');
+
+  // Set the desired font
+  context.font =
+    font;
+
+  // Measure the text
+  const metrics =
+    context.measureText(text);
+
+  // Return the width in pixels
+  return metrics.width;
+}
+
+// Sends a request to the sql server
+function updateMySql(SQLquery, tableName, CRUDE) {
+
+  let messageToServer =
+  {
+    tableName: tableName,
+    CRUD: CRUDE,
+    requestId: "requestId",
+    SQLquery: SQLquery
+  };
+  console.log('CRUDE:', CRUDE);
+
+  // Converts a JavaScript value to a JavaScript Object Notation (JSON) string
+  messageToServer =
+    JSON.stringify(messageToServer);
+
+  // Send message to server
+  socket.send(messageToServer);
 }

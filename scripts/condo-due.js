@@ -19,17 +19,159 @@ let socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('condo-login');
+  showLoginError('due-login');
 } else {
 
+  // Send a requests to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get users
+    let SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+
+    // Sends a request to the server to get condos
+    SQLquery =
+      `
+        SELECT * FROM condo
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY condoId;
+      `;
+
+    updateMySql(SQLquery, 'condo', 'SELECT');
+
+    // Sends a request to the server to get accounts
+    SQLquery =
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
+
+    updateMySql(SQLquery, 'account', 'SELECT');
+
+    // Sends a request to the server to get dues
+    SQLquery =
+      `
+        SELECT * FROM due
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY dueId;
+      `;
+
+    updateMySql(SQLquery, 'due', 'SELECT');
+  };
+
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
+
+    let messageFromServer =
+      event.data;
+    console.log('Incoming message from server:', messageFromServer);
+
+    //Converts a JavaScript Object Notation (JSON) string into an object
+    objInfo =
+      JSON.parse(messageFromServer);
+
+    if (objInfo.CRUD === 'SELECT') {
+      switch (objInfo.tableName) {
+        case 'user':
+
+          // user table
+          console.log('userTable');
+
+          userArray =
+            objInfo.tableArray;
+          break;
+
+          case 'account':
+
+          // account table
+          console.log('accountTable');
+
+          accountArray =
+            objInfo.tableArray;
+          break;
+
+        case 'condo':
+
+          // condo table
+          console.log('condoTable');
+
+          condoArray =
+            objInfo.tableArray;
+          break;
+
+        case 'due':
+
+          // due table
+          console.log('dueTable');
+
+          // array including objects with due information
+          dueArray =
+            objInfo.tableArray;
+
+          // Find selected due id
+          const dueId =
+            objDue.getSelectedDueId('select-due-dueId');
+
+          // Show leading text
+          showLeadingText(dueId);
+
+          // Show all values for due
+          showValues(dueId);
+
+          // Make events
+          if (!isEventsCreated) {
+            createEvents();
+            isEventsCreated = true;
+          }
+          break;
+      }
+    }
+
+    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+      switch (objInfo.tableName) {
+        case 'due':
+
+          // Sends a request to the server to get dues one more time
+          SQLquery =
+            `
+              SELECT * FROM dues
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+              ORDER BY duesId;
+            `;
+          updateMySql(SQLquery, 'due', 'SELECT');
+          break;
+      };
+    }
+
+    // Handle errors
+    socket.onerror = (error) => {
+
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
+
+    // Handle disconnection
+    socket.onclose = () => {
+    }
+  }
+  /*
   // Send a message to the server
   socket.onopen = () => {
 
     // Sends a request to the server to get all users
-    const SQLquery = `
-    SELECT * FROM user
-    ORDER BY userId;
-  `;
+    const SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
     socket.send(SQLquery);
   };
 
@@ -47,10 +189,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       userArray = JSON.parse(message);
 
       // Sends a request to the server to get all condos
-      const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY name;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM condo
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY name;
+        `;
       socket.send(SQLquery);
     }
 
@@ -63,10 +207,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       userArray = JSON.parse(message);
 
       // Sends a request to the server to get all condos
-      const SQLquery = `
-      SELECT * FROM condo
-      ORDER BY name;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM condo
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY name;
+        `;
       socket.send(SQLquery);
     }
 
@@ -80,10 +226,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       condoArray = JSON.parse(message);
 
       // Sends a request to the server to get all accounts
-      const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM account
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY accountId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -97,10 +245,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       accountArray = JSON.parse(message);
 
       // Sends a request to the server to get all dues
-      const SQLquery = `
-      SELECT * FROM due
-      ORDER BY dueId;
-    `;
+      const SQLquery =
+        `
+          SELECT * FROM due
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY dueId;
+        `;
       socket.send(SQLquery);
     }
 
@@ -122,12 +272,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // Show all values
       showValues(dueId);
 
-      /*
-      // Show condoId
-      const condoId =
-       Number(document.querySelector('.select-due-condoId').value);
-      */
-
       // Make events
       if (!isEventsCreated) {
 
@@ -144,6 +288,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM due
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY dueId;
         `;
       socket.send(SQLquery);
@@ -160,6 +305,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
+  */
 }
 
 // Make due events
@@ -207,11 +353,13 @@ function createEvents() {
 
       // Sends a request to the server to get all due
       //objDue.getDues(socket);
-      const SQLquery = `
-        SELECT * FROM due
-        ORDER BY dueId;
-      `;
-      socket.send(SQLquery);
+      const SQLquery =
+        `
+          SELECT * FROM due
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY dueId;
+        `;
+      updateMySql(SQLquery, 'due', 'SELECT');
     }
   });
 
@@ -221,11 +369,13 @@ function createEvents() {
 
       // Sends a request to the server to get all due
       //objDue.getDues(socket);
-      const SQLquery = `
-        SELECT * FROM due
-        ORDER BY dueId;
-      `;
-      socket.send(SQLquery);
+      const SQLquery =
+        `
+          SELECT * FROM due
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+          ORDER BY dueId;
+        `;
+      updateMySql(SQLquery, 'due', 'SELECT');
     }
   });
 }
@@ -278,7 +428,7 @@ function updateDueRow(dueId) {
             text = '${text}'
           WHERE dueId = ${dueId};
         `;
-
+updateMySql(SQLquery, 'due', 'UPDATE');
     } else {
 
       SQLquery =
@@ -305,15 +455,8 @@ function updateDueRow(dueId) {
             '${text}'
           );
         `;
+        updateMySql(SQLquery, 'due', 'INSERT');
     }
-    socket.send(SQLquery);
-
-    // Sends a request to the server to get all dues
-    SQLquery = `
-      SELECT * FROM due
-      ORDER BY dueId;
-    `;
-    socket.send(SQLquery);
 
     document.querySelector('.select-due-dueId').disabled =
       false;
@@ -342,10 +485,11 @@ function deleteDueRow(dueId) {
 
     // Show updated dues
     //objDue.getDues(socket);
-    const SQLquery = `
-      SELECT * FROM due
-      ORDER BY dueId;
-    `;
+    const SQLquery =
+      `
+        SELECT * FROM due
+        ORDER BY dueId;
+      `;
     socket.send(SQLquery);
   }
 }
@@ -426,26 +570,6 @@ function validateValues(dueId) {
   return (validAccountId && validCondoId && validDate && validAmount && validText) ? true : false;
 }
 
-/*
-function findDueId(condoId, accountId, amount, date) {
-
-  let dueId = 0
-  dueArray.forEach((due) => {
-    due.due = formatOreToKroner(due.due);
-    if (due.dueId > 1
-      && due.due === amount
-      && due.date === date
-      && due.accountId === accountId
-      && due.condoId === condoId) {
-
-      dueId = due.dueId;
-    }
-  });
-
-  return dueId;
-}
-*/
-
 // Show values for due
 function showValues(dueId) {
 
@@ -472,8 +596,8 @@ function showValues(dueId) {
       objDue.selectAccountId(accountId, 'due-accountId');
 
       // Show due date
-      const dueDate = 
-      formatToNorDate(dueArray[objDueRowNumber].date);
+      const dueDate =
+        formatToNorDate(dueArray[objDueRowNumber].date);
       document.querySelector('.input-due-date').value =
         dueDate;
 

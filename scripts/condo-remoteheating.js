@@ -21,9 +21,150 @@ let socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('condo-login');
+  showLoginError('remoteheating-login');
 } else {
 
+
+  // Send a requests to the server
+  socket.onopen = () => {
+
+    // Sends a request to the server to get users
+    let SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+
+    // Sends a request to the server to get condos
+    SQLquery =
+      `
+        SELECT * FROM condo
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY condoId;
+      `;
+
+    updateMySql(SQLquery, 'condo', 'SELECT');
+
+    // Sends a request to the server to get accounts
+    SQLquery =
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
+
+    updateMySql(SQLquery, 'account', 'SELECT');
+
+    // Sends a request to the server to get bank account movements
+    SQLquery =
+      `
+        SELECT * FROM bankaccountmovement
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY bankaccountmovementId;
+      `;
+
+    updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+  };
+
+  // Handle incoming messages from server
+  socket.onmessage = (event) => {
+
+    let messageFromServer =
+      event.data;
+    console.log('Incoming message from server:', messageFromServer);
+
+    //Converts a JavaScript Object Notation (JSON) string into an object
+    objInfo =
+      JSON.parse(messageFromServer);
+
+    if (objInfo.CRUD === 'SELECT') {
+      switch (objInfo.tableName) {
+        case 'user':
+
+          // user table
+          console.log('userTable');
+
+          userArray =
+            objInfo.tableArray;
+          break;
+
+        case 'condo':
+
+          // condo table
+          console.log('condoTable');
+
+          condoArray =
+            objInfo.tableArray;
+          break;
+
+        case 'account':
+
+          // account table
+          console.log('accountTable');
+
+          accountArray =
+            objInfo.tableArray;
+          break;
+
+        case 'bankaccountmovement':
+
+          // bank account movement table
+          console.log('bankaccountmovementTable');
+
+          // array including objects with bank account movement information
+          bankAccountMovementArray =
+            objInfo.tableArray;
+
+          // Find selected condo id
+          const condoId =
+            objCondo.getSelectedCondoId('select-remoteheating-condoId');
+
+          // Show leading text
+          showLeadingText(condoId);
+
+          // Show all values for bank Account Movement
+          showValues();
+
+          // Make events
+          if (!isEventsCreated) {
+            createEvents();
+            isEventsCreated = true;
+          }
+          break;
+      }
+    }
+
+    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+      switch (objInfo.tableName) {
+        case 'bankaccountmovement':
+
+          // Sends a request to the server to get bank account movements one more time
+          SQLquery =
+            `
+              SELECT * FROM bankaccountmovement
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+              ORDER BY bankaccountmovementId;
+            `;
+          updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+          break;
+      };
+    }
+
+    // Handle errors
+    socket.onerror = (error) => {
+
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
+    }
+
+    // Handle disconnection
+    socket.onclose = () => {
+    }
+  }
+  /*
   // Send a message to the server
   socket.onopen = () => {
 
@@ -31,6 +172,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const SQLquery =
       `
         SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY userId;
       `;
     socket.send(SQLquery);
@@ -53,6 +195,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM condo
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY name;
         `;
       socket.send(SQLquery);
@@ -69,10 +212,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Sends a request to the server to get all accounts
       //objAccount.getAccounts(socket);
-      const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
+      const SQLquery = 
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
       socket.send(SQLquery);
     }
 
@@ -89,6 +234,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM bankaccountmovement
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY bankAccountMovementId;
         `;
       socket.send(SQLquery);
@@ -123,6 +269,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const SQLquery =
         `
           SELECT * FROM bankaccountmovement
+          WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY bankAccountMovementId;
         `;
       socket.send(SQLquery);
@@ -139,6 +286,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
+  */
 }
 
 // Make overview events

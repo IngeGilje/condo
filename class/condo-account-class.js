@@ -7,7 +7,6 @@ class Account extends Condos {
   // Show all accounts
   showAllAccounts(className, accountId, alternativeSelect, alternativeSelect2) {
 
-    console.log('alternativeSelect',alternativeSelect);
     let html =
       `
         <form
@@ -31,7 +30,7 @@ class Account extends Condos {
 
     // Check if account movement array is empty
     const numberOfRows = accountArray.length;
-    if (numberOfRows > 1) {
+    if (numberOfRows > 0) {
       accountArray.forEach((account) => {
         if (account.accountId > 1) {
           if (account.accountId === accountId) {
