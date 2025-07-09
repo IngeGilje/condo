@@ -1,5 +1,8 @@
 // Create tables for condos database
 
+// Activate classes
+const now = new Date();
+
 // 1 condominium
 const createCondominiumTable =
   false;
@@ -28,13 +31,17 @@ const createUserBankAccountTable =
 const createSupplierTable =
   false;
 
+/*
 // 8 payment
 const createPaymentTable =
-  true;
+  false;
+*/
 
+/*
 // 9 Income
 const createIncomeTable =
-  true;
+  false;
+*/
 
 // 10 Due
 const createDueTable =
@@ -56,7 +63,6 @@ socket = connectingToServer();
 
 let isEventsCreated = false;
 
-const now = new Date();
 const lastUpdate = now.toISOString();
 
 // Send a message to the server
@@ -68,7 +74,7 @@ socket.onopen = () => {
 
   createAllTables();
 
-  insertRowAllTables();
+  //insertRowAllTables();
 }
 
 // Handle errors
@@ -82,21 +88,17 @@ socket.onerror = (error) => {
 socket.onclose = () => {
 }
 
-// Make events for condo
-function condoEvents() {
-
-}
-
 function deleteAllTables() {
 
   // 12 Bank account movement
   if (createBankAccountMovementTable) {
+
     console.log('DROP bankaccountmovement Table');
     SQLquery =
       `
         DROP TABLE bankaccountmovement;
       `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'bankaccountmovement', 'DROP');
   }
 
   // 11 Budget
@@ -106,7 +108,7 @@ function deleteAllTables() {
       `
       DROP TABLE budget;
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'budget', 'DROP');
   }
 
   // 10 Due
@@ -116,9 +118,10 @@ function deleteAllTables() {
       `
       DROP TABLE due; 
     `;
-    socket.send(SQLquery)
+    updateMySql(SQLquery, 'due', 'DROP');
   }
 
+  /*
   // 9 Income
   if (createIncomeTable) {
     console.log('DROP income Table');
@@ -127,8 +130,9 @@ function deleteAllTables() {
       DROP TABLE income;
     `;
     socket.send(SQLquery);
-  }
+  */
 
+  /*
   // 8 payment
   if (createPaymentTable) {
     console.log('DROP payment Table');
@@ -138,6 +142,7 @@ function deleteAllTables() {
     `;
     socket.send(SQLquery);
   }
+  */
 
   // 7 supplier
   if (createSupplierTable) {
@@ -146,7 +151,7 @@ function deleteAllTables() {
       `
       DROP TABLE supplier;
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'supplier', 'DROP');
   }
 
   // 6 user bank account
@@ -156,7 +161,7 @@ function deleteAllTables() {
       `
       DROP TABLE userbankaccount;
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'userbankaccount', 'DROP');
   }
 
   // 5 user
@@ -166,7 +171,7 @@ function deleteAllTables() {
       `
       DROP TABLE user;
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'user', 'DROP');
   }
 
   // 4 Account
@@ -176,7 +181,7 @@ function deleteAllTables() {
       `
       DROP TABLE account;
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'account', 'DROP');
   }
 
   // 3 Bank account
@@ -186,7 +191,7 @@ function deleteAllTables() {
       `
       DROP TABLE bankaccount;
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'bankaccount', 'DROP');
   }
 
   // 2 Condo
@@ -196,7 +201,7 @@ function deleteAllTables() {
       `
       DROP TABLE condo;
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'condo', 'DROP');
   }
 
   // 1 condominium
@@ -206,7 +211,7 @@ function deleteAllTables() {
       `
         DROP TABLE condominium;
       `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'condominium', 'DROP');
   }
 }
 
@@ -233,7 +238,7 @@ function createAllTables() {
         importPath VARCHAR(50)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'condominium', 'CREATE');
   }
 
   // 2 Condo
@@ -255,7 +260,7 @@ function createAllTables() {
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'condo', 'CREATE');
   }
 
   // 3 Bank account
@@ -278,7 +283,7 @@ function createAllTables() {
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'bankaccount', 'CREATE');
   }
 
   // 4 Account
@@ -296,7 +301,7 @@ function createAllTables() {
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'account', 'CREATE');
   }
 
   // 5 user
@@ -321,7 +326,7 @@ function createAllTables() {
         FOREIGN KEY (condoId) REFERENCES condo(condoId)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'user', 'CREATE');
   }
 
   // 6 user bank account
@@ -344,7 +349,7 @@ function createAllTables() {
         FOREIGN KEY (accountId) REFERENCES account(accountId)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'userbankaccount', 'CREATE');
   }
 
   // 7 supplier
@@ -371,9 +376,10 @@ function createAllTables() {
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'supplier', 'CREATE');
   }
 
+  /*
   // 8 payment
   if (createPaymentTable) {
     console.log('CREATE payment Table');
@@ -396,7 +402,9 @@ function createAllTables() {
     `;
     socket.send(SQLquery);
   }
+  */
 
+  /*
   // 9 Income
   if (createIncomeTable) {
     console.log('CREATE income Table');
@@ -418,6 +426,7 @@ function createAllTables() {
     `;
     socket.send(SQLquery);
   }
+  */
 
   // 10 Due
   if (createDueTable) {
@@ -440,7 +449,7 @@ function createAllTables() {
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'due', 'CREATE');
   }
 
   // 11 Budget
@@ -462,7 +471,7 @@ function createAllTables() {
         FOREIGN KEY (accountId) REFERENCES account(accountId)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'budget', 'CREATE');
   }
 
   // 12 Bank account movement
@@ -486,9 +495,10 @@ function createAllTables() {
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'bankaccountmovement', 'CREATE');
   }
 }
+
 
 function insertRowAllTables() {
 
@@ -719,6 +729,7 @@ function insertRowAllTables() {
     socket.send(SQLquery);
   }
 
+  /*
   // 8 payment
   if (createPaymentTable) {
     console.log('INSERT payment Table');
@@ -748,7 +759,9 @@ function insertRowAllTables() {
     `;
     socket.send(SQLquery);
   }
+  */
 
+  /*
   // 9 Income
   if (createIncomeTable) {
     console.log('INSERT income Table');
@@ -778,34 +791,35 @@ function insertRowAllTables() {
     `;
     socket.send(SQLquery);
   }
+  */
 
   // 10 Due
   if (createDueTable) {
     console.log('INSERT due Table');
     SQLquery =
       `         
-      INSERT INTO due (
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        condoId,
-        accountId,
-        amount,
-        date,
-        text)
-      VALUES (
-        'due',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        1,
-        1,
-        '',
-        '',
-        ''
-      );
-    `;
+    INSERT INTO due (
+      tableName,
+      condominiumId,
+      user,
+      lastUpdate,
+      condoId,
+      accountId,
+      amount,
+      date,
+      text)
+    VALUES (
+      'due',
+      1,
+      'superuser@ingegilje.no',
+      '${lastUpdate}',
+      1,
+      1,
+      '',
+      '',
+      ''
+    );
+  `;
     socket.send(SQLquery);
   }
 
@@ -814,26 +828,26 @@ function insertRowAllTables() {
     console.log('INSERT budget Table');
     SQLquery =
       `
-      INSERT INTO budget(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        accountId,
-        amount,
-        year,
-        text)
-      VALUES(
-        'budget',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        1,
-        '0',
-        '2025',
-        'text'
-      );
-    `;
+    INSERT INTO budget(
+      tableName,
+      condominiumId,
+      user,
+      lastUpdate,
+      accountId,
+      amount,
+      year,
+      text)
+    VALUES(
+      'budget',
+      1,
+      'superuser@ingegilje.no',
+      '${lastUpdate}',
+      1,
+      '0',
+      '2025',
+      'text'
+    );
+  `;
     socket.send(SQLquery);
   }
 
@@ -842,33 +856,33 @@ function insertRowAllTables() {
     console.log('INSERT bankaccountmovement Table');
     SQLquery =
       `         
-        INSERT INTO bankaccountmovement(
-          tableName,
-          condominiumId,
-          user,
-          lastUpdate,
-          condoId,
-          accountId,
-          income,
-          payment,
-          numberKWHour,
-          date,
-          text
-        )
-        VALUES(
-          'bankaccountmovement',
-          1,
-          'superuser@ingegilje.no',
-          '${lastUpdate}',
-          1,
-          1,
-          '',
-          '',
-          '',
-          '',
-          ''
-        );
-      `;
+      INSERT INTO bankaccountmovement(
+        tableName,
+        condominiumId,
+        user,
+        lastUpdate,
+        condoId,
+        accountId,
+        income,
+        payment,
+        numberKWHour,
+        date,
+        text
+      )
+      VALUES(
+        'bankaccountmovement',
+        1,
+        'superuser@ingegilje.no',
+        '${lastUpdate}',
+        1,
+        1,
+        '',
+        '',
+        '',
+        '',
+        ''
+      );
+    `;
     socket.send(SQLquery);
   }
 }

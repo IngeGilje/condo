@@ -15,7 +15,8 @@ let isEventsCreated = false;
 objOverview.menu();
 objOverview.markSelectedMenu('Bet.oversikt');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
@@ -385,14 +386,14 @@ function showValues() {
               `;
 
             // Text has to fit into the column
-            const text =
-              truncateText(due.text, 'div-overview-columnDueText');
+            //const text =
+            //  truncateText(due.text, 'div-overview-columnDueText');
             htmlColumnDueText +=
               `
                 <div 
-                  class="leftCell"
+                  class="leftCell one-line"
                 >
-                  ${text}
+                  ${due.text}
                 </div>
               `;
 
@@ -458,14 +459,14 @@ function showValues() {
               `;
 
             // Text has to fit into the column
-            const bankAccountMovementText =
-              truncateText(bankAccountMovement.text, 'div-overview-columnBankAccountMovementText');
+            //const bankAccountMovementText =
+            //  truncateText(bankAccountMovement.text, 'div-overview-columnBankAccountMovementText');
             htmlBankAccountMovementText +=
               `
                 <div
-                  class="leftCell"
+                  class="leftCell one-line"
                 >
-                  ${bankAccountMovementText}
+                  ${bankAccountMovement.text}
                 </div>
               `;
 

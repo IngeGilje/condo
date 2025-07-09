@@ -11,8 +11,8 @@ let isEventsCreated = false;
 objCondo.menu();
 objCondo.markSelectedMenu('Leilighet');
 
-let socket =
-  connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));

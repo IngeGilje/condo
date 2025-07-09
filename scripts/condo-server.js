@@ -50,19 +50,6 @@ switch (serverStatus) {
     break;
 }
 
-/*
-server.on('connection', (socket) => {
-
-  console.log('Client connected');
-  socket.on('message', (message) => {
-  });
-
-  socket.on('close', () => {
-    console.log('Client disconnected');
-  });
-});
-*/
-
 // Connecting to mySQL
 const mysql =
   require('mysql2');
@@ -134,13 +121,6 @@ server.on('connection', (socket) => {
 
       case 'textFile':
 
-        /*
-        tableName: 'fileName',
-      CRUD: 'textFile',
-      requestId: "requestId",
-      SQLquery: 
-      */
-
         // Get text file from server
         const fs =
           require('fs');
@@ -149,7 +129,6 @@ server.on('connection', (socket) => {
         // Name of importfile: C://inetpub//wwwroot//condo//scripts//transaksjonsliste.csv';
         let importFileName =
           messageFromClient.tableName;
-        console.log('importFileName:', importFileName);
         fs.readFile(importFileName, 'utf8', (err, textFile) => {
           if (err) {
             console.error(err);
@@ -168,7 +147,6 @@ server.on('connection', (socket) => {
           // Converts a JavaScript value to a JavaScript Object Notation (JSON) string
           messageToClient =
             JSON.stringify(messageToClient);
-          console.log('Message to the client:', messageToClient);
 
           // Send message to client
           socket.send(messageToClient);
@@ -178,6 +156,8 @@ server.on('connection', (socket) => {
       case 'SELECT':
       case 'UPDATE':
       case 'INSERT':
+      case 'DROP':
+      case 'CREATE':
 
         // Send a request to mysql
         (connected2MySQL) ? '' : connectToMySql();

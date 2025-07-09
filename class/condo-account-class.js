@@ -111,7 +111,8 @@ class Account extends Condos {
     } else {
 
       // Get last id in last object in account array
-      accountId = accountArray.at(-1).accountId;
+      accountId =
+       accountArray.at(-1).accountId;
     }
 
     return accountId;

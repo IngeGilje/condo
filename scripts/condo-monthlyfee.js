@@ -15,7 +15,8 @@ let isEventsCreated = false;
 objMonthlyFee.menu();
 objMonthlyFee.markSelectedMenu('Månedsavgift');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));

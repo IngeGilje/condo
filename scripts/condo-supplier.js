@@ -12,7 +12,8 @@ let isEventsCreated = false;
 objSupplier.menu();
 objSupplier.markSelectedMenu('Leverandør');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));

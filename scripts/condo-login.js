@@ -8,25 +8,12 @@ const objLogIn =
 
 let isEventsCreated =
   false;
-let socket =
-  connectingToServer();
+  
+let socket;
+socket = connectingToServer();
 
 localStorage.removeItem("user");
 
-/*
-// Send a message to the server
-socket.onopen = () => {
-
-  // Sends a request to the server to get all users
-  const SQLquery = 
-    `
-      SELECT * FROM user
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-      ORDER BY userId;
-    `;
-  socket.send(SQLquery);
-};
-*/
 // Send a requests to the server
 socket.onopen = () => {
 
@@ -41,31 +28,7 @@ socket.onopen = () => {
 
   updateMySql(SQLquery, 'user', 'SELECT');
 };
-/*
-// Handle incoming messages from server
-socket.onmessage = (event) => {
 
-  let message = event.data;
-
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
-
-    // user table
-    console.log('userTable');
-
-    // array including objects with user information
-    userArray = JSON.parse(message);
-
-    // Show leading text
-    showLeadingText();
-
-    // Make events
-    if (!isEventsCreated) {
-      createEvents();
-      isEventsCreated = true;
-    }
-  }
-  */
 // Handle incoming messages from server
 socket.onmessage = (event) => {
 
@@ -155,7 +118,7 @@ function createEvents() {
         localStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
 
         (objLogIn.validateUser(email, password))
-          ? window.location.href = 'http://localhost/condo/condo-income.html'
+          ? window.location.href = 'http://localhost/condo/condo-bankaccountmovement.html'
           : resetValues();
       }
     }

@@ -11,7 +11,8 @@ testMode();
 objUser.menu();
 objUser.markSelectedMenu('Bruker');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));

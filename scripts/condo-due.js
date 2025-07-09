@@ -13,7 +13,8 @@ let isEventsCreated = false;
 objDue.menu();
 objDue.markSelectedMenu('Forfall');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));

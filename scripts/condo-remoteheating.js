@@ -15,7 +15,8 @@ let isEventsCreated = false;
 objRemoteheating.menu();
 objRemoteheating.markSelectedMenu('Fjernvarme');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
@@ -446,15 +447,15 @@ function showValues() {
                 `;
 
               // Text
-              const text =
-                truncateText(bankaccountmovement.text, 'div-remoteheating-columnText');
+              //const text =
+              //  truncateText(bankaccountmovement.text, 'div-remoteheating-columnText');
 
               htmlColumnText +=
                 `
                   <div 
-                    class="leftCell ${colorClass}"
+                    class="leftCell ${colorClass} one-line"
                   >
-                    ${text}
+                    ${bankaccountmovement.text}
                   </div>
                 `;
 

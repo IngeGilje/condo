@@ -13,7 +13,8 @@ testMode();
 objBudget.menu();
 objBudget.markSelectedMenu('Budsjett');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
@@ -263,7 +264,8 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-budget-accountId')) {
 
-      accountId = Number(event.target.value);
+      accountId =
+       Number(event.target.value);
     };
   });
 

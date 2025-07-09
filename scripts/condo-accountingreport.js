@@ -14,7 +14,8 @@ let isEventsCreated = false;
 objAccountingReport.menu();
 objAccountingReport.markSelectedMenu('Regnskapsrapport');
 
-let socket =
+let socket;
+socket =
   connectingToServer();
 
 // Validate user/password
@@ -27,19 +28,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Send a requests to the server
   socket.onopen = () => {
 
-
-    let SQLquery;
     let messageToServer;
 
     // Sends a request to the server to get users
-    SQLquery =
+    let SQLquery =
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY userId;
       `;
+    updateMySql(SQLquery, 'user', 'SELECT');
 
-    messageToServer =
+    SQLquery =
     {
       tableName: "budget",
       requestId: "requestId",
@@ -55,7 +55,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY accountId;
       `;
-
     updateMySql(SQLquery, 'account', 'SELECT');
 
     // Sends a request to the server to get bank account movements
@@ -65,7 +64,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY bankAccountMovementId;
       `;
-
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
   };
 
@@ -308,14 +306,14 @@ function showValues() {
         const colorClass =
           (rowNumber % 2 !== 0) ? "green" : "";
 
-        accountName =
-          truncateText(account.name, 'div-accountingreport-columnAccountName');
+        //accountName =
+        //  truncateText(account.name, 'div-accountingreport-columnAccountName');
         htmlColumnAccountName +=
           `
             <div 
-              class="rightCell ${colorClass}"
+              class="rightCell ${colorClass} one-line"
             >
-              ${accountName}
+              ${account.name}
             </div>
           `;
 

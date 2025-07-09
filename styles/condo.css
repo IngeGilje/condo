@@ -71,13 +71,13 @@
 }
 
 /* Define the grid container with 8 columns*/
-.div-grid-bankaccountmovement {
-  grid-template-columns: 200px 200px 75px 100px 150px 125px 125px 125px;
-}
-
-/* Define the grid container with 8 columns*/
 .div-grid-remoteheating {
   grid-template-columns: 200px 200px 200px 150px 150px 150px 150px 150px;
+}
+
+/* Define the grid container with 9 columns*/
+.div-grid-bankaccountmovement {
+  grid-template-columns: 200px 200px 75px 100px 150px 125px 125px 125px 150px;
 }
 
 /* Define the grid container with 10 columns*/
@@ -96,6 +96,7 @@
 .div-bankaccountmovement-columnPayment,
 .div-bankaccountmovement-columnAccountName,
 .div-bankaccountmovement-columnCondoName,
+.div-bankaccountmovement-columnText,
 
 .div-accountingreport-columnAccountName,
 .div-accountingreport-columnBankAccountMovementAmount,
@@ -196,11 +197,12 @@
 
 .div-bankaccountmovement-columnPayment,
 .div-remoteheating-columnText,
-.div-overview-columnBankAccountMovementDate, 
+.div-overview-columnBankAccountMovementDate,
 .div-importfile-columnToBankAccount {
   grid-column-start: 8;
 }
 
+.div-bankaccountmovement-columnText,
 .div-overview-columnBankAccountMovementAmount,
 .div-importfile-columnIncome {
   grid-column-start: 9;
@@ -490,8 +492,8 @@
 }
 
 /* select */
-.div-grid-bankaccountmovement-search select, 
-.div-grid-bankaccountmovement select, 
+.div-grid-bankaccountmovement-search select,
+.div-grid-bankaccountmovement select,
 .div-grid-accountingreport select,
 .div-grid-userbankaccount select,
 .div-grid-supplier select,
@@ -614,8 +616,7 @@
 }
 
 /* Darker green on hover */
-.div-grid-bankaccountmovement-search button:hover 
-.div-grid-bankaccountmovement button:hover,
+.div-grid-bankaccountmovement-search button:hover .div-grid-bankaccountmovement button:hover,
 .div-grid-accountingreport button:hover,
 .div-grid-userbankaccount button:hover,
 .div-grid-supplier button:hover,
@@ -798,6 +799,8 @@
 .label-bankaccount-bankAccountId-red,
 .label-bankaccount-bankAccount-red,
 .label-bankaccount-name-red,
+.label-bankaccount-openingBalanceDate-red,
+.label-bankaccount-closingBalanceDate-red,
 
 .label-condominium-condominiumId-red,
 .label-condominium-name-red,
@@ -969,4 +972,10 @@
 .file-name {
   margin-left: 10px;
   font-style: italic;
+}
+
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

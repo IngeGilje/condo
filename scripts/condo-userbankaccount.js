@@ -12,7 +12,8 @@ let isEventsCreated = false;
 objUserBankAccount.menu();
 objUserBankAccount.markSelectedMenu('Bankkonto for bruker');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
@@ -40,7 +41,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY accountId;
       `;
-
     updateMySql(SQLquery, 'account', 'SELECT');
 
     // Sends a request to the server to get user bank accounts
@@ -50,7 +50,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY userBankAccountId;
       `;
-
     updateMySql(SQLquery, 'userbankaccount', 'SELECT');
   };
 

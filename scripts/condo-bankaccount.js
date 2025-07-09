@@ -12,7 +12,8 @@ let isEventsCreated = false;
 objBankAccount.menu();
 objBankAccount.markSelectedMenu('Bankkonto sameie');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
@@ -75,7 +76,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             objInfo.tableArray;
           break;
 
-          case 'account':
+        case 'account':
 
           // account table
           console.log('accountTable');
@@ -302,8 +303,6 @@ function createEvents() {
 
 function updateBankAccount() {
 
-  let SQLquery = "";
-
   if (validateValues()) {
 
     // Bank account id
@@ -323,16 +322,20 @@ function updateBankAccount() {
       document.querySelector('.input-bankaccount-openingBalance').value;
 
     // Opening balance date
-    const openingBalanceDate =
+    let openingBalanceDate =
       document.querySelector('.input-bankaccount-openingBalanceDate').value;
+    openingBalanceDate =
+      convertDateToISOFormat(openingBalanceDate);
 
     // Closing balance
     const closingBalance =
       document.querySelector('.input-bankaccount-closingBalance').value;
 
     // Closing balance date
-    const closingBalanceDate =
+    let closingBalanceDate =
       document.querySelector('.input-bankaccount-closingBalanceDate').value;
+    closingBalanceDate =
+      convertDateToISOFormat(closingBalanceDate);
 
     if (bankAccountId >= 0) {
 
@@ -449,17 +452,17 @@ function showLeadingText(bankAccountId) {
   // bank account name
   objBankAccount.showInput('bankaccount-name', '* Kontonavn', 50, '');
 
+  // Opening balance date
+  objBankAccount.showInput('bankaccount-openingBalanceDate', 'Dato inngående saldo', 10, '');
+
   // Opening balance
   objBankAccount.showInput('bankaccount-openingBalance', 'Inngående saldo', 10, '');
 
-  // Opening balance date
-  objBankAccount.showInput('bankaccount-openingBalanceDate', 'Dato', 10, '');
+  // Closing balance date
+  objBankAccount.showInput('bankaccount-closingBalanceDate', 'Dato utgående saldo', 10, '');
 
   // Closing balance
   objBankAccount.showInput('bankaccount-closingBalance', 'Utgående saldo', 10, '');
-
-  // Closing balance date
-  objBankAccount.showInput('bankaccount-closingBalanceDate', 'Dato', 10, '');
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -533,7 +536,24 @@ function validateValues() {
     document.querySelector('.input-bankaccount-name').value;
   const validName = objBankAccount.validateText(bankAccountName, "label-bankaccount-name", "Kontonavn");
 
-  return (validName && validBankAccount) ? true : false;
+  // Opening balance date
+  let openingBalanceDate =
+    document.querySelector('.input-bankaccount-openingBalanceDate').value;
+  openingBalanceDate =
+    convertDateToISOFormat(openingBalanceDate);
+
+  // Closing balance date
+  let closingBalanceDate =
+    document.querySelector('.input-bankaccount-closingBalanceDate').value;
+  closingBalanceDate =
+    convertDateToISOFormat(closingBalanceDate);
+
+  const validOpeningDate =
+    validateInterval('label-bankaccount-openingBalanceDate', 'Dato inngående saldo', openingBalanceDate, closingBalanceDate);
+  const validClosingDate =
+    validateInterval('label-bankaccount-closingBalanceDate', 'Dato utgående saldo', openingBalanceDate, closingBalanceDate);
+
+  return (validOpeningDate && validClosingDate && validName && validBankAccount) ? true : false;
 }
 
 function resetValues() {
@@ -572,6 +592,4 @@ function resetValues() {
     true;
   document.querySelector('.button-bankaccount-new').disabled =
     true;
-  //document.querySelector('.button-bankaccount-cancel').disabled =
-  //  true;
 }

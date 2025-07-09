@@ -1362,20 +1362,9 @@ function hideInput(className) {
     }
   }
 }
-/*
-function getTextWidth(text, font) {
-  const canvas =
-   document.createElement('canvas');
-  const context =
-   canvas.getContext('2d');
-  context.font =
-   font;
-  const metrics =
-   context.measureText(text);
-  return metrics.width;
-}
-*/
 
+
+/*
 // Text must fit within the element
 function truncateText(text, className) {
 
@@ -1410,15 +1399,6 @@ function truncateText(text, className) {
   const marginRight =
     parseFloat(computedStyle.marginRight);
 
-  /*
-  let lengthTextPx = Math.ceil(
-    getTextWidth(text, font =
-      `${fontSize} '${fontFamily}'`)
-    + paddingLeft + paddingRight
-    + borderLeft + borderRight
-    + marginLeft + marginRight + 4);
-  */
-
   let lengthTextPx =
     Math.ceil(getTextWidth(text, font = `${fontSize} '${fontFamily}'`)
       + paddingLeft + paddingRight
@@ -1439,6 +1419,7 @@ function truncateText(text, className) {
 
   return text;
 }
+*/
 
 // Validate user/password
 function checkUserPassword(user, password) {
@@ -1574,7 +1555,6 @@ function updateMySql(SQLquery, tableName, CRUDE) {
     requestId: "requestId",
     SQLquery: SQLquery
   };
-  console.log('CRUDE:', CRUDE);
 
   // Converts a JavaScript value to a JavaScript Object Notation (JSON) string
   messageToServer =
@@ -1583,3 +1563,35 @@ function updateMySql(SQLquery, tableName, CRUDE) {
   // Send message to server
   socket.send(messageToServer);
 }
+
+function validateInterval(className, labelText, fromValue, toValue) {
+
+  let isIntervalValid = false;
+
+  // Validate interval
+  if (Number(toValue) < Number(fromValue)) {
+
+    // Invalid interval
+    if (isClassDefined(className)) {
+
+      document.querySelector(`.${className}`).outerHTML =
+        `<div class="${className}-red">
+            * Ugyldig ${labelText}
+          </div>`;
+    }
+    isTextValid = false;
+  } else {
+
+    // Valid interval
+    if (isClassDefined(`${className}-red`)) {
+
+      document.querySelector(`.${className}-red`).outerHTML =
+        `<div class="${className}">
+            * ${labelText}
+          </div>`;
+    }
+    isTextValid = true;
+  }
+  return isTextValid;
+}
+

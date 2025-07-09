@@ -13,8 +13,8 @@ let isEventsCreated = false;
 objCondominium.menu();
 objCondominium.markSelectedMenu('Sameie');
 
-let socket =
-  connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));

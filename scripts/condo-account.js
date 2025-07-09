@@ -11,7 +11,8 @@ let isEventsCreated = false;
 objAccount.menu();
 objAccount.markSelectedMenu('Kontonavn');
 
-let socket = connectingToServer();
+let socket;
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword =
