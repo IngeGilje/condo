@@ -5,7 +5,7 @@ class Condo extends Condos {
   condoArray = Array;
 
   // Show all condos
-  showAllCondos(columnName, condoId, alternativeSelect,alternativeSelect2) {
+  showAllCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
 
     let html =
       `
@@ -30,7 +30,7 @@ class Condo extends Condos {
     const numberOfRows = condoArray.length;
     if (numberOfRows > 0) {
       condoArray.forEach((condo) => {
-        if (condo.condoId > 1) {
+        if (condo.condoId >= 0) {
           if (condo.condoId === condoId) {
 
             html +=
@@ -56,7 +56,7 @@ class Condo extends Condos {
 
     } else {
 
-      html += 
+      html +=
         `
           <option 
             value = "0"
@@ -129,9 +129,9 @@ class Condo extends Condos {
 
     let condoName;
     const objCondoRowNumber =
-     condoArray.findIndex(condo => condo.condoId === condoId);
+      condoArray.findIndex(condo => condo.condoId === condoId);
     if (objCondoRowNumber !== -1) {
-        condoName = condoArray[objCondoRowNumber].name;
+      condoName = condoArray[objCondoRowNumber].name;
     } else {
       condoName = "-";
     }

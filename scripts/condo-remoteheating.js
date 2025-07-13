@@ -63,7 +63,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY bankaccountmovementId;
+        ORDER BY date DESC;
       `;
 
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
@@ -74,7 +74,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
+
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -147,7 +147,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM bankaccountmovement
               WHERE condominiumId = ${objUserPassword.condominiumId}
-              ORDER BY bankaccountmovementId;
+              ORDER BY date DESC;
             `;
           updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
           break;
@@ -360,13 +360,13 @@ function showValues() {
       Number(document.querySelector('.select-remoteheating-accountId').value);
 
     // Accomulate
-    let sumColumnAmount = 0;
+    let sumColumnPayment = 0;
     let sumColumnNumberKWHour = 0;
 
     // Header bankaccountmovement
     let htmlColumnDate =
       '<div class="columnHeaderRight">Betalings dato</div><br>';
-    let htmlColumnAmount =
+    let htmlColumnPayment =
       '<div class="columnHeaderRight">Beløp</div><br>';
     let htmlColumnNumberKWHour =
       '<div class="columnHeaderRight">Kilowatt timer</div><br>';
@@ -379,7 +379,7 @@ function showValues() {
     let rowNumber =
       0;
     bankAccountMovementArray.forEach((bankaccountmovement) => {
-      if (bankaccountmovement.bankAccountMovementId > 1) {
+      if (bankaccountmovement.bankAccountMovementId >= 0) {
         if (Number(bankaccountmovement.date) >= fromDate && Number(bankaccountmovement.date) <= toDate) {
           if (bankaccountmovement.condoId === condoId || condoId === 999999999) {
             if (bankaccountmovement.accountId === accountId || accountId === 999999999) {
@@ -402,15 +402,15 @@ function showValues() {
                   </div>
                 `;
 
-              // amount
-              let amount =
-                formatOreToKroner(bankaccountmovement.amount);
-              htmlColumnAmount +=
+              // payment
+              let payment =
+                formatOreToKroner(bankaccountmovement.payment);
+              htmlColumnPayment +=
                 `
                   <div 
                     class="rightCell ${colorClass}"
                   >
-                    ${amount}
+                    ${payment}
                   </div>
                 `;
 
@@ -427,16 +427,21 @@ function showValues() {
                 `;
 
               // Price per KWHour
-              amount =
-                Number(bankaccountmovement.amount);
+              payment =
+                Number(bankaccountmovement.payment);
               numberKWHour =
                 Number(bankaccountmovement.numberKWHour);
-              if (amount && numberKWHour) {
+              /*
+              if (payment && numberKWHour) {
                 priceKWHour =
-                  formatOreToKroner(String(amount / numberKWHour) * 100);
+                  formatOreToKroner(String(payment / numberKWHour) * 100);
               } else {
                 priceKWHour = "-";
               }
+              */
+             const priceKWHour = 
+             (payment && numberKWHour) ? formatOreToKroner(String(payment / numberKWHour) * 100) : "-";
+
 
               htmlColumnPriceKWHour +=
                 `
@@ -445,10 +450,6 @@ function showValues() {
                     ${priceKWHour}
                   </div>
                 `;
-
-              // Text
-              //const text =
-              //  truncateText(bankaccountmovement.text, 'div-remoteheating-columnText');
 
               htmlColumnText +=
                 `
@@ -460,8 +461,8 @@ function showValues() {
                 `;
 
               // Accomulate
-              // amount
-              sumColumnAmount += Number(bankaccountmovement.amount);
+              // payment
+              sumColumnPayment += Number(bankaccountmovement.payment);
 
               // KWHour
               sumColumnNumberKWHour += Number(bankaccountmovement.numberKWHour);
@@ -483,14 +484,14 @@ function showValues() {
        </div>
      `;
 
-    // Amount
-    htmlColumnAmount +=
+    // Payment
+    htmlColumnPayment +=
       `
         <div class="sumCellRight">
       `;
-    htmlColumnAmount +=
-      formatOreToKroner(String(sumColumnAmount));
-    htmlColumnAmount +=
+    htmlColumnPayment +=
+      formatOreToKroner(String(sumColumnPayment));
+    htmlColumnPayment +=
       `
         </div>
       `;
@@ -530,8 +531,8 @@ function showValues() {
     // Show all columns
     document.querySelector('.div-remoteheating-columnDate').innerHTML =
       htmlColumnDate;
-    document.querySelector('.div-remoteheating-columnAmount').innerHTML =
-      htmlColumnAmount;
+    document.querySelector('.div-remoteheating-columnPayment').innerHTML =
+      htmlColumnPayment;
     document.querySelector('.div-remoteheating-columnNumberKWHour').innerHTML =
       htmlColumnNumberKWHour;
     document.querySelector('.div-remoteheating-columnPriceKWHour').innerHTML =

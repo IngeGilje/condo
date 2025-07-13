@@ -31,7 +31,7 @@ class Due extends Condos {
     const numberOfRows = dueArray.length;
     if (numberOfRows > 0) {
       dueArray.forEach((due) => {
-        if (due.dueId > 1) {
+        if (due.dueId >= 0) {
           if (due.dueId === dueId) {
 
             html += `

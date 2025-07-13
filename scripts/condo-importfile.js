@@ -133,7 +133,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
+
 
     // Converts a JavaScript Object Notation (JSON) string into an object
     const objInfo =
@@ -214,7 +214,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           bankAccountMovementArray =
             objInfo.tableArray;
 
-        case 'bankaccountmovement':
+        case 'userbankaccount':
 
           // user bank account table
           console.log('userbankaccountTable');
@@ -224,7 +224,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             objInfo.tableArray;
       }
     }
-    console.log('objInfo.CRUD:', objInfo.CRUD);
+
     if (objInfo.CRUD === 'textFile') {
 
       // text file
@@ -300,41 +300,14 @@ function createEvents() {
       // Update closing date and balance
       updateOpeningClosingBalance();
 
-      // Reset screen
-      resetBankAccountMovements();
-      removeBankAccountColumn();
+      // Start program for maintain bank account movements
+      window.location.href = 'http://localhost/condo/condo-bankaccountmovement.html'
     }
   });
 }
 
 // Show leading text for income
 function showLeadingText() {
-
-  /*
-  // Show all all account movements to update
-  objImportFile.showImportFile('importfile-importFileId', 0);
- 
-  // Show date
-  objImportFile.showInput('importfile-date', '* Dato', 10, 'dd.mm.åååå');
- 
-  // Show all condos
-  objCondo.showAllCondos('importfile-condoId', 0);
- 
-  // Show all accounts
-  objAccount.showAllAccounts('importfile-accountId', 0);
- 
-  // Show income
-  objImportFile.showInput('importfile-income', 'Inntekt', 10, '');
- 
-  // Show payment
-  objImportFile.showInput('importfile-payment', 'Utgift', 10, '');
- 
-  // Show text
-  objImportFile.showInput('importfile-text', '* Tekst', 50, '');
- 
-  // Show button
-  objImportFile.showButton('importfile-updateImportArray', 'Oppdater');
-  */
 
   // Show button for update of bank account movement
   objImportFile.showButton('importfile-updateBankAccountMovement', 'Oppdater bankkonto transaksjoner');
@@ -660,11 +633,14 @@ function createImportFileArray(fileContent) {
       payment =
         formatKronerToOre(payment);
 
-      let accountName;
+      // Account Id
       let accountId =
-        objImportFile.getAccountIdFromBankAccount(fromBankAccount, toBankAccount);
+        (getAccountIdFromBankAccount(fromBankAccount));
+       accountId = 
+       (accountId) ? accountId : getAccountIdFromBankAccount(toBankAccount);
 
       // Account Name
+      let accountName;
       if (text.includes('FAKT.TJ')) {
 
         const accountRowNumber =
@@ -703,9 +679,6 @@ function createImportFileArray(fileContent) {
       }
 
       // To bank account
-      if (accountingDate === '31.05.2025') {
-        console.log('toBankAccount:', toBankAccount);
-      }
       toBankAccountName =
         objImportFile.getBankAccountName(toBankAccount);
 
@@ -741,9 +714,6 @@ function updateBankAccountMovements() {
 
   importFileArray.forEach((importFile) => {
 
-    let SQLquery =
-      '';
-
     const lastUpdate =
       now.toISOString();
 
@@ -768,7 +738,7 @@ function updateBankAccountMovements() {
     // Do not import bank account movement twice
     if (!checkBankAccountMovement(income, payment, date, text)) {
 
-      SQLquery =
+      const SQLquery =
         `
           INSERT INTO bankaccountmovement (
             tableName,
@@ -1058,26 +1028,7 @@ function resetBankAccountMovements() {
 
 function removeBankAccountColumn() {
 
-  /*
-  document.querySelector(".label-importfile-importFileId").remove();
-  document.querySelector(".select-importfile-importFileId").remove();
-  document.querySelector(".label-importfile-condoId").remove();
-  document.querySelector(".select-importfile-condoId").remove();
-  document.querySelector(".label-importfile-accountId").remove();
-  document.querySelector(".select-importfile-accountId").remove();
-  document.querySelector(".label-importfile-date").remove();
-  document.querySelector(".input-importfile-date").remove();
-  document.querySelector(".label-importfile-income").remove();
-  document.querySelector(".input-importfile-income").remove();
-  document.querySelector(".label-importfile-payment").remove();
-  document.querySelector(".input-importfile-payment").remove();
-  document.querySelector(".label-importfile-text").remove();
-  document.querySelector(".input-importfile-text").remove();
-  */
-
   document.querySelector(".button-importfile-updateBankAccountMovement").remove();
-  //document.querySelector(".button-importfile-updateImportArray").remove();
-
 }
 
 // Send a request to the server to get all bank account transactions
@@ -1097,6 +1048,11 @@ function checkBankAccountMovement(income, payment, date, text) {
 
   let bankAccountMovementExist = false;
 
+  if (date === '20250710') {
+
+    console.log('date:', date);
+  }
+
   bankAccountMovementArray.forEach((bankAccountMovement) => {
 
     if (Number(bankAccountMovement.income) === income
@@ -1109,54 +1065,3 @@ function checkBankAccountMovement(income, payment, date, text) {
   });
   return bankAccountMovementExist;
 }
-/*
-// Update import file array row
-function updateImportFileArray(rowNumber) {
-
-  // validate row number
-  if (rowNumber > 0) {
-    rowNumber--;
-  } else {
-    rowNumber = 0;
-  }
-
-  // condo Id
-  importFileArray[rowNumber].condoId =
-    Number(document.querySelector('.select-importfile-condoId').value);
-  console.log('condoId 5:', condoId);
-
-  // Account Id
-  importFileArray[rowNumber].accountId =
-    Number(document.querySelector('.select-importfile-accountId').value);
-
-  // Account Name
-  const accountId =
-    importFileArray[rowNumber].accountId;
-  const objAccountRowNumber =
-    accountArray.findIndex(account => account.accountId === accountId);
-  if (objAccountRowNumber !== -1) {
-    importFileArray[rowNumber].accountName =
-      accountArray[objAccountRowNumber].name;
-  }
-
-  // Acounting Date
-  importFileArray[rowNumber].accountingDate =
-    document.querySelector('.input-importfile-date').value;
-
-  // Income
-  importFileArray[rowNumber].income =
-    document.querySelector('.input-importfile-income').value;
-
-  // Payment
-  importFileArray[rowNumber].payment =
-    document.querySelector('.input-importfile-payment').value;
-
-  // Number Kilo Watt per Hour
-  importFileArray[rowNumber].numberKWHour =
-    document.querySelector('.input-importfile-numberKWHour').value;
-
-  // Text
-  importFileArray[rowNumber].text =
-    document.querySelector('.input-importfile-text').value;
-}
-*/

@@ -59,7 +59,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
+
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -141,114 +141,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     socket.onclose = () => {
     }
   }
-  /*
-  // Send a message to the server
-  socket.onopen = () => {
-
-    // Send a request to the server to get all users
-    const SQLquery =
-      `
-        SELECT * FROM user
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY userId;
-      `;
-    socket.send(SQLquery);
-  };
-
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
-
-    let message = event.data;
-
-    // Create user array including objets
-    if (message.includes('"tableName":"user"')) {
-
-      // user table
-      console.log('userTable');
-
-      // array including objects with user information
-      userArray = JSON.parse(message);
-
-      // Send a request to the server to get all accounts
-      const SQLquery =
-        `
-          SELECT * FROM account
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY accountId;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create account array including objets
-    if (message.includes('"tableName":"account"')) {
-
-      // account table
-      console.log('accountTable');
-
-      // array including objects with account information
-      accountArray = JSON.parse(message);
-
-      // Send a request to the server to get all suppliers
-      const SQLquery = 
-        `
-          SELECT * FROM supplier
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY supplierId;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create supplier array including supplier objets
-    if (message.includes('"tableName":"supplier"')) {
-
-      // supplier table
-      console.log('supplierTable');
-
-      // array including objects with suplier information
-      supplierArray = JSON.parse(message);
-
-      // Show leading texts
-      let supplierId =
-       objSupplier.getSelectedSupplierId('select-supplier-supplierId');
-      showLeadingText(supplierId);
-
-      // Show all values for all suppliers
-      showValues(supplierId);
-
-      // Make events
-      if (!isEventsCreated) {
-        createEvents();
-        isEventsCreated = true;
-      }
-    }
-
-    // Check for update, delete ...
-    if (message.includes('"affectedRows"')) {
-
-      console.log('affectedRows');
-
-      // Sends a request to the server to get all users
-      const SQLquery =
-        `
-          SELECT * FROM supplier
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY supplierId;
-        `;
-      socket.send(SQLquery);
-    }
-
-  // Handle errors
-  socket.onerror = (error) => {
-
-    // Close socket on error and let onclose handle reconnection
-    socket.close();
-  }
-
-  // Handle disconnection
-  socket.onclose = () => {
-  }
-}
-  */
 }
 
 // Make events for suppliers
@@ -302,7 +194,7 @@ function createEvents() {
           WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY supplierId;
         `;
-     updateMySql(SQLquery, 'supplier', 'SELECT');
+      updateMySql(SQLquery, 'supplier', 'SELECT');
     }
   });
 
@@ -317,7 +209,7 @@ function createEvents() {
           WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY supplierId;
         `;
-     updateMySql(SQLquery, 'supplier', 'SELECT');
+      updateMySql(SQLquery, 'supplier', 'SELECT');
     }
   });
 }
@@ -364,6 +256,14 @@ function updateSupplier(supplierId) {
     const accountId =
       document.querySelector('.select-supplier-accountId').value;
 
+    // account2 Id
+    const account2Id =
+      document.querySelector('.select-supplier-account2Id').value;
+
+    // amount
+    const amount =
+      (document.querySelector('.input-supplier-amount').value) ? formatKronerToOre(document.querySelector('.input-supplier-amount').value) : '';
+
     let SQLquery = '';
     const now = new Date();
     const lastUpdate = now.toISOString();
@@ -390,7 +290,9 @@ function updateSupplier(supplierId) {
             email = '${email}',
             phone = '${phone}',
             bankAccount = '${bankAccount}',
-            accountId = ${accountId}
+            accountId = ${accountId},
+            account2Id = ${account2Id},
+            amount = '${amount}'
           WHERE supplierId = ${supplierId}
           ;
         `;
@@ -412,7 +314,9 @@ function updateSupplier(supplierId) {
           email,
           phone,
           bankAccount,
-          accountId
+          accountId,
+          account2Id,
+          amount
         ) 
         VALUES (
           'supplier',
@@ -427,7 +331,9 @@ function updateSupplier(supplierId) {
           '${email}',
           '${phone}',
           '${bankAccount}',
-          ${accountId}
+          ${accountId},
+          ${account2Id},
+          '${amount}'
         );
       `;
       // Client sends a request to the server
@@ -449,7 +355,7 @@ function deleteSupplierRow(supplierId) {
 
   let SQLquery = "";
 
-  if (supplierId > 1) {
+  if (supplierId >= 0) {
 
     // Check if supplier exist
     const objUserSupplierNumber =
@@ -510,7 +416,13 @@ function showLeadingText(supplierId) {
   objSupplier.showInput('supplier-bankAccount', '* Bankkonto', 11, '');
 
   // Show all accounts
-  objAccount.showAllAccounts('supplier-accountId', 0);
+  objAccount.showAllAccounts('supplier-accountId', 0, '', 'Ingen konti er valgt');
+
+  // Show all accounts
+  objAccount.showAllAccounts('supplier-account2Id', 0, '', 'Ingen konti er valgt');
+
+  // Show amount
+  objAccount.showInput('supplier-amount', 'Beløp', 10, '');
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -531,7 +443,7 @@ function showLeadingText(supplierId) {
 function showValues(supplierId) {
 
   // Check for valid supplier Id
-  if (supplierId > 1) {
+  if (supplierId >= 0) {
 
     // find object number for selected supplier Id 
     const objUserSupplierNumber =
@@ -578,6 +490,13 @@ function showValues(supplierId) {
       document.querySelector('.select-supplier-accountId').value =
         supplierArray[objUserSupplierNumber].accountId;
 
+      // Select account2 Id
+      document.querySelector('.select-supplier-account2Id').value =
+        (supplierArray[objUserSupplierNumber].account2Id) ? supplierArray[objUserSupplierNumber].account2Id : 0;
+
+      // Select amount
+      document.querySelector('.input-supplier-amount').value =
+        (supplierArray[objUserSupplierNumber].amount) ? formatOreToKroner(supplierArray[objUserSupplierNumber].amount) : '';
     }
   }
 }
@@ -639,6 +558,14 @@ function resetValues() {
   // account Id
   document.querySelector('.select-supplier-accountId').value =
     0;
+
+  // account2 Id
+  document.querySelector('.select-supplier-account2Id').value =
+    0;
+
+  // amount
+  document.querySelector('.input-supplier-amount').value =
+    '';
 
   document.querySelector('.select-supplier-supplierId').disabled =
     true;

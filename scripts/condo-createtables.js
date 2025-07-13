@@ -49,11 +49,11 @@ const createDueTable =
 
 // 11 Budget
 const createBudgetTable =
-  false;
+  true;
 
 // 12 Bank account movement
 const createBankAccountMovementTable =
-  true;
+  false;
 
 // Activate Account class
 const objUser = new User('user');
@@ -372,6 +372,8 @@ function createAllTables() {
         phone VARCHAR(20) NOT NULL,
         bankAccount VARCHAR(11),
         accountId INT,
+        account2Id INT,
+        amount VARCHAR(10),
         FOREIGN KEY (accountId) REFERENCES account(accountId),
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
@@ -466,7 +468,6 @@ function createAllTables() {
         accountId INT,
         amount VARCHAR(10) NOT NULL,
         year VARCHAR(4) NOT NULL,
-        text VARCHAR(255) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId),
         FOREIGN KEY (accountId) REFERENCES account(accountId)
       );
@@ -536,7 +537,7 @@ function insertRowAllTables() {
         ''
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'condoinium', 'INSERT');
   }
 
   // 2 Condo
@@ -567,7 +568,7 @@ function insertRowAllTables() {
         ''
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'condo', 'INSERT');
   }
 
   // 3 Bank account
@@ -600,7 +601,7 @@ function insertRowAllTables() {
         ''
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'bankaccount', 'INSERT');
   }
 
   // 4 Account
@@ -623,7 +624,7 @@ function insertRowAllTables() {
         ''
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'account', 'INSERT');
   }
 
   // 5 user
@@ -658,7 +659,7 @@ function insertRowAllTables() {
         'superuser'
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'user', 'INSERT');
   }
 
   // 6 user bank account
@@ -687,7 +688,7 @@ function insertRowAllTables() {
         '12345678901'
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'userbankaccount', 'INSERT');
   }
 
   // 7 supplier
@@ -708,6 +709,7 @@ function insertRowAllTables() {
         email,
         phone,
         bankAccount,
+        amount,
         accountId
       ) 
       VALUES (
@@ -723,10 +725,11 @@ function insertRowAllTables() {
         '',
         '',
         '',
+        '',
         1
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'supplier', 'INSERT');
   }
 
   /*
@@ -820,7 +823,7 @@ function insertRowAllTables() {
       ''
     );
   `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'due', 'INSERT');
   }
 
   // 11 Budget
@@ -835,20 +838,17 @@ function insertRowAllTables() {
       lastUpdate,
       accountId,
       amount,
-      year,
-      text)
-    VALUES(
+      year(
       'budget',
       1,
       'superuser@ingegilje.no',
       '${lastUpdate}',
       1,
       '0',
-      '2025',
-      'text'
+      ''
     );
   `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'budget', 'INSERT');
   }
 
   // 12 Bank account movement
@@ -883,6 +883,6 @@ function insertRowAllTables() {
         ''
       );
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'bankaccountmovement', 'INSERT');
   }
 }

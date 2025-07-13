@@ -31,7 +31,7 @@ class BankAccount extends Condos {
     const numberOfRows = bankAccountArray.length;
     if (numberOfRows > 0) {
       bankAccountArray.forEach((bankaccount) => {
-        if (bankaccount.bankAccountId > 1) {
+        if (bankaccount.bankAccountId >= 0) {
           if (bankaccount.bankAccountId === bankAccountId) {
 
             html += `
@@ -59,7 +59,7 @@ class BankAccount extends Condos {
       <option value="0" 
         selected
       >
-        Ingen bankkontoer
+        Ingen bankkonti
       </option>
     `;
     }

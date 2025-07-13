@@ -27,10 +27,10 @@ class BankAccountMovement extends Condos {
 
     // Check if bank account movement array is empty
     const numberOfRows =
-     bankAccountMovementArray.length;
+      bankAccountMovementArray.length;
     if (numberOfRows > 0) {
       bankAccountMovementArray.forEach((BankAccountMovement) => {
-        if (bankAccountMovement.bankAccountMovementId > 1) {
+        if (bankAccountMovement.bankAccountMovementId >= 0) {
           if (bankAccountMovement.bankAccountMovementId === bankAccountMovementId) {
 
             html += `
@@ -120,16 +120,16 @@ class BankAccountMovement extends Condos {
       0;
 
     // Check if bank account movement array is empty
-    const numberOfRows = 
-    bankAccountMovementArray.length;
+    const numberOfRows =
+      bankAccountMovementArray.length;
     if (numberOfRows > 0) {
       bankAccountMovementArray.forEach((bankaccountmovement) => {
-        if (bankaccountmovement.bankAccountMovementId > 1) {
+        if (bankaccountmovement.bankAccountMovementId >= 0) {
 
           lineNumber++;
           if (bankaccountmovement.bankAccountMovementId === bankAccountMovementId) {
 
-            html += 
+            html +=
               `
                 <option 
                   value=${bankaccountmovement.bankAccountMovementId}
@@ -152,8 +152,8 @@ class BankAccountMovement extends Condos {
       });
     } else {
 
-      html += 
-      `
+      html +=
+        `
         <option 
           value="0" 
           selected
@@ -197,12 +197,12 @@ class BankAccountMovement extends Condos {
       bankAccountMovementId =
         Number(document.querySelector(`.${className}`).value);
       bankAccountMovementId =
-       (bankAccountMovementId === 0) ? bankAccountMovementArray.at(-1).bankAccountMovementId : bankAccountMovementId;
+        (bankAccountMovementId === 0) ? bankAccountMovementArray.at(-1).bankAccountMovementId : bankAccountMovementId;
     } else {
 
       // Get last id in last object in budget array
       bankAccountMovementId =
-       bankAccountMovementArray.at(-1).bankAccountMovementId;
+        bankAccountMovementArray.at(-1).bankAccountMovementId;
     }
 
     return bankAccountMovementId;

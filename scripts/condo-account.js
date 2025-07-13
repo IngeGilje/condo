@@ -49,7 +49,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
 
     // Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -280,7 +279,7 @@ function deleteAccountRow() {
         WHERE accountId = ${accountId};
       `;
       // Client sends a request to the server
-          updateMySql(SQLquery, 'account', 'SELECT');
+      updateMySql(SQLquery, 'account', 'SELECT');
     }
     // Get accounts
     SQLquery = `
@@ -320,7 +319,7 @@ function showLeadingText(accountId) {
 function showValues(accountId) {
 
   // Check for valid income Id
-  if (accountId > 1) {
+  if (accountId >= 0) {
 
     // find object number for selected account 
     const objAccountRowNumber =

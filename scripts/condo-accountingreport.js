@@ -1,6 +1,7 @@
 // Search for amount movements
 
 // Activate objects
+const today = new Date();
 const objUser = new User('user');
 const objBudget = new Budget('budget');
 const objAccount = new Account('account');
@@ -25,28 +26,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   showLoginError('accountinreport-login');
 } else {
 
+  let SQLquery;
+
   // Send a requests to the server
   socket.onopen = () => {
-
-    let messageToServer;
-
-    // Sends a request to the server to get users
-    let SQLquery =
-      `
-        SELECT * FROM user
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY userId;
-      `;
-    updateMySql(SQLquery, 'user', 'SELECT');
-
-    SQLquery =
-    {
-      tableName: "budget",
-      requestId: "requestId",
-      SQLquery: SQLquery
-    };
-
-    updateMySql(SQLquery, 'budget', 'SELECT');
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -56,6 +39,23 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
+
+    // Sends a request to the server to get users
+    SQLquery =
+      `
+        SELECT * FROM user
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY userId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+
+    SQLquery =
+      `
+        SELECT * FROM budget
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY budgetId;
+      `;
+    updateMySql(SQLquery, 'budget', 'SELECT');
 
     // Sends a request to the server to get bank account movements
     SQLquery =
@@ -72,7 +72,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -98,30 +97,29 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             objInfo.tableArray;
           break;
 
-        case 'bankaccountmovement':
-
-          // account table
-          console.log('bankaccountmovement');
-
-          bankAccountMovementArray =
-            objInfo.tableArray;
-          break;
-
         case 'budget':
 
           // budget table
-          console.log('budgetTable');
+          console.log('budget');
 
-          // array including objects with budget information
           budgetArray =
             objInfo.tableArray;
+          break;
 
-          // Find selected budget id
-          const budgetId =
-            objBudget.getSelectedBudgetId('select-accountingreport-budgetId');
+        case 'bankaccountmovement':
+
+          // budget table
+          console.log('bankaccountmovementTable');
+
+          // array including objects with budget information
+          bankAccountMovementArray =
+            objInfo.tableArray;
 
           // Show leading text
           showLeadingText();
+
+          // Show all bank account movements
+          showValues();
 
           // Make events
           if (!isEventsCreated) {
@@ -148,92 +146,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       };
     }
 
-    /*
-    // Handle incoming messages from server
-    socket.onmessage = (event) => {
-  
-      let message = event.data;
-  
-      // Create user array including objets
-      if (message.includes('"tableName":"user"')) {
-  
-        console.log('userTable');
-  
-        // user array including objects with user information
-        userArray = JSON.parse(message);
-  
-        // Sends a request to the server to get all condos
-        const SQLquery =
-          `
-            SELECT * FROM bankaccountmovement
-            WHERE condominiumId = ${objUserPassword.condominiumId}
-            ORDER BY bankaccountmovementId;
-          `;
-        socket.send(SQLquery);
-      }
-  
-      // Create bank account movement array including objets
-      if (message.includes('"tableName":"bankaccountmovement"')) {
-  
-        console.log('bankaccountmovementTable');
-  
-        // user array including objects with user information
-        bankAccountMovementArray = JSON.parse(message);
-  
-        // Sends a request to the server to get all condos
-        const SQLquery =
-          `
-            SELECT * FROM account
-            WHERE condominiumId = ${objUserPassword.condominiumId}
-            ORDER BY accountId;
-          `;
-        socket.send(SQLquery);
-      }
-  
-      // Create account array including objets
-      if (message.includes('"tableName":"account"')) {
-  
-        console.log('accountTable');
-  
-        // array including objects with account information
-        accountArray = JSON.parse(message);
-  
-        // Sends a request to the server to get all budgets
-        const SQLquery =
-          `
-            SELECT * FROM budget
-            WHERE condominiumId = ${objUserPassword.condominiumId}
-            ORDER BY budgetId;
-          `;
-        socket.send(SQLquery);
-      }
-  
-      // Create bank account movements array including objets
-      if (message.includes('"tableName":"budget"')) {
-  
-        // budget table
-        console.log('budgetTable');
-  
-        // array including objects with budget information
-        budgetArray = JSON.parse(message);
-  
-        // Show leading text
-        showLeadingText();
-  
-        // Make events
-        if (!isEventsCreated) {
-          createEvents();
-          isEventsCreated = true;
-        }
-      }
-  
-      // Check for update, delete ...
-      if (message.includes('"affectedRows"')) {
-        console.log('affectedRows');
-      }
-    };
-    */
-
     // Handle errors
     socket.onerror = (error) => {
 
@@ -254,7 +166,7 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-accountingreport-search')) {
 
-      // Show all values for payment
+      // Show all bank account movements
       showValues();
     };
   });
@@ -265,13 +177,18 @@ function showLeadingText() {
 
   // Show from date
   objAccountingReport.showInput('accountingreport-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
+  const year =
+    today.getFullYear();
   document.querySelector('.input-accountingreport-fromDate').value =
-    '01.01.2024';
+    `01.01.${year}`;
 
   // Show to date
   objAccountingReport.showInput('accountingreport-toDate', 'Til dato', 10, 'mm.dd.åååå');
   document.querySelector('.input-accountingreport-toDate').value =
     getCurrentDate();
+
+  // Show budget year
+  objBudget.selectNumber('accountingreport-year', 2020, 2030, year, 'Budsjettår');
 
   // show start search button
   objAccountingReport.showButton('accountingreport-search', 'Start søk');
@@ -298,7 +215,7 @@ function showValues() {
     let rowNumber = 0;
 
     accountArray.forEach((account) => {
-      if (account.accountId > 1) {
+      if (account.accountId >= 0) {
 
         rowNumber++;
 
@@ -307,7 +224,6 @@ function showValues() {
           (rowNumber % 2 !== 0) ? "green" : "";
 
         //accountName =
-        //  truncateText(account.name, 'div-accountingreport-columnAccountName');
         htmlColumnAccountName +=
           `
             <div 
@@ -332,6 +248,7 @@ function showValues() {
           `;
 
         // Budget Amount
+        /*
         let budgetAmount = 0;
         const objBudgetRowNumber =
           budgetArray.findIndex(budget => budget.accountId === account.accountId);
@@ -341,7 +258,11 @@ function showValues() {
         }
         budgetAmount =
           formatOreToKroner(String(budgetAmount));
-
+        */
+        const year =
+          Number(document.querySelector('.select-accountingreport-year').value);
+        let budgetAmount =
+          getBudgetAmount(account.accountId, year);
         htmlColumnBudgetAmount +=
           `
             <div 
@@ -353,9 +274,9 @@ function showValues() {
 
         // Deviation
         accountAmount =
-          formatKronerToOre(accountAmount);
+          Number(formatKronerToOre(accountAmount));
         budgetAmount =
-          formatKronerToOre(budgetAmount);
+          Number(formatKronerToOre(budgetAmount));
         let deviation =
           accountAmount - budgetAmount;
         deviation =
@@ -443,11 +364,20 @@ function showValues() {
 // Check for valid filter values
 function validateValues() {
 
-  let fromDate = document.querySelector('.input-accountingreport-fromDate').value;
-  const validFromDate = validateNorDate(fromDate, 'accountingreport-fromDate', 'Fra dato');
+  let fromDate =
+    document.querySelector('.input-accountingreport-fromDate').value;
+  const validFromDate =
+    validateNorDate(fromDate, 'accountingreport-fromDate', 'Fra dato');
 
-  let toDate = document.querySelector('.input-accountingreport-toDate').value;
-  const validToDate = validateNorDate(toDate, 'accountingreport-toDate', 'Fra dato');
+  let toDate =
+    document.querySelector('.input-accountingreport-toDate').value;
+  const validToDate =
+    validateNorDate(toDate, 'accountingreport-toDate', 'Fra dato');
+
+  let year =
+    Number(document.querySelector('.select-accountingreport-year').value);
+  const validYear =
+    validateNumber(year, 2020, 2030, 'Budsjettår');
 
   // Check date interval
   fromDate = Number(convertDateToISOFormat(fromDate));
@@ -459,18 +389,6 @@ function validateValues() {
     formatToNorDate(fromDate);
   toDate =
     formatToNorDate(toDate);
-
-
-  /*
-  if (toDate !== '') {
-    // Check to date dd.mm.yyyy
-    if (!validateEuroDateFormat(toDate)) {
-      document.querySelector('.label-accountingreport-fromDate').outerHTML =
-        "<div class='label-accountingreport-fromDate-red'>Format dd.mm.åååå</div>";
-      validValues = false;
-    }
-  }
-  */
 
   if (validFromDate && validToDate && validDateInterval) {
 
@@ -486,7 +404,7 @@ function validateValues() {
     }
   }
 
-  return (validFromDate && validToDate && validDateInterval) ? true : false;
+  return (validYear && validFromDate && validToDate && validDateInterval) ? true : false;
 }
 
 // Accumulate all bank account movement for specified account id
@@ -509,7 +427,8 @@ function getTotalMovementsBankAccount(accountId) {
   bankAccountMovementArray.forEach((bankAccountMovement) => {
 
     if (Number(bankAccountMovement.date) >= fromDate
-      && (Number(bankAccountMovement.date) <= toDate)) {
+      && (Number(bankAccountMovement.date) <= toDate)
+    ) {
 
       if (bankAccountMovement.accountId === accountId) {
 
@@ -522,4 +441,25 @@ function getTotalMovementsBankAccount(accountId) {
   })
 
   return totalAccountAmount;
+}
+
+// get budget amount
+function getBudgetAmount(accountId, year) {
+
+  amount =
+    '';
+
+  // Budget Amount
+  const objBudgetRowNumber =
+    budgetArray.findIndex(budget => budget.accountId === accountId);
+  if (objBudgetRowNumber !== -1) {
+
+    const budgetYear =
+      Number(budgetArray[objBudgetRowNumber].year);
+    if (budgetYear === year) {
+      amount =
+        budgetArray[objBudgetRowNumber].amount;
+    }
+  }
+  return formatOreToKroner(amount);
 }

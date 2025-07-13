@@ -7,7 +7,7 @@ class ImportFile extends Condos {
   // Show all account movements to update
   showImportFile(columnName, importFileId, alternativeSelect) {
 
-    let htmlImportFile = 
+    let htmlImportFile =
       `
         <form 
           id="ImportFile"
@@ -80,8 +80,8 @@ class ImportFile extends Condos {
       </form >
     `;
 
-    document.querySelector(`.div-${columnName}`).innerHTML = 
-    htmlImportFile;
+    document.querySelector(`.div-${columnName}`).innerHTML =
+      htmlImportFile;
   }
- }
+}
 

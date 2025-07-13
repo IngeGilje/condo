@@ -32,7 +32,7 @@ class Account extends Condos {
     const numberOfRows = accountArray.length;
     if (numberOfRows > 0) {
       accountArray.forEach((account) => {
-        if (account.accountId > 1) {
+        if (account.accountId >= 0) {
           if (account.accountId === accountId) {
 
             html += `
@@ -59,7 +59,7 @@ class Account extends Condos {
       <option value="0" 
         selected
       >
-        Ingen kontoer
+        Ingen konti
       </option>
     `;
     }

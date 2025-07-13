@@ -28,7 +28,7 @@ class User extends Condos {
     const numberOfRows = userArray.length;
     if (numberOfRows > 0) {
       userArray.forEach((user) => {
-        if (user.userId > 1) {
+        if (user.userId >= 0) {
           if (user.userId === userId) {
 
             html += `
@@ -73,7 +73,7 @@ class User extends Condos {
   // Find selected user id
   getSelectedUserId(classValue) {
 
-    let userId= 0;
+    let userId = 0;
 
     // Check if HTML class exist
     if (isClassDefined(classValue)) {

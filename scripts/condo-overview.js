@@ -73,7 +73,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
+
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -347,7 +347,7 @@ function showValues() {
 
     let sumColumnDue = 0;
     dueArray.forEach((due) => {
-      if (due.dueId > 1) {
+      if (due.dueId >= 0) {
         if (due.condoId === condoId || condoId === 999999999) {
           if (Number(due.date) >= fromDate && (Number(due.date) <= toDate)) {
 
@@ -421,7 +421,7 @@ function showValues() {
     let sumColumnBankAccountMovement = 0;
 
     bankAccountMovementArray.forEach((bankAccountMovement) => {
-      if (bankAccountMovement.bankAccountMovementId > 1) {
+      if (bankAccountMovement.bankAccountMovementId >= 0) {
         if (Number(bankAccountMovement.date) >= Number(fromDate) && Number(bankAccountMovement.date) <= Number(toDate)) {
           if (bankAccountMovement.condoId === condoId || condoId === 999999999) {
 
@@ -471,8 +471,7 @@ function showValues() {
               `;
 
             // Accomulate
-            // bankaccountmovement.
-            sumColumnBankAccountMovement += Number(bankAccountMovement.amount);
+            sumColumnBankAccountMovement += Number(bankAccountMovement.payment);
           }
         }
       }

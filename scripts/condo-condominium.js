@@ -533,7 +533,7 @@ function showLeadingText(condominiumId) {
 function showValues(condominiumId) {
 
   // Check for valid condominium Id
-  if (condominiumId > 1) {
+  if (condominiumId >= 0) {
 
     // find object number for selected condominium id
     const objCondominimuRowNumber =
@@ -641,7 +641,7 @@ function deleteCondominiumRow() {
 
   // Check for valid condominium Id
   const condominiumId = Number(document.querySelector('.select-condominium-condominiumId').value);
-  if (condominiumId > 1) {
+  if (condominiumId >= 0) {
 
     // Check if condominium exist
     const objCondominimuRowNumber =

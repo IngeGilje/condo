@@ -59,7 +59,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -412,7 +411,7 @@ function deleteAccountRow() {
   let SQLquery = "";
 
   const bankAccountId = Number(document.querySelector('.select-bankaccount-bankAccountId').value);
-  if (bankAccountId > 1) {
+  if (bankAccountId >= 0) {
 
     // Check if bank account exist
     const objAccountRowNumber =
@@ -426,7 +425,7 @@ function deleteAccountRow() {
       `;
 
       // Client sends a request to the server
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'bankaccount', 'DELETE');
     }
 
     // Get bank account
@@ -483,7 +482,7 @@ function showLeadingText(bankAccountId) {
 function showValues(bankAccountId) {
 
   // Check for valid bankaccount Id
-  if (bankAccountId > 1) {
+  if (bankAccountId >= 0) {
 
     // find object number for selected account 
     const objAccountRowNumber =

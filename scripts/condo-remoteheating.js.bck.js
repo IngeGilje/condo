@@ -29,13 +29,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   socket.onopen = () => {
 
     // Sends a request to the server to get all users
-    const SQLquery = 
+    const SQLquery =
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY userId;
       `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'user', 'SELECT');
   };
 
   // Handle incoming messages from server
@@ -52,13 +52,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       userArray = JSON.parse(message);
 
       // Sends a request to the server to get all condos
-      const SQLquery = 
+      const SQLquery =
         `
           SELECT * FROM condo
           WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY name;
         `;
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'condo', 'SELECT');
     }
 
     // Create condo array including objets
@@ -72,11 +72,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Sends a request to the server to get all accounts
       //objAccount.getAccounts(socket);
-      const SQLquery = `
-      SELECT * FROM account
-      ORDER BY accountId;
-    `;
-      socket.send(SQLquery);
+      const SQLquery =
+        `
+          SELECT * FROM account
+          ORDER BY accountId;
+        `;
+      updateMySql(SQLquery, 'account', 'SELECT');
     }
 
     // Create account array including objets
@@ -95,7 +96,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY paymentId;
         `;
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'payment', 'SELECT');
     }
 
     // Create payment array including objets
@@ -130,7 +131,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY paymentId;
         `;
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'payment', 'SELECT');
     }
   };
 
@@ -235,7 +236,7 @@ function showValues() {
     let rowNumber =
       0;
     paymentArray.forEach((payment) => {
-      if (payment.paymentId > 1) {
+      if (payment.paymentId >= 0) {
         if (Number(payment.date) >= fromDate && Number(payment.date) <= toDate) {
           if (payment.condoId === condoId || condoId === 999999999) {
             if (payment.accountId === accountId || accountId === 999999999) {
@@ -301,10 +302,6 @@ function showValues() {
                     ${priceKWHour}
                   </div>
                 `;
-
-              // Text
-              //const text =
-              //  truncateText(payment.text, 'div-remoteheating-columnText');
 
               htmlColumnText +=
                 `
@@ -386,7 +383,7 @@ function showValues() {
     // Show all columns
     document.querySelector('.div-remoteheating-columnDate').innerHTML =
       htmlColumnDate;
-    document.querySelector('.div-remoteheating-columnAmount').innerHTML =
+    document.querySelector('.div-remoteheating-columnPayment').innerHTML =
       htmlColumnAmount;
     document.querySelector('.div-remoteheating-columnNumberKWHour').innerHTML =
       htmlColumnNumberKWHour;

@@ -7,7 +7,7 @@ class Budget extends Condos {
   // Show all budgets
   showAllBudgets(columnName, budgetId) {
 
-    let html = 
+    let html =
       `
         <form 
           id ="Budget"
@@ -32,7 +32,7 @@ class Budget extends Condos {
     const numberOfRows = budgetArray.length;
     if (numberOfRows > 0) {
       budgetArray.forEach((budget) => {
-        if (budget.budgetId > 1) {
+        if (budget.budgetId >= 0) {
           if (budget.budgetId === budgetId) {
 
             html += `

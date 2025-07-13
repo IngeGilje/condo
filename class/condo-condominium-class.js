@@ -30,7 +30,7 @@ class Condominium extends Condos {
     const numberOfRows = condominiumArray.length;
     if (numberOfRows > 0) {
       condominiumArray.forEach((condominium) => {
-        if (condominium.condominiumId > 1) {
+        if (condominium.condominiumId >= 0) {
           if (condominium.condominiumId === condominiumId) {
 
             html += `

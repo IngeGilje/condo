@@ -7,7 +7,7 @@ class UserBankAccount extends Condos {
   // Show all user bank accounts
   showAllUserBankAccounts(classValue, userBankAccountId) {
 
-    let html = 
+    let html =
       `
         <form 
           id="userBankAccountId"
@@ -29,7 +29,7 @@ class UserBankAccount extends Condos {
     const numberOfRows = userBankAccountArray.length;
     if (numberOfRows > 0) {
       userBankAccountArray.forEach((userBankAccount) => {
-        if (userBankAccount.userBankAccountId > 1) {
+        if (userBankAccount.userBankAccountId >= 0) {
           if (userBankAccount.userBankAccountId === userBankAccountId) {
 
             html += `

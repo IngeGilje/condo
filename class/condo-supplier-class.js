@@ -28,7 +28,7 @@ class Supplier extends Condos {
     const numberOfRows = supplierArray.length;
     if (numberOfRows > 0) {
       supplierArray.forEach((supplier) => {
-        if (supplier.supplierId > 1) {
+        if (supplier.supplierId >= 0) {
           if (supplier.supplierId === supplierId) {
 
             html += `

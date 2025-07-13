@@ -49,7 +49,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     const objInfo =
@@ -304,7 +303,7 @@ function showLeadingText(condoId) {
 function showValues(condoId) {
 
   // Check for valid condo Id
-  if (condoId > 1) {
+  if (condoId >= 0) {
 
     // find object number for selected condo id
     const objCondoRowNumber =
@@ -388,7 +387,7 @@ function deleteCondoRow() {
 
   // Check for valid condo Id
   const condoId = Number(document.querySelector('.select-condo-condoId').value);
-  if (condoId > 1) {
+  if (condoId >= 0) {
 
     // Check if condo exist
     const objCondoRowNumber =

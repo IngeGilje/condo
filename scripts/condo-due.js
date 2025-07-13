@@ -71,7 +71,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
+
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -88,7 +88,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             objInfo.tableArray;
           break;
 
-          case 'account':
+        case 'account':
 
           // account table
           console.log('accountTable');
@@ -429,7 +429,7 @@ function updateDueRow(dueId) {
             text = '${text}'
           WHERE dueId = ${dueId};
         `;
-updateMySql(SQLquery, 'due', 'UPDATE');
+      updateMySql(SQLquery, 'due', 'UPDATE');
     } else {
 
       SQLquery =
@@ -456,7 +456,7 @@ updateMySql(SQLquery, 'due', 'UPDATE');
             '${text}'
           );
         `;
-        updateMySql(SQLquery, 'due', 'INSERT');
+      updateMySql(SQLquery, 'due', 'INSERT');
     }
 
     document.querySelector('.select-due-dueId').disabled =
@@ -476,13 +476,13 @@ function deleteDueRow(dueId) {
   let isUpdated = false;
 
   // Check for valid due Id
-  if (dueId > 0) {
+  if (dueId >= 0) {
 
     SQLquery = `
       DELETE FROM due 
       WHERE dueId = ${dueId};
     `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'due', 'DELETE');
 
     // Show updated dues
     //objDue.getDues(socket);
@@ -491,7 +491,7 @@ function deleteDueRow(dueId) {
         SELECT * FROM due
         ORDER BY dueId;
       `;
-    socket.send(SQLquery);
+    updateMySql(SQLquery, 'due', 'SELECT');
   }
 }
 
@@ -575,7 +575,7 @@ function validateValues(dueId) {
 function showValues(dueId) {
 
   // Check for valid due Id
-  if (dueId > 1) {
+  if (dueId >= 0) {
 
     // Check if due Id exist
     const objDueRowNumber =

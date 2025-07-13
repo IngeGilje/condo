@@ -50,7 +50,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
+
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -274,13 +274,13 @@ function createEvents() {
       deleteUserRow(userId);
 
       // Sends a request to the server to get all users
-      const SQLquery = 
+      const SQLquery =
         `
           SELECT * FROM user
           WHERE condominiumId = ${objUserPassword.condominiumId}
           ORDER BY userId;
         `;
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'user', 'SELECT');
     }
   });
 
@@ -289,7 +289,7 @@ function createEvents() {
     if (event.target.classList.contains('button-user-cancel')) {
 
       // Sends a request to the server to get all user
-      const SQLquery = 
+      const SQLquery =
         `
           SELECT * FROM user
           WHERE condominiumId = ${objUserPassword.condominiumId}
@@ -361,7 +361,7 @@ function updateUser(userId) {
             WHERE 
               userId = ${userId};
         `;
-        updateMySql(SQLquery, 'user', 'UPDATE');
+      updateMySql(SQLquery, 'user', 'UPDATE');
     } else {
 
       // Insert new record
@@ -394,7 +394,7 @@ function updateUser(userId) {
             '${password}'
           );
         `;
-        updateMySql(SQLquery, 'user', 'INSERT');
+      updateMySql(SQLquery, 'user', 'INSERT');
     }
 
     document.querySelector('.select-user-userId').disabled =
@@ -414,7 +414,7 @@ function deleteUserRow(userId) {
 
   let SQLquery = "";
 
-  if (userId > 1) {
+  if (userId >= 0) {
 
     // Check if user exist
     const objUserRowNumber =
@@ -428,17 +428,17 @@ function deleteUserRow(userId) {
     `;
 
       // Client sends a request to the server
-      socket.send(SQLquery);
+      updateMySql(SQLquery, 'user', 'DELETE');
     }
 
     // Get user
-    SQLquery = 
+    SQLquery =
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY userId;
       `;
-     updateMySql(SQLquery, 'user', 'SELECT');
+    updateMySql(SQLquery, 'user', 'SELECT');
 
     resetValues();
   }
@@ -491,7 +491,7 @@ function showLeadingText(userId) {
 function showValues(userId) {
 
   // Check for valid user Id
-  if (userId > 1) {
+  if (userId >= 0) {
 
     // find object number for selected user Id 
     const objUserRowNumber =

@@ -811,6 +811,7 @@ class Condos {
     return (bankAccountName) ? bankAccountName : "-";
   }
 
+  /*
   // get account id from bankaccount
   getAccountIdFromBankAccount(fromBankAccount, toBankAccount) {
 
@@ -859,6 +860,7 @@ class Condos {
     }
     return accountId;
   }
+  */
 
   // get account name
   getAccountName(accountId) {
@@ -881,8 +883,9 @@ class Condos {
 
     let condoId = 0;
 
-    // Check for valid bank account
-    if (Number(fromBankAccount) > 987654321) {
+    // Validate Bank Account
+    const bankAccountPattern = /^\d{11}$/;
+    if ((bankAccountPattern.test(fromBankAccount))) {
 
       const objBankAccountRowNumber =
         userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
@@ -1180,7 +1183,7 @@ function getCurrentDate() {
   return `${day}.${month}.${year}`;  // Output in dd.mm.yyyy format
 }
 
-// Format number (12345) to norwegian amount (12345,00)
+// Format number (12345) to norwegian amount (1 2345,00)
 function formatToNorAmount(amount) {
 
   amount = (amount.includes(",")) ? amount.replace(",", ".") : amount;
@@ -1189,7 +1192,7 @@ function formatToNorAmount(amount) {
   return amount;
 }
 
-// Format number (1234567) to norwegian amount (12345,67)
+// Format number (1234567) to norwegian amount (1 2345,67)
 function formatOreToKroner(amount) {
 
   amount = this.removeComma(String(amount));
@@ -1290,7 +1293,8 @@ function formatAmountToOre(amount) {
   // Check for valid amount in orer
   amount = (amount === '000') ? '0' : amount;
   amount = (isNumeric(amount)) ? amount : '0';
-  return amount;
+  amount = Number(amount);
+  return String(amount);
 }
 
 // Format norwegian date (11.05.1983) to number (19830511)
@@ -1595,3 +1599,44 @@ function validateInterval(className, labelText, fromValue, toValue) {
   return isTextValid;
 }
 
+// get account id from bank account
+function getAccountIdFromBankAccount(bankAccount) {
+
+  let accountId = 0;
+
+  if (bankAccount === '32019999008') {
+    console.log('bank account:', bankAccount);
+  }
+
+  // Bank Acoount <> Condominium Bank Account
+  let objBankAccountRowNumber =
+    bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
+  if (objBankAccountRowNumber === -1) {
+
+    // Check user bank account
+    const objBankAccountRowNumber =
+      userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+    if (objBankAccountRowNumber !== -1) {
+
+      accountId =
+        userBankAccountArray[objBankAccountRowNumber].accountId;
+    }
+
+    // get Account Id from supplier
+    const objSupplierRowNumber =
+      supplierArray.findIndex(supplier => supplier.bankAccount === bankAccount);
+    if (objSupplierRowNumber !== -1) {
+
+      accountId =
+        supplierArray[objSupplierRowNumber].accountId;
+
+      // get Account Id from supplier amount
+      const amount =
+        (supplierArray[objSupplierRowNumber].amount) ? Number(supplierArray[objSupplierRowNumber].amount) : 0;
+
+      accountId =
+        (amount) ? Number(supplierArray[objSupplierRowNumber].account2Id) : accountId;
+    }
+  }
+  return accountId;
+}

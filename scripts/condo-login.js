@@ -8,7 +8,7 @@ const objLogIn =
 
 let isEventsCreated =
   false;
-  
+
 let socket;
 socket = connectingToServer();
 
@@ -34,7 +34,7 @@ socket.onmessage = (event) => {
 
   let messageFromServer =
     event.data;
-  console.log('Incoming message from server:', messageFromServer);
+  console.log(':', messageFromServer);
 
   // Converts a JavaScript Object Notation (JSON) string into an object
   objInfo =

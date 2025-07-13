@@ -61,7 +61,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -265,7 +264,7 @@ function createEvents() {
     if (event.target.classList.contains('select-budget-accountId')) {
 
       accountId =
-       Number(event.target.value);
+        Number(event.target.value);
     };
   });
 
@@ -502,7 +501,7 @@ function deleteBudgetRow() {
 
   // Check for valid budget Id
   const budgetId = Number(document.querySelector('.select-budget-budgetId').value);
-  if (budgetId > 1) {
+  if (budgetId >= 0) {
 
     // Check if budget id exist
     const objBudgetRowNumber =

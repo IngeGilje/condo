@@ -71,7 +71,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Incoming message from server:', messageFromServer);
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -550,14 +549,14 @@ function deleteMonthlyFee() {
       const dueId =
         findDueId(condoId, accountId, amount, date);
 
-      if (dueId > 1) {
+      if (dueId >= 0) {
         SQLquery =
           `
             DELETE FROM due 
             WHERE dueId = ${dueId};
           `;
 
-        socket.send(SQLquery);
+        updateMySql(SQLquery, 'due', 'DELETE');
         console.log(SQLquery);
 
         isDeleted = true;
@@ -701,6 +700,7 @@ function resetValues() {
 function showMonthlyFee(condoId, accountId) {
 
   let sumAmount = 0;
+  let lineNumber = 0;
 
   document.querySelector(".input-monthlyfee-amount").value =
     '';
@@ -728,12 +728,18 @@ function showMonthlyFee(condoId, accountId) {
 
     if (due.condoId === condoId && due.accountId === accountId) {
 
+      lineNumber++;
+
+      // check if the number is odd
+      const colorClass =
+        (lineNumber % 2 !== 0) ? "green" : "";
+
       // 20250115 -> 15.01.2025
       date = formatToNorDate(String(due.date));
       htmlColumnDate +=
         `
           <div 
-            class="rightCell"
+            class="rightCell ${colorClass}"
           >
             ${date}
           </div>
@@ -746,7 +752,7 @@ function showMonthlyFee(condoId, accountId) {
       htmlColumnAmount +=
         `
           <div 
-            class="rightCell"
+            class="rightCell ${colorClass}"
           >
             ${amount}
           </div>
@@ -779,7 +785,7 @@ function showMonthlyFee(condoId, accountId) {
 function showValues(dueId) {
 
   // Check for valid due Id
-  if (dueId > 1) {
+  if (dueId >= 0) {
 
     // find object number for selected due id
     const objDueRowNumber =
@@ -793,18 +799,6 @@ function showValues(dueId) {
       // Account id
       document.querySelector('.select-monthlyfee-accountId').value =
         dueArray[objDueRowNumber].accountId;
-
-      /*
-      // year
-      document.querySelector('.select-monthlyfee-year').value =
-        dueArray[objDueRowNumber].year;
-      */
-
-      /*
-      // Day
-      document.querySelector('.select-monthlyfee-day').value =
-        dueArray[objDueRowNumber].day;
-      */
 
       // Amount
       const amount =
