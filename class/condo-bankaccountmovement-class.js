@@ -4,8 +4,8 @@ class BankAccountMovement extends Condos {
   // bank account movement information
   bankAccountMovementArray = Array;
 
-  // Show all bank account movements
-  showAllAccountMovements(columnName, bankAccountMovementId) {
+  // Show all selected bank account movements
+  showAllSelectedAccountMovements(columnName, bankAccountMovementId, fromDate, toDate, condoId, accountId) {
 
     let html = `
       <form 
@@ -25,42 +25,61 @@ class BankAccountMovement extends Condos {
         >
     `;
 
+    let lineNumber = 0;
+
+    let selectedOption =
+      false;
+
     // Check if bank account movement array is empty
     const numberOfRows =
       bankAccountMovementArray.length;
     if (numberOfRows > 0) {
-      bankAccountMovementArray.forEach((BankAccountMovement) => {
-        if (bankAccountMovement.bankAccountMovementId >= 0) {
-          if (bankAccountMovement.bankAccountMovementId === bankAccountMovementId) {
+      bankAccountMovementArray.forEach((bankAccountMovement) => {
 
-            html += `
+        /*
+        if (bankAccountMovement.bankAccountMovementId >= 0) {
+          if (Number(bankAccountMovement.date) >= Number(fromDate) && Number(bankAccountMovement.date) <= Number(toDate)) {
+            if (bankAccountMovement.condoId === condoId || condoId === 999999999) {
+              if (bankAccountMovement.accountId === accountId || accountId === 999999999) {
+        */
+
+        lineNumber++;
+        if (bankAccountMovement.bankAccountMovementId === bankAccountMovementId) {
+
+          html +=
+            `
               <option 
                 value="${bankAccountMovement.bankAccountMovementId}"
                 selected
-                >
-                ${bankAccountMovement.bankAccountMovementId} - ${bankAccountMovement.text}
+              >
+                ${lineNumber} - ${bankAccountMovement.bankAccountMovementId}
               </option>
             `;
-          } else {
+          selectedOption =
+            true;
+        } else {
 
-            html += `
+          html +=
+            `
               <option 
                 value="${bankAccountMovement.bankAccountMovementId}">
-                ${bankAccountMovement.bankAccountMovementId} - ${bankAccountMovement.text}
+                ${lineNumber} - ${bankAccountMovement.bankAccountMovementId}
               </option>
             `;
-          }
         }
       });
     } else {
 
-      html += `
-        <option value="0" 
-          selected
-        >
-          Ingen bankkonto transaksjoner
-        </option>
-      `;
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen bankkonto transaksjoner
+          </option>
+        `;
+      selectedOption =
+        true;
     }
 
     html += `
@@ -119,18 +138,20 @@ class BankAccountMovement extends Condos {
     let lineNumber =
       0;
 
+    let selectedOption =
+      false;
+
     // Check if bank account movement array is empty
     const numberOfRows =
       bankAccountMovementArray.length;
     if (numberOfRows > 0) {
       bankAccountMovementArray.forEach((bankaccountmovement) => {
-        if (bankaccountmovement.bankAccountMovementId >= 0) {
 
-          lineNumber++;
-          if (bankaccountmovement.bankAccountMovementId === bankAccountMovementId) {
+        lineNumber++;
+        if (bankaccountmovement.bankAccountMovementId === bankAccountMovementId) {
 
-            html +=
-              `
+          html +=
+            `
                 <option 
                   value=${bankaccountmovement.bankAccountMovementId}
                   selected
@@ -138,49 +159,64 @@ class BankAccountMovement extends Condos {
                   ${lineNumber} - ${bankaccountmovement.text} 
                 </option>
               `;
-          } else {
+          selectedOption =
+            true;
+        } else {
 
-            html +=
-              `
+          html +=
+            `
                 <option 
                   value="${bankaccountmovement.bankAccountMovementId}">
                   ${lineNumber} - ${bankaccountmovement.text} 
                 </option>
               `;
-          }
         }
       });
     } else {
 
       html +=
         `
-        <option 
-          value="0" 
-          selected
-        >
-          Ingen bankkonto transaksjoner
-        </option>
-    `;
+          <option 
+            value="0" 
+            selected
+          >
+            Ingen bankkonto transaksjoner
+          </option>
+        `;
+      selectedOption =
+        true;
     }
 
     // Alternative select
     if (alternativeSelect && (numberOfRows > 1)) {
-      html +=
-        `
+      if (selectedOption) {
+        html +=
+          `
           <option 
             value=999999999
-            selected
           >
             ${alternativeSelect}
           </option>
         `;
+      } else {
+
+        html +=
+          `
+            <option 
+              value=999999999
+              selected
+            >
+              ${alternativeSelect}
+            </option>
+          `;
+      }
     }
 
     html +=
       `
           </select >
         </form>
-    `;
+      `;
 
     document.querySelector(`.div-${className}`).innerHTML =
       html;
@@ -196,13 +232,17 @@ class BankAccountMovement extends Condos {
 
       bankAccountMovementId =
         Number(document.querySelector(`.${className}`).value);
-      bankAccountMovementId =
-        (bankAccountMovementId === 0) ? bankAccountMovementArray.at(-1).bankAccountMovementId : bankAccountMovementId;
+      if (bankAccountMovementArray.length > 0) {
+        bankAccountMovementId =
+          (bankAccountMovementId === 0) ? bankAccountMovementArray[0].bankAccountMovementId : bankAccountMovementId;
+      }
     } else {
 
       // Get last id in last object in budget array
-      bankAccountMovementId =
-        bankAccountMovementArray.at(-1).bankAccountMovementId;
+      if (bankAccountMovementArray.length > 0) {
+        bankAccountMovementId =
+          bankAccountMovementArray[0].bankAccountMovementId;
+      }
     }
 
     return bankAccountMovementId;

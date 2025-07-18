@@ -1,18 +1,27 @@
 // Account movement search
 
 // Activate objects
-const now = new Date();
-const objUser = new User('user');
-const objCondo = new Condo('condo');
-const objAccount = new Account('account');
-const objBankAccount = new BankAccount('bankaccount');
-const objSupplier = new Supplier('supplier');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
-const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
+const today =
+  new Date();
+const objUser =
+  new User('user');
+const objCondo =
+  new Condo('condo');
+const objAccount =
+  new Account('account');
+const objBankAccount =
+  new BankAccount('bankaccount');
+const objSupplier =
+  new Supplier('supplier');
+const objUserBankAccount =
+  new UserBankAccount('userbankaccount');
+const objBankAccountMovement =
+  new BankAccountMovement('bankaccountmovement');
 
 testMode();
 
-let isEventsCreated = false;
+let isEventsCreated =
+  false;
 
 objBankAccountMovement.menu();
 objBankAccountMovement.markSelectedMenu('Bankkonto transaksjoner');
@@ -100,7 +109,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY date DESC;
       `;
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-
   };
 
   // Handle incoming messages from server
@@ -187,10 +195,23 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // Show bank account movements 
           showBankAccountMovements();
 
-          // Show values
-          // Show first line
-          const bankAccountMovementId =
-            Number(bankAccountMovementArray[0].bankAccountMovementId);
+          // Get selected Bank Account Movement Id
+          bankAccountMovementId =
+            objBankAccountMovement.getSelectedBankAccountMovementId('select-bankaccountmovement-bankAccountMovementId');
+
+          const fromDate =
+            convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
+          const toDate =
+            convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
+
+          const condoId =
+            Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
+          const accountId =
+            Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
+
+          // Show bank account movements Id
+          objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
+
           showValues(bankAccountMovementId);
 
           // Make events
@@ -218,13 +239,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
           break;
       };
+    }
 
-      // Handle errors
-      socket.onerror = (error) => {
+    // Handle errors
+    socket.onerror = (error) => {
 
-        // Close socket on error and let onclose handle reconnection
-        socket.close();
-      }
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
 
       // Handle disconnection
       socket.onclose = () => {
@@ -240,8 +261,29 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-bankaccountmovement-filterCondoId')) {
 
+      getSelectedBankAccountMovements();
+
       // Show bank account movements
       showBankAccountMovements();
+
+      /*
+      // Get selected Bank Account Movement Id
+      bankAccountMovementId =
+        objBankAccountMovement.getSelectedBankAccountMovementId('select-bankaccountmovement-bankAccountMovementId');
+
+      const fromDate =
+        convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
+      const toDate =
+        convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
+
+      const condoId =
+        Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
+      const accountId =
+        Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
+
+      // Show bank account movements Id
+      objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
+      */
     }
   });
 
@@ -249,26 +291,89 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-bankaccountmovement-filterAccountId')) {
 
+      getSelectedBankAccountMovements();
+
+      /*
       // Show bank account movements
       showBankAccountMovements();
+
+      // Get selected Bank Account Movement Id
+      bankAccountMovementId =
+        objBankAccountMovement.getSelectedBankAccountMovementId('select-bankaccountmovement-bankAccountMovementId');
+
+      const fromDate =
+        convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
+      const toDate =
+        convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
+
+      const condoId =
+        Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
+      const accountId =
+        Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
+
+      // Show bank account movements Id
+      objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
+      */
     }
   });
 
   // Search for from date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-bankaccountmovement-filterFromDate')) {
+    if (event.target.classList.contains('input-bankaccountmovement-filterFromDate')) {
 
+      getSelectedBankAccountMovements();
+
+      /*
       // Show bank account movements
       showBankAccountMovements();
+
+      // Get selected Bank Account Movement Id
+      bankAccountMovementId =
+        objBankAccountMovement.getSelectedBankAccountMovementId('select-bankaccountmovement-bankAccountMovementId');
+
+      const fromDate =
+        convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
+      const toDate =
+        convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
+
+      const condoId =
+        Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
+      const accountId =
+        Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
+
+      // Show bank account movements Id
+      objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
+      */
     }
   });
 
   // Search for to date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-bankaccountmovement-filterToDate')) {
+    if (event.target.classList.contains('input-bankaccountmovement-filterToDate')) {
 
+      getSelectedBankAccountMovements();
+
+      /*
       // Show bank account movements
       showBankAccountMovements();
+
+      // Get selected Bank Account Movement Id
+      bankAccountMovementId =
+        objBankAccountMovement.getSelectedBankAccountMovementId('select-bankaccountmovement-bankAccountMovementId');
+
+      const fromDate =
+        convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
+      const toDate =
+        convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
+
+      const condoId =
+        Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
+      const accountId =
+        Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
+
+      // Show bank account movements Id
+      objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
+      */
     }
   });
 
@@ -330,49 +435,50 @@ function createEvents() {
 function showLeadingTextSearch() {
 
   // Show all condos
-  let condoId = 0;
-  if (condoArray.length > 0) {
-    condoId =
-      condoArray.at(-1).condoId;
-  }
+  const condoId =
+    (isClassDefined('select-bankaccountmovement-filterCondoId')) ? Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value) : 0;
   objCondo.showAllCondos('bankaccountmovement-filterCondoId', condoId, 'Alle');
 
   // Show all accounts
-  const accountId = accountArray.at(-1).accountId;
+  const accountId =
+    (isClassDefined('select-bankaccountmovement-filterAccountId')) ? Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value) : 0;
   objAccount.showAllAccounts('bankaccountmovement-filterAccountId', accountId, 'Alle');
 
   // Show from date
   objBankAccountMovement.showInput('bankaccountmovement-filterFromDate', 'Fra dato', 10, 'dd.mm.åååå');
 
-  // Find bank account
-  let date;
-  const bankAccountRowNumber =
-    bankAccountArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
-  if (bankAccountRowNumber !== -1) {
-    openingDate =
-      bankAccountArray[bankAccountRowNumber].openingBalanceDate;
-    closingDate =
-      bankAccountArray[bankAccountRowNumber].closingBalanceDate;
-  }
-
-  document.querySelector('.input-bankaccountmovement-filterFromDate').value =
-    formatToNorDate(openingDate);
-
   // Show to date
   objBankAccountMovement.showInput('bankaccountmovement-filterToDate', 'Til dato', 10, 'dd.mm.åååå');
-  document.querySelector('.input-bankaccountmovement-filterToDate').value =
-    formatToNorDate(closingDate);
+
+  // Check for filter from date
+  let date =
+    document.querySelector('.input-bankaccountmovement-filterFromDate').value;
+  if (!validateEuroDateFormat(date)) {
+
+    // From date is not ok
+    const year =
+      String(today.getFullYear());
+    document.querySelector('.input-bankaccountmovement-filterFromDate').value =
+      "01.01." + year;
+  }
+
+  // Check for filter to date
+  date =
+    document.querySelector('.input-bankaccountmovement-filterToDate').value;
+  if (!validateEuroDateFormat(date)) {
+
+    // To date is not ok
+    document.querySelector('.input-bankaccountmovement-filterToDate').value =
+      getCurrentDate();
+  }
 }
 
 // Show values for bank Account Movement
 function showLeadingText() {
 
   // Show bank Account Movement Id
-  let bankAccountMovementId = 0;
-  if (bankAccountMovementArray.length > 0) {
-    bankAccountMovementId =
-      bankAccountMovementArray.at(-1).bankAccountMovementId;
-  }
+  bankAccountMovementId =
+    objBankAccountMovement.getSelectedBankAccountMovementId('select-bankaccountmovement-bankAccountMovementId');
   objBankAccountMovement.showAllBankAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, '', 'Ingen er valgt');
 
   // Show all condos
@@ -392,7 +498,7 @@ function showLeadingText() {
   objAccount.showAllAccounts('bankaccountmovement-accountId', accountId, '', 'Ingen er valgt');
 
   // Show date
-  objBankAccountMovement.showInput('bankaccountmovement-date', 'Dato', 10, 'dd.mm.åååå');
+  objBankAccountMovement.showInput('bankaccountmovement-date', '* Dato', 10, 'dd.mm.åååå');
 
   // Show income
   objBankAccountMovement.showInput('bankaccountmovement-income', 'Inntekt', 10, '');
@@ -477,39 +583,11 @@ function showValues(bankAccountMovementId) {
   }
 }
 
-// Check for valid filter
-function validateFilter() {
-
-  // Check account movement
-  const accountId =
-    document.querySelector('.select-bankaccountmovement-filterAccountId').value;
-  const validAccountId =
-    validateNumber(accountId, 1, 999999999, 'Konto');
-
-  const condoId =
-    document.querySelector('.select-bankaccountmovement-filterCondoId').value;
-  const validCondoId =
-    validateNumber(condoId, 1, 999999999, 'Leilighet');
-
-  const fromDate =
-    document.querySelector('.input-bankaccountmovement-filterFromDate').value;
-  const validFromDate =
-    validateNorDate(fromDate, 'bankaccountmovement-filterFromDate', 'Fra dato');
-
-  const toDate =
-    document.querySelector('.input-bankaccountmovement-filterToDate').value;
-  const validToDate =
-    validateNorDate(toDate, 'bankaccountmovement-filterToDate', 'Til dato');
-
-  return (validAccountId && validCondoId && validFromDate && validToDate) ? true : false;
-}
-
-// Show bank account movements
+// Show selected bank account movements
 function showBankAccountMovements() {
 
   // Validate search filter
   if (validateFilter()) {
-    // Show account movement
 
     // Header
     let htmlColumnLine =
@@ -549,114 +627,112 @@ function showBankAccountMovements() {
       Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
 
     bankAccountMovementArray.forEach((bankAccountMovement) => {
+
+      /*
       if (bankAccountMovement.bankAccountMovementId >= 0) {
         if (Number(bankAccountMovement.date) >= Number(fromDate) && Number(bankAccountMovement.date) <= Number(toDate)) {
           if (bankAccountMovement.condoId === condoId || condoId === 999999999) {
             if (bankAccountMovement.accountId === accountId || accountId === 999999999) {
+      */
 
-              lineNumber++;
+      lineNumber++;
 
-              // check if the number is odd
-              const colorClass =
-                (lineNumber % 2 !== 0) ? "green" : "";
+      // check if the number is odd
+      const colorClass =
+        (lineNumber % 2 !== 0) ? "green" : "";
 
-              // bank Account Movement Id
-              htmlColumnLine +=
-                `
-                  <div 
-                    class="centerCell ${colorClass}"
-                  >
-                    ${bankAccountMovement.bankAccountMovementId}
-                  </div >
-                `;
+      // bank Account Movement Id
+      htmlColumnLine +=
+        `
+          <div 
+            class="centerCell ${colorClass}"
+          >
+            ${lineNumber}
+          </div >
+        `;
 
-              // condo name
-              let condoName = "-";
-              if (bankAccountMovement.condoId) {
-                const condoId =
-                  Number(bankAccountMovement.condoId);
-                condoName =
-                  objCondo.getCondoName(condoId);
-              }
-              htmlColumnCondoName +=
-                `
-                  <div 
-                    class="leftCell ${colorClass} one-line"
-                  >
-                    ${condoName}
-                  </div >
-                `;
-
-              // account name
-              const accountName =
-                objBankAccount.getAccountName(bankAccountMovement.accountId);
-              const colorClassAccountName =
-                (accountName === '-') ? 'red' : colorClass;
-              htmlColumnAccountName +=
-                `
-                  <div
-                    class="leftCell ${colorClassAccountName} one-line"
-                  >
-                    ${accountName}    
-                  </div >
-                `;
-
-              // date
-              const date =
-                formatToNorDate(bankAccountMovement.date);
-              htmlColumnDate +=
-                `
-                  <div
-                    class="rightCell ${colorClass}"
-                  >
-                    ${date}
-                  </div >
-                `;
-
-              // income
-              const income =
-                formatOreToKroner(bankAccountMovement.income);
-              htmlColumnIncome +=
-                `
-                  <div
-                    class="rightCell ${colorClass}"
-                  >
-                    ${income}
-                  </div>
-                `;
-
-              // payment
-              const payment =
-                formatOreToKroner(bankAccountMovement.payment);
-              htmlColumnPayment +=
-                `
-                  <div
-                    class="rightCell ${colorClass}"
-                  >
-                    ${payment}
-                  </div>
-                `;
-
-              // text
-              htmlColumnText +=
-                `
-                  <div
-                    class="leftCell ${colorClass} one-line"
-                  >
-                    ${bankAccountMovement.text}
-                  </div>
-                `;
-
-
-              // accumulate
-              sumIncome +=
-                Number(bankAccountMovement.income);
-              sumPayment +=
-                Number(bankAccountMovement.payment);
-            }
-          }
-        }
+      // condo name
+      let condoName = "-";
+      if (bankAccountMovement.condoId) {
+        const condoId =
+          Number(bankAccountMovement.condoId);
+        condoName =
+          objCondo.getCondoName(condoId);
       }
+      htmlColumnCondoName +=
+        `
+          <div 
+            class="leftCell ${colorClass} one-line"
+          >
+            ${condoName}
+          </div >
+        `;
+
+      // account name
+      const accountName =
+        objBankAccount.getAccountName(bankAccountMovement.accountId);
+      const colorClassAccountName =
+        (accountName === '-') ? 'red' : colorClass;
+      htmlColumnAccountName +=
+        `
+          <div
+            class="leftCell ${colorClassAccountName} one-line"
+          >
+            ${accountName}    
+          </div >
+        `;
+
+      // date
+      const date =
+        formatToNorDate(bankAccountMovement.date);
+      htmlColumnDate +=
+        `
+          <div
+            class="rightCell ${colorClass}"
+          >
+            ${date}
+          </div >
+        `;
+
+      // income
+      const income =
+        formatOreToKroner(bankAccountMovement.income);
+      htmlColumnIncome +=
+        `
+          <div
+            class="rightCell ${colorClass}"
+          >
+            ${income}
+          </div>
+        `;
+
+      // payment
+      const payment =
+        formatOreToKroner(bankAccountMovement.payment);
+      htmlColumnPayment +=
+        `
+          <div
+            class="rightCell ${colorClass}"
+          >
+            ${payment}
+          </div>
+        `;
+
+      // text
+      htmlColumnText +=
+        `
+          <div
+            class="leftCell ${colorClass} one-line"
+          >
+            ${bankAccountMovement.text}
+          </div>
+        `;
+
+      // accumulate
+      sumIncome +=
+        Number(bankAccountMovement.income);
+      sumPayment +=
+        Number(bankAccountMovement.payment);
     });
 
     // Sum line
@@ -715,6 +791,34 @@ function showBankAccountMovements() {
   }
 }
 
+// Check for valid filter
+function validateFilter() {
+
+  // Check account movement
+  const accountId =
+    document.querySelector('.select-bankaccountmovement-filterAccountId').value;
+  const validAccountId =
+    validateNumber(accountId, 1, 999999999, 'bankaccountmovement-filterAccountId', 'Konto');
+
+  const condoId =
+    document.querySelector('.select-bankaccountmovement-filterCondoId').value;
+  const validCondoId =
+    validateNumber(accountId, 1, 999999999, 'bankaccountmovement-filterAccountId', 'Konto');
+
+  const fromDate =
+    document.querySelector('.input-bankaccountmovement-filterFromDate').value;
+  const validFromDate =
+    validateNorDate(fromDate, 'bankaccountmovement-filterFromDate', 'Fra dato');
+
+  const toDate =
+    document.querySelector('.input-bankaccountmovement-filterToDate').value;
+  const validToDate =
+    validateNorDate(toDate, 'bankaccountmovement-filterToDate', 'Til dato');
+
+  return (validAccountId && validCondoId && validFromDate && validToDate) ? true : false;
+}
+
+/*
 // Show all searched bank account movements
 function showAllSearchedBankAccountMovements(className, bankAccountMovementId, alternativeSelect, alternativeSelect2) {
 
@@ -756,6 +860,9 @@ function showAllSearchedBankAccountMovements(className, bankAccountMovementId, a
   const accountId =
     Number(document.querySelector('.select-bankaccountmovement-accountId').value);
 
+  let selectedOption =
+    false;
+
   // Check if bank account movement array is empty
   const numberOfRows =
     bankAccountMovementArray.length;
@@ -764,9 +871,9 @@ function showAllSearchedBankAccountMovements(className, bankAccountMovementId, a
       if (bankAccountMovement.bankAccountMovementId >= 0) {
         if (Number(bankAccountMovement.date) >= Number(fromDate) && Number(bankAccountMovement.date) <= Number(toDate)) {
           if (bankAccountMovement.condoId === condoId || condoId === 999999999) {
-            if (bankAccountMovement.accountId === accountId || accountId === 999999999) {
 
-              lineNumber++;
+            lineNumber++;
+            if (bankAccountMovement.accountId === accountId) {
 
               html +=
                 `
@@ -776,7 +883,10 @@ function showAllSearchedBankAccountMovements(className, bankAccountMovementId, a
                   >
                     ${bankAccountMovement.bankAccountMovementId} - ${bankAccountMovement.text} 
                   </option>
-              `;
+                `;
+              selectedOption =
+                true;
+
             } else {
 
               html +=
@@ -785,7 +895,7 @@ function showAllSearchedBankAccountMovements(className, bankAccountMovementId, a
                     value="${bankAccountMovement.bankAccountMovementId}">
                     ${bankAccountMovement.bankAccountMovementId} - ${bankAccountMovement.text} 
                   </option>
-              `;
+                `;
             }
           }
         }
@@ -802,32 +912,61 @@ function showAllSearchedBankAccountMovements(className, bankAccountMovementId, a
           Ingen bankkonto transaksjoner
         </option>
       `;
+    selectedOption =
+      true;
   }
 
   // Alternative select
   if (alternativeSelect && (numberOfRows > 1)) {
-    html +=
-      `
+    if (selectedOption) {
+      html +=
+        `
         <option 
           value=0
-          selected
         >
           ${alternativeSelect}
         </option>
       `;
+    } else {
+      html +=
+        `
+          <option 
+            value=0
+            selected
+          >
+            ${alternativeSelect}
+          </option>
+        `;
+      selectedOption =
+        true;
+    }
   }
 
   // Alternative select
   if (alternativeSelect2 && (numberOfRows > 1)) {
-    html +=
-      `
-        <option 
-          value=0
-          selected
-        >
-          ${alternativeSelect2}
-        </option>
-      `;
+    if (selectedOption) {
+      html +=
+        `
+          <option 
+            value=0
+          >
+            ${alternativeSelect2}
+          </option>
+        `;
+    } else {
+
+      html +=
+        `
+          <option 
+            value=0
+            selected
+          >
+            ${alternativeSelect2}
+          </option>
+        `;
+      selectedOption =
+        true;
+    }
   }
 
   html +=
@@ -839,7 +978,7 @@ function showAllSearchedBankAccountMovements(className, bankAccountMovementId, a
   document.querySelector(`.div-${className}`).innerHTML =
     html;
 }
-
+*/
 
 function updateBankAccountMovement(bankAccountMovementId) {
 
@@ -879,7 +1018,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
 
     // current date
     const lastUpdate =
-      now.toISOString();
+      today.toISOString();
 
     // Check if bank account movement id exist
     const objBankAccountMovementRowNumber =
@@ -939,16 +1078,15 @@ function updateBankAccountMovement(bankAccountMovementId) {
 
     document.querySelector('.select-bankaccountmovement-bankAccountMovementId').disabled =
       false;
-    document.querySelector('.select-bankaccountmovement-condoId').disabled =
-      false;
-    document.querySelector('.select-bankaccountmovement-accountId').disabled =
-      false;
+    //document.querySelector('.select-bankaccountmovement-condoId').disabled =
+    //  false;
+    //document.querySelector('.select-bankaccountmovement-accountId').disabled =
+    //  false;
 
     document.querySelector('.button-bankaccountmovement-delete').disabled =
       false;
     document.querySelector('.button-bankaccountmovement-insert').disabled =
       false;
-
     isUpdated = true;
   }
   return isUpdated;
@@ -957,45 +1095,50 @@ function updateBankAccountMovement(bankAccountMovementId) {
 // Check for valid bank account values
 function validateValues() {
 
-  // Check account Id
-  const accountId =
-    document.querySelector('.select-bankaccountmovement-accountId').value;
-  const validAccountId =
-    validateNumber(accountId, 1, 999999999, 'Konto');
 
+  // Check account Id
+  let accountId =
+    document.querySelector('.select-bankaccountmovement-accountId').value;
+  accountId =
+    (accountId) ? Number(accountId) : 0;
+  const validAccountId =
+    validateNumber(accountId, 1, 999999999, 'bankaccountmovement-accountId', 'Konto');
+
+  /*
   // Check condo Id
   const condoId =
     document.querySelector('.select-bankaccountmovement-condoId').value;
   const validCondoId =
     validateNumber(condoId, 0, 999999999, 'Leilighet');
+  */
 
   const date =
     document.querySelector('.input-bankaccountmovement-date').value;
   const validDate =
     validateNorDate(date, 'bankaccountmovement-date', 'Dato');
-
+  /*
   // Validate norwegian amounts
   const income =
     document.querySelector('.input-bankaccountmovement-income').value;
   const validIncome =
     objBankAccountMovement.validateAmount(income, 'bankaccountmovement-income', 'Inntekt');
-
+ 
   const payment =
     document.querySelector('.input-bankaccountmovement-payment').value;
   const validPayment =
     objBankAccountMovement.validateAmount(payment, 'bankaccountmovement-payment', 'Utgift');
-
+ 
   const numberKWHour =
     document.querySelector('.input-bankaccountmovement-numberKWHour').value;
   const validNumberKWHour =
     objBankAccountMovement.validateAmount(numberKWHour, 'bankaccountmovement-numberKWHour', 'Kilowatt/time');
-
+ 
   const text =
     document.querySelector('.input-bankaccountmovement-text').value;
   const validText =
     objBankAccountMovement.validateText(text, 'bankaccountmovement-text', 'Tekst');
-
-  return (validCondoId && validAccountId && validDate && validIncome && validPayment && validNumberKWHour && validText) ? true : false;
+  */
+  return (validAccountId && validDate) ? true : false;
 }
 
 function deleteBankAccountMovement() {
@@ -1050,12 +1193,69 @@ function resetValues() {
 
   document.querySelector('.select-bankaccountmovement-bankAccountMovementId').disabled =
     true;
-  document.querySelector('.select-bankaccountmovement-condoId').disabled =
-    true;
-  document.querySelector('.select-bankaccountmovement-accountId').disabled =
-    true;
+  //document.querySelector('.select-bankaccountmovement-condoId').disabled =
+  //  true;
+  //document.querySelector('.select-bankaccountmovement-accountId').disabled =
+  //  true;
   document.querySelector('.button-bankaccountmovement-insert').disabled =
     true;
   document.querySelector('.button-bankaccountmovement-delete').disabled =
     true;
+}
+
+// Get selected bank account movements
+function getSelectedBankAccountMovements() {
+
+  const condoId =
+    Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
+  const accountId =
+    Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
+
+  const fromDate =
+    convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
+  const toDate =
+    convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
+
+  // Check if condo Id and account Id is selected
+  if ((condoId !== 999999999) && (accountId !== 999999999)) {
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+      SELECT * FROM bankaccountmovement
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND date BETWEEN '${fromDate}' AND '${toDate}' 
+      AND condoId = ${condoId}
+      AND accountId = ${accountId}
+      ORDER BY date DESC;
+    `;
+  }
+
+  // Check if condo Id is selected but not account Id
+  if ((condoId !== 999999999) && (accountId === 999999999)) {
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+      SELECT * FROM bankaccountmovement
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND date BETWEEN '${fromDate}' AND '${toDate}' 
+      AND condoId = ${condoId}
+      ORDER BY date DESC;
+    `;
+  }
+
+  // Check if account Id is selected but not condo Id
+  if ((condoId === 999999999) && (accountId !== 999999999)) {
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+      SELECT * FROM bankaccountmovement
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND date BETWEEN '${fromDate}' AND '${toDate}' 
+      AND accountId = ${accountId}
+      ORDER BY date DESC;
+    `;
+  }
+
+  console.log(SQLquery);
+  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
 }

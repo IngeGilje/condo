@@ -158,6 +158,7 @@ server.on('connection', (socket) => {
       case 'INSERT':
       case 'DROP':
       case 'CREATE':
+      case 'DELETE':
 
         // Send a request to mysql
         (connected2MySQL) ? '' : connectToMySql();

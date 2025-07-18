@@ -26,6 +26,9 @@ class ImportFile extends Condos {
           >
       `;
 
+    let selectedOption =
+      false;
+
     // Check if file import array is empty
     const numberOfRows = importFileArray.length;
     if (numberOfRows > 0) {
@@ -41,6 +44,8 @@ class ImportFile extends Condos {
                 ${importFile.importFileId} - ${importFile.text}
               </option >
             `;
+            selectedOption =
+              true;
           } else {
             htmlImportFile += `
               <option
@@ -61,24 +66,43 @@ class ImportFile extends Condos {
         Ingen import linjer
         </option >
         `;
+      selectedOption =
+        true;
     }
 
     // Alternative select
     if (alternativeSelect && (numberOfRows > 1)) {
-      htmlImportFile += `
-        <option 
-          value=999999999
-          selected
-          >
-          ${alternativeSelect}
-        </option>
-      `;
+      if (selectedOption) {
+
+        htmlImportFile +=
+          `
+            <option 
+              value=999999999
+            >
+              ${alternativeSelect}
+            </option>
+          `;
+      } else {
+
+        htmlImportFile +=
+          `
+            <option 
+              value=999999999
+              selected
+            >
+              ${alternativeSelect}
+            </option>
+          `;
+        selectedOption =
+          true;
+      }
     }
 
-    htmlImportFile += `
-        </select >
-      </form >
-    `;
+    htmlImportFile +=
+      `
+          </select >
+        </form >
+      `;
 
     document.querySelector(`.div-${columnName}`).innerHTML =
       htmlImportFile;

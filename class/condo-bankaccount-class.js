@@ -27,6 +27,9 @@ class BankAccount extends Condos {
         >
     `;
 
+    let selectedOption =
+      false;
+
     // Check if bank account array is empty
     const numberOfRows = bankAccountArray.length;
     if (numberOfRows > 0) {
@@ -34,14 +37,17 @@ class BankAccount extends Condos {
         if (bankaccount.bankAccountId >= 0) {
           if (bankaccount.bankAccountId === bankAccountId) {
 
-            html += `
-            <option 
-              value="${bankaccount.bankAccountId}"
-              selected
-              >
-              ${bankaccount.bankAccountId} - ${bankaccount.name}
-            </option>
-          `;
+            html +=
+              `
+                <option 
+                  value="${bankaccount.bankAccountId}"
+                  selected
+                >
+                  ${bankaccount.bankAccountId} - ${bankaccount.name}
+                </option>
+              `;
+            selectedOption =
+              true;
           } else {
             html += `
             <option 
@@ -55,31 +61,34 @@ class BankAccount extends Condos {
 
     } else {
 
-      html += `
-      <option value="0" 
-        selected
-      >
-        Ingen bankkonti
-      </option>
-    `;
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen bankkonti
+          </option>
+        `;
+      selectedOption =
+        true;
     }
 
-    html += `
-      </select >
-    </form>
-  `;
+    html +=
+      `
+          </select >
+        </form>
+      `;
 
     document.querySelector(`.div-${className}`).innerHTML =
       html;
   }
 
   // Find selected bankaccount id
-  getSelectedBankAccountId(columnName) {
+  getSelectedBankAccountId(className) {
 
     let bankAccountId = 0;
 
     // Check if HTML class exist
-    const className = `select-${this.applicationName}-${columnName}`;
     if (isClassDefined(className)) {
 
       bankAccountId =
@@ -88,7 +97,7 @@ class BankAccount extends Condos {
     } else {
 
       // Get last id in last object in bankaccount array
-      bankAccountId = bankAccountArray.at(-1).bankAccountId;
+      bankAccountId = (bankAccountArray.length > 0) ? bankAccountArray.at(-1).bankAccountId : 0;
     }
 
     return bankAccountId;

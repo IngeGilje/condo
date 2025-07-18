@@ -1,21 +1,33 @@
 // Import of bank transaction file 
 
 // Activate objects
-const now = new Date();
-const objUser = new User('user');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
-const objCondominium = new Condominium('condominium');
-const objCondo = new Condo('condo');
-const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
-const objAccount = new Account('account');
-const objBankAccount = new BankAccount('bankaccount');
-const objDue = new Due('due');
-const objSupplier = new Supplier('supplier');
-const objImportFile = new ImportFile('importfile');
+const today =
+  new Date();
+const objUser =
+  new User('user');
+const objUserBankAccount =
+  new UserBankAccount('userbankaccount');
+const objCondominium =
+  new Condominium('condominium');
+const objCondo =
+  new Condo('condo');
+const objBankAccountMovement =
+  new BankAccountMovement('bankaccountmovement');
+const objAccount =
+  new Account('account');
+const objBankAccount =
+  new BankAccount('bankaccount');
+const objDue =
+  new Due('due');
+const objSupplier =
+  new Supplier('supplier');
+const objImportFile =
+  new ImportFile('importfile');
 
 testMode();
 
-let importFileArray = [];
+let importFileArray =
+  [];
 let textFile;
 
 let isEventsCreated = false;
@@ -285,7 +297,6 @@ function createEvents() {
       // Get row number import file array
       const rowNumber =
         Number(document.querySelector(".select-importfile-importFileId").value);
-
     };
   });
 
@@ -374,8 +385,6 @@ function showBankAccountMovements() {
         </div>
       `;
 
-    //accountName =
-    //  truncateText(importFile.accountName, 'div-importfile-columnAccountName');
     if (importFile.accountId) {
 
       htmlColumnAccountName +=
@@ -635,9 +644,9 @@ function createImportFileArray(fileContent) {
 
       // Account Id
       let accountId =
-        (getAccountIdFromBankAccount(fromBankAccount));
-       accountId = 
-       (accountId) ? accountId : getAccountIdFromBankAccount(toBankAccount);
+        getAccountIdFromBankAccount(fromBankAccount, payment);
+      accountId =
+        (accountId) ? accountId : getAccountIdFromBankAccount(toBankAccount, payment);
 
       // Account Name
       let accountName;
@@ -685,26 +694,32 @@ function createImportFileArray(fileContent) {
       fromBankAccountName =
         objImportFile.getBankAccountName(fromBankAccount);
 
-      // From bank account
-      importFileId++;
+      // Do not import bank account movement twice
+      date =
+        convertDateToISOFormat(accountingDate);
+      if (!checkBankAccountMovement(income, payment, date, text)) {
 
-      const objBankAccountMovement = {
-        importFileId: importFileId,
-        accountingDate: accountingDate,
-        condoId: condoId,
-        condoName: condoName,
-        accountId: accountId,
-        accountName: accountName,
-        fromBankAccount: fromBankAccount,
-        fromBankAccountName: fromBankAccountName,
-        toBankAccount: toBankAccount,
-        toBankAccountName: toBankAccountName,
-        income: income,
-        payment: payment,
-        text: text
-      };
+        // From bank account
+        importFileId++;
 
-      importFileArray.push(objBankAccountMovement);
+        const objBankAccountMovement = {
+          importFileId: importFileId,
+          accountingDate: accountingDate,
+          condoId: condoId,
+          condoName: condoName,
+          accountId: accountId,
+          accountName: accountName,
+          fromBankAccount: fromBankAccount,
+          fromBankAccountName: fromBankAccountName,
+          toBankAccount: toBankAccount,
+          toBankAccountName: toBankAccountName,
+          income: income,
+          payment: payment,
+          text: text
+        };
+
+        importFileArray.push(objBankAccountMovement);
+      }
     }
   });
 }
@@ -715,7 +730,7 @@ function updateBankAccountMovements() {
   importFileArray.forEach((importFile) => {
 
     const lastUpdate =
-      now.toISOString();
+      today.toISOString();
 
     const condoId =
       Number(importFile.condoId);
@@ -736,10 +751,10 @@ function updateBankAccountMovements() {
       importFile.text;
 
     // Do not import bank account movement twice
-    if (!checkBankAccountMovement(income, payment, date, text)) {
+    //if (!checkBankAccountMovement(income, payment, date, text)) {
 
-      const SQLquery =
-        `
+    const SQLquery =
+      `
           INSERT INTO bankaccountmovement (
             tableName,
             condominiumId,
@@ -767,9 +782,9 @@ function updateBankAccountMovements() {
           );
         `;
 
-      // Client sends a request to the server
-      updateMySql(SQLquery, 'bankaccountmovement', 'INSERT');
-    }
+    // Client sends a request to the server
+    updateMySql(SQLquery, 'bankaccountmovement', 'INSERT');
+    //}
   })
 }
 
@@ -896,7 +911,7 @@ function updateOpeningClosingBalance() {
         Number(closingBalance) - (totalIncome + totalPayment);
 
       const lastUpdate =
-        now.toISOString();
+        today.toISOString();
 
       // Updating openening balance
       // Check for openening balance date
@@ -1048,15 +1063,10 @@ function checkBankAccountMovement(income, payment, date, text) {
 
   let bankAccountMovementExist = false;
 
-  if (date === '20250710') {
-
-    console.log('date:', date);
-  }
-
   bankAccountMovementArray.forEach((bankAccountMovement) => {
 
-    if (Number(bankAccountMovement.income) === income
-      && Number(bankAccountMovement.payment) === payment
+    if (Number(bankAccountMovement.income) === Number(income)
+      && Number(bankAccountMovement.payment) === Number(payment)
       && bankAccountMovement.date === date
       && bankAccountMovement.text === text) {
 

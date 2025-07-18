@@ -239,86 +239,84 @@ function showValues() {
       if (payment.paymentId >= 0) {
         if (Number(payment.date) >= fromDate && Number(payment.date) <= toDate) {
           if (payment.condoId === condoId || condoId === 999999999) {
-            if (payment.accountId === accountId || accountId === 999999999) {
 
-              rowNumber++;
+            rowNumber++;
 
-              // check if the number is odd
-              const colorClass =
-                (rowNumber % 2 !== 0) ? "green" : "";
+            // check if the number is odd
+            const colorClass =
+              (rowNumber % 2 !== 0) ? "green" : "";
 
-              // date
-              const date =
-                formatToNorDate(payment.date);
-              htmlColumnDate +=
-                `
-                  <div 
-                    class="rightCell ${colorClass}"
-                  >
-                    ${date}
-                  </div>
-                `;
+            // date
+            const date =
+              formatToNorDate(payment.date);
+            htmlColumnDate +=
+              `
+                <div 
+                  class="rightCell ${colorClass}"
+                >
+                  ${date}
+                </div>
+              `;
 
-              // amount
-              let amount =
-                formatOreToKroner(payment.amount);
-              htmlColumnAmount +=
-                `
-                  <div 
-                    class="rightCell ${colorClass}"
-                  >
-                    ${amount}
-                  </div>
-                `;
+            // amount
+            let amount =
+              formatOreToKroner(payment.amount);
+            htmlColumnAmount +=
+              `
+                <div 
+                  class="rightCell ${colorClass}"
+                >
+                  ${amount}
+                </div>
+              `;
 
-              // Number of kw/h
-              let numberKWHour =
-                formatOreToKroner(payment.numberKWHour);
-              htmlColumnNumberKWHour +=
-                `
-                  <div 
-                    class="rightCell ${colorClass}"
-                  >
-                    ${numberKWHour}
-                  </div>
-                `;
+            // Number of kw/h
+            let numberKWHour =
+              formatOreToKroner(payment.numberKWHour);
+            htmlColumnNumberKWHour +=
+              `
+                <div 
+                  class="rightCell ${colorClass}"
+                >
+                  ${numberKWHour}
+                </div>
+              `;
 
-              // Price per KWHour
-              amount =
-                Number(payment.amount);
-              numberKWHour =
-                Number(payment.numberKWHour);
-              if (amount && numberKWHour) {
-                priceKWHour =
-                  formatOreToKroner(String(amount / numberKWHour) * 100);
-              } else {
-                priceKWHour = "-";
-              }
-
-              htmlColumnPriceKWHour +=
-                `
-                  <div class="rightCell ${colorClass}"
-                  >
-                    ${priceKWHour}
-                  </div>
-                `;
-
-              htmlColumnText +=
-                `
-                  <div 
-                    class="leftCell ${colorClass} one-line"
-                  >
-                    ${payment.text}
-                  </div>
-                `;
-
-              // Accomulate
-              // amount
-              sumColumnAmount += Number(payment.amount);
-
-              // KWHour
-              sumColumnNumberKWHour += Number(payment.numberKWHour);
+            // Price per KWHour
+            amount =
+              Number(payment.amount);
+            numberKWHour =
+              Number(payment.numberKWHour);
+            if (amount && numberKWHour) {
+              priceKWHour =
+                formatOreToKroner(String(amount / numberKWHour) * 100);
+            } else {
+              priceKWHour = "-";
             }
+
+            htmlColumnPriceKWHour +=
+              `
+                <div class="rightCell ${colorClass}"
+                >
+                  ${priceKWHour}
+                </div>
+              `;
+
+            htmlColumnText +=
+              `
+                <div 
+                  class="leftCell ${colorClass} one-line"
+                >
+                  ${payment.text}
+                </div>
+              `;
+
+            // Accomulate
+            // amount
+            sumColumnAmount += Number(payment.amount);
+
+            // KWHour
+            sumColumnNumberKWHour += Number(payment.numberKWHour);
           }
         }
       }

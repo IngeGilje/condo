@@ -24,6 +24,9 @@ class Supplier extends Condos {
         >
     `;
 
+       let selectedOption =
+      false;
+
     // Check if supplier array is empty
     const numberOfRows = supplierArray.length;
     if (numberOfRows > 0) {
@@ -39,6 +42,8 @@ class Supplier extends Condos {
               ${supplier.supplierId} - ${supplier.name}
             </option>
           `;
+                 selectedOption =
+          true;
           } else {
             html += `
             <option 
@@ -59,6 +64,8 @@ class Supplier extends Condos {
         Ingen leverandører
       </option>
     `;
+           selectedOption =
+          true;
     }
 
     html += `

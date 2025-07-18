@@ -382,91 +382,80 @@ function showValues() {
       if (bankaccountmovement.bankAccountMovementId >= 0) {
         if (Number(bankaccountmovement.date) >= fromDate && Number(bankaccountmovement.date) <= toDate) {
           if (bankaccountmovement.condoId === condoId || condoId === 999999999) {
-            if (bankaccountmovement.accountId === accountId || accountId === 999999999) {
 
-              rowNumber++;
+            rowNumber++;
 
-              // check if the number is odd
-              const colorClass =
-                (rowNumber % 2 !== 0) ? "green" : "";
+            // check if the number is odd
+            const colorClass =
+              (rowNumber % 2 !== 0) ? "green" : "";
 
-              // date
-              const date =
-                formatToNorDate(bankaccountmovement.date);
-              htmlColumnDate +=
-                `
-                  <div 
-                    class="rightCell ${colorClass}"
-                  >
-                    ${date}
-                  </div>
-                `;
+            // date
+            const date =
+              formatToNorDate(bankaccountmovement.date);
+            htmlColumnDate +=
+              `
+                <div 
+                  class="rightCell ${colorClass}"
+                >
+                  ${date}
+                </div>
+              `;
 
-              // payment
-              let payment =
-                formatOreToKroner(bankaccountmovement.payment);
-              htmlColumnPayment +=
-                `
-                  <div 
-                    class="rightCell ${colorClass}"
-                  >
-                    ${payment}
-                  </div>
-                `;
+            // payment
+            let payment =
+              formatOreToKroner(bankaccountmovement.payment);
+            htmlColumnPayment +=
+              `
+                <div 
+                  class="rightCell ${colorClass}"
+                >
+                  ${payment}
+                </div>
+              `;
 
-              // Number of kw/h
-              let numberKWHour =
-                formatOreToKroner(bankaccountmovement.numberKWHour);
-              htmlColumnNumberKWHour +=
-                `
-                  <div 
-                    class="rightCell ${colorClass}"
-                  >
-                    ${numberKWHour}
-                  </div>
-                `;
+            // Number of kw/h
+            let numberKWHour =
+              formatOreToKroner(bankaccountmovement.numberKWHour);
+            htmlColumnNumberKWHour +=
+              `
+                <div 
+                  class="rightCell ${colorClass}"
+                >
+                  ${numberKWHour}
+                </div>
+              `;
 
-              // Price per KWHour
-              payment =
-                Number(bankaccountmovement.payment);
-              numberKWHour =
-                Number(bankaccountmovement.numberKWHour);
-              /*
-              if (payment && numberKWHour) {
-                priceKWHour =
-                  formatOreToKroner(String(payment / numberKWHour) * 100);
-              } else {
-                priceKWHour = "-";
-              }
-              */
-             const priceKWHour = 
-             (payment && numberKWHour) ? formatOreToKroner(String(payment / numberKWHour) * 100) : "-";
+            // Price per KWHour
+            payment =
+              Number(bankaccountmovement.payment);
+            numberKWHour =
+              Number(bankaccountmovement.numberKWHour);
+            const priceKWHour =
+              (payment && numberKWHour) ? formatOreToKroner(String(payment / numberKWHour) * 100) : "-";
 
+            htmlColumnPriceKWHour +=
+              `
+                <div class="rightCell ${colorClass}"
+                >
+                  ${priceKWHour}
+                </div>
+              `;
 
-              htmlColumnPriceKWHour +=
-                `
-                  <div class="rightCell ${colorClass}"
-                  >
-                    ${priceKWHour}
-                  </div>
-                `;
+            htmlColumnText +=
+              `
+                <div 
+                  class="leftCell ${colorClass} one-line"
+                >
+                  ${bankaccountmovement.text}
+                </div>
+              `;
 
-              htmlColumnText +=
-                `
-                  <div 
-                    class="leftCell ${colorClass} one-line"
-                  >
-                    ${bankaccountmovement.text}
-                  </div>
-                `;
+            // Accomulate
+            // payment
+            sumColumnPayment += Number(bankaccountmovement.payment);
 
-              // Accomulate
-              // payment
-              sumColumnPayment += Number(bankaccountmovement.payment);
-
-              // KWHour
-              sumColumnNumberKWHour += Number(bankaccountmovement.numberKWHour);
-            }
+            // KWHour
+            sumColumnNumberKWHour += Number(bankaccountmovement.numberKWHour);
           }
         }
       }

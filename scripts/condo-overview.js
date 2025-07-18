@@ -1,12 +1,18 @@
 // Search for bank account movements
 
 // Activate objects
-const today = new Date();
-const objUser = new User('user');
-const objDue = new Due('due');
-const objCondo = new Condo('condo');
-const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
-const objOverview = new Overview('overview');
+const today =
+  new Date();
+const objUser =
+  new User('user');
+const objDue =
+  new Due('due');
+const objCondo =
+  new Condo('condo');
+const objBankAccountMovement =
+  new BankAccountMovement('bankaccountmovement');
+const objOverview =
+  new Overview('overview');
 
 testMode();
 
@@ -38,11 +44,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     updateMySql(SQLquery, 'user', 'SELECT');
 
     // Sends a request to the server to get dues
+    let todate =
+      getCurrentDate();
+    todate =
+      convertDateToISOFormat(todate)
+    year =
+      today.getFullYear();
     SQLquery =
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY dueId;
+        AND date BETWEEN '${year}0101' AND '${todate}' 
+        ORDER BY date DESC;
       `;
 
     updateMySql(SQLquery, 'due', 'SELECT');
@@ -62,6 +75,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${year}0101' AND '${todate}' 
         ORDER BY bankAccountMovementId;
       `;
 
@@ -135,8 +149,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
 
       switch (objInfo.tableName) {
-        case 'bank account movement':
+        case 'bankaccountmovement':
 
+          /*
           // Sends a request to the server to get bank account movements one more time
           SQLquery =
             `
@@ -146,6 +161,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `;
           updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
           break;
+          */
+
+          // Get selected dues
+          getSelectedDues();
+
+          // Get selected bank account movements
+          getSelectedBankAccountMovements();
+
       };
     }
 
@@ -158,109 +181,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     // Handle disconnection
     socket.onclose = () => {
+      console.log('disconnection');
     }
   }
-
-  /*
-  // Send a message to the server
-  socket.onopen = () => {
-
-    // Sends a request to the server to get all users
-    const SQLquery =
-      `
-        SELECT * FROM user
-        ORDER BY userId;
-      `;
-    socket.send(SQLquery);
-  };
-
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
-
-    let message = event.data;
-
-    // Create user array including objets
-    if (message.includes('"tableName":"user"')) {
-
-      console.log('userTable');
-
-      // user array including objects with user information
-      userArray = JSON.parse(message);
-
-      // Sends a request to the server to get all condos
-      const SQLquery =
-        `
-          SELECT * FROM condo
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY name;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create condo array including objets
-    if (message.includes('"tableName":"condo"')) {
-
-      console.log('condoTable');
-      // condo table
-
-      // array including objects with condo information
-      condoArray = JSON.parse(message);
-
-      // Sends a request to the server to get all monthly payments
-      const SQLquery =
-        `
-          SELECT * FROM due
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY date;
-        `;
-      socket.send(SQLquery);
-
-    }
-
-    // Create monthly payment array including objets
-    if (message.includes('"tableName":"due"')) {
-
-      // monthly payment table
-      console.log('dueTable');
-
-      // array including objects with due information
-      dueArray = JSON.parse(message);
-
-      // Sends a request to the server to get all bank account movements
-      // Get all bankaccountmovement. rows
-      const SQLquery =
-        `
-          SELECT * FROM bankaccountmovement
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY date;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create bank account movement array including objets
-    if (message.includes('"tableName":"bankaccountmovement"')) {
-
-      // bank account movement table
-      console.log('bankaccountmovementTable');
-
-      // array including objects with bank account movement information
-      bankAccountMovementArray =
-        JSON.parse(message);
-
-      // Show leading text
-      showLeadingText();
-
-      // Make events
-      if (!isEventsCreated) {
-        createEvents();
-        isEventsCreated = true;
-      }
-    }
-
-    // Check for update, delete ...
-    if (message.includes('"affectedRows"')) {
-      console.log('affectedRows');
-    }
 
 
   // Handle errors
@@ -273,7 +196,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
-  */
 }
 
 // Make overview events
@@ -283,16 +205,35 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-overview-condoId')) {
 
-      showValues();
+      // Show selected for dues
+      getSelectedDues();
+
+      // Show selected for bank account movements
+      getSelectedBankAccountMovements();
     }
   });
 
-  // Start search
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-overview-search')) {
+  // From date
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('input-overview-fromDate')) {
 
-      // Show all values for bank account movements
-      showValues();
+      // Show selected for dues
+      getSelectedDues();
+
+      // Show selected for bank account movements
+      getSelectedBankAccountMovements();
+    };
+  });
+
+  // To date
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('input-overview-toDate')) {
+
+      // Show selected for dues
+      getSelectedDues();
+
+      // Show selected for bank account movements
+      getSelectedBankAccountMovements();
     };
   });
 }
@@ -301,22 +242,38 @@ function createEvents() {
 function showLeadingText() {
 
   // Show all condos
-  objCondo.showAllCondos('overview-condoId', 0, 'Alle');
+  const condoId =
+    (isClassDefined('select-overview-condoId')) ? Number(document.querySelector('.select-overview-condoId').value) : 0;
+  objCondo.showAllCondos('overview-condoId', condoId, 'Alle');
 
-  // Show from date
-  objOverview.showInput('overview-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
-  const year = String(today.getFullYear());
-  document.querySelector('.input-overview-fromDate').value =
-    `01.01.${year}`;
+  // from date
+  if (!isClassDefined('input-overview-fromDate')) {
 
-  // Show to date
-  objOverview.showInput('overview-toDate', 'Til dato', 10, 'mm.dd.åååå');
-  document.querySelector('.input-overview-toDate').value =
-    getCurrentDate();
+    objOverview.showInput('overview-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
+    date =
+      document.querySelector('.input-overview-fromDate').value;
+    if (!validateEuroDateFormat(date)) {
 
-  // show start search button
-  objOverview.showButton('overview-search', 'Start søk');
+      // From date is not ok
+      const year =
+        String(today.getFullYear());
+      document.querySelector('.input-overview-fromDate').value =
+        "01.01." + year;
+    }
+  }
 
+  // To date
+  if (!isClassDefined('input-overview-toDate')) {
+    objOverview.showInput('overview-toDate', 'Til dato', 10, 'mm.dd.åååå');
+    date =
+      document.querySelector('.input-overview-toDate').value;
+    if (!validateEuroDateFormat(date)) {
+
+      // To date is not ok
+      document.querySelector('.input-overview-toDate').value =
+        getCurrentDate();
+    }
+  }
 }
 
 // Show values for due and bankaccountmovement. for selected condo
@@ -345,65 +302,70 @@ function showValues() {
     const condoId =
       Number(document.querySelector('.select-overview-condoId').value);
 
+    let lineNumber = 0;
+
     let sumColumnDue = 0;
     dueArray.forEach((due) => {
+
+      /*
       if (due.dueId >= 0) {
         if (due.condoId === condoId || condoId === 999999999) {
           if (Number(due.date) >= fromDate && (Number(due.date) <= toDate)) {
+      */
 
-            // condo name
-            const condoName =
-              objCondo.getCondoName(due.condoId);
-            htmlColumnDueCondoName +=
-              `
-                <div class="rightCell">
+      lineNumber++;
+
+      // check if the number is odd
+      const colorClass =
+        (lineNumber % 2 !== 0) ? "green" : "";
+
+      // condo name
+      const condoName =
+        objCondo.getCondoName(due.condoId);
+      htmlColumnDueCondoName +=
+        `
+                <div class="rightCell ${colorClass}">
                   ${condoName}
                 </div>
               `;
 
-            // date
-            const date =
-              formatToNorDate(due.date);
-            htmlColumnDueDate +=
-              `
+      // date
+      const date =
+        formatToNorDate(due.date);
+      htmlColumnDueDate +=
+        `
                 <div 
-                  class="rightCell"
+                  class="rightCell ${colorClass}"
                 >
                   ${date}
                 </div>
               `;
 
-            // amount
-            htmlColumnDueAmount +=
-              `
-                <div class="rightCell">
+      // amount
+      htmlColumnDueAmount +=
+        `
+                <div class="rightCell ${colorClass}">
               `;
-            htmlColumnDueAmount +=
-              formatOreToKroner(due.amount);
-            htmlColumnDueAmount +=
-              `
+      htmlColumnDueAmount +=
+        formatOreToKroner(due.amount);
+      htmlColumnDueAmount +=
+        `
                 </div>
               `;
 
-            // Text has to fit into the column
-            //const text =
-            //  truncateText(due.text, 'div-overview-columnDueText');
-            htmlColumnDueText +=
-              `
+      htmlColumnDueText +=
+        `
                 <div 
-                  class="leftCell one-line"
+                  class="leftCell one-line  ${colorClass}"
                 >
                   ${due.text}
                 </div>
               `;
 
-            // Accomulate
-            // due
-            const formatedAmount = due.amount.replace(',', '.');
-            sumColumnDue += Number(formatedAmount);
-          }
-        }
-      }
+      // Accomulate
+      // due
+      const formatedAmount = due.amount.replace(',', '.');
+      sumColumnDue += Number(formatedAmount);
     });
 
     // Show bank account movement
@@ -418,72 +380,79 @@ function showValues() {
     let htmlBankAccountMovementText =
       '<div class="columnHeaderLeft">Tekst</div><br>';
 
-    let sumColumnBankAccountMovement = 0;
+    let sumColumnBankAccountMovement =
+      0;
 
     bankAccountMovementArray.forEach((bankAccountMovement) => {
+
+      /*
       if (bankAccountMovement.bankAccountMovementId >= 0) {
         if (Number(bankAccountMovement.date) >= Number(fromDate) && Number(bankAccountMovement.date) <= Number(toDate)) {
           if (bankAccountMovement.condoId === condoId || condoId === 999999999) {
+      */
 
-            // condo name
-            const condoName =
-              (bankAccountMovement.condoId) ? objCondo.getCondoName(bankAccountMovement.condoId) : "-";
-            htmlBankAccountMovementCondoName +=
-              `
-                <div class="rightCell">
-                  ${condoName}
-                </div>
-              `;
+      lineNumber++;
 
-            // date
-            const date =
-              formatToNorDate(bankAccountMovement.date);
-            htmlBankAccountMovementDate +=
-              `
-                <div class="rightCell"
-                  ${date}
-                >
-                </div>
-              `;
+      // check if the number is odd
+      const colorClass =
+        (lineNumber % 2 !== 0) ? "green" : "";
 
-            // income
-            const income =
-              formatOreToKroner(bankAccountMovement.income);
-            htmlBankAccountMovementAmount +=
-              `
-                <div 
-                  class="rightCell"
-                >
-                  ${income}
-                </div>
-              `;
+      // condo name
+      const condoName =
+        (bankAccountMovement.condoId) ? objCondo.getCondoName(bankAccountMovement.condoId) : "-";
+      htmlBankAccountMovementCondoName +=
+        `
+          <div class="rightCell ${colorClass}">
+            ${condoName}
+          </div>
+        `;
 
-            // Text has to fit into the column
-            //const bankAccountMovementText =
-            //  truncateText(bankAccountMovement.text, 'div-overview-columnBankAccountMovementText');
-            htmlBankAccountMovementText +=
-              `
-                <div
-                  class="leftCell one-line"
-                >
-                  ${bankAccountMovement.text}
-                </div>
-              `;
+      // date
+      const date =
+        formatToNorDate(bankAccountMovement.date);
+      htmlBankAccountMovementDate +=
+        `
+          <div class="rightCell ${colorClass}"
+          >
+            ${date}
+          </div>
+        `;
 
-            // Accomulate
-            sumColumnBankAccountMovement += Number(bankAccountMovement.payment);
-          }
-        }
-      }
+      // income
+      const income =
+        formatOreToKroner(bankAccountMovement.income);
+      htmlBankAccountMovementAmount +=
+        `
+          <div 
+            class="rightCell ${colorClass}"
+          >
+            ${income}
+          </div>
+        `;
+
+      // Text has to fit into the column
+      htmlBankAccountMovementText +=
+        `
+          <div
+            class="leftCell one-line ${colorClass}"
+          >
+            ${bankAccountMovement.text}
+          </div>
+        `;
+
+      // Accomulate
+      sumColumnBankAccountMovement +=
+        Number(bankAccountMovement.income)
+        + Number(bankAccountMovement.payment);
     });
 
     // Show total line
     htmlColumnDueCondoName +=
       `
-      <div class="sumCellLeft">
-        Sum
-      </div>
-    `;
+        <div class="sumCellLeft">
+          Sum
+        </div>
+      `;
 
     htmlColumnDueDate +=
       `
@@ -504,30 +473,7 @@ function showValues() {
         </div>
       `;
 
-    // Sum text
-    htmlColumnDueText +=
-      `
-        <div class="sumCellLeft">
-      `;
-    htmlColumnDueText +=
-      '-';
-    htmlColumnDueText +=
-      `
-        </div>
-      `;
-
-    // sum bank account movement.
-    htmlBankAccountMovementDate +=
-      `
-      <div class="sumCellRight">
-    `;
-    htmlBankAccountMovementDate +=
-      '-';
-    htmlBankAccountMovementDate +=
-      `
-      </div>
-    `;
-
+    // sum bank account movement
     htmlBankAccountMovementAmount +=
       `
         <div class="sumCellRight">
@@ -545,7 +491,8 @@ function showValues() {
         <div class="sumCellLeft"
         >
       `;
-    const guilty = sumColumnDue - sumColumnBankAccountMovement;
+    const guilty =
+      sumColumnDue - sumColumnBankAccountMovement;
     htmlBankAccountMovementText +=
       `Skyldig ` + formatOreToKroner(String(guilty));
     htmlBankAccountMovementText +=
@@ -578,20 +525,29 @@ function showValues() {
 // Check for valid filter values
 function validateValues() {
 
-  let fromDate = document.querySelector('.input-overview-fromDate').value;
-  const validFromDate = validateNorDate(fromDate, 'overview-fromDate', 'Fra dato');
+  let fromDate =
+    document.querySelector('.input-overview-fromDate').value;
+  const validFromDate =
+    validateNorDate(fromDate, 'overview-fromDate', 'Fra dato');
 
-  let toDate = document.querySelector('.input-overview-toDate').value;
-  const validToDate = validateNorDate(toDate, 'overview-toDate', 'Fra dato');
+  let toDate =
+    document.querySelector('.input-overview-toDate').value;
+  const validToDate =
+    validateNorDate(toDate, 'overview-toDate', 'Fra dato');
 
   // Check date interval
-  fromDate = Number(convertDateToISOFormat(fromDate));
-  toDate = Number(convertDateToISOFormat(toDate));
+  fromDate =
+    Number(convertDateToISOFormat(fromDate));
+  toDate =
+    Number(convertDateToISOFormat(toDate));
 
-  validDateInterval = (fromDate <= toDate) ? true : false;
+  validDateInterval =
+    (fromDate <= toDate) ? true : false;
 
-  fromDate = formatToNorDate(fromDate);
-  toDate = formatToNorDate(toDate);
+  fromDate =
+    formatToNorDate(fromDate);
+  toDate =
+    formatToNorDate(toDate);
 
 
   if (toDate !== '') {
@@ -606,8 +562,10 @@ function validateValues() {
   if (validFromDate && validToDate && validDateInterval) {
 
     if (fromDate !== '' && toDate !== '') {
-      const flipedFromDate = convertDateToISOFormat(fromDate);
-      const flipedToDate = convertDateToISOFormat(toDate);
+      const flipedFromDate =
+        convertDateToISOFormat(fromDate);
+      const flipedToDate =
+        convertDateToISOFormat(toDate);
 
       if (flipedFromDate > flipedToDate) {
         document.querySelector('.label-overview-fromDate').outerHTML =
@@ -620,3 +578,84 @@ function validateValues() {
   return (validFromDate && validToDate && validDateInterval) ? true : false;
 }
 
+// Get selected due
+function getSelectedDues() {
+
+  const condoId =
+    Number(document.querySelector('.select-overview-condoId').value);
+
+  const fromDate =
+    convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value);
+  const toDate =
+    convertDateToISOFormat(document.querySelector('.input-overview-toDate').value);
+
+  // Check condo Id 
+  if ((condoId === 999999999)) {
+
+    // Sends a request to the server to get selected dues
+    SQLquery =
+      `
+        SELECT * FROM due
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        ORDER BY date DESC;
+      `;
+  }
+
+  // Check if condo Id is selected
+  if ((condoId !== 999999999)) {
+
+    // Sends a request to the server to get selected budgets
+    SQLquery =
+      `
+        SELECT * FROM due
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND condoId = ${condoId}
+        ORDER BY date DESC;
+      `;
+  }
+
+  updateMySql(SQLquery, 'due', 'SELECT');
+}
+
+// Get selected bank account movements
+function getSelectedBankAccountMovements() {
+
+  const condoId =
+    Number(document.querySelector('.select-overview-condoId').value);
+
+  const fromDate =
+    convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value);
+  const toDate =
+    convertDateToISOFormat(document.querySelector('.input-overview-toDate').value);
+
+  // Check condo Id 
+  if ((condoId === 999999999)) {
+
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+        SELECT * FROM bankaccountmovement
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        ORDER BY date DESC;
+      `;
+  }
+
+  // Check if condo Id is selected
+  if ((condoId !== 999999999)) {
+
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+        SELECT * FROM bankaccountmovement
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND condoId = ${condoId}
+        ORDER BY date DESC;
+      `;
+  }
+
+  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+}

@@ -1,12 +1,18 @@
 // Search for amount movements
 
 // Activate objects
-const today = new Date();
-const objUser = new User('user');
-const objBudget = new Budget('budget');
-const objAccount = new Account('account');
-const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
-const objAccountingReport = new AccountingReport('accountingreport');
+const today =
+  new Date();
+const objUser =
+  new User('user');
+const objBudget =
+  new Budget('budget');
+const objAccount =
+  new Account('account');
+const objBankAccountMovement =
+  new BankAccountMovement('bankaccountmovement');
+const objAccountingReport =
+  new AccountingReport('accountingreport');
 
 testMode();
 
@@ -162,12 +168,39 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make budget events
 function createEvents() {
 
-  // Start search
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-accountingreport-search')) {
+  // from date
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('input-accountingreport-fromDate')) {
 
-      // Show all bank account movements
-      showValues();
+      // Show selected budgets
+      getSelectedBudgets();
+
+      // Show selected bank account movements
+      getSelectedBankAccountMovement();
+    };
+  });
+
+  // to date
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('input-accountingreport-toDate')) {
+
+      // Show selected budgets
+      getSelectedBudgets();
+
+      // Show selected bank account movements
+      getSelectedBankAccountMovement();
+    };
+  });
+
+  // budget year
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-accountingreport-year')) {
+
+      // Show selected budgets
+      getSelectedBudgets();
+
+      // Show selected bank account movements
+      getSelectedBankAccountMovement();
     };
   });
 }
@@ -189,9 +222,6 @@ function showLeadingText() {
 
   // Show budget year
   objBudget.selectNumber('accountingreport-year', 2020, 2030, year, 'Budsjettår');
-
-  // show start search button
-  objAccountingReport.showButton('accountingreport-search', 'Start søk');
 }
 
 // Show values for due and income for selected budget
@@ -248,17 +278,6 @@ function showValues() {
           `;
 
         // Budget Amount
-        /*
-        let budgetAmount = 0;
-        const objBudgetRowNumber =
-          budgetArray.findIndex(budget => budget.accountId === account.accountId);
-        if (objBudgetRowNumber !== -1) {
-          budgetAmount =
-            budgetArray[objBudgetRowNumber].amount;
-        }
-        budgetAmount =
-          formatOreToKroner(String(budgetAmount));
-        */
         const year =
           Number(document.querySelector('.select-accountingreport-year').value);
         let budgetAmount =
@@ -377,7 +396,7 @@ function validateValues() {
   let year =
     Number(document.querySelector('.select-accountingreport-year').value);
   const validYear =
-    validateNumber(year, 2020, 2030, 'Budsjettår');
+    validateNumber(year, 2020, 2030, 'accountingreport-year', 'Budsjettår');
 
   // Check date interval
   fromDate = Number(convertDateToISOFormat(fromDate));
@@ -410,8 +429,7 @@ function validateValues() {
 // Accumulate all bank account movement for specified account id
 function getTotalMovementsBankAccount(accountId) {
 
-  let totalAccountAmount = 0;
-  let totalPaymentAmount = 0;
+  let accountAmount = 0;
 
   let fromDate =
     document.querySelector('.input-accountingreport-fromDate').value;
@@ -427,20 +445,17 @@ function getTotalMovementsBankAccount(accountId) {
   bankAccountMovementArray.forEach((bankAccountMovement) => {
 
     if (Number(bankAccountMovement.date) >= fromDate
-      && (Number(bankAccountMovement.date) <= toDate)
-    ) {
+      && (Number(bankAccountMovement.date) <= toDate
+        && bankAccountMovement.accountId === accountId)) {
 
-      if (bankAccountMovement.accountId === accountId) {
-
-        totalAccountAmount +=
-          Number(bankAccountMovement.income);
-        totalPaymentAmount +=
-          Number(bankAccountMovement.payment);
-      }
+      accountAmount +=
+        Number(bankAccountMovement.income);
+      accountAmount +=
+        Number(bankAccountMovement.payment);
     }
   })
 
-  return totalAccountAmount;
+  return accountAmount;
 }
 
 // get budget amount
@@ -462,4 +477,48 @@ function getBudgetAmount(accountId, year) {
     }
   }
   return formatOreToKroner(amount);
+}
+
+// Get selected budgets
+function getSelectedBudgets() {
+
+  const year =
+    Number(document.querySelector('.select-accountingreport-year').value);
+
+  const fromDate =
+    convertDateToISOFormat(document.querySelector('.input-accountingreport-fromDate').value);
+  const toDate =
+    convertDateToISOFormat(document.querySelector('.input-accountingreport-toDate').value);
+
+  // Sends a request to the server to get selected bank account movements
+  SQLquery =
+    `
+      SELECT * FROM budget
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND year = '${year}';
+    `;
+  console.log(SQLquery);
+  updateMySql(SQLquery, 'budget', 'SELECT');
+}
+
+// Get selected bank account movement 
+function getSelectedBankAccountMovement() {
+
+  const year =
+    Number(document.querySelector('.select-accountingreport-year').value);
+
+  const fromDate =
+    convertDateToISOFormat(document.querySelector('.input-accountingreport-fromDate').value);
+  const toDate =
+    convertDateToISOFormat(document.querySelector('.input-accountingreport-toDate').value);
+
+  // Sends a request to the server to get selected bank account movements
+  SQLquery =
+    `
+      SELECT * FROM bankaccountmovement
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND date BETWEEN '${fromDate}' AND '${toDate}';
+    `;
+  console.log(SQLquery);
+  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
 }

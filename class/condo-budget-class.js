@@ -5,7 +5,7 @@ class Budget extends Condos {
   budgetArray = [];
 
   // Show all budgets
-  showAllBudgets(columnName, budgetId) {
+  showAllBudgets(className, budgetId) {
 
     let html =
       `
@@ -15,41 +15,56 @@ class Budget extends Condos {
           method="POST"
         >
           <label 
-            class="label-budget-${columnName} 
-            label-budget-${columnName}"
+            class="label-${className} 
+            label-${className}"
             for="Budget"
             id ="Budget"
           >
             Velg budsjett
           </label>
           <select 
-            class="select-budget-${columnName}"
+            class="select-${className}"
             id ="Budget" 
           >
     `;
 
+    let selectedOption =
+      false;
+
     // Check if budget array is empty
-    const numberOfRows = budgetArray.length;
+    const numberOfRows =
+      budgetArray.length;
+
     if (numberOfRows > 0) {
       budgetArray.forEach((budget) => {
         if (budget.budgetId >= 0) {
+
+          // get account name
+          const accountName =
+            objBudget.getAccountName(budget.accountId);
+
           if (budget.budgetId === budgetId) {
 
-            html += `
-          <option 
-            value="${budget.budgetId}"
-            selected
-            >
-            ${budget.budgetId} - ${budget.text}
-          </option>
-        `;
+            html +=
+              `
+                <option 
+                  value="${budget.budgetId}"
+                  selected
+                  >
+                  ${budget.budgetId} - ${accountName}
+                </option>
+              `;
+            selectedOption =
+              true;
           } else {
-            html += `
-          <option 
-            value="${budget.budgetId}">
-            ${budget.budgetId} - ${budget.text}
-          </option>
-        `;
+
+            html +=
+              `
+              <option 
+                value="${budget.budgetId}">
+                ${budget.budgetId} - ${accountName}
+              </option>
+            `;
           }
         }
       });
@@ -60,9 +75,11 @@ class Budget extends Condos {
         <option value="0" 
           selected
         >
-          Ingen budsjett
+          Ingen budsjett er valgt
         </option>
       `;
+      selectedOption =
+        true;
     }
 
     html += `
@@ -70,7 +87,8 @@ class Budget extends Condos {
     </form>
   `;
 
-    document.querySelector(`.div-budget-${columnName}`).innerHTML = html;
+    document.querySelector(`.div-${className}`).innerHTML =
+      html;
   }
 
   // Find selected budget id
@@ -83,11 +101,13 @@ class Budget extends Condos {
 
       budgetId =
         Number(document.querySelector(`.${className}`).value);
-      budgetId = (budgetId === 0) ? budgetArray.at(-1).budgetId : budgetId;
+      budgetId =
+        (budgetId === 0) ? budgetArray.at(-1).budgetId : budgetId;
     } else {
 
       // Get last id in last object in budget array
-      budgetId = budgetArray.at(-1).budgetId;
+      budgetId =
+        (budgetArray.length > 0) ? budgetArray.at(-1).budgetId : 0;
     }
 
     return budgetId;

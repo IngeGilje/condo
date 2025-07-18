@@ -26,6 +26,9 @@ class Condo extends Condos {
           >
     `;
 
+    let selectedOption =
+      false;
+
     // Check if condo array is empty
     const numberOfRows = condoArray.length;
     if (numberOfRows > 0) {
@@ -42,6 +45,9 @@ class Condo extends Condos {
                   ${condo.condoId} - ${condo.name}
                 </option >
               `;
+            selectedOption =
+              true;
+
           } else {
             html +=
               `
@@ -65,42 +71,73 @@ class Condo extends Condos {
             Ingen leiligheter
           </option >
         `;
+      selectedOption =
+        true;
     }
 
     // Alternative select
     if (alternativeSelect && (numberOfRows > 1)) {
+      if (selectedOption) {
+        html +=
+          `
+            <option 
+              value=999999999
+            >
+              ${alternativeSelect}
+            </option>
+          `;
+      } else {
 
-      html +=
-        `
-          <option 
-            value=999999999
-            selected
-          >
-            ${alternativeSelect}
-          </option>
-      `;
+        html +=
+          `
+            <option 
+              value=999999999
+              selected
+            >
+              ${alternativeSelect}
+            </option>
+          `;
+        selectedOption =
+          true;
+      }
     }
 
     // Do not select any condo
     if (alternativeSelect2 && (numberOfRows > 1)) {
+      if (selectedOption) {
+        html +=
+          `
+            <option 
+              value=0
+            >
+              ${alternativeSelect2}
+            </option>
+          `;
+      } else {
 
-      html +=
-        `
-          <option 
-            value=0
-            selected
-          >
-            ${alternativeSelect2}
-          </option>
-      `;
+        html +=
+          `
+            <option 
+              value=0
+              selected
+            >
+              ${alternativeSelect2}
+            </option>
+          `;
+        selectedOption =
+          true;
+
+      }
     }
 
-    html += `
-        </select >
-      </form >
-    `;
+    html +=
+      `
+          </select >
+        </form >
+      `;
 
-    document.querySelector(`.div-${columnName}`).innerHTML = html;
+    document.querySelector(`.div-${columnName}`).innerHTML =
+      html;
   }
 
   // Find selected condo id

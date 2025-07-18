@@ -26,6 +26,9 @@ class Condominium extends Condos {
       >
     `;
 
+       let selectedOption =
+      false;
+
     // Check if condominium array is empty
     const numberOfRows = condominiumArray.length;
     if (numberOfRows > 0) {
@@ -41,6 +44,8 @@ class Condominium extends Condos {
             ${condominium.condominiumId} - ${condominium.name}
           </option>
         `;
+               selectedOption =
+          true;
           } else {
             html += `
           <option 
@@ -60,6 +65,8 @@ class Condominium extends Condos {
           Ingen sameier
         </option>
       `;
+             selectedOption =
+          true;
     }
 
     html += `

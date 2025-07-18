@@ -379,6 +379,9 @@ class Condos {
         >
       `;
 
+    let selectedOption =
+      false;
+
     this.yearArray.forEach((year) => {
       if (year === selectedYear) {
 
@@ -390,6 +393,8 @@ class Condos {
             ${year}
           </option>
         `;
+        selectedOption =
+          true;
       } else {
         html += `
           <option 
@@ -515,6 +520,9 @@ class Condos {
         >
     `;
 
+    let selectedOption =
+      false;
+
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
 
@@ -526,6 +534,8 @@ class Condos {
           ${number}
         </option>
       `;
+        selectedOption =
+          true;
       } else {
         html += `
         <option 
@@ -811,57 +821,6 @@ class Condos {
     return (bankAccountName) ? bankAccountName : "-";
   }
 
-  /*
-  // get account id from bankaccount
-  getAccountIdFromBankAccount(fromBankAccount, toBankAccount) {
-
-    let accountId = 0;
-
-    // To Bank Acoount <> Condominium Bank Account
-    let objBankAccountRowNumber =
-      bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === toBankAccount);
-    if (objBankAccountRowNumber === -1) {
-
-      const objBankAccountRowNumber =
-        userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === toBankAccount);
-      if (objBankAccountRowNumber !== -1) {
-
-        accountId = userBankAccountArray[objBankAccountRowNumber].accountId;
-      }
-      // get Account Id from supplier
-      const objSupplierRowNumber =
-        supplierArray.findIndex(supplier => supplier.bankAccount === toBankAccount);
-      if (objSupplierRowNumber !== -1) {
-
-        accountId = supplierArray[objSupplierRowNumber].accountId;
-      }
-    }
-
-    // From Bank Acoount <> Condominium Bank Account
-    objBankAccountRowNumber =
-      bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === fromBankAccount);
-
-    if (objBankAccountRowNumber === -1) {
-
-      // Bank Account does not exist
-      const objBankAccountRowNumber =
-        userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
-      if (objBankAccountRowNumber !== -1) {
-
-        accountId = userBankAccountArray[objBankAccountRowNumber].accountId;
-      }
-      // get Account Id from supplier
-      const objSupplierRowNumber =
-        supplierArray.findIndex(supplier => supplier.bankAccount === fromBankAccount);
-      if (objSupplierRowNumber !== -1) {
-
-        accountId = supplierArray[objSupplierRowNumber].accountId;
-      }
-    }
-    return accountId;
-  }
-  */
-
   // get account name
   getAccountName(accountId) {
 
@@ -872,7 +831,8 @@ class Condos {
       accountArray.findIndex(account => account.accountId === accountId);
     if (objAccountRowNumber !== -1) {
 
-      accountName = accountArray[objAccountRowNumber].name;
+      accountName =
+        accountArray[objAccountRowNumber].name;
     }
 
     return (accountName) ? accountName : "-";
@@ -957,9 +917,15 @@ function validateEuroDateFormat(dateString) {
 
 // Format date dd.mm.yyyy (European date format) to yyyymmdd ("Basic ISO 8601 format)
 function convertDateToISOFormat(date) {
-
-  const dateParts = date.split(".");
-  return `${dateParts[2]}${dateParts[1]}${dateParts[0]}`;
+  if (date.includes('.')) {
+    const dateParts = date.split(".");
+    date =
+      `${dateParts[2]}${dateParts[1]}${dateParts[0]}`;
+  } else {
+    date =
+      '';
+  }
+  return date;
 }
 
 // Format date from yyyymmdd (Basic ISO 8601 format) -> dd.mm.yyyy (European date format)
@@ -1013,8 +979,8 @@ function validateNorDate(dateString, className, labelText) {
 
   let isDateValid = true;
 
-  //dateString = (dateString.length === 0) ? this.getCurrentDate() : String(dateString); 
-  dateString = (dateString.length === 0) ? '00.00.0000' : String(dateString);
+  dateString =
+    (dateString.length === 0) ? '00.00.0000' : String(dateString);
   [day, month, year] = dateString.split('.');
   day = day.padStart(2, "0");
   month = month.padStart(2, "0");
@@ -1367,64 +1333,6 @@ function hideInput(className) {
   }
 }
 
-
-/*
-// Text must fit within the element
-function truncateText(text, className) {
-
-  const element =
-    document.querySelector(`.${className}`);
-  const computedStyle =
-    window.getComputedStyle(element);
-  const paddingLeft =
-    parseFloat(computedStyle.paddingLeft);
-  const paddingRight =
-    parseFloat(computedStyle.paddingRight);
-  const borderLeft =
-    parseFloat(computedStyle.borderLeftWidth);
-  const borderRight =
-    parseFloat(computedStyle.borderRightWidth);
-
-  // Width of an element
-  const widthOfElement =
-    element.offsetWidth
-    - paddingLeft
-    - paddingRight
-    - borderLeft
-    - borderRight;
-
-  const fontSize =
-    window.getComputedStyle(element).fontSize;
-  const fontFamily =
-    computedStyle.fontFamily;
-
-  const marginLeft =
-    parseFloat(computedStyle.marginLeft);
-  const marginRight =
-    parseFloat(computedStyle.marginRight);
-
-  let lengthTextPx =
-    Math.ceil(getTextWidth(text, font = `${fontSize} '${fontFamily}'`)
-      + paddingLeft + paddingRight
-      + borderLeft + borderRight
-      + marginLeft + marginRight
-      + 4);
-
-  for (; lengthTextPx > widthOfElement;) {
-    text =
-      text.slice(0, -1);
-    lengthTextPx =
-      Math.ceil(getTextWidth(text, font = `${fontSize} '${fontFamily}'`)
-        + paddingLeft + paddingRight
-        + borderLeft + borderRight
-        + marginLeft + marginRight
-        + 4);
-  }
-
-  return text;
-}
-*/
-
 // Validate user/password
 function checkUserPassword(user, password) {
 
@@ -1600,11 +1508,11 @@ function validateInterval(className, labelText, fromValue, toValue) {
 }
 
 // get account id from bank account
-function getAccountIdFromBankAccount(bankAccount) {
+function getAccountIdFromBankAccount(bankAccount, payment) {
 
   let accountId = 0;
 
-  if (bankAccount === '32019999008') {
+  if (bankAccount === '32073195801') {
     console.log('bank account:', bankAccount);
   }
 
@@ -1635,7 +1543,7 @@ function getAccountIdFromBankAccount(bankAccount) {
         (supplierArray[objSupplierRowNumber].amount) ? Number(supplierArray[objSupplierRowNumber].amount) : 0;
 
       accountId =
-        (amount) ? Number(supplierArray[objSupplierRowNumber].account2Id) : accountId;
+        (amount === Number(payment)) ? Number(supplierArray[objSupplierRowNumber].account2Id) : accountId;
     }
   }
   return accountId;

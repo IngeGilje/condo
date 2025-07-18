@@ -24,6 +24,9 @@ class User extends Condos {
         >
     `;
 
+       let selectedOption =
+      false;
+
     // Check if user array is empty
     const numberOfRows = userArray.length;
     if (numberOfRows > 0) {
@@ -39,6 +42,8 @@ class User extends Condos {
               ${user.userId} - ${user.firstName}
             </option>
           `;
+            selectedOption =
+              true;
           } else {
             html += `
             <option 
@@ -59,6 +64,8 @@ class User extends Condos {
         Ingen brukere
       </option>
     `;
+      selectedOption =
+        true;
     }
 
     html += `

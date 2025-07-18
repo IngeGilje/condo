@@ -69,7 +69,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-    console.log('Message from server:', messageFromServer);
 
     //Converts a JavaScript Object Notation (JSON) string into an object
     objInfo =
@@ -512,7 +511,7 @@ function showLeadingText(condominiumId) {
   objCondominium.showInput('condominium-organizationNumber', '* Organisasjonsnummer', 9, '');
 
   // import path
-  objCondominium.showInput('condominium-importPath', '* Sti for filimport', 50, '');
+  objCondominium.showInput('condominium-importPath', '* Navn på importfile', 50, '');
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -710,7 +709,7 @@ function validateValues() {
   const importPath =
     document.querySelector('.input-condominium-importPath').value;
   const validImportPath =
-    objCondominium.validateText(importPath, "condominium-importpath", "Sti for filimport");
+    objCondominium.validateText(importPath, "condominium-importpath", "Navn på importfil");
 
   return (validCondominiumName
     && validStreet

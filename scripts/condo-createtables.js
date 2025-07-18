@@ -49,7 +49,7 @@ const createDueTable =
 
 // 11 Budget
 const createBudgetTable =
-  true;
+  false;
 
 // 12 Bank account movement
 const createBankAccountMovementTable =

@@ -25,6 +25,9 @@ class UserBankAccount extends Condos {
           >
       `;
 
+         let selectedOption =
+      false;
+
     // Check if user bank account array is empty
     const numberOfRows = userBankAccountArray.length;
     if (numberOfRows > 0) {
@@ -40,6 +43,8 @@ class UserBankAccount extends Condos {
               ${userBankAccount.userBankAccountId} - ${userBankAccount.name}
             </option>
           `;
+            selectedOption =
+              true;
           } else {
             html += `
             <option 
@@ -60,6 +65,8 @@ class UserBankAccount extends Condos {
         Ingen bruker bankkonto
       </option>
     `;
+      selectedOption =
+        true;
     }
 
     html += `

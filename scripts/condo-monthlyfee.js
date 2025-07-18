@@ -628,7 +628,7 @@ function validateValues() {
   const day =
     document.querySelector('.select-monthlyfee-day').value;
   const validDay =
-    validateNumber(day, 1, 28, 'monthlyfee-day', '* Dag');
+    validateNumber(day, 1, 28, 'monthlyfee-day', 'Dag');
 
   // Check amount
   const amount =

@@ -27,6 +27,9 @@ class Due extends Condos {
       >
     `;
 
+    let selectedOption =
+      false;
+
     // Check if monthly payment array is empty
     const numberOfRows = dueArray.length;
     if (numberOfRows > 0) {
@@ -34,14 +37,17 @@ class Due extends Condos {
         if (due.dueId >= 0) {
           if (due.dueId === dueId) {
 
-            html += `
-          <option 
-            value="${due.dueId}"
-            selected
-            >
-            ${due.dueId} - ${due.text}
-          </option>
-        `;
+            html +=
+              `
+                <option 
+                  value="${due.dueId}"
+                  selected
+                >
+                  ${due.dueId} - ${due.text}
+                </option>
+              `;
+            selectedOption =
+              true;
           } else {
             html += `
           <option 
@@ -62,6 +68,8 @@ class Due extends Condos {
           Ingen forfall
         </option>
       `;
+      selectedOption =
+        true;
     }
 
     html += `
