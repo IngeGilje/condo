@@ -11,15 +11,15 @@ const objAccount =
   new Account('account');
 const objBankAccountMovement =
   new BankAccountMovement('bankaccountmovement');
-const objAccountingReport =
-  new AccountingReport('accountingreport');
+const objAccountReport =
+  new AccountReport('accountreport');
 
 testMode();
 
 let isEventsCreated = false;
 
-objAccountingReport.menu();
-objAccountingReport.markSelectedMenu('Regnskapsrapport');
+objAccountReport.menu();
+objAccountReport.markSelectedMenu('Regnskapsrapport');
 
 let socket;
 socket =
@@ -170,7 +170,7 @@ function createEvents() {
 
   // from date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-accountingreport-fromDate')) {
+    if (event.target.classList.contains('input-accountreport-fromDate')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -182,7 +182,7 @@ function createEvents() {
 
   // to date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-accountingreport-toDate')) {
+    if (event.target.classList.contains('input-accountreport-toDate')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -194,7 +194,7 @@ function createEvents() {
 
   // budget year
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-accountingreport-year')) {
+    if (event.target.classList.contains('select-accountreport-year')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -205,23 +205,46 @@ function createEvents() {
   });
 }
 
-// Show leading text for payment
+// Show leading text
 function showLeadingText() {
 
-  // Show from date
-  objAccountingReport.showInput('accountingreport-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
-  const year =
-    today.getFullYear();
-  document.querySelector('.input-accountingreport-fromDate').value =
-    `01.01.${year}`;
+  // from date
+  if (!isClassDefined('input-accountreport-fromDate')) {
 
-  // Show to date
-  objAccountingReport.showInput('accountingreport-toDate', 'Til dato', 10, 'mm.dd.åååå');
-  document.querySelector('.input-accountingreport-toDate').value =
-    getCurrentDate();
+    objAccountReport.showInput('accountreport-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
+    date =
+      document.querySelector('.input-accountreport-fromDate').value;
+    if (!validateEuroDateFormat(date)) {
 
-  // Show budget year
-  objBudget.selectNumber('accountingreport-year', 2020, 2030, year, 'Budsjettår');
+      // From date is not ok
+      const year =
+        String(today.getFullYear());
+      document.querySelector('.input-accountreport-fromDate').value =
+        "01.01." + year;
+    }
+  }
+
+  // To date
+  if (!isClassDefined('input-accountreport-toDate')) {
+    objAccountReport.showInput('accountreport-toDate', 'Til dato', 10, 'mm.dd.åååå');
+    date =
+      document.querySelector('.input-accountreport-toDate').value;
+    if (!validateEuroDateFormat(date)) {
+
+      // To date is not ok
+      document.querySelector('.input-accountreport-toDate').value =
+        getCurrentDate();
+    }
+  }
+
+  // Show selected years
+  if (!isClassDefined('select-accountreport-year')) {
+
+    // Show years
+    const year =
+      today.getFullYear();
+    objBudget.selectNumber('accountreport-year', 2020, 2030, year, 'År');
+  }
 }
 
 // Show values for due and income for selected budget
@@ -279,7 +302,7 @@ function showValues() {
 
         // Budget Amount
         const year =
-          Number(document.querySelector('.select-accountingreport-year').value);
+          Number(document.querySelector('.select-accountreport-year').value);
         let budgetAmount =
           getBudgetAmount(account.accountId, year);
         htmlColumnBudgetAmount +=
@@ -369,13 +392,13 @@ function showValues() {
         </div>
       `;
 
-    document.querySelector('.div-accountingreport-columnAccountName').innerHTML =
+    document.querySelector('.div-accountreport-columnAccountName').innerHTML =
       htmlColumnAccountName;
-    document.querySelector('.div-accountingreport-columnBankAccountMovementAmount').innerHTML =
+    document.querySelector('.div-accountreport-columnBankAccountMovementAmount').innerHTML =
       htmlColumnBankAccountMovementAmount;
-    document.querySelector('.div-accountingreport-columnBudgetAmount').innerHTML =
+    document.querySelector('.div-accountreport-columnBudgetAmount').innerHTML =
       htmlColumnBudgetAmount;
-    document.querySelector('.div-accountingreport-columnDeviation').innerHTML =
+    document.querySelector('.div-accountreport-columnDeviation').innerHTML =
       htmlColumnDeviation;
   }
 }
@@ -384,19 +407,19 @@ function showValues() {
 function validateValues() {
 
   let fromDate =
-    document.querySelector('.input-accountingreport-fromDate').value;
+    document.querySelector('.input-accountreport-fromDate').value;
   const validFromDate =
-    validateNorDate(fromDate, 'accountingreport-fromDate', 'Fra dato');
+    validateNorDate(fromDate, 'accountreport-fromDate', 'Fra dato');
 
   let toDate =
-    document.querySelector('.input-accountingreport-toDate').value;
+    document.querySelector('.input-accountreport-toDate').value;
   const validToDate =
-    validateNorDate(toDate, 'accountingreport-toDate', 'Fra dato');
+    validateNorDate(toDate, 'accountreport-toDate', 'Fra dato');
 
   let year =
-    Number(document.querySelector('.select-accountingreport-year').value);
+    Number(document.querySelector('.select-accountreport-year').value);
   const validYear =
-    validateNumber(year, 2020, 2030, 'accountingreport-year', 'Budsjettår');
+    validateNumber(year, 2020, 2030, 'accountreport-year', 'Budsjettår');
 
   // Check date interval
   fromDate = Number(convertDateToISOFormat(fromDate));
@@ -416,8 +439,8 @@ function validateValues() {
       const flipedToDate = convertDateToISOFormat(toDate);
 
       if (flipedFromDate > flipedToDate) {
-        document.querySelector('.label-accountingreport-fromDate').outerHTML =
-          "<div class='label-accountingreport-fromDate-red label-accountingreport-fromDate-red'>Dato er feil</div>";
+        document.querySelector('.label-accountreport-fromDate').outerHTML =
+          "<div class='label-accountreport-fromDate-red label-accountreport-fromDate-red'>Dato er feil</div>";
         validValues = false;
       }
     }
@@ -432,13 +455,13 @@ function getTotalMovementsBankAccount(accountId) {
   let accountAmount = 0;
 
   let fromDate =
-    document.querySelector('.input-accountingreport-fromDate').value;
+    document.querySelector('.input-accountreport-fromDate').value;
 
   fromDate =
     Number(convertDateToISOFormat(fromDate));
 
   let toDate =
-    document.querySelector('.input-accountingreport-toDate').value;
+    document.querySelector('.input-accountreport-toDate').value;
   toDate =
     Number(convertDateToISOFormat(toDate));
 
@@ -483,12 +506,12 @@ function getBudgetAmount(accountId, year) {
 function getSelectedBudgets() {
 
   const year =
-    Number(document.querySelector('.select-accountingreport-year').value);
+    Number(document.querySelector('.select-accountreport-year').value);
 
   const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-accountingreport-fromDate').value);
+    convertDateToISOFormat(document.querySelector('.input-accountreport-fromDate').value);
   const toDate =
-    convertDateToISOFormat(document.querySelector('.input-accountingreport-toDate').value);
+    convertDateToISOFormat(document.querySelector('.input-accountreport-toDate').value);
 
   // Sends a request to the server to get selected bank account movements
   SQLquery =
@@ -505,12 +528,12 @@ function getSelectedBudgets() {
 function getSelectedBankAccountMovement() {
 
   const year =
-    Number(document.querySelector('.select-accountingreport-year').value);
+    Number(document.querySelector('.select-accountreport-year').value);
 
   const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-accountingreport-fromDate').value);
+    convertDateToISOFormat(document.querySelector('.input-accountreport-fromDate').value);
   const toDate =
-    convertDateToISOFormat(document.querySelector('.input-accountingreport-toDate').value);
+    convertDateToISOFormat(document.querySelector('.input-accountreport-toDate').value);
 
   // Sends a request to the server to get selected bank account movements
   SQLquery =

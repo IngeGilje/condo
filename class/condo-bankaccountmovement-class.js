@@ -116,7 +116,7 @@ class BankAccountMovement extends Condos {
 
     let html =
       `
-        <form
+        <form 
           id="bankAccountMovementId"
           action="/submit" 
           method="POST"

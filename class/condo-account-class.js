@@ -12,7 +12,7 @@ class Account extends Condos {
 
     let html =
       `
-        <form
+        <form 
           id="accountId"
           action="/submit" 
           method="POST"
@@ -32,43 +32,44 @@ class Account extends Condos {
       `;
 
     // Check if account movement array is empty
-    const numberOfRows = accountArray.length;
+    const numberOfRows = 
+    accountArray.length;
     if (numberOfRows > 0) {
       accountArray.forEach((account) => {
-        if (account.accountId >= 0) {
-          if (account.accountId === accountId) {
+        if (account.accountId === accountId) {
 
-            html +=
-              `
-                <option 
-                  value=${account.accountId}
-                  selected
-                >
-                  ${account.accountId} - ${account.name}
-                </option>
-              `;
-            selectedOption =
-              true;
-          } else {
+          html +=
+            `
+              <option 
+                value=${account.accountId}
+                selected
+              >
+                ${account.accountId} - ${account.name}
+              </option>
+            `;
+          selectedOption =
+            true;
+        } else {
 
-            html += `
-            <option 
-              value="${account.accountId}">
-              ${account.accountId} - ${account.name}
-            </option>
-          `;
-          }
+          html +=
+            `
+              <option 
+                value="${account.accountId}">
+                ${account.accountId} - ${account.name}
+              </option>
+            `;
         }
       });
     } else {
 
-      html += `
-      <option value="0" 
-        selected
-      >
-        Ingen konti
-      </option>
-    `;
+      html += 
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen konti
+          </option>
+        `;
       selectedOption =
         true;
     }

@@ -8,7 +8,7 @@ class BankAccount extends Condos {
   showAllBankAccounts(className, bankAccountId) {
 
     let html = `
-      <form
+      <form 
         id="bankAccountId"
         action="/submit" 
         method="POST"

@@ -56,14 +56,17 @@ const createBankAccountMovementTable =
   false;
 
 // Activate Account class
-const objUser = new User('user');
+const objUser
+ = new User('user');
 
 // Connection to a server
 socket = connectingToServer();
 
-let isEventsCreated = false;
+let isEventsCreated
+ = false;
 
-const lastUpdate = now.toISOString();
+const lastUpdate
+ = now.toISOString();
 
 // Send a message to the server
 socket.onopen = () => {
@@ -73,8 +76,6 @@ socket.onopen = () => {
   deleteAllTables();
 
   createAllTables();
-
-  //insertRowAllTables();
 }
 
 // Handle errors
@@ -234,6 +235,7 @@ function createAllTables() {
         city VARCHAR(50) NOT NULL,
         phone VARCHAR(20),
         email VARCHAR(50),
+        accountId INT,
         organizationNumber VARCHAR(9),
         importPath VARCHAR(50)
       );
@@ -519,6 +521,7 @@ function insertRowAllTables() {
         city,
         phone,
         email,
+        accountId,
         organizationNumber,
         importPath
       )
@@ -533,6 +536,7 @@ function insertRowAllTables() {
         '',
         '',
         '',
+        0,
         '',
         ''
       );

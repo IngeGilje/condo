@@ -1,10 +1,14 @@
 // Condominium maintenance
 
 // Activate Condominium class
-const objUser = new User('user');
-const objAccount = new Account('account');
-const objBankAccount = new BankAccount('bankaccount');
-const objCondominium = new Condominium('condominium');
+const objUser =
+  new User('user');
+const objAccount =
+  new Account('account');
+const objBankAccount =
+  new BankAccount('bankaccount');
+const objCondominium =
+  new Condominium('condominium');
 
 testMode();
 
@@ -14,7 +18,8 @@ objCondominium.menu();
 objCondominium.markSelectedMenu('Sameie');
 
 let socket;
-socket = connectingToServer();
+socket =
+  connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
@@ -51,7 +56,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY accountId;
       `;
-    updateMySql(SQLquery, 'bankaccount', 'SELECT');
+    updateMySql(SQLquery, 'account', 'SELECT');
 
     // Sends a request to the server to get condominiums
     SQLquery =
@@ -93,7 +98,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           accountArray =
             objInfo.tableArray;
           break;
-
 
         case 'bankaccount':
 
@@ -160,163 +164,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     }
   }
 }
-/*
-objUserPassword = JSON.parse(localStorage.getItem('user'));
-
-// Connection to a server
-let socket;
-switch (objUser.serverStatus) {
-
-  // Web server
-  case 1: {
-    socket = new WebSocket('ws://ingegilje.no:7000');
-    break;
-  }
-  // Test web server/ local web server
-  case 2: {
-    socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
-  // Test server/ local test server
-  case 3: {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const hostname = window.location.hostname || 'localhost';
-    socket = new WebSocket(`${protocol}://${hostname}:5000`); break;
-    break;
-  }
-  default:
-    break;
-}
-
-let isEventsCreated = false;
-
-objCondominium.menu();
-objCondominium.markSelectedMenu('Sameie');
-
-// Send a message to the server
-socket.onopen = () => {
-
-  // Sends a request to the server to get all users
-  const SQLquery = `
-    SELECT * FROM user
-    WHERE condominiumId = ${objUserPassword.condominiumId}
-    ORDER BY userId;
-  `;
-  socket.send(SQLquery);
-};
-
-// Handle incoming messages from server
-socket.onmessage = (event) => {
-
-  let message = event.data;
-
-  // Create user array including objets
-  if (message.includes('"tableName":"user"')) {
-
-    console.log('userTable');
-
-    // user array including objects with user information
-    userArray = JSON.parse(message);
-
-    // Sends a request to the server to get all accounts
-    const SQLquery = `
-    SELECT * FROM account
-    WHERE condominiumId = ${objUserPassword.condominiumId}
-    ORDER BY accountId;
-  `;
-    socket.send(SQLquery);
-  }
-
-  // Create account array including objets
-  if (message.includes('"tableName":"account"')) {
-
-    // account table
-    console.log('accountTable');
-
-    // array including objects with condominium information
-    accountArray = JSON.parse(message);
-
-    //objBankAccount.getBankAccounts(socket);
-    const SQLquery = `
-      SELECT * FROM bankaccount
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-      ORDER BY name;
-    `;
-    socket.send(SQLquery);
-  }
-
-  // Create bank account array including objets
-  if (message.includes('"tableName":"bankaccount"')) {
-
-    // bankaccount table
-    console.log('bankaccountTable');
-
-    // array including objects with condominium information
-    bankAccountArray = JSON.parse(message);
-
-    //objCondominium.getCondominiums(socket);
-    // Get all condominiums from MySQL database
-    const SQLquery = `
-      SELECT * FROM condominium
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-      ORDER BY name;
-    `;
-    socket.send(SQLquery);
-  }
-
-  // Create condominium array including objets
-  if (message.includes('"tableName":"condominium"')) {
-
-    // condominium table
-    console.log('condominiumTable');
-
-    // array including objects with condominium information
-    condominiumArray = JSON.parse(message);
-
-    const condominiumId =
-     objCondominium.getSelectedCondominiumId('condominiumId');
-
-    // Show leading text
-    showLeadingText(condominiumId);
-
-    // Show all values for condominium
-    showValues(condominiumId);
-
-    // Make events
-    if (!isEventsCreated) {
-      condoEvents();
-      isEventsCreated = true;
-    }
-  }
-
-  // Check for update, delete ...
-  if (message.includes('"affectedRows"')) {
-
-    console.log('affectedRows');
-
-    // Sends a request to the server to get all condos
-    const SQLquery =
-      `
-        SELECT * FROM condominium
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY condominiumId;
-      `;
-    socket.send(SQLquery);
-  }
-
-
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
-}
-}
-*/
 
 // Make events for condominium
 function condominiumEvents() {
@@ -400,6 +247,8 @@ function updateCondominium(condominiumId) {
       document.querySelector('.input-condominium-phone').value;
     const email =
       document.querySelector('.input-condominium-email').value;
+    const accountId =
+      Number(document.querySelector('.select-condominium-accountId').value);
     const organizationNumber =
       document.querySelector('.input-condominium-organizationNumber').value;
     const importPath =
@@ -427,6 +276,7 @@ function updateCondominium(condominiumId) {
           city = '${city}',
           phone = '${phone}',
           email = '${email}',
+          accountId = ${accountId},
           organizationNumber = '${organizationNumber}',
           importPath = '${importPath}'
         WHERE condominiumId = ${condominiumId};
@@ -447,6 +297,7 @@ function updateCondominium(condominiumId) {
           city,
           phone,
           email,
+          accountId,
           organizationNumber,
           importPath)
         VALUES (
@@ -460,6 +311,7 @@ function updateCondominium(condominiumId) {
           '${city}',
           '${phone}',
           '${email}',
+          ${accountId},
           '${organizationNumber}',
           '${importPath}'
         );
@@ -506,6 +358,9 @@ function showLeadingText(condominiumId) {
 
   // email
   objCondominium.showInput('condominium-email', '* eMail', 50, '');
+
+  // show all account Ids for remote heating
+  objAccount.showAllAccounts('condominium-accountId', 0, "", "Ingen");
 
   // organization Number
   objCondominium.showInput('condominium-organizationNumber', '* Organisasjonsnummer', 9, '');
@@ -571,6 +426,12 @@ function showValues(condominiumId) {
       document.querySelector('.input-condominium-email').value =
         condominiumArray[objCondominimuRowNumber].email;
 
+      // account id
+      document.querySelector('.select-condominium-accountId').value =
+        (condominiumArray[objCondominimuRowNumber].accountId) ? condominiumArray[objCondominimuRowNumber].accountId : 0;
+      document.querySelector('.label-condominium-accountId').innerHTML =
+        'Velg fjernvarmekonto';
+
       // Show organization number
       document.querySelector('.input-condominium-organizationNumber').value =
         condominiumArray[objCondominimuRowNumber].organizationNumber;
@@ -614,6 +475,10 @@ function resetValues() {
   // Show email
   document.querySelector('.input-condominium-email').value =
     '';
+
+  // account id for remote heating
+  document.querySelector('.select-condominium-accountId').value =
+    0;
 
   // Show organization number
   document.querySelector('.input-condominium-organizationNumber').value =

@@ -123,7 +123,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Regnskapsrapport",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-accountingreport.html",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-accountreport.html",
     },
     {
       "type": "chrome",

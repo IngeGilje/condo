@@ -1,4 +1,0 @@
-
-class AccountingReport extends Condos {
-
-}

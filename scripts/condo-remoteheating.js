@@ -1,16 +1,25 @@
 // Overview of remote heating
 
 // Activate objects
-const today = new Date();
-const objUser = new User('user');
-const objCondo = new Condo('condo');
-const objAccount = new Account('account');
-const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
-const objRemoteheating = new Remoteheating('remoteheating');
+const today =
+  new Date();
+const objCondominium =
+  new Condominium('condominium');
+const objUser =
+  new User('user');
+const objCondo =
+  new Condo('condo');
+const objAccount =
+  new Account('account');
+const objBankAccountMovement =
+  new BankAccountMovement('bankaccountmovement');
+const objRemoteheating =
+  new Remoteheating('remoteheating');
 
 testMode();
 
-let isEventsCreated = false;
+let isEventsCreated =
+  false;
 
 objRemoteheating.menu();
 objRemoteheating.markSelectedMenu('Fjernvarme');
@@ -19,7 +28,8 @@ let socket;
 socket = connectingToServer();
 
 // Validate user/password
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+const objUserPassword =
+  JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   showLoginError('remoteheating-login');
@@ -29,8 +39,20 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Send a requests to the server
   socket.onopen = () => {
 
+    let SQLquery;
+
+    // Sends a request to the server to get condominiums
+    SQLquery =
+      `
+        SELECT * FROM condominium
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY condominiumId;
+      `;
+
+    updateMySql(SQLquery, 'condominium', 'SELECT');
+
     // Sends a request to the server to get users
-    let SQLquery =
+    SQLquery =
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
@@ -82,6 +104,15 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     if (objInfo.CRUD === 'SELECT') {
       switch (objInfo.tableName) {
+        case 'condominium':
+
+          // condominium table
+          console.log('condominiumTable');
+
+          condominiumArray =
+            objInfo.tableArray;
+          break;
+
         case 'user':
 
           // user table
@@ -142,14 +173,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       switch (objInfo.tableName) {
         case 'bankaccountmovement':
 
-          // Sends a request to the server to get bank account movements one more time
-          SQLquery =
-            `
-              SELECT * FROM bankaccountmovement
-              WHERE condominiumId = ${objUserPassword.condominiumId}
-              ORDER BY date DESC;
-            `;
-          updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+          // Get selected bank account movements
+          getSelectedBankAccountMovements();
           break;
       };
     }
@@ -165,181 +190,99 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     socket.onclose = () => {
     }
   }
-  /*
-  // Send a message to the server
-  socket.onopen = () => {
-
-    // Sends a request to the server to get all users
-    const SQLquery =
-      `
-        SELECT * FROM user
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY userId;
-      `;
-    socket.send(SQLquery);
-  };
-
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
-
-    let message = event.data;
-
-    // Create user array including objets
-    if (message.includes('"tableName":"user"')) {
-
-      console.log('userTable');
-
-      // user array including objects with user information
-      userArray = JSON.parse(message);
-
-      // Sends a request to the server to get all condos
-      const SQLquery =
-        `
-          SELECT * FROM condo
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY name;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create condo array including objets
-    if (message.includes('"tableName":"condo"')) {
-
-      // condo table
-      console.log('condoTable');
-
-      // array including objects with condo information
-      condoArray = JSON.parse(message);
-
-      // Sends a request to the server to get all accounts
-      //objAccount.getAccounts(socket);
-      const SQLquery = 
-      `
-        SELECT * FROM account
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY accountId;
-      `;
-      socket.send(SQLquery);
-    }
-
-    // Create account array including objets
-    if (message.includes('"tableName":"account"')) {
-
-      // account table
-      console.log('accountTable');
-
-      // array including objects with account information
-      accountArray = JSON.parse(message);
-
-      // Sends a request to the server to get all account moveents
-      const SQLquery =
-        `
-          SELECT * FROM bankaccountmovement
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY bankAccountMovementId;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create bankaccountmovement array including objets
-    if (message.includes('"tableName":"bankaccountmovement"')) {
-
-      // bank account movement table
-      console.log('bankaccountmovementTable');
-
-      // array including objects with bank account movement information
-      bankAccountMovementArray =
-        JSON.parse(message);
-
-      // Show leading text
-      const condoId =
-        objCondo.getSelectedCondoId('condoId')
-      showLeadingText(condoId);
-
-      // Make events
-      if (!isEventsCreated) {
-        createEvents();
-        isEventsCreated = true;
-      }
-    }
-
-    // Check for update, delete ...
-    if (message.includes('"affectedRows"')) {
-
-      console.log('affectedRows');
-      const SQLquery =
-        `
-          SELECT * FROM bankaccountmovement
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY bankAccountMovementId;
-        `;
-      socket.send(SQLquery);
-    }
-  };
-
-  // Handle errors
-  socket.onerror = (error) => {
-
-    // Close socket on error and let onclose handle reconnection
-    socket.close();
-  }
-
-  // Handle disconnection
-  socket.onclose = () => {
-  }
-  */
 }
 
-// Make overview events
+// Make remoteheating events
 function createEvents() {
 
   // Select condo
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-remoteheating-condoId')) {
-      condoId = Number(event.target.value);
+
+      // Show selected for bank account movements
+      getSelectedBankAccountMovements();
     }
   });
 
-  // Select account number
+  // Select account
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-remoteheating-accountId')) {
-      accountId = Number(event.target.value);
+
+      // Show selected for bank account movements
+      getSelectedBankAccountMovements();
+    }
+  });
+
+  // From date
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('input-remoteheating-fromDate')) {
+
+      // Show selected for bank account movements
+      getSelectedBankAccountMovements();
     };
   });
 
-  // Start search
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-remoteheating-search')) {
+  // To date
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('input-remoteheating-toDate')) {
 
-      showValues();
-    }
+      // Show selected for bank account movements
+      getSelectedBankAccountMovements();
+    };
   });
 }
 
-// Show leading text for bankaccountmovement
-function showLeadingText(condoId) {
+// Show leading text
+function showLeadingText() {
 
   // Show all condos
-  objCondo.showAllCondos('remoteheating-condoId', condoId, 'Alle leiligheter');
+  if (!isClassDefined('select-remoteheating-condoId')) {
 
-  // Show all accounts
-  const accountId = accountArray.at(-1).accountId;
-  objAccount.showAllAccounts('remoteheating-accountId', accountId, 'Alle konti');
+    objCondo.showAllCondos('remoteheating-condoId', 0, 'Alle');
+  }
 
-  // Show from date
-  objRemoteheating.showInput('remoteheating-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
+  // from date
+  if (!isClassDefined('input-remoteheating-fromDate')) {
 
-  const year = String(today.getFullYear());
-  document.querySelector('.input-remoteheating-fromDate').value =
-    `01.01.${year}`;
+    objRemoteheating.showInput('remoteheating-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
+    date =
+      document.querySelector('.input-remoteheating-fromDate').value;
+    if (!validateEuroDateFormat(date)) {
 
-  // Show to date
-  objRemoteheating.showInput('remoteheating-toDate', 'Til dato', 10, 'mm.dd.åååå');
-  document.querySelector('.input-remoteheating-toDate').value =
-    getCurrentDate();
+      // From date is not ok
+      const year =
+        String(today.getFullYear());
+      document.querySelector('.input-remoteheating-fromDate').value =
+        "01.01." + year;
+    }
+  }
 
-  // show start search button
-  objRemoteheating.showButton('remoteheating-search', 'Start søk');
+  // To date
+  if (!isClassDefined('input-remoteheating-toDate')) {
+    objRemoteheating.showInput('remoteheating-toDate', 'Til dato', 10, 'mm.dd.åååå');
+    date =
+      document.querySelector('.input-remoteheating-toDate').value;
+    if (!validateEuroDateFormat(date)) {
+
+      // To date is not ok
+      document.querySelector('.input-remoteheating-toDate').value =
+        getCurrentDate();
+    }
+  }
+
+    // Show all accounts
+  if (!isClassDefined('select-remoteheating-accountId')) {
+
+    // Check if condominium id exist
+    const objCondominimuRowNumber =
+      condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    if (objCondominimuRowNumber !== -1) {
+    const accountId =
+      condominiumArray[objCondominimuRowNumber].accountId;
+    objAccount.showAllAccounts('remoteheating-accountId', accountId, 'Alle');
+    getSelectedBankAccountMovements();
+    }
+  }
 }
 
 // Show values for bankaccountmovement
@@ -378,87 +321,90 @@ function showValues() {
     // Make all columns
     let rowNumber =
       0;
+
     bankAccountMovementArray.forEach((bankaccountmovement) => {
-      if (bankaccountmovement.bankAccountMovementId >= 0) {
-        if (Number(bankaccountmovement.date) >= fromDate && Number(bankaccountmovement.date) <= toDate) {
-          if (bankaccountmovement.condoId === condoId || condoId === 999999999) {
 
-            rowNumber++;
+      rowNumber++;
 
-            // check if the number is odd
-            const colorClass =
-              (rowNumber % 2 !== 0) ? "green" : "";
+      // check if the number is odd
+      const colorClass =
+        (rowNumber % 2 !== 0) ? "green" : "";
 
-            // date
-            const date =
-              formatToNorDate(bankaccountmovement.date);
-            htmlColumnDate +=
-              `
-                <div 
-                  class="rightCell ${colorClass}"
-                >
-                  ${date}
-                </div>
-              `;
+      // date
+      const date =
+        formatToNorDate(bankaccountmovement.date);
+      htmlColumnDate +=
+        `
+          <div 
+            class="rightCell ${colorClass}"
+          >
+            ${date}
+          </div>
+        `;
 
-            // payment
-            let payment =
-              formatOreToKroner(bankaccountmovement.payment);
-            htmlColumnPayment +=
-              `
-                <div 
-                  class="rightCell ${colorClass}"
-                >
-                  ${payment}
-                </div>
-              `;
+      // payment
+      let payment =
+        formatOreToKroner(bankaccountmovement.payment);
+      htmlColumnPayment +=
+        `
+          <div 
+            class="rightCell ${colorClass}"
+          >
+            ${payment}
+          </div>
+        `;
 
-            // Number of kw/h
-            let numberKWHour =
-              formatOreToKroner(bankaccountmovement.numberKWHour);
-            htmlColumnNumberKWHour +=
-              `
-                <div 
-                  class="rightCell ${colorClass}"
-                >
-                  ${numberKWHour}
-                </div>
-              `;
+      // Number of kw/h
+      let numberKWHour =
+        formatOreToKroner(bankaccountmovement.numberKWHour);
+      htmlColumnNumberKWHour +=
+        `
+          <div 
+            class="rightCell ${colorClass}"
+          >
+            ${numberKWHour}
+          </div>
+        `;
 
-            // Price per KWHour
-            payment =
-              Number(bankaccountmovement.payment);
-            numberKWHour =
-              Number(bankaccountmovement.numberKWHour);
-            const priceKWHour =
-              (payment && numberKWHour) ? formatOreToKroner(String(payment / numberKWHour) * 100) : "-";
+      // Price per KWHour
+      payment =
+        Number(bankaccountmovement.payment);
+      numberKWHour =
+        Number(bankaccountmovement.numberKWHour);
 
-            htmlColumnPriceKWHour +=
-              `
-                <div class="rightCell ${colorClass}"
-                >
-                  ${priceKWHour}
-                </div>
-              `;
+      let priceKWHour = '-';
+      if (numberKWHour !== 0 && payment !== 0) {
 
-            htmlColumnText +=
-              `
-                <div 
-                  class="leftCell ${colorClass} one-line"
-                >
-                  ${bankaccountmovement.text}
-                </div>
-              `;
-
-            // Accomulate
-            // payment
-            sumColumnPayment += Number(bankaccountmovement.payment);
-
-            // KWHour
-            sumColumnNumberKWHour += Number(bankaccountmovement.numberKWHour);
-          }
-        }
+        priceKWHour =
+          (-1 * payment) / numberKWHour;
+        priceKWHour =
+          priceKWHour.toFixed(2);
       }
+      htmlColumnPriceKWHour +=
+        `
+          <div class="rightCell ${colorClass}"
+          >
+            ${priceKWHour}
+          </div>
+        `;
+
+      htmlColumnText +=
+        `
+          <div 
+            class="leftCell ${colorClass} one-line"
+          >
+            ${bankaccountmovement.text}
+          </div>
+        `;
+
+      // Accomulate
+      // payment
+      sumColumnPayment +=
+        Number(bankaccountmovement.payment);
+
+      // KWHour
+      sumColumnNumberKWHour +=
+        Number(bankaccountmovement.numberKWHour);
     });
 
     // Show all sums
@@ -485,6 +431,7 @@ function showValues() {
         </div>
       `;
 
+
     // Kilowatt/hour
     htmlColumnNumberKWHour +=
       `
@@ -498,14 +445,24 @@ function showValues() {
       `;
 
     // Price per KWHour
+    payment =
+      Number(sumColumnPayment);
+    numberKWHour =
+      Number(sumColumnNumberKWHour);
+
+    let sumPriceKWHour = '-';
+    if (payment !== 0 && numberKWHour !== 0) {
+
+      sumPriceKWHour =
+        ((-1 * payment) / numberKWHour);
+      sumPriceKWHour =
+        sumPriceKWHour.toFixed(2);
+    }
+
     htmlColumnPriceKWHour +=
       `
         <div class="sumCellRight">
-      `;
-    htmlColumnPriceKWHour +=
-      formatOreToKroner(String(sumColumnNumberKWHour));
-    htmlColumnPriceKWHour +=
-      `
+          ${sumPriceKWHour}
         </div>
       `;
 
@@ -575,4 +532,77 @@ function validateValues() {
   }
 
   return validValues;
+}
+
+// Get selected bank account movements
+function getSelectedBankAccountMovements() {
+
+  const condoId =
+    Number(document.querySelector('.select-remoteheating-condoId').value);
+
+  const accountId =
+    Number(document.querySelector('.select-remoteheating-accountId').value);
+
+  const fromDate =
+    convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value);
+  const toDate =
+    convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value);
+
+  // Check condo Id 
+  if ((condoId === 999999999) && (accountId === 999999999)) {
+
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+        SELECT * FROM bankaccountmovement
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        ORDER BY date DESC;
+      `;
+  }
+
+  // Check if condo Id is selected
+  if ((condoId !== 999999999) && (accountId !== 999999999)) {
+
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+        SELECT * FROM bankaccountmovement
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND condoId = ${condoId}
+        AND accountId = ${accountId}
+        ORDER BY date DESC;
+      `;
+  }
+
+  // Check if condo Id is selected
+  if ((condoId === 999999999) && (accountId !== 999999999)) {
+
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+        SELECT * FROM bankaccountmovement
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND accountId = ${accountId}
+        ORDER BY date DESC;
+      `;
+  }
+
+  // Check if condo Id is selected
+  if ((condoId !== 999999999) && (accountId === 999999999)) {
+
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+        SELECT * FROM bankaccountmovement
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND condoId = ${condoId}
+        ORDER BY date DESC;
+      `;
+  }
+
+  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
 }

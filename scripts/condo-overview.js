@@ -151,18 +151,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       switch (objInfo.tableName) {
         case 'bankaccountmovement':
 
-          /*
-          // Sends a request to the server to get bank account movements one more time
-          SQLquery =
-            `
-              SELECT * FROM bankaccountmovement
-              WHERE condominiumId = ${objUserPassword.condominiumId}
-              ORDER BY bankaccountmovementId;
-            `;
-          updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-          break;
-          */
-
           // Get selected dues
           getSelectedDues();
 
@@ -238,7 +226,7 @@ function createEvents() {
   });
 }
 
-// Show leading text for payment
+// Show leading text
 function showLeadingText() {
 
   // Show all condos

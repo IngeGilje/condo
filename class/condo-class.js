@@ -123,7 +123,7 @@ class Condos {
     let html = this.showLabel(columnName, labelText);
     html +=
       `
-        <form
+        <form 
           id="${columnName}"
         >
       `;
@@ -152,7 +152,7 @@ class Condos {
 
     let html =
       `
-        <form
+        <form 
           id="${columnName}"
         >
         <div class = "div-radio-${columnName}"
@@ -505,7 +505,7 @@ class Condos {
 
     let html =
       `
-      <form
+      <form 
         id="selectedNumber"
         action="/submit" method="POST"
       >
@@ -708,8 +708,8 @@ class Condos {
             Importer bankkonto transaksjoner
           </a>
 
-          <a href="${url}condo/condo-accountingreport.html"
-            class="a-menu-vertical-accountingreport"
+          <a href="${url}condo/condo-accountreport.html"
+            class="a-menu-vertical-accountreport"
           >
             Regnskapsrapport
           </a>
