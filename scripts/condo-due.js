@@ -1,10 +1,16 @@
 // Due maintenance
 
 // Activate objects
-const objUser = new User('user');
-const objCondo = new Condo('condo');
-const objAccount = new Account('account');
-const objDue = new Due('due');
+const today =
+  new Date();
+const objUser =
+  new User('user');
+const objCondo =
+  new Condo('condo');
+const objAccount =
+  new Account('account');
+const objDue =
+  new Due('due');
 
 testMode();
 
@@ -56,12 +62,24 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     updateMySql(SQLquery, 'account', 'SELECT');
 
     // Sends a request to the server to get dues
+    // From date
+    let fromDate =
+      "01.01." + String(today.getFullYear());
+    fromDate =
+      convertDateToISOFormat(fromDate);
+
+    // To date
+    let toDate =
+      getCurrentDate();
+    toDate =
+      convertDateToISOFormat(toDate);
     SQLquery =
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY dueId;
-      `;
+        AND date BETWEEN '${fromDate}' AND '${toDate}'
+        ORDER BY date DESC, condoId ASC;
+    `;
 
     updateMySql(SQLquery, 'due', 'SELECT');
   };
@@ -115,18 +133,37 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           dueArray =
             objInfo.tableArray;
 
-          // Find selected due id
+          // Show leading text search
+          showLeadingTextSearch();
+
+          // Show leading text maintenance
+          showLeadingText();
+
+          // Show dues 
+          showDues();
+
+          // Get selected due Id
           const dueId =
             objDue.getSelectedDueId('select-due-dueId');
 
-          // Show leading text
-          showLeadingText(dueId);
+          const fromDate =
+            convertDateToISOFormat(document.querySelector('.input-due-filterFromDate').value);
+          const toDate =
+            convertDateToISOFormat(document.querySelector('.input-due-filterToDate').value);
 
-          // Show all values for due
+          const condoId =
+            Number(document.querySelector('.select-due-filterCondoId').value);
+          const accountId =
+            Number(document.querySelector('.select-due-filterAccountId').value);
+
+          // Show due Id
+          objDue.showAllSelectedDues('due-dueId', dueId, fromDate, toDate, condoId, accountId);
+
           showValues(dueId);
 
           // Make events
           if (!isEventsCreated) {
+
             createEvents();
             isEventsCreated = true;
           }
@@ -139,14 +176,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       switch (objInfo.tableName) {
         case 'due':
 
-          // Sends a request to the server to get dues one more time
-          SQLquery =
-            `
-              SELECT * FROM dues
-              WHERE condominiumId = ${objUserPassword.condominiumId}
-              ORDER BY duesId;
-            `;
-          updateMySql(SQLquery, 'due', 'SELECT');
+          getSelectedDues();
           break;
       };
     }
@@ -162,169 +192,56 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     socket.onclose = () => {
     }
   }
-  /*
-  // Send a message to the server
-  socket.onopen = () => {
-
-    // Sends a request to the server to get all users
-    const SQLquery =
-      `
-        SELECT * FROM user
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY userId;
-      `;
-    socket.send(SQLquery);
-  };
-
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
-
-    let message = event.data;
-
-    // Create user array including objets
-    if (message.includes('"tableName":"user"')) {
-
-      console.log('userTable');
-
-      // user array including objects with user information
-      userArray = JSON.parse(message);
-
-      // Sends a request to the server to get all condos
-      const SQLquery =
-        `
-          SELECT * FROM condo
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY name;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create user array including objets
-    if (message.includes('"tableName":"user"')) {
-
-      console.log('userTable');
-
-      // user array including objects with user information
-      userArray = JSON.parse(message);
-
-      // Sends a request to the server to get all condos
-      const SQLquery =
-        `
-          SELECT * FROM condo
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY name;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create condo array including objets
-    if (message.includes('"tableName":"condo"')) {
-
-      // condo table
-      console.log('CondoTable');
-
-      // array including objects with condo information
-      condoArray = JSON.parse(message);
-
-      // Sends a request to the server to get all accounts
-      const SQLquery =
-        `
-          SELECT * FROM account
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY accountId;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create condo array including objets
-    if (message.includes('"tableName":"account"')) {
-
-      // account table
-      console.log('AccountTable');
-
-      // array including objects with account information
-      accountArray = JSON.parse(message);
-
-      // Sends a request to the server to get all dues
-      const SQLquery =
-        `
-          SELECT * FROM due
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY dueId;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create  due array including objets
-    if (message.includes('"tableName":"due"')) {
-
-      // due table
-      console.log('dueTable');
-
-      // array including objects with due information
-      dueArray = JSON.parse(message);
-
-      const dueId =
-        objDue.getSelectedDueId('dueId');
-
-      // Show leading text
-      showLeadingText(dueId);
-
-      // Show all values
-      showValues(dueId);
-
-      // Make events
-      if (!isEventsCreated) {
-
-        createEvents();
-        isEventsCreated = true;
-      }
-    }
-
-    // Check for update, delete ...
-    if (message.includes('"affectedRows"')) {
-
-      console.log('affectedRows');
-
-      const SQLquery =
-        `
-          SELECT * FROM due
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY dueId;
-        `;
-      socket.send(SQLquery);
-    }
-  };
-
-  // Handle errors
-  socket.onerror = (error) => {
-
-    // Close socket on error and let onclose handle reconnection
-    socket.close();
-  }
-
-  // Handle disconnection
-  socket.onclose = () => {
-  }
-  */
 }
 
 // Make due events
 function createEvents() {
 
+  // Selected condo id
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-due-filterCondoId')) {
+
+      getSelectedDues();
+    }
+  });
+
+  // Selected account id
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-due-filterAccountId')) {
+
+      getSelectedDues();
+    }
+  });
+
+  // Selected from date
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-due-filterFromDate')) {
+
+      getSelectedDues();
+    }
+  });
+
+  // Selected to date
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-due-filterToDate')) {
+
+      getSelectedDues();
+    }
+  });
+
   // Selected due Id
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-due-dueId')) {
 
+      /*
       dueId = Number(event.target.value);
       showLeadingText(dueId);
       showValues(dueId);
-    }
-  });
-
-  // Selected condo id
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-due-condoId')) {
+      */
+      // Show bank account movements
+      const dueId =
+        Number(document.querySelector('.select-due-dueId').value);
+      showValues(dueId);
     }
   });
 
@@ -332,12 +249,23 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-update')) {
 
-      const dueId = Number(document.querySelector('.select-due-dueId').value);
+      /*
+      const dueId =
+        Number(document.querySelector('.select-due-dueId').value);
       updateDueRow(dueId);
+      */
+      const dueId =
+        Number(document.querySelector('.select-due-dueId').value);
+      updateDue(dueId);
+      
+      document.querySelector('.select-due-filterCondoId').value =
+        document.querySelector('.select-due-condoId').value;
+        document.querySelector('.select-due-filterAccountId').value =
+        document.querySelector('.select-due-accountId').value;
     }
   });
 
-  // new mountly amount
+  // new due
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-new')) {
 
@@ -345,22 +273,19 @@ function createEvents() {
     }
   });
 
-  // Delete due
+  // Reset bank account movement values
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-due-insert')) {
+
+      resetValues();
+    }
+  });
+
+  // Delete bank account movement
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-delete')) {
 
-      const dueId = document.querySelector('.select-due-dueId');
-      deleteDueRow(dueId);
-
-      // Sends a request to the server to get all due
-      //objDue.getDues(socket);
-      const SQLquery =
-        `
-          SELECT * FROM due
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY dueId;
-        `;
-      updateMySql(SQLquery, 'due', 'SELECT');
+      deleteDue();
     }
   });
 
@@ -368,20 +293,12 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-cancel')) {
 
-      // Sends a request to the server to get all due
-      //objDue.getDues(socket);
-      const SQLquery =
-        `
-          SELECT * FROM due
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY dueId;
-        `;
-      updateMySql(SQLquery, 'due', 'SELECT');
+      getSelectedDues();
     }
   });
 }
 
-function updateDueRow(dueId) {
+function updateDue(dueId) {
 
   let SQLquery = '';
   let isUpdated = false;
@@ -391,8 +308,7 @@ function updateDueRow(dueId) {
 
     // Valid values
 
-    const now = new Date();
-    const lastUpdate = now.toISOString();
+    const lastUpdate = today.toISOString();
 
     const condoId =
       Number(document.querySelector('.select-due-condoId').value);
@@ -470,7 +386,7 @@ function updateDueRow(dueId) {
   return isUpdated;
 }
 
-function deleteDueRow(dueId) {
+function deleteDue(dueId) {
 
   let SQLquery = '';
   let isUpdated = false;
@@ -485,13 +401,59 @@ function deleteDueRow(dueId) {
     updateMySql(SQLquery, 'due', 'DELETE');
 
     // Show updated dues
-    //objDue.getDues(socket);
     const SQLquery =
       `
         SELECT * FROM due
-        ORDER BY dueId;
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY date DESC, condoId ASC;
       `;
     updateMySql(SQLquery, 'due', 'SELECT');
+  }
+}
+
+// Show filter for search
+function showLeadingTextSearch() {
+
+  // Show all condos
+  const condoId =
+    (isClassDefined('select-due-filterCondoId')) ? Number(document.querySelector('.select-due-filterCondoId').value) : 0;
+  objCondo.showAllCondos('due-filterCondoId', condoId, 'Alle');
+
+  // Show all accounts
+  const accountId =
+    (isClassDefined('select-due-filterAccountId')) ? Number(document.querySelector('.select-due-filterAccountId').value) : 0;
+  objAccount.showAllAccounts('due-filterAccountId', accountId, 'Alle');
+
+  // Show from date
+  if (!isClassDefined('input-due-filterFromDate')) {
+    objDue.showInput('due-filterFromDate', 'Fra dato', 10, 'dd.mm.åååå');
+  }
+
+  // Show to date
+  if (!isClassDefined('input-due-filterToDate')) {
+    objDue.showInput('due-filterToDate', 'Til dato', 10, 'dd.mm.åååå');
+  }
+
+  // Check for filter from date
+  let date =
+    document.querySelector('.input-due-filterFromDate').value;
+  if (!validateEuroDateFormat(date)) {
+
+    // From date is not ok
+    const year =
+      String(today.getFullYear());
+    document.querySelector('.input-due-filterFromDate').value =
+      "01.01." + year;
+  }
+
+  // Check for filter to date
+  date =
+    document.querySelector('.input-due-filterToDate').value;
+  if (!validateEuroDateFormat(date)) {
+
+    // To date is not ok
+    document.querySelector('.input-due-filterToDate').value =
+      getCurrentDate();
   }
 }
 
@@ -504,12 +466,12 @@ function showLeadingText(dueId) {
   // Show all condos
   const condoId =
     condoArray.at(-1).condoId;
-  objCondo.showAllCondos('due-condoId', condoId);
+  objCondo.showAllCondos('due-condoId', condoId, 'Ingen er valgt', 'Alle');
 
   // Show all accounts
   const accountId =
     accountArray.at(-1).accountId;
-  objAccount.showAllAccounts('due-accountId', accountId);
+  objAccount.showAllAccounts('due-accountId', accountId, 'Ingen er valgt', 'Alle');
 
   // Show amount
   objDue.showInput('due-date', '* Dato', 10, '');
@@ -520,7 +482,7 @@ function showLeadingText(dueId) {
   // Show text
   objDue.showInput('due-text', '* Tekst', 255, '');
 
-  // show update button
+  // show buttons
   if (Number(objUserPassword.securityLevel) >= 9) {
     objDue.showButton('due-update', 'Oppdater');
 
@@ -641,6 +603,271 @@ function resetValues() {
     true;
   document.querySelector('.button-due-new').disabled =
     true;
-  //document.querySelector('.button-due-cancel').disabled =
-  //  true;
+}
+
+// Show selected dues
+function showDues() {
+
+  // Validate search filter
+  if (validateFilter()) {
+
+    // Header
+    let htmlColumnLine =
+      '<div class="columnHeaderCenter">Linje</div><br>';
+    let htmlColumnCondoName =
+      '<div class="columnHeaderLeft">Leilighet</div><br>';
+    let htmlColumnAccountName =
+      '<div class="columnHeaderLeft">Konto</div><br>';
+    let htmlColumnDate =
+      '<div class="columnHeaderRight">Dato</div><br>';
+    let htmlcolumnAmount =
+      '<div class="columnHeaderRight">Beløp</div><br>';
+    let htmlColumnText =
+      '<div class="columnHeaderLeft">Tekst</div><br>';
+
+    let sumAmount =
+      0;
+    let lineNumber =
+      0;
+
+    let fromDate =
+      document.querySelector('.input-due-filterFromDate').value;
+    fromDate =
+      convertDateToISOFormat(fromDate);
+    let toDate =
+      document.querySelector('.input-due-filterToDate').value;
+    toDate =
+      convertDateToISOFormat(toDate);
+
+    const condoId =
+      Number(document.querySelector('.select-due-filterCondoId').value);
+    const accountId =
+      Number(document.querySelector('.select-due-filterAccountId').value);
+
+    dueArray.forEach((due) => {
+
+      lineNumber++;
+
+      // check if the number is odd
+      const colorClass =
+        (lineNumber % 2 !== 0) ? "green" : "";
+
+      // bank Account Movement Id
+      htmlColumnLine +=
+        `
+          <div 
+            class="centerCell ${colorClass}"
+          >
+            ${lineNumber}
+          </div >
+        `;
+
+      // condo name
+      let condoName = "-";
+      if (due.condoId) {
+        const condoId =
+          Number(due.condoId);
+        condoName =
+          objCondo.getCondoName(condoId);
+      }
+      htmlColumnCondoName +=
+        `
+          <div 
+            class="leftCell ${colorClass} one-line"
+          >
+            ${condoName}
+          </div >
+        `;
+
+      // account name
+      const accountName =
+        objAccount.getAccountName(due.accountId);
+      const colorClassAccountName =
+        (accountName === '-') ? 'red' : colorClass;
+      htmlColumnAccountName +=
+        `
+          <div
+            class="leftCell ${colorClassAccountName} one-line"
+          >
+            ${accountName}    
+          </div >
+        `;
+
+      // date
+      const date =
+        formatToNorDate(due.date);
+      htmlColumnDate +=
+        `
+          <div
+            class="rightCell ${colorClass}"
+          >
+            ${date}
+          </div >
+        `;
+
+      // amount
+      const amount =
+        formatOreToKroner(due.amount);
+      htmlcolumnAmount +=
+        `
+          <div
+            class="rightCell ${colorClass}"
+          >
+            ${amount}
+          </div>
+        `;
+
+      // text
+      htmlColumnText +=
+        `
+          <div
+            class="leftCell ${colorClass} one-line"
+          >
+            ${due.text}
+          </div>
+        `;
+
+      // accumulate
+      sumAmount +=
+        Number(due.amount);
+    });
+
+    // Sum line
+
+    // amount
+    amount =
+      formatOreToKroner(sumAmount);
+    htmlcolumnAmount +=
+      `
+        <div
+          class="sumCellRight"
+        >
+          ${amount}
+        </div >
+      `;
+
+    // Show line number
+    document.querySelector('.div-due-columnLine').innerHTML =
+      htmlColumnLine;
+
+    // Show condo name
+    document.querySelector('.div-due-columnCondoName').innerHTML =
+      htmlColumnCondoName;
+
+    // Show bank account name
+    document.querySelector('.div-due-columnAccountName').innerHTML =
+      htmlColumnAccountName;
+
+    // Show date
+    document.querySelector('.div-due-columnDate').innerHTML =
+      htmlColumnDate;
+
+    // Show amount
+    document.querySelector('.div-due-columnAmount').innerHTML =
+      htmlcolumnAmount;
+
+    // Show text
+    document.querySelector('.div-due-columnText').innerHTML =
+      htmlColumnText;
+  }
+}
+
+// Check for valid filter
+function validateFilter() {
+
+  // Check account movement
+  const accountId =
+    document.querySelector('.select-due-filterAccountId').value;
+  const validAccountId =
+    validateNumber(accountId, 1, 999999999, 'due-filterAccountId', 'Konto');
+
+  const condoId =
+    document.querySelector('.select-due-filterCondoId').value;
+  const validCondoId =
+    validateNumber(accountId, 1, 999999999, 'due-filterCondoId', 'Leilighet');
+
+  const fromDate =
+    document.querySelector('.input-due-filterFromDate').value;
+  const validFromDate =
+    validateNorDate(fromDate, 'due-filterFromDate', 'Fra dato');
+
+  const toDate =
+    document.querySelector('.input-due-filterToDate').value;
+  const validToDate =
+    validateNorDate(toDate, 'due-filterToDate', 'Til dato');
+
+  return (validAccountId && validCondoId && validFromDate && validToDate) ? true : false;
+}
+
+// Get selected dues
+function getSelectedDues() {
+
+  const condoId =
+    Number(document.querySelector('.select-due-filterCondoId').value);
+  const accountId =
+    Number(document.querySelector('.select-due-filterAccountId').value);
+
+  const fromDate =
+    convertDateToISOFormat(document.querySelector('.input-due-filterFromDate').value);
+  const toDate =
+    convertDateToISOFormat(document.querySelector('.input-due-filterToDate').value);
+
+  let SQLquery;
+
+  // Check if condo Id and account Id is selected
+  if ((condoId === 999999999) && (accountId === 999999999)) {
+
+    // Sends a request to the server to get selected dues
+    SQLquery =
+      `
+        SELECT * FROM due
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        ORDER BY date DESC, condoId ASC;
+      `;
+  }
+
+  // Check if condo Id and account Id is selected
+  if ((condoId !== 999999999) && (accountId !== 999999999)) {
+
+    // Sends a request to the server to get selected dues
+    SQLquery =
+      `
+        SELECT * FROM due
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND condoId = ${condoId}
+        AND accountId = ${accountId}
+        ORDER BY date DESC, condoId ASC;
+      `;
+  }
+
+  // Check if condo Id is selected but not account Id
+  if ((condoId !== 999999999) && (accountId === 999999999)) {
+
+    // Sends a request to the server to get selected dues
+    SQLquery =
+      `
+        SELECT * FROM due
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND condoId = ${condoId}
+        ORDER BY date DESC, condoId ASC;
+      `;
+  }
+
+  // Check if account Id is selected but not condo Id
+  if ((condoId === 999999999) && (accountId !== 999999999)) {
+
+    // Sends a request to the server to get selected bank account movements
+    SQLquery =
+      `
+        SELECT * FROM due
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND accountId = ${accountId}
+        ORDER BY date DESC, condoId ASC;
+      `;
+  }
+  updateMySql(SQLquery, 'due', 'SELECT');
 }

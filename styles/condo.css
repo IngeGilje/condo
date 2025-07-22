@@ -28,6 +28,7 @@
 
 .div-grid-account,
 
+.div-grid-due-search,
 .div-grid-due,
 
 .div-grid-monthlyfee,
@@ -51,8 +52,7 @@
 .div-grid-userbankaccount,
 .div-grid-condo,
 .div-grid-budget,
-.div-grid-account,
-.div-grid-due {
+.div-grid-account {
   grid-template-columns: 200px 200px;
 }
 
@@ -76,6 +76,7 @@
 }
 
 /* Define the grid container with 6 columns*/
+.div-grid-due-search,
 .div-grid-remoteheating-search,
 .div-grid-bankaccountmovement-search {
   grid-template-columns: 200px 200px 200px 200px 200px 200px;
@@ -89,6 +90,11 @@
 /* Define the grid container with 7 columns*/
 .div-grid-remoteheating {
   grid-template-columns: 200px 200px 200px 150px 150px 150px 150px;
+}
+
+/* Define the grid container with 8 columns*/
+.div-grid-due {
+  grid-template-columns: 200px 200px 75px 100px 150px 125px 125px 150px;
 }
 
 /* Define the grid container with 9 columns*/
@@ -493,6 +499,7 @@
 
 .div-grid-account input,
 
+.div-grid-due-search input,
 .div-grid-due input,
 
 .div-grid-monthlyfee input,
@@ -585,6 +592,7 @@
 
 .div-grid-account select,
 
+.div-grid-due-search select,
 .div-grid-due select,
 
 .div-grid-monthlyfee select,
@@ -697,6 +705,7 @@
 
 .div-grid-account button,
 
+.div-grid-due-search button,
 .div-grid-due button,
 
 .div-grid-monthlyfee button,
@@ -741,6 +750,7 @@
 
 .div-grid-account button:hover,
 
+.div-grid-due-search button:hover,
 .div-grid-due button:hover,
 
 .div-grid-monthlyfee button:hover,
@@ -775,6 +785,7 @@
 
 .div-grid-account button:active,
 
+.div-grid-due-search button:active,
 .div-grid-due button:active,
 
 .div-grid-monthlyfee button:active,

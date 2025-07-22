@@ -238,15 +238,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       switch (objInfo.tableName) {
         case 'bankaccountmovement':
 
-          // Sends a request to the server to get bank Account Movements one more time
-          SQLquery =
-            `
-              SELECT * FROM bankaccountmovement
-              WHERE condominiumId = ${objUserPassword.condominiumId}
-              ORDER BY date DESC;
-            `;
-          updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-          break;
+         getSelectedBankAccountMovements();
+         break;
       };
     }
 
@@ -319,6 +312,10 @@ function createEvents() {
       const bankAccountMovementId =
         Number(document.querySelector('.select-bankaccountmovement-bankAccountMovementId').value);
       updateBankAccountMovement(bankAccountMovementId);
+      document.querySelector('.select-bankaccountmovement-filterCondoId').value =
+        Number(document.querySelector('.select-bankaccountmovement-condoId').value);
+      document.querySelector('.select-bankaccountmovement-filterAccountId').value =
+        Number(document.querySelector('.select-bankaccountmovement-accountId').value);
     }
   });
 
@@ -369,12 +366,12 @@ function showLeadingTextSearch() {
 
   // Show from date
   if (!isClassDefined('input-bankaccountmovement-filterFromDate')) {
-  objBankAccountMovement.showInput('bankaccountmovement-filterFromDate', 'Fra dato', 10, 'dd.mm.åååå');
+    objBankAccountMovement.showInput('bankaccountmovement-filterFromDate', 'Fra dato', 10, 'dd.mm.åååå');
   }
 
   // Show to date
   if (!isClassDefined('input-bankaccountmovement-filterToDate')) {
-  objBankAccountMovement.showInput('bankaccountmovement-filterToDate', 'Til dato', 10, 'dd.mm.åååå');
+    objBankAccountMovement.showInput('bankaccountmovement-filterToDate', 'Til dato', 10, 'dd.mm.åååå');
   }
 
   // Check for filter from date
@@ -601,7 +598,7 @@ function showBankAccountMovements() {
 
       // account name
       const accountName =
-        objBankAccount.getAccountName(bankAccountMovement.accountId);
+        objAccount.getAccountName(bankAccountMovement.accountId);
       const colorClassAccountName =
         (accountName === '-') ? 'red' : colorClass;
       htmlColumnAccountName +=
@@ -766,7 +763,7 @@ function validateFilter() {
   const condoId =
     document.querySelector('.select-bankaccountmovement-filterCondoId').value;
   const validCondoId =
-    validateNumber(accountId, 1, 999999999, 'bankaccountmovement-filterAccountId', 'Konto');
+    validateNumber(accountId, 1, 999999999, 'bankaccountmovement-filterCondoId', 'Leilighet');
 
   const fromDate =
     document.querySelector('.input-bankaccountmovement-filterFromDate').value;

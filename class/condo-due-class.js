@@ -30,7 +30,7 @@ class Due extends Condos {
     let selectedOption =
       false;
 
-    // Check if monthly payment array is empty
+    // Check if monthly due array is empty
     const numberOfRows = dueArray.length;
     if (numberOfRows > 0) {
       dueArray.forEach((due) => {
@@ -49,12 +49,14 @@ class Due extends Condos {
             selectedOption =
               true;
           } else {
-            html += `
-          <option 
-            value="${due.dueId}">
-            ${due.dueId} - ${due.text}
-          </option>
-        `;
+            
+            html +=
+              `
+                <option 
+                  value="${due.dueId}">
+                  ${due.dueId} - ${due.text}
+                </option>
+              `;
           }
         }
       });
@@ -82,12 +84,11 @@ class Due extends Condos {
   }
 
   // Find selected due id
-  getSelectedDueId(columnName) {
+  getSelectedDueId(className) {
 
     let dueId = 0;
 
     // Check if HTML class exist
-    const className = `select-${this.applicationName}-${columnName}`;
     if (isClassDefined(className)) {
 
       dueId =
@@ -100,5 +101,85 @@ class Due extends Condos {
     }
 
     return dueId;
+  }
+
+  // Show all selected dues
+  showAllSelectedDues(className, dueId, fromDate, toDate, condoId, accountId) {
+
+    let html = `
+      <form 
+        id="due"
+        action="/submit" 
+        method="POST"
+      >
+        <label 
+          class="label-${className}"
+          for="due"
+          id="due"
+        >
+            Velg forfall
+        </label>
+        <select 
+          class="select-${className}" 
+        >
+    `;
+
+    let lineNumber = 0;
+
+    let selectedOption =
+      false;
+
+    // Check if bank account movement array is empty
+    const numberOfRows =
+      dueArray.length;
+    if (numberOfRows > 0) {
+      dueArray.forEach((due) => {
+
+        lineNumber++;
+        if (due.dueId === dueId) {
+
+          html +=
+            `
+              <option 
+                value="${due.dueId}"
+                selected
+              >
+                ${lineNumber} - ${due.dueId}
+              </option>
+            `;
+          selectedOption =
+            true;
+        } else {
+
+          html +=
+            `
+              <option 
+                value="${due.dueId}">
+                ${lineNumber} - ${due.dueId}
+              </option>
+            `;
+        }
+      });
+    } else {
+
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen bankkonto transaksjoner
+          </option>
+        `;
+      selectedOption =
+        true;
+    }
+
+    html += `
+      </select >
+    </form>
+  `;
+
+    document.querySelector(`.div-${className}`).innerHTML =
+      html;
   }
 }

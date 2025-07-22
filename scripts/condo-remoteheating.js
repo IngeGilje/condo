@@ -84,7 +84,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     SQLquery =
       `
         SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
+        WHERE condominiumId = 999999999
+
         ORDER BY date DESC;
       `;
 
@@ -270,17 +271,18 @@ function showLeadingText() {
     }
   }
 
-    // Show all accounts
+  // Show all accounts
   if (!isClassDefined('select-remoteheating-accountId')) {
 
     // Check if condominium id exist
     const objCondominimuRowNumber =
       condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
     if (objCondominimuRowNumber !== -1) {
-    const accountId =
-      condominiumArray[objCondominimuRowNumber].accountId;
-    objAccount.showAllAccounts('remoteheating-accountId', accountId, 'Alle');
-    getSelectedBankAccountMovements();
+      const accountId =
+        condominiumArray[objCondominimuRowNumber].accountId;
+      objAccount.showAllAccounts('remoteheating-accountId', accountId, 'Alle');
+
+      getSelectedBankAccountMovements();
     }
   }
 }
@@ -431,7 +433,6 @@ function showValues() {
         </div>
       `;
 
-
     // Kilowatt/hour
     htmlColumnNumberKWHour +=
       `
@@ -556,7 +557,7 @@ function getSelectedBankAccountMovements() {
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND date BETWEEN '${fromDate}' AND '${toDate}'
         ORDER BY date DESC;
       `;
   }

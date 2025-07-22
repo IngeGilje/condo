@@ -1,8 +1,12 @@
 // Maintenance of users
 
 // Activate objects
-const objCondo = new Condo('condo');
-const objUser = new User('user');
+const objCondo =
+  new Condo('condo');
+const objAccount =
+  new Account('account');
+const objUser =
+  new User('user');
 
 let isEventsCreated = false;
 
@@ -24,8 +28,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Send a requests to the server
   socket.onopen = () => {
 
+    let SQLquery;
+
     // Sends a request to the server to get condos
-    let SQLquery =
+    SQLquery =
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
@@ -33,6 +39,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condo', 'SELECT');
+
+    // Sends a request to the server to get accounts
+    SQLquery =
+      `
+        SELECT * FROM account
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        ORDER BY accountId;
+      `;
+
+    updateMySql(SQLquery, 'account', 'SELECT');
 
     // Sends a request to the server to get users
     SQLquery =
@@ -42,7 +58,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
-
   };
 
   // Handle incoming messages from server
@@ -64,6 +79,15 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('condoTable');
 
           condoArray =
+            objInfo.tableArray;
+          break;
+
+        case 'account':
+
+          // account table
+          console.log('accountTable');
+
+          accountArray =
             objInfo.tableArray;
           break;
 
@@ -123,100 +147,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     socket.onclose = () => {
     }
   }
-
-  /*
-  objUser.menu();
-  objUser.markSelectedMenu('Bruker');
-
-  // Send a message to the server
-  socket.onopen = () => {
-
-    // Send a request to the server to get all condos
-    const SQLquery =
-      `
-        SELECT * FROM condo
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY condoId;
-      `;
-
-    socket.send(SQLquery);
-  };
-
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
-
-    let message = event.data;
-
-    // Create condo array including objets
-    if (message.includes('"tableName":"condo"')) {
-
-      // condo table
-      console.log('condoTable');
-
-      // array including objects with condo information
-      condoArray = JSON.parse(message);
-
-      // Send a request to the server to get all users
-      const SQLquery =
-        `
-          SELECT * FROM user
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY userId;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create condo array including objets
-    if (message.includes('"tableName":"user"')) {
-
-      // user table
-      console.log('userTable');
-
-      // array including objects with user information
-      userArray = JSON.parse(message);
-
-      // Show leading texts
-      let userId =
-       objUser.getSelectedUserId('select-user-userId');
-      showLeadingText(userId);
-
-      // Show all values for all user
-      showValues(userId);
-
-      // Make events
-      if (!isEventsCreated) {
-        createEvents();
-        isEventsCreated = true;
-      }
-    }
-
-    // Check for update, delete ...
-    if (message.includes('"affectedRows"')) {
-
-      console.log('affectedRows');
-
-      // Sends a request to the server to get all users
-      const SQLquery =
-        `
-          SELECT * FROM user
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY userId;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Handle errors
-    socket.onerror = (error) => {
-
-      // Close socket on error and let onclose handle reconnection
-      socket.close();
-    }
-
-    // Handle disconnection
-    socket.onclose = () => {
-    }
-  }
-  */
 }
 
 // Make events for users
@@ -326,6 +256,10 @@ function updateUser(userId) {
     const phone =
       document.querySelector('.input-user-phone').value;
 
+    // account
+    const accountId =
+      document.querySelector('.select-user-accountId').value;
+
     // securityLevel
     const securityLevel =
       Number(document.querySelector('.select-user-securityLevel').value);
@@ -356,6 +290,7 @@ function updateUser(userId) {
               firstName = '${firstName}',
               lastName = '${lastName}',
               phone = '${phone}',
+              accountId = ${accountId},
               securityLevel = ${securityLevel},
               password = '${password}'
             WHERE 
@@ -377,6 +312,7 @@ function updateUser(userId) {
             firstName,
             lastName,
             phone,
+            accountId,
             securityLevel,
             password
           )
@@ -390,6 +326,7 @@ function updateUser(userId) {
             '${firstName}',
             '${lastName}',
             '${phone}',
+            ${accountId},
             ${securityLevel},
             '${password}'
           );
@@ -454,7 +391,8 @@ function showLeadingText(userId) {
   objUser.showInput('user-email', '* E-mail(Bruker)', 50, '');
 
   // Show all condos
-  const condoId = condoArray.at(-1).condoId;
+  const condoId =
+    condoArray.at(-1).condoId;
   objCondo.showAllCondos('user-condoId', condoId);
 
   // Show first name
@@ -465,6 +403,11 @@ function showLeadingText(userId) {
 
   // Phone
   objUser.showInput('user-phone', 'Telefonnummer', 20, '');
+
+  // Show all accounts
+  objAccount.showAllAccounts('user-accountId', 0,'', 'Ingen er valgt');
+  document.querySelector('.label-user-accountId').textContent =
+    'Velg konto for månedsleie';
 
   // Select securityLevel
   objUser.selectNumber('user-securityLevel', 1, 9, 5, 'Sikkerhetsnivå');
@@ -518,6 +461,10 @@ function showValues(userId) {
       document.querySelector('.input-user-phone').value =
         userArray[objUserRowNumber].phone;
 
+      // Show account Id
+      document.querySelector('.select-user-accountId').value =
+       (userArray[objUserRowNumber].accountId) ? (userArray[objUserRowNumber].accountId) : 0; 
+
       // show securityLevel
       document.querySelector('.select-user-securityLevel').value =
         userArray[objUserRowNumber].securityLevel;
@@ -544,11 +491,14 @@ function validateValues(userId) {
 
   // Check first name
   const firstName = document.querySelector('.input-user-firstName').value;
-  const validFirstName = objUser.validateText(firstName, "label-user-firstName", "Fornavn");
+  const validFirstName =
+    objUser.validateText(firstName, "label-user-firstName", "Fornavn");
 
   // Check last name
-  const lastName = document.querySelector('.input-user-lastName').value;
-  const validLastName = objUser.validateText(lastName, "label-user-lastName", "Etternavn");
+  const lastName =
+    document.querySelector('.input-user-lastName').value;
+  const validLastName =
+    objUser.validateText(lastName, "label-user-lastName", "Etternavn");
 
   const securityLevel =
     Number(document.querySelector('.select-user-securityLevel').value);
@@ -556,8 +506,10 @@ function validateValues(userId) {
     validateNumber(securityLevel, 1, 9, "user-securityLevel", "Sikkerhetsnivå");
 
   // Check password
-  const password = document.querySelector('.input-user-password').value;
-  const validpassword = objUser.validateText(password, "label-user-password", "Passord");
+  const password =
+    document.querySelector('.input-user-password').value;
+  const validpassword =
+    objUser.validateText(password, "label-user-password", "Passord");
 
   return (validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
 }
@@ -587,6 +539,10 @@ function resetValues() {
   // reset phone number
   document.querySelector('.input-user-phone').value =
     '';
+
+  // reset account Id
+  document.querySelector('.select-user-accountId').value =
+    0;
 
   // securityLevel
   document.querySelector('.select-user-securityLevel').value =
