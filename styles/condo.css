@@ -31,7 +31,7 @@
 .div-grid-due-search,
 .div-grid-due,
 
-.div-grid-monthlyfee,
+.div-grid-monthlyrent,
 
 .div-grid-remoteheating-search,
 .div-grid-remoteheating,
@@ -65,26 +65,34 @@
 }
 
 /* grid container 4 columns */
-.div-grid-monthlyfee {
+.div-grid-monthlyrent {
   grid-template-columns: 200px 200px 150px 150px;
 }
 
 /* Define the grid container with 4 columns*/
-.div-grid-overview-search,
 .div-grid-accountreport-search {
+  grid-template-columns: 200px 200px 200px 200px;
+}
+
+/* Define the grid container with 4 columns*/
+.div-grid-overview-search {
   grid-template-columns: 200px 200px 200px 200px;
 }
 
 /* Define the grid container with 6 columns*/
 .div-grid-due-search,
-.div-grid-remoteheating-search,
-.div-grid-bankaccountmovement-search {
+.div-grid-remoteheating-search {
   grid-template-columns: 200px 200px 200px 200px 200px 200px;
 }
 
 /* Define the grid container with 6 columns*/
 .div-grid-accountreport {
   grid-template-columns: 200px 200px 150px 150px 150px 150px;
+}
+
+/* Define the grid container with 7 columns*/
+.div-grid-bankaccountmovement-search {
+  grid-template-columns: 200px 200px 200px 200px 200px 200px 200px;
 }
 
 /* Define the grid container with 7 columns*/
@@ -293,8 +301,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.div-monthlyfee-columnAmount,
-.div-monthlyfee-columnDate {
+.div-monthlyrent-columnAmount,
+.div-monthlyrent-columnDate {
   grid-row-start: 1;
   grid-row-end: 20;
   display: block;
@@ -303,15 +311,15 @@
   padding: 2px;
 }
 
-.div-monthlyfee-columnDate {
+.div-monthlyrent-columnDate {
   grid-column-start: 3;
 }
 
-.div-monthlyfee-columnAmount {
+.div-monthlyrent-columnAmount {
   grid-column-start: 4;
 }
 
-.div-monthlyfee-columnDate {
+.div-monthlyrent-columnDate {
   grid-column-start: 3;
   grid-row-start: 1;
   grid-row-end: 20;
@@ -335,7 +343,7 @@
 .a-menu-vertical-income,
 .a-menu-vertical-payment,
 .a-menu-vertical-due,
-.a-menu-vertical-monthlyfee,
+.a-menu-vertical-monthlyrent,
 .a-menu-vertical-remoteheating,
 .a-menu-vertical-budget,
 .a-menu-vertical-overview,
@@ -362,7 +370,7 @@
 .a-menu-vertical-condo-green,
 .a-menu-vertical-account-green,
 .a-menu-vertical-due-green,
-.a-menu-vertical-monthlyfee-green,
+.a-menu-vertical-monthlyrent-green,
 .a-menu-vertical-income-green,
 .a-menu-vertical-payment-green,
 .a-menu-vertical-overview-green,
@@ -432,7 +440,7 @@
 
 .div-grid-due label,
 
-.div-grid-monthlyfee label,
+.div-grid-monthlyrent label,
 
 .div-grid-remoteheating-search label,
 
@@ -502,7 +510,7 @@
 .div-grid-due-search input,
 .div-grid-due input,
 
-.div-grid-monthlyfee input,
+.div-grid-monthlyrent input,
 
 .div-grid-remoteheating-search input,
 .div-grid-remoteheating input,
@@ -595,7 +603,7 @@
 .div-grid-due-search select,
 .div-grid-due select,
 
-.div-grid-monthlyfee select,
+.div-grid-monthlyrent select,
 
 .div-grid-remoteheating-search select,
 .div-grid-remoteheating select,
@@ -708,7 +716,7 @@
 .div-grid-due-search button,
 .div-grid-due button,
 
-.div-grid-monthlyfee button,
+.div-grid-monthlyrent button,
 
 .div-grid-remoteheating-search button,
 
@@ -753,7 +761,7 @@
 .div-grid-due-search button:hover,
 .div-grid-due button:hover,
 
-.div-grid-monthlyfee button:hover,
+.div-grid-monthlyrent button:hover,
 
 .div-grid-remoteheating-search button:hover,
 .div-grid-remoteheating button:hover,
@@ -788,7 +796,7 @@
 .div-grid-due-search button:active,
 .div-grid-due button:active,
 
-.div-grid-monthlyfee button:active,
+.div-grid-monthlyrent button:active,
 
 .div-grid-remoteheating-search button:active,
 .div-grid-remoteheating button:active,
@@ -837,8 +845,8 @@
 .div-grid-due select:disabled,
 .div-grid-due button:disabled,
 
-.div-grid-monthlyfee select:disabled,
-.div-grid-monthlyfee button:disabled,
+.div-grid-monthlyrent select:disabled,
+.div-grid-monthlyrent button:disabled,
 
 .div-grid-budget select:disabled,
 .div-grid-budget button:disabled {
@@ -847,8 +855,8 @@
 }
 
 /* header */
-.div-monthlyfee-columnDate-Header,
-.div-monthlyfee-columnAmount-Header,
+.div-monthlyrent-columnDate-Header,
+.div-monthlyrent-columnAmount-Header,
 
 .label-bankaccountmovement-columnCondoName-Header,
 .label-bankaccountmovement-columnAccountName-Header,
@@ -991,9 +999,9 @@
 .label-account-accountName-red,
 .label-account-accountType-red,
 
-.label-monthlyfee-condoId-red,
-.label-monthlyfee-date-red,
-.label-monthlyfee-amount-red,
+.label-monthlyrent-condoId-red,
+.label-monthlyrent-date-red,
+.label-monthlyrent-amount-red,
 
 .label-due-condoId-red,
 .label-due-date-red,

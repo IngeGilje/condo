@@ -249,6 +249,8 @@ function updateCondominium(condominiumId) {
       document.querySelector('.input-condominium-email').value;
     const accountId =
       Number(document.querySelector('.select-condominium-accountId').value);
+    const monthlyRentAccountId =
+      Number(document.querySelector('.select-condominium-monthlyRentAccountId').value);
     const organizationNumber =
       document.querySelector('.input-condominium-organizationNumber').value;
     const importPath =
@@ -277,6 +279,7 @@ function updateCondominium(condominiumId) {
           phone = '${phone}',
           email = '${email}',
           accountId = ${accountId},
+          monthlyRentAccountId = ${monthlyRentAccountId},
           organizationNumber = '${organizationNumber}',
           importPath = '${importPath}'
         WHERE condominiumId = ${condominiumId};
@@ -298,6 +301,7 @@ function updateCondominium(condominiumId) {
           phone,
           email,
           accountId,
+          monthlyRentAccountId,
           organizationNumber,
           importPath)
         VALUES (
@@ -312,6 +316,7 @@ function updateCondominium(condominiumId) {
           '${phone}',
           '${email}',
           ${accountId},
+          ${monthlyRentAccountId},
           '${organizationNumber}',
           '${importPath}'
         );
@@ -362,6 +367,9 @@ function showLeadingText(condominiumId) {
   // show all account Ids for remote heating
   objAccount.showAllAccounts('condominium-accountId', 0, "", "Ingen");
 
+  // show all account Ids for monthly rent accounts
+  objAccount.showAllAccounts('condominium-monthlyRentAccountId', 0, "", "Ingen");
+
   // organization Number
   objCondominium.showInput('condominium-organizationNumber', '* Organisasjonsnummer', 9, '');
 
@@ -373,7 +381,7 @@ function showLeadingText(condominiumId) {
     objCondominium.showButton('condominium-update', 'Oppdater');
 
     // show new button
-    objCondominium.showButton('condominium-new', 'Ny');
+    objCondominium.showButton('condominium-insert', 'Ny');
 
     // show delete button
     objCondominium.showButton('condominium-delete', 'Slett');
@@ -430,7 +438,13 @@ function showValues(condominiumId) {
       document.querySelector('.select-condominium-accountId').value =
         (condominiumArray[objCondominimuRowNumber].accountId) ? condominiumArray[objCondominimuRowNumber].accountId : 0;
       document.querySelector('.label-condominium-accountId').innerHTML =
-        'Velg fjernvarmekonto';
+        'Velg konto for fjernvarme';
+
+      // account id
+      document.querySelector('.select-condominium-monthlyRentAccountId').value =
+        (condominiumArray[objCondominimuRowNumber].monthlyRentAccountId) ? condominiumArray[objCondominimuRowNumber].monthlyRentAccountId : 0;
+      document.querySelector('.label-condominium-monthlyRentAccountId').innerHTML =
+        'Velg konto for månedsleie';
 
       // Show organization number
       document.querySelector('.input-condominium-organizationNumber').value =
@@ -478,6 +492,10 @@ function resetValues() {
 
   // account id for remote heating
   document.querySelector('.select-condominium-accountId').value =
+    0;
+
+  // account id for monthly rent
+  document.querySelector('.select-condominium-monthlyRentAccountId').value =
     0;
 
   // Show organization number

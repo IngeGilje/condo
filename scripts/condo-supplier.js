@@ -429,7 +429,7 @@ function showLeadingText(supplierId) {
     objSupplier.showButton('supplier-update', 'Oppdater');
 
     // new button
-    objSupplier.showButton('supplier-new', 'Ny');
+    objSupplier.showButton('supplier-insert', 'Ny');
 
     // delete button
     objSupplier.showButton('supplier-delete', 'Slett');

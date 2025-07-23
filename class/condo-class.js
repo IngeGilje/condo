@@ -672,8 +672,8 @@ class Condos {
             Forfall
           </a>
 
-          <a href="${url}condo/condo-monthlyfee.html"
-            class="a-menu-vertical-monthlyfee"
+          <a href="${url}condo/condo-monthlyrent.html"
+            class="a-menu-vertical-monthlyrent"
           >
             Månedsavgift
           </a>
@@ -722,7 +722,8 @@ class Condos {
     let isValidAmount = true;
 
     // 123456,78 -> 12345678
-    amount = removeComma(amount);
+    amount =
+     removeComma(amount);
     if (!isNumeric(amount)) {
 
       // Invalid amount

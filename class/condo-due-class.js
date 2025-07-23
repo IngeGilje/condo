@@ -104,7 +104,7 @@ class Due extends Condos {
   }
 
   // Show all selected dues
-  showAllSelectedDues(className, dueId, fromDate, toDate, condoId, accountId) {
+  showAllSelectedDues(className, dueId) {
 
     let html = `
       <form 
@@ -183,3 +183,4 @@ class Due extends Condos {
       html;
   }
 }
+

@@ -87,7 +87,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Månedsleie",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-monthlyfee.html",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-monthlyrent.html",
     },
     {
       "type": "chrome",

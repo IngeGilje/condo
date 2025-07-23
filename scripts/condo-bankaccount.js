@@ -268,9 +268,9 @@ function createEvents() {
     }
   });
 
-  // New account
+  // Insert account
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-bankaccount-new')) {
+    if (event.target.classList.contains('button-bankaccount-insert')) {
 
       resetValues();
     }
@@ -400,7 +400,7 @@ function updateBankAccount() {
         false;
       document.querySelector('.button-bankaccount-delete').disabled =
         false;
-      document.querySelector('.button-bankaccount-new').disabled =
+      document.querySelector('.button-bankaccount-insert').disabled =
         false;
     }
   }
@@ -468,7 +468,7 @@ function showLeadingText(bankAccountId) {
     objBankAccount.showButton('bankaccount-update', 'Oppdater');
 
     // new button
-    objBankAccount.showButton('bankaccount-new', 'Ny');
+    objBankAccount.showButton('bankaccount-insert', 'Ny');
 
     // delete button
     objBankAccount.showButton('bankaccount-delete', 'Slett');
@@ -589,6 +589,6 @@ function resetValues() {
     true;
   document.querySelector('.button-bankaccount-delete').disabled =
     true;
-  document.querySelector('.button-bankaccount-new').disabled =
+  document.querySelector('.button-bankaccount-insert').disabled =
     true;
 }

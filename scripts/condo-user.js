@@ -3,8 +3,6 @@
 // Activate objects
 const objCondo =
   new Condo('condo');
-const objAccount =
-  new Account('account');
 const objUser =
   new User('user');
 
@@ -40,16 +38,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     updateMySql(SQLquery, 'condo', 'SELECT');
 
-    // Sends a request to the server to get accounts
-    SQLquery =
-      `
-        SELECT * FROM account
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY accountId;
-      `;
-
-    updateMySql(SQLquery, 'account', 'SELECT');
-
     // Sends a request to the server to get users
     SQLquery =
       `
@@ -79,15 +67,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('condoTable');
 
           condoArray =
-            objInfo.tableArray;
-          break;
-
-        case 'account':
-
-          // account table
-          console.log('accountTable');
-
-          accountArray =
             objInfo.tableArray;
           break;
 
@@ -256,10 +235,6 @@ function updateUser(userId) {
     const phone =
       document.querySelector('.input-user-phone').value;
 
-    // account
-    const accountId =
-      document.querySelector('.select-user-accountId').value;
-
     // securityLevel
     const securityLevel =
       Number(document.querySelector('.select-user-securityLevel').value);
@@ -290,7 +265,6 @@ function updateUser(userId) {
               firstName = '${firstName}',
               lastName = '${lastName}',
               phone = '${phone}',
-              accountId = ${accountId},
               securityLevel = ${securityLevel},
               password = '${password}'
             WHERE 
@@ -312,7 +286,6 @@ function updateUser(userId) {
             firstName,
             lastName,
             phone,
-            accountId,
             securityLevel,
             password
           )
@@ -326,7 +299,6 @@ function updateUser(userId) {
             '${firstName}',
             '${lastName}',
             '${phone}',
-            ${accountId},
             ${securityLevel},
             '${password}'
           );
@@ -404,11 +376,6 @@ function showLeadingText(userId) {
   // Phone
   objUser.showInput('user-phone', 'Telefonnummer', 20, '');
 
-  // Show all accounts
-  objAccount.showAllAccounts('user-accountId', 0,'', 'Ingen er valgt');
-  document.querySelector('.label-user-accountId').textContent =
-    'Velg konto for månedsleie';
-
   // Select securityLevel
   objUser.selectNumber('user-securityLevel', 1, 9, 5, 'Sikkerhetsnivå');
 
@@ -420,7 +387,7 @@ function showLeadingText(userId) {
     objUser.showButton('user-update', 'Oppdater');
 
     // new button
-    objUser.showButton('user-new', 'Ny');
+    objUser.showButton('user-insert', 'Ny');
 
     // delete button
     objUser.showButton('user-delete', 'Slett');
@@ -460,10 +427,6 @@ function showValues(userId) {
       // Show phone number
       document.querySelector('.input-user-phone').value =
         userArray[objUserRowNumber].phone;
-
-      // Show account Id
-      document.querySelector('.select-user-accountId').value =
-       (userArray[objUserRowNumber].accountId) ? (userArray[objUserRowNumber].accountId) : 0; 
 
       // show securityLevel
       document.querySelector('.select-user-securityLevel').value =
@@ -539,10 +502,6 @@ function resetValues() {
   // reset phone number
   document.querySelector('.input-user-phone').value =
     '';
-
-  // reset account Id
-  document.querySelector('.select-user-accountId').value =
-    0;
 
   // securityLevel
   document.querySelector('.select-user-securityLevel').value =

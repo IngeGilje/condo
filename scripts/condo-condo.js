@@ -289,7 +289,7 @@ function showLeadingText(condoId) {
     objCondo.showButton('condo-update', 'Oppdater');
 
     // show new button
-    objCondo.showButton('condo-new', 'Ny');
+    objCondo.showButton('condo-insert', 'Ny');
 
     // show delete button
     objCondo.showButton('condo-delete', 'Slett');

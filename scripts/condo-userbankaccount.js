@@ -277,7 +277,7 @@ function createEvents() {
 
   // New user bank account
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-userbankaccount-new')) {
+    if (event.target.classList.contains('button-userbankaccount-insert')) {
 
       resetValues();
     }
@@ -400,7 +400,7 @@ function updateUserBankAccount() {
       false;
     document.querySelector('.button-userbankaccount-delete').disabled =
       false;
-    document.querySelector('.button-userbankaccount-new').disabled =
+    document.querySelector('.button-userbankaccount-insert').disabled =
       false;
   }
 }
@@ -432,7 +432,7 @@ function showLeadingText(userBankAccountId) {
     objUserBankAccount.showButton('userbankaccount-update', 'Oppdater');
 
     // new button
-    objUserBankAccount.showButton('userbankaccount-new', 'Ny');
+    objUserBankAccount.showButton('userbankaccount-insert', 'Ny');
 
     // delete button
     objUserBankAccount.showButton('userbankaccount-delete', 'Slett');
@@ -529,6 +529,6 @@ function resetValues() {
     true;
   document.querySelector('.button-userbankaccount-delete').disabled =
     true;
-  document.querySelector('.button-userbankaccount-new').disabled =
+  document.querySelector('.button-userbankaccount-insert').disabled =
     true;
 }

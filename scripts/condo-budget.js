@@ -1,12 +1,17 @@
 // Budget maintenance
 
 // Activate objects
-const today = new Date();
-const objUser = new User('user');
-const objAccount = new Account('account');
-const objBudget = new Budget('budget');
+const today =
+ new Date();
+const objUser = 
+new User('user');
+const objAccount =
+ new Account('account');
+const objBudget =
+ new Budget('budget');
 
-let isEventsCreated = false;
+let isEventsCreated =
+ false;
 
 testMode();
 
@@ -173,9 +178,9 @@ function createEvents() {
     };
   });
 
-  // New budget
+  // Insert budget
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-budget-new')) {
+    if (event.target.classList.contains('button-budget-insert')) {
 
       resetValues();
     };
@@ -281,7 +286,7 @@ function updateBudgetRow(budgetId) {
         false;
       document.querySelector('.button-budget-delete').disabled =
         false;
-      document.querySelector('.button-budget-new').disabled =
+      document.querySelector('.button-budget-insert').disabled =
         false;
     }
   }
@@ -296,7 +301,7 @@ function showLeadingText(budgetId) {
   // Show all accounts
   const accountId =
     accountArray.at(-1).accountId;
-  objAccount.showAllAccounts('budget-accountId', accountId,'','Ingen konti er valgt');
+  objAccount.showAllAccounts('budget-accountId', accountId, '', 'Ingen konti er valgt');
 
   // Show years
   const year =
@@ -311,7 +316,7 @@ function showLeadingText(budgetId) {
     objBudget.showButton('budget-update', 'Oppdater');
 
     // show new button
-    objBudget.showButton('budget-new', 'Ny');
+    objBudget.showButton('budget-insert', 'Ny');
 
     // show delete button
     objBudget.showButton('budget-delete', 'Slett');
@@ -326,12 +331,12 @@ function showValues(budgetId) {
 
   // find object number for selected budget 
   // Check if budget exist
-    let objBudgetRowNumber = -1;
-    if (budgetArray.length > 0) {
+  let objBudgetRowNumber = -1;
+  if (budgetArray.length > 0) {
 
-      objBudgetRowNumber =
-        budgetArray.findIndex(budget => budget.budgetId === budgetId);
-    }
+    objBudgetRowNumber =
+      budgetArray.findIndex(budget => budget.budgetId === budgetId);
+  }
 
   if (objBudgetRowNumber !== -1) {
 
@@ -378,7 +383,7 @@ function resetValues() {
     true;
   document.querySelector('.button-budget-delete').disabled =
     true;
-  document.querySelector('.button-budget-new').disabled =
+  document.querySelector('.button-budget-insert').disabled =
     true;
   //document.querySelector('.button-budget-cancel').disabled =
   //  true;
@@ -393,7 +398,7 @@ function deleteBudgetRow() {
   if (budgetId >= 0) {
 
     // Check if budget id exist
-   let objBudgetRowNumber = -1;
+    let objBudgetRowNumber = -1;
     if (budgetArray.length > 0) {
 
       objBudgetRowNumber =

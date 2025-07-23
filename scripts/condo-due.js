@@ -146,18 +146,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           const dueId =
             objDue.getSelectedDueId('select-due-dueId');
 
-          const fromDate =
-            convertDateToISOFormat(document.querySelector('.input-due-filterFromDate').value);
-          const toDate =
-            convertDateToISOFormat(document.querySelector('.input-due-filterToDate').value);
-
-          const condoId =
-            Number(document.querySelector('.select-due-filterCondoId').value);
-          const accountId =
-            Number(document.querySelector('.select-due-filterAccountId').value);
-
           // Show due Id
-          objDue.showAllSelectedDues('due-dueId', dueId, fromDate, toDate, condoId, accountId);
+          objDue.showAllSelectedDues('due-dueId', dueId);
 
           showValues(dueId);
 
@@ -238,7 +228,7 @@ function createEvents() {
       showLeadingText(dueId);
       showValues(dueId);
       */
-      // Show bank account movements
+      // Show due
       const dueId =
         Number(document.querySelector('.select-due-dueId').value);
       showValues(dueId);
@@ -249,31 +239,18 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-update')) {
 
-      /*
-      const dueId =
-        Number(document.querySelector('.select-due-dueId').value);
-      updateDueRow(dueId);
-      */
       const dueId =
         Number(document.querySelector('.select-due-dueId').value);
       updateDue(dueId);
-      
+
       document.querySelector('.select-due-filterCondoId').value =
         document.querySelector('.select-due-condoId').value;
-        document.querySelector('.select-due-filterAccountId').value =
+      document.querySelector('.select-due-filterAccountId').value =
         document.querySelector('.select-due-accountId').value;
     }
   });
 
-  // new due
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-due-new')) {
-
-      resetValues();
-    }
-  });
-
-  // Reset bank account movement values
+  // insert due
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-insert')) {
 
@@ -281,11 +258,13 @@ function createEvents() {
     }
   });
 
-  // Delete bank account movement
+  // Delete due
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-due-delete')) {
 
-      deleteDue();
+      const dueId =
+        Number(document.querySelector('.select-due-dueId').value);
+      deleteDue(dueId);
     }
   });
 
@@ -301,7 +280,6 @@ function createEvents() {
 function updateDue(dueId) {
 
   let SQLquery = '';
-  let isUpdated = false;
 
   // Check for valid values
   if (validateValues(dueId)) {
@@ -324,8 +302,6 @@ function updateDue(dueId) {
 
     const text =
       document.querySelector('.input-due-text').value;
-
-    let SQLquery = "";
 
     // Check if due Id exist
     const objDueRowNumber =
@@ -379,35 +355,26 @@ function updateDue(dueId) {
       false;
     document.querySelector('.button-due-delete').disabled =
       false;
-    document.querySelector('.button-due-new').disabled =
+    document.querySelector('.button-due-insert').disabled =
       false;
-    isUpdated = true;
   }
-  return isUpdated;
+  return;
 }
 
 function deleteDue(dueId) {
 
-  let SQLquery = '';
-  let isUpdated = false;
+  let SQLquery =
+    '';
 
   // Check for valid due Id
   if (dueId >= 0) {
 
-    SQLquery = `
-      DELETE FROM due 
-      WHERE dueId = ${dueId};
-    `;
-    updateMySql(SQLquery, 'due', 'DELETE');
-
-    // Show updated dues
-    const SQLquery =
+    SQLquery =
       `
-        SELECT * FROM due
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY date DESC, condoId ASC;
+        DELETE FROM due 
+        WHERE dueId = ${dueId};
       `;
-    updateMySql(SQLquery, 'due', 'SELECT');
+    updateMySql(SQLquery, 'due', 'DELETE');
   }
 }
 
@@ -466,12 +433,12 @@ function showLeadingText(dueId) {
   // Show all condos
   const condoId =
     condoArray.at(-1).condoId;
-  objCondo.showAllCondos('due-condoId', condoId, 'Ingen er valgt', 'Alle');
+  objCondo.showAllCondos('due-condoId', condoId, 'Ingen er valgt');
 
   // Show all accounts
   const accountId =
     accountArray.at(-1).accountId;
-  objAccount.showAllAccounts('due-accountId', accountId, 'Ingen er valgt', 'Alle');
+  objAccount.showAllAccounts('due-accountId', accountId, 'Ingen er valgt');
 
   // Show amount
   objDue.showInput('due-date', '* Dato', 10, '');
@@ -487,7 +454,7 @@ function showLeadingText(dueId) {
     objDue.showButton('due-update', 'Oppdater');
 
     // show new button
-    objDue.showButton('due-new', 'Ny');
+    objDue.showButton('due-insert', 'Ny');
 
     // show delete button
     objDue.showButton('due-delete', 'Slett');
@@ -601,7 +568,7 @@ function resetValues() {
     true;
   document.querySelector('.button-due-delete').disabled =
     true;
-  document.querySelector('.button-due-new').disabled =
+  document.querySelector('.button-due-insert').disabled =
     true;
 }
 
@@ -630,6 +597,7 @@ function showDues() {
     let lineNumber =
       0;
 
+    /*
     let fromDate =
       document.querySelector('.input-due-filterFromDate').value;
     fromDate =
@@ -643,7 +611,7 @@ function showDues() {
       Number(document.querySelector('.select-due-filterCondoId').value);
     const accountId =
       Number(document.querySelector('.select-due-filterAccountId').value);
-
+    */
     dueArray.forEach((due) => {
 
       lineNumber++;
@@ -652,7 +620,7 @@ function showDues() {
       const colorClass =
         (lineNumber % 2 !== 0) ? "green" : "";
 
-      // bank Account Movement Id
+      // line number
       htmlColumnLine +=
         `
           <div 
@@ -754,7 +722,7 @@ function showDues() {
     document.querySelector('.div-due-columnCondoName').innerHTML =
       htmlColumnCondoName;
 
-    // Show bank account name
+    // Show account name
     document.querySelector('.div-due-columnAccountName').innerHTML =
       htmlColumnAccountName;
 
@@ -775,7 +743,7 @@ function showDues() {
 // Check for valid filter
 function validateFilter() {
 
-  // Check account movement
+  // Check account
   const accountId =
     document.querySelector('.select-due-filterAccountId').value;
   const validAccountId =
@@ -812,62 +780,36 @@ function getSelectedDues() {
   const toDate =
     convertDateToISOFormat(document.querySelector('.input-due-filterToDate').value);
 
-  let SQLquery;
+  let SQLquery =
+    `
+      SELECT * FROM due
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND date BETWEEN '${fromDate}' AND '${toDate}' 
+    `;
 
-  // Check if condo Id and account Id is selected
-  if ((condoId === 999999999) && (accountId === 999999999)) {
+  // Check if condo Id is selected
+  if (condoId !== 999999999) {
 
-    // Sends a request to the server to get selected dues
-    SQLquery =
+    SQLquery +=
       `
-        SELECT * FROM due
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
-        ORDER BY date DESC, condoId ASC;
-      `;
-  }
-
-  // Check if condo Id and account Id is selected
-  if ((condoId !== 999999999) && (accountId !== 999999999)) {
-
-    // Sends a request to the server to get selected dues
-    SQLquery =
-      `
-        SELECT * FROM due
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
         AND condoId = ${condoId}
-        AND accountId = ${accountId}
-        ORDER BY date DESC, condoId ASC;
       `;
   }
 
-  // Check if condo Id is selected but not account Id
-  if ((condoId !== 999999999) && (accountId === 999999999)) {
+  // Check if account Id is selected
+  if (accountId !== 999999999) {
 
-    // Sends a request to the server to get selected dues
-    SQLquery =
+    SQLquery +=
       `
-        SELECT * FROM due
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
-        AND condoId = ${condoId}
-        ORDER BY date DESC, condoId ASC;
-      `;
-  }
-
-  // Check if account Id is selected but not condo Id
-  if ((condoId === 999999999) && (accountId !== 999999999)) {
-
-    // Sends a request to the server to get selected bank account movements
-    SQLquery =
-      `
-        SELECT * FROM due
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
         AND accountId = ${accountId}
-        ORDER BY date DESC, condoId ASC;
       `;
   }
+
+  SQLquery +=
+    `
+      ORDER BY date DESC, condoId ASC;
+    `;
+
+  // Sends a request to the server to get selected dues
   updateMySql(SQLquery, 'due', 'SELECT');
 }

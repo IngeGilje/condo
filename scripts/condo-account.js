@@ -146,9 +146,9 @@ function createEvents() {
     }
   });
 
-  // New account
+  // Insert account
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-account-new')) {
+    if (event.target.classList.contains('button--account-insert')) {
 
       resetValues();
     }
@@ -250,7 +250,7 @@ function updateAccount() {
         false;
       document.querySelector('.button-account-delete').disabled =
         false;
-      document.querySelector('.button-account-new').disabled =
+      document.querySelector('.button--account-insert').disabled =
         false;
     }
   }
@@ -305,7 +305,7 @@ function showLeadingText(accountId) {
     objAccount.showButton('account-update', 'Oppdater');
 
     // new button
-    objAccount.showButton('account-new', 'Ny');
+    objAccount.showButton('-account-insert', 'Ny');
 
     // delete button
     objAccount.showButton('account-delete', 'Slett');
@@ -359,6 +359,6 @@ function resetValues() {
     true;
   document.querySelector('.button-account-delete').disabled =
     true;
-  document.querySelector('.button-account-new').disabled =
+  document.querySelector('.button--account-insert').disabled =
     true;
 }

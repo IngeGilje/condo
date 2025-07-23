@@ -212,7 +212,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
           const toDate =
             convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
-
+          const amount =
+            convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterAmount').value);
           const condoId =
             Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
           const accountId =
@@ -238,8 +239,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       switch (objInfo.tableName) {
         case 'bankaccountmovement':
 
-         getSelectedBankAccountMovements();
-         break;
+          getSelectedBankAccountMovements();
+          break;
       };
     }
 
@@ -290,6 +291,16 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-bankaccountmovement-filterToDate')) {
 
+      getSelectedBankAccountMovements();
+    }
+  });
+
+  // Search for amount
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('input-bankaccountmovement-filterAmount')) {
+      
+      document.querySelector('.input-bankaccountmovement-filterAmount').value =
+      formatAmountToEuroFormat(document.querySelector('.input-bankaccountmovement-filterAmount').value);
       getSelectedBankAccountMovements();
     }
   });
@@ -374,6 +385,11 @@ function showLeadingTextSearch() {
     objBankAccountMovement.showInput('bankaccountmovement-filterToDate', 'Til dato', 10, 'dd.mm.åååå');
   }
 
+  // Show amount
+  if (!isClassDefined('input-bankaccountmovement-filterAmount')) {
+    objBankAccountMovement.showInput('bankaccountmovement-filterAmount', 'Beløp', 10,'Alle');
+  }
+
   // Check for filter from date
   let date =
     document.querySelector('.input-bankaccountmovement-filterFromDate').value;
@@ -394,6 +410,16 @@ function showLeadingTextSearch() {
     // To date is not ok
     document.querySelector('.input-bankaccountmovement-filterToDate').value =
       getCurrentDate();
+  }
+
+  // Check for filter amount
+  amount =
+    document.querySelector('.input-bankaccountmovement-filterAmount').value;
+  if (!objBankAccountMovement.validateAmount(amount)) {
+
+    // Amount is not ok
+    document.querySelector('.input-bankaccountmovement-filterAmount').value =
+      '';
   }
 }
 
@@ -549,19 +575,17 @@ function showBankAccountMovements() {
     toDate =
       convertDateToISOFormat(toDate);
 
+    let amount =
+      document.querySelector('.input-bankaccountmovement-filterAmount').value;
+    amount =
+      Number(formatKronerToOre(amount));
+
     const condoId =
       Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
     const accountId =
       Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
 
     bankAccountMovementArray.forEach((bankAccountMovement) => {
-
-      /*
-      if (bankAccountMovement.bankAccountMovementId >= 0) {
-        if (Number(bankAccountMovement.date) >= Number(fromDate) && Number(bankAccountMovement.date) <= Number(toDate)) {
-          if (bankAccountMovement.condoId === condoId || condoId === 999999999) {
-            if (bankAccountMovement.accountId === accountId || accountId === 999999999) {
-      */
 
       lineNumber++;
 
@@ -645,8 +669,6 @@ function showBankAccountMovements() {
             ${payment}
           </div>
         `;
-
-
 
       // KiloWatt/Hour
       const kiloWattHour =
@@ -775,7 +797,12 @@ function validateFilter() {
   const validToDate =
     validateNorDate(toDate, 'bankaccountmovement-filterToDate', 'Til dato');
 
-  return (validAccountId && validCondoId && validFromDate && validToDate) ? true : false;
+  const amount =
+    (document.querySelector('.input-bankaccountmovement-filterAmount').value) ? document.querySelector('.input-bankaccountmovement-filterAmount').value : '0';
+  const validAmount =
+    objBankAccountMovement.validateAmount(amount, 'bankaccountmovement-filterAmount', 'Beløp');
+
+  return (validAccountId && validCondoId && validFromDate && validToDate && validAmount) ? true : false;
 }
 
 function updateBankAccountMovement(bankAccountMovementId) {
@@ -902,40 +929,11 @@ function validateValues() {
   const validAccountId =
     validateNumber(accountId, 1, 999999999, 'bankaccountmovement-accountId', 'Konto');
 
-  /*
-  // Check condo Id
-  const condoId =
-    document.querySelector('.select-bankaccountmovement-condoId').value;
-  const validCondoId =
-    validateNumber(condoId, 0, 999999999, 'Leilighet');
-  */
-
   const date =
     document.querySelector('.input-bankaccountmovement-date').value;
   const validDate =
     validateNorDate(date, 'bankaccountmovement-date', 'Dato');
-  /*
-  // Validate norwegian amounts
-  const income =
-    document.querySelector('.input-bankaccountmovement-income').value;
-  const validIncome =
-    objBankAccountMovement.validateAmount(income, 'bankaccountmovement-income', 'Inntekt');
- 
-  const payment =
-    document.querySelector('.input-bankaccountmovement-payment').value;
-  const validPayment =
-    objBankAccountMovement.validateAmount(payment, 'bankaccountmovement-payment', 'Utgift');
- 
-  const numberKWHour =
-    document.querySelector('.input-bankaccountmovement-numberKWHour').value;
-  const validNumberKWHour =
-    objBankAccountMovement.validateAmount(numberKWHour, 'bankaccountmovement-numberKWHour', 'Kilowatt/time');
- 
-  const text =
-    document.querySelector('.input-bankaccountmovement-text').value;
-  const validText =
-    objBankAccountMovement.validateText(text, 'bankaccountmovement-text', 'Tekst');
-  */
+
   return (validAccountId && validDate) ? true : false;
 }
 
@@ -1010,62 +1008,41 @@ function getSelectedBankAccountMovements() {
   const toDate =
     convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
 
-  let SQLquery;
+  const amount =
+    formatAmountToOre(document.querySelector('.input-bankaccountmovement-filterAmount').value);
 
-  // Check if condo Id and account Id is selected
-  if ((condoId === 999999999) && (accountId === 999999999)) {
+  let SQLquery =
+    `
+      SELECT * FROM bankaccountmovement
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND date BETWEEN '${fromDate}' AND '${toDate}'
+    `;
 
-    // Sends a request to the server to get selected bank account movements
-    SQLquery =
+  if (condoId !== 999999999) {
+    SQLquery +=
       `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
-        ORDER BY date DESC;
-      `;
-  }
-
-  // Check if condo Id and account Id is selected
-  if ((condoId !== 999999999) && (accountId !== 999999999)) {
-
-    // Sends a request to the server to get selected bank account movements
-    SQLquery =
-      `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
         AND condoId = ${condoId}
-        AND accountId = ${accountId}
-        ORDER BY date DESC;
       `;
   }
 
-  // Check if condo Id is selected but not account Id
-  if ((condoId !== 999999999) && (accountId === 999999999)) {
-
-    // Sends a request to the server to get selected bank account movements
-    SQLquery =
+  if (accountId !== 999999999) {
+    SQLquery +=
       `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
-        AND condoId = ${condoId}
-        ORDER BY date DESC;
-      `;
-  }
-
-  // Check if account Id is selected but not condo Id
-  if ((condoId === 999999999) && (accountId !== 999999999)) {
-
-    // Sends a request to the server to get selected bank account movements
-    SQLquery =
-      `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
         AND accountId = ${accountId}
-        ORDER BY date DESC;
       `;
   }
+
+  if (amount !== '0') {
+    SQLquery +=
+      `
+        AND income = '${amount}' OR payment = '${amount}'
+      `;
+  }
+
+  SQLquery +=
+    `
+      ORDER BY date DESC;
+    `;
+  
   updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
 }
