@@ -14,6 +14,12 @@ const objDue =
 
 testMode();
 
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
 let isEventsCreated = false;
 
 objDue.menu();
@@ -26,7 +32,8 @@ socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('due-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -66,18 +73,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     let fromDate =
       "01.01." + String(today.getFullYear());
     fromDate =
-      convertDateToISOFormat(fromDate);
+      Number(convertDateToISOFormat(fromDate));
 
     // To date
     let toDate =
       getCurrentDate();
     toDate =
-      convertDateToISOFormat(toDate);
+      Number(convertDateToISOFormat(toDate));
     SQLquery =
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}'
+        AND date BETWEEN ${fromDate} AND ${toDate}
         ORDER BY date DESC, condoId ASC;
     `;
 
@@ -295,10 +302,10 @@ function updateDue(dueId) {
       Number(document.querySelector('.select-due-accountId').value);
 
     const date =
-      formatNorDateToNumber(document.querySelector('.input-due-date').value);
+      Number(formatNorDateToNumber(document.querySelector('.input-due-date').value));
 
     const amount =
-      formatAmountToOre(document.querySelector('.input-due-amount').value);
+      Number(formatAmountToOre(document.querySelector('.input-due-amount').value));
 
     const text =
       document.querySelector('.input-due-text').value;
@@ -316,8 +323,8 @@ function updateDue(dueId) {
             lastUpdate = '${lastUpdate}',
             condoId = ${condoId},
             accountId = ${accountId},
-            amount = '${amount}',
-            date = '${date}',
+            amount = ${amount},
+            date = ${date},
             text = '${text}'
           WHERE dueId = ${dueId};
         `;
@@ -343,8 +350,8 @@ function updateDue(dueId) {
             '${lastUpdate}',
             ${condoId},
             ${accountId},
-            '${amount}',
-            '${date}',
+            ${amount},
+            ${date},
             '${text}'
           );
         `;
@@ -447,7 +454,7 @@ function showLeadingText(dueId) {
   objDue.showInput('due-amount', '* Beløp', 10, '');
 
   // Show text
-  objDue.showInput('due-text', '* Tekst', 255, '');
+  objDue.showInput('due-text', 'Tekst', 50, '');
 
   // show buttons
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -776,15 +783,15 @@ function getSelectedDues() {
     Number(document.querySelector('.select-due-filterAccountId').value);
 
   const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-due-filterFromDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-due-filterFromDate').value));
   const toDate =
-    convertDateToISOFormat(document.querySelector('.input-due-filterToDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-due-filterToDate').value));
 
   let SQLquery =
     `
       SELECT * FROM due
       WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND date BETWEEN '${fromDate}' AND '${toDate}' 
+      AND date BETWEEN ${fromDate} AND ${toDate} 
     `;
 
   // Check if condo Id is selected

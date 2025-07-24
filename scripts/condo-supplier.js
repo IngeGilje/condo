@@ -7,7 +7,14 @@ const objSupplier = new Supplier('supplier');
 
 testMode();
 
-let isEventsCreated = false;
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
+let isEventsCreated =
+  false;
 
 objSupplier.menu();
 objSupplier.markSelectedMenu('Leverandør');
@@ -19,7 +26,8 @@ socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('supplier-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -173,7 +181,7 @@ function createEvents() {
 
   // New supplier
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-supplier-new')) {
+    if (event.target.classList.contains('button-supplier-insert')) {
 
       resetValues();
     }
@@ -292,7 +300,7 @@ function updateSupplier(supplierId) {
             bankAccount = '${bankAccount}',
             accountId = ${accountId},
             account2Id = ${account2Id},
-            amount = '${amount}'
+            amount = ${amount}
           WHERE supplierId = ${supplierId}
           ;
         `;
@@ -333,7 +341,7 @@ function updateSupplier(supplierId) {
           '${bankAccount}',
           ${accountId},
           ${account2Id},
-          '${amount}'
+          ${amount}
         );
       `;
       // Client sends a request to the server
@@ -344,7 +352,7 @@ function updateSupplier(supplierId) {
       false;
     document.querySelector('.button-supplier-delete').disabled =
       false;
-    document.querySelector('.button-supplier-new').disabled =
+    document.querySelector('.button-supplier-insert').disabled =
       false;
     isUpdated = true;
   }
@@ -571,6 +579,6 @@ function resetValues() {
     true;
   document.querySelector('.button-supplier-delete').disabled =
     true;
-  document.querySelector('.button-supplier-new').disabled =
+  document.querySelector('.button-supplier-insert').disabled =
     true;
 }

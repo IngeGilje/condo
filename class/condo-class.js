@@ -203,33 +203,62 @@ class Condos {
   // Valid text
   validateText(text, className, labelText) {
 
-    let isTextValid = false;
+    let validText =
+      true;
 
-    // Validate text
-    if ((text.length < 3) || text === '') {
+    // Check for string
+    if (typeof text !== "string") {
+
+      validText =
+        false;
+    }
+
+    // Check length
+    if (text.length > 50) {
+
+      validText =
+        false;
+    };
+
+    // Check allowed characters (letters, numbers, spaces)
+    if (text.length > 0) {
+
+      const regex = /^[a-zA-Z0-9\s]+$/;
+      if (!regex.test(text)) {
+
+        validText =
+          false;
+      }
+    }
+
+    if (!validText) {
 
       // Invalid text
       if (isClassDefined(className)) {
 
         document.querySelector(`.${className}`).outerHTML =
-          `<div class="${className}-red">
-            * Ugyldig ${labelText}
-          </div>`;
+          `
+            <div class="${className}-red">
+              * Ugyldig ${labelText}
+            </div>
+          `;
       }
-      isTextValid = false;
-    } else {
+    }
 
-      // Valid text
+    // Valid text
+    if (validText) {
       if (isClassDefined(`${className}-red`)) {
 
         document.querySelector(`.${className}-red`).outerHTML =
-          `<div class="${className}">
-            * ${labelText}
-          </div>`;
+          `
+            <div class="${className}">
+              * ${labelText}
+            </div>
+          `;
       }
-      isTextValid = true;
+      validText = true;
     }
-    return isTextValid;
+    return validText;
   }
 
   // Validate postal code
@@ -699,13 +728,13 @@ class Condos {
           <a href="${url}condo/condo-bankaccountmovement.html"
             class="a-menu-vertical-bankaccountmovement"
           >
-           Bankkonto transaksjoner
+           Banktransaksjoner
           </a>
 
           <a href="${url}condo/condo-importfile.html"
             class="a-menu-vertical-importfile"
           >
-            Importer bankkonto transaksjoner
+            Importer banktransaksjoner
           </a>
 
           <a href="${url}condo/condo-accountreport.html"
@@ -723,7 +752,7 @@ class Condos {
 
     // 123456,78 -> 12345678
     amount =
-     removeComma(amount);
+      removeComma(amount);
     if (!isNumeric(amount)) {
 
       // Invalid amount
@@ -906,7 +935,8 @@ function validateEuroDateFormat(dateString) {
   if (month < 1 || month > 12) return false;
 
   // Create a date object
-  const date = new Date(year, month - 1, day);
+  const date =
+    new Date(year, month - 1, day);
 
   // Validate that the date components match
   return (
@@ -1261,7 +1291,8 @@ function formatAmountToOre(amount) {
   amount = (amount === '000') ? '0' : amount;
   amount = (isNumeric(amount)) ? amount : '0';
   amount = Number(amount);
-  return String(amount);
+  //return String(amount);
+  return Number(amount);
 }
 
 // Format norwegian date (11.05.1983) to number (19830511)
@@ -1384,20 +1415,6 @@ function connectingToServer() {
   }
 
   return socket;
-}
-
-// Show login Error
-function showLoginError(className) {
-
-  document.querySelector(`.div-${className}`).innerHTML =
-    `
-      <a
-        href="http://localhost/condo/condo-login.html"
-        class="a-condo-login"
-      >
-        Ugyldig pålogging
-      </a>
-    `
 }
 
 // Removes the iframe
@@ -1549,3 +1566,20 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   }
   return accountId;
 }
+
+// exit application after 10 minuttes
+function resetInactivityTimer() {
+
+  clearTimeout(inactivityTimeout);
+  
+  inactivityTimeout = setTimeout(() => {
+    window.location.href =
+    'http://localhost/condo/condo-login.html'
+  }, 10 * 60 * 1000); 
+}
+
+// Listen for user activity
+['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
+  document.addEventListener(event, resetInactivityTimer);
+});
+

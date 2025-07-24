@@ -16,6 +16,12 @@ const objOverview =
 
 testMode();
 
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
 let isEventsCreated = false;
 
 objOverview.menu();
@@ -28,7 +34,8 @@ socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('condo-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -370,8 +377,8 @@ function showValues() {
 
       // Accomulate
       // due
-      const formatedAmount = due.amount.replace(',', '.');
-      sumColumnDue += Number(formatedAmount);
+      sumColumnDue +=
+        due.amount;
     });
 
     // Show bank account movement
@@ -444,8 +451,7 @@ function showValues() {
 
       // Accomulate
       sumColumnBankAccountMovement +=
-        Number(bankAccountMovement.income)
-        + Number(bankAccountMovement.payment);
+        bankAccountMovement.income;
     });
 
     // Show total line
@@ -586,9 +592,9 @@ function getSelectedDues() {
     Number(document.querySelector('.select-overview-condoId').value);
 
   const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value));
   const toDate =
-    convertDateToISOFormat(document.querySelector('.input-overview-toDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-overview-toDate').value));
 
   // Check condo Id 
   if ((condoId === 999999999)) {
@@ -598,7 +604,7 @@ function getSelectedDues() {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND date BETWEEN ${fromDate} AND ${toDate} 
         ORDER BY date DESC;
       `;
   }
@@ -611,7 +617,7 @@ function getSelectedDues() {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND date BETWEEN ${fromDate} AND ${toDate} 
         AND condoId = ${condoId}
         ORDER BY date DESC;
       `;
@@ -631,17 +637,12 @@ function getSelectedBankAccountMovements() {
   const toDate =
     convertDateToISOFormat(document.querySelector('.input-overview-toDate').value);
 
-  /*
-  const amount =
-    formatAmountToOre(document.querySelector('.input-overview-amount').value);
-  */
-
   // Sends a request to the server to get selected bank account movements
   let SQLquery =
     `
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND date BETWEEN '${fromDate}' AND '${toDate}' 
+      AND date BETWEEN ${fromDate} AND ${toDate} 
     `;
 
   // Check if condo Id is selected
@@ -658,7 +659,7 @@ function getSelectedBankAccountMovements() {
   if (amount !== '0') {
     SQLquery +=
       `
-        AND income = '${amount}' OR payment = '${amount}'
+        AND income = ${amount} OR payment = ${amount}
       `;
   }
   */

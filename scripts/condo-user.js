@@ -6,9 +6,16 @@ const objCondo =
 const objUser =
   new User('user');
 
-let isEventsCreated = false;
+let isEventsCreated =
+  false;
 
 testMode();
+
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
 
 objUser.menu();
 objUser.markSelectedMenu('Bruker');
@@ -20,7 +27,8 @@ socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('user-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -168,7 +176,7 @@ function createEvents() {
 
   // New user
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-user-new')) {
+    if (event.target.classList.contains('button-user-insert')) {
 
       resetValues();
     }
@@ -310,7 +318,7 @@ function updateUser(userId) {
       false;
     document.querySelector('.button-user-delete').disabled =
       false;
-    document.querySelector('.button-user-new').disabled =
+    document.querySelector('.button-user-insert').disabled =
       false;
     //document.querySelector('.button-user-cancel').disabled =
     //  false;
@@ -515,6 +523,6 @@ function resetValues() {
     true;
   document.querySelector('.button-user-delete').disabled =
     true;
-  document.querySelector('.button-user-new').disabled =
+  document.querySelector('.button-user-insert').disabled =
     true;
 }

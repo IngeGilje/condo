@@ -1,16 +1,28 @@
 
-const a=5;
-const b=55;
-let result;
+function sum(a,b) {
 
-result = add(5,55);
-function add(a, b) {
   return a + b;
 }
-console.log('This works:',result);
 
-addFunction = (a, b) => a + b;
-result = addFunction(a,b);
+let sum2 = (a,b) => a + b;
 
-console.log('This does work too:',result);
+function isPositive (number) {
 
+  return (number >= 0);
+}
+
+let isPositive = number => number > 0;
+
+function randomNumber() {
+
+  return Math.randomNumber;
+}
+
+let randomNumber2 = () => Math.randomNumber;
+
+
+document.addEventListener('click', function() {
+  console.log('click');
+})
+
+document.addEventListener('click', () => console.log('click'));

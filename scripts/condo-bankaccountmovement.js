@@ -20,11 +20,16 @@ const objBankAccountMovement =
 
 testMode();
 
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href = 'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
 let isEventsCreated =
   false;
 
 objBankAccountMovement.menu();
-objBankAccountMovement.markSelectedMenu('Bankkonto transaksjoner');
+objBankAccountMovement.markSelectedMenu('Banktransaksjoner');
 
 let socket;
 socket =
@@ -35,9 +40,9 @@ const objUserPassword =
   JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('bankaccountmovement-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
-
 
   // Send a requests to the server
   socket.onopen = () => {
@@ -105,16 +110,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     let fromDate =
       "01.01." + String(today.getFullYear());
     fromDate =
-      convertDateToISOFormat(fromDate);
+      Number(convertDateToISOFormat(fromDate));
     let toDate =
       getCurrentDate();
     toDate =
-      convertDateToISOFormat(toDate);
+      Number(convertDateToISOFormat(toDate));
     SQLquery =
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
+        AND date BETWEEN ${fromDate} AND ${toDate} 
         ORDER BY date DESC;
       `;
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
@@ -228,7 +233,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           if (!isEventsCreated) {
 
             createEvents();
-            isEventsCreated = true;
+            isEventsCreated =
+              true;
           }
           break;
       }
@@ -298,9 +304,9 @@ function createEvents() {
   // Search for amount
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-bankaccountmovement-filterAmount')) {
-      
+
       document.querySelector('.input-bankaccountmovement-filterAmount').value =
-      formatAmountToEuroFormat(document.querySelector('.input-bankaccountmovement-filterAmount').value);
+        formatAmountToEuroFormat(document.querySelector('.input-bankaccountmovement-filterAmount').value);
       getSelectedBankAccountMovements();
     }
   });
@@ -387,7 +393,7 @@ function showLeadingTextSearch() {
 
   // Show amount
   if (!isClassDefined('input-bankaccountmovement-filterAmount')) {
-    objBankAccountMovement.showInput('bankaccountmovement-filterAmount', 'Beløp', 10,'Alle');
+    objBankAccountMovement.showInput('bankaccountmovement-filterAmount', 'Beløp', 10, 'Alle');
   }
 
   // Check for filter from date
@@ -826,7 +832,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
     let income =
       document.querySelector('.input-bankaccountmovement-income').value;
     income =
-      formatAmountToOre(income);
+      Number(formatAmountToOre(income));
 
     let payment =
       document.querySelector('.input-bankaccountmovement-payment').value;
@@ -836,7 +842,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
     let numberKWHour =
       document.querySelector('.input-bankaccountmovement-numberKWHour').value;
     numberKWHour =
-      formatAmountToOre(numberKWHour);
+      Number(formatAmountToOre(numberKWHour));
 
     const text =
       document.querySelector('.input-bankaccountmovement-text').value;
@@ -859,10 +865,10 @@ function updateBankAccountMovement(bankAccountMovementId) {
             lastUpdate = '${lastUpdate}',
             condoId = '${condoId}',
             accountId = '${accountId}',
-            income = '${income}',
-            payment = '${payment}',
+            income = ${income},
+            payment = ${payment},
             numberKWHour  = '${numberKWHour}',
-            date  = '${date}',
+            date  = ${date},
             text = '${text}'
           WHERE bankAccountMovementId = ${bankAccountMovementId};
         `;
@@ -891,10 +897,10 @@ function updateBankAccountMovement(bankAccountMovementId) {
           '${lastUpdate}',
           ${condoId},
           ${accountId},
-          '${income}',
-          '${payment}',
+          ${income},
+          ${payment},
           '${numberKWHour}',
-          '${date}', 
+          ${date}, 
           '${text}'
         );
       `;
@@ -1004,18 +1010,18 @@ function getSelectedBankAccountMovements() {
     Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
 
   const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value));
   const toDate =
-    convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value));
 
   const amount =
-    formatAmountToOre(document.querySelector('.input-bankaccountmovement-filterAmount').value);
+    Number(formatAmountToOre(document.querySelector('.input-bankaccountmovement-filterAmount').value));
 
   let SQLquery =
     `
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND date BETWEEN '${fromDate}' AND '${toDate}'
+      AND date BETWEEN ${fromDate} AND ${toDate}
     `;
 
   if (condoId !== 999999999) {
@@ -1032,17 +1038,17 @@ function getSelectedBankAccountMovements() {
       `;
   }
 
-  if (amount !== '0') {
+  if (amount !== 0) {
     SQLquery +=
       `
-        AND income = '${amount}' OR payment = '${amount}'
+        AND income = ${amount} OR payment = ${amount}
       `;
   }
 
   SQLquery +=
     `
-      ORDER BY date DESC;
+      ORDER BY date DESC, income DESC;
     `;
-  
+
   updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
 }

@@ -16,6 +16,11 @@ const objAccountReport =
 
 testMode();
 
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href = 'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
 let isEventsCreated = false;
 
 objAccountReport.menu();
@@ -29,7 +34,8 @@ socket =
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('accountinreport-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   let SQLquery;
@@ -531,16 +537,16 @@ function getSelectedBankAccountMovement() {
     Number(document.querySelector('.select-accountreport-year').value);
 
   const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-accountreport-fromDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-fromDate').value));
   const toDate =
-    convertDateToISOFormat(document.querySelector('.input-accountreport-toDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-toDate').value));
 
   // Sends a request to the server to get selected bank account movements
   SQLquery =
     `
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND date BETWEEN '${fromDate}' AND '${toDate}';
+      AND date BETWEEN ${fromDate} AND ${toDate};
     `;
   console.log(SQLquery);
   updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');

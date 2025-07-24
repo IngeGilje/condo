@@ -6,6 +6,12 @@ const objAccount = new Account('account');
 
 testMode();
 
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
 let isEventsCreated = false;
 
 objAccount.menu();
@@ -19,7 +25,8 @@ const objUserPassword =
   JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('account-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server

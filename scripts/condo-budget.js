@@ -2,18 +2,24 @@
 
 // Activate objects
 const today =
- new Date();
-const objUser = 
-new User('user');
+  new Date();
+const objUser =
+  new User('user');
 const objAccount =
- new Account('account');
+  new Account('account');
 const objBudget =
- new Budget('budget');
+  new Budget('budget');
 
 let isEventsCreated =
- false;
+  false;
 
 testMode();
+
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
 
 objBudget.menu();
 objBudget.markSelectedMenu('Budsjett');
@@ -25,7 +31,8 @@ socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('bankaccount-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -252,7 +259,7 @@ function updateBudgetRow(budgetId) {
             user = '${objUserPassword.email}', 
             lastUpdate = '${lastUpdate}',
             accountId = ${accountId},
-            amount = '${amount}',
+            amount = ${amount},
             year = '${year}'
           WHERE budgetId = ${budgetId};
         `;
@@ -276,7 +283,7 @@ function updateBudgetRow(budgetId) {
             '${objUserPassword.email}',
             '${lastUpdate}',
             ${accountId},
-            '${amount}',
+            ${amount},
             '${year}'
           );
         `;

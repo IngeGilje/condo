@@ -10,6 +10,12 @@ const objMonthlyRent = new MonthlyRent('monthlyrent');
 
 testMode();
 
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
 let isEventsCreated = false;
 
 objMonthlyRent.menu();
@@ -22,7 +28,8 @@ socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('monthlyrent-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
 
@@ -321,7 +328,7 @@ function updateMonthlyRent() {
       Number(document.querySelector('.select-monthlyrent-day').value);
 
     const amount =
-      formatAmountToOre(document.querySelector('.input-monthlyrent-amount').value);
+      Number(formatAmountToOre(document.querySelector('.input-monthlyrent-amount').value));
 
     // Insert new monthly amount for every month this year
     for (month = 1; month < 13; month++) {
@@ -352,8 +359,8 @@ function updateMonthlyRent() {
           '${lastUpdate}',
           ${condoId},
           ${accountId},
-          '${amount}',
-          '${date}',
+          ${amount},
+          ${date},
           '${text}'
         );
       `;
@@ -389,7 +396,7 @@ function deleteMonthlyRent() {
     const accountId =
       Number(document.querySelector('.select-monthlyrent-accountId').value);
     let amount =
-      formatAmountToOre(document.querySelector('.input-monthlyrent-amount').value);
+      Number(formatAmountToOre(document.querySelector('.input-monthlyrent-amount').value));
 
     for (month = 1; month < 13; month++) {
 
@@ -412,7 +419,6 @@ function deleteMonthlyRent() {
           `;
 
         updateMySql(SQLquery, 'due', 'DELETE');
-        console.log(SQLquery);
 
         isDeleted = true;
       }

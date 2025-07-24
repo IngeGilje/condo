@@ -167,7 +167,7 @@ class Due extends Condos {
           <option value="0" 
             selected
           >
-            Ingen bankkonto transaksjoner
+            Ingen banktransaksjoner
           </option>
         `;
       selectedOption =

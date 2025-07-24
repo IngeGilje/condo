@@ -7,6 +7,11 @@ const objBankAccount = new BankAccount('bankaccount');
 
 testMode();
 
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href = 'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
 let isEventsCreated = false;
 
 objBankAccount.menu();
@@ -19,7 +24,8 @@ socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('bankaccount-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
   // Send a requests to the server
   socket.onopen = () => {

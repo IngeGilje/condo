@@ -7,19 +7,30 @@ const objUserBankAccount = new UserBankAccount('userbankaccount');
 
 testMode();
 
-let isEventsCreated = false;
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
+
+let isEventsCreated =
+  false;
 
 objUserBankAccount.menu();
 objUserBankAccount.markSelectedMenu('Bankkonto for bruker');
 
 let socket;
-socket = connectingToServer();
+socket =
+  connectingToServer();
 
 // Validate user/password
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+const objUserPassword =
+  JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('userbankaccount-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server

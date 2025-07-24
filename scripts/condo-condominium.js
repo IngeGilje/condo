@@ -1,6 +1,8 @@
 // Condominium maintenance
 
-// Activate Condominium class
+// Activate classes
+const today =
+  new Date();
 const objUser =
   new User('user');
 const objAccount =
@@ -12,7 +14,17 @@ const objCondominium =
 
 testMode();
 
-let isEventsCreated = false;
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
+// exit application if no activity for 10 minutes
+resetInactivityTimer();
+
+let isEventsCreated =
+  false;
 
 objCondominium.menu();
 objCondominium.markSelectedMenu('Sameie');
@@ -25,19 +37,23 @@ socket =
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('condominium-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server
   socket.onopen = () => {
 
+    let SQLquery;
+
     // Sends a request to the server to get users
-    let SQLquery =
+    SQLquery =
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
         ORDER BY userId;
       `;
+
     updateMySql(SQLquery, 'user', 'SELECT');
 
     // Sends a request to the server to get bankaccounts
@@ -187,7 +203,7 @@ function condominiumEvents() {
 
   // New condominium
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominium-new')) {
+    if (event.target.classList.contains('button-condominium-insert')) {
       resetValues();
     }
   });
@@ -227,8 +243,10 @@ function condominiumEvents() {
 
 function updateCondominium(condominiumId) {
 
-  let SQLquery = "";
-  let isUpdated = false;
+  let SQLquery =
+    "";
+  let isUpdated =
+    false;
 
   // Check values
   if (validateValues()) {
@@ -257,8 +275,8 @@ function updateCondominium(condominiumId) {
       document.querySelector('.input-condominium-importPath').value;
 
     // current date
-    const now = new Date();
-    const lastUpdate = now.toISOString();
+    const lastUpdate =
+      today.toISOString();
 
     // Check if condominium id exist
     const objCondominimuRowNumber =
@@ -328,7 +346,7 @@ function updateCondominium(condominiumId) {
       false;
     document.querySelector('.button-condominium-delete').disabled =
       false;
-    document.querySelector('.button-condominium-new').disabled =
+    document.querySelector('.button-condominium-insert').disabled =
       false;
     //document.querySelector('.button-condominium-cancel').disabled =
     //  false;
@@ -510,7 +528,7 @@ function resetValues() {
     true;
   document.querySelector('.button-condominium-delete').disabled =
     true;
-  document.querySelector('.button-condominium-new').disabled =
+  document.querySelector('.button-condominium-insert').disabled =
     true;
   //document.querySelector('.button-condominium-cancel').disabled =
   //  true;

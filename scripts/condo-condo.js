@@ -6,7 +6,14 @@ const objCondo = new Condo('condo');
 
 testMode();
 
-let isEventsCreated = false;
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
+let isEventsCreated =
+  false;
 
 objCondo.menu();
 objCondo.markSelectedMenu('Leilighet');
@@ -18,7 +25,8 @@ socket = connectingToServer();
 const objUserPassword = JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('condo-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -147,7 +155,7 @@ function createEvents() {
 
   // New condo
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condo-new')) {
+    if (event.target.classList.contains('button-condo-insert')) {
 
       resetValues();
     }
@@ -254,7 +262,7 @@ function updateCondoRow(condoId) {
       false;
     document.querySelector('.button-condo-delete').disabled =
       false;
-    document.querySelector('.button-condo-new').disabled =
+    document.querySelector('.button-condo-insert').disabled =
       false;
 
     isUpdated = true;
@@ -377,7 +385,7 @@ function resetValues() {
     true;
   document.querySelector('.button-condo-delete').disabled =
     true;
-  document.querySelector('.button-condo-new').disabled =
+  document.querySelector('.button-condo-insert').disabled =
     true;
 }
 

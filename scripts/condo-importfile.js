@@ -26,6 +26,17 @@ const objImportFile =
 
 testMode();
 
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href = 'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
 let importFileArray =
   [];
 let textFile;
@@ -34,7 +45,7 @@ let isEventsCreated = false;
 
 // Mark selected menu
 objImportFile.menu();
-objImportFile.markSelectedMenu('Importer bankkonto transaksjoner');
+objImportFile.markSelectedMenu('Importer banktransaksjoner');
 
 let socket;
 socket =
@@ -45,7 +56,8 @@ const objUserPassword =
   JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('importfile-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -308,7 +320,6 @@ function createEvents() {
       updateBankAccountMovements();
 
       // Update opening date and balance
-      // Update closing date and balance
       updateOpeningClosingBalance();
 
       // Start program for maintain bank account movements
@@ -321,7 +332,7 @@ function createEvents() {
 function showLeadingText() {
 
   // Show button for update of bank account movement
-  objImportFile.showButton('importfile-updateBankAccountMovement', 'Oppdater bankkonto transaksjoner');
+  objImportFile.showButton('importfile-updateBankAccountMovement', 'Oppdater banktransaksjoner');
 }
 
 function showBankAccountMovements() {
@@ -407,8 +418,6 @@ function showBankAccountMovements() {
       `;
     }
 
-    //const fromBankAccountName =
-    //  truncateText(importFile.fromBankAccountName, 'div-importfile-columnFromBankAccount');
     htmlColumnFromBankAccount +=
       `
         <div 
@@ -418,9 +427,6 @@ function showBankAccountMovements() {
         </div>
       `;
 
-    // get to bank account name
-    //const toBankAccountName =
-    //  truncateText(importFile.toBankAccountName, 'div-importfile-columnToBankAccount');
     htmlColumnToBankAccount +=
       `
         <div 
@@ -457,8 +463,6 @@ function showBankAccountMovements() {
       `;
 
     // Text has to fit into the column
-    //let text =
-    //  truncateText(importFile.text, 'div-importfile-columnText');
     text = (text === "") ? "-" : text;
     htmlColumnText +=
       `
@@ -518,10 +522,6 @@ function showBankAccountMovements() {
     `;
 
   // opening balance date
-  /*
-  const closingBalanceDate =
-    getClosingBalanceDate();
-  */
   htmlColumnFromBankAccount +=
     `
       <div
@@ -532,12 +532,6 @@ function showBankAccountMovements() {
     `;
 
   // opening balance
-  /*
-  let openingBalance =
-    getOpeningBalance();
-  openingBalance =
-    formatOreToKroner(openingBalance);
-  */
   htmlColumnToBankAccount +=
     `
       <div
@@ -568,24 +562,6 @@ function showBankAccountMovements() {
         ${payment}
       </div>
     `;
-
-  // Utgående balanse
-  /*
-  openingBalance = openingBalance.replace(" ", "");
-  openingBalance = openingBalance.replace(",", "");
-  let closingBalanse =
-    Number(openingBalance) + sumColumnPayment + sumColumnIncome;
-  closingBalanse =
-    formatOreToKroner(closingBalanse);
-  htmlColumnText +=
-    `
-      <div 
-        class = "sumCellLeft"
-      >
-        ${closingBalanse}
-      </div>
-    `;
-  */
 
   // Show columns
   document.querySelector(".div-importfile-columnLineNumber").innerHTML =
@@ -697,7 +673,7 @@ function createImportFileArray(fileContent) {
       // Do not import bank account movement twice
       date =
         convertDateToISOFormat(accountingDate);
-      if (!checkBankAccountMovement(income, payment, date, text)) {
+      if (!checkBankAccountMovement(Number(income), Number(payment), Number(date), text)) {
 
         // From bank account
         importFileId++;
@@ -750,9 +726,6 @@ function updateBankAccountMovements() {
     const text =
       importFile.text;
 
-    // Do not import bank account movement twice
-    //if (!checkBankAccountMovement(income, payment, date, text)) {
-
     const SQLquery =
       `
           INSERT INTO bankaccountmovement (
@@ -774,10 +747,10 @@ function updateBankAccountMovements() {
             '${lastUpdate}',
             ${condoId},
             ${accountId},
-            '${income}',
-            '${payment}',
+            ${income},
+            ${payment},
             '',
-            '${date}', 
+            ${date}, 
             '${text}'
           );
         `;
@@ -1065,8 +1038,8 @@ function checkBankAccountMovement(income, payment, date, text) {
 
   bankAccountMovementArray.forEach((bankAccountMovement) => {
 
-    if (Number(bankAccountMovement.income) === Number(income)
-      && Number(bankAccountMovement.payment) === Number(payment)
+    if (bankAccountMovement.income === income
+      && bankAccountMovement.payment === payment
       && bankAccountMovement.date === date
       && bankAccountMovement.text === text) {
 

@@ -18,6 +18,12 @@ const objRemoteheating =
 
 testMode();
 
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href =
+    'http://localhost/condo/condo-login.html'
+}, 1 * 60 * 60 * 1000);
+
 let isEventsCreated =
   false;
 
@@ -32,7 +38,8 @@ const objUserPassword =
   JSON.parse(localStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  showLoginError('remoteheating-login');
+  window.location.href =
+    'http://localhost/condo/condo-login.html';
 } else {
 
 
@@ -545,49 +552,34 @@ function getSelectedBankAccountMovements() {
     Number(document.querySelector('.select-remoteheating-accountId').value);
 
   const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
   const toDate =
-    convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value);
+    Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
+
+  let SQLquery =
+    `
+      SELECT * FROM bankaccountmovement
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND date BETWEEN ${fromDate} AND ${toDate}
+    `;
 
   // Check condo Id 
-  if ((condoId === 999999999) && (accountId === 999999999)) {
+  if (condoId !== 999999999) {
 
     // Sends a request to the server to get selected bank account movements
-    SQLquery =
+    SQLquery +=
       `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}'
-        ORDER BY date DESC;
-      `;
-  }
-
-  // Check if condo Id is selected
-  if ((condoId !== 999999999) && (accountId !== 999999999)) {
-
-    // Sends a request to the server to get selected bank account movements
-    SQLquery =
-      `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
         AND condoId = ${condoId}
-        AND accountId = ${accountId}
-        ORDER BY date DESC;
       `;
   }
 
-  // Check if condo Id is selected
-  if ((condoId === 999999999) && (accountId !== 999999999)) {
+  // Check account Id 
+  if (accountId !== 999999999) {
 
     // Sends a request to the server to get selected bank account movements
-    SQLquery =
+    SQLquery +=
       `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
         AND accountId = ${accountId}
-        ORDER BY date DESC;
       `;
   }
 
@@ -595,12 +587,8 @@ function getSelectedBankAccountMovements() {
   if ((condoId !== 999999999) && (accountId === 999999999)) {
 
     // Sends a request to the server to get selected bank account movements
-    SQLquery =
+    SQLquery +=
       `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${fromDate}' AND '${toDate}' 
-        AND condoId = ${condoId}
         ORDER BY date DESC;
       `;
   }
