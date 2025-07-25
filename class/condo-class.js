@@ -6,6 +6,9 @@ class Condos {
   // serverStatus = 3; // Test server/ local test server
   serverStatus = 3; // Test server/ local test server
 
+  inactivityTimeout =
+    false;
+
   // All year from 2020 until 2039
   #yearArray = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029,
     2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039];
@@ -201,37 +204,34 @@ class Condos {
   }
 
   // Valid text
-  validateText(text, className, labelText) {
+  validateText(tekst, className, labelText) {
 
-    let validText =
+    let validTekst =
       true;
 
     // Check for string
-    if (typeof text !== "string") {
+    if (typeof tekst !== "string") {
 
-      validText =
+      validTekst =
         false;
     }
 
     // Check length
-    if (text.length > 50) {
+    if (tekst.length > 50) {
 
-      validText =
+      validTekst =
         false;
     };
 
     // Check allowed characters (letters, numbers, spaces)
-    if (text.length > 0) {
+    if (tekst.length > 0) {
 
-      const regex = /^[a-zA-Z0-9\s]+$/;
-      if (!regex.test(text)) {
 
-        validText =
-          false;
-      }
+      const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
+      validTekst = (regex.test(tekst)) ? true : false;
     }
 
-    if (!validText) {
+    if (!validTekst) {
 
       // Invalid text
       if (isClassDefined(className)) {
@@ -246,7 +246,7 @@ class Condos {
     }
 
     // Valid text
-    if (validText) {
+    if (validTekst) {
       if (isClassDefined(`${className}-red`)) {
 
         document.querySelector(`.${className}-red`).outerHTML =
@@ -256,9 +256,8 @@ class Condos {
             </div>
           `;
       }
-      validText = true;
     }
-    return validText;
+    return validTekst;
   }
 
   // Validate postal code
@@ -1274,23 +1273,30 @@ function formatAmountToOre(amount) {
 
   switch (Number(orer.length)) {
     case 2:
-      amount = kroner + orer;
+      amount =
+        kroner + orer;
       break;
     case 1:
-      amount = kroner + orer + '0';
+      amount =
+        kroner + orer + '0';
       break;
     case 0:
-      amount = kroner + '00;'
+      amount =
+        kroner + '00;'
       break;
     default:
-      amount = kroner + orer.slice(0, 2);
+      amount =
+        kroner + orer.slice(0, 2);
       break;
   }
 
   // Check for valid amount in orer
-  amount = (amount === '000') ? '0' : amount;
-  amount = (isNumeric(amount)) ? amount : '0';
-  amount = Number(amount);
+  amount =
+    (amount === '000') ? '0' : amount;
+  amount =
+    (isNumeric(amount)) ? amount : '0';
+  amount =
+    Number(amount);
   //return String(amount);
   return Number(amount);
 }
@@ -1570,12 +1576,12 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
 // exit application after 10 minuttes
 function resetInactivityTimer() {
 
-  clearTimeout(inactivityTimeout);
-  
+  clearTimeout(this.inactivityTimeout);
+
   inactivityTimeout = setTimeout(() => {
     window.location.href =
-    'http://localhost/condo/condo-login.html'
-  }, 10 * 60 * 1000); 
+      'http://localhost/condo/condo-login.html'
+  }, 10 * 60 * 1000);
 }
 
 // Listen for user activity

@@ -16,11 +16,8 @@ const objOverview =
 
 testMode();
 
-// Redirect application after 2 hours
-setTimeout(() => {
-  window.location.href =
-    'http://localhost/condo/condo-login.html'
-}, 1 * 60 * 60 * 1000);
+// Exit application if no activity for 10 minutes
+resetInactivityTimer();
 
 let isEventsCreated = false;
 

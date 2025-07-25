@@ -11,7 +11,7 @@ function isPositive (number) {
   return (number >= 0);
 }
 
-let isPositive = number => number > 0;
+isPositive = number => number > 0;
 
 function randomNumber() {
 

@@ -14,13 +14,7 @@ const objCondominium =
 
 testMode();
 
-// Redirect application after 2 hours
-setTimeout(() => {
-  window.location.href =
-    'http://localhost/condo/condo-login.html'
-}, 1 * 60 * 60 * 1000);
-
-// exit application if no activity for 10 minutes
+// Exit application if no activity for 10 minutes
 resetInactivityTimer();
 
 let isEventsCreated =
@@ -144,10 +138,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(condominiumId);
 
           // Make events
+          /*
           if (!isEventsCreated) {
             condominiumEvents();
             isEventsCreated = true;
           }
+          */
+           isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
           break;
       }
     }
@@ -239,6 +236,7 @@ function condominiumEvents() {
       updateMySql(SQLquery, 'condominium', 'SELECT');
     }
   });
+  return true;
 }
 
 function updateCondominium(condominiumId) {
