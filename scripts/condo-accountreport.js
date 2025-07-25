@@ -21,7 +21,7 @@ setTimeout(() => {
   window.location.href = 'http://localhost/condo/condo-login.html'
 }, 1 * 60 * 60 * 1000);
 
-let isEventsCreated = false;
+let isEventsCreated
 
 objAccountReport.menu();
 objAccountReport.markSelectedMenu('Regnskapsrapport');
@@ -134,10 +134,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues();
 
           // Make events
-          if (!isEventsCreated) {
-            createEvents();
-            isEventsCreated = true;
-          }
+          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
           break;
       }
     }

@@ -10,8 +10,7 @@ const objAccount =
 const objBudget =
   new Budget('budget');
 
-let isEventsCreated =
-  false;
+let isEventsCreated
 
 testMode();
 
@@ -113,12 +112,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(budgetId);
 
           // Make events
-          if (!isEventsCreated) {
-
-            createEvents();
-            isEventsCreated = true;
-          }
-          break;
+          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+                    break;
       }
     }
 

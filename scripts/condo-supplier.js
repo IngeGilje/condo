@@ -10,8 +10,7 @@ testMode();
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
 
-let isEventsCreated =
-  false;
+let isEventsCreated
 
 objSupplier.menu();
 objSupplier.markSelectedMenu('Leverandør');
@@ -110,10 +109,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(supplierId);
 
           // Make events
-          if (!isEventsCreated) {
-            createEvents();
-            isEventsCreated = true;
-          }
+          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
           break;
       }
     }

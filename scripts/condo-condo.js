@@ -9,8 +9,7 @@ testMode();
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
 
-let isEventsCreated =
-  false;
+let isEventsCreated
 
 objCondo.menu();
 objCondo.markSelectedMenu('Leilighet');
@@ -90,11 +89,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(condoId);
 
           // Make events
-          if (!isEventsCreated) {
-            createEvents();
-            isEventsCreated = true;
-          }
-          break;
+           isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+                     break;
       }
     }
 

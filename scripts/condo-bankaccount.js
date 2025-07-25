@@ -12,7 +12,7 @@ setTimeout(() => {
   window.location.href = 'http://localhost/condo/condo-login.html'
 }, 1 * 60 * 60 * 1000);
 
-let isEventsCreated = false;
+let isEventsCreated
 
 objBankAccount.menu();
 objBankAccount.markSelectedMenu('Bankkonto sameie');
@@ -110,10 +110,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(bankaccountId);
 
           // Make events
-          if (!isEventsCreated) {
-            createEvents();
-            isEventsCreated = true;
-          }
+          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
           break;
       }
     }
@@ -146,98 +143,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     socket.onclose = () => {
     }
   }
-  /*
-  // Send a message to the server
-  socket.onopen = () => {
-
-    // Sends a request to the server to get all users
-    const SQLquery = `
-    SELECT * FROM user
-    WHERE condominiumId = ${objUserPassword.condominiumId}
-    ORDER BY userId;
-  `;
-    socket.send(SQLquery);
-  };
-
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
-
-    let message = event.data;
-
-    // Create user array including objets
-    if (message.includes('"tableName":"user"')) {
-
-      console.log('userTable');
-
-      // user array including objects with user information
-      userArray = JSON.parse(message);
-
-      // Sends a request to the server to get all accounts
-      const SQLquery = 
-        `
-          SELECT * FROM account
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY accountId;
-        `;
-      socket.send(SQLquery);
-    }
-
-    // Create bankaccount array including objets
-    if (message.includes('"tableName":"account"')) {
-
-      // array including objects with account information
-      accountArray = JSON.parse(message);
-
-      // Sends a request to the server to get all bank accounts
-      const SQLquery = `
-      SELECT * FROM bankaccount
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-      ORDER BY name;
-    `;
-      socket.send(SQLquery);
-    }
-
-    // Create bank account array including objets
-    if (message.includes('"tableName":"bankaccount"')) {
-
-      // bankaccount table
-      console.log('bankaccountTable');
-
-      // array including objects with bankaccount information
-      bankAccountArray =
-        JSON.parse(message);
-
-      const bankAccountId =
-        objBankAccount.getSelectedBankAccountId('bankAccountId');
-
-      // Show leading text
-      showLeadingText(bankAccountId);
-
-      // Show all values for bankaccount
-      showValues(bankAccountId);
-
-      // Make events
-      if (!isEventsCreated) {
-        createEvents();
-        isEventsCreated = true;
-      }
-    }
-
-    // Check for update, delete ...
-    if (message.includes('"affectedRows"')) {
-
-      console.log('affectedRows');
-
-      // Sends a request to the server to get all bank accounts
-      const SQLquery =
-        `
-          SELECT * FROM bankaccount
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-          ORDER BY bankAccountId;
-        `;
-      socket.send(SQLquery);
-    }
-  };
 
   // Handle errors
   socket.onerror = (error) => {
@@ -249,8 +154,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
-  */
 }
+
 // Make events for bankaccounts
 function createEvents() {
 

@@ -6,8 +6,7 @@ const objUser =
 const objLogIn =
   new Login('login');
 
-let isEventsCreated =
-  false;
+let isEventsCreated
 
 let socket;
 socket = connectingToServer();
@@ -54,10 +53,7 @@ socket.onmessage = (event) => {
         showLeadingText();
 
         // Make events
-        if (!isEventsCreated) {
-          createEvents();
-          isEventsCreated = true;
-        }
+          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
         break;
     }
   }

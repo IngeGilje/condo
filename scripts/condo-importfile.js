@@ -38,7 +38,7 @@ let importFileArray =
   [];
 let textFile;
 
-let isEventsCreated = false;
+let isEventsCreated
 
 // Mark selected menu
 objImportFile.menu();
@@ -258,11 +258,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         showLeadingText();
 
         // Make events
-        if (!isEventsCreated) {
-
-          createEvents();
-          isEventsCreated = true;
-        }
+          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
       }, 100);
     }
 

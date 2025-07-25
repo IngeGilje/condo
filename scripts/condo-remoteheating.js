@@ -21,8 +21,7 @@ testMode();
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
 
-let isEventsCreated =
-  false;
+let isEventsCreated
 
 objRemoteheating.menu();
 objRemoteheating.markSelectedMenu('Fjernvarme');
@@ -165,10 +164,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues();
 
           // Make events
-          if (!isEventsCreated) {
-            createEvents();
-            isEventsCreated = true;
-          }
+           isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
           break;
       }
     }

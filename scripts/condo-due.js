@@ -17,7 +17,7 @@ testMode();
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
 
-let isEventsCreated = false;
+let isEventsCreated
 
 objDue.menu();
 objDue.markSelectedMenu('Forfall');
@@ -156,11 +156,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(dueId);
 
           // Make events
-          if (!isEventsCreated) {
-
-            createEvents();
-            isEventsCreated = true;
-          }
+          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
           break;
       }
     }

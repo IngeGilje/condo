@@ -6,8 +6,7 @@ const objCondo =
 const objUser =
   new User('user');
 
-let isEventsCreated =
-  false;
+let isEventsCreated
 
 testMode();
 
@@ -95,10 +94,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(userId);
 
           // Make events
-          if (!isEventsCreated) {
-            createEvents();
-            isEventsCreated = true;
-          }
+          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
           break;
       }
     }
