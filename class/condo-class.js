@@ -51,21 +51,102 @@ class Condos {
 
     let html =
       this.showLabel(className, labelText);
+
     html +=
       `
         <input 
           type="text" 
-          class="input-${className}"
+          class="input-${className} icon-input"
           maxlength="${maxlength}"
           placeholder="${placeholder}"
         >
-        <p
-          class="p-importfile-fileName"
-        </p>
       `;
     document.querySelector(`.div-${className}`).innerHTML =
       html;
+
+    let imageName;
+    imageName =
+      className.includes('-name') ? "name.png" : '';
+    imageName =
+      className.includes('-street') ? "street.png" : imageName;
+    imageName =
+      className.includes('-address2') ? "address2.png" : imageName;
+    imageName =
+      className.includes('-postalCode') ? "postalcode.png" : imageName;
+    imageName =
+      className.includes('-city') ? "city.png" : imageName;
+    imageName =
+      className.includes('-phone') ? "phone.png" : imageName;
+    imageName =
+      className.includes('-email') ? "email.png" : imageName;
+    imageName =
+      className.includes('-organizationNumber') ? "organizationnumber.png" : imageName;
+    imageName =
+      className.includes('-fileName') ? "filename.png" : imageName;
+    imageName =
+      className.includes('-date') ? "date.png" : imageName;
+    imageName =
+      className.includes('-income') ? "income.png" : imageName;
+    imageName =
+      className.includes('-payment') ? "payment.png" : imageName;
+    imageName =
+      className.includes('-numberKWHour') ? "numberKWHour.png" : imageName;
+    imageName =
+      className.includes('-text') ? "text.png" : imageName;
+    imageName =
+      className.includes('-filterFromDate') ? "date.png" : imageName;
+    imageName =
+      className.includes('-fromDate') ? "date.png" : imageName;
+    imageName =
+      className.includes('-toDate') ? "date.png" : imageName;
+    imageName =
+      className.includes('-filterToDate') ? "date.png" : imageName;
+    imageName =
+      className.includes('-filterAmount') ? "amount.png" : imageName;
+    imageName =
+      className.includes('-amount') ? "amount.png" : imageName;
+    imageName =
+      className.includes('-bankAccount') ? "bankAccount.png" : imageName;
+    imageName =
+      className.includes('-firstName') ? "name.png" : imageName;
+    imageName =
+      className.includes('-lastName') ? "name.png" : imageName;
+    imageName =
+      className.includes('-password') ? "password.png" : imageName;
+    imageName =
+      className.includes('-accountName') ? "accountName.png" : imageName;
+    imageName =
+      className.includes('-openingBalance') ? "amount.png" : imageName;
+    imageName =
+      className.includes('-closingBalance') ? "amount.png" : imageName;
+    imageName =
+      className.includes('-openingBalanceDate') ? "date.png" : imageName;
+    imageName =
+      className.includes('-closingBalanceDate') ? "date.png" : imageName;
+
+    // Set the PNG file
+    const input =
+      document.querySelector(`.input-${className}`);
+    input.style.backgroundRepeat = `no-repeat`;
+    input.style.backgroundImage = `url('icons/${imageName}')`;
   }
+
+  /*
+  // Show input
+  showInput(className, labelText, maxlength, placeholder) {
+
+    let html = `<input type="text" class="icon-input input-${className}" placeholder="Type here..." />`;
+    document.querySelector(`.div-${className}`).innerHTML =
+      html;
+
+          // Dynamically set the PNG file
+    const input = document.querySelector(`.div-${className}`);
+
+    const iconPath = "icons/delete.png";
+    input.style.backgroundImage = `url('${iconPath}')`;
+  }
+  */
+
 
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
@@ -92,7 +173,7 @@ class Condos {
         </label>
       `;
   }
-
+  /*
   // Show button
   showButton(className, buttonText) {
 
@@ -105,19 +186,35 @@ class Condos {
         </button>
       `;
   }
-
+  */
   // Show button
-  showLabelButton(className, buttonText) {
+  showButton(className, buttonText) {
+    let imageName;
+    imageName =
+      className.includes('-email') ? "mail.png" : '';
+    imageName =
+      className.includes('-save') ? "save.png" : '';
+    imageName =
+      className.includes('-insert') ? "insert.png" : imageName;
+    imageName =
+      className.includes('-cancel') ? "cancel.png" : imageName;
+    imageName =
+      className.includes('-delete') ? "delete.png" : imageName;
 
-    document.querySelector(`.div-${className}`).innerHTML =
+    const html =
       `
-
         <button 
-          class="button-${className} buttonHeight"
+          class="button-${className}"
         >
+          <img 
+            src="icons/${imageName}" 
+            height="18"
+          >
           ${buttonText}
         </button>
       `;
+    document.querySelector(`.div-${className}`).innerHTML =
+      html;
   }
 
   // Show checkbox

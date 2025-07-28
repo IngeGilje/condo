@@ -229,7 +229,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(bankAccountMovementId);
 
           // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
           break;
       }
     }
@@ -318,7 +318,7 @@ function createEvents() {
 
   // update bank account movement
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-bankaccountmovement-update')) {
+    if (event.target.classList.contains('button-bankaccountmovement-save')) {
 
       const bankAccountMovementId =
         Number(document.querySelector('.select-bankaccountmovement-bankAccountMovementId').value);
@@ -463,7 +463,7 @@ function showLeadingText() {
   objBankAccountMovement.showInput('bankaccountmovement-payment', 'Utgift', 10, '');
 
   // show update button
-  objBankAccountMovement.showButton('bankaccountmovement-update', 'Oppdater');
+  objBankAccountMovement.showButton('bankaccountmovement-save', 'Lagre');
 
   // show insert button
   objBankAccountMovement.showButton('bankaccountmovement-insert', 'Ny');

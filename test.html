@@ -3,22 +3,45 @@
 
 <head>
 
-  <title>Socket.IO Test</title>
+  <title>Test</title>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/condo.css">
-  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-</head>
+
+   <style>
+    .icon-input {
+      background-repeat: no-repeat;
+      background-position: 10px center;
+      padding-left: 40px;
+      width: 250px;
+      height: 36px;
+    }
+  </style>
+ </head>
 
 <body>
 
-  <!--
+  <input type="text" class="icon-input" placeholder="Type here..." />
+
+  <script>
+
+    const input = document.querySelector(".icon-input");
+
+    // Dynamically set the PNG file
+    const iconPath = "icons/home.png";
+    input.style.backgroundImage = `url('${iconPath}')`;
+  </script>
+</body>
+
+<!--
   <script src="class/condo-class.js"></script>
   <script src="class/condo-user-class.js"></script>
   <script src="class/condo-condo-class.js"></script>
-  -->
+  <script src="class/condo-condominium-class.js"></script>
+
+
   <script src="scripts/test.js"></script>
+    -->
 </body>
 
 </html>

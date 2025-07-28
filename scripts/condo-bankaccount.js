@@ -110,7 +110,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(bankaccountId);
 
           // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
           break;
       }
     }
@@ -173,7 +173,7 @@ function createEvents() {
   });
 
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-bankaccount-update')) {
+    if (event.target.classList.contains('button-bankaccount-save')) {
       if (updateBankAccount()) {
       }
     }
@@ -376,7 +376,7 @@ function showLeadingText(bankAccountId) {
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objBankAccount.showButton('bankaccount-update', 'Oppdater');
+    objBankAccount.showButton('bankaccount-save', 'Lagre');
 
     // new button
     objBankAccount.showButton('bankaccount-insert', 'Ny');

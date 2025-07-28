@@ -134,7 +134,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues();
 
           // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
           break;
       }
     }

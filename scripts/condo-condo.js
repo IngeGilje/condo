@@ -89,8 +89,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(condoId);
 
           // Make events
-           isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
-                     break;
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
+          break;
       }
     }
 
@@ -138,7 +138,7 @@ function createEvents() {
   // Update condo
   document.addEventListener('click', (event) => {
 
-    if (event.target.classList.contains('button-condo-update')) {
+    if (event.target.classList.contains('button-condo-save')) {
 
       const condoId =
         Number(document.querySelector('.select-condo-condoId').value);
@@ -279,7 +279,7 @@ function showLeadingText(condoId) {
   objCondo.showInput('condo-address2', 'Adresse 2', 50, '');
 
   // Postal code
-  objCondo.showInput('condo-postalCode', '* Postnummer', 4, '4 siffer');
+  objCondo.showInput('condo-postalCode', '* Postnummer', 4, '');
 
   // City
   objCondo.showInput('condo-city', '* Poststed', 50, '');
@@ -287,7 +287,7 @@ function showLeadingText(condoId) {
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
 
-    objCondo.showButton('condo-update', 'Oppdater');
+    objCondo.showButton('condo-save', 'Lagre');
 
     // show new button
     objCondo.showButton('condo-insert', 'Ny');

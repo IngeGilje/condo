@@ -258,7 +258,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         showLeadingText();
 
         // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+        isEventsCreated = (isEventsCreated) ? true : createEvents();
       }, 100);
     }
 
@@ -307,7 +307,7 @@ function createEvents() {
 
   // Update bank account movements
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-importfile-updateBankAccountMovement')) {
+    if (event.target.classList.contains('button-importfile-saveBankAccountMovement')) {
 
       // Update bank account movements table
       updateBankAccountMovements();
@@ -325,7 +325,7 @@ function createEvents() {
 function showLeadingText() {
 
   // Show button for update of bank account movement
-  objImportFile.showButton('importfile-updateBankAccountMovement', 'Oppdater banktransaksjoner');
+  objImportFile.showButton('importfile-saveBankAccountMovement', 'Oppdater banktransaksjoner');
 }
 
 function showBankAccountMovements() {
@@ -1009,7 +1009,7 @@ function resetBankAccountMovements() {
 
 function removeBankAccountColumn() {
 
-  document.querySelector(".button-importfile-updateBankAccountMovement").remove();
+  document.querySelector(".button-importfile-saveBankAccountMovement").remove();
 }
 
 // Send a request to the server to get all bank account transactions

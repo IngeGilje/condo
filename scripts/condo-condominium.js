@@ -3,14 +3,22 @@
 // Activate classes
 const today =
   new Date();
+
 const objUser =
   new User('user');
+let userTableOpen
+
 const objAccount =
   new Account('account');
+let accountTableOpen
+
 const objBankAccount =
   new BankAccount('bankaccount');
+let bankAccountTableOpen
+
 const objCondominium =
   new Condominium('condominium');
+let condominiumTableOpen;
 
 testMode();
 
@@ -97,6 +105,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userTableOpen =
+            true
           break;
 
         case 'account':
@@ -106,15 +116,19 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountTableOpen =
+            true
           break;
 
         case 'bankaccount':
 
           // bankaccount table
-          console.log('bankaccountTable');
+          console.log('bankAccountTable');
 
-          bankaccountArray =
+          bankAccountArray =
             objInfo.tableArray;
+          bankAccountTableOpen =
+            true
           break;
 
         case 'condominium':
@@ -125,19 +139,26 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with condominium information
           condominiumArray =
             objInfo.tableArray;
+          condominiumTableOpen =
+            true
 
-          // Find selected condominium id
-          const condominiumId =
-            objCondominium.getSelectedCondominiumId('select-condominium-condominiumId');
+          // if all tables are opened
+          if (userTableOpen && accountTableOpen && bankAccountTableOpen && condominiumTableOpen) {
 
-          // Show leading text
-          showLeadingText(condominiumId);
+            // Find selected condominium id
+            const condominiumId =
+              objCondominium.getSelectedCondominiumId('select-condominium-condominiumId');
 
-          // Show all values for condominium
-          showValues(condominiumId);
+            // Show leading text
+            showLeadingText(condominiumId);
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+            // Show all values for condominium
+            showValues(condominiumId);
+
+            // Make events
+            isEventsCreated =
+              (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -172,7 +193,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 }
 
 // Make events for condominium
-function condominiumEvents() {
+function createEvents() {
 
   // Select condominium
   document.addEventListener('change', (event) => {
@@ -183,7 +204,7 @@ function condominiumEvents() {
 
   // Update condominium
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominium-update')) {
+    if (event.target.classList.contains('button-condominium-save')) {
 
       const condominiumId =
         Number(document.querySelector('.select-condominium-condominiumId').value);
@@ -236,8 +257,6 @@ function updateCondominium(condominiumId) {
 
   let SQLquery =
     "";
-  let isUpdated =
-    false;
 
   // Check values
   if (validateValues()) {
@@ -263,7 +282,7 @@ function updateCondominium(condominiumId) {
     const organizationNumber =
       document.querySelector('.input-condominium-organizationNumber').value;
     const importPath =
-      document.querySelector('.input-condominium-importPath').value;
+      document.querySelector('.input-condominium-fileName').value;
 
     // current date
     const lastUpdate =
@@ -339,11 +358,7 @@ function updateCondominium(condominiumId) {
       false;
     document.querySelector('.button-condominium-insert').disabled =
       false;
-    //document.querySelector('.button-condominium-cancel').disabled =
-    //  false;
-    isUpdated = true;
   }
-  return isUpdated;
 }
 
 // Show leading text for condominium
@@ -362,7 +377,7 @@ function showLeadingText(condominiumId) {
   objCondominium.showInput('condominium-address2', 'Adresse 2', 50, '');
 
   // Postal code
-  objCondominium.showInput('condominium-postalCode', '* Postnummer', 4, '4 siffer');
+  objCondominium.showInput('condominium-postalCode', '* Postnummer', 4, '');
 
   // City
   objCondominium.showInput('condominium-city', '* Poststed', 50, '');
@@ -383,11 +398,11 @@ function showLeadingText(condominiumId) {
   objCondominium.showInput('condominium-organizationNumber', '* Organisasjonsnummer', 9, '');
 
   // import path
-  objCondominium.showInput('condominium-importPath', '* Navn på importfile', 50, '');
+  objCondominium.showInput('condominium-fileName', '* Navn på importfil', 50, '');
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objCondominium.showButton('condominium-update', 'Oppdater');
+    objCondominium.showButton('condominium-save', 'Lagre');
 
     // show new button
     objCondominium.showButton('condominium-insert', 'Ny');
@@ -460,7 +475,7 @@ function showValues(condominiumId) {
         condominiumArray[objCondominimuRowNumber].organizationNumber;
 
       // Show file import path
-      document.querySelector('.input-condominium-importPath').value =
+      document.querySelector('.input-condominium-fileName').value =
         condominiumArray[objCondominimuRowNumber].importPath;
     }
   }
@@ -512,7 +527,7 @@ function resetValues() {
     '';
 
   // Show path for file to import
-  document.querySelector('.input-condominium-importPath').value =
+  document.querySelector('.input-condominium-fileName').value =
     '';
 
   document.querySelector('.select-condominium-condominiumId').disabled =
@@ -599,9 +614,9 @@ function validateValues() {
 
   // Check import path
   const importPath =
-    document.querySelector('.input-condominium-importPath').value;
+    document.querySelector('.input-condominium-fileName').value;
   const validImportPath =
-    objCondominium.validateText(importPath, "condominium-importpath", "Navn på importfil");
+    objCondominium.validateText(importPath, "condominium-fileName", "Navn på importfil");
 
   return (validCondominiumName
     && validStreet

@@ -109,7 +109,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(supplierId);
 
           // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
           break;
       }
     }
@@ -163,7 +163,7 @@ function createEvents() {
 
   // Update
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-supplier-update')) {
+    if (event.target.classList.contains('button-supplier-save')) {
 
       // user id
       let supplierId =
@@ -427,7 +427,7 @@ function showLeadingText(supplierId) {
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objSupplier.showButton('supplier-update', 'Oppdater');
+    objSupplier.showButton('supplier-save', 'Lagre');
 
     // new button
     objSupplier.showButton('supplier-insert', 'Ny');

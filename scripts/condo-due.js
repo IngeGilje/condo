@@ -156,7 +156,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(dueId);
 
           // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
           break;
       }
     }
@@ -237,7 +237,7 @@ function createEvents() {
 
   // Update due
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-due-update')) {
+    if (event.target.classList.contains('button-due-save')) {
 
       const dueId =
         Number(document.querySelector('.select-due-dueId').value);
@@ -451,7 +451,7 @@ function showLeadingText(dueId) {
 
   // show buttons
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objDue.showButton('due-update', 'Oppdater');
+    objDue.showButton('due-save', 'Lagre');
 
     // show new button
     objDue.showButton('due-insert', 'Ny');

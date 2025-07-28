@@ -112,8 +112,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showValues(budgetId);
 
           // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
-                    break;
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
+          break;
       }
     }
 
@@ -169,7 +169,7 @@ function createEvents() {
 
   // Update budget
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-budget-update')) {
+    if (event.target.classList.contains('button-budget-save')) {
 
       const budgetId =
         Number(document.querySelector('.select-budget-budgetId').value);
@@ -312,7 +312,7 @@ function showLeadingText(budgetId) {
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objBudget.showButton('budget-update', 'Oppdater');
+    objBudget.showButton('budget-save', 'Lagre');
 
     // show new button
     objBudget.showButton('budget-insert', 'Ny');

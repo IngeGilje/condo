@@ -153,7 +153,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           showMonthlyRent(condoId, accountId);
 
           // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
           break;
       }
     }
@@ -236,7 +236,7 @@ function createEvents() {
 
   // Update monthly rent
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-monthlyrent-update')) {
+    if (event.target.classList.contains('button-monthlyrent-save')) {
 
       updateMonthlyRent();
       const condoId =
@@ -448,7 +448,7 @@ function showLeadingText() {
   if (Number(objUserPassword.securityLevel) >= 9) {
 
     // show update button
-    objDue.showButton('monthlyrent-update', 'Oppdater');
+    objDue.showButton('monthlyrent-save', 'Lagre');
 
     // show delete button
     objDue.showButton('monthlyrent-delete', 'Slett');

@@ -53,7 +53,7 @@ socket.onmessage = (event) => {
         showLeadingText();
 
         // Make events
-          isEventsCreated = (isEventsCreated) ? true : condominiumEvents();
+        isEventsCreated = (isEventsCreated) ? true : createEvents();
         break;
     }
   }
