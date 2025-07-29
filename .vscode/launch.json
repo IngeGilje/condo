@@ -129,7 +129,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Test",
-      "file": "c:\\inetpub\\wwwroot\\condo\\test.html",
+      "file": "c:\\inetpub\\wwwroot\\condo\\condo-test.html",
     }
   ]
 }

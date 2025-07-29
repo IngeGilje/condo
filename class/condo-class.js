@@ -1670,6 +1670,7 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   return accountId;
 }
 
+/*
 // exit application after 10 minuttes
 function resetInactivityTimer() {
 
@@ -1678,11 +1679,12 @@ function resetInactivityTimer() {
   inactivityTimeout = setTimeout(() => {
     window.location.href =
       'http://localhost/condo/condo-login.html'
-  }, 10 * 60 * 1000);
+  }, 1* 60 * 60 * 1000); // 1 hour
 }
 
 // Listen for user activity
 ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
   document.addEventListener(event, resetInactivityTimer);
 });
+*/
 

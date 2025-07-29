@@ -158,6 +158,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             // Make events
             isEventsCreated =
               (isEventsCreated) ? true : createEvents();
+          } else {
+
+            
+
           }
           break;
       }

@@ -16,7 +16,7 @@ const objAccountReport =
 
 testMode();
 
-// Redirect application after 2 hours
+// Redirect application after 1 hours
 setTimeout(() => {
   window.location.href = 'http://localhost/condo/condo-login.html'
 }, 1 * 60 * 60 * 1000);
