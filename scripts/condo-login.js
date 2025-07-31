@@ -11,7 +11,7 @@ let isEventsCreated
 let socket;
 socket = connectingToServer();
 
-localStorage.removeItem("user");
+sessionStorage.removeItem("user");
 
 // Send a requests to the server
 socket.onopen = () => {
@@ -111,7 +111,7 @@ function createEvents() {
           userArray[objUserRowNumber].condominiumId;
 
         // Save email/user, password and security level
-        localStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
+        sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
 
         (objLogIn.validateUser(email, password))
           ? window.location.href = 'http://localhost/condo/condo-bankaccountmovement.html'
@@ -146,5 +146,5 @@ function resetValues() {
   document.querySelector('.input-password').value =
     '';
 
-  localStorage.removeItem("user");
+  sessionStorage.removeItem("user");
 }

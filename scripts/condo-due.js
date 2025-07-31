@@ -12,7 +12,7 @@ const objAccount =
 const objDue =
   new Due('due');
 
-testMode();
+//testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
@@ -26,7 +26,7 @@ let socket;
 socket = connectingToServer();
 
 // Validate user/password
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =

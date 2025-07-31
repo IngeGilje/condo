@@ -14,7 +14,7 @@ const objBankAccountMovement =
 const objAccountReport =
   new AccountReport('accountreport');
 
-testMode();
+//testMode();
 
 // Redirect application after 1 hours
 setTimeout(() => {
@@ -31,7 +31,7 @@ socket =
   connectingToServer();
 
 // Validate user/password
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =

@@ -16,7 +16,7 @@ const objBankAccountMovement =
 const objRemoteheating =
   new Remoteheating('remoteheating');
 
-testMode();
+//testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
@@ -31,7 +31,7 @@ socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword =
-  JSON.parse(localStorage.getItem('user'));
+  JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =

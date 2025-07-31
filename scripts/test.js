@@ -1,7 +1,24 @@
-localStorage.setItem('name','Inge')
-console.log(localStorage.getItem('name'))
-//localStorage.removeItem('name')
+const recorVideoOne = new Promise ((resolve,reject) => {
 
-sessionStorage.setItem('name','Inge S.')
-console.log(sessionStorage.getItem('name'))
-sessionStorage.removeItem('name')
+  resolve('Video 1 Recorded')
+})
+
+const recorVideoTwo = new Promise ((resolve,reject) => {
+
+  resolve('Video 2 Recorded')
+})
+
+const recorVideoTree = new Promise ((resolve,reject) => {
+
+  resolve('Video 3 Recorded')
+})
+
+Promise.race([
+
+recorVideoOne,
+recorVideoTwo,
+recorVideoTree
+]).then((message) => {
+
+  console.log(message)
+})

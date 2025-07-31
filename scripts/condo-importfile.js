@@ -24,7 +24,7 @@ const objSupplier =
 const objImportFile =
   new ImportFile('importfile');
 
-testMode();
+//testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
@@ -50,7 +50,7 @@ socket =
 
 // Validate user/password
 const objUserPassword =
-  JSON.parse(localStorage.getItem('user'));
+  JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =

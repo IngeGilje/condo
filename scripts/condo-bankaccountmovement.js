@@ -18,12 +18,12 @@ const objUserBankAccount =
 const objBankAccountMovement =
   new BankAccountMovement('bankaccountmovement');
 
-testMode();
+//testMode();
 
 // Redirect application after 2 hours
 setTimeout(() => {
   window.location.href = 'http://localhost/condo/condo-login.html'
-}, 1 * 60 * 60 * 1000);
+}, 2 * 60 * 60 * 1000);
 
 let isEventsCreated
 
@@ -36,7 +36,7 @@ socket =
 
 // Validate user/password
 const objUserPassword =
-  JSON.parse(localStorage.getItem('user'));
+  JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =

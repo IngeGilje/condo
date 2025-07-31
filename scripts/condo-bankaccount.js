@@ -5,7 +5,7 @@ const objUser = new User('user');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 
-testMode();
+//testMode();
 
 // Redirect application after 2 hours
 setTimeout(() => {
@@ -21,7 +21,7 @@ let socket;
 socket = connectingToServer();
 
 // Validate user/password
-const objUserPassword = JSON.parse(localStorage.getItem('user'));
+const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =

@@ -1542,14 +1542,14 @@ function testMode() {
     // Test server/ local test server
     case 3: {
 
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
 
       // Save email/user, password and security level
       const email = 'inge.gilje@gmail.com';
       const password = '12345';
       const securityLevel = 9;
       const condominiumId = 2;
-      localStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
+      sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
       break;
     }
     default: {
@@ -1670,7 +1670,6 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   return accountId;
 }
 
-/*
 // exit application after 10 minuttes
 function resetInactivityTimer() {
 
@@ -1686,5 +1685,4 @@ function resetInactivityTimer() {
 ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
   document.addEventListener(event, resetInactivityTimer);
 });
-*/
 
