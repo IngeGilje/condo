@@ -18,7 +18,7 @@ const objAccountReport =
 
 // Redirect application after 1 hours
 setTimeout(() => {
-  window.location.href = 'http://localhost/condo/condo-login.html'
+  window.location.href = 'http://localhost/condo-login.html'
 }, 1 * 60 * 60 * 1000);
 
 let isEventsCreated
@@ -35,7 +35,7 @@ const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
   let SQLquery;

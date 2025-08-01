@@ -114,7 +114,7 @@ function createEvents() {
         sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
 
         (objLogIn.validateUser(email, password))
-          ? window.location.href = 'http://localhost/condo/condo-bankaccountmovement.html'
+          ? window.location.href = 'http://localhost/condo-bankaccountmovement.html'
           : resetValues();
       }
     }

@@ -23,19 +23,13 @@ switch (serverStatus) {
   // Web server
   case 1: {
     WebSocket = require('ws');
-    server = new WebSocket.Server({ port: 7000 }, () => {
-      console.log('WebSocket server is listening on port 7000');
+    server = new WebSocket.Server({ port: 5000 }, () => {
+      console.log('WebSocket server is listening on port 5000');
     }); break;
   }
 
   // Test web server/ local web server
-  case 2: {
-    WebSocket = require('ws');
-    server = new WebSocket.Server({ port: 7000 }, () => {
-      console.log('WebSocket server is listening on port 7000');
-    }); socket = new WebSocket('ws://localhost:7000');
-    break;
-  }
+  case 2: 
 
   // Test server/ local test server
   case 3: {

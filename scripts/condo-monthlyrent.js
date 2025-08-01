@@ -1,12 +1,18 @@
 // Monthly rent maintenance
 
 // Activate objects
-const today = new Date();
-const objUser = new User('user');
-const objCondo = new Condo('condo');
-const objAccount = new Account('account');
-const objDue = new Due('due');
-const objMonthlyRent = new MonthlyRent('monthlyrent');
+const today =
+  new Date();
+const objUser =
+  new User('user');
+const objCondo =
+  new Condo('condo');
+const objAccount =
+  new Account('account');
+const objDue =
+  new Due('due');
+const objMonthlyRent =
+  new MonthlyRent('monthlyrent');
 
 //testMode();
 
@@ -26,7 +32,7 @@ const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
 

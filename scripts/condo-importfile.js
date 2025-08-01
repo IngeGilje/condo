@@ -31,7 +31,7 @@ resetInactivityTimer();
 
 // Redirect application after 2 hours
 setTimeout(() => {
-  window.location.href = 'http://localhost/condo/condo-login.html'
+  window.location.href = 'http://localhost/condo-login.html'
 }, 1 * 60 * 60 * 1000);
 
 let importFileArray =
@@ -54,7 +54,7 @@ const objUserPassword =
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -316,7 +316,7 @@ function createEvents() {
       updateOpeningClosingBalance();
 
       // Start program for maintain bank account movements
-      window.location.href = 'http://localhost/condo/condo-bankaccountmovement.html'
+      window.location.href = 'http://localhost/condo-bankaccountmovement.html'
     }
   });
 }

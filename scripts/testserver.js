@@ -26,6 +26,6 @@ io.on("connection", (socket) => {
 });
 
 // start server
-server.listen(7000, () => {
-  console.log("Socket.IO server listening on port 7000");
+server.listen(5000, () => {
+  console.log("Socket.IO server listening on port 5000");
 });

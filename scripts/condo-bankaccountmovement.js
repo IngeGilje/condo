@@ -22,7 +22,7 @@ const objBankAccountMovement =
 
 // Redirect application after 2 hours
 setTimeout(() => {
-  window.location.href = 'http://localhost/condo/condo-login.html'
+  window.location.href = 'http://localhost/condo-login.html'
 }, 2 * 60 * 60 * 1000);
 
 let isEventsCreated
@@ -40,7 +40,7 @@ const objUserPassword =
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
   // Send a requests to the server
