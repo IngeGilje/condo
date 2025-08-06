@@ -3,6 +3,7 @@
 // Activate classes
 const today =
   new Date();
+  
 
 const objUser =
   new User('user');
