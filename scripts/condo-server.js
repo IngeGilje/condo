@@ -21,12 +21,7 @@ let server;
 switch (serverStatus) {
 
   // Web server
-  case 1: {
-    WebSocket = require('ws');
-    server = new WebSocket.Server({ port: 5000 }, () => {
-      console.log('WebSocket server is listening on port 5000');
-    }); break;
-  }
+  case 1:
 
   // Test web server/ local web server
   case 2: 
@@ -51,19 +46,7 @@ let connection;
 switch (serverStatus) {
 
   // connection to mysql
-  case 1: {
-    connection =
-      mysql.createConnection(
-        {
-          host: '127.0.0.1',
-          user: 'Inge',
-          password: 'Sommer--2025',
-          database: "condos"
-        }
-      );
-    console.log('Connected to mySql');
-    break;
-  }
+  case 1: 
   // Test web server/ local web server
   case 2: {
     connection =
@@ -78,6 +61,7 @@ switch (serverStatus) {
     console.log('Connected to mySql');
     break;
   }
+  
   // Test server/ local test server
   case 3: {
     connection =
@@ -85,7 +69,7 @@ switch (serverStatus) {
         {
           host: 'localhost',
           user: 'Inge',
-          password: 'Vinter-2025',
+          password: 'Sommer--2025',
           database: "condos"
         }
       );

@@ -24,7 +24,7 @@ const objSupplier =
 const objImportFile =
   new ImportFile('importfile');
 
-//testMode();
+testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();

@@ -4,7 +4,6 @@
 const today =
   new Date();
   
-
 const objUser =
   new User('user');
 let userTableOpen
