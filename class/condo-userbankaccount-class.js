@@ -2,7 +2,8 @@
 class UserBankAccount extends Condos {
 
   // user bank account information
-  userBankAccountArray = [];
+  userBankAccountArray = 
+  [];
 
   // Show all user bank accounts
   showAllUserBankAccounts(classValue, userBankAccountId) {

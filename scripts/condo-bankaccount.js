@@ -5,6 +5,13 @@ const objUser = new User('user');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 
+let userArrayCreated =
+  false
+let accountArrayCreated =
+  false
+let bankAccountArrayCreated =
+  false
+
 //testMode();
 
 // Redirect application after 2 hours
@@ -38,6 +45,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -48,6 +57,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
 
     // Sends a request to the server to get bank accountss
     SQLquery =
@@ -58,6 +69,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'bankaccount', 'SELECT');
+    bankAccountArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -79,6 +92,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -88,6 +103,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
           break;
 
         case 'bankaccount':
@@ -98,19 +115,26 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with account information
           bankAccountArray =
             objInfo.tableArray;
+          bankAccountArrayCreated =
+            true;
 
-          // Find selected account id
-          const bankaccountId =
-            objBankAccount.getSelectedBankAccountId('select-bankaccount-accountId');
+          if (userArrayCreated
+            && accountArrayCreated
+            && bankAccountArrayCreated) {
+              
+            // Find selected account id
+            const bankaccountId =
+              objBankAccount.getSelectedBankAccountId('select-bankaccount-accountId');
 
-          // Show leading text
-          showLeadingText(bankaccountId);
+            // Show leading text
+            showLeadingText(bankaccountId);
 
-          // Show all values for bank account
-          showValues(bankaccountId);
+            // Show all values for bank account
+            showValues(bankaccountId);
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -128,6 +152,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY bankAccountId;
             `;
           updateMySql(SQLquery, 'bankaccount', 'SELECT');
+          bankAccountArrayCreated =
+            false;
           break;
       };
     }
@@ -207,6 +233,8 @@ function createEvents() {
         ORDER BY name;
       `;
       updateMySql(SQLquery, 'bankaccount', 'SELECT');
+      bankAccountArrayCreated =
+        false;
     }
   });
 }
@@ -347,6 +375,8 @@ function deleteAccountRow() {
     `;
     // Client sends a request to the server
     updateMySql(SQLquery, 'bankaccount', 'SELECT');
+    bankAccountArrayCreated =
+      false;
   }
 }
 

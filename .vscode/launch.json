@@ -6,132 +6,35 @@
   "configurations": [
     
     {
-      "name": "Launch Chrome",
-      "request": "launch",
+      "name": "Attach to Chrome",
+      "port": 9222,
+      "request": "attach",
       "type": "chrome",
-      "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}"
     },
+    
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Create tables",
-      "file": "c:\\inetpub\\wwwroot\\condo-createtables.html",
-    },
-    {
-      "name": "Launch Chrome against localhost",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost/condo/condo-login.html",
+      "name": "Login",
+      "url": "http://localhost/condo-login.html",
       "webRoot": "${workspaceFolder}"
     },
-    {
+
+     {
       "type": "chrome",
       "request": "launch",
       "name": "Sameie",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-condominium.html",
+      "url": "http://localhost/condo-condominium.html",
+      "webRoot": "${workspaceFolder}"
     },
+
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Leilighet",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-condo.html",
+      "name": "Import av banktransaksjoner",
+      "url": "http://localhost/condo-importfile.html",
+      "webRoot": "${workspaceFolder}"
     },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Bankkonto",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-bankaccount.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Konto",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-account.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Bruker",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-user.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Bankonto for bruker",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-userbankaccount.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Leverandør",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-supplier.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Betaling",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-payment.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Inntekter",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-income.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Forfall",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-due.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Månedsleie",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-monthlyrent.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Budsjett",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-budget.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Fjernvarme",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-remoteheating.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Betalingsoversikt",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-overview.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Kontobevegelser",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-bankaccountmovement.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Importer banktransaksoner",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-importfile.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Regnskapsrapport",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-accountreport.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Test",
-      "file": "c:\\inetpub\\wwwroot\\condo\\condo-test.html",
-    }
   ]
 }

@@ -6,6 +6,11 @@ const objCondo =
 const objUser =
   new User('user');
 
+let condoArrayCreated =
+  false
+let userArrayCreated =
+  false
+
 let isEventsCreated
 
 //testMode();
@@ -41,6 +46,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condo', 'SELECT');
+    condoArrayCreated =
+      false;
 
     // Sends a request to the server to get users
     SQLquery =
@@ -50,6 +57,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -72,6 +81,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           condoArray =
             objInfo.tableArray;
+          condoArrayCreated =
+            true;
           break;
 
         case 'user':
@@ -82,19 +93,25 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with user information
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
 
-          // Find selected user id
-          const userId =
-            objUser.getSelectedUserId('select-user-userId');
+          if (condoArrayCreated
+            && userArrayCreated) {
+              
+            // Find selected user id
+            const userId =
+              objUser.getSelectedUserId('select-user-userId');
 
-          // Show leading text
-          showLeadingText(userId);
+            // Show leading text
+            showLeadingText(userId);
 
-          // Show all values for user
-          showValues(userId);
+            // Show all values for user
+            showValues(userId);
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -112,6 +129,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY userId;
             `;
           updateMySql(SQLquery, 'user', 'SELECT');
+          userArrayCreated =
+            false;
           break;
       };
     }
@@ -191,6 +210,8 @@ function createEvents() {
           ORDER BY userId;
         `;
       updateMySql(SQLquery, 'user', 'SELECT');
+      userArrayCreated =
+        false;
     }
   });
 
@@ -206,6 +227,8 @@ function createEvents() {
           ORDER BY userId;
         `;
       updateMySql(SQLquery, 'user', 'SELECT');
+      userArrayCreated =
+        false;
     }
   });
 }
@@ -349,6 +372,8 @@ function deleteUserRow(userId) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     resetValues();
   }

@@ -14,6 +14,15 @@ const objBankAccountMovement =
 const objAccountReport =
   new AccountReport('accountreport');
 
+let userArrayCreated =
+  false;
+let budgetArrayCreated =
+  false;
+let accountArrayCreated =
+  false
+let bankAccountMovementArrayCreated =
+  false
+
 //testMode();
 
 // Redirect application after 1 hours
@@ -51,6 +60,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
 
     // Sends a request to the server to get users
     SQLquery =
@@ -60,6 +71,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     SQLquery =
       `
@@ -68,6 +81,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY budgetId;
       `;
     updateMySql(SQLquery, 'budget', 'SELECT');
+    budgetArrayCreated =
+      false;
 
     // Sends a request to the server to get bank account movements
     SQLquery =
@@ -77,6 +92,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY bankAccountMovementId;
       `;
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+    bankAccountMovementArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -98,6 +115,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -107,6 +126,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
           break;
 
         case 'budget':
@@ -116,6 +137,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           budgetArray =
             objInfo.tableArray;
+          budgetArrayCreated =
+            true
           break;
 
         case 'bankaccountmovement':
@@ -126,15 +149,24 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with budget information
           bankAccountMovementArray =
             objInfo.tableArray;
+          bankAccountMovementArrayCreated =
+            true;
 
-          // Show leading text
-          showLeadingText();
 
-          // Show all bank account movements
-          showValues();
+          if (budgetArrayCreated
+            && userArrayCreated
+            && accountArrayCreated
+            && bankAccountMovementArrayCreated) {
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            // Show leading text
+            showLeadingText();
+
+            // Show all bank account movements
+            showValues();
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -151,6 +183,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY budgetId;
             `;
           updateMySql(SQLquery, 'budget', 'SELECT');
+          budgetArrayCreated =
+            false;
           break;
       };
     }
@@ -525,6 +559,8 @@ function getSelectedBudgets() {
     `;
   console.log(SQLquery);
   updateMySql(SQLquery, 'budget', 'SELECT');
+  budgetArrayCreated =
+    false;
 }
 
 // Get selected bank account movement 
@@ -547,4 +583,6 @@ function getSelectedBankAccountMovement() {
     `;
   console.log(SQLquery);
   updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+  bankAccountMovementArrayCreated =
+    false;
 }

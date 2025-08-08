@@ -18,6 +18,22 @@ const objUserBankAccount =
 const objBankAccountMovement =
   new BankAccountMovement('bankaccountmovement');
 
+
+let userArrayCreated =
+  false
+let condoArrayCreated =
+  false
+let accountArrayCreated =
+  false
+let bankAccountArrayCreated =
+  false
+let supplierArrayCreated =
+  false
+let userBankAccountArrayCreated =
+  false
+let bankAccountMovementArrayCreated =
+  false
+
 //testMode();
 
 // Redirect application after 2 hours
@@ -54,6 +70,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get condos
     SQLquery =
@@ -64,6 +82,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condo', 'SELECT');
+    condoArrayCreated =
+      false;
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -74,6 +94,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
 
     // Sends a request to the server to get bank accounts
     SQLquery =
@@ -84,6 +106,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'bankaccount', 'SELECT');
+    bankAccountArrayCreated =
+      false;
 
     // Sends a request to the server to get suppliers
     SQLquery =
@@ -94,6 +118,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'supplier', 'SELECT');
+    supplierArrayCreated =
+      false;
 
     // Sends a request to the server to get user bank accounts
     SQLquery =
@@ -104,6 +130,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+    userBankAccountArrayCreated =
+      false;
 
     // Sends a request to the server to get bank account movements
     let fromDate =
@@ -122,6 +150,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY date DESC;
       `;
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+    bankAccountMovementArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -143,6 +173,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'condo':
@@ -152,6 +184,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           condoArray =
             objInfo.tableArray;
+          condoArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -161,6 +195,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
           break;
 
         case 'bankaccount':
@@ -170,6 +206,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           bankAccountArray =
             objInfo.tableArray;
+          bankAccountArrayCreated =
+            true;
           break;
 
         case 'supplier':
@@ -179,6 +217,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           supplierArray =
             objInfo.tableArray;
+          supplierArrayCreated =
+            true;
           break;
 
         case 'userbankaccount':
@@ -188,6 +228,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userbankAccountArray =
             objInfo.tableArray;
+          userBankAccountArrayCreated =
+            true;
           break;
 
         case 'bankaccountmovement':
@@ -198,38 +240,49 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with bank account movement information
           bankAccountMovementArray =
             objInfo.tableArray;
+          bankAccountMovementArrayCreated =
+            true;
 
-          // Show leading text search
-          showLeadingTextSearch();
+          if (userArrayCreated
+            && condoArrayCreated
+            && accountArrayCreated
+            && bankAccountArrayCreated
+            && supplierArrayCreated
+            && userBankAccountArrayCreated
+            && bankAccountMovementArrayCreated) {
 
-          // Show leading text maintenance
-          showLeadingText();
+            // Show leading text search
+            showLeadingTextSearch();
 
-          // Show bank account movements 
-          showBankAccountMovements();
+            // Show leading text maintenance
+            showLeadingText();
 
-          // Get selected Bank Account Movement Id
-          bankAccountMovementId =
-            objBankAccountMovement.getSelectedBankAccountMovementId('select-bankaccountmovement-bankAccountMovementId');
+            // Show bank account movements 
+            showBankAccountMovements();
 
-          const fromDate =
-            convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
-          const toDate =
-            convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
-          const amount =
-            convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterAmount').value);
-          const condoId =
-            Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
-          const accountId =
-            Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
+            // Get selected Bank Account Movement Id
+            bankAccountMovementId =
+              objBankAccountMovement.getSelectedBankAccountMovementId('select-bankaccountmovement-bankAccountMovementId');
 
-          // Show bank account movements Id
-          objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
+            const fromDate =
+              convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterFromDate').value);
+            const toDate =
+              convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterToDate').value);
+            const amount =
+              convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterAmount').value);
+            const condoId =
+              Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
+            const accountId =
+              Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
 
-          showValues(bankAccountMovementId);
+            // Show bank account movements Id
+            objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            showValues(bankAccountMovementId);
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -358,6 +411,8 @@ function createEvents() {
           ORDER BY date DESC;
         `;
       updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+      bankAccountMovementArrayCreated =
+        false;
     }
   });
 }
@@ -1045,4 +1100,6 @@ function getSelectedBankAccountMovements() {
     `;
 
   updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+  bankAccountMovementArrayCreated =
+    false;
 }

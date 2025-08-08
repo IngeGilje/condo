@@ -2,7 +2,8 @@
 class Condo extends Condos {
 
   // Condo information
-  condoArray = Array;
+  condoArray = 
+  Array;
 
   // Show all condos
   showAllCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {

@@ -3,24 +3,26 @@
 // Activate classes
 const today =
   new Date();
-  
+
 const objUser =
   new User('user');
-let userTableOpen
-
 const objAccount =
   new Account('account');
-let accountTableOpen
-
 const objBankAccount =
   new BankAccount('bankaccount');
-let bankAccountTableOpen
-
 const objCondominium =
   new Condominium('condominium');
-let condominiumTableOpen;
 
-//testMode();
+let userArrayCreated =
+  false
+let accountArrayCreated =
+  false
+let bankAccountArrayCreated =
+  false
+const condominiumArrayCreated =
+  false
+
+testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
@@ -56,6 +58,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get bankaccounts
     SQLquery =
@@ -65,6 +69,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY bankAccountId;
       `;
     updateMySql(SQLquery, 'bankaccount', 'SELECT');
+    bankAccountArrayCreated =
+      false;
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -74,6 +80,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
 
     // Sends a request to the server to get condominiums
     SQLquery =
@@ -84,6 +92,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condominium', 'SELECT');
+    condominiumArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -105,8 +115,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
-          userTableOpen =
-            true
+          userArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -116,7 +126,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
-          accountTableOpen =
+          accountArrayCreated =
             true
           break;
 
@@ -127,7 +137,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           bankAccountArray =
             objInfo.tableArray;
-          bankAccountTableOpen =
+          bankAccountTableCreated =
             true
           break;
 
@@ -139,11 +149,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with condominium information
           condominiumArray =
             objInfo.tableArray;
-          condominiumTableOpen =
+          condominiumArrayCreated =
             true
 
           // if all tables are opened
-          if (userTableOpen && accountTableOpen && bankAccountTableOpen && condominiumTableOpen) {
+          if (userArrayCreated
+            && accountArrayCreated
+            && bankAccountArrayCreated
+            && condominiumArrayCreated) {
 
             // Find selected condominium id
             const condominiumId =
@@ -158,10 +171,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             // Make events
             isEventsCreated =
               (isEventsCreated) ? true : createEvents();
-          } else {
-
-
-
           }
           break;
       }
@@ -180,6 +189,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY condominiumId;
             `;
           updateMySql(SQLquery, 'condominium', 'SELECT');
+          condominiumArrayCreated =
+            false;
       };
     }
 
@@ -237,6 +248,8 @@ function createEvents() {
           ORDER BY name;
         `;
       updateMySql(SQLquery, 'condominium', 'SELECT');
+      condominiumArrayCreated =
+        false;
     }
   });
 
@@ -252,6 +265,8 @@ function createEvents() {
           ORDER BY condominiumId;
         `;
       updateMySql(SQLquery, 'condominium', 'SELECT');
+      condominiumArrayCreated =
+        false;
     }
   });
   return true;
@@ -564,6 +579,8 @@ function deleteCondominiumRow() {
         WHERE condominiumId = ${condominiumId};
       `;
       updateMySql(SQLquery, 'condominium', 'SELECT');
+      condominiumArrayCreated =
+        false;
     }
 
     // Get all condominiums from MySQL database
@@ -574,6 +591,8 @@ function deleteCondominiumRow() {
         ORDER BY name;
       `;
     updateMySql(SQLquery, 'condominium', 'SELECT');
+    condominiumArrayCreated =
+      false;
   }
 }
 

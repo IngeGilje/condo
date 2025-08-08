@@ -2,7 +2,8 @@
 class Supplier extends Condos {
 
   // supplier information
-  supplierArray = Array;
+  supplierArray =
+   Array;
 
   // Show all suppliers
   showAllSuppliers(classValue, supplierId) {

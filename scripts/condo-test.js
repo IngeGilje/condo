@@ -50,6 +50,8 @@ function getUser() {
 
         console.log(SQLquery);
         updateMySql(SQLquery, 'user', 'SELECT');
+        userArrayCreated =
+      false;
         console.log('Cloudy');
         resolve('Cloudy');
       }

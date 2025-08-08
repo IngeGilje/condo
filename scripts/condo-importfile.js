@@ -24,14 +24,34 @@ const objSupplier =
 const objImportFile =
   new ImportFile('importfile');
 
+let userArrayCreated =
+  false;
+let condominiumArrayCreated =
+  false;
+let condoArrayCreated =
+  false;
+let accountArrayCreated =
+  false;
+let bankAccountArrayCreated =
+  false;
+let dueArrayCreated =
+  false;
+let supplierArrayCreated =
+  false;
+let bankAccountMovementArrayCreated =
+  false;
+let userBankAccountArrayCreated =
+  false;
+
 testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
 
-// Redirect application after 2 hours
+// Redirect application after 1 hour
 setTimeout(() => {
-  window.location.href = 'http://localhost/condo-login.html'
+  window.location.href =
+    'http://localhost/condo-login.html'
 }, 1 * 60 * 60 * 1000);
 
 let importFileArray =
@@ -68,6 +88,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get condominiums
     SQLquery =
@@ -77,6 +99,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY condominiumId;
       `;
     updateMySql(SQLquery, 'condominium', 'SELECT');
+    condominiumArrayCreated =
+      false;
 
     // Sends a request to the server to get condos
     SQLquery =
@@ -87,6 +111,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condo', 'SELECT');
+    condoArrayCreated =
+      false;
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -96,6 +122,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
 
     // Sends a request to the server to get bank accounts
     SQLquery =
@@ -105,6 +133,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY bankaccountId;
       `;
     updateMySql(SQLquery, 'bankaccount', 'SELECT');
+    bankAccountArrayCreated =
+      false;
 
     // Sends a request to the server to get dues
     SQLquery =
@@ -114,6 +144,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY dueId;
       `;
     updateMySql(SQLquery, 'due', 'SELECT');
+    dueArrayCreated =
+      false;
 
     // Sends a request to the server to get suppliers
     SQLquery =
@@ -123,6 +155,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY supplierId;
       `;
     updateMySql(SQLquery, 'supplier', 'SELECT');
+    supplierArrayCreated =
+      false;
 
     // Sends a request to the server to get bank account movement
     SQLquery =
@@ -132,6 +166,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY bankAccountMovementId;
       `;
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+    bankAccountMovementArrayCreated =
+      false;
 
     // Sends a request to the server to get user bank account
     SQLquery =
@@ -141,6 +177,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userBankAccountId;
       `;
     updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+    userBankAccountArrayCreated =
+      false;
 
     // Sends a request to the server to get bank account movement text file from bank
     SQLquery =
@@ -154,7 +192,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     let messageFromServer =
       event.data;
-
 
     // Converts a JavaScript Object Notation (JSON) string into an object
     const objInfo =
@@ -170,6 +207,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'condonium':
@@ -179,6 +218,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           condoniumArray =
             objInfo.tableArray;
+          condoniumArrayCreated =
+            true;
           break;
 
         case 'condo':
@@ -188,6 +229,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           condoArray =
             objInfo.tableArray;
+          condoArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -197,6 +240,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
           break;
 
         case 'bankaccount':
@@ -206,6 +251,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           bankAccountArray =
             objInfo.tableArray;
+          bankAccountArrayCreated =
+            true;
           break;
 
         case 'due':
@@ -215,6 +262,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           dueArray =
             objInfo.tableArray;
+          dueArrayCreated =
+            true;
           break;
 
         case 'supplier':
@@ -224,6 +273,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           supplierArray =
             objInfo.tableArray;
+          supplierArrayCreated =
+            true;
           break;
 
         case 'bankaccountmovement':
@@ -234,6 +285,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with bank account movement information
           bankAccountMovementArray =
             objInfo.tableArray;
+          bankAccountMovementArrayCreated =
+            true;
 
         case 'userbankaccount':
 
@@ -243,6 +296,19 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with user bank account information
           userBankAccountArray =
             objInfo.tableArray;
+          userBankAccountArrayCreated =
+            true;
+
+        case 'condominium':
+
+          // condominium table
+          console.log('condominiumTable');
+
+          // array including objects with condominium information
+          condominiumArray =
+            objInfo.tableArray;
+          condominiumArrayCreated =
+            true;
       }
     }
 
@@ -254,11 +320,23 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       setTimeout(() => {
 
         createImportFileArray(objInfo.tableArray);
-        showBankAccountMovements();
-        showLeadingText();
 
-        // Make events
-        isEventsCreated = (isEventsCreated) ? true : createEvents();
+        if (userArrayCreated
+          && condominiumArrayCreated
+          && condoArrayCreated
+          && accountArrayCreated
+          && bankAccountArrayCreated
+          && dueArrayCreated
+          && supplierArrayCreated
+          && bankAccountMovementArrayCreated
+          && userBankAccountArrayCreated) {
+
+          showBankAccountMovements();
+          showLeadingText();
+
+          // Make events
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
+        }
       }, 100);
     }
 
@@ -275,6 +353,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY bankAccountMovementId;
             `;
           updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+          bankAccountMovementArrayCreated =
+            false;
           break;
       };
 
@@ -750,7 +830,6 @@ function updateBankAccountMovements() {
 
     // Client sends a request to the server
     updateMySql(SQLquery, 'bankaccountmovement', 'INSERT');
-    //}
   })
 }
 

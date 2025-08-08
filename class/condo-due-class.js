@@ -3,7 +3,8 @@
 class Due extends Condos {
 
   // Due information
-  dueArray = undefined;
+  dueArray = 
+  undefined;
 
   // Show all dues
   showAllDues(className, dueId) {

@@ -1,8 +1,15 @@
 // Condo maintenance
 
 // Activate classes
-const objUser = new User('user');
-const objCondo = new Condo('condo');
+const objUser =
+  new User('user');
+const objCondo =
+  new Condo('condo');
+
+let userArrayCreated =
+  false
+let condoArrayCreated =
+  false
 
 //testMode();
 
@@ -36,6 +43,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get condos
     SQLquery =
@@ -46,6 +55,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condo', 'SELECT');
+    condoArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -67,6 +78,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'condo':
@@ -77,19 +90,25 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with condo information
           condoArray =
             objInfo.tableArray;
+          condoArrayCreated =
+            true;
 
-          // Find selected condo id
-          const condoId =
-            objCondo.getSelectedCondoId('select-condo-condoId');
+          if (userArrayCreated
+            && condoArrayCreated) {
 
-          // Show leading text
-          showLeadingText(condoId);
+            // Find selected condo id
+            const condoId =
+              objCondo.getSelectedCondoId('select-condo-condoId');
 
-          // Show all values for condo
-          showValues(condoId);
+            // Show leading text
+            showLeadingText(condoId);
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            // Show all values for condo
+            showValues(condoId);
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -107,6 +126,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY condoId;
             `;
           updateMySql(SQLquery, 'condo', 'SELECT');
+          condoArrayCreated =
+            false;
           break;
       };
     }
@@ -174,6 +195,8 @@ function createEvents() {
         ORDER BY condoId;
       `;
       updateMySql(SQLquery, 'condo', 'SELECT');
+      condoArrayCreated =
+        false;
     }
   });
 }
@@ -412,6 +435,8 @@ function deleteCondoRow() {
       ORDER BY condoId;
     `;
     updateMySql(SQLquery, 'condo', 'SELECT');
+    condoArrayCreated =
+      false;
   }
 }
 

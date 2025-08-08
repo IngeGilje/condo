@@ -12,6 +12,15 @@ const objAccount =
 const objDue =
   new Due('due');
 
+let userArrayCreated =
+  false
+let condoArrayCreated =
+  false
+let accountArrayCreated =
+  false
+let dueArrayCreated =
+  false
+
 //testMode();
 
 // Exit application if no activity for 10 minutes
@@ -44,6 +53,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get condos
     SQLquery =
@@ -54,6 +65,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condo', 'SELECT');
+    condoArrayCreated =
+      false;
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -64,6 +77,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
 
     // Sends a request to the server to get dues
     // From date
@@ -86,6 +101,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     `;
 
     updateMySql(SQLquery, 'due', 'SELECT');
+    dueArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -108,6 +125,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -117,6 +136,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
           break;
 
         case 'condo':
@@ -126,6 +147,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           condoArray =
             objInfo.tableArray;
+          condoArrayCreated =
+            true;
           break;
 
         case 'due':
@@ -136,27 +159,35 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with due information
           dueArray =
             objInfo.tableArray;
+          dueArrayCreated =
+            true;
 
-          // Show leading text search
-          showLeadingTextSearch();
+          if (userArrayCreated
+            && condoArrayCreated
+            && accountArrayCreated
+            && dueArrayCreated) {
 
-          // Show leading text maintenance
-          showLeadingText();
+            // Show leading text search
+            showLeadingTextSearch();
 
-          // Show dues 
-          showDues();
+            // Show leading text maintenance
+            showLeadingText();
 
-          // Get selected due Id
-          const dueId =
-            objDue.getSelectedDueId('select-due-dueId');
+            // Show dues 
+            showDues();
 
-          // Show due Id
-          objDue.showAllSelectedDues('due-dueId', dueId);
+            // Get selected due Id
+            const dueId =
+              objDue.getSelectedDueId('select-due-dueId');
 
-          showValues(dueId);
+            // Show due Id
+            objDue.showAllSelectedDues('due-dueId', dueId);
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            showValues(dueId);
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -223,11 +254,6 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-due-dueId')) {
 
-      /*
-      dueId = Number(event.target.value);
-      showLeadingText(dueId);
-      showValues(dueId);
-      */
       // Show due
       const dueId =
         Number(document.querySelector('.select-due-dueId').value);
@@ -812,4 +838,6 @@ function getSelectedDues() {
 
   // Sends a request to the server to get selected dues
   updateMySql(SQLquery, 'due', 'SELECT');
+  dueArrayCreated =
+    false;
 }

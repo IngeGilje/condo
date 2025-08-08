@@ -6,6 +6,9 @@ const objUser =
 const objLogIn =
   new Login('login');
 
+let userArrayCreated =
+  false
+
 let isEventsCreated
 
 let socket;
@@ -26,6 +29,8 @@ socket.onopen = () => {
     `;
 
   updateMySql(SQLquery, 'user', 'SELECT');
+  userArrayCreated =
+    false;
 };
 
 // Handle incoming messages from server
@@ -33,7 +38,6 @@ socket.onmessage = (event) => {
 
   let messageFromServer =
     event.data;
-  console.log(':', messageFromServer);
 
   // Converts a JavaScript Object Notation (JSON) string into an object
   objInfo =
@@ -48,12 +52,17 @@ socket.onmessage = (event) => {
 
         userArray =
           objInfo.tableArray;
+          userArrayCreated =
+          true
 
-        // Show leading text
-        showLeadingText();
+        if (userArrayCreated) {
 
-        // Make events
-        isEventsCreated = (isEventsCreated) ? true : createEvents();
+          // Show leading text
+          showLeadingText();
+
+          // Make events
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
+        }
         break;
     }
   }
@@ -69,6 +78,8 @@ socket.onmessage = (event) => {
               ORDER BY userId;
             `;
         updateMySql(SQLquery, 'user', 'SELECT');
+        userArrayCreated =
+          false;
         break;
     };
   };

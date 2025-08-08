@@ -14,6 +14,16 @@ const objBankAccountMovement =
 const objOverview =
   new Overview('overview');
 
+
+let userArrayCreated =
+  false
+let dueArrayCreated =
+  false
+let condoArrayCreated =
+  false
+let bankAccountMovementArrayCreated =
+  false
+
 //testMode();
 
 // Exit application if no activity for 10 minutes
@@ -46,6 +56,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get dues
     let todate =
@@ -63,6 +75,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'due', 'SELECT');
+    dueArrayCreated =
+      false;
 
     // Sends a request to the server to get condos
     SQLquery =
@@ -73,6 +87,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condo', 'SELECT');
+    condoArrayCreated =
+      false;
 
     // Sends a request to the server to get bank account movements
     SQLquery =
@@ -84,6 +100,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+    bankAccountMovementArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -106,6 +124,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'due':
@@ -115,6 +135,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           dueArray =
             objInfo.tableArray;
+          dueArrayCreated =
+            true;
           break;
 
         case 'condo':
@@ -124,6 +146,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           condoArray =
             objInfo.tableArray;
+          condoArrayCreated =
+            true;
           break;
 
         case 'bankaccountmovement':
@@ -134,15 +158,23 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with bank account movement information
           bankAccountMovementArray =
             objInfo.tableArray;
+          bankAccountMovementArrayCreated =
+            true;
 
-          // Show leading text bank account movement
-          showLeadingText();
+          if (userArrayCreated
+            && dueArrayCreated
+            && condoArrayCreated
+            && bankAccountMovementArrayCreated) {
 
-          // Show all values for 
-          showValues();
+            // Show leading text bank account movement
+            showLeadingText();
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            // Show all values for 
+            showValues();
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -618,6 +650,8 @@ function getSelectedDues() {
   }
 
   updateMySql(SQLquery, 'due', 'SELECT');
+  dueArrayCreated =
+    false;
 }
 
 // Get selected bank account movements
@@ -664,4 +698,6 @@ function getSelectedBankAccountMovements() {
     `;
 
   updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+  bankAccountMovementArrayCreated =
+    false;
 }

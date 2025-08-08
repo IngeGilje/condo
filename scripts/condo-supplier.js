@@ -1,9 +1,19 @@
 // Maintenance of users
 
 // Activate objects
-const objUser = new User('user');
-const objAccount = new Account('account');
-const objSupplier = new Supplier('supplier');
+const objUser =
+  new User('user');
+const objAccount =
+  new Account('account');
+const objSupplier =
+  new Supplier('supplier');
+
+let userArrayCreated =
+  false
+let accountArrayCreated =
+  false
+let supplierArrayCreated =
+  false
 
 //testMode();
 
@@ -37,6 +47,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -46,6 +58,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
 
     // Sends a request to the server to get suppliers
     SQLquery =
@@ -56,6 +70,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'supplier', 'SELECT');
+    supplierArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -78,6 +94,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -87,6 +105,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
           break;
 
         case 'supplier':
@@ -97,19 +117,26 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with supplier information
           supplierArray =
             objInfo.tableArray;
+          supplierArrayCreated =
+            true;
 
-          // Find selected supplier id
-          const supplierId =
-            objSupplier.getSelectedSupplierId('select-supplier-supplierId');
+          if (userArrayCreated
+            && accountArrayCreated
+            && supplierArrayCreated) {
 
-          // Show leading text
-          showLeadingText(supplierId);
+            // Find selected supplier id
+            const supplierId =
+              objSupplier.getSelectedSupplierId('select-supplier-supplierId');
 
-          // Show all values for supplier
-          showValues(supplierId);
+            // Show leading text
+            showLeadingText(supplierId);
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            // Show all values for supplier
+            showValues(supplierId);
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -127,6 +154,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY supplierId;
             `;
           updateMySql(SQLquery, 'supplier', 'SELECT');
+          supplierArrayCreated =
+            false;
           break;
       };
     }
@@ -196,6 +225,8 @@ function createEvents() {
           ORDER BY supplierId;
         `;
       updateMySql(SQLquery, 'supplier', 'SELECT');
+      supplierArrayCreated =
+        false;
     }
   });
 
@@ -211,6 +242,8 @@ function createEvents() {
           ORDER BY supplierId;
         `;
       updateMySql(SQLquery, 'supplier', 'SELECT');
+      supplierArrayCreated =
+        false;
     }
   });
 }
@@ -371,6 +404,8 @@ function deleteSupplierRow(supplierId) {
 
       // Client sends a request to the server
       updateMySql(SQLquery, 'supplier', 'SELECT');
+      supplierArrayCreated =
+        false;
     }
 
     // Get supplier
@@ -381,6 +416,8 @@ function deleteSupplierRow(supplierId) {
         ORDER BY supplierId;
       `;
     updateMySql(SQLquery, 'supplier', 'SELECT');
+    supplierArrayCreated =
+      false;
 
     resetValues();
   }

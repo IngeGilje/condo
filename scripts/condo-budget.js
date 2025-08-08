@@ -10,6 +10,13 @@ const objAccount =
 const objBudget =
   new Budget('budget');
 
+let userArrayCreated =
+  false;
+let accountArrayCreated =
+  false;
+let budgetArrayCreated =
+  false;
+
 let isEventsCreated
 
 //testMode();
@@ -42,6 +49,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -52,6 +61,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
 
     // Sends a request to the server to get budgets
     SQLquery =
@@ -62,6 +73,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'budget', 'SELECT');
+    budgetArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -83,6 +96,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -92,6 +107,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
           break;
 
         case 'budget':
@@ -102,17 +119,24 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with budget information
           budgetArray =
             objInfo.tableArray;
+          budgetArrayCreated =
+            true;
 
-          // Find selected budget id
-          const budgetId =
-            objBudget.getSelectedBudgetId('select-budget-budgetId');
+          if (userArrayCreated
+            && accountArrayCreated
+            && budgetArrayCreated) {
 
-          showLeadingText(budgetId);
+            // Find selected budget id
+            const budgetId =
+              objBudget.getSelectedBudgetId('select-budget-budgetId');
 
-          showValues(budgetId);
+            showLeadingText(budgetId);
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            showValues(budgetId);
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -130,6 +154,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY budgetId;
             `;
           updateMySql(SQLquery, 'budget', 'SELECT');
+          budgetArrayCreated =
+            false;
           break;
       };
     }
@@ -196,6 +222,8 @@ function createEvents() {
         ORDER BY budgetId;
       `;
       updateMySql(SQLquery, 'budget', 'SELECT');
+      budgetArrayCreated =
+        false;
     };
   });
 
@@ -209,6 +237,8 @@ function createEvents() {
         ORDER BY budgetId;
       `;
       updateMySql(SQLquery, 'budget', 'SELECT');
+      budgetArrayCreated =
+        false;
     };
   });
 }

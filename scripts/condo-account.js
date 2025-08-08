@@ -1,8 +1,15 @@
 // maintenance of accounts
 
 // Activate classes
-const objUser = new User('user');
-const objAccount = new Account('account');
+const objUser =
+  new User('user');
+const objAccount =
+  new Account('account');
+
+let userArrayCreated =
+  false;
+let accountArrayCreated =
+  false;
 
 //testMode();
 
@@ -15,7 +22,8 @@ objAccount.menu();
 objAccount.markSelectedMenu('Kontonavn');
 
 let socket;
-socket = connectingToServer();
+socket =
+  connectingToServer();
 
 // Validate user/password
 const objUserPassword =
@@ -37,6 +45,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -46,6 +56,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -69,6 +81,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -79,19 +93,26 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with account information
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
 
-          // Find selected account id
-          const accountId =
-            objAccount.getSelectedAccountId('accountId');
+          if (userArrayCreated
+            && accountArrayCreated) {
 
-          // Show leading text
-          showLeadingText(accountId);
 
-          // Show all values for account
-          showValues(accountId);
+            // Find selected account id
+            const accountId =
+              objAccount.getSelectedAccountId('accountId');
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            // Show leading text
+            showLeadingText(accountId);
+
+            // Show all values for account
+            showValues(accountId);
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -109,6 +130,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY accountId;
             `;
           updateMySql(SQLquery, 'account', 'SELECT');
+          accountArrayCreated =
+            false;
           break;
       };
     }
@@ -167,6 +190,8 @@ function createEvents() {
         ORDER BY accountId;
       `;
       updateMySql(SQLquery, 'account', 'SELECT');
+      accountArrayCreated =
+        false;
     }
   });
 
@@ -181,6 +206,8 @@ function createEvents() {
         ORDER BY accountId;
       `;
       updateMySql(SQLquery, 'account', 'SELECT');
+      accountArrayCreated =
+        false;
     }
   });
 }
@@ -289,6 +316,8 @@ function deleteAccountRow() {
       ORDER BY accountId;
     `;
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
   }
 }
 

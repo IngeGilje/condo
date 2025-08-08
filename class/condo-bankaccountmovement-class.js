@@ -2,7 +2,8 @@
 class BankAccountMovement extends Condos {
 
   // bank account movement information
-  bankAccountMovementArray = Array;
+  bankAccountMovementArray =
+   Array;
 
   // Show all selected bank account movements
   showAllSelectedAccountMovements(columnName, bankAccountMovementId, fromDate, toDate, condoId, accountId) {

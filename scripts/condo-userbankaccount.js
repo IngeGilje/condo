@@ -1,15 +1,24 @@
 // Maintenance of user bank account
 
 // Activate objects
-const objUser = new User('user');
-const objAccount = new Account('account');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
+const objUser =
+  new User('user');
+const objAccount =
+  new Account('account');
+const objUserBankAccount =
+  new UserBankAccount('userbankaccount');
+
+let userArrayCreated =
+  false
+let accountArrayCreated =
+  false
+let userBankAccountArrayCreated =
+  false
 
 //testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
-
 
 let isEventsCreated
 
@@ -40,6 +49,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get accounts
     SQLquery =
@@ -49,6 +60,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
+    accountArrayCreated =
+      false;
 
     // Sends a request to the server to get user bank accounts
     SQLquery =
@@ -58,6 +71,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userBankAccountId;
       `;
     updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+    userBankAccountArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -79,6 +94,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -88,6 +105,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
           break;
 
         case 'userbankaccount':
@@ -98,19 +117,26 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with user bank account information
           userBankAccountArray =
             objInfo.tableArray;
+          userBankAccountArrayCreated =
+            true;
 
-          // Find selected user Bank account id
-          const userBankAccountId =
-            objUserBankAccount.getSelectedUserBankAccountId('select-userbankaccount-userBankAccountId');
+          if (userArrayCreated
+            && accountArrayCreated
+            && userBankAccountArrayCreated) {
 
-          // Show leading text
-          showLeadingText(userBankAccountId);
+            // Find selected user Bank account id
+            const userBankAccountId =
+              objUserBankAccount.getSelectedUserBankAccountId('select-userbankaccount-userBankAccountId');
 
-          // Show all values for user Bank Account
-          showValues(userBankAccountId);
+            // Show leading text
+            showLeadingText(userBankAccountId);
 
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+            // Show all values for user Bank Account
+            showValues(userBankAccountId);
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          }
           break;
       }
     }
@@ -128,6 +154,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY userbankaccountId;
             `;
           updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+          userBankAccountArrayCreated =
+            false;
           break;
       };
     }
@@ -207,6 +235,8 @@ function createEvents() {
           ORDER BY userBankAccountId;
         `;
       updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+      userBankAccountArrayCreated =
+        false;
     }
   });
 
@@ -222,6 +252,8 @@ function createEvents() {
           ORDER BY userBankAccountId;
         `;
       updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+      userBankAccountArrayCreated =
+        false;
     }
   });
 }

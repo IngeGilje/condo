@@ -14,6 +14,15 @@ const objDue =
 const objMonthlyRent =
   new MonthlyRent('monthlyrent');
 
+let userArrayCreated =
+  false
+let condoArrayCreated =
+  false
+let accountArrayCreated =
+  false
+let dueArrayCreated =
+  false
+
 //testMode();
 
 // Exit application if no activity for 10 minutes
@@ -47,6 +56,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
 
     // Sends a request to the server to get condos
     SQLquery =
@@ -64,6 +75,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
+    condoArrayCreated =
+      false;
 
     // Sends a request to the server to get dues
     SQLquery =
@@ -74,6 +87,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'due', 'SELECT');
+    dueArrayCreated =
+      false;
   };
 
   // Handle incoming messages from server
@@ -95,6 +110,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           userArray =
             objInfo.tableArray;
+          userArrayCreated =
+            true;
           break;
 
         case 'condo':
@@ -104,6 +121,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           condoArray =
             objInfo.tableArray;
+          condoArrayCreated =
+            true;
           break;
 
         case 'account':
@@ -113,6 +132,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           accountArray =
             objInfo.tableArray;
+          accountArrayCreated =
+            true;
           break;
 
         case 'due':
@@ -123,43 +144,51 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // array including objects with due information
           dueArray =
             objInfo.tableArray;
+          dueArrayCreated =
+            true;
 
-          // Find selected due id
-          const dueId =
-            objDue.getSelectedDueId('select-due-dueId');
+          if (userArrayCreated
+            && condoArrayCreated
+            && objAccountArrayCreated
+            && objDueArrayCreated) {
 
-          // Show leading text
-          showLeadingText(dueId);
+            // Find selected due id
+            const dueId =
+              objDue.getSelectedDueId('select-due-dueId');
 
-          // Show all values for due
-          showValues(dueId);
+            // Show leading text
+            showLeadingText(dueId);
 
-          // show all monthly amounts for selected condo id and account id
-          let condoId = 0;
-          if (isClassDefined('select-monthlyrent-condoId')) {
-            condoId =
-              Number(document.querySelector('.select-monthlyrent-condoId').value);
+            // Show all values for due
+            showValues(dueId);
+
+            // show all monthly amounts for selected condo id and account id
+            let condoId = 0;
+            if (isClassDefined('select-monthlyrent-condoId')) {
+              condoId =
+                Number(document.querySelector('.select-monthlyrent-condoId').value);
+            }
+            if (condoId === 0) {
+              condoId =
+                condoArray.at(-1).condoId;
+              showLeadingText();
+            }
+
+            // Account Id
+            let accountId = 0;
+            if (isClassDefined('select-monthlyrent-accountId')) {
+              accountId =
+                Number(document.querySelector('.select-monthlyrent-accountId').value);
+            }
+            if (accountId === 0) {
+              accountId =
+                accountArray.at(-1).accountId;
+            }
+            showMonthlyRent(condoId, accountId);
+
+            // Make events
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
           }
-          if (condoId === 0) {
-            condoId =
-              condoArray.at(-1).condoId;
-            showLeadingText();
-          }
-
-          // Account Id
-          let accountId = 0;
-          if (isClassDefined('select-monthlyrent-accountId')) {
-            accountId =
-              Number(document.querySelector('.select-monthlyrent-accountId').value);
-          }
-          if (accountId === 0) {
-            accountId =
-              accountArray.at(-1).accountId;
-          }
-          showMonthlyRent(condoId, accountId);
-
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
           break;
       }
     }
@@ -177,6 +206,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               ORDER BY dueId;
             `;
           updateMySql(SQLquery, 'due', 'SELECT');
+          dueArrayCreated =
+            false;
           break;
       };
     }
@@ -272,6 +303,8 @@ function createEvents() {
             ORDER BY date;
           `;
         updateMySql(SQLquery, 'due', 'SELECT');
+        dueArrayCreated =
+          false;
 
         document.querySelector('.select-monthlyrent-condoId').value =
           condoId;
@@ -291,6 +324,8 @@ function createEvents() {
           ORDER BY dueId;
         `;
       updateMySql(SQLquery, 'due', 'SELECT');
+      dueArrayCreated =
+        false;
     }
   });
 }
