@@ -31,7 +31,7 @@ resetInactivityTimer();
 let isEventsCreated
 
 objMonthlyRent.menu();
-objMonthlyRent.markSelectedMenu('Månedsavgift');
+objMonthlyRent.markSelectedMenu('Månedsleie');
 
 let socket;
 socket = connectingToServer();

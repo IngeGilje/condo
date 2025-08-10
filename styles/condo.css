@@ -137,16 +137,6 @@
 .grid-column14,
 .grid-column15,
 
-.div-importfile-columnLineNumber,
-.div-importfile-columnAccountingDate,
-.div-importfile-columnName,
-.div-importfile-columnAccountName,
-.div-importfile-columnFromBankAccount,
-.div-importfile-columnToBankAccount,
-.div-importfile-columnIncome,
-.div-importfile-columnPayment,
-.div-importfile-columnText,
-
 .div-payment-columnIncomeId,
 .div-payment-columnDate,
 .div-payment-columnAmount,
@@ -482,99 +472,6 @@
   width: 187.5px;
   -webkit-font-smoothing: antialiased;
 }
-
-/* input 
-.a-condo-login,
-.div-grid-bankaccountmovement-search input,
-.div-grid-bankaccountmovement input,
-
-.div-grid-accountreport-search input,
-.div-grid-accountreport input,
-
-.div-grid-userbankaccount input,
-
-.div-grid-supplier input,
-
-.div-grid-importfile input,
-
-.div-grid-user input,
-
-.div-grid-condo input,
-
-.div-grid-bankaccount input,
-
-.div-grid-account input,
-
-.div-grid-due-search input,
-.div-grid-due input,
-
-.div-grid-monthlyrent input,
-
-.div-grid-remoteheating-search input,
-.div-grid-remoteheating input,
-
-.div-grid-budget input,
-
-.div-grid-overview-search input,
-.div-grid-overview input {
-  appearance: auto;
-  background-color: rgb(255, 255, 255);
-  border-bottom-color: rgb(195, 204, 217);
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-image-outset: 0;
-  border-image-repeat: stretch;
-  border-image-slice: 100%;
-  border-image-source: none;
-  border-image-width: 1;
-  border-left-color: rgb(195, 204, 217);
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-right-color: rgb(195, 204, 217);
-  border-right-style: solid;
-  border-right-width: 1px;
-  border-top-color: rgb(195, 204, 217);
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  box-sizing: border-box;
-  color: rgb(70, 70, 70);
-  cursor: text;
-  display: block;
-  height: 48px;
-  letter-spacing: normal;
-  line-height: 22px;
-  margin-bottom: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 0px;
-  overflow-clip-margin: 0px;
-  overflow-x: clip;
-  overflow-y: clip;
-  padding-block-end: 12px;
-  padding-block-start: 12px;
-  padding-bottom: 12px;
-  padding-inline-end: 8px;
-  padding-inline-start: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-top: 12px;
-  tab-size: 4;
-  text-align: start;
-  text-indent: 0px;
-  text-rendering: auto;
-  text-shadow: none;
-  text-size-adjust: 100%;
-  text-transform: none;
-  width: 187.5px;
-  word-spacing: 0px;
-  -webkit-rtl-ordering: logical;
-  cursor: pointer;
-}
-*/
 
 /* input */
 .a-condo-login,

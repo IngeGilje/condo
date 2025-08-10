@@ -1,5 +1,5 @@
 // Login
-
+console.log('Programstart')
 // Activate user class
 const objUser =
   new User('user');

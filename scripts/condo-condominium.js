@@ -3,7 +3,6 @@
 // Activate classes
 const today =
   new Date();
-
 const objUser =
   new User('user');
 const objAccount =
@@ -19,10 +18,10 @@ let accountArrayCreated =
   false
 let bankAccountArrayCreated =
   false
-const condominiumArrayCreated =
+let condominiumArrayCreated =
   false
 
-testMode();
+//testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
@@ -137,7 +136,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           bankAccountArray =
             objInfo.tableArray;
-          bankAccountTableCreated =
+          bankAccountArrayCreated =
             true
           break;
 

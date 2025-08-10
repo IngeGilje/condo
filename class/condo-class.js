@@ -123,6 +123,8 @@ class Condos {
       className.includes('-openingBalanceDate') ? "date.png" : imageName;
     imageName =
       className.includes('-closingBalanceDate') ? "date.png" : imageName;
+    imageName =
+      className.includes('-importFileName') ? "filename.png" : imageName;
 
     // Set the PNG file
     const input =
@@ -173,20 +175,7 @@ class Condos {
         </label>
       `;
   }
-  /*
-  // Show button
-  showButton(className, buttonText) {
 
-    document.querySelector(`.div-${className}`).innerHTML =
-      `
-        <button 
-          class="button-${className}"
-        >
-          ${buttonText}
-        </button>
-      `;
-  }
-  */
   // Show button
   showButton(className, buttonText) {
     let imageName;
@@ -200,6 +189,8 @@ class Condos {
       className.includes('-cancel') ? "cancel.png" : imageName;
     imageName =
       className.includes('-delete') ? "delete.png" : imageName;
+    imageName =
+      className.includes('-startImport') ? "not_started.png" : imageName;
 
     const html =
       `
@@ -796,7 +787,7 @@ class Condos {
         <a href="${url}condo-monthlyrent.html"
           class="a-menu-vertical-monthlyrent"
         >
-          Månedsavgift
+          Månedsleie
         </a>
 
         <a href="${url}condo-budget.html"
@@ -1492,7 +1483,7 @@ function connectingToServer() {
       break;
     }
     // Test web server/ local web server
-    case 2: 
+    case 2:
     // Test server/ local test server
     case 3: {
 

@@ -104,9 +104,12 @@ server.on('connection', (socket) => {
           require('fs');
 
         // 012345678901234567890
-        // Name of importfile: C://inetpub//wwwroot//condo//scripts//transaksjonsliste.csv';
+        // Name of importfile: http://localhost/scripts//transaksjonsliste.csv';
+        //C:\\Websites\\condo\\scripts\\http:\\localhost\\scripts\\transaksjonsliste.csv
         let importFileName =
           messageFromClient.tableName;
+        console.log('messageFromClient.tableName',messageFromClient.tableName)
+        // messageFromClient.tableName http://localhost//scripts//transaksjonsliste.csv
         fs.readFile(importFileName, 'utf8', (err, textFile) => {
           if (err) {
             console.error(err);

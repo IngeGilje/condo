@@ -42,6 +42,8 @@ let bankAccountMovementArrayCreated =
   false;
 let userBankAccountArrayCreated =
   false;
+let textFileArrayCreated =
+  false
 
 testMode();
 
@@ -180,11 +182,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     userBankAccountArrayCreated =
       false;
 
+    /*
     // Sends a request to the server to get bank account movement text file from bank
-    SQLquery =
-      `
-      `;
-    updateMySql(SQLquery, 'C://inetpub//wwwroot//condo//scripts//transaksjonsliste.csv', 'textFile');
+    SQLquery = "";
+    updateMySql(SQLquery, 'C:\\Websites\\condo\\transaksjonsliste.csv', 'textFile');
+    textFileArrayCreated =
+      false;
+    */
   };
 
   // Handle incoming messages from server
@@ -211,14 +215,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             true;
           break;
 
-        case 'condonium':
+        case 'condominium':
 
           // condonium table
           console.log('condoniumTable');
 
-          condoniumArray =
+          condominiumArray =
             objInfo.tableArray;
-          condoniumArrayCreated =
+          condominiumArrayCreated =
             true;
           break;
 
@@ -287,6 +291,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             objInfo.tableArray;
           bankAccountMovementArrayCreated =
             true;
+          break;
 
         case 'userbankaccount':
 
@@ -298,17 +303,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             objInfo.tableArray;
           userBankAccountArrayCreated =
             true;
-
-        case 'condominium':
-
-          // condominium table
-          console.log('condominiumTable');
-
-          // array including objects with condominium information
-          condominiumArray =
-            objInfo.tableArray;
-          condominiumArrayCreated =
-            true;
+          break;
       }
     }
 
@@ -320,6 +315,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       setTimeout(() => {
 
         createImportFileArray(objInfo.tableArray);
+        textFileArrayCreated =
+          true
 
         if (userArrayCreated
           && condominiumArrayCreated
@@ -329,10 +326,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           && dueArrayCreated
           && supplierArrayCreated
           && bankAccountMovementArrayCreated
-          && userBankAccountArrayCreated) {
+          && userBankAccountArrayCreated
+          && textFileArrayCreated) {
 
-          showBankAccountMovements();
           showLeadingText();
+          showValues();
 
           // Make events
           isEventsCreated = (isEventsCreated) ? true : createEvents();
@@ -375,13 +373,15 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make importfile events
 function createEvents() {
 
-  // Show selected import file row
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-importfile-importFileId')) {
+  // Start import of text file
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-importfile-startImport')) {
 
-      // Get row number import file array
-      const rowNumber =
-        Number(document.querySelector(".select-importfile-importFileId").value);
+      document.querySelector(".div-importfile-importFileName").remove();
+      document.querySelector(".div-importfile-startImport").remove();
+
+      showImportedTextFile();
+      showBankAccountMovements();
     };
   });
 
@@ -401,8 +401,8 @@ function createEvents() {
   });
 }
 
-// Show leading text for income
-function showLeadingText() {
+// Show imported file
+function showImportedTextFile() {
 
   // Show button for update of bank account movement
   objImportFile.showButton('importfile-saveBankAccountMovement', 'Oppdater banktransaksjoner');
@@ -1091,18 +1091,6 @@ function removeBankAccountColumn() {
   document.querySelector(".button-importfile-saveBankAccountMovement").remove();
 }
 
-// Send a request to the server to get all bank account transactions
-function requestImportFile() {
-
-  const objCondominiumRowNumber =
-    condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-  if (objCondominiumRowNumber !== -1) {
-
-    const importFileName = `${condominiumArray[objCondominiumRowNumber].importPath} //transaksjonsliste.csv`;
-    socket.send(`Name of importfile: ${importFileName}`);
-  }
-}
-
 //Check if bank account movement exists
 function checkBankAccountMovement(income, payment, date, text) {
 
@@ -1119,4 +1107,31 @@ function checkBankAccountMovement(income, payment, date, text) {
     }
   });
   return bankAccountMovementExist;
+}
+
+// Show leading text for import text file name
+function showLeadingText() {
+
+  // import text file name
+  objImportFile.showInput('importfile-importFileName', '* Navn på tekst fil', 50, 'eks.: c://users//user//data//transaksjonsfile.csv');
+
+  // update button
+  if (Number(objUserPassword.securityLevel) >= 9) {
+
+    objImportFile.showButton('importfile-startImport', 'Start import');
+  }
+}
+
+// Show values for bank Account movements
+function showValues() {
+
+  // get name of importfile
+  const objCondominiumRowNumber =
+    condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+  if (objCondominiumRowNumber !== -1) {
+
+    // file import text name
+    document.querySelector('.input-importfile-importFileName').value =
+      condominiumArray[objCondominiumRowNumber].importPath;
+  }
 }
