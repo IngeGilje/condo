@@ -95,6 +95,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
         AND date BETWEEN '${year}0101' AND '${todate}' 
         ORDER BY bankAccountMovementId;
       `;
@@ -670,6 +671,7 @@ function getSelectedBankAccountMovements() {
     `
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND deleted <> 'Y'
       AND date BETWEEN ${fromDate} AND ${toDate} 
     `;
 

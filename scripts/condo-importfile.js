@@ -165,6 +165,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
         ORDER BY bankAccountMovementId;
       `;
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
@@ -181,14 +182,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     updateMySql(SQLquery, 'userbankaccount', 'SELECT');
     userBankAccountArrayCreated =
       false;
-
-    /*
-    // Sends a request to the server to get bank account movement text file from bank
-    SQLquery = "";
-    updateMySql(SQLquery, 'C:\\Websites\\condo\\transaksjonsliste.csv', 'textFile');
-    textFileArrayCreated =
-      false;
-    */
   };
 
   // Handle incoming messages from server
@@ -303,6 +296,27 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             objInfo.tableArray;
           userBankAccountArrayCreated =
             true;
+
+          setTimeout(() => {
+
+            if (userArrayCreated
+              && condominiumArrayCreated
+              && condoArrayCreated
+              && accountArrayCreated
+              && bankAccountArrayCreated
+              && dueArrayCreated
+              && supplierArrayCreated
+              && bankAccountMovementArrayCreated
+              && userBankAccountArrayCreated) {
+
+              showLeadingText();
+              showValues();
+
+              // Make events
+              isEventsCreated = (isEventsCreated) ? true : createEvents();
+            }
+          }, 100);
+
           break;
       }
     }
@@ -312,30 +326,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // text file
       console.log('textFile');
 
-      setTimeout(() => {
-
-        createImportFileArray(objInfo.tableArray);
-        textFileArrayCreated =
-          true
-
-        if (userArrayCreated
-          && condominiumArrayCreated
-          && condoArrayCreated
-          && accountArrayCreated
-          && bankAccountArrayCreated
-          && dueArrayCreated
-          && supplierArrayCreated
-          && bankAccountMovementArrayCreated
-          && userBankAccountArrayCreated
-          && textFileArrayCreated) {
-
-          showLeadingText();
-          showValues();
-
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
-        }
-      }, 100);
+      createImportFileArray(objInfo.tableArray);
+      textFileArrayCreated =
+        true
     }
 
     if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
@@ -348,6 +341,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM bankaccountmovement
               WHERE condominiumId = ${objUserPassword.condominiumId}
+              AND deleted <> 'Y'
               ORDER BY bankAccountMovementId;
             `;
           updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
@@ -377,11 +371,35 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-importfile-startImport')) {
 
-      document.querySelector(".div-importfile-importFileName").remove();
-      document.querySelector(".div-importfile-startImport").remove();
+      // file import text name
+      const importFileName =
+        document.querySelector('.input-importfile-importFileName').value;
 
-      showImportedTextFile();
-      showBankAccountMovements();
+      // Sends a request to the server to get bank account movement text file from bank
+      updateMySql("", importFileName, 'textFile');
+      textFileArrayCreated =
+        false;
+
+      setTimeout(() => {
+
+        document.querySelector(".div-importfile-importFileName").remove();
+        document.querySelector(".div-importfile-startImport").remove();
+
+        if (userArrayCreated
+          && condominiumArrayCreated
+          && condoArrayCreated
+          && accountArrayCreated
+          && bankAccountArrayCreated
+          && dueArrayCreated
+          && supplierArrayCreated
+          && bankAccountMovementArrayCreated
+          && userBankAccountArrayCreated
+          && textFileArrayCreated) {
+
+          showImportedTextFile();
+          showBankAccountMovements();
+        }
+      }, 100);
     };
   });
 
@@ -801,32 +819,34 @@ function updateBankAccountMovements() {
 
     const SQLquery =
       `
-          INSERT INTO bankaccountmovement (
-            tableName,
-            condominiumId,
-            user,
-            lastUpdate,
-            condoId,
-            accountId,
-            income,
-            payment,
-            numberKWHour,
-            date,
-            text)
-          VALUES (
-            'bankaccountmovement',
-            ${objUserPassword.condominiumId},
-            '${objUserPassword.email}',
-            '${lastUpdate}',
-            ${condoId},
-            ${accountId},
-            ${income},
-            ${payment},
-            '',
-            ${date}, 
-            '${text}'
-          );
-        `;
+        INSERT INTO bankaccountmovement (
+          deleted,
+          tableName,
+          condominiumId,
+          user,
+          lastUpdate,
+          condoId,
+          accountId,
+          income,
+          payment,
+          numberKWHour,
+          date,
+          text)
+        VALUES (
+          'N',
+          'bankaccountmovement',
+          ${objUserPassword.condominiumId},
+          '${objUserPassword.email}',
+          '${lastUpdate}',
+          ${condoId},
+          ${accountId},
+          ${income},
+          ${payment},
+          '',
+          ${date}, 
+          '${text}'
+        );
+      `;
 
     // Client sends a request to the server
     updateMySql(SQLquery, 'bankaccountmovement', 'INSERT');

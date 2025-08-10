@@ -484,6 +484,7 @@ function createAllTables() {
       `         
       CREATE TABLE bankaccountmovement (
         bankAccountMovementId INT AUTO_INCREMENT PRIMARY KEY,
+        deleted VARCHAR(1),
         tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
         user VARCHAR (50),
@@ -861,6 +862,7 @@ function insertRowAllTables() {
     SQLquery =
       `         
       INSERT INTO bankaccountmovement(
+        deleted,
         tableName,
         condominiumId,
         user,
@@ -874,6 +876,7 @@ function insertRowAllTables() {
         text
       )
       VALUES(
+        'N',
         'bankaccountmovement',
         1,
         'superuser@ingegilje.no',

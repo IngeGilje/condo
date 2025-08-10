@@ -146,6 +146,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
         AND date BETWEEN ${fromDate} AND ${toDate} 
         ORDER BY date DESC;
       `;
@@ -408,6 +409,7 @@ function createEvents() {
         `
           SELECT * FROM bankaccountmovement
           WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND deleted <> 'Y'
           ORDER BY date DESC;
         `;
       updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
@@ -910,6 +912,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
         `
           UPDATE bankaccountmovement
           SET 
+            deleted = '${deleted}',
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             condoId = '${condoId}',
@@ -927,6 +930,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
       SQLquery =
         `
         INSERT INTO bankaccountmovement (
+          deleted,
           tableName,
           condominiumId,
           user,
@@ -940,6 +944,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
           text
         )
         VALUES (
+          'N',
           'bankaccountmovement',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
@@ -958,11 +963,6 @@ function updateBankAccountMovement(bankAccountMovementId) {
 
     document.querySelector('.select-bankaccountmovement-bankAccountMovementId').disabled =
       false;
-    //document.querySelector('.select-bankaccountmovement-condoId').disabled =
-    //  false;
-    //document.querySelector('.select-bankaccountmovement-accountId').disabled =
-    //  false;
-
     document.querySelector('.button-bankaccountmovement-delete').disabled =
       false;
     document.querySelector('.button-bankaccountmovement-insert').disabled =
@@ -1007,14 +1007,26 @@ function deleteBankAccountMovement() {
     if (objBankAccountMovementRowNumber !== -1) {
 
       // Delete table row
+      /*
       SQLquery =
         `
           DELETE FROM bankaccountmovement
           WHERE bankAccountMovementId = ${bankAccountMovementId};
         `;
-
-      // Client sends a request to the server
-      updateMySql(SQLquery, 'bankaccountmovement', 'DELETE');
+      */
+      // current date
+      const lastUpdate =
+        today.toISOString();
+      SQLquery =
+        `
+        UPDATE bankaccountmovement
+          SET 
+            deleted = 'Y',
+            user = '${objUserPassword.email}',
+            lastUpdate = '${lastUpdate}',
+          WHERE bankAccountMovementId = ${bankAccountMovementId};
+        `;
+      updateMySql(SQLquery, 'bankaccountmovement', 'UPDATE');
     }
   }
 }
@@ -1070,6 +1082,7 @@ function getSelectedBankAccountMovements() {
     `
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND deleted <> 'Y'
       AND date BETWEEN ${fromDate} AND ${toDate}
     `;
 
