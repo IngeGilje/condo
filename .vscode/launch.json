@@ -29,5 +29,11 @@
       "name": "Importer banktransaksjoner",
       "url": "http://localhost/condo-importfile.html",
     },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Banktransaksjoner",
+      "url": "http://localhost/condo-bankaccountmovement.html",
+    },
   ]
 }

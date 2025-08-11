@@ -34,7 +34,7 @@ let userBankAccountArrayCreated =
 let bankAccountMovementArrayCreated =
   false
 
-//testMode();
+testMode();
 
 // Redirect application after 2 hours
 setTimeout(() => {

@@ -341,7 +341,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM bankaccountmovement
               WHERE condominiumId = ${objUserPassword.condominiumId}
-              AND deleted <> 'Y'
               ORDER BY bankAccountMovementId;
             `;
           updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
@@ -1123,7 +1122,8 @@ function checkBankAccountMovement(income, payment, date, text) {
       && bankAccountMovement.date === date
       && bankAccountMovement.text === text) {
 
-      bankAccountMovementExist = true;
+      bankAccountMovementExist =
+       true;
     }
   });
   return bankAccountMovementExist;
@@ -1133,7 +1133,7 @@ function checkBankAccountMovement(income, payment, date, text) {
 function showLeadingText() {
 
   // import text file name
-  objImportFile.showInput('importfile-importFileName', '* Navn på tekst fil', 50, 'eks.: c://users//user//data//transaksjonsfile.csv');
+  objImportFile.showInput('importfile-importFileName', '* Navn på transaksjonsfil', 50, 'eks.: c://users//user//data//transaksjonsfile.csv');
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
