@@ -53,6 +53,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
 
@@ -65,6 +66,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY bankAccountId;
       `;
     updateMySql(SQLquery, 'bankaccount', 'SELECT');
@@ -76,6 +78,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -87,6 +90,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condominium
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY condominiumId;
       `;
 
@@ -185,6 +189,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM condominium
               WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND delete <> 'Y'
               ORDER BY condominiumId;
             `;
           updateMySql(SQLquery, 'condominium', 'SELECT');
@@ -244,6 +249,7 @@ function createEvents() {
         `
           SELECT * FROM condominium
           WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND delete <> 'Y'
           ORDER BY name;
         `;
       updateMySql(SQLquery, 'condominium', 'SELECT');
@@ -261,6 +267,7 @@ function createEvents() {
         `
           SELECT * FROM condominium
           WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND delete <> 'Y'
           ORDER BY condominiumId;
         `;
       updateMySql(SQLquery, 'condominium', 'SELECT');
@@ -336,7 +343,7 @@ function updateCondominium(condominiumId) {
 
       SQLquery = `
         INSERT INTO condominium (
-          tableName,
+          deleted,
           user,
           lastUpdate,
           name,
@@ -351,7 +358,7 @@ function updateCondominium(condominiumId) {
           organizationNumber,
           importPath)
         VALUES (
-          'condominium',
+          'N',
           '${objUserPassword.email}',
           '${lastUpdate}',
           '${condominiumName}',
@@ -572,10 +579,19 @@ function deleteCondominiumRow() {
       condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (objCondominimuRowNumber !== -1) {
 
+      // current date
+      const lastUpdate =
+        today.toISOString();
+
       // Delete table
-      SQLquery = `
-        DELETE FROM condominium
-        WHERE condominiumId = ${condominiumId};
+      SQLquery =
+        `
+          UPDATE condominium
+            SET 
+              deleted = 'Y',
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}',
+          WHERE condominiumId = ${condominiumId};
       `;
       updateMySql(SQLquery, 'condominium', 'SELECT');
       condominiumArrayCreated =
@@ -587,6 +603,7 @@ function deleteCondominiumRow() {
       `
         SELECT * FROM condominium
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY name;
       `;
     updateMySql(SQLquery, 'condominium', 'SELECT');

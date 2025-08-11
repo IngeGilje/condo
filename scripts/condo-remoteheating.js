@@ -61,6 +61,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condominium
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY condominiumId;
       `;
 
@@ -73,6 +74,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -84,6 +86,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY condoId;
       `;
 
@@ -96,6 +99,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
 
@@ -589,7 +593,7 @@ function getSelectedBankAccountMovements() {
     `
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND deleted <> 'Y'
+        AND deleted <> 'Y'
       AND date BETWEEN ${fromDate} AND ${toDate}
     `;
 

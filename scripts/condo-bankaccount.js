@@ -1,9 +1,14 @@
 // Maintenance of bankaccounts
 
 // Activate objects
-const objUser = new User('user');
-const objAccount = new Account('account');
-const objBankAccount = new BankAccount('bankaccount');
+const today =
+  new Date();
+const objUser = 
+new User('user');
+const objAccount = 
+new Account('account');
+const objBankAccount = 
+new BankAccount('bankaccount');
 
 let userArrayCreated =
   false
@@ -42,6 +47,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -53,6 +59,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
 
@@ -65,6 +72,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY bankaccountId;
       `;
 
@@ -149,6 +157,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM bankaccount
               WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND delete <> 'Y'
               ORDER BY bankAccountId;
             `;
           updateMySql(SQLquery, 'bankaccount', 'SELECT');
@@ -230,6 +239,7 @@ function createEvents() {
       const SQLquery = `
         SELECT * FROM bankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY name;
       `;
       updateMySql(SQLquery, 'bankaccount', 'SELECT');
@@ -278,8 +288,8 @@ function updateBankAccount() {
     if (bankAccountId >= 0) {
 
       let SQLquery = '';
-      const now = new Date();
-      const lastUpdate = now.toISOString();
+      const lastUpdate =
+       today.toISOString();
 
       const objAccountRowNumber =
         bankAccountArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
@@ -307,7 +317,7 @@ function updateBankAccount() {
         // Insert new record
         SQLquery = `
         INSERT INTO bankaccount (
-          tableName,
+          deleted,
           condominiumId,
           user,
           lastUpdate,
@@ -319,7 +329,7 @@ function updateBankAccount() {
           closingBalanceDate
         ) 
         VALUES (
-          'bankaccount',
+          'N',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
@@ -359,7 +369,9 @@ function deleteAccountRow() {
 
       // Delete table
       SQLquery = `
-        DELETE FROM bankaccount
+        UPDATE bankaccount
+        SET 
+          deleted = 'Y'
         WHERE bankAccountId = '${bankAccountId}';
       `;
 
@@ -371,6 +383,7 @@ function deleteAccountRow() {
     SQLquery = `
       SELECT * FROM bankaccount
       WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND delete <> 'Y'
       ORDER BY name;
     `;
     // Client sends a request to the server

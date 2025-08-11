@@ -53,6 +53,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -70,7 +71,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN '${year}0101' AND '${todate}' 
+          AND delete <> 'Y'
+          AND date BETWEEN '${year}0101' AND '${todate}' 
         ORDER BY date DESC;
       `;
 
@@ -83,6 +85,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY name;
       `;
 
@@ -95,8 +98,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-        AND date BETWEEN '${year}0101' AND '${todate}' 
+          AND deleted <> 'Y'
+          AND date BETWEEN '${year}0101' AND '${todate}' 
         ORDER BY bankAccountMovementId;
       `;
 
@@ -631,7 +634,8 @@ function getSelectedDues() {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN ${fromDate} AND ${toDate} 
+          AND delete <> 'Y'
+          AND date BETWEEN ${fromDate} AND ${toDate} 
         ORDER BY date DESC;
       `;
   }
@@ -644,8 +648,9 @@ function getSelectedDues() {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN ${fromDate} AND ${toDate} 
-        AND condoId = ${condoId}
+          AND delete <> 'Y'
+          AND date BETWEEN ${fromDate} AND ${toDate} 
+          AND condoId = ${condoId}
         ORDER BY date DESC;
       `;
   }
@@ -671,7 +676,7 @@ function getSelectedBankAccountMovements() {
     `
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND deleted <> 'Y'
+        AND deleted <> 'Y'
       AND date BETWEEN ${fromDate} AND ${toDate} 
     `;
 

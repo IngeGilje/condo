@@ -46,6 +46,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -57,6 +58,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
 
@@ -69,6 +71,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM budget
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY budgetId;
       `;
 
@@ -151,6 +154,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM budget
               WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND delete <> 'Y'
               ORDER BY budgetId;
             `;
           updateMySql(SQLquery, 'budget', 'SELECT');
@@ -219,6 +223,7 @@ function createEvents() {
       const SQLquery = `
         SELECT * FROM budget
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY budgetId;
       `;
       updateMySql(SQLquery, 'budget', 'SELECT');
@@ -234,6 +239,7 @@ function createEvents() {
       const SQLquery = `
         SELECT * FROM budget
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY budgetId;
       `;
       updateMySql(SQLquery, 'budget', 'SELECT');
@@ -258,10 +264,9 @@ function updateBudgetRow(budgetId) {
       Number(document.querySelector('.select-budget-year').value);
     let amount =
       formatKronerToOre(document.querySelector('.input-budget-amount').value);
-    const now =
-      new Date();
+  
     const lastUpdate =
-      now.toISOString();
+      today.toISOString();
 
     // Check if budget exist
     let objBudgetRowNumber = -1;
@@ -292,7 +297,7 @@ function updateBudgetRow(budgetId) {
       SQLquery =
         `
           INSERT INTO budget (
-            tableName,
+            deleted,
             condominiumId,
             user,
             lastUpdate,
@@ -300,7 +305,7 @@ function updateBudgetRow(budgetId) {
             amount,
             year)
           VALUES (
-            'budget',
+            'N',
             ${objUserPassword.condominiumId},
             '${objUserPassword.email}',
             '${lastUpdate}',
@@ -435,11 +440,19 @@ function deleteBudgetRow() {
     }
     if (objBudgetRowNumber !== -1) {
 
+      // current date
+      const lastUpdate =
+        today.toISOString();
+
       // Delete table
       SQLquery =
         `
-          DELETE FROM budget
-          WHERE budgetId = ${budgetId};
+          UPDATE budget
+            SET 
+              deleted = 'Y',
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}',
+            WHERE budgetId = ${budgetId};
         `;
     }
     // Client sends a request to the server

@@ -1,6 +1,8 @@
 // maintenance of accounts
 
 // Activate classes
+const today =
+  new Date();
 const objUser =
   new User('user');
 const objAccount =
@@ -42,6 +44,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -53,6 +56,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -127,6 +131,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM account
               WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND delete <> 'Y'
               ORDER BY accountId;
             `;
           updateMySql(SQLquery, 'account', 'SELECT');
@@ -187,6 +192,7 @@ function createEvents() {
       const SQLquery = `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
       updateMySql(SQLquery, 'account', 'SELECT');
@@ -203,6 +209,7 @@ function createEvents() {
       const SQLquery = `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
       updateMySql(SQLquery, 'account', 'SELECT');
@@ -227,10 +234,8 @@ function updateAccount() {
 
     if (accountId >= 0) {
 
-      const now =
-        new Date();
       const lastUpdate =
-        now.toISOString();
+        today.toISOString();
 
       const objAccountRowNumber =
         accountArray.findIndex(account => account.accountId === accountId);
@@ -255,14 +260,14 @@ function updateAccount() {
         // Insert new record
         SQLquery = `
         INSERT INTO account (
-          tableName,
+          deleted,
           condominiumId,
           user,
           lastUpdate,
           name
         ) 
         VALUES (
-          'account',
+          'N',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
@@ -303,8 +308,10 @@ function deleteAccountRow() {
 
       // Delete table
       SQLquery = `
-        DELETE FROM account
-        WHERE accountId = ${accountId};
+       UPDATE account
+          SET 
+            deleted = 'Y'
+          WHERE accountId = ${accountId};
       `;
       // Client sends a request to the server
       updateMySql(SQLquery, 'account', 'SELECT');
@@ -313,6 +320,7 @@ function deleteAccountRow() {
     SQLquery = `
       SELECT * FROM account
       WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND delete <> 'Y'
       ORDER BY accountId;
     `;
     updateMySql(SQLquery, 'account', 'SELECT');

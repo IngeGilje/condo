@@ -1,6 +1,8 @@
 // Maintenance of users
 
 // Activate objects
+const today =
+  new Date();
 const objCondo =
   new Condo('condo');
 const objUser =
@@ -42,6 +44,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY name;
       `;
 
@@ -54,6 +57,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -98,7 +102,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           if (condoArrayCreated
             && userArrayCreated) {
-              
+
             // Find selected user id
             const userId =
               objUser.getSelectedUserId('select-user-userId');
@@ -126,6 +130,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM user
               WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND delete <> 'Y'
               ORDER BY userId;
             `;
           updateMySql(SQLquery, 'user', 'SELECT');
@@ -207,6 +212,7 @@ function createEvents() {
         `
           SELECT * FROM user
           WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND delete <> 'Y'
           ORDER BY userId;
         `;
       updateMySql(SQLquery, 'user', 'SELECT');
@@ -224,6 +230,7 @@ function createEvents() {
         `
           SELECT * FROM user
           WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND delete <> 'Y'
           ORDER BY userId;
         `;
       updateMySql(SQLquery, 'user', 'SELECT');
@@ -268,8 +275,9 @@ function updateUser(userId) {
       document.querySelector('.input-user-password').value;
 
     let SQLquery = '';
-    const now = new Date();
-    const lastUpdate = now.toISOString();
+
+    const lastUpdate =
+      today.toISOString();
 
     const objUserRowNumber =
       userArray.findIndex(user => user.userId === userId);
@@ -301,7 +309,7 @@ function updateUser(userId) {
       SQLquery =
         `
           INSERT INTO user(
-            tableName,
+            deleted,
             condominiumId,
             user,
             lastUpdate,
@@ -314,7 +322,7 @@ function updateUser(userId) {
             password
           )
           VALUES(
-            'user',
+            'N',
             ${objUserPassword.condominiumId},
             '${objUserPassword.email}',
             '${lastUpdate}',
@@ -349,16 +357,28 @@ function deleteUserRow(userId) {
 
   if (userId >= 0) {
 
+    const lastUpdate =
+      today.toISOString();
+
     // Check if user exist
     const objUserRowNumber =
       userArray.findIndex(user => user.userId === userId);
     if (objUserRowNumber !== -1) {
 
+            // current date
+      const lastUpdate =
+        today.toISOString();
+
       // Delete table
-      SQLquery = `
-        DELETE FROM user
-        WHERE userId = ${userId};
-    `;
+      SQLquery =
+        `
+          UPDATE user
+            SET 
+              deleted = 'Y',
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}',
+          WHERE userId = ${userId};
+        `;
 
       // Client sends a request to the server
       updateMySql(SQLquery, 'user', 'DELETE');
@@ -369,6 +389,7 @@ function deleteUserRow(userId) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -469,8 +490,10 @@ function showValues(userId) {
 function validateValues(userId) {
 
   // Check email
-  const eMail = document.querySelector('.input-user-email').value;
-  const validEmail = objUser.validateEmail(eMail, "label-user-email", "E-mail(Bruker)");
+  const eMail =
+   document.querySelector('.input-user-email').value;
+  const validEmail =
+   objUser.validateEmail(eMail, "label-user-email", "E-mail(Bruker)");
 
   // Check condo Id
   const condoId =

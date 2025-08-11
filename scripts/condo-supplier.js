@@ -1,6 +1,8 @@
 // Maintenance of users
 
 // Activate objects
+const today =
+  new Date();
 const objUser =
   new User('user');
 const objAccount =
@@ -15,7 +17,7 @@ let accountArrayCreated =
 let supplierArrayCreated =
   false
 
-//testMode();
+testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
@@ -44,6 +46,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -55,6 +58,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -66,6 +70,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM supplier
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY supplierId;
       `;
 
@@ -151,6 +156,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM supplier
               WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND delete <> 'Y'
               ORDER BY supplierId;
             `;
           updateMySql(SQLquery, 'supplier', 'SELECT');
@@ -222,6 +228,7 @@ function createEvents() {
         `
           SELECT * FROM supplier
           WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND delete <> 'Y'
           ORDER BY supplierId;
         `;
       updateMySql(SQLquery, 'supplier', 'SELECT');
@@ -239,6 +246,7 @@ function createEvents() {
         `
           SELECT * FROM supplier
           WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND delete <> 'Y'
           ORDER BY supplierId;
         `;
       updateMySql(SQLquery, 'supplier', 'SELECT');
@@ -249,8 +257,6 @@ function createEvents() {
 }
 
 function updateSupplier(supplierId) {
-
-  let isUpdated = false;
 
   if (validateValues(supplierId)) {
 
@@ -299,8 +305,8 @@ function updateSupplier(supplierId) {
       (document.querySelector('.input-supplier-amount').value) ? formatKronerToOre(document.querySelector('.input-supplier-amount').value) : '';
 
     let SQLquery = '';
-    const now = new Date();
-    const lastUpdate = now.toISOString();
+    const lastUpdate =
+      today.toISOString();
 
     const objUserSupplierNumber =
       supplierArray.findIndex(supplier => supplier.supplierId === supplierId);
@@ -326,7 +332,7 @@ function updateSupplier(supplierId) {
             bankAccount = '${bankAccount}',
             accountId = ${accountId},
             account2Id = ${account2Id},
-            amount = ${amount}
+            amount = '${amount}'
           WHERE supplierId = ${supplierId}
           ;
         `;
@@ -336,7 +342,7 @@ function updateSupplier(supplierId) {
       // Insert new record
       SQLquery = `
         INSERT INTO supplier (
-          tableName,
+          deleted,
           condominiumId,
           user,
           lastUpdate,
@@ -353,7 +359,7 @@ function updateSupplier(supplierId) {
           amount
         ) 
         VALUES (
-          'supplier',
+          'N',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
@@ -380,9 +386,7 @@ function updateSupplier(supplierId) {
       false;
     document.querySelector('.button-supplier-insert').disabled =
       false;
-    isUpdated = true;
   }
-  return isUpdated;
 }
 
 function deleteSupplierRow(supplierId) {
@@ -396,10 +400,19 @@ function deleteSupplierRow(supplierId) {
       supplierArray.findIndex(supplier => supplier.supplierId === supplierId);
     if (objUserSupplierNumber !== -1) {
 
+      // current date
+      const lastUpdate =
+        today.toISOString();
+
       // Delete table
-      SQLquery = `
-        DELETE FROM supplier
-        WHERE supplierId = ${supplierId};
+      SQLquery =
+        `
+          UPDATE supplier
+            SET 
+              deleted = 'Y',
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}',
+          WHERE supplierId = ${supplierId};
       `;
 
       // Client sends a request to the server
@@ -413,6 +426,7 @@ function deleteSupplierRow(supplierId) {
       `
         SELECT * FROM supplier
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY supplierId;
       `;
     updateMySql(SQLquery, 'supplier', 'SELECT');

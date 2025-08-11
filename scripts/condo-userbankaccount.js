@@ -1,6 +1,8 @@
 // Maintenance of user bank account
 
 // Activate objects
+const today =
+  new Date();
 const objUser =
   new User('user');
 const objAccount =
@@ -46,6 +48,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -57,6 +60,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -68,6 +72,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM userbankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userBankAccountId;
       `;
     updateMySql(SQLquery, 'userbankaccount', 'SELECT');
@@ -151,6 +156,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM userbankaccount
               WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND delete <> 'Y'
               ORDER BY userbankaccountId;
             `;
           updateMySql(SQLquery, 'userbankaccount', 'SELECT');
@@ -232,6 +238,7 @@ function createEvents() {
         `
           SELECT * FROM userbankaccount
           WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND delete <> 'Y'
           ORDER BY userBankAccountId;
         `;
       updateMySql(SQLquery, 'userbankaccount', 'SELECT');
@@ -249,6 +256,7 @@ function createEvents() {
         `
           SELECT * FROM userbankaccount
           WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND delete <> 'Y'
           ORDER BY userBankAccountId;
         `;
       updateMySql(SQLquery, 'userbankaccount', 'SELECT');
@@ -283,8 +291,9 @@ function updateUserBankAccount() {
       document.querySelector('.input-userbankaccount-bankAccount').value;
 
     let SQLquery = '';
-    const now = new Date();
-    const lastUpdate = now.toISOString();
+    
+    const lastUpdate =
+      today.toISOString();
 
     const objBankAccountRowNumber =
       userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
@@ -313,7 +322,7 @@ function updateUserBankAccount() {
       SQLquery =
         `
           INSERT INTO userBankAccount (
-            tableName,
+            deleted,
             condominiumId,
             user,
             lastUpdate,
@@ -323,7 +332,7 @@ function updateUserBankAccount() {
             bankAccount
           ) 
           VALUES (
-            'userbankaccount',
+            'N',
             ${objUserPassword.condominiumId},
             '${objUserPassword.email}',
             '${lastUpdate}',

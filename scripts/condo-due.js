@@ -50,6 +50,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -61,6 +62,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY condoId;
       `;
 
@@ -73,6 +75,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
 
@@ -96,7 +99,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND date BETWEEN ${fromDate} AND ${toDate}
+          AND delete <> 'Y'
+          AND date BETWEEN ${fromDate} AND ${toDate}
         ORDER BY date DESC, condoId ASC;
     `;
 
@@ -311,9 +315,6 @@ function updateDue(dueId) {
   if (validateValues(dueId)) {
 
     // Valid values
-
-    const lastUpdate = today.toISOString();
-
     const condoId =
       Number(document.querySelector('.select-due-condoId').value);
 
@@ -328,6 +329,9 @@ function updateDue(dueId) {
 
     const text =
       document.querySelector('.input-due-text').value;
+
+    const lastUpdate =
+      today.toISOString();
 
     // Check if due Id exist
     const objDueRowNumber =
@@ -353,7 +357,7 @@ function updateDue(dueId) {
       SQLquery =
         `
           INSERT INTO due (
-            tableName,
+            deleted,
             condominiumId,
             user,
             lastUpdate,
@@ -363,7 +367,7 @@ function updateDue(dueId) {
             date,
             text)
           VALUES(
-            'due',
+            'N',
             ${objUserPassword.condominiumId},
             '${objUserPassword.email}',
             '${lastUpdate}',
@@ -395,9 +399,17 @@ function deleteDue(dueId) {
   // Check for valid due Id
   if (dueId >= 0) {
 
+    // current date
+    const lastUpdate =
+      today.toISOString();
+
     SQLquery =
       `
-        DELETE FROM due 
+        UPDATE due
+          SET 
+            deleted = 'Y',
+            user = '${objUserPassword.email}',
+            lastUpdate = '${lastUpdate}',
         WHERE dueId = ${dueId};
       `;
     updateMySql(SQLquery, 'due', 'DELETE');
@@ -810,6 +822,7 @@ function getSelectedDues() {
     `
       SELECT * FROM due
       WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND delete <> 'Y'
       AND date BETWEEN ${fromDate} AND ${toDate} 
     `;
 

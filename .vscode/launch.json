@@ -26,6 +26,18 @@
     {
       "type": "chrome",
       "request": "launch",
+      "name": "Leverandør",
+      "url": "http://localhost/condo-supplier.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Månedsleie",
+      "url": "http://localhost/condo-monthlyrent.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
       "name": "Importer banktransaksjoner",
       "url": "http://localhost/condo-importfile.html",
     },

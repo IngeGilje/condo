@@ -11,6 +11,8 @@ const objAccount =
   new Account('account');
 const objDue =
   new Due('due');
+const objCondominium =
+  new Condominium('condominium');
 const objMonthlyRent =
   new MonthlyRent('monthlyrent');
 
@@ -20,10 +22,12 @@ let condoArrayCreated =
   false
 let accountArrayCreated =
   false
+let condominiumArrayCreated =
+  false
 let dueArrayCreated =
   false
 
-//testMode();
+testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
@@ -53,6 +57,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -64,6 +69,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY condoId;
       `;
     updateMySql(SQLquery, 'condo', 'SELECT');
@@ -72,9 +78,21 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
+    condoArrayCreated =
+      false;
+
+    SQLquery =
+      `
+        SELECT * FROM condominium
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
+        ORDER BY condominiumId;
+      `;
+    updateMySql(SQLquery, 'condominium', 'SELECT');
     condoArrayCreated =
       false;
 
@@ -83,6 +101,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY dueId;
       `;
 
@@ -136,6 +155,17 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             true;
           break;
 
+        case 'condominium':
+
+          // condominium table
+          console.log('condominiumTable');
+
+          condominiumArray =
+            objInfo.tableArray;
+          condominiumArrayCreated =
+            true;
+          break;
+
         case 'due':
 
           // due table
@@ -149,8 +179,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
           if (userArrayCreated
             && condoArrayCreated
-            && objAccountArrayCreated
-            && objDueArrayCreated) {
+            && accountArrayCreated
+            && condominiumArrayCreated
+            && dueArrayCreated) {
 
             // Find selected due id
             const dueId =
@@ -203,6 +234,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM due
               WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND delete <> 'Y'
               ORDER BY dueId;
             `;
           updateMySql(SQLquery, 'due', 'SELECT');
@@ -228,13 +260,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make monthly amount events
 function createEvents() {
 
+  /*
   // Selected condo Id
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-monthlyrent-condoId')) {
 
       const condoId =
         Number(event.target.value);
-      //showValues(dueId);
 
       const accountId =
         Number(document.querySelector('.select-monthlyrent-accountId').value);
@@ -243,6 +275,7 @@ function createEvents() {
       showMonthlyRent(condoId, accountId);
     }
   });
+  */
 
   // Selected account Id
   document.addEventListener('change', (event) => {
@@ -295,11 +328,12 @@ function createEvents() {
         condoId =
           document.querySelector('.select-monthlyrent-condoId').value;
 
-        // Sends a request to the server to get all due
+        // Sends a request to the server to get all dues
         const SQLquery =
           `
             SELECT * FROM due
             WHERE condominiumId = ${objUserPassword.condominiumId}
+              AND delete <> 'Y'
             ORDER BY date;
           `;
         updateMySql(SQLquery, 'due', 'SELECT');
@@ -321,6 +355,7 @@ function createEvents() {
         `
           SELECT * FROM due
           WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND delete <> 'Y'
           ORDER BY dueId;
         `;
       updateMySql(SQLquery, 'due', 'SELECT');
@@ -339,10 +374,6 @@ function updateMonthlyRent() {
   if (validateValues()) {
 
     // Valid values
-
-    const now = new Date();
-    const lastUpdate = now.toISOString();
-
     const year =
       Number(document.querySelector('.select-monthlyrent-year').value);
 
@@ -365,6 +396,9 @@ function updateMonthlyRent() {
     const amount =
       Number(formatAmountToOre(document.querySelector('.input-monthlyrent-amount').value));
 
+    const lastUpdate =
+      today.toISOString();
+
     // Insert new monthly amount for every month this year
     for (month = 1; month < 13; month++) {
 
@@ -378,7 +412,7 @@ function updateMonthlyRent() {
 
       SQLquery = `
         INSERT INTO due(
-          tableName,
+          deleted,
           condominiumId,
           user,
           lastUpdate,
@@ -388,7 +422,7 @@ function updateMonthlyRent() {
           date,
           text)
         VALUES(
-          'due',
+          'N',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
@@ -447,9 +481,18 @@ function deleteMonthlyRent() {
         findDueId(condoId, accountId, amount, date);
 
       if (dueId >= 0) {
+
+        // current date
+        const lastUpdate =
+          today.toISOString();
+
         SQLquery =
           `
-            DELETE FROM due 
+          UPDATE due
+            SET 
+              deleted = 'Y',
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}',
             WHERE dueId = ${dueId};
           `;
 
@@ -470,10 +513,15 @@ function showLeadingText() {
     condoArray.at(-1).condoId;
   objCondo.showAllCondos('monthlyrent-condoId', condoId);
 
-  // Show all accounts
-  const accountId =
-    accountArray.at(-1).accountId;
-  objAccount.showAllAccounts('monthlyrent-accountId', accountId, "Alle");
+  // Show account for monthly rent
+  objDue.showInput('monthlyrent-accountId', 'Konto for månedsleue', 10, '');
+  const objCondominiumRowNumber =
+    condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+  if (objCondominiumRowNumber !== -1) {
+
+    document.querySelector('.input-monthlyrent-accountId').value =
+      condominiumArray[objCondominiumRowNumber].monthlyRentAccountId;
+  }
 
   // Show years
   const year =
@@ -694,10 +742,6 @@ function showValues(dueId) {
       // Condo id
       document.querySelector('.select-monthlyrent-condoId').value =
         dueArray[objDueRowNumber].condoId;
-
-      // Account id
-      document.querySelector('.select-monthlyrent-accountId').value =
-        dueArray[objDueRowNumber].accountId;
 
       // Amount
       const amount =

@@ -87,6 +87,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -98,6 +99,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condominium
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY condominiumId;
       `;
     updateMySql(SQLquery, 'condominium', 'SELECT');
@@ -109,6 +111,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY condoId;
       `;
 
@@ -121,6 +124,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -132,6 +136,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY bankaccountId;
       `;
     updateMySql(SQLquery, 'bankaccount', 'SELECT');
@@ -143,6 +148,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY dueId;
       `;
     updateMySql(SQLquery, 'due', 'SELECT');
@@ -154,6 +160,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM supplier
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY supplierId;
       `;
     updateMySql(SQLquery, 'supplier', 'SELECT');
@@ -165,7 +172,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
         ORDER BY bankAccountMovementId;
       `;
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
@@ -177,6 +183,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM userbankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userBankAccountId;
       `;
     updateMySql(SQLquery, 'userbankaccount', 'SELECT');
@@ -795,9 +802,6 @@ function updateBankAccountMovements() {
 
   importFileArray.forEach((importFile) => {
 
-    const lastUpdate =
-      today.toISOString();
-
     const condoId =
       Number(importFile.condoId);
 
@@ -816,11 +820,13 @@ function updateBankAccountMovements() {
     const text =
       importFile.text;
 
+    const lastUpdate =
+      today.toISOString();
+
     const SQLquery =
       `
         INSERT INTO bankaccountmovement (
           deleted,
-          tableName,
           condominiumId,
           user,
           lastUpdate,
@@ -833,7 +839,6 @@ function updateBankAccountMovements() {
           text)
         VALUES (
           'N',
-          'bankaccountmovement',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
@@ -1123,7 +1128,7 @@ function checkBankAccountMovement(income, payment, date, text) {
       && bankAccountMovement.text === text) {
 
       bankAccountMovementExist =
-       true;
+        true;
     }
   });
   return bankAccountMovementExist;

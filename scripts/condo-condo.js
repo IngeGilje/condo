@@ -1,6 +1,8 @@
 // Condo maintenance
 
 // Activate classes
+const today =
+  new Date();
 const objUser =
   new User('user');
 const objCondo =
@@ -40,6 +42,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -51,6 +54,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY name;
       `;
 
@@ -123,6 +127,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM condo
               WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND delete <> 'Y'
               ORDER BY condoId;
             `;
           updateMySql(SQLquery, 'condo', 'SELECT');
@@ -192,6 +197,7 @@ function createEvents() {
       const SQLquery = `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY condoId;
       `;
       updateMySql(SQLquery, 'condo', 'SELECT');
@@ -221,9 +227,8 @@ function updateCondoRow(condoId) {
       document.querySelector('.input-condo-address2').value;
 
     // current date
-    const now = new Date();
     const lastUpdate =
-      now.toISOString();
+      today.toISOString();
 
     // Check if condo id exist
     const objCondoRowNumber =
@@ -249,7 +254,7 @@ function updateCondoRow(condoId) {
 
       SQLquery = `
         INSERT INTO condo (
-          tableName,
+          deleted,
           condominiumId,
           user,
           lastUpdate,
@@ -259,7 +264,7 @@ function updateCondoRow(condoId) {
           postalCode,
           city)
         VALUES (
-          'condo',
+          'N',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
@@ -418,11 +423,20 @@ function deleteCondoRow() {
       condoArray.findIndex(condo => condo.condoId === condoId);
     if (objCondoRowNumber !== -1) {
 
+      // current date
+      const lastUpdate =
+        today.toISOString();
+
       // Delete table
-      SQLquery = `
-        DELETE FROM condo
-        WHERE condoId = ${condoId};
-      `;
+      SQLquery =
+        `
+          UPDATE condo
+            SET 
+              deleted = 'Y',
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}',
+          WHERE condoId = ${condoId};
+        `;
     }
     // Client sends a request to the server
     updateMySql(SQLquery, 'condo', 'DELETE');
@@ -432,6 +446,7 @@ function deleteCondoRow() {
     const SQLquery = `
       SELECT * FROM condo
       WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND delete <> 'Y'
       ORDER BY condoId;
     `;
     updateMySql(SQLquery, 'condo', 'SELECT');

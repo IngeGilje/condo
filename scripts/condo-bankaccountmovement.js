@@ -67,6 +67,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -78,6 +79,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY condoId;
       `;
 
@@ -90,6 +92,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY accountId;
       `;
 
@@ -102,6 +105,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY bankAccountId;
       `;
 
@@ -114,6 +118,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM supplier
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY supplierId;
       `;
 
@@ -126,6 +131,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM userbankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND delete <> 'Y'
         ORDER BY userBankAccountId;
       `;
 
@@ -146,8 +152,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccountmovement
         WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-        AND date BETWEEN ${fromDate} AND ${toDate} 
+          AND deleted <> 'Y'
+          AND date BETWEEN ${fromDate} AND ${toDate} 
         ORDER BY date DESC;
       `;
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
@@ -409,7 +415,7 @@ function createEvents() {
         `
           SELECT * FROM bankaccountmovement
           WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
+            AND deleted <> 'Y'
           ORDER BY date DESC;
         `;
       updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
@@ -931,7 +937,6 @@ function updateBankAccountMovement(bankAccountMovementId) {
         `
         INSERT INTO bankaccountmovement (
           deleted,
-          tableName,
           condominiumId,
           user,
           lastUpdate,
@@ -945,7 +950,6 @@ function updateBankAccountMovement(bankAccountMovementId) {
         )
         VALUES (
           'N',
-          'bankaccountmovement',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
@@ -1006,17 +1010,10 @@ function deleteBankAccountMovement() {
       bankAccountMovementArray.findIndex(bankAccountMovement => bankAccountMovement.bankAccountMovementId === bankAccountMovementId);
     if (objBankAccountMovementRowNumber !== -1) {
 
-      // Delete table row
-      /*
-      SQLquery =
-        `
-          DELETE FROM bankaccountmovement
-          WHERE bankAccountMovementId = ${bankAccountMovementId};
-        `;
-      */
       // current date
       const lastUpdate =
         today.toISOString();
+        
       SQLquery =
         `
         UPDATE bankaccountmovement
@@ -1082,7 +1079,7 @@ function getSelectedBankAccountMovements() {
     `
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND deleted <> 'Y'
+        AND deleted <> 'Y'
       AND date BETWEEN ${fromDate} AND ${toDate}
     `;
 

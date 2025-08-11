@@ -1,7 +1,8 @@
 // Create tables for condos database
 
 // Activate classes
-const now = new Date();
+const today = 
+  new Date();
 
 // 1 condominium
 const createCondominiumTable =
@@ -66,7 +67,7 @@ let isEventsCreated
  = false;
 
 const lastUpdate
- = now.toISOString();
+ = today.toISOString();
 
 // Send a message to the server
 socket.onopen = () => {
@@ -224,6 +225,7 @@ function createAllTables() {
     SQLquery =
       `
       CREATE TABLE condominium (
+        deleted VARCHAR(1),
         condominiumId INT AUTO_INCREMENT PRIMARY KEY,
         tableName VARCHAR(50),
         user VARCHAR (50),
@@ -249,6 +251,7 @@ function createAllTables() {
     SQLquery =
       `         
       CREATE TABLE condo (
+        deleted VARCHAR(1),
         condoId INT AUTO_INCREMENT PRIMARY KEY,
         tableName VARCHAR(50),
         condominiumId INT,
@@ -271,6 +274,7 @@ function createAllTables() {
     SQLquery =
       `         
       CREATE TABLE bankaccount (
+        deleted VARCHAR(1),
         bankAccountId INT AUTO_INCREMENT PRIMARY KEY,
         tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
@@ -294,6 +298,7 @@ function createAllTables() {
     SQLquery =
       `
       CREATE TABLE account(
+        deleted VARCHAR(1),
         accountId INT AUTO_INCREMENT PRIMARY KEY,
         tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
@@ -312,6 +317,7 @@ function createAllTables() {
     SQLquery =
       `         
       CREATE TABLE user (
+        deleted VARCHAR(1),
         userId INT AUTO_INCREMENT PRIMARY KEY,
         tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
@@ -337,6 +343,7 @@ function createAllTables() {
     SQLquery =
       `         
       CREATE TABLE userbankaccount (
+        deleted VARCHAR(1),
         userBankAccountId INT AUTO_INCREMENT PRIMARY KEY,
         tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
@@ -360,6 +367,7 @@ function createAllTables() {
     SQLquery =
       `         
       CREATE TABLE supplier (
+        deleted VARCHAR(1),
         supplierId INT AUTO_INCREMENT PRIMARY KEY,
         tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
@@ -383,61 +391,13 @@ function createAllTables() {
     updateMySql(SQLquery, 'supplier', 'CREATE');
   }
 
-  /*
-  // 8 payment
-  if (createPaymentTable) {
-    console.log('CREATE payment Table');
-    SQLquery =
-      `         
-      CREATE TABLE payment (
-        paymentId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
-        condominiumId INT,
-        user VARCHAR (50),
-        lastUpdate VarChar (40),
-        accountId INT,
-        amount VARCHAR(10) NOT NULL,
-        numberKWHour VARCHAR(10),
-        date VARCHAR(10) NOT NULL,
-        text VARCHAR (255) NOT NULL,
-        FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId),
-        FOREIGN KEY (accountId) REFERENCES account(accountId)
-      );
-    `;
-    socket.send(SQLquery);
-  }
-  */
-
-  /*
-  // 9 Income
-  if (createIncomeTable) {
-    console.log('CREATE income Table');
-    SQLquery =
-      `         
-      CREATE TABLE income (
-        incomeId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
-        condominiumId INT,
-        user VARCHAR (50),
-        lastUpdate VarChar (40),
-        condoId INT,
-        accountId INT,
-        amount VARCHAR(10) NOT NULL,
-        date VARCHAR(10) NOT NULL,
-        text VARCHAR (255) NOT NULL,
-        FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
-      );
-    `;
-    socket.send(SQLquery);
-  }
-  */
-
   // 10 Due
   if (createDueTable) {
     console.log('CREATE due Table');
     SQLquery =
       `         
       CREATE TABLE due (
+        deleted VARCHAR(1),
         dueId INT AUTO_INCREMENT PRIMARY KEY,
         tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
@@ -462,6 +422,7 @@ function createAllTables() {
     SQLquery =
       `
       CREATE TABLE budget(
+        deleted VARCHAR(1),
         budgetId INT AUTO_INCREMENT PRIMARY KEY,
         tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
@@ -483,6 +444,7 @@ function createAllTables() {
     SQLquery =
       `         
       CREATE TABLE bankaccountmovement (
+        deleted VARCHAR(1),
         bankAccountMovementId INT AUTO_INCREMENT PRIMARY KEY,
         deleted VARCHAR(1),
         tableName VARCHAR(50) NOT NULL,
@@ -500,396 +462,5 @@ function createAllTables() {
       );
     `;
     updateMySql(SQLquery, 'bankaccountmovement', 'CREATE');
-  }
-}
-
-
-function insertRowAllTables() {
-
-  // 1 condominium
-  if (createCondominiumTable) {
-    console.log('INSERT condominium Table');
-    SQLquery =
-      `
-      INSERT INTO condominium (
-        tableName,
-        user,
-        lastUpdate,
-        name,
-        street,
-        address2,
-        postalCode,
-        city,
-        phone,
-        email,
-        accountId,
-        organizationNumber,
-        importPath
-      )
-      VALUES (
-        'condominium',
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        0,
-        '',
-        ''
-      );
-    `;
-    updateMySql(SQLquery, 'condoinium', 'INSERT');
-  }
-
-  // 2 Condo
-  if (createCondoTable) {
-    console.log('INSERT condo Table');
-    SQLquery =
-      `         
-      INSERT INTO condo (
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        name,
-        street,
-        address2,
-        postalCode,
-        city
-      )
-      VALUES (
-        'condo',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        '',
-        '',
-        '',
-        '',
-        ''
-      );
-    `;
-    updateMySql(SQLquery, 'condo', 'INSERT');
-  }
-
-  // 3 Bank account
-  if (createBankAccountTable) {
-    console.log('INSERT bankaccount Table');
-    SQLquery =
-      `         
-      INSERT INTO bankaccount(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        bankAccount,
-        name,
-        openingBalance, 
-        openingBalanceDate,
-        closingBalance, 
-        closingBalanceDate
-      )
-      VALUES(
-        'bankaccount',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        '',
-        '',
-        '',
-        '',
-        '',
-        ''
-      );
-    `;
-    updateMySql(SQLquery, 'bankaccount', 'INSERT');
-  }
-
-  // 4 Account
-  if (createAccountTable) {
-    console.log('INSERT account Table');
-    SQLquery =
-      `
-      INSERT INTO account(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        name
-      )
-      VALUES(
-        'account',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        ''
-      );
-    `;
-    updateMySql(SQLquery, 'account', 'INSERT');
-  }
-
-  // 5 user
-  if (createUserTable) {
-    console.log('INSERT user Table');
-    SQLquery =
-      `         
-      INSERT INTO user(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        email,
-        condoId,
-        firstName,
-        lastName,
-        phone,
-        securityLevel,
-        password
-      ) 
-      VALUES (
-        'user',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        'superuser@ingegilje.no',
-        1,
-        'Super',
-        'User',
-        '',
-        9,
-        'superuser'
-      );
-    `;
-    updateMySql(SQLquery, 'user', 'INSERT');
-  }
-
-  // 6 user bank account
-  if (createUserBankAccountTable) {
-    console.log('INSERT userbankaccount Table');
-    SQLquery =
-      `         
-      INSERT INTO userbankaccount(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        userId,
-        accountId,
-        name,
-        bankAccount
-      ) 
-      VALUES (
-        'userbankaccount',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        1,
-        1,
-        'Ugyldig bank nummer',
-        '12345678901'
-      );
-    `;
-    updateMySql(SQLquery, 'userbankaccount', 'INSERT');
-  }
-
-  // 7 supplier
-  if (createSupplierTable) {
-    console.log('INSERT supplier Table');
-    SQLquery =
-      `         
-      INSERT INTO supplier(
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        name,
-        street,
-        address2,
-        postalCode,
-        city,
-        email,
-        phone,
-        bankAccount,
-        amount,
-        accountId
-      ) 
-      VALUES (
-        'supplier',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        'superuser@ingegilje.no',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        1
-      );
-    `;
-    updateMySql(SQLquery, 'supplier', 'INSERT');
-  }
-
-  /*
-  // 8 payment
-  if (createPaymentTable) {
-    console.log('INSERT payment Table');
-    SQLquery =
-      `         
-      INSERT INTO payment (
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        accountId,
-        amount,
-        numberKWHour,
-        date,
-        text)
-      VALUES (
-        'payment',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        1, 
-        '',
-        '',
-        '',
-        ''
-      );
-    `;
-    socket.send(SQLquery);
-  }
-  */
-
-  /*
-  // 9 Income
-  if (createIncomeTable) {
-    console.log('INSERT income Table');
-    SQLquery =
-      `         
-      INSERT INTO income (
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        condoId,
-        accountId,
-        amount,
-        date,
-        text)
-      VALUES (
-        'income',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        1,
-        1, 
-        '',
-        '',
-        ''
-      );
-    `;
-    socket.send(SQLquery);
-  }
-  */
-
-  // 10 Due
-  if (createDueTable) {
-    console.log('INSERT due Table');
-    SQLquery =
-      `         
-    INSERT INTO due (
-      tableName,
-      condominiumId,
-      user,
-      lastUpdate,
-      condoId,
-      accountId,
-      amount,
-      date,
-      text)
-    VALUES (
-      'due',
-      1,
-      'superuser@ingegilje.no',
-      '${lastUpdate}',
-      1,
-      1,
-      '',
-      '',
-      ''
-    );
-  `;
-    updateMySql(SQLquery, 'due', 'INSERT');
-  }
-
-  // 11 Budget
-  if (createBudgetTable) {
-    console.log('INSERT budget Table');
-    SQLquery =
-      `
-    INSERT INTO budget(
-      tableName,
-      condominiumId,
-      user,
-      lastUpdate,
-      accountId,
-      amount,
-      year(
-      'budget',
-      1,
-      'superuser@ingegilje.no',
-      '${lastUpdate}',
-      1,
-      '0',
-      ''
-    );
-  `;
-    updateMySql(SQLquery, 'budget', 'INSERT');
-  }
-
-  // 12 Bank account movement
-  if (createBankAccountMovementTable) {
-    console.log('INSERT bankaccountmovement Table');
-    SQLquery =
-      `         
-      INSERT INTO bankaccountmovement(
-        deleted,
-        tableName,
-        condominiumId,
-        user,
-        lastUpdate,
-        condoId,
-        accountId,
-        income,
-        payment,
-        numberKWHour,
-        date,
-        text
-      )
-      VALUES(
-        'N',
-        'bankaccountmovement',
-        1,
-        'superuser@ingegilje.no',
-        '${lastUpdate}',
-        1,
-        1,
-        '',
-        '',
-        '',
-        '',
-        ''
-      );
-    `;
-    updateMySql(SQLquery, 'bankaccountmovement', 'INSERT');
   }
 }
