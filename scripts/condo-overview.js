@@ -53,7 +53,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -71,7 +71,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
           AND date BETWEEN '${year}0101' AND '${todate}' 
         ORDER BY date DESC;
       `;
@@ -85,7 +85,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY name;
       `;
 
@@ -634,7 +634,7 @@ function getSelectedDues() {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
           AND date BETWEEN ${fromDate} AND ${toDate} 
         ORDER BY date DESC;
       `;
@@ -648,7 +648,7 @@ function getSelectedDues() {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
           AND date BETWEEN ${fromDate} AND ${toDate} 
           AND condoId = ${condoId}
         ORDER BY date DESC;

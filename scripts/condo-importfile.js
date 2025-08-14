@@ -87,7 +87,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -99,7 +99,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condominium
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY condominiumId;
       `;
     updateMySql(SQLquery, 'condominium', 'SELECT');
@@ -111,7 +111,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY condoId;
       `;
 
@@ -124,7 +124,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -136,7 +136,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM bankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY bankaccountId;
       `;
     updateMySql(SQLquery, 'bankaccount', 'SELECT');
@@ -148,7 +148,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY dueId;
       `;
     updateMySql(SQLquery, 'due', 'SELECT');
@@ -160,7 +160,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM supplier
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY supplierId;
       `;
     updateMySql(SQLquery, 'supplier', 'SELECT');
@@ -183,7 +183,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM userbankaccount
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY userBankAccountId;
       `;
     updateMySql(SQLquery, 'userbankaccount', 'SELECT');

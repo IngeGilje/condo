@@ -57,7 +57,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -69,27 +69,38 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM condo
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY condoId;
       `;
     updateMySql(SQLquery, 'condo', 'SELECT');
 
+    /*
     SQLquery =
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY accountId;
       `;
+    */
+   // Inner join
+    SQLquery =
+      `
+        SELECT account.*
+        FROM condominium
+        JOIN account ON condominium.monthlyRentAccountId = account.accountId 
+        WHERE condominium.condominiumId = ${objUserPassword.condominiumId};
+      `
     updateMySql(SQLquery, 'account', 'SELECT');
-    condoArrayCreated =
+
+    accountArrayCreated =
       false;
 
     SQLquery =
       `
         SELECT * FROM condominium
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY condominiumId;
       `;
     updateMySql(SQLquery, 'condominium', 'SELECT');
@@ -101,7 +112,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY dueId;
       `;
 
@@ -234,7 +245,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM due
               WHERE condominiumId = ${objUserPassword.condominiumId}
-                AND delete <> 'Y'
+                AND deleted <> 'Y'
               ORDER BY dueId;
             `;
           updateMySql(SQLquery, 'due', 'SELECT');
@@ -333,7 +344,7 @@ function createEvents() {
           `
             SELECT * FROM due
             WHERE condominiumId = ${objUserPassword.condominiumId}
-              AND delete <> 'Y'
+              AND deleted <> 'Y'
             ORDER BY date;
           `;
         updateMySql(SQLquery, 'due', 'SELECT');
@@ -355,7 +366,7 @@ function createEvents() {
         `
           SELECT * FROM due
           WHERE condominiumId = ${objUserPassword.condominiumId}
-            AND delete <> 'Y'
+            AND deleted <> 'Y'
           ORDER BY dueId;
         `;
       updateMySql(SQLquery, 'due', 'SELECT');
@@ -515,13 +526,9 @@ function showLeadingText() {
 
   // Show account for monthly rent
   objDue.showInput('monthlyrent-accountId', 'Konto for månedsleue', 10, '');
-  const objCondominiumRowNumber =
-    condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-  if (objCondominiumRowNumber !== -1) {
 
-    document.querySelector('.input-monthlyrent-accountId').value =
-      condominiumArray[objCondominiumRowNumber].monthlyRentAccountId;
-  }
+  document.querySelector('.input-monthlyrent-accountId').value =
+    accountArray[0].name;
 
   // Show years
   const year =

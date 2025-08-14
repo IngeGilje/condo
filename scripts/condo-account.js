@@ -44,7 +44,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -56,7 +56,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -131,7 +131,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM account
               WHERE condominiumId = ${objUserPassword.condominiumId}
-                AND delete <> 'Y'
+                AND deleted <> 'Y'
               ORDER BY accountId;
             `;
           updateMySql(SQLquery, 'account', 'SELECT');
@@ -192,7 +192,7 @@ function createEvents() {
       const SQLquery = `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY accountId;
       `;
       updateMySql(SQLquery, 'account', 'SELECT');
@@ -209,7 +209,7 @@ function createEvents() {
       const SQLquery = `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY accountId;
       `;
       updateMySql(SQLquery, 'account', 'SELECT');
@@ -320,7 +320,7 @@ function deleteAccountRow() {
     SQLquery = `
       SELECT * FROM account
       WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND delete <> 'Y'
+        AND deleted <> 'Y'
       ORDER BY accountId;
     `;
     updateMySql(SQLquery, 'account', 'SELECT');

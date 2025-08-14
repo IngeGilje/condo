@@ -64,91 +64,15 @@ class Condos {
     document.querySelector(`.div-${className}`).innerHTML =
       html;
 
-    let imageName;
-    imageName =
-      className.includes('-name') ? "name.png" : '';
-    imageName =
-      className.includes('-street') ? "street.png" : imageName;
-    imageName =
-      className.includes('-address2') ? "address2.png" : imageName;
-    imageName =
-      className.includes('-postalCode') ? "postalcode.png" : imageName;
-    imageName =
-      className.includes('-city') ? "city.png" : imageName;
-    imageName =
-      className.includes('-phone') ? "phone.png" : imageName;
-    imageName =
-      className.includes('-email') ? "email.png" : imageName;
-    imageName =
-      className.includes('-organizationNumber') ? "organizationnumber.png" : imageName;
-    imageName =
-      className.includes('-fileName') ? "filename.png" : imageName;
-    imageName =
-      className.includes('-date') ? "date.png" : imageName;
-    imageName =
-      className.includes('-income') ? "income.png" : imageName;
-    imageName =
-      className.includes('-payment') ? "payment.png" : imageName;
-    imageName =
-      className.includes('-numberKWHour') ? "numberKWHour.png" : imageName;
-    imageName =
-      className.includes('-text') ? "text.png" : imageName;
-    imageName =
-      className.includes('-filterFromDate') ? "date.png" : imageName;
-    imageName =
-      className.includes('-fromDate') ? "date.png" : imageName;
-    imageName =
-      className.includes('-toDate') ? "date.png" : imageName;
-    imageName =
-      className.includes('-filterToDate') ? "date.png" : imageName;
-    imageName =
-      className.includes('-filterAmount') ? "amount.png" : imageName;
-    imageName =
-      className.includes('-amount') ? "amount.png" : imageName;
-    imageName =
-      className.includes('-bankAccount') ? "bankAccount.png" : imageName;
-    imageName =
-      className.includes('-firstName') ? "name.png" : imageName;
-    imageName =
-      className.includes('-lastName') ? "name.png" : imageName;
-    imageName =
-      className.includes('-password') ? "password.png" : imageName;
-    imageName =
-      className.includes('-accountName') ? "accountName.png" : imageName;
-    imageName =
-      className.includes('-openingBalance') ? "amount.png" : imageName;
-    imageName =
-      className.includes('-closingBalance') ? "amount.png" : imageName;
-    imageName =
-      className.includes('-openingBalanceDate') ? "date.png" : imageName;
-    imageName =
-      className.includes('-closingBalanceDate') ? "date.png" : imageName;
-    imageName =
-      className.includes('-importFileName') ? "filename.png" : imageName;
-
     // Set the PNG file
-    const input =
+    const inputElement =
       document.querySelector(`.input-${className}`);
-    input.style.backgroundRepeat = `no-repeat`;
-    input.style.backgroundImage = `url('icons/${imageName}')`;
+    inputElement.style.backgroundRepeat = `no-repeat`;
+
+    const iconName =
+      this.getIconName(className);
+    inputElement.style.backgroundImage = `url('icons/${iconName}')`;
   }
-
-  /*
-  // Show input
-  showInput(className, labelText, maxlength, placeholder) {
-
-    let html = `<input type="text" class="icon-input input-${className}" placeholder="Type here..." />`;
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
-
-          // Dynamically set the PNG file
-    const input = document.querySelector(`.div-${className}`);
-
-    const iconPath = "icons/delete.png";
-    input.style.backgroundImage = `url('${iconPath}')`;
-  }
-  */
-
 
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
@@ -178,19 +102,9 @@ class Condos {
 
   // Show button
   showButton(className, buttonText) {
-    let imageName;
-    imageName =
-      className.includes('-email') ? "mail.png" : '';
-    imageName =
-      className.includes('-save') ? "save.png" : '';
-    imageName =
-      className.includes('-insert') ? "insert.png" : imageName;
-    imageName =
-      className.includes('-cancel') ? "cancel.png" : imageName;
-    imageName =
-      className.includes('-delete') ? "delete.png" : imageName;
-    imageName =
-      className.includes('-startImport') ? "not_started.png" : imageName;
+
+    const iconName =
+      this.getIconName(className);
 
     const html =
       `
@@ -198,7 +112,7 @@ class Condos {
           class="button-${className}"
         >
           <img 
-            src="icons/${imageName}" 
+            src="icons/${iconName}" 
             height="18"
           >
           ${buttonText}
@@ -445,9 +359,10 @@ class Condos {
     }
   }
 
+  /*
   // select file
   showInputFile(className) {
-
+  
     document.querySelector(`.div-${className}`).innerHTML =
       `
         <input
@@ -462,6 +377,7 @@ class Condos {
         </p>
       `;
   }
+  */
 
   // Mark selected application in menu
   markSelectedMenu(text) {
@@ -979,6 +895,170 @@ class Condos {
       }
     }
     return condoId;
+  }
+  // get icon name from column name
+  getIconName(className) {
+
+    let imageName;
+    const posionOfText =
+      className.lastIndexOf("-");
+    className =
+      className.slice(posionOfText + 1);
+    switch (className) {
+      case "firstName":
+      case "lastName":
+      case "name": {
+
+        imageName =
+          "name.png";
+        break;
+      }
+      case "street": {
+        imageName =
+          "street.png";
+        break;
+      }
+      case "address2": {
+        imageName =
+          "address2.png";
+        break;
+      }
+      case "postalCode": {
+        imageName =
+          "postalcode.png";
+        break;
+      }
+      case "city": {
+        imageName =
+          "city.png";
+        break;
+      }
+      case "phone": {
+        imageName =
+          "phone.png";
+        break;
+      }
+      case "eMail":
+      case "email": {
+        imageName =
+          "email.png";
+        break;
+      }
+      case "organizationNumber": {
+        imageName =
+          "organizationnumber.png";
+        break;
+      }
+      case "fileName": {
+        imageName =
+          "filename.png";
+        break;
+      }
+      case "filterFromDate":
+      case "filterToDate":
+      case "fromDate":
+      case "toDate":
+      case "date": {
+        imageName =
+          "date.png";
+        break;
+      }
+      case "income": {
+        imageName =
+          "income.png";
+        break;
+      }
+      case "payment": {
+        imageName =
+          "payment.png";
+        break;
+      }
+      case "numberKWHour": {
+        imageName =
+          "numberKWHour.png";
+        break;
+      }
+      case "text": {
+        imageName =
+          "text.png";
+        break;
+      }
+      case "amount": {
+        imageName =
+          "amount.png";
+        break;
+      }
+      case "text": {
+        imageName =
+          "text.png";
+        break;
+      }
+      case "bankAccount": {
+        imageName =
+          "bankAccount.png";
+        break;
+      }
+      case "password": {
+        imageName =
+          "password.png";
+        break;
+      }
+      case "accountName":
+      case "accountId": {
+        imageName =
+          "accountName.png";
+        break;
+      }
+      case "closingBalance":
+      case "openingBalance": {
+        imageName =
+          "accountName.png";
+        break;
+      }
+      case "closingBalanceDate":
+      case "openingBalanceDate": {
+        imageName =
+          "date.png";
+        break;
+      }
+      case "importFileName": {
+        imageName =
+          "filename.png";
+        break;
+      }
+      case "save": {
+        imageName =
+          "save.png";
+        break;
+      }
+      case "insert": {
+        imageName =
+          "insert.png";
+        break;
+      }
+      case "cancel": {
+        imageName =
+          "cancel.png";
+        break;
+      }
+      case "delete": {
+        imageName =
+          "delete.png";
+        break;
+      }
+      case "startImport": {
+        imageName =
+          "not_started.png";
+        break;
+      }
+      default: {
+        imageName =
+          "error.png";
+        break;
+      }
+    }
+
+    return imageName;
   }
 }
 

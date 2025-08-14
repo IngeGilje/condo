@@ -79,10 +79,10 @@
   grid-template-columns: 200px 200px 200px 200px;
 }
 
-/* Define the grid container with 6 columns*/
+/* Define the grid container with 4 columns*/
 .div-grid-due-search,
 .div-grid-remoteheating-search {
-  grid-template-columns: 200px 200px 200px 200px 200px 200px;
+  grid-template-columns: 200px 200px 200px 200px;
 }
 
 /* Define the grid container with 6 columns*/
@@ -95,9 +95,9 @@
   grid-template-columns: 200px 200px 200px 200px 200px 200px 200px;
 }
 
-/* Define the grid container with 7 columns*/
+/* Define the grid container with 6 columns*/
 .div-grid-remoteheating {
-  grid-template-columns: 200px 200px 200px 150px 150px 150px 150px;
+  grid-template-columns: 200px 150px 150px 150px 150px 200px;
 }
 
 /* Define the grid container with 8 columns*/

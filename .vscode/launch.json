@@ -38,6 +38,12 @@
     {
       "type": "chrome",
       "request": "launch",
+      "name": "Fjernvarme",
+      "url": "http://localhost/condo-remoteheating.html",
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
       "name": "Importer banktransaksjoner",
       "url": "http://localhost/condo-importfile.html",
     },

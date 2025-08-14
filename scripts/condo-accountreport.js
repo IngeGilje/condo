@@ -57,7 +57,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM account
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -69,7 +69,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM user
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -80,7 +80,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT * FROM budget
         WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND delete <> 'Y'
+          AND deleted <> 'Y'
         ORDER BY budgetId;
       `;
     updateMySql(SQLquery, 'budget', 'SELECT');
@@ -184,7 +184,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             `
               SELECT * FROM budget
               WHERE condominiumId = ${objUserPassword.condominiumId}
-                AND delete <> 'Y'
+                AND deleted <> 'Y'
               ORDER BY budgetId;
             `;
           updateMySql(SQLquery, 'budget', 'SELECT');
@@ -560,7 +560,7 @@ function getSelectedBudgets() {
     `
       SELECT * FROM budget
       WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND delete <> 'Y'
+        AND deleted <> 'Y'
       AND year = '${year}';
     `;
   console.log(SQLquery);
