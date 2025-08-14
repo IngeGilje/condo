@@ -23,11 +23,18 @@ switch (serverStatus) {
   // Web server
   case 1:
 
+    WebSocket = require('ws');
+    server = new WebSocket.Server({ port: 5000 }, () => {
+      console.log('WebSocket server is listening on port 5000');
+    });
+    break;
+
   // Test web server/ local web server
-  case 2: 
+  case 2:
 
   // Test server/ local test server
   case 3: {
+
     WebSocket = require('ws');
     server = new WebSocket.Server({ port: 5000 }, () => {
       console.log('WebSocket server is listening on port 5000');
@@ -46,7 +53,7 @@ let connection;
 switch (serverStatus) {
 
   // connection to mysql
-  case 1: 
+  case 1:
   // Test web server/ local web server
   case 2: {
     connection =
@@ -61,7 +68,7 @@ switch (serverStatus) {
     console.log('Connected to mySql');
     break;
   }
-  
+
   // Test server/ local test server
   case 3: {
     connection =
@@ -108,7 +115,7 @@ server.on('connection', (socket) => {
         //C:\\Websites\\condo\\scripts\\http:\\localhost\\scripts\\transaksjonsliste.csv
         let importFileName =
           messageFromClient.tableName;
-        console.log('messageFromClient.tableName',messageFromClient.tableName)
+        console.log('messageFromClient.tableName', messageFromClient.tableName)
         // messageFromClient.tableName http://localhost//scripts//transaksjonsliste.csv
         fs.readFile(importFileName, 'utf8', (err, textFile) => {
           if (err) {

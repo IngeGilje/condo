@@ -1554,6 +1554,7 @@ function validateEuroAmount(amount) {
 // Connection to a server
 function connectingToServer() {
 
+            let  socket;
   switch (objUser.serverStatus) {
 
     // Web server
@@ -1567,13 +1568,19 @@ function connectingToServer() {
     // Test server/ local test server
     case 3: {
 
+      /*
       const protocol =
         window.location.protocol === 'https:' ? 'wss' : 'ws';
       const hostname =
         window.location.hostname || 'localhost';
       socket =
         new WebSocket(`${protocol}://${hostname}:5000`);
-
+      console.log(socket)
+      */
+      const protocol =
+        location.protocol === 'https:' ? 'wss' : 'ws';
+     socket =
+        new WebSocket(`${protocol}://localhost:5000`);
       break;
     }
     default:

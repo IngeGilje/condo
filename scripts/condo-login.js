@@ -1,5 +1,4 @@
 // Login
-console.log('Programstart')
 // Activate user class
 const objUser =
   new User('user');
@@ -12,7 +11,8 @@ let userArrayCreated =
 let isEventsCreated
 
 let socket;
-socket = connectingToServer();
+socket =
+ connectingToServer();
 
 sessionStorage.removeItem("user");
 
