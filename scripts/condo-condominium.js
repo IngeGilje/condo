@@ -21,26 +21,29 @@ let bankAccountArrayCreated =
 let condominiumArrayCreated =
   false
 
-//testMode();
+testMode();
 
-// Exit application if no activity for 10 minutes
-resetInactivityTimer();
+// Redirect application after 2 hours
+setTimeout(() => {
+  window.location.href = 'http://localhost:8080/condo-login.html'
+}, 2 * 60 * 60 * 1000);
 
 let isEventsCreated
 
 objCondominium.menu();
-objCondominium.markSelectedMenu('Sameie');
+objCondominium.markSelectedMenu('Banktransaksjoner');
 
 let socket;
 socket =
   connectingToServer();
 
 // Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
+const objUserPassword =
+  JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo-login.html';
+    'http://localhost:8080/condo-login.html';
 } else {
 
   // Send a requests to the server

@@ -10,9 +10,8 @@ let userArrayCreated =
 
 let isEventsCreated
 
-let socket;
-socket =
- connectingToServer();
+const socket =
+  connectingToServer();
 
 sessionStorage.removeItem("user");
 
@@ -52,7 +51,7 @@ socket.onmessage = (event) => {
 
         userArray =
           objInfo.tableArray;
-          userArrayCreated =
+        userArrayCreated =
           true
 
         if (userArrayCreated) {
@@ -124,9 +123,15 @@ function createEvents() {
         // Save email/user, password and security level
         sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
 
+        /*
         (objLogIn.validateUser(email, password))
           ? window.location.href = 'http://localhost/condo-bankaccountmovement.html'
           : resetValues();
+        */
+        (objLogIn.validateUser(email, password))
+          ? window.location.href = 'http://localhost:8080/condo-bankaccountmovement.html'
+          : resetValues();
+
       }
     }
   });

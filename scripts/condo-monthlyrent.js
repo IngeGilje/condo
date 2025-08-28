@@ -45,7 +45,7 @@ const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo-login.html';
+    'http://localhost:8080/condo-login.html';
 } else {
 
 
@@ -83,7 +83,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         ORDER BY accountId;
       `;
     */
-   // Inner join
+    // Inner join
     SQLquery =
       `
         SELECT account.*
