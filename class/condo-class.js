@@ -4,7 +4,7 @@ class Condos {
   // serverStatus = 1; // Web server
   // serverStatus = 2; // Test web server/ local web server
   // serverStatus = 3; // Test server/ local test server
-  serverStatus = 3; // Test server/ local test server
+  serverStatus = 1; // Test server/ local test server
 
   inactivityTimeout =
     false;
@@ -1551,16 +1551,39 @@ function validateEuroAmount(amount) {
   return isValidNumber(amount);
 }
 
-// Connection to a server
+// Connection to a web server
 function connectingToServer() {
 
-            let  socket;
+  let socket;
   switch (objUser.serverStatus) {
 
     // Web server
     case 1: {
+
+      /*
+      const protocol =
+        window.location.protocol === 'https:' ? 'wss' : 'ws';
+      const hostname =
+        window.location.hostname;
       socket =
-        new WebSocket('ws://ingegilje.no:5000');
+        new WebSocket(`${protocol}://${hostname}/ws`);
+      */
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const hostname = window.location.hostname;
+      const port = window.location.port ? `:${window.location.port}` : '';
+      const socketUrl = `${protocol}//${hostname}${port}/ws`;
+
+      socket = new WebSocket(socketUrl);
+
+      //socket.onopen = () => console.log('Connected!');
+      socket.onopen = () => {
+        console.log(`Connected to ${socketUrl}`);
+      };
+
+      socket.onclose = () => {
+        console.log("WebSocket connection closed");
+      };
+      //socket.onmessage = (msg) => console.log('Received:', msg.data);
       break;
     }
     // Test web server/ local web server
@@ -1568,19 +1591,10 @@ function connectingToServer() {
     // Test server/ local test server
     case 3: {
 
-      /*
-      const protocol =
-        window.location.protocol === 'https:' ? 'wss' : 'ws';
-      const hostname =
-        window.location.hostname || 'localhost';
-      socket =
-        new WebSocket(`${protocol}://${hostname}:5000`);
-      console.log(socket)
-      */
       const protocol =
         location.protocol === 'https:' ? 'wss' : 'ws';
-     socket =
-        new WebSocket(`${protocol}://localhost:5000`);
+      socket =
+        new WebSocket(`${protocol}://localhost:3000`);
       break;
     }
     default:
@@ -1603,10 +1617,7 @@ function testMode() {
   switch (objUser.serverStatus) {
 
     // Web server
-    case 1: {
-
-      break;
-    }
+    case 1: 
     // Test web server/ local web server
     case 2:
     // Test server/ local test server
@@ -1747,7 +1758,7 @@ function resetInactivityTimer() {
 
   inactivityTimeout = setTimeout(() => {
     window.location.href =
-      'http://localhost/condo-login.html'
+      'http://localhost:8080/condo-login.html'
   }, 1 * 60 * 60 * 1000); // 1 hour
 }
 

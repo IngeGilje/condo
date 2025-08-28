@@ -53,7 +53,7 @@ resetInactivityTimer();
 // Redirect application after 1 hour
 setTimeout(() => {
   window.location.href =
-    'http://localhost/condo-login.html'
+    'http://localhost:8080/condo-login.html'
 }, 1 * 60 * 60 * 1000);
 
 let importFileArray =
@@ -76,7 +76,7 @@ const objUserPassword =
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo-login.html';
+    'http://localhost:8080/condo-login.html';
 } else {
 
   // Send a requests to the server

@@ -4,24 +4,30 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    {
-      "name": "Attach to Chrome",
-      "port": 9222,
-      "request": "attach",
-      "type": "chrome",
-      "webRoot": "${workspaceFolder}"
-    },
+   
     {
       "type": "chrome",
       "request": "launch",
       "name": "Login",
-      "url": "http://localhost/condo-login.html",
+      "url": "http://localhost:8080/condo-login.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
     {
       "type": "chrome",
       "request": "launch",
       "name": "Sameie",
-      "url": "http://localhost/condo-condominium.html",
+      "url": "http://localhost:8080/condo-condominium.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Bankkontobevegelser",
+      "url": "http://localhost:8080/condo-bankaccountmovement.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
     {
       "type": "chrome",
@@ -46,12 +52,6 @@
       "request": "launch",
       "name": "Importer banktransaksjoner",
       "url": "http://localhost/condo-importfile.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Banktransaksjoner",
-      "url": "http://localhost/condo-bankaccountmovement.html",
-    },
+    }
   ]
 }

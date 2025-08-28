@@ -13,7 +13,7 @@ let userArrayCreated =
 let accountArrayCreated =
   false;
 
-//testMode();
+testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
@@ -33,7 +33,7 @@ const objUserPassword =
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo-login.html';
+    'http://localhost:8080/condo-login.html';
 } else {
 
   // Send a requests to the server

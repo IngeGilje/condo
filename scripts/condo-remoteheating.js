@@ -38,8 +38,8 @@ objRemoteheating.menu();
 objRemoteheating.markSelectedMenu('Fjernvarme');
 
 let socket;
-socket = 
-connectingToServer();
+socket =
+  connectingToServer();
 
 // Validate user/password
 const objUserPassword =
@@ -47,7 +47,7 @@ const objUserPassword =
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo-login.html';
+    'http://localhost:8080/condo-login.html';
 } else {
 
 

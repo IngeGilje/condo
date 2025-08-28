@@ -1,9 +1,10 @@
 // Start the inactivity timer
 // backup: >mysqldump -u Inge -p condos > e:\backup.sql
-
 // Import the backup:
 //mysql -u [username] -p [database_name] < backup.sql
 let inactivityTimer;
+
+const WebSocket = require('ws');
 
 // Constants for database handling
 let connected2MySQL =
@@ -13,36 +14,43 @@ let connected2MySQL =
 // const serverStatus = 1; // Web server
 // const serverStatus = 2; // Test web server/ local web server
 // const serverStatus = 3; // Test server/ local test server
-const serverStatus = 3; // Test server/ local test server
+const serverStatus = 1
+//let server;
+//let wss;
 
-let WebSocket;
-let server;
-
+// Connection to a web server
+//let socket;
 switch (serverStatus) {
 
   // Web server
-  case 1:
+  case 1: {
+    
+  //  wss =
+  //  new WebSocket.Server({ port: 3000 })
 
-    WebSocket = require('ws');
-    server = new WebSocket.Server({ port: 5000 }, () => {
-      console.log('WebSocket server is listening on port 5000');
+    socket =
+    new WebSocket.Server({ port: 3000 })
+    //wss = new WebSocket.Server({ port: 3000, path: "/ws" });
+
+    socket.on('connection', (ws) => {
+      console.log('Client connected');
     });
-    break;
 
+    break;
+  }
   // Test web server/ local web server
   case 2:
-
   // Test server/ local test server
   case 3: {
 
-    WebSocket = require('ws');
-    server = new WebSocket.Server({ port: 5000 }, () => {
-      console.log('WebSocket server is listening on port 5000');
-    });
+    const protocol =
+      location.protocol === 'https:' ? 'wss' : 'ws';
+    socket =
+      new WebSocket(`${protocol}://localhost:3000`);
     break;
   }
-
   default:
+
     break;
 }
 
@@ -61,7 +69,7 @@ switch (serverStatus) {
         {
           host: '127.0.0.1',
           user: 'Inge',
-          password: 'Sommer--2025',
+          password: 'Vinter-2025',
           database: "condos"
         }
       );
@@ -87,7 +95,8 @@ switch (serverStatus) {
     break;
 }
 
-server.on('connection', (socket) => {
+//server.on('connection', (socket) => {
+socket.on('connection', (ws) => {
 
   // Connect to MySQL
   if (!connected2MySQL) {
@@ -95,13 +104,13 @@ server.on('connection', (socket) => {
   }
 
   // Listen for messages from the client
-  socket.on('message', (message) => {
+  ws.on('message', (message) => {
 
     // JSON string into an object
     const messageFromClient =
       JSON.parse(message);
 
-    console.log('CRUD:', messageFromClient.CRUD);
+    console.log(messageFromClient.SQLquery);
     switch (messageFromClient.CRUD) {
 
       case 'textFile':
@@ -110,13 +119,9 @@ server.on('connection', (socket) => {
         const fs =
           require('fs');
 
-        // 012345678901234567890
-        // Name of importfile: http://localhost/scripts//transaksjonsliste.csv';
-        //C:\\Websites\\condo\\scripts\\http:\\localhost\\scripts\\transaksjonsliste.csv
         let importFileName =
           messageFromClient.tableName;
         console.log('messageFromClient.tableName', messageFromClient.tableName)
-        // messageFromClient.tableName http://localhost//scripts//transaksjonsliste.csv
         fs.readFile(importFileName, 'utf8', (err, textFile) => {
           if (err) {
             console.error(err);
@@ -137,7 +142,7 @@ server.on('connection', (socket) => {
             JSON.stringify(messageToClient);
 
           // Send message to client
-          socket.send(messageToClient);
+          ws.send(messageToClient);
 
         });
         break;
@@ -173,7 +178,7 @@ server.on('connection', (socket) => {
                 JSON.stringify(messageToClient);
 
               // Send message to client
-              socket.send(messageToClient);
+              ws.send(messageToClient);
             }
           });
         }
@@ -181,7 +186,7 @@ server.on('connection', (socket) => {
     }
   });
 
-  socket.on('close', () => {
+  ws.on('close', () => {
     console.log('Client disconnected');
   });
 });

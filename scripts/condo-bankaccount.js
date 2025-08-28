@@ -3,12 +3,12 @@
 // Activate objects
 const today =
   new Date();
-const objUser = 
-new User('user');
-const objAccount = 
-new Account('account');
-const objBankAccount = 
-new BankAccount('bankaccount');
+const objUser =
+  new User('user');
+const objAccount =
+  new Account('account');
+const objBankAccount =
+  new BankAccount('bankaccount');
 
 let userArrayCreated =
   false
@@ -17,11 +17,11 @@ let accountArrayCreated =
 let bankAccountArrayCreated =
   false
 
-//testMode();
+testMode();
 
 // Redirect application after 2 hours
 setTimeout(() => {
-  window.location.href = 'http://localhost/condo-login.html'
+  window.location.href = 'http://localhost:8080/condo-login.html'
 }, 1 * 60 * 60 * 1000);
 
 let isEventsCreated
@@ -37,7 +37,7 @@ const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo-login.html';
+    'http://localhost:8080/condo-login.html';
 } else {
   // Send a requests to the server
   socket.onopen = () => {
@@ -129,7 +129,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           if (userArrayCreated
             && accountArrayCreated
             && bankAccountArrayCreated) {
-              
+
             // Find selected account id
             const bankaccountId =
               objBankAccount.getSelectedBankAccountId('select-bankaccount-accountId');
@@ -289,7 +289,7 @@ function updateBankAccount() {
 
       let SQLquery = '';
       const lastUpdate =
-       today.toISOString();
+        today.toISOString();
 
       const objAccountRowNumber =
         bankAccountArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);

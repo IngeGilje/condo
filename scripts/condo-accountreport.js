@@ -23,11 +23,11 @@ let accountArrayCreated =
 let bankAccountMovementArrayCreated =
   false
 
-//testMode();
+testMode();
 
 // Redirect application after 1 hours
 setTimeout(() => {
-  window.location.href = 'http://localhost/condo-login.html'
+  window.location.href = 'http://localhost:8080/condo-login.html'
 }, 1 * 60 * 60 * 1000);
 
 let isEventsCreated
@@ -44,7 +44,7 @@ const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo-login.html';
+    'http://localhost:8080/condo-login.html';
 } else {
 
   let SQLquery;

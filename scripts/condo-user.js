@@ -15,7 +15,7 @@ let userArrayCreated =
 
 let isEventsCreated
 
-//testMode();
+testMode();
 
 // Exit application if no activity for 10 minutes
 resetInactivityTimer();
@@ -31,7 +31,7 @@ const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost/condo-login.html';
+    'http://localhost:8080/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -365,7 +365,7 @@ function deleteUserRow(userId) {
       userArray.findIndex(user => user.userId === userId);
     if (objUserRowNumber !== -1) {
 
-            // current date
+      // current date
       const lastUpdate =
         today.toISOString();
 
@@ -491,9 +491,9 @@ function validateValues(userId) {
 
   // Check email
   const eMail =
-   document.querySelector('.input-user-email').value;
+    document.querySelector('.input-user-email').value;
   const validEmail =
-   objUser.validateEmail(eMail, "label-user-email", "E-mail(Bruker)");
+    objUser.validateEmail(eMail, "label-user-email", "E-mail(Bruker)");
 
   // Check condo Id
   const condoId =
