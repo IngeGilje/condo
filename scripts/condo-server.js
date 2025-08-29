@@ -14,7 +14,7 @@ let connected2MySQL =
 // const serverStatus = 1; // Web server
 // const serverStatus = 2; // Test web server/ local web server
 // const serverStatus = 3; // Test server/ local test server
-const serverStatus = 1
+const serverStatus = 3
 //let server;
 //let wss;
 
@@ -24,12 +24,12 @@ switch (serverStatus) {
 
   // Web server
   case 1: {
-    
-  //  wss =
-  //  new WebSocket.Server({ port: 3000 })
+
+    //  wss =
+    //  new WebSocket.Server({ port: 3000 })
 
     socket =
-    new WebSocket.Server({ port: 3000 })
+      new WebSocket.Server({ port: 3000 })
     //wss = new WebSocket.Server({ port: 3000, path: "/ws" });
 
     socket.on('connection', (ws) => {
@@ -43,10 +43,13 @@ switch (serverStatus) {
   // Test server/ local test server
   case 3: {
 
-    const protocol =
-      location.protocol === 'https:' ? 'wss' : 'ws';
     socket =
-      new WebSocket(`${protocol}://localhost:3000`);
+      new WebSocket.Server({ port: 3000 })
+    //wss = new WebSocket.Server({ port: 3000, path: "/ws" });
+
+    socket.on('connection', (ws) => {
+      console.log('Client connected');
+    });
     break;
   }
   default:

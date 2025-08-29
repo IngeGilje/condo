@@ -128,10 +128,31 @@ function createEvents() {
           ? window.location.href = 'http://localhost/condo-bankaccountmovement.html'
           : resetValues();
         */
-        (objLogIn.validateUser(email, password))
-          ? window.location.href = 'http://localhost:8080/condo-bankaccountmovement.html'
-          : resetValues();
 
+        switch (objUser.serverStatus) {
+
+          // web server
+          case 1:
+            (objLogIn.validateUser(email, password))
+              ? window.location.href = 'http://localhost:8080/condo-bankaccountmovement.html'
+              : resetValues();
+            break
+          // Test web server/ local web server
+          case 2:
+
+          // Test server/ local test server
+          case 3: {
+
+            (objLogIn.validateUser(email, password))
+              ? window.location.href = 'condo-bankaccountmovement.html'
+              : resetValues();
+            break
+          }
+          default: {
+
+            break
+          }
+        }
       }
     }
   });

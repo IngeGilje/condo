@@ -4,7 +4,7 @@ class Condos {
   // serverStatus = 1; // Web server
   // serverStatus = 2; // Test web server/ local web server
   // serverStatus = 3; // Test server/ local test server
-  serverStatus = 1; // Test server/ local test server
+  serverStatus = 3; // Test server/ local test server
 
   inactivityTimeout =
     false;
@@ -1560,18 +1560,14 @@ function connectingToServer() {
     // Web server
     case 1: {
 
-      /*
       const protocol =
-        window.location.protocol === 'https:' ? 'wss' : 'ws';
+        window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       const hostname =
         window.location.hostname;
-      socket =
-        new WebSocket(`${protocol}://${hostname}/ws`);
-      */
-      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const hostname = window.location.hostname;
-      const port = window.location.port ? `:${window.location.port}` : '';
-      const socketUrl = `${protocol}//${hostname}${port}/ws`;
+      const port =
+        window.location.port ? `:${window.location.port}` : '';
+      const socketUrl =
+        `${protocol}//${hostname}${port}/ws`;
 
       socket = new WebSocket(socketUrl);
 
@@ -1617,7 +1613,7 @@ function testMode() {
   switch (objUser.serverStatus) {
 
     // Web server
-    case 1: 
+    case 1:
     // Test web server/ local web server
     case 2:
     // Test server/ local test server

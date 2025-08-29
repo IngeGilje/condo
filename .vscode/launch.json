@@ -9,7 +9,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Login",
-      "url": "http://localhost:8080/condo-login.html",
+      "url": "http://localhost/condo-login.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
@@ -17,7 +17,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Sameie",
-      "url": "http://localhost:8080/condo-condominium.html",
+      "url": "http://localhost/condo-condominium.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
@@ -25,7 +25,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Bankkontobevegelser",
-      "url": "http://localhost:8080/condo-bankaccountmovement.html",
+      "url": "http://localhost/condo-bankaccountmovement.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
