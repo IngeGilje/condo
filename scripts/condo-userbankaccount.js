@@ -19,8 +19,8 @@ let userBankAccountArrayCreated =
 
 testMode();
 
-// Exit application if no activity for 10 minutes
-resetInactivityTimer();
+// Exit application if no activity for 1 hour
+exitIfNoActivity();
 
 let isEventsCreated
 

@@ -214,15 +214,3 @@ function closeDatabase() {
   }
   return connected2MySQL;
 }
-
-/*
-// Close the application after 1 hour with no user activity
-function resetTimer() {
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(() => {
-
-      // Close the application
-      process.exit(); 
-  }, 10 * 60 * 60 * 1000); // 10 hours
-}
-*/

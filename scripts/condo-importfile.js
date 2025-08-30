@@ -45,16 +45,10 @@ let userBankAccountArrayCreated =
 let textFileArrayCreated =
   false
 
-testMode();
+testMode()
 
-// Exit application if no activity for 10 minutes
-resetInactivityTimer();
-
-// Redirect application after 1 hour
-setTimeout(() => {
-  window.location.href =
-    'http://localhost:8080/condo-login.html'
-}, 1 * 60 * 60 * 1000);
+// Exit application if no activity for 1 hour
+//exitIfNoActivity()
 
 let importFileArray =
   [];
@@ -76,7 +70,7 @@ const objUserPassword =
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost:8080/condo-login.html';
+    'condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -421,22 +415,19 @@ function createEvents() {
 
       // Start program for maintain bank account movements
       //window.location.href = 'http://localhost/condo-bankaccountmovement.html'
-      switch (this.serverStatus) {
+      switch (objBankAccountMovement.serverStatus) {
 
         // web server
         case 1:
-          (objLogIn.validateUser(email, password))
-            ? window.location.href = 'http://localhost:8080/condo-bankaccountmovement.html'
-            : resetValues();
+
+          window.location.href = 'http://localhost:8080/condo-bankaccountmovement.html'
           break
         // Test web server/ local web server
         case 2:
 
         // Test server/ local test server
         case 3: {
-          (objLogIn.validateUser(email, password))
-            ? window.location.href = 'http://localhost/condo-bankaccountmovement.html'
-            : resetValues();
+          window.location.href = 'condo-bankaccountmovement.html'
           break
         }
         default: {

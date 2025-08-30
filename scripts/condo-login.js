@@ -123,12 +123,6 @@ function createEvents() {
         // Save email/user, password and security level
         sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
 
-        /*
-        (objLogIn.validateUser(email, password))
-          ? window.location.href = 'http://localhost/condo-bankaccountmovement.html'
-          : resetValues();
-        */
-
         switch (objUser.serverStatus) {
 
           // web server

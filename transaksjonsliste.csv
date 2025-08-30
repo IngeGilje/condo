@@ -1,5 +1,5 @@
 Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til konto;Til
-20.08.2025;20.08.2025;"AVTALE Avtale";2281,00;;Ikke tilgjengelig;Ikke tilgjengelig;;NOK;;;32062337272;
+20.08.2025;;"Sameie 99a";2281,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32705753007;Åse Myklebust Stapnes;32062337272;
 18.08.2025;;"97A";2275,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32013972337;Kristine Sømme;32062337272;
 15.08.2025;;"ny månedsleiefra 1/2024";3431,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;12016029341;Birgit Ruth M A Schober;32062337272;Sameie Hinna Park B3-08
 15.08.2025;;"Laberget 95B";3139,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32061703445;Inge Svein Gilje;32062337272;
@@ -25,4 +25,4 @@ Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til
 
 "DRIFT., 3206.23.37272"
 "Inngående saldo pr. 01.07.2025:";"203954.71";"NOK"
-"Utgående saldo pr. 20.08.2025:";"219516.41";"NOK"
+"Utgående saldo pr. 29.08.2025:";"221797.41";"NOK"

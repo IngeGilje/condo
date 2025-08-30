@@ -36,10 +36,8 @@ let bankAccountMovementArrayCreated =
 
 testMode();
 
-// Redirect application after 2 hours
-setTimeout(() => {
-  window.location.href = 'http://localhost:8080/condo-login.html'
-}, 2 * 60 * 60 * 1000);
+// Exit application if no activity for 1 hour
+exitIfNoActivity();
 
 let isEventsCreated
 
