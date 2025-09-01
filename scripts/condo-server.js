@@ -11,10 +11,10 @@ let connected2MySQL =
   false;
 
 // Test- or web server
-// const serverStatus = 1; // Web server
+const serverStatus = 1; // Web server
 // const serverStatus = 2; // Test web server/ local web server
 // const serverStatus = 3; // Test server/ local test server
-const serverStatus = 3
+
 //let server;
 //let wss;
 
@@ -33,7 +33,7 @@ switch (serverStatus) {
     //wss = new WebSocket.Server({ port: 3000, path: "/ws" });
 
     socket.on('connection', (ws) => {
-      console.log('Client connected');
+      console.log('Client connected to port 3000');
     });
 
     break;
@@ -107,8 +107,10 @@ socket.on('connection', (ws) => {
   }
 
   // Listen for messages from the client
-  ws.on('message', (message) => {
+  //ws.on('message', (message) => {
+  socket.on('message', (message) => {
 
+    console.log('Message:',message)
     // JSON string into an object
     const messageFromClient =
       JSON.parse(message);
