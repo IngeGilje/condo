@@ -1,9 +1,8 @@
 // class for all applications for the condo system
 class Condos {
 
-  // serverStatus = 1; // Web server
+  //serverStatus = 1; // Web server
   // serverStatus = 2; // Test web server/ local web server
-  // serverStatus = 3; // Test server/ local test server
   serverStatus = 3; // Test server/ local test server
 
   inactivityTimeout =
@@ -1560,26 +1559,26 @@ function connectingToServer() {
     // Web server
     case 1: {
 
-      const protocol =
-        window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const hostname =
-        window.location.hostname;
-      const port =
-        window.location.port ? `:${window.location.port}` : '';
-      const socketUrl =
-        `${protocol}//${hostname}${port}/ws`;
+      // Always use relative URL so it works on ingegilje.no
+      //socket = 
+      //  new WebSocket("wss://" + window.location.host + ":3000/ws");
+      socket =
+        "ws://localhost:8080/ws"
 
-      socket = new WebSocket(socketUrl);
-
-      //socket.onopen = () => console.log('Connected!');
+      /*
       socket.onopen = () => {
-        console.log(`Connected to ${socketUrl}`);
+        console.log("✅ Connected to Node.js WebSocket through IIS");
+        socket.send("Hello Node.js!");
+      };
+
+      socket.onmessage = (event) => {
+        console.log("📩 Message from server:", event.data);
       };
 
       socket.onclose = () => {
-        console.log("WebSocket connection closed");
+        console.log("❌ Connection closed");
       };
-      //socket.onmessage = (msg) => console.log('Received:', msg.data);
+      */
       break;
     }
     // Test web server/ local web server
@@ -1589,7 +1588,6 @@ function connectingToServer() {
 
       const protocol =
         location.protocol === 'https:' ? 'wss' : 'ws';
-      // ws://localhost:3000
       socket =
         new WebSocket(`${protocol}://localhost:3000`);
       break;

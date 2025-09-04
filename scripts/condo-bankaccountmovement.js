@@ -251,8 +251,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           if (userArrayCreated
             && condoArrayCreated
             && accountArrayCreated
-            && bankAccountArrayCreated
             && supplierArrayCreated
+            && bankAccountArrayCreated
             && userBankAccountArrayCreated
             && bankAccountMovementArrayCreated) {
 
@@ -286,7 +286,17 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(bankAccountMovementId);
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated =
+              (isEventsCreated) ? true : createEvents();
+          } else {
+
+            console.log('userArrayCreated',userArrayCreated)
+            console.log('condoArrayCreated',condoArrayCreated)
+            console.log('accountArrayCreated',accountArrayCreated)
+            console.log('supplierArrayCreated',supplierArrayCreated)
+            console.log('bankAccountArrayCreated',bankAccountArrayCreated)
+            console.log('userBankAccountArrayCreated',userBankAccountArrayCreated)
+            console.log('bankAccountMovementArrayCreated',bankAccountMovementArrayCreated)
           }
           break;
       }
@@ -376,15 +386,11 @@ function createEvents() {
 
   // update bank account movement
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-bankaccountmovement-save')) {
+    if (event.target.classList.contains('button-bankaccountmovement-update')) {
 
       const bankAccountMovementId =
         Number(document.querySelector('.select-bankaccountmovement-bankAccountMovementId').value);
       updateBankAccountMovement(bankAccountMovementId);
-      document.querySelector('.select-bankaccountmovement-filterCondoId').value =
-        Number(document.querySelector('.select-bankaccountmovement-condoId').value);
-      document.querySelector('.select-bankaccountmovement-filterAccountId').value =
-        Number(document.querySelector('.select-bankaccountmovement-accountId').value);
     }
   });
 
@@ -421,6 +427,7 @@ function createEvents() {
         false;
     }
   });
+  return true;
 }
 
 // Show filter for search
@@ -523,8 +530,8 @@ function showLeadingText() {
   // Show payment
   objBankAccountMovement.showInput('bankaccountmovement-payment', 'Utgift', 10, '');
 
-  // show update button
-  objBankAccountMovement.showButton('bankaccountmovement-save', 'Lagre');
+  // show update button 
+  objBankAccountMovement.showButton('bankaccountmovement-update', 'Oppdater');
 
   // show insert button
   objBankAccountMovement.showButton('bankaccountmovement-insert', 'Ny');
@@ -916,7 +923,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
         `
           UPDATE bankaccountmovement
           SET 
-            deleted = '${deleted}',
+            deleted = 'N',
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             condoId = '${condoId}',
@@ -1011,14 +1018,14 @@ function deleteBankAccountMovement() {
       // current date
       const lastUpdate =
         today.toISOString();
-        
+
       SQLquery =
         `
         UPDATE bankaccountmovement
           SET 
             deleted = 'Y',
             user = '${objUserPassword.email}',
-            lastUpdate = '${lastUpdate}',
+            lastUpdate = '${lastUpdate}'
           WHERE bankAccountMovementId = ${bankAccountMovementId};
         `;
       updateMySql(SQLquery, 'bankaccountmovement', 'UPDATE');
@@ -1028,33 +1035,26 @@ function deleteBankAccountMovement() {
 
 function resetValues() {
 
-  document.querySelector('.select-bankaccountmovement-bankAccountMovementId').value =
-    '';
+  document.querySelector('.select-bankaccountmovement-bankAccountMovementId').value = '';
 
   document.querySelector('.select-bankaccountmovement-condoId').value =
     '';
 
-  document.querySelector('.select-bankaccountmovement-accountId').value =
-    '';
+  document.querySelector('.select-bankaccountmovement-accountId').value = '';
 
-  document.querySelector('.input-bankaccountmovement-income').value =
-    '';
+  document.querySelector('.input-bankaccountmovement-date').value = '';
 
-  document.querySelector('.input-bankaccountmovement-payment').value =
-    '';
+  document.querySelector('.input-bankaccountmovement-payment').value = '';
 
-  document.querySelector('.input-bankaccountmovement-numberKWHour').value =
-    '';
+  document.querySelector('.input-bankaccountmovement-income').value = '';
 
-  document.querySelector('.input-bankaccountmovement-text').value =
-    '';
+  document.querySelector('.input-bankaccountmovement-numberKWHour').value = '';
 
-  document.querySelector('.select-bankaccountmovement-bankAccountMovementId').disabled =
-    true;
-  document.querySelector('.button-bankaccountmovement-insert').disabled =
-    true;
-  document.querySelector('.button-bankaccountmovement-delete').disabled =
-    true;
+  document.querySelector('.input-bankaccountmovement-text').value = '';
+
+  document.querySelector('.select-bankaccountmovement-bankAccountMovementId').disabled = true;
+  document.querySelector('.button-bankaccountmovement-insert').disabled = true;
+  document.querySelector('.button-bankaccountmovement-delete').disabled = true;
 }
 
 // Get selected bank account movements

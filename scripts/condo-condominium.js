@@ -224,7 +224,7 @@ function createEvents() {
 
   // Update condominium
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominium-save')) {
+    if (event.target.classList.contains('button-condominium-update')) {
 
       const condominiumId =
         Number(document.querySelector('.select-condominium-condominiumId').value);
@@ -428,7 +428,7 @@ function showLeadingText(condominiumId) {
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objCondominium.showButton('condominium-save', 'Lagre');
+    objCondominium.showButton('condominium-update', 'Oppdater');
 
     // show new button
     objCondominium.showButton('condominium-insert', 'Ny');
@@ -591,7 +591,7 @@ function deleteCondominiumRow() {
             SET 
               deleted = 'Y',
               user = '${objUserPassword.email}',
-              lastUpdate = '${lastUpdate}',
+              lastUpdate = '${lastUpdate}'
           WHERE condominiumId = ${condominiumId};
       `;
       updateMySql(SQLquery, 'condominium', 'SELECT');

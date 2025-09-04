@@ -229,7 +229,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showMonthlyRent(condoId, accountId);
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated = 
+            (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -271,23 +272,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make monthly amount events
 function createEvents() {
 
-  /*
-  // Selected condo Id
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-monthlyrent-condoId')) {
-
-      const condoId =
-        Number(event.target.value);
-
-      const accountId =
-        Number(document.querySelector('.select-monthlyrent-accountId').value);
-
-      // Show all dues for condo id, account id
-      showMonthlyRent(condoId, accountId);
-    }
-  });
-  */
-
   // Selected account Id
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-monthlyrent-accountId')) {
@@ -317,7 +301,7 @@ function createEvents() {
 
   // Update monthly rent
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-monthlyrent-save')) {
+    if (event.target.classList.contains('button-monthlyrent-update')) {
 
       updateMonthlyRent();
       const condoId =
@@ -374,6 +358,7 @@ function createEvents() {
         false;
     }
   });
+  return true;
 }
 
 function updateMonthlyRent() {
@@ -503,7 +488,7 @@ function deleteMonthlyRent() {
             SET 
               deleted = 'Y',
               user = '${objUserPassword.email}',
-              lastUpdate = '${lastUpdate}',
+              lastUpdate = '${lastUpdate}'
             WHERE dueId = ${dueId};
           `;
 
@@ -544,7 +529,7 @@ function showLeadingText() {
   if (Number(objUserPassword.securityLevel) >= 9) {
 
     // show update button
-    objDue.showButton('monthlyrent-save', 'Lagre');
+    objDue.showButton('monthlyrent-update', 'Oppdater');
 
     // show delete button
     objDue.showButton('monthlyrent-delete', 'Slett');

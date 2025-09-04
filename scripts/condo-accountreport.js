@@ -167,7 +167,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues();
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated = 
+            (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -243,6 +244,7 @@ function createEvents() {
       getSelectedBankAccountMovement();
     };
   });
+  return true;
 }
 
 // Show leading text
@@ -285,6 +287,7 @@ function showLeadingText() {
       today.getFullYear();
     objBudget.selectNumber('accountreport-year', 2020, 2030, year, 'År');
   }
+  return true;
 }
 
 // Show values for due and income for selected budget

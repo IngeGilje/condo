@@ -9,7 +9,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Login",
-      "url": "https://ingegilje.no",
+      "url": "http://localhost/condo-login.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
@@ -24,8 +24,24 @@
     {
       "type": "chrome",
       "request": "launch",
+      "name": "Forfall",
+      "url": "http://localhost/condo-due.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
       "name": "Bankkontobevegelser",
       "url": "http://localhost/condo-bankaccountmovement.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Importer banktransaksjoner",
+      "url": "http://localhost/condo-importfile.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

@@ -177,7 +177,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues();
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated = 
+            (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -261,23 +262,7 @@ function createEvents() {
       getSelectedBankAccountMovements();
     };
   });
-
-  /*
-  // Search for amount
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-overview-amount')) {
-
-      // Show selected for dues
-      getSelectedDues();
-
-      document.querySelector('.input-overview-amount').value =
-        formatAmountToEuroFormat(document.querySelector('.input-overview-amount').value);
-
-      // Show selected for bank account movements
-      getSelectedBankAccountMovements();
-    }
-  });
-  */
+  return true;
 }
 
 // Show leading text

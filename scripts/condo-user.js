@@ -114,7 +114,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(userId);
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated = 
+            (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -170,19 +171,9 @@ function createEvents() {
     }
   });
 
-  /*
-  // Select condominium
-  document.addEventListener('change', (event) => {
- 
-    if (event.target.classList.contains('select-user-condominiumId')) {
- 
-    }
-  });
-  */
-
   // Update
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-user-save')) {
+    if (event.target.classList.contains('button-user-update')) {
 
       // user id
       let userId =
@@ -238,6 +229,7 @@ function createEvents() {
         false;
     }
   });
+  return true;
 }
 
 function updateUser(userId) {
@@ -376,7 +368,7 @@ function deleteUserRow(userId) {
             SET 
               deleted = 'Y',
               user = '${objUserPassword.email}',
-              lastUpdate = '${lastUpdate}',
+              lastUpdate = '${lastUpdate}'
           WHERE userId = ${userId};
         `;
 
@@ -431,7 +423,7 @@ function showLeadingText(userId) {
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objUser.showButton('user-save', 'Lagre');
+    objUser.showButton('user-update', 'Oppdater');
 
     // new button
     objUser.showButton('user-insert', 'Ny');

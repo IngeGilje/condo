@@ -314,7 +314,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               showValues();
 
               // Make events
-              isEventsCreated = (isEventsCreated) ? true : createEvents();
+              isEventsCreated =
+               (isEventsCreated) ? true : createEvents();
             }
           }, 100);
 
@@ -398,6 +399,18 @@ function createEvents() {
 
           showImportedTextFile();
           showBankAccountMovements();
+        } else {
+
+          console.log("userArrayCreated: ",userArrayCreated)
+          console.log("condominiumArrayCreated: ",condominiumArrayCreated)
+          console.log("condoArrayCreated: ",condoArrayCreated)
+          console.log("accountArrayCreated: ",accountArrayCreated)
+          console.log("bankAccountArrayCreated: ",bankAccountArrayCreated)
+          console.log("dueArrayCreated: ",dueArrayCreated)
+          console.log("supplierArrayCreated: ",supplierArrayCreated)
+          console.log("bankAccountMovementArrayCreated: ",bankAccountMovementArrayCreated)
+          console.log("userBankAccountArrayCreated: ",userBankAccountArrayCreated)
+          console.log("textFileArrayCreated: ",textFileArrayCreated)
         }
       }, 100);
     };
@@ -437,6 +450,7 @@ function createEvents() {
       }
     }
   });
+  return true;
 }
 
 // Show imported file
@@ -1124,10 +1138,12 @@ function resetBankAccountMovements() {
     '';
 }
 
+/*
 function removeBankAccountColumn() {
 
   document.querySelector(".button-importfile-saveBankAccountMovement").remove();
 }
+*/
 
 //Check if bank account movement exists
 function checkBankAccountMovement(income, payment, date, text) {
@@ -1151,14 +1167,22 @@ function checkBankAccountMovement(income, payment, date, text) {
 // Show leading text for import text file name
 function showLeadingText() {
 
-  // import text file name
+  // name of import text file
   objImportFile.showInput('importfile-importFileName', '* Navn på transaksjonsfil', 50, 'eks.: c://users//user//data//transaksjonsfile.csv');
 
-  // update button
+  // import button
   if (Number(objUserPassword.securityLevel) >= 9) {
 
-    objImportFile.showButton('importfile-startImport', 'Start import');
+    objImportFile.showButton('importfile-startImport', 'Importer transaksjonsfil');
   }
+
+  /*
+  // update bank account movement table button
+  if (Number(objUserPassword.securityLevel) >= 9) {
+
+    objImportFile.showButton('importfile-saveBankAccountMovement', 'Oppdater banktransaksjoner');
+  }
+  */
 }
 
 // Show values for bank Account movements

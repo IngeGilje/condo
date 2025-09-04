@@ -115,7 +115,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(accountId);
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated = 
+            (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -169,7 +170,7 @@ function createEvents() {
   });
 
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-account-save')) {
+    if (event.target.classList.contains('button-account-update')) {
 
       updateAccount();
     }
@@ -217,6 +218,7 @@ function createEvents() {
         false;
     }
   });
+  return true;
 }
 
 function updateAccount() {
@@ -340,7 +342,7 @@ function showLeadingText(accountId) {
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objAccount.showButton('account-save', 'Lagre');
+    objAccount.showButton('account-update', 'Oppdater');
 
     // new button
     objAccount.showButton('-account-insert', 'Ny');

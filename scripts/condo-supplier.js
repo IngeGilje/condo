@@ -140,7 +140,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(supplierId);
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated = 
+            (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -198,7 +199,7 @@ function createEvents() {
 
   // Update
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-supplier-save')) {
+    if (event.target.classList.contains('button-supplier-update')) {
 
       // user id
       let supplierId =
@@ -254,6 +255,7 @@ function createEvents() {
         false;
     }
   });
+  return true;
 }
 
 function updateSupplier(supplierId) {
@@ -411,7 +413,7 @@ function deleteSupplierRow(supplierId) {
             SET 
               deleted = 'Y',
               user = '${objUserPassword.email}',
-              lastUpdate = '${lastUpdate}',
+              lastUpdate = '${lastUpdate}'
           WHERE supplierId = ${supplierId};
       `;
 
@@ -478,7 +480,7 @@ function showLeadingText(supplierId) {
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objSupplier.showButton('supplier-save', 'Lagre');
+    objSupplier.showButton('supplier-update', 'Oppdater');
 
     // new button
     objSupplier.showButton('supplier-insert', 'Ny');

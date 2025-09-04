@@ -140,7 +140,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(userBankAccountId);
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated =
+              (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -210,7 +211,7 @@ function createEvents() {
 
   // Update bank account
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-userbankaccount-save')) {
+    if (event.target.classList.contains('button-userbankaccount-update')) {
 
       // update user bank account
       updateUserBankAccount();
@@ -264,6 +265,7 @@ function createEvents() {
         false;
     }
   });
+  return true;
 }
 
 function updateUserBankAccount() {
@@ -378,7 +380,7 @@ function showLeadingText(userBankAccountId) {
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objUserBankAccount.showButton('userbankaccount-save', 'Lagre');
+    objUserBankAccount.showButton('userbankaccount-update', 'Oppdater');
 
     // new button
     objUserBankAccount.showButton('userbankaccount-insert', 'Ny');

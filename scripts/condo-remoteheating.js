@@ -223,7 +223,8 @@ socket.onmessage = (event) => {
           showValues();
 
           // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+          isEventsCreated =
+          (isEventsCreated) ? true : createEvents();
         }
         break;
     }
@@ -281,6 +282,7 @@ function createEvents() {
       getSelectedBankAccountMovements();
     };
   });
+  return true;
 }
 
 // Show leading text

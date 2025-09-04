@@ -60,7 +60,8 @@ socket.onmessage = (event) => {
           showLeadingText();
 
           // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
+          isEventsCreated =
+           (isEventsCreated) ? true : createEvents();
         }
         break;
     }
@@ -150,6 +151,7 @@ function createEvents() {
       }
     }
   });
+  return true;
 }
 
 // Show leading text for login

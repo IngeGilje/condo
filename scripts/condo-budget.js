@@ -138,7 +138,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(budgetId);
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated =
+             (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -199,7 +200,7 @@ function createEvents() {
 
   // Update budget
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-budget-save')) {
+    if (event.target.classList.contains('button-budget-update')) {
 
       const budgetId =
         Number(document.querySelector('.select-budget-budgetId').value);
@@ -247,6 +248,7 @@ function createEvents() {
         false;
     };
   });
+  return true;
 }
 
 function updateBudgetRow(budgetId) {
@@ -347,7 +349,7 @@ function showLeadingText(budgetId) {
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objBudget.showButton('budget-save', 'Lagre');
+    objBudget.showButton('budget-update', 'Oppdater');
 
     // show new button
     objBudget.showButton('budget-insert', 'Ny');
@@ -451,7 +453,7 @@ function deleteBudgetRow() {
             SET 
               deleted = 'Y',
               user = '${objUserPassword.email}',
-              lastUpdate = '${lastUpdate}',
+              lastUpdate = '${lastUpdate}'
             WHERE budgetId = ${budgetId};
         `;
     }

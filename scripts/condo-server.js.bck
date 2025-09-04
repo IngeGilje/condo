@@ -1,23 +1,20 @@
-// backup condo mysql DB:
+// Start the inactivity timer
 // backup: >mysqldump -u Inge -p condos > e:\backup.sql
 // Import the backup:
-// mysql -u [username] -p [database_name] < backup.sql
+//mysql -u [username] -p [database_name] < backup.sql
 let inactivityTimer;
 
-const WebSocket =
- require('ws');
-const fs =
-  require('fs');
+const WebSocket = require('ws');
 
 // Constants for database handling
 let connected2MySQL =
   false;
 
 // Test- or web server
-// const serverStatus = 1; // Web server
+//const serverStatus = 1; // Web server
 // const serverStatus = 2; // Test web server/ local web server
-// const serverStatus = 3; // Test server/ local test server
-const serverStatus = 3
+const serverStatus = 3; // Test server/ local test server
+
 //let server;
 //let wss;
 
@@ -36,7 +33,7 @@ switch (serverStatus) {
     //wss = new WebSocket.Server({ port: 3000, path: "/ws" });
 
     socket.on('connection', (ws) => {
-      console.log('Client connected');
+      console.log('Client connected to port 3000');
     });
 
     break;
@@ -110,8 +107,10 @@ socket.on('connection', (ws) => {
   }
 
   // Listen for messages from the client
-  ws.on('message', (message) => {
+  //ws.on('message', (message) => {
+  socket.on('message', (message) => {
 
+    console.log('Message:',message)
     // JSON string into an object
     const messageFromClient =
       JSON.parse(message);
@@ -122,12 +121,12 @@ socket.on('connection', (ws) => {
       case 'textFile':
 
         // Get text file from server
-        //const fs =
-        //  require('fs');
+        const fs =
+          require('fs');
 
         let importFileName =
           messageFromClient.tableName;
-        console.log('messageFromClient.tableName: ', messageFromClient.tableName)
+        console.log('messageFromClient.tableName', messageFromClient.tableName)
         fs.readFile(importFileName, 'utf8', (err, textFile) => {
           if (err) {
             console.error(err);
@@ -148,11 +147,10 @@ socket.on('connection', (ws) => {
             JSON.stringify(messageToClient);
 
           // Send message to client
-          console.log("Send message to client:",messageToClient)
           ws.send(messageToClient);
+
         });
         break;
-        
       case 'SELECT':
       case 'UPDATE':
       case 'INSERT':

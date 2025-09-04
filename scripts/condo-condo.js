@@ -111,7 +111,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(condoId);
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated =
+             (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -164,7 +165,7 @@ function createEvents() {
   // Update condo
   document.addEventListener('click', (event) => {
 
-    if (event.target.classList.contains('button-condo-save')) {
+    if (event.target.classList.contains('button-condo-update')) {
 
       const condoId =
         Number(document.querySelector('.select-condo-condoId').value);
@@ -205,6 +206,7 @@ function createEvents() {
         false;
     }
   });
+  return true;
 }
 
 function updateCondoRow(condoId) {
@@ -315,7 +317,7 @@ function showLeadingText(condoId) {
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
 
-    objCondo.showButton('condo-save', 'Lagre');
+    objCondo.showButton('condo-update', 'Oppdater');
 
     // show new button
     objCondo.showButton('condo-insert', 'Ny');
@@ -434,7 +436,7 @@ function deleteCondoRow() {
             SET 
               deleted = 'Y',
               user = '${objUserPassword.email}',
-              lastUpdate = '${lastUpdate}',
+              lastUpdate = '${lastUpdate}'
           WHERE condoId = ${condoId};
         `;
     }

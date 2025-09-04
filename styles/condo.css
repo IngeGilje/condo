@@ -80,9 +80,13 @@
 }
 
 /* Define the grid container with 4 columns*/
-.div-grid-due-search,
 .div-grid-remoteheating-search {
   grid-template-columns: 200px 200px 200px 200px;
+}
+
+/* Define the grid container with 5 columns*/
+.div-grid-due-search {
+  grid-template-columns: 200px 200px 200px 200px 200px;
 }
 
 /* Define the grid container with 6 columns*/

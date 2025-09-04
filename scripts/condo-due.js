@@ -190,7 +190,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(dueId);
 
             // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
+            isEventsCreated = 
+            (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -267,7 +268,7 @@ function createEvents() {
 
   // Update due
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-due-save')) {
+    if (event.target.classList.contains('button-due-update')) {
 
       const dueId =
         Number(document.querySelector('.select-due-dueId').value);
@@ -305,6 +306,7 @@ function createEvents() {
       getSelectedDues();
     }
   });
+  return true;
 }
 
 function updateDue(dueId) {
@@ -409,7 +411,7 @@ function deleteDue(dueId) {
           SET 
             deleted = 'Y',
             user = '${objUserPassword.email}',
-            lastUpdate = '${lastUpdate}',
+            lastUpdate = '${lastUpdate}'
         WHERE dueId = ${dueId};
       `;
     updateMySql(SQLquery, 'due', 'DELETE');
@@ -442,6 +444,7 @@ function showLeadingTextSearch() {
   // Check for filter from date
   let date =
     document.querySelector('.input-due-filterFromDate').value;
+
   if (!validateEuroDateFormat(date)) {
 
     // From date is not ok
@@ -489,7 +492,7 @@ function showLeadingText(dueId) {
 
   // show buttons
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objDue.showButton('due-save', 'Lagre');
+    objDue.showButton('due-update', 'Oppdater');
 
     // show new button
     objDue.showButton('due-insert', 'Ny');
@@ -635,21 +638,6 @@ function showDues() {
     let lineNumber =
       0;
 
-    /*
-    let fromDate =
-      document.querySelector('.input-due-filterFromDate').value;
-    fromDate =
-      convertDateToISOFormat(fromDate);
-    let toDate =
-      document.querySelector('.input-due-filterToDate').value;
-    toDate =
-      convertDateToISOFormat(toDate);
-
-    const condoId =
-      Number(document.querySelector('.select-due-filterCondoId').value);
-    const accountId =
-      Number(document.querySelector('.select-due-filterAccountId').value);
-    */
     dueArray.forEach((due) => {
 
       lineNumber++;
