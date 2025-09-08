@@ -1,5 +1,5 @@
-node_modules
-C:\websites\condo\web.config.bak
-C:\websites\condo\web.config
-C:\Websites\condo\.vscode\launch.json
-C:\Websites\condo\applicationHost.config
+node_modules/
+.vscode/
+web.config
+web.config.bak
+applicationHost.config
