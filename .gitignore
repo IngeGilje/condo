@@ -3,3 +3,4 @@ node_modules/
 web.config
 web.config.bak
 applicationHost.config
+GitToken.txt
