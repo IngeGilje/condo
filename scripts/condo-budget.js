@@ -22,7 +22,7 @@ let isEventsCreated
 testMode();
 
 // Exit application if no activity for 1 hour
-exitIfNoActivity();
+//exitIfNoActivity();
 
 objBudget.menu();
 objBudget.markSelectedMenu('Budsjett');
@@ -66,12 +66,15 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     accountArrayCreated =
       false;
 
+    const year = String(today.getFullYear());
+
     // Sends a request to the server to get budgets
     SQLquery =
       `
         SELECT * FROM budget
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
+          AND year = ${year}
         ORDER BY budgetId;
       `;
 
@@ -94,7 +97,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       switch (objInfo.tableName) {
         case 'user':
 
-          // condo table
+          // user table
           console.log('userTable');
 
           userArray =
@@ -129,6 +132,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             && accountArrayCreated
             && budgetArrayCreated) {
 
+            // Show leading text search
+            showLeadingTextSearch();
+
             // Find selected budget id
             const budgetId =
               objBudget.getSelectedBudgetId('select-budget-budgetId');
@@ -137,9 +143,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
             showValues(budgetId);
 
+            // Show budgets
+            const year = String(today.getFullYear());
+            showBudgets(year);
+
             // Make events
             isEventsCreated =
-             (isEventsCreated) ? true : createEvents();
+              (isEventsCreated) ? true : createEvents();
+          } else {
+
+            console.log("userArrayCreated", userArrayCreated);
+            console.log("accountArrayCreated", accountArrayCreated);
+            console.log("budgetArrayCreated", budgetArrayCreated);
           }
           break;
       }
@@ -180,6 +195,23 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
 // Make budget events
 function createEvents() {
+
+  // Select filter
+  // account
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-budget-filterAccountId')) {
+
+      getSelectedBudgets();
+    };
+  });
+
+  // year
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-budget-filterYear')) {
+
+      getSelectedBudgets();
+    };
+  });
 
   // Select budget
   document.addEventListener('change', (event) => {
@@ -332,7 +364,8 @@ function updateBudgetRow(budgetId) {
 function showLeadingText(budgetId) {
 
   // Show all budgets
-  objBudget.showAllBudgets('budget-budgetId', budgetId);
+  //objBudget.showAllBudgets('budget-budgetId', budgetId);
+  objBudget.showAllSelectedBudgets('budget-budgetId', budgetId)
 
   // Show all accounts
   const accountId =
@@ -486,4 +519,167 @@ function validateValues() {
     objBudget.validateAmount(amount, "budget-amount", "Budsjett");
 
   return (validAmount && validAccountId && validYear) ? true : false;
+}
+
+// Check for valid filter
+function validateFilter() {
+
+  // Check account
+  const accountId =
+    document.querySelector('.select-budget-filterAccountId').value;
+  const validAccountId =
+    validateNumber(accountId, 1, 999999999, 'budget-filterAccountId', 'Konto');
+
+  const year =
+    document.querySelector('.select-budget-filterYear').value;
+  const validYear =
+    validateNumber(year, 2020, 2030, 'budget-year', 'Budsjettår');
+
+  return (validAccountId && validYear) ? true : false;
+}
+
+// Show filter for search
+function showLeadingTextSearch() {
+
+  // Show all accounts
+  const accountId =
+    (isClassDefined('select-budget-filterAccountId')) ? Number(document.querySelector('.select-budget-filterAccountId').value) : 0;
+  objAccount.showAllAccounts('budget-filterAccountId', accountId, 'Alle');
+
+  // Show years
+  if (!isClassDefined('select-budget-filterYear')) {
+    const year =
+      today.getFullYear();
+    objBudget.selectNumber('budget-filterYear', 2020, 2030, year, 'År');
+  }
+}
+
+// Show selected budgets
+function showBudgets() {
+
+  // Validate search filter
+  if (validateFilter()) {
+
+    // Filter
+    let htmlColumnLine =
+      '<div class="columnHeaderCenter">Linje</div><br>';
+    let htmlColumnAccountName =
+      '<div class="columnHeaderLeft">Konto</div><br>';
+    let htmlcolumnBudget =
+      '<div class="columnHeaderRight">Budsjett</div><br>';
+
+    let sumAmount =
+      0;
+    let lineNumber =
+      0;
+
+    budgetArray.forEach((budget) => {
+
+      lineNumber++;
+
+      // check if the number is odd
+      const colorClass =
+        (lineNumber % 2 !== 0) ? "green" : "";
+
+      // line number
+      htmlColumnLine +=
+        `
+          <div 
+            class="centerCell ${colorClass}"
+          >
+            ${lineNumber}
+          </div >
+        `;
+
+      // account name
+      const accountName =
+        objAccount.getAccountName(budget.accountId);
+      const colorClassAccountName =
+        (accountName === '-') ? 'red' : colorClass;
+      htmlColumnAccountName +=
+        `
+          <div
+            class="leftCell ${colorClassAccountName} one-line"
+          >
+            ${accountName}    
+          </div >
+        `;
+
+      // budget
+      const amount =
+        formatOreToKroner(budget.amount);
+      htmlcolumnBudget +=
+        `
+          <div
+            class="rightCell ${colorClass}"
+          >
+            ${amount}
+          </div>
+        `;
+
+      // accumulate
+      sumAmount +=
+        Number(budget.amount);
+    });
+
+    // Sum line
+
+    // budget
+    amount =
+      formatOreToKroner(sumAmount);
+    htmlcolumnBudget +=
+      `
+        <div
+          class="sumCellRight"
+        >
+          ${amount}
+        </div >
+      `;
+
+    // Show line number
+    document.querySelector('.div-budget-columnLine').innerHTML =
+      htmlColumnLine;
+
+    // Show account name
+    document.querySelector('.div-budget-columnAccountName').innerHTML =
+      htmlColumnAccountName;
+
+    // Show budget
+    document.querySelector('.div-budget-columnAmount').innerHTML =
+      htmlcolumnBudget;
+  }
+}
+
+// Get selected budgets
+function getSelectedBudgets() {
+
+  const accountId =
+    Number(document.querySelector('.select-budget-filterAccountId').value);
+
+  const year =
+    String(document.querySelector('.select-budget-filterYear').value);
+
+  let SQLquery =
+    `
+      SELECT * FROM budget
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+        AND year = '${year}'
+    `;
+
+  if (accountId !== 999999999) {
+    SQLquery +=
+      `
+        AND accountId = ${accountId}
+      `;
+  }
+
+  SQLquery +=
+    `
+      ORDER BY budgetId;
+    `;
+
+  updateMySql(SQLquery, 'budget', 'SELECT');
+  budgetArrayCreated =
+    false;
 }

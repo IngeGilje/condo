@@ -24,8 +24,32 @@
     {
       "type": "chrome",
       "request": "launch",
+      "name": "Leilighet",
+      "url": "http://localhost/condo-condo.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
       "name": "Forfall",
       "url": "http://localhost/condo-due.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Felleskostnad",
+      "url": "http://localhost/condo-commoncost.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+        {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Budsjett",
+      "url": "http://localhost/condo-budget.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
@@ -54,20 +78,8 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Månedsleie",
-      "url": "http://localhost/condo-monthlyrent.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
       "name": "Fjernvarme",
       "url": "http://localhost/condo-remoteheating.html",
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Importer banktransaksjoner",
-      "url": "http://localhost/condo-importfile.html",
     }
   ]
 }

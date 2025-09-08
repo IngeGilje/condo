@@ -24,7 +24,7 @@ let condominiumArrayCreated =
 testMode();
 
 // Exit application if no activity for 1 hour
-exitIfNoActivity();
+//exitIfNoActivity();
 
 let isEventsCreated
 
@@ -301,10 +301,10 @@ function updateCondominium(condominiumId) {
       document.querySelector('.input-condominium-phone').value;
     const email =
       document.querySelector('.input-condominium-email').value;
-    const accountId =
-      Number(document.querySelector('.select-condominium-accountId').value);
-    const monthlyRentAccountId =
-      Number(document.querySelector('.select-condominium-monthlyRentAccountId').value);
+    const remoteHeatingAccountId =
+      Number(document.querySelector('.select-condominium-remoteHeatingAccountId').value);
+    const commonCostAccountId =
+      Number(document.querySelector('.select-condominium-commoncostAccountId').value);
     const organizationNumber =
       document.querySelector('.input-condominium-organizationNumber').value;
     const importPath =
@@ -315,9 +315,9 @@ function updateCondominium(condominiumId) {
       today.toISOString();
 
     // Check if condominium id exist
-    const objCondominimuRowNumber =
+    const objCondominiumRowNumber =
       condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (objCondominimuRowNumber !== -1) {
+    if (objCondominiumRowNumber !== -1) {
 
       // Update condominium table
       SQLquery = `
@@ -332,8 +332,8 @@ function updateCondominium(condominiumId) {
           city = '${city}',
           phone = '${phone}',
           email = '${email}',
-          accountId = ${accountId},
-          monthlyRentAccountId = ${monthlyRentAccountId},
+          remoteHeatingAccountId = ${remoteHeatingAccountId},
+          commonCostAccountId = ${commonCostAccountId},
           organizationNumber = '${organizationNumber}',
           importPath = '${importPath}'
         WHERE condominiumId = ${condominiumId};
@@ -354,8 +354,8 @@ function updateCondominium(condominiumId) {
           city,
           phone,
           email,
-          accountId,
-          monthlyRentAccountId,
+          remoteHeatingAccountId,
+          commonCostAccountId,
           organizationNumber,
           importPath)
         VALUES (
@@ -369,8 +369,8 @@ function updateCondominium(condominiumId) {
           '${city}',
           '${phone}',
           '${email}',
-          ${accountId},
-          ${monthlyRentAccountId},
+          ${remoteHeatingAccountId},
+          ${commonCostAccountId},
           '${organizationNumber}',
           '${importPath}'
         );
@@ -415,10 +415,10 @@ function showLeadingText(condominiumId) {
   objCondominium.showInput('condominium-email', '* eMail', 50, '');
 
   // show all account Ids for remote heating
-  objAccount.showAllAccounts('condominium-accountId', 0, "", "Ingen");
+  objAccount.showAllAccounts('condominium-remoteHeatingAccountId', 0, "", "Ingen");
 
-  // show all account Ids for monthly rent accounts
-  objAccount.showAllAccounts('condominium-monthlyRentAccountId', 0, "", "Ingen");
+  // show all account Ids for common cost accounts
+  objAccount.showAllAccounts('condominium-commoncostAccountId', 0, "", "Ingen");
 
   // organization Number
   objCondominium.showInput('condominium-organizationNumber', '* Organisasjonsnummer', 9, '');
@@ -448,61 +448,61 @@ function showValues(condominiumId) {
   if (condominiumId >= 0) {
 
     // find object number for selected condominium id
-    const objCondominimuRowNumber =
+    const objCondominiumRowNumber =
       condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (objCondominimuRowNumber !== -1) {
+    if (objCondominiumRowNumber !== -1) {
 
       // Condominium id
       document.querySelector('.select-condominium-condominiumId').value =
-        condominiumArray[objCondominimuRowNumber].condominiumId;
+        condominiumArray[objCondominiumRowNumber].condominiumId;
 
       // Condominium name
       document.querySelector('.input-condominium-name').value =
-        condominiumArray[objCondominimuRowNumber].name;
+        condominiumArray[objCondominiumRowNumber].name;
 
       // Show street
       document.querySelector('.input-condominium-street').value =
-        condominiumArray[objCondominimuRowNumber].street;
+        condominiumArray[objCondominiumRowNumber].street;
 
       // Show address 2
       document.querySelector('.input-condominium-address2').value =
-        condominiumArray[objCondominimuRowNumber].address2;
+        condominiumArray[objCondominiumRowNumber].address2;
 
       // Show postal code
       document.querySelector('.input-condominium-postalCode').value =
-        condominiumArray[objCondominimuRowNumber].postalCode;
+        condominiumArray[objCondominiumRowNumber].postalCode;
 
       // Show city
       document.querySelector('.input-condominium-city').value =
-        condominiumArray[objCondominimuRowNumber].city;
+        condominiumArray[objCondominiumRowNumber].city;
 
       // Show phone
       document.querySelector('.input-condominium-phone').value =
-        condominiumArray[objCondominimuRowNumber].phone;
+        condominiumArray[objCondominiumRowNumber].phone;
 
       // Show email
       document.querySelector('.input-condominium-email').value =
-        condominiumArray[objCondominimuRowNumber].email;
+        condominiumArray[objCondominiumRowNumber].email;
 
-      // account id
-      document.querySelector('.select-condominium-accountId').value =
-        (condominiumArray[objCondominimuRowNumber].accountId) ? condominiumArray[objCondominimuRowNumber].accountId : 0;
-      document.querySelector('.label-condominium-accountId').innerHTML =
+      // account id for remote heating
+      document.querySelector('.select-condominium-remoteHeatingAccountId').value =
+        (condominiumArray[objCondominiumRowNumber].remoteHeatingAccountId) ? condominiumArray[objCondominiumRowNumber].remoteHeatingAccountId : 0;
+      document.querySelector('.label-condominium-remoteHeatingAccountId').innerHTML =
         'Velg konto for fjernvarme';
 
-      // account id
-      document.querySelector('.select-condominium-monthlyRentAccountId').value =
-        (condominiumArray[objCondominimuRowNumber].monthlyRentAccountId) ? condominiumArray[objCondominimuRowNumber].monthlyRentAccountId : 0;
-      document.querySelector('.label-condominium-monthlyRentAccountId').innerHTML =
-        'Velg konto for månedsleie';
+      // account id for common cost
+      document.querySelector('.select-condominium-commoncostAccountId').value =
+        (condominiumArray[objCondominiumRowNumber].commonCostAccountId) ? condominiumArray[objCondominiumRowNumber].commonCostAccountId : 0;
+      document.querySelector('.label-condominium-commoncostAccountId').innerHTML =
+        'Velg konto for felleskostnader';
 
       // Show organization number
       document.querySelector('.input-condominium-organizationNumber').value =
-        condominiumArray[objCondominimuRowNumber].organizationNumber;
+        condominiumArray[objCondominiumRowNumber].organizationNumber;
 
       // Show file import path
       document.querySelector('.input-condominium-fileName').value =
-        condominiumArray[objCondominimuRowNumber].importPath;
+        condominiumArray[objCondominiumRowNumber].importPath;
     }
   }
 }
@@ -541,11 +541,11 @@ function resetValues() {
     '';
 
   // account id for remote heating
-  document.querySelector('.select-condominium-accountId').value =
+  document.querySelector('.select-condominium-remoteHeatingAccountId').value =
     0;
 
-  // account id for monthly rent
-  document.querySelector('.select-condominium-monthlyRentAccountId').value =
+  // account id for common cost
+  document.querySelector('.select-condominium-commoncostAccountId').value =
     0;
 
   // Show organization number
@@ -576,9 +576,9 @@ function deleteCondominiumRow() {
   if (condominiumId >= 0) {
 
     // Check if condominium exist
-    const objCondominimuRowNumber =
+    const objCondominiumRowNumber =
       condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (objCondominimuRowNumber !== -1) {
+    if (objCondominiumRowNumber !== -1) {
 
       // current date
       const lastUpdate =

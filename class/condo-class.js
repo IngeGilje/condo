@@ -392,6 +392,7 @@ class Condos {
     `;
   }
 
+  /*
   showAllYears(className, selectedYear) {
 
     let html = `
@@ -446,6 +447,7 @@ class Condos {
     document.querySelector(`.div-${className}`).innerHTML =
       html;
   }
+  */
 
   // Select account
   selectAccountId(accountId, className) {
@@ -700,10 +702,10 @@ class Condos {
           Forfall
         </a>
 
-        <a href="${url}condo-monthlyrent.html"
-          class="a-menu-vertical-monthlyrent"
+        <a href="${url}condo-commoncost.html"
+          class="a-menu-vertical-commoncost"
         >
-          Månedsleie
+          Felleskostnader
         </a>
 
         <a href="${url}condo-budget.html"
@@ -1026,6 +1028,7 @@ class Condos {
           "filename.png";
         break;
       }
+      case "update":
       case "save": {
         imageName =
           "save.png";
@@ -1359,14 +1362,6 @@ function formatOreToKroner(amount) {
   amount = String(Number(amount) / 100);
   amount = Number(amount).toFixed(2);
   return formatToNorAmount(amount);
-}
-
-// Format norwegian number (12 345,67) to number (12345.67)
-function formatAmountToNumber(number) {
-
-  const formatedNumber = number.replace(',', '.');
-  number = formatedNumber.replace(/\s+/g, "");
-  return number;
 }
 
 // Format norwegian kroner (12 345,67) to ore/number (1234567)
@@ -1748,6 +1743,7 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   return accountId;
 }
 
+/*
 // exit application after 1 hour
 function exitIfNoActivity() {
 
@@ -1763,4 +1759,4 @@ function exitIfNoActivity() {
 ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
   document.addEventListener(event, exitIfNoActivity);
 });
-
+*/

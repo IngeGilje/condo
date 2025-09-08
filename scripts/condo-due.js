@@ -24,7 +24,7 @@ let dueArrayCreated =
 testMode();
 
 // Exit application if no activity for 1 hour
-exitIfNoActivity();
+//exitIfNoActivity();
 
 let isEventsCreated
 
@@ -622,8 +622,6 @@ function showDues() {
     // Header
     let htmlColumnLine =
       '<div class="columnHeaderCenter">Linje</div><br>';
-    let htmlColumnCondoName =
-      '<div class="columnHeaderLeft">Leilighet</div><br>';
     let htmlColumnAccountName =
       '<div class="columnHeaderLeft">Konto</div><br>';
     let htmlColumnDate =
@@ -664,14 +662,6 @@ function showDues() {
         condoName =
           objCondo.getCondoName(condoId);
       }
-      htmlColumnCondoName +=
-        `
-          <div 
-            class="leftCell ${colorClass} one-line"
-          >
-            ${condoName}
-          </div >
-        `;
 
       // account name
       const accountName =
@@ -743,10 +733,6 @@ function showDues() {
     // Show line number
     document.querySelector('.div-due-columnLine').innerHTML =
       htmlColumnLine;
-
-    // Show condo name
-    document.querySelector('.div-due-columnCondoName').innerHTML =
-      htmlColumnCondoName;
 
     // Show account name
     document.querySelector('.div-due-columnAccountName').innerHTML =

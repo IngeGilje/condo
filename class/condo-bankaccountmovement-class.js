@@ -6,7 +6,8 @@ class BankAccountMovement extends Condos {
    Array;
 
   // Show all selected bank account movements
-  showAllSelectedAccountMovements(columnName, bankAccountMovementId, fromDate, toDate, condoId, accountId) {
+  //showAllSelectedAccountMovements(columnName, bankAccountMovementId, fromDate, toDate, condoId, accountId) {
+  showAllSelectedAccountMovements(columnName, bankAccountMovementId) {
 
     let html = `
       <form 
@@ -36,13 +37,6 @@ class BankAccountMovement extends Condos {
       bankAccountMovementArray.length;
     if (numberOfRows > 0) {
       bankAccountMovementArray.forEach((bankAccountMovement) => {
-
-        /*
-        if (bankAccountMovement.bankAccountMovementId >= 0) {
-          if (Number(bankAccountMovement.date) >= Number(fromDate) && Number(bankAccountMovement.date) <= Number(toDate)) {
-            if (bankAccountMovement.condoId === condoId || condoId === 999999999) {
-              if (bankAccountMovement.accountId === accountId || accountId === 999999999) {
-        */
 
         lineNumber++;
         if (bankAccountMovement.bankAccountMovementId === bankAccountMovementId) {

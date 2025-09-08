@@ -30,7 +30,7 @@ let bankAccountMovementArrayCreated =
 testMode();
 
 // Exit application if no activity for 1 hour
-exitIfNoActivity();
+//exitIfNoActivity();
 
 let isEventsCreated
 
@@ -62,7 +62,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT account.*
         FROM condominium
-        JOIN account ON condominium.accountId = account.accountId
+        JOIN account ON condominium.remoteHeatingAccountId = account.accountId
         WHERE condominium.condominiumId = ${objUserPassword.condominiumId}    
       `;
 
@@ -610,6 +610,7 @@ function getSelectedBankAccountMovements() {
         AND deleted <> 'Y'
         AND accountId = ${accountArray[0].accountId}
         AND date BETWEEN ${fromDate} AND ${toDate}
+        ORDER By date DESC;
     `;
 
   // Check condo Id 

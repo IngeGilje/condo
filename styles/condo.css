@@ -31,11 +31,12 @@
 .div-grid-due-search,
 .div-grid-due,
 
-.div-grid-monthlyrent,
+.div-grid-commoncost,
 
 .div-grid-remoteheating-search,
 .div-grid-remoteheating,
 
+.div-grid-budget-search,
 .div-grid-budget,
 
 .div-grid-overview-search,
@@ -50,13 +51,13 @@
 
 /* grid container 2 columns */
 .div-grid-userbankaccount,
-.div-grid-condo,
-.div-grid-budget,
 .div-grid-account {
   grid-template-columns: 200px 200px;
 }
 
 /* grid container 3 columns */
+.div-grid-condo,
+.div-grid-budget-search,
 .div-grid-bankaccount,
 .div-grid-supplier,
 .div-grid-user,
@@ -65,7 +66,7 @@
 }
 
 /* grid container 4 columns */
-.div-grid-monthlyrent {
+.div-grid-commoncost {
   grid-template-columns: 200px 200px 150px 150px;
 }
 
@@ -82,6 +83,11 @@
 /* Define the grid container with 4 columns*/
 .div-grid-remoteheating-search {
   grid-template-columns: 200px 200px 200px 200px;
+}
+
+/* Define the grid container with 5 columns*/
+.div-grid-budget {
+  grid-template-columns: 200px 200px 75px 200px 100px;
 }
 
 /* Define the grid container with 5 columns*/
@@ -295,8 +301,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.div-monthlyrent-columnAmount,
-.div-monthlyrent-columnDate {
+.div-commoncost-columnAmount,
+.div-commoncost-columnDate {
   grid-row-start: 1;
   grid-row-end: 20;
   display: block;
@@ -305,15 +311,15 @@
   padding: 2px;
 }
 
-.div-monthlyrent-columnDate {
+.div-commoncost-columnDate {
   grid-column-start: 3;
 }
 
-.div-monthlyrent-columnAmount {
+.div-commoncost-columnAmount {
   grid-column-start: 4;
 }
 
-.div-monthlyrent-columnDate {
+.div-commoncost-columnDate {
   grid-column-start: 3;
   grid-row-start: 1;
   grid-row-end: 20;
@@ -337,7 +343,7 @@
 .a-menu-vertical-income,
 .a-menu-vertical-payment,
 .a-menu-vertical-due,
-.a-menu-vertical-monthlyrent,
+.a-menu-vertical-commoncost,
 .a-menu-vertical-remoteheating,
 .a-menu-vertical-budget,
 .a-menu-vertical-overview,
@@ -364,7 +370,7 @@
 .a-menu-vertical-condo-green,
 .a-menu-vertical-account-green,
 .a-menu-vertical-due-green,
-.a-menu-vertical-monthlyrent-green,
+.a-menu-vertical-commoncost-green,
 .a-menu-vertical-income-green,
 .a-menu-vertical-payment-green,
 .a-menu-vertical-overview-green,
@@ -434,7 +440,7 @@
 
 .div-grid-due label,
 
-.div-grid-monthlyrent label,
+.div-grid-commoncost label,
 
 .div-grid-remoteheating-search label,
 
@@ -502,11 +508,12 @@
 .div-grid-due-search input,
 .div-grid-due input,
 
-.div-grid-monthlyrent input,
+.div-grid-commoncost input,
 
 .div-grid-remoteheating-search input,
 .div-grid-remoteheating input,
 
+.div-grid-budget-search input,
 .div-grid-budget input,
 
 .div-grid-overview-search input,
@@ -585,11 +592,12 @@
 .div-grid-due-search select,
 .div-grid-due select,
 
-.div-grid-monthlyrent select,
+.div-grid-commoncost select,
 
 .div-grid-remoteheating-search select,
 .div-grid-remoteheating select,
 
+.div-grid-budget-search select,
 .div-grid-budget select,
 
 .div-grid-overview-search select,
@@ -698,12 +706,13 @@
 .div-grid-due-search button,
 .div-grid-due button,
 
-.div-grid-monthlyrent button,
+.div-grid-commoncost button,
 
 .div-grid-remoteheating-search button,
 
 .div-grid-remoteheating button,
 
+.div-grid-budget-search button,
 .div-grid-budget button,
 
 .div-grid-overview-search button,
@@ -743,11 +752,12 @@
 .div-grid-due-search button:hover,
 .div-grid-due button:hover,
 
-.div-grid-monthlyrent button:hover,
+.div-grid-commoncost button:hover,
 
 .div-grid-remoteheating-search button:hover,
 .div-grid-remoteheating button:hover,
 
+.div-grid-budget-search button:hover,
 .div-grid-budget button:hover,
 
 .div-grid-overview-search button:hover,
@@ -778,11 +788,12 @@
 .div-grid-due-search button:active,
 .div-grid-due button:active,
 
-.div-grid-monthlyrent button:active,
+.div-grid-commoncost button:active,
 
 .div-grid-remoteheating-search button:active,
 .div-grid-remoteheating button:active,
 
+.div-grid-budget-search button:active,
 .div-grid-budget button:active,
 
 .div-grid-overview-search button:active,
@@ -827,8 +838,8 @@
 .div-grid-due select:disabled,
 .div-grid-due button:disabled,
 
-.div-grid-monthlyrent select:disabled,
-.div-grid-monthlyrent button:disabled,
+.div-grid-commoncost select:disabled,
+.div-grid-commoncost button:disabled,
 
 .div-grid-budget select:disabled,
 .div-grid-budget button:disabled {
@@ -837,8 +848,8 @@
 }
 
 /* header */
-.div-monthlyrent-columnDate-Header,
-.div-monthlyrent-columnAmount-Header,
+.div-commoncost-columnDate-Header,
+.div-commoncost-columnAmount-Header,
 
 .label-bankaccountmovement-columnCondoName-Header,
 .label-bankaccountmovement-columnAccountName-Header,
@@ -949,7 +960,7 @@
 .label-condominium-city-red,
 .label-condominium-phone-red,
 .label-condominium-email-red,
-.label-condominium-accountId-red,
+.label-condominium-remoteHeatingAccountId-red,
 .label-condominium-organizationNumber-red,
 
 .label-condo-condoId-red,
@@ -981,9 +992,9 @@
 .label-account-accountName-red,
 .label-account-accountType-red,
 
-.label-monthlyrent-condoId-red,
-.label-monthlyrent-date-red,
-.label-monthlyrent-amount-red,
+.label-commoncost-condoId-red,
+.label-commoncost-date-red,
+.label-commoncost-amount-red,
 
 .label-due-condoId-red,
 .label-due-date-red,

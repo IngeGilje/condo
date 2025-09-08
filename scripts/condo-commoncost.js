@@ -1,4 +1,4 @@
-// Monthly rent maintenance
+// Common cost maintenance
 
 // Activate objects
 const today =
@@ -13,8 +13,8 @@ const objDue =
   new Due('due');
 const objCondominium =
   new Condominium('condominium');
-const objMonthlyRent =
-  new MonthlyRent('monthlyrent');
+const objCommonCost =
+  new CommonCost('commoncost');
 
 let userArrayCreated =
   false
@@ -29,13 +29,15 @@ let dueArrayCreated =
 
 testMode();
 
+/*
 // Exit application if no activity for 1 hour
-exitIfNoActivity();
+//exitIfNoActivity();
+*/
 
 let isEventsCreated
 
-objMonthlyRent.menu();
-objMonthlyRent.markSelectedMenu('Månedsleie');
+objCommonCost.menu();
+objCommonCost.markSelectedMenu('Felleskostnader');
 
 let socket;
 socket = connectingToServer();
@@ -74,21 +76,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
     updateMySql(SQLquery, 'condo', 'SELECT');
 
-    /*
-    SQLquery =
-      `
-        SELECT * FROM account
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY accountId;
-      `;
-    */
     // Inner join
     SQLquery =
       `
         SELECT account.*
         FROM condominium
-        JOIN account ON condominium.monthlyRentAccountId = account.accountId 
+        JOIN account ON condominium.commonCostAccountId = account.accountId 
         WHERE condominium.condominiumId = ${objUserPassword.condominiumId};
       `
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -113,7 +106,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         SELECT * FROM due
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY dueId;
+        ORDER BY date DESC;
       `;
 
     updateMySql(SQLquery, 'due', 'SELECT');
@@ -206,31 +199,26 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
             // show all monthly amounts for selected condo id and account id
             let condoId = 0;
-            if (isClassDefined('select-monthlyrent-condoId')) {
-              condoId =
-                Number(document.querySelector('.select-monthlyrent-condoId').value);
+            if (isClassDefined('select-commoncost-condoId')) {
+              condoId = Number(document.querySelector('.select-commoncost-condoId').value);
             }
             if (condoId === 0) {
-              condoId =
-                condoArray.at(-1).condoId;
+              condoId = condoArray.at(-1).condoId;
               showLeadingText();
             }
 
-            // Account Id
-            let accountId = 0;
-            if (isClassDefined('select-monthlyrent-accountId')) {
-              accountId =
-                Number(document.querySelector('.select-monthlyrent-accountId').value);
-            }
-            if (accountId === 0) {
-              accountId =
-                accountArray.at(-1).accountId;
-            }
-            showMonthlyRent(condoId, accountId);
+            const accountId = accountArray[0].accountId;
+            showCommonCost(condoId);
 
             // Make events
-            isEventsCreated = 
-            (isEventsCreated) ? true : createEvents();
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
+          } else {
+
+            console.log("userArrayCreated: ", userArrayCreated);
+            console.log("condoArrayCreated: ", condoArrayCreated);
+            console.log("accountArrayCreated: ", accountArrayCreated);
+            console.log("condominiumArrayCreated: ", condominiumArrayCreated);
+            console.log("dueArrayCreated): ", dueArrayCreated);
           }
           break;
       }
@@ -247,7 +235,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               SELECT * FROM due
               WHERE condominiumId = ${objUserPassword.condominiumId}
                 AND deleted <> 'Y'
-              ORDER BY dueId;
+              ORDER BY date DESC;
             `;
           updateMySql(SQLquery, 'due', 'SELECT');
           dueArrayCreated =
@@ -272,56 +260,56 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make monthly amount events
 function createEvents() {
 
-  // Selected account Id
+  // Selected condo Id
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-monthlyrent-accountId')) {
-
-      const accountId =
-        Number(event.target.value);
+    if (event.target.classList.contains('select-commoncost-condoId')) {
 
       const condoId =
-        Number(document.querySelector('.select-monthlyrent-condoId').value);
+        Number(event.target.value);
+
+      const accountId =
+        accountArray[0].accountId;
 
       // Show all dues for condo id, account id
-      showMonthlyRent(condoId, accountId);
+      showCommonCost(condoId);
     }
   });
 
   // Selected year
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-monthlyrent-year')) {
+    if (event.target.classList.contains('select-commoncost-year')) {
     }
   });
 
   // Selected day
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-monthlyrent-day')) {
+    if (event.target.classList.contains('select-commoncost-day')) {
     }
   });
 
-  // Update monthly rent
+  // Update common cost
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-monthlyrent-update')) {
+    if (event.target.classList.contains('button-commoncost-update')) {
 
-      updateMonthlyRent();
+      updateCommonCost();
       const condoId =
-        Number(document.querySelector('.select-monthlyrent-condoId').value);
+        Number(document.querySelector('.select-commoncost-condoId').value);
 
       const accountId =
-        Number(document.querySelector('.select-monthlyrent-accountId').value);
+        accountArray[0].accountId;
 
-      showMonthlyRent(condoId, accountId);
+      showCommonCost(condoId);
     }
   });
 
-  // Delete monthly rent
+  // Delete common cost
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-monthlyrent-delete')) {
+    if (event.target.classList.contains('button-commoncost-delete')) {
 
-      if (deleteMonthlyRent()) {
+      if (deleteCommonCost()) {
 
         condoId =
-          document.querySelector('.select-monthlyrent-condoId').value;
+          document.querySelector('.select-commoncost-condoId').value;
 
         // Sends a request to the server to get all dues
         const SQLquery =
@@ -329,13 +317,13 @@ function createEvents() {
             SELECT * FROM due
             WHERE condominiumId = ${objUserPassword.condominiumId}
               AND deleted <> 'Y'
-            ORDER BY date;
+            ORDER BY date DESC;
           `;
         updateMySql(SQLquery, 'due', 'SELECT');
         dueArrayCreated =
           false;
 
-        document.querySelector('.select-monthlyrent-condoId').value =
+        document.querySelector('.select-commoncost-condoId').value =
           condoId;
       }
     }
@@ -343,7 +331,7 @@ function createEvents() {
 
   // Cancel
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-monthlyrent-cancel')) {
+    if (event.target.classList.contains('button-commoncost-cancel')) {
 
       // Sends a request to the server to get all dues
       const SQLquery =
@@ -351,7 +339,7 @@ function createEvents() {
           SELECT * FROM due
           WHERE condominiumId = ${objUserPassword.condominiumId}
             AND deleted <> 'Y'
-          ORDER BY dueId;
+          ORDER BY date DESC;
         `;
       updateMySql(SQLquery, 'due', 'SELECT');
       dueArrayCreated =
@@ -361,7 +349,7 @@ function createEvents() {
   return true;
 }
 
-function updateMonthlyRent() {
+function updateCommonCost() {
 
   let SQLquery;
   let isUpdated = false;
@@ -371,13 +359,13 @@ function updateMonthlyRent() {
 
     // Valid values
     const year =
-      Number(document.querySelector('.select-monthlyrent-year').value);
+      Number(document.querySelector('.select-commoncost-year').value);
 
     const condoId =
-      Number(document.querySelector('.select-monthlyrent-condoId').value);
+      Number(document.querySelector('.select-commoncost-condoId').value);
 
     const accountId =
-      Number(document.querySelector('.select-monthlyrent-accountId').value);
+      accountArray[0].accountId;
 
     // get condo name 
     const array =
@@ -387,10 +375,10 @@ function updateMonthlyRent() {
       array.name;
 
     const day =
-      Number(document.querySelector('.select-monthlyrent-day').value);
+      Number(document.querySelector('.select-commoncost-day').value);
 
     const amount =
-      Number(formatAmountToOre(document.querySelector('.input-monthlyrent-amount').value));
+      Number(formatAmountToOre(document.querySelector('.input-commoncost-amount').value));
 
     const lastUpdate =
       today.toISOString();
@@ -432,36 +420,30 @@ function updateMonthlyRent() {
 
       updateMySql(SQLquery, 'due', 'INSERT');
     }
-    document.querySelector('.button-monthlyrent-delete').disabled =
+    document.querySelector('.button-commoncost-delete').disabled =
       false;
-    document.querySelector('.select-monthlyrent-condoId').value =
+    document.querySelector('.select-commoncost-condoId').value =
       condoId;
-    document.querySelector('.select-monthlyrent-accountId').value =
-      accountId;
-
-    isUpdated = true;
   }
-  return isUpdated;
 }
 
-function deleteMonthlyRent() {
+function deleteCommonCost() {
 
   // Check for valid values
-  let isDeleted = false;
   if (validateValues()) {
 
     let SQLquery = '';
 
     const year =
-      Number(document.querySelector('.select-monthlyrent-year').value);
+      Number(document.querySelector('.select-commoncost-year').value);
     const day =
-      Number(document.querySelector('.select-monthlyrent-day').value);
+      Number(document.querySelector('.select-commoncost-day').value);
     const condoId =
-      Number(document.querySelector('.select-monthlyrent-condoId').value);
+      Number(document.querySelector('.select-commoncost-condoId').value);
     const accountId =
-      Number(document.querySelector('.select-monthlyrent-accountId').value);
+      accountArray[0].accountId;
     let amount =
-      Number(formatAmountToOre(document.querySelector('.input-monthlyrent-amount').value));
+      Number(formatAmountToOre(document.querySelector('.input-commoncost-amount').value));
 
     for (month = 1; month < 13; month++) {
 
@@ -493,12 +475,9 @@ function deleteMonthlyRent() {
           `;
 
         updateMySql(SQLquery, 'due', 'DELETE');
-
-        isDeleted = true;
       }
     }
   }
-  return isDeleted;
 }
 
 // Show leading text for due
@@ -507,35 +486,29 @@ function showLeadingText() {
   // Show all condos
   const condoId =
     condoArray.at(-1).condoId;
-  objCondo.showAllCondos('monthlyrent-condoId', condoId);
-
-  // Show account for monthly rent
-  objDue.showInput('monthlyrent-accountId', 'Konto for månedsleue', 10, '');
-
-  document.querySelector('.input-monthlyrent-accountId').value =
-    accountArray[0].name;
+  objCondo.showAllCondos('commoncost-condoId', condoId);
 
   // Show years
   const year =
     today.getFullYear();
-  objDue.selectNumber('monthlyrent-year', 2020, 2030, year, 'År');
+  objDue.selectNumber('commoncost-year', 2020, 2030, year, 'År');
 
   // Show days
-  objDue.selectNumber('monthlyrent-day', 1, 28, 15, 'Dag')
+  objDue.selectNumber('commoncost-day', 1, 28, 15, 'Dag')
 
   // Show amount
-  objDue.showInput('monthlyrent-amount', '* Månedsavgift', 10, '');
+  objDue.showInput('commoncost-amount', '* Månedsavgift', 10, '');
 
   if (Number(objUserPassword.securityLevel) >= 9) {
 
     // show update button
-    objDue.showButton('monthlyrent-update', 'Oppdater');
+    objDue.showButton('commoncost-update', 'Oppdater');
 
     // show delete button
-    objDue.showButton('monthlyrent-delete', 'Slett');
+    objDue.showButton('commoncost-delete', 'Slett');
 
     // show cancel button
-    objDue.showButton('monthlyrent-cancel', 'Avbryt');
+    objDue.showButton('commoncost-cancel', 'Avbryt');
   }
 }
 
@@ -544,35 +517,29 @@ function validateValues() {
 
   // Check for valid condo
   const year =
-    document.querySelector('.select-monthlyrent-year').value;
+    document.querySelector('.select-commoncost-year').value;
   const validYear =
-    validateNumber(year, 2020, 2099, 'monthlyrent-year', '* År');
+    validateNumber(year, 2020, 2099, 'commoncost-year', '* År');
 
   // Check for valid condo Id
   const condoId =
-    document.querySelector('.select-monthlyrent-condoId').value;
+    document.querySelector('.select-commoncost-condoId').value;
   const validCondoId =
-    validateNumber(condoId, 1, 99999, 'monthlyrent-condoId', 'Leilighet');
-
-  // Check for valid account Id
-  const accountId =
-    document.querySelector('.select-monthlyrent-accountId').value;
-  const validAccountId =
-    validateNumber(accountId, 1, 99999, 'monthlyrent-accountId', 'Konto');
+    validateNumber(condoId, 1, 99999, 'commoncost-condoId', 'Leilighet');
 
   // Check for valid day
   const day =
-    document.querySelector('.select-monthlyrent-day').value;
+    document.querySelector('.select-commoncost-day').value;
   const validDay =
-    validateNumber(day, 1, 28, 'monthlyrent-day', 'Dag');
+    validateNumber(day, 1, 28, 'commoncost-day', 'Dag');
 
   // Check amount
   const amount =
-    document.querySelector('.input-monthlyrent-amount').value;
-  document.querySelector('.input-monthlyrent-amount').value =
+    document.querySelector('.input-commoncost-amount').value;
+  document.querySelector('.input-commoncost-amount').value =
     formatAmountToEuroFormat(amount);
   const validAmount =
-    objDue.validateAmount(amount, "monthlyrent-amount", "Månedsavgift");
+    objDue.validateAmount(amount, "commoncost-amount", "Månedsavgift");
 
   return (validAccountId && validYear && validCondoId && validDay && validAmount) ? true : false;
 }
@@ -595,50 +562,51 @@ function findDueId(condoId, accountId, amount, date) {
   return dueId;
 }
 
-// Reset all monthly rent amounts
-function resetMonthlyRent() {
+// Reset all common cost amounts
+function resetCommonCost() {
 
-  document.querySelector('.input-monthlyrent-amount').value =
+  document.querySelector('.input-commoncost-amount').value =
     '';
 
-  document.querySelector('.div-monthlyrent-columnDate').innerHTML =
+  document.querySelector('.div-commoncost-columnDate').innerHTML =
     '';
-  document.querySelector('.div-monthlyrent-columnAmount').innerHTML =
+  document.querySelector('.div-commoncost-columnAmount').innerHTML =
     '';
 
-  document.querySelector('.button-monthlyrent-delete').disabled =
+  document.querySelector('.button-commoncost-delete').disabled =
     true;
 }
 
 // Reset all values for due
 function resetValues() {
 
-  document.querySelector('.select-monthlyrent-condoId').value =
+  document.querySelector('.select-commoncost-condoId').value =
     '';
 
   // Year
-  document.querySelector('.select-monthlyrent-year').value =
+  document.querySelector('.select-commoncost-year').value =
     '';
 
   // Day
-  document.querySelector('.input-monthlyrent-day').value =
+  document.querySelector('.input-commoncost-day').value =
     '';
 
   // Amount
-  document.querySelector('.input-monthlyrent-amount').value =
+  document.querySelector('.input-commoncost-amount').value =
     '';
 
-  document.querySelector('.button-monthlyrent-delete').disabled =
+  document.querySelector('.button-commoncost-delete').disabled =
     true;
 }
 
-// show all monthly rents for selected condo id
-function showMonthlyRent(condoId, accountId) {
+// show all common costs for selected condo id
+function showCommonCost(condoId) {
 
   let sumAmount = 0;
   let lineNumber = 0;
+  const accountId = accountArray[0].accountId;
 
-  document.querySelector(".input-monthlyrent-amount").value =
+  document.querySelector(".input-commoncost-amount").value =
     '';
 
   let htmlColumnDate =
@@ -685,7 +653,7 @@ function showMonthlyRent(condoId, accountId) {
 
         // 1234567 -> 12345,67
         const amount = formatOreToKroner(due.amount);
-        document.querySelector(".input-monthlyrent-amount").value =
+        document.querySelector(".input-commoncost-amount").value =
           amount;
         htmlColumnAmount +=
           `
@@ -714,9 +682,9 @@ function showMonthlyRent(condoId, accountId) {
       <br>
     `;
 
-  document.querySelector('.div-monthlyrent-columnDate').innerHTML =
+  document.querySelector('.div-commoncost-columnDate').innerHTML =
     htmlColumnDate;
-  document.querySelector('.div-monthlyrent-columnAmount').innerHTML =
+  document.querySelector('.div-commoncost-columnAmount').innerHTML =
     htmlColumnAmount;
 }
 
@@ -732,13 +700,13 @@ function showValues(dueId) {
     if (objDueRowNumber !== -1) {
 
       // Condo id
-      document.querySelector('.select-monthlyrent-condoId').value =
+      document.querySelector('.select-commoncost-condoId').value =
         dueArray[objDueRowNumber].condoId;
 
       // Amount
       const amount =
         formatOreToKroner(dueArray[objDueRowNumber].amount);
-      document.querySelector('.input-monthlyrent-amount').value =
+      document.querySelector('.input-commoncost-amount').value =
         amount;
     } else {
 

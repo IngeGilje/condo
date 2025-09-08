@@ -4,93 +4,6 @@ class Budget extends Condos {
   // Budget information
   budgetArray = [];
 
-  // Show all budgets
-  showAllBudgets(className, budgetId) {
-
-    let html =
-      `
-        <form 
-          id ="Budget"
-          action="/submit" 
-          method="POST"
-        >
-          <label 
-            class="label-${className} 
-            label-${className}"
-            for="Budget"
-            id ="Budget"
-          >
-            Velg budsjett
-          </label>
-          <select 
-            class="select-${className}"
-            id ="Budget" 
-          >
-    `;
-
-    let selectedOption =
-      false;
-
-    // Check if budget array is empty
-    const numberOfRows =
-      budgetArray.length;
-
-    if (numberOfRows > 0) {
-      budgetArray.forEach((budget) => {
-        if (budget.budgetId >= 0) {
-
-          // get account name
-          const accountName =
-            objBudget.getAccountName(budget.accountId);
-
-          if (budget.budgetId === budgetId) {
-
-            html +=
-              `
-                <option 
-                  value="${budget.budgetId}"
-                  selected
-                  >
-                  ${budget.budgetId} - ${accountName}
-                </option>
-              `;
-            selectedOption =
-              true;
-          } else {
-
-            html +=
-              `
-              <option 
-                value="${budget.budgetId}">
-                ${budget.budgetId} - ${accountName}
-              </option>
-            `;
-          }
-        }
-      });
-
-    } else {
-
-      html += `
-        <option value="0" 
-          selected
-        >
-          Ingen budsjett er valgt
-        </option>
-      `;
-      selectedOption =
-        true;
-    }
-
-    html += `
-      </select >
-    </form>
-  `;
-
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
-  }
-
   // Find selected budget id
   getSelectedBudgetId(className) {
 
@@ -112,5 +25,84 @@ class Budget extends Condos {
 
     return budgetId;
   }
-}
 
+  // Show all selected budgets
+  showAllSelectedBudgets(columnName, budgetId) {
+
+    let html = `
+      <form 
+        id="budgets"
+        action="/submit" 
+        method="POST"
+      >
+        <label 
+          class="label-${columnName}"
+          for="budgets"
+          id="budgets"
+        >
+            Velg budsjett
+        </label>
+        <select 
+          class="select-${columnName}" 
+        >
+    `;
+
+    let lineNumber = 0;
+
+    let selectedOption =
+      false;
+
+    // Check if budget array is empty
+    const numberOfRows =
+      budgetArray.length;
+    if (numberOfRows > 0) {
+      budgetArray.forEach((budget) => {
+
+        lineNumber++;
+        if (budget.budgetId === budgetId) {
+
+          html +=
+            `
+              <option 
+                value="${budget.budgetId}"
+                selected
+              >
+                ${lineNumber} - ${budget.budgetId}
+              </option>
+            `;
+          selectedOption =
+            true;
+        } else {
+
+          html +=
+            `
+              <option 
+                value="${budget.budgetId}">
+                ${lineNumber} - ${budget.budgetId}
+              </option>
+            `;
+        }
+      });
+    } else {
+
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen budsjett
+          </option>
+        `;
+      selectedOption =
+        true;
+    }
+
+    html += `
+      </select >
+    </form>
+  `;
+
+    document.querySelector(`.div-${columnName}`).innerHTML =
+      html;
+  }
+}

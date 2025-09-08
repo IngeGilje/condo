@@ -16,7 +16,7 @@ let condoArrayCreated =
 testMode();
 
 // Exit application if no activity for 1 hour
-exitIfNoActivity();
+//exitIfNoActivity();
 
 let isEventsCreated
 
@@ -112,7 +112,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
             // Make events
             isEventsCreated =
-             (isEventsCreated) ? true : createEvents();
+              (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -227,7 +227,10 @@ function updateCondoRow(condoId) {
       document.querySelector('.input-condo-city').value;
     const address2 =
       document.querySelector('.input-condo-address2').value;
+    const squareMeters =
+      Number(formatAmountToOre(document.querySelector('.input-condo-squareMeters').value));
 
+    squareMeters
     // current date
     const lastUpdate =
       today.toISOString();
@@ -247,7 +250,8 @@ function updateCondoRow(condoId) {
           street = '${street}',
           address2 = '${address2}',
           postalCode = '${postalCode}', 
-          city = '${city}'
+          city = '${city}',
+          squareMeters = '${squareMeters}'
         WHERE condoId = ${condoId};
       `;
       updateMySql(SQLquery, 'condo', 'UPDATE');
@@ -264,7 +268,8 @@ function updateCondoRow(condoId) {
           street,
           address2,
           postalCode,
-          city)
+          city,
+          squareMeters)
         VALUES (
           'N',
           ${objUserPassword.condominiumId},
@@ -274,7 +279,8 @@ function updateCondoRow(condoId) {
           '${street}',
           '${address2}',
           '${postalCode}',
-          '${city}'
+          '${city}',
+          '${squareMeters}'
         );
       `;
 
@@ -313,6 +319,9 @@ function showLeadingText(condoId) {
 
   // City
   objCondo.showInput('condo-city', '* Poststed', 50, '');
+
+  // square meters
+  objCondo.showInput('condo-squareMeters', '* Kvadratmeter', 5, '');
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -366,15 +375,9 @@ function showValues(condoId) {
       document.querySelector('.input-condo-city').value =
         condoArray[objCondoRowNumber].city;
 
-      /*
-      // Show phone number
-      document.querySelector('.input-condo-phone').value =
-        condoArray[objCondoRowNumber].phone;
-
-      // Show email
-      document.querySelector('.input-condo-email').value =
-        condoArray[objCondoRowNumber].email;
-      */
+      // Show square meters
+      document.querySelector('.input-condo-squareMeters').value =
+        formatOreToKroner(condoArray[objCondoRowNumber].squareMeters);
     }
   }
 }
@@ -402,6 +405,10 @@ function resetValues() {
 
   // Show city
   document.querySelector('.input-condo-city').value =
+    '';
+
+  // Show square meters
+  document.querySelector('.input-squareMeters').value =
     '';
 
   document.querySelector('.select-condo-condoId').disabled =
@@ -478,10 +485,15 @@ function validateValues() {
   const city = document.querySelector('.input-condo-city').value;
   const validCity = objCondo.validateText(city, "label-condo-city", "Poststed");
 
+  // Check square meters
+  const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
+  const validSquareMeters = objCondo.validateAmount(squareMeters, 'label-condo-squareMeters', "Kvadratmeter");
+
   if (validCondoName
     && validStreet
     && validPostalCode
-    && validCity) {
+    && validCity
+    && validSquareMeters) {
     return true;
   } else {
     return false;

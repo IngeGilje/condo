@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="nb-NO">
+
+<head>
+
+  <title>Månedsavgift</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/condo.css">
+
+</head>
+
+<body>
+  <!-- All rows consist of 4 columns -->
+  <div class="div-grid-commoncost">
+
+    <div class="div-menu"></div>
+    <div class="div-commoncost-condoId"></div>
+    <div class="div-commoncost-columnDate"></div>
+    <div class="div-commoncost-columnAmount"></div>
+
+    <div class="div-commoncost-name"></div>
+
+    <div class="div-commoncost-year"></div>
+
+    <div class="div-commoncost-day"></div>
+
+    <div class="div-commoncost-amount"></div>
+
+    <div class="div-commoncost-update"></div>
+
+    <div class="div-commoncost-delete"></div>
+
+    <div class="div-commoncost-cancel"></div>
+  </div>
+
+  <script src="class/condo-class.js"></script>
+  <script src="class/condo-user-class.js"></script>
+  <script src="class/condo-condo-class.js"></script>
+  <script src="class/condo-account-class.js"></script>
+  <script src="class/condo-due-class.js"></script>
+  <script src="class/condo-commoncost-class.js"></script>
+  <script src="class/condo-condominium-class.js"></script>
+  <script src="scripts/condo-commoncost.js"></script>
+</body>
+
+</html>

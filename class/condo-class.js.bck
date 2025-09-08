@@ -702,7 +702,7 @@ class Condos {
         <a href="${url}condo-monthlyrent.html"
           class="a-menu-vertical-monthlyrent"
         >
-          Månedsleie
+          Felleskostnad
         </a>
 
         <a href="${url}condo-budget.html"

@@ -37,7 +37,7 @@ let bankAccountMovementArrayCreated =
 testMode();
 
 // Exit application if no activity for 1 hour
-exitIfNoActivity();
+//exitIfNoActivity();
 
 let isEventsCreated
 
@@ -281,7 +281,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
 
             // Show bank account movements Id
-            objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
+            //objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
+            objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId);
 
             showValues(bankAccountMovementId);
 
@@ -875,8 +876,7 @@ function validateFilter() {
 
 function updateBankAccountMovement(bankAccountMovementId) {
 
-  let SQLquery = "";
-  let isUpdated = false;
+  let SQLquery;
 
   // Check values
   if (validateValues()) {
@@ -978,7 +978,6 @@ function updateBankAccountMovement(bankAccountMovementId) {
       false;
     isUpdated = true;
   }
-  return isUpdated;
 }
 
 // Check for valid bank account values

@@ -142,12 +142,11 @@ class Condo extends Condos {
   }
 
   // Find selected condo id
-  getSelectedCondoId(columnName) {
+  getSelectedCondoId(className) {
 
     let condoId = 0;
 
     // Check if HTML class exist
-    const className = `select-${this.applicationName}-${columnName} `;
     if (isClassDefined(className)) {
 
       condoId =

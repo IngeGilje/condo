@@ -262,6 +262,7 @@ function createAllTables() {
         address2 VARCHAR(50),
         postalCode VARCHAR(4) NOT NULL,
         city VARCHAR(50) NOT NULL,
+        squareMeters VARCHAR(5) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
