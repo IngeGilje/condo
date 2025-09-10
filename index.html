@@ -3,36 +3,37 @@
 
 <head>
 
-  <title>Login Condo 1.0</title>
+  <title>Test</title>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="http://localhost/styles/condo-login.css">
+  <link rel="stylesheet" href="http://localhost/styles/condo.css">
 
 </head>
 
 <body>
 
-  <!-- All rows consist of 1 column -->
-  <div class="div-main">
-    <div class="login">
-      <div class="login-box">
-        <h2>Login</h2>
-        <form id="login">
-          <div class="div-email"></div>
+  <h2>Choose your favorite fruits:</h2>
 
-          <div class="div-password"></div>
+  <form>
+    <label>
+      <input type="checkbox" name="fruits" value="apple">
+      Apple
+    </label><br>
 
-          <div class="div-program"></div>
-        </form>
-      </div>
-    </div>
-  </div>
+    <label>
+      <input type="checkbox" name="fruits" value="banana">
+      Banana
+    </label><br>
 
-  <script src="class/condo-class.js"></script>
-  <script src="class/condo-user-class.js"></script>
-  <script src="class/condo-login-class.js"></script>
-  <script src="scripts/condo-login.js"></script>
+    <label>
+      <input type="checkbox" name="fruits" value="cherry">
+      Cherry
+    </label><br>
+
+    <br>
+    <button type="submit">Submit</button>
+  </form>
 </body>
 
 </html>

@@ -21,7 +21,7 @@ testMode();
 let isEventsCreated
 
 objAccount.menu();
-objAccount.markSelectedMenu('Kontonavn');
+objAccount.markSelectedMenu('Konto');
 
 let socket;
 socket =
@@ -103,10 +103,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           if (userArrayCreated
             && accountArrayCreated) {
 
-
             // Find selected account id
             const accountId =
-              objAccount.getSelectedAccountId('accountId');
+              objAccount.getSelectedAccountId('select-account-accountId');
 
             // Show leading text
             showLeadingText(accountId);
@@ -115,8 +114,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(accountId);
 
             // Make events
-            isEventsCreated = 
-            (isEventsCreated) ? true : createEvents();
+            isEventsCreated =
+              (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -228,11 +227,28 @@ function updateAccount() {
   if (validateValues()) {
 
     // Account number
-    const accountId =
-      Number(document.querySelector('.select-account-accountId').value);
+    const accountId = Number(document.querySelector('.select-account-accountId').value);
 
     // Account Name
     const accountName = document.querySelector('.input-account-accountName').value;
+
+    // Fixed cost
+    let fixedCost = document.querySelector('.select-account-fixedCost').value;
+
+    switch (fixedCost) {
+
+      case 'Ja':
+        fixedCost = 'Y';
+        break;
+
+      case 'Nei':
+        fixedCost = 'N';
+        break;
+
+      default:
+        fixedCost = 'Y';
+        break;
+    }
 
     if (accountId >= 0) {
 
@@ -251,7 +267,8 @@ function updateAccount() {
           SET 
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
-            name = '${accountName}'
+            name = '${accountName}',
+            fixedCost = '${fixedCost}'
           WHERE accountId = ${accountId};
         `;
 
@@ -266,20 +283,21 @@ function updateAccount() {
           condominiumId,
           user,
           lastUpdate,
-          name
+          name,
+          fixedCost
         ) 
         VALUES (
           'N',
           ${objUserPassword.condominiumId},
           '${objUserPassword.email}',
           '${lastUpdate}',
-          '${accountName}'
+          '${accountName}',
+          '${fixedCost}'
         );
       `;
         // Client sends a request to the server
         updateMySql(SQLquery, 'account', 'INSERT');
       }
-
 
       document.querySelector('.select-account-accountId').disabled =
         false;
@@ -298,8 +316,6 @@ function deleteAccountRow() {
   // Check for valid account number
   const accountId =
     Number(document.querySelector('.select-account-accountId').value);
-  const accountName =
-    document.querySelector('.input-account-accountName').value;
 
   if (accountId !== 1) {
 
@@ -340,6 +356,9 @@ function showLeadingText(accountId) {
   // account name
   objAccount.showInput('account-accountName', '* Kontonavn', 50, '');
 
+  // fixed cost
+  objAccount.showSelectedValues('account-fixedCost', 'No', 'Fast kostnad', 'Ja', 'Nei');
+
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
     objAccount.showButton('account-update', 'Oppdater');
@@ -369,6 +388,24 @@ function showValues(accountId) {
       // account name
       document.querySelector('.input-account-accountName').value =
         accountArray[objAccountRowNumber].name;
+
+      // fixed cost
+      let fixedCost = accountArray[objAccountRowNumber].fixedCost;
+      switch (fixedCost) {
+        case 'Y':
+          fixedCost = 'Ja';
+          break;
+
+        case 'N':
+          fixedCost = 'Nei';
+          break;
+
+        default:
+          fixedCost = 'Nei';
+          break;
+      }
+      document.querySelector('.select-account-fixedCost').value =
+        fixedCost;
     }
   }
 }
@@ -377,12 +414,13 @@ function showValues(accountId) {
 function validateValues() {
 
   // Check account Name
-  const accountName =
-    document.querySelector('.input-account-accountName').value;
-  const validName =
-    objAccount.validateText(accountName, "label-account-accountName", "Kontonavn");
+  const accountName = document.querySelector('.input-account-accountName').value;
+  const validName = objAccount.validateText(accountName, "label-account-accountName", "Kontonavn");
 
-  return (validName) ? true : false;
+  const fixedCost = document.querySelector('.select-account-fixedCost').value;
+  const validFixedCost = objAccount.validateText(fixedCost, "label-account-fixedCost", "Fast kostnad");
+
+  return (validName && validFixedCost) ? true : false;
 }
 
 function resetValues() {
@@ -393,6 +431,10 @@ function resetValues() {
 
   // account Name
   document.querySelector('.input-account-accountName').value =
+    '';
+
+  // Fixed cost
+  document.querySelector('.select-account-fixedCost').value =
     '';
 
   document.querySelector('.select-account-accountId').disabled =

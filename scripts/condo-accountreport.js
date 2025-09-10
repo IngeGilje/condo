@@ -1,32 +1,24 @@
 // Search for amount movements
 
 // Activate objects
-const today =
-  new Date();
-const objUser =
-  new User('user');
-const objBudget =
-  new Budget('budget');
-const objAccount =
-  new Account('account');
-const objBankAccountMovement =
-  new BankAccountMovement('bankaccountmovement');
-const objAccountReport =
-  new AccountReport('accountreport');
+const today = new Date();
+const objUser = new User('user');
+const objBudget = new Budget('budget');
+const objAccount = new Account('account');
+const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
+const objCondo = new Condo('condo');
+const objAccountReport = new AccountReport('accountreport');
 
-let userArrayCreated =
-  false;
-let budgetArrayCreated =
-  false;
-let accountArrayCreated =
-  false
-let bankAccountMovementArrayCreated =
-  false
+let userArrayCreated = false;
+let budgetArrayCreated = false;
+let accountArrayCreated = false;
+let condoArrayCreated = false;
+let bankAccountMovementArrayCreated = false;
 
 testMode();
 
 // Exit application if no activity for 1 hour
-//exitIfNoActivity();
+exitIfNoActivity();
 
 let isEventsCreated
 
@@ -41,8 +33,7 @@ socket =
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  window.location.href =
-    'http://localhost:8080/condo-login.html';
+  window.location.href = 'http://localhost:8080/condo-login.html';
 } else {
 
   let SQLquery;
@@ -85,124 +76,161 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     budgetArrayCreated =
       false;
 
+    // Sends a request to the server to get condo
+    SQLquery =
+      `
+        SELECT * FROM condo
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND deleted <> 'Y'
+        ORDER BY name;
+      `;
+    updateMySql(SQLquery, 'condo', 'SELECT');
+    condoArrayCreated =
+      false;
+
     // Sends a request to the server to get bank account movements
     SQLquery =
       `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY bankAccountMovementId;
-      `;
+      SELECT * FROM bankaccountmovement
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY bankAccountMovementId;
+    `;
     updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
     bankAccountMovementArrayCreated =
       false;
   };
+}
 
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
+// Handle incoming messages from server
+socket.onmessage = (event) => {
 
-    let messageFromServer =
-      event.data;
+  let messageFromServer =
+    event.data;
 
-    //Converts a JavaScript Object Notation (JSON) string into an object
-    objInfo =
-      JSON.parse(messageFromServer);
+  //Converts a JavaScript Object Notation (JSON) string into an object
+  objInfo =
+    JSON.parse(messageFromServer);
 
-    if (objInfo.CRUD === 'SELECT') {
-      switch (objInfo.tableName) {
-        case 'user':
+  if (objInfo.CRUD === 'SELECT') {
+    switch (objInfo.tableName) {
+      case 'user':
 
-          // user table
-          console.log('userTable');
+        // user table
+        console.log('userTable');
 
-          userArray =
-            objInfo.tableArray;
-          userArrayCreated =
-            true;
-          break;
+        userArray =
+          objInfo.tableArray;
+        userArrayCreated =
+          true;
+        break;
 
-        case 'account':
+      case 'account':
 
-          // account table
-          console.log('accountTable');
+        // account table
+        console.log('accountTable');
 
-          accountArray =
-            objInfo.tableArray;
-          accountArrayCreated =
-            true;
-          break;
+        accountArray =
+          objInfo.tableArray;
+        accountArrayCreated =
+          true;
+        break;
 
-        case 'budget':
+      case 'budget':
 
-          // budget table
-          console.log('budget');
+        // budget table
+        console.log('budget');
 
-          budgetArray =
-            objInfo.tableArray;
-          budgetArrayCreated =
-            true
-          break;
+        budgetArray =
+          objInfo.tableArray;
+        budgetArrayCreated =
+          true
+        break;
 
-        case 'bankaccountmovement':
+      case 'condo':
 
-          // budget table
-          console.log('bankaccountmovementTable');
+        // condo table
+        console.log('condo');
 
-          // array including objects with budget information
-          bankAccountMovementArray =
-            objInfo.tableArray;
-          bankAccountMovementArrayCreated =
-            true;
+        condoArray =
+          objInfo.tableArray;
+        condoArrayCreated =
+          true
+        break;
+
+      case 'bankaccountmovement':
+
+        // budget table
+        console.log('bankaccountmovementTable');
+
+        // array including objects with budget information
+        bankAccountMovementArray =
+          objInfo.tableArray;
+        bankAccountMovementArrayCreated =
+          true;
 
 
-          if (budgetArrayCreated
-            && userArrayCreated
-            && accountArrayCreated
-            && bankAccountMovementArrayCreated) {
+        if (budgetArrayCreated
+          && userArrayCreated
+          && accountArrayCreated
+          && condoArrayCreated
+          && bankAccountMovementArrayCreated) {
 
-            // Show leading text
-            showLeadingText();
+          // Show leading text
+          showLeadingText();
 
-            // Show all bank account movements
-            showValues();
+          // Show budget
+          showBudget();
 
-            // Make events
-            isEventsCreated = 
+          // Show calculated budget
+          showBudgetNextYear();
+
+          // Show bank deposit
+          showBankDeposit();
+
+          // Make events
+          isEventsCreated =
             (isEventsCreated) ? true : createEvents();
-          }
-          break;
-      }
+        } else {
+
+          console.log("budgetArrayCreated: ", budgetArrayCreated);
+          console.log("userArrayCreated: ", userArrayCreated);
+          console.log("accountArrayCreated: ", accountArrayCreated);
+          console.log("condoArrayCreated: ", condoArrayCreated);
+          console.log("bankAccountMovementArrayCreated: ", bankAccountMovementArrayCreated);
+        }
+        break;
     }
-    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+  }
+  if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
 
-      switch (objInfo.tableName) {
-        case 'budget':
+    switch (objInfo.tableName) {
+      case 'budget':
 
-          // Sends a request to the server to get accounts one more time
-          SQLquery =
-            `
+        // Sends a request to the server to get accounts one more time
+        SQLquery =
+          `
               SELECT * FROM budget
               WHERE condominiumId = ${objUserPassword.condominiumId}
                 AND deleted <> 'Y'
               ORDER BY budgetId;
             `;
-          updateMySql(SQLquery, 'budget', 'SELECT');
-          budgetArrayCreated =
-            false;
-          break;
-      };
-    }
+        updateMySql(SQLquery, 'budget', 'SELECT');
+        budgetArrayCreated =
+          false;
+        break;
+    };
+  }
 
-    // Handle errors
-    socket.onerror = (error) => {
+  // Handle errors
+  socket.onerror = (error) => {
 
-      // Close socket on error and let onclose handle reconnection
-      socket.close();
-    }
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
+  }
 
-    // Handle disconnection
-    socket.onclose = () => {
-    }
+  // Handle disconnection
+  socket.onclose = () => {
   }
 }
 
@@ -211,7 +239,7 @@ function createEvents() {
 
   // from date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-accountreport-fromDate')) {
+    if (event.target.classList.contains('input-accountreport-search-fromDate')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -223,7 +251,7 @@ function createEvents() {
 
   // to date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-accountreport-toDate')) {
+    if (event.target.classList.contains('input-accountreport-search-toDate')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -235,7 +263,7 @@ function createEvents() {
 
   // budget year
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-accountreport-year')) {
+    if (event.target.classList.contains('select-accountreport-search-year')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -244,6 +272,19 @@ function createEvents() {
       getSelectedBankAccountMovement();
     };
   });
+
+  // Price per squaremeter
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('input-accountreport-search-priceSquareMeter')) {
+
+      // Show selected budgets
+      getSelectedBudgets();
+
+      // Show selected bank account movements
+      getSelectedBankAccountMovement();
+    };
+  });
+
   return true;
 }
 
@@ -251,54 +292,64 @@ function createEvents() {
 function showLeadingText() {
 
   // from date
-  if (!isClassDefined('input-accountreport-fromDate')) {
+  if (!isClassDefined('input-accountreport-search-fromDate')) {
 
-    objAccountReport.showInput('accountreport-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
+    objAccountReport.showInput('accountreport-search-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
     date =
-      document.querySelector('.input-accountreport-fromDate').value;
+      document.querySelector('.input-accountreport-search-fromDate').value;
     if (!validateEuroDateFormat(date)) {
 
       // From date is not ok
       const year =
         String(today.getFullYear());
-      document.querySelector('.input-accountreport-fromDate').value =
+      document.querySelector('.input-accountreport-search-fromDate').value =
         "01.01." + year;
     }
   }
 
   // To date
-  if (!isClassDefined('input-accountreport-toDate')) {
-    objAccountReport.showInput('accountreport-toDate', 'Til dato', 10, 'mm.dd.åååå');
+  if (!isClassDefined('input-accountreport-search-toDate')) {
+    objAccountReport.showInput('accountreport-search-toDate', 'Til dato', 10, 'mm.dd.åååå');
     date =
-      document.querySelector('.input-accountreport-toDate').value;
+      document.querySelector('.input-accountreport-search-toDate').value;
     if (!validateEuroDateFormat(date)) {
 
       // To date is not ok
-      document.querySelector('.input-accountreport-toDate').value =
+      document.querySelector('.input-accountreport-search-toDate').value =
         getCurrentDate();
     }
   }
 
   // Show selected years
-  if (!isClassDefined('select-accountreport-year')) {
+  if (!isClassDefined('select-accountreport-search-year')) {
 
     // Show years
     const year =
       today.getFullYear();
-    objBudget.selectNumber('accountreport-year', 2020, 2030, year, 'År');
+    objBudget.selectNumber('accountreport-search-year', 2020, 2030, year, 'År');
   }
+
+  // Show price per square meter
+  if (!isClassDefined('input-accountreport-search-priceSquareMeter')) {
+
+    objAccountReport.showInput('accountreport-search-priceSquareMeter', 'Kvadratmeterpris', 8, '');
+    document.querySelector('.input-accountreport-search-priceSquareMeter').value = '30,00';
+  }
+
   return true;
 }
 
-// Show values for due and income for selected budget
-function showValues() {
+// Show budgets
+function showBudget() {
 
   // check for valid filter
   if (validateValues()) {
 
-    // Header due
+    // Header budget
     let htmlColumnAccountName =
       '<div class="columnHeaderRight">Konto</div><br>';
+    let htmlColumnCostType =
+      '<div class="columnHeaderLeft">K.type</div><br>';
     let htmlColumnBankAccountMovementAmount =
       '<div class="columnHeaderRight">Beløp</div><br>';
     let htmlColumnBudgetAmount =
@@ -329,6 +380,32 @@ function showValues() {
             </div>
           `;
 
+        // fixed cost/ variable cost
+        let costType = "";
+        switch (account.fixedCost) {
+
+          case "Y":
+            costType = "Fast kostnad";
+            break;
+
+          case "N":
+            costType = "Variabel kostnad";
+            break;
+
+          default:
+            costType = "Variabel kostnad";
+            break;
+        }
+
+        htmlColumnCostType +=
+          `
+            <div 
+              class="rightCell ${colorClass} one-line"
+            >
+              ${costType}
+            </div>
+          `;
+
         // bank account movement for selected account
         let accountAmount =
           getTotalMovementsBankAccount(account.accountId);
@@ -345,7 +422,7 @@ function showValues() {
 
         // Budget Amount
         const year =
-          Number(document.querySelector('.select-accountreport-year').value);
+          Number(document.querySelector('.select-accountreport-search-year').value);
         let budgetAmount =
           getBudgetAmount(account.accountId, year);
         htmlColumnBudgetAmount +=
@@ -435,13 +512,15 @@ function showValues() {
         </div>
       `;
 
-    document.querySelector('.div-accountreport-columnAccountName').innerHTML =
+    document.querySelector('.div-accountreport-accountName').innerHTML =
       htmlColumnAccountName;
-    document.querySelector('.div-accountreport-columnBankAccountMovementAmount').innerHTML =
+    document.querySelector('.div-accountreport-costType').innerHTML =
+      htmlColumnCostType;
+    document.querySelector('.div-accountreport-amount').innerHTML =
       htmlColumnBankAccountMovementAmount;
-    document.querySelector('.div-accountreport-columnBudgetAmount').innerHTML =
+    document.querySelector('.div-accountreport-budgetAmount').innerHTML =
       htmlColumnBudgetAmount;
-    document.querySelector('.div-accountreport-columnDeviation').innerHTML =
+    document.querySelector('.div-accountreport-deviation').innerHTML =
       htmlColumnDeviation;
   }
 }
@@ -450,19 +529,19 @@ function showValues() {
 function validateValues() {
 
   let fromDate =
-    document.querySelector('.input-accountreport-fromDate').value;
+    document.querySelector('.input-accountreport-search-fromDate').value;
   const validFromDate =
-    validateNorDate(fromDate, 'accountreport-fromDate', 'Fra dato');
+    validateNorDate(fromDate, 'accountreport-search-fromDate', 'Fra dato');
 
   let toDate =
-    document.querySelector('.input-accountreport-toDate').value;
+    document.querySelector('.input-accountreport-search-toDate').value;
   const validToDate =
-    validateNorDate(toDate, 'accountreport-toDate', 'Fra dato');
+    validateNorDate(toDate, 'accountreport-search-toDate', 'Fra dato');
 
   let year =
-    Number(document.querySelector('.select-accountreport-year').value);
+    Number(document.querySelector('.select-accountreport-search-year').value);
   const validYear =
-    validateNumber(year, 2020, 2030, 'accountreport-year', 'Budsjettår');
+    validateNumber(year, 2020, 2030, 'accountreport-search-year', 'Budsjettår');
 
   // Check date interval
   fromDate = Number(convertDateToISOFormat(fromDate));
@@ -482,8 +561,8 @@ function validateValues() {
       const flipedToDate = convertDateToISOFormat(toDate);
 
       if (flipedFromDate > flipedToDate) {
-        document.querySelector('.label-accountreport-fromDate').outerHTML =
-          "<div class='label-accountreport-fromDate-red label-accountreport-fromDate-red'>Dato er feil</div>";
+        document.querySelector('.label-accountreport-search-fromDate').outerHTML =
+          "<div class='label-accountreport-search-fromDate-red label-accountreport-search-fromDate-red'>Dato er feil</div>";
         validValues = false;
       }
     }
@@ -498,13 +577,13 @@ function getTotalMovementsBankAccount(accountId) {
   let accountAmount = 0;
 
   let fromDate =
-    document.querySelector('.input-accountreport-fromDate').value;
+    document.querySelector('.input-accountreport-search-fromDate').value;
 
   fromDate =
     Number(convertDateToISOFormat(fromDate));
 
   let toDate =
-    document.querySelector('.input-accountreport-toDate').value;
+    document.querySelector('.input-accountreport-search-toDate').value;
   toDate =
     Number(convertDateToISOFormat(toDate));
 
@@ -549,12 +628,12 @@ function getBudgetAmount(accountId, year) {
 function getSelectedBudgets() {
 
   const year =
-    Number(document.querySelector('.select-accountreport-year').value);
+    Number(document.querySelector('.select-accountreport-search-year').value);
 
   const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-accountreport-fromDate').value);
+    convertDateToISOFormat(document.querySelector('.input-accountreport-search-fromDate').value);
   const toDate =
-    convertDateToISOFormat(document.querySelector('.input-accountreport-toDate').value);
+    convertDateToISOFormat(document.querySelector('.input-accountreport-search-toDate').value);
 
   // Sends a request to the server to get selected bank account movements
   SQLquery =
@@ -574,12 +653,12 @@ function getSelectedBudgets() {
 function getSelectedBankAccountMovement() {
 
   const year =
-    Number(document.querySelector('.select-accountreport-year').value);
+    Number(document.querySelector('.select-accountreport-search-year').value);
 
   const fromDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-fromDate').value));
+    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-search-fromDate').value));
   const toDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-toDate').value));
+    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-search-toDate').value));
 
   // Sends a request to the server to get selected bank account movements
   SQLquery =
@@ -593,4 +672,261 @@ function getSelectedBankAccountMovement() {
   updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
   bankAccountMovementArrayCreated =
     false;
+}
+
+// Show calculated budget for next year
+function showBudgetNextYear() {
+
+  // Get fixed costs per month
+  let fromDate = document.querySelector('.input-accountreport-search-fromDate').value;
+  fromDate = Number(convertDateToISOFormat(fromDate));
+  let toDate = document.querySelector('.input-accountreport-search-toDate').value;
+  toDate = Number(convertDateToISOFormat(toDate));
+  let numFixedCost = Number(getFixedCost(fromDate, toDate));
+
+  // 12 month and 7 condos
+  let strFixedCost = String(Math.round(numFixedCost / 12 / 7) * (-1));
+
+  // Remove øre
+  strFixedCost = strFixedCost.slice(0, -2) + "00";
+  numFixedCost = Number(strFixedCost);
+  strFixedCost = formatOreToKroner(String(numFixedCost));
+
+  // Header budget
+  let htmlBudgetCondoId =
+    '<div class="columnHeaderRight">Leilighet</div><br>';
+  let htmlBudgetSquareMeters =
+    '<div class="columnHeaderRight">Kvadratmeter</div><br>';
+  let htmlBudFixedCosts =
+    '<div class="columnHeaderRight">Faste kostnader</div><br>';
+  let htmlCommonCostsMonth =
+    '<div class="columnHeaderRight">Fellesk. måned</div><br>';
+  let htmlCommonCostsYear =
+    '<div class="columnHeaderRight">Fellesk. år</div><br>';
+
+  let rowNumber = 0;
+  let totalCommonCostsMonth = 0;
+  let totalCommonCostsYear = 0;
+  let totalSquareMeters = 0;
+  let totalFixedCosts = 0;
+
+  condoArray.forEach((condo) => {
+
+    rowNumber++;
+
+    // check if the number is odd
+    const colorClass =
+      (rowNumber % 2 !== 0) ? "green" : "";
+
+    htmlBudgetCondoId +=
+      `
+        <div 
+          class="rightCell ${colorClass} one-line"
+        >
+          ${condo.name}
+        </div>
+      `;
+
+    // square meters
+    let numSquareMeters = Number(condo.squareMeters);
+    let strSquareMeters = formatOreToKroner(condo.squareMeters);
+    htmlBudgetSquareMeters +=
+      `
+        <div 
+          class="rightCell ${colorClass}"
+        >
+          ${strSquareMeters}
+        </div>
+      `;
+
+    // Fixed costs
+    htmlBudFixedCosts +=
+      `
+        <div 
+          class="rightCell ${colorClass}"
+        >
+          ${strFixedCost}
+        </div>
+      `;
+
+    // Common costs per month
+    let priceSquareMeter = document.querySelector('.input-accountreport-search-priceSquareMeter').value;
+    priceSquareMeter = Number(formatKronerToOre(priceSquareMeter));
+
+    let numCommonCostsMonth = (priceSquareMeter * numSquareMeters) / 100;
+    let strCommonCostsMonth = String(numCommonCostsMonth + numFixedCost);
+    strCommonCostsMonth = formatOreToKroner(strCommonCostsMonth);
+
+    htmlCommonCostsMonth +=
+      `
+        <div 
+          class="rightCell ${colorClass}">
+          ${strCommonCostsMonth}
+        </div>
+      `;
+
+    // Common cost per Year
+    let numCommonCostsYear = (numCommonCostsMonth + numFixedCost) * 12;
+    let strCommonCostsYear = formatOreToKroner(String(numCommonCostsYear));
+    htmlCommonCostsYear +=
+      `
+          <div 
+            class="rightCell ${colorClass}"
+          >
+            ${strCommonCostsYear}
+          </div>
+        `;
+
+    // Accomulate
+    totalSquareMeters +=
+      Number(numSquareMeters);
+    totalFixedCosts +=
+      Number(numFixedCost);
+    totalCommonCostsMonth +=
+      Number(numCommonCostsMonth);
+    totalCommonCostsYear +=
+      Number(numCommonCostsYear);
+  });
+
+  // Show sum
+  // Leilighet
+
+  // Square meter
+  const strSquareMeters = formatOreToKroner(String(totalSquareMeters));
+  htmlBudgetSquareMeters +=
+    `
+      <div 
+        class="sumCellRight">
+        ${strSquareMeters}
+      </div>
+    `;
+
+  // Fixed costs
+  strFixedCost = formatOreToKroner(String(totalFixedCosts));
+  htmlBudFixedCosts +=
+    `
+      <div 
+        class="sumCellRight"
+      >
+        ${strFixedCost}
+      </div>
+    `;
+
+  // Common cost per month
+  const strCommonCostsMonth = formatOreToKroner(String(totalCommonCostsMonth));
+  htmlCommonCostsMonth +=
+    `
+      <div 
+        class="sumCellRight"
+      >
+        ${strCommonCostsMonth}
+      </div>
+    `;
+
+  // Common cost per year
+  const strCommonCostsYear = formatOreToKroner(String(totalCommonCostsYear));
+  htmlCommonCostsYear +=
+    `
+      <div 
+        class="sumCellRight">
+        ${strCommonCostsYear}
+      </div>
+    `;
+
+  document.querySelector('.div-accountreport-budget-name').innerHTML =
+    htmlBudgetCondoId;
+  document.querySelector('.div-accountreport-budget-squareMeter').innerHTML =
+    htmlBudgetSquareMeters;
+  document.querySelector('.div-accountreport-budget-fixedCosts').innerHTML =
+    htmlBudFixedCosts;
+  document.querySelector('.div-accountreport-budget-commonCostsMonth').innerHTML =
+    htmlCommonCostsMonth;
+  document.querySelector('.div-accountreport-budget-commonCostsYear').innerHTML =
+    htmlCommonCostsYear;
+}
+
+// Get fixed costs
+function getFixedCost(fromDate, toDate) {
+
+  let fixedCost = 0;
+
+  bankAccountMovementArray.forEach((bankAccountMovement) => {
+
+    if (Number(bankAccountMovement.date) >= fromDate
+      && (Number(bankAccountMovement.date) <= toDate)) {
+
+      // Check for fixed cost
+      const objAccountNumber =
+        accountArray.findIndex(account => account.accountId === bankAccountMovement.accountId);
+      if (objAccountNumber !== -1) {
+
+        if (accountArray[objAccountNumber].fixedCost === 'Y') {
+
+          fixedCost +=
+            Number(bankAccountMovement.income);
+          fixedCost +=
+            Number(bankAccountMovement.payment);
+        }
+
+      }
+    }
+  })
+  return fixedCost;
+}
+
+// Show current bankdeposit and estimated for next year
+function showBankDeposit() {
+
+  // Header bank deposit
+  let htmlBankDepositText =
+    '<div class="columnHeaderLeft">Tekst</div><br>';
+  let htmlBankDepositDate =
+    '<div class="columnHeaderRight">Dato</div><br>';
+  let htmlBankDepositAmount =
+    '<div class="columnHeaderRight">Beløp</div><br>';
+
+  let rowNumber = 0;
+
+  rowNumber++;
+
+  // check if the number is odd
+  const colorClass =
+    (rowNumber % 2 !== 0) ? "green" : "";
+
+  // Text
+  htmlBankDepositText +=
+    `
+      <div 
+        class="rightCell ${colorClass} one-line"
+      >
+        Bankinnskudd
+      </div>
+    `;
+
+  // Dato
+  const date = document.querySelector('.input-accountreport-search-toDate').value;
+  htmlBankDepositDate +=
+    `
+      <div 
+        class="rightCell ${colorClass}"
+      >
+        ${date}
+      </div>
+    `;
+
+  // Bank deposit
+  htmlBankDepositAmount +=
+    `
+      <div 
+        class="rightCell ${colorClass}"
+      >
+        99999
+      </div>
+    `;
+  document.querySelector('.div-accountreport-bankdeposit-text').innerHTML =
+    htmlBankDepositText;
+  document.querySelector('.div-accountreport-bankdeposit-date').innerHTML =
+    htmlBankDepositDate;
+  document.querySelector('.div-accountreport-bankdeposit-amount').innerHTML =
+    htmlBankDepositAmount;
 }

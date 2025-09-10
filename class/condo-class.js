@@ -228,9 +228,11 @@ class Condos {
     // Check allowed characters (letters, numbers, spaces)
     if (tekst.length > 0) {
 
-
       const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
       validTekst = (regex.test(tekst)) ? true : false;
+    } else {
+
+      validTekst = false;
     }
 
     if (!validTekst) {
@@ -247,8 +249,9 @@ class Condos {
       }
     }
 
-    // Valid text
     if (validTekst) {
+
+      // Valid text
       if (isClassDefined(`${className}-red`)) {
 
         document.querySelector(`.${className}-red`).outerHTML =
@@ -453,9 +456,9 @@ class Condos {
   selectAccountId(accountId, className) {
 
     // Check if account id exist
-    const objUserAccountNumber =
+    const objAccountNumber =
       accountArray.findIndex(account => account.accountId === accountId);
-    if (objUserAccountNumber !== -1) {
+    if (objAccountNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
         accountId;
@@ -675,7 +678,7 @@ class Condos {
         <a href="${url}condo-account.html"
           class="a-menu-vertical-account"
         >
-          Kontonavn
+          Konto
         </a>
 
         <a href="${url}condo-user.html"
@@ -794,6 +797,69 @@ class Condos {
       `;
     document.querySelector(`.div-${className}`)
       .innerHTML = html;
+  }
+
+  // Select choices like Yes, No, Ignore
+  showSelectedValues(className, selectedChoice, labelText, ...choices) {
+
+    let selectedOption =
+      false;
+
+    let html =
+      `
+      <form 
+        id="${accountId}"
+        action="/submit" 
+        method="POST"
+      >
+        <label 
+          class="label-${className}"
+          for="${accountId}"
+          id="${accountId}"
+        >
+          ${labelText}
+        </label>
+        <select 
+          class="select-${className}" 
+          id="${accountId}"
+          name="${accountId}"
+        >
+      `;
+
+    choices.forEach((choice) => {
+      if (choice === selectedChoice) {
+
+        html +=
+          `
+          <option 
+            value=${choice}
+            selected
+          >
+            ${choice}
+          </option>
+        `;
+        selectedOption =
+          true;
+      } else {
+
+        html +=
+          `
+          <option 
+            value="${choice}">
+            ${choice}
+          </option>
+        `;
+      }
+    });
+
+    html +=
+      `
+        </select >
+      </form>
+    `;
+
+    document.querySelector(`.div-${className}`).innerHTML =
+      html;
   }
 
   // get text file name
@@ -1071,7 +1137,7 @@ function isNumeric(string) {
   return !isNaN(string) && string.trim() !== "";
 }
 
-// Remove comma, periode and space
+// Remove comma, period and space
 function removeComma(amount) {
 
   amount =
@@ -1743,7 +1809,6 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   return accountId;
 }
 
-/*
 // exit application after 1 hour
 function exitIfNoActivity() {
 
@@ -1759,4 +1824,3 @@ function exitIfNoActivity() {
 ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
   document.addEventListener(event, exitIfNoActivity);
 });
-*/

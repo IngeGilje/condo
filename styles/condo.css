@@ -11,6 +11,8 @@
 
 .div-grid-accountreport-search,
 .div-grid-accountreport,
+.div-grid-accountreport-budget,
+.div-grid-accountreport-bankdeposit,
 
 .div-grid-userbankaccount,
 
@@ -71,8 +73,13 @@
 }
 
 /* Define the grid container with 4 columns*/
+.div-grid-accountreport-bankdeposit {
+  grid-template-columns: 200px 200px 200px 150px;
+}
+
+/* Define the grid container with 5 columns*/
 .div-grid-accountreport-search {
-  grid-template-columns: 200px 200px 200px 200px;
+  grid-template-columns: 200px 200px 200px 200px 150px;
 }
 
 /* Define the grid container with 4 columns*/
@@ -93,6 +100,11 @@
 /* Define the grid container with 5 columns*/
 .div-grid-due-search {
   grid-template-columns: 200px 200px 200px 200px 200px;
+}
+
+/* Define the grid container with 6 columns*/
+.div-grid-accountreport-budget {
+  grid-template-columns: 200px 100px 150px 150px 150px 150px;
 }
 
 /* Define the grid container with 6 columns*/
@@ -421,6 +433,8 @@
 
 .div-grid-accountreport-search label,
 .div-grid-accountreport label,
+.div-grid-accountreport-budget label,
+.div-grid-accountreport-bankdeposit label,
 
 .div-grid-userbankaccount label,
 
@@ -490,6 +504,8 @@
 
 .div-grid-accountreport-search input,
 .div-grid-accountreport input,
+.div-grid-accountreport-budget input,
+.div-grid-accountreport-bankdeposit input,
 
 .div-grid-userbankaccount input,
 
@@ -572,6 +588,8 @@
 
 .div-grid-accountreport-search select,
 .div-grid-accountreport select,
+.div-grid-accountreport-budget select,
+.div-grid-accountreport-bankdeposit select,
 
 .div-grid-userbankaccount select,
 
@@ -686,6 +704,8 @@
 
 .div-grid-accountreport-search button,
 .div-grid-accountreport button,
+.div-grid-accountreport-budget button,
+.div-grid-accountreport-bankdeposit button,
 
 .div-grid-userbankaccount button,
 
@@ -732,6 +752,8 @@
 
 .div-grid-accountreport-search button:hover,
 .div-grid-accountreport button:hover,
+.div-grid-accountreport-budget button:hover,
+.div-grid-accountreport-bankdeposit button.hover,
 
 .div-grid-userbankaccount button:hover,
 
@@ -809,6 +831,9 @@
 .div-grid-accountreport-search button:disabled,
 
 .div-grid-accountreport select:disabled,
+.div-grid-accountreport button:disabled,
+
+.div-grid-accountreport-budget select:disabled,
 .div-grid-accountreport button:disabled,
 
 .div-grid-userbankaccount select:disabled,
@@ -924,8 +949,8 @@
 .label-bankaccountmovement-accountId-red,
 .label-bankaccountmovement-date-red,
 
-.label-accountreport-fromDate-red,
-.label-accountreport-toDate-red,
+.label-accountreport-search-fromDate-red,
+.label-accountreport-search-toDate-red,
 
 .label-userbankaccount-userId-red,
 .label-userbankaccount-accountId-red,
@@ -988,9 +1013,8 @@
 
 .label-account-accountId-red,
 .label-account-bankAccountId-red,
-.label-account-bankAccountName-red,
 .label-account-accountName-red,
-.label-account-accountType-red,
+.label-account-fixedCost-red,
 
 .label-commoncost-condoId-red,
 .label-commoncost-date-red,

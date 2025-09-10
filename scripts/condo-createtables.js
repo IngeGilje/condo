@@ -33,8 +33,8 @@ const createSupplierTable =
   false;
 
 /*
-// 8 payment
-const createPaymentTable =
+// 8 budget period
+const createBudgetperiodTable =
   false;
 */
 
@@ -134,13 +134,14 @@ function deleteAllTables() {
     socket.send(SQLquery);
   */
 
+
   /*
-  // 8 payment
-  if (createPaymentTable) {
-    console.log('DROP payment Table');
+  // 8 budget period
+  if (createBudgetperiodTable) {
+    console.log('DROP budgetPeriod Table');
     SQLquery =
       `
-      DROP TABLE payment;
+      DROP TABLE budgetPeriod;
     `;
     socket.send(SQLquery);
   }
@@ -227,7 +228,6 @@ function createAllTables() {
       CREATE TABLE condominium (
         deleted VARCHAR(1),
         condominiumId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50),
         user VARCHAR (50),
         lastUpdate VARCHAR (40),
         name VARCHAR(50) NOT NULL,
@@ -253,7 +253,6 @@ function createAllTables() {
       CREATE TABLE condo (
         deleted VARCHAR(1),
         condoId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50),
         condominiumId INT,
         user VARCHAR (50),
         lastUpdate VarChar (40),
@@ -277,7 +276,6 @@ function createAllTables() {
       CREATE TABLE bankaccount (
         deleted VARCHAR(1),
         bankAccountId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
         user VARCHAR (50),
         lastUpdate VARCHAR (40),
@@ -301,7 +299,6 @@ function createAllTables() {
       CREATE TABLE account(
         deleted VARCHAR(1),
         accountId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
         user VARCHAR(50),
         lastUpdate VarChar(40),
@@ -320,7 +317,6 @@ function createAllTables() {
       CREATE TABLE user (
         deleted VARCHAR(1),
         userId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
         user VARCHAR(50) NOT NULL,
         lastUpdate VARCHAR (40),
@@ -346,7 +342,6 @@ function createAllTables() {
       CREATE TABLE userbankaccount (
         deleted VARCHAR(1),
         userBankAccountId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
         user VARCHAR(50) NOT NULL,
         lastUpdate VARCHAR (40),
@@ -370,7 +365,6 @@ function createAllTables() {
       CREATE TABLE supplier (
         deleted VARCHAR(1),
         supplierId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
         user VARCHAR(50) NOT NULL,
         lastUpdate VARCHAR (40),
@@ -392,6 +386,28 @@ function createAllTables() {
     updateMySql(SQLquery, 'supplier', 'CREATE');
   }
 
+/*
+ // 8 budget period
+  if (createBudgetPeriodTable) {
+    console.log('CREATE budget period Table');
+    SQLquery =
+      `         
+      CREATE TABLE budgetperiod (
+        deleted VARCHAR(1),
+        budgetPeriodId INT AUTO_INCREMENT PRIMARY KEY,
+        condominiumId INT,
+        user VARCHAR(50) NOT NULL,
+        lastUpdate VARCHAR (40),
+        year VARCHAR(4) NOT NULL,
+        fromDate VARCHAR(8) NOT NULL,
+        toDate VARCHAR(8) NOT NULL,
+      FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
+      );
+    `;
+    updateMySql(SQLquery, 'budgetperiod', 'CREATE');
+  }
+*/
+
   // 10 Due
   if (createDueTable) {
     console.log('CREATE due Table');
@@ -400,7 +416,6 @@ function createAllTables() {
       CREATE TABLE due (
         deleted VARCHAR(1),
         dueId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
         user VARCHAR (50),
         lastUpdate VarChar (40),
@@ -425,7 +440,6 @@ function createAllTables() {
       CREATE TABLE budget(
         deleted VARCHAR(1),
         budgetId INT AUTO_INCREMENT PRIMARY KEY,
-        tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
         user VARCHAR(50),
         lastUpdate VarChar(40),
@@ -448,7 +462,6 @@ function createAllTables() {
         deleted VARCHAR(1),
         bankAccountMovementId INT AUTO_INCREMENT PRIMARY KEY,
         deleted VARCHAR(1),
-        tableName VARCHAR(50) NOT NULL,
         condominiumId INT,
         user VARCHAR (50),
         lastUpdate VarChar (40),
