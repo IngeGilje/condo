@@ -56,7 +56,7 @@ class Condos {
       `
         <input 
           type="text" 
-          class="input-${className} icon-input"
+          class="input-${className} icon-input one-line"
           maxlength="${maxlength}"
           placeholder="${placeholder}"
         >
@@ -94,7 +94,7 @@ class Condos {
   showLabel(className, labelText) {
     return `
         <label
-          class="label-${className}">
+          class="label-${className} one-line">
           ${labelText}
         </label>
       `;

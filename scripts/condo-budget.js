@@ -66,16 +66,15 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     accountArrayCreated =
       false;
 
+    // Sends a request to the server to get budget
     const year = String(today.getFullYear());
-
-    // Sends a request to the server to get budgets
     SQLquery =
       `
         SELECT * FROM budget
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-          AND year = ${year}
-        ORDER BY budgetId;
+          AND year = '${year}'
+        ORDER BY year,accountId;
       `;
 
     updateMySql(SQLquery, 'budget', 'SELECT');
@@ -136,16 +135,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showLeadingTextSearch();
 
             // Find selected budget id
-            const budgetId =
-              objBudget.getSelectedBudgetId('select-budget-budgetId');
-
+            let budgetId = objBudget.getSelectedBudgetId('select-budget-budgetId');
             showLeadingText(budgetId);
 
-            showValues(budgetId);
+            // Show budget
+            showBudget();
 
-            // Show budgets
-            const year = String(today.getFullYear());
-            showBudgets(year);
+            // Show budget Id
+            budgetId = objBudget.getSelectedBudgetId('select-budget-budgetId');
+            objBudget.showAllSelectedBudgets('budget-budgetId', budgetId);
+            showValues(budgetId);
 
             // Make events
             isEventsCreated =
@@ -165,13 +164,15 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       switch (objInfo.tableName) {
         case 'budget':
 
-          // Sends a request to the server to get budgets one more time
+          // Sends a request to the server to get budget one more time
+          const year = document.querySelector('.select-budget-filterYear').value;
           SQLquery =
             `
               SELECT * FROM budget
               WHERE condominiumId = ${objUserPassword.condominiumId}
                 AND deleted <> 'Y'
-              ORDER BY budgetId;
+                AND year = '${year}'
+              ORDER BY year,accountId;
             `;
           updateMySql(SQLquery, 'budget', 'SELECT');
           budgetArrayCreated =
@@ -205,7 +206,7 @@ function createEvents() {
     };
   });
 
-  // year
+  // select year
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-budget-filterYear')) {
 
@@ -253,11 +254,14 @@ function createEvents() {
     if (event.target.classList.contains('button-budget-delete')) {
 
       deleteBudgetRow();
+
+      const year = document.querySelector('.select-budget-filterYear').value;
       const SQLquery = `
         SELECT * FROM budget
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY budgetId;
+          AND year = '${year}'
+        ORDER BY year,accountId;
       `;
       updateMySql(SQLquery, 'budget', 'SELECT');
       budgetArrayCreated =
@@ -269,11 +273,13 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-budget-cancel')) {
 
+      const year = document.querySelector('.select-budget-filterYear').value;
       const SQLquery = `
         SELECT * FROM budget
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY budgetId;
+          AND year = '${year}'
+        ORDER BY year,accountId;
       `;
       updateMySql(SQLquery, 'budget', 'SELECT');
       budgetArrayCreated =
@@ -363,8 +369,9 @@ function updateBudgetRow(budgetId) {
 // Show leading text for budget
 function showLeadingText(budgetId) {
 
-  // Show all budgets
-  //objBudget.showAllBudgets('budget-budgetId', budgetId);
+  const budgetYear = today.getFullYear();
+
+  // Show budget
   objBudget.showAllSelectedBudgets('budget-budgetId', budgetId)
 
   // Show all accounts
@@ -373,9 +380,7 @@ function showLeadingText(budgetId) {
   objAccount.showAllAccounts('budget-accountId', accountId, '', 'Ingen konti er valgt');
 
   // Show years
-  const year =
-    today.getFullYear();
-  objBudget.selectNumber('budget-year', 2020, 2030, year, 'År');
+  objBudget.selectNumber('budget-year', 2020, 2030, budgetYear, 'År');
 
   // amount
   objBudget.showInput('budget-amount', '* Budsjett', 10, '');
@@ -400,6 +405,7 @@ function showValues(budgetId) {
 
   // find object number for selected budget 
   // Check if budget exist
+  /*
   let objBudgetRowNumber = -1;
   if (budgetArray.length > 0) {
 
@@ -409,23 +415,34 @@ function showValues(budgetId) {
 
   if (objBudgetRowNumber !== -1) {
 
-    // Select budget
-    const budgetId =
-      budgetArray[objBudgetRowNumber].budgetId;
-    objBudget.selectBudgetId(budgetId, 'budget-budgetId');
+  // Select budget
+  const budgetId =
+    budgetArray[objBudgetRowNumber].budgetId;
+  */
 
-    // Select account
-    const accountId =
-      budgetArray[objBudgetRowNumber].accountId;
-    objAccount.selectAccountId(accountId, 'budget-accountId');
+  // Check for valid budget Id
+  if (budgetId >= 0) {
 
-    // Show select year
-    document.querySelector('.select-budget-year').value =
-      budgetArray[objBudgetRowNumber].year;
+    // Find object number budget array
+    const objBudgetRowNumber =
+      budgetArray.findIndex(budget => budget.budgetId === budgetId);
+    if (objBudgetRowNumber !== -1) {
 
-    // Show amount
-    document.querySelector('.input-budget-amount').value =
-      formatOreToKroner(budgetArray[objBudgetRowNumber].amount);
+      //objBudget.selectBudgetId(budgetId, 'budget-budgetId');
+
+      // Select account
+      const accountId =
+        budgetArray[objBudgetRowNumber].accountId;
+      objAccount.selectAccountId(accountId, 'budget-accountId');
+
+      // Show select year
+      document.querySelector('.select-budget-year').value =
+        budgetArray[objBudgetRowNumber].year;
+
+      // Show amount
+      document.querySelector('.input-budget-amount').value =
+        formatOreToKroner(budgetArray[objBudgetRowNumber].amount);
+    }
   }
 }
 
@@ -457,6 +474,7 @@ function resetValues() {
   //document.querySelector('.button-budget-cancel').disabled =
   //  true;
 }
+
 
 function deleteBudgetRow() {
 
@@ -546,7 +564,7 @@ function showLeadingTextSearch() {
     (isClassDefined('select-budget-filterAccountId')) ? Number(document.querySelector('.select-budget-filterAccountId').value) : 0;
   objAccount.showAllAccounts('budget-filterAccountId', accountId, 'Alle');
 
-  // Show years
+  // Show budget year
   if (!isClassDefined('select-budget-filterYear')) {
     const year =
       today.getFullYear();
@@ -554,8 +572,8 @@ function showLeadingTextSearch() {
   }
 }
 
-// Show selected budgets
-function showBudgets() {
+// Show selected budget
+function showBudget() {
 
   // Validate search filter
   if (validateFilter()) {
@@ -573,17 +591,21 @@ function showBudgets() {
     let lineNumber =
       0;
 
+    const budgetYear = Number(document.querySelector('.select-budget-filterYear').value);
     budgetArray.forEach((budget) => {
 
-      lineNumber++;
+      // Check for budget year
+      if (Number(budget.year) === budgetYear) {
 
-      // check if the number is odd
-      const colorClass =
-        (lineNumber % 2 !== 0) ? "green" : "";
+        lineNumber++;
 
-      // line number
-      htmlColumnLine +=
-        `
+        // check if the number is odd
+        const colorClass =
+          (lineNumber % 2 !== 0) ? "green" : "";
+
+        // line number
+        htmlColumnLine +=
+          `
           <div 
             class="centerCell ${colorClass}"
           >
@@ -591,13 +613,13 @@ function showBudgets() {
           </div >
         `;
 
-      // account name
-      const accountName =
-        objAccount.getAccountName(budget.accountId);
-      const colorClassAccountName =
-        (accountName === '-') ? 'red' : colorClass;
-      htmlColumnAccountName +=
-        `
+        // account name
+        const accountName =
+          objAccount.getAccountName(budget.accountId);
+        const colorClassAccountName =
+          (accountName === '-') ? 'red' : colorClass;
+        htmlColumnAccountName +=
+          `
           <div
             class="leftCell ${colorClassAccountName} one-line"
           >
@@ -605,11 +627,11 @@ function showBudgets() {
           </div >
         `;
 
-      // budget
-      const amount =
-        formatOreToKroner(budget.amount);
-      htmlcolumnBudget +=
-        `
+        // budget
+        const amount =
+          formatOreToKroner(budget.amount);
+        htmlcolumnBudget +=
+          `
           <div
             class="rightCell ${colorClass}"
           >
@@ -617,9 +639,10 @@ function showBudgets() {
           </div>
         `;
 
-      // accumulate
-      sumAmount +=
-        Number(budget.amount);
+        // accumulate
+        sumAmount +=
+          Number(budget.amount);
+      }
     });
 
     // Sum line
@@ -650,7 +673,7 @@ function showBudgets() {
   }
 }
 
-// Get selected budgets
+// Get selected budget
 function getSelectedBudgets() {
 
   const accountId =
@@ -676,10 +699,9 @@ function getSelectedBudgets() {
 
   SQLquery +=
     `
-      ORDER BY budgetId;
+      ORDER BY year,accountId;
     `;
 
   updateMySql(SQLquery, 'budget', 'SELECT');
-  budgetArrayCreated =
-    false;
+  budgetArrayCreated = false;
 }

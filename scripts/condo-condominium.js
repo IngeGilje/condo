@@ -447,7 +447,7 @@ function showValues(condominiumId) {
   // Check for valid condominium Id
   if (condominiumId >= 0) {
 
-    // find object number for selected condominium id
+    // get object number for selected condominium id
     const objCondominiumRowNumber =
       condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (objCondominiumRowNumber !== -1) {
@@ -494,7 +494,7 @@ function showValues(condominiumId) {
       document.querySelector('.select-condominium-commoncostAccountId').value =
         (condominiumArray[objCondominiumRowNumber].commonCostAccountId) ? condominiumArray[objCondominiumRowNumber].commonCostAccountId : 0;
       document.querySelector('.label-condominium-commoncostAccountId').innerHTML =
-        'Velg konto for felleskostnader';
+        'Velg konto for f.kostnader';
 
       // Show organization number
       document.querySelector('.input-condominium-organizationNumber').value =

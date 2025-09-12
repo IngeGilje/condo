@@ -27,7 +27,7 @@ class Budget extends Condos {
   }
 
   // Show all selected budgets
-  showAllSelectedBudgets(columnName, budgetId) {
+  showAllSelectedBudgets(className, budgetId) {
 
     let html = `
       <form 
@@ -36,14 +36,14 @@ class Budget extends Condos {
         method="POST"
       >
         <label 
-          class="label-${columnName}"
+          class="label-${className}"
           for="budgets"
           id="budgets"
         >
             Velg budsjett
         </label>
         <select 
-          class="select-${columnName}" 
+          class="select-${className}" 
         >
     `;
 
@@ -59,6 +59,7 @@ class Budget extends Condos {
       budgetArray.forEach((budget) => {
 
         lineNumber++;
+
         if (budget.budgetId === budgetId) {
 
           html +=
@@ -102,7 +103,7 @@ class Budget extends Condos {
     </form>
   `;
 
-    document.querySelector(`.div-${columnName}`).innerHTML =
+    document.querySelector(`.div-${className}`).innerHTML =
       html;
   }
 }

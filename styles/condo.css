@@ -1,9 +1,21 @@
-/* body */
+/* body
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1rem;
+  background: #f5f5f5;
+}
+*/
+
+/*
 .div-main {
   background: url('http://localhost/images/hinna-park-blur.jpg') no-repeat center center/cover;
   display: flex;
   align-items: center;
 }
+*/
 
 /* Define the grid container */
 .div-grid-bankaccountmovement-search,
@@ -77,9 +89,9 @@
   grid-template-columns: 200px 200px 200px 150px;
 }
 
-/* Define the grid container with 5 columns*/
+/* Define the grid container with 6 columns*/
 .div-grid-accountreport-search {
-  grid-template-columns: 200px 200px 200px 200px 150px;
+  grid-template-columns: 200px 200px 200px 200px 200px 200px;
 }
 
 /* Define the grid container with 4 columns*/
@@ -301,16 +313,21 @@
   width: 150px;
   grid-row-start: 1;
   grid-row-end: 20;
-  display: block;
   color: #333;
   text-decoration: none;
   padding: 12px 20px;
-  border-bottom: 1px solid #ddd;
-  transition: background-color 0.3s, color 0.3s;
-  background-color: #f4f4f4;
   border: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ddd;
   border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+  background: #fff;
+  background-color: #f4f4f4;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
 }
 
 .div-commoncost-columnAmount,
@@ -542,7 +559,8 @@
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 6px;
   border-bottom-style: solid;
-  border-bottom-width: 1px; appearance: auto;
+  border-bottom-width: 1px;
+  appearance: auto;
   background-color: rgb(255, 255, 255);
   border-bottom-color: rgb(195, 204, 217);
   border-bottom-left-radius: 6px;
@@ -1134,6 +1152,7 @@
   display: none;
 }
 
+/*
 .custom-file-label {
   display: inline-block;
   padding: 8px 12px;
@@ -1147,6 +1166,7 @@
   margin-left: 10px;
   font-style: italic;
 }
+*/
 
 .one-line {
   white-space: nowrap;
@@ -1160,4 +1180,90 @@
   padding-left: 40px;
   width: 250px;
   height: 36px;
+}
+
+.sidebar {
+  background: #fff;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #2a5d2a;
+}
+
+/* Main Content */
+.main {
+  padding: 1rem;
+  display: grid;
+  gap: 2rem;
+}
+
+/* Filter Section */
+.filters {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.filters div {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.85rem;
+  margin-bottom: .25rem;
+}
+
+input,
+select {
+  padding: .5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: .5rem;
+  text-align: right;
+}
+
+th {
+  background: #e0f0e0;
+  text-align: center;
+}
+
+td:first-child,
+th:first-child {
+  text-align: left;
+}
+
+/* Apartment grid */
+.apartments {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* Transactions */
+.transactions {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
 }

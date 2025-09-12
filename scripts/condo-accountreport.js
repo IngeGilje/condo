@@ -3,15 +3,19 @@
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
+const objCondominium = new Condominium('condominium');
 const objBudget = new Budget('budget');
 const objAccount = new Account('account');
+const objBankAccount = new BankAccount('bankaccount');
 const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
 const objCondo = new Condo('condo');
 const objAccountReport = new AccountReport('accountreport');
 
 let userArrayCreated = false;
+let condominiumArrayCreated = false;
 let budgetArrayCreated = false;
 let accountArrayCreated = false;
+let bankAccountArrayCreated = false;
 let condoArrayCreated = false;
 let bankAccountMovementArrayCreated = false;
 
@@ -53,6 +57,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     accountArrayCreated =
       false;
 
+    // Sends a request to the server to get bankaccounts
+    SQLquery =
+      `
+        SELECT * FROM bankaccount
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND deleted <> 'Y'
+        ORDER BY bankAccountId;
+      `;
+    updateMySql(SQLquery, 'bankaccount', 'SELECT');
+    accountArrayCreated =
+      false;
+
     // Sends a request to the server to get users
     SQLquery =
       `
@@ -65,6 +81,19 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     userArrayCreated =
       false;
 
+    // Sends a request to the server to get condominium
+    SQLquery =
+      `
+        SELECT * FROM condominium
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND deleted <> 'Y'
+        ORDER BY condominiumId;
+      `;
+    updateMySql(SQLquery, 'condominium', 'SELECT');
+    condominiumArrayCreated =
+      false;
+
+    // Sends a request to the server to get budgets
     SQLquery =
       `
         SELECT * FROM budget
@@ -136,6 +165,28 @@ socket.onmessage = (event) => {
           true;
         break;
 
+      case 'bankaccount':
+
+        // bank account table
+        console.log('bankaccountTable');
+
+        bankAccountArray =
+          objInfo.tableArray;
+        bankAccountArrayCreated =
+          true;
+        break;
+
+      case 'condominium':
+
+        // condominium table
+        console.log('condominium');
+
+        condominiumArray =
+          objInfo.tableArray;
+        condominiumArrayCreated =
+          true
+        break;
+
       case 'budget':
 
         // budget table
@@ -160,20 +211,21 @@ socket.onmessage = (event) => {
 
       case 'bankaccountmovement':
 
-        // budget table
+        // bank account movement table
         console.log('bankaccountmovementTable');
 
-        // array including objects with budget information
+        // array including objects with bank account movement information
         bankAccountMovementArray =
           objInfo.tableArray;
         bankAccountMovementArrayCreated =
           true;
 
-
         if (budgetArrayCreated
+          && condominiumArrayCreated
           && userArrayCreated
-          && accountArrayCreated
           && condoArrayCreated
+          && bankAccountArrayCreated
+          && accountArrayCreated
           && bankAccountMovementArrayCreated) {
 
           // Show leading text
@@ -182,8 +234,8 @@ socket.onmessage = (event) => {
           // Show budget
           showBudget();
 
-          // Show calculated budget
-          showBudgetNextYear();
+          // Show calculated income for next year
+          showIncomeNextYear();
 
           // Show bank deposit
           showBankDeposit();
@@ -194,8 +246,10 @@ socket.onmessage = (event) => {
         } else {
 
           console.log("budgetArrayCreated: ", budgetArrayCreated);
+          console.log("condominiumArrayCreated: ", condominiumArrayCreated);
           console.log("userArrayCreated: ", userArrayCreated);
           console.log("accountArrayCreated: ", accountArrayCreated);
+          console.log("bankAccountArrayCreated: ", accountArrayCreated);
           console.log("condoArrayCreated: ", condoArrayCreated);
           console.log("bankAccountMovementArrayCreated: ", bankAccountMovementArrayCreated);
         }
@@ -263,7 +317,7 @@ function createEvents() {
 
   // budget year
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-accountreport-search-year')) {
+    if (event.target.classList.contains('select-accountreport-search-fiscalYear')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -276,6 +330,10 @@ function createEvents() {
   // Price per squaremeter
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-accountreport-search-priceSquareMeter')) {
+
+      let priceSquareMeter = document.querySelector('.input-accountreport-search-priceSquareMeter').value;
+      priceSquareMeter = formatKronerToOre(priceSquareMeter);
+      document.querySelector('.input-accountreport-search-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);;
 
       // Show selected budgets
       getSelectedBudgets();
@@ -320,13 +378,22 @@ function showLeadingText() {
     }
   }
 
-  // Show selected years
-  if (!isClassDefined('select-accountreport-search-year')) {
+  // Show selected fiscal year
+  if (!isClassDefined('select-accountreport-search-fiscalYear')) {
 
     // Show years
     const year =
       today.getFullYear();
-    objBudget.selectNumber('accountreport-search-year', 2020, 2030, year, 'År');
+    objBudget.selectNumber('accountreport-search-fiscalYear', 2020, 2030, year, 'Regnskapsår');
+  }
+
+  // Show selected budget year
+  if (!isClassDefined('select-accountreport-search-budgetYear')) {
+
+    // Show years
+    const year =
+      today.getFullYear() + 1;
+    objBudget.selectNumber('accountreport-search-budgetYear', 2020, 2030, year, 'Budsjettår');
   }
 
   // Show price per square meter
@@ -349,11 +416,12 @@ function showBudget() {
     let htmlColumnAccountName =
       '<div class="columnHeaderRight">Konto</div><br>';
     let htmlColumnCostType =
-      '<div class="columnHeaderLeft">K.type</div><br>';
+      '<div class="columnHeaderRight">K.type</div><br>';
+    const fiscalYear = document.querySelector('.select-accountreport-search-fiscalYear').value;
     let htmlColumnBankAccountMovementAmount =
-      '<div class="columnHeaderRight">Beløp</div><br>';
+      `<div class="columnHeaderRight">Beløp ${fiscalYear}</div><br>`;
     let htmlColumnBudgetAmount =
-      '<div class="columnHeaderRight">Budsjett</div><br>';
+      `<div class="columnHeaderRight">Budsjett ${fiscalYear}</div><br>`;
     let htmlColumnDeviation =
       '<div class="columnHeaderRight">Avvik</div><br>';
 
@@ -362,102 +430,98 @@ function showBudget() {
     let rowNumber = 0;
 
     accountArray.forEach((account) => {
-      if (account.accountId >= 0) {
 
-        rowNumber++;
+      rowNumber++;
 
-        // check if the number is odd
-        const colorClass =
-          (rowNumber % 2 !== 0) ? "green" : "";
+      // check if the number is odd
+      const colorClass =
+        (rowNumber % 2 !== 0) ? "green" : "";
 
-        //accountName =
-        htmlColumnAccountName +=
-          `
-            <div 
-              class="rightCell ${colorClass} one-line"
-            >
-              ${account.name}
-            </div>
-          `;
+      //accountName =
+      htmlColumnAccountName +=
+        `
+          <div 
+            class="rightCell ${colorClass} one-line"
+          >
+            ${account.name}
+          </div>
+        `;
 
-        // fixed cost/ variable cost
-        let costType = "";
-        switch (account.fixedCost) {
+      // fixed cost/ variable cost
+      let costType = "";
+      switch (account.fixedCost) {
 
-          case "Y":
-            costType = "Fast kostnad";
-            break;
+        case "Y":
+          costType = "Fast kostnad";
+          break;
 
-          case "N":
-            costType = "Variabel kostnad";
-            break;
+        case "N":
+          costType = "Variabel kostnad";
+          break;
 
-          default:
-            costType = "Variabel kostnad";
-            break;
-        }
-
-        htmlColumnCostType +=
-          `
-            <div 
-              class="rightCell ${colorClass} one-line"
-            >
-              ${costType}
-            </div>
-          `;
-
-        // bank account movement for selected account
-        let accountAmount =
-          getTotalMovementsBankAccount(account.accountId);
-        accountAmount =
-          formatOreToKroner(accountAmount);
-        htmlColumnBankAccountMovementAmount +=
-          `
-            <div 
-              class="rightCell ${colorClass}"
-            >
-              ${accountAmount}
-            </div>
-          `;
-
-        // Budget Amount
-        const year =
-          Number(document.querySelector('.select-accountreport-search-year').value);
-        let budgetAmount =
-          getBudgetAmount(account.accountId, year);
-        htmlColumnBudgetAmount +=
-          `
-            <div 
-              class="rightCell ${colorClass}"
-            >
-              ${budgetAmount}
-            </div>
-          `;
-
-        // Deviation
-        accountAmount =
-          Number(formatKronerToOre(accountAmount));
-        budgetAmount =
-          Number(formatKronerToOre(budgetAmount));
-        let deviation =
-          accountAmount - budgetAmount;
-        deviation =
-          formatOreToKroner(String(deviation));
-        htmlColumnDeviation +=
-          `
-            <div 
-              class="rightCell ${colorClass}">
-              ${deviation}
-            </div>
-          `;
-
-        // Accomulate
-        totalAccountAmount +=
-          Number(accountAmount);
-
-        totalBudgetAmount +=
-          Number(budgetAmount);
+        default:
+          costType = "Variabel kostnad";
+          break;
       }
+
+      htmlColumnCostType +=
+        `
+          <div 
+            class="rightCell ${colorClass} one-line"
+          >
+            ${costType}
+          </div>
+        `;
+
+      // bank account movement for selected account
+      let accountAmount =
+        getTotalMovementsBankAccount(account.accountId);
+      accountAmount =
+        formatOreToKroner(accountAmount);
+      htmlColumnBankAccountMovementAmount +=
+        `
+          <div 
+            class="rightCell ${colorClass}"
+          >
+            ${accountAmount}
+          </div>
+        `;
+
+      // Budget Amount for fiscal year
+      const fiscalYear = Number(document.querySelector('.select-accountreport-search-fiscalYear').value);
+      let budgetAmount = getBudgetAmount(account.accountId, fiscalYear);
+      htmlColumnBudgetAmount +=
+        `
+          <div 
+            class="rightCell ${colorClass}"
+          >
+            ${budgetAmount}
+          </div>
+        `;
+
+      // Deviation
+      accountAmount =
+        Number(formatKronerToOre(accountAmount));
+      budgetAmount =
+        Number(formatKronerToOre(budgetAmount));
+      let deviation =
+        accountAmount - budgetAmount;
+      deviation =
+        formatOreToKroner(String(deviation));
+      htmlColumnDeviation +=
+        `
+          <div 
+            class="rightCell ${colorClass}">
+            ${deviation}
+          </div>
+        `;
+
+      // Accomulate
+      totalAccountAmount +=
+        Number(accountAmount);
+
+      totalBudgetAmount +=
+        Number(budgetAmount);
     });
 
     // Show total line
@@ -538,10 +602,15 @@ function validateValues() {
   const validToDate =
     validateNorDate(toDate, 'accountreport-search-toDate', 'Fra dato');
 
-  let year =
-    Number(document.querySelector('.select-accountreport-search-year').value);
-  const validYear =
-    validateNumber(year, 2020, 2030, 'accountreport-search-year', 'Budsjettår');
+  let fiscalYear =
+    Number(document.querySelector('.select-accountreport-search-fiscalYear').value);
+  const validFiscalYear =
+    validateNumber(year, 2020, 2030, 'accountreport-search-fiscalYear', 'Regnskapsår');
+
+  let budgetYear =
+    Number(document.querySelector('.select-accountreport-search-budgetYear').value);
+  const validBudgetYear =
+    validateNumber(year, 2020, 2030, 'accountreport-search-budgetYear', 'Budsjettår');
 
   // Check date interval
   fromDate = Number(convertDateToISOFormat(fromDate));
@@ -568,7 +637,7 @@ function validateValues() {
     }
   }
 
-  return (validYear && validFromDate && validToDate && validDateInterval) ? true : false;
+  return (validFiscalYear && validBudgetYear && validFromDate && validToDate && validDateInterval) ? true : false;
 }
 
 // Accumulate all bank account movement for specified account id
@@ -606,34 +675,34 @@ function getTotalMovementsBankAccount(accountId) {
 // get budget amount
 function getBudgetAmount(accountId, year) {
 
-  amount =
-    '';
+  let amount = 0;
 
   // Budget Amount
-  const objBudgetRowNumber =
-    budgetArray.findIndex(budget => budget.accountId === accountId);
-  if (objBudgetRowNumber !== -1) {
 
-    const budgetYear =
-      Number(budgetArray[objBudgetRowNumber].year);
-    if (budgetYear === year) {
-      amount =
-        budgetArray[objBudgetRowNumber].amount;
+  budgetArray.forEach(budget => {
+    if (budget.accountId === accountId
+      && Number(budget.year) === year) {
+
+      amount = budget.amount;
     }
-  }
+  })
+
   return formatOreToKroner(amount);
 }
 
 // Get selected budgets
 function getSelectedBudgets() {
 
-  const year =
-    Number(document.querySelector('.select-accountreport-search-year').value);
+  const fiscalYear = 
+  Number(document.querySelector('.select-accountreport-search-fiscalYear').value);
 
-  const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-accountreport-search-fromDate').value);
-  const toDate =
-    convertDateToISOFormat(document.querySelector('.input-accountreport-search-toDate').value);
+  const budgetYear = 
+  Number(document.querySelector('.select-accountreport-search-budgetYear').value);
+
+  const fromDate = 
+  convertDateToISOFormat(document.querySelector('.input-accountreport-search-fromDate').value);
+  const toDate = 
+  convertDateToISOFormat(document.querySelector('.input-accountreport-search-toDate').value);
 
   // Sends a request to the server to get selected bank account movements
   SQLquery =
@@ -641,7 +710,7 @@ function getSelectedBudgets() {
       SELECT * FROM budget
       WHERE condominiumId = ${objUserPassword.condominiumId}
         AND deleted <> 'Y'
-      AND year = '${year}';
+      ORDER BY budgetId;
     `;
   console.log(SQLquery);
   updateMySql(SQLquery, 'budget', 'SELECT');
@@ -652,8 +721,11 @@ function getSelectedBudgets() {
 // Get selected bank account movement 
 function getSelectedBankAccountMovement() {
 
-  const year =
-    Number(document.querySelector('.select-accountreport-search-year').value);
+  const fiscalYear =
+    Number(document.querySelector('.select-accountreport-search-fiscalYear').value);
+
+  const budgetYear =
+    Number(document.querySelector('.select-accountreport-search-budgetYear').value);
 
   const fromDate =
     Number(convertDateToISOFormat(document.querySelector('.input-accountreport-search-fromDate').value));
@@ -674,8 +746,8 @@ function getSelectedBankAccountMovement() {
     false;
 }
 
-// Show calculated budget for next year
-function showBudgetNextYear() {
+// Show calculated income next year
+function showIncomeNextYear() {
 
   // Get fixed costs per month
   let fromDate = document.querySelector('.input-accountreport-search-fromDate').value;
@@ -770,12 +842,12 @@ function showBudgetNextYear() {
     let strCommonCostsYear = formatOreToKroner(String(numCommonCostsYear));
     htmlCommonCostsYear +=
       `
-          <div 
-            class="rightCell ${colorClass}"
-          >
-            ${strCommonCostsYear}
-          </div>
-        `;
+        <div 
+          class="rightCell ${colorClass}"
+        >
+          ${strCommonCostsYear}
+        </div>
+      `;
 
     // Accomulate
     totalSquareMeters +=
@@ -886,43 +958,166 @@ function showBankDeposit() {
     '<div class="columnHeaderRight">Beløp</div><br>';
 
   let rowNumber = 0;
+  let accAmount = 0;
 
   rowNumber++;
 
   // check if the number is odd
-  const colorClass =
+  let colorClass =
     (rowNumber % 2 !== 0) ? "green" : "";
 
   // Text
   htmlBankDepositText +=
     `
       <div 
-        class="rightCell ${colorClass} one-line"
+        class="leftCell ${colorClass} one-line"
       >
         Bankinnskudd
       </div>
     `;
 
   // Dato
-  const date = document.querySelector('.input-accountreport-search-toDate').value;
+  let closingBalanceDate = "";
+  const objBankAccountRowNumber =
+    bankAccountArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
+  if (objBankAccountRowNumber !== -1) {
+
+    closingBalanceDate = (bankAccountArray[objBankAccountRowNumber].closingBalanceDate);
+    closingBalanceDate = formatToNorDate(closingBalanceDate);
+  }
+
   htmlBankDepositDate +=
     `
       <div 
         class="rightCell ${colorClass}"
       >
-        ${date}
+        ${closingBalanceDate}
       </div>
     `;
 
   // Bank deposit
+  let bankDepositAmount = "";
+
+  bankDepositAmount = (bankAccountArray[objBankAccountRowNumber].closingBalance);
+  bankDepositAmount = formatOreToKroner(bankDepositAmount);
+
   htmlBankDepositAmount +=
     `
       <div 
         class="rightCell ${colorClass}"
       >
-        99999
+        ${bankDepositAmount}
       </div>
     `;
+
+  accAmount += Number(formatKronerToOre(bankDepositAmount));
+
+  // budget
+  budgetArray.forEach((budget) => {
+
+    const budgetYear = document.querySelector('.select-accountreport-search-budgetYear').value;
+    if (Number(budget.year) === Number(budgetYear)) {
+
+      if (Number(budget.amount) !== 0) {
+
+        rowNumber++;
+
+        // check if the number is odd
+        colorClass =
+          (rowNumber % 2 !== 0) ? "green" : "";
+
+        // Text
+        const objAccountRowNumber =
+          accountArray.findIndex(account => account.accountId === budget.accountId);
+        if (objAccountRowNumber !== -1) {
+
+          const name =
+            accountArray[objAccountRowNumber].name;
+          htmlBankDepositText +=
+            `
+              <div 
+                class="leftCell ${colorClass} one-line"
+              >
+                ${name}
+              </div>
+            `;
+
+          // Dato
+          htmlBankDepositDate +=
+            `
+              <div 
+                class="rightCell ${colorClass}"
+              >
+                -
+              </div>
+            `;
+
+          // budget amount
+          let amount = Number(budget.amount);
+          amount = formatOreToKroner(amount);
+
+          htmlBankDepositAmount +=
+            `
+              <div 
+                class="rightCell ${colorClass}"
+              >
+                ${amount}
+              </div>
+            `;
+
+          // accumulate
+          const numAmmount = Number(formatKronerToOre(amount));
+          accAmount += numAmmount;
+        }
+      }
+    }
+  });
+
+  // Calculated closining balance next year
+  rowNumber++;
+
+  // check if the number is odd
+  colorClass =
+    (rowNumber % 2 !== 0) ? "green" : "";
+
+  // Text
+  htmlBankDepositText +=
+    `
+      <div 
+        class="leftCell ${colorClass} one-line"
+      >
+        Estimert bankinnskudd
+      </div>
+    `;
+
+  // Dato
+  closingBalanceDate = Number(bankAccountArray[objBankAccountRowNumber].closingBalanceDate);
+
+  // Next year
+  closingBalanceDate = closingBalanceDate + 10000;
+  closingBalanceDate = formatToNorDate(String(closingBalanceDate));
+
+  htmlBankDepositDate +=
+    `
+      <div 
+        class="rightCell ${colorClass}"
+      >
+        ${closingBalanceDate}
+      </div>
+    `;
+
+  // Bank deposit next year
+  bankDepositAmount = formatOreToKroner(String(accAmount));
+
+  htmlBankDepositAmount +=
+    `
+      <div 
+        class="rightCell ${colorClass}"
+      >
+        ${bankDepositAmount}
+      </div>
+    `;
+
   document.querySelector('.div-accountreport-bankdeposit-text').innerHTML =
     htmlBankDepositText;
   document.querySelector('.div-accountreport-bankdeposit-date').innerHTML =

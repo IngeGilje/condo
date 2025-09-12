@@ -281,9 +281,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
 
             // Show bank account movements Id
-            //objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId, fromDate, toDate, condoId, accountId);
             objBankAccountMovement.showAllSelectedAccountMovements('bankaccountmovement-bankAccountMovementId', bankAccountMovementId);
-
             showValues(bankAccountMovementId);
 
             // Make events

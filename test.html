@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Test 1.4</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/condo.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1rem;
+      background: #f5f5f5;
+    }
+
+    /* Sidebar 
+    .sidebar {
+      background: #fff;
+      padding: 1rem;
+      border-right: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #2a5d2a;
+    }
+    */
+
+    /* Main Content 
+    .main {
+      padding: 1rem;
+      display: grid;
+      gap: 2rem;
+    }
+    */
+
+    /* Filter Section
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .filters div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.85rem;
+      margin-bottom: .25rem;
+    }
+
+    input,
+    select {
+      padding: .5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    */
+
+    /* Table 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: .5rem;
+      text-align: right;
+    }
+
+    th {
+      background: #e0f0e0;
+      text-align: center;
+    }
+
+    td:first-child,
+    th:first-child {
+      text-align: left;
+    }
+
+
+    /* Apartment grid
+    .apartments {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    */
+
+    /* Transactions
+    .transactions {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    */
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="#">Login</a>
+    <a href="#">Sameie</a>
+    <a href="#">Leilighet</a>
+    <a href="#">Bankkonto sameie</a>
+    <a href="#">Konto</a>
+    <a href="#">Bruker</a>
+    <a href="#">Bankkonto for bruker</a>
+    <a href="#">Leverandør</a>
+    <a href="#">Forfall</a>
+    <a href="#">Felleskostnader</a>
+    <a href="#">Budsjett</a>
+    <a href="#">Fjernvarme</a>
+    <a href="#">Betalingsoversikt</a>
+    <a href="#">Banktransaksjoner</a>
+    <a href="#">Importer banktransaksjoner</a>
+    <a href="#"><b>Regnskapsrapport</b></a>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Filters -->
+    <div class="filters">
+      <div>
+        <label>Fra dato</label>
+        <input type="date" value="2025-01-01">
+      </div>
+      <div>
+        <label>Til dato</label>
+        <input type="date" value="2025-09-12">
+      </div>
+      <div>
+        <label>Regnskapsår</label>
+        <select>
+          <option>2025</option>
+        </select>
+      </div>
+      <div>
+        <label>Budsjettår</label>
+        <select>
+          <option>2026</option>
+        </select>
+      </div>
+      <div>
+        <label>Kvadratmeterpris</label>
+        <input type="number" value="30.00">
+      </div>
+    </div>
+
+    <!-- Accounting Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Konto</th>
+          <th>K.type</th>
+          <th>Beløp 2025</th>
+          <th>Budsjett 2025</th>
+          <th>Avvik</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Inntekter husleie</td>
+          <td>Variabel kostnad</td>
+          <td>161 180,21</td>
+          <td>200 720,00</td>
+          <td>-39 539,79</td>
+        </tr>
+        <tr>
+          <td>Fjernvarme utgift</td>
+          <td>Variabel kostnad</td>
+          <td>-96 093,29</td>
+          <td>-93 152,00</td>
+          <td>-2 941,29</td>
+        </tr>
+        <tr>
+          <td>Fjernvarme inntekt</td>
+          <td>Variabel kostnad</td>
+          <td>57 913,98</td>
+          <td>84 684,00</td>
+          <td>-26 770,02</td>
+        </tr>
+        <tr>
+          <td>Nettleie Lyse</td>
+          <td>Fast kostnad</td>
+          <td>-7 623,73</td>
+          <td>-8 048,00</td>
+          <td>424,27</td>
+        </tr>
+        <!-- Add rest ... -->
+      </tbody>
+    </table>
+
+    <!-- Apartments -->
+    <div class="apartments">
+      <table>
+        <thead>
+          <tr>
+            <th>Leilighet</th>
+            <th>Kvadratmeter</th>
+            <th>Faste kostnader</th>
+            <th>Fellesk. måned</th>
+            <th>Fellesk. år</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>95A</td>
+            <td>69,00</td>
+            <td>193,00</td>
+            <td>2 263,00</td>
+            <td>27 156,00</td>
+          </tr>
+          <tr>
+            <td>95B</td>
+            <td>96,00</td>
+            <td>193,00</td>
+            <td>3 073,00</td>
+            <td>36 876,00</td>
+          </tr>
+          <tr>
+            <td>97A</td>
+            <td>67,20</td>
+            <td>193,00</td>
+            <td>2 209,00</td>
+            <td>26 508,00</td>
+          </tr>
+          <!-- Add rest ... -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Transactions -->
+    <div class="transactions">
+      <table>
+        <thead>
+          <tr>
+            <th>Tekst</th>
+            <th>Dato</th>
+            <th>Beløp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bankinnskudd</td>
+            <td>12.09.2025</td>
+            <td>217 649,09</td>
+          </tr>
+          <tr>
+            <td>Fjernvarme utgift</td>
+            <td>-</td>
+            <td>-110 000,00</td>
+          </tr>
+          <tr>
+            <td>Inntekter husleie</td>
+            <td>-</td>
+            <td>185 628,00</td>
+          </tr>
+          <!-- Add rest ... -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>
