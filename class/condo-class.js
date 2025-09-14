@@ -74,6 +74,40 @@ class Condos {
     inputElement.style.backgroundImage = `url('icons/${iconName}')`;
   }
 
+  // Show input
+  showInputHTML(className, labelText, maxlength, placeholder) {
+
+    let html =
+      `
+        <div>
+          <label
+            class="one-line"
+          >
+            ${labelText}
+          </label>
+          <input 
+            type="text" 
+            class="${className} icon-input one-line"
+            maxlength="${maxlength}"
+            placeholder="${placeholder}"
+          >
+        </div>
+      `;
+    //document.querySelector(`.div-${className}`).innerHTML =
+    //  html;
+
+    // Set the PNG file
+    //const inputElement =
+    //  document.querySelector(`.input-${className}`);
+    //inputElement.style.backgroundRepeat = `no-repeat`;
+
+    //const iconName =
+    //  this.getIconName(className);
+    //inputElement.style.backgroundImage = `url('icons/${iconName}')`;
+
+    return html;
+  }
+
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
 
@@ -591,6 +625,60 @@ class Condos {
 
     document.querySelector(`.div-${className}`).innerHTML =
       html;
+  }
+
+  // Select number
+  selectNumberHTML(className, fromNumber, toNumber, selectedNumber, labelText) {
+
+    let html =
+      `
+        <div>
+          <label 
+            for="selectedNumber"
+          >
+            ${labelText}
+          </label>
+          <select 
+            class="${className}" 
+            id="selectedNumber"
+            name="selectedNumber"
+          >
+      `;
+
+    let selectedOption = false;
+
+    for (let number = fromNumber; number <= toNumber; number++) {
+      if (number === selectedNumber) {
+
+        html +=
+          `
+            <option 
+              value="${number}"
+              selected
+            >
+              ${number}
+            </option>
+          `;
+        selectedOption = true;
+      } else {
+
+        html +=
+          `
+            <option 
+              value="${number}"
+            >
+              ${number}
+            </option>
+          `;
+      }
+    };
+
+    html +=
+      `
+          </select >
+        </div>
+      `;
+    return html;
   }
 
   // show button to start new page
@@ -1152,6 +1240,10 @@ function removeComma(amount) {
 // validate the dd.mm.yyyy (European date format) format
 function validateEuroDateFormat(dateString) {
 
+  // Check for valid date String
+  if (dateString === '' || typeof dateString === 'undefined') {
+    return false;
+  }
   // Regular expression for valuating the dd.mm.yyyy format
   const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/;
   const match = dateString.match(regex);
@@ -1236,6 +1328,26 @@ function validateNumber(number, min, max, className, labelText) {
   return isValidNumber;
 }
 
+// Validate number (No error message)
+function validateNumberHTML(number, min, max) {
+
+  let isValidNumber;
+  number = Number(number);
+  min = Number(min);
+  max = Number(max);
+
+  // Validate number
+  if (number < min || number > max) {
+
+    isValidNumber = false;
+  } else {
+
+    isValidNumber = true;
+  }
+
+  return isValidNumber;
+}
+
 // Validate norwegian date dd.mm.yyyy format
 // Show error message
 function validateNorDate(dateString, className, labelText) {
@@ -1276,6 +1388,27 @@ function validateNorDate(dateString, className, labelText) {
     }
   }
   return isDateValid;
+}
+
+// Validate norwegian date dd.mm.yyyy format
+// Do not show error message
+function validateNorDateHTML(dateString) {
+
+  dateString =
+    (dateString.length === 0) ? '00.00.0000' : String(dateString);
+  [day, month, year] = dateString.split('.');
+  day = day.padStart(2, "0");
+  month = month.padStart(2, "0");
+  dateString = day + '.' + month + '.' + year;
+
+  // Validate date
+  if (!this.validateEuroDateFormat(dateString)) {
+
+      return false;
+  } else {
+
+    return true;
+  }
 }
 
 // Check if HTML class is defined
@@ -1809,6 +1942,20 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   return accountId;
 }
 
+// Show icon
+function showIcon(className) {
+
+  // Set the PNG file
+  const inputElement =
+    document.querySelector(`.${className}`);
+  inputElement.style.backgroundRepeat = `no-repeat`;
+
+  const iconName =
+    objAccountReport.getIconName(`${className}`);
+  inputElement.style.backgroundImage = `url('icons/${iconName}')`;
+}
+
+/*
 // exit application after 1 hour
 function exitIfNoActivity() {
 
@@ -1824,3 +1971,5 @@ function exitIfNoActivity() {
 ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
   document.addEventListener(event, exitIfNoActivity);
 });
+*/
+

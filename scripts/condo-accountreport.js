@@ -22,7 +22,7 @@ let bankAccountMovementArrayCreated = false;
 testMode();
 
 // Exit application if no activity for 1 hour
-exitIfNoActivity();
+//exitIfNoActivity();
 
 let isEventsCreated
 
@@ -228,8 +228,11 @@ socket.onmessage = (event) => {
           && accountArrayCreated
           && bankAccountMovementArrayCreated) {
 
-          // Show leading text
-          showLeadingText();
+          // Show leading text for filter
+          showLeadingTextFilter();
+
+          // Show values for filter
+          showValuesFilter();
 
           // Show budget
           showBudget();
@@ -293,7 +296,7 @@ function createEvents() {
 
   // from date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-accountreport-search-fromDate')) {
+    if (event.target.classList.contains('input-filter-fromDate')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -305,7 +308,7 @@ function createEvents() {
 
   // to date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-accountreport-search-toDate')) {
+    if (event.target.classList.contains('input-filter-toDate')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -317,7 +320,7 @@ function createEvents() {
 
   // budget year
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-accountreport-search-fiscalYear')) {
+    if (event.target.classList.contains('select-filter-fiscalYear')) {
 
       // Show selected budgets
       getSelectedBudgets();
@@ -329,11 +332,11 @@ function createEvents() {
 
   // Price per squaremeter
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-accountreport-search-priceSquareMeter')) {
+    if (event.target.classList.contains('input-filter-priceSquareMeter')) {
 
-      let priceSquareMeter = document.querySelector('.input-accountreport-search-priceSquareMeter').value;
+      let priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
       priceSquareMeter = formatKronerToOre(priceSquareMeter);
-      document.querySelector('.input-accountreport-search-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);;
+      document.querySelector('.input-filter-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);;
 
       // Show selected budgets
       getSelectedBudgets();
@@ -346,64 +349,159 @@ function createEvents() {
   return true;
 }
 
-// Show leading text
-function showLeadingText() {
+// Show leading text Filter
+function showLeadingTextFilter() {
 
+  let html =
+    `
+      <!-- Main -->
+      <div class="main">
+
+        <!-- Filters -->
+        <div class="filters">
+    `;
   // from date
-  if (!isClassDefined('input-accountreport-search-fromDate')) {
-
-    objAccountReport.showInput('accountreport-search-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
-    date =
-      document.querySelector('.input-accountreport-search-fromDate').value;
-    if (!validateEuroDateFormat(date)) {
-
-      // From date is not ok
-      const year =
-        String(today.getFullYear());
-      document.querySelector('.input-accountreport-search-fromDate').value =
-        "01.01." + year;
-    }
-  }
+  html +=
+    objAccountReport.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
 
   // To date
-  if (!isClassDefined('input-accountreport-search-toDate')) {
-    objAccountReport.showInput('accountreport-search-toDate', 'Til dato', 10, 'mm.dd.åååå');
-    date =
-      document.querySelector('.input-accountreport-search-toDate').value;
-    if (!validateEuroDateFormat(date)) {
+  html +=
+    objAccountReport.showInputHTML('input-filter-toDate', 'Til dato', 10, 'mm.dd.åååå');
 
-      // To date is not ok
-      document.querySelector('.input-accountreport-search-toDate').value =
-        getCurrentDate();
-    }
-  }
+  // Fiscal year
+  let fiscalYear =
+    today.getFullYear();
+  html +=
+    objBudget.selectNumberHTML('select-filter-fiscalYear', 2020, 2030, fiscalYear, 'Regnskapsår');
 
-  // Show selected fiscal year
-  if (!isClassDefined('select-accountreport-search-fiscalYear')) {
+  // Budget year
+  let budgetYear =
+    today.getFullYear() + 1;
+  html +=
+    objBudget.selectNumberHTML('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
 
-    // Show years
+  // price per square meter
+  html +=
+    objAccountReport.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
+
+  html +=
+    `
+        </div>
+      </div>
+    `;
+  document.querySelector('.div-grid-accountreport-filter').innerHTML = html;
+
+  /*
+  // from date
+  date = document.querySelector('.input-filter-fromDate').value;
+  if (!validateEuroDateFormat(date)) {
+
+    // From date is not ok
     const year =
+      String(today.getFullYear());
+    document.querySelector('.input-filter-fromDate').value =
+      "01.01." + year;
+  }
+  showIcon('input-filter-fromDate');
+
+  // to date
+  date = document.querySelector('.input-filter-toDate').value;
+  if (!validateEuroDateFormat(date)) {
+
+    // To date is not ok
+    const year =
+      String(today.getFullYear());
+    document.querySelector('.input-filter-toDate').value =
+      getCurrentDate();
+  }
+  showIcon('input-filter-toDate');
+
+  // Fiscal year
+  fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
+  if (!validateNumberHTML(fiscalYear, 2020, 2030)) {
+
+    fiscalYear =
       today.getFullYear();
-    objBudget.selectNumber('accountreport-search-fiscalYear', 2020, 2030, year, 'Regnskapsår');
+    objBudget.selectNumber('select-filter-fiscalYear', 2020, 2030, year, 'Regnskapsår');
+    showIcon('input-filter-fiscalYear');
   }
+  // Budget year
+  budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
+  if (!validateNumberHTML(budgetYear, 2020, 2030)) {
 
-  // Show selected budget year
-  if (!isClassDefined('select-accountreport-search-budgetYear')) {
-
-    // Show years
-    const year =
+    budgetYear =
       today.getFullYear() + 1;
-    objBudget.selectNumber('accountreport-search-budgetYear', 2020, 2030, year, 'Budsjettår');
+    objBudget.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
+    showIcon('select-filter-budgetYear');
   }
 
-  // Show price per square meter
-  if (!isClassDefined('input-accountreport-search-priceSquareMeter')) {
+  // Price per square meter
+  priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
+  priceSquareMeter = formatKronerToOre(priceSquareMeter);
+  if (!validateEuroDateFormat(priceSquareMeter)) {
 
-    objAccountReport.showInput('accountreport-search-priceSquareMeter', 'Kvadratmeterpris', 8, '');
-    document.querySelector('.input-accountreport-search-priceSquareMeter').value = '30,00';
+    // To Price per square meter is not ok
+    document.querySelector('.input-filter-priceSquareMeter').value = '30,00'
+  }
+  showIcon('input-filter-priceSquareMeter');
+}
+*/
+}
+
+// Show values for text
+function showValuesFilter() {
+  // from date
+  date = document.querySelector('.input-filter-fromDate').value;
+  if (!validateEuroDateFormat(date)) {
+
+    // From date is not ok
+    const year =
+      String(today.getFullYear());
+    document.querySelector('.input-filter-fromDate').value =
+      "01.01." + year;
+  }
+  showIcon('input-filter-fromDate');
+
+  // to date
+  date = document.querySelector('.input-filter-toDate').value;
+  if (!validateEuroDateFormat(date)) {
+
+    // To date is not ok
+    const year =
+      String(today.getFullYear());
+    document.querySelector('.input-filter-toDate').value =
+      getCurrentDate();
+  }
+  showIcon('input-filter-toDate');
+
+  // Fiscal year
+  fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
+  if (!validateNumberHTML(fiscalYear, 2020, 2030)) {
+
+    fiscalYear =
+      today.getFullYear();
+    objBudget.selectNumber('select-filter-fiscalYear', 2020, 2030, year, 'Regnskapsår');
+    showIcon('input-filter-fiscalYear');
+  }
+  // Budget year
+  budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
+  if (!validateNumberHTML(budgetYear, 2020, 2030)) {
+
+    budgetYear =
+      today.getFullYear() + 1;
+    objBudget.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
+    showIcon('select-filter-budgetYear');
   }
 
-  return true;
+  // Price per square meter
+  priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
+  priceSquareMeter = formatKronerToOre(priceSquareMeter);
+  if (!validateEuroDateFormat(priceSquareMeter)) {
+
+    // To Price per square meter is not ok
+    document.querySelector('.input-filter-priceSquareMeter').value = '30,00'
+  }
+  showIcon('input-filter-priceSquareMeter');
 }
 
 // Show budgets
@@ -412,22 +510,26 @@ function showBudget() {
   // check for valid filter
   if (validateValues()) {
 
-    // Header budget
-    let htmlColumnAccountName =
-      '<div class="columnHeaderRight">Konto</div><br>';
-    let htmlColumnCostType =
-      '<div class="columnHeaderRight">K.type</div><br>';
-    const fiscalYear = document.querySelector('.select-accountreport-search-fiscalYear').value;
-    let htmlColumnBankAccountMovementAmount =
-      `<div class="columnHeaderRight">Beløp ${fiscalYear}</div><br>`;
-    let htmlColumnBudgetAmount =
-      `<div class="columnHeaderRight">Budsjett ${fiscalYear}</div><br>`;
-    let htmlColumnDeviation =
-      '<div class="columnHeaderRight">Avvik</div><br>';
-
     let totalBudgetAmount = 0;
     let totalAccountAmount = 0;
     let rowNumber = 0;
+
+    const fiscalYear = document.querySelector('.select-filter-fiscalYear').value;
+    html =
+      `
+        <!-- Budget Table Heading -->
+        <table>
+          <thead>
+            <tr>
+              <th>Konto</th>
+              <th>Kontotype</th>
+              <th>Beløp ${fiscalYear}</th>
+              <th>Budsjett ${fiscalYear}</th>
+              <th>Avvik</th>
+            </tr>
+          </thead>
+        <tbody>
+      `;
 
     accountArray.forEach((account) => {
 
@@ -436,15 +538,14 @@ function showBudget() {
       // check if the number is odd
       const colorClass =
         (rowNumber % 2 !== 0) ? "green" : "";
-
-      //accountName =
-      htmlColumnAccountName +=
+      html +=
         `
-          <div 
-            class="rightCell ${colorClass} one-line"
-          >
-            ${account.name}
-          </div>
+          <tr>
+        `;
+      //account Name =
+      html +=
+        `
+          <td>${account.name}</td>
         `;
 
       // fixed cost/ variable cost
@@ -463,14 +564,9 @@ function showBudget() {
           costType = "Variabel kostnad";
           break;
       }
-
-      htmlColumnCostType +=
+      html +=
         `
-          <div 
-            class="rightCell ${colorClass} one-line"
-          >
-            ${costType}
-          </div>
+          <td>${costType}</td>
         `;
 
       // bank account movement for selected account
@@ -478,25 +574,18 @@ function showBudget() {
         getTotalMovementsBankAccount(account.accountId);
       accountAmount =
         formatOreToKroner(accountAmount);
-      htmlColumnBankAccountMovementAmount +=
+
+      html +=
         `
-          <div 
-            class="rightCell ${colorClass}"
-          >
-            ${accountAmount}
-          </div>
+          <td>${accountAmount}</td>
         `;
 
       // Budget Amount for fiscal year
-      const fiscalYear = Number(document.querySelector('.select-accountreport-search-fiscalYear').value);
+      const fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
       let budgetAmount = getBudgetAmount(account.accountId, fiscalYear);
-      htmlColumnBudgetAmount +=
+      html +=
         `
-          <div 
-            class="rightCell ${colorClass}"
-          >
-            ${budgetAmount}
-          </div>
+          <td>${budgetAmount}</td>
         `;
 
       // Deviation
@@ -508,12 +597,9 @@ function showBudget() {
         accountAmount - budgetAmount;
       deviation =
         formatOreToKroner(String(deviation));
-      htmlColumnDeviation +=
+      html +=
         `
-          <div 
-            class="rightCell ${colorClass}">
-            ${deviation}
-          </div>
+          <td>${deviation}</td>
         `;
 
       // Accomulate
@@ -522,42 +608,50 @@ function showBudget() {
 
       totalBudgetAmount +=
         Number(budgetAmount);
+
+      html +=
+        `
+          </tr>
+        `;
     });
 
     // Show total line
-    htmlColumnAccountName +=
+
+    html +=
       `
-        <div
-          class="sumCellRight"
-        >
-          Sum
-        </div>
+        <tr>
       `;
 
+    // Sum
+    html +=
+      `
+        <td>Sum</td>
+      `;
+
+    html +=
+      `
+        <td></td>
+      `;
+
+    // Total amount annual accounts
     totalAccountAmount =
       formatOreToKroner(totalAccountAmount);
 
-    htmlColumnBankAccountMovementAmount +=
+    html +=
       `
-        <div 
-          class="sumCellRight"
-        >
-          ${totalAccountAmount}
-        </div>
+        <td>${totalAccountAmount}</td>
       `;
 
+    // Budget fiscal year
     totalBudgetAmount =
       formatOreToKroner(String(totalBudgetAmount));
 
-    htmlColumnBudgetAmount +=
+    html +=
       `
-        <div 
-          class="sumCellRight"
-        >
-          ${totalBudgetAmount}
-        </div>
+        <td>${totalBudgetAmount}</td>
       `;
 
+    // Total deviation
     totalAccountAmount =
       formatKronerToOre(totalAccountAmount);
     totalBudgetAmount =
@@ -566,26 +660,18 @@ function showBudget() {
       Number(totalAccountAmount) - Number(totalBudgetAmount);
     deviation =
       formatOreToKroner(String(deviation));
-
-    htmlColumnDeviation +=
+    html +=
       `
-        <div 
-          class="sumCellRight"
-        >
-          ${deviation}
-        </div>
+        <td>${deviation}</td>
       `;
 
-    document.querySelector('.div-accountreport-accountName').innerHTML =
-      htmlColumnAccountName;
-    document.querySelector('.div-accountreport-costType').innerHTML =
-      htmlColumnCostType;
-    document.querySelector('.div-accountreport-amount').innerHTML =
-      htmlColumnBankAccountMovementAmount;
-    document.querySelector('.div-accountreport-budgetAmount').innerHTML =
-      htmlColumnBudgetAmount;
-    document.querySelector('.div-accountreport-deviation').innerHTML =
-      htmlColumnDeviation;
+    html +=
+      `
+            </tr>
+          <tbody>
+        </table>
+      `;
+    document.querySelector('.div-grid-accountreport-fiscalBudget').innerHTML = html;
   }
 }
 
@@ -593,49 +679,23 @@ function showBudget() {
 function validateValues() {
 
   let fromDate =
-    document.querySelector('.input-accountreport-search-fromDate').value;
-  const validFromDate =
-    validateNorDate(fromDate, 'accountreport-search-fromDate', 'Fra dato');
+    document.querySelector('.input-filter-fromDate').value;
+  const validFromDate = validateNorDateHTML(fromDate);
 
-  let toDate =
-    document.querySelector('.input-accountreport-search-toDate').value;
-  const validToDate =
-    validateNorDate(toDate, 'accountreport-search-toDate', 'Fra dato');
+  let toDate = document.querySelector('.input-filter-toDate').value;
+  const validToDate = validateNorDateHTML(toDate);
 
-  let fiscalYear =
-    Number(document.querySelector('.select-accountreport-search-fiscalYear').value);
-  const validFiscalYear =
-    validateNumber(year, 2020, 2030, 'accountreport-search-fiscalYear', 'Regnskapsår');
+  let fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
+  const validFiscalYear = validateNumberHTML(fiscalYear, 2020, 2030);
 
-  let budgetYear =
-    Number(document.querySelector('.select-accountreport-search-budgetYear').value);
-  const validBudgetYear =
-    validateNumber(year, 2020, 2030, 'accountreport-search-budgetYear', 'Budsjettår');
+  let budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
+  const validBudgetYear = validateNumberHTML(budgetYear, 2020, 2030);
 
   // Check date interval
   fromDate = Number(convertDateToISOFormat(fromDate));
   toDate = Number(convertDateToISOFormat(toDate));
 
   validDateInterval = (fromDate <= toDate) ? true : false;
-
-  fromDate =
-    formatToNorDate(fromDate);
-  toDate =
-    formatToNorDate(toDate);
-
-  if (validFromDate && validToDate && validDateInterval) {
-
-    if (fromDate !== '' && toDate !== '') {
-      const flipedFromDate = convertDateToISOFormat(fromDate);
-      const flipedToDate = convertDateToISOFormat(toDate);
-
-      if (flipedFromDate > flipedToDate) {
-        document.querySelector('.label-accountreport-search-fromDate').outerHTML =
-          "<div class='label-accountreport-search-fromDate-red label-accountreport-search-fromDate-red'>Dato er feil</div>";
-        validValues = false;
-      }
-    }
-  }
 
   return (validFiscalYear && validBudgetYear && validFromDate && validToDate && validDateInterval) ? true : false;
 }
@@ -646,13 +706,13 @@ function getTotalMovementsBankAccount(accountId) {
   let accountAmount = 0;
 
   let fromDate =
-    document.querySelector('.input-accountreport-search-fromDate').value;
+    document.querySelector('.input-filter-fromDate').value;
 
   fromDate =
     Number(convertDateToISOFormat(fromDate));
 
   let toDate =
-    document.querySelector('.input-accountreport-search-toDate').value;
+    document.querySelector('.input-filter-toDate').value;
   toDate =
     Number(convertDateToISOFormat(toDate));
 
@@ -690,72 +750,17 @@ function getBudgetAmount(accountId, year) {
   return formatOreToKroner(amount);
 }
 
-// Get selected budgets
-function getSelectedBudgets() {
-
-  const fiscalYear = 
-  Number(document.querySelector('.select-accountreport-search-fiscalYear').value);
-
-  const budgetYear = 
-  Number(document.querySelector('.select-accountreport-search-budgetYear').value);
-
-  const fromDate = 
-  convertDateToISOFormat(document.querySelector('.input-accountreport-search-fromDate').value);
-  const toDate = 
-  convertDateToISOFormat(document.querySelector('.input-accountreport-search-toDate').value);
-
-  // Sends a request to the server to get selected bank account movements
-  SQLquery =
-    `
-      SELECT * FROM budget
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      ORDER BY budgetId;
-    `;
-  console.log(SQLquery);
-  updateMySql(SQLquery, 'budget', 'SELECT');
-  budgetArrayCreated =
-    false;
-}
-
-// Get selected bank account movement 
-function getSelectedBankAccountMovement() {
-
-  const fiscalYear =
-    Number(document.querySelector('.select-accountreport-search-fiscalYear').value);
-
-  const budgetYear =
-    Number(document.querySelector('.select-accountreport-search-budgetYear').value);
-
-  const fromDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-search-fromDate').value));
-  const toDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-search-toDate').value));
-
-  // Sends a request to the server to get selected bank account movements
-  SQLquery =
-    `
-      SELECT * FROM bankaccountmovement
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND deleted <> 'Y'
-      AND date BETWEEN ${fromDate} AND ${toDate};
-    `;
-  console.log(SQLquery);
-  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-  bankAccountMovementArrayCreated =
-    false;
-}
-
 // Show calculated income next year
 function showIncomeNextYear() {
 
   // Get fixed costs per month
-  let fromDate = document.querySelector('.input-accountreport-search-fromDate').value;
+  let fromDate = document.querySelector('.input-filter-fromDate').value;
   fromDate = Number(convertDateToISOFormat(fromDate));
-  let toDate = document.querySelector('.input-accountreport-search-toDate').value;
+  let toDate = document.querySelector('.input-filter-toDate').value;
   toDate = Number(convertDateToISOFormat(toDate));
   let numFixedCost = Number(getFixedCost(fromDate, toDate));
 
+  // // Get fixed costs per year
   // 12 month and 7 condos
   let strFixedCost = String(Math.round(numFixedCost / 12 / 7) * (-1));
 
@@ -764,23 +769,26 @@ function showIncomeNextYear() {
   numFixedCost = Number(strFixedCost);
   strFixedCost = formatOreToKroner(String(numFixedCost));
 
-  // Header budget
-  let htmlBudgetCondoId =
-    '<div class="columnHeaderRight">Leilighet</div><br>';
-  let htmlBudgetSquareMeters =
-    '<div class="columnHeaderRight">Kvadratmeter</div><br>';
-  let htmlBudFixedCosts =
-    '<div class="columnHeaderRight">Faste kostnader</div><br>';
-  let htmlCommonCostsMonth =
-    '<div class="columnHeaderRight">Fellesk. måned</div><br>';
-  let htmlCommonCostsYear =
-    '<div class="columnHeaderRight">Fellesk. år</div><br>';
-
   let rowNumber = 0;
   let totalCommonCostsMonth = 0;
   let totalCommonCostsYear = 0;
   let totalSquareMeters = 0;
   let totalFixedCosts = 0;
+
+  html =
+    `<div class="incomeNextYear">
+      <table>
+        <thead>
+          <tr>
+            <th>Leilighet</th>
+            <th>Kvadratmeter</th>
+            <th>Faste kostnader</th>
+            <th>Felleskostnad måned</th>
+            <th>Felleskostnad år</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
 
   condoArray.forEach((condo) => {
 
@@ -790,63 +798,51 @@ function showIncomeNextYear() {
     const colorClass =
       (rowNumber % 2 !== 0) ? "green" : "";
 
-    htmlBudgetCondoId +=
+    //  condo Name =
+    html +=
       `
-        <div 
-          class="rightCell ${colorClass} one-line"
-        >
-          ${condo.name}
-        </div>
+        <td>${condo.name}</td>
       `;
 
-    // square meters
+    // Square meters
     let numSquareMeters = Number(condo.squareMeters);
     let strSquareMeters = formatOreToKroner(condo.squareMeters);
-    htmlBudgetSquareMeters +=
+
+    html +=
       `
-        <div 
-          class="rightCell ${colorClass}"
-        >
-          ${strSquareMeters}
-        </div>
+        <td>${strSquareMeters}</td>
       `;
 
     // Fixed costs
-    htmlBudFixedCosts +=
+    html +=
       `
-        <div 
-          class="rightCell ${colorClass}"
-        >
-          ${strFixedCost}
-        </div>
+        <td>${strFixedCost}</td>
       `;
 
     // Common costs per month
-    let priceSquareMeter = document.querySelector('.input-accountreport-search-priceSquareMeter').value;
+    let priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
     priceSquareMeter = Number(formatKronerToOre(priceSquareMeter));
 
     let numCommonCostsMonth = (priceSquareMeter * numSquareMeters) / 100;
     let strCommonCostsMonth = String(numCommonCostsMonth + numFixedCost);
     strCommonCostsMonth = formatOreToKroner(strCommonCostsMonth);
 
-    htmlCommonCostsMonth +=
+    html +=
       `
-        <div 
-          class="rightCell ${colorClass}">
-          ${strCommonCostsMonth}
-        </div>
+        <td>${strCommonCostsMonth}</td>
       `;
 
     // Common cost per Year
     let numCommonCostsYear = (numCommonCostsMonth + numFixedCost) * 12;
     let strCommonCostsYear = formatOreToKroner(String(numCommonCostsYear));
-    htmlCommonCostsYear +=
+    html +=
       `
-        <div 
-          class="rightCell ${colorClass}"
-        >
-          ${strCommonCostsYear}
-        </div>
+        <td>${strCommonCostsYear}</td>
+      `;
+
+    html +=
+      `
+        </tr>
       `;
 
     // Accomulate
@@ -860,61 +856,54 @@ function showIncomeNextYear() {
       Number(numCommonCostsYear);
   });
 
-  // Show sum
-  // Leilighet
+  // accumulator line
+
+  html +=
+    `
+      <tr>
+    `;
+
+  // Condo
+  html +=
+    `
+      <td></td>
+    `;
 
   // Square meter
   const strSquareMeters = formatOreToKroner(String(totalSquareMeters));
-  htmlBudgetSquareMeters +=
+  html +=
     `
-      <div 
-        class="sumCellRight">
-        ${strSquareMeters}
-      </div>
+      <td>${strSquareMeters}</td>
     `;
 
   // Fixed costs
   strFixedCost = formatOreToKroner(String(totalFixedCosts));
-  htmlBudFixedCosts +=
+  html +=
     `
-      <div 
-        class="sumCellRight"
-      >
-        ${strFixedCost}
-      </div>
+      <td>${strFixedCost}</td>
     `;
 
   // Common cost per month
   const strCommonCostsMonth = formatOreToKroner(String(totalCommonCostsMonth));
-  htmlCommonCostsMonth +=
+  html +=
     `
-      <div 
-        class="sumCellRight"
-      >
-        ${strCommonCostsMonth}
-      </div>
+      <td>${strCommonCostsMonth}</td>
     `;
 
   // Common cost per year
   const strCommonCostsYear = formatOreToKroner(String(totalCommonCostsYear));
-  htmlCommonCostsYear +=
+  html +=
     `
-      <div 
-        class="sumCellRight">
-        ${strCommonCostsYear}
-      </div>
+      <td>${strCommonCostsYear}</td>
     `;
 
-  document.querySelector('.div-accountreport-budget-name').innerHTML =
-    htmlBudgetCondoId;
-  document.querySelector('.div-accountreport-budget-squareMeter').innerHTML =
-    htmlBudgetSquareMeters;
-  document.querySelector('.div-accountreport-budget-fixedCosts').innerHTML =
-    htmlBudFixedCosts;
-  document.querySelector('.div-accountreport-budget-commonCostsMonth').innerHTML =
-    htmlCommonCostsMonth;
-  document.querySelector('.div-accountreport-budget-commonCostsYear').innerHTML =
-    htmlCommonCostsYear;
+  html +=
+    `
+          </tbody>
+        </table>
+      </div>
+    `;
+  document.querySelector('.div-grid-accountreport-budget').innerHTML = html;
 }
 
 // Get fixed costs
@@ -946,9 +935,10 @@ function getFixedCost(fromDate, toDate) {
   return fixedCost;
 }
 
-// Show current bankdeposit and estimated for next year
+// Show current bank deposit and estimated bank deposit for next year
 function showBankDeposit() {
 
+  /*
   // Header bank deposit
   let htmlBankDepositText =
     '<div class="columnHeaderLeft">Tekst</div><br>';
@@ -956,6 +946,23 @@ function showBankDeposit() {
     '<div class="columnHeaderRight">Dato</div><br>';
   let htmlBankDepositAmount =
     '<div class="columnHeaderRight">Beløp</div><br>';
+  */
+
+  html =
+    `
+      <!-- Budget Table Heading -->
+      <div class="bankDeposit">
+        <table>
+          <thead>
+            <tr>
+              <th>Tekst</th>
+              <th>Dato</th>
+              <th>Beløp ${fiscalYear}</th>
+            </tr>
+          </thead>
+        <tbody>
+          <tr>
+    `;
 
   let rowNumber = 0;
   let accAmount = 0;
@@ -967,13 +974,9 @@ function showBankDeposit() {
     (rowNumber % 2 !== 0) ? "green" : "";
 
   // Text
-  htmlBankDepositText +=
+  html +=
     `
-      <div 
-        class="leftCell ${colorClass} one-line"
-      >
-        Bankinnskudd
-      </div>
+      <td>Bankinnskudd</td>
     `;
 
   // Dato
@@ -986,13 +989,9 @@ function showBankDeposit() {
     closingBalanceDate = formatToNorDate(closingBalanceDate);
   }
 
-  htmlBankDepositDate +=
+  html +=
     `
-      <div 
-        class="rightCell ${colorClass}"
-      >
-        ${closingBalanceDate}
-      </div>
+      <td>${closingBalanceDate}</td>
     `;
 
   // Bank deposit
@@ -1001,13 +1000,9 @@ function showBankDeposit() {
   bankDepositAmount = (bankAccountArray[objBankAccountRowNumber].closingBalance);
   bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
-  htmlBankDepositAmount +=
+  html +=
     `
-      <div 
-        class="rightCell ${colorClass}"
-      >
-        ${bankDepositAmount}
-      </div>
+      <td>${bankDepositAmount}</td>
     `;
 
   accAmount += Number(formatKronerToOre(bankDepositAmount));
@@ -1015,12 +1010,17 @@ function showBankDeposit() {
   // budget
   budgetArray.forEach((budget) => {
 
-    const budgetYear = document.querySelector('.select-accountreport-search-budgetYear').value;
+    const budgetYear = document.querySelector('.select-filter-budgetYear').value;
     if (Number(budget.year) === Number(budgetYear)) {
 
       if (Number(budget.amount) !== 0) {
 
         rowNumber++;
+
+        html +=
+          `
+            <tr>
+          `;
 
         // check if the number is odd
         colorClass =
@@ -1033,42 +1033,35 @@ function showBankDeposit() {
 
           const name =
             accountArray[objAccountRowNumber].name;
-          htmlBankDepositText +=
+          html +=
             `
-              <div 
-                class="leftCell ${colorClass} one-line"
-              >
-                ${name}
-              </div>
+              <td>${name}</td>
             `;
-
-          // Dato
-          htmlBankDepositDate +=
-            `
-              <div 
-                class="rightCell ${colorClass}"
-              >
-                -
-              </div>
-            `;
-
-          // budget amount
-          let amount = Number(budget.amount);
-          amount = formatOreToKroner(amount);
-
-          htmlBankDepositAmount +=
-            `
-              <div 
-                class="rightCell ${colorClass}"
-              >
-                ${amount}
-              </div>
-            `;
-
-          // accumulate
-          const numAmmount = Number(formatKronerToOre(amount));
-          accAmount += numAmmount;
         }
+
+        // Dato
+        html +=
+          `
+              <td></td>
+            `;
+
+        // budget amount
+        let amount = Number(budget.amount);
+        amount = formatOreToKroner(amount);
+
+        html +=
+          `
+            <td>${amount}</td>
+          `;
+
+        // accumulate
+        const numAmmount = Number(formatKronerToOre(amount));
+        accAmount += numAmmount;
+
+        html +=
+          `
+            </tr>
+          `;
       }
     }
   });
@@ -1081,13 +1074,9 @@ function showBankDeposit() {
     (rowNumber % 2 !== 0) ? "green" : "";
 
   // Text
-  htmlBankDepositText +=
+  html +=
     `
-      <div 
-        class="leftCell ${colorClass} one-line"
-      >
-        Estimert bankinnskudd
-      </div>
+      <td>Estimert bankinnskudd</td>
     `;
 
   // Dato
@@ -1097,31 +1086,81 @@ function showBankDeposit() {
   closingBalanceDate = closingBalanceDate + 10000;
   closingBalanceDate = formatToNorDate(String(closingBalanceDate));
 
-  htmlBankDepositDate +=
+  html +=
     `
-      <div 
-        class="rightCell ${colorClass}"
-      >
-        ${closingBalanceDate}
-      </div>
-    `;
+    <td>${closingBalanceDate}</td>
+  `;
 
   // Bank deposit next year
   bankDepositAmount = formatOreToKroner(String(accAmount));
 
-  htmlBankDepositAmount +=
+  html +=
     `
-      <div 
-        class="rightCell ${colorClass}"
-      >
-        ${bankDepositAmount}
+    <td>${bankDepositAmount}</td>
+  `;
+
+  html +=
+    `
+            </tr>
+          </tbody>
+        </table>
       </div>
     `;
+  document.querySelector('.div-grid-accountreport-bankdeposit').innerHTML = html;
+}
 
-  document.querySelector('.div-accountreport-bankdeposit-text').innerHTML =
-    htmlBankDepositText;
-  document.querySelector('.div-accountreport-bankdeposit-date').innerHTML =
-    htmlBankDepositDate;
-  document.querySelector('.div-accountreport-bankdeposit-amount').innerHTML =
-    htmlBankDepositAmount;
+// Get selected bank account movement 
+function getSelectedBankAccountMovement() {
+
+  const fiscalYear =
+    Number(document.querySelector('.select-accountreport-filter-fiscalYear').value);
+
+  const budgetYear =
+    Number(document.querySelector('.select-accountreport-filter-budgetYear').value);
+
+  const fromDate =
+    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-filter-fromDate').value));
+  const toDate =
+    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-filter-toDate').value));
+
+  // Sends a request to the server to get selected bank account movements
+  SQLquery =
+    `
+      SELECT * FROM bankaccountmovement
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND deleted <> 'Y'
+      AND date BETWEEN ${fromDate} AND ${toDate};
+    `;
+  console.log(SQLquery);
+  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+  bankAccountMovementArrayCreated =
+    false;
+}
+
+// Get selected budgets
+function getSelectedBudgets() {
+
+  const fiscalYear =
+    Number(document.querySelector('.select-filter-fiscalYear').value);
+
+  const budgetYear =
+    Number(document.querySelector('.select-filter-budgetYear').value);
+
+  const fromDate =
+    convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value);
+  const toDate =
+    convertDateToISOFormat(document.querySelector('.input-filter-toDate').value);
+
+  // Sends a request to the server to get selected bank account movements
+  SQLquery =
+    `
+      SELECT * FROM budget
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY budgetId;
+    `;
+  console.log(SQLquery);
+  updateMySql(SQLquery, 'budget', 'SELECT');
+  budgetArrayCreated =
+    false;
 }

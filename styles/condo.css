@@ -21,10 +21,10 @@ body {
 .div-grid-bankaccountmovement-search,
 .div-grid-bankaccountmovement,
 
-.div-grid-accountreport-search,
+/*.div-grid-accountreport-filter,*/
 .div-grid-accountreport,
-.div-grid-accountreport-budget,
-.div-grid-accountreport-bankdeposit,
+/*.div-grid-accountreport-budget,*/
+/*.div-grid-accountreport-bankdeposit,*/
 
 .div-grid-userbankaccount,
 
@@ -85,14 +85,14 @@ body {
 }
 
 /* Define the grid container with 4 columns*/
-.div-grid-accountreport-bankdeposit {
-  grid-template-columns: 200px 200px 200px 150px;
-}
+/*.div-grid-accountreport-bankdeposit {*/
+/*  grid-template-columns: 200px 200px 200px 150px;*/
+/*}
 
 /* Define the grid container with 6 columns*/
-.div-grid-accountreport-search {
-  grid-template-columns: 200px 200px 200px 200px 200px 200px;
-}
+/*.div-grid-accountreport-filter {*/
+/*  grid-template-columns: 200px 200px 200px 200px 200px 200px;*/
+/*}*/
 
 /* Define the grid container with 4 columns*/
 .div-grid-overview-search {
@@ -115,9 +115,9 @@ body {
 }
 
 /* Define the grid container with 6 columns*/
-.div-grid-accountreport-budget {
-  grid-template-columns: 200px 100px 150px 150px 150px 150px;
-}
+/*.div-grid-accountreport-budget {*/
+/*  grid-template-columns: 200px 100px 150px 150px 150px 150px;*/
+/*}*/
 
 /* Define the grid container with 6 columns*/
 .div-grid-accountreport {
@@ -448,10 +448,10 @@ body {
 .div-grid-bankaccountmovement-search label,
 .div-grid-bankaccountmovement label,
 
-.div-grid-accountreport-search label,
+/*.div-grid-accountreport-filter label,*/
 .div-grid-accountreport label,
-.div-grid-accountreport-budget label,
-.div-grid-accountreport-bankdeposit label,
+/*.div-grid-accountreport-budget label,*/
+/*.div-grid-accountreport-bankdeposit label,*/
 
 .div-grid-userbankaccount label,
 
@@ -519,10 +519,10 @@ body {
 .div-grid-bankaccountmovement-search input,
 .div-grid-bankaccountmovement input,
 
-.div-grid-accountreport-search input,
+/*.div-grid-accountreport-filter input,*/
 .div-grid-accountreport input,
-.div-grid-accountreport-budget input,
-.div-grid-accountreport-bankdeposit input,
+/*.div-grid-accountreport-budget input,*/
+/*.div-grid-accountreport-bankdeposit input,*/
 
 .div-grid-userbankaccount input,
 
@@ -604,10 +604,10 @@ body {
 .div-grid-bankaccountmovement-search select,
 .div-grid-bankaccountmovement select,
 
-.div-grid-accountreport-search select,
+/*.div-grid-accountreport-filter select,*/
 .div-grid-accountreport select,
-.div-grid-accountreport-budget select,
-.div-grid-accountreport-bankdeposit select,
+/*.div-grid-accountreport-budget select,*/
+/*.div-grid-accountreport-bankdeposit select,*/
 
 .div-grid-userbankaccount select,
 
@@ -720,10 +720,10 @@ body {
 .div-grid-bankaccountmovement-search button,
 .div-grid-bankaccountmovement button,
 
-.div-grid-accountreport-search button,
+/*.div-grid-accountreport-filter button,*/
 .div-grid-accountreport button,
-.div-grid-accountreport-budget button,
-.div-grid-accountreport-bankdeposit button,
+/*.div-grid-accountreport-budget button,*/
+/*.div-grid-accountreport-bankdeposit button,*/
 
 .div-grid-userbankaccount button,
 
@@ -768,10 +768,10 @@ body {
 /* Darker green on hover */
 .div-grid-bankaccountmovement-search button:hover .div-grid-bankaccountmovement button:hover,
 
-.div-grid-accountreport-search button:hover,
+/*.div-grid-accountreport-filter button:hover,*/
 .div-grid-accountreport button:hover,
-.div-grid-accountreport-budget button:hover,
-.div-grid-accountreport-bankdeposit button.hover,
+/*.div-grid-accountreport-budget button:hover,*/
+/*.div-grid-accountreport-bankdeposit button.hover,*/
 
 .div-grid-userbankaccount button:hover,
 
@@ -845,14 +845,14 @@ body {
 .div-grid-bankaccountmovement select:disabled,
 .div-grid-bankaccountmovement button:disabled,
 
-.div-grid-accountreport-search select:disabled,
-.div-grid-accountreport-search button:disabled,
+/*.div-grid-accountreport-filter select:disabled,*/
+/*.div-grid-accountreport-filter button:disabled,*/
 
 .div-grid-accountreport select:disabled,
 .div-grid-accountreport button:disabled,
 
-.div-grid-accountreport-budget select:disabled,
-.div-grid-accountreport button:disabled,
+/*.div-grid-accountreport-budget select:disabled,*/
+/*.div-grid-accountreport button:disabled,*/
 
 .div-grid-userbankaccount select:disabled,
 .div-grid-userbankaccount button:disabled,
@@ -967,8 +967,8 @@ body {
 .label-bankaccountmovement-accountId-red,
 .label-bankaccountmovement-date-red,
 
-.label-accountreport-search-fromDate-red,
-.label-accountreport-search-toDate-red,
+.label-accountreport-filter-fromDate-red,
+.label-accountreport-filter-toDate-red,
 
 .label-userbankaccount-userId-red,
 .label-userbankaccount-accountId-red,
@@ -1228,6 +1228,7 @@ select {
   padding: .5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  height: 54px;
 }
 
 /* Table */
@@ -1254,15 +1255,15 @@ th:first-child {
   text-align: left;
 }
 
-/* Apartment grid */
-.apartments {
+/* grid for income next year */
+.incomeNextYear {
   background: #fff;
   padding: 1rem;
   border-radius: 8px;
 }
 
-/* Transactions */
-.transactions {
+/* bank deposit */
+.bankDeposit {
   background: #fff;
   padding: 1rem;
   border-radius: 8px;
