@@ -24,7 +24,8 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-let isEventsCreated
+let isEventsCreated;
+let neadToShowLeadingTextFilter = true;
 
 objAccountReport.menu();
 objAccountReport.markSelectedMenu('Regnskapsrapport');
@@ -229,7 +230,10 @@ socket.onmessage = (event) => {
           && bankAccountMovementArrayCreated) {
 
           // Show leading text for filter
-          showLeadingTextFilter();
+          if (neadToShowLeadingTextFilter) {
+            showLeadingTextFilter();
+            neadToShowLeadingTextFilter = false;
+          }
 
           // Show values for filter
           showValuesFilter();
@@ -450,7 +454,8 @@ function showLeadingTextFilter() {
 
 // Show values for text
 function showValuesFilter() {
-  // from date
+
+  // From date
   date = document.querySelector('.input-filter-fromDate').value;
   if (!validateEuroDateFormat(date)) {
 
@@ -495,8 +500,7 @@ function showValuesFilter() {
 
   // Price per square meter
   priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
-  priceSquareMeter = formatKronerToOre(priceSquareMeter);
-  if (!validateEuroDateFormat(priceSquareMeter)) {
+  if (!objAccountReport.validateAmount(priceSquareMeter)) {
 
     // To Price per square meter is not ok
     document.querySelector('.input-filter-priceSquareMeter').value = '30,00'
@@ -938,16 +942,6 @@ function getFixedCost(fromDate, toDate) {
 // Show current bank deposit and estimated bank deposit for next year
 function showBankDeposit() {
 
-  /*
-  // Header bank deposit
-  let htmlBankDepositText =
-    '<div class="columnHeaderLeft">Tekst</div><br>';
-  let htmlBankDepositDate =
-    '<div class="columnHeaderRight">Dato</div><br>';
-  let htmlBankDepositAmount =
-    '<div class="columnHeaderRight">Beløp</div><br>';
-  */
-
   html =
     `
       <!-- Budget Table Heading -->
@@ -1113,15 +1107,15 @@ function showBankDeposit() {
 function getSelectedBankAccountMovement() {
 
   const fiscalYear =
-    Number(document.querySelector('.select-accountreport-filter-fiscalYear').value);
+    Number(document.querySelector('.select-filter-fiscalYear').value);
 
   const budgetYear =
-    Number(document.querySelector('.select-accountreport-filter-budgetYear').value);
+    Number(document.querySelector('.select-filter-budgetYear').value);
 
   const fromDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-filter-fromDate').value));
+    Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
   const toDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-accountreport-filter-toDate').value));
+    Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
   // Sends a request to the server to get selected bank account movements
   SQLquery =

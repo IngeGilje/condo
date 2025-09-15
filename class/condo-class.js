@@ -837,7 +837,7 @@ class Condos {
       `;
   }
 
-  // Validate norwegian amount
+  // Validate norwegian amount (12 345,67)
   validateAmount(amount, className, labelText) {
 
     let isValidAmount = true;
@@ -1245,7 +1245,7 @@ function validateEuroDateFormat(dateString) {
     return false;
   }
   // Regular expression for valuating the dd.mm.yyyy format
-  const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/;
+  const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
   const match = dateString.match(regex);
 
   if (!match) return false; // Return false if format doesn't match
