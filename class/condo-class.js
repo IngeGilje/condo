@@ -93,18 +93,6 @@ class Condos {
           >
         </div>
       `;
-    //document.querySelector(`.div-${className}`).innerHTML =
-    //  html;
-
-    // Set the PNG file
-    //const inputElement =
-    //  document.querySelector(`.input-${className}`);
-    //inputElement.style.backgroundRepeat = `no-repeat`;
-
-    //const iconName =
-    //  this.getIconName(className);
-    //inputElement.style.backgroundImage = `url('icons/${iconName}')`;
-
     return html;
   }
 
@@ -1052,6 +1040,19 @@ class Condos {
     }
     return condoId;
   }
+
+  // Show icon
+  showIcon(className) {
+
+    // Set the PNG file
+    const inputElement =
+      document.querySelector(`.${className}`);
+    inputElement.style.backgroundRepeat = `no-repeat`;
+
+    const iconName = this.getIconName(`${className}`);
+    inputElement.style.backgroundImage = `url('icons/${iconName}')`;
+  }
+
   // get icon name from column name
   getIconName(className) {
 
@@ -1404,7 +1405,7 @@ function validateNorDateHTML(dateString) {
   // Validate date
   if (!this.validateEuroDateFormat(dateString)) {
 
-      return false;
+    return false;
   } else {
 
     return true;
@@ -1942,6 +1943,133 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   return accountId;
 }
 
+// HTML start for filters
+function startHTMLFilters() {
+
+  return `
+      <!-- Main -->
+      <div class="main">
+
+        <!-- Filters -->
+        <div class="filters">
+    `;
+}
+
+// HTML end for filters
+function endHTMLFilters() {
+
+  return `
+      </div>
+    </div>
+  `;
+}
+
+// Start of HTML table
+function startHTMLTable() {
+
+  return `
+        <div class="startHTMLTable">
+          <table>
+      `;
+}
+
+// End of HTML table
+function endHTMLTable() {
+
+  return `
+
+        </table>
+      </div>
+    `;
+}
+
+// Start of HTML table Header
+function startHTMLTableHeader() {
+  return `
+      <thead>
+    `;
+}
+
+// End of HTML table Header
+function endHTMLTableHeader() {
+  return `
+      </thead>
+    `;
+}
+
+// Start of HTML table line
+function startHTMLTableRow() {
+  return `
+      <tr>
+    `;
+}
+
+// End of HTML table line
+function endHTMLTableRow() {
+  return `
+      </tr>
+    `;
+}
+
+// Start of HTML table cell
+function startHTMLTableCell() {
+  return `
+      <td>
+    `;
+}
+
+// End of HTML table cell
+function endHTMLTableCell() {
+  return `
+      </td>
+    `;
+}
+
+// Start of HTML table head cell
+function startHTMLTableCell() {
+  return `
+      <th>
+    `;
+}
+
+// End of HTML table head cell
+function startHTMLTableCell() {
+  return `
+      </th>
+    `;
+}
+
+// Start of HTML table cell
+function startHTMLTableCell() {
+  return `
+      <td>
+    `;
+}
+
+// End of HTML table cell
+function endHTMLTableCell() {
+  return `
+      </td>
+    `;
+}
+/*
+
+     <!-- Budget Table Heading -->
+      <div class="bankDeposit">
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Tekst</th>
+              <th>Dato</th>
+              <th>Beløp ${budgetYear}</th>
+            </tr>
+          </thead>
+        <tbody>
+*/
+/*
 // Show icon
 function showIcon(className) {
 
@@ -1950,10 +2078,10 @@ function showIcon(className) {
     document.querySelector(`.${className}`);
   inputElement.style.backgroundRepeat = `no-repeat`;
 
-  const iconName =
-    objAccountReport.getIconName(`${className}`);
+  const iconName = this.getIconName(`${className}`);
   inputElement.style.backgroundImage = `url('icons/${iconName}')`;
 }
+*/
 
 /*
 // exit application after 1 hour
@@ -1972,4 +2100,3 @@ function exitIfNoActivity() {
   document.addEventListener(event, exitIfNoActivity);
 });
 */
-

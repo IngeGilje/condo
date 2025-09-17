@@ -1,5 +1,9 @@
 Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til konto;Til
-12.09.2025;12.09.2025;"MOBILGIRO Mobilgiro i dag";2329,00;;Ikke tilgjengelig;Ikke tilgjengelig;;NOK;;;32062337272;
+16.09.2025;16.09.2025;"AVTALE Avtale";2275,00;;Ikke tilgjengelig;Ikke tilgjengelig;;NOK;;;32062337272;
+15.09.2025;15.09.2025;"OVERFØRT   Fra: Oskar Fausk Betalt: 15.09.25";1549,00;;Ikke tilgjengelig;Ikke tilgjengelig;;NOK;36264007849;Oskar Fausk;32062337272;
+15.09.2025;15.09.2025;"AVTALE     Fra: Inge Svein Gilje Betalt: 15.09.25";3139,00;;Ikke tilgjengelig;Ikke tilgjengelig;;NOK;32061703445;Inge Svein Gilje;32062337272;
+15.09.2025;15.09.2025;"OVERFØRT   Fra: Birgit Ruth M A Schober Betalt: 15.09.25";3431,00;;Ikke tilgjengelig;Ikke tilgjengelig;;NOK;12016029341;Birgit Ruth M A Schober;32062337272;
+12.09.2025;;"Månedsbetaling 95A";2329,00;;Ikke tilgjengelig;Ikke tilgjengelig;Mobilgiro m/meld. forf. i dag;NOK;32016934118;Fabiana Gaspar Franco;32062337272;
 10.09.2025;;"Fellesutgifter";1984,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;05390874660;Ladan Pazoki;32062337272;inge gilje
 10.09.2025;;"20011129151105765069";;-4513,60;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073195801;Lyse Marked AS
 09.09.2025;;"Omkostninger BedriftsNett";;-100,25;Ikke tilgjengelig;Ikke tilgjengelig;Pris;NOK;32062337272;;32019999008;
@@ -20,4 +24,4 @@ Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til
 
 "DRIFT., 3206.23.37272"
 "Inngående saldo pr. 01.08.2025:";"212194.15";"NOK"
-"Utgående saldo pr. 12.09.2025:";"217649.09";"NOK"
+"Utgående saldo pr. 16.09.2025:";"228097.09";"NOK"

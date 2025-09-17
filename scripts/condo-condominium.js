@@ -41,7 +41,7 @@ const objUserPassword =
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost:8080/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -287,32 +287,21 @@ function updateCondominium(condominiumId) {
   // Check values
   if (validateValues()) {
 
-    const condominiumName =
-      document.querySelector('.input-condominium-name').value;
-    const street =
-      document.querySelector('.input-condominium-street').value;
-    const postalCode =
-      document.querySelector('.input-condominium-postalCode').value;
-    const city =
-      document.querySelector('.input-condominium-city').value;
-    const address2 =
-      document.querySelector('.input-condominium-address2').value;
-    const phone =
-      document.querySelector('.input-condominium-phone').value;
-    const email =
-      document.querySelector('.input-condominium-email').value;
-    const remoteHeatingAccountId =
-      Number(document.querySelector('.select-condominium-remoteHeatingAccountId').value);
-    const commonCostAccountId =
-      Number(document.querySelector('.select-condominium-commoncostAccountId').value);
-    const organizationNumber =
-      document.querySelector('.input-condominium-organizationNumber').value;
-    const importPath =
-      document.querySelector('.input-condominium-fileName').value;
+    const condominiumName = document.querySelector('.input-condominium-name').value;
+    const street = document.querySelector('.input-condominium-street').value;
+    const postalCode = document.querySelector('.input-condominium-postalCode').value;
+    const city = document.querySelector('.input-condominium-city').value;
+    const address2 = document.querySelector('.input-condominium-address2').value;
+    const phone = document.querySelector('.input-condominium-phone').value;
+    const email = document.querySelector('.input-condominium-email').value;
+    const incomeRemoteHeatingAccountId = Number(document.querySelector('.select-condominium-incomeRemoteHeatingAccountId').value);
+    const paymentRemoteHeatingAccountId = Number(document.querySelector('.select-condominium-paymentRemoteHeatingAccountId').value);
+    const commonCostAccountId = Number(document.querySelector('.select-condominium-commoncostAccountId').value);
+    const organizationNumber = document.querySelector('.input-condominium-organizationNumber').value;
+    const importPath = document.querySelector('.input-condominium-fileName').value;
 
     // current date
-    const lastUpdate =
-      today.toISOString();
+    const lastUpdate = today.toISOString();
 
     // Check if condominium id exist
     const objCondominiumRowNumber =
@@ -332,7 +321,8 @@ function updateCondominium(condominiumId) {
           city = '${city}',
           phone = '${phone}',
           email = '${email}',
-          remoteHeatingAccountId = ${remoteHeatingAccountId},
+          incomeRemoteHeatingAccountId = ${incomeRemoteHeatingAccountId},
+          paymentRemoteHeatingAccountId = ${paymentRemoteHeatingAccountId},
           commonCostAccountId = ${commonCostAccountId},
           organizationNumber = '${organizationNumber}',
           importPath = '${importPath}'
@@ -354,7 +344,8 @@ function updateCondominium(condominiumId) {
           city,
           phone,
           email,
-          remoteHeatingAccountId,
+          incomeRemoteHeatingAccountId,
+          paymentRemoteHeatingAccountId,
           commonCostAccountId,
           organizationNumber,
           importPath)
@@ -369,7 +360,8 @@ function updateCondominium(condominiumId) {
           '${city}',
           '${phone}',
           '${email}',
-          ${remoteHeatingAccountId},
+          ${incomeRemoteHeatingAccountId},
+          ${paymentRemoteHeatingAccountId},
           ${commonCostAccountId},
           '${organizationNumber}',
           '${importPath}'
@@ -414,8 +406,11 @@ function showLeadingText(condominiumId) {
   // email
   objCondominium.showInput('condominium-email', '* eMail', 50, '');
 
-  // show all account Ids for remote heating
-  objAccount.showAllAccounts('condominium-remoteHeatingAccountId', 0, "", "Ingen");
+  // show all account Ids for income remote heating
+  objAccount.showAllAccounts('condominium-incomeRemoteHeatingAccountId', 0, "", "Ingen");
+
+  // show all account Ids for payment remote heating
+  objAccount.showAllAccounts('condominium-paymentRemoteHeatingAccountId', 0, "", "Ingen");
 
   // show all account Ids for common cost accounts
   objAccount.showAllAccounts('condominium-commoncostAccountId', 0, "", "Ingen");
@@ -484,17 +479,23 @@ function showValues(condominiumId) {
       document.querySelector('.input-condominium-email').value =
         condominiumArray[objCondominiumRowNumber].email;
 
-      // account id for remote heating
-      document.querySelector('.select-condominium-remoteHeatingAccountId').value =
-        (condominiumArray[objCondominiumRowNumber].remoteHeatingAccountId) ? condominiumArray[objCondominiumRowNumber].remoteHeatingAccountId : 0;
-      document.querySelector('.label-condominium-remoteHeatingAccountId').innerHTML =
-        'Velg konto for fjernvarme';
+      // account id for income remote heating
+      document.querySelector('.select-condominium-incomeRemoteHeatingAccountId').value =
+        (condominiumArray[objCondominiumRowNumber].incomeRemoteHeatingAccountId) ? condominiumArray[objCondominiumRowNumber].incomeRemoteHeatingAccountId : 0;
+      document.querySelector('.label-condominium-incomeRemoteHeatingAccountId').innerHTML =
+        'Inntekt fjernvarmekonto';
+
+      // account id for payment remote heating
+      document.querySelector('.select-condominium-paymentRemoteHeatingAccountId').value =
+        (condominiumArray[objCondominiumRowNumber].paymentRemoteHeatingAccountId) ? condominiumArray[objCondominiumRowNumber].paymentRemoteHeatingAccountId : 0;
+      document.querySelector('.label-condominium-paymentRemoteHeatingAccountId').innerHTML =
+        'Utgift fjernvarmekonto';
 
       // account id for common cost
       document.querySelector('.select-condominium-commoncostAccountId').value =
         (condominiumArray[objCondominiumRowNumber].commonCostAccountId) ? condominiumArray[objCondominiumRowNumber].commonCostAccountId : 0;
       document.querySelector('.label-condominium-commoncostAccountId').innerHTML =
-        'Velg konto for f.kostnader';
+        'Konto for felleskostnader';
 
       // Show organization number
       document.querySelector('.input-condominium-organizationNumber').value =
@@ -540,8 +541,12 @@ function resetValues() {
   document.querySelector('.input-condominium-email').value =
     '';
 
-  // account id for remote heating
-  document.querySelector('.select-condominium-remoteHeatingAccountId').value =
+  // account id for income remote heating
+  document.querySelector('.select-condominium-incomeRemoteHeatingAccountId').value =
+    0;
+
+  // account id for payment remote heating
+  document.querySelector('.select-condominium-paymentRemoteHeatingAccountId').value =
     0;
 
   // account id for common cost

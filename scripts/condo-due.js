@@ -1,25 +1,16 @@
 // Due maintenance
 
 // Activate objects
-const today =
-  new Date();
-const objUser =
-  new User('user');
-const objCondo =
-  new Condo('condo');
-const objAccount =
-  new Account('account');
-const objDue =
-  new Due('due');
+const today = new Date();
+const objUser = new User('user');
+const objCondo = new Condo('condo');
+const objAccount = new Account('account');
+const objDue = new Due('due');
 
-let userArrayCreated =
-  false
-let condoArrayCreated =
-  false
-let accountArrayCreated =
-  false
-let dueArrayCreated =
-  false
+let userArrayCreated = false;
+let condoArrayCreated = false;
+let accountArrayCreated = false;
+let dueArrayCreated = false;
 
 testMode();
 
@@ -39,7 +30,7 @@ const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost:8080/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
   // Send a requests to the server
@@ -171,8 +162,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             && accountArrayCreated
             && dueArrayCreated) {
 
-            // Show leading text search
-            showLeadingTextSearch();
+            // Show leading text filter
+            showLeadingTextFilter();
 
             // Show leading text maintenance
             showLeadingText();
@@ -190,8 +181,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(dueId);
 
             // Make events
-            isEventsCreated = 
-            (isEventsCreated) ? true : createEvents();
+            isEventsCreated =
+              (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -419,7 +410,7 @@ function deleteDue(dueId) {
 }
 
 // Show filter for search
-function showLeadingTextSearch() {
+function showLeadingTextFilter() {
 
   // Show all condos
   const condoId =
@@ -622,10 +613,12 @@ function showDues() {
     // Header
     let htmlColumnLine =
       '<div class="columnHeaderCenter">Linje</div><br>';
-    let htmlColumnAccountName =
-      '<div class="columnHeaderLeft">Konto</div><br>';
     let htmlColumnDate =
       '<div class="columnHeaderRight">Dato</div><br>';
+    let htmlColumnCondoName =
+      '<div class="columnHeaderRight">Leilighet</div><br>';
+    let htmlColumnAccountName =
+      '<div class="columnHeaderLeft">Konto</div><br>';
     let htmlcolumnAmount =
       '<div class="columnHeaderRight">Beløp</div><br>';
     let htmlColumnText =
@@ -662,6 +655,14 @@ function showDues() {
         condoName =
           objCondo.getCondoName(condoId);
       }
+      htmlColumnCondoName +=
+        `
+          <div
+            class="${colorClass} leftCell one-line"
+          >
+            ${condoName}    
+          </div >
+        `;
 
       // account name
       const accountName =
@@ -734,13 +735,18 @@ function showDues() {
     document.querySelector('.div-due-columnLine').innerHTML =
       htmlColumnLine;
 
+    // Show date
+    document.querySelector('.div-due-columnDate').innerHTML =
+      htmlColumnDate;
+
+    // Show condo name
+    document.querySelector('.div-due-columnCondoName').innerHTML =
+      htmlColumnCondoName;
+
     // Show account name
     document.querySelector('.div-due-columnAccountName').innerHTML =
       htmlColumnAccountName;
 
-    // Show date
-    document.querySelector('.div-due-columnDate').innerHTML =
-      htmlColumnDate;
 
     // Show amount
     document.querySelector('.div-due-columnAmount').innerHTML =

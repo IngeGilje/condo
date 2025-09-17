@@ -1,31 +1,19 @@
 // Overview of remote heating
 
 // Activate objects
-const today =
-  new Date();
-const objRemoteheating =
-  new Remoteheating('remoteheating');
-const objCondominium =
-  new Condominium('condominium');
-const objUser =
-  new User('user');
-const objCondo =
-  new Condo('condo');
-const objAccount =
-  new Account('account');
-const objBankAccountMovement =
-  new BankAccountMovement('bankaccountmovement');
+const today = new Date();
+const objRemoteheating = new Remoteheating('remoteheating');
+const objCondominium = new Condominium('condominium');
+const objUser = new User('user');
+const objCondo = new Condo('condo');
+const objAccount = new Account('account');
+const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
 
-let condominiumArrayCreated =
-  false
-let userArrayCreated =
-  false
-let condoArrayCreated =
-  false
-let accountArrayCreated =
-  false
-let bankAccountMovementArrayCreated =
-  false
+let condominiumArrayCreated = false;
+let userArrayCreated = false;
+let condoArrayCreated = false;
+let accountArrayCreated = false;
+let bankAccountMovementArrayCreated = false;
 
 testMode();
 
@@ -47,7 +35,7 @@ const objUserPassword =
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost:8080/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
 
@@ -62,7 +50,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT account.*
         FROM condominium
-        JOIN account ON condominium.remoteHeatingAccountId = account.accountId
+        JOIN account ON condominium.paymentRemoteHeatingAccountId = account.accountId
         WHERE condominium.condominiumId = ${objUserPassword.condominiumId}    
       `;
 
@@ -224,7 +212,7 @@ socket.onmessage = (event) => {
 
           // Make events
           isEventsCreated =
-          (isEventsCreated) ? true : createEvents();
+            (isEventsCreated) ? true : createEvents();
         }
         break;
     }
@@ -637,3 +625,4 @@ function getSelectedBankAccountMovements() {
   bankAccountMovementArrayCreated =
     false;
 }
+

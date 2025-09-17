@@ -54,7 +54,7 @@ const objUserPassword =
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost:8080/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
   // Send a requests to the server

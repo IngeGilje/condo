@@ -42,7 +42,7 @@ body {
 
 .div-grid-account,
 
-.div-grid-due-search,
+.div-grid-due-filter,
 .div-grid-due,
 
 .div-grid-commoncost,
@@ -110,7 +110,7 @@ body {
 }
 
 /* Define the grid container with 5 columns*/
-.div-grid-due-search {
+.div-grid-due-filter {
   grid-template-columns: 200px 200px 200px 200px 200px;
 }
 
@@ -538,7 +538,7 @@ body {
 
 .div-grid-account input,
 
-.div-grid-due-search input,
+.div-grid-due-filter input,
 .div-grid-due input,
 
 .div-grid-commoncost input,
@@ -625,7 +625,7 @@ body {
 
 .div-grid-account select,
 
-.div-grid-due-search select,
+.div-grid-due-filter select,
 .div-grid-due select,
 
 .div-grid-commoncost select,
@@ -741,7 +741,7 @@ body {
 
 .div-grid-account button,
 
-.div-grid-due-search button,
+.div-grid-due-filter button,
 .div-grid-due button,
 
 .div-grid-commoncost button,
@@ -789,7 +789,7 @@ body {
 
 .div-grid-account button:hover,
 
-.div-grid-due-search button:hover,
+.div-grid-due-filter button:hover,
 .div-grid-due button:hover,
 
 .div-grid-commoncost button:hover,
@@ -825,7 +825,7 @@ body {
 
 .div-grid-account button:active,
 
-.div-grid-due-search button:active,
+.div-grid-due-filter button:active,
 .div-grid-due button:active,
 
 .div-grid-commoncost button:active,
@@ -1003,7 +1003,7 @@ body {
 .label-condominium-city-red,
 .label-condominium-phone-red,
 .label-condominium-email-red,
-.label-condominium-remoteHeatingAccountId-red,
+.label-condominium-incomeRemoteHeatingAccountId-red,
 .label-condominium-organizationNumber-red,
 
 .label-condo-condoId-red,
@@ -1262,8 +1262,8 @@ th:first-child {
   border-radius: 8px;
 }
 
-/* bank deposit */
-.bankDeposit {
+/* start HTML Table */
+.startHTMLTable {
   background: #fff;
   padding: 1rem;
   border-radius: 8px;

@@ -2,12 +2,14 @@
 class Condo extends Condos {
 
   // Condo information
-  condoArray = 
-  Array;
+  condoArray =
+    Array;
 
   // Show all condos
   showAllCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
 
+    let selectedOption;
+    
     let html =
       `
         <form 
@@ -26,9 +28,6 @@ class Condo extends Condos {
             class="select-${columnName}" 
           >
     `;
-
-    let selectedOption =
-      false;
 
     // Check if condo array is empty
     const numberOfRows = condoArray.length;
@@ -173,5 +172,71 @@ class Condo extends Condos {
       condoName = "-";
     }
     return condoName;
+  }
+
+  // Show all condos
+  showAllCondosHTML(className, selectAll) {
+
+    let html =
+      `
+        <div>
+          <label 
+          >
+            Velg leilighet
+          </label>
+          <select
+            class = "${className}"
+          > 
+      `;
+
+    // Check if condo array is empty
+    const numberOfRows = condoArray.length;
+    if (numberOfRows > 0) {
+      condoArray.forEach((condo) => {
+
+        html +=
+          `
+            <option
+              value = "${condo.condoId}"
+            >
+              ${condo.condoId} - ${condo.name}
+            </option >
+          `;
+      });
+
+    } else {
+
+      html +=
+        `
+          <option 
+            value = "0"
+            selected
+          >
+            Ingen leiligheter
+          </option >
+        `;
+    }
+
+    // Select all
+    if (selectAll) {
+
+      html +=
+        `
+        <option 
+          value=999999999
+          selected
+        >
+          ${selectAll}
+        </option>
+      `;
+    }
+
+    html +=
+      `
+        </select >
+      </div>
+    `;
+
+    return html;
   }
 }

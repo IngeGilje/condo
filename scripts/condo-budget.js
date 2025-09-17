@@ -1,28 +1,21 @@
 // Budget maintenance
 
 // Activate objects
-const today =
-  new Date();
-const objUser =
-  new User('user');
-const objAccount =
-  new Account('account');
-const objBudget =
-  new Budget('budget');
+const today =   new Date();
+const objUser = new User('user');
+const objAccount = new Account('account');
+const objBudget = new Budget('budget');
 
-let userArrayCreated =
-  false;
-let accountArrayCreated =
-  false;
-let budgetArrayCreated =
-  false;
+let userArrayCreated = false;
+let accountArrayCreated = false;
+let budgetArrayCreated = false;
 
 let isEventsCreated
 
 testMode();
 
 // Exit application if no activity for 1 hour
-exitIfNoActivity();
+//exitIfNoActivity();
 
 objBudget.menu();
 objBudget.markSelectedMenu('Budsjett');
@@ -35,7 +28,7 @@ const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost:8080/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
   // Send a requests to the server

@@ -1,47 +1,212 @@
-<!-- Budget Table Heading -->
-<div class="bankDeposit">
-  <table>
-    <thead>
-      <tr>
-        <th>Tekst</th>
-        <th>Dato</th>
-        <th>Beløp 2025</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <title>Felleskostnader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #fff;
+      color: #333;
+    }
 
-        <td>Bankinnskudd</td>
+    .container {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 100vh;
+    }
 
-        <td>12.09.2025</td>
+    /* Sidebar */
+    .sidebar {
+      background: #f3f3f3;
+      padding: 20px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar li {
+      margin: 10px 0;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: #222;
+    }
+    .sidebar a:hover {
+      color: #2e7d32;
+    }
 
-        <td>217 649,09</td>
+    /* Content */
+    .content {
+      padding: 20px;
+    }
 
-        <td>Fjernvarme utgift</td>
+    /* Filters section */
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    label {
+      font-size: 13px;
+      margin-bottom: 4px;
+      display: block;
+    }
+    select, input[type="date"], input[type="text"] {
+      padding: 6px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      width: 100%;
+    }
 
-      </tr>
+    /* Form section */
+    .form-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 15px;
+      max-width: 600px;
+    }
 
-      <td>Inntekter husleie</td>
+    /* Buttons */
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      min-width: 100px;
+    }
+    .btn-update { background: #2e7d32; }
+    .btn-delete { background: #4caf50; }
+    .btn-cancel { background: #c62828; }
 
-      </tr>
+    .btn:hover { opacity: 0.9; }
 
-      <td>Nettleie Lyse</td>
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #2e7d32;
+      color: white;
+    }
+    tbody tr:nth-child(even) {
+      background: #e6f4ea;
+    }
+    tbody tr:nth-child(odd) {
+      background: #c8e6c9;
+    }
+    tfoot td {
+      font-weight: bold;
+      background: #f3f3f3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <ul>
+        <li><a href="#">Login</a></li>
+        <li><a href="#">Sameie</a></li>
+        <li><a href="#">Leilighet</a></li>
+        <li><a href="#">Bankkonto sameie</a></li>
+        <li><a href="#">Konto</a></li>
+        <li><a href="#">Bruker</a></li>
+        <li><a href="#">Bankkonto for bruker</a></li>
+        <li><a href="#">Leverandør</a></li>
+        <li><a href="#">Forfall</a></li>
+        <li><a href="#">Felleskostnader</a></li>
+        <li><a href="#">Budsjett</a></li>
+        <li><a href="#">Fjernvarme</a></li>
+      </ul>
+    </aside>
 
-      </tr>
+    <!-- Main content -->
+    <main class="content">
+      <!-- Filters -->
+      <div class="filters">
+        <div>
+          <label>Velg leilighet</label>
+          <select><option>Alle</option></select>
+        </div>
+        <div>
+          <label>Fra dato</label>
+          <input type="date" value="2025-01-01">
+        </div>
+        <div>
+          <label>Til dato</label>
+          <input type="date" value="2025-09-15">
+        </div>
+      </div>
 
-      <td>Forsikring</td>
+      <!-- Form -->
+      <div class="form-section">
+        <div>
+          <label>Velg leilighet</label>
+          <select><option>3 - 95A</option></select>
+        </div>
+        <div>
+          <label>År</label>
+          <select><option>2025</option></select>
+        </div>
+        <div>
+          <label>Dag</label>
+          <select><option>15</option></select>
+        </div>
+        <div>
+          <label>* Måned­savgift</label>
+          <input type="text" value="2 329,00">
+        </div>
+      </div>
 
-      </tr>
+      <div class="form-actions">
+        <button class="btn btn-update">Oppdater</button>
+        <button class="btn btn-delete">Slett</button>
+        <button class="btn btn-cancel">Avbryt</button>
+      </div>
 
-      <td>Driftsutgifter</td>
-
-      </tr>
-
-      <td>Fjernvarme inntekt</td>
-
-      </tr>
-
-      </tr>
-    </tbody>
-  </table>
-</div>
+      <!-- Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>Forfallsdato</th>
+            <th>Beløp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>15.12.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.11.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.10.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.09.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.08.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.07.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.06.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.05.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.04.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.03.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.02.2025</td><td>2 329,00</td></tr>
+          <tr><td>15.01.2025</td><td>2 329,00</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Total</td><td>37 919,58</td></tr>
+        </tfoot>
+      </table>
+    </main>
+  </div>
+</body>
+</html>

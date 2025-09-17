@@ -31,14 +31,13 @@ objAccountReport.menu();
 objAccountReport.markSelectedMenu('Regnskapsrapport');
 
 let socket;
-socket =
-  connectingToServer();
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  window.location.href = 'http://localhost:8080/condo-login.html';
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
   let SQLquery;
@@ -86,22 +85,32 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     SQLquery =
       `
         SELECT * FROM condominium
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
         ORDER BY condominiumId;
       `;
     updateMySql(SQLquery, 'condominium', 'SELECT');
     condominiumArrayCreated =
       false;
 
+    /*
     // Sends a request to the server to get budgets
     SQLquery =
       `
         SELECT * FROM budget
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
+          AND year = '${today.getFullYear()}'
         ORDER BY budgetId;
       `;
+    */
+    // Sends a request to the server to get budgets
+    SQLquery =
+      `
+        SELECT * FROM budget
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+        ORDER BY budgetId;
+      `;
+
     updateMySql(SQLquery, 'budget', 'SELECT');
     budgetArrayCreated =
       false;
@@ -244,7 +253,10 @@ socket.onmessage = (event) => {
           // Show calculated income for next year
           showIncomeNextYear();
 
-          // Show bank deposit
+          // Show remote heating
+          showRemoteHeating();
+
+          // Show bank deposit for next year
           showBankDeposit();
 
           // Make events
@@ -269,6 +281,17 @@ socket.onmessage = (event) => {
       case 'budget':
 
         // Sends a request to the server to get accounts one more time
+        //const budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
+        /*
+        SQLquery =
+          `
+              SELECT * FROM budget
+              WHERE condominiumId = ${objUserPassword.condominiumId}
+                AND deleted <> 'Y'
+                AND year = '${budgetYear}'
+              ORDER BY budgetId;
+            `;
+        */
         SQLquery =
           `
               SELECT * FROM budget
@@ -302,9 +325,6 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-filter-fromDate')) {
 
-      // Show selected budgets
-      getSelectedBudgets();
-
       // Show selected bank account movements
       getSelectedBankAccountMovement();
     };
@@ -314,9 +334,6 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-filter-toDate')) {
 
-      // Show selected budgets
-      getSelectedBudgets();
-
       // Show selected bank account movements
       getSelectedBankAccountMovement();
     };
@@ -324,10 +341,7 @@ function createEvents() {
 
   // budget year
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-filter-fiscalYear')) {
-
-      // Show selected budgets
-      getSelectedBudgets();
+    if (event.target.classList.contains('select-filter-budgetYear')) {
 
       // Show selected bank account movements
       getSelectedBankAccountMovement();
@@ -341,9 +355,6 @@ function createEvents() {
       let priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
       priceSquareMeter = formatKronerToOre(priceSquareMeter);
       document.querySelector('.input-filter-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);;
-
-      // Show selected budgets
-      getSelectedBudgets();
 
       // Show selected bank account movements
       getSelectedBankAccountMovement();
@@ -365,28 +376,17 @@ function showLeadingTextFilter() {
         <div class="filters">
     `;
   // from date
-  html +=
-    objAccountReport.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
+  html += objAccountReport.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
 
   // To date
-  html +=
-    objAccountReport.showInputHTML('input-filter-toDate', 'Til dato', 10, 'mm.dd.åååå');
-
-  // Fiscal year
-  let fiscalYear =
-    today.getFullYear();
-  html +=
-    objBudget.selectNumberHTML('select-filter-fiscalYear', 2020, 2030, fiscalYear, 'Regnskapsår');
+  html += objAccountReport.showInputHTML('input-filter-toDate', 'Til dato', 10, 'mm.dd.åååå');
 
   // Budget year
-  let budgetYear =
-    today.getFullYear() + 1;
-  html +=
-    objBudget.selectNumberHTML('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
+  let budgetYear = today.getFullYear();
+  html += objBudget.selectNumberHTML('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
 
   // price per square meter
-  html +=
-    objAccountReport.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
+  html += objAccountReport.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
 
   html +=
     `
@@ -394,62 +394,6 @@ function showLeadingTextFilter() {
       </div>
     `;
   document.querySelector('.div-grid-accountreport-filter').innerHTML = html;
-
-  /*
-  // from date
-  date = document.querySelector('.input-filter-fromDate').value;
-  if (!validateEuroDateFormat(date)) {
-
-    // From date is not ok
-    const year =
-      String(today.getFullYear());
-    document.querySelector('.input-filter-fromDate').value =
-      "01.01." + year;
-  }
-  showIcon('input-filter-fromDate');
-
-  // to date
-  date = document.querySelector('.input-filter-toDate').value;
-  if (!validateEuroDateFormat(date)) {
-
-    // To date is not ok
-    const year =
-      String(today.getFullYear());
-    document.querySelector('.input-filter-toDate').value =
-      getCurrentDate();
-  }
-  showIcon('input-filter-toDate');
-
-  // Fiscal year
-  fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
-  if (!validateNumberHTML(fiscalYear, 2020, 2030)) {
-
-    fiscalYear =
-      today.getFullYear();
-    objBudget.selectNumber('select-filter-fiscalYear', 2020, 2030, year, 'Regnskapsår');
-    showIcon('input-filter-fiscalYear');
-  }
-  // Budget year
-  budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
-  if (!validateNumberHTML(budgetYear, 2020, 2030)) {
-
-    budgetYear =
-      today.getFullYear() + 1;
-    objBudget.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
-    showIcon('select-filter-budgetYear');
-  }
-
-  // Price per square meter
-  priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
-  priceSquareMeter = formatKronerToOre(priceSquareMeter);
-  if (!validateEuroDateFormat(priceSquareMeter)) {
-
-    // To Price per square meter is not ok
-    document.querySelector('.input-filter-priceSquareMeter').value = '30,00'
-  }
-  showIcon('input-filter-priceSquareMeter');
-}
-*/
 }
 
 // Show values for text
@@ -465,7 +409,7 @@ function showValuesFilter() {
     document.querySelector('.input-filter-fromDate').value =
       "01.01." + year;
   }
-  showIcon('input-filter-fromDate');
+  objAccountReport.showIcon('input-filter-fromDate');
 
   // to date
   date = document.querySelector('.input-filter-toDate').value;
@@ -477,17 +421,19 @@ function showValuesFilter() {
     document.querySelector('.input-filter-toDate').value =
       getCurrentDate();
   }
-  showIcon('input-filter-toDate');
+  objAccountReport.showIcon('input-filter-toDate');
 
+  /*
   // Fiscal year
   fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
   if (!validateNumberHTML(fiscalYear, 2020, 2030)) {
-
+ 
     fiscalYear =
       today.getFullYear();
     objBudget.selectNumber('select-filter-fiscalYear', 2020, 2030, year, 'Regnskapsår');
-    showIcon('input-filter-fiscalYear');
+    objAccountReport.showIcon('input-filter-fiscalYear');
   }
+  */
   // Budget year
   budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
   if (!validateNumberHTML(budgetYear, 2020, 2030)) {
@@ -495,7 +441,7 @@ function showValuesFilter() {
     budgetYear =
       today.getFullYear() + 1;
     objBudget.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
-    showIcon('select-filter-budgetYear');
+    objAccountReport.showIcon('select-filter-budgetYear');
   }
 
   // Price per square meter
@@ -505,20 +451,21 @@ function showValuesFilter() {
     // To Price per square meter is not ok
     document.querySelector('.input-filter-priceSquareMeter').value = '30,00'
   }
-  showIcon('input-filter-priceSquareMeter');
+  objAccountReport.showIcon('input-filter-priceSquareMeter');
 }
 
 // Show budgets
 function showBudget() {
 
   // check for valid filter
-  if (validateValues()) {
+  if (validateFilter()) {
 
     let totalBudgetAmount = 0;
     let totalAccountAmount = 0;
     let rowNumber = 0;
 
-    const fiscalYear = document.querySelector('.select-filter-fiscalYear').value;
+    //const fiscalYear = document.querySelector('.select-filter-fiscalYear').value;
+    const budgetYear = document.querySelector('.select-filter-budgetYear').value;
     html =
       `
         <!-- Budget Table Heading -->
@@ -527,8 +474,8 @@ function showBudget() {
             <tr>
               <th>Konto</th>
               <th>Kontotype</th>
-              <th>Beløp ${fiscalYear}</th>
-              <th>Budsjett ${fiscalYear}</th>
+              <th>Beløp</th>
+              <th>Budsjett ${budgetYear}</th>
               <th>Avvik</th>
             </tr>
           </thead>
@@ -584,9 +531,9 @@ function showBudget() {
           <td>${accountAmount}</td>
         `;
 
-      // Budget Amount for fiscal year
-      const fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
-      let budgetAmount = getBudgetAmount(account.accountId, fiscalYear);
+      // Budget Amount for fiscal
+      const budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
+      let budgetAmount = getBudgetAmount(account.accountId, budgetYear);
       html +=
         `
           <td>${budgetAmount}</td>
@@ -680,17 +627,18 @@ function showBudget() {
 }
 
 // Check for valid filter values
-function validateValues() {
+function validateFilter() {
 
-  let fromDate =
-    document.querySelector('.input-filter-fromDate').value;
+  let fromDate = document.querySelector('.input-filter-fromDate').value;
   const validFromDate = validateNorDateHTML(fromDate);
 
   let toDate = document.querySelector('.input-filter-toDate').value;
   const validToDate = validateNorDateHTML(toDate);
 
+  /*
   let fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
   const validFiscalYear = validateNumberHTML(fiscalYear, 2020, 2030);
+  */
 
   let budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
   const validBudgetYear = validateNumberHTML(budgetYear, 2020, 2030);
@@ -701,7 +649,7 @@ function validateValues() {
 
   validDateInterval = (fromDate <= toDate) ? true : false;
 
-  return (validFiscalYear && validBudgetYear && validFromDate && validToDate && validDateInterval) ? true : false;
+  return (validBudgetYear && validFromDate && validToDate && validDateInterval) ? true : false;
 }
 
 // Accumulate all bank account movement for specified account id
@@ -941,8 +889,9 @@ function getFixedCost(fromDate, toDate) {
 
 // Show current bank deposit and estimated bank deposit for next year
 function showBankDeposit() {
-
-  html =
+  let budgetYear = document.querySelector('.select-filter-budgetYear').value;
+  html = startHTMLTable();
+  /*
     `
       <!-- Budget Table Heading -->
       <div class="bankDeposit">
@@ -951,12 +900,12 @@ function showBankDeposit() {
             <tr>
               <th>Tekst</th>
               <th>Dato</th>
-              <th>Beløp ${fiscalYear}</th>
+              <th>Beløp ${budgetYear}</th>
             </tr>
           </thead>
         <tbody>
-          <tr>
     `;
+  */
 
   let rowNumber = 0;
   let accAmount = 0;
@@ -966,6 +915,11 @@ function showBankDeposit() {
   // check if the number is odd
   let colorClass =
     (rowNumber % 2 !== 0) ? "green" : "";
+
+  html +=
+    `
+      <tr>
+    `;
 
   // Text
   html +=
@@ -999,13 +953,19 @@ function showBankDeposit() {
       <td>${bankDepositAmount}</td>
     `;
 
+  html +=
+    `
+      </tr>
+    `;
   accAmount += Number(formatKronerToOre(bankDepositAmount));
+
+  // Next budget year
+  budgetYear = Number(document.querySelector('.select-filter-budgetYear').value) + 1;
 
   // budget
   budgetArray.forEach((budget) => {
 
-    const budgetYear = document.querySelector('.select-filter-budgetYear').value;
-    if (Number(budget.year) === Number(budgetYear)) {
+    if (Number(budget.year) === budgetYear) {
 
       if (Number(budget.amount) !== 0) {
 
@@ -1067,6 +1027,11 @@ function showBankDeposit() {
   colorClass =
     (rowNumber % 2 !== 0) ? "green" : "";
 
+  html +=
+    `
+      <tr>
+   `;
+
   // Text
   html +=
     `
@@ -1106,9 +1071,6 @@ function showBankDeposit() {
 // Get selected bank account movement 
 function getSelectedBankAccountMovement() {
 
-  const fiscalYear =
-    Number(document.querySelector('.select-filter-fiscalYear').value);
-
   const budgetYear =
     Number(document.querySelector('.select-filter-budgetYear').value);
 
@@ -1131,30 +1093,165 @@ function getSelectedBankAccountMovement() {
     false;
 }
 
-// Get selected budgets
-function getSelectedBudgets() {
+// Show remote heating
+function showRemoteHeating() {
 
-  const fiscalYear =
-    Number(document.querySelector('.select-filter-fiscalYear').value);
+  // check for valid filter
+  if (validateFilter()) {
 
-  const budgetYear =
-    Number(document.querySelector('.select-filter-budgetYear').value);
+    let rowNumber = 0;
 
-  const fromDate =
-    convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value);
-  const toDate =
-    convertDateToISOFormat(document.querySelector('.input-filter-toDate').value);
+    const budgetYear = document.querySelector('.select-filter-budgetYear').value;
+    html =
+      `
+        <!-- Budget Table Heading -->
+        <table>
+          <thead>
+            <tr>
+              <th>Betalings dato</th>
+              <th>Beløp</th>
+              <th>Kilowatt timer</th>
+              <th>Pris/Kilowatt timer</th>
+            </tr>
+          </thead>
+        <tbody>
+      `;
 
-  // Sends a request to the server to get selected bank account movements
-  SQLquery =
-    `
-      SELECT * FROM budget
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      ORDER BY budgetId;
-    `;
-  console.log(SQLquery);
-  updateMySql(SQLquery, 'budget', 'SELECT');
-  budgetArrayCreated =
-    false;
+    // Filter
+    let fromDate = convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value);
+    let toDate = convertDateToISOFormat(document.querySelector('.input-filter-toDate').value);
+
+    // Accomulate
+    let sumColumnPayment = 0;
+    let sumColumnNumberKWHour = 0;
+
+    // Get row number for payment Remote Heating Account Id
+    const objCondominiumRowNumber =
+      condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    if (objCondominiumRowNumber !== -1) {
+
+      bankAccountMovementArray.forEach((bankaccountmovement) => {
+        if (bankaccountmovement.accountId === condominiumArray[objCondominiumRowNumber].paymentRemoteHeatingAccountId) {
+          if (Number(bankaccountmovement.date) >= Number(fromDate) && Number(bankaccountmovement.date) <= Number(toDate)) {
+
+            rowNumber++;
+
+            // check if the number is odd
+            const colorClass =
+              (rowNumber % 2 !== 0) ? "green" : "";
+            html +=
+              `
+                <tr>
+              `;
+
+            // date
+            const date = formatToNorDate(bankaccountmovement.date);
+            // Date
+            html +=
+              `
+                <td>${date}</td>
+              `;
+
+            // payment
+            let payment =
+              formatOreToKroner(bankaccountmovement.payment);
+            html +=
+              `
+                <td>${payment}</td>
+              `;
+
+            // Number of kw/h
+            let numberKWHour =
+              formatOreToKroner(bankaccountmovement.numberKWHour);
+            html +=
+              `
+                <td>${numberKWHour}</td>
+              `;
+
+            // Price per KWHour
+            payment =
+              Number(bankaccountmovement.payment);
+            numberKWHour =
+              Number(bankaccountmovement.numberKWHour);
+
+            let priceKWHour = '';
+            if (numberKWHour !== 0 && payment !== 0) {
+
+              priceKWHour = (-1 * payment) / numberKWHour;
+              priceKWHour =
+                priceKWHour.toFixed(2);
+            }
+            html +=
+              `
+                <td>${priceKWHour}</td>
+              `;
+
+            // Accomulate
+            // payment
+            sumColumnPayment += Number(bankaccountmovement.payment);
+
+            // KWHour
+            sumColumnNumberKWHour += Number(bankaccountmovement.numberKWHour);
+          }
+        }
+        html +=
+          `
+            </tr>
+          `;
+      });
+
+      html +=
+        `
+            <tr>
+          `;
+
+
+      html +=
+        `
+          <td>Sum</td>
+        `;
+
+      // Payment
+      let payment = formatOreToKroner(String(sumColumnPayment));
+      html +=
+        `
+          <td>${payment}</td>
+        `;
+
+      // Kilowatt/hour
+      const KWHour = formatOreToKroner(String(sumColumnNumberKWHour));
+      html +=
+        `
+          <td>${KWHour}</td>
+        `;
+
+      // Price per KWHour
+      payment = Number(sumColumnPayment);
+      numberKWHour = Number(sumColumnNumberKWHour);
+
+      let sumPriceKWHour = '-';
+      if (payment !== 0 && numberKWHour !== 0) {
+
+        sumPriceKWHour =
+          ((-1 * payment) / numberKWHour);
+        sumPriceKWHour =
+          sumPriceKWHour.toFixed(2);
+      }
+
+      html +=
+        `
+          <td>${sumPriceKWHour}</td>
+        `;
+
+      html +=
+        `
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      document.querySelector('.div-grid-accountreport-remoteHeating').innerHTML =
+        html;
+    }
+  }
 }

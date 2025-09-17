@@ -433,7 +433,7 @@ function createEvents() {
         // web server
         case 1:
 
-          window.location.href = 'http://localhost:8080/condo-bankaccountmovement.html'
+          window.location.href = 'http://localhost/condo-bankaccountmovement.html'
           break
         // Test web server/ local web server
         case 2:

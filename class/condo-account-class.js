@@ -159,5 +159,72 @@ class Account extends Condos {
 
     return accountId;
   }
+
+
+  // Show all accounts
+  showAllAccountsHTML(className, selectAll) {
+
+    let html =
+      `
+        <div>
+          <label 
+          >
+            Velg Konto
+          </label>
+          <select
+            class="${className}"
+          > 
+      `;
+
+    // Check if account array is empty
+    const numberOfRows = accountArray.length;
+    if (numberOfRows > 0) {
+      accountArray.forEach((account) => {
+
+        html +=
+          `
+            <option
+              value = "${account.accountId}"
+            >
+              ${account.accountId} - ${account.name}
+            </option >
+          `;
+      });
+
+    } else {
+
+      html +=
+        `
+          <option 
+            value = "0"
+            selected
+          >
+            Ingen leiligheter
+          </option >
+        `;
+    }
+
+    // Select all
+    if (selectAll) {
+
+      html +=
+        `
+        <option 
+          value=999999999
+          selected
+        >
+          ${selectAll}
+        </option>
+      `;
+    }
+
+    html +=
+      `
+        </select >
+      </div>
+    `;
+
+    return html;
+  }
 }
 

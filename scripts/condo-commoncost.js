@@ -1,31 +1,19 @@
 // Common cost maintenance
 
 // Activate objects
-const today =
-  new Date();
-const objUser =
-  new User('user');
-const objCondo =
-  new Condo('condo');
-const objAccount =
-  new Account('account');
-const objDue =
-  new Due('due');
-const objCondominium =
-  new Condominium('condominium');
-const objCommonCost =
-  new CommonCost('commoncost');
+const today = new Date();
+const objUser = new User('user');
+const objCondo = new Condo('condo');
+const objAccount = new Account('account');
+const objDue = new Due('due');
+const objCondominium = new Condominium('condominium');
+const objCommonCost = new CommonCost('commoncost');
 
-let userArrayCreated =
-  false
-let condoArrayCreated =
-  false
-let accountArrayCreated =
-  false
-let condominiumArrayCreated =
-  false
-let dueArrayCreated =
-  false
+let userArrayCreated = false;
+let condoArrayCreated = false;
+let accountArrayCreated = false;
+let condominiumArrayCreated = false;
+let dueArrayCreated = false;
 
 testMode();
 
@@ -47,7 +35,7 @@ const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
-    'http://localhost:8080/condo-login.html';
+    'http://localhost/condo-login.html';
 } else {
 
 
