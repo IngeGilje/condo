@@ -367,14 +367,8 @@ function createEvents() {
 // Show leading text Filter
 function showLeadingTextFilter() {
 
-  let html =
-    `
-      <!-- Main -->
-      <div class="main">
+  let html = startHTMLFilters();
 
-        <!-- Filters -->
-        <div class="filters">
-    `;
   // from date
   html += objAccountReport.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
 
@@ -388,11 +382,7 @@ function showLeadingTextFilter() {
   // price per square meter
   html += objAccountReport.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
 
-  html +=
-    `
-        </div>
-      </div>
-    `;
+  html += endHTMLFilters();
   document.querySelector('.div-grid-accountreport-filter').innerHTML = html;
 }
 
@@ -423,17 +413,6 @@ function showValuesFilter() {
   }
   objAccountReport.showIcon('input-filter-toDate');
 
-  /*
-  // Fiscal year
-  fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
-  if (!validateNumberHTML(fiscalYear, 2020, 2030)) {
- 
-    fiscalYear =
-      today.getFullYear();
-    objBudget.selectNumber('select-filter-fiscalYear', 2020, 2030, year, 'Regnskapsår');
-    objAccountReport.showIcon('input-filter-fiscalYear');
-  }
-  */
   // Budget year
   budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
   if (!validateNumberHTML(budgetYear, 2020, 2030)) {

@@ -1947,11 +1947,17 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
 function startHTMLFilters() {
 
   return `
-      <!-- Main -->
-      <div class="main">
+      <!-- Filters -->
+      <div class="filters">
+    `;
+}
 
-        <!-- Filters -->
-        <div class="filters">
+// HTML end for filters
+function endHTMLFilters() {
+
+  return `
+        <!-- End Filters -->
+        <div>
     `;
 }
 
@@ -2041,7 +2047,7 @@ function endHTMLTable() {
       </div>
     `;
 }
-
+ 
 /*
 // Show icon
 function showIcon(className) {

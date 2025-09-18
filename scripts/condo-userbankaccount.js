@@ -1,21 +1,14 @@
 // Maintenance of user bank account
 
 // Activate objects
-const today =
-  new Date();
-const objUser =
-  new User('user');
-const objAccount =
-  new Account('account');
-const objUserBankAccount =
-  new UserBankAccount('userbankaccount');
+const today = new Date();
+const objUser = new User('user');
+const objAccount = new Account('account');
+const objUserBankAccount = new UserBankAccount('userbankaccount');
 
-let userArrayCreated =
-  false
-let accountArrayCreated =
-  false
-let userBankAccountArrayCreated =
-  false
+let userArrayCreated = false;
+let accountArrayCreated = false;
+let userBankAccountArrayCreated = false;
 
 testMode();
 
@@ -28,12 +21,10 @@ objUserBankAccount.menu();
 objUserBankAccount.markSelectedMenu('Bankkonto for bruker');
 
 let socket;
-socket =
-  connectingToServer();
+socket = connectingToServer();
 
 // Validate user/password
-const objUserPassword =
-  JSON.parse(sessionStorage.getItem('user'));
+const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =

@@ -1,134 +1,80 @@
-`
-        <div class="startHTMLTable">
-          <table>
-      
-      <thead>
-        <tr>
-    
-          <th>Tekst</th>
-        
-          <th>Dato</th>
-        
-          <th>Beløp 2025</th>
-        
-          </tr>   
-        </thead>
-     
-      <tbody>
-        <tr>
-    
-      <tr>
-    
-        <td>Bankinnskudd</td>
-      
-        <td>16.09.2025</td>
-      
-        <td>228 097,09</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>Fjernvarme utgift</td>
-      
-        <td></td>
-      
-        <td>-110 000,00</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>Inntekter husleie</td>
-      
-        <td></td>
-      
-        <td>185 628,00</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>Nettleie Lyse</td>
-      
-        <td></td>
-      
-        <td>-10 000,00</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>Forsikring</td>
-      
-        <td></td>
-      
-        <td>-55 000,00</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>Driftsutgifter</td>
-      
-        <td></td>
-      
-        <td>-50 000,00</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>Fjernvarme inntekt</td>
-      
-        <td></td>
-      
-        <td>110 000,00</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>TV og bredbånd</td>
-      
-        <td></td>
-      
-        <td>-8 316,00</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>Banktjenester</td>
-      
-        <td></td>
-      
-        <td>-1 000,00</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>Velforening</td>
-      
-        <td></td>
-      
-        <td>-1 400,00</td>
-      
-      </tr>
-    
-      <tr>
-    
-        <td>Estimert bankinnskudd</td>
-      
-        <td>16.09.2026</td>
-      
-        <td>288 009,09</td>
-      
-      </tr>
-    
-          </tr>
-        </tbody>
-      
-        </table>
-      </div>
+<!-- Main -->
+<div class="main">
+
+  <!-- Filters -->
+  <div class="filters">
+
+    <div>
+      <label class="one-line">
+        Fra dato
+      </label>
+      <input type="text" class="input-filter-fromDate icon-input one-line" maxlength="10" placeholder="mm.dd.åååå">
+    </div>
+
+    <div>
+      <label class="one-line">
+        Til dato
+      </label>
+      <input type="text" class="input-filter-toDate icon-input one-line" maxlength="10" placeholder="mm.dd.åååå">
+    </div>
+
+    <div>
+      <label for="selectedNumber">
+        Budsjettår
+      </label>
+      <select class="select-filter-budgetYear" id="selectedNumber" name="selectedNumber">
+
+        <option value="2020">
+          2020
+        </option>
+
+        <option value="2021">
+          2021
+        </option>
+
+        <option value="2022">
+          2022
+        </option>
+
+        <option value="2023">
+          2023
+        </option>
+
+        <option value="2024">
+          2024
+        </option>
+
+        <option value="2025" selected>
+          2025
+        </option>
+
+        <option value="2026">
+          2026
+        </option>
+
+        <option value="2027">
+          2027
+        </option>
+
+        <option value="2028">
+          2028
+        </option>
+
+        <option value="2029">
+          2029
+        </option>
+
+        <option value="2030">
+          2030
+        </option>
+
+      </select>
+    </div>
+
+    <div>
+      <label class="one-line">
+        Kvadratmeterpris
+      </label>
+      <input type="text" class="input-filter-priceSquareMeter icon-input one-line" maxlength="8" placeholder="">
+    </div>
+  </div>
