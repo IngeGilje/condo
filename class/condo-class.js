@@ -1973,6 +1973,65 @@ function startHTMLTable() {
       `;
 }
 
+function HTMLTableHeader(...texts) {
+
+  let html = `
+      <thead>
+        <tr>
+    `;
+
+  texts.forEach((text) => {
+
+    html += `
+          <th>${text}</th>
+        `;
+  });
+
+  html += `
+          </tr>   
+        </thead>
+     `;
+  return html;
+}
+
+// Start body table
+function startHTMLTableBody() {
+
+  let html = `
+      <tbody>
+        <tr>
+    `;
+  return html;
+}
+
+// End body table
+function endHTMLTableBody() {
+
+  let html = `
+      </tbody>
+    `;
+  return html;
+}
+
+// One row in a table
+function HTMLTableRow(...texts) {
+
+  let html = `
+      <tr>
+    `;
+  texts.forEach((text) => {
+
+    html += `
+        <td>${text}</td>
+      `;
+  });
+
+  html += `
+      </tr>
+    `;
+  return html;
+}
+
 // End of HTML table
 function endHTMLTable() {
 
@@ -1983,92 +2042,6 @@ function endHTMLTable() {
     `;
 }
 
-// Start of HTML table Header
-function startHTMLTableHeader() {
-  return `
-      <thead>
-    `;
-}
-
-// End of HTML table Header
-function endHTMLTableHeader() {
-  return `
-      </thead>
-    `;
-}
-
-// Start of HTML table line
-function startHTMLTableRow() {
-  return `
-      <tr>
-    `;
-}
-
-// End of HTML table line
-function endHTMLTableRow() {
-  return `
-      </tr>
-    `;
-}
-
-// Start of HTML table cell
-function startHTMLTableCell() {
-  return `
-      <td>
-    `;
-}
-
-// End of HTML table cell
-function endHTMLTableCell() {
-  return `
-      </td>
-    `;
-}
-
-// Start of HTML table head cell
-function startHTMLTableCell() {
-  return `
-      <th>
-    `;
-}
-
-// End of HTML table head cell
-function startHTMLTableCell() {
-  return `
-      </th>
-    `;
-}
-
-// Start of HTML table cell
-function startHTMLTableCell() {
-  return `
-      <td>
-    `;
-}
-
-// End of HTML table cell
-function endHTMLTableCell() {
-  return `
-      </td>
-    `;
-}
-/*
-
-     <!-- Budget Table Heading -->
-      <div class="bankDeposit">
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>Tekst</th>
-              <th>Dato</th>
-              <th>Beløp ${budgetYear}</th>
-            </tr>
-          </thead>
-        <tbody>
-*/
 /*
 // Show icon
 function showIcon(className) {

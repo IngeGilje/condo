@@ -466,21 +466,9 @@ function showBudget() {
 
     //const fiscalYear = document.querySelector('.select-filter-fiscalYear').value;
     const budgetYear = document.querySelector('.select-filter-budgetYear').value;
-    html =
-      `
-        <!-- Budget Table Heading -->
-        <table>
-          <thead>
-            <tr>
-              <th>Konto</th>
-              <th>Kontotype</th>
-              <th>Beløp</th>
-              <th>Budsjett ${budgetYear}</th>
-              <th>Avvik</th>
-            </tr>
-          </thead>
-        <tbody>
-      `;
+
+    let html = startHTMLTable();
+    html += HTMLTableHeader('Konto', 'Kontotype', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
 
     accountArray.forEach((account) => {
 
@@ -489,15 +477,6 @@ function showBudget() {
       // check if the number is odd
       const colorClass =
         (rowNumber % 2 !== 0) ? "green" : "";
-      html +=
-        `
-          <tr>
-        `;
-      //account Name =
-      html +=
-        `
-          <td>${account.name}</td>
-        `;
 
       // fixed cost/ variable cost
       let costType = "";
@@ -515,113 +494,54 @@ function showBudget() {
           costType = "Variabel kostnad";
           break;
       }
-      html +=
-        `
-          <td>${costType}</td>
-        `;
 
       // bank account movement for selected account
-      let accountAmount =
-        getTotalMovementsBankAccount(account.accountId);
-      accountAmount =
-        formatOreToKroner(accountAmount);
-
-      html +=
-        `
-          <td>${accountAmount}</td>
-        `;
+      let accountAmount = getTotalMovementsBankAccount(account.accountId);
+      accountAmount = formatOreToKroner(accountAmount);
 
       // Budget Amount for fiscal
       const budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
       let budgetAmount = getBudgetAmount(account.accountId, budgetYear);
-      html +=
-        `
-          <td>${budgetAmount}</td>
-        `;
 
       // Deviation
-      accountAmount =
-        Number(formatKronerToOre(accountAmount));
-      budgetAmount =
-        Number(formatKronerToOre(budgetAmount));
-      let deviation =
-        accountAmount - budgetAmount;
-      deviation =
-        formatOreToKroner(String(deviation));
-      html +=
-        `
-          <td>${deviation}</td>
-        `;
+      accountAmount = Number(formatKronerToOre(accountAmount));
+      budgetAmount = Number(formatKronerToOre(budgetAmount));
+      let deviation = accountAmount - budgetAmount;
 
       // Accomulate
-      totalAccountAmount +=
-        Number(accountAmount);
+      totalAccountAmount += Number(accountAmount);
+      totalBudgetAmount += Number(budgetAmount);
 
-      totalBudgetAmount +=
-        Number(budgetAmount);
-
-      html +=
-        `
-          </tr>
-        `;
+      // Format amount
+      accountAmount = formatOreToKroner(String(accountAmount));
+      budgetAmount = formatOreToKroner(String(budgetAmount));
+      deviation = formatOreToKroner(String(deviation));
+      html += HTMLTableRow(account.name, costType, accountAmount, budgetAmount, deviation);
     });
 
-    // Show total line
-
-    html +=
-      `
-        <tr>
-      `;
-
-    // Sum
-    html +=
-      `
-        <td>Sum</td>
-      `;
-
-    html +=
-      `
-        <td></td>
-      `;
+    // Sum line
 
     // Total amount annual accounts
     totalAccountAmount =
       formatOreToKroner(totalAccountAmount);
 
-    html +=
-      `
-        <td>${totalAccountAmount}</td>
-      `;
-
     // Budget fiscal year
     totalBudgetAmount =
       formatOreToKroner(String(totalBudgetAmount));
 
-    html +=
-      `
-        <td>${totalBudgetAmount}</td>
-      `;
-
     // Total deviation
-    totalAccountAmount =
-      formatKronerToOre(totalAccountAmount);
-    totalBudgetAmount =
-      formatKronerToOre(totalBudgetAmount);
-    let deviation =
-      Number(totalAccountAmount) - Number(totalBudgetAmount);
-    deviation =
-      formatOreToKroner(String(deviation));
-    html +=
-      `
-        <td>${deviation}</td>
-      `;
+    totalAccountAmount = formatKronerToOre(totalAccountAmount);
+    totalBudgetAmount = formatKronerToOre(totalBudgetAmount);
+    let deviation = Number(totalAccountAmount) - Number(totalBudgetAmount);
 
-    html +=
-      `
-            </tr>
-          <tbody>
-        </table>
-      `;
+    deviation = formatOreToKroner(String(deviation));
+    totalAccountAmount = formatOreToKroner(String(totalAccountAmount));
+    totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
+
+    html += HTMLTableRow('Sum', '', totalAccountAmount, totalBudgetAmount, deviation);
+    html += endHTMLTableBody();
+    html += endHTMLTable();
+
     document.querySelector('.div-grid-accountreport-fiscalBudget').innerHTML = html;
   }
 }
@@ -634,11 +554,6 @@ function validateFilter() {
 
   let toDate = document.querySelector('.input-filter-toDate').value;
   const validToDate = validateNorDateHTML(toDate);
-
-  /*
-  let fiscalYear = Number(document.querySelector('.select-filter-fiscalYear').value);
-  const validFiscalYear = validateNumberHTML(fiscalYear, 2020, 2030);
-  */
 
   let budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
   const validBudgetYear = validateNumberHTML(budgetYear, 2020, 2030);
@@ -727,20 +642,10 @@ function showIncomeNextYear() {
   let totalSquareMeters = 0;
   let totalFixedCosts = 0;
 
-  html =
-    `<div class="incomeNextYear">
-      <table>
-        <thead>
-          <tr>
-            <th>Leilighet</th>
-            <th>Kvadratmeter</th>
-            <th>Faste kostnader</th>
-            <th>Felleskostnad måned</th>
-            <th>Felleskostnad år</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
+  let html = startHTMLTable();
+
+  // Header
+  html += HTMLTableHeader('Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad år');
 
   condoArray.forEach((condo) => {
 
@@ -750,26 +655,9 @@ function showIncomeNextYear() {
     const colorClass =
       (rowNumber % 2 !== 0) ? "green" : "";
 
-    //  condo Name =
-    html +=
-      `
-        <td>${condo.name}</td>
-      `;
-
     // Square meters
     let numSquareMeters = Number(condo.squareMeters);
     let strSquareMeters = formatOreToKroner(condo.squareMeters);
-
-    html +=
-      `
-        <td>${strSquareMeters}</td>
-      `;
-
-    // Fixed costs
-    html +=
-      `
-        <td>${strFixedCost}</td>
-      `;
 
     // Common costs per month
     let priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
@@ -779,23 +667,11 @@ function showIncomeNextYear() {
     let strCommonCostsMonth = String(numCommonCostsMonth + numFixedCost);
     strCommonCostsMonth = formatOreToKroner(strCommonCostsMonth);
 
-    html +=
-      `
-        <td>${strCommonCostsMonth}</td>
-      `;
-
     // Common cost per Year
     let numCommonCostsYear = (numCommonCostsMonth + numFixedCost) * 12;
     let strCommonCostsYear = formatOreToKroner(String(numCommonCostsYear));
-    html +=
-      `
-        <td>${strCommonCostsYear}</td>
-      `;
 
-    html +=
-      `
-        </tr>
-      `;
+    html += HTMLTableRow(condo.name, strSquareMeters, strFixedCost, strCommonCostsMonth, strCommonCostsYear);
 
     // Accomulate
     totalSquareMeters +=
@@ -810,51 +686,21 @@ function showIncomeNextYear() {
 
   // accumulator line
 
-  html +=
-    `
-      <tr>
-    `;
-
-  // Condo
-  html +=
-    `
-      <td></td>
-    `;
-
   // Square meter
   const strSquareMeters = formatOreToKroner(String(totalSquareMeters));
-  html +=
-    `
-      <td>${strSquareMeters}</td>
-    `;
 
   // Fixed costs
   strFixedCost = formatOreToKroner(String(totalFixedCosts));
-  html +=
-    `
-      <td>${strFixedCost}</td>
-    `;
 
   // Common cost per month
   const strCommonCostsMonth = formatOreToKroner(String(totalCommonCostsMonth));
-  html +=
-    `
-      <td>${strCommonCostsMonth}</td>
-    `;
 
   // Common cost per year
   const strCommonCostsYear = formatOreToKroner(String(totalCommonCostsYear));
-  html +=
-    `
-      <td>${strCommonCostsYear}</td>
-    `;
 
-  html +=
-    `
-          </tbody>
-        </table>
-      </div>
-    `;
+  html += HTMLTableRow('', strSquareMeters, strFixedCost, strCommonCostsMonth, strCommonCostsYear);
+  html += endHTMLTableBody();
+  html += endHTMLTable();
   document.querySelector('.div-grid-accountreport-budget').innerHTML = html;
 }
 
@@ -880,7 +726,6 @@ function getFixedCost(fromDate, toDate) {
           fixedCost +=
             Number(bankAccountMovement.payment);
         }
-
       }
     }
   })
@@ -890,22 +735,9 @@ function getFixedCost(fromDate, toDate) {
 // Show current bank deposit and estimated bank deposit for next year
 function showBankDeposit() {
   let budgetYear = document.querySelector('.select-filter-budgetYear').value;
-  html = startHTMLTable();
-  /*
-    `
-      <!-- Budget Table Heading -->
-      <div class="bankDeposit">
-        <table>
-          <thead>
-            <tr>
-              <th>Tekst</th>
-              <th>Dato</th>
-              <th>Beløp ${budgetYear}</th>
-            </tr>
-          </thead>
-        <tbody>
-    `;
-  */
+
+  let html = startHTMLTable();
+  html += HTMLTableHeader('Tekst', 'Dato', `Beløp ${budgetYear}`);
 
   let rowNumber = 0;
   let accAmount = 0;
@@ -916,16 +748,7 @@ function showBankDeposit() {
   let colorClass =
     (rowNumber % 2 !== 0) ? "green" : "";
 
-  html +=
-    `
-      <tr>
-    `;
-
-  // Text
-  html +=
-    `
-      <td>Bankinnskudd</td>
-    `;
+  html += startHTMLTableBody();
 
   // Dato
   let closingBalanceDate = "";
@@ -937,26 +760,14 @@ function showBankDeposit() {
     closingBalanceDate = formatToNorDate(closingBalanceDate);
   }
 
-  html +=
-    `
-      <td>${closingBalanceDate}</td>
-    `;
-
   // Bank deposit
   let bankDepositAmount = "";
 
   bankDepositAmount = (bankAccountArray[objBankAccountRowNumber].closingBalance);
   bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
-  html +=
-    `
-      <td>${bankDepositAmount}</td>
-    `;
+  html += HTMLTableRow('Bankinnskudd', closingBalanceDate, bankDepositAmount);
 
-  html +=
-    `
-      </tr>
-    `;
   accAmount += Number(formatKronerToOre(bankDepositAmount));
 
   // Next budget year
@@ -964,58 +775,34 @@ function showBankDeposit() {
 
   // budget
   budgetArray.forEach((budget) => {
-
     if (Number(budget.year) === budgetYear) {
-
       if (Number(budget.amount) !== 0) {
 
         rowNumber++;
 
-        html +=
-          `
-            <tr>
-          `;
-
         // check if the number is odd
-        colorClass =
-          (rowNumber % 2 !== 0) ? "green" : "";
+        colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
-        // Text
-        const objAccountRowNumber =
-          accountArray.findIndex(account => account.accountId === budget.accountId);
+        // Account Name
+        let name = '';
+
+        const objAccountRowNumber = accountArray.findIndex(account => account.accountId === budget.accountId);
         if (objAccountRowNumber !== -1) {
 
-          const name =
-            accountArray[objAccountRowNumber].name;
-          html +=
-            `
-              <td>${name}</td>
-            `;
+          name = accountArray[objAccountRowNumber].name;
         }
 
         // Dato
-        html +=
-          `
-              <td></td>
-            `;
 
         // budget amount
         let amount = Number(budget.amount);
         amount = formatOreToKroner(amount);
 
-        html +=
-          `
-            <td>${amount}</td>
-          `;
-
         // accumulate
         const numAmmount = Number(formatKronerToOre(amount));
         accAmount += numAmmount;
 
-        html +=
-          `
-            </tr>
-          `;
+        html += HTMLTableRow(name, '', amount);
       }
     }
   });
@@ -1027,17 +814,6 @@ function showBankDeposit() {
   colorClass =
     (rowNumber % 2 !== 0) ? "green" : "";
 
-  html +=
-    `
-      <tr>
-   `;
-
-  // Text
-  html +=
-    `
-      <td>Estimert bankinnskudd</td>
-    `;
-
   // Dato
   closingBalanceDate = Number(bankAccountArray[objBankAccountRowNumber].closingBalanceDate);
 
@@ -1045,26 +821,14 @@ function showBankDeposit() {
   closingBalanceDate = closingBalanceDate + 10000;
   closingBalanceDate = formatToNorDate(String(closingBalanceDate));
 
-  html +=
-    `
-    <td>${closingBalanceDate}</td>
-  `;
-
   // Bank deposit next year
   bankDepositAmount = formatOreToKroner(String(accAmount));
 
-  html +=
-    `
-    <td>${bankDepositAmount}</td>
-  `;
+  html += HTMLTableRow('Estimert bankinnskudd', closingBalanceDate, bankDepositAmount);
 
-  html +=
-    `
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    `;
+  html += endHTMLTableBody();
+  html += endHTMLTable();
+
   document.querySelector('.div-grid-accountreport-bankdeposit').innerHTML = html;
 }
 
