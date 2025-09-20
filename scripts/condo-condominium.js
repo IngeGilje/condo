@@ -117,8 +117,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('userTable');
 
-          userArray =
-            objInfo.tableArray;
+          userArray = objInfo.tableArray;
           userArrayCreated =
             true;
           break;
@@ -128,8 +127,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('accountTable');
 
-          accountArray =
-            objInfo.tableArray;
+          accountArray = objInfo.tableArray;
           accountArrayCreated =
             true
           break;
@@ -139,8 +137,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // bankaccount table
           console.log('bankAccountTable');
 
-          bankAccountArray =
-            objInfo.tableArray;
+          bankAccountArray = objInfo.tableArray;
           bankAccountArrayCreated =
             true
           break;
@@ -151,8 +148,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('condominiumTable');
 
           // array including objects with condominium information
-          condominiumArray =
-            objInfo.tableArray;
+          condominiumArray = objInfo.tableArray;
           condominiumArrayCreated =
             true
 
@@ -173,8 +169,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(condominiumId);
 
             // Make events
-            isEventsCreated =
-              (isEventsCreated) ? true : createEvents();
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
           }
           break;
       }

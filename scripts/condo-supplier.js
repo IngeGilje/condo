@@ -97,8 +97,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('userTable');
 
-          userArray =
-            objInfo.tableArray;
+          userArray = objInfo.tableArray;
           userArrayCreated =
             true;
           break;
@@ -108,8 +107,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('accountTable');
 
-          accountArray =
-            objInfo.tableArray;
+          accountArray = objInfo.tableArray;
           accountArrayCreated =
             true;
           break;
@@ -120,8 +118,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('supplierTable');
 
           // array including objects with supplier information
-          supplierArray =
-            objInfo.tableArray;
+          supplierArray = objInfo.tableArray;
           supplierArrayCreated =
             true;
 

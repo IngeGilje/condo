@@ -96,6 +96,27 @@ class Condos {
     return html;
   }
 
+  // Show input date
+  showInputHTMLDate(className, labelText, maxlength, placeholder) {
+
+    let html =
+      `
+        <div>
+          <label
+            class="one-line"
+          >
+            ${labelText}
+          </label>
+          <input 
+            type="date" 
+            class="${className}"
+            value="2025-09-15"
+          >
+        </div>
+      `;
+    return html;
+  }
+  
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
 
@@ -1220,7 +1241,6 @@ class Condos {
   }
 }
 
-
 // Check if string includes only digits
 function isNumeric(string) {
   return !isNaN(string) && string.trim() !== "";
@@ -1229,12 +1249,9 @@ function isNumeric(string) {
 // Remove comma, period and space
 function removeComma(amount) {
 
-  amount =
-    amount.replace(/\s+/g, '');
-  amount =
-    String(amount).replace(/\./g, "");
-  amount =
-    amount.replace(/\,/g, "");
+  amount = amount.replace(/\s+/g, '');
+  amount = String(amount).replace(/\./g, "");
+  amount = amount.replace(/\,/g, "");
   return (amount === '000') ? '00' : amount;
 }
 
@@ -1961,6 +1978,7 @@ function endHTMLFilters() {
     `;
 }
 
+/*
 // HTML end for filters
 function endHTMLFilters() {
 
@@ -1969,6 +1987,7 @@ function endHTMLFilters() {
     </div>
   `;
 }
+*/
 
 // Start of HTML table
 function startHTMLTable() {

@@ -1206,13 +1206,22 @@ body {
 /* Filter Section */
 .filters {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 1rem;
   background: #fff;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 15px;
 }
 
+/* maintenance section */
+.maintenance {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 16px;
+  border-radius: 15px;
+}
+
+.maintenance div,
 .filters div {
   display: flex;
   flex-direction: column;
@@ -1233,7 +1242,7 @@ select {
 
 /* Table */
 table {
-  width: 100%;
+  width: 25%;
   border-collapse: collapse;
   background: #fff;
 }

@@ -203,8 +203,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('userTable');
 
-          userArray =
-            objInfo.tableArray;
+          userArray = objInfo.tableArray;
           userArrayCreated =
             true;
           break;
@@ -214,8 +213,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // condonium table
           console.log('condoniumTable');
 
-          condominiumArray =
-            objInfo.tableArray;
+          condominiumArray = objInfo.tableArray;
           condominiumArrayCreated =
             true;
           break;
@@ -225,8 +223,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // condo table
           console.log('condoTable');
 
-          condoArray =
-            objInfo.tableArray;
+          condoArray = objInfo.tableArray;
           condoArrayCreated =
             true;
           break;
@@ -236,8 +233,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('accountTable');
 
-          accountArray =
-            objInfo.tableArray;
+          accountArray = objInfo.tableArray;
           accountArrayCreated =
             true;
           break;
@@ -247,8 +243,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('bankAccountTable');
 
-          bankAccountArray =
-            objInfo.tableArray;
+          bankAccountArray = objInfo.tableArray;
           bankAccountArrayCreated =
             true;
           break;
@@ -258,8 +253,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // due table
           console.log('dueTable');
 
-          dueArray =
-            objInfo.tableArray;
+          dueArray = objInfo.tableArray;
           dueArrayCreated =
             true;
           break;
@@ -269,8 +263,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // supplier table
           console.log('supplierTable');
 
-          supplierArray =
-            objInfo.tableArray;
+          supplierArray = objInfo.tableArray;
           supplierArrayCreated =
             true;
           break;
@@ -281,8 +274,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('bankaccountmovementTable');
 
           // array including objects with bank account movement information
-          bankAccountMovementArray =
-            objInfo.tableArray;
+          bankAccountMovementArray = objInfo.tableArray;
           bankAccountMovementArrayCreated =
             true;
           break;
@@ -293,10 +285,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('userbankaccountTable');
 
           // array including objects with user bank account information
-          userBankAccountArray =
-            objInfo.tableArray;
-          userBankAccountArrayCreated =
-            true;
+          userBankAccountArray = objInfo.tableArray;
+          userBankAccountArrayCreated = true;
 
           setTimeout(() => {
 

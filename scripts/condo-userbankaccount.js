@@ -88,10 +88,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('userTable');
 
-          userArray =
-            objInfo.tableArray;
-          userArrayCreated =
-            true;
+          userArray = objInfo.tableArray;
+          userArrayCreated = true;
           break;
 
         case 'account':
@@ -99,10 +97,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('accountTable');
 
-          accountArray =
-            objInfo.tableArray;
-          accountArrayCreated =
-            true;
+          accountArray = objInfo.tableArray;
+          accountArrayCreated = true;
           break;
 
         case 'userbankaccount':
@@ -111,10 +107,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('userBankAccountTable');
 
           // array including objects with user bank account information
-          userBankAccountArray =
-            objInfo.tableArray;
-          userBankAccountArrayCreated =
-            true;
+          userBankAccountArray = objInfo.tableArray;
+          userBankAccountArrayCreated = true;
 
           if (userArrayCreated
             && accountArrayCreated
@@ -131,8 +125,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(userBankAccountId);
 
             // Make events
-            isEventsCreated =
-              (isEventsCreated) ? true : createEvents();
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
           }
           break;
       }
@@ -221,8 +214,7 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-userbankaccount-delete')) {
 
-      const userBankAccountId =
-        Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
+      const userBankAccountId = Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
       deleteUserBankAccountRow(userBankAccountId);
 
       // Sends a request to the server to get all user bank account

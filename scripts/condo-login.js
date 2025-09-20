@@ -49,8 +49,7 @@ socket.onmessage = (event) => {
         // condo table
         console.log('userTable');
 
-        userArray =
-          objInfo.tableArray;
+        userArray = objInfo.tableArray;
         userArrayCreated =
           true
 

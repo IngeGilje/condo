@@ -92,8 +92,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('userTable');
 
-          userArray =
-            objInfo.tableArray;
+          userArray = objInfo.tableArray;
           userArrayCreated =
             true;
           break;
@@ -103,8 +102,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('accountTable');
 
-          accountArray =
-            objInfo.tableArray;
+          accountArray = objInfo.tableArray;
           accountArrayCreated =
             true;
           break;
@@ -115,8 +113,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('budgetTable');
 
           // array including objects with budget information
-          budgetArray =
-            objInfo.tableArray;
+          budgetArray = objInfo.tableArray;
           budgetArrayCreated =
             true;
 
@@ -140,8 +137,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(budgetId);
 
             // Make events
-            isEventsCreated =
-              (isEventsCreated) ? true : createEvents();
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
           } else {
 
             console.log("userArrayCreated", userArrayCreated);

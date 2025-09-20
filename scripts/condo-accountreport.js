@@ -91,17 +91,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     condominiumArrayCreated =
       false;
 
-    /*
-    // Sends a request to the server to get budgets
-    SQLquery =
-      `
-        SELECT * FROM budget
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-          AND year = '${today.getFullYear()}'
-        ORDER BY budgetId;
-      `;
-    */
     // Sends a request to the server to get budgets
     SQLquery =
       `
@@ -158,10 +147,8 @@ socket.onmessage = (event) => {
         // user table
         console.log('userTable');
 
-        userArray =
-          objInfo.tableArray;
-        userArrayCreated =
-          true;
+        userArray = objInfo.tableArray;
+        userArrayCreated = true;
         break;
 
       case 'account':
@@ -169,10 +156,8 @@ socket.onmessage = (event) => {
         // account table
         console.log('accountTable');
 
-        accountArray =
-          objInfo.tableArray;
-        accountArrayCreated =
-          true;
+        accountArray = objInfo.tableArray;
+        accountArrayCreated = true;
         break;
 
       case 'bankaccount':
@@ -180,10 +165,8 @@ socket.onmessage = (event) => {
         // bank account table
         console.log('bankaccountTable');
 
-        bankAccountArray =
-          objInfo.tableArray;
-        bankAccountArrayCreated =
-          true;
+        bankAccountArray = objInfo.tableArray;
+        bankAccountArrayCreated = true;
         break;
 
       case 'condominium':
@@ -191,8 +174,7 @@ socket.onmessage = (event) => {
         // condominium table
         console.log('condominium');
 
-        condominiumArray =
-          objInfo.tableArray;
+        condominiumArray = objInfo.tableArray;
         condominiumArrayCreated =
           true
         break;
@@ -202,8 +184,7 @@ socket.onmessage = (event) => {
         // budget table
         console.log('budget');
 
-        budgetArray =
-          objInfo.tableArray;
+        budgetArray = objInfo.tableArray;
         budgetArrayCreated =
           true
         break;
@@ -213,8 +194,7 @@ socket.onmessage = (event) => {
         // condo table
         console.log('condo');
 
-        condoArray =
-          objInfo.tableArray;
+        condoArray = objInfo.tableArray;
         condoArrayCreated =
           true
         break;
@@ -225,10 +205,8 @@ socket.onmessage = (event) => {
         console.log('bankaccountmovementTable');
 
         // array including objects with bank account movement information
-        bankAccountMovementArray =
-          objInfo.tableArray;
-        bankAccountMovementArrayCreated =
-          true;
+        bankAccountMovementArray = objInfo.tableArray;
+        bankAccountMovementArrayCreated = true;
 
         if (budgetArrayCreated
           && condominiumArrayCreated

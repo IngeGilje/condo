@@ -144,10 +144,8 @@ socket.onmessage = (event) => {
         // condominium table
         console.log('condominiumTable');
 
-        condominiumArray =
-          objInfo.tableArray;
-        condominiumArrayCreated =
-          true;
+        condominiumArray = objInfo.tableArray;
+        condominiumArrayCreated = true;
         break;
 
       case 'user':
@@ -155,10 +153,8 @@ socket.onmessage = (event) => {
         // user table
         console.log('userTable');
 
-        userArray =
-          objInfo.tableArray;
-        userArrayCreated =
-          true;
+        userArray = objInfo.tableArray;
+        userArrayCreated = true;
         break;
 
       case 'condo':
@@ -166,10 +162,8 @@ socket.onmessage = (event) => {
         // condo table
         console.log('condoTable');
 
-        condoArray =
-          objInfo.tableArray;
-        condoArrayCreated =
-          true;
+        condoArray = objInfo.tableArray;
+        condoArrayCreated = true;
         break;
 
       case 'account':
@@ -177,10 +171,8 @@ socket.onmessage = (event) => {
         // account table
         console.log('accountTable');
 
-        accountArray =
-          objInfo.tableArray;
-        accountArrayCreated =
-          true;
+        accountArray = objInfo.tableArray;
+        accountArrayCreated = true;
         break;
 
       case 'bankaccountmovement':
@@ -189,10 +181,8 @@ socket.onmessage = (event) => {
         console.log('bankaccountmovementTable');
 
         // array including objects with bank account movement information
-        bankAccountMovementArray =
-          objInfo.tableArray;
-        bankAccountMovementArrayCreated =
-          true;
+        bankAccountMovementArray = objInfo.tableArray;
+        bankAccountMovementArrayCreated = true;
 
         if (condominiumArrayCreated
           && userArrayCreated

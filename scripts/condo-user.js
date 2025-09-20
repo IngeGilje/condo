@@ -83,8 +83,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // condo table
           console.log('condoTable');
 
-          condoArray =
-            objInfo.tableArray;
+          condoArray = objInfo.tableArray;
           condoArrayCreated =
             true;
           break;
@@ -95,8 +94,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('userTable');
 
           // array including objects with user information
-          userArray =
-            objInfo.tableArray;
+          userArray = objInfo.tableArray;
           userArrayCreated =
             true;
 

@@ -176,8 +176,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('userTable');
 
-          userArray =
-            objInfo.tableArray;
+          userArray = objInfo.tableArray;
           userArrayCreated =
             true;
           break;
@@ -187,8 +186,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // condo table
           console.log('condoTable');
 
-          condoArray =
-            objInfo.tableArray;
+          condoArray = objInfo.tableArray;
           condoArrayCreated =
             true;
           break;
@@ -198,8 +196,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('accountTable');
 
-          accountArray =
-            objInfo.tableArray;
+          accountArray = objInfo.tableArray;
           accountArrayCreated =
             true;
           break;
@@ -209,8 +206,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // bank account table
           console.log('bankaccountTable');
 
-          bankAccountArray =
-            objInfo.tableArray;
+          bankAccountArray = objInfo.tableArray;
           bankAccountArrayCreated =
             true;
           break;
@@ -220,8 +216,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // supplier table
           console.log('supplierTable');
 
-          supplierArray =
-            objInfo.tableArray;
+          supplierArray = objInfo.tableArray;
           supplierArrayCreated =
             true;
           break;
@@ -231,10 +226,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user bank account table
           console.log('userbankaccountTable');
 
-          userbankAccountArray =
-            objInfo.tableArray;
-          userBankAccountArrayCreated =
-            true;
+          userbankAccountArray = objInfo.tableArray;
+          userBankAccountArrayCreated = true;
           break;
 
         case 'bankaccountmovement':
@@ -243,8 +236,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('bankaccountmovementTable');
 
           // array including objects with bank account movement information
-          bankAccountMovementArray =
-            objInfo.tableArray;
+          bankAccountMovementArray = objInfo.tableArray;
           bankAccountMovementArrayCreated =
             true;
 
@@ -285,8 +277,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(bankAccountMovementId);
 
             // Make events
-            isEventsCreated =
-              (isEventsCreated) ? true : createEvents();
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
           } else {
 
             console.log('userArrayCreated',userArrayCreated)

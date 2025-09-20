@@ -83,8 +83,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('accountTable');
 
-          userArray =
-            objInfo.tableArray;
+          userArray = objInfo.tableArray;
           userArrayCreated =
             true;
           break;
@@ -95,8 +94,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('accountTable');
 
           // array including objects with account information
-          accountArray =
-            objInfo.tableArray;
+          accountArray = objInfo.tableArray;
           accountArrayCreated =
             true;
 
@@ -114,8 +112,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             showValues(accountId);
 
             // Make events
-            isEventsCreated =
-              (isEventsCreated) ? true : createEvents();
+            isEventsCreated = (isEventsCreated) ? true : createEvents();
           }
           break;
       }
