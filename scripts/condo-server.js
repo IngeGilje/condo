@@ -61,8 +61,7 @@ switch (serverStatus) {
 }
 
 // Connecting to mySQL
-const mysql =
-  require('mysql2');
+const mysql = require('mysql2');
 let connection;
 switch (serverStatus) {
 

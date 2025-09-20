@@ -1,39 +1,29 @@
 // Condominium maintenance
 
 // Activate classes
-const today =
-  new Date();
-const objUser =
-  new User('user');
-const objAccount =
-  new Account('account');
-const objBankAccount =
-  new BankAccount('bankaccount');
-const objCondominium =
-  new Condominium('condominium');
+const today = new Date();
+const objUser = new User('user');
+const objAccount = new Account('account');
+const objBankAccount = new BankAccount('bankaccount');
+const objCondominium = new Condominium('condominium');
 
-let userArrayCreated =
-  false
-let accountArrayCreated =
-  false
-let bankAccountArrayCreated =
-  false
-let condominiumArrayCreated =
-  false
+let userArrayCreated = false;
+let accountArrayCreated = false;
+let bankAccountArrayCreate = false;
+let condominiumArrayCreated = false;
 
 testMode();
 
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-let isEventsCreated
+let isEventsCreated;
 
 objCondominium.menu();
 objCondominium.markSelectedMenu('Banktransaksjoner');
 
 let socket;
-socket =
-  connectingToServer();
+socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword =
