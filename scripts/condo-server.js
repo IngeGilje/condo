@@ -4,10 +4,8 @@
 // mysql -u [username] -p [database_name] < backup.sql
 let inactivityTimer;
 
-const WebSocket =
- require('ws');
-const fs =
-  require('fs');
+const WebSocket = require('ws');
+const fs = require('fs');
 
 // Constants for database handling
 let connected2MySQL =

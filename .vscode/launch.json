@@ -99,6 +99,14 @@
       "url": "http://localhost/condo-accountreport.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+        {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Test synch",
+      "url": "http://localhost/client.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     }
   ]
 }
