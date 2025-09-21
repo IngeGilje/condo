@@ -57,32 +57,20 @@ async function main() {
 
     console.log("✅ Connected to MySQL");
 
-    // Example endpoint: get current server time
-    app.get("/time", async (req, res) => {
-      try {
-        const [rows] = await db.query("SELECT NOW() AS time");
-        res.json({ server_time: rows[0].time });
-      } catch (err) {
-        res.status(500).json({ error: err.message });
-      }
-    });
-
-    /*
-    // Example endpoint: query your table
-    app.get("/users", async (req, res) => {
-      try {
-        const [rows] = await db.query("SELECT * FROM user");
-        res.json(rows);
-      } catch (err) {
-        res.status(500).json({ error: err.message });
-      }
-    });
-    */
-
     // Returns users ordered by ID
     app.get("/users", async (req, res) => {
+
       try {
-        const [rows] = await db.query("SELECT * FROM user ORDER BY UserId");
+
+        const condominiumId = req.query.condominiumId;
+        const SQLquery =
+          `
+            SELECT * FROM users
+            WHERE condominiumId = ${condominiumId}
+              AND deleted <> 'Y'
+            ORDER BY userId;
+          `;
+        const [rows] = await db.query(SQLquery);
         res.json(rows);
       } catch (err) {
         console.error("Database error:", err);
@@ -92,8 +80,18 @@ async function main() {
 
     // Returns accounts ordered by ID
     app.get("/accounts", async (req, res) => {
+
       try {
-        const [rows] = await db.query("SELECT * FROM `account` ORDER BY `accountId`");
+
+        const condominiumId = req.query.condominiumId;
+        const SQLquery =
+          `
+          SELECT * FROM accounts
+          WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+          ORDER BY accountId;
+        `;
+        const [rows] = await db.query(SQLquery);
         res.json(rows);
       } catch (err) {
         console.error("Database error in /accounts:", err.message);

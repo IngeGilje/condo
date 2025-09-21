@@ -32,7 +32,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Konto",
-      "url": "http://localhost/condo-account.html",
+      "url": "http://localhost/condo-accounts.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

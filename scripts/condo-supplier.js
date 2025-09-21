@@ -44,10 +44,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Sends a request to the server to get users
     let SQLquery =
       `
-        SELECT * FROM user
+        SELECT * FROM users
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY userId;
+        ORDER BY usersId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
     userArrayCreated =
@@ -56,10 +56,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Sends a request to the server to get accounts
     SQLquery =
       `
-        SELECT * FROM account
+        SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountId;
+        ORDER BY accountsId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
     accountArrayCreated =
@@ -107,7 +107,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('accountTable');
 
-          accountArray = objInfo.tableArray;
+          accountsArray = objInfo.tableArray;
           accountArrayCreated =
             true;
           break;
@@ -292,8 +292,8 @@ function updateSupplier(supplierId) {
       document.querySelector('.input-supplier-bankAccount').value;
 
     // account Id
-    const accountId =
-      document.querySelector('.select-supplier-accountId').value;
+    const accountsId =
+      document.querySelector('.select-supplier-accountsId').value;
 
     // account2 Id
     const account2Id =
@@ -329,7 +329,7 @@ function updateSupplier(supplierId) {
             email = '${email}',
             phone = '${phone}',
             bankAccount = '${bankAccount}',
-            accountId = ${accountId},
+            accountsId = ${accountsId},
             account2Id = ${account2Id},
             amount = '${amount}'
           WHERE supplierId = ${supplierId}
@@ -353,7 +353,7 @@ function updateSupplier(supplierId) {
           email,
           phone,
           bankAccount,
-          accountId,
+          accountsId,
           account2Id,
           amount
         ) 
@@ -370,7 +370,7 @@ function updateSupplier(supplierId) {
           '${email}',
           '${phone}',
           '${bankAccount}',
-          ${accountId},
+          ${accountsId},
           ${account2Id},
           ${amount}
         );
@@ -467,7 +467,7 @@ function showLeadingText(supplierId) {
   objSupplier.showInput('supplier-bankAccount', '* Bankkonto', 11, '');
 
   // Show all accounts
-  objAccount.showAllAccounts('supplier-accountId', 0, '', 'Ingen konti er valgt');
+  objAccount.showAllAccounts('supplier-accountsId', 0, '', 'Ingen konti er valgt');
 
   // Show all accounts
   objAccount.showAllAccounts('supplier-account2Id', 0, '', 'Ingen konti er valgt');
@@ -538,8 +538,8 @@ function showValues(supplierId) {
         supplierArray[objUserSupplierNumber].bankAccount;
 
       // Select account Id
-      document.querySelector('.select-supplier-accountId').value =
-        supplierArray[objUserSupplierNumber].accountId;
+      document.querySelector('.select-supplier-accountsId').value =
+        supplierArray[objUserSupplierNumber].accountsId;
 
       // Select account2 Id
       document.querySelector('.select-supplier-account2Id').value =
@@ -607,7 +607,7 @@ function resetValues() {
     '';
 
   // account Id
-  document.querySelector('.select-supplier-accountId').value =
+  document.querySelector('.select-supplier-accountsId').value =
     0;
 
   // account2 Id

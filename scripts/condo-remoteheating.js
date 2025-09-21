@@ -50,7 +50,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT account.*
         FROM condominium
-        JOIN account ON condominium.paymentRemoteHeatingAccountId = account.accountId
+        JOIN account ON condominium.paymentRemoteHeatingAccountId = account.accountsId
         WHERE condominium.condominiumId = ${objUserPassword.condominiumId}    
       `;
 
@@ -74,10 +74,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Sends a request to the server to get users
     SQLquery =
       `
-        SELECT * FROM user
+        SELECT * FROM users
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY userId;
+        ORDER BY usersId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
     userArrayCreated =
@@ -114,7 +114,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           `
             SELECT * FROM bankaccountmovement
             WHERE deleted <> 'Y'
-              AND accountId = ${accountArray[0].accountId}
+              AND accountsId = ${accountsArray[0].accountsId}
               AND date BETWEEN ${fromDate} AND ${toDate}
             ORDER BY date DESC;
           `;
@@ -171,7 +171,7 @@ socket.onmessage = (event) => {
         // account table
         console.log('accountTable');
 
-        accountArray = objInfo.tableArray;
+        accountsArray = objInfo.tableArray;
         accountArrayCreated = true;
         break;
 
@@ -303,15 +303,15 @@ function showLeadingText() {
 
   /*
   // Show all accounts
-  if (!isClassDefined('select-remoteheating-accountId')) {
+  if (!isClassDefined('select-remoteheating-accountsId')) {
 
     // Check if condominium id exist
     const objCondominimuRowNumber =
       condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
     if (objCondominimuRowNumber !== -1) {
-      const accountId =
-        condominiumArray[objCondominimuRowNumber].accountId;
-      objAccount.showAllAccounts('remoteheating-accountId', accountId, 'Alle');
+      const accountsId =
+        condominiumArray[objCondominimuRowNumber].accountsId;
+      objAccount.showAllAccounts('remoteheating-accountsId', accountsId, 'Alle');
 
       getSelectedBankAccountMovements();
     }
@@ -333,8 +333,8 @@ function showValues() {
 
     const condoId =
       Number(document.querySelector('.select-remoteheating-condoId').value);
-    //const accountId =
-    //  Number(document.querySelector('.select-remoteheating-accountId').value);
+    //const accountsId =
+    //  Number(document.querySelector('.select-remoteheating-accountsId').value);
 
     // Accomulate
     let sumColumnPayment = 0;
@@ -573,8 +573,8 @@ function getSelectedBankAccountMovements() {
   const condoId =
     Number(document.querySelector('.select-remoteheating-condoId').value);
 
-  //const accountId =
-  //  Number(document.querySelector('.select-remoteheating-accountId').value);
+  //const accountsId =
+  //  Number(document.querySelector('.select-remoteheating-accountsId').value);
 
   const fromDate =
     Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
@@ -586,7 +586,7 @@ function getSelectedBankAccountMovements() {
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
         AND deleted <> 'Y'
-        AND accountId = ${accountArray[0].accountId}
+        AND accountsId = ${accountsArray[0].accountsId}
         AND date BETWEEN ${fromDate} AND ${toDate}
         ORDER By date DESC;
     `;

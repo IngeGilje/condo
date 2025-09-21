@@ -237,7 +237,7 @@ function createAllTables() {
         city VARCHAR(50) NOT NULL,
         phone VARCHAR(20),
         email VARCHAR(50),
-        accountId INT,
+        accountsId INT,
         organizationNumber VARCHAR(9),
         importPath VARCHAR(50)
       );
@@ -298,7 +298,7 @@ function createAllTables() {
       `
       CREATE TABLE account(
         deleted VARCHAR(1),
-        accountId INT AUTO_INCREMENT PRIMARY KEY,
+        accountsId INT AUTO_INCREMENT PRIMARY KEY,
         condominiumId INT,
         user VARCHAR(50),
         lastUpdate VarChar(40),
@@ -316,7 +316,7 @@ function createAllTables() {
       `         
       CREATE TABLE user (
         deleted VARCHAR(1),
-        userId INT AUTO_INCREMENT PRIMARY KEY,
+        usersId INT AUTO_INCREMENT PRIMARY KEY,
         condominiumId INT,
         user VARCHAR(50) NOT NULL,
         lastUpdate VARCHAR (40),
@@ -345,13 +345,13 @@ function createAllTables() {
         condominiumId INT,
         user VARCHAR(50) NOT NULL,
         lastUpdate VARCHAR (40),
-        userId INT,
-        accountId INT,
+        usersId INT,
+        accountsId INT,
         name VARCHAR(50) NOT NULL,
         bankAccount VARCHAR(11) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId),
-        FOREIGN KEY (userId) REFERENCES user(userId),
-        FOREIGN KEY (accountId) REFERENCES account(accountId)
+        FOREIGN KEY (usersId) REFERENCES user(usersId),
+        FOREIGN KEY (accountsId) REFERENCES account(accountsId)
       );
     `;
     updateMySql(SQLquery, 'userbankaccount', 'CREATE');
@@ -376,10 +376,10 @@ function createAllTables() {
         email VARCHAR(50) NOT NULL,
         phone VARCHAR(20) NOT NULL,
         bankAccount VARCHAR(11),
-        accountId INT,
+        accountsId INT,
         account2Id INT,
         amount VARCHAR(10),
-        FOREIGN KEY (accountId) REFERENCES account(accountId),
+        FOREIGN KEY (accountsId) REFERENCES account(accountsId),
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
@@ -420,12 +420,12 @@ function createAllTables() {
         user VARCHAR (50),
         lastUpdate VarChar (40),
         condoId INT,
-        accountId INT,
+        accountsId INT,
         amount VARCHAR(10) NOT NULL,
         date VARCHAR(10) NOT NULL,
         text VARCHAR (255) NOT NULL,
         FOREIGN KEY (condoId) REFERENCES condo(condoId),
-        FOREIGN KEY (accountId) REFERENCES account(accountId),
+        FOREIGN KEY (accountsId) REFERENCES account(accountsId),
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
@@ -443,11 +443,11 @@ function createAllTables() {
         condominiumId INT,
         user VARCHAR(50),
         lastUpdate VarChar(40),
-        accountId INT,
+        accountsId INT,
         amount VARCHAR(10) NOT NULL,
         year VARCHAR(4) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId),
-        FOREIGN KEY (accountId) REFERENCES account(accountId)
+        FOREIGN KEY (accountsId) REFERENCES account(accountsId)
       );
     `;
     updateMySql(SQLquery, 'budget', 'CREATE');
@@ -466,7 +466,7 @@ function createAllTables() {
         user VARCHAR (50),
         lastUpdate VarChar (40),
         condoId INT,
-        accountId INT,
+        accountsId INT,
         income VARCHAR(10) NOT NULL,
         payment VARCHAR(10) NOT NULL,
         numberKWHour VARCHAR(10) NOT NULL,

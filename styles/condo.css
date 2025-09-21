@@ -40,7 +40,7 @@ body {
 
 .div-grid-condominium,
 
-.div-grid-account,
+.div-grid-accounts,
 
 .div-grid-due-filter,
 .div-grid-due,
@@ -65,7 +65,7 @@ body {
 
 /* grid container 2 columns */
 .div-grid-userbankaccount,
-.div-grid-account {
+.div-grid-accounts {
   grid-template-columns: 200px 200px;
 }
 
@@ -397,7 +397,7 @@ body {
 .a-menu-vertical-bankaccountmovement-green,
 .a-menu-vertical-bankaccount-green,
 .a-menu-vertical-condo-green,
-.a-menu-vertical-account-green,
+.a-menu-vertical-accounts-green,
 .a-menu-vertical-due-green,
 .a-menu-vertical-commoncost-green,
 .a-menu-vertical-income-green,
@@ -432,7 +432,7 @@ body {
 /* Style the grid items */
 .div-bankaccount-item-info,
 .div-condo-item-info,
-.div-account-item-info,
+.div-accounts-item-info,
 .div-due-item-info,
 .div-payment-item-info,
 .div-overview-item-info,
@@ -467,7 +467,7 @@ body {
 
 .div-grid-condominium label,
 
-.div-grid-account label,
+.div-grid-accounts label,
 
 .div-grid-due label,
 
@@ -536,7 +536,7 @@ body {
 
 .div-grid-bankaccount input,
 
-.div-grid-account input,
+.div-grid-accounts input,
 
 .div-grid-due-filter input,
 .div-grid-due input,
@@ -623,7 +623,7 @@ body {
 
 .div-grid-condominium select,
 
-.div-grid-account select,
+.div-grid-accounts select,
 
 .div-grid-due-filter select,
 .div-grid-due select,
@@ -739,7 +739,7 @@ body {
 
 .div-grid-condominium button,
 
-.div-grid-account button,
+.div-grid-accounts button,
 
 .div-grid-due-filter button,
 .div-grid-due button,
@@ -787,7 +787,7 @@ body {
 
 .div-grid-condominium button:hover,
 
-.div-grid-account button:hover,
+.div-grid-accounts button:hover,
 
 .div-grid-due-filter button:hover,
 .div-grid-due button:hover,
@@ -823,7 +823,7 @@ body {
 
 .div-grid-condominium button:active,
 
-.div-grid-account button:active,
+.div-grid-accounts button:active,
 
 .div-grid-due-filter button:active,
 .div-grid-due button:active,
@@ -875,8 +875,8 @@ body {
 .div-grid-condominium select:disabled,
 .div-grid-condominium button:disabled,
 
-.div-grid-account select:disabled,
-.div-grid-account button:disabled,
+.div-grid-accounts select:disabled,
+.div-grid-accounts button:disabled,
 
 .div-grid-due select:disabled,
 .div-grid-due button:disabled,
@@ -964,14 +964,14 @@ body {
 /* red */
 .red,
 
-.label-bankaccountmovement-accountId-red,
+.label-bankaccountmovement-accountsId-red,
 .label-bankaccountmovement-date-red,
 
 .label-accountreport-filter-fromDate-red,
 .label-accountreport-filter-toDate-red,
 
-.label-userbankaccount-userId-red,
-.label-userbankaccount-accountId-red,
+.label-userbankaccount-usersId-red,
+.label-userbankaccount-accountsId-red,
 .label-userbankaccount-name-red,
 .label-userbankaccount-bankAccount-red,
 
@@ -1029,10 +1029,10 @@ body {
 .label-income-date-red,
 .label-income-amount-red,
 
-.label-account-accountId-red,
-.label-account-bankAccountId-red,
-.label-account-accountName-red,
-.label-account-fixedCost-red,
+.label-accounts-accountsId-red,
+.label-accounts-bankAccountId-red,
+.label-accounts-accountName-red,
+.label-accounts-fixedCost-red,
 
 .label-commoncost-condoId-red,
 .label-commoncost-date-red,

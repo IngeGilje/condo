@@ -42,10 +42,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Sends a request to the server to get users
     SQLquery =
       `
-        SELECT * FROM user
+        SELECT * FROM users
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY userId;
+        ORDER BY usersId;
       `;
 
     updateMySql(SQLquery, 'user', 'SELECT');
@@ -67,10 +67,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Sends a request to the server to get accounts
     SQLquery =
       `
-        SELECT * FROM account
+        SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountId;
+        ORDER BY accountsId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
     accountArrayCreated =
@@ -117,7 +117,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('accountTable');
 
-          accountArray = objInfo.tableArray;
+          accountsArray = objInfo.tableArray;
           accountArrayCreated =
             true
           break;

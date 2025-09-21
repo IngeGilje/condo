@@ -6,8 +6,7 @@ class Condos {
   // serverStatus = 3; // Test server/ local test server
   serverStatus = 3; // Test server/ local test server
 
-  inactivityTimeout =
-    false;
+  inactivityTimeout = false;
 
   // All year from 2020 until 2039
   #yearArray = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029,
@@ -430,12 +429,12 @@ class Condos {
 
     document.querySelector(`.a-menu-vertical-${this.applicationName}`).outerHTML =
       `
-      <div 
-        class='a-menu-vertical-${this.applicationName}-green'
-      >
-        ${text}
-      </div>
-    `;
+        <div 
+          class='a-menu-vertical-${this.applicationName}-green'
+        >
+          ${text}
+        </div>
+      `;
   }
 
   /*
@@ -496,15 +495,15 @@ class Condos {
   */
 
   // Select account
-  selectAccountId(accountId, className) {
+  selectAccountId(accountsId, className) {
 
     // Check if account id exist
     const objAccountNumber =
-      accountArray.findIndex(account => account.accountId === accountId);
+      accountsArray.findIndex(account => account.accountsId === accountsId);
     if (objAccountNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
-        accountId;
+        accountsId;
       return true;
     } else {
 
@@ -761,25 +760,25 @@ class Condos {
         </a>
 
         <a href="${url}condo-condo.html"
-          class="a-menu-vertical-condo"
+          class="a-menu-vertical-condos"
         >
           Leilighet
         </a>
 
         <a href="${url}condo-bankaccount.html"
-          class="a-menu-vertical-bankaccount"
+          class="a-menu-vertical-bankaccounts"
         >
           Bankkonto sameie
         </a>
 
         <a href="${url}condo-account.html"
-          class="a-menu-vertical-account"
+          class="a-menu-vertical-accounts"
         >
           Konto
         </a>
 
         <a href="${url}condo-user.html"
-          class="a-menu-vertical-user"
+          class="a-menu-vertical-users"
         >
           Bruker
         </a>
@@ -905,21 +904,21 @@ class Condos {
     let html =
       `
       <form 
-        id="${accountId}"
+        id="${accountsId}"
         action="/submit" 
         method="POST"
       >
         <label 
           class="label-${className}"
-          for="${accountId}"
-          id="${accountId}"
+          for="${accountsId}"
+          id="${accountsId}"
         >
           ${labelText}
         </label>
         <select 
           class="select-${className}" 
-          id="${accountId}"
-          name="${accountId}"
+          id="${accountsId}"
+          name="${accountsId}"
         >
       `;
 
@@ -1016,17 +1015,17 @@ class Condos {
   }
 
   // get account name
-  getAccountName(accountId) {
+  getAccountName(accountsId) {
 
     let accountName = "-";
 
     // Account name from account table
     const objAccountRowNumber =
-      accountArray.findIndex(account => account.accountId === accountId);
+      accountsArray.findIndex(account => account.accountsId === accountsId);
     if (objAccountRowNumber !== -1) {
 
       accountName =
-        accountArray[objAccountRowNumber].name;
+        accountsArray[objAccountRowNumber].name;
     }
 
     return (accountName) ? accountName : "-";
@@ -1045,12 +1044,12 @@ class Condos {
         userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
       if (objBankAccountRowNumber !== -1) {
 
-        const userId = Number(userBankAccountArray[objBankAccountRowNumber].userId);
+        const usersId = Number(userBankAccountArray[objBankAccountRowNumber].usersId);
 
-        if (userId >= 0) {
+        if (usersId >= 0) {
 
           const objUserRowNumber =
-            userArray.findIndex(user => user.userId === userId);
+            userArray.findIndex(user => user.usersId === usersId);
           if (objUserRowNumber !== -1) {
 
             condoId =
@@ -1182,7 +1181,7 @@ class Condos {
         break;
       }
       case "accountName":
-      case "accountId": {
+      case "accountsId": {
         imageName =
           "accountName.png";
         break;
@@ -1767,7 +1766,7 @@ function validateEuroAmount(amount) {
 function connectingToServer() {
 
   let socket;
-  switch (objUser.serverStatus) {
+  switch (objUsers.serverStatus) {
 
     // Web server
     case 1: {
@@ -1823,7 +1822,7 @@ function removeIframe() {
 
 function testMode() {
 
-  switch (objUser.serverStatus) {
+  switch (objUsers.serverStatus) {
 
     // Web server
     case 1:
@@ -1921,7 +1920,7 @@ function validateInterval(className, labelText, fromValue, toValue) {
 // get account id from bank account
 function getAccountIdFromBankAccount(bankAccount, payment) {
 
-  let accountId = 0;
+  let accountsId = 0;
 
   if (bankAccount === '32073195801') {
     console.log('bank account:', bankAccount);
@@ -1937,8 +1936,8 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
       userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
     if (objBankAccountRowNumber !== -1) {
 
-      accountId =
-        userBankAccountArray[objBankAccountRowNumber].accountId;
+      accountsId =
+        userBankAccountArray[objBankAccountRowNumber].accountsId;
     }
 
     // get Account Id from supplier
@@ -1946,18 +1945,18 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
       supplierArray.findIndex(supplier => supplier.bankAccount === bankAccount);
     if (objSupplierRowNumber !== -1) {
 
-      accountId =
-        supplierArray[objSupplierRowNumber].accountId;
+      accountsId =
+        supplierArray[objSupplierRowNumber].accountsId;
 
       // get Account Id from supplier amount
       const amount =
         (supplierArray[objSupplierRowNumber].amount) ? Number(supplierArray[objSupplierRowNumber].amount) : 0;
 
-      accountId =
-        (amount === Number(payment)) ? Number(supplierArray[objSupplierRowNumber].account2Id) : accountId;
+      accountsId =
+        (amount === Number(payment)) ? Number(supplierArray[objSupplierRowNumber].account2Id) : accountsId;
     }
   }
-  return accountId;
+  return accountsId;
 }
 
 // HTML start for filters

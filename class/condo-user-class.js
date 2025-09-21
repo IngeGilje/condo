@@ -1,11 +1,11 @@
 // class for user
-class User extends Condos {
+class Users extends Condos {
 
-  // user information
-  userArray = Array;
+  // users information
+  usersArray = Array;
 
   // Show all users
-  showAllUsers(classValue, userId) {
+  showAllUsers(classValue, usersId) {
 
     let html = `
       <form 
@@ -24,22 +24,22 @@ class User extends Condos {
         >
     `;
 
-       let selectedOption =
+    let selectedOption =
       false;
 
     // Check if user array is empty
     const numberOfRows = userArray.length;
     if (numberOfRows > 0) {
       userArray.forEach((user) => {
-        if (user.userId >= 0) {
-          if (user.userId === userId) {
+        if (user.usersId >= 0) {
+          if (user.usersId === usersId) {
 
             html += `
             <option 
-              value="${user.userId}"
+              value="${user.usersId}"
               selected
               >
-              ${user.userId} - ${user.firstName}
+              ${user.usersId} - ${user.firstName}
             </option>
           `;
             selectedOption =
@@ -47,8 +47,8 @@ class User extends Condos {
           } else {
             html += `
             <option 
-              value="${user.userId}">
-              ${user.userId} - ${user.firstName}
+              value="${user.usersId}">
+              ${user.usersId} - ${user.firstName}
             </option>
           `;
           }
@@ -80,19 +80,32 @@ class User extends Condos {
   // Find selected user id
   getSelectedUserId(classValue) {
 
-    let userId = 0;
+    let usersId = 0;
 
     // Check if HTML class exist
     if (isClassDefined(classValue)) {
 
-      userId =
+      usersId =
         Number(document.querySelector(`.${classValue}`).value);
-      userId = (userId === 0) ? userArray.at(-1).userId : userId;
+      usersId = (usersId === 0) ? userArray.at(-1).usersId : usersId;
     } else {
 
       // Get last id in last object in user array
-      userId = userArray.at(-1).userId;
+      usersId = userArray.at(-1).usersId;
     }
-    return userId;
+    return usersId;
+  }
+
+  // get users
+  async loadUsersTable(condominiumId) {
+
+    // Get users
+    try {
+      const response = await fetch(`http://localhost:3000/users?condominiumId=${condominiumId}`);
+      if (!response.ok) throw new Error("Network error (users)");
+      this.usersArray = await response.json();
+    } catch (error) {
+      console.log("Error loading users:", error);
+    }
   }
 }

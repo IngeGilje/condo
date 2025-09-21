@@ -23,8 +23,8 @@ socket.onopen = () => {
   // Sends a request to the server to get users
   SQLquery =
     `
-      SELECT * FROM user
-      ORDER BY userId;
+      SELECT * FROM users
+      ORDER BY usersId;
     `;
 
   updateMySql(SQLquery, 'user', 'SELECT');
@@ -73,8 +73,8 @@ socket.onmessage = (event) => {
         // Sends a request to the server to get accounts one more time
         SQLquery =
           `
-              SELECT * FROM user
-              ORDER BY userId;
+              SELECT * FROM users
+              ORDER BY usersId;
             `;
         updateMySql(SQLquery, 'user', 'SELECT');
         userArrayCreated =
@@ -123,7 +123,7 @@ function createEvents() {
         // Save email/user, password and security level
         sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
 
-        switch (objUser.serverStatus) {
+        switch (objUsers.serverStatus) {
 
           // web server
           case 1:

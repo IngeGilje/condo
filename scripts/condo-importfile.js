@@ -79,10 +79,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Sends a request to the server to get users
     let SQLquery =
       `
-        SELECT * FROM user
+        SELECT * FROM users
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY userId;
+        ORDER BY usersId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
     userArrayCreated =
@@ -116,10 +116,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Sends a request to the server to get accounts
     SQLquery =
       `
-        SELECT * FROM account
+        SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountId;
+        ORDER BY accountsId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
     accountArrayCreated =
@@ -233,7 +233,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('accountTable');
 
-          accountArray = objInfo.tableArray;
+          accountsArray = objInfo.tableArray;
           accountArrayCreated =
             true;
           break;
@@ -511,7 +511,7 @@ function showBankAccountMovements() {
         </div>
       `;
 
-    if (importFile.accountId) {
+    if (importFile.accountsId) {
 
       htmlColumnAccountName +=
         `
@@ -734,23 +734,23 @@ function createImportFileArray(fileContent) {
         formatKronerToOre(payment);
 
       // Account Id
-      let accountId =
+      let accountsId =
         getAccountIdFromBankAccount(fromBankAccount, payment);
-      accountId =
-        (accountId) ? accountId : getAccountIdFromBankAccount(toBankAccount, payment);
+      accountsId =
+        (accountsId) ? accountsId : getAccountIdFromBankAccount(toBankAccount, payment);
 
       // Account Name
       let accountName;
       if (text.includes('FAKT.TJ')) {
 
         const accountRowNumber =
-          accountArray.findIndex(account => account.name.includes('FAKT.TJ'));
+          accountsArray.findIndex(account => account.name.includes('FAKT.TJ'));
         if (accountRowNumber !== -1) {
 
-          accountId =
-            accountArray[accountRowNumber].accountId;
+          accountsId =
+            accountsArray[accountRowNumber].accountsId;
           accountName =
-            accountArray[accountRowNumber].name;
+            accountsArray[accountRowNumber].name;
         }
       }
 
@@ -758,19 +758,19 @@ function createImportFileArray(fileContent) {
       if (text.includes('transaksjoner')) {
 
         const accountRowNumber =
-          accountArray.findIndex(account => account.name.includes('transaksjoner'));
+          accountsArray.findIndex(account => account.name.includes('transaksjoner'));
         if (accountRowNumber !== -1) {
 
-          accountId =
-            accountArray[accountRowNumber].accountId;
+          accountsId =
+            accountsArray[accountRowNumber].accountsId;
           accountName =
-            accountArray[accountRowNumber].name;
+            accountsArray[accountRowNumber].name;
         }
       }
 
-      if (accountId) {
+      if (accountsId) {
         accountName =
-          objImportFile.getAccountName(accountId);
+          objImportFile.getAccountName(accountsId);
 
       } else {
 
@@ -798,7 +798,7 @@ function createImportFileArray(fileContent) {
           accountingDate: accountingDate,
           condoId: condoId,
           condoName: condoName,
-          accountId: accountId,
+          accountsId: accountsId,
           accountName: accountName,
           fromBankAccount: fromBankAccount,
           fromBankAccountName: fromBankAccountName,
@@ -823,8 +823,8 @@ function updateBankAccountMovements() {
     const condoId =
       Number(importFile.condoId);
 
-    const accountId =
-      Number(importFile.accountId);
+    const accountsId =
+      Number(importFile.accountsId);
 
     const income =
       Number(importFile.income);
@@ -849,7 +849,7 @@ function updateBankAccountMovements() {
           user,
           lastUpdate,
           condoId,
-          accountId,
+          accountsId,
           income,
           payment,
           numberKWHour,
@@ -861,7 +861,7 @@ function updateBankAccountMovements() {
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
-          ${accountId},
+          ${accountsId},
           ${income},
           ${payment},
           '',

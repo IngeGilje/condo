@@ -71,12 +71,12 @@ class AccountMovement extends Condos {
       html;
   }
 
-  getBankAccountName(accountId, unKnown = 'Ukjent') {
+  getBankAccountName(accountsId, unKnown = 'Ukjent') {
 
     let bankAccountName = unKnown;
-    const objectNumberAccount = accountArray.findIndex(account => account.accountId === accountId);
+    const objectNumberAccount = accountsArray.findIndex(account => account.accountsId === accountsId);
     if (objectNumberAccount > 0) {
-      const bankAccountId = Number(accountArray[objectNumberAccount].bankAccountId);
+      const bankAccountId = Number(accountsArray[objectNumberAccount].bankAccountId);
       const objectNumberBankAccount = bankAccountArray.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
       if (objectNumberBankAccount > 0) {
         bankAccountName = bankAccountArray[objectNumberBankAccount].name;

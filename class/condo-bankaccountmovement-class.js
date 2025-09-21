@@ -6,7 +6,7 @@ class BankAccountMovement extends Condos {
    Array;
 
   // Show all selected bank account movements
-  //showAllSelectedAccountMovements(columnName, bankAccountMovementId, fromDate, toDate, condoId, accountId) {
+  //showAllSelectedAccountMovements(columnName, bankAccountMovementId, fromDate, toDate, condoId, accountsId) {
   showAllSelectedAccountMovements(columnName, bankAccountMovementId) {
 
     let html = `

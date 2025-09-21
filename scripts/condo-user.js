@@ -55,10 +55,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Sends a request to the server to get users
     SQLquery =
       `
-        SELECT * FROM user
+        SELECT * FROM users
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY userId;
+        ORDER BY usersId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
     userArrayCreated =
@@ -102,14 +102,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
             && userArrayCreated) {
 
             // Find selected user id
-            const userId =
-              objUser.getSelectedUserId('select-user-userId');
+            const usersId =
+              objUser.getSelectedUserId('select-user-usersId');
 
             // Show leading text
-            showLeadingText(userId);
+            showLeadingText(usersId);
 
             // Show all values for user
-            showValues(userId);
+            showValues(usersId);
 
             // Make events
             isEventsCreated = 
@@ -127,10 +127,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // Sends a request to the server to get users one more time
           SQLquery =
             `
-              SELECT * FROM user
+              SELECT * FROM users
               WHERE condominiumId = ${objUserPassword.condominiumId}
                 AND deleted <> 'Y'
-              ORDER BY userId;
+              ORDER BY usersId;
             `;
           updateMySql(SQLquery, 'user', 'SELECT');
           userArrayCreated =
@@ -158,13 +158,13 @@ function createEvents() {
   // Select User
   document.addEventListener('change', (event) => {
 
-    if (event.target.classList.contains('select-user-userId')) {
+    if (event.target.classList.contains('select-user-usersId')) {
 
-      let userId = Number(document.querySelector('.select-user-userId').value);
-      userId =
-        (userId !== 0) ? userId : userArray.at(-1).userId;
-      if (userId) {
-        showValues(userId);
+      let usersId = Number(document.querySelector('.select-user-usersId').value);
+      usersId =
+        (usersId !== 0) ? usersId : userArray.at(-1).usersId;
+      if (usersId) {
+        showValues(usersId);
       }
     }
   });
@@ -174,9 +174,9 @@ function createEvents() {
     if (event.target.classList.contains('button-user-update')) {
 
       // user id
-      let userId =
-        Number(document.querySelector('.select-user-userId').value);
-      updateUser(userId);
+      let usersId =
+        Number(document.querySelector('.select-user-usersId').value);
+      updateUser(usersId);
     }
   });
 
@@ -192,17 +192,17 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-user-delete')) {
 
-      const userId =
-        Number(document.querySelector('.select-user-userId').value);
-      deleteUserRow(userId);
+      const usersId =
+        Number(document.querySelector('.select-user-usersId').value);
+      deleteUserRow(usersId);
 
       // Sends a request to the server to get all users
       const SQLquery =
         `
-          SELECT * FROM user
+          SELECT * FROM users
           WHERE condominiumId = ${objUserPassword.condominiumId}
             AND deleted <> 'Y'
-          ORDER BY userId;
+          ORDER BY usersId;
         `;
       updateMySql(SQLquery, 'user', 'SELECT');
       userArrayCreated =
@@ -217,10 +217,10 @@ function createEvents() {
       // Sends a request to the server to get all user
       const SQLquery =
         `
-          SELECT * FROM user
+          SELECT * FROM users
           WHERE condominiumId = ${objUserPassword.condominiumId}
             AND deleted <> 'Y'
-          ORDER BY userId;
+          ORDER BY usersId;
         `;
       updateMySql(SQLquery, 'user', 'SELECT');
       userArrayCreated =
@@ -230,11 +230,11 @@ function createEvents() {
   return true;
 }
 
-function updateUser(userId) {
+function updateUser(usersId) {
 
   let isUpdated = false;
 
-  if (validateValues(userId)) {
+  if (validateValues(usersId)) {
 
     // e-mail
     const email =
@@ -270,7 +270,7 @@ function updateUser(userId) {
       today.toISOString();
 
     const objUserRowNumber =
-      userArray.findIndex(user => user.userId === userId);
+      userArray.findIndex(user => user.usersId === usersId);
 
     // Check if object exist
     if (objUserRowNumber !== -1) {
@@ -290,7 +290,7 @@ function updateUser(userId) {
               securityLevel = ${securityLevel},
               password = '${password}'
             WHERE 
-              userId = ${userId};
+              usersId = ${usersId};
         `;
       updateMySql(SQLquery, 'user', 'UPDATE');
     } else {
@@ -328,7 +328,7 @@ function updateUser(userId) {
       updateMySql(SQLquery, 'user', 'INSERT');
     }
 
-    document.querySelector('.select-user-userId').disabled =
+    document.querySelector('.select-user-usersId').disabled =
       false;
     document.querySelector('.button-user-delete').disabled =
       false;
@@ -341,18 +341,18 @@ function updateUser(userId) {
   return isUpdated;
 }
 
-function deleteUserRow(userId) {
+function deleteUserRow(usersId) {
 
   let SQLquery = "";
 
-  if (userId >= 0) {
+  if (usersId >= 0) {
 
     const lastUpdate =
       today.toISOString();
 
     // Check if user exist
     const objUserRowNumber =
-      userArray.findIndex(user => user.userId === userId);
+      userArray.findIndex(user => user.usersId === usersId);
     if (objUserRowNumber !== -1) {
 
       // current date
@@ -367,7 +367,7 @@ function deleteUserRow(userId) {
               deleted = 'Y',
               user = '${objUserPassword.email}',
               lastUpdate = '${lastUpdate}'
-          WHERE userId = ${userId};
+          WHERE usersId = ${usersId};
         `;
 
       // Client sends a request to the server
@@ -377,10 +377,10 @@ function deleteUserRow(userId) {
     // Get user
     SQLquery =
       `
-        SELECT * FROM user
+        SELECT * FROM users
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY userId;
+        ORDER BY usersId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
     userArrayCreated =
@@ -391,10 +391,10 @@ function deleteUserRow(userId) {
 }
 
 // Show leading text for user
-function showLeadingText(userId) {
+function showLeadingText(usersId) {
 
   // Show all users
-  objUser.showAllUsers('user-userId', userId);
+  objUser.showAllUsers('user-usersId', usersId);
 
   // email
   objUser.showInput('user-email', '* E-mail(Bruker)', 50, '');
@@ -435,14 +435,14 @@ function showLeadingText(userId) {
 }
 
 // Show all values for user
-function showValues(userId) {
+function showValues(usersId) {
 
   // Check for valid user Id
-  if (userId >= 0) {
+  if (usersId >= 0) {
 
     // find object number for selected user Id 
     const objUserRowNumber =
-      userArray.findIndex(user => user.userId === userId);
+      userArray.findIndex(user => user.usersId === usersId);
     if (objUserRowNumber !== -1) {
 
       // Show email
@@ -477,7 +477,7 @@ function showValues(userId) {
 }
 
 // Check for valid values
-function validateValues(userId) {
+function validateValues(usersId) {
 
   // Check email
   const eMail =
@@ -519,7 +519,7 @@ function validateValues(userId) {
 function resetValues() {
 
   // user Id
-  document.querySelector('.select-user-userId').value =
+  document.querySelector('.select-user-usersId').value =
     0;
 
   // reset e-mail
@@ -550,7 +550,7 @@ function resetValues() {
   document.querySelector('.input-user-password').value =
     '';
 
-  document.querySelector('.select-user-userId').disabled =
+  document.querySelector('.select-user-usersId').disabled =
     true;
   document.querySelector('.button-user-delete').disabled =
     true;
