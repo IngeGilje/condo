@@ -1,47 +1,43 @@
 <!DOCTYPE html>
 <html lang="no">
+
 <head>
   <meta charset="UTF-8">
   <title>Condo Client</title>
 </head>
+
 <body>
   <h1>Condo Client</h1>
-  <button id="btnTime">Get Server Time</button>
-  <button id="btnUsers">Get Users</button>
 
-  <pre id="output"></pre>
+  <pre id="usersOutput"></pre>
+  <pre id="accountsOutput"></pre>
 
   <script type="module">
-    // Utility: wait for data from server
-    async function getData(url) {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
+
+    loadUsersAndAccounts();
+
+    // Get users and accounts
+    async function loadUsersAndAccounts() {
+      try {
+        const response = await fetch("http://localhost:3000/users");
+        if (!response.ok) throw new Error("Network error (users)");
+        const users = await response.json();
+        document.getElementById("usersOutput").textContent = JSON.stringify(users, null, 2);
+      } catch (error) {
+        console.error("Error loading users:", error);
       }
-      return await response.json();
+
+      try {
+        const response = await fetch("http://localhost:3000/accounts");
+        if (!response.ok) throw new Error("Network error (accounts)");
+        const accounts = await response.json();
+        document.getElementById("accountsOutput").textContent = JSON.stringify(accounts, null, 2);
+      } catch (error) {
+        console.log("Error loading accounts:", error);
+      }
     }
 
-    const output = document.getElementById("output");
-
-    // Button: get server time
-    document.getElementById("btnTime").addEventListener("click", async () => {
-      try {
-        const data = await getData("http://localhost:3000/time");
-        output.textContent = JSON.stringify(data, null, 2);
-      } catch (err) {
-        output.textContent = "Error: " + err.message;
-      }
-    });
-
-    // Button: get users
-    document.getElementById("btnUsers").addEventListener("click", async () => {
-      try {
-        const data = await getData("http://localhost:3000/users");
-        output.textContent = JSON.stringify(data, null, 2);
-      } catch (err) {
-        output.textContent = "Error: " + err.message;
-      }
-    });
   </script>
 </body>
+
 </html>
