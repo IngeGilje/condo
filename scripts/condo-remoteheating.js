@@ -50,7 +50,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT account.*
         FROM condominium
-        JOIN account ON condominium.paymentRemoteHeatingAccountId = account.accountsId
+        JOIN account ON condominium.paymentRemoteHeatingAccountId = account.accountId
         WHERE condominium.condominiumId = ${objUserPassword.condominiumId}    
       `;
 
@@ -114,7 +114,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           `
             SELECT * FROM bankaccountmovement
             WHERE deleted <> 'Y'
-              AND accountsId = ${accountsArray[0].accountsId}
+              AND accountId = ${accountsArray[0].accountId}
               AND date BETWEEN ${fromDate} AND ${toDate}
             ORDER BY date DESC;
           `;
@@ -303,15 +303,15 @@ function showLeadingText() {
 
   /*
   // Show all accounts
-  if (!isClassDefined('select-remoteheating-accountsId')) {
+  if (!isClassDefined('select-remoteheating-accountId')) {
 
     // Check if condominium id exist
     const objCondominimuRowNumber =
       condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
     if (objCondominimuRowNumber !== -1) {
-      const accountsId =
-        condominiumArray[objCondominimuRowNumber].accountsId;
-      objAccount.showAllAccounts('remoteheating-accountsId', accountsId, 'Alle');
+      const accountId =
+        condominiumArray[objCondominimuRowNumber].accountId;
+      objAccount.showAllAccounts('remoteheating-accountId', accountId, 'Alle');
 
       getSelectedBankAccountMovements();
     }
@@ -333,8 +333,8 @@ function showValues() {
 
     const condoId =
       Number(document.querySelector('.select-remoteheating-condoId').value);
-    //const accountsId =
-    //  Number(document.querySelector('.select-remoteheating-accountsId').value);
+    //const accountId =
+    //  Number(document.querySelector('.select-remoteheating-accountId').value);
 
     // Accomulate
     let sumColumnPayment = 0;
@@ -573,8 +573,8 @@ function getSelectedBankAccountMovements() {
   const condoId =
     Number(document.querySelector('.select-remoteheating-condoId').value);
 
-  //const accountsId =
-  //  Number(document.querySelector('.select-remoteheating-accountsId').value);
+  //const accountId =
+  //  Number(document.querySelector('.select-remoteheating-accountId').value);
 
   const fromDate =
     Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
@@ -586,7 +586,7 @@ function getSelectedBankAccountMovements() {
       SELECT * FROM bankaccountmovement
       WHERE condominiumId = ${objUserPassword.condominiumId}
         AND deleted <> 'Y'
-        AND accountsId = ${accountsArray[0].accountsId}
+        AND accountId = ${accountsArray[0].accountId}
         AND date BETWEEN ${fromDate} AND ${toDate}
         ORDER By date DESC;
     `;

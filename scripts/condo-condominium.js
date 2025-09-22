@@ -70,7 +70,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountsId;
+        ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
     accountArrayCreated =

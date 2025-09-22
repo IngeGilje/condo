@@ -71,10 +71,10 @@ class AccountMovement extends Condos {
       html;
   }
 
-  getBankAccountName(accountsId, unKnown = 'Ukjent') {
+  getBankAccountName(accountId, unKnown = 'Ukjent') {
 
     let bankAccountName = unKnown;
-    const objectNumberAccount = accountsArray.findIndex(account => account.accountsId === accountsId);
+    const objectNumberAccount = accountsArray.findIndex(account => account.accountId === accountId);
     if (objectNumberAccount > 0) {
       const bankAccountId = Number(accountsArray[objectNumberAccount].bankAccountId);
       const objectNumberBankAccount = bankAccountArray.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);

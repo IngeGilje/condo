@@ -58,7 +58,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountsId;
+        ORDER BY accountId;
       `;
 
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -127,7 +127,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
             // Find selected account id
             const bankaccountId =
-              objBankAccount.getSelectedBankAccountId('select-bankaccount-accountsId');
+              objBankAccount.getSelectedBankAccountId('select-bankaccount-accountId');
 
             // Show leading text
             showLeadingText(bankaccountId);

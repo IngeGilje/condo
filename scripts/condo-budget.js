@@ -52,7 +52,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountsId;
+        ORDER BY accountId;
       `;
 
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -67,7 +67,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
           AND year = '${year}'
-        ORDER BY year,accountsId;
+        ORDER BY year,accountId;
       `;
 
     updateMySql(SQLquery, 'budget', 'SELECT');
@@ -161,7 +161,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               WHERE condominiumId = ${objUserPassword.condominiumId}
                 AND deleted <> 'Y'
                 AND year = '${year}'
-              ORDER BY year,accountsId;
+              ORDER BY year,accountId;
             `;
           updateMySql(SQLquery, 'budget', 'SELECT');
           budgetArrayCreated =
@@ -213,9 +213,9 @@ function createEvents() {
 
   // Select account number
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-budget-accountsId')) {
+    if (event.target.classList.contains('select-budget-accountId')) {
 
-      accountsId =
+      accountId =
         Number(event.target.value);
     };
   });
@@ -250,7 +250,7 @@ function createEvents() {
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
           AND year = '${year}'
-        ORDER BY year,accountsId;
+        ORDER BY year,accountId;
       `;
       updateMySql(SQLquery, 'budget', 'SELECT');
       budgetArrayCreated =
@@ -268,7 +268,7 @@ function createEvents() {
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
           AND year = '${year}'
-        ORDER BY year,accountsId;
+        ORDER BY year,accountId;
       `;
       updateMySql(SQLquery, 'budget', 'SELECT');
       budgetArrayCreated =
@@ -287,8 +287,8 @@ function updateBudgetRow(budgetId) {
 
     // Valid values
 
-    const accountsId =
-      Number(document.querySelector('.select-budget-accountsId').value);
+    const accountId =
+      Number(document.querySelector('.select-budget-accountId').value);
     const year =
       Number(document.querySelector('.select-budget-year').value);
     let amount =
@@ -314,7 +314,7 @@ function updateBudgetRow(budgetId) {
           SET
             user = '${objUserPassword.email}', 
             lastUpdate = '${lastUpdate}',
-            accountsId = ${accountsId},
+            accountId = ${accountId},
             amount = ${amount},
             year = '${year}'
           WHERE budgetId = ${budgetId};
@@ -330,7 +330,7 @@ function updateBudgetRow(budgetId) {
             condominiumId,
             user,
             lastUpdate,
-            accountsId,
+            accountId,
             amount,
             year)
           VALUES (
@@ -338,7 +338,7 @@ function updateBudgetRow(budgetId) {
             ${objUserPassword.condominiumId},
             '${objUserPassword.email}',
             '${lastUpdate}',
-            ${accountsId},
+            ${accountId},
             ${amount},
             '${year}'
           );
@@ -364,9 +364,9 @@ function showLeadingText(budgetId) {
   objBudget.showAllSelectedBudgets('budget-budgetId', budgetId)
 
   // Show all accounts
-  const accountsId =
-    accountsArray.at(-1).accountsId;
-  objAccount.showAllAccounts('budget-accountsId', accountsId, '', 'Ingen konti er valgt');
+  const accountId =
+    accountsArray.at(-1).accountId;
+  objAccount.showAllAccounts('budget-accountId', accountId, '', 'Ingen konti er valgt');
 
   // Show years
   objBudget.selectNumber('budget-year', 2020, 2030, budgetYear, 'År');
@@ -420,9 +420,9 @@ function showValues(budgetId) {
       //objBudget.selectBudgetId(budgetId, 'budget-budgetId');
 
       // Select account
-      const accountsId =
-        budgetArray[objBudgetRowNumber].accountsId;
-      objAccount.selectAccountId(accountsId, 'budget-accountsId');
+      const accountId =
+        budgetArray[objBudgetRowNumber].accountId;
+      objAccount.selectAccountId(accountId, 'budget-accountId');
 
       // Show select year
       document.querySelector('.select-budget-year').value =
@@ -443,7 +443,7 @@ function resetValues() {
     0;
 
   // selected account Id
-  document.querySelector('.select-budget-accountsId').value =
+  document.querySelector('.select-budget-accountId').value =
     0;
 
   // selected year
@@ -506,10 +506,10 @@ function deleteBudgetRow() {
 function validateValues() {
 
   // Check account id
-  const accountsId =
-    document.querySelector('.select-budget-accountsId').value;
+  const accountId =
+    document.querySelector('.select-budget-accountId').value;
   const validAccountId =
-    validateNumber(accountsId, 1, 99999, "budget-accountsId", "Konto");
+    validateNumber(accountId, 1, 99999, "budget-accountId", "Konto");
 
   // Check year
   const year =
@@ -532,10 +532,10 @@ function validateValues() {
 function validateFilter() {
 
   // Check account
-  const accountsId =
+  const accountId =
     document.querySelector('.select-budget-filterAccountId').value;
   const validAccountId =
-    validateNumber(accountsId, 1, 999999999, 'budget-filterAccountId', 'Konto');
+    validateNumber(accountId, 1, 999999999, 'budget-filterAccountId', 'Konto');
 
   const year =
     document.querySelector('.select-budget-filterYear').value;
@@ -549,9 +549,9 @@ function validateFilter() {
 function showLeadingTextSearch() {
 
   // Show all accounts
-  const accountsId =
+  const accountId =
     (isClassDefined('select-budget-filterAccountId')) ? Number(document.querySelector('.select-budget-filterAccountId').value) : 0;
-  objAccount.showAllAccounts('budget-filterAccountId', accountsId, 'Alle');
+  objAccount.showAllAccounts('budget-filterAccountId', accountId, 'Alle');
 
   // Show budget year
   if (!isClassDefined('select-budget-filterYear')) {
@@ -604,7 +604,7 @@ function showBudget() {
 
         // account name
         const accountName =
-          objAccount.getAccountName(budget.accountsId);
+          objAccount.getAccountName(budget.accountId);
         const colorClassAccountName =
           (accountName === '-') ? 'red' : colorClass;
         htmlColumnAccountName +=
@@ -665,7 +665,7 @@ function showBudget() {
 // Get selected budget
 function getSelectedBudgets() {
 
-  const accountsId =
+  const accountId =
     Number(document.querySelector('.select-budget-filterAccountId').value);
 
   const year =
@@ -679,16 +679,16 @@ function getSelectedBudgets() {
         AND year = '${year}'
     `;
 
-  if (accountsId !== 999999999) {
+  if (accountId !== 999999999) {
     SQLquery +=
       `
-        AND accountsId = ${accountsId}
+        AND accountId = ${accountId}
       `;
   }
 
   SQLquery +=
     `
-      ORDER BY year,accountsId;
+      ORDER BY year,accountId;
     `;
 
   updateMySql(SQLquery, 'budget', 'SELECT');

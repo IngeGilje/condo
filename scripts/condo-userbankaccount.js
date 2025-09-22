@@ -52,7 +52,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountsId;
+        ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
     accountArrayCreated =
@@ -176,10 +176,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
 }
 
-// Make events for user bank accountsId
+// Make events for user bank accountId
 function createEvents() {
 
-  // Select user bank accountsId
+  // Select user bank accountId
   document.addEventListener('change', (event) => {
 
     if (event.target.classList.contains('select-userbankaccount-userBankAccountId')) {
@@ -264,8 +264,8 @@ function updateUserBankAccount() {
       Number(document.querySelector('.select-userbankaccount-usersId').value);
 
     // account id
-    const accountsId =
-      Number(document.querySelector('.select-userbankaccount-accountsId').value);
+    const accountId =
+      Number(document.querySelector('.select-userbankaccount-accountId').value);
 
     // name
     const bankAccountName =
@@ -294,7 +294,7 @@ function updateUserBankAccount() {
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             usersId = ${usersId},
-            accountsId = ${accountsId},
+            accountId = ${accountId},
             name = '${bankAccountName}',
             bankAccount = '${bankAccount}'
           WHERE userBankAccountId = ${userBankAccountId}
@@ -312,7 +312,7 @@ function updateUserBankAccount() {
             user,
             lastUpdate,
             usersId,
-            accountsId,
+            accountId,
             name,
             bankAccount
           ) 
@@ -322,7 +322,7 @@ function updateUserBankAccount() {
             '${objUserPassword.email}',
             '${lastUpdate}',
             ${usersId},
-            ${accountsId},
+            ${accountId},
             '${bankAccountName}',
             '${bankAccount}'
           );
@@ -351,9 +351,9 @@ function showLeadingText(userBankAccountId) {
   objUser.showAllUsers('userbankaccount-usersId', userBankAccountId);
 
   // Show all accounts
-  const accountsId =
-    accountsArray.at(-1).accountsId;
-  objAccount.showAllAccounts('userbankaccount-accountsId', accountsId);
+  const accountId =
+    accountsArray.at(-1).accountId;
+  objAccount.showAllAccounts('userbankaccount-accountId', accountId);
 
   // name
   objUserBankAccount.showInput('userbankaccount-name', '* Navn', 50, '');
@@ -382,7 +382,7 @@ function showValues(userBankAccountId) {
   // Check for valid user bank account
   if (userBankAccountId >= 0) {
 
-    // find object number for selected user bank accountsId
+    // find object number for selected user bank accountId
     const objBankAccountRowNumber =
       userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (objBankAccountRowNumber !== -1) {
@@ -391,9 +391,9 @@ function showValues(userBankAccountId) {
       document.querySelector('.select-userbankaccount-usersId').value =
         userBankAccountArray[objBankAccountRowNumber].usersId;
 
-      // Select accountsId
-      document.querySelector('.select-userbankaccount-accountsId').value =
-        userBankAccountArray[objBankAccountRowNumber].accountsId;
+      // Select accountId
+      document.querySelector('.select-userbankaccount-accountId').value =
+        userBankAccountArray[objBankAccountRowNumber].accountId;
 
       // Show bank account name
       document.querySelector('.input-userbankaccount-name').value =
@@ -416,10 +416,10 @@ function validateValues() {
     validateNumber(usersId, 1, 99999, "userbankaccount-usersId", "bruker");
 
   // Check account Id
-  const accountsId =
-    Number(document.querySelector('.select-userbankaccount-accountsId').value);
+  const accountId =
+    Number(document.querySelector('.select-userbankaccount-accountId').value);
   const validAccountId =
-    validateNumber(accountsId, 1, 99999, "userbankaccount-accountsId", "konto");
+    validateNumber(accountId, 1, 99999, "userbankaccount-accountId", "konto");
 
   // Check name
   const userBankAccountName =
@@ -447,7 +447,7 @@ function resetValues() {
     0;
 
   // reset account Id
-  document.querySelector('.select-userbankaccount-accountsId').value =
+  document.querySelector('.select-userbankaccount-accountId').value =
     0;
 
 

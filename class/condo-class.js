@@ -495,15 +495,15 @@ class Condos {
   */
 
   // Select account
-  selectAccountId(accountsId, className) {
+  selectAccountId(accountId, className) {
 
     // Check if account id exist
     const objAccountNumber =
-      accountsArray.findIndex(account => account.accountsId === accountsId);
+      accountsArray.findIndex(account => account.accountId === accountId);
     if (objAccountNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
-        accountsId;
+        accountId;
       return true;
     } else {
 
@@ -904,21 +904,21 @@ class Condos {
     let html =
       `
       <form 
-        id="${accountsId}"
+        id="${accountId}"
         action="/submit" 
         method="POST"
       >
         <label 
           class="label-${className}"
-          for="${accountsId}"
-          id="${accountsId}"
+          for="${accountId}"
+          id="${accountId}"
         >
           ${labelText}
         </label>
         <select 
           class="select-${className}" 
-          id="${accountsId}"
-          name="${accountsId}"
+          id="${accountId}"
+          name="${accountId}"
         >
       `;
 
@@ -1015,13 +1015,13 @@ class Condos {
   }
 
   // get account name
-  getAccountName(accountsId) {
+  getAccountName(accountId) {
 
     let accountName = "-";
 
     // Account name from account table
     const objAccountRowNumber =
-      accountsArray.findIndex(account => account.accountsId === accountsId);
+      accountsArray.findIndex(account => account.accountId === accountId);
     if (objAccountRowNumber !== -1) {
 
       accountName =
@@ -1181,7 +1181,7 @@ class Condos {
         break;
       }
       case "accountName":
-      case "accountsId": {
+      case "accountId": {
         imageName =
           "accountName.png";
         break;
@@ -1920,7 +1920,7 @@ function validateInterval(className, labelText, fromValue, toValue) {
 // get account id from bank account
 function getAccountIdFromBankAccount(bankAccount, payment) {
 
-  let accountsId = 0;
+  let accountId = 0;
 
   if (bankAccount === '32073195801') {
     console.log('bank account:', bankAccount);
@@ -1936,8 +1936,8 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
       userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
     if (objBankAccountRowNumber !== -1) {
 
-      accountsId =
-        userBankAccountArray[objBankAccountRowNumber].accountsId;
+      accountId =
+        userBankAccountArray[objBankAccountRowNumber].accountId;
     }
 
     // get Account Id from supplier
@@ -1945,18 +1945,18 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
       supplierArray.findIndex(supplier => supplier.bankAccount === bankAccount);
     if (objSupplierRowNumber !== -1) {
 
-      accountsId =
-        supplierArray[objSupplierRowNumber].accountsId;
+      accountId =
+        supplierArray[objSupplierRowNumber].accountId;
 
       // get Account Id from supplier amount
       const amount =
         (supplierArray[objSupplierRowNumber].amount) ? Number(supplierArray[objSupplierRowNumber].amount) : 0;
 
-      accountsId =
-        (amount === Number(payment)) ? Number(supplierArray[objSupplierRowNumber].account2Id) : accountsId;
+      accountId =
+        (amount === Number(payment)) ? Number(supplierArray[objSupplierRowNumber].account2Id) : accountId;
     }
   }
-  return accountsId;
+  return accountId;
 }
 
 // HTML start for filters

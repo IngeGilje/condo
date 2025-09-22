@@ -964,14 +964,14 @@ body {
 /* red */
 .red,
 
-.label-bankaccountmovement-accountsId-red,
+.label-bankaccountmovement-accountId-red,
 .label-bankaccountmovement-date-red,
 
 .label-accountreport-filter-fromDate-red,
 .label-accountreport-filter-toDate-red,
 
 .label-userbankaccount-usersId-red,
-.label-userbankaccount-accountsId-red,
+.label-userbankaccount-accountId-red,
 .label-userbankaccount-name-red,
 .label-userbankaccount-bankAccount-red,
 
@@ -1029,7 +1029,7 @@ body {
 .label-income-date-red,
 .label-income-amount-red,
 
-.label-accounts-accountsId-red,
+.label-accounts-accountId-red,
 .label-accounts-bankAccountId-red,
 .label-accounts-accountName-red,
 .label-accounts-fixedCost-red,

@@ -5,7 +5,7 @@ class Accounts extends Condos {
   accountsArray;
 
   // Show all accounts
-  showAllAccounts(className, accountsId, alternativeSelect, alternativeSelect2) {
+  showAllAccounts(className, accountId, alternativeSelect, alternativeSelect2) {
 
     let selectedOption =
       false;
@@ -13,21 +13,21 @@ class Accounts extends Condos {
     let html =
       `
         <form 
-          id="accountsId"
+          id="accountId"
           action="/submit" 
           method="POST"
         >
           <label 
             class="label-${className}"
-            for="accountsId"
-            id="accountsId"
+            for="accountId"
+            id="accountId"
           >
             Velg konto
           </label>
           <select 
             class="select-${className}" 
-            id="accountsId"
-            name="accountsId"
+            id="accountId"
+            name="accountId"
           >
       `;
 
@@ -35,15 +35,15 @@ class Accounts extends Condos {
     const numberOfRows = this.accountsArray.length;
     if (numberOfRows > 0) {
       this.accountsArray.forEach((account) => {
-        if (account.accountsId === accountsId) {
+        if (account.accountId === accountId) {
 
           html +=
             `
               <option 
-                value=${account.accountsId}
+                value=${account.accountId}
                 selected
               >
-                ${account.accountsId} - ${account.name}
+                ${account.accountId} - ${account.name}
               </option>
             `;
           selectedOption =
@@ -53,8 +53,8 @@ class Accounts extends Condos {
           html +=
             `
               <option 
-                value="${account.accountsId}">
-                ${account.accountsId} - ${account.name}
+                value="${account.accountId}">
+                ${account.accountId} - ${account.name}
               </option>
             `;
         }
@@ -140,20 +140,20 @@ class Accounts extends Condos {
   // Get selected account id
   getSelectedAccountId(className) {
 
-    let accountsId = 0;
+    let accountId = 0;
 
     // Check if HTML class exist
     if (isClassDefined(className)) {
 
-      accountsId = Number(document.querySelector(`.${className}`).value);
-      accountsId = (accountsId === 0) ? accountsArray.at(-1).accountsId : accountsId;
+      accountId = Number(document.querySelector(`.${className}`).value);
+      accountId = (accountId === 0) ? this.accountsArray.at(-1).accountId : accountId;
     } else {
 
       // Get last id in last object in account array
-      accountsId = this.accountsArray.at(-1).accountsId;
+      accountId = this.accountsArray.at(-1).accountId;
     }
 
-    return accountsId;
+    return accountId;
   }
 
 
@@ -173,16 +173,16 @@ class Accounts extends Condos {
       `;
 
     // Check if account array is empty
-    const numberOfRows = accountsArray.length;
+    const numberOfRows = this.accountsArray.length;
     if (numberOfRows > 0) {
-      accountsArray.forEach((account) => {
+      this.accountsArray.forEach((account) => {
 
         html +=
           `
             <option
-              value = "${account.accountsId}"
+              value = "${account.accountId}"
             >
-              ${account.accountsId} - ${account.name}
+              ${account.accountId} - ${account.name}
             </option >
           `;
       });
@@ -222,26 +222,54 @@ class Accounts extends Condos {
 
     return html;
   }
-  // Get accounts
-  async sTable() {
+
+  // get accounts
+  async loadAccountsTable(condominiumId) {
+
     try {
-      const response = await fetch("http://localhost:3000/accounts");
+      const response = await fetch(`http://localhost:3000/accounts?action=select&condominiumId=${condominiumId}`);
+      if (!response.ok) throw new Error("Network error (users)");
+      this.accountsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading users:", error);
+    }
+    return this.accountsArray;
+  }
+
+  // update account row
+  async updateAccountsTable(user, accountId, fixedCost, lastUpdate, accountName) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/accounts?action=update&user=${user}&accountId=${accountId}&fixedCost=${fixedCost}&lastUpdate=${lastUpdate}&accountName=${accountName}`);
+      if (!response.ok) throw new Error("Network error (accounts)");
+      this.accountsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading accounts:", error);
+    }
+    return this.accountsArray;
+  }
+
+  // insert account row
+  async insertAccountsTable(condominiumId, user, lastUpdate, accountName, fixedCost) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/accounts?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&accountName=${accountName}&fixedCost=${fixedCost}`);
       if (!response.ok) throw new Error("Network error (accounts)");
       this.accountsArray = await response.json();
     } catch (error) {
       console.log("Error loading accounts:", error);
     }
   }
-  // get accounts
-  async loadAccountsTable(condominiumId) {
+  // delete account row
+  async deleteAccountsTable(accountId, user, lastUpdate) {
 
-    // Get accounts
     try {
-      const response = await fetch(`http://localhost:3000/accounts?condominiumId=${condominiumId}`);
-      if (!response.ok) throw new Error("Network error (users)");
+      const response = await fetch(`http://localhost:3000/accounts?action=delete&accountId=${accountId}&user=${user}&lastUpdate=${lastUpdate}`);
+      if (!response.ok) throw new Error("Network error (accounts)");
       this.accountsArray = await response.json();
     } catch (error) {
-      console.log("Error loading users:", error);
+      console.log("Error loading accounts:", error);
     }
+    return this.accountsArray;
   }
 }

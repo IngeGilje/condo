@@ -91,7 +91,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountsId;
+        ORDER BY accountId;
       `;
 
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -269,7 +269,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               convertDateToISOFormat(document.querySelector('.input-bankaccountmovement-filterAmount').value);
             const condoId =
               Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
-            const accountsId =
+            const accountId =
               Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
 
             // Show bank account movements Id
@@ -429,9 +429,9 @@ function showLeadingTextSearch() {
   objCondo.showAllCondos('bankaccountmovement-filterCondoId', condoId, 'Alle');
 
   // Show all accounts
-  const accountsId =
+  const accountId =
     (isClassDefined('select-bankaccountmovement-filterAccountId')) ? Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value) : 0;
-  objAccount.showAllAccounts('bankaccountmovement-filterAccountId', accountsId, 'Alle');
+  objAccount.showAllAccounts('bankaccountmovement-filterAccountId', accountId, 'Alle');
 
   // Show from date
   if (!isClassDefined('input-bankaccountmovement-filterFromDate')) {
@@ -498,12 +498,12 @@ function showLeadingText() {
   objCondo.showAllCondos('bankaccountmovement-condoId', condoId, '', 'Ingen er valgt');
 
   // Show all accounts
-  let accountsId = 0;
+  let accountId = 0;
   if (accountsArray.length > 0) {
-    accountsId =
-      accountsArray.at(-1).accountsId;
+    accountId =
+      accountsArray.at(-1).accountId;
   }
-  objAccount.showAllAccounts('bankaccountmovement-accountsId', accountsId, '', 'Ingen er valgt');
+  objAccount.showAllAccounts('bankaccountmovement-accountId', accountId, '', 'Ingen er valgt');
 
   // Show date
   objBankAccountMovement.showInput('bankaccountmovement-date', '* Dato', 10, 'dd.mm.åååå');
@@ -553,8 +553,8 @@ function showValues(bankAccountMovementId) {
         bankAccountMovementArray[objBankAccountMovementRowNumber].condoId;
 
       // Show account
-      document.querySelector('.select-bankaccountmovement-accountsId').value =
-        bankAccountMovementArray[objBankAccountMovementRowNumber].accountsId;
+      document.querySelector('.select-bankaccountmovement-accountId').value =
+        bankAccountMovementArray[objBankAccountMovementRowNumber].accountId;
 
       // Show date
       const date =
@@ -640,7 +640,7 @@ function showBankAccountMovements() {
 
     const condoId =
       Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
-    const accountsId =
+    const accountId =
       Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
 
     bankAccountMovementArray.forEach((bankAccountMovement) => {
@@ -680,7 +680,7 @@ function showBankAccountMovements() {
 
       // account name
       const accountName =
-        objAccount.getAccountName(bankAccountMovement.accountsId);
+        objAccount.getAccountName(bankAccountMovement.accountId);
       const colorClassAccountName =
         (accountName === '-') ? 'red' : colorClass;
       htmlColumnAccountName +=
@@ -835,15 +835,15 @@ function showBankAccountMovements() {
 function validateFilter() {
 
   // Check account movement
-  const accountsId =
+  const accountId =
     document.querySelector('.select-bankaccountmovement-filterAccountId').value;
   const validAccountId =
-    validateNumber(accountsId, 1, 999999999, 'bankaccountmovement-filterAccountId', 'Konto');
+    validateNumber(accountId, 1, 999999999, 'bankaccountmovement-filterAccountId', 'Konto');
 
   const condoId =
     document.querySelector('.select-bankaccountmovement-filterCondoId').value;
   const validCondoId =
-    validateNumber(accountsId, 1, 999999999, 'bankaccountmovement-filterCondoId', 'Leilighet');
+    validateNumber(accountId, 1, 999999999, 'bankaccountmovement-filterCondoId', 'Leilighet');
 
   const fromDate =
     document.querySelector('.input-bankaccountmovement-filterFromDate').value;
@@ -872,8 +872,8 @@ function updateBankAccountMovement(bankAccountMovementId) {
 
     const condoId =
       Number(document.querySelector('.select-bankaccountmovement-condoId').value);
-    const accountsId =
-      Number(document.querySelector('.select-bankaccountmovement-accountsId').value);
+    const accountId =
+      Number(document.querySelector('.select-bankaccountmovement-accountId').value);
 
     let date =
       document.querySelector('.input-bankaccountmovement-date').value;
@@ -916,7 +916,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             condoId = '${condoId}',
-            accountsId = '${accountsId}',
+            accountId = '${accountId}',
             income = ${income},
             payment = ${payment},
             numberKWHour  = '${numberKWHour}',
@@ -935,7 +935,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
           user,
           lastUpdate,
           condoId,
-          accountsId,
+          accountId,
           income,
           payment,
           numberKWHour,
@@ -948,7 +948,7 @@ function updateBankAccountMovement(bankAccountMovementId) {
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
-          ${accountsId},
+          ${accountId},
           ${income},
           ${payment},
           '${numberKWHour}',
@@ -974,12 +974,12 @@ function validateValues() {
 
 
   // Check account Id
-  let accountsId =
-    document.querySelector('.select-bankaccountmovement-accountsId').value;
-  accountsId =
-    (accountsId) ? Number(accountsId) : 0;
+  let accountId =
+    document.querySelector('.select-bankaccountmovement-accountId').value;
+  accountId =
+    (accountId) ? Number(accountId) : 0;
   const validAccountId =
-    validateNumber(accountsId, 1, 999999999, 'bankaccountmovement-accountsId', 'Konto');
+    validateNumber(accountId, 1, 999999999, 'bankaccountmovement-accountId', 'Konto');
 
   const date =
     document.querySelector('.input-bankaccountmovement-date').value;
@@ -1028,7 +1028,7 @@ function resetValues() {
   document.querySelector('.select-bankaccountmovement-condoId').value =
     '';
 
-  document.querySelector('.select-bankaccountmovement-accountsId').value = '';
+  document.querySelector('.select-bankaccountmovement-accountId').value = '';
 
   document.querySelector('.input-bankaccountmovement-date').value = '';
 
@@ -1050,7 +1050,7 @@ function getSelectedBankAccountMovements() {
 
   const condoId =
     Number(document.querySelector('.select-bankaccountmovement-filterCondoId').value);
-  const accountsId =
+  const accountId =
     Number(document.querySelector('.select-bankaccountmovement-filterAccountId').value);
 
   const fromDate =
@@ -1076,10 +1076,10 @@ function getSelectedBankAccountMovements() {
       `;
   }
 
-  if (accountsId !== 999999999) {
+  if (accountId !== 999999999) {
     SQLquery +=
       `
-        AND accountsId = ${accountsId}
+        AND accountId = ${accountId}
       `;
   }
 

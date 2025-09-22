@@ -119,7 +119,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountsId;
+        ORDER BY accountId;
       `;
     updateMySql(SQLquery, 'account', 'SELECT');
     accountArrayCreated =
@@ -511,7 +511,7 @@ function showBankAccountMovements() {
         </div>
       `;
 
-    if (importFile.accountsId) {
+    if (importFile.accountId) {
 
       htmlColumnAccountName +=
         `
@@ -734,10 +734,10 @@ function createImportFileArray(fileContent) {
         formatKronerToOre(payment);
 
       // Account Id
-      let accountsId =
+      let accountId =
         getAccountIdFromBankAccount(fromBankAccount, payment);
-      accountsId =
-        (accountsId) ? accountsId : getAccountIdFromBankAccount(toBankAccount, payment);
+      accountId =
+        (accountId) ? accountId : getAccountIdFromBankAccount(toBankAccount, payment);
 
       // Account Name
       let accountName;
@@ -747,8 +747,8 @@ function createImportFileArray(fileContent) {
           accountsArray.findIndex(account => account.name.includes('FAKT.TJ'));
         if (accountRowNumber !== -1) {
 
-          accountsId =
-            accountsArray[accountRowNumber].accountsId;
+          accountId =
+            accountsArray[accountRowNumber].accountId;
           accountName =
             accountsArray[accountRowNumber].name;
         }
@@ -761,16 +761,16 @@ function createImportFileArray(fileContent) {
           accountsArray.findIndex(account => account.name.includes('transaksjoner'));
         if (accountRowNumber !== -1) {
 
-          accountsId =
-            accountsArray[accountRowNumber].accountsId;
+          accountId =
+            accountsArray[accountRowNumber].accountId;
           accountName =
             accountsArray[accountRowNumber].name;
         }
       }
 
-      if (accountsId) {
+      if (accountId) {
         accountName =
-          objImportFile.getAccountName(accountsId);
+          objImportFile.getAccountName(accountId);
 
       } else {
 
@@ -798,7 +798,7 @@ function createImportFileArray(fileContent) {
           accountingDate: accountingDate,
           condoId: condoId,
           condoName: condoName,
-          accountsId: accountsId,
+          accountId: accountId,
           accountName: accountName,
           fromBankAccount: fromBankAccount,
           fromBankAccountName: fromBankAccountName,
@@ -823,8 +823,8 @@ function updateBankAccountMovements() {
     const condoId =
       Number(importFile.condoId);
 
-    const accountsId =
-      Number(importFile.accountsId);
+    const accountId =
+      Number(importFile.accountId);
 
     const income =
       Number(importFile.income);
@@ -849,7 +849,7 @@ function updateBankAccountMovements() {
           user,
           lastUpdate,
           condoId,
-          accountsId,
+          accountId,
           income,
           payment,
           numberKWHour,
@@ -861,7 +861,7 @@ function updateBankAccountMovements() {
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
-          ${accountsId},
+          ${accountId},
           ${income},
           ${payment},
           '',

@@ -67,7 +67,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         SELECT * FROM accounts
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY accountsId;
+        ORDER BY accountId;
       `;
 
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -263,7 +263,7 @@ function createEvents() {
       document.querySelector('.select-due-filterCondoId').value =
         document.querySelector('.select-due-condoId').value;
       document.querySelector('.select-due-filterAccountId').value =
-        document.querySelector('.select-due-accountsId').value;
+        document.querySelector('.select-due-accountId').value;
     }
   });
 
@@ -306,8 +306,8 @@ function updateDue(dueId) {
     const condoId =
       Number(document.querySelector('.select-due-condoId').value);
 
-    const accountsId =
-      Number(document.querySelector('.select-due-accountsId').value);
+    const accountId =
+      Number(document.querySelector('.select-due-accountId').value);
 
     const date =
       Number(formatNorDateToNumber(document.querySelector('.input-due-date').value));
@@ -333,7 +333,7 @@ function updateDue(dueId) {
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
             condoId = ${condoId},
-            accountsId = ${accountsId},
+            accountId = ${accountId},
             amount = ${amount},
             date = ${date},
             text = '${text}'
@@ -350,7 +350,7 @@ function updateDue(dueId) {
             user,
             lastUpdate,
             condoId,
-            accountsId,
+            accountId,
             amount,
             date,
             text)
@@ -360,7 +360,7 @@ function updateDue(dueId) {
             '${objUserPassword.email}',
             '${lastUpdate}',
             ${condoId},
-            ${accountsId},
+            ${accountId},
             ${amount},
             ${date},
             '${text}'
@@ -413,9 +413,9 @@ function showLeadingTextFilter() {
   objCondo.showAllCondos('due-filterCondoId', condoId, 'Alle');
 
   // Show all accounts
-  const accountsId =
+  const accountId =
     (isClassDefined('select-due-filterAccountId')) ? Number(document.querySelector('.select-due-filterAccountId').value) : 0;
-  objAccount.showAllAccounts('due-filterAccountId', accountsId, 'Alle');
+  objAccount.showAllAccounts('due-filterAccountId', accountId, 'Alle');
 
   // Show from date
   if (!isClassDefined('input-due-filterFromDate')) {
@@ -463,9 +463,9 @@ function showLeadingText(dueId) {
   objCondo.showAllCondos('due-condoId', condoId, 'Ingen er valgt');
 
   // Show all accounts
-  const accountsId =
-    accountsArray.at(-1).accountsId;
-  objAccount.showAllAccounts('due-accountsId', accountsId, 'Ingen er valgt');
+  const accountId =
+    accountsArray.at(-1).accountId;
+  objAccount.showAllAccounts('due-accountId', accountId, 'Ingen er valgt');
 
   // Show amount
   objDue.showInput('due-date', '* Dato', 10, '');
@@ -501,10 +501,10 @@ function validateValues(dueId) {
     validateNumber(condoId, 1, 99999, 'due-condoId', 'Leilighet');
 
   // Check for valid account Id
-  const accountsId =
-    document.querySelector('.select-due-accountsId').value;
+  const accountId =
+    document.querySelector('.select-due-accountId').value;
   const validAccountId =
-    validateNumber(condoId, 1, 99999, 'due-accountsId', 'Konto');
+    validateNumber(condoId, 1, 99999, 'due-accountId', 'Konto');
 
   // Check for valid date
   const date =
@@ -548,9 +548,9 @@ function showValues(dueId) {
       objDue.selectCondoId(condoId, 'due-condoId');
 
       // Show account id
-      const accountsId =
-        dueArray[objDueRowNumber].accountsId;
-      objDue.selectAccountId(accountsId, 'due-accountsId');
+      const accountId =
+        dueArray[objDueRowNumber].accountId;
+      objDue.selectAccountId(accountId, 'due-accountId');
 
       // Show due date
       const dueDate =
@@ -661,7 +661,7 @@ function showDues() {
 
       // account name
       const accountName =
-        objAccount.getAccountName(due.accountsId);
+        objAccount.getAccountName(due.accountId);
       const colorClassAccountName =
         (accountName === '-') ? 'red' : colorClass;
       htmlColumnAccountName +=
@@ -757,15 +757,15 @@ function showDues() {
 function validateFilter() {
 
   // Check account
-  const accountsId =
+  const accountId =
     document.querySelector('.select-due-filterAccountId').value;
   const validAccountId =
-    validateNumber(accountsId, 1, 999999999, 'due-filterAccountId', 'Konto');
+    validateNumber(accountId, 1, 999999999, 'due-filterAccountId', 'Konto');
 
   const condoId =
     document.querySelector('.select-due-filterCondoId').value;
   const validCondoId =
-    validateNumber(accountsId, 1, 999999999, 'due-filterCondoId', 'Leilighet');
+    validateNumber(accountId, 1, 999999999, 'due-filterCondoId', 'Leilighet');
 
   const fromDate =
     document.querySelector('.input-due-filterFromDate').value;
@@ -785,7 +785,7 @@ function getSelectedDues() {
 
   const condoId =
     Number(document.querySelector('.select-due-filterCondoId').value);
-  const accountsId =
+  const accountId =
     Number(document.querySelector('.select-due-filterAccountId').value);
 
   const fromDate =
@@ -811,11 +811,11 @@ function getSelectedDues() {
   }
 
   // Check if account Id is selected
-  if (accountsId !== 999999999) {
+  if (accountId !== 999999999) {
 
     SQLquery +=
       `
-        AND accountsId = ${accountsId}
+        AND accountId = ${accountId}
       `;
   }
 

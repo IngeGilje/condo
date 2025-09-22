@@ -101,7 +101,8 @@ class Users extends Condos {
 
     // Get users
     try {
-      const response = await fetch(`http://localhost:3000/users?condominiumId=${condominiumId}`);
+      const response = await fetch(`http://localhost:3000/users?action=select&condominiumId=${condominiumId}`);
+
       if (!response.ok) throw new Error("Network error (users)");
       this.usersArray = await response.json();
     } catch (error) {

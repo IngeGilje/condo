@@ -69,7 +69,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `
         SELECT account.*
         FROM condominium
-        JOIN account ON condominium.commonCostAccountId = account.accountsId 
+        JOIN account ON condominium.commonCostAccountId = account.accountId 
         WHERE condominium.condominiumId = ${objUserPassword.condominiumId};
       `
     updateMySql(SQLquery, 'account', 'SELECT');
@@ -190,7 +190,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
               showLeadingText();
             }
 
-            const accountsId = accountsArray[0].accountsId;
+            const accountId = accountsArray[0].accountId;
             showCommonCost(condoId);
 
             // Make events
@@ -250,8 +250,8 @@ function createEvents() {
       const condoId =
         Number(event.target.value);
 
-      const accountsId =
-        accountsArray[0].accountsId;
+      const accountId =
+        accountsArray[0].accountId;
 
       // Show all dues for condo id, account id
       showCommonCost(condoId);
@@ -278,8 +278,8 @@ function createEvents() {
       const condoId =
         Number(document.querySelector('.select-commoncost-condoId').value);
 
-      const accountsId =
-        accountsArray[0].accountsId;
+      const accountId =
+        accountsArray[0].accountId;
 
       showCommonCost(condoId);
     }
@@ -347,8 +347,8 @@ function updateCommonCost() {
     const condoId =
       Number(document.querySelector('.select-commoncost-condoId').value);
 
-    const accountsId =
-      accountsArray[0].accountsId;
+    const accountId =
+      accountsArray[0].accountId;
 
     // get condo name 
     const array =
@@ -384,7 +384,7 @@ function updateCommonCost() {
           user,
           lastUpdate,
           condoId,
-          accountsId,
+          accountId,
           amount,
           date,
           text)
@@ -394,7 +394,7 @@ function updateCommonCost() {
           '${objUserPassword.email}',
           '${lastUpdate}',
           ${condoId},
-          ${accountsId},
+          ${accountId},
           ${amount},
           ${date},
           '${text}'
@@ -423,8 +423,8 @@ function deleteCommonCost() {
       Number(document.querySelector('.select-commoncost-day').value);
     const condoId =
       Number(document.querySelector('.select-commoncost-condoId').value);
-    const accountsId =
-      accountsArray[0].accountsId;
+    const accountId =
+      accountsArray[0].accountId;
     let amount =
       Number(formatAmountToOre(document.querySelector('.input-commoncost-amount').value));
 
@@ -439,7 +439,7 @@ function deleteCommonCost() {
 
       // due id for deleting row
       const dueId =
-        findDueId(condoId, accountsId, amount, date);
+        findDueId(condoId, accountId, amount, date);
 
       if (dueId >= 0) {
 
@@ -527,7 +527,7 @@ function validateValues() {
   return (validAccountId && validYear && validCondoId && validDay && validAmount) ? true : false;
 }
 
-function findDueId(condoId, accountsId, amount, date) {
+function findDueId(condoId, accountId, amount, date) {
 
   let dueId = 0
   dueArray.forEach((due) => {
@@ -535,7 +535,7 @@ function findDueId(condoId, accountsId, amount, date) {
       && due.amount === amount
       && due.date === date
       && due.condoId === condoId
-      && due.accountsId === accountsId
+      && due.accountId === accountId
     ) {
 
       dueId = due.dueId;
@@ -587,7 +587,7 @@ function showCommonCost(condoId) {
 
   let sumAmount = 0;
   let lineNumber = 0;
-  const accountsId = accountsArray[0].accountsId;
+  const accountId = accountsArray[0].accountId;
 
   document.querySelector(".input-commoncost-amount").value =
     '';
@@ -615,7 +615,7 @@ function showCommonCost(condoId) {
   dueArray.forEach((due) => {
 
     if (due.condoId === condoId) {
-      if (due.accountsId === accountsId || accountsId === 999999999) {
+      if (due.accountId === accountId || accountId === 999999999) {
 
         lineNumber++;
 
