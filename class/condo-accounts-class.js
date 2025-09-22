@@ -233,7 +233,6 @@ class Accounts extends Condos {
     } catch (error) {
       console.log("Error loading users:", error);
     }
-    return this.accountsArray;
   }
 
   // update account row
@@ -246,7 +245,6 @@ class Accounts extends Condos {
     } catch (error) {
       console.log("Error loading accounts:", error);
     }
-    return this.accountsArray;
   }
 
   // insert account row
@@ -270,6 +268,5 @@ class Accounts extends Condos {
     } catch (error) {
       console.log("Error loading accounts:", error);
     }
-    return this.accountsArray;
   }
 }

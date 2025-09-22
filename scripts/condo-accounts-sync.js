@@ -66,22 +66,25 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-accounts-update')) {
 
-      let accountId;
-      if (document.querySelector('.select-accounts-accountId')) {
-        accountId = objAccounts.getSelectedAccountId('select-accounts-accountId');
-      } else {
-        accountId = objAccounts.accountsArray.at(-1).accountId;
+      async function updateAccountSync() {
+        
+        let accountId;
+        if (document.querySelector('.select-accounts-accountId')) {
+          accountId = objAccounts.getSelectedAccountId('select-accounts-accountId');
+        } else {
+          accountId = objAccounts.accountsArray.at(-1).accountId;
+        }
+
+        updateAccount();
+
+        objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+
+        // Show leading text
+        showLeadingText(accountId);
+
+        // Show all values for account
+        showValues(accountId);
       }
-
-      updateAccount();
-
-      objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-      
-      // Show leading text
-      showLeadingText(accountId);
-
-      // Show all values for account
-      showValues(accountId);
     }
   });
 

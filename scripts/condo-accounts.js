@@ -66,22 +66,27 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-accounts-update')) {
 
-      let accountId;
-      if (document.querySelector('.select-accounts-accountId')) {
-        accountId = objAccounts.getSelectedAccountId('select-accounts-accountId');
-      } else {
-        accountId = objAccounts.accountsArray.at(-1).accountId;
+      updateAccountSync();
+
+      // Main entry point
+      async function updateAccountSync() {
+        let accountId;
+        if (document.querySelector('.select-accounts-accountId')) {
+          accountId = objAccounts.getSelectedAccountId('select-accounts-accountId');
+        } else {
+          accountId = objAccounts.accountsArray.at(-1).accountId;
+        }
+
+        updateAccount();
+
+        await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+
+        // Show leading text
+        showLeadingText(accountId);
+
+        // Show all values for account
+        showValues(accountId);
       }
-
-      updateAccount();
-
-      objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-      
-      // Show leading text
-      showLeadingText(accountId);
-
-      // Show all values for account
-      showValues(accountId);
     }
   });
 
@@ -97,21 +102,25 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-accounts-delete')) {
 
-      deleteAccount();
+      // Delete account and reload accounts
+      deleteAccountSync();
 
-      objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
-      // Show leading text
-      let accountId;
-      if (document.querySelector('.select-accounts-accountId') === null) {
-        accountId = objAccounts.accountsArray.at(-1).accountId;
-      } else {
-        accountId = objAccounts.getSelectedAccountId('select-accounts-accountId');
+        deleteAccount();
+
+        // Delete account and reload accounts
+      async function deleteAccountSync() {
+        
+        // Load accounts
+        await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+        
+        // Show leading text
+        const accountId = objAccounts.accountsArray.at(-1).accountId;
+        showLeadingText(accountId);
+
+        // Show all values for account
+        showValues(accountId);
       }
-      showLeadingText(accountId);
-
-      // Show all values for account
-      showValues(accountId);
     }
   });
 
