@@ -1,0 +1,648 @@
+// Maintenance of users
+
+// Activate objects
+const today = new Date();
+const objCondo = new Condo('condo');
+const objUser = new User('user');
+
+let condoArrayCreated = false;
+let userArrayCreated = false;
+
+// let isEventsCreated
+
+testMode();
+
+// Exit application if no activity for 1 hour
+//exitIfNoActivity();
+
+objUser.menu();
+objUser.markSelectedMenu('Bruker');
+
+// let socket;
+// socket = connectingToServer();
+
+// Validate user/password
+const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
+if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+
+  window.location.href = 'http://localhost/condo-login.html';
+} else {
+
+  // Call main when script loads
+  main();
+
+  // Main entry point
+  async function main() {
+
+    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+
+    await objCondo.loadCondosTable(objUserPassword.condominiumId);
+
+    // Find selected user id
+    const usersId = objUser.getSelectedUserId('select-users-usersId');
+
+    // Show leading text
+    showLeadingText(usersId);
+
+    // Show all values for user
+    showValues(usersId);
+
+    // Make events
+    isEventsCreated =
+      (isEventsCreated) ? true : createEvents();
+  }
+}
+
+/*
+// Send a requests to the server
+socket.onopen = () => {
+
+  let SQLquery;
+
+  // Sends a request to the server to get condos
+  SQLquery =
+    `
+      SELECT * FROM condo
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY name;
+    `;
+
+  updateMySql(SQLquery, 'condo', 'SELECT');
+  condoArrayCreated =
+    false;
+
+  // Sends a request to the server to get users
+  SQLquery =
+    `
+      SELECT * FROM users
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY usersId;
+    `;
+  updateMySql(SQLquery, 'user', 'SELECT');
+  userArrayCreated =
+    false;
+};
+
+// Handle incoming messages from server
+socket.onmessage = (event) => {
+
+  let messageFromServer =
+    event.data;
+
+
+  //Converts a JavaScript Object Notation (JSON) string into an object
+  objInfo =
+    JSON.parse(messageFromServer);
+
+  if (objInfo.CRUD === 'SELECT') {
+    switch (objInfo.tableName) {
+      case 'condo':
+
+        // condo table
+        console.log('condoTable');
+
+        condoArray = objInfo.tableArray;
+        condoArrayCreated =
+          true;
+        break;
+
+      case 'user':
+
+        // user table
+        console.log('userTable');
+
+        // array including objects with user information
+        userArray = objInfo.tableArray;
+        userArrayCreated =
+          true;
+
+        if (condoArrayCreated
+          && userArrayCreated) {
+
+          // Find selected user id
+          const usersId =
+            objUser.getSelectedUserId('select-users-usersId');
+
+          // Show leading text
+          showLeadingText(usersId);
+
+          // Show all values for user
+          showValues(usersId);
+
+          // Make events
+          isEventsCreated = 
+          (isEventsCreated) ? true : createEvents();
+        }
+        break;
+    }
+  }
+
+  if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+    switch (objInfo.tableName) {
+      case 'user':
+
+        // Sends a request to the server to get users one more time
+        SQLquery =
+          `
+            SELECT * FROM users
+            WHERE condominiumId = ${objUserPassword.condominiumId}
+              AND deleted <> 'Y'
+            ORDER BY usersId;
+          `;
+        updateMySql(SQLquery, 'user', 'SELECT');
+        userArrayCreated =
+          false;
+        break;
+    };
+  }
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
+  }
+
+  // Handle disconnection
+  socket.onclose = () => {
+  }
+}
+*/
+
+// Make events for users
+function createEvents() {
+
+  // Select User
+  document.addEventListener('change', (event) => {
+
+    if (event.target.classList.contains('select-users-usersId')) {
+
+      let usersId = Number(document.querySelector('.select-users-usersId').value);
+      usersId =
+        (usersId !== 0) ? usersId : userArray.at(-1).usersId;
+      if (usersId) {
+        showValues(usersId);
+      }
+    }
+  });
+
+  // Update
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-users-update')) {
+
+      // Update user and reload users
+      updateUserSync();
+
+      // Update user and reload users
+      async function updateUserSync() {
+
+        // Load users
+        let userId;
+        if (document.querySelector('.select-users-usersId')) {
+          userId = objUsers.getSelectedUserId('select-users-usersId');
+        } else {
+          userId = objUsers.usersArray.at(-1).userId;
+        }
+
+        updateUser();
+
+        await objUsers.loadUsersTable(objUserPassword.condominiumId);
+
+        // Show leading text
+        showLeadingText(userId);
+
+        // Show all values for account
+        showValues(userId);
+      }
+    }
+  });
+  /*
+  // user id
+  let usersId =
+    Number(document.querySelector('.select-users-usersId').value);
+  updateUser(usersId);
+}
+});
+  */
+
+  // New user
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-users-insert')) {
+
+      resetValues();
+    }
+  });
+
+  // Delete user
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-users-delete')) {
+
+      // Delete user and reload users
+      deleteUserSync();
+
+      // Delete user and reload users
+      async function deleteUserSync() {
+
+        deleteUser();
+
+        // Load users
+        await objUsers.loadUsersTable(objUserPassword.condominiumId);
+
+        // Show leading text
+        const usersId = objUsers.usersArray.at(-1).usersId;
+        showLeadingText(usersId);
+
+        // Show all values for account
+        showValues(accountId);
+      }
+    }
+  });
+  /*
+  const usersId =
+    Number(document.querySelector('.select-users-usersId').value);
+  deleteUserRow(usersId);
+
+  // Sends a request to the server to get all users
+  const SQLquery =
+    `
+      SELECT * FROM users
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY usersId;
+    `;
+  updateMySql(SQLquery, 'user', 'SELECT');
+  userArrayCreated =
+    false;
+  */
+
+
+  // Cancel
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-users-cancel')) {
+
+      // Sends a request to the server to get all user
+      const SQLquery =
+        `
+          SELECT * FROM users
+          WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND deleted <> 'Y'
+          ORDER BY usersId;
+        `;
+      updateMySql(SQLquery, 'user', 'SELECT');
+      userArrayCreated =
+        false;
+    }
+  });
+  return true;
+}
+
+function updateUser(usersId) {
+
+  let isUpdated = false;
+
+  if (validateValues(usersId)) {
+
+    // e-mail
+    const email =
+      document.querySelector('.input-users-email').value;
+
+    // condo id
+    const condoId =
+      Number(document.querySelector('.select-users-condoId').value);
+
+    // first name
+    const firstName =
+      document.querySelector('.input-users-firstName').value;
+
+    // last name
+    const lastName =
+      document.querySelector('.input-users-lastName').value;
+
+    // phone
+    const phone =
+      document.querySelector('.input-users-phone').value;
+
+    // securityLevel
+    const securityLevel =
+      Number(document.querySelector('.select-users-securityLevel').value);
+
+    // password
+    const password =
+      document.querySelector('.input-users-password').value;
+
+    let SQLquery = '';
+
+    const lastUpdate =
+      today.toISOString();
+
+    const objUserRowNumber =
+      userArray.findIndex(user => user.usersId === usersId);
+
+    // Check if object exist
+    if (objUserRowNumber !== -1) {
+
+      // Update table
+      SQLquery =
+        `
+          UPDATE user
+            SET
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}',
+              email = '${email}',
+              condoId = ${condoId},
+              firstName = '${firstName}',
+              lastName = '${lastName}',
+              phone = '${phone}',
+              securityLevel = ${securityLevel},
+              password = '${password}'
+            WHERE 
+              usersId = ${usersId};
+        `;
+      updateMySql(SQLquery, 'user', 'UPDATE');
+    } else {
+
+      // Insert new record
+      SQLquery =
+        `
+          INSERT INTO user(
+            deleted,
+            condominiumId,
+            user,
+            lastUpdate,
+            email,
+            condoId,
+            firstName,
+            lastName,
+            phone,
+            securityLevel,
+            password
+          )
+          VALUES(
+            'N',
+            ${objUserPassword.condominiumId},
+            '${objUserPassword.email}',
+            '${lastUpdate}',
+            '${email}',
+            ${condoId},
+            '${firstName}',
+            '${lastName}',
+            '${phone}',
+            ${securityLevel},
+            '${password}'
+          );
+        `;
+      updateMySql(SQLquery, 'user', 'INSERT');
+    }
+
+    document.querySelector('.select-users-usersId').disabled =
+      false;
+    document.querySelector('.button-users-delete').disabled =
+      false;
+    document.querySelector('.button-users-insert').disabled =
+      false;
+    //document.querySelector('.button-users-cancel').disabled =
+    //  false;
+    isUpdated = true;
+  }
+  return isUpdated;
+}
+
+function deleteUserRow(usersId) {
+
+  let SQLquery = "";
+
+  if (usersId >= 0) {
+
+    const lastUpdate =
+      today.toISOString();
+
+    // Check if user exist
+    const objUserRowNumber =
+      userArray.findIndex(user => user.usersId === usersId);
+    if (objUserRowNumber !== -1) {
+
+      // current date
+      const lastUpdate =
+        today.toISOString();
+
+      // Delete table
+      SQLquery =
+        `
+          UPDATE user
+            SET 
+              deleted = 'Y',
+              user = '${objUserPassword.email}',
+              lastUpdate = '${lastUpdate}'
+          WHERE usersId = ${usersId};
+        `;
+
+      // Client sends a request to the server
+      updateMySql(SQLquery, 'user', 'DELETE');
+    }
+
+    // Get user
+    SQLquery =
+      `
+        SELECT * FROM users
+        WHERE condominiumId = ${objUserPassword.condominiumId}
+          AND deleted <> 'Y'
+        ORDER BY usersId;
+      `;
+    updateMySql(SQLquery, 'user', 'SELECT');
+    userArrayCreated =
+      false;
+
+    resetValues();
+  }
+}
+
+// Show leading text for user
+function showLeadingText(usersId) {
+
+  // Show all users
+  objUser.showAllUsers('user-usersId', usersId);
+
+  // email
+  objUser.showInput('user-email', '* E-mail(Bruker)', 50, '');
+
+  // Show all condos
+  const condoId =
+    condoArray.at(-1).condoId;
+  objCondo.showAllCondos('user-condoId', condoId);
+
+  // Show first name
+  objUser.showInput('user-firstName', '* Fornavn', 50, '');
+
+  // Show last name
+  objUser.showInput('user-lastName', '* Etternavn', 50, '');
+
+  // Phone
+  objUser.showInput('user-phone', 'Telefonnummer', 20, '');
+
+  // Select securityLevel
+  objUser.selectNumber('user-securityLevel', 1, 9, 5, 'Sikkerhetsnivå');
+
+  // passord
+  objUser.showInput('user-password', '* Passord', 50, '');
+
+  // update button
+  if (Number(objUserPassword.securityLevel) >= 9) {
+    objUser.showButton('user-update', 'Oppdater');
+
+    // new button
+    objUser.showButton('user-insert', 'Ny');
+
+    // delete button
+    objUser.showButton('user-delete', 'Slett');
+
+    // cancel button
+    objUser.showButton('user-cancel', 'Avbryt');
+  }
+}
+
+// Show all values for user
+function showValues(usersId) {
+
+  // Check for valid user Id
+  if (usersId >= 0) {
+
+    // find object number for selected user Id 
+    const objUserRowNumber =
+      userArray.findIndex(user => user.usersId === usersId);
+    if (objUserRowNumber !== -1) {
+
+      // Show email
+      document.querySelector('.input-users-email').value =
+        userArray[objUserRowNumber].email;
+
+      // Select condoId
+      document.querySelector('.select-users-condoId').value =
+        userArray[objUserRowNumber].condoId;
+
+      // first name
+      document.querySelector('.input-users-firstName').value =
+        userArray[objUserRowNumber].firstName;
+
+      // last name
+      document.querySelector('.input-users-lastName').value =
+        userArray[objUserRowNumber].lastName;
+
+      // Show phone number
+      document.querySelector('.input-users-phone').value =
+        userArray[objUserRowNumber].phone;
+
+      // show securityLevel
+      document.querySelector('.select-users-securityLevel').value =
+        userArray[objUserRowNumber].securityLevel;
+
+      // password
+      document.querySelector('.input-users-password').value =
+        userArray[objUserRowNumber].password;
+    }
+  }
+}
+
+// Check for valid values
+function validateValues(usersId) {
+
+  // Check email
+  const eMail =
+    document.querySelector('.input-users-email').value;
+  const validEmail =
+    objUser.validateEmail(eMail, "label-users-email", "E-mail(Bruker)");
+
+  // Check condo Id
+  const condoId =
+    Number(document.querySelector('.select-users-condoId').value);
+  const validCondoId =
+    validateNumber(condoId, 1, 99999, "user-condoId", "Vis leilighet");
+
+  // Check first name
+  const firstName = document.querySelector('.input-users-firstName').value;
+  const validFirstName =
+    objUser.validateText(firstName, "label-users-firstName", "Fornavn");
+
+  // Check last name
+  const lastName =
+    document.querySelector('.input-users-lastName').value;
+  const validLastName =
+    objUser.validateText(lastName, "label-users-lastName", "Etternavn");
+
+  const securityLevel =
+    Number(document.querySelector('.select-users-securityLevel').value);
+  const validSecuritylevel =
+    validateNumber(securityLevel, 1, 9, "user-securityLevel", "Sikkerhetsnivå");
+
+  // Check password
+  const password =
+    document.querySelector('.input-users-password').value;
+  const validpassword =
+    objUser.validateText(password, "label-users-password", "Passord");
+
+  return (validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
+}
+
+function resetValues() {
+
+  // user Id
+  document.querySelector('.select-users-usersId').value =
+    0;
+
+  // reset e-mail
+  document.querySelector('.input-users-email').value =
+    '';
+
+  // reset condo Id
+  document.querySelector('.select-users-condoId').value =
+    0;
+
+  // reset first name
+  document.querySelector('.input-users-firstName').value =
+    '';
+
+  // reset last name
+  document.querySelector('.input-users-lastName').value =
+    '';
+
+  // reset phone number
+  document.querySelector('.input-users-phone').value =
+    '';
+
+  // securityLevel
+  document.querySelector('.select-users-securityLevel').value =
+    0;
+
+  // reset password
+  document.querySelector('.input-users-password').value =
+    '';
+
+  document.querySelector('.select-users-usersId').disabled =
+    true;
+  document.querySelector('.button-users-delete').disabled =
+    true;
+  document.querySelector('.button-users-insert').disabled =
+    true;
+}
+
+// Delete user
+function deleteUser() {
+
+  // Check for valid user number
+  const userId = Number(document.querySelector('.select-users-usersId').value);
+
+  if (userId !== 1) {
+
+    // Check if user number exist
+    const objUserRowNumber = objUsers.usersArray.findIndex(user => user.usersId === userId);
+    if (objUserRowNumber !== -1) {
+
+      // delete user row
+      const user = objUserPassword.email;
+      const lastUpdate = today.toISOString();
+      objUsers.deleteUsersTable(userId, user, lastUpdate);
+    }
+  }
+}

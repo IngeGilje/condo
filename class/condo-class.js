@@ -760,24 +760,24 @@ class Condos {
         </a>
 
         <a href="${url}condo-condo.html"
-          class="a-menu-vertical-condos"
+          class="a-menu-vertical-condo"
         >
           Leilighet
         </a>
 
         <a href="${url}condo-bankaccount.html"
-          class="a-menu-vertical-bankaccounts"
+          class="a-menu-vertical-bankaccount"
         >
           Bankkonto sameie
         </a>
 
-        <a href="${url}condo-account.html"
+        <a href="${url}condo-accounts.html"
           class="a-menu-vertical-accounts"
         >
           Konto
         </a>
 
-        <a href="${url}condo-user.html"
+        <a href="${url}condo-users.html"
           class="a-menu-vertical-users"
         >
           Bruker
@@ -1044,12 +1044,12 @@ class Condos {
         userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
       if (objBankAccountRowNumber !== -1) {
 
-        const usersId = Number(userBankAccountArray[objBankAccountRowNumber].usersId);
+        const userId = Number(userBankAccountArray[objBankAccountRowNumber].userId);
 
-        if (usersId >= 0) {
+        if (userId >= 0) {
 
           const objUserRowNumber =
-            userArray.findIndex(user => user.usersId === usersId);
+            userArray.findIndex(user => user.userId === userId);
           if (objUserRowNumber !== -1) {
 
             condoId =

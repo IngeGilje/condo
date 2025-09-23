@@ -70,6 +70,8 @@ function createEvents() {
 
       // Main entry point
       async function updateAccountSync() {
+
+        // Load accounts
         let accountId;
         if (document.querySelector('.select-accounts-accountId')) {
           accountId = objAccounts.getSelectedAccountId('select-accounts-accountId');
@@ -105,15 +107,14 @@ function createEvents() {
       // Delete account and reload accounts
       deleteAccountSync();
 
+      // Delete account and reload accounts
+      async function deleteAccountSync() {
 
         deleteAccount();
 
-        // Delete account and reload accounts
-      async function deleteAccountSync() {
-        
         // Load accounts
         await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-        
+
         // Show leading text
         const accountId = objAccounts.accountsArray.at(-1).accountId;
         showLeadingText(accountId);
@@ -136,8 +137,6 @@ function createEvents() {
           AND deleted <> 'Y'
         ORDER BY accountId;
       `;
-      updateMySql(SQLquery, 'account', 'SELECT');
-      accountsArrayCreated = false;
       */
     }
   });

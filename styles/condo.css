@@ -359,12 +359,13 @@ body {
 }
 
 /* menu */
+.a-menu-vertical-accounts,
 .a-menu-vertical-accountreport,
 .a-menu-vertical-userbankaccount,
 .a-menu-vertical-supplier,
 .a-menu-vertical-importfile,
 .a-menu-vertical-login,
-.a-menu-vertical-user,
+.a-menu-vertical-users,
 .a-menu-vertical-condo,
 .a-menu-vertical-bankaccount,
 .a-menu-vertical-condominium,
@@ -389,11 +390,12 @@ body {
 }
 
 .a-menu-vertical-accountreport-green,
+.a-menu-vertical-accounts-green,
 .a-menu-vertical-userbankaccount-green,
 .a-menu-vertical-supplier-green,
 .a-menu-vertical-importfile-green,
 .a-menu-vertical-login-green,
-.a-menu-vertical-user-green,
+.a-menu-vertical-users-green,
 .a-menu-vertical-bankaccountmovement-green,
 .a-menu-vertical-bankaccount-green,
 .a-menu-vertical-condo-green,
@@ -970,18 +972,18 @@ body {
 .label-accountreport-filter-fromDate-red,
 .label-accountreport-filter-toDate-red,
 
-.label-userbankaccount-usersId-red,
+.label-userbankaccount-userId-red,
 .label-userbankaccount-accountId-red,
 .label-userbankaccount-name-red,
 .label-userbankaccount-bankAccount-red,
 
-.label-user-condoId-red,
-.label-user-firstName-red,
-.label-user-lastName-red,
-.label-user-phone-red,
-.label-user-email-red,
-.label-user-password-red,
-.label-user-securityLevel-red,
+.label-users-condoId-red,
+.label-users-firstName-red,
+.label-users-lastName-red,
+.label-users-phone-red,
+.label-users-email-red,
+.label-users-password-red,
+.label-users-securityLevel-red,
 
 .label-bankaccountmovement-bankaccountmovementId-red,
 .label-bankaccountmovement-amount-red,

@@ -16,42 +16,42 @@
   <div class="div-grid-user">
 
     <div class="div-menu"></div>
-    <div class="div-user-usersId"></div>
+    <div class="div-users-usersId"></div>
     <div class="div-user"></div>
 
-    <div class="div-user-email"></div>
+    <div class="div-users-email"></div>
     <div class="div-user"></div>
 
-    <div class="div-user-condoId"></div>
+    <div class="div-users-condoId"></div>
     <div class="div-user"></div>
 
-    <div class="div-user-firstName"></div>
-    <div class="div-user-lastName"></div>
+    <div class="div-users-firstName"></div>
+    <div class="div-users-lastName"></div>
 
-    <div class="div-user-phone"></div>
+    <div class="div-users-phone"></div>
     <div class="div-user"></div>
 
-    <div class="div-user-securityLevel"></div>
-    <div class="div-user-password"></div>
+    <div class="div-users-securityLevel"></div>
+    <div class="div-users-password"></div>
 
-    <div class="div-user-bankAccount"></div>
+    <div class="div-users-bankAccount"></div>
     <div class="div-user"></div>
 
-    <div class="div-user-update"></div>
-    <div class="div-user-insert"></div>
+    <div class="div-users-update"></div>
+    <div class="div-users-insert"></div>
 
-    <div class="div-user-delete"></div>
-    <div class="div-user-cancel"></div>
+    <div class="div-users-delete"></div>
+    <div class="div-users-cancel"></div>
 
-    <div class="div-user-login"></div>
+    <div class="div-users-login"></div>
     <div class="div-user"></div>
   </div>
 
   <script src="class/condo-class.js"></script>
   <script src="class/condo-condominium-class.js"></script>
   <script src="class/condo-condo-class.js"></script>
-  <script src="class/condo-user-class.js"></script>
-  <script src="scripts/condo-user.js"></script>
+  <script src="class/condo-users-class.js"></script>
+  <script src="scripts/condo-users.js"></script>
 </body>
 
 </html>

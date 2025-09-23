@@ -258,6 +258,7 @@ class Accounts extends Condos {
       console.log("Error loading accounts:", error);
     }
   }
+  
   // delete account row
   async deleteAccountsTable(accountId, user, lastUpdate) {
 

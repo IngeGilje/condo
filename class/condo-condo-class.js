@@ -2,8 +2,7 @@
 class Condo extends Condos {
 
   // Condo information
-  condoArray =
-    Array;
+  condosArray = Array;
 
   // Show all condos
   showAllCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
@@ -30,9 +29,9 @@ class Condo extends Condos {
     `;
 
     // Check if condo array is empty
-    const numberOfRows = condoArray.length;
+    const numberOfRows = this.condosArray.length;
     if (numberOfRows > 0) {
-      condoArray.forEach((condo) => {
+      this.condosArray.forEach((condo) => {
         if (condo.condoId >= 0) {
           if (condo.condoId === condoId) {
 
@@ -150,11 +149,11 @@ class Condo extends Condos {
 
       condoId =
         Number(document.querySelector(`.${className}`).value);
-      condoId = (condoId === 0) ? condoArray.at(-1).condoId : condoId;
+      condoId = (condoId === 0) ? condosArray.at(-1).condoId : condoId;
     } else {
 
       // Get last id in last object in condo array
-      condoId = condoArray.at(-1).condoId;
+      condoId = condosArray.at(-1).condoId;
     }
 
     return condoId;
@@ -165,7 +164,7 @@ class Condo extends Condos {
 
     let condoName;
     const objCondoRowNumber =
-      condoArray.findIndex(condo => condo.condoId === condoId);
+      condosArray.findIndex(condo => condo.condoId === condoId);
     if (objCondoRowNumber !== -1) {
       condoName = condoArray[objCondoRowNumber].name;
     } else {
@@ -190,9 +189,9 @@ class Condo extends Condos {
       `;
 
     // Check if condo array is empty
-    const numberOfRows = condoArray.length;
+    const numberOfRows = condosArray.length;
     if (numberOfRows > 0) {
-      condoArray.forEach((condo) => {
+      condosArray.forEach((condo) => {
 
         html +=
           `
@@ -238,5 +237,17 @@ class Condo extends Condos {
     `;
 
     return html;
+  }
+  // get condos
+  async loadCondosTable(condominiumId) {
+
+    // Get condos
+    try {
+      const response = await fetch(`http://localhost:3000/condos?action=select&condominiumId=${condominiumId}`);
+      if (!response.ok) throw new Error("Network error (condos)");
+      this.condosArray = await response.json();
+    } catch (error) {
+      console.log("Error loading condos:", error);
+    }
   }
 }

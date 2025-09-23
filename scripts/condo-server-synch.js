@@ -57,6 +57,7 @@ async function main() {
 
     console.log("✅ Connected to MySQL");
 
+    /*
     // Returns users ordered by ID
     app.get("/users", async (req, res) => {
 
@@ -79,8 +80,9 @@ async function main() {
         res.status(500).json({ error: "Database error" });
       }
     });
+    */
 
-    // Returns accounts ordered by ID
+    // Requests for accounts
     app.get("/accounts", async (req, res) => {
 
       console.log("Received request for accounts", req.query);
@@ -221,7 +223,322 @@ async function main() {
             res.status(500).json({ error: err.message });
           }
           break;
+        }
+      }
+    });
 
+    // Requests for condos
+    app.get("/condos", async (req, res) => {
+
+      console.log("Received request for condos", req.query);
+      const action = req.query.action;
+
+      console.log("action: ", action);
+      switch (action) {
+
+        case 'select': {
+          const condominiumId = Number(req.query.condominiumId);
+
+          try {
+
+            const SQLquery =
+              `
+                SELECT * FROM condos
+                WHERE condominiumId = ${condominiumId}
+                  AND deleted <> 'Y'
+                ORDER BY condoId;
+              `;
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.error("Database error in /accounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          console.log("Update condo request received");
+
+          console.log("try");
+          try {
+
+            const condoId = req.query.condoId;
+            console.log("condoId: ", condoId);
+            const user = req.query.user;
+            const fixedCost = req.query.fixedCost;
+            const lastUpdate = req.query.lastUpdate;
+            const accountName = req.query.accountName;
+
+            const SQLquery =
+              `
+                UPDATE accounts
+                SET 
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}',
+                  name = '${accountName}',
+                  fixedCost = '${fixedCost}'
+                WHERE accountId = ${accountId};
+              `;
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.error("Database error in /accounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          console.log("Insert account request received");
+
+          try {
+
+            const condominiumId = req.query.condominiumId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const accountName = req.query.accountName;
+            const fixedCost = req.query.fixedCost;
+
+            // Insert new row
+            const SQLquery =
+              `
+                INSERT INTO accounts (
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  name,
+                  fixedCost
+                ) 
+                VALUES (
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  '${accountName}',
+                  '${fixedCost}'
+                  );
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.error("Database error in /accounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+
+        }
+
+        case 'delete': {
+
+          console.log("Delete account request received");
+
+          try {
+
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const accountId = req.query.accountId;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE accounts
+                  SET 
+                    deleted = 'Y',
+                    lastUpdate = '${lastUpdate}',
+                    user = '${user}'
+                  WHERE accountId = ${accountId};
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.error("Database error in /accounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+
+        }
+      }
+    });
+
+    // Requests for users
+    app.get("/users", async (req, res) => {
+
+      console.log("Received request for condos", req.query);
+      const action = req.query.action;
+
+      console.log("action: ", action);
+      switch (action) {
+
+        case 'select': {
+          const condominiumId = Number(req.query.condominiumId);
+
+          try {
+
+            const SQLquery =
+              `
+                SELECT * FROM users
+                WHERE condominiumId = ${condominiumId}
+                  AND deleted <> 'Y'
+                ORDER BY userId;
+            `;
+
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.error("Database error in /accounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          console.log("Update users request received");
+
+          console.log("try");
+          try {
+
+            const userId = req.query.userId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const email = req.query.email;
+            const condoId = req.query.condoId;
+            const firstName = req.query.firstName;
+            const lastName = req.query.lastName;
+            const phone = req.query.phone;
+            const securityLevel = req.query.securityLevel;
+            const password = req.query.password;
+
+            const SQLquery =
+              `
+                UPDATE users
+                SET
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}',
+                  email = '${email}',
+                  condoId = ${condoId},
+                  firstName = '${firstName}',
+                  lastName = '${lastName}',
+                  phone = '${phone}',
+                  securityLevel = ${securityLevel},
+                  password = '${password}'
+                WHERE 
+                  userId = ${userId};
+              `;
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.error("Database error in /accounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          console.log("Insert user request received");
+
+          try {
+
+            const condominiumId = req.query.condominiumId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const email = req.query.email;
+            const condoId = req.query.condoId;
+            const firstName = req.query.firstName;
+            const lastName = req.query.lastName;
+            const phone = req.query.phone;
+            const securityLevel = req.query.securityLevel;
+            const password = req.query.password;
+
+            // Insert new row
+            const SQLquery =
+              `
+                INSERT INTO users(
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  email,
+                  condoId,
+                  firstName,
+                  lastName,
+                  phone,
+                  securityLevel,
+                  password
+                )
+                VALUES(
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  '${email}',
+                  ${condoId},
+                  '${firstName}',
+                  '${lastName}',
+                  '${phone}',
+                  ${securityLevel},
+                  '${password}'
+                );
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.error("Database error in /accounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'delete': {
+
+          console.log("Delete user request received");
+
+          try {
+
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const userId = req.query.userId;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE users
+                  SET 
+                    deleted = 'Y',
+                    lastUpdate = '${lastUpdate}',
+                    user = '${user}'
+                  WHERE userId = ${userId};
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.error("Database error in /accounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
         }
       }
     });

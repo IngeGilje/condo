@@ -24,7 +24,7 @@ socket.onopen = () => {
   SQLquery =
     `
       SELECT * FROM users
-      ORDER BY usersId;
+      ORDER BY userId;
     `;
 
   updateMySql(SQLquery, 'user', 'SELECT');
@@ -74,7 +74,7 @@ socket.onmessage = (event) => {
         SQLquery =
           `
               SELECT * FROM users
-              ORDER BY usersId;
+              ORDER BY userId;
             `;
         updateMySql(SQLquery, 'user', 'SELECT');
         userArrayCreated =

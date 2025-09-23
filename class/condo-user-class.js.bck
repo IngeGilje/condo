@@ -109,4 +109,15 @@ class Users extends Condos {
       console.log("Error loading users:", error);
     }
   }
+  // delete user row
+  async deleteUsersTable(userId, user, lastUpdate) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/users?action=delete&userId=${userId}&user=${user}&lastUpdate=${lastUpdate}`);
+      if (!response.ok) throw new Error("Network error (users)");
+      this.usersArray = await response.json();
+    } catch (error) {
+      console.log("Error loading users:", error);
+    }
+  }
 }

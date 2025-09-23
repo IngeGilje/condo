@@ -40,7 +40,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         SELECT * FROM users
         WHERE condominiumId = ${objUserPassword.condominiumId}
           AND deleted <> 'Y'
-        ORDER BY usersId;
+        ORDER BY userId;
       `;
     updateMySql(SQLquery, 'user', 'SELECT');
     userArrayCreated =
@@ -260,8 +260,8 @@ function updateUserBankAccount() {
       Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
 
     // user id
-    const usersId =
-      Number(document.querySelector('.select-userbankaccount-usersId').value);
+    const userId =
+      Number(document.querySelector('.select-userbankaccount-userId').value);
 
     // account id
     const accountId =
@@ -293,7 +293,7 @@ function updateUserBankAccount() {
           SET 
             user = '${objUserPassword.email}',
             lastUpdate = '${lastUpdate}',
-            usersId = ${usersId},
+            userId = ${userId},
             accountId = ${accountId},
             name = '${bankAccountName}',
             bankAccount = '${bankAccount}'
@@ -311,7 +311,7 @@ function updateUserBankAccount() {
             condominiumId,
             user,
             lastUpdate,
-            usersId,
+            userId,
             accountId,
             name,
             bankAccount
@@ -321,7 +321,7 @@ function updateUserBankAccount() {
             ${objUserPassword.condominiumId},
             '${objUserPassword.email}',
             '${lastUpdate}',
-            ${usersId},
+            ${userId},
             ${accountId},
             '${bankAccountName}',
             '${bankAccount}'
@@ -346,9 +346,9 @@ function showLeadingText(userBankAccountId) {
   objUserBankAccount.showAllUserBankAccounts('userbankaccount-userBankAccountId', userBankAccountId);
 
   // Show all users
-  const usersId =
-    userArray.at(-1).usersId;
-  objUser.showAllUsers('userbankaccount-usersId', userBankAccountId);
+  const userId =
+    userArray.at(-1).userId;
+  objUser.showAllUsers('userbankaccount-userId', userBankAccountId);
 
   // Show all accounts
   const accountId =
@@ -387,9 +387,9 @@ function showValues(userBankAccountId) {
       userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (objBankAccountRowNumber !== -1) {
 
-      // Select usersId
-      document.querySelector('.select-userbankaccount-usersId').value =
-        userBankAccountArray[objBankAccountRowNumber].usersId;
+      // Select userId
+      document.querySelector('.select-userbankaccount-userId').value =
+        userBankAccountArray[objBankAccountRowNumber].userId;
 
       // Select accountId
       document.querySelector('.select-userbankaccount-accountId').value =
@@ -410,10 +410,10 @@ function showValues(userBankAccountId) {
 function validateValues() {
 
   // Check user Id
-  const usersId =
-    Number(document.querySelector('.select-userbankaccount-usersId').value);
+  const userId =
+    Number(document.querySelector('.select-userbankaccount-userId').value);
   const validUserId =
-    validateNumber(usersId, 1, 99999, "userbankaccount-usersId", "bruker");
+    validateNumber(userId, 1, 99999, "userbankaccount-userId", "bruker");
 
   // Check account Id
   const accountId =
@@ -443,7 +443,7 @@ function resetValues() {
     0;
 
   // reset user Id
-  document.querySelector('.select-userbankaccount-usersId').value =
+  document.querySelector('.select-userbankaccount-userId').value =
     0;
 
   // reset account Id

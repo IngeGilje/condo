@@ -316,7 +316,7 @@ function createAllTables() {
       `         
       CREATE TABLE user (
         deleted VARCHAR(1),
-        usersId INT AUTO_INCREMENT PRIMARY KEY,
+        userId INT AUTO_INCREMENT PRIMARY KEY,
         condominiumId INT,
         user VARCHAR(50) NOT NULL,
         lastUpdate VARCHAR (40),
@@ -345,12 +345,12 @@ function createAllTables() {
         condominiumId INT,
         user VARCHAR(50) NOT NULL,
         lastUpdate VARCHAR (40),
-        usersId INT,
+        userId INT,
         accountId INT,
         name VARCHAR(50) NOT NULL,
         bankAccount VARCHAR(11) NOT NULL,
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId),
-        FOREIGN KEY (usersId) REFERENCES user(usersId),
+        FOREIGN KEY (userId) REFERENCES user(userId),
         FOREIGN KEY (accountId) REFERENCES account(accountId)
       );
     `;
