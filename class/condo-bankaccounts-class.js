@@ -1,8 +1,8 @@
-// class for bankaccounts
+// class for bankaccount
 class BankAccounts extends Condos {
 
-  // bankaccounts information
-  bankAccountArray = [];
+  // bankaccount information
+  bankAccountsArray = [];
 
   // Show bankaccounts
   showAllBankAccounts(className, bankAccountId) {

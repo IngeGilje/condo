@@ -150,7 +150,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
             // Find selected condominium id
             const condominiumId =
-              objCondominium.getSelectedCondominiumId('select-condominium-condominiumId');
+              objCondominium.getSelectedCondominiumId('select-condominiums-condominiumId');
 
             // Show leading text
             showLeadingText(condominiumId);
@@ -202,31 +202,31 @@ function createEvents() {
 
   // Select condominium
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-condominium-condominiumId')) {
+    if (event.target.classList.contains('select-condominiums-condominiumId')) {
       showValues(Number(event.target.value));
     }
   });
 
   // Update condominium
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominium-update')) {
+    if (event.target.classList.contains('button-condominiums-update')) {
 
       const condominiumId =
-        Number(document.querySelector('.select-condominium-condominiumId').value);
+        Number(document.querySelector('.select-condominiums-condominiumId').value);
       updateCondominium(condominiumId);
     }
   });
 
   // New condominium
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominium-insert')) {
+    if (event.target.classList.contains('button-condominiums-insert')) {
       resetValues();
     }
   });
 
   // Delete condominium
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominium-delete')) {
+    if (event.target.classList.contains('button-condominiums-delete')) {
 
       deleteCondominiumRow();
 
@@ -246,7 +246,7 @@ function createEvents() {
 
   // Cancel
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominium-cancel')) {
+    if (event.target.classList.contains('button-condominiums-cancel')) {
 
       // Sends a request to the server to get all condos
       const SQLquery =
@@ -272,18 +272,18 @@ function updateCondominium(condominiumId) {
   // Check values
   if (validateValues()) {
 
-    const condominiumName = document.querySelector('.input-condominium-name').value;
-    const street = document.querySelector('.input-condominium-street').value;
-    const postalCode = document.querySelector('.input-condominium-postalCode').value;
-    const city = document.querySelector('.input-condominium-city').value;
-    const address2 = document.querySelector('.input-condominium-address2').value;
-    const phone = document.querySelector('.input-condominium-phone').value;
-    const email = document.querySelector('.input-condominium-email').value;
-    const incomeRemoteHeatingAccountId = Number(document.querySelector('.select-condominium-incomeRemoteHeatingAccountId').value);
-    const paymentRemoteHeatingAccountId = Number(document.querySelector('.select-condominium-paymentRemoteHeatingAccountId').value);
-    const commonCostAccountId = Number(document.querySelector('.select-condominium-commoncostAccountId').value);
-    const organizationNumber = document.querySelector('.input-condominium-organizationNumber').value;
-    const importPath = document.querySelector('.input-condominium-fileName').value;
+    const condominiumName = document.querySelector('.input-condominiums-name').value;
+    const street = document.querySelector('.input-condominiums-street').value;
+    const postalCode = document.querySelector('.input-condominiums-postalCode').value;
+    const city = document.querySelector('.input-condominiums-city').value;
+    const address2 = document.querySelector('.input-condominiums-address2').value;
+    const phone = document.querySelector('.input-condominiums-phone').value;
+    const email = document.querySelector('.input-condominiums-email').value;
+    const incomeRemoteHeatingAccountId = Number(document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value);
+    const paymentRemoteHeatingAccountId = Number(document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value);
+    const commonCostAccountId = Number(document.querySelector('.select-condominiums-commoncostAccountId').value);
+    const organizationNumber = document.querySelector('.input-condominiums-organizationNumber').value;
+    const importPath = document.querySelector('.input-condominiums-fileName').value;
 
     // current date
     const lastUpdate = today.toISOString();
@@ -355,11 +355,11 @@ function updateCondominium(condominiumId) {
       updateMySql(SQLquery, 'condominium', 'INSERT');
     }
 
-    document.querySelector('.select-condominium-condominiumId').disabled =
+    document.querySelector('.select-condominiums-condominiumId').disabled =
       false;
-    document.querySelector('.button-condominium-delete').disabled =
+    document.querySelector('.button-condominiums-delete').disabled =
       false;
-    document.querySelector('.button-condominium-insert').disabled =
+    document.querySelector('.button-condominiums-insert').disabled =
       false;
   }
 }
@@ -433,61 +433,61 @@ function showValues(condominiumId) {
     if (objCondominiumRowNumber !== -1) {
 
       // Condominium id
-      document.querySelector('.select-condominium-condominiumId').value =
+      document.querySelector('.select-condominiums-condominiumId').value =
         condominiumArray[objCondominiumRowNumber].condominiumId;
 
       // Condominium name
-      document.querySelector('.input-condominium-name').value =
+      document.querySelector('.input-condominiums-name').value =
         condominiumArray[objCondominiumRowNumber].name;
 
       // Show street
-      document.querySelector('.input-condominium-street').value =
+      document.querySelector('.input-condominiums-street').value =
         condominiumArray[objCondominiumRowNumber].street;
 
       // Show address 2
-      document.querySelector('.input-condominium-address2').value =
+      document.querySelector('.input-condominiums-address2').value =
         condominiumArray[objCondominiumRowNumber].address2;
 
       // Show postal code
-      document.querySelector('.input-condominium-postalCode').value =
+      document.querySelector('.input-condominiums-postalCode').value =
         condominiumArray[objCondominiumRowNumber].postalCode;
 
       // Show city
-      document.querySelector('.input-condominium-city').value =
+      document.querySelector('.input-condominiums-city').value =
         condominiumArray[objCondominiumRowNumber].city;
 
       // Show phone
-      document.querySelector('.input-condominium-phone').value =
+      document.querySelector('.input-condominiums-phone').value =
         condominiumArray[objCondominiumRowNumber].phone;
 
       // Show email
-      document.querySelector('.input-condominium-email').value =
+      document.querySelector('.input-condominiums-email').value =
         condominiumArray[objCondominiumRowNumber].email;
 
       // account id for income remote heating
-      document.querySelector('.select-condominium-incomeRemoteHeatingAccountId').value =
+      document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value =
         (condominiumArray[objCondominiumRowNumber].incomeRemoteHeatingAccountId) ? condominiumArray[objCondominiumRowNumber].incomeRemoteHeatingAccountId : 0;
-      document.querySelector('.label-condominium-incomeRemoteHeatingAccountId').innerHTML =
+      document.querySelector('.label-condominiums-incomeRemoteHeatingAccountId').innerHTML =
         'Inntekt fjernvarmekonto';
 
       // account id for payment remote heating
-      document.querySelector('.select-condominium-paymentRemoteHeatingAccountId').value =
+      document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value =
         (condominiumArray[objCondominiumRowNumber].paymentRemoteHeatingAccountId) ? condominiumArray[objCondominiumRowNumber].paymentRemoteHeatingAccountId : 0;
-      document.querySelector('.label-condominium-paymentRemoteHeatingAccountId').innerHTML =
+      document.querySelector('.label-condominiums-paymentRemoteHeatingAccountId').innerHTML =
         'Utgift fjernvarmekonto';
 
       // account id for common cost
-      document.querySelector('.select-condominium-commoncostAccountId').value =
+      document.querySelector('.select-condominiums-commoncostAccountId').value =
         (condominiumArray[objCondominiumRowNumber].commonCostAccountId) ? condominiumArray[objCondominiumRowNumber].commonCostAccountId : 0;
-      document.querySelector('.label-condominium-commoncostAccountId').innerHTML =
+      document.querySelector('.label-condominiums-commoncostAccountId').innerHTML =
         'Konto for felleskostnader';
 
       // Show organization number
-      document.querySelector('.input-condominium-organizationNumber').value =
+      document.querySelector('.input-condominiums-organizationNumber').value =
         condominiumArray[objCondominiumRowNumber].organizationNumber;
 
       // Show file import path
-      document.querySelector('.input-condominium-fileName').value =
+      document.querySelector('.input-condominiums-fileName').value =
         condominiumArray[objCondominiumRowNumber].importPath;
     }
   }
@@ -496,63 +496,63 @@ function showValues(condominiumId) {
 // Reset all values for condominium
 function resetValues() {
 
-  document.querySelector('.select-condominium-condominiumId').value =
+  document.querySelector('.select-condominiums-condominiumId').value =
     '';
 
-  document.querySelector('.input-condominium-name').value =
+  document.querySelector('.input-condominiums-name').value =
     '';
 
   // Show street
-  document.querySelector('.input-condominium-street').value =
+  document.querySelector('.input-condominiums-street').value =
     '';
 
   // Show address 2
-  document.querySelector('.input-condominium-address2').value =
+  document.querySelector('.input-condominiums-address2').value =
     '';
 
   // Show postal code
-  document.querySelector('.input-condominium-postalCode').value =
+  document.querySelector('.input-condominiums-postalCode').value =
     '';
 
   // Show city
-  document.querySelector('.input-condominium-city').value =
+  document.querySelector('.input-condominiums-city').value =
     '';
 
   // Show phone number
-  document.querySelector('.input-condominium-phone').value =
+  document.querySelector('.input-condominiums-phone').value =
     '';
 
   // Show email
-  document.querySelector('.input-condominium-email').value =
+  document.querySelector('.input-condominiums-email').value =
     '';
 
   // account id for income remote heating
-  document.querySelector('.select-condominium-incomeRemoteHeatingAccountId').value =
+  document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value =
     0;
 
   // account id for payment remote heating
-  document.querySelector('.select-condominium-paymentRemoteHeatingAccountId').value =
+  document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value =
     0;
 
   // account id for common cost
-  document.querySelector('.select-condominium-commoncostAccountId').value =
+  document.querySelector('.select-condominiums-commoncostAccountId').value =
     0;
 
   // Show organization number
-  document.querySelector('.input-condominium-organizationNumber').value =
+  document.querySelector('.input-condominiums-organizationNumber').value =
     '';
 
   // Show path for file to import
-  document.querySelector('.input-condominium-fileName').value =
+  document.querySelector('.input-condominiums-fileName').value =
     '';
 
-  document.querySelector('.select-condominium-condominiumId').disabled =
+  document.querySelector('.select-condominiums-condominiumId').disabled =
     true;
-  document.querySelector('.button-condominium-delete').disabled =
+  document.querySelector('.button-condominiums-delete').disabled =
     true;
-  document.querySelector('.button-condominium-insert').disabled =
+  document.querySelector('.button-condominiums-insert').disabled =
     true;
-  //document.querySelector('.button-condominium-cancel').disabled =
+  //document.querySelector('.button-condominiums-cancel').disabled =
   //  true;
 }
 
@@ -562,7 +562,7 @@ function deleteCondominiumRow() {
   let SQLquery = "";
 
   // Check for valid condominium Id
-  const condominiumId = Number(document.querySelector('.select-condominium-condominiumId').value);
+  const condominiumId = Number(document.querySelector('.select-condominiums-condominiumId').value);
   if (condominiumId >= 0) {
 
     // Check if condominium exist
@@ -608,45 +608,33 @@ function validateValues() {
 
   // Check condominium name
   const condominiumName =
-    document.querySelector('.input-condominium-name').value;
+    document.querySelector('.input-condominiums-name').value;
   const validCondominiumName =
-    objCondominium.validateText(condominiumName, "label-condominium-name", "Navn");
+    objCondominium.validateText(condominiumName, "label-condominiums-name", "Navn");
 
   // Check street name
-  const street =
-    document.querySelector('.input-condominium-street').value;
-  const validStreet =
-    objCondominium.validateText(street, "label-condominium-street", "Gateadresse");
+  const street = document.querySelector('.input-condominiums-street').value;
+  const validStreet = objCondominium.validateText(street, "label-condominiums-street", "Gateadresse");
 
   // Check postal code
-  const postalCode =
-    document.querySelector('.input-condominium-postalCode').value;
-  const validPostalCode =
-    objCondominium.validatePostalCode(postalCode, "label-condominium-postalCode", "Postnummer");
+  const postalCode = document.querySelector('.input-condominiums-postalCode').value;
+  const validPostalCode = objCondominium.validatePostalCode(postalCode, "label-condominiums-postalCode", "Postnummer");
 
   // Validate city
-  const city =
-    document.querySelector('.input-condominium-city').value;
-  const validCity =
-    objCondominium.validateText(city, "label-condominium-city", "Poststed");
+  const city = document.querySelector('.input-condominiums-city').value;
+  const validCity = objCondominium.validateText(city, "label-condominiums-city", "Poststed");
 
   // Check email
-  const eMail =
-    document.querySelector('.input-condominium-email').value;
-  const validEmail =
-    objCondominium.validateEmail(eMail, "label-condominium-email", "E-mail");
+  const eMail = document.querySelector('.input-condominiums-email').value;
+  const validEmail = objCondominium.validateEmail(eMail, "label-condominiums-email", "E-mail");
 
   // Check organization number
-  const organizationNumber =
-    document.querySelector('.input-condominium-organizationNumber').value;
-  const validOrganizationNumber =
-    validateOrganizationNumber(organizationNumber, "condominium-organizationNumber", "Organisasjonsnummer");
+  const organizationNumber = document.querySelector('.input-condominiums-organizationNumber').value;
+  const validOrganizationNumber = validateOrganizationNumber(organizationNumber, "condominium-organizationNumber", "Organisasjonsnummer");
 
   // Check import path
-  const importPath =
-    document.querySelector('.input-condominium-fileName').value;
-  const validImportPath =
-    objCondominium.validateText(importPath, "condominium-fileName", "Navn på importfil");
+  const importPath = document.querySelector('.input-condominiums-fileName').value;
+  const validImportPath = objCondominium.validateText(importPath, "condominium-fileName", "Navn på importfil");
 
   return (validCondominiumName
     && validStreet

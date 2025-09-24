@@ -516,7 +516,7 @@ class Condos {
 
     // Check if budget id exist
     const objBudgetNumber =
-      budgetArray.findIndex(budget => budget.budgetId === budgetId);
+      budgetsArray.findIndex(budget => budget.budgetId === budgetId);
     if (objBudgetNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
@@ -753,8 +753,8 @@ class Condos {
           Login
         </a>
 
-        <a href="${url}condo-condominium.html"
-          class="a-menu-vertical-condominium"
+        <a href="${url}condo-condominiums.html"
+          class="a-menu-vertical-condominiums"
         >
           Sameie
         </a>

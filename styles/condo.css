@@ -38,7 +38,7 @@ body {
 
 .div-grid-bankaccount,
 
-.div-grid-condominium,
+.div-grid-condominiums,
 
 .div-grid-accounts,
 
@@ -75,7 +75,7 @@ body {
 .div-grid-bankaccount,
 .div-grid-supplier,
 .div-grid-user,
-.div-grid-condominium {
+.div-grid-condominiums {
   grid-template-columns: 200px 200px 200px;
 }
 
@@ -368,7 +368,7 @@ body {
 .a-menu-vertical-users,
 .a-menu-vertical-condo,
 .a-menu-vertical-bankaccount,
-.a-menu-vertical-condominium,
+.a-menu-vertical-condominiums,
 .a-menu-vertical-account,
 .a-menu-vertical-income,
 .a-menu-vertical-payment,
@@ -407,7 +407,7 @@ body {
 .a-menu-vertical-overview-green,
 .a-menu-vertical-remoteheating-green,
 .a-menu-vertical-budget-green,
-.a-menu-vertical-condominium-green {
+.a-menu-vertical-condominiums-green {
   display: block;
   color: #4CAF50;
   text-decoration: none;
@@ -467,7 +467,7 @@ body {
 
 .div-grid-bankaccount label,
 
-.div-grid-condominium label,
+.div-grid-condominiums label,
 
 .div-grid-accounts label,
 
@@ -554,7 +554,7 @@ body {
 .div-grid-overview-search input,
 .div-grid-overview input,
 
-.div-grid-condominium input {
+.div-grid-condominiums input {
   appearance: auto;
   background-color: rgb(255, 255, 255);
   border-bottom-color: rgb(195, 204, 217);
@@ -623,7 +623,7 @@ body {
 
 .div-grid-bankaccount select,
 
-.div-grid-condominium select,
+.div-grid-condominiums select,
 
 .div-grid-accounts select,
 
@@ -739,7 +739,7 @@ body {
 
 .div-grid-bankaccount button,
 
-.div-grid-condominium button,
+.div-grid-condominiums button,
 
 .div-grid-accounts button,
 
@@ -787,7 +787,7 @@ body {
 
 .div-grid-bankaccount button:hover,
 
-.div-grid-condominium button:hover,
+.div-grid-condominiums button:hover,
 
 .div-grid-accounts button:hover,
 
@@ -823,7 +823,7 @@ body {
 
 .div-grid-bankaccount button:active,
 
-.div-grid-condominium button:active,
+.div-grid-condominiums button:active,
 
 .div-grid-accounts button:active,
 
@@ -874,8 +874,8 @@ body {
 .div-grid-bankaccount select:disabled,
 .div-grid-bankaccount button:disabled,
 
-.div-grid-condominium select:disabled,
-.div-grid-condominium button:disabled,
+.div-grid-condominiums select:disabled,
+.div-grid-condominiums button:disabled,
 
 .div-grid-accounts select:disabled,
 .div-grid-accounts button:disabled,
@@ -997,16 +997,16 @@ body {
 .label-bankaccount-openingBalanceDate-red,
 .label-bankaccount-closingBalanceDate-red,
 
-.label-condominium-condominiumId-red,
-.label-condominium-name-red,
-.label-condominium-street-red,
-.label-condominium-address2-red,
-.label-condominium-postalCode-red,
-.label-condominium-city-red,
-.label-condominium-phone-red,
-.label-condominium-email-red,
-.label-condominium-incomeRemoteHeatingAccountId-red,
-.label-condominium-organizationNumber-red,
+.label-condominiums-condominiumId-red,
+.label-condominiums-name-red,
+.label-condominiums-street-red,
+.label-condominiums-address2-red,
+.label-condominiums-postalCode-red,
+.label-condominiums-city-red,
+.label-condominiums-phone-red,
+.label-condominiums-email-red,
+.label-condominiums-incomeRemoteHeatingAccountId-red,
+.label-condominiums-organizationNumber-red,
 
 .label-condo-condoId-red,
 .label-condo-name-red,

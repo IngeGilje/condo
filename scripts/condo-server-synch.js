@@ -57,31 +57,6 @@ async function main() {
 
     console.log("✅ Connected to MySQL");
 
-    /*
-    // Returns users ordered by ID
-    app.get("/users", async (req, res) => {
-
-      console.log("Received request for users", req.query);
-      try {
-
-        const condominiumId = req.query.condominiumId;
-        console.log("condominiumId: ", condominiumId);
-        const SQLquery =
-          `
-            SELECT * FROM users
-            WHERE condominiumId = ${condominiumId}
-              AND deleted <> 'Y'
-            ORDER BY userId;
-          `;
-        const [rows] = await db.query(SQLquery);
-        res.json(rows);
-      } catch (err) {
-        console.error("Database error:", err);
-        res.status(500).json({ error: "Database error" });
-      }
-    });
-    */
-
     // Requests for accounts
     app.get("/accounts", async (req, res) => {
 
@@ -107,7 +82,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /accounts:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -117,7 +92,6 @@ async function main() {
 
           console.log("Update account request received");
 
-          console.log("try");
           try {
 
             const accountId = req.query.accountId;
@@ -142,7 +116,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /accounts:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -186,7 +160,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /accounts:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -219,7 +193,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /accounts:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -252,7 +226,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /condos:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -262,7 +236,6 @@ async function main() {
 
           console.log("Update condo request received");
 
-          console.log("try");
           try {
 
             const condoId = req.query.condoId;
@@ -287,7 +260,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /accounts:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -331,7 +304,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /accounts:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -364,7 +337,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /accounts:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -399,7 +372,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /users:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -409,7 +382,6 @@ async function main() {
 
           console.log("Update users request received");
 
-          console.log("try");
           try {
 
             const userId = req.query.userId;
@@ -444,7 +416,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /users:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -503,7 +475,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /users:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -535,7 +507,357 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.error("Database error in /accounts:", err.message);
+            console.log("Database error in /users:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+      }
+    });
+
+    // Requests for bank accounts
+    app.get("/bankaccounts", async (req, res) => {
+
+      console.log("Received request for bank accounts", req.query);
+      const action = req.query.action;
+
+      console.log("action: ", action);
+      switch (action) {
+
+        case 'select': {
+          const condominiumId = Number(req.query.condominiumId);
+
+          try {
+
+            const SQLquery =
+              `
+                SELECT * FROM bankaccounts
+                WHERE condominiumId = ${condominiumId}
+                  AND deleted <> 'Y'
+                ORDER BY bankAccountId;
+            `;
+
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /bankaccounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          console.log("Update bank account request received");
+
+          try {
+
+
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const name = req.query.name;
+            const openingBalance = req.query.openingBalance;
+            const openingBalanceDate = req.query.openingBalanceDate;
+            const closingBalance = req.query.closingBalance;
+            const closingBalanceDate = req.query.closingBalanceDate;
+            const bankAccountId = req.query.bankAccountId;
+
+            const SQLquery =
+              `
+                UPDATE bankaccounts
+                SET 
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}',
+                  bankAccount = '${bankAccount}',
+                  name = '${name}',
+                  openingBalance = '${openingBalance}',
+                  openingBalanceDate = '${openingBalanceDate}',
+                  closingBalance = '${closingBalance}',
+                  closingBalanceDate = '${closingBalanceDate}'
+                WHERE bankAccountId = ${bankAccountId};
+              `;
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /bankaccounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          console.log("Insert bank account request received");
+
+          try {
+
+            const condominiumId = req.query.condominiumId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const bankAccount = req.query.bankAccount;
+            const name = req.query.name;
+            const openingBalance = req.query.openingBalance;
+            const openingBalanceDate = req.query.openingBalanceDate;
+            const closingBalance = req.query.closingBalance;
+            const closingBalanceDate = req.query.closingBalanceDate;
+
+            // Insert new row
+            const SQLquery =
+              `
+                INSERT INTO bankaccounts (
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  bankAccount,
+                  name,
+                  openingBalance, 
+                  openingBalanceDate,
+                  closingBalance, 
+                  closingBalanceDate
+                ) VALUES (
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  '${bankAccount}',
+                  '${name}',
+                  '${openingBalance}',
+                  '${openingBalanceDate}',
+                  '${closingBalance}',
+                  '${closingBalanceDate}'
+                );
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /bankaccounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'delete': {
+
+          console.log("Delete bank account request received");
+
+          try {
+
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const bankAccountId = req.query.bankAccountId;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE bankaccounts
+                  SET 
+                    deleted = 'Y',
+                    lastUpdate = '${lastUpdate}',
+                    user = '${user}'
+                  WHERE bankAccountId = ${bankAccountId};
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /bankaccounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+      }
+    });
+
+    // Requests for condominiums table
+    app.get("/condominiums", async (req, res) => {
+
+      console.log("Received request for condominiums", req.query);
+      const action = req.query.action;
+
+      console.log("action: ", action);
+      switch (action) {
+
+        case 'select': {
+
+          console.log("Select condominium request received");
+          try {
+
+            const SQLquery =
+              `
+                SELECT * FROM condominiums
+                  WHERE deleted <> 'Y'
+                ORDER BY condominiumId;
+              `;
+
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /condominiums:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          console.log("Update condominium request received");
+
+          try {
+
+            const condominiumId = req.query.condominiumId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const name = req.query.name;
+            const street = req.query.street;
+            const address2 = req.query.address2;
+            const postalCode = req.query.postalCode;
+            const city = req.query.city;
+            const phone = req.query.phone;
+            const email = req.query.email;
+            const incomeRemoteHeatingAccountId = req.query.incomeRemoteHeatingAccountId;
+            const paymentRemoteHeatingAccountId = req.query.paymentRemoteHeatingAccountId;
+            const commonCostAccountId = req.query.commonCostAccountId;
+            const organizationNumber = req.query.organizationNumber;
+            const importPath = req.query.importPath;
+
+            const SQLquery =
+              `        
+                UPDATE condominiums
+                SET 
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}',
+                  name = '${name}',
+                  street = '${street}',
+                  address2 = '${address2}',
+                  postalCode = '${postalCode}', 
+                  city = '${city}',
+                  phone = '${phone}',
+                  email = '${email}',
+                  incomeRemoteHeatingAccountId = ${incomeRemoteHeatingAccountId},
+                  paymentRemoteHeatingAccountId = ${paymentRemoteHeatingAccountId},
+                  commonCostAccountId = ${commonCostAccountId},
+                  organizationNumber = '${organizationNumber}',
+                  importPath = '${importPath}'
+                WHERE condominiumId = ${condominiumId};
+              `;
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /condominiums:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          console.log("Insert condominium request received");
+
+          try {
+
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const name = req.query.name;
+            const street = req.query.street;
+            const address2 = req.query.address2;
+            const postalCode = req.query.postalCode;
+            const city = req.query.city;
+            const phone = req.query.phone;
+            const email = req.query.email;
+            const incomeRemoteHeatingAccountId = req.query.incomeRemoteHeatingAccountId;
+            const paymentRemoteHeatingAccountId = req.query.paymentRemoteHeatingAccountId;
+            const commonCostAccountId = req.query.commonCostAccountId;
+            const organizationNumber = req.query.organizationNumber;
+            const importPath = req.query.importPath;
+
+            // Insert new row
+            const SQLquery =
+              `
+                INSERT INTO condominiums (
+                  deleted,
+                  user,
+                  lastUpdate,
+                  name,
+                  street,
+                  address2,
+                  postalCode,
+                  city,
+                  phone,
+                  email,
+                  incomeRemoteHeatingAccountId,
+                  paymentRemoteHeatingAccountId,
+                  commonCostAccountId,
+                  organizationNumber,
+                  importPath
+                ) VALUES (
+                  'N',
+                  '${user}',
+                  '${lastUpdate}',
+                  '${name}',
+                  '${street}',
+                  '${address2}',
+                  '${postalCode}',
+                  '${city}',
+                  '${phone}',
+                  '${email}',
+                  ${incomeRemoteHeatingAccountId},
+                  ${paymentRemoteHeatingAccountId},
+                  ${commonCostAccountId},
+                  '${organizationNumber}',
+                  '${importPath}'
+                );
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /condominiums:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'delete': {
+
+          console.log("Delete user request received");
+
+          try {
+
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const condominiumId = req.query.condominiumId;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE condominiums
+                SET 
+                  deleted = 'Y',
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}'
+                WHERE condominiumId = ${condominiumId};
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /condominiums:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -549,7 +871,7 @@ async function main() {
     });
 
   } catch (err) {
-    console.error("❌ Database connection failed:", err.message);
+    console.log("❌ Database connection failed:", err.message);
     process.exit(1);
   }
 }

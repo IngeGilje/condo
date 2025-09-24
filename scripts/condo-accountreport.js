@@ -184,7 +184,7 @@ socket.onmessage = (event) => {
         // budget table
         console.log('budget');
 
-        budgetArray = objInfo.tableArray;
+        budgetsArray = objInfo.tableArray;
         budgetArrayCreated =
           true
         break;
@@ -563,7 +563,7 @@ function getBudgetAmount(accountId, year) {
 
   // Budget Amount
 
-  budgetArray.forEach(budget => {
+  budgetsArray.forEach(budget => {
     if (budget.accountId === accountId
       && Number(budget.year) === year) {
 
@@ -731,7 +731,7 @@ function showBankDeposit() {
   budgetYear = Number(document.querySelector('.select-filter-budgetYear').value) + 1;
 
   // budget
-  budgetArray.forEach((budget) => {
+  budgetsArray.forEach((budget) => {
     if (Number(budget.year) === budgetYear) {
       if (Number(budget.amount) !== 0) {
 

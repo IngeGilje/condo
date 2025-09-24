@@ -1,5 +1,5 @@
 
-class Budget extends Condos {
+class Budgets extends Condos {
 
   // Budget information
   budgetsArray = [];
