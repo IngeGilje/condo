@@ -23,7 +23,7 @@ body {
 
 /*.div-grid-accountreport-filter,*/
 .div-grid-accountreport,
-/*.div-grid-accountreport-budget,*/
+/*.div-grid-accountreport-budgets,*/
 /*.div-grid-accountreport-bankdeposit,*/
 
 .div-grid-userbankaccount,
@@ -50,8 +50,8 @@ body {
 .div-grid-remoteheating-search,
 .div-grid-remoteheating,
 
-.div-grid-budget-search,
-.div-grid-budget,
+.div-grid-budgets-search,
+.div-grid-budgets,
 
 .div-grid-overview-search,
 .div-grid-overview {
@@ -71,7 +71,7 @@ body {
 
 /* grid container 3 columns */
 .div-grid-condo,
-.div-grid-budget-search,
+.div-grid-budgets-search,
 .div-grid-bankaccount,
 .div-grid-supplier,
 .div-grid-user,
@@ -105,7 +105,7 @@ body {
 }
 
 /* Define the grid container with 5 columns*/
-.div-grid-budget {
+.div-grid-budgets {
   grid-template-columns: 200px 200px 75px 200px 100px;
 }
 
@@ -115,7 +115,7 @@ body {
 }
 
 /* Define the grid container with 6 columns*/
-/*.div-grid-accountreport-budget {*/
+/*.div-grid-accountreport-budgets {*/
 /*  grid-template-columns: 200px 100px 150px 150px 150px 150px;*/
 /*}*/
 
@@ -375,7 +375,7 @@ body {
 .a-menu-vertical-due,
 .a-menu-vertical-commoncost,
 .a-menu-vertical-remoteheating,
-.a-menu-vertical-budget,
+.a-menu-vertical-budgets,
 .a-menu-vertical-overview,
 .a-menu-vertical-bankaccountmovement {
   display: block;
@@ -406,7 +406,7 @@ body {
 .a-menu-vertical-payment-green,
 .a-menu-vertical-overview-green,
 .a-menu-vertical-remoteheating-green,
-.a-menu-vertical-budget-green,
+.a-menu-vertical-budgets-green,
 .a-menu-vertical-condominiums-green {
   display: block;
   color: #4CAF50;
@@ -452,7 +452,7 @@ body {
 
 /*.div-grid-accountreport-filter label,*/
 .div-grid-accountreport label,
-/*.div-grid-accountreport-budget label,*/
+/*.div-grid-accountreport-budgets label,*/
 /*.div-grid-accountreport-bankdeposit label,*/
 
 .div-grid-userbankaccount label,
@@ -479,7 +479,7 @@ body {
 
 .div-grid-remoteheating label,
 
-.div-grid-budget label,
+.div-grid-budgets label,
 
 .div-grid-overview-search label,
 .div-grid-overview label {
@@ -523,7 +523,7 @@ body {
 
 /*.div-grid-accountreport-filter input,*/
 .div-grid-accountreport input,
-/*.div-grid-accountreport-budget input,*/
+/*.div-grid-accountreport-budgets input,*/
 /*.div-grid-accountreport-bankdeposit input,*/
 
 .div-grid-userbankaccount input,
@@ -548,8 +548,8 @@ body {
 .div-grid-remoteheating-search input,
 .div-grid-remoteheating input,
 
-.div-grid-budget-search input,
-.div-grid-budget input,
+.div-grid-budgets-search input,
+.div-grid-budgets input,
 
 .div-grid-overview-search input,
 .div-grid-overview input,
@@ -608,7 +608,7 @@ body {
 
 /*.div-grid-accountreport-filter select,*/
 .div-grid-accountreport select,
-/*.div-grid-accountreport-budget select,*/
+/*.div-grid-accountreport-budgets select,*/
 /*.div-grid-accountreport-bankdeposit select,*/
 
 .div-grid-userbankaccount select,
@@ -635,8 +635,8 @@ body {
 .div-grid-remoteheating-search select,
 .div-grid-remoteheating select,
 
-.div-grid-budget-search select,
-.div-grid-budget select,
+.div-grid-budgets-search select,
+.div-grid-budgets select,
 
 .div-grid-overview-search select,
 .div-grid-overview select {
@@ -724,7 +724,7 @@ body {
 
 /*.div-grid-accountreport-filter button,*/
 .div-grid-accountreport button,
-/*.div-grid-accountreport-budget button,*/
+/*.div-grid-accountreport-budgets button,*/
 /*.div-grid-accountreport-bankdeposit button,*/
 
 .div-grid-userbankaccount button,
@@ -752,8 +752,8 @@ body {
 
 .div-grid-remoteheating button,
 
-.div-grid-budget-search button,
-.div-grid-budget button,
+.div-grid-budgets-search button,
+.div-grid-budgets button,
 
 .div-grid-overview-search button,
 .div-grid-overview button {
@@ -772,7 +772,7 @@ body {
 
 /*.div-grid-accountreport-filter button:hover,*/
 .div-grid-accountreport button:hover,
-/*.div-grid-accountreport-budget button:hover,*/
+/*.div-grid-accountreport-budgets button:hover,*/
 /*.div-grid-accountreport-bankdeposit button.hover,*/
 
 .div-grid-userbankaccount button:hover,
@@ -799,8 +799,8 @@ body {
 .div-grid-remoteheating-search button:hover,
 .div-grid-remoteheating button:hover,
 
-.div-grid-budget-search button:hover,
-.div-grid-budget button:hover,
+.div-grid-budgets-search button:hover,
+.div-grid-budgets button:hover,
 
 .div-grid-overview-search button:hover,
 .div-grid-overview button:hover {
@@ -835,8 +835,8 @@ body {
 .div-grid-remoteheating-search button:active,
 .div-grid-remoteheating button:active,
 
-.div-grid-budget-search button:active,
-.div-grid-budget button:active,
+.div-grid-budgets-search button:active,
+.div-grid-budgets button:active,
 
 .div-grid-overview-search button:active,
 .div-grid-overview button:active {
@@ -853,7 +853,7 @@ body {
 .div-grid-accountreport select:disabled,
 .div-grid-accountreport button:disabled,
 
-/*.div-grid-accountreport-budget select:disabled,*/
+/*.div-grid-accountreport-budgets select:disabled,*/
 /*.div-grid-accountreport button:disabled,*/
 
 .div-grid-userbankaccount select:disabled,
@@ -886,8 +886,8 @@ body {
 .div-grid-commoncost select:disabled,
 .div-grid-commoncost button:disabled,
 
-.div-grid-budget select:disabled,
-.div-grid-budget button:disabled {
+.div-grid-budgets select:disabled,
+.div-grid-budgets button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
@@ -1014,8 +1014,8 @@ body {
 .label-condo-postalCode-red,
 .label-condo-city-red,
 
-.label-budget-text-red,
-.label-budget-amount-red,
+.label-budgets-text-red,
+.label-budgets-amount-red,
 
 .label-remoteheating-fromDate-red,
 .label-remoteheating-toDate-red,

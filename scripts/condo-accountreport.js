@@ -658,7 +658,7 @@ function showIncomeNextYear() {
   html += HTMLTableRow('', strSquareMeters, strFixedCost, strCommonCostsMonth, strCommonCostsYear);
   html += endHTMLTableBody();
   html += endHTMLTable();
-  document.querySelector('.div-grid-accountreport-budget').innerHTML = html;
+  document.querySelector('.div-grid-accountreport-budgets').innerHTML = html;
 }
 
 // Get fixed costs

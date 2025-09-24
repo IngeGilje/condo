@@ -264,6 +264,7 @@ function createEvents() {
   return true;
 }
 
+/*
 function updateCondominium(condominiumId) {
 
   let SQLquery =
@@ -363,6 +364,7 @@ function updateCondominium(condominiumId) {
       false;
   }
 }
+*/
 
 // Show leading text for condominium
 function showLeadingText(condominiumId) {

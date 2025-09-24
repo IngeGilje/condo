@@ -865,6 +865,153 @@ async function main() {
       }
     });
 
+    // Requests for budgets table
+    app.get("/budgets", async (req, res) => {
+
+      console.log("Received request for budgets", req.query);
+      const action = req.query.action;
+
+      console.log("action: ", action);
+      switch (action) {
+
+        case 'select': {
+
+          console.log("Select budget request received");
+          try {
+
+            const SQLquery =
+              `
+                SELECT * FROM budgets
+                  WHERE deleted <> 'Y'
+                ORDER BY budgetId;
+              `;
+
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /budgets:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          console.log("Update budget request received");
+
+          try {
+
+            const budgetId = req.query.budgetId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const accountId = req.query.accountId;
+            const amount = req.query.amount;
+            const year = req.query.year;
+
+            // Update row
+            const SQLquery =
+              `
+              UPDATE budgets
+              SET
+                user = '${user}', 
+                lastUpdate = '${lastUpdate}',
+                accountId = ${accountId},
+                amount = ${amount},
+                year = '${year}'
+              WHERE budgetId = ${budgetId};
+            `;
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /budgets:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          console.log("Insert budget request received");
+
+          try {
+
+            const condominiumId = req.query.condominiumId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const accountId = req.query.accountId;
+            const amount = req.query.amount;
+            const year = req.query.year;
+
+            // Insert new row
+            const SQLquery =
+              `
+                INSERT INTO budgets (
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  accountId,
+                  amount,
+                  year
+                  ) VALUES (
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  ${accountId},
+                  ${amount},
+                  '${year}'
+                );
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /budgets:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'delete': {
+
+          console.log("Delete budget request received");
+
+          try {
+
+            const budgetId = req.query.budgetId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE budgets
+                SET 
+                  deleted = 'Y',
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}'
+                WHERE budgetId = ${budgetId};
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /budgets:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+      }
+    });
+
     // Start the server
     app.listen(3000, () => {
       console.log("🚀 Server running at http://localhost:3000");

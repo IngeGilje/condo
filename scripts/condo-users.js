@@ -60,8 +60,7 @@ function createEvents() {
     if (event.target.classList.contains('select-users-userId')) {
 
       let userId = Number(document.querySelector('.select-users-userId').value);
-      userId =
-        (userId !== 0) ? userId : objUsers.usersArray.at(-1).userId;
+      userId = (userId !== 0) ? userId : objUsers.usersArray.at(-1).userId;
       if (userId) {
         showValues(userId);
       }

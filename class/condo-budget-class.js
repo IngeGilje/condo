@@ -15,12 +15,12 @@ class Budget extends Condos {
       budgetId =
         Number(document.querySelector(`.${className}`).value);
       budgetId =
-        (budgetId === 0) ? budgetsArray.at(-1).budgetId : budgetId;
+        (budgetId === 0) ? this.budgetsArray.at(-1).budgetId : budgetId;
     } else {
 
       // Get last id in last object in budget array
       budgetId =
-        (budgetsArray.length > 0) ? budgetsArray.at(-1).budgetId : 0;
+        (this.budgetsArray.length > 0) ? this.budgetsArray.at(-1).budgetId : 0;
     }
 
     return budgetId;
@@ -54,9 +54,9 @@ class Budget extends Condos {
 
     // Check if budget array is empty
     const numberOfRows =
-      budgetsArray.length;
+      this.budgetsArray.length;
     if (numberOfRows > 0) {
-      budgetsArray.forEach((budget) => {
+      this.budgetsArray.forEach((budget) => {
 
         lineNumber++;
 

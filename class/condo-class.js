@@ -498,12 +498,10 @@ class Condos {
   selectAccountId(accountId, className) {
 
     // Check if account id exist
-    const objAccountNumber =
-      accountsArray.findIndex(account => account.accountId === accountId);
+    const objAccountNumber = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
     if (objAccountNumber !== -1) {
 
-      document.querySelector(`.select-${className}`).value =
-        accountId;
+      document.querySelector(`.select-${className}`).value = objAccounts.accountsArray[objAccountNumber].accountId;
       return true;
     } else {
 
@@ -807,8 +805,8 @@ class Condos {
           Felleskostnader
         </a>
 
-        <a href="${url}condo-budget.html"
-          class="a-menu-vertical-budget"
+        <a href="${url}condo-budgets.html"
+          class="a-menu-vertical-budgets"
         >
           Budsjett
         </a>

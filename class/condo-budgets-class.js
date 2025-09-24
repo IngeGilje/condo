@@ -15,12 +15,12 @@ class Budgets extends Condos {
       budgetId =
         Number(document.querySelector(`.${className}`).value);
       budgetId =
-        (budgetId === 0) ? budgetsArray.at(-1).budgetId : budgetId;
+        (budgetId === 0) ? this.budgetsArray.at(-1).budgetId : budgetId;
     } else {
 
       // Get last id in last object in budget array
       budgetId =
-        (budgetsArray.length > 0) ? budgetsArray.at(-1).budgetId : 0;
+        (this.budgetsArray.length > 0) ? this.budgetsArray.at(-1).budgetId : 0;
     }
 
     return budgetId;
@@ -54,9 +54,9 @@ class Budgets extends Condos {
 
     // Check if budget array is empty
     const numberOfRows =
-      budgetsArray.length;
+      this.budgetsArray.length;
     if (numberOfRows > 0) {
-      budgetsArray.forEach((budget) => {
+      this.budgetsArray.forEach((budget) => {
 
         lineNumber++;
 
@@ -105,5 +105,52 @@ class Budgets extends Condos {
 
     document.querySelector(`.div-${className}`).innerHTML =
       html;
+  }
+  
+  // get budgets
+  async loadBudgetsTable(condominiumId) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/budgets?action=select&condominiumId=${condominiumId}`);
+      if (!response.ok) throw new Error("Network error (budgets)");
+      this.budgetsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading budgets:", error);
+    }
+  }
+
+  // update budget row in budgets table
+  async updateBudgetsTable(budgetId, user, lastUpdate, accountId, amount, year) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/budgets?action=update&budgetId=${budgetId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&year=${year}`);
+      if (!response.ok) throw new Error("Network error (budgets)");
+      this.budgetsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading budgets:", error);
+    }
+  }
+
+  // insert budget row in budgets table
+  async insertBudgetsTable(condominiumId, user, lastUpdate, accountId, amount, year) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/budgets?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&year=${year}`);
+      if (!response.ok) throw new Error("Network error (budgets)");
+      this.budgetsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading budgets:", error);
+    }
+  }
+  // delete budget row
+  async deleteBudgetsTable(budgetId, user, lastUpdate) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/budgets?action=delete&budgetId=${budgetId}&user=${user}&lastUpdate=${lastUpdate}`);
+      if (!response.ok) throw new Error("Network error (budgets)");
+      this.budgetsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading budgets:", error);
+    }
   }
 }

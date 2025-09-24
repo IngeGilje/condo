@@ -201,7 +201,7 @@ function createEvents() {
   return true;
 }
 
-function updateCondominium(condominiumId) {
+async function updateCondominium(condominiumId) {
 
   // Check values
   if (validateValues()) {
