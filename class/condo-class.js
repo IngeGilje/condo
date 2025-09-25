@@ -498,10 +498,10 @@ class Condos {
   selectAccountId(accountId, className) {
 
     // Check if account id exist
-    const objAccountNumber = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+    const objAccountNumber = this.accountsArray.findIndex(account => account.accountId === accountId);
     if (objAccountNumber !== -1) {
 
-      document.querySelector(`.select-${className}`).value = objAccounts.accountsArray[objAccountNumber].accountId;
+      document.querySelector(`.select-${className}`).value = this.accountsArray[objAccountNumber].accountId;
       return true;
     } else {
 
@@ -1019,11 +1019,11 @@ class Condos {
 
     // Account name from account table
     const objAccountRowNumber =
-      accountsArray.findIndex(account => account.accountId === accountId);
+      this.accountsArray.findIndex(account => account.accountId === accountId);
     if (objAccountRowNumber !== -1) {
 
       accountName =
-        accountsArray[objAccountRowNumber].name;
+        this.accountsArray[objAccountRowNumber].name;
     }
 
     return (accountName) ? accountName : "-";
@@ -1845,6 +1845,7 @@ function testMode() {
   }
 }
 
+/*
 function getTextWidth(text, font = '16px Arial') {
 
   // Create a canvas element (doesn't need to be in the DOM)
@@ -1864,7 +1865,9 @@ function getTextWidth(text, font = '16px Arial') {
   // Return the width in pixels
   return metrics.width;
 }
+*/
 
+/*
 // Sends a request to the sql server
 function updateMySql(SQLquery, tableName, CRUDE) {
 
@@ -1883,7 +1886,9 @@ function updateMySql(SQLquery, tableName, CRUDE) {
   // Send message to server
   socket.send(messageToServer);
 }
+*/
 
+/* Validate interval
 function validateInterval(className, labelText, fromValue, toValue) {
 
   let isIntervalValid = false;
@@ -1914,6 +1919,7 @@ function validateInterval(className, labelText, fromValue, toValue) {
   }
   return isTextValid;
 }
+*/
 
 // get account id from bank account
 function getAccountIdFromBankAccount(bankAccount, payment) {

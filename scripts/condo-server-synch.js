@@ -879,13 +879,31 @@ async function main() {
           console.log("Select budget request received");
           try {
 
-            const SQLquery =
+            const condominiumId = req.query.condominiumId;
+            const year = req.query.year;
+            const accountId = Number(req.query.accountId);
+
+            let SQLquery =
               `
                 SELECT * FROM budgets
-                  WHERE deleted <> 'Y'
-                ORDER BY budgetId;
+                WHERE condominiumId = ${condominiumId}
+                  AND deleted <> 'Y'
+                  AND year = '${year}'
               `;
 
+            if (accountId !== 999999999) {
+              SQLquery +=
+                `
+                  AND accountId = ${accountId}
+                `;
+            }
+
+            SQLquery +=
+              `
+                ORDER BY year,accountId;
+              `;
+
+            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {

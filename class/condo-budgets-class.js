@@ -108,10 +108,10 @@ class Budgets extends Condos {
   }
   
   // get budgets
-  async loadBudgetsTable(condominiumId) {
+  async loadBudgetsTable(condominiumId,year,accountId) {
 
     try {
-      const response = await fetch(`http://localhost:3000/budgets?action=select&condominiumId=${condominiumId}`);
+      const response = await fetch(`http://localhost:3000/budgets?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}`);
       if (!response.ok) throw new Error("Network error (budgets)");
       this.budgetsArray = await response.json();
     } catch (error) {
