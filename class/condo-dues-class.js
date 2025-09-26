@@ -1,10 +1,9 @@
 
 // Due maintenance
-class Due extends Condos {
+class Dues extends Condos {
 
   // Due information
-  dueArray = 
-  undefined;
+  duesArray;
 
   // Show all dues
   showAllDues(className, dueId) {
@@ -28,13 +27,10 @@ class Due extends Condos {
       >
     `;
 
-    let selectedOption =
-      false;
-
-    // Check if monthly due array is empty
-    const numberOfRows = dueArray.length;
+    // Check if due array is empty
+    const numberOfRows = duesArray.length;
     if (numberOfRows > 0) {
-      dueArray.forEach((due) => {
+      duesArray.forEach((due) => {
         if (due.dueId >= 0) {
           if (due.dueId === dueId) {
 
@@ -47,8 +43,7 @@ class Due extends Condos {
                   ${due.dueId} - ${due.text}
                 </option>
               `;
-            selectedOption =
-              true;
+            selectedOption = true;
           } else {
             
             html +=
@@ -94,11 +89,11 @@ class Due extends Condos {
 
       dueId =
         Number(document.querySelector(`.${className}`).value);
-      dueId = (dueId === 0) ? dueArray.at(-1).dueId : dueId;
+      dueId = (dueId === 0) ? this.duesArray.at(-1).dueId : dueId;
     } else {
 
       // Get last id in last object in monthly payment array
-      dueId = dueArray.at(-1).dueId;
+      dueId = this.duesArray.at(-1).dueId;
     }
 
     return dueId;
@@ -131,10 +126,9 @@ class Due extends Condos {
       false;
 
     // Check if bank account movement array is empty
-    const numberOfRows =
-      dueArray.length;
+    const numberOfRows = this.duesArray.length;
     if (numberOfRows > 0) {
-      dueArray.forEach((due) => {
+      this.duesArray.forEach((due) => {
 
         lineNumber++;
         if (due.dueId === dueId) {
@@ -182,6 +176,53 @@ class Due extends Condos {
 
     document.querySelector(`.div-${className}`).innerHTML =
       html;
+  }
+
+  // get dues
+  async loadDuesTable(condominiumId,year,accountId,condoId) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/dues?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}&condoId=${condoId}`);
+      if (!response.ok) throw new Error("Network error (dues)");
+      this.budgetsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading dues:", error);
+    }
+  }
+
+  // update due row in dues table
+  async updateDuesTable(dueId, user, lastUpdate, condoId, accountId, amount,date,text) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/dues?action=update&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
+      if (!response.ok) throw new Error("Network error (dues)");
+      this.budgetsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading dues:", error);
+    }
+  }
+
+  // insert due row in dues table
+  async insertDuesTable(condominiumId, dueId, user, lastUpdate, condoId, accountId, amount,date,text) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/dues?action=insert&condominiumId=${condominiumId}&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
+      if (!response.ok) throw new Error("Network error (dues)");
+      this.budgetsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading dues:", error);
+    }
+  }
+  // delete due row
+  async deleteDuesTable(dueId, user, lastUpdate) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/dues?action=delete&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}`);
+      if (!response.ok) throw new Error("Network error (dues)");
+      this.budgetsArray = await response.json();
+    } catch (error) {
+      console.log("Error loading dues:", error);
+    }
   }
 }
 

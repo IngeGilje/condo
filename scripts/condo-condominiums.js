@@ -12,8 +12,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-let isEventsCreated;
-
 objCondominiums.menu();
 objCondominiums.markSelectedMenu('Sameie');
 
@@ -501,6 +499,7 @@ function resetValues() {
   //  true;
 }
 
+/*
 // Delete a row in condominium table
 function deleteCondominiumRow() {
 
@@ -547,6 +546,7 @@ function deleteCondominiumRow() {
       false;
   }
 }
+*/
 
 // Check for valid condominium number
 function validateValues() {

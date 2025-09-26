@@ -26,13 +26,13 @@ body {
 /*.div-grid-accountreport-budgets,*/
 /*.div-grid-accountreport-bankdeposit,*/
 
-.div-grid-userbankaccount,
+.div-grid-userbankaccounts,
 
 .div-grid-supplier,
 
 .div-grid-importfile,
 
-.div-grid-condo,
+.div-grid-condos,
 
 .div-grid-user,
 
@@ -42,8 +42,8 @@ body {
 
 .div-grid-accounts,
 
-.div-grid-due-filter,
-.div-grid-due,
+.div-grid-dues-filter,
+.div-grid-dues,
 
 .div-grid-commoncost,
 
@@ -64,13 +64,13 @@ body {
 }
 
 /* grid container 2 columns */
-.div-grid-userbankaccount,
+.div-grid-userbankaccounts,
 .div-grid-accounts {
   grid-template-columns: 200px 200px;
 }
 
 /* grid container 3 columns */
-.div-grid-condo,
+.div-grid-condos,
 .div-grid-budgets-search,
 .div-grid-bankaccount,
 .div-grid-supplier,
@@ -110,7 +110,7 @@ body {
 }
 
 /* Define the grid container with 5 columns*/
-.div-grid-due-filter {
+.div-grid-dues-filter {
   grid-template-columns: 200px 200px 200px 200px 200px;
 }
 
@@ -135,7 +135,7 @@ body {
 }
 
 /* Define the grid container with 8 columns*/
-.div-grid-due {
+.div-grid-dues {
   grid-template-columns: 200px 200px 75px 100px 150px 125px 125px 150px;
 }
 
@@ -361,7 +361,7 @@ body {
 /* menu */
 .a-menu-vertical-accounts,
 .a-menu-vertical-accountreport,
-.a-menu-vertical-userbankaccount,
+.a-menu-vertical-userbankaccounts,
 .a-menu-vertical-supplier,
 .a-menu-vertical-importfile,
 .a-menu-vertical-login,
@@ -372,7 +372,7 @@ body {
 .a-menu-vertical-account,
 .a-menu-vertical-income,
 .a-menu-vertical-payment,
-.a-menu-vertical-due,
+.a-menu-vertical-dues,
 .a-menu-vertical-commoncost,
 .a-menu-vertical-remoteheating,
 .a-menu-vertical-budgets,
@@ -391,7 +391,7 @@ body {
 
 .a-menu-vertical-accountreport-green,
 .a-menu-vertical-accounts-green,
-.a-menu-vertical-userbankaccount-green,
+.a-menu-vertical-userbankaccounts-green,
 .a-menu-vertical-supplier-green,
 .a-menu-vertical-importfile-green,
 .a-menu-vertical-login-green,
@@ -400,7 +400,7 @@ body {
 .a-menu-vertical-bankaccount-green,
 .a-menu-vertical-condo-green,
 .a-menu-vertical-accounts-green,
-.a-menu-vertical-due-green,
+.a-menu-vertical-dues-green,
 .a-menu-vertical-commoncost-green,
 .a-menu-vertical-income-green,
 .a-menu-vertical-payment-green,
@@ -435,7 +435,7 @@ body {
 .div-bankaccount-item-info,
 .div-condo-item-info,
 .div-accounts-item-info,
-.div-due-item-info,
+.div-dues-item-info,
 .div-payment-item-info,
 .div-overview-item-info,
 .div-remoteheating-item-info {
@@ -455,7 +455,7 @@ body {
 /*.div-grid-accountreport-budgets label,*/
 /*.div-grid-accountreport-bankdeposit label,*/
 
-.div-grid-userbankaccount label,
+.div-grid-userbankaccounts label,
 
 .div-grid-supplier label,
 
@@ -463,7 +463,7 @@ body {
 
 .div-grid-user label,
 
-.div-grid-condo label,
+.div-grid-condos label,
 
 .div-grid-bankaccount label,
 
@@ -471,7 +471,7 @@ body {
 
 .div-grid-accounts label,
 
-.div-grid-due label,
+.div-grid-dues label,
 
 .div-grid-commoncost label,
 
@@ -526,7 +526,7 @@ body {
 /*.div-grid-accountreport-budgets input,*/
 /*.div-grid-accountreport-bankdeposit input,*/
 
-.div-grid-userbankaccount input,
+.div-grid-userbankaccounts input,
 
 .div-grid-supplier input,
 
@@ -534,14 +534,14 @@ body {
 
 .div-grid-user input,
 
-.div-grid-condo input,
+.div-grid-condos input,
 
 .div-grid-bankaccount input,
 
 .div-grid-accounts input,
 
-.div-grid-due-filter input,
-.div-grid-due input,
+.div-grid-dues-filter input,
+.div-grid-dues input,
 
 .div-grid-commoncost input,
 
@@ -611,7 +611,7 @@ body {
 /*.div-grid-accountreport-budgets select,*/
 /*.div-grid-accountreport-bankdeposit select,*/
 
-.div-grid-userbankaccount select,
+.div-grid-userbankaccounts select,
 
 .div-grid-supplier select,
 
@@ -619,7 +619,7 @@ body {
 
 .div-grid-user select,
 
-.div-grid-condo select,
+.div-grid-condos select,
 
 .div-grid-bankaccount select,
 
@@ -627,8 +627,8 @@ body {
 
 .div-grid-accounts select,
 
-.div-grid-due-filter select,
-.div-grid-due select,
+.div-grid-dues-filter select,
+.div-grid-dues select,
 
 .div-grid-commoncost select,
 
@@ -703,8 +703,8 @@ body {
 
 .div-overview-text,
 .div-overview-sumPayment,
-.div-overview-due-payment,
-.div-overview-due-date,
+.div-overview-dues-payment,
+.div-overview-dues-date,
 .div-overview-payment,
 
 .div-remoteheating-text,
@@ -712,7 +712,7 @@ body {
 .div-remoteheating-sumNumberKWHour,
 .div-remoteheating-sumPriceKWHour,
 
-.div-overview-due-sumDue,
+.div-overview-dues-sumDue,
 .div-overview-sumIncome,
 .div-overview-income {
   font-weight: 700;
@@ -727,7 +727,7 @@ body {
 /*.div-grid-accountreport-budgets button,*/
 /*.div-grid-accountreport-bankdeposit button,*/
 
-.div-grid-userbankaccount button,
+.div-grid-userbankaccounts button,
 
 .div-grid-supplier button,
 
@@ -735,7 +735,7 @@ body {
 
 .div-grid-user button,
 
-.div-grid-condo button,
+.div-grid-condos button,
 
 .div-grid-bankaccount button,
 
@@ -743,8 +743,8 @@ body {
 
 .div-grid-accounts button,
 
-.div-grid-due-filter button,
-.div-grid-due button,
+.div-grid-dues-filter button,
+.div-grid-dues button,
 
 .div-grid-commoncost button,
 
@@ -775,7 +775,7 @@ body {
 /*.div-grid-accountreport-budgets button:hover,*/
 /*.div-grid-accountreport-bankdeposit button.hover,*/
 
-.div-grid-userbankaccount button:hover,
+.div-grid-userbankaccounts button:hover,
 
 .div-grid-supplier button:hover,
 
@@ -783,7 +783,7 @@ body {
 
 .div-grid-user button:hover,
 
-.div-grid-condo button:hover,
+.div-grid-condos button:hover,
 
 .div-grid-bankaccount button:hover,
 
@@ -791,8 +791,8 @@ body {
 
 .div-grid-accounts button:hover,
 
-.div-grid-due-filter button:hover,
-.div-grid-due button:hover,
+.div-grid-dues-filter button:hover,
+.div-grid-dues button:hover,
 
 .div-grid-commoncost button:hover,
 
@@ -813,13 +813,13 @@ body {
 
 .div-accountreport button:active,
 
-.div-userbankaccount button:active,
+.div-userbankaccounts button:active,
 
 .div-grid-importile button:active,
 
 .div-grid-user button:active,
 
-.div-grid-condo button:active,
+.div-grid-condos button:active,
 
 .div-grid-bankaccount button:active,
 
@@ -827,8 +827,8 @@ body {
 
 .div-grid-accounts button:active,
 
-.div-grid-due-filter button:active,
-.div-grid-due button:active,
+.div-grid-dues-filter button:active,
+.div-grid-dues button:active,
 
 .div-grid-commoncost button:active,
 
@@ -856,8 +856,8 @@ body {
 /*.div-grid-accountreport-budgets select:disabled,*/
 /*.div-grid-accountreport button:disabled,*/
 
-.div-grid-userbankaccount select:disabled,
-.div-grid-userbankaccount button:disabled,
+.div-grid-userbankaccounts select:disabled,
+.div-grid-userbankaccounts button:disabled,
 
 .div-grid-supplier select:disabled,
 .div-grid-supplier button:disabled,
@@ -868,8 +868,8 @@ body {
 .div-grid-user select:disabled,
 .div-grid-user button:disabled,
 
-.div-grid-condo select:disabled,
-.div-grid-condo button:disabled,
+.div-grid-condos select:disabled,
+.div-grid-condos button:disabled,
 
 .div-grid-bankaccount select:disabled,
 .div-grid-bankaccount button:disabled,
@@ -880,8 +880,8 @@ body {
 .div-grid-accounts select:disabled,
 .div-grid-accounts button:disabled,
 
-.div-grid-due select:disabled,
-.div-grid-due button:disabled,
+.div-grid-dues select:disabled,
+.div-grid-dues button:disabled,
 
 .div-grid-commoncost select:disabled,
 .div-grid-commoncost button:disabled,
@@ -909,12 +909,12 @@ body {
 .div-remoteheating-priceKWHour-Header,
 .div-remoteheating-text-Header,
 
-.div-overview-due-date-Header,
-.div-overview-due-payment-Header,
-.div-overview-due-text-Header,
+.div-overview-dues-date-Header,
+.div-overview-dues-payment-Header,
+.div-overview-dues-text-Header,
 .div-overview-payment-Header,
 .div-overview-date-Header,
-.div-overview-due-payment-Header,
+.div-overview-dues-payment-Header,
 .div-overview-text-Header {
   background-color: #f4f4f4;
   text-align: left;
@@ -934,14 +934,14 @@ body {
 /* right */
 .div-montlyfee-amountCondo,
 
-.div-overview-due-date-Header,
-.div-overview-due-payment-Header,
-.div-overview-due-sumDue,
+.div-overview-dues-date-Header,
+.div-overview-dues-payment-Header,
+.div-overview-dues-sumDue,
 .div-overview-income,
 .div-overview-sumIncome,
 .div-overview-payment,
 .div-overview-sumPayment,
-.div-overview-due-payment,
+.div-overview-dues-payment,
 
 .div-remoteheating-sumPayment,
 .div-remoteheating-sumNumberKWHour,
@@ -955,8 +955,8 @@ body {
 
 .div-overview-text,
 .div-overview-date,
-.div-overview-due-payment,
-.div-overview-due-payment,
+.div-overview-dues-payment,
+.div-overview-dues-payment,
 .div-overview-payment-payDate,
 .div-overview-payment-Header {
 
@@ -972,10 +972,10 @@ body {
 .label-accountreport-filter-fromDate-red,
 .label-accountreport-filter-toDate-red,
 
-.label-userbankaccount-userId-red,
-.label-userbankaccount-accountId-red,
-.label-userbankaccount-name-red,
-.label-userbankaccount-bankAccount-red,
+.label-userbankaccounts-userId-red,
+.label-userbankaccounts-accountId-red,
+.label-userbankaccounts-name-red,
+.label-userbankaccounts-bankAccount-red,
 
 .label-users-condoId-red,
 .label-users-firstName-red,
@@ -1040,11 +1040,11 @@ body {
 .label-commoncost-date-red,
 .label-commoncost-amount-red,
 
-.label-due-condoId-red,
-.label-due-date-red,
-.label-due-amount-red,
-.label-due-text-red,
-.label-due-amount-red {
+.label-dues-condoId-red,
+.label-dues-date-red,
+.label-dues-amount-red,
+.label-dues-text-red,
+.label-dues-amount-red {
 
   font-weight: bold;
   color: rgb(234, 8, 8);

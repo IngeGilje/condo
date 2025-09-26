@@ -1,5 +1,5 @@
 // class for all applications for the condo system
-class Condos {
+class CondosApp {
 
   // serverStatus = 1; // Web server
   // serverStatus = 2; // Test web server/ local web server
@@ -527,7 +527,8 @@ class Condos {
   selectCondoId(condoId, className) {
 
     // Check if condo id exist
-    const objCondoRowNumber = this.condoArray.findIndex(condo => condo.condoId === condoId);
+    const objCondoRowNumber =
+      condoArray.findIndex(condo => condo.condoId === condoId);
     if (objCondoRowNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
@@ -736,8 +737,8 @@ class Condos {
           Sameie
         </a>
 
-        <a href="${url}condo-condo.html"
-          class="a-menu-vertical-condo"
+        <a href="${url}condo-condos.html"
+          class="a-menu-vertical-condos"
         >
           Leilighet
         </a>
@@ -760,8 +761,8 @@ class Condos {
           Bruker
         </a>
 
-        <a href="${url}condo-userbankaccounts.html"
-          class="a-menu-vertical-userbankaccounts"
+        <a href="${url}condo-userbankaccount.html"
+          class="a-menu-vertical-userbankaccount"
         >
           Bankkonto for bruker
         </a>
@@ -1793,7 +1794,7 @@ function connectingToServer() {
 
 // Removes the iframe
 function removeIframe() {
-  const iframe = document.getElementById("div-condo-login");
+  const iframe = document.getElementById("div-condos-login");
   if (iframe) {
     iframe.remove();
   }

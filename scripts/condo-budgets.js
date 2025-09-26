@@ -56,162 +56,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   }
 }
 
-/*
-} else {
-
-  // Send a requests to the server
-  socket.onopen = () => {
-
-    // Sends a request to the server to get users
-    let SQLquery =
-      `
-        SELECT * FROM users
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY userId;
-      `;
-    updateMySql(SQLquery, 'user', 'SELECT');
-    userArrayCreated =
-      false;
-
-    // Sends a request to the server to get accounts
-    SQLquery =
-      `
-        SELECT * FROM accounts
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY accountId;
-      `;
-
-    updateMySql(SQLquery, 'account', 'SELECT');
-    accountArrayCreated =
-      false;
-
-    // Sends a request to the server to get budget
-    const year = String(today.getFullYear());
-    SQLquery =
-      `
-        SELECT * FROM budget
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-          AND year = '${year}'
-        ORDER BY year,accountId;
-      `;
-
-    updateMySql(SQLquery, 'budget', 'SELECT');
-    budgetArrayCreated =
-      false;
-  };
-
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
-
-    let messageFromServer =
-      event.data;
-
-    //Converts a JavaScript Object Notation (JSON) string into an object
-    objInfo =
-      JSON.parse(messageFromServer);
-
-    if (objInfo.CRUD === 'SELECT') {
-      switch (objInfo.tableName) {
-        case 'user':
-
-          // user table
-          console.log('userTable');
-
-          userArray = objInfo.tableArray;
-          userArrayCreated =
-            true;
-          break;
-
-        case 'account':
-
-          // account table
-          console.log('accountTable');
-
-          accountsArray = objInfo.tableArray;
-          accountArrayCreated =
-            true;
-          break;
-
-        case 'budget':
-
-          // budget table
-          console.log('budgetTable');
-
-          // array including objects with budget information
-          budgetsArray = objInfo.tableArray;
-          budgetArrayCreated =
-            true;
-
-          if (userArrayCreated
-            && accountArrayCreated
-            && budgetArrayCreated) {
-
-            // Show leading text search
-            showLeadingTextFilter();
-
-            // Find selected budget id
-            let budgetId = objBudgets.getSelectedBudgetId('select-budgets-budgetId');
-            showLeadingText(budgetId);
-
-            // Show budget
-            showBudget();
-
-            // Show budget Id
-            budgetId = objBudgets.getSelectedBudgetId('select-budgets-budgetId');
-            objBudgets.showAllSelectedBudgets('budget-budgetId', budgetId);
-            showValues(budgetId);
-
-            // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
-          } else {
-
-            console.log("userArrayCreated", userArrayCreated);
-            console.log("accountArrayCreated", accountArrayCreated);
-            console.log("budgetArrayCreated", budgetArrayCreated);
-          }
-          break;
-      }
-    }
-
-    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
-
-      switch (objInfo.tableName) {
-        case 'budget':
-
-          // Sends a request to the server to get budget one more time
-          const year = document.querySelector('.select-budgets-filterYear').value;
-          SQLquery =
-            `
-              SELECT * FROM budget
-              WHERE condominiumId = ${objUserPassword.condominiumId}
-                AND deleted <> 'Y'
-                AND year = '${year}'
-              ORDER BY year,accountId;
-            `;
-          updateMySql(SQLquery, 'budget', 'SELECT');
-          budgetArrayCreated =
-            false;
-          break;
-      };
-    }
-
-    // Handle errors
-    socket.onerror = (error) => {
-
-      // Close socket on error and let onclose handle reconnection
-      socket.close();
-    }
-
-    // Handle disconnection
-    socket.onclose = () => {
-    }
-  }
-  */
-
-
 // Make budget events
 function createEvents() {
 
@@ -291,12 +135,6 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-budgets-update')) {
 
-      /*
-      const budgetId =
-        Number(document.querySelector('.select-budgets-budgetId').value);
-      updateBudgetRow(budgetId);
-      */
-
       // Update budget and reload budgets
       updateBudgetSync();
 
@@ -328,7 +166,7 @@ function createEvents() {
         // Show leading text
         showLeadingText(budgetId);
 
-        // Show all values for account
+        // Show all values for condo
         showValues(budgetId);
       }
     };
@@ -396,6 +234,7 @@ function createEvents() {
   });
 };
 
+/*
 function updateBudgetRow(budgetId) {
 
   let SQLquery = "";
@@ -471,6 +310,7 @@ function updateBudgetRow(budgetId) {
     }
   }
 }
+*/
 
 // Show leading text for budget
 function showLeadingText(budgetId) {
@@ -576,7 +416,7 @@ function resetValues() {
   //  true;
 }
 
-
+/*
 function deleteBudgetRow() {
 
   let SQLquery = "";
@@ -613,6 +453,7 @@ function deleteBudgetRow() {
     updateMySql(SQLquery, 'budget', 'DELETE');
   }
 }
+*/
 
 // Check for valid budget values
 function validateValues() {
@@ -819,17 +660,17 @@ async function updateBudget(budgetId) {
     const amount = formatKronerToOre(document.querySelector('.input-budgets-amount').value);
     const year = document.querySelector('.select-budgets-year').value;
 
-    // Check if condominium id exist
+    // Check if budget id exist
     const objBudgetsRowNumber =
       objBudgets.budgetsArray.findIndex(budget => budget.budgetId === budgetId);
     if (objBudgetsRowNumber !== -1) {
 
-      // update user
+      // update budget
       await objBudgets.updateBudgetsTable(budgetId, user, lastUpdate, accountId, amount, year);
 
     } else {
 
-      // Insert user row in users table
+      // Insert budget row in budgets table
       await objBudgets.insertBudgetsTable(condominiumId, user, lastUpdate, accountId, amount, year);
     }
 

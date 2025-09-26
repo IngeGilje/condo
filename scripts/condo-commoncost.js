@@ -172,7 +172,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
             // Find selected due id
             const dueId =
-              objDue.getSelectedDueId('select-due-dueId');
+              objDue.getSelectedDueId('select-dues-dueId');
 
             // Show leading text
             showLeadingText(dueId);

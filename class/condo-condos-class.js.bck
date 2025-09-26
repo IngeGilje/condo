@@ -1,14 +1,14 @@
 
-class Condo extends Condos {
+class Condos extends CondosApp {
 
   // Condo information
-  condoArray;
+  condosArray;
 
   // Show all condos
   showAllCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
 
     let selectedOption;
-
+    
     let html =
       `
         <form 
@@ -29,9 +29,9 @@ class Condo extends Condos {
     `;
 
     // Check if condo array is empty
-    const numberOfRows = this.condoArray.length;
+    const numberOfRows = this.condosArray.length;
     if (numberOfRows > 0) {
-      this.condoArray.forEach((condo) => {
+      this.condosArray.forEach((condo) => {
         if (condo.condoId >= 0) {
           if (condo.condoId === condoId) {
 
@@ -147,24 +147,26 @@ class Condo extends Condos {
     // Check if HTML class exist
     if (isClassDefined(className)) {
 
-      condoId = Number(document.querySelector(`.${className}`).value);
-      condoId = (condoId === 0) ? this.condoArray.at(-1).condoId : condoId;
+      condoId =
+        Number(document.querySelector(`.${className}`).value);
+      condoId = (condoId === 0) ? condosArray.at(-1).condoId : condoId;
     } else {
 
       // Get last id in last object in condo array
-      condoId = this.condoArray.at(-1).condoId;
+      condoId = condosArray.at(-1).condoId;
     }
 
     return condoId;
   }
 
+
   getCondoName(condoId) {
 
     let condoName;
     const objCondoRowNumber =
-      this.condoArray.findIndex(condo => condo.condoId === condoId);
+      condosArray.findIndex(condo => condo.condoId === condoId);
     if (objCondoRowNumber !== -1) {
-      condoName = this.condoArray[objCondoRowNumber].name;
+      condoName = condoArray[objCondoRowNumber].name;
     } else {
       condoName = "-";
     }
@@ -187,9 +189,9 @@ class Condo extends Condos {
       `;
 
     // Check if condo array is empty
-    const numberOfRows = this.condoArray.length;
+    const numberOfRows = condosArray.length;
     if (numberOfRows > 0) {
-      this.condoArray.forEach((condo) => {
+      condosArray.forEach((condo) => {
 
         html +=
           `
@@ -238,50 +240,15 @@ class Condo extends Condos {
   }
 
   // get condos
-  async loadCondoTable(condominiumId) {
+  async loadCondosTable(condominiumId) {
 
     // Get condos
     try {
-      const response = await fetch(`http://localhost:3000/condo?action=select&condominiumId=${condominiumId}`);
+      const response = await fetch(`http://localhost:3000/condos?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (condos)");
-      this.condoArray = await response.json();
+      this.condosArray = await response.json();
     } catch (error) {
       console.log("Error loading condos:", error);
-    }
-  }
-  // update condo row in condo table
-  async updateCondoTable(condoId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters) {
-
-    if (address2 === 'undefined') address2 = '';
-    try {
-      const response = await fetch(`http://localhost:3000/condo?action=update&condoId=${condoId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
-      if (!response.ok) throw new Error("Network error (condo)");
-      this.condoArray = await response.json();
-    } catch (error) {
-      console.log("Error loading condo:", error);
-    }
-  }
-
-  // insert condo row in condo table
-  async insertCondoTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters) {
-    if (address2 === 'undefined') address2 = '';
-    try {
-      const response = await fetch(`http://localhost:3000/condo?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
-      if (!response.ok) throw new Error("Network error (condo)");
-      this.condoArray = await response.json();
-    } catch (error) {
-      console.log("Error loading condo:", error);
-    }
-  }
-  // delete condo row
-  async deleteCondoTable(condoId, user, lastUpdate) {
-
-    try {
-      const response = await fetch(`http://localhost:3000/condo?action=delete&condoId=${condoId}&user=${user}&lastUpdate=${lastUpdate}`);
-      if (!response.ok) throw new Error("Network error (condo)");
-      this.condoArray = await response.json();
-    } catch (error) {
-      console.log("Error loading condo:", error);
     }
   }
 }

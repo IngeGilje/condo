@@ -1,30 +1,17 @@
 // Condo maintenance
 
 // Activate classes
-const today =
-  new Date();
-const objUser =
-  new User('user');
-const objCondo =
-  new Condo('condo');
-
-let userArrayCreated =
-  false
-let condoArrayCreated =
-  false
+const today = new Date();
+const objCondo = new Condo('condo');
+const objUsers = new Users('users');
 
 testMode();
 
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-let isEventsCreated
-
 objCondo.menu();
 objCondo.markSelectedMenu('Leilighet');
-
-let socket;
-socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -34,117 +21,27 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     'http://localhost/condo-login.html';
 } else {
 
-  // Send a requests to the server
-  socket.onopen = () => {
+  // Call main when script loads
+  main();
 
-    // Sends a request to the server to get users
-    let SQLquery =
-      `
-        SELECT * FROM users
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY userId;
-      `;
-    updateMySql(SQLquery, 'user', 'SELECT');
-    userArrayCreated =
-      false;
+  // Main entry point
+  async function main() {
 
-    // Sends a request to the server to get condos
-    SQLquery =
-      `
-        SELECT * FROM condo
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY name;
-      `;
+    await objUsers.loadUsersTable(objUserPassword.condominiumId);
 
-    updateMySql(SQLquery, 'condo', 'SELECT');
-    condoArrayCreated =
-      false;
-  };
+    await objCondo.loadCondoTable(objUserPassword.condominiumId);
 
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
+    // Find selected condo id
+    const condoId = objCondo.getSelectedCondoId('select-condo-condoId');
 
-    let messageFromServer =
-      event.data;
+    // Show leading text
+    showLeadingText(condoId);
 
-    //Converts a JavaScript Object Notation (JSON) string into an object
-    const objInfo =
-      JSON.parse(messageFromServer);
+    // Show all values for condo
+    showValues(condoId);
 
-    if (objInfo.CRUD === 'SELECT') {
-      switch (objInfo.tableName) {
-        case 'user':
-
-          // user table
-          console.log('userTable');
-
-          userArray = objInfo.tableArray;
-          userArrayCreated =
-            true;
-          break;
-
-        case 'condo':
-
-          // condo table
-          console.log('condoTable');
-
-          // array including objects with condo information
-          condoArray = objInfo.tableArray;
-          condoArrayCreated =
-            true;
-
-          if (userArrayCreated
-            && condoArrayCreated) {
-
-            // Find selected condo id
-            const condoId =
-              objCondo.getSelectedCondoId('select-condo-condoId');
-
-            // Show leading text
-            showLeadingText(condoId);
-
-            // Show all values for condo
-            showValues(condoId);
-
-            // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
-          }
-          break;
-      }
-    }
-
-    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
-
-      switch (objInfo.tableName) {
-        case 'condo':
-
-          // Sends a request to the server to get condos one more time
-          SQLquery =
-            `
-              SELECT * FROM condo
-              WHERE condominiumId = ${objUserPassword.condominiumId}
-                AND deleted <> 'Y'
-              ORDER BY condoId;
-            `;
-          updateMySql(SQLquery, 'condo', 'SELECT');
-          condoArrayCreated =
-            false;
-          break;
-      };
-    }
-
-    // Handle errors
-    socket.onerror = (error) => {
-
-      // Close socket on error and let onclose handle reconnection
-      socket.close();
-    }
-
-    // Handle disconnection
-    socket.onclose = () => {
-    }
+    // Make events
+    createEvents();
   }
 }
 
@@ -161,12 +58,44 @@ function createEvents() {
 
   // Update condo
   document.addEventListener('click', (event) => {
-
     if (event.target.classList.contains('button-condo-update')) {
 
+      /*
       const condoId =
         Number(document.querySelector('.select-condo-condoId').value);
       updateCondoRow(condoId);
+      */
+      // Update condo and reload condo
+      updateCondoSync();
+
+      // Update condo and reload condo
+      async function updateCondoSync() {
+
+        // Load condos
+        let condoId;
+        if (document.querySelector('.select-condo-condoId').value === '') {
+
+          // Insert new row into condos table
+          condoId = 0;
+        } else {
+
+          // Update existing row in condos table
+          condoId = Number(document.querySelector('.select-condo-condoId').value);
+        }
+
+        await updateCondo(condoId);
+
+        await objCondo.loadCondoTable(objUserPassword.condominiumId);
+
+        // Select last condo if condoId is 0
+        if (condoId === 0) condoId = objCondo.condoArray.at(-1).condoId;
+
+        // Show leading text
+        showLeadingText(condoId);
+
+        // Show all values for condo
+        showValues(condoId);
+      }
     }
   });
 
@@ -182,9 +111,25 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-condo-delete')) {
 
-      deleteCondoRow();
+      // Delete sondo and reload condos
+      deleteCondoSync();
 
-    }
+      // Delete condo and reload condos
+      async function deleteCondoSync() {
+
+        await deleteCondo();
+
+        // Load condos
+        await objCondo.loadCondoTable(objUserPassword.condominiumId);
+
+        // Show leading text
+        const condoId = objCondo.condoArray.at(-1).condoId;
+        showLeadingText(condoId);
+
+        // Show all values for condo
+        showValues(condoId);
+      };
+    };
   });
 
   // Cancel
@@ -206,6 +151,7 @@ function createEvents() {
   return true;
 }
 
+/*
 function updateCondoRow(condoId) {
 
   let SQLquery = "";
@@ -214,23 +160,15 @@ function updateCondoRow(condoId) {
   // Check values
   if (validateValues()) {
 
-    const condoName =
-      document.querySelector('.input-condo-name').value;
-    const street =
-      document.querySelector('.input-condo-street').value;
-    const postalCode =
-      document.querySelector('.input-condo-postalCode').value;
-    const city =
-      document.querySelector('.input-condo-city').value;
-    const address2 =
-      document.querySelector('.input-condo-address2').value;
-    const squareMeters =
-      Number(formatAmountToOre(document.querySelector('.input-condo-squareMeters').value));
+    const condoName = document.querySelector('.input-condo-name').value;
+    const street = document.querySelector('.input-condo-street').value;
+    const postalCode = document.querySelector('.input-condo-postalCode').value;
+    const city = document.querySelector('.input-condo-city').value;
+    const address2 = document.querySelector('.input-condo-address2').value;
+    const squareMeters = Number(formatAmountToOre(document.querySelector('.input-condo-squareMeters').value));
 
-    squareMeters
     // current date
-    const lastUpdate =
-      today.toISOString();
+    const lastUpdate = today.toISOString();
 
     // Check if condo id exist
     const objCondoRowNumber =
@@ -295,6 +233,7 @@ function updateCondoRow(condoId) {
   }
   return isUpdated;
 }
+*/
 
 // Show leading text for condo
 function showLeadingText(condoId) {
@@ -343,38 +282,30 @@ function showValues(condoId) {
   if (condoId >= 0) {
 
     // find object number for selected condo id
-    const objCondoRowNumber =
-      condoArray.findIndex(condo => condo.condoId === condoId);
+    const objCondoRowNumber = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
     if (objCondoRowNumber !== -1) {
 
       // Condo id
-      const condoId =
-        condoArray[objCondoRowNumber].condoId;
+      const condoId = objCondo.condoArray[objCondoRowNumber].condoId;
       objCondo.selectCondoId(condoId, 'condo-condoId')
 
       // Condo name
-      document.querySelector('.input-condo-name').value =
-        condoArray[objCondoRowNumber].name;
+      document.querySelector('.input-condo-name').value = objCondo.condoArray[objCondoRowNumber].name;
 
       // Show street
-      document.querySelector('.input-condo-street').value =
-        condoArray[objCondoRowNumber].street;
+      document.querySelector('.input-condo-street').value = objCondo.condoArray[objCondoRowNumber].street;
 
       // Show address 2
-      document.querySelector('.input-condo-address2').value =
-        condoArray[objCondoRowNumber].address2;
+      document.querySelector('.input-condo-address2').value = objCondo.condoArray[objCondoRowNumber].address2;
 
       // Show postal code
-      document.querySelector('.input-condo-postalCode').value =
-        condoArray[objCondoRowNumber].postalCode;
+      document.querySelector('.input-condo-postalCode').value = objCondo.condoArray[objCondoRowNumber].postalCode;
 
       // Show city
-      document.querySelector('.input-condo-city').value =
-        condoArray[objCondoRowNumber].city;
+      document.querySelector('.input-condo-city').value = objCondo.condoArray[objCondoRowNumber].city;
 
       // Show square meters
-      document.querySelector('.input-condo-squareMeters').value =
-        formatOreToKroner(condoArray[objCondoRowNumber].squareMeters);
+      document.querySelector('.input-condo-squareMeters').value = formatOreToKroner(objCondo.condoArray[objCondoRowNumber].squareMeters);
     }
   }
 }
@@ -382,93 +313,36 @@ function showValues(condoId) {
 // Reset all values for condo
 function resetValues() {
 
-  document.querySelector('.select-condo-condoId').value =
-    '';
+  document.querySelector('.select-condo-condoId').value = '';
 
-  document.querySelector('.input-condo-name').value =
-    '';
+  document.querySelector('.input-condo-name').value = '';
 
   // Show street
-  document.querySelector('.input-condo-street').value =
-    '';
+  document.querySelector('.input-condo-street').value = '';
 
   // Show address 2
-  document.querySelector('.input-condo-address2').value =
-    '';
+  document.querySelector('.input-condo-address2').value = '';
 
   // Show postal code
-  document.querySelector('.input-condo-postalCode').value =
-    '';
+  document.querySelector('.input-condo-postalCode').value = '';
 
   // Show city
-  document.querySelector('.input-condo-city').value =
-    '';
+  document.querySelector('.input-condo-city').value = '';
 
   // Show square meters
-  document.querySelector('.input-squareMeters').value =
-    '';
+  document.querySelector('.input-condo-squareMeters').value = '';
 
-  document.querySelector('.select-condo-condoId').disabled =
-    true;
-  document.querySelector('.button-condo-delete').disabled =
-    true;
-  document.querySelector('.button-condo-insert').disabled =
-    true;
+  document.querySelector('.select-condo-condoId').disabled = true;
+  document.querySelector('.button-condo-delete').disabled = true;
+  document.querySelector('.button-condo-insert').disabled = true;
 }
 
-function deleteCondoRow() {
-
-  let SQLquery = "";
-
-  // Check for valid condo Id
-  const condoId = Number(document.querySelector('.select-condo-condoId').value);
-  if (condoId >= 0) {
-
-    // Check if condo exist
-    const objCondoRowNumber =
-      condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objCondoRowNumber !== -1) {
-
-      // current date
-      const lastUpdate =
-        today.toISOString();
-
-      // Delete table
-      SQLquery =
-        `
-          UPDATE condo
-            SET 
-              deleted = 'Y',
-              user = '${objUserPassword.email}',
-              lastUpdate = '${lastUpdate}'
-          WHERE condoId = ${condoId};
-        `;
-    }
-    // Client sends a request to the server
-    updateMySql(SQLquery, 'condo', 'DELETE');
-
-    // Show updated condos
-    //objCondo.getCondos(socket);
-    const SQLquery = `
-      SELECT * FROM condo
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      ORDER BY condoId;
-    `;
-    updateMySql(SQLquery, 'condo', 'SELECT');
-    condoArrayCreated =
-      false;
-  }
-}
-
-// Check for valid condo number
+// check for valid condo number
 function validateValues() {
 
   // Check condo name
-  const condoName =
-    document.querySelector('.input-condo-name').value;
-  const validCondoName =
-    objCondo.validateText(condoName, "label-condo-name", "Navn");
+  const condoName = document.querySelector('.input-condo-name').value;
+  const validCondoName = objCondo.validateText(condoName, "label-condo-name", "Navn");
 
   // Check street name
   const street = document.querySelector('.input-condo-street').value;
@@ -486,13 +360,74 @@ function validateValues() {
   const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
   const validSquareMeters = objCondo.validateAmount(squareMeters, 'label-condo-squareMeters', "Kvadratmeter");
 
-  if (validCondoName
-    && validStreet
-    && validPostalCode
-    && validCity
-    && validSquareMeters) {
-    return true;
-  } else {
-    return false;
+  return (validCondoName && validStreet && validPostalCode && validCity && validSquareMeters);
+}
+
+// Update condo
+async function updateCondo(condoId) {
+
+  // Check values
+  if (validateValues()) {
+
+    // user
+    const user = objUserPassword.email;
+
+    // Condominium
+    const condominiumId = objUserPassword.condominiumId;
+
+    // current date
+    const lastUpdate = today.toISOString();
+
+    // Condo id
+    const condoId = Number(document.querySelector('.select-condo-condoId').value);
+
+    // Condo name
+    const name = document.querySelector('.input-condo-name').value;
+
+    // Street
+    const street = document.querySelector('.input-condo-street').value;
+
+    // Address 2
+    const address2 = document.querySelector('.input-condo-address2').value
+
+    // Postal code
+    const postalCode = document.querySelector('.input-condo-postalCode').value;
+
+    // City
+    const city = document.querySelector('.input-condo-city').value;
+
+    // Square meters
+    const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
+
+    // Check if condo id exist
+    const objCondoRowNumber = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
+    if (objCondoRowNumber !== -1) {
+
+      // update condo
+      await objCondo.updateCondoTable(condoId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters);
+
+    } else {
+
+      // Insert condo row in condo table
+      await objCondo.insertCondoTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters);
+
+    }
+  }
+}
+
+// Delete condo
+async function deleteCondo() {
+
+  // Check for valid condo Id
+  const condoId = Number(document.querySelector('.select-condo-condoId').value);
+
+  // Check if condo id exist
+  const objCondoRowNumber = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
+  if (objCondoRowNumber !== -1) {
+
+    // delete condo row
+    const user = objUserPassword.email;
+    const lastUpdate = today.toISOString();
+    objCondo.deleteCondoTable(condoId, user, lastUpdate);
   }
 }

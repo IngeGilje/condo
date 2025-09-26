@@ -33,8 +33,7 @@ class BankAccountMovement extends Condos {
       false;
 
     // Check if bank account movement array is empty
-    const numberOfRows =
-      bankAccountMovementArray.length;
+    const numberOfRows = bankAccountMovementArray.length;
     if (numberOfRows > 0) {
       bankAccountMovementArray.forEach((bankAccountMovement) => {
 
@@ -137,8 +136,7 @@ class BankAccountMovement extends Condos {
       false;
 
     // Check if bank account movement array is empty
-    const numberOfRows =
-      bankAccountMovementArray.length;
+    const numberOfRows = bankAccountMovementArray.length;
     if (numberOfRows > 0) {
       bankAccountMovementArray.forEach((bankaccountmovement) => {
 

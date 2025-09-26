@@ -53,8 +53,7 @@ class Budget extends Condos {
       false;
 
     // Check if budget array is empty
-    const numberOfRows =
-      this.budgetsArray.length;
+    const numberOfRows = this.budgetsArray.length;
     if (numberOfRows > 0) {
       this.budgetsArray.forEach((budget) => {
 

@@ -3,8 +3,7 @@
 class Due extends Condos {
 
   // Due information
-  dueArray = 
-  undefined;
+  dueArray;
 
   // Show all dues
   showAllDues(className, dueId) {
@@ -31,7 +30,7 @@ class Due extends Condos {
     let selectedOption =
       false;
 
-    // Check if monthly due array is empty
+    // Check if due array is empty
     const numberOfRows = dueArray.length;
     if (numberOfRows > 0) {
       dueArray.forEach((due) => {

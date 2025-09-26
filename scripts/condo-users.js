@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objCondos = new Condo('condo');
+const objCondo = new Condo('condo');
 const objUsers = new Users('users');
 
 let condoArrayCreated = false;
@@ -36,7 +36,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
 
-    await objCondos.loadCondosTable(objUserPassword.condominiumId);
+    await objCondo.loadCondoTable(objUserPassword.condominiumId);
 
     // Find selected user id
     const userId = objUsers.getSelectedUserId('select-users-userId');
@@ -357,8 +357,8 @@ function showLeadingText(userId) {
   objUsers.showInput('users-email', '* E-mail(Bruker)', 50, '');
 
   // Show all condos
-  const condoId = objCondos.condosArray.at(-1).condoId;
-  objCondos.showAllCondos('users-condoId', condoId);
+  const condoId = objCondo.condoArray.at(-1).condoId;
+  objCondo.showAllCondos('users-condoId', condoId);
 
   // Show first name
   objUsers.showInput('users-firstName', '* Fornavn', 50, '');

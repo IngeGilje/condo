@@ -116,7 +116,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
             // Find selected user Bank account id
             const userBankAccountId =
-              objUserBankAccount.getSelectedUserBankAccountId('select-userbankaccount-userBankAccountId');
+              objUserBankAccount.getSelectedUserBankAccountId('select-userbankaccounts-userBankAccountId');
 
             // Show leading text
             showLeadingText(userBankAccountId);
@@ -182,9 +182,9 @@ function createEvents() {
   // Select user bank accountId
   document.addEventListener('change', (event) => {
 
-    if (event.target.classList.contains('select-userbankaccount-userBankAccountId')) {
+    if (event.target.classList.contains('select-userbankaccounts-userBankAccountId')) {
 
-      let userBankAccountId = Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
+      let userBankAccountId = Number(document.querySelector('.select-userbankaccounts-userBankAccountId').value);
       userBankAccountId =
         (userBankAccountId !== 0) ? userBankAccountId : userBankAccountArray.at(-1).userBankAccountId;
       if (userBankAccountId) {
@@ -195,7 +195,7 @@ function createEvents() {
 
   // Update bank account
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-userbankaccount-update')) {
+    if (event.target.classList.contains('button-userbankaccounts-update')) {
 
       // update user bank account
       updateUserBankAccount();
@@ -204,7 +204,7 @@ function createEvents() {
 
   // New user bank account
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-userbankaccount-insert')) {
+    if (event.target.classList.contains('button-userbankaccounts-insert')) {
 
       resetValues();
     }
@@ -212,9 +212,9 @@ function createEvents() {
 
   // Delete user bank account
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-userbankaccount-delete')) {
+    if (event.target.classList.contains('button-userbankaccounts-delete')) {
 
-      const userBankAccountId = Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
+      const userBankAccountId = Number(document.querySelector('.select-userbankaccounts-userBankAccountId').value);
       deleteUserBankAccountRow(userBankAccountId);
 
       // Sends a request to the server to get all user bank account
@@ -233,7 +233,7 @@ function createEvents() {
 
   // Cancel
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-userbankaccount-cancel')) {
+    if (event.target.classList.contains('button-userbankaccounts-cancel')) {
 
       // Sends a request to the server to get all user
       const SQLquery =
@@ -257,23 +257,23 @@ function updateUserBankAccount() {
 
     // user Bank Account Id
     const userBankAccountId =
-      Number(document.querySelector('.select-userbankaccount-userBankAccountId').value);
+      Number(document.querySelector('.select-userbankaccounts-userBankAccountId').value);
 
     // user id
     const userId =
-      Number(document.querySelector('.select-userbankaccount-userId').value);
+      Number(document.querySelector('.select-userbankaccounts-userId').value);
 
     // account id
     const accountId =
-      Number(document.querySelector('.select-userbankaccount-accountId').value);
+      Number(document.querySelector('.select-userbankaccounts-accountId').value);
 
     // name
     const bankAccountName =
-      document.querySelector('.input-userbankaccount-name').value;
+      document.querySelector('.input-userbankaccounts-name').value;
 
     // bank account
     const bankAccount =
-      document.querySelector('.input-userbankaccount-bankAccount').value;
+      document.querySelector('.input-userbankaccounts-bankAccount').value;
 
     let SQLquery = '';
 
@@ -330,11 +330,11 @@ function updateUserBankAccount() {
       updateMySql(SQLquery, 'userbankaccount', 'INSERT');
     }
 
-    document.querySelector('.select-userbankaccount-userBankAccountId').disabled =
+    document.querySelector('.select-userbankaccounts-userBankAccountId').disabled =
       false;
-    document.querySelector('.button-userbankaccount-delete').disabled =
+    document.querySelector('.button-userbankaccounts-delete').disabled =
       false;
-    document.querySelector('.button-userbankaccount-insert').disabled =
+    document.querySelector('.button-userbankaccounts-insert').disabled =
       false;
   }
 }
@@ -388,19 +388,19 @@ function showValues(userBankAccountId) {
     if (objBankAccountRowNumber !== -1) {
 
       // Select userId
-      document.querySelector('.select-userbankaccount-userId').value =
+      document.querySelector('.select-userbankaccounts-userId').value =
         userBankAccountArray[objBankAccountRowNumber].userId;
 
       // Select accountId
-      document.querySelector('.select-userbankaccount-accountId').value =
+      document.querySelector('.select-userbankaccounts-accountId').value =
         userBankAccountArray[objBankAccountRowNumber].accountId;
 
       // Show bank account name
-      document.querySelector('.input-userbankaccount-name').value =
+      document.querySelector('.input-userbankaccounts-name').value =
         userBankAccountArray[objBankAccountRowNumber].name;
 
       // Show bank account
-      document.querySelector('.input-userbankaccount-bankAccount').value =
+      document.querySelector('.input-userbankaccounts-bankAccount').value =
         userBankAccountArray[objBankAccountRowNumber].bankAccount;
     }
   }
@@ -411,27 +411,27 @@ function validateValues() {
 
   // Check user Id
   const userId =
-    Number(document.querySelector('.select-userbankaccount-userId').value);
+    Number(document.querySelector('.select-userbankaccounts-userId').value);
   const validUserId =
     validateNumber(userId, 1, 99999, "userbankaccount-userId", "bruker");
 
   // Check account Id
   const accountId =
-    Number(document.querySelector('.select-userbankaccount-accountId').value);
+    Number(document.querySelector('.select-userbankaccounts-accountId').value);
   const validAccountId =
     validateNumber(accountId, 1, 99999, "userbankaccount-accountId", "konto");
 
   // Check name
   const userBankAccountName =
-    document.querySelector('.input-userbankaccount-name').value;
+    document.querySelector('.input-userbankaccounts-name').value;
   const validUserBankAccountName =
-    objUserBankAccount.validateText(userBankAccountName, "label-userbankaccount-name", "Navn");
+    objUserBankAccount.validateText(userBankAccountName, "label-userbankaccounts-name", "Navn");
 
   // Check bank account
   const bankAccount =
-    document.querySelector('.input-userbankaccount-bankAccount').value;
+    document.querySelector('.input-userbankaccounts-bankAccount').value;
   const validBankAccount =
-    objUserBankAccount.validateBankAccount(bankAccount, "label-userbankaccount-bankAccount", "Bankkonto");
+    objUserBankAccount.validateBankAccount(bankAccount, "label-userbankaccounts-bankAccount", "Bankkonto");
 
   return (validAccountId && validUserId && validBankAccount && validUserBankAccountName) ? true : false;
 }
@@ -439,30 +439,30 @@ function validateValues() {
 function resetValues() {
 
   // user bank account
-  document.querySelector('.select-userbankaccount-userBankAccountId').value =
+  document.querySelector('.select-userbankaccounts-userBankAccountId').value =
     0;
 
   // reset user Id
-  document.querySelector('.select-userbankaccount-userId').value =
+  document.querySelector('.select-userbankaccounts-userId').value =
     0;
 
   // reset account Id
-  document.querySelector('.select-userbankaccount-accountId').value =
+  document.querySelector('.select-userbankaccounts-accountId').value =
     0;
 
 
   // reset bank account name
-  document.querySelector('.input-userbankaccount-name').value =
+  document.querySelector('.input-userbankaccounts-name').value =
     '';
 
   // reset bank account number
-  document.querySelector('.input-userbankaccount-bankAccount').value =
+  document.querySelector('.input-userbankaccounts-bankAccount').value =
     '';
 
-  document.querySelector('.select-userbankaccount-userBankAccountId').disabled =
+  document.querySelector('.select-userbankaccounts-userBankAccountId').disabled =
     true;
-  document.querySelector('.button-userbankaccount-delete').disabled =
+  document.querySelector('.button-userbankaccounts-delete').disabled =
     true;
-  document.querySelector('.button-userbankaccount-insert').disabled =
+  document.querySelector('.button-userbankaccounts-insert').disabled =
     true;
 }

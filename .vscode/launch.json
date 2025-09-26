@@ -48,7 +48,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Bankkonto for bruker",
-      "url": "http://localhost/condo-userbankaccount.html",
+      "url": "http://localhost/condo-userbankaccounts.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
@@ -56,7 +56,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Forfall",
-      "url": "http://localhost/condo-due.html",
+      "url": "http://localhost/condo-dues.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="nb-NO">
+
+<head>
+
+  <title>Leilighet</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/condo.css">
+
+</head>
+
+<body>
+  <!-- All rows consist of 3 columns -->
+  <div class="div-grid-condos">
+
+    <div class="div-menu"></div>
+    <div class="div-condos-condoId"></div>
+    <div class="div-condos"></div>
+
+    <div class="div-condos-name"></div>
+    <div class="div-condos"></div>
+
+    <div class="div-condos-street"></div>
+    <div class="div-condos-address2"></div>
+
+    <div class="div-condos-postalCode"></div>
+    <div class="div-condos-city"></div>
+
+    <div class="div-condos-squareMeters"></div>
+    <div class="div-condos"></div>
+
+    <div class="div-condos-update"></div>
+
+    <div class="div-condos-insert"></div>
+
+    <div class="div-condos-delete"></div>
+
+    <div class="div-condos-cancel"></div>
+
+    <div class="div-condos-login"></div>
+
+  </div>
+  <script src="class/condo-app-class.js"></script>
+  <script src="class/condo-users-class.js"></script>
+  <script src="class/condo-condo-class.js"></script>
+  <script src="scripts/condo-condo.js"></script>
+  </div>
+</body>
+
+</html>

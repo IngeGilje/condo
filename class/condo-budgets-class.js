@@ -5,22 +5,20 @@ class Budgets extends Condos {
   budgetsArray = [];
 
   // Find selected budget id
-  getSelectedBudgetId(className) {
+  getSelectedBudg
+  etId(className) {
 
     let budgetId = 0;
 
     // Check if HTML class exist
     if (isClassDefined(className)) {
 
-      budgetId =
-        Number(document.querySelector(`.${className}`).value);
-      budgetId =
-        (budgetId === 0) ? this.budgetsArray.at(-1).budgetId : budgetId;
+      budgetId = Number(document.querySelector(`.${className}`).value);
+      budgetId = (budgetId === 0) ? this.budgetsArray.at(-1).budgetId : budgetId;
     } else {
 
       // Get last id in last object in budget array
-      budgetId =
-        (this.budgetsArray.length > 0) ? this.budgetsArray.at(-1).budgetId : 0;
+      budgetId = (this.budgetsArray.length > 0) ? this.budgetsArray.at(-1).budgetId : 0;
     }
 
     return budgetId;

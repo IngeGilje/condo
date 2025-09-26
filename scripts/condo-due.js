@@ -169,7 +169,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
             // Get selected due Id
             const dueId =
-              objDue.getSelectedDueId('select-due-dueId');
+              objDue.getSelectedDueId('select-dues-dueId');
 
             // Show due Id
             objDue.showAllSelectedDues('due-dueId', dueId);
@@ -211,7 +211,7 @@ function createEvents() {
 
   // Selected condo id
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-due-filterCondoId')) {
+    if (event.target.classList.contains('select-dues-filterCondoId')) {
 
       getSelectedDues();
     }
@@ -219,7 +219,7 @@ function createEvents() {
 
   // Selected account id
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-due-filterAccountId')) {
+    if (event.target.classList.contains('select-dues-filterAccountId')) {
 
       getSelectedDues();
     }
@@ -227,7 +227,7 @@ function createEvents() {
 
   // Selected from date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-due-filterFromDate')) {
+    if (event.target.classList.contains('select-dues-filterFromDate')) {
 
       getSelectedDues();
     }
@@ -235,7 +235,7 @@ function createEvents() {
 
   // Selected to date
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-due-filterToDate')) {
+    if (event.target.classList.contains('select-dues-filterToDate')) {
 
       getSelectedDues();
     }
@@ -243,33 +243,33 @@ function createEvents() {
 
   // Selected due Id
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-due-dueId')) {
+    if (event.target.classList.contains('select-dues-dueId')) {
 
       // Show due
       const dueId =
-        Number(document.querySelector('.select-due-dueId').value);
+        Number(document.querySelector('.select-dues-dueId').value);
       showValues(dueId);
     }
   });
 
   // Update due
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-due-update')) {
+    if (event.target.classList.contains('button-dues-update')) {
 
       const dueId =
-        Number(document.querySelector('.select-due-dueId').value);
+        Number(document.querySelector('.select-dues-dueId').value);
       updateDue(dueId);
 
-      document.querySelector('.select-due-filterCondoId').value =
-        document.querySelector('.select-due-condoId').value;
-      document.querySelector('.select-due-filterAccountId').value =
-        document.querySelector('.select-due-accountId').value;
+      document.querySelector('.select-dues-filterCondoId').value =
+        document.querySelector('.select-dues-condoId').value;
+      document.querySelector('.select-dues-filterAccountId').value =
+        document.querySelector('.select-dues-accountId').value;
     }
   });
 
   // insert due
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-due-insert')) {
+    if (event.target.classList.contains('button-dues-insert')) {
 
       resetValues();
     }
@@ -277,17 +277,17 @@ function createEvents() {
 
   // Delete due
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-due-delete')) {
+    if (event.target.classList.contains('button-dues-delete')) {
 
       const dueId =
-        Number(document.querySelector('.select-due-dueId').value);
+        Number(document.querySelector('.select-dues-dueId').value);
       deleteDue(dueId);
     }
   });
 
   // Cancel
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-due-cancel')) {
+    if (event.target.classList.contains('button-dues-cancel')) {
 
       getSelectedDues();
     }
@@ -304,19 +304,19 @@ function updateDue(dueId) {
 
     // Valid values
     const condoId =
-      Number(document.querySelector('.select-due-condoId').value);
+      Number(document.querySelector('.select-dues-condoId').value);
 
     const accountId =
-      Number(document.querySelector('.select-due-accountId').value);
+      Number(document.querySelector('.select-dues-accountId').value);
 
     const date =
-      Number(formatNorDateToNumber(document.querySelector('.input-due-date').value));
+      Number(formatNorDateToNumber(document.querySelector('.input-dues-date').value));
 
     const amount =
-      Number(formatAmountToOre(document.querySelector('.input-due-amount').value));
+      Number(formatAmountToOre(document.querySelector('.input-dues-amount').value));
 
     const text =
-      document.querySelector('.input-due-text').value;
+      document.querySelector('.input-dues-text').value;
 
     const lastUpdate =
       today.toISOString();
@@ -369,11 +369,11 @@ function updateDue(dueId) {
       updateMySql(SQLquery, 'due', 'INSERT');
     }
 
-    document.querySelector('.select-due-dueId').disabled =
+    document.querySelector('.select-dues-dueId').disabled =
       false;
-    document.querySelector('.button-due-delete').disabled =
+    document.querySelector('.button-dues-delete').disabled =
       false;
-    document.querySelector('.button-due-insert').disabled =
+    document.querySelector('.button-dues-insert').disabled =
       false;
   }
   return;
@@ -409,44 +409,44 @@ function showLeadingTextFilter() {
 
   // Show all condos
   const condoId =
-    (isClassDefined('select-due-filterCondoId')) ? Number(document.querySelector('.select-due-filterCondoId').value) : 0;
+    (isClassDefined('select-dues-filterCondoId')) ? Number(document.querySelector('.select-dues-filterCondoId').value) : 0;
   objCondo.showAllCondos('due-filterCondoId', condoId, 'Alle');
 
   // Show all accounts
   const accountId =
-    (isClassDefined('select-due-filterAccountId')) ? Number(document.querySelector('.select-due-filterAccountId').value) : 0;
+    (isClassDefined('select-dues-filterAccountId')) ? Number(document.querySelector('.select-dues-filterAccountId').value) : 0;
   objAccount.showAllAccounts('due-filterAccountId', accountId, 'Alle');
 
   // Show from date
-  if (!isClassDefined('input-due-filterFromDate')) {
+  if (!isClassDefined('input-dues-filterFromDate')) {
     objDue.showInput('due-filterFromDate', 'Fra dato', 10, 'dd.mm.åååå');
   }
 
   // Show to date
-  if (!isClassDefined('input-due-filterToDate')) {
+  if (!isClassDefined('input-dues-filterToDate')) {
     objDue.showInput('due-filterToDate', 'Til dato', 10, 'dd.mm.åååå');
   }
 
   // Check for filter from date
   let date =
-    document.querySelector('.input-due-filterFromDate').value;
+    document.querySelector('.input-dues-filterFromDate').value;
 
   if (!validateEuroDateFormat(date)) {
 
     // From date is not ok
     const year =
       String(today.getFullYear());
-    document.querySelector('.input-due-filterFromDate').value =
+    document.querySelector('.input-dues-filterFromDate').value =
       "01.01." + year;
   }
 
   // Check for filter to date
   date =
-    document.querySelector('.input-due-filterToDate').value;
+    document.querySelector('.input-dues-filterToDate').value;
   if (!validateEuroDateFormat(date)) {
 
     // To date is not ok
-    document.querySelector('.input-due-filterToDate').value =
+    document.querySelector('.input-dues-filterToDate').value =
       getCurrentDate();
   }
 }
@@ -496,33 +496,33 @@ function validateValues(dueId) {
 
   // Check for valid condo Id
   const condoId =
-    document.querySelector('.select-due-condoId').value;
+    document.querySelector('.select-dues-condoId').value;
   const validCondoId =
     validateNumber(condoId, 1, 99999, 'due-condoId', 'Leilighet');
 
   // Check for valid account Id
   const accountId =
-    document.querySelector('.select-due-accountId').value;
+    document.querySelector('.select-dues-accountId').value;
   const validAccountId =
     validateNumber(condoId, 1, 99999, 'due-accountId', 'Konto');
 
   // Check for valid date
   const date =
-    document.querySelector('.input-due-date').value;
+    document.querySelector('.input-dues-date').value;
   const validDate =
     validateNorDate(date, 'due-date', 'Dato');
 
   // Check amount
   const amount =
-    formatToNorAmount(document.querySelector('.input-due-amount').value);
+    formatToNorAmount(document.querySelector('.input-dues-amount').value);
   const validAmount =
     objDue.validateAmount(amount, "due-amount", "Månedsbetaling");
 
   // Check text
   const text =
-    document.querySelector('.input-due-text').value;
+    document.querySelector('.input-dues-text').value;
   const validText =
-    objDue.validateText(text, "label-due-text", "Tekst");
+    objDue.validateText(text, "label-dues-text", "Tekst");
 
   return (validAccountId && validCondoId && validDate && validAmount && validText) ? true : false;
 }
@@ -539,7 +539,7 @@ function showValues(dueId) {
     if (objDueRowNumber !== -1) {
 
       // Show due id
-      document.querySelector('.select-due-dueId').value =
+      document.querySelector('.select-dues-dueId').value =
         dueArray[objDueRowNumber].dueId;
 
       // Show condo id
@@ -555,15 +555,15 @@ function showValues(dueId) {
       // Show due date
       const dueDate =
         formatToNorDate(dueArray[objDueRowNumber].date);
-      document.querySelector('.input-due-date').value =
+      document.querySelector('.input-dues-date').value =
         dueDate;
 
       // Show amount
-      document.querySelector('.input-due-amount').value =
+      document.querySelector('.input-dues-amount').value =
         formatOreToKroner(dueArray[objDueRowNumber].amount);
 
       // Show text
-      document.querySelector('.input-due-text').value =
+      document.querySelector('.input-dues-text').value =
         dueArray[objDueRowNumber].text;
     }
   }
@@ -572,30 +572,30 @@ function showValues(dueId) {
 function resetValues() {
 
   // Show dueid
-  document.querySelector('.select-due-dueId').value =
+  document.querySelector('.select-dues-dueId').value =
     0;
 
   // Show condo
-  document.querySelector('.select-due-condoId').value =
+  document.querySelector('.select-dues-condoId').value =
     0;
 
   // Show date
-  document.querySelector('.input-due-date').value =
+  document.querySelector('.input-dues-date').value =
     '';
 
   // Show amount
-  document.querySelector('.input-due-amount').value =
+  document.querySelector('.input-dues-amount').value =
     '';
 
   // Show text
-  document.querySelector('.input-due-text').value =
+  document.querySelector('.input-dues-text').value =
     '';
 
-  document.querySelector('.select-due-dueId').disabled =
+  document.querySelector('.select-dues-dueId').disabled =
     true;
-  document.querySelector('.button-due-delete').disabled =
+  document.querySelector('.button-dues-delete').disabled =
     true;
-  document.querySelector('.button-due-insert').disabled =
+  document.querySelector('.button-dues-insert').disabled =
     true;
 }
 
@@ -727,28 +727,28 @@ function showDues() {
       `;
 
     // Show line number
-    document.querySelector('.div-due-columnLine').innerHTML =
+    document.querySelector('.div-dues-columnLine').innerHTML =
       htmlColumnLine;
 
     // Show date
-    document.querySelector('.div-due-columnDate').innerHTML =
+    document.querySelector('.div-dues-columnDate').innerHTML =
       htmlColumnDate;
 
     // Show condo name
-    document.querySelector('.div-due-columnCondoName').innerHTML =
+    document.querySelector('.div-dues-columnCondoName').innerHTML =
       htmlColumnCondoName;
 
     // Show account name
-    document.querySelector('.div-due-columnAccountName').innerHTML =
+    document.querySelector('.div-dues-columnAccountName').innerHTML =
       htmlColumnAccountName;
 
 
     // Show amount
-    document.querySelector('.div-due-columnAmount').innerHTML =
+    document.querySelector('.div-dues-columnAmount').innerHTML =
       htmlcolumnAmount;
 
     // Show text
-    document.querySelector('.div-due-columnText').innerHTML =
+    document.querySelector('.div-dues-columnText').innerHTML =
       htmlColumnText;
   }
 }
@@ -758,22 +758,22 @@ function validateFilter() {
 
   // Check account
   const accountId =
-    document.querySelector('.select-due-filterAccountId').value;
+    document.querySelector('.select-dues-filterAccountId').value;
   const validAccountId =
     validateNumber(accountId, 1, 999999999, 'due-filterAccountId', 'Konto');
 
   const condoId =
-    document.querySelector('.select-due-filterCondoId').value;
+    document.querySelector('.select-dues-filterCondoId').value;
   const validCondoId =
     validateNumber(accountId, 1, 999999999, 'due-filterCondoId', 'Leilighet');
 
   const fromDate =
-    document.querySelector('.input-due-filterFromDate').value;
+    document.querySelector('.input-dues-filterFromDate').value;
   const validFromDate =
     validateNorDate(fromDate, 'due-filterFromDate', 'Fra dato');
 
   const toDate =
-    document.querySelector('.input-due-filterToDate').value;
+    document.querySelector('.input-dues-filterToDate').value;
   const validToDate =
     validateNorDate(toDate, 'due-filterToDate', 'Til dato');
 
@@ -784,14 +784,14 @@ function validateFilter() {
 function getSelectedDues() {
 
   const condoId =
-    Number(document.querySelector('.select-due-filterCondoId').value);
+    Number(document.querySelector('.select-dues-filterCondoId').value);
   const accountId =
-    Number(document.querySelector('.select-due-filterAccountId').value);
+    Number(document.querySelector('.select-dues-filterAccountId').value);
 
   const fromDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-due-filterFromDate').value));
+    Number(convertDateToISOFormat(document.querySelector('.input-dues-filterFromDate').value));
   const toDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-due-filterToDate').value));
+    Number(convertDateToISOFormat(document.querySelector('.input-dues-filterToDate').value));
 
   let SQLquery =
     `
