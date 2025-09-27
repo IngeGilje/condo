@@ -2,7 +2,7 @@
 class UserBankAccount extends Condos {
 
   // user bank account information
-  userBankAccountArray = 
+  userBankAccountsArray = 
   [];
 
   // Show all user bank accounts
@@ -30,9 +30,9 @@ class UserBankAccount extends Condos {
       false;
 
     // Check if user bank account array is empty
-    const numberOfRows = userBankAccountArray.length;
+    const numberOfRows = userBankAccountsArray.length;
     if (numberOfRows > 0) {
-      userBankAccountArray.forEach((userBankAccount) => {
+      userBankAccountsArray.forEach((userBankAccount) => {
         if (userBankAccount.userBankAccountId >= 0) {
           if (userBankAccount.userBankAccountId === userBankAccountId) {
 
@@ -80,7 +80,7 @@ class UserBankAccount extends Condos {
   }
 
   // Find selected user bank account id
-  getSelectedUserBankAccountId(classValue) {
+  getSelectedUserBankAccountsId(classValue) {
 
     let userBankAccountId = 0;
 
@@ -89,11 +89,11 @@ class UserBankAccount extends Condos {
 
       userBankAccountId =
         Number(document.querySelector(`.${classValue}`).value);
-      userBankAccountId = (userBankAccountId === 0) ? userBankAccountArray.at(-1).userBankAccountId : userBankAccountId;
+      userBankAccountId = (userBankAccountId === 0) ? userBankAccountsArray.at(-1).userBankAccountId : userBankAccountId;
     } else {
 
       // Get last id in last object in user bank account array
-      userBankAccountId = userBankAccountArray.at(-1).userBankAccountId;
+      userBankAccountId = userBankAccountsArray.at(-1).userBankAccountId;
     }
     return userBankAccountId;
   }

@@ -243,7 +243,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // account table
           console.log('bankAccountTable');
 
-          bankAccountArray = objInfo.tableArray;
+          bankAccountsArray = objInfo.tableArray;
           bankAccountArrayCreated =
             true;
           break;
@@ -285,7 +285,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('userbankaccountTable');
 
           // array including objects with user bank account information
-          userBankAccountArray = objInfo.tableArray;
+          userBankAccountsArray = objInfo.tableArray;
           userBankAccountArrayCreated = true;
 
           setTimeout(() => {
@@ -930,27 +930,27 @@ function updateOpeningClosingBalance() {
 
       // Get row number for bank account number in bank account array
       objBankAccountRowNumber =
-        (bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
+        (bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
 
       // Get row number for bank account number in bank account table
       bankAccountRowNumber =
-        (bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber) + 1);
+        (bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber) + 1);
 
       bankAccountId =
-        bankAccountArray[objBankAccountRowNumber].bankAccountId;
+        bankAccountsArray[objBankAccountRowNumber].bankAccountId;
 
       // Get current opening and closing balance
       currentOpeningBalance =
-        bankAccountArray[objBankAccountRowNumber].openingBalance;
+        bankAccountsArray[objBankAccountRowNumber].openingBalance;
 
       currentOpeningBalanceDate =
-        bankAccountArray[objBankAccountRowNumber].openingBalanceDate;
+        bankAccountsArray[objBankAccountRowNumber].openingBalanceDate;
 
       currentClosingBalance =
-        bankAccountArray[objBankAccountRowNumber].closingBalance;
+        bankAccountsArray[objBankAccountRowNumber].closingBalance;
 
       currentClosingBalanceDate =
-        bankAccountArray[objBankAccountRowNumber].closingBalanceDate;
+        bankAccountsArray[objBankAccountRowNumber].closingBalanceDate;
     }
 
     // Update opening balance date

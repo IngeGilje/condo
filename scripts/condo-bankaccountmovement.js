@@ -206,7 +206,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // bank account table
           console.log('bankaccountTable');
 
-          bankAccountArray = objInfo.tableArray;
+          bankAccountsArray = objInfo.tableArray;
           bankAccountArrayCreated =
             true;
           break;

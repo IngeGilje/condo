@@ -1,4 +1,4 @@
-// class for all applications for the condo system
+// class for all applications for the condominium system
 class Condos {
 
   // serverStatus = 1; // Web server
@@ -60,8 +60,7 @@ class Condos {
           placeholder="${placeholder}"
         >
       `;
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
 
     // Set the PNG file
     const inputElement =
@@ -510,12 +509,10 @@ class Condos {
   selectBankAccountId(bankAccountId, className) {
 
     // Check if account id exist
-    const objBankAccountRowNumber =
-      bankAccountArray.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+    const objBankAccountRowNumber = this.bankAccountsArray.findIndex(bankAccounts => bankAccounts.bankAccountId === bankAccountId);
     if (objBankAccountRowNumber !== -1) {
 
-      document.querySelector(`.select-${className}`).value =
-        bankAccountId;
+      document.querySelector(`.select-${className}`).value = bankAccountId;
       return true;
     } else {
 
@@ -958,10 +955,10 @@ class Condos {
 
     // Bank account name from bank account table 
     const objBankAccountRowNumber =
-      bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+      this.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
     if (objBankAccountRowNumber !== -1) {
 
-      bankAccountName = bankAccountArray[objBankAccountRowNumber].name;
+      bankAccountName = this.bankAccountsArray[objBankAccountRowNumber].name;
     }
 
     if (!bankAccountName) {
@@ -979,10 +976,10 @@ class Condos {
 
       // Bank account name from user bank account
       const objBankAccountRowNumber =
-        userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+        userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
       if (objBankAccountRowNumber !== -1) {
 
-        bankAccountName = userBankAccountArray[objBankAccountRowNumber].name;
+        bankAccountName = userBankAccountsArray[objBankAccountRowNumber].name;
       }
     }
 
@@ -1018,10 +1015,10 @@ class Condos {
     if ((bankAccountPattern.test(fromBankAccount))) {
 
       const objBankAccountRowNumber =
-        userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
+        userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
       if (objBankAccountRowNumber !== -1) {
 
-        const userId = Number(userBankAccountArray[objBankAccountRowNumber].userId);
+        const userId = Number(userBankAccountsArray[objBankAccountRowNumber].userId);
 
         if (userId >= 0) {
 
@@ -1913,16 +1910,16 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
 
   // Bank Acoount <> Condominium Bank Account
   let objBankAccountRowNumber =
-    bankAccountArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
+    this.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
   if (objBankAccountRowNumber === -1) {
 
     // Check user bank account
     const objBankAccountRowNumber =
-      userBankAccountArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+      userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
     if (objBankAccountRowNumber !== -1) {
 
       accountId =
-        userBankAccountArray[objBankAccountRowNumber].accountId;
+        userBankAccountsArray[objBankAccountRowNumber].accountId;
     }
 
     // get Account Id from supplier

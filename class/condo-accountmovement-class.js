@@ -77,9 +77,9 @@ class AccountMovement extends Condos {
     const objectNumberAccount = accountsArray.findIndex(account => account.accountId === accountId);
     if (objectNumberAccount > 0) {
       const bankAccountId = Number(accountsArray[objectNumberAccount].bankAccountId);
-      const objectNumberBankAccount = bankAccountArray.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+      const objectNumberBankAccount = bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
       if (objectNumberBankAccount > 0) {
-        bankAccountName = bankAccountArray[objectNumberBankAccount].name;
+        bankAccountName = bankAccountsArray[objectNumberBankAccount].name;
       }
     }
     return bankAccountName;

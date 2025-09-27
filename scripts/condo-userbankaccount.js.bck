@@ -2,23 +2,17 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
-const objAccount = new Account('account');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
-
-let userArrayCreated = false;
-let accountArrayCreated = false;
-let userBankAccountArrayCreated = false;
+const objUsers = new Users('users');
+const objAccounts = new Accounts('accounts');
+const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 
 testMode();
 
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-let isEventsCreated
-
-objUserBankAccount.menu();
-objUserBankAccount.markSelectedMenu('Bankkonto for bruker');
+objUserBankAccounts.menu();
+objUserBankAccounts.markSelectedMenu('Bankkonto for bruker');
 
 let socket;
 socket = connectingToServer();
@@ -31,136 +25,151 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     'http://localhost/condo-login.html';
 } else {
 
-  // Send a requests to the server
-  socket.onopen = () => {
+  // Call main when script loads
+  main();
 
-    // Sends a request to the server to get users
-    let SQLquery =
-      `
-        SELECT * FROM users
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY userId;
-      `;
-    updateMySql(SQLquery, 'user', 'SELECT');
-    userArrayCreated =
-      false;
+  // Main entry point
+  async function main() {
 
-    // Sends a request to the server to get accounts
-    SQLquery =
-      `
-        SELECT * FROM accounts
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY accountId;
-      `;
-    updateMySql(SQLquery, 'account', 'SELECT');
-    accountArrayCreated =
-      false;
+    await objUsers.loadUsersTable(objUserPassword.condominiumId);
 
-    // Sends a request to the server to get user bank accounts
-    SQLquery =
-      `
-        SELECT * FROM userbankaccount
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY userBankAccountId;
-      `;
-    updateMySql(SQLquery, 'userbankaccount', 'SELECT');
-    userBankAccountArrayCreated =
-      false;
-  };
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
+    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId);
 
-    let messageFromServer =
-      event.data;
+    // Find selected user bank accounts id
+    const userBankAccountsId = objUserBankAccounts.getSelectedBankAccountsId('select-userBankAccountId');
 
-    //Converts a JavaScript Object Notation (JSON) string into an object
-    objInfo =
-      JSON.parse(messageFromServer);
+    // Show leading text
+    showLeadingText(userBankAccountsId);
 
-    if (objInfo.CRUD === 'SELECT') {
-      switch (objInfo.tableName) {
-        case 'user':
+    // Show all values for user bank Accounts Id
+    showValues(userBankAccountsId);
 
-          // user table
-          console.log('userTable');
+    // Make events
+    createEvents();
+  }
+}
 
-          userArray = objInfo.tableArray;
-          userArrayCreated = true;
-          break;
+/*
+// Send a requests to the server
+socket.onopen = () => {
 
-        case 'account':
+  // Sends a request to the server to get users
+  let SQLquery =
+    `
+      SELECT * FROM users
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY userId;
+    `;
+  updateMySql(SQLquery, 'user', 'SELECT');
+  userArrayCreated =
+    false;
 
-          // account table
-          console.log('accountTable');
+  // Sends a request to the server to get accounts
+  SQLquery =
+    `
+      SELECT * FROM accounts
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY accountId;
+    `;
+  updateMySql(SQLquery, 'account', 'SELECT');
+  accountArrayCreated =
+    false;
 
-          accountsArray = objInfo.tableArray;
-          accountArrayCreated = true;
-          break;
+  // Sends a request to the server to get user bank accounts
+  SQLquery =
+    `
+      SELECT * FROM userbankaccount
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY userBankAccountId;
+    `;
+  updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+  userBankAccountArrayCreated =
+    false;
+};
 
-        case 'userbankaccount':
+// Handle incoming messages from server
+socket.onmessage = (event) => {
 
-          // user bank account table
-          console.log('userBankAccountTable');
+  let messageFromServer =
+    event.data;
 
-          // array including objects with user bank account information
-          userBankAccountArray = objInfo.tableArray;
-          userBankAccountArrayCreated = true;
+  //Converts a JavaScript Object Notation (JSON) string into an object
+  objInfo =
+    JSON.parse(messageFromServer);
 
-          if (userArrayCreated
-            && accountArrayCreated
-            && userBankAccountArrayCreated) {
+  if (objInfo.CRUD === 'SELECT') {
+    switch (objInfo.tableName) {
+      case 'user':
 
-            // Find selected user Bank account id
-            const userBankAccountId =
-              objUserBankAccount.getSelectedUserBankAccountId('select-userbankaccounts-userBankAccountId');
+        // user table
+        console.log('userTable');
 
-            // Show leading text
-            showLeadingText(userBankAccountId);
+        userArray = objInfo.tableArray;
+        userArrayCreated = true;
+        break;
 
-            // Show all values for user Bank Account
-            showValues(userBankAccountId);
+      case 'account':
 
-            // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
-          }
-          break;
-      }
+        // account table
+        console.log('accountTable');
+
+        accountsArray = objInfo.tableArray;
+        accountArrayCreated = true;
+        break;
+
+      case 'userbankaccount':
+
+        // user bank account table
+        console.log('userBankAccountTable');
+
+        // array including objects with user bank account information
+        userBankAccountsArray = objInfo.tableArray;
+        userBankAccountArrayCreated = true;
+
+        if (userArrayCreated
+          && accountArrayCreated
+          && userBankAccountArrayCreated) {
+
+          // Find selected user Bank account id
+          const userBankAccountId =
+            objUserBankAccounts.getSelectedUserBankAccountsId('select-userbankaccounts-userBankAccountId');
+
+          // Show leading text
+          showLeadingText(userBankAccountId);
+
+          // Show all values for user Bank Account
+          showValues(userBankAccountId);
+
+          // Make events
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
+        }
+        break;
     }
+  }
 
-    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+  if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
 
-      switch (objInfo.tableName) {
-        case 'userbankaccount':
+    switch (objInfo.tableName) {
+      case 'userbankaccount':
 
-          // Sends a request to the server to get user bank accounts one more time
-          SQLquery =
-            `
-              SELECT * FROM userbankaccount
-              WHERE condominiumId = ${objUserPassword.condominiumId}
-                AND deleted <> 'Y'
-              ORDER BY userbankaccountId;
-            `;
-          updateMySql(SQLquery, 'userbankaccount', 'SELECT');
-          userBankAccountArrayCreated =
-            false;
-          break;
-      };
-    }
-
-    // Handle errors
-    socket.onerror = (error) => {
-
-      // Close socket on error and let onclose handle reconnection
-      socket.close();
-    }
-
-    // Handle disconnection
-    socket.onclose = () => {
-    }
+        // Sends a request to the server to get user bank accounts one more time
+        SQLquery =
+          `
+            SELECT * FROM userbankaccount
+            WHERE condominiumId = ${objUserPassword.condominiumId}
+              AND deleted <> 'Y'
+            ORDER BY userbankaccountId;
+          `;
+        updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+        userBankAccountArrayCreated =
+          false;
+        break;
+    };
   }
 
   // Handle errors
@@ -173,8 +182,21 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
+}
+
+// Handle errors
+socket.onerror = (error) => {
+
+  // Close socket on error and let onclose handle reconnection
+  socket.close();
+}
+
+// Handle disconnection
+socket.onclose = () => {
+}
 
 }
+*/
 
 // Make events for user bank accountId
 function createEvents() {
@@ -186,7 +208,7 @@ function createEvents() {
 
       let userBankAccountId = Number(document.querySelector('.select-userbankaccounts-userBankAccountId').value);
       userBankAccountId =
-        (userBankAccountId !== 0) ? userBankAccountId : userBankAccountArray.at(-1).userBankAccountId;
+        (userBankAccountId !== 0) ? userBankAccountId : userBankAccountsArray.at(-1).userBankAccountId;
       if (userBankAccountId) {
         showValues(userBankAccountId);
       }
@@ -281,7 +303,7 @@ function updateUserBankAccount() {
       today.toISOString();
 
     const objBankAccountRowNumber =
-      userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+      userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
     // Check if user bank account exist
     if (objBankAccountRowNumber !== -1) {
@@ -343,36 +365,36 @@ function updateUserBankAccount() {
 function showLeadingText(userBankAccountId) {
 
   // Show all user bank accounts
-  objUserBankAccount.showAllUserBankAccounts('userbankaccount-userBankAccountId', userBankAccountId);
+  objUserBankAccounts.showAllUserBankAccounts('userbankaccounts-userBankAccountId', userBankAccountId);
 
   // Show all users
   const userId =
     userArray.at(-1).userId;
-  objUser.showAllUsers('userbankaccount-userId', userBankAccountId);
+  objUser.showAllUsers('userbankaccounts-userId', userBankAccountId);
 
   // Show all accounts
   const accountId =
     accountsArray.at(-1).accountId;
-  objAccount.showAllAccounts('userbankaccount-accountId', accountId);
+  objAccount.showAllAccounts('userbankaccounts-accountId', accountId);
 
   // name
-  objUserBankAccount.showInput('userbankaccount-name', '* Navn', 50, '');
+  objUserBankAccounts.showInput('userbankaccounts-name', '* Navn', 50, '');
 
   // bank account
-  objUserBankAccount.showInput('userbankaccount-bankAccount', '* Bankkonto', 11, '');
+  objUserBankAccounts.showInput('userbankaccounts-bankAccount', '* Bankkonto', 11, '');
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
-    objUserBankAccount.showButton('userbankaccount-update', 'Oppdater');
+    objUserBankAccounts.showButton('userbankaccounts-update', 'Oppdater');
 
     // new button
-    objUserBankAccount.showButton('userbankaccount-insert', 'Ny');
+    objUserBankAccounts.showButton('userbankaccounts-insert', 'Ny');
 
     // delete button
-    objUserBankAccount.showButton('userbankaccount-delete', 'Slett');
+    objUserBankAccounts.showButton('userbankaccounts-delete', 'Slett');
 
     // cancel button
-    objUserBankAccount.showButton('userbankaccount-cancel', 'Avbryt');
+    objUserBankAccounts.showButton('userbankaccounts-cancel', 'Avbryt');
   }
 }
 
@@ -384,24 +406,24 @@ function showValues(userBankAccountId) {
 
     // find object number for selected user bank accountId
     const objBankAccountRowNumber =
-      userBankAccountArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+      userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (objBankAccountRowNumber !== -1) {
 
       // Select userId
       document.querySelector('.select-userbankaccounts-userId').value =
-        userBankAccountArray[objBankAccountRowNumber].userId;
+        userBankAccountsArray[objBankAccountRowNumber].userId;
 
       // Select accountId
       document.querySelector('.select-userbankaccounts-accountId').value =
-        userBankAccountArray[objBankAccountRowNumber].accountId;
+        userBankAccountsArray[objBankAccountRowNumber].accountId;
 
       // Show bank account name
       document.querySelector('.input-userbankaccounts-name').value =
-        userBankAccountArray[objBankAccountRowNumber].name;
+        userBankAccountsArray[objBankAccountRowNumber].name;
 
       // Show bank account
       document.querySelector('.input-userbankaccounts-bankAccount').value =
-        userBankAccountArray[objBankAccountRowNumber].bankAccount;
+        userBankAccountsArray[objBankAccountRowNumber].bankAccount;
     }
   }
 }
@@ -413,25 +435,25 @@ function validateValues() {
   const userId =
     Number(document.querySelector('.select-userbankaccounts-userId').value);
   const validUserId =
-    validateNumber(userId, 1, 99999, "userbankaccount-userId", "bruker");
+    validateNumber(userId, 1, 99999, "userbankaccounts-userId", "bruker");
 
   // Check account Id
   const accountId =
     Number(document.querySelector('.select-userbankaccounts-accountId').value);
   const validAccountId =
-    validateNumber(accountId, 1, 99999, "userbankaccount-accountId", "konto");
+    validateNumber(accountId, 1, 99999, "userbankaccounts-accountId", "konto");
 
   // Check name
   const userBankAccountName =
     document.querySelector('.input-userbankaccounts-name').value;
   const validUserBankAccountName =
-    objUserBankAccount.validateText(userBankAccountName, "label-userbankaccounts-name", "Navn");
+    objUserBankAccounts.validateText(userBankAccountName, "label-userbankaccounts-name", "Navn");
 
   // Check bank account
   const bankAccount =
     document.querySelector('.input-userbankaccounts-bankAccount').value;
   const validBankAccount =
-    objUserBankAccount.validateBankAccount(bankAccount, "label-userbankaccounts-bankAccount", "Bankkonto");
+    objUserBankAccounts.validateBankAccount(bankAccount, "label-userbankaccounts-bankAccount", "Bankkonto");
 
   return (validAccountId && validUserId && validBankAccount && validUserBankAccountName) ? true : false;
 }

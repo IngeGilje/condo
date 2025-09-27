@@ -27,13 +27,10 @@ class BankAccounts extends Condos {
         >
     `;
 
-    let selectedOption =
-      false;
-
     // Check if bank account array is empty
-    const numberOfRows = bankAccountArray.length;
+    const numberOfRows = this.bankAccountsArray.length;
     if (numberOfRows > 0) {
-      bankAccountArray.forEach((bankaccount) => {
+      this.bankAccountsArray.forEach((bankaccount) => {
         if (bankaccount.bankAccountId >= 0) {
           if (bankaccount.bankAccountId === bankAccountId) {
 
@@ -46,8 +43,6 @@ class BankAccounts extends Condos {
                   ${bankaccount.bankAccountId} - ${bankaccount.name}
                 </option>
               `;
-            selectedOption =
-              true;
           } else {
             html += `
             <option 
@@ -69,8 +64,6 @@ class BankAccounts extends Condos {
             Ingen bankkonti
           </option>
         `;
-      selectedOption =
-        true;
     }
 
     html +=
@@ -79,8 +72,7 @@ class BankAccounts extends Condos {
         </form>
       `;
 
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
   // Find selected bankaccount id
@@ -93,11 +85,11 @@ class BankAccounts extends Condos {
 
       bankAccountId =
         Number(document.querySelector(`.${className}`).value);
-      bankAccountId = (bankAccountId === 0) ? bankAccountArray.at(-1).bankAccountId : bankAccountId;
+      bankAccountId = (bankAccountId === 0) ? this.bankAccountsArray.at(-1).bankAccountId : bankAccountId;
     } else {
 
       // Get last id in last object in bankaccount array
-      bankAccountId = (bankAccountArray.length > 0) ? bankAccountArray.at(-1).bankAccountId : 0;
+      bankAccountId = (this.bankAccountsArray.length > 0) ? this.bankAccountsArray.at(-1).bankAccountId : 0;
     }
 
     return bankAccountId;
@@ -109,7 +101,7 @@ class BankAccounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/bankaccounts?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (bank accounts)");
-      this.bankAccountArray = await response.json();
+      this.bankAccountsArray = await response.json();
     } catch (error) {
       console.log("Error loading bank accounts:", error);
     }

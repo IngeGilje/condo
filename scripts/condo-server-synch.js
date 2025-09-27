@@ -1145,7 +1145,7 @@ async function main() {
           try {
 
             const condominiumId = req.query.condominiumId;
-            console.log('CondominiumId: ',condominiumId);
+            console.log('CondominiumId: ', condominiumId);
             const user = req.query.user;
             const lastUpdate = req.query.lastUpdate;
             const name = req.query.name;
@@ -1222,6 +1222,165 @@ async function main() {
           } catch (err) {
 
             console.log("Database error in /accounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+
+          break;
+        }
+      }
+    });
+
+    // Requests for user bank account
+    app.get("/userbankaccounts", async (req, res) => {
+
+      console.log("Received request for user bank account", req.query);
+      const action = req.query.action;
+
+      console.log("action: ", action);
+      switch (action) {
+
+        case 'select': {
+
+          const condominiumId = Number(req.query.condominiumId);
+
+          try {
+            const SQLquery =
+              `
+                SELECT * FROM userbankaccounts
+                WHERE condominiumId = ${condominiumId}
+                  AND deleted <> 'Y'
+                ORDER BY userBankAccountId;
+              `;
+
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /userbankaccounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          console.log("Update user bank account request received");
+
+          try {
+
+            console.log('req.query: ',req.query);
+            const user = req.query.user;
+            console.log('user: ',user);
+            const lastUpdate = req.query.lastUpdate;
+            const userId = req.query.userId;
+            const accountId = req.query.accountId;
+            const name = req.query.name;
+            const bankAccount = req.query.bankAccount;
+            const userBankAccountId = req.query.userBankAccountId;
+
+            // Update user bank account table
+            const SQLquery =
+              `
+                UPDATE userBankAccounts
+                SET 
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}',
+                  userId = ${userId},
+                  accountId = ${accountId},
+                  name = '${name}',
+                  bankAccount = '${bankAccount}'
+                WHERE userBankAccountId = ${userBankAccountId};
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /userbankaccounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          console.log("Insert account request received");
+
+          try {
+
+            const condominiumId = req.query.condominiumId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const userId = req.query.userId;
+            const accountId = req.query.accountId;
+            const name = req.query.name;
+            const bankAccount = req.query.bankAccount;
+
+            // Insert new row
+            // Insert new record
+            const SQLquery =
+              `
+                INSERT INTO userBankAccounts (
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  userId,
+                  accountId,
+                  name,
+                  bankAccount
+                ) VALUES (
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  ${userId},
+                  ${accountId},
+                  '${name}',
+                  '${bankAccount}'
+                );
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /userbankaccounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+
+        }
+
+        case 'delete': {
+
+          console.log("Delete account request received");
+
+          try {
+
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const userBankAccountId = req.query.userBankAccountId;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE userbankaccounts
+                  SET 
+                    deleted = 'Y',
+                    lastUpdate = '${lastUpdate}',
+                    user = '${user}'
+                  WHERE userBankAccountId = ${userBankAccountId};
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /userbankaccounts:", err.message);
             res.status(500).json({ error: err.message });
           }
 

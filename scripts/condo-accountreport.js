@@ -165,7 +165,7 @@ socket.onmessage = (event) => {
         // bank account table
         console.log('bankaccountTable');
 
-        bankAccountArray = objInfo.tableArray;
+        bankAccountsArray = objInfo.tableArray;
         bankAccountArrayCreated = true;
         break;
 
@@ -710,17 +710,17 @@ function showBankDeposit() {
   // Dato
   let closingBalanceDate = "";
   const objBankAccountRowNumber =
-    bankAccountArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
+    bankAccountsArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
   if (objBankAccountRowNumber !== -1) {
 
-    closingBalanceDate = (bankAccountArray[objBankAccountRowNumber].closingBalanceDate);
+    closingBalanceDate = (bankAccountsArray[objBankAccountRowNumber].closingBalanceDate);
     closingBalanceDate = formatToNorDate(closingBalanceDate);
   }
 
   // Bank deposit
   let bankDepositAmount = "";
 
-  bankDepositAmount = (bankAccountArray[objBankAccountRowNumber].closingBalance);
+  bankDepositAmount = (bankAccountsArray[objBankAccountRowNumber].closingBalance);
   bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
   html += HTMLTableRow('Bankinnskudd', closingBalanceDate, bankDepositAmount);
@@ -772,7 +772,7 @@ function showBankDeposit() {
     (rowNumber % 2 !== 0) ? "green" : "";
 
   // Dato
-  closingBalanceDate = Number(bankAccountArray[objBankAccountRowNumber].closingBalanceDate);
+  closingBalanceDate = Number(bankAccountsArray[objBankAccountRowNumber].closingBalanceDate);
 
   // Next year
   closingBalanceDate = closingBalanceDate + 10000;
