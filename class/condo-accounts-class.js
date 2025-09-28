@@ -243,7 +243,7 @@ class Accounts extends Condos {
       if (!response.ok) throw new Error("Network error (accounts)");
       this.accountsArray = await response.json();
     } catch (error) {
-      console.log("Error loading accounts:", error);
+      console.log("Error updating accounts:", error);
     }
   }
 
@@ -255,7 +255,7 @@ class Accounts extends Condos {
       if (!response.ok) throw new Error("Network error (accounts)");
       this.accountsArray = await response.json();
     } catch (error) {
-      console.log("Error loading accounts:", error);
+      console.log("Error insert accounts:", error);
     }
   }
   
@@ -267,7 +267,7 @@ class Accounts extends Condos {
       if (!response.ok) throw new Error("Network error (accounts)");
       this.accountsArray = await response.json();
     } catch (error) {
-      console.log("Error loading accounts:", error);
+      console.log("Error delete accounts:", error);
     }
   }
 }

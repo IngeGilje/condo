@@ -125,7 +125,7 @@ class Budgets extends Condos {
       if (!response.ok) throw new Error("Network error (budgets)");
       this.budgetsArray = await response.json();
     } catch (error) {
-      console.log("Error loading budgets:", error);
+      console.log("Error updateing budgets:", error);
     }
   }
 
@@ -137,7 +137,7 @@ class Budgets extends Condos {
       if (!response.ok) throw new Error("Network error (budgets)");
       this.budgetsArray = await response.json();
     } catch (error) {
-      console.log("Error loading budgets:", error);
+      console.log("Error inserting budgets:", error);
     }
   }
   // delete budget row
@@ -148,7 +148,7 @@ class Budgets extends Condos {
       if (!response.ok) throw new Error("Network error (budgets)");
       this.budgetsArray = await response.json();
     } catch (error) {
-      console.log("Error loading budgets:", error);
+      console.log("Error deleting budgets:", error);
     }
   }
 }

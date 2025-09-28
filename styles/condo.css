@@ -28,7 +28,7 @@ body {
 
 .div-grid-userbankaccounts,
 
-.div-grid-supplier,
+.div-grid-suppliers,
 
 .div-grid-importfile,
 
@@ -36,7 +36,7 @@ body {
 
 .div-grid-user,
 
-.div-grid-bankaccount,
+.div-grid-bankaccounts,
 
 .div-grid-condominiums,
 
@@ -72,8 +72,8 @@ body {
 /* grid container 3 columns */
 .div-grid-condos,
 .div-grid-budgets-search,
-.div-grid-bankaccount,
-.div-grid-supplier,
+.div-grid-bankaccounts,
+.div-grid-suppliers,
 .div-grid-user,
 .div-grid-condominiums {
   grid-template-columns: 200px 200px 200px;
@@ -362,12 +362,12 @@ body {
 .a-menu-vertical-accounts,
 .a-menu-vertical-accountreport,
 .a-menu-vertical-userbankaccounts,
-.a-menu-vertical-supplier,
+.a-menu-vertical-suppliers,
 .a-menu-vertical-importfile,
 .a-menu-vertical-login,
 .a-menu-vertical-users,
 .a-menu-vertical-condo,
-.a-menu-vertical-bankaccount,
+.a-menu-vertical-bankaccounts,
 .a-menu-vertical-condominiums,
 .a-menu-vertical-account,
 .a-menu-vertical-income,
@@ -392,12 +392,12 @@ body {
 .a-menu-vertical-accountreport-green,
 .a-menu-vertical-accounts-green,
 .a-menu-vertical-userbankaccounts-green,
-.a-menu-vertical-supplier-green,
+.a-menu-vertical-suppliers-green,
 .a-menu-vertical-importfile-green,
 .a-menu-vertical-login-green,
 .a-menu-vertical-users-green,
 .a-menu-vertical-bankaccountmovement-green,
-.a-menu-vertical-bankaccount-green,
+.a-menu-vertical-bankaccounts-green,
 .a-menu-vertical-condo-green,
 .a-menu-vertical-accounts-green,
 .a-menu-vertical-dues-green,
@@ -432,7 +432,7 @@ body {
 }
 
 /* Style the grid items */
-.div-bankaccount-item-info,
+.div-bankaccounts-item-info,
 .div-condo-item-info,
 .div-accounts-item-info,
 .div-dues-item-info,
@@ -457,7 +457,7 @@ body {
 
 .div-grid-userbankaccounts label,
 
-.div-grid-supplier label,
+.div-grid-suppliers label,
 
 .div-grid-importfile label,
 
@@ -465,7 +465,7 @@ body {
 
 .div-grid-condos label,
 
-.div-grid-bankaccount label,
+.div-grid-bankaccounts label,
 
 .div-grid-condominiums label,
 
@@ -528,7 +528,7 @@ body {
 
 .div-grid-userbankaccounts input,
 
-.div-grid-supplier input,
+.div-grid-suppliers input,
 
 .div-grid-importfile input,
 
@@ -536,7 +536,7 @@ body {
 
 .div-grid-condos input,
 
-.div-grid-bankaccount input,
+.div-grid-bankaccounts input,
 
 .div-grid-accounts input,
 
@@ -613,7 +613,7 @@ body {
 
 .div-grid-userbankaccounts select,
 
-.div-grid-supplier select,
+.div-grid-suppliers select,
 
 .div-grid-importfile select,
 
@@ -621,7 +621,7 @@ body {
 
 .div-grid-condos select,
 
-.div-grid-bankaccount select,
+.div-grid-bankaccounts select,
 
 .div-grid-condominiums select,
 
@@ -729,7 +729,7 @@ body {
 
 .div-grid-userbankaccounts button,
 
-.div-grid-supplier button,
+.div-grid-suppliers button,
 
 .div-grid-importfile button,
 
@@ -737,7 +737,7 @@ body {
 
 .div-grid-condos button,
 
-.div-grid-bankaccount button,
+.div-grid-bankaccounts button,
 
 .div-grid-condominiums button,
 
@@ -777,7 +777,7 @@ body {
 
 .div-grid-userbankaccounts button:hover,
 
-.div-grid-supplier button:hover,
+.div-grid-suppliers button:hover,
 
 .div-grid-importfile button:hover,
 
@@ -785,7 +785,7 @@ body {
 
 .div-grid-condos button:hover,
 
-.div-grid-bankaccount button:hover,
+.div-grid-bankaccounts button:hover,
 
 .div-grid-condominiums button:hover,
 
@@ -821,7 +821,7 @@ body {
 
 .div-grid-condos button:active,
 
-.div-grid-bankaccount button:active,
+.div-grid-bankaccounts button:active,
 
 .div-grid-condominiums button:active,
 
@@ -859,8 +859,8 @@ body {
 .div-grid-userbankaccounts select:disabled,
 .div-grid-userbankaccounts button:disabled,
 
-.div-grid-supplier select:disabled,
-.div-grid-supplier button:disabled,
+.div-grid-suppliers select:disabled,
+.div-grid-suppliers button:disabled,
 
 .div-grid-importfile select:disabled,
 .div-grid-importfile button:disabled,
@@ -871,8 +871,8 @@ body {
 .div-grid-condos select:disabled,
 .div-grid-condos button:disabled,
 
-.div-grid-bankaccount select:disabled,
-.div-grid-bankaccount button:disabled,
+.div-grid-bankaccounts select:disabled,
+.div-grid-bankaccounts button:disabled,
 
 .div-grid-condominiums select:disabled,
 .div-grid-condominiums button:disabled,
@@ -992,10 +992,10 @@ body {
 .label-bankaccountmovement-text-red,
 
 .label-bankaccounts-bankAccountId-red,
-.label-bankaccount-bankAccount-red,
-.label-bankaccount-name-red,
-.label-bankaccount-openingBalanceDate-red,
-.label-bankaccount-closingBalanceDate-red,
+.label-bankaccounts-bankAccount-red,
+.label-bankaccounts-name-red,
+.label-bankaccounts-openingBalanceDate-red,
+.label-bankaccounts-closingBalanceDate-red,
 
 .label-condominiums-condominiumId-red,
 .label-condominiums-name-red,

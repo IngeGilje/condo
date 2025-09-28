@@ -119,7 +119,7 @@ class Condominiums extends Condos {
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.condominiumsArray = await response.json();
     } catch (error) {
-      console.log("Error loading condominiums:", error);
+      console.log("Error updating condominiums:", error);
     }
   }
 
@@ -131,7 +131,7 @@ class Condominiums extends Condos {
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.condominiumsArray = await response.json();
     } catch (error) {
-      console.log("Error loading condominiums:", error);
+      console.log("Error inserting condominiums:", error);
     }
   }
   // delete condominium row
@@ -142,7 +142,7 @@ class Condominiums extends Condos {
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.condominiumsArray = await response.json();
     } catch (error) {
-      console.log("Error loading condominiums:", error);
+      console.log("Error deleteing condominiums:", error);
     }
   }
 }

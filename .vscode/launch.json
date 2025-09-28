@@ -60,6 +60,14 @@
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
+        {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Leverandør",
+      "url": "http://localhost/condo-suppliers.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
     {
       "type": "chrome",
       "request": "launch",

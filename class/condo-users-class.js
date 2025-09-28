@@ -110,17 +110,6 @@ class Users extends Condos {
     }
   }
 
-  // delete user row
-  async deleteUsersTable(userId, user, lastUpdate) {
-
-    try {
-      const response = await fetch(`http://localhost:3000/users?action=delete&userId=${userId}&user=${user}&lastUpdate=${lastUpdate}`);
-      if (!response.ok) throw new Error("Network error (users)");
-      this.usersArray = await response.json();
-    } catch (error) {
-      console.log("Error loading users:", error);
-    }
-  }
 
   // update user row in users table
   async updateUsersTable(user, lastUpdate, email, condoId, firstName, lastName, phone, securityLevel, password) {
@@ -130,7 +119,7 @@ class Users extends Condos {
       if (!response.ok) throw new Error("Network error (users)");
       this.usersArray = await response.json();
     } catch (error) {
-      console.log("Error loading users:", error);
+      console.log("Error updating users:", error);
     }
   }
 
@@ -142,7 +131,19 @@ class Users extends Condos {
       if (!response.ok) throw new Error("Network error (users)");
       this.usersArray = await response.json();
     } catch (error) {
-      console.log("Error loading users:", error);
+      console.log("Error inserting users:", error);
+    }
+  }
+
+  // delete user row
+  async deleteUsersTable(userId, user, lastUpdate) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/users?action=delete&userId=${userId}&user=${user}&lastUpdate=${lastUpdate}`);
+      if (!response.ok) throw new Error("Network error (users)");
+      this.usersArray = await response.json();
+    } catch (error) {
+      console.log("Error deleting users:", error);
     }
   }
 }

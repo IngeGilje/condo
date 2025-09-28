@@ -2,20 +2,13 @@
 
 // Activate objects
 const today = new Date();
-const objUser = 
-  new User('user');
-const objCondo =
-  new Condo('condo');
-const objAccount =
-  new Account('account');
-const objBankAccount =
-  new BankAccount('bankaccount');
-const objSupplier =
-  new Supplier('supplier');
-const objUserBankAccount =
-  new UserBankAccount('userbankaccount');
-const objBankAccountMovement =
-  new BankAccountMovement('bankaccountmovement');
+const objUsers = new Users('users');
+const objCondo = new Condo('condo');
+const objAccount = new Account('account');
+const objBankAccount = new BankAccount('bankaccount');
+const objSupplier = new Supplier('supplier');
+const objUserBankAccounts = new UserBankAccount('userbankaccount');
+const objBankAccountMovements = new BankAccountMovement('bankaccountmovement');
 
 
 let userArrayCreated =

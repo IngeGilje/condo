@@ -763,8 +763,8 @@ class Condos {
           Bankkonto for bruker
         </a>
 
-        <a href="${url}condo-supplier.html"
-          class="a-menu-vertical-supplier"
+        <a href="${url}condo-suppliers.html"
+          class="a-menu-vertical-suppliers"
         >
           Leverandør
         </a>

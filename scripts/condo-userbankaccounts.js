@@ -48,153 +48,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   }
 }
 
-/*
-// Send a requests to the server
-socket.onopen = () => {
-
-  // Sends a request to the server to get users
-  let SQLquery =
-    `
-      SELECT * FROM users
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      ORDER BY userId;
-    `;
-  updateMySql(SQLquery, 'user', 'SELECT');
-  userArrayCreated =
-    false;
-
-  // Sends a request to the server to get accounts
-  SQLquery =
-    `
-      SELECT * FROM accounts
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      ORDER BY accountId;
-    `;
-  updateMySql(SQLquery, 'account', 'SELECT');
-  accountArrayCreated =
-    false;
-
-  // Sends a request to the server to get user bank accounts
-  SQLquery =
-    `
-      SELECT * FROM userbankaccount
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      ORDER BY userBankAccountId;
-    `;
-  updateMySql(SQLquery, 'userbankaccount', 'SELECT');
-  userBankAccountsArrayCreated =
-    false;
-};
-
-// Handle incoming messages from server
-socket.onmessage = (event) => {
-
-  let messageFromServer =
-    event.data;
-
-  //Converts a JavaScript Object Notation (JSON) string into an object
-  objInfo =
-    JSON.parse(messageFromServer);
-
-  if (objInfo.CRUD === 'SELECT') {
-    switch (objInfo.tableName) {
-      case 'user':
-
-        // user table
-        console.log('userTable');
-
-        usersArray = objInfo.tableArray;
-        userArrayCreated = true;
-        break;
-
-      case 'account':
-
-        // account table
-        console.log('accountTable');
-
-        accountsArray = objInfo.tableArray;
-        accountArrayCreated = true;
-        break;
-
-      case 'userbankaccount':
-
-        // user bank account table
-        console.log('userBankAccountTable');
-
-        // array including objects with user bank account information
-        userBankAccountsArray = objInfo.tableArray;
-        userBankAccountsArrayCreated = true;
-
-        if (userArrayCreated
-          && accountArrayCreated
-          && userBankAccountsArrayCreated) {
-
-          // Find selected user Bank account id
-          const userBankAccountId =
-            objUserBankAccounts.getSelectedUserBankAccountId('select-userbankaccounts-userBankAccountId');
-
-          // Show leading text
-          showLeadingText(userBankAccountId);
-
-          // Show all values for user Bank Account
-          showValues(userBankAccountId);
-
-          // Make events
-          isEventsCreated = (isEventsCreated) ? true : createEvents();
-        }
-        break;
-    }
-  }
-
-  if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
-
-    switch (objInfo.tableName) {
-      case 'userbankaccount':
-
-        // Sends a request to the server to get user bank accounts one more time
-        SQLquery =
-          `
-            SELECT * FROM userbankaccount
-            WHERE condominiumId = ${objUserPassword.condominiumId}
-              AND deleted <> 'Y'
-            ORDER BY userbankaccountId;
-          `;
-        updateMySql(SQLquery, 'userbankaccount', 'SELECT');
-        userBankAccountsArrayCreated =
-          false;
-        break;
-    };
-  }
-
-  // Handle errors
-  socket.onerror = (error) => {
-
-    // Close socket on error and let onclose handle reconnection
-    socket.close();
-  }
-
-  // Handle disconnection
-  socket.onclose = () => {
-  }
-}
-
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
-}
-
-}
-*/
-
 // Make events for user bank accountId
 function createEvents() {
 
@@ -265,7 +118,7 @@ function createEvents() {
       // Delete user bank account and reload user bank accounts
       deleteUserBankAccountSync();
 
-      // Delete condo and reload condos
+      // Delete user bank account and reload user bank account
       async function deleteUserBankAccountSync() {
 
         await deleteUserBankAccount();
@@ -277,7 +130,7 @@ function createEvents() {
         const userBankAccountId = objUserBankAccounts.userBankAccountsArray.at(-1).userBankAccountId;
         showLeadingText(userBankAccountId);
 
-        // Show all values for condo
+        // Show all values for supplier
         showValues(userBankAccountId);
       };
     };

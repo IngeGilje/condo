@@ -113,7 +113,7 @@ class UserBankAccounts extends Condos {
       if (!response.ok) throw new Error("Network error (user bank accounts)");
       this.userBankAccountsArray = await response.json();
     } catch (error) {
-      console.log("Error loading user bank accounts:", error);
+      console.log("Error updating user bank accounts:", error);
     }
   }
 
@@ -125,7 +125,7 @@ class UserBankAccounts extends Condos {
       if (!response.ok) throw new Error("Network error (user bank accounts)");
       this.userBankAccountsArray = await response.json();
     } catch (error) {
-      console.log("Error loading user bank accounts:", error);
+      console.log("Error inserting user bank accounts:", error);
     }
   }
 
@@ -137,7 +137,7 @@ class UserBankAccounts extends Condos {
       if (!response.ok) throw new Error("Network error (user bank accounts)");
       this.userBankAccountsArray = await response.json();
     } catch (error) {
-      console.log("Error loading user bank accounts:", error);
+      console.log("Error deleting user bank accounts:", error);
     }
   }
 }

@@ -302,43 +302,15 @@ function validateValues() {
 function resetValues() {
 
   // account Id
-  document.querySelector('.select-accounts-accountId').value =
-    '';
+  document.querySelector('.select-accounts-accountId').value = '';
 
   // account Name
-  document.querySelector('.input-accounts-accountName').value =
-    '';
+  document.querySelector('.input-accounts-accountName').value = '';
 
   // Fixed cost
-  document.querySelector('.select-accounts-fixedCost').value =
-    '';
+  document.querySelector('.select-accounts-fixedCost').value = '';
 
-  document.querySelector('.select-accounts-accountId').disabled =
-    true;
-  document.querySelector('.button-accounts-delete').disabled =
-    true;
-  document.querySelector('.button--accounts-insert').disabled =
-    true;
-}
-
-// Load tables (users and accounts)
-async function loadTables() {
-
-  // Get users
-  try {
-    const response = await fetch("http://localhost:3000/users?info=moreinformation");
-    if (!response.ok) throw new Error("Network error (users)");
-    usersArray = await response.json();
-  } catch (error) {
-    console.log("Error loading users:", error);
-  }
-
-  // Get accounts
-  try {
-    const response = await fetch("http://localhost:3000/accounts");
-    if (!response.ok) throw new Error("Network error (accounts)");
-    objAccounts.accountsArray = await response.json();
-  } catch (error) {
-    console.log("Error loading accounts:", error);
-  }
+  document.querySelector('.select-accounts-accountId').disabled = true;
+  document.querySelector('.button-accounts-delete').disabled = true;
+  document.querySelector('.button--accounts-insert').disabled = true;
 }

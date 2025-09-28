@@ -59,8 +59,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       showDues();
 
       // Get selected due Id
-      const dueId =
-        objDues.getSelectedDueId('select-dues-dueId');
+      const dueId = objDues.getSelectedDueId('select-dues-dueId');
 
       // Show due Id
       objDues.showAllSelectedDues('dues-dueId', dueId);
@@ -69,7 +68,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Make events
       createEvents();
-
     }
   }
   /*
@@ -336,6 +334,7 @@ function createEvents() {
   return true;
 }
 
+/*
 function updateDue(dueId) {
 
   let SQLquery = '';
@@ -363,8 +362,7 @@ function updateDue(dueId) {
       today.toISOString();
 
     // Check if due Id exist
-    const objDueRowNumber =
-      objDues.duesArray.findIndex(due => due.dueId === dueId);
+    const objDueRowNumber = objDues.duesArray.findIndex(due => due.dueId === dueId);
     if (objDueRowNumber !== -1) {
 
       SQLquery =
@@ -419,11 +417,11 @@ function updateDue(dueId) {
   }
   return;
 }
-
+*/
+/*
 function deleteDue(dueId) {
 
-  let SQLquery =
-    '';
+  let SQLquery = '';
 
   // Check for valid due Id
   if (dueId >= 0) {
@@ -444,6 +442,7 @@ function deleteDue(dueId) {
     updateMySql(SQLquery, 'due', 'DELETE');
   }
 }
+*/
 
 // Show filter for search
 function showLeadingTextFilter() {
@@ -495,11 +494,11 @@ function showLeadingText(dueId) {
   objDues.showAllDues('dues-dueId', dueId);
 
   // Show all condos
-  const condoId = condoArray.at(-1).condoId;
+  const condoId = objCondo.condoArray.at(-1).condoId;
   objCondo.showAllCondos('dues-condoId', condoId, 'Ingen er valgt');
 
   // Show all accounts
-  const accountId = accountsArray.at(-1).accountId;
+  const accountId = objAccounts.accountsArray.at(-1).accountId;
    objAccounts.showAllAccounts('dues-accountId', accountId, 'Ingen er valgt');
 
   // Show amount
@@ -580,8 +579,7 @@ function showValues(dueId) {
       objDues.selectCondoId(condoId, 'dues-condoId');
 
       // Show account id
-      const accountId =
-        objDues.duesArray[objDueRowNumber].accountId;
+      const accountId = objDues.duesArray[objDueRowNumber].accountId;
       objDues.selectAccountId(accountId, 'dues-accountId');
 
       // Show due date
@@ -797,6 +795,7 @@ function validateFilter() {
   return (validAccountId && validCondoId && validFromDate && validToDate) ? true : false;
 }
 
+/*
 // Get selected dues
 function getSelectedDues() {
 
@@ -846,3 +845,4 @@ function getSelectedDues() {
   objDues.duesArrayCreated =
     false;
 }
+*/

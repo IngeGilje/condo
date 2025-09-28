@@ -28,9 +28,9 @@ class Dues extends Condos {
     `;
 
     // Check if due array is empty
-    const numberOfRows = duesArray.length;
+    const numberOfRows = this.duesArray.length;
     if (numberOfRows > 0) {
-      duesArray.forEach((due) => {
+      this.duesArray.forEach((due) => {
         if (due.dueId >= 0) {
           if (due.dueId === dueId) {
 
@@ -184,7 +184,7 @@ class Dues extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/dues?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}&condoId=${condoId}`);
       if (!response.ok) throw new Error("Network error (dues)");
-      this.budgetsArray = await response.json();
+      this.duesArray = await response.json();
     } catch (error) {
       console.log("Error loading dues:", error);
     }
@@ -198,7 +198,7 @@ class Dues extends Condos {
       if (!response.ok) throw new Error("Network error (dues)");
       this.budgetsArray = await response.json();
     } catch (error) {
-      console.log("Error loading dues:", error);
+      console.log("Error updating dues:", error);
     }
   }
 
@@ -210,7 +210,7 @@ class Dues extends Condos {
       if (!response.ok) throw new Error("Network error (dues)");
       this.budgetsArray = await response.json();
     } catch (error) {
-      console.log("Error loading dues:", error);
+      console.log("Error inserting dues:", error);
     }
   }
   // delete due row
@@ -221,7 +221,7 @@ class Dues extends Condos {
       if (!response.ok) throw new Error("Network error (dues)");
       this.budgetsArray = await response.json();
     } catch (error) {
-      console.log("Error loading dues:", error);
+      console.log("Error deleting dues:", error);
     }
   }
 }

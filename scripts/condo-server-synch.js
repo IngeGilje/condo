@@ -1268,9 +1268,9 @@ async function main() {
 
           try {
 
-            console.log('req.query: ',req.query);
+            console.log('req.query: ', req.query);
             const user = req.query.user;
-            console.log('user: ',user);
+            console.log('user: ', user);
             const lastUpdate = req.query.lastUpdate;
             const userId = req.query.userId;
             const accountId = req.query.accountId;
@@ -1305,7 +1305,7 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert account request received");
+          console.log("Insert user bank account request received");
 
           try {
 
@@ -1356,7 +1356,7 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete account request received");
+          console.log("Delete user bank account request received");
 
           try {
 
@@ -1381,6 +1381,199 @@ async function main() {
           } catch (err) {
 
             console.log("Database error in /userbankaccounts:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+
+          break;
+        }
+      }
+    });
+
+    // Requests for supplier
+    app.get("/suppliers", async (req, res) => {
+
+      console.log("Received request for supplier", req.query);
+      const action = req.query.action;
+
+      console.log("action: ", action);
+      switch (action) {
+
+        case 'select': {
+
+          const condominiumId = Number(req.query.condominiumId);
+
+          try {
+
+            const SQLquery =
+              `
+                SELECT * FROM suppliers
+                WHERE condominiumId = ${condominiumId}
+                  AND deleted <> 'Y'
+                ORDER BY supplierId;
+              `;
+
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /suppliers:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          console.log("Update supplier request received");
+
+          try {
+
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const email = req.query.email;
+            const name = req.query.name;
+            const street = req.query.street;
+            const address2 = req.query.address2;
+            const postalCode = req.query.postalCode;
+            const city = req.query.city;
+            const phone = req.query.phone;
+            const bankAccount = req.query.bankAccount;
+            const accountId = req.query.accountId;
+            const account2Id = req.query.account2Id;
+            const amount = req.query.amount;
+            const supplierId = req.query.supplierId;
+
+            // Update supplier table
+            const SQLquery =
+              `
+                UPDATE suppliers
+                SET 
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}',
+                  name = '${name}',
+                  street = '${street}',
+                  address2 = '${address2}',
+                  postalcode = '${postalCode}',
+                  city = '${city}',
+                  email = '${email}',
+                  phone = '${phone}',
+                  bankAccount = '${bankAccount}',
+                  accountId = ${accountId},
+                  account2Id = ${account2Id},
+                  amount = '${amount}'
+                WHERE supplierId = ${supplierId};
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /suppliers:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          console.log("Insert supplier request received");
+
+          try {
+
+            const condominiumId = req.query.condominiumId;
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const email = req.query.email;
+            const name = req.query.name;
+            const street = req.query.street;
+            const address2 = req.query.address2;
+            const postalCode = req.query.postalCode;
+            const city = req.query.city;
+            const phone = req.query.phone;
+            const bankAccount = req.query.bankAccount;
+            const accountId = req.query.accountId;
+            const account2Id = req.query.account2Id;
+            const amount = req.query.amount;
+            console.log('amount: ',amount);
+
+            // Insert new supplier row
+            const SQLquery =
+              `
+                INSERT INTO suppliers (
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  name,
+                  street,
+                  address2,
+                  postalCode,
+                  city,
+                  email,
+                  phone,
+                  bankAccount,
+                  accountId,
+                  account2Id,
+                  amount
+                ) VALUES (
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  '${name}',
+                  '${street}',
+                  '${address2}',
+                  '${postalCode}',
+                  '${city}',
+                  '${email}',
+                  '${phone}',
+                  '${bankAccount}',
+                  ${accountId},
+                  ${account2Id},
+                  ${amount}
+                );
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /suppliers:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+
+        }
+
+        case 'delete': {
+
+          console.log("Delete supplier request received");
+
+          try {
+
+            const user = req.query.user;
+            const lastUpdate = req.query.lastUpdate;
+            const supplierId = req.query.supplierId;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE suppliers
+                  SET 
+                    deleted = 'Y',
+                    lastUpdate = '${lastUpdate}',
+                    user = '${user}'
+                  WHERE supplierId = ${supplierId};
+              `;
+
+            console.log("SQLquery: ", SQLquery);
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /supplier:", err.message);
             res.status(500).json({ error: err.message });
           }
 
