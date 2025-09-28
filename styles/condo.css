@@ -18,8 +18,8 @@ body {
 */
 
 /* Define the grid container */
-.div-grid-bankaccountmovement-search,
-.div-grid-bankaccountmovement,
+.div-grid-bankaccountmovements-search,
+.div-grid-bankaccountmovements,
 
 /*.div-grid-accountreport-filter,*/
 .div-grid-accountreport,
@@ -125,7 +125,7 @@ body {
 }
 
 /* Define the grid container with 7 columns*/
-.div-grid-bankaccountmovement-search {
+.div-grid-bankaccountmovements-search {
   grid-template-columns: 200px 200px 200px 200px 200px 200px 200px;
 }
 
@@ -145,7 +145,7 @@ body {
 }
 
 /* Define the grid container with 10 columns*/
-.div-grid-bankaccountmovement {
+.div-grid-bankaccountmovements {
   grid-template-columns: 200px 200px 75px 100px 150px 125px 125px 125px 125px 150px;
 }
 
@@ -198,7 +198,7 @@ body {
   grid-column-start: 3;
 }
 
-.div-bankaccountmovement-columnCondoName,
+.div-bankaccountmovements-columnCondoName,
 .div-importfile-columnAccountingDate,
 .div-payment-columnIncomeId,
 .div-income-columnDate,
@@ -206,7 +206,7 @@ body {
   grid-column-start: 4;
 }
 
-.div-bankaccountmovement-columnAccountName,
+.div-bankaccountmovements-columnAccountName,
 .div-importfile-columnName,
 .div-payment-columnDate,
 .div-income-columnAmount,
@@ -377,7 +377,7 @@ body {
 .a-menu-vertical-remoteheating,
 .a-menu-vertical-budgets,
 .a-menu-vertical-overview,
-.a-menu-vertical-bankaccountmovement {
+.a-menu-vertical-bankaccountmovements {
   display: block;
   color: #333;
   text-decoration: none;
@@ -396,7 +396,7 @@ body {
 .a-menu-vertical-importfile-green,
 .a-menu-vertical-login-green,
 .a-menu-vertical-users-green,
-.a-menu-vertical-bankaccountmovement-green,
+.a-menu-vertical-bankaccountmovements-green,
 .a-menu-vertical-bankaccounts-green,
 .a-menu-vertical-condo-green,
 .a-menu-vertical-accounts-green,
@@ -447,8 +447,8 @@ body {
 }
 
 /* label */
-.div-grid-bankaccountmovement-search label,
-.div-grid-bankaccountmovement label,
+.div-grid-bankaccountmovements-search label,
+.div-grid-bankaccountmovements label,
 
 /*.div-grid-accountreport-filter label,*/
 .div-grid-accountreport label,
@@ -518,8 +518,8 @@ body {
 
 /* input */
 .a-condo-login,
-.div-grid-bankaccountmovement-search input,
-.div-grid-bankaccountmovement input,
+.div-grid-bankaccountmovements-search input,
+.div-grid-bankaccountmovements input,
 
 /*.div-grid-accountreport-filter input,*/
 .div-grid-accountreport input,
@@ -603,8 +603,8 @@ body {
 }
 
 /* select */
-.div-grid-bankaccountmovement-search select,
-.div-grid-bankaccountmovement select,
+.div-grid-bankaccountmovements-search select,
+.div-grid-bankaccountmovements select,
 
 /*.div-grid-accountreport-filter select,*/
 .div-grid-accountreport select,
@@ -719,8 +719,8 @@ body {
 }
 
 /* button */
-.div-grid-bankaccountmovement-search button,
-.div-grid-bankaccountmovement button,
+.div-grid-bankaccountmovements-search button,
+.div-grid-bankaccountmovements button,
 
 /*.div-grid-accountreport-filter button,*/
 .div-grid-accountreport button,
@@ -768,7 +768,8 @@ body {
 }
 
 /* Darker green on hover */
-.div-grid-bankaccountmovement-search button:hover .div-grid-bankaccountmovement button:hover,
+.div-grid-bankaccountmovements-search button:hover 
+.div-grid-bankaccountmovements button:hover,
 
 /*.div-grid-accountreport-filter button:hover,*/
 .div-grid-accountreport button:hover,
@@ -808,8 +809,8 @@ body {
 }
 
 /* Even darker green on click */
-.div-grid-bankaccountmovement-search button:active,
-.div-grid-bankaccountmovement button:active,
+.div-grid-bankaccountmovements-search button:active,
+.div-grid-bankaccountmovements button:active,
 
 .div-accountreport button:active,
 
@@ -844,8 +845,8 @@ body {
 }
 
 /* Gray for disabled state */
-.div-grid-bankaccountmovement select:disabled,
-.div-grid-bankaccountmovement button:disabled,
+.div-grid-bankaccountmovements select:disabled,
+.div-grid-bankaccountmovements button:disabled,
 
 /*.div-grid-accountreport-filter select:disabled,*/
 /*.div-grid-accountreport-filter button:disabled,*/
@@ -896,12 +897,12 @@ body {
 .div-commoncost-columnDate-Header,
 .div-commoncost-columnAmount-Header,
 
-.label-bankaccountmovement-columnCondoName-Header,
-.label-bankaccountmovement-columnAccountName-Header,
-.label-bankaccountmovement-columnDate-Header,
-.label-bankaccountmovement-columnIncome-Header,
-.label-bankaccountmovement-columnPayment-Header,
-.label-bankaccountmovement-columnNumberKWHour-Header,
+.label-bankaccountmovements-columnCondoName-Header,
+.label-bankaccountmovements-columnAccountName-Header,
+.label-bankaccountmovements-columnDate-Header,
+.label-bankaccountmovements-columnIncome-Header,
+.label-bankaccountmovements-columnPayment-Header,
+.label-bankaccountmovements-columnNumberKWHour-Header,
 
 .div-remoteheating-date-Header,
 .div-remoteheating-payment-Header,
@@ -966,8 +967,8 @@ body {
 /* red */
 .red,
 
-.label-bankaccountmovement-accountId-red,
-.label-bankaccountmovement-date-red,
+.label-bankaccountmovements-accountId-red,
+.label-bankaccountmovements-date-red,
 
 .label-accountreport-filter-fromDate-red,
 .label-accountreport-filter-toDate-red,
@@ -985,11 +986,11 @@ body {
 .label-users-password-red,
 .label-users-securityLevel-red,
 
-.label-bankaccountmovement-bankaccountmovementId-red,
-.label-bankaccountmovement-amount-red,
-.label-bankaccountmovement-fromDate-red,
-.label-bankaccountmovement-toDate-red,
-.label-bankaccountmovement-text-red,
+.label-bankaccountmovements-bankaccountmovementId-red,
+.label-bankaccountmovements-amount-red,
+.label-bankaccountmovements-fromDate-red,
+.label-bankaccountmovements-toDate-red,
+.label-bankaccountmovements-text-red,
 
 .label-bankaccounts-bankAccountId-red,
 .label-bankaccounts-bankAccount-red,

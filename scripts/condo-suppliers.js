@@ -291,7 +291,7 @@ function createEvents() {
       // Delete supplier and reload supplier
       deleteSupplierSync();
 
-      // Delete supplier and supplier
+      // Delete supplier
       async function deleteSupplierSync() {
 
         await deleteSupplier();
@@ -426,12 +426,9 @@ async function updateSupplier(supplierId) {
       objSuppliers.insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, account2Id, amount);
     }
 
-    document.querySelector('.select-suppliers-supplierId').disabled =
-      false;
-    document.querySelector('.button-suppliers-delete').disabled =
-      false;
-    document.querySelector('.button-suppliers-insert').disabled =
-      false;
+    document.querySelector('.select-suppliers-supplierId').disabled = false;
+    document.querySelector('.button-suppliers-delete').disabled = false;
+    document.querySelector('.button-suppliers-insert').disabled = false;
   }
 }
 

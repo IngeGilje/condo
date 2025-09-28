@@ -799,8 +799,8 @@ class Condos {
           Betalingsoversikt
         </a>
 
-        <a href="${url}condo-bankaccountmovement.html"
-          class="a-menu-vertical-bankaccountmovement"
+        <a href="${url}condo-bankaccountmovements.html"
+          class="a-menu-vertical-bankaccountmovements"
         >
           Banktransaksjoner
         </a>

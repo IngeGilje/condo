@@ -409,7 +409,7 @@ function showValues() {
 
     lineNumber = 0;
 
-    bankAccountMovementArray.forEach((bankAccountMovement) => {
+    bankAccountMovementsArray.forEach((bankAccountMovement) => {
 
       lineNumber++;
 

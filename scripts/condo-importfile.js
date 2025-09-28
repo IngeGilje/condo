@@ -417,20 +417,19 @@ function createEvents() {
       updateOpeningClosingBalance();
 
       // Start program for maintain bank account movements
-      //window.location.href = 'http://localhost/condo-bankaccountmovement.html'
       switch (objBankAccountMovement.serverStatus) {
 
         // web server
         case 1:
 
-          window.location.href = 'http://localhost/condo-bankaccountmovement.html'
+          window.location.href = 'http://localhost/condo-bankaccountmovements.html'
           break
         // Test web server/ local web server
         case 2:
 
         // Test server/ local test server
         case 3: {
-          window.location.href = 'condo-bankaccountmovement.html'
+          window.location.href = 'condo-bankaccountmovements.html'
           break
         }
         default: {
@@ -1140,7 +1139,7 @@ function checkBankAccountMovement(income, payment, date, text) {
 
   let bankAccountMovementExist = false;
 
-  bankAccountMovementArray.forEach((bankAccountMovement) => {
+  bankAccountMovementsArray.forEach((bankAccountMovement) => {
 
     if (bankAccountMovement.income === income
       && bankAccountMovement.payment === payment

@@ -103,7 +103,7 @@ class Suppliers extends Condos {
       if (!response.ok) throw new Error("Network error (users)");
       this.suppliersArray = await response.json();
     } catch (error) {
-      console.log("Error loading users:", error);
+      console.log("Error loading suppliers:", error);
     }
   }
 
@@ -116,7 +116,7 @@ class Suppliers extends Condos {
       if (!response.ok) throw new Error("Network error (suppliers)");
       this.suppliersArray = await response.json();
     } catch (error) {
-      console.log("Error updating suppliers:", error);
+      console.log("Error updating supplier:", error);
     }
   }
 
@@ -128,7 +128,7 @@ class Suppliers extends Condos {
       if (!response.ok) throw new Error("Network error (suppliers)");
       this.suppliersArray = await response.json();
     } catch (error) {
-      console.log("Error inserting acsupplirs:"& error);
+      console.log("Error inserting supplier:", error);
     }
   }
 
@@ -140,7 +140,7 @@ class Suppliers extends Condos {
       if (!response.ok) throw new Error("Network error (suppliers)");
       this.suppliersArray = await response.json();
     } catch (error) {
-      console.log("Error deleting suppliers:", error);
+      console.log("Error deleting supplier:", error);
     }
   }
 }

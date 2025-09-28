@@ -311,7 +311,7 @@ function showLeadingText() {
     if (objCondominimuRowNumber !== -1) {
       const accountId =
         condominiumArray[objCondominimuRowNumber].accountId;
-      objAccount.showAllAccounts('remoteheating-accountId', accountId, 'Alle');
+      objAccounts.showAllAccounts('remoteheating-accountId', accountId, 'Alle');
 
       getSelectedBankAccountMovements();
     }
@@ -356,7 +356,7 @@ function showValues() {
     let rowNumber =
       0;
 
-    bankAccountMovementArray.forEach((bankaccountmovement) => {
+    bankAccountMovementsArray.forEach((bankaccountmovement) => {
 
       rowNumber++;
 

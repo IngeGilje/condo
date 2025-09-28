@@ -366,7 +366,7 @@ function showLeadingText(budgetId) {
   // Show all accounts
   const accountId =
     accountsArray.at(-1).accountId;
-  objAccount.showAllAccounts('budget-accountId', accountId, '', 'Ingen konti er valgt');
+  objAccounts.showAllAccounts('budget-accountId', accountId, '', 'Ingen konti er valgt');
 
   // Show years
   objBudget.selectNumber('budget-year', 2020, 2030, budgetYear, 'År');
@@ -422,7 +422,7 @@ function showValues(budgetId) {
       // Select account
       const accountId =
         budgetsArray[objBudgetRowNumber].accountId;
-      objAccount.selectAccountId(accountId, 'budget-accountId');
+      objAccounts.selectAccountId(accountId, 'budget-accountId');
 
       // Show select year
       document.querySelector('.select-budgets-year').value =
@@ -551,7 +551,7 @@ function showLeadingTextSearch() {
   // Show all accounts
   const accountId =
     (isClassDefined('select-budgets-filterAccountId')) ? Number(document.querySelector('.select-budgets-filterAccountId').value) : 0;
-  objAccount.showAllAccounts('budget-filterAccountId', accountId, 'Alle');
+  objAccounts.showAllAccounts('budget-filterAccountId', accountId, 'Alle');
 
   // Show budget year
   if (!isClassDefined('select-budgets-filterYear')) {
@@ -604,7 +604,7 @@ function showBudget() {
 
         // account name
         const accountName =
-          objAccount.getAccountName(budget.accountId);
+          objAccounts.getAccountName(budget.accountId);
         const colorClassAccountName =
           (accountName === '-') ? 'red' : colorClass;
         htmlColumnAccountName +=

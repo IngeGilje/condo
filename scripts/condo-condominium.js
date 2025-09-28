@@ -394,13 +394,13 @@ function showLeadingText(condominiumId) {
   objCondominium.showInput('condominium-email', '* eMail', 50, '');
 
   // show all account Ids for income remote heating
-  objAccount.showAllAccounts('condominium-incomeRemoteHeatingAccountId', 0, "", "Ingen");
+  objAccounts.showAllAccounts('condominium-incomeRemoteHeatingAccountId', 0, "", "Ingen");
 
   // show all account Ids for payment remote heating
-  objAccount.showAllAccounts('condominium-paymentRemoteHeatingAccountId', 0, "", "Ingen");
+  objAccounts.showAllAccounts('condominium-paymentRemoteHeatingAccountId', 0, "", "Ingen");
 
   // show all account Ids for common cost accounts
-  objAccount.showAllAccounts('condominium-commoncostAccountId', 0, "", "Ingen");
+  objAccounts.showAllAccounts('condominium-commoncostAccountId', 0, "", "Ingen");
 
   // organization Number
   objCondominium.showInput('condominium-organizationNumber', '* Organisasjonsnummer', 9, '');

@@ -455,13 +455,13 @@ function showLeadingText(supplierId) {
   objSuppliers.showInput('suppliers-bankAccount', '* Bankkonto', 11, '');
 
   // Show all accounts
-  objAccount.showAllAccounts('suppliers-accountId', 0, '', 'Ingen konti er valgt');
+  objAccounts.showAllAccounts('suppliers-accountId', 0, '', 'Ingen konti er valgt');
 
   // Show all accounts
-  objAccount.showAllAccounts('suppliers-account2Id', 0, '', 'Ingen konti er valgt');
+  objAccounts.showAllAccounts('suppliers-account2Id', 0, '', 'Ingen konti er valgt');
 
   // Show amount
-  objAccount.showInput('suppliers-amount', 'Beløp', 10, '');
+  objAccounts.showInput('suppliers-amount', 'Beløp', 10, '');
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {

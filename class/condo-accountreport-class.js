@@ -1,4 +1,3 @@
-
 class AccountReport extends Condos {
 
 }
