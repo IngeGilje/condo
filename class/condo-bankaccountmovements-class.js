@@ -98,6 +98,7 @@ class BankAccountMovements extends Condos {
   // Show all bank account movements
   showAllBankAccountMovements(className, bankAccountMovementId, alternativeSelect) {
 
+    document.querySelector(`.div-${className}`).innerHTML = "";
     let html =
       `
         <form 
@@ -214,7 +215,7 @@ class BankAccountMovements extends Condos {
       }
     } else {
 
-      // Get last id in last object in budget array
+      // Get first id in bank Account Movement array
       if (this.bankAccountMovementsArray.length > 0) {
         bankAccountMovementId = this.bankAccountMovementsArray[0].bankAccountMovementId;
       }
@@ -224,10 +225,10 @@ class BankAccountMovements extends Condos {
   }
 
   // get bank account movements
-  async loadBankAccountMovementsTable(condominiumId,condoId,accountId,amount) {
+  async loadBankAccountMovementsTable(condominiumId,condoId,accountId,amount,fromDate,toDate) {
 
     try {
-      const response = await fetch(`http://localhost:3000/bankaccountmovements?action=select&condominiumId=${condominiumId}&condoId=${condoId}&accountId=${accountId}&amount=${amount}`);
+      const response = await fetch(`http://localhost:3000/bankaccountmovements?action=select&condominiumId=${condominiumId}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&fromDate=${fromDate}&toDate=${toDate}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.bankAccountMovementsArray = await response.json();
     } catch (error) {

@@ -135,8 +135,7 @@ class Condo extends Condos {
         </form >
       `;
 
-    document.querySelector(`.div-${columnName}`).innerHTML =
-      html;
+    document.querySelector(`.div-${columnName}`).innerHTML = html;
   }
 
   // Find selected condo id

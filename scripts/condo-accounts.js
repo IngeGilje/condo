@@ -15,9 +15,6 @@ let isEventsCreated
 objAccounts.menu();
 objAccounts.markSelectedMenu('Konto');
 
-//let socket;
-//socket = connectingToServer();
-
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {

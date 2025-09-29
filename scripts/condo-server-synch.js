@@ -1593,44 +1593,46 @@ async function main() {
 
         case 'select': {
 
+          console.log("Select bank account movements request received");
+
           const condominiumId = Number(req.query.condominiumId);
+          const condoId = Number(req.query.condoId);
+          const accountId = Number(req.query.accountId);
+          const amount = Number(req.query.amount);
+          const fromDate = Number(req.query.fromDate);
+          const toDate = Number(req.query.toDate);
 
           try {
 
             let SQLquery =
               `
-                SELECT * FROM bankaccountmovement
+                SELECT * FROM bankaccountmovements
                 WHERE condominiumId = ${condominiumId}
                   AND deleted <> 'Y'
                 AND date BETWEEN ${fromDate} AND ${toDate}
               `;
-
             if (condoId !== 999999999) {
               SQLquery +=
                 `
                   AND condoId = ${condoId}
                 `;
             }
-
             if (accountId !== 999999999) {
               SQLquery +=
                 `
                   AND accountId = ${accountId}
                 `;
             }
-
             if (amount !== 0) {
               SQLquery +=
                 `
                   AND income = ${amount} OR payment = ${amount}
                 `;
             }
-
             SQLquery +=
               `
                 ORDER BY date DESC, income DESC;
               `;
-
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {

@@ -196,8 +196,7 @@ function createEvents() {
     if (event.target.classList.contains('select-suppliers-supplierId')) {
 
       let supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
-      supplierId =
-        (supplierId !== 0) ? supplierId : objSuppliers.suppliersArray.at(-1).supplierId;
+      supplierId = (supplierId !== 0) ? supplierId : objSuppliers.suppliersArray.at(-1).supplierId;
       if (supplierId) {
         showValues(supplierId);
       }
@@ -543,8 +542,7 @@ function showValues(supplierId) {
   if (supplierId >= 0) {
 
     // find object number for selected supplier Id 
-    const objUserSupplierNumber =
-      objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
+    const objUserSupplierNumber = objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
     if (objUserSupplierNumber !== -1) {
 
       // Select supplier Id

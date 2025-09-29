@@ -1589,10 +1589,8 @@ function formatKronerToOre(amount) {
 
 // Format amount to euro format
 function formatAmountToEuroFormat(amount) {
-  amount =
-    formatAmountToOre(amount);
-  amount =
-    formatOreToKroner(amount);
+  amount = formatAmountToOre(amount);
+  amount = formatOreToKroner(amount);
   return amount;
 }
 

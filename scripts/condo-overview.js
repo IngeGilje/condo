@@ -1,50 +1,30 @@
 // Search for bank account movements
 
 // Activate objects
-const today =
-  new Date();
-const objUser =
-  new User('user');
-const objDue =
-  new Due('due');
-const objCondo =
-  new Condo('condo');
-const objBankAccountMovement =
-  new BankAccountMovement('bankaccountmovement');
-const objOverview =
-  new Overview('overview');
-
-
-let userArrayCreated =
-  false
-let dueArrayCreated =
-  false
-let condoArrayCreated =
-  false
-let bankAccountMovementArrayCreated =
-  false
+const today = new Date();
+const objUser = new User('user');
+const objDue = new Due('due');
+const objCondo = new Condo('condo');
+const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
+const objOverview = new Overview('overview');
 
 testMode();
 
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-let isEventsCreated
-
 objOverview.menu();
 objOverview.markSelectedMenu('Bet.oversikt');
-
-let socket;
-socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  window.location.href =
-    'http://localhost/condo-login.html';
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
+}
+  /*
   // Send a requests to the server
   socket.onopen = () => {
 
@@ -218,7 +198,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Handle disconnection
   socket.onclose = () => {
   }
-}
+*/
 
 // Make overview events
 function createEvents() {
