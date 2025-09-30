@@ -35,14 +35,19 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
-    await objUsers.loadCondominiumsTable(objUserPassword.condominiumId);
-    await objBudgets.loadCondominiumsTable(objUserPassword.condominiumId);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-    await objBankAccountMovements.loadBankAccountsTable(objUserPassword.condominiumId);
-    await objCondo.loadCondoTable(objUserPassword.condominiumId);
+    await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
 
-    // Find selected supplier id
-    const supplierId = objSuppliers.getSelectedSupplierId('select-supplierId');
+    const year = today.getFullYear();
+    await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, 999999999);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+
+    let fromDate = "01.01." + year;
+    fromDate = Number(convertDateToISOFormat(fromDate));
+    console.log('fromDate', fromDate);
+    let toDate = getCurrentDate();
+    toDate = Number(convertDateToISOFormat(toDate));
+    await objBankAccountMovements.loadBankAccountMovementsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate)
+    await objCondo.loadCondoTable(objUserPassword.condominiumId);
 
     // Show leading text for filter
     showLeadingTextFilter();
@@ -50,8 +55,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show values for filter
     showValuesFilter();
 
-    // Show budget
-    showBudget();
+    // Show bank account movements
+    ShowBankAccountMovements();
 
     // Show calculated income for next year
     showIncomeNextYear();
@@ -115,7 +120,7 @@ socket.onopen = () => {
       ORDER BY condominiumId;
     `;
   updateMySql(SQLquery, 'condominium', 'SELECT');
-  condominiumArrayCreated =
+  objCondominiums.condominiumsArrayCreated =
     false;
 
   // Sends a request to the server to get budgets
@@ -201,8 +206,8 @@ if (objInfo.CRUD === 'SELECT') {
       // condominium table
       console.log('condominium');
 
-      condominiumArray = objInfo.tableArray;
-      condominiumArrayCreated =
+      objCondominiums.condominiumsArray = objInfo.tableArray;
+      objCondominiums.condominiumsArrayCreated =
         true
       break;
 
@@ -236,7 +241,7 @@ if (objInfo.CRUD === 'SELECT') {
       bankAccountMovementArrayCreated = true;
 
       if (budgetArrayCreated
-        && condominiumArrayCreated
+        && objCondominiums.condominiumsArrayCreated
         && userArrayCreated
         && condoArrayCreated
         && bankAccountArrayCreated
@@ -270,7 +275,7 @@ if (objInfo.CRUD === 'SELECT') {
       } else {
 
         console.log("budgetArrayCreated: ", budgetArrayCreated);
-        console.log("condominiumArrayCreated: ", condominiumArrayCreated);
+        console.log("objCondominiums.condominiumsArrayCreated: ", objCondominiums.condominiumsArrayCreated);
         console.log("userArrayCreated: ", userArrayCreated);
         console.log("accountArrayCreated: ", accountArrayCreated);
         console.log("bankAccountArrayCreated: ", accountArrayCreated);
@@ -383,7 +388,7 @@ function showLeadingTextFilter() {
 
   // Budget year
   let budgetYear = today.getFullYear();
-  html += objBudget.selectNumberHTML('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
+  html += objBudgets.selectNumberHTML('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
 
   // price per square meter
   html += objAccountReport.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
@@ -400,10 +405,8 @@ function showValuesFilter() {
   if (!validateEuroDateFormat(date)) {
 
     // From date is not ok
-    const year =
-      String(today.getFullYear());
-    document.querySelector('.input-filter-fromDate').value =
-      "01.01." + year;
+    const year = String(today.getFullYear());
+    document.querySelector('.input-filter-fromDate').value = "01.01." + year;
   }
   objAccountReport.showIcon('input-filter-fromDate');
 
@@ -423,7 +426,7 @@ function showValuesFilter() {
 
     budgetYear =
       today.getFullYear() + 1;
-    objBudget.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
+    objBudgets.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
     objAccountReport.showIcon('select-filter-budgetYear');
   }
 
@@ -453,7 +456,7 @@ function showBudget() {
     let html = startHTMLTable();
     html += HTMLTableHeader('Konto', 'Kontotype', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
 
-    accountsArray.forEach((account) => {
+    objAccounts.accountsArray.forEach((account) => {
 
       rowNumber++;
 
@@ -555,18 +558,14 @@ function getTotalMovementsBankAccount(accountId) {
 
   let accountAmount = 0;
 
-  let fromDate =
-    document.querySelector('.input-filter-fromDate').value;
+  let fromDate = document.querySelector('.input-filter-fromDate').value;
 
-  fromDate =
-    Number(convertDateToISOFormat(fromDate));
+  fromDate = Number(convertDateToISOFormat(fromDate));
 
-  let toDate =
-    document.querySelector('.input-filter-toDate').value;
-  toDate =
-    Number(convertDateToISOFormat(toDate));
+  let toDate = document.querySelector('.input-filter-toDate').value;
+  toDate = Number(convertDateToISOFormat(toDate));
 
-  bankAccountMovementsArray.forEach((bankAccountMovement) => {
+  objBankAccountMovements.bankAccountMovementsArray.forEach((bankAccountMovement) => {
 
     if (Number(bankAccountMovement.date) >= fromDate
       && (Number(bankAccountMovement.date) <= toDate
@@ -692,14 +691,14 @@ function getFixedCost(fromDate, toDate) {
 
   let fixedCost = 0;
 
-  bankAccountMovementsArray.forEach((bankAccountMovement) => {
+  objBankAccountMovements.bankAccountMovementsArray.forEach((bankAccountMovement) => {
 
     if (Number(bankAccountMovement.date) >= fromDate
       && (Number(bankAccountMovement.date) <= toDate)) {
 
       // Check for fixed cost
       const objAccountNumber =
-        accountsArray.findIndex(account => account.accountId === bankAccountMovement.accountId);
+        objAccounts.accountsArray.findIndex(account => account.accountId === bankAccountMovement.accountId);
       if (objAccountNumber !== -1) {
 
         if (accountsArray[objAccountNumber].fixedCost === 'Y') {
@@ -736,7 +735,7 @@ function showBankDeposit() {
   // Dato
   let closingBalanceDate = "";
   const objBankAccountRowNumber =
-    bankAccountsArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
+    bankobjAccounts.accountsArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
   if (objBankAccountRowNumber !== -1) {
 
     closingBalanceDate = (bankAccountsArray[objBankAccountRowNumber].closingBalanceDate);
@@ -769,7 +768,7 @@ function showBankDeposit() {
         // Account Name
         let name = '';
 
-        const objAccountRowNumber = accountsArray.findIndex(account => account.accountId === budget.accountId);
+        const objAccountRowNumber = objAccounts.accountsArray.findIndex(account => account.accountId === budget.accountId);
         if (objAccountRowNumber !== -1) {
 
           name = accountsArray[objAccountRowNumber].name;
@@ -818,13 +817,10 @@ function showBankDeposit() {
 // Get selected bank account movement 
 function getSelectedBankAccountMovement() {
 
-  const budgetYear =
-    Number(document.querySelector('.select-filter-budgetYear').value);
+  const budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
 
-  const fromDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
-  const toDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
+  const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
+  const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
   // Sends a request to the server to get selected bank account movements
   SQLquery =
@@ -836,19 +832,17 @@ function getSelectedBankAccountMovement() {
     `;
   console.log(SQLquery);
   updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-  bankAccountMovementArrayCreated =
-    false;
+  bankAccountMovementArrayCreated = false;
 }
 
-// Show remote heating
-function showRemoteHeating() {
+// Show bank account movements
+function ShowBankAccountMovements() {
 
   // check for valid filter
   if (validateFilter()) {
 
     let rowNumber = 0;
 
-    const budgetYear = document.querySelector('.select-filter-budgetYear').value;
     html =
       `
         <!-- Budget Table Heading -->
@@ -873,12 +867,11 @@ function showRemoteHeating() {
     let sumColumnNumberKWHour = 0;
 
     // Get row number for payment Remote Heating Account Id
-    const objCondominiumRowNumber =
-      condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    const objCondominiumRowNumber = objCondominiums.condominiumsArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
     if (objCondominiumRowNumber !== -1) {
 
-      bankAccountMovementsArray.forEach((bankaccountmovement) => {
-        if (bankaccountmovement.accountId === condominiumArray[objCondominiumRowNumber].paymentRemoteHeatingAccountId) {
+      objBankAccountMovements.bankAccountMovementsArray.forEach((bankaccountmovement) => {
+        if (bankaccountmovement.accountId === objCondominiums.condominiumsArray[objCondominiumRowNumber].paymentRemoteHeatingAccountId) {
           if (Number(bankaccountmovement.date) >= Number(fromDate) && Number(bankaccountmovement.date) <= Number(toDate)) {
 
             rowNumber++;

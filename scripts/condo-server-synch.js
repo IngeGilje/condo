@@ -903,7 +903,7 @@ async function main() {
             const accountId = Number(req.query.accountId);
             const condoId = Number(req.query.condoId);
             const fromDate = Number(req.query.fromDate);
-            console.log('fromDate:',fromDate);
+            console.log('fromDate:', fromDate);
             const toDate = Number(req.query.toDate);
 
             let SQLquery =
@@ -913,7 +913,7 @@ async function main() {
                   AND deleted <> 'Y'
               `;
 
-              if (fromDate !== 999999999) {
+            if (fromDate !== 999999999) {
               SQLquery +=
                 `
                   AND date BETWEEN ${fromDate} AND ${toDate}
@@ -939,7 +939,7 @@ async function main() {
                 ORDER BY date DESC;
               `;
 
-            console.log('SQLquery: ',SQLquery);
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1607,11 +1607,11 @@ async function main() {
           console.log("Select bank account movements request received");
 
           const condominiumId = Number(req.query.condominiumId);
-          console.log('condominiumId: ', condominiumId)
           const condoId = Number(req.query.condoId);
           const accountId = Number(req.query.accountId);
           const amount = Number(req.query.amount);
           const fromDate = Number(req.query.fromDate);
+          console.log('fromDate: ', fromDate)
           const toDate = Number(req.query.toDate);
 
           try {
