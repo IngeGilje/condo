@@ -45,7 +45,7 @@ class Dues extends Condos {
               `;
             selectedOption = true;
           } else {
-            
+
             html +=
               `
                 <option 
@@ -174,18 +174,19 @@ class Dues extends Condos {
     </form>
   `;
 
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
   // get dues
-  async loadDuesTable(condominiumId,year,accountId,condoId) {
+  async loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate) {
 
     try {
-      const response = await fetch(`http://localhost:3000/dues?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}&condoId=${condoId}`);
+
+      const response = await fetch(`http://localhost:3000/dues?action=select&condominiumId=${condominiumId}&accountId=${accountId}&condoId=${condoId}&fromDate=${fromDate}&toDate=${toDate}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.duesArray = await response.json();
     } catch (error) {
+
       console.log("Error loading dues:", error);
     }
   }
@@ -203,7 +204,7 @@ class Dues extends Condos {
   }
 
   // insert due row in dues table
-  async insertDuesTable(condominiumId, dueId, user, lastUpdate, condoId, accountId, amount,date,text) {
+  async insertDuesTable(condominiumId, dueId, user, lastUpdate, condoId, accountId, amount, date, text) {
 
     try {
       const response = await fetch(`http://localhost:3000/dues?action=insert&condominiumId=${condominiumId}&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);

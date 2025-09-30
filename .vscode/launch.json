@@ -103,6 +103,14 @@
     {
       "type": "chrome",
       "request": "launch",
+      "name": "Betalingsoversikt",
+      "url": "http://localhost/condo-overview.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
       "name": "Bankkontobevegelser",
       "url": "http://localhost/condo-bankaccountmovements.html",
       "webRoot": "c:/websites/condo",

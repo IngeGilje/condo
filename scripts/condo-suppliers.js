@@ -402,7 +402,7 @@ async function updateSupplier(supplierId) {
     const accountId = Number(document.querySelector('.select-suppliers-accountId').value);
 
     // account2 Id
-    const account2Id = Number(document.querySelector('.select-suppliers-account2Id').value);
+    const accountAmountId = Number(document.querySelector('.select-suppliers-accountAmountId').value);
 
     // amount
     const amount = (document.querySelector('.input-suppliers-amount').value) ? formatKronerToOre(document.querySelector('.input-suppliers-amount').value) : '0';
@@ -417,12 +417,12 @@ async function updateSupplier(supplierId) {
     if (objSupplierRowNumber !== -1) {
 
       // update supplier
-      objSuppliers.updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, account2Id, amount);
+      objSuppliers.updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, accountAmountId, amount);
 
     } else {
 
       // insert supplier
-      objSuppliers.insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, account2Id, amount);
+      objSuppliers.insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, accountAmountId, amount);
     }
 
     document.querySelector('.select-suppliers-supplierId').disabled = false;
@@ -515,7 +515,7 @@ function showLeadingText(supplierId) {
   objAccounts.showAllAccounts('suppliers-accountId', 0, '', 'Ingen konti er valgt');
 
   // Show all accounts
-  objAccounts.showAllAccounts('suppliers-account2Id', 0, '', 'Ingen konti er valgt');
+  objAccounts.showAllAccounts('suppliers-accountAmountId', 0, '', 'Ingen konti er valgt');
 
   // Show amount
   objAccounts.showInput('suppliers-amount', 'Beløp', 10, '');
@@ -586,8 +586,8 @@ function showValues(supplierId) {
         objSuppliers.suppliersArray[objUserSupplierNumber].accountId;
 
       // Select account2 Id
-      document.querySelector('.select-suppliers-account2Id').value =
-        (objSuppliers.suppliersArray[objUserSupplierNumber].account2Id) ? objSuppliers.suppliersArray[objUserSupplierNumber].account2Id : 0;
+      document.querySelector('.select-suppliers-accountAmountId').value =
+        (objSuppliers.suppliersArray[objUserSupplierNumber].accountAmountId) ? objSuppliers.suppliersArray[objUserSupplierNumber].accountAmountId : 0;
 
       // Select amount
       document.querySelector('.input-suppliers-amount').value =
@@ -645,7 +645,7 @@ function resetValues() {
   document.querySelector('.select-suppliers-accountId').value = 0;
 
   // account2 Id
-  document.querySelector('.select-suppliers-account2Id').value = 0;
+  document.querySelector('.select-suppliers-accountAmountId').value = 0;
 
   // amount
   document.querySelector('.input-suppliers-amount').value = '';

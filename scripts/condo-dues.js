@@ -41,10 +41,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
-      const year = String(today.getFullYear());
       const accountId = 999999999;
       const condoId = 999999999;
-      await objDues.loadDuesTable(objUserPassword.condominiumId,year,accountId,condoId);
+      const fromDate = 999999999;
+      const toDate =999999999;
+      await objDues.loadDuesTable(objUserPassword.condominiumId, accountId, condoId, fromDate, toDate);
 
       // Show leading text filter
       showLeadingTextFilter();
@@ -487,7 +488,6 @@ function showLeadingTextFilter() {
 function showLeadingText(dueId) {
 
   // Show all dues
-  console.log('duesArray: ', objDues.duesArray);
   objDues.showAllDues('dues-dueId', dueId);
 
   // Show all condos
@@ -573,11 +573,11 @@ function showValues(dueId) {
 
       // Show condo id
       const condoId = objDues.duesArray[objDueRowNumber].condoId;
-      objDues.selectCondoId(condoId, 'dues-condoId');
+      objCondo.selectCondoId(condoId, 'dues-condoId');
 
       // Show account id
       const accountId = objDues.duesArray[objDueRowNumber].accountId;
-      objDues.selectAccountId(accountId, 'dues-accountId');
+      objAccounts.selectAccountId(accountId, 'dues-accountId');
 
       // Show due date
       const dueDate = formatToNorDate(objDues.duesArray[objDueRowNumber].date);

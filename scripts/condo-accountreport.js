@@ -412,10 +412,8 @@ function showValuesFilter() {
   if (!validateEuroDateFormat(date)) {
 
     // To date is not ok
-    const year =
-      String(today.getFullYear());
-    document.querySelector('.input-filter-toDate').value =
-      getCurrentDate();
+    const year = String(today.getFullYear());
+    document.querySelector('.input-filter-toDate').value = getCurrentDate();
   }
   objAccountReport.showIcon('input-filter-toDate');
 

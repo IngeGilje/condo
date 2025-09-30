@@ -377,7 +377,7 @@ function createAllTables() {
         phone VARCHAR(20) NOT NULL,
         bankAccount VARCHAR(11),
         accountId INT,
-        account2Id INT,
+        accountAmountId INT,
         amount VARCHAR(10),
         FOREIGN KEY (accountId) REFERENCES account(accountId),
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)

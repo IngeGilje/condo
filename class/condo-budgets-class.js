@@ -5,8 +5,7 @@ class Budgets extends Condos {
   budgetsArray = [];
 
   // Find selected budget id
-  getSelectedBudg
-  etId(className) {
+  getSelectedBudgetId(className) {
 
     let budgetId = 0;
 
@@ -104,11 +103,29 @@ class Budgets extends Condos {
     document.querySelector(`.div-${className}`).innerHTML =
       html;
   }
+
+  // Select budget
+  selectBudgetId(budgetId, className) {
+
+    // Check if budget id exist
+    const objBudgetNumber =
+      budgetsArray.findIndex(budget => budget.budgetId === budgetId);
+    if (objBudgetNumber !== -1) {
+
+      document.querySelector(`.select-${className}`).value =
+        budgetId;
+      return true;
+    } else {
+
+      return false;
+    }
+  }
   
   // get budgets
-  async loadBudgetsTable(condominiumId,year,accountId) {
+  async loadBudgetsTable(condominiumId, year, accountId) {
 
     try {
+      
       const response = await fetch(`http://localhost:3000/budgets?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}`);
       if (!response.ok) throw new Error("Network error (budgets)");
       this.budgetsArray = await response.json();

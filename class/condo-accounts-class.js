@@ -223,6 +223,21 @@ class Accounts extends Condos {
     return html;
   }
 
+  // Select account
+  selectAccountId(accountId, className) {
+
+    // Check if account id exist
+    const objAccountNumber = this.accountsArray.findIndex(account => account.accountId === accountId);
+    if (objAccountNumber !== -1) {
+
+      document.querySelector(`.select-${className}`).value = this.accountsArray[objAccountNumber].accountId;
+      return true;
+    } else {
+
+      return false;
+    }
+  }
+
   // get accounts
   async loadAccountsTable(condominiumId) {
 

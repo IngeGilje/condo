@@ -236,6 +236,22 @@ class Condo extends Condos {
     return html;
   }
 
+  // Select condo Id
+  selectCondoId(condoId, className) {
+
+    // Check if condo id exist
+    const objCondoRowNumber = this.condoArray.findIndex(condo => condo.condoId === condoId);
+    if (objCondoRowNumber !== -1) {
+
+      document.querySelector(`.select-${className}`).value =
+        condoId;
+      return true;
+    } else {
+
+      return false;
+    }
+  }
+  
   // get condos
   async loadCondoTable(condominiumId) {
 

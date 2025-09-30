@@ -114,7 +114,7 @@ class Condos {
       `;
     return html;
   }
-  
+
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
 
@@ -416,95 +416,6 @@ class Condos {
       `;
   }
 
-  /*
-  showAllYears(className, selectedYear) {
-
-    let html = `
-      <form 
-        action="/submit" 
-        method="POST"
-        id="showAllYears"
-      >
-        <label class="label-${className}"
-          for="selectedYear">
-            År
-        </label>
-        <select 
-          class="select-${className}" 
-          id="selectedYear"
-          name="selectedYear"
-        >
-      `;
-
-    let selectedOption =
-      false;
-
-    this.yearArray.forEach((year) => {
-      if (year === selectedYear) {
-
-        html += `
-          <option 
-            value="${year}"
-            selected
-          >
-            ${year}
-          </option>
-        `;
-        selectedOption =
-          true;
-      } else {
-        html += `
-          <option 
-            value="${year}"
-            >
-            ${year}
-          </option>
-        `;
-      }
-    });
-
-    html += `
-        </select >
-      </form>
-    `;
-
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
-  }
-  */
-
-  // Select account
-  selectAccountId(accountId, className) {
-
-    // Check if account id exist
-    const objAccountNumber = this.accountsArray.findIndex(account => account.accountId === accountId);
-    if (objAccountNumber !== -1) {
-
-      document.querySelector(`.select-${className}`).value = this.accountsArray[objAccountNumber].accountId;
-      return true;
-    } else {
-
-      return false;
-    }
-  }
-
-  // Select budget
-  selectBudgetId(budgetId, className) {
-
-    // Check if budget id exist
-    const objBudgetNumber =
-      budgetsArray.findIndex(budget => budget.budgetId === budgetId);
-    if (objBudgetNumber !== -1) {
-
-      document.querySelector(`.select-${className}`).value =
-        budgetId;
-      return true;
-    } else {
-
-      return false;
-    }
-  }
-
   // Select bank account
   selectBankAccountId(bankAccountId, className) {
 
@@ -520,21 +431,6 @@ class Condos {
     }
   }
 
-  // Select condo Id
-  selectCondoId(condoId, className) {
-
-    // Check if condo id exist
-    const objCondoRowNumber = this.condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objCondoRowNumber !== -1) {
-
-      document.querySelector(`.select-${className}`).value =
-        condoId;
-      return true;
-    } else {
-
-      return false;
-    }
-  }
 
   // Select year
   selectYear(year, className) {
@@ -1902,38 +1798,27 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
 
   let accountId = 0;
 
-  if (bankAccount === '32073195801') {
-    console.log('bank account:', bankAccount);
-  }
-
   // Bank Acoount <> Condominium Bank Account
-  let objBankAccountRowNumber =
-    this.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
+  let objBankAccountRowNumber = this.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
   if (objBankAccountRowNumber === -1) {
 
     // Check user bank account
-    const objBankAccountRowNumber =
-      userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+    const objBankAccountRowNumber = userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
     if (objBankAccountRowNumber !== -1) {
 
-      accountId =
-        userBankAccountsArray[objBankAccountRowNumber].accountId;
+      accountId = userBankAccountsArray[objBankAccountRowNumber].accountId;
     }
 
     // get Account Id from supplier
-    const objSupplierRowNumber =
-      supplierArray.findIndex(supplier => supplier.bankAccount === bankAccount);
+    const objSupplierRowNumber = supplierArray.findIndex(supplier => supplier.bankAccount === bankAccount);
     if (objSupplierRowNumber !== -1) {
 
-      accountId =
-        supplierArray[objSupplierRowNumber].accountId;
+      accountId = supplierArray[objSupplierRowNumber].accountId;
 
       // get Account Id from supplier amount
-      const amount =
-        (supplierArray[objSupplierRowNumber].amount) ? Number(supplierArray[objSupplierRowNumber].amount) : 0;
+      const amount = (supplierArray[objSupplierRowNumber].amount) ? Number(supplierArray[objSupplierRowNumber].amount) : 0;
 
-      accountId =
-        (amount === Number(payment)) ? Number(supplierArray[objSupplierRowNumber].account2Id) : accountId;
+      accountId = (amount === Number(payment)) ? Number(supplierArray[objSupplierRowNumber].accountAmountId) : accountId;
     }
   }
   return accountId;
@@ -2045,7 +1930,7 @@ function endHTMLTable() {
       </div>
     `;
 }
- 
+
 /*
 // Show icon
 function showIcon(className) {

@@ -417,8 +417,6 @@ function showValues(budgetId) {
       budgetsArray.findIndex(budget => budget.budgetId === budgetId);
     if (objBudgetRowNumber !== -1) {
 
-      //objBudget.selectBudgetId(budgetId, 'budget-budgetId');
-
       // Select account
       const accountId =
         budgetsArray[objBudgetRowNumber].accountId;

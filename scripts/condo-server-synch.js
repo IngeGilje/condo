@@ -738,7 +738,7 @@ async function main() {
             const year = req.query.year;
             const accountId = Number(req.query.accountId);
 
-            const SQLquery =
+            let SQLquery =
               `
                 SELECT * FROM budgets
                 WHERE condominiumId = ${condominiumId}
@@ -902,6 +902,9 @@ async function main() {
             const condominiumId = req.query.condominiumId;
             const accountId = Number(req.query.accountId);
             const condoId = Number(req.query.condoId);
+            const fromDate = Number(req.query.fromDate);
+            console.log('fromDate:',fromDate);
+            const toDate = Number(req.query.toDate);
 
             let SQLquery =
               `
@@ -909,6 +912,13 @@ async function main() {
                 WHERE condominiumId = ${condominiumId}
                   AND deleted <> 'Y'
               `;
+
+              if (fromDate !== 999999999) {
+              SQLquery +=
+                `
+                  AND date BETWEEN ${fromDate} AND ${toDate}
+                `;
+            }
 
             if (condoId !== 999999999) {
               SQLquery +=
@@ -929,6 +939,7 @@ async function main() {
                 ORDER BY date DESC;
               `;
 
+            console.log('SQLquery: ',SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1439,7 +1450,7 @@ async function main() {
             const phone = req.query.phone;
             const bankAccount = req.query.bankAccount;
             const accountId = req.query.accountId;
-            const account2Id = req.query.account2Id;
+            const accountAmountId = req.query.accountAmountId;
             const amount = req.query.amount;
             const supplierId = req.query.supplierId;
 
@@ -1459,7 +1470,7 @@ async function main() {
                   phone = '${phone}',
                   bankAccount = '${bankAccount}',
                   accountId = ${accountId},
-                  account2Id = ${account2Id},
+                  accountAmountId = ${accountAmountId},
                   amount = '${amount}'
                 WHERE supplierId = ${supplierId};
               `;
@@ -1493,7 +1504,7 @@ async function main() {
             const phone = req.query.phone;
             const bankAccount = req.query.bankAccount;
             const accountId = req.query.accountId;
-            const account2Id = req.query.account2Id;
+            const accountAmountId = req.query.accountAmountId;
             const amount = req.query.amount;
             console.log('amount: ', amount);
 
@@ -1514,7 +1525,7 @@ async function main() {
                   phone,
                   bankAccount,
                   accountId,
-                  account2Id,
+                  accountAmountId,
                   amount
                 ) VALUES (
                   'N',
@@ -1530,7 +1541,7 @@ async function main() {
                   '${phone}',
                   '${bankAccount}',
                   ${accountId},
-                  ${account2Id},
+                  ${accountAmountId},
                   ${amount}
                 );
               `;
@@ -1596,6 +1607,7 @@ async function main() {
           console.log("Select bank account movements request received");
 
           const condominiumId = Number(req.query.condominiumId);
+          console.log('condominiumId: ', condominiumId)
           const condoId = Number(req.query.condoId);
           const accountId = Number(req.query.accountId);
           const amount = Number(req.query.amount);
@@ -1633,6 +1645,7 @@ async function main() {
               `
                 ORDER BY date DESC, income DESC;
               `;
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {

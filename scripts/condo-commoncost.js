@@ -2,18 +2,12 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objCondo = new Condo('condo');
-const objAccount = new Account('account');
-const objDue = new Due('due');
-const objCondominium = new Condominium('condominium');
+const objAccounts = new Accounts('accounts');
+const objDues = new Dues('dues');
+const objCondominiums = new Condominiums('condominiums');
 const objCommonCost = new CommonCost('commoncost');
-
-let userArrayCreated = false;
-let condoArrayCreated = false;
-let accountArrayCreated = false;
-let condominiumArrayCreated = false;
-let dueArrayCreated = false;
 
 testMode();
 
@@ -22,13 +16,8 @@ testMode();
 //exitIfNoActivity();
 */
 
-let isEventsCreated
-
 objCommonCost.menu();
 objCommonCost.markSelectedMenu('Felleskostnader');
-
-let socket;
-socket = connectingToServer();
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -38,207 +27,237 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     'http://localhost/condo-login.html';
 } else {
 
+  // Call main when script loads
+  main();
 
-  // Send a requests to the server
-  socket.onopen = () => {
+  // Main entry point
+  async function main() {
 
-    // Sends a request to the server to get users
-    let SQLquery =
-      `
-        SELECT * FROM users
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY userId;
-      `;
-    updateMySql(SQLquery, 'user', 'SELECT');
-    userArrayCreated =
-      false;
+    const year = String(today.getFullYear());
+    let fromDate = "01.01." + year;
+    fromDate = convertDateToISOFormat(fromDate);
+    let toDate = getCurrentDate();
+    toDate = convertDateToISOFormat(toDate);
 
-    // Sends a request to the server to get condos
-    SQLquery =
-      `
-        SELECT * FROM condo
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY condoId;
-      `;
-    updateMySql(SQLquery, 'condo', 'SELECT');
+    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    await objDues.loadDuesTable(objUserPassword.condominiumId, 999999999, 999999999, 999999999, 999999999);
+    await objCondo.loadCondoTable(objUserPassword.condominiumId);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
 
-    // Inner join
-    SQLquery =
-      `
-        SELECT account.*
-        FROM condominium
-        JOIN account ON condominium.commonCostAccountId = account.accountId 
-        WHERE condominium.condominiumId = ${objUserPassword.condominiumId};
-      `
-    updateMySql(SQLquery, 'account', 'SELECT');
+    // Show filter
+    showLeadingText();
 
-    accountArrayCreated =
-      false;
+    // Show all values for 
+    showValues();
 
-    SQLquery =
-      `
-        SELECT * FROM condominium
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY condominiumId;
-      `;
-    updateMySql(SQLquery, 'condominium', 'SELECT');
-    condoArrayCreated =
-      false;
-
-    // Sends a request to the server to get dues
-    SQLquery =
-      `
-        SELECT * FROM due
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY date DESC;
-      `;
-
-    updateMySql(SQLquery, 'due', 'SELECT');
-    dueArrayCreated =
-      false;
-  };
-
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
-
-    let messageFromServer =
-      event.data;
-
-    //Converts a JavaScript Object Notation (JSON) string into an object
-    objInfo =
-      JSON.parse(messageFromServer);
-
-    if (objInfo.CRUD === 'SELECT') {
-      switch (objInfo.tableName) {
-        case 'user':
-
-          // user table
-          console.log('userTable');
-
-          userArray = objInfo.tableArray;
-          userArrayCreated =
-            true;
-          break;
-
-        case 'condo':
-
-          // condo table
-          console.log('condoTable');
-
-          condoArray = objInfo.tableArray;
-          condoArrayCreated =
-            true;
-          break;
-
-        case 'account':
-
-          // account table
-          console.log('accountTable');
-
-          accountsArray = objInfo.tableArray;
-          accountArrayCreated =
-            true;
-          break;
-
-        case 'condominium':
-
-          // condominium table
-          console.log('condominiumTable');
-
-          condominiumArray = objInfo.tableArray;
-          condominiumArrayCreated =
-            true;
-          break;
-
-        case 'due':
-
-          // due table
-          console.log('dueTable');
-
-          // array including objects with due information
-          dueArray = objInfo.tableArray;
-          dueArrayCreated =
-            true;
-
-          if (userArrayCreated
-            && condoArrayCreated
-            && accountArrayCreated
-            && condominiumArrayCreated
-            && dueArrayCreated) {
-
-            // Find selected due id
-            const dueId =
-              objDue.getSelectedDueId('select-dues-dueId');
-
-            // Show leading text
-            showLeadingText(dueId);
-
-            // Show all values for due
-            showValues(dueId);
-
-            // show all monthly amounts for selected condo id and account id
-            let condoId = 0;
-            if (isClassDefined('select-commoncost-condoId')) {
-              condoId = Number(document.querySelector('.select-commoncost-condoId').value);
-            }
-            if (condoId === 0) {
-              condoId = condoArray.at(-1).condoId;
-              showLeadingText();
-            }
-
-            const accountId = accountsArray[0].accountId;
-            showCommonCost(condoId);
-
-            // Make events
-            isEventsCreated = (isEventsCreated) ? true : createEvents();
-          } else {
-
-            console.log("userArrayCreated: ", userArrayCreated);
-            console.log("condoArrayCreated: ", condoArrayCreated);
-            console.log("accountArrayCreated: ", accountArrayCreated);
-            console.log("condominiumArrayCreated: ", condominiumArrayCreated);
-            console.log("dueArrayCreated): ", dueArrayCreated);
-          }
-          break;
-      }
-    }
-
-    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
-
-      switch (objInfo.tableName) {
-        case 'due':
-
-          // Sends a request to the server to get dues one more time
-          SQLquery =
-            `
-              SELECT * FROM due
-              WHERE condominiumId = ${objUserPassword.condominiumId}
-                AND deleted <> 'Y'
-              ORDER BY date DESC;
-            `;
-          updateMySql(SQLquery, 'due', 'SELECT');
-          dueArrayCreated =
-            false;
-          break;
-      };
-    }
-
-    // Handle errors
-    socket.onerror = (error) => {
-
-      // Close socket on error and let onclose handle reconnection
-      socket.close();
-    }
-
-    // Handle disconnection
-    socket.onclose = () => {
-    }
+    // Make events
+    createEvents();
   }
 }
+
+/*
+// Send a requests to the server
+socket.onopen = () => {
+
+  // Sends a request to the server to get users
+  let SQLquery =
+    `
+      SELECT * FROM users
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY userId;
+    `;
+  updateMySql(SQLquery, 'user', 'SELECT');
+  userArrayCreated =
+    false;
+
+  // Sends a request to the server to get condos
+  SQLquery =
+    `
+      SELECT * FROM condo
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY condoId;
+    `;
+  updateMySql(SQLquery, 'condo', 'SELECT');
+
+  // Inner join
+  SQLquery =
+    `
+      SELECT account.*
+      FROM condominium
+      JOIN account ON condominium.commonCostAccountId = account.accountId 
+      WHERE condominium.condominiumId = ${objUserPassword.condominiumId};
+    `
+  updateMySql(SQLquery, 'account', 'SELECT');
+
+  accountArrayCreated =
+    false;
+
+  SQLquery =
+    `
+      SELECT * FROM condominium
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY condominiumId;
+    `;
+  updateMySql(SQLquery, 'condominium', 'SELECT');
+  objCondo.condoArray.Created =
+    false;
+
+  // Sends a request to the server to get dues
+  SQLquery =
+    `
+      SELECT * FROM due
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY date DESC;
+    `;
+
+  updateMySql(SQLquery, 'due', 'SELECT');
+  dueArrayCreated =
+    false;
+};
+
+// Handle incoming messages from server
+socket.onmessage = (event) => {
+
+  let messageFromServer =
+    event.data;
+
+  //Converts a JavaScript Object Notation (JSON) string into an object
+  objInfo =
+    JSON.parse(messageFromServer);
+
+  if (objInfo.CRUD === 'SELECT') {
+    switch (objInfo.tableName) {
+      case 'user':
+
+        // user table
+        console.log('userTable');
+
+        userArray = objInfo.tableArray;
+        userArrayCreated =
+          true;
+        break;
+
+      case 'condo':
+
+        // condo table
+        console.log('condoTable');
+
+        objCondo.condoArray. = objInfo.tableArray;
+        objCondo.condoArray.Created =
+          true;
+        break;
+
+      case 'account':
+
+        // account table
+        console.log('accountTable');
+
+        objAccounts.accountsArray = objInfo.tableArray;
+        accountArrayCreated =
+          true;
+        break;
+
+      case 'condominium':
+
+        // condominium table
+        console.log('condominiumTable');
+
+        condominiumArray = objInfo.tableArray;
+        condominiumArrayCreated =
+          true;
+        break;
+
+      case 'due':
+
+        // due table
+        console.log('dueTable');
+
+        // array including objects with due information
+        dueArray = objInfo.tableArray;
+        dueArrayCreated =
+          true;
+
+        if (userArrayCreated
+          && objCondo.condoArray.Created
+          && accountArrayCreated
+          && condominiumArrayCreated
+          && dueArrayCreated) {
+
+          // Find selected due id
+          const dueId =
+            objDues.getSelectedDueId('select-dues-dueId');
+
+          // Show leading text
+          showLeadingText(dueId);
+
+          // Show all values for due
+          showValues(dueId);
+
+          // show all monthly amounts for selected condo id and account id
+          let condoId = 0;
+          if (isClassDefined('select-commoncost-condoId')) {
+            condoId = Number(document.querySelector('.select-commoncost-condoId').value);
+          }
+          if (condoId === 0) {
+            condoId = objCondo.condoArray.at(-1).condoId;
+            showLeadingText();
+          }
+
+          const accountId = objAccounts.accountsArray[0].accountId;
+          showCommonCost(condoId);
+
+          // Make events
+          isEventsCreated = (isEventsCreated) ? true : createEvents();
+        } else {
+
+          console.log("userArrayCreated: ", userArrayCreated);
+          console.log("objCondo.condoArray.Created: ", objCondo.condoArray.Created);
+          console.log("accountArrayCreated: ", accountArrayCreated);
+          console.log("condominiumArrayCreated: ", condominiumArrayCreated);
+          console.log("dueArrayCreated): ", dueArrayCreated);
+        }
+        break;
+    }
+  }
+
+  if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+    switch (objInfo.tableName) {
+      case 'due':
+
+        // Sends a request to the server to get dues one more time
+        SQLquery =
+          `
+            SELECT * FROM due
+            WHERE condominiumId = ${objUserPassword.condominiumId}
+              AND deleted <> 'Y'
+            ORDER BY date DESC;
+          `;
+        updateMySql(SQLquery, 'due', 'SELECT');
+        dueArrayCreated =
+          false;
+        break;
+    };
+  }
+
+  // Handle errors
+  socket.onerror = (error) => {
+
+    // Close socket on error and let onclose handle reconnection
+    socket.close();
+  }
+
+  // Handle disconnection
+  socket.onclose = () => {
+  }
+}
+}
+*/
 
 // Make monthly amount events
 function createEvents() {
@@ -247,11 +266,9 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-commoncost-condoId')) {
 
-      const condoId =
-        Number(event.target.value);
+      const condoId = Number(event.target.value);
 
-      const accountId =
-        accountsArray[0].accountId;
+      const accountId = objAccounts.accountsArray[0].accountId;
 
       // Show all dues for condo id, account id
       showCommonCost(condoId);
@@ -279,7 +296,7 @@ function createEvents() {
         Number(document.querySelector('.select-commoncost-condoId').value);
 
       const accountId =
-        accountsArray[0].accountId;
+        objAccounts.accountsArray[0].accountId;
 
       showCommonCost(condoId);
     }
@@ -348,11 +365,11 @@ function updateCommonCost() {
       Number(document.querySelector('.select-commoncost-condoId').value);
 
     const accountId =
-      accountsArray[0].accountId;
+      objAccounts.accountsArray[0].accountId;
 
     // get condo name 
     const array =
-      condoArray.find(condo => condo.condoId === condoId);
+      objCondo.condoArray.find(condo => condo.condoId === condoId);
 
     condoName =
       array.name;
@@ -424,7 +441,7 @@ function deleteCommonCost() {
     const condoId =
       Number(document.querySelector('.select-commoncost-condoId').value);
     const accountId =
-      accountsArray[0].accountId;
+      objAccounts.accountsArray[0].accountId;
     let amount =
       Number(formatAmountToOre(document.querySelector('.input-commoncost-amount').value));
 
@@ -467,31 +484,29 @@ function deleteCommonCost() {
 function showLeadingText() {
 
   // Show all condos
-  const condoId =
-    condoArray.at(-1).condoId;
+  const condoId = objCondo.condoArray.at(-1).condoId;
   objCondo.showAllCondos('commoncost-condoId', condoId);
 
   // Show years
-  const year =
-    today.getFullYear();
-  objDue.selectNumber('commoncost-year', 2020, 2030, year, 'År');
+  const year = today.getFullYear();
+  objDues.selectNumber('commoncost-year', 2020, 2030, year, 'År');
 
   // Show days
-  objDue.selectNumber('commoncost-day', 1, 28, 15, 'Dag')
+  objDues.selectNumber('commoncost-day', 1, 28, 15, 'Dag')
 
   // Show amount
-  objDue.showInput('commoncost-amount', '* Månedsavgift', 10, '');
+  objDues.showInput('commoncost-amount', '* Månedsavgift', 10, '');
 
   if (Number(objUserPassword.securityLevel) >= 9) {
 
     // show update button
-    objDue.showButton('commoncost-update', 'Oppdater');
+    objDues.showButton('commoncost-update', 'Oppdater');
 
     // show delete button
-    objDue.showButton('commoncost-delete', 'Slett');
+    objDues.showButton('commoncost-delete', 'Slett');
 
     // show cancel button
-    objDue.showButton('commoncost-cancel', 'Avbryt');
+    objDues.showButton('commoncost-cancel', 'Avbryt');
   }
 }
 
@@ -522,7 +537,7 @@ function validateValues() {
   document.querySelector('.input-commoncost-amount').value =
     formatAmountToEuroFormat(amount);
   const validAmount =
-    objDue.validateAmount(amount, "commoncost-amount", "Månedsavgift");
+    objDues.validateAmount(amount, "commoncost-amount", "Månedsavgift");
 
   return (validAccountId && validYear && validCondoId && validDay && validAmount) ? true : false;
 }
@@ -530,7 +545,7 @@ function validateValues() {
 function findDueId(condoId, accountId, amount, date) {
 
   let dueId = 0
-  dueArray.forEach((due) => {
+  objDues.duesArray.forEach((due) => {
     if (due.dueId > 1
       && due.amount === amount
       && due.date === date
@@ -587,7 +602,7 @@ function showCommonCost(condoId) {
 
   let sumAmount = 0;
   let lineNumber = 0;
-  const accountId = accountsArray[0].accountId;
+  const accountId = objAccounts.accountsArray[0].accountId;
 
   document.querySelector(".input-commoncost-amount").value =
     '';
@@ -612,7 +627,7 @@ function showCommonCost(condoId) {
       <br>
     `;
 
-  dueArray.forEach((due) => {
+  objDues.duesArray.forEach((due) => {
 
     if (due.condoId === condoId) {
       if (due.accountId === accountId || accountId === 999999999) {
@@ -679,7 +694,7 @@ function showValues(dueId) {
 
     // find object number for selected due id
     const objDueRowNumber =
-      dueArray.findIndex(due => due.dueId === dueId);
+      objDues.duesArray.findIndex(due => due.dueId === dueId);
     if (objDueRowNumber !== -1) {
 
       // Condo id

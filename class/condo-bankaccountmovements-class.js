@@ -228,6 +228,7 @@ class BankAccountMovements extends Condos {
   async loadBankAccountMovementsTable(condominiumId,condoId,accountId,amount,fromDate,toDate) {
 
     try {
+
       const response = await fetch(`http://localhost:3000/bankaccountmovements?action=select&condominiumId=${condominiumId}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&fromDate=${fromDate}&toDate=${toDate}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.bankAccountMovementsArray = await response.json();
