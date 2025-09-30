@@ -2,43 +2,63 @@
 
 // Activate objects
 const today = new Date();
-const objRemoteheating = new Remoteheating('remoteheating');
-const objCondominium = new Condominium('condominium');
-const objUser = new User('user');
+const objCondominiums = new Condominiums('condominiums');
+const objUsers = new Users('users');
 const objCondo = new Condo('condo');
-const objAccount = new Account('account');
-const objBankAccountMovement = new BankAccountMovement('bankaccountmovement');
-
-let condominiumArrayCreated = false;
-let userArrayCreated = false;
-let condoArrayCreated = false;
-let accountArrayCreated = false;
-let bankAccountMovementArrayCreated = false;
+const objAccounts = new Accounts('accounts');
+const objBankAccountMovements = new BankAccountMovements('bankaccountmovements');
+const objRemoteheating = new Remoteheating('remoteheating');
 
 testMode();
 
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-let isEventsCreated
 
 objRemoteheating.menu();
 objRemoteheating.markSelectedMenu('Fjernvarme');
 
-let socket;
-socket =
-  connectingToServer();
-
 // Validate user/password
-const objUserPassword =
-  JSON.parse(sessionStorage.getItem('user'));
+const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   window.location.href =
     'http://localhost/condo-login.html';
 } else {
 
+  // Call main when script loads
+  main();
 
+  // Main entry point
+  async function main() {
+
+    await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
+    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    await objCondo.loadCondoTable(objUserPassword.condominiumId);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+
+    amount = 0;
+    condominiumId = objUserPassword.condominiumId;
+    const condoId = 999999999;
+    const accountId = 999999999;
+    let fromDate = "01.01." + String(today.getFullYear());
+    fromDate = Number(convertDateToISOFormat(fromDate));
+    let toDate = getCurrentDate();
+    toDate = Number(convertDateToISOFormat(toDate));
+    await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, accountId, amount, fromDate, toDate);
+
+    // Show filter
+    showFilter();
+
+    // Get selected Bank Account Movement Id
+    showValues();
+
+    // Make events
+    createEvents();
+  }
+}
+
+/*
   // Send a requests to the server
   socket.onopen = () => {
 
@@ -68,7 +88,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condominium', 'SELECT');
-    condominiumArrayCreated =
+    objCondominiums.condominiumsArrayCreated =
       false;
 
     // Sends a request to the server to get users
@@ -144,8 +164,8 @@ socket.onmessage = (event) => {
         // condominium table
         console.log('condominiumTable');
 
-        condominiumArray = objInfo.tableArray;
-        condominiumArrayCreated = true;
+        objCondominiums.condominiumsArray = objInfo.tableArray;
+        objCondominiums.condominiumsArrayCreated = true;
         break;
 
       case 'user':
@@ -184,7 +204,7 @@ socket.onmessage = (event) => {
         bankAccountMovementArray = objInfo.tableArray;
         bankAccountMovementArrayCreated = true;
 
-        if (condominiumArrayCreated
+        if (objCondominiums.condominiumsArrayCreated
           && userArrayCreated
           && condoArrayCreated
           && accountArrayCreated
@@ -195,7 +215,7 @@ socket.onmessage = (event) => {
             objCondo.getSelectedCondoId('select-remoteheating-condoId');
 
           // Show leading text
-          showLeadingText(condoId);
+          showLeadingText();
 
           // Show all values for bank Account Movement
           showValues();
@@ -230,7 +250,7 @@ socket.onmessage = (event) => {
   socket.onclose = () => {
   }
 }
-
+*/
 // Make remoteheating events
 function createEvents() {
 
@@ -238,8 +258,22 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-remoteheating-condoId')) {
 
-      // Show selected for bank account movements
-      getSelectedBankAccountMovements();
+      // Get selected Bank Account Movements and show
+      searchCondosSync();
+
+      // Get selected Bank Account Movements
+      async function searchCondosSync() {
+
+        // Get selected Bank Account Movements
+        const condominiumId = objUserPassword.condominiumId;
+        const condoId = Number(document.querySelector('.select-remoteheating-condoId').value);
+        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
+        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
+        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, 999999999, 0, fromDate, toDate)
+
+        // Show selected Bank Account Movements
+        showValues();
+      }
     }
   });
 
@@ -247,8 +281,22 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-remoteheating-fromDate')) {
 
-      // Show selected for bank account movements
-      getSelectedBankAccountMovements();
+      // Get selected Bank Account Movements and show
+      searchFromDateSync();
+
+      // Get selected Bank Account Movements
+      async function searchFromDateSync() {
+
+        // Get selected Bank Account Movements
+        const condominiumId = objUserPassword.condominiumId;
+        const condoId = Number(document.querySelector('.select-remoteheating-condoId').value);
+        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
+        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
+        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, 999999999, 0, fromDate, toDate)
+
+        // Show selected Bank Account Movements
+        showValues();
+      }
     };
   });
 
@@ -256,15 +304,28 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-remoteheating-toDate')) {
 
-      // Show selected for bank account movements
-      getSelectedBankAccountMovements();
+       // Get selected Bank Account Movements and show
+      searchToDateSync();
+
+      // Get selected Bank Account Movements
+      async function searchToDateSync() {
+
+        // Get selected Bank Account Movements
+        const condominiumId = objUserPassword.condominiumId;
+        const condoId = Number(document.querySelector('.select-remoteheating-condoId').value);
+        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
+        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
+        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, 999999999, 0, fromDate, toDate)
+
+        // Show selected Bank Account Movements
+        showValues();
+      }
     };
   });
-  return true;
 }
 
-// Show leading text
-function showLeadingText() {
+// Show filter
+function showFilter() {
 
   // Show all condos
   if (!isClassDefined('select-remoteheating-condoId')) {
@@ -276,13 +337,11 @@ function showLeadingText() {
   if (!isClassDefined('input-remoteheating-fromDate')) {
 
     objRemoteheating.showInput('remoteheating-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
-    date =
-      document.querySelector('.input-remoteheating-fromDate').value;
+    date = document.querySelector('.input-remoteheating-fromDate').value;
     if (!validateEuroDateFormat(date)) {
 
       // From date is not ok
-      const year =
-        String(today.getFullYear());
+      const year = String(today.getFullYear());
       document.querySelector('.input-remoteheating-fromDate').value =
         "01.01." + year;
     }
@@ -291,8 +350,7 @@ function showLeadingText() {
   // To date
   if (!isClassDefined('input-remoteheating-toDate')) {
     objRemoteheating.showInput('remoteheating-toDate', 'Til dato', 10, 'mm.dd.åååå');
-    date =
-      document.querySelector('.input-remoteheating-toDate').value;
+    date = document.querySelector('.input-remoteheating-toDate').value;
     if (!validateEuroDateFormat(date)) {
 
       // To date is not ok
@@ -306,11 +364,10 @@ function showLeadingText() {
   if (!isClassDefined('select-remoteheating-accountId')) {
 
     // Check if condominium id exist
-    const objCondominimuRowNumber =
-      condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    const objCondominimuRowNumber = objCondominiums.condominiumsArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
     if (objCondominimuRowNumber !== -1) {
-      const accountId =
-        condominiumArray[objCondominimuRowNumber].accountId;
+
+      const accountId = objCondominiums.condominiumsArray[objCondominimuRowNumber].accountId;
       objAccounts.showAllAccounts('remoteheating-accountId', accountId, 'Alle');
 
       getSelectedBankAccountMovements();
@@ -325,48 +382,29 @@ function showValues() {
   // check for valid filter
   if (validateValues()) {
 
-    // Filter
-    let fromDate =
-      convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value);
-    let toDate =
-      convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value);
-
-    const condoId =
-      Number(document.querySelector('.select-remoteheating-condoId').value);
-    //const accountId =
-    //  Number(document.querySelector('.select-remoteheating-accountId').value);
-
     // Accomulate
     let sumColumnPayment = 0;
     let sumColumnNumberKWHour = 0;
 
     // Header bankaccountmovement
-    let htmlColumnDate =
-      '<div class="columnHeaderRight">Betalings dato</div><br>';
-    let htmlColumnPayment =
-      '<div class="columnHeaderRight">Beløp</div><br>';
-    let htmlColumnNumberKWHour =
-      '<div class="columnHeaderRight">Kilowatt timer</div><br>';
-    let htmlColumnPriceKWHour =
-      '<div class="columnHeaderRight">Pris/Kilowatt timer</div><br>';
-    let htmlColumnText =
-      '<div class="columnHeaderLeft">Tekst</div><br>';
+    let htmlColumnDate = '<div class="columnHeaderRight">Betalings dato</div><br>';
+    let htmlColumnPayment = '<div class="columnHeaderRight">Beløp</div><br>';
+    let htmlColumnNumberKWHour = '<div class="columnHeaderRight">Kilowatt timer</div><br>';
+    let htmlColumnPriceKWHour = '<div class="columnHeaderRight">Pris/Kilowatt timer</div><br>';
+    let htmlColumnText = '<div class="columnHeaderLeft">Tekst</div><br>';
 
     // Make all columns
-    let rowNumber =
-      0;
+    let rowNumber = 0;
 
-    bankAccountMovementsArray.forEach((bankaccountmovement) => {
+    objBankAccountMovements.bankAccountMovementsArray.forEach((bankaccountmovement) => {
 
       rowNumber++;
 
       // check if the number is odd
-      const colorClass =
-        (rowNumber % 2 !== 0) ? "green" : "";
+      const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
       // date
-      const date =
-        formatToNorDate(bankaccountmovement.date);
+      const date = formatToNorDate(bankaccountmovement.date);
       htmlColumnDate +=
         `
           <div 
@@ -377,8 +415,7 @@ function showValues() {
         `;
 
       // payment
-      let payment =
-        formatOreToKroner(bankaccountmovement.payment);
+      let payment = formatOreToKroner(bankaccountmovement.payment);
       htmlColumnPayment +=
         `
           <div 
@@ -389,8 +426,7 @@ function showValues() {
         `;
 
       // Number of kw/h
-      let numberKWHour =
-        formatOreToKroner(bankaccountmovement.numberKWHour);
+      let numberKWHour = formatOreToKroner(bankaccountmovement.numberKWHour);
       htmlColumnNumberKWHour +=
         `
           <div 
@@ -401,18 +437,14 @@ function showValues() {
         `;
 
       // Price per KWHour
-      payment =
-        Number(bankaccountmovement.payment);
-      numberKWHour =
-        Number(bankaccountmovement.numberKWHour);
+      payment = Number(bankaccountmovement.payment);
+      numberKWHour = Number(bankaccountmovement.numberKWHour);
 
       let priceKWHour = '-';
       if (numberKWHour !== 0 && payment !== 0) {
 
-        priceKWHour =
-          (-1 * payment) / numberKWHour;
-        priceKWHour =
-          priceKWHour.toFixed(2);
+        priceKWHour = (-1 * payment) / numberKWHour;
+        priceKWHour = priceKWHour.toFixed(2);
       }
       htmlColumnPriceKWHour +=
         `
@@ -433,12 +465,10 @@ function showValues() {
 
       // Accomulate
       // payment
-      sumColumnPayment +=
-        Number(bankaccountmovement.payment);
+      sumColumnPayment += Number(bankaccountmovement.payment);
 
       // KWHour
-      sumColumnNumberKWHour +=
-        Number(bankaccountmovement.numberKWHour);
+      sumColumnNumberKWHour += Number(bankaccountmovement.numberKWHour);
     });
 
     // Show all sums
@@ -446,8 +476,7 @@ function showValues() {
       `
        <div class="sumCellRight">
      `;
-    htmlColumnDate +=
-      'Sum';
+    htmlColumnDate += 'Sum';
     htmlColumnDate +=
       `
        </div>
@@ -458,8 +487,7 @@ function showValues() {
       `
         <div class="sumCellRight">
       `;
-    htmlColumnPayment +=
-      formatOreToKroner(String(sumColumnPayment));
+    htmlColumnPayment += formatOreToKroner(String(sumColumnPayment));
     htmlColumnPayment +=
       `
         </div>
@@ -470,26 +498,21 @@ function showValues() {
       `
         <div class="sumCellRight">
       `;
-    htmlColumnNumberKWHour +=
-      formatOreToKroner(String(sumColumnNumberKWHour));
+    htmlColumnNumberKWHour += formatOreToKroner(String(sumColumnNumberKWHour));
     htmlColumnNumberKWHour +=
       `
         </div>
       `;
 
     // Price per KWHour
-    payment =
-      Number(sumColumnPayment);
-    numberKWHour =
-      Number(sumColumnNumberKWHour);
+    payment = Number(sumColumnPayment);
+    numberKWHour = Number(sumColumnNumberKWHour);
 
     let sumPriceKWHour = '-';
     if (payment !== 0 && numberKWHour !== 0) {
 
-      sumPriceKWHour =
-        ((-1 * payment) / numberKWHour);
-      sumPriceKWHour =
-        sumPriceKWHour.toFixed(2);
+      sumPriceKWHour = ((-1 * payment) / numberKWHour);
+      sumPriceKWHour = sumPriceKWHour.toFixed(2);
     }
 
     htmlColumnPriceKWHour +=
@@ -508,16 +531,11 @@ function showValues() {
       `;
 
     // Show all columns
-    document.querySelector('.div-remoteheating-columnDate').innerHTML =
-      htmlColumnDate;
-    document.querySelector('.div-remoteheating-columnPayment').innerHTML =
-      htmlColumnPayment;
-    document.querySelector('.div-remoteheating-columnNumberKWHour').innerHTML =
-      htmlColumnNumberKWHour;
-    document.querySelector('.div-remoteheating-columnPriceKWHour').innerHTML =
-      htmlColumnPriceKWHour;
-    document.querySelector('.div-remoteheating-columnText').innerHTML =
-      htmlColumnText;
+    document.querySelector('.div-remoteheating-columnDate').innerHTML = htmlColumnDate;
+    document.querySelector('.div-remoteheating-columnPayment').innerHTML = htmlColumnPayment;
+    document.querySelector('.div-remoteheating-columnNumberKWHour').innerHTML = htmlColumnNumberKWHour;
+    document.querySelector('.div-remoteheating-columnPriceKWHour').innerHTML = htmlColumnPriceKWHour;
+    document.querySelector('.div-remoteheating-columnText').innerHTML = htmlColumnText;
   }
 }
 
@@ -566,53 +584,3 @@ function validateValues() {
 
   return validValues;
 }
-
-// Get selected bank account movements
-function getSelectedBankAccountMovements() {
-
-  const condoId =
-    Number(document.querySelector('.select-remoteheating-condoId').value);
-
-  //const accountId =
-  //  Number(document.querySelector('.select-remoteheating-accountId').value);
-
-  const fromDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
-  const toDate =
-    Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
-
-  let SQLquery =
-    `
-      SELECT * FROM bankaccountmovement
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-        AND accountId = ${accountsArray[0].accountId}
-        AND date BETWEEN ${fromDate} AND ${toDate}
-        ORDER By date DESC;
-    `;
-
-  // Check condo Id 
-  if (condoId !== 999999999) {
-
-    // Sends a request to the server to get selected bank account movements
-    SQLquery +=
-      `
-        AND condoId = ${condoId}
-      `;
-  }
-
-  // Check if condo Id is selected
-  if (condoId !== 999999999) {
-
-    // Sends a request to the server to get selected bank account movements
-    SQLquery +=
-      `
-        ORDER BY date DESC;
-      `;
-  }
-
-  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-  bankAccountMovementArrayCreated =
-    false;
-}
-

@@ -1173,10 +1173,8 @@ function convertDateToISOFormat(date) {
 // Format date from yyyymmdd (Basic ISO 8601 format) -> dd.mm.yyyy (European date format)
 function formatToNorDate(date) {
 
-  date =
-    String(date);
-  const formatedDate =
-    date.slice(6, 8) + '.' + date.slice(4, 6) + '.' + date.slice(0, 4);
+  date = String(date);
+  const formatedDate = date.slice(6, 8) + '.' + date.slice(4, 6) + '.' + date.slice(0, 4);
   return (formatedDate.includes('..')) ? '' : formatedDate;
 }
 

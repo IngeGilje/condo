@@ -7,8 +7,7 @@ class Accounts extends Condos {
   // Show all accounts
   showAllAccounts(className, accountId, alternativeSelect, alternativeSelect2) {
 
-    let selectedOption =
-      false;
+    let selectedOption = false;
 
     let html =
       `
@@ -46,8 +45,7 @@ class Accounts extends Condos {
                 ${account.accountId} - ${account.name}
               </option>
             `;
-          selectedOption =
-            true;
+          selectedOption = true;
         } else {
 
           html +=
@@ -69,8 +67,7 @@ class Accounts extends Condos {
             Ingen konti
           </option>
         `;
-      selectedOption =
-        true;
+      selectedOption = true;
     }
 
     // Alternative select
@@ -95,8 +92,7 @@ class Accounts extends Condos {
               ${alternativeSelect}
             </option>
           `;
-        selectedOption =
-          true;
+        selectedOption = true;
       }
     }
 
@@ -122,8 +118,7 @@ class Accounts extends Condos {
             ${alternativeSelect2}
           </option>
         `;
-        selectedOption =
-          true;
+        selectedOption = true;
       }
     }
 
@@ -133,8 +128,7 @@ class Accounts extends Condos {
         </form>
       `;
 
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
   // Get selected account id
