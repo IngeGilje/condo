@@ -617,6 +617,7 @@ class Condos {
     }
     document.querySelector('.div-menu').innerHTML =
       `
+        <aside>
         <a href="${url}condo-login.html"
           class="a-menu-vertical-login"
         >
@@ -707,11 +708,12 @@ class Condos {
           Importer banktransaksjoner
         </a>
 
-        <a href="${url}condo-accountreport.html"
-          class="a-menu-vertical-accountreport"
+        <a href="${url}condo-annualaccounts.html"
+          class="a-menu-vertical-annualaccounts"
         >
-          Regnskapsrapport
+          Årsregnskap
         </a>
+        </aside>
       `;
   }
 
@@ -1839,17 +1841,6 @@ function endHTMLFilters() {
         <div>
     `;
 }
-
-/*
-// HTML end for filters
-function endHTMLFilters() {
-
-  return `
-      </div>
-    </div>
-  `;
-}
-*/
 
 // Start of HTML table
 function startHTMLTable() {

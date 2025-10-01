@@ -9,22 +9,14 @@ body {
 }
 */
 
-/*
-.div-main {
-  background: url('http://localhost/images/hinna-park-blur.jpg') no-repeat center center/cover;
-  display: flex;
-  align-items: center;
-}
-*/
-
 /* Define the grid container */
 .div-grid-bankaccountmovements-search,
 .div-grid-bankaccountmovements,
 
-/*.div-grid-accountreport-filter,*/
-.div-grid-accountreport,
-/*.div-grid-accountreport-budgets,*/
-/*.div-grid-accountreport-bankdeposit,*/
+/*.div-grid-annualaccounts-filter,*/
+.div-grid-annualaccounts,
+/*.div-grid-annualaccounts-budgets,*/
+/*.div-grid-annualaccounts-bankdeposit,*/
 
 .div-grid-userbankaccounts,
 
@@ -85,16 +77,6 @@ body {
 }
 
 /* Define the grid container with 4 columns*/
-/*.div-grid-accountreport-bankdeposit {*/
-/*  grid-template-columns: 200px 200px 200px 150px;*/
-/*}
-
-/* Define the grid container with 6 columns*/
-/*.div-grid-accountreport-filter {*/
-/*  grid-template-columns: 200px 200px 200px 200px 200px 200px;*/
-/*}*/
-
-/* Define the grid container with 4 columns*/
 .div-grid-overview-search {
   grid-template-columns: 200px 200px 200px 200px;
 }
@@ -114,14 +96,9 @@ body {
   grid-template-columns: 200px 200px 200px 200px 200px;
 }
 
-/* Define the grid container with 6 columns*/
-/*.div-grid-accountreport-budgets {*/
-/*  grid-template-columns: 200px 100px 150px 150px 150px 150px;*/
-/*}*/
-
-/* Define the grid container with 6 columns*/
-.div-grid-accountreport {
-  grid-template-columns: 200px 200px 150px 150px 150px 150px;
+/* Define the grid container with 5 columns*/
+.div-grid-annualaccounts {
+  grid-template-columns: 200px 200px 150px 150px 150px;
 }
 
 /* Define the grid container with 7 columns*/
@@ -360,7 +337,7 @@ body {
 
 /* menu */
 .a-menu-vertical-accounts,
-.a-menu-vertical-accountreport,
+.a-menu-vertical-annualaccounts,
 .a-menu-vertical-userbankaccounts,
 .a-menu-vertical-suppliers,
 .a-menu-vertical-importfile,
@@ -389,7 +366,7 @@ body {
   font-size: 16px;
 }
 
-.a-menu-vertical-accountreport-green,
+.a-menu-vertical-annualaccounts-green,
 .a-menu-vertical-accounts-green,
 .a-menu-vertical-userbankaccounts-green,
 .a-menu-vertical-suppliers-green,
@@ -450,10 +427,10 @@ body {
 .div-grid-bankaccountmovements-search label,
 .div-grid-bankaccountmovements label,
 
-/*.div-grid-accountreport-filter label,*/
-.div-grid-accountreport label,
-/*.div-grid-accountreport-budgets label,*/
-/*.div-grid-accountreport-bankdeposit label,*/
+/*.div-grid-annualaccounts-filter label,*/
+.div-grid-annualaccounts label,
+/*.div-grid-annualaccounts-budgets label,*/
+/*.div-grid-annualaccounts-bankdeposit label,*/
 
 .div-grid-userbankaccounts label,
 
@@ -521,10 +498,10 @@ body {
 .div-grid-bankaccountmovements-search input,
 .div-grid-bankaccountmovements input,
 
-/*.div-grid-accountreport-filter input,*/
-.div-grid-accountreport input,
-/*.div-grid-accountreport-budgets input,*/
-/*.div-grid-accountreport-bankdeposit input,*/
+/*.div-grid-annualaccounts-filter input,*/
+.div-grid-annualaccounts input,
+/*.div-grid-annualaccounts-budgets input,*/
+/*.div-grid-annualaccounts-bankdeposit input,*/
 
 .div-grid-userbankaccounts input,
 
@@ -606,10 +583,10 @@ body {
 .div-grid-bankaccountmovements-search select,
 .div-grid-bankaccountmovements select,
 
-/*.div-grid-accountreport-filter select,*/
-.div-grid-accountreport select,
-/*.div-grid-accountreport-budgets select,*/
-/*.div-grid-accountreport-bankdeposit select,*/
+/*.div-grid-annualaccounts-filter select,*/
+.div-grid-annualaccounts select,
+/*.div-grid-annualaccounts-budgets select,*/
+/*.div-grid-annualaccounts-bankdeposit select,*/
 
 .div-grid-userbankaccounts select,
 
@@ -722,10 +699,10 @@ body {
 .div-grid-bankaccountmovements-search button,
 .div-grid-bankaccountmovements button,
 
-/*.div-grid-accountreport-filter button,*/
-.div-grid-accountreport button,
-/*.div-grid-accountreport-budgets button,*/
-/*.div-grid-accountreport-bankdeposit button,*/
+/*.div-grid-annualaccounts-filter button,*/
+.div-grid-annualaccounts button,
+/*.div-grid-annualaccounts-budgets button,*/
+/*.div-grid-annualaccounts-bankdeposit button,*/
 
 .div-grid-userbankaccounts button,
 
@@ -768,13 +745,12 @@ body {
 }
 
 /* Darker green on hover */
-.div-grid-bankaccountmovements-search button:hover 
-.div-grid-bankaccountmovements button:hover,
+.div-grid-bankaccountmovements-search button:hover .div-grid-bankaccountmovements button:hover,
 
-/*.div-grid-accountreport-filter button:hover,*/
-.div-grid-accountreport button:hover,
-/*.div-grid-accountreport-budgets button:hover,*/
-/*.div-grid-accountreport-bankdeposit button.hover,*/
+/*.div-grid-annualaccounts-filter button:hover,*/
+.div-grid-annualaccounts button:hover,
+/*.div-grid-annualaccounts-budgets button:hover,*/
+/*.div-grid-annualaccounts-bankdeposit button.hover,*/
 
 .div-grid-userbankaccounts button:hover,
 
@@ -812,7 +788,7 @@ body {
 .div-grid-bankaccountmovements-search button:active,
 .div-grid-bankaccountmovements button:active,
 
-.div-accountreport button:active,
+.div-annualaccounts button:active,
 
 .div-userbankaccounts button:active,
 
@@ -848,14 +824,8 @@ body {
 .div-grid-bankaccountmovements select:disabled,
 .div-grid-bankaccountmovements button:disabled,
 
-/*.div-grid-accountreport-filter select:disabled,*/
-/*.div-grid-accountreport-filter button:disabled,*/
-
-.div-grid-accountreport select:disabled,
-.div-grid-accountreport button:disabled,
-
-/*.div-grid-accountreport-budgets select:disabled,*/
-/*.div-grid-accountreport button:disabled,*/
+.div-grid-annualaccounts select:disabled,
+.div-grid-annualaccounts button:disabled,
 
 .div-grid-userbankaccounts select:disabled,
 .div-grid-userbankaccounts button:disabled,
@@ -970,8 +940,8 @@ body {
 .label-bankaccountmovements-accountId-red,
 .label-bankaccountmovements-date-red,
 
-.label-accountreport-filter-fromDate-red,
-.label-accountreport-filter-toDate-red,
+.label-annualaccounts-filter-fromDate-red,
+.label-annualaccounts-filter-toDate-red,
 
 .label-userbankaccounts-userId-red,
 .label-userbankaccounts-accountId-red,
@@ -1255,6 +1225,10 @@ td {
   border: 1px solid #ccc;
   padding: .5rem;
   text-align: right;
+  min-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 th {

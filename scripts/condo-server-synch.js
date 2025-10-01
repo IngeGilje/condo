@@ -735,7 +735,7 @@ async function main() {
           try {
 
             const condominiumId = req.query.condominiumId;
-            const year = req.query.year;
+            const year = Number(req.query.year);
             const accountId = Number(req.query.accountId);
 
             let SQLquery =
@@ -743,9 +743,14 @@ async function main() {
                 SELECT * FROM budgets
                 WHERE condominiumId = ${condominiumId}
                   AND deleted <> 'Y'
-                  AND year = '${year}'
               `;
 
+            if (year !== 999999999) {
+              SQLquery +=
+                `
+                  AND year = '${year}'
+                `;
+            }
             if (accountId !== 999999999) {
               SQLquery +=
                 `

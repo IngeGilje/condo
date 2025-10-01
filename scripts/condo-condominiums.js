@@ -69,7 +69,7 @@ function createEvents() {
 
       let condominiumId = Number(document.querySelector('.select-condominiums-condominiumId').value);
       condominiumId =
-        (condominiumId !== 0) ? condominiumId : objCondominiums.condominiumsArray.at(-1).condominiumId;
+        (condominiumId !== 0) ? condominiumId : objCondominiums.arrayCondominiums.at(-1).condominiumId;
       if (condominiumId) {
         showValues(condominiumId);
       }
@@ -114,7 +114,7 @@ function createEvents() {
         await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
 
         // Select last condominium if condominiumId is 0
-        if (condominiumId === 0) condominiumId = objCondominiums.condominiumsArray.at(-1).condominiumId;
+        if (condominiumId === 0) condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
 
         // Show leading text
         showLeadingText(condominiumId);
@@ -170,7 +170,7 @@ function createEvents() {
         await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
 
         // Show leading text
-        const condominiumId = objCondominiums.condominiumsArray.at(-1).condominiumId;
+        const condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
         showLeadingText(condominiumId);
 
         // Show all values for condominium
@@ -222,7 +222,7 @@ async function updateCondominium(condominiumId) {
 
     // Check if condominium id exist
     const objCondominiumsRowNumber =
-      objCondominiums.condominiumsArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+      objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (objCondominiumsRowNumber !== -1) {
 
       // update user
@@ -372,66 +372,66 @@ function showValues(condominiumId) {
 
     // get object number for selected condominium id
     const objCondominiumsRowNumber =
-      objCondominiums.condominiumsArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+      objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (objCondominiumsRowNumber !== -1) {
 
       // Condominium id
       document.querySelector('.select-condominiums-condominiumId').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].condominiumId;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].condominiumId;
 
       // Condominium name
       document.querySelector('.input-condominiums-name').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].name;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].name;
 
       // Show street
       document.querySelector('.input-condominiums-street').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].street;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].street;
 
       // Show address 2
       document.querySelector('.input-condominiums-address2').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].address2;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].address2;
 
       // Show postal code
       document.querySelector('.input-condominiums-postalCode').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].postalCode;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].postalCode;
 
       // Show city
       document.querySelector('.input-condominiums-city').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].city;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].city;
 
       // Show phone
       document.querySelector('.input-condominiums-phone').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].phone;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].phone;
 
       // Show email
       document.querySelector('.input-condominiums-email').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].email;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].email;
 
       // account id for income remote heating
       document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value =
-        (objCondominiums.condominiumsArray[objCondominiumsRowNumber].incomeRemoteHeatingAccountId) ? objCondominiums.condominiumsArray[objCondominiumsRowNumber].incomeRemoteHeatingAccountId : 0;
+        (objCondominiums.arrayCondominiums[objCondominiumsRowNumber].incomeRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[objCondominiumsRowNumber].incomeRemoteHeatingAccountId : 0;
       document.querySelector('.label-condominiums-incomeRemoteHeatingAccountId').innerHTML =
         'Inntekt fjernvarmekonto';
 
       // account id for payment remote heating
       document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value =
-        (objCondominiums.condominiumsArray[objCondominiumsRowNumber].paymentRemoteHeatingAccountId) ? objCondominiums.condominiumsArray[objCondominiumsRowNumber].paymentRemoteHeatingAccountId : 0;
+        (objCondominiums.arrayCondominiums[objCondominiumsRowNumber].paymentRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[objCondominiumsRowNumber].paymentRemoteHeatingAccountId : 0;
       document.querySelector('.label-condominiums-paymentRemoteHeatingAccountId').innerHTML =
         'Utgift fjernvarmekonto';
 
       // account id for common cost
       document.querySelector('.select-condominiums-commoncostAccountId').value =
-        (objCondominiums.condominiumsArray[objCondominiumsRowNumber].commonCostAccountId) ? objCondominiums.condominiumsArray[objCondominiumsRowNumber].commonCostAccountId : 0;
+        (objCondominiums.arrayCondominiums[objCondominiumsRowNumber].commonCostAccountId) ? objCondominiums.arrayCondominiums[objCondominiumsRowNumber].commonCostAccountId : 0;
       document.querySelector('.label-condominiums-commoncostAccountId').innerHTML =
         'Konto for felleskostnader';
 
       // Show organization number
       document.querySelector('.input-condominiums-organizationNumber').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].organizationNumber;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].organizationNumber;
 
       // Show file import path
       document.querySelector('.input-condominiums-fileName').value =
-        objCondominiums.condominiumsArray[objCondominiumsRowNumber].importPath;
+        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].importPath;
     }
   }
 }
@@ -511,7 +511,7 @@ function deleteCondominiumRow() {
 
     // Check if condominium exist
     const objCondominiumsRowNumber =
-      objcondominiums.condominiumsArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+      objcondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (objCondominiumsRowNumber !== -1) {
 
       // current date
@@ -598,7 +598,7 @@ async function deleteCondominium() {
   const condominiumId = Number(document.querySelector('.select-condominiums-condominiumId').value);
 
   // Check if condominium number exist
-  const objCondominiumRowNumber = objCondominiums.condominiumsArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+  const objCondominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
   if (objCondominiumRowNumber !== -1) {
 
     // delete condominium row

@@ -88,7 +88,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       `;
 
     updateMySql(SQLquery, 'condominium', 'SELECT');
-    objCondominiums.condominiumsArrayCreated =
+    objCondominiums.arrayCondominiumsCreated =
       false;
 
     // Sends a request to the server to get users
@@ -164,8 +164,8 @@ socket.onmessage = (event) => {
         // condominium table
         console.log('condominiumTable');
 
-        objCondominiums.condominiumsArray = objInfo.tableArray;
-        objCondominiums.condominiumsArrayCreated = true;
+        objCondominiums.arrayCondominiums = objInfo.tableArray;
+        objCondominiums.arrayCondominiumsCreated = true;
         break;
 
       case 'user':
@@ -204,7 +204,7 @@ socket.onmessage = (event) => {
         bankAccountMovementArray = objInfo.tableArray;
         bankAccountMovementArrayCreated = true;
 
-        if (objCondominiums.condominiumsArrayCreated
+        if (objCondominiums.arrayCondominiumsCreated
           && userArrayCreated
           && condoArrayCreated
           && accountArrayCreated
@@ -364,10 +364,10 @@ function showFilter() {
   if (!isClassDefined('select-remoteheating-accountId')) {
 
     // Check if condominium id exist
-    const objCondominimuRowNumber = objCondominiums.condominiumsArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    const objCondominimuRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
     if (objCondominimuRowNumber !== -1) {
 
-      const accountId = objCondominiums.condominiumsArray[objCondominimuRowNumber].accountId;
+      const accountId = objCondominiums.arrayCondominiums[objCondominimuRowNumber].accountId;
       objAccounts.showAllAccounts('remoteheating-accountId', accountId, 'Alle');
 
       getSelectedBankAccountMovements();

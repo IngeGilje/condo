@@ -2,7 +2,7 @@
 class Condominiums extends Condos {
 
   // Condominiums informations
-  condominiumsArray = Array;
+  arrayCondominiums = Array;
 
   // Show all condominiums
   showAllCondominiums(className, condominiumId) {
@@ -29,9 +29,9 @@ class Condominiums extends Condos {
     let selectedOption = false;
 
     // Check if condominium array is empty
-    const numberOfRows = this.condominiumsArray.length;
+    const numberOfRows = this.arrayCondominiums.length;
     if (numberOfRows > 0) {
-      this.condominiumsArray.forEach((condominium) => {
+      this.arrayCondominiums.forEach((condominium) => {
         if (condominium.condominiumId >= 0) {
           if (condominium.condominiumId === condominiumId) {
 
@@ -90,11 +90,11 @@ class Condominiums extends Condos {
 
       condominiumId =
         Number(document.querySelector(`.${className}`).value);
-      condominiumId = (condominiumId === 0) ? this.condominiumsArray.at(-1).condominiumId : condominiumId;
+      condominiumId = (condominiumId === 0) ? this.arrayCondominiums.at(-1).condominiumId : condominiumId;
     } else {
 
       // Get last id in last object in condominium array
-      condominiumId = this.condominiumsArray.at(-1).condominiumId;
+      condominiumId = this.arrayCondominiums.at(-1).condominiumId;
     }
 
     return condominiumId;
@@ -106,7 +106,7 @@ class Condominiums extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/condominiums?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
-      this.condominiumsArray = await response.json();
+      this.arrayCondominiums = await response.json();
     } catch (error) {
       console.log("Error loading condominiums:", error);
     }
@@ -117,7 +117,7 @@ class Condominiums extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/condominiums?action=update&user=${user}&condominiumId=${condominiumId}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importPath=${importPath}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
-      this.condominiumsArray = await response.json();
+      this.arrayCondominiums = await response.json();
     } catch (error) {
       console.log("Error updating condominiums:", error);
     }
@@ -129,7 +129,7 @@ class Condominiums extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/condominiums?action=insert&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importPath=${importPath}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
-      this.condominiumsArray = await response.json();
+      this.arrayCondominiums = await response.json();
     } catch (error) {
       console.log("Error inserting condominiums:", error);
     }
@@ -140,7 +140,7 @@ class Condominiums extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/condominiums?action=delete&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
-      this.condominiumsArray = await response.json();
+      this.arrayCondominiums = await response.json();
     } catch (error) {
       console.log("Error deleteing condominiums:", error);
     }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="nb-NO">
+
+<head>
+  <title>Årsregnskap</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/condo.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1rem;
+      background: #f5f5f5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- menu -->
+  <div class="div-menu"></div>
+
+  <!-- Start Main -->
+  <div class="main">
+    
+    <!-- Filter -->
+    <div class="div-grid-annualaccounts-filter"></div>
+    <!--
+    <div class="div-annualaccounts-filter-fromDate grid-column2"></div>
+    <div class="div-annualaccounts-filter-toDate grid-column3"></div>
+    <div class="div-annualaccounts-filter-fiscalYear grid-column4"></div>
+    <div class="div-annualaccounts-filter-budgetYear grid-column5"></div>
+    <div class="div-annualaccounts-filter-priceSquareMeter grid-column6"></div>
+    -->
+
+    <!-- annual accounts -->
+    <div class="div-grid-annualaccounts-annualAccounts"> </div>
+
+    <!--
+      <div class="div-annualaccounts-accountName grid-column2"></div>
+      <div class="div-annualaccounts-costType grid-column3"></div>
+      <div class="div-annualaccounts-amount grid-column4"></div>
+      <div class="div-annualaccounts-budgetAmount grid-column5"></div>
+      <div class="div-annualaccounts-deviation grid-column6"></div>
+    -->
+
+    <!-- income next year -->
+    <div class="div-grid-annualaccounts-income"></div>
+
+    <!--
+    <div class="div-annualaccounts-budgets-name grid-column2"></div>
+    <div class="div-annualaccounts-budgets-squareMeter grid-column3"></div>
+    <div class="div-annualaccounts-budgets-fixedCosts grid-column4"></div>
+    <div class="div-annualaccounts-budgets-commonCostsMonth grid-column5"></div>
+    <div class="div-annualaccounts-budgets-commonCostsYear grid-column6"></div>
+    -->
+
+    <!-- remote heating -->
+    <div class="div-grid-annualaccounts-remoteHeating"></div>
+
+    <!-- bank deposit -->
+    <div class="div-grid-annualaccounts-bankDeposit"></div>
+    <!--
+    <div class="div-annualaccounts-bankdeposit-text grid-column2"></div>
+    <div class="div-annualaccounts-bankdeposit-date grid-column3"></div>
+    <div class="div-annualaccounts-bankdeposit-amount grid-column4"></div>
+    -->
+  </div>
+
+  <script src="class/condo-class.js"></script>
+  <script src="class/condo-users-class.js"></script>
+  <script src="class/condo-condominiums-class.js"></script>
+  <script src="class/condo-budgets-class.js"></script>
+  <script src="class/condo-accounts-class.js"></script>
+  <script src="class/condo-bankaccountmovements-class.js"></script>
+  <script src="class/condo-annualaccounts-class.js"></script>
+  <script src="class/condo-condo-class.js"></script>
+  <script src="class/condo-bankaccounts-class.js"></script>
+  <script src="scripts/condo-annualaccounts.js"></script>
+</body>
+
+</html>
