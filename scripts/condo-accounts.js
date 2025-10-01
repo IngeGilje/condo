@@ -179,10 +179,10 @@ function updateAccount() {
 
       const condominiumId = objUserPassword.condominiumId;
 
-      const objAccountRowNumber = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+      const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
 
       // Check if account number exist
-      if (objAccountRowNumber !== -1) {
+      if (accountRowNumberObj !== -1) {
 
         // update account
         objAccounts.updateAccountsTable(user, accountId, fixedCost, lastUpdate, accountName);
@@ -211,8 +211,8 @@ function deleteAccount() {
   if (accountId !== 1) {
 
     // Check if account number exist
-    const objAccountRowNumber = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
-    if (objAccountRowNumber !== -1) {
+    const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+    if (accountRowNumberObj !== -1) {
 
       // delete account row
       const user = objUserPassword.email;
@@ -256,14 +256,14 @@ function showValues(accountId) {
   if (accountId >= 0) {
 
     // find object number for selected account 
-    const objAccountRowNumber = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
-    if (objAccountRowNumber !== -1) {
+    const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+    if (accountRowNumberObj !== -1) {
 
       // account name
-      document.querySelector('.input-accounts-accountName').value = objAccounts.accountsArray[objAccountRowNumber].name;
+      document.querySelector('.input-accounts-accountName').value = objAccounts.accountsArray[accountRowNumberObj].name;
 
       // fixed cost
-      let fixedCost = objAccounts.accountsArray[objAccountRowNumber].fixedCost;
+      let fixedCost = objAccounts.accountsArray[accountRowNumberObj].fixedCost;
       switch (fixedCost) {
         case 'Y':
           fixedCost = 'Ja';

@@ -821,25 +821,22 @@ function showBankDeposit() {
 
   // Date
   let closingBalanceDate = "";
-  const objBankAccountRowNumber = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
-  if (objBankAccountRowNumber !== -1) {
+  const bankAccountRowNumberObj = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
+  if (bankAccountRowNumberObj !== -1) {
 
-    closingBalanceDate = (objBankAccounts.bankAccountsArray[objBankAccountRowNumber].closingBalanceDate);
+    closingBalanceDate = (objBankAccounts.bankAccountsArray[bankAccountRowNumberObj].closingBalanceDate);
     closingBalanceDate = formatToNorDate(closingBalanceDate);
   }
 
   // Bank deposit
   let bankDepositAmount = "";
 
-  bankDepositAmount = (objBankAccounts.bankAccountsArray[objBankAccountRowNumber].closingBalance);
+  bankDepositAmount = (objBankAccounts.bankAccountsArray[bankAccountRowNumberObj].closingBalance);
   bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
   html += HTMLTableRow('Bankinnskudd', closingBalanceDate, bankDepositAmount);
 
   accAmount += Number(formatKronerToOre(bankDepositAmount));
-
-  // Next budget year
-  //budgetYear = Number(document.querySelector('.select-filter-budgetYear').value) + 1;
 
   // budget
   objBudgets.budgetsArray.forEach((budget) => {
@@ -854,10 +851,10 @@ function showBankDeposit() {
         // Account Name
         let name = '';
 
-        const objAccountRowNumber = objAccounts.accountsArray.findIndex(account => account.accountId === budget.accountId);
-        if (objAccountRowNumber !== -1) {
+        const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === budget.accountId);
+        if (accountRowNumberObj !== -1) {
 
-          name = objAccounts.accountsArray[objAccountRowNumber].name;
+          name = objAccounts.accountsArray[accountRowNumberObj].name;
         }
 
         // Dato
@@ -882,7 +879,7 @@ function showBankDeposit() {
   colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
   // Dato
-  closingBalanceDate = Number(objBankAccounts.bankAccountsArray[objBankAccountRowNumber].closingBalanceDate);
+  closingBalanceDate = Number(objBankAccounts.bankAccountsArray[bankAccountRowNumberObj].closingBalanceDate);
 
   // Next year
   closingBalanceDate = closingBalanceDate + 10000;
@@ -954,11 +951,11 @@ function showRemoteHeating() {
     let sumColumnNumberKWHour = 0;
 
     // Get row number for payment Remote Heating Account Id
-    const objCondominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-    if (objCondominiumRowNumber !== -1) {
+    const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    if (condominiumRowNumberObj !== -1) {
 
       objBankAccountMovements.bankAccountMovementsArray.forEach((bankaccountmovement) => {
-        if (bankaccountmovement.accountId === objCondominiums.arrayCondominiums[objCondominiumRowNumber].paymentRemoteHeatingAccountId) {
+        if (bankaccountmovement.accountId === objCondominiums.arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId) {
           if (Number(bankaccountmovement.date) >= Number(fromDate) && Number(bankaccountmovement.date) <= Number(toDate)) {
 
             rowNumber++;

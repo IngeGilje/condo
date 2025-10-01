@@ -160,10 +160,10 @@ class Condo extends Condos {
   getCondoName(condoId) {
 
     let condoName;
-    const objCondoRowNumber =
+    const condoRowNumberObj =
       this.condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objCondoRowNumber !== -1) {
-      condoName = this.condoArray[objCondoRowNumber].name;
+    if (condoRowNumberObj !== -1) {
+      condoName = this.condoArray[condoRowNumberObj].name;
     } else {
       condoName = "-";
     }
@@ -240,8 +240,8 @@ class Condo extends Condos {
   selectCondoId(condoId, className) {
 
     // Check if condo id exist
-    const objCondoRowNumber = this.condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objCondoRowNumber !== -1) {
+    const condoRowNumberObj = this.condoArray.findIndex(condo => condo.condoId === condoId);
+    if (condoRowNumberObj !== -1) {
 
       document.querySelector(`.select-${className}`).value =
         condoId;

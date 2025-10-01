@@ -420,28 +420,10 @@ class Condos {
   selectBankAccountId(bankAccountId, className) {
 
     // Check if account id exist
-    const objBankAccountRowNumber = this.bankAccountsArray.findIndex(bankAccounts => bankAccounts.bankAccountId === bankAccountId);
-    if (objBankAccountRowNumber !== -1) {
+    const bankAccountRowNumberObj = this.bankAccountsArray.findIndex(bankAccounts => bankAccounts.bankAccountId === bankAccountId);
+    if (bankAccountRowNumberObj !== -1) {
 
       document.querySelector(`.select-${className}`).value = bankAccountId;
-      return true;
-    } else {
-
-      return false;
-    }
-  }
-
-
-  // Select year
-  selectYear(year, className) {
-
-    // Check if year
-    const objYearRowNumber =
-      this.yearArray.findIndex(year => year.year === year);
-    if (objYearRowNumber !== -1) {
-
-      document.querySelector(`.select-${className}`).value =
-        year;
       return true;
     } else {
 
@@ -852,32 +834,32 @@ class Condos {
     let bankAccountName = '';
 
     // Bank account name from bank account table 
-    const objBankAccountRowNumber =
+    const bankAccountRowNumberObj =
       this.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
-    if (objBankAccountRowNumber !== -1) {
+    if (bankAccountRowNumberObj !== -1) {
 
-      bankAccountName = this.bankAccountsArray[objBankAccountRowNumber].name;
+      bankAccountName = this.bankAccountsArray[bankAccountRowNumberObj].name;
     }
 
     if (!bankAccountName) {
 
       // Bank account name from supplier table
-      const objSupplierRowNumber =
+      const supplierRowNumberObj =
         supplierArray.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
-      if (objSupplierRowNumber !== -1) {
+      if (supplierRowNumberObj !== -1) {
 
-        bankAccountName = supplierArray[objSupplierRowNumber].name;
+        bankAccountName = supplierArray[supplierRowNumberObj].name;
       }
     }
 
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const objBankAccountRowNumber =
+      const bankAccountRowNumberObj =
         userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
-      if (objBankAccountRowNumber !== -1) {
+      if (bankAccountRowNumberObj !== -1) {
 
-        bankAccountName = userBankAccountsArray[objBankAccountRowNumber].name;
+        bankAccountName = userBankAccountsArray[bankAccountRowNumberObj].name;
       }
     }
 
@@ -892,12 +874,12 @@ class Condos {
     let accountName = "-";
 
     // Account name from account table
-    const objAccountRowNumber =
+    const accountRowNumberObj =
       this.accountsArray.findIndex(account => account.accountId === accountId);
-    if (objAccountRowNumber !== -1) {
+    if (accountRowNumberObj !== -1) {
 
       accountName =
-        this.accountsArray[objAccountRowNumber].name;
+        this.accountsArray[accountRowNumberObj].name;
     }
 
     return (accountName) ? accountName : "-";
@@ -912,20 +894,20 @@ class Condos {
     const bankAccountPattern = /^\d{11}$/;
     if ((bankAccountPattern.test(fromBankAccount))) {
 
-      const objBankAccountRowNumber =
+      const bankAccountRowNumberObj =
         userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
-      if (objBankAccountRowNumber !== -1) {
+      if (bankAccountRowNumberObj !== -1) {
 
-        const userId = Number(userBankAccountsArray[objBankAccountRowNumber].userId);
+        const userId = Number(userBankAccountsArray[bankAccountRowNumberObj].userId);
 
         if (userId >= 0) {
 
-          const objUserRowNumber =
+          const userRowNumberObj =
             userArray.findIndex(user => user.userId === userId);
-          if (objUserRowNumber !== -1) {
+          if (userRowNumberObj !== -1) {
 
             condoId =
-              Number(userArray[objUserRowNumber].condoId);
+              Number(userArray[userRowNumberObj].condoId);
           }
         }
       }
@@ -1799,26 +1781,26 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   let accountId = 0;
 
   // Bank Acoount <> Condominium Bank Account
-  let objBankAccountRowNumber = this.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
-  if (objBankAccountRowNumber === -1) {
+  let bankAccountRowNumberObj = this.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
+  if (bankAccountRowNumberObj === -1) {
 
     // Check user bank account
-    const objBankAccountRowNumber = userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
-    if (objBankAccountRowNumber !== -1) {
+    const bankAccountRowNumberObj = userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+    if (bankAccountRowNumberObj !== -1) {
 
-      accountId = userBankAccountsArray[objBankAccountRowNumber].accountId;
+      accountId = userBankAccountsArray[bankAccountRowNumberObj].accountId;
     }
 
     // get Account Id from supplier
-    const objSupplierRowNumber = supplierArray.findIndex(supplier => supplier.bankAccount === bankAccount);
-    if (objSupplierRowNumber !== -1) {
+    const supplierRowNumberObj = supplierArray.findIndex(supplier => supplier.bankAccount === bankAccount);
+    if (supplierRowNumberObj !== -1) {
 
-      accountId = supplierArray[objSupplierRowNumber].accountId;
+      accountId = supplierArray[supplierRowNumberObj].accountId;
 
       // get Account Id from supplier amount
-      const amount = (supplierArray[objSupplierRowNumber].amount) ? Number(supplierArray[objSupplierRowNumber].amount) : 0;
+      const amount = (supplierArray[supplierRowNumberObj].amount) ? Number(supplierArray[supplierRowNumberObj].amount) : 0;
 
-      accountId = (amount === Number(payment)) ? Number(supplierArray[objSupplierRowNumber].accountAmountId) : accountId;
+      accountId = (amount === Number(payment)) ? Number(supplierArray[supplierRowNumberObj].accountAmountId) : accountId;
     }
   }
   return accountId;

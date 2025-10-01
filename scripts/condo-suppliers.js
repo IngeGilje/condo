@@ -316,8 +316,8 @@ async function deleteSupplier() {
   const supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
 
   // Check if supplier id exist
-  const objSupplierRowNumber = objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
-  if (objSupplierRowNumber !== -1) {
+  const supplierRowNumberObj = objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
+  if (supplierRowNumberObj !== -1) {
 
     // delete supplier row
     const user = objUserPassword.email;
@@ -411,10 +411,10 @@ async function updateSupplier(supplierId) {
 
     const condominiumId = objUserPassword.condominiumId;
 
-    const objSupplierRowNumber = objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
+    const supplierRowNumberObj = objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
 
     // Check if supplier exist
-    if (objSupplierRowNumber !== -1) {
+    if (supplierRowNumberObj !== -1) {
 
       // update supplier
       objSuppliers.updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, accountAmountId, amount);

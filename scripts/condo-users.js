@@ -210,10 +210,10 @@ function updateUser(userId) {
 
     const lastUpdate = today.toISOString();
 
-    const objUserRowNumber = objUsers.usersArray.findIndex(user => user.userId === userId);
+    const userRowNumberObj = objUsers.usersArray.findIndex(user => user.userId === userId);
 
     // Check if user exist
-    if (objUserRowNumber !== -1) {
+    if (userRowNumberObj !== -1) {
 
       // update user
       objUsers.updateUsersTable(user, lastUpdate, email, condoId, firstName, lastName, phone, securityLevel, password);
@@ -226,7 +226,7 @@ function updateUser(userId) {
 
     /*
     // Check if object exist
-    if (objUserRowNumber !== -1) {
+    if (userRowNumberObj !== -1) {
 
       /*
       // Update table
@@ -307,9 +307,9 @@ function deleteUserRow(userId) {
       today.toISOString();
 
     // Check if user exist
-    const objUserRowNumber =
+    const userRowNumberObj =
       objUsers.usersArray.findIndex(user => user.userId === userId);
-    if (objUserRowNumber !== -1) {
+    if (userRowNumberObj !== -1) {
 
       // current date
       const lastUpdate =
@@ -397,29 +397,29 @@ function showValues(userId) {
   if (userId >= 0) {
 
     // find object number for selected user Id 
-    const objUserRowNumber = objUsers.usersArray.findIndex(user => user.userId === userId);
-    if (objUserRowNumber !== -1) {
+    const userRowNumberObj = objUsers.usersArray.findIndex(user => user.userId === userId);
+    if (userRowNumberObj !== -1) {
 
       // Show email
-      document.querySelector('.input-users-email').value = objUsers.usersArray[objUserRowNumber].email;
+      document.querySelector('.input-users-email').value = objUsers.usersArray[userRowNumberObj].email;
 
       // Select condoId
-      document.querySelector('.select-users-condoId').value = objUsers.usersArray[objUserRowNumber].condoId;
+      document.querySelector('.select-users-condoId').value = objUsers.usersArray[userRowNumberObj].condoId;
 
       // first name
-      document.querySelector('.input-users-firstName').value = objUsers.usersArray[objUserRowNumber].firstName;
+      document.querySelector('.input-users-firstName').value = objUsers.usersArray[userRowNumberObj].firstName;
 
       // last name
-      document.querySelector('.input-users-lastName').value = objUsers.usersArray[objUserRowNumber].lastName;
+      document.querySelector('.input-users-lastName').value = objUsers.usersArray[userRowNumberObj].lastName;
 
       // Show phone number
-      document.querySelector('.input-users-phone').value = objUsers.usersArray[objUserRowNumber].phone;
+      document.querySelector('.input-users-phone').value = objUsers.usersArray[userRowNumberObj].phone;
 
       // show securityLevel
-      document.querySelector('.select-users-securityLevel').value = objUsers.usersArray[objUserRowNumber].securityLevel;
+      document.querySelector('.select-users-securityLevel').value = objUsers.usersArray[userRowNumberObj].securityLevel;
 
       // password
-      document.querySelector('.input-users-password').value = objUsers.usersArray[objUserRowNumber].password;
+      document.querySelector('.input-users-password').value = objUsers.usersArray[userRowNumberObj].password;
     }
   }
 }
@@ -513,8 +513,8 @@ async function deleteUser() {
   const userId = Number(document.querySelector('.select-users-userId').value);
 
   // Check if user number exist
-  const objUserRowNumber = objUsers.usersArray.findIndex(user => user.userId === userId);
-  if (objUserRowNumber !== -1) {
+  const userRowNumberObj = objUsers.usersArray.findIndex(user => user.userId === userId);
+  if (userRowNumberObj !== -1) {
 
     // delete user row
     const user = objUserPassword.email;

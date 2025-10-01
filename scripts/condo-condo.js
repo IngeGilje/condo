@@ -171,9 +171,9 @@ function updateCondoRow(condoId) {
     const lastUpdate = today.toISOString();
 
     // Check if condo id exist
-    const objCondoRowNumber =
+    const condoRowNumberObj =
       condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objCondoRowNumber !== -1) {
+    if (condoRowNumberObj !== -1) {
 
       // Update condo table
       SQLquery = `
@@ -282,30 +282,30 @@ function showValues(condoId) {
   if (condoId >= 0) {
 
     // find object number for selected condo id
-    const objCondoRowNumber = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objCondoRowNumber !== -1) {
+    const condoRowNumberObj = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
+    if (condoRowNumberObj !== -1) {
 
       // Condo id
-      const condoId = objCondo.condoArray[objCondoRowNumber].condoId;
+      const condoId = objCondo.condoArray[condoRowNumberObj].condoId;
       objCondo.selectCondoId(condoId, 'condo-condoId')
 
       // Condo name
-      document.querySelector('.input-condo-name').value = objCondo.condoArray[objCondoRowNumber].name;
+      document.querySelector('.input-condo-name').value = objCondo.condoArray[condoRowNumberObj].name;
 
       // Show street
-      document.querySelector('.input-condo-street').value = objCondo.condoArray[objCondoRowNumber].street;
+      document.querySelector('.input-condo-street').value = objCondo.condoArray[condoRowNumberObj].street;
 
       // Show address 2
-      document.querySelector('.input-condo-address2').value = objCondo.condoArray[objCondoRowNumber].address2;
+      document.querySelector('.input-condo-address2').value = objCondo.condoArray[condoRowNumberObj].address2;
 
       // Show postal code
-      document.querySelector('.input-condo-postalCode').value = objCondo.condoArray[objCondoRowNumber].postalCode;
+      document.querySelector('.input-condo-postalCode').value = objCondo.condoArray[condoRowNumberObj].postalCode;
 
       // Show city
-      document.querySelector('.input-condo-city').value = objCondo.condoArray[objCondoRowNumber].city;
+      document.querySelector('.input-condo-city').value = objCondo.condoArray[condoRowNumberObj].city;
 
       // Show square meters
-      document.querySelector('.input-condo-squareMeters').value = formatOreToKroner(objCondo.condoArray[objCondoRowNumber].squareMeters);
+      document.querySelector('.input-condo-squareMeters').value = formatOreToKroner(objCondo.condoArray[condoRowNumberObj].squareMeters);
     }
   }
 }
@@ -400,8 +400,8 @@ async function updateCondo(condoId) {
     const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
 
     // Check if condo id exist
-    const objCondoRowNumber = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
-    if (objCondoRowNumber !== -1) {
+    const condoRowNumberObj = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
+    if (condoRowNumberObj !== -1) {
 
       // update condo
       await objCondo.updateCondoTable(condoId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters);
@@ -422,8 +422,8 @@ async function deleteCondo() {
   const condoId = Number(document.querySelector('.select-condo-condoId').value);
 
   // Check if condo id exist
-  const objCondoRowNumber = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
-  if (objCondoRowNumber !== -1) {
+  const condoRowNumberObj = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
+  if (condoRowNumberObj !== -1) {
 
     // delete condo row
     const user = objUserPassword.email;

@@ -18,8 +18,7 @@ objBudgets.markSelectedMenu('Budsjett');
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  window.location.href =
-    'http://localhost/condo-login.html';
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
   // Call main when script loads
@@ -255,13 +254,13 @@ function updateBudgetRow(budgetId) {
       today.toISOString();
 
     // Check if budget exist
-    let objBudgetRowNumber = -1;
+    let budgetRowNumberObj = -1;
     if (objBudgets.budgetsArray.length > 0) {
 
-      objBudgetRowNumber = objBudgets.budgetsArray.findIndex(budget => budget.budgetId === budgetId);
+      budgetRowNumberObj = objBudgets.budgetsArray.findIndex(budget => budget.budgetId === budgetId);
     }
 
-    if (objBudgetRowNumber !== -1) {
+    if (budgetRowNumberObj !== -1) {
 
       // Update budget table
       SQLquery =
@@ -351,36 +350,36 @@ function showValues(budgetId) {
   // find object number for selected budget 
   // Check if budget exist
   /*
-  let objBudgetRowNumber = -1;
+  let budgetRowNumberObj = -1;
   if (budgetsArray.length > 0) {
  
-    objBudgetRowNumber =
+    budgetRowNumberObj =
       budgetsArray.findIndex(budget => budget.budgetId === budgetId);
   }
  
-  if (objBudgetRowNumber !== -1) {
+  if (budgetRowNumberObj !== -1) {
  
   // Select budget
   const budgetId =
-    budgetsArray[objBudgetRowNumber].budgetId;
+    budgetsArray[budgetRowNumberObj].budgetId;
   */
 
   // Check for valid budget Id
   if (budgetId >= 0) {
 
     // Find object number budget array
-    const objBudgetRowNumber = objBudgets.budgetsArray.findIndex(budget => budget.budgetId === budgetId);
-    if (objBudgetRowNumber !== -1) {
+    const budgetRowNumberObj = objBudgets.budgetsArray.findIndex(budget => budget.budgetId === budgetId);
+    if (budgetRowNumberObj !== -1) {
 
       // Select account
-      const accountId = objBudgets.budgetsArray[objBudgetRowNumber].accountId;
+      const accountId = objBudgets.budgetsArray[budgetRowNumberObj].accountId;
       objAccounts.selectAccountId(accountId, 'budgets-accountId');
 
       // Show select year
-      document.querySelector('.select-budgets-year').value = objBudgets.budgetsArray[objBudgetRowNumber].year;
+      document.querySelector('.select-budgets-year').value = objBudgets.budgetsArray[budgetRowNumberObj].year;
 
       // Show amount
-      document.querySelector('.input-budgets-amount').value = formatOreToKroner(objBudgets.budgetsArray[objBudgetRowNumber].amount);
+      document.querySelector('.input-budgets-amount').value = formatOreToKroner(objBudgets.budgetsArray[budgetRowNumberObj].amount);
     }
   }
 }
@@ -424,13 +423,13 @@ function deleteBudgetRow() {
   if (budgetId >= 0) {
 
     // Check if budget id exist
-    let objBudgetRowNumber = -1;
+    let budgetRowNumberObj = -1;
     if (objBudgets.budgetsArray.length > 0) {
 
-      objBudgetRowNumber =
+      budgetRowNumberObj =
         objBudgets.budgetsArray.findIndex(budget => budget.budgetId === budgetId);
     }
-    if (objBudgetRowNumber !== -1) {
+    if (budgetRowNumberObj !== -1) {
 
       // current date
       const lastUpdate =

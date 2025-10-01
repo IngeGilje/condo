@@ -598,8 +598,8 @@ async function deleteCondominium() {
   const condominiumId = Number(document.querySelector('.select-condominiums-condominiumId').value);
 
   // Check if condominium number exist
-  const objCondominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-  if (objCondominiumRowNumber !== -1) {
+  const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+  if (condominiumRowNumberObj !== -1) {
 
     // delete condominium row
     const user = objUserPassword.email;

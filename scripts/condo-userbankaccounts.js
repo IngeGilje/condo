@@ -198,10 +198,10 @@ function updateUserBankAccount() {
 
     const lastUpdate = today.toISOString();
 
-    const objBankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const bankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
     // Check if user bank account exist
-    if (objBankAccountRowNumber !== -1) {
+    if (bankAccountRowNumberObj !== -1) {
 
       // Update table
       SQLquery =
@@ -299,20 +299,20 @@ function showValues(userBankAccountId) {
   if (userBankAccountId >= 0) {
 
     // find object number for selected user bank accountId
-    const objBankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
-    if (objBankAccountRowNumber !== -1) {
+    const bankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    if (bankAccountRowNumberObj !== -1) {
 
       // Select userId
-      document.querySelector('.select-userbankaccounts-userId').value = objUserBankAccounts.userBankAccountsArray[objBankAccountRowNumber].userId;
+      document.querySelector('.select-userbankaccounts-userId').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].userId;
 
       // Select accountId
-      document.querySelector('.select-userbankaccounts-accountId').value = objUserBankAccounts.userBankAccountsArray[objBankAccountRowNumber].accountId;
+      document.querySelector('.select-userbankaccounts-accountId').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].accountId;
 
       // Show bank account name
-      document.querySelector('.input-userbankaccounts-name').value = objUserBankAccounts.userBankAccountsArray[objBankAccountRowNumber].name;
+      document.querySelector('.input-userbankaccounts-name').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].name;
 
       // Show bank account
-      document.querySelector('.input-userbankaccounts-bankAccount').value = objUserBankAccounts.userBankAccountsArray[objBankAccountRowNumber].bankAccount;
+      document.querySelector('.input-userbankaccounts-bankAccount').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].bankAccount;
     }
   }
 }
@@ -402,8 +402,8 @@ async function updateUserBankAccount(userBankAccountId) {
     const bankAccount = document.querySelector('.input-userbankaccounts-bankAccount').value;
 
     // Check if user Bank Account id exist
-    const objUserBankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
-    if (objUserBankAccountRowNumber !== -1) {
+    const userBankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    if (userBankAccountRowNumberObj !== -1) {
 
       // update user bank account
       await objUserBankAccounts.updateUserBankAccountsTable(userBankAccountId, condominiumId, user, lastUpdate, userId, accountId, name, bankAccount);
@@ -422,8 +422,8 @@ async function deleteUserBankAccount() {
   const userBankAccountId = Number(document.querySelector('.select-userbankaccounts-userBankAccountId').value);
 
   // Check if user bank account id exist
-  const objUserBankAccountsRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
-  if (objUserBankAccountsRowNumber !== -1) {
+  const userBankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+  if (userBankAccountRowNumberObj !== -1) {
 
     // delete user bank account row
     const user = objUserPassword.email;

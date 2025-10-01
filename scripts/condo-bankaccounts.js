@@ -300,11 +300,11 @@ function updateBankAccount() {
       const lastUpdate =
         today.toISOString();
 
-      const objAccountRowNumber =
+      const accountRowNumberObj =
         objBankAccounts.bankAccountsArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
 
       // Check if bank account number exist
-      if (objAccountRowNumber !== -1) {
+      if (accountRowNumberObj !== -1) {
 
         // Update table
         SQLquery = `
@@ -369,9 +369,9 @@ function deleteAccountRow() {
   if (bankAccountId >= 0) {
 
     // Check if bank account exist
-    const objAccountRowNumber =
+    const accountRowNumberObj =
       objBankAccounts.bankAccountsArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
-    if (objAccountRowNumber !== -1) {
+    if (accountRowNumberObj !== -1) {
 
       // Delete table
       SQLquery = `
@@ -445,30 +445,30 @@ function showValues(bankAccountId) {
   if (bankAccountId >= 0) {
 
     // find object number for selected account 
-    const objAccountRowNumber = objBankAccounts.bankAccountsArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
-    if (objAccountRowNumber !== -1) {
+    const accountRowNumberObj = objBankAccounts.bankAccountsArray.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
+    if (accountRowNumberObj !== -1) {
 
       // Select bank account
-      const bankAccountId = objBankAccounts.bankAccountsArray[objAccountRowNumber].bankAccountId;
+      const bankAccountId = objBankAccounts.bankAccountsArray[accountRowNumberObj].bankAccountId;
       objBankAccounts.selectBankAccountId(bankAccountId, 'bankaccounts-bankAccountId');
 
       // account name
-      document.querySelector('.input-bankaccounts-name').value = objBankAccounts.bankAccountsArray[objAccountRowNumber].name;
+      document.querySelector('.input-bankaccounts-name').value = objBankAccounts.bankAccountsArray[accountRowNumberObj].name;
 
       // account number
-      document.querySelector('.input-bankaccounts-bankAccount').value = objBankAccounts.bankAccountsArray[objAccountRowNumber].bankAccount;
+      document.querySelector('.input-bankaccounts-bankAccount').value = objBankAccounts.bankAccountsArray[accountRowNumberObj].bankAccount;
 
       // opening balance date
-      document.querySelector('.input-bankaccounts-openingBalanceDate').value = formatToNorDate(objBankAccounts.bankAccountsArray[objAccountRowNumber].openingBalanceDate);
+      document.querySelector('.input-bankaccounts-openingBalanceDate').value = formatToNorDate(objBankAccounts.bankAccountsArray[accountRowNumberObj].openingBalanceDate);
 
       // opening balance
-      document.querySelector('.input-bankaccounts-openingBalance').value = formatOreToKroner(objBankAccounts.bankAccountsArray[objAccountRowNumber].openingBalance);
+      document.querySelector('.input-bankaccounts-openingBalance').value = formatOreToKroner(objBankAccounts.bankAccountsArray[accountRowNumberObj].openingBalance);
 
       // closing balance date
-      document.querySelector('.input-bankaccounts-closingBalanceDate').value = formatToNorDate(objBankAccounts.bankAccountsArray[objAccountRowNumber].closingBalanceDate);
+      document.querySelector('.input-bankaccounts-closingBalanceDate').value = formatToNorDate(objBankAccounts.bankAccountsArray[accountRowNumberObj].closingBalanceDate);
 
       // closing balance
-      document.querySelector('.input-bankaccounts-closingBalance').value = formatOreToKroner(objBankAccounts.bankAccountsArray[objAccountRowNumber].closingBalance);
+      document.querySelector('.input-bankaccounts-closingBalance').value = formatOreToKroner(objBankAccounts.bankAccountsArray[accountRowNumberObj].closingBalance);
     }
   }
 }

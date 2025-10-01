@@ -10,7 +10,6 @@ const objSuppliers = new Suppliers('suppliers');
 const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objBankAccountMovements = new BankAccountMovements('bankaccountmovements');
 
-
 testMode();
 
 // Exit application if no activity for 1 hour

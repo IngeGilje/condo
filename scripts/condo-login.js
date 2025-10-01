@@ -110,15 +110,15 @@ function createEvents() {
         document.querySelector('.input-password').value;
 
       // Security level
-      const objUserRowNumber =
+      const userRowNumberObj =
         userArray.findIndex(userRow => userRow.email === email);
-      if (objUserRowNumber !== -1) {
+      if (userRowNumberObj !== -1) {
 
         const securityLevel =
-          userArray[objUserRowNumber].securityLevel;
+          userArray[userRowNumberObj].securityLevel;
 
         const condominiumId =
-          userArray[objUserRowNumber].condominiumId;
+          userArray[userRowNumberObj].condominiumId;
 
         // Save email/user, password and security level
         sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));

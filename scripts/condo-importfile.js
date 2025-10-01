@@ -1,359 +1,349 @@
 // Import of bank transaction file 
 
 // Activate objects
-const today =
-  new Date();
-const objUser =
-  new User('user');
-const objUserBankAccount =
-  new UserBankAccount('userbankaccount');
-const objCondominium =
-  new Condominium('condominium');
-const objCondo =
-  new Condo('condo');
-const objBankAccountMovement =
-  new BankAccountMovement('bankaccountmovement');
-const objAccount =
-  new Account('account');
-const objBankAccount =
-  new BankAccount('bankaccount');
-const objDue =
-  new Due('due');
-const objSupplier =
-  new Supplier('supplier');
-const objImportFile =
-  new ImportFile('importfile');
+const today = new Date();
+const objUsers = new Users('users');
+const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
+const objCondominiums = new Condominiums('condominiums');
+const objCondo = new Condo('condo');
+const objBankAccountMovements = new BankAccountMovements('bankaccountmovements');
+const objAccounts = new Accounts('accounts');
+const objBankAccounts = new BankAccounts('bankaccounts');
+const objDues = new Dues('dues');
+const objSuppliers = new Suppliers('suppliers');
+const objImportFile = new ImportFile('importfile');
 
-let userArrayCreated =
-  false;
-let condominiumArrayCreated =
-  false;
-let condoArrayCreated =
-  false;
-let accountArrayCreated =
-  false;
-let bankAccountArrayCreated =
-  false;
-let dueArrayCreated =
-  false;
-let supplierArrayCreated =
-  false;
-let bankAccountMovementArrayCreated =
-  false;
-let userBankAccountArrayCreated =
-  false;
-let textFileArrayCreated =
-  false
-
-testMode()
+testMode();
 
 // Exit application if no activity for 1 hour
 //exitIfNoActivity()
-
-let importFileArray =
-  [];
-let textFile;
-
-let isEventsCreated
 
 // Mark selected menu
 objImportFile.menu();
 objImportFile.markSelectedMenu('Importer banktransaksjoner');
 
-let socket;
-socket =
-  connectingToServer();
-
 // Validate user/password
-const objUserPassword =
-  JSON.parse(sessionStorage.getItem('user'));
+const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  window.location.href =
-    'condo-login.html';
+  window.location.href = 'condo-login.html';
 } else {
 
-  // Send a requests to the server
-  socket.onopen = () => {
+  // Call main when script loads
+  main();
 
-    // Sends a request to the server to get users
-    let SQLquery =
-      `
-        SELECT * FROM users
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY userId;
-      `;
-    updateMySql(SQLquery, 'user', 'SELECT');
-    userArrayCreated =
-      false;
+  // Main entry point
+  async function main() {
 
-    // Sends a request to the server to get condominiums
-    SQLquery =
-      `
-        SELECT * FROM condominium
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY condominiumId;
-      `;
-    updateMySql(SQLquery, 'condominium', 'SELECT');
-    condominiumArrayCreated =
-      false;
+    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
+    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId);
+    await objCondo.loadCondoTable(objUserPassword.condominiumId);
+    await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
+    await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
+    await objDues.loadDuesTable(objUserPassword.condominiumId);
 
-    // Sends a request to the server to get condos
-    SQLquery =
-      `
-        SELECT * FROM condo
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY condoId;
-      `;
+    amount = 0;
+    condominiumId = objUserPassword.condominiumId;
+    const condoId = 999999999;
+    const accountId = 999999999;
+    let fromDate = "01.01." + String(today.getFullYear());
+    fromDate = Number(convertDateToISOFormat(fromDate));
+    let toDate = getCurrentDate();
+    toDate = Number(convertDateToISOFormat(toDate));
+    await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, accountId, amount, fromDate, toDate);
 
-    updateMySql(SQLquery, 'condo', 'SELECT');
-    condoArrayCreated =
-      false;
+    showLeadingText();
+    showValues();
 
-    // Sends a request to the server to get accounts
-    SQLquery =
-      `
-        SELECT * FROM accounts
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY accountId;
-      `;
-    updateMySql(SQLquery, 'account', 'SELECT');
-    accountArrayCreated =
-      false;
+    // Make events
+    createEvents();
+  }
+}
+/*
+// Send a requests to the server
+socket.onopen = () => {
 
-    // Sends a request to the server to get bank accounts
-    SQLquery =
-      `
-        SELECT * FROM bankaccount
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY bankaccountId;
-      `;
-    updateMySql(SQLquery, 'bankaccount', 'SELECT');
-    bankAccountArrayCreated =
-      false;
+  // Sends a request to the server to get users
+  let SQLquery =
+    `
+      SELECT * FROM users
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY userId;
+    `;
+  updateMySql(SQLquery, 'user', 'SELECT');
+  userArrayCreated =
+    false;
 
-    // Sends a request to the server to get dues
-    SQLquery =
-      `
-        SELECT * FROM due
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY dueId;
-      `;
-    updateMySql(SQLquery, 'due', 'SELECT');
-    dueArrayCreated =
-      false;
+  // Sends a request to the server to get condominiums
+  SQLquery =
+    `
+      SELECT * FROM condominium
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY condominiumId;
+    `;
+  updateMySql(SQLquery, 'condominium', 'SELECT');
+  condominiumArrayCreated =
+    false;
 
-    // Sends a request to the server to get suppliers
-    SQLquery =
-      `
-        SELECT * FROM supplier
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY supplierId;
-      `;
-    updateMySql(SQLquery, 'supplier', 'SELECT');
-    supplierArrayCreated =
-      false;
+  // Sends a request to the server to get condos
+  SQLquery =
+    `
+      SELECT * FROM condo
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY condoId;
+    `;
 
-    // Sends a request to the server to get bank account movement
-    SQLquery =
-      `
-        SELECT * FROM bankaccountmovement
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-        ORDER BY bankAccountMovementId;
-      `;
-    updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-    bankAccountMovementArrayCreated =
-      false;
+  updateMySql(SQLquery, 'condo', 'SELECT');
+  condoArrayCreated =
+    false;
 
-    // Sends a request to the server to get user bank account
-    SQLquery =
-      `
-        SELECT * FROM userbankaccount
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY userBankAccountId;
-      `;
-    updateMySql(SQLquery, 'userbankaccount', 'SELECT');
-    userBankAccountArrayCreated =
-      false;
-  };
+  // Sends a request to the server to get accounts
+  SQLquery =
+    `
+      SELECT * FROM accounts
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY accountId;
+    `;
+  updateMySql(SQLquery, 'account', 'SELECT');
+  accountArrayCreated =
+    false;
 
-  // Handle incoming messages from server
-  socket.onmessage = (event) => {
+  // Sends a request to the server to get bank accounts
+  SQLquery =
+    `
+      SELECT * FROM bankaccount
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY bankaccountId;
+    `;
+  updateMySql(SQLquery, 'bankaccount', 'SELECT');
+  bankAccountArrayCreated =
+    false;
 
-    let messageFromServer =
-      event.data;
+  // Sends a request to the server to get dues
+  SQLquery =
+    `
+      SELECT * FROM due
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY dueId;
+    `;
+  updateMySql(SQLquery, 'due', 'SELECT');
+  dueArrayCreated =
+    false;
 
-    // Converts a JavaScript Object Notation (JSON) string into an object
-    const objInfo =
-      JSON.parse(messageFromServer);
+  // Sends a request to the server to get suppliers
+  SQLquery =
+    `
+      SELECT * FROM supplier
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY supplierId;
+    `;
+  updateMySql(SQLquery, 'supplier', 'SELECT');
+  supplierArrayCreated =
+    false;
 
-    if (objInfo.CRUD === 'SELECT') {
-      switch (objInfo.tableName) {
+  // Sends a request to the server to get bank account movement
+  SQLquery =
+    `
+      SELECT * FROM bankaccountmovement
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+      ORDER BY bankAccountMovementId;
+    `;
+  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+  bankAccountMovementArrayCreated =
+    false;
 
-        case 'user':
+  // Sends a request to the server to get user bank account
+  SQLquery =
+    `
+      SELECT * FROM userbankaccount
+      WHERE condominiumId = ${objUserPassword.condominiumId}
+        AND deleted <> 'Y'
+      ORDER BY userBankAccountId;
+    `;
+  updateMySql(SQLquery, 'userbankaccount', 'SELECT');
+  userBankAccountArrayCreated =
+    false;
+};
 
-          // user table
-          console.log('userTable');
+// Handle incoming messages from server
+socket.onmessage = (event) => {
 
-          userArray = objInfo.tableArray;
-          userArrayCreated =
-            true;
-          break;
+  let messageFromServer =
+    event.data;
 
-        case 'condominium':
+  // Converts a JavaScript Object Notation (JSON) string into an object
+  const objInfo =
+    JSON.parse(messageFromServer);
 
-          // condonium table
-          console.log('condoniumTable');
+  if (objInfo.CRUD === 'SELECT') {
+    switch (objInfo.tableName) {
 
-          condominiumArray = objInfo.tableArray;
-          condominiumArrayCreated =
-            true;
-          break;
+      case 'user':
 
-        case 'condo':
+        // user table
+        console.log('userTable');
 
-          // condo table
-          console.log('condoTable');
+        userArray = objInfo.tableArray;
+        userArrayCreated =
+          true;
+        break;
 
-          condoArray = objInfo.tableArray;
-          condoArrayCreated =
-            true;
-          break;
+      case 'condominium':
 
-        case 'account':
+        // condonium table
+        console.log('condoniumTable');
 
-          // account table
-          console.log('accountTable');
+        condominiumArray = objInfo.tableArray;
+        condominiumArrayCreated =
+          true;
+        break;
 
-          accountsArray = objInfo.tableArray;
-          accountArrayCreated =
-            true;
-          break;
+      case 'condo':
 
-        case 'bankaccount':
+        // condo table
+        console.log('condoTable');
 
-          // account table
-          console.log('bankAccountTable');
+        condoArray = objInfo.tableArray;
+        condoArrayCreated =
+          true;
+        break;
 
-          bankAccountsArray = objInfo.tableArray;
-          bankAccountArrayCreated =
-            true;
-          break;
+      case 'account':
 
-        case 'due':
+        // account table
+        console.log('accountTable');
 
-          // due table
-          console.log('dueTable');
+        accountsArray = objInfo.tableArray;
+        accountArrayCreated =
+          true;
+        break;
 
-          dueArray = objInfo.tableArray;
-          dueArrayCreated =
-            true;
-          break;
+      case 'bankaccount':
 
-        case 'supplier':
+        // account table
+        console.log('bankAccountTable');
 
-          // supplier table
-          console.log('supplierTable');
+        bankAccountsArray = objInfo.tableArray;
+        bankAccountArrayCreated =
+          true;
+        break;
 
-          supplierArray = objInfo.tableArray;
-          supplierArrayCreated =
-            true;
-          break;
+      case 'due':
 
-        case 'bankaccountmovement':
+        // due table
+        console.log('dueTable');
 
-          // bank account movement table
-          console.log('bankaccountmovementTable');
+        dueArray = objInfo.tableArray;
+        dueArrayCreated =
+          true;
+        break;
 
-          // array including objects with bank account movement information
-          bankAccountMovementArray = objInfo.tableArray;
-          bankAccountMovementArrayCreated =
-            true;
-          break;
+      case 'supplier':
 
-        case 'userbankaccount':
+        // supplier table
+        console.log('supplierTable');
 
-          // user bank account table
-          console.log('userbankaccountTable');
+        supplierArray = objInfo.tableArray;
+        supplierArrayCreated =
+          true;
+        break;
 
-          // array including objects with user bank account information
-          userBankAccountsArray = objInfo.tableArray;
-          userBankAccountArrayCreated = true;
+      case 'bankaccountmovement':
 
-          setTimeout(() => {
+        // bank account movement table
+        console.log('bankaccountmovementTable');
 
-            if (userArrayCreated
-              && condominiumArrayCreated
-              && condoArrayCreated
-              && accountArrayCreated
-              && bankAccountArrayCreated
-              && dueArrayCreated
-              && supplierArrayCreated
-              && bankAccountMovementArrayCreated
-              && userBankAccountArrayCreated) {
+        // array including objects with bank account movement information
+        bankAccountMovementArray = objInfo.tableArray;
+        bankAccountMovementArrayCreated =
+          true;
+        break;
 
-              showLeadingText();
-              showValues();
+      case 'userbankaccount':
 
-              // Make events
-              isEventsCreated =
-               (isEventsCreated) ? true : createEvents();
-            }
-          }, 100);
+        // user bank account table
+        console.log('userbankaccountTable');
 
-          break;
-      }
+        // array including objects with user bank account information
+        userBankAccountsArray = objInfo.tableArray;
+        userBankAccountArrayCreated = true;
+
+        setTimeout(() => {
+
+          if (userArrayCreated
+            && condominiumArrayCreated
+            && condoArrayCreated
+            && accountArrayCreated
+            && bankAccountArrayCreated
+            && dueArrayCreated
+            && supplierArrayCreated
+            && bankAccountMovementArrayCreated
+            && userBankAccountArrayCreated) {
+
+            showLeadingText();
+            showValues();
+
+            // Make events
+            isEventsCreated =
+             (isEventsCreated) ? true : createEvents();
+          }
+        }, 100);
+
+        break;
+    }
+  }
+
+  if (objInfo.CRUD === 'textFile') {
+
+    // text file
+    console.log('textFile');
+
+    createImportFileArray(objInfo.tableArray);
+    textFileArrayCreated =
+      true
+  }
+
+  if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
+
+    switch (objInfo.tableName) {
+      case 'bankaccountmovement':
+
+        // Sends a request to the server to get condos one more time
+        SQLquery =
+          `
+            SELECT * FROM bankaccountmovement
+            WHERE condominiumId = ${objUserPassword.condominiumId}
+            ORDER BY bankAccountMovementId;
+          `;
+        updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+        bankAccountMovementArrayCreated =
+          false;
+        break;
+    };
+
+    // Handle errors
+    socket.onerror = (error) => {
+
+      // Close socket on error and let onclose handle reconnection
+      socket.close();
     }
 
-    if (objInfo.CRUD === 'textFile') {
-
-      // text file
-      console.log('textFile');
-
-      createImportFileArray(objInfo.tableArray);
-      textFileArrayCreated =
-        true
-    }
-
-    if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
-
-      switch (objInfo.tableName) {
-        case 'bankaccountmovement':
-
-          // Sends a request to the server to get condos one more time
-          SQLquery =
-            `
-              SELECT * FROM bankaccountmovement
-              WHERE condominiumId = ${objUserPassword.condominiumId}
-              ORDER BY bankAccountMovementId;
-            `;
-          updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-          bankAccountMovementArrayCreated =
-            false;
-          break;
-      };
-
-      // Handle errors
-      socket.onerror = (error) => {
-
-        // Close socket on error and let onclose handle reconnection
-        socket.close();
-      }
-
-      // Handle disconnection
-      socket.onclose = () => {
-      }
+    // Handle disconnection
+    socket.onclose = () => {
     }
   }
 }
+}
+*/
 
 // Make importfile events
 function createEvents() {
@@ -362,47 +352,21 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-importfile-startImport')) {
 
-      // file import text name
-      const importFileName =
-        document.querySelector('.input-importfile-importFileName').value;
+      // start import of bank account movements
+      startImportSync();
 
-      // Sends a request to the server to get bank account movement text file from bank
-      updateMySql("", importFileName, 'textFile');
-      textFileArrayCreated =
-        false;
+      // start import of bank account movements
+      async function startImportSync() {
 
-      setTimeout(() => {
+        // file import text name
+        const importFileName = document.querySelector('.input-importfile-importFileName').value;
 
-        document.querySelector(".div-importfile-importFileName").remove();
-        document.querySelector(".div-importfile-startImport").remove();
+        // Sends a request to the server to get bank account movement text file from bank
+        //updateMySql("", importFileName, 'textFile');
 
-        if (userArrayCreated
-          && condominiumArrayCreated
-          && condoArrayCreated
-          && accountArrayCreated
-          && bankAccountArrayCreated
-          && dueArrayCreated
-          && supplierArrayCreated
-          && bankAccountMovementArrayCreated
-          && userBankAccountArrayCreated
-          && textFileArrayCreated) {
-
-          showImportedTextFile();
-          showBankAccountMovements();
-        } else {
-
-          console.log("userArrayCreated: ",userArrayCreated)
-          console.log("condominiumArrayCreated: ",condominiumArrayCreated)
-          console.log("condoArrayCreated: ",condoArrayCreated)
-          console.log("accountArrayCreated: ",accountArrayCreated)
-          console.log("bankAccountArrayCreated: ",bankAccountArrayCreated)
-          console.log("dueArrayCreated: ",dueArrayCreated)
-          console.log("supplierArrayCreated: ",supplierArrayCreated)
-          console.log("bankAccountMovementArrayCreated: ",bankAccountMovementArrayCreated)
-          console.log("userBankAccountArrayCreated: ",userBankAccountArrayCreated)
-          console.log("textFileArrayCreated: ",textFileArrayCreated)
-        }
-      }, 100);
+        showImportedTextFile();
+        showBankAccountMovements();
+      };
     };
   });
 
@@ -878,7 +842,7 @@ function updateBankAccountMovements() {
 function updateOpeningClosingBalance() {
 
   let bankAccountId = 0;
-  let objBankAccountRowNumber = 0;
+  let bankAccountRowNumberObj = 0;
   let bankAccountRowNumber = 0;
 
   let openingBalanceDate;
@@ -919,7 +883,7 @@ function updateOpeningClosingBalance() {
         accountingDate.split(',');
 
       // Get row number for bank account number in bank account array
-      objBankAccountRowNumber =
+      bankAccountRowNumberObj =
         (bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
 
       // Get row number for bank account number in bank account table
@@ -927,20 +891,20 @@ function updateOpeningClosingBalance() {
         (bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber) + 1);
 
       bankAccountId =
-        bankAccountsArray[objBankAccountRowNumber].bankAccountId;
+        bankAccountsArray[bankAccountRowNumberObj].bankAccountId;
 
       // Get current opening and closing balance
       currentOpeningBalance =
-        bankAccountsArray[objBankAccountRowNumber].openingBalance;
+        bankAccountsArray[bankAccountRowNumberObj].openingBalance;
 
       currentOpeningBalanceDate =
-        bankAccountsArray[objBankAccountRowNumber].openingBalanceDate;
+        bankAccountsArray[bankAccountRowNumberObj].openingBalanceDate;
 
       currentClosingBalance =
-        bankAccountsArray[objBankAccountRowNumber].closingBalance;
+        bankAccountsArray[bankAccountRowNumberObj].closingBalance;
 
       currentClosingBalanceDate =
-        bankAccountsArray[objBankAccountRowNumber].closingBalanceDate;
+        bankAccountsArray[bankAccountRowNumberObj].closingBalanceDate;
     }
 
     // Update opening balance date
@@ -1169,12 +1133,12 @@ function showLeadingText() {
 function showValues() {
 
   // get name of importfile
-  const objCondominiumRowNumber =
+  const condominiumRowNumberObj =
     condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-  if (objCondominiumRowNumber !== -1) {
+  if (condominiumRowNumberObj !== -1) {
 
     // file import text name
     document.querySelector('.input-importfile-importFileName').value =
-      condominiumArray[objCondominiumRowNumber].importPath;
+      condominiumArray[condominiumRowNumberObj].importPath;
   }
 }
