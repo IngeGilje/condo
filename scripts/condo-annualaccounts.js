@@ -333,8 +333,44 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-filter-fromDate')) {
 
-      // Show selected bank account movements
-      getSelectedBankAccountMovement();
+      // Search bank account movement and reload bank account movement
+      searchFromDateSync();
+
+      // Search for bank account movement
+      async function searchFromDateSync() {
+
+        const condominiumId = objUserPassword.condominiumId;
+        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
+        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
+
+        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+
+        // Show annual accounts
+        showAnnualAccounts();
+
+        // Show income for next year
+        showIncomeNextYear();
+
+        // Show remote Heating
+        showRemoteHeating();
+
+        // Show bank deposit for next year
+        showBankDeposit();
+
+        /*
+        // Sends a request to the server to get selected bank account movements
+        SQLquery =
+          `
+            SELECT * FROM bankaccountmovement
+            WHERE condominiumId = ${objUserPassword.condominiumId}
+            AND deleted <> 'Y'
+            AND date BETWEEN ${fromDate} AND ${toDate};
+          `;
+              console.log(SQLquery);
+              updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
+              bankAccountMovementArrayCreated = false;
+        */
+      };
     };
   });
 
@@ -342,8 +378,30 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-filter-toDate')) {
 
-      // Show selected bank account movements
-      getSelectedBankAccountMovement();
+      // Search bank account movement and reload bank account movement
+      searchToDateSync();
+
+      // Search for bank account movements
+      async function searchToDateSync() {
+
+        const condominiumId = objUserPassword.condominiumId;
+        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
+        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
+
+        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+
+        // Show annual accounts
+        showAnnualAccounts();
+
+        // Show income for next year
+        showIncomeNextYear();
+
+        // Show remote Heating
+        showRemoteHeating();
+
+        // Show bank deposit for next year
+        showBankDeposit();
+      };
     };
   });
 
@@ -351,8 +409,30 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-filter-budgetYear')) {
 
-      // Show selected bank account movements
-      getSelectedBankAccountMovement();
+      // Search bank account movement and reload bank account movement
+      searchBudgetYearSync();
+
+      // Search for bank account movements
+      async function searchBudgetYearSync() {
+
+        const condominiumId = objUserPassword.condominiumId;
+        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
+        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
+
+        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+
+        // Show annual accounts
+        showAnnualAccounts();
+
+        // Show income for next year
+        showIncomeNextYear();
+
+        // Show remote Heating
+        showRemoteHeating();
+
+        // Show bank deposit for next year
+        showBankDeposit();
+      };
     };
   });
 
@@ -360,16 +440,36 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-filter-priceSquareMeter')) {
 
-      let priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
-      priceSquareMeter = formatKronerToOre(priceSquareMeter);
-      document.querySelector('.input-filter-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);;
+      // Search bank account movement and reload bank account movement
+      searchBudgetYearSync();
 
-      // Show selected bank account movements
-      getSelectedBankAccountMovement();
+      // Search for bank account movements
+      async function searchBudgetYearSync() {
+
+        let priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
+        priceSquareMeter = formatKronerToOre(priceSquareMeter);
+        document.querySelector('.input-filter-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);;
+
+        const condominiumId = objUserPassword.condominiumId;
+        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
+        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
+
+        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+
+        // Show annual accounts
+        showAnnualAccounts();
+
+        // Show income for next year
+        showIncomeNextYear();
+
+        // Show remote Heating
+        showRemoteHeating();
+
+        // Show bank deposit for next year
+        showBankDeposit();
+      };
     };
   });
-
-  return true;
 }
 
 // Show leading text Filter
@@ -703,10 +803,11 @@ function getFixedCost(fromDate, toDate) {
 
 // Show current bank deposit and estimated bank deposit for next year
 function showBankDeposit() {
-  let budgetYear = document.querySelector('.select-filter-budgetYear').value;
+
+  let nextBudgetYear = Number(document.querySelector('.select-filter-budgetYear').value) + 1;
 
   let html = startHTMLTable();
-  html += HTMLTableHeader('Tekst', 'Dato', `Beløp ${budgetYear}`);
+  html += HTMLTableHeader('Tekst', 'Dato', `Beløp ${nextBudgetYear}`);
 
   let rowNumber = 0;
   let accAmount = 0;
@@ -738,11 +839,11 @@ function showBankDeposit() {
   accAmount += Number(formatKronerToOre(bankDepositAmount));
 
   // Next budget year
-  budgetYear = Number(document.querySelector('.select-filter-budgetYear').value) + 1;
+  //budgetYear = Number(document.querySelector('.select-filter-budgetYear').value) + 1;
 
   // budget
   objBudgets.budgetsArray.forEach((budget) => {
-    if (Number(budget.year) === budgetYear) {
+    if (Number(budget.year) === nextBudgetYear) {
       if (Number(budget.amount) !== 0) {
 
         rowNumber++;
@@ -798,6 +899,7 @@ function showBankDeposit() {
   document.querySelector('.div-grid-annualaccounts-bankDeposit').innerHTML = html;
 }
 
+/*
 // Get selected bank account movement 
 function getSelectedBankAccountMovement() {
 
@@ -818,6 +920,7 @@ function getSelectedBankAccountMovement() {
   updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
   bankAccountMovementArrayCreated = false;
 }
+*/
 
 // Show remote heating
 function showRemoteHeating() {

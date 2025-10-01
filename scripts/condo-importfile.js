@@ -877,28 +877,19 @@ function updateBankAccountMovements() {
 // Update opening balance and closing balance
 function updateOpeningClosingBalance() {
 
-  let bankAccountId =
-    0;
-  let objBankAccountRowNumber =
-    0;
-  let bankAccountRowNumber =
-    0;
+  let bankAccountId = 0;
+  let objBankAccountRowNumber = 0;
+  let bankAccountRowNumber = 0;
 
   let openingBalanceDate;
 
-  let totalIncome =
-    0;
-  let totalPayment =
-    0;
+  let totalIncome = 0;
+  let totalPayment = 0;
 
-  let currentOpeningBalance =
-    '';
-  let currentOpeningBalanceDate =
-    '';
-  let currentClosingBalance =
-    '';
-  let currentClosingBalanceDate =
-    '';
+  let currentOpeningBalance = '';
+  let currentOpeningBalanceDate = '';
+  let currentClosingBalance = '';
+  let currentClosingBalanceDate = '';
 
   textFile.forEach((record) => {
 
