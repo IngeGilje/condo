@@ -144,8 +144,7 @@ class Condos {
   // Show button
   showButton(className, buttonText) {
 
-    const iconName =
-      this.getIconName(className);
+    const iconName = this.getIconName(className);
 
     const html =
       `
@@ -931,10 +930,8 @@ class Condos {
   getIconName(className) {
 
     let imageName;
-    const posionOfText =
-      className.lastIndexOf("-");
-    className =
-      className.slice(posionOfText + 1);
+    const posionOfText = className.lastIndexOf("-");
+    className = className.slice(posionOfText + 1);
     switch (className) {
       case "firstName":
       case "lastName":

@@ -138,7 +138,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('condominiumTable');
 
           // array including objects with condominium information
-          condominiumArray = objInfo.tableArray;
+          arrayCondominiums = objInfo.tableArray;
           condominiumArrayCreated =
             true
 
@@ -291,7 +291,7 @@ function updateCondominium(condominiumId) {
 
     // Check if condominium id exist
     const condominiumRowNumberObj =
-      condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+      arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (condominiumRowNumberObj !== -1) {
 
       // Update condominium table
@@ -431,66 +431,66 @@ function showValues(condominiumId) {
 
     // get object number for selected condominium id
     const condominiumRowNumberObj =
-      condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+      arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (condominiumRowNumberObj !== -1) {
 
       // Condominium id
       document.querySelector('.select-condominiums-condominiumId').value =
-        condominiumArray[condominiumRowNumberObj].condominiumId;
+        arrayCondominiums[condominiumRowNumberObj].condominiumId;
 
       // Condominium name
       document.querySelector('.input-condominiums-name').value =
-        condominiumArray[condominiumRowNumberObj].name;
+        arrayCondominiums[condominiumRowNumberObj].name;
 
       // Show street
       document.querySelector('.input-condominiums-street').value =
-        condominiumArray[condominiumRowNumberObj].street;
+        arrayCondominiums[condominiumRowNumberObj].street;
 
       // Show address 2
       document.querySelector('.input-condominiums-address2').value =
-        condominiumArray[condominiumRowNumberObj].address2;
+        arrayCondominiums[condominiumRowNumberObj].address2;
 
       // Show postal code
       document.querySelector('.input-condominiums-postalCode').value =
-        condominiumArray[condominiumRowNumberObj].postalCode;
+        arrayCondominiums[condominiumRowNumberObj].postalCode;
 
       // Show city
       document.querySelector('.input-condominiums-city').value =
-        condominiumArray[condominiumRowNumberObj].city;
+        arrayCondominiums[condominiumRowNumberObj].city;
 
       // Show phone
       document.querySelector('.input-condominiums-phone').value =
-        condominiumArray[condominiumRowNumberObj].phone;
+        arrayCondominiums[condominiumRowNumberObj].phone;
 
       // Show email
       document.querySelector('.input-condominiums-email').value =
-        condominiumArray[condominiumRowNumberObj].email;
+        arrayCondominiums[condominiumRowNumberObj].email;
 
       // account id for income remote heating
       document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value =
-        (condominiumArray[condominiumRowNumberObj].incomeRemoteHeatingAccountId) ? condominiumArray[condominiumRowNumberObj].incomeRemoteHeatingAccountId : 0;
+        (arrayCondominiums[condominiumRowNumberObj].incomeRemoteHeatingAccountId) ? arrayCondominiums[condominiumRowNumberObj].incomeRemoteHeatingAccountId : 0;
       document.querySelector('.label-condominiums-incomeRemoteHeatingAccountId').innerHTML =
         'Inntekt fjernvarmekonto';
 
       // account id for payment remote heating
       document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value =
-        (condominiumArray[condominiumRowNumberObj].paymentRemoteHeatingAccountId) ? condominiumArray[condominiumRowNumberObj].paymentRemoteHeatingAccountId : 0;
+        (arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId) ? arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId : 0;
       document.querySelector('.label-condominiums-paymentRemoteHeatingAccountId').innerHTML =
         'Utgift fjernvarmekonto';
 
       // account id for common cost
       document.querySelector('.select-condominiums-commoncostAccountId').value =
-        (condominiumArray[condominiumRowNumberObj].commonCostAccountId) ? condominiumArray[condominiumRowNumberObj].commonCostAccountId : 0;
+        (arrayCondominiums[condominiumRowNumberObj].commonCostAccountId) ? arrayCondominiums[condominiumRowNumberObj].commonCostAccountId : 0;
       document.querySelector('.label-condominiums-commoncostAccountId').innerHTML =
         'Konto for felleskostnader';
 
       // Show organization number
       document.querySelector('.input-condominiums-organizationNumber').value =
-        condominiumArray[condominiumRowNumberObj].organizationNumber;
+        arrayCondominiums[condominiumRowNumberObj].organizationNumber;
 
       // Show file import path
       document.querySelector('.input-condominiums-fileName').value =
-        condominiumArray[condominiumRowNumberObj].importPath;
+        arrayCondominiums[condominiumRowNumberObj].importPath;
     }
   }
 }
@@ -569,7 +569,7 @@ function deleteCondominiumRow() {
 
     // Check if condominium exist
     const condominiumRowNumberObj =
-      condominiumArray.findIndex(condominium => condominium.condominiumId === condominiumId);
+      arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (condominiumRowNumberObj !== -1) {
 
       // current date

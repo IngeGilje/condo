@@ -6,16 +6,29 @@
 // const serverStatus = 2; // Test server/ local test server
 const serverStatus = 2;
 
+/*
 import express from "express";
 import cors from "cors";
 import mysql from "mysql2/promise";
+import fs from "fs";
+import csv from "csv-parser";
+//import fs from "fs/promises";
 
 const app = express();
 app.use(cors());          // allow frontend to call backend
-app.use(express.json());
+*/
+
+import express from "express";
+import cors from "cors";
+import mysql from "mysql2/promise";
+import fs from "fs/promises";
+
+const app = express();
+app.use(cors());          // allow frontend to call backend
 
 // Middleware to parse JSON requests
 app.use(express.json());
+
 
 let db;
 
@@ -222,7 +235,6 @@ async function main() {
                   AND deleted <> 'Y'
                 ORDER BY userId;
             `;
-            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1603,8 +1615,6 @@ async function main() {
 
       console.log("Received request for bank account movements", req.query);
       const action = req.query.action;
-
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
@@ -1787,7 +1797,6 @@ async function main() {
                   WHERE bankAccountMovementId = ${bankAccountMovementId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1798,6 +1807,56 @@ async function main() {
 
           break;
         }
+      }
+    });
+
+    /*
+    // Import text file
+    app.get("/loadTextFile", async (req, res) => {
+
+      console.log('/loadTextFile');
+      try {
+
+        const textFileName = req.query.textFileName;
+        console.log('textFileName: ', textFileName);
+
+        const textFile = await fs.readFile(textFileName, "utf8");
+
+        // Text file content
+        res.json({ content: textFile });
+      } catch (err) {
+        console.log("Text file error in /importTextFile:", err.message);
+        res.status(500).json({ error: err.message });
+      }
+    });
+
+
+    app.get("/import-text", async (req, res) => {
+      try {
+        // adjust path to your file
+        const data = await fs.readFile("C:/Websites/condo/transaksjonsliste.csv", "utf8");
+        console.log('data: ', data);
+
+        // here data is your ASCII text file content
+        res.json({ content: data });
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
+    });
+    */
+
+    app.get("/import-text", async (req, res) => {
+      console.log('/import-text');
+      try {
+
+        // adjust path to your file
+        const data = await fs.readFile("C:/Websites/condo/data/transaksjonsliste.txt", "utf8");
+        console.log('data :',data);
+        
+        res.json({ content: data });
+
+      } catch (err) {
+        res.status(500).json({ error: err.message });
       }
     });
 

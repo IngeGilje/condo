@@ -167,7 +167,7 @@ socket.onmessage = (event) => {
         // condominium table
         console.log('condominiumTable');
 
-        condominiumArray = objInfo.tableArray;
+        arrayCondominiums = objInfo.tableArray;
         condominiumArrayCreated =
           true;
         break;

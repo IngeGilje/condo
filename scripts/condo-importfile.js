@@ -1,5 +1,8 @@
 // Import of bank transaction file 
 
+// Importfile
+let importFileArray;
+
 // Activate objects
 const today = new Date();
 const objUsers = new Users('users');
@@ -42,15 +45,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
-    await objDues.loadDuesTable(objUserPassword.condominiumId);
+
+    const condominiumId = objUserPassword.condominiumId;
+    const accountId = 999999999;
+    const condoId = 999999999;
+    let fromDate = 999999999;
+    let toDate = 999999999;
+    await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
     amount = 0;
-    condominiumId = objUserPassword.condominiumId;
-    const condoId = 999999999;
-    const accountId = 999999999;
-    let fromDate = "01.01." + String(today.getFullYear());
+    fromDate = "01.01." + String(today.getFullYear());
     fromDate = Number(convertDateToISOFormat(fromDate));
-    let toDate = getCurrentDate();
+    toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
     await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, accountId, amount, fromDate, toDate);
 
@@ -202,7 +208,7 @@ socket.onmessage = (event) => {
         // condonium table
         console.log('condoniumTable');
 
-        condominiumArray = objInfo.tableArray;
+        arrayCondominiums = objInfo.tableArray;
         condominiumArrayCreated =
           true;
         break;
@@ -362,11 +368,13 @@ function createEvents() {
         const importFileName = document.querySelector('.input-importfile-importFileName').value;
 
         // Sends a request to the server to get bank account movement text file from bank
-        //updateMySql("", importFileName, 'textFile');
+        await objImportFile.loadTextFile(importFileName);
 
-        showImportedTextFile();
+        // Show button for update of bank account movement
+        objImportFile.showButton('importfile-saveBankAccountMovement', 'Oppdater banktransaksjoner');
+
         showBankAccountMovements();
-      };
+      }
     };
   });
 
@@ -413,6 +421,7 @@ function showImportedTextFile() {
   objImportFile.showButton('importfile-saveBankAccountMovement', 'Oppdater banktransaksjoner');
 }
 
+// Show csv file for bank account
 function showBankAccountMovements() {
 
   let sumColumnIncome = 0;
@@ -420,32 +429,23 @@ function showBankAccountMovements() {
   let sumColumnNumberKWHour = 0;
   let rowNumber = 0;
 
-  let htmlColumnLineNumber =
-    '<div class = "columnHeaderCenter">Linje</div><br>';
-  let htmlColumnAccountingDate =
-    '<div class = "columnHeaderRight">Dato</div><br>';
-  let htmlColumnCondoName =
-    '<div class = "columnHeaderRight">Leilighet</div><br>';
-  let htmlColumnAccountName =
-    '<div class = "columnHeaderRight">Konto</div><br>';
-  let htmlColumnFromBankAccount =
-    '<div class = "columnHeaderRight">Fra b.konto</div><br>';
-  let htmlColumnToBankAccount =
-    '<div class = "columnHeaderRight">Til b.konto</div><br>';
-  let htmlColumnIncome =
-    '<div class = "columnHeaderRight">Inntekt</div><br>';
-  let htmlColumnPayment =
-    '<div class = "columnHeaderRight">Utgift</div><br>';
-  let htmlColumnText =
-    '<div class = "columnHeaderLeft">Tekst</div><br>';
+  let htmlColumnLineNumber = '<div class = "columnHeaderCenter">Linje</div><br>';
+  let htmlColumnAccountingDate = '<div class = "columnHeaderRight">Dato</div><br>';
+  let htmlColumnCondoName = '<div class = "columnHeaderRight">Leilighet</div><br>';
+  let htmlColumnAccountName = '<div class = "columnHeaderRight">Konto</div><br>';
+  let htmlColumnFromBankAccount = '<div class = "columnHeaderRight">Fra b.konto</div><br>';
+  let htmlColumnToBankAccount = '<div class = "columnHeaderRight">Til b.konto</div><br>';
+  let htmlColumnIncome = '<div class = "columnHeaderRight">Inntekt</div><br>';
+  let htmlColumnPayment = '<div class = "columnHeaderRight">Utgift</div><br>';
+  let htmlColumnText = '<div class = "columnHeaderLeft">Tekst</div><br>';
 
-  importFileArray.forEach((importFile) => {
+  objImportFile.importFileArray.forEach((importFile) => {
 
+    console.log('importFile', importFile);
     rowNumber++;
 
     // check if the number is odd
-    const colorClass =
-      (rowNumber % 2 !== 0) ? "green" : "";
+    const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
     htmlColumnLineNumber +=
       `
         <div
@@ -460,7 +460,7 @@ function showBankAccountMovements() {
         <div 
           class = "rightCell ${colorClass}"
         >
-          ${importFile.accountingDate}
+          ${importFile.Dato}
         </div>
       `;
 
@@ -528,8 +528,7 @@ function showBankAccountMovements() {
       `;
 
     // Payment
-    const payment =
-      formatOreToKroner(importFile.payment);
+    const payment = formatOreToKroner(importFile.payment);
 
     htmlColumnPayment +=
       `
@@ -541,7 +540,6 @@ function showBankAccountMovements() {
       `;
 
     // Text has to fit into the column
-    text = (text === "") ? "-" : text;
     htmlColumnText +=
       `
         <div
@@ -554,12 +552,10 @@ function showBankAccountMovements() {
     // Accomulate
 
     // income
-    sumColumnIncome +=
-      Number(importFile.income);
+    sumColumnIncome += Number(importFile.income);
 
     // payment
-    sumColumnPayment +=
-      Number(importFile.payment);
+    sumColumnPayment += Number(importFile.payment);
   });
 
   //Show sum row
@@ -619,8 +615,7 @@ function showBankAccountMovements() {
       </div>
     `;
 
-  const income =
-    formatOreToKroner(sumColumnIncome);
+  const income = formatOreToKroner(sumColumnIncome);
   htmlColumnIncome +=
     `
       <div 
@@ -630,8 +625,7 @@ function showBankAccountMovements() {
       </div>
     `;
 
-  const payment =
-    formatOreToKroner(sumColumnPayment);
+  const payment = formatOreToKroner(sumColumnPayment);
   htmlColumnPayment +=
     `
       <div 
@@ -642,33 +636,23 @@ function showBankAccountMovements() {
     `;
 
   // Show columns
-  document.querySelector(".div-importfile-columnLineNumber").innerHTML =
-    htmlColumnLineNumber;
-  document.querySelector(".div-importfile-columnAccountingDate").innerHTML =
-    htmlColumnAccountingDate;
-  document.querySelector(".div-importfile-columnName").innerHTML =
-    htmlColumnCondoName;
-  document.querySelector(".div-importfile-columnAccountName").innerHTML =
-    htmlColumnAccountName;
-  document.querySelector(".div-importfile-columnFromBankAccount").innerHTML =
-    htmlColumnFromBankAccount;
-  document.querySelector(".div-importfile-columnToBankAccount").innerHTML =
-    htmlColumnToBankAccount;
-  document.querySelector(".div-importfile-columnIncome").innerHTML =
-    htmlColumnIncome;
-  document.querySelector(".div-importfile-columnPayment").innerHTML =
-    htmlColumnPayment;
-  document.querySelector(".div-importfile-columnText").innerHTML =
-    htmlColumnText;
+  document.querySelector(".div-importfile-columnLineNumber").innerHTML = htmlColumnLineNumber;
+  document.querySelector(".div-importfile-columnAccountingDate").innerHTML = htmlColumnAccountingDate;
+  document.querySelector(".div-importfile-columnName").innerHTML = htmlColumnCondoName;
+  document.querySelector(".div-importfile-columnAccountName").innerHTML = htmlColumnAccountName;
+  document.querySelector(".div-importfile-columnFromBankAccount").innerHTML = htmlColumnFromBankAccount;
+  document.querySelector(".div-importfile-columnToBankAccount").innerHTML = htmlColumnToBankAccount;
+  document.querySelector(".div-importfile-columnIncome").innerHTML = htmlColumnIncome;
+  document.querySelector(".div-importfile-columnPayment").innerHTML = htmlColumnPayment;
+  document.querySelector(".div-importfile-columnText").innerHTML = htmlColumnText;
 }
 
-// Create array for bank account movement
+// Create array for bank account movement from imported csv file
 function createImportFileArray(fileContent) {
 
   let importFileId = 0;
 
-  textFile =
-    fileContent.split(/\r?\n/);
+  textFile = fileContent.split(/\r?\n/);
   textFile.forEach((record) => {
 
     [accountingDate, Rentedato, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
@@ -680,77 +664,59 @@ function createImportFileArray(fileContent) {
 
       // text
       // remove first and last "
-      text =
-        text.replace(/^"|"$/g, '');
+      text = text.replace(/^"|"$/g, '');
 
       // Condo id
-      const condoId =
-        objImportFile.getCondoId(fromBankAccount);
+      const condoId = objImportFile.getCondoId(fromBankAccount);
 
-      const condoName =
-        objCondo.getCondoName(condoId);
+      const condoName = objCondo.getCondoName(condoId);
 
-      income =
-        formatKronerToOre(income);
+      income = formatKronerToOre(income);
 
-      payment =
-        formatKronerToOre(payment);
+      payment = formatKronerToOre(payment);
 
       // Account Id
-      let accountId =
-        getAccountIdFromBankAccount(fromBankAccount, payment);
-      accountId =
-        (accountId) ? accountId : getAccountIdFromBankAccount(toBankAccount, payment);
+      let accountId = getAccountIdFromBankAccount(fromBankAccount, payment);
+      accountId = (accountId) ? accountId : getAccountIdFromBankAccount(toBankAccount, payment);
 
       // Account Name
       let accountName;
       if (text.includes('FAKT.TJ')) {
 
-        const accountRowNumber =
-          accountsArray.findIndex(account => account.name.includes('FAKT.TJ'));
+        const accountRowNumber = accountsArray.findIndex(account => account.name.includes('FAKT.TJ'));
         if (accountRowNumber !== -1) {
 
-          accountId =
-            accountsArray[accountRowNumber].accountId;
-          accountName =
-            accountsArray[accountRowNumber].name;
+          accountId = accountsArray[accountRowNumber].accountId;
+          accountName = accountsArray[accountRowNumber].name;
         }
       }
 
       // Account Name
       if (text.includes('transaksjoner')) {
 
-        const accountRowNumber =
-          accountsArray.findIndex(account => account.name.includes('transaksjoner'));
+        const accountRowNumber = accountsArray.findIndex(account => account.name.includes('transaksjoner'));
         if (accountRowNumber !== -1) {
 
-          accountId =
-            accountsArray[accountRowNumber].accountId;
-          accountName =
-            accountsArray[accountRowNumber].name;
+          accountId = accountsArray[accountRowNumber].accountId;
+          accountName = accountsArray[accountRowNumber].name;
         }
       }
 
       if (accountId) {
-        accountName =
-          objImportFile.getAccountName(accountId);
+        accountName = objImportFile.getAccountName(accountId);
 
       } else {
 
-        accountName =
-          text;
+        accountName = text;
       }
 
       // To bank account
-      toBankAccountName =
-        objImportFile.getBankAccountName(toBankAccount);
+      toBankAccountName = objImportFile.getBankAccountName(toBankAccount);
 
-      fromBankAccountName =
-        objImportFile.getBankAccountName(fromBankAccount);
+      fromBankAccountName = objImportFile.getBankAccountName(fromBankAccount);
 
       // Do not import bank account movement twice
-      date =
-        convertDateToISOFormat(accountingDate);
+      date = convertDateToISOFormat(accountingDate);
       if (!checkBankAccountMovement(Number(income), Number(payment), Number(date), text)) {
 
         // From bank account
@@ -783,26 +749,19 @@ function updateBankAccountMovements() {
 
   importFileArray.forEach((importFile) => {
 
-    const condoId =
-      Number(importFile.condoId);
+    const condoId = Number(importFile.condoId);
 
-    const accountId =
-      Number(importFile.accountId);
+    const accountId = Number(importFile.accountId);
 
-    const income =
-      Number(importFile.income);
+    const income = Number(importFile.income);
 
-    const payment =
-      Number(importFile.payment);
+    const payment = Number(importFile.payment);
 
-    const date =
-      convertDateToISOFormat(importFile.accountingDate);
+    const date = convertDateToISOFormat(importFile.accountingDate);
 
-    const text =
-      importFile.text;
+    const text = importFile.text;
 
-    const lastUpdate =
-      today.toISOString();
+    const lastUpdate = today.toISOString();
 
     const SQLquery =
       `
@@ -843,7 +802,6 @@ function updateOpeningClosingBalance() {
 
   let bankAccountId = 0;
   let bankAccountRowNumberObj = 0;
-  let bankAccountRowNumber = 0;
 
   let openingBalanceDate;
 
@@ -1062,32 +1020,16 @@ function getClosingBalanceDate() {
 function resetBankAccountMovements() {
 
   // Show columns
-  document.querySelector(".div-importfile-columnLineNumber").innerHTML =
-    '';
-  document.querySelector(".div-importfile-columnAccountingDate").innerHTML =
-    '';
-  document.querySelector(".div-importfile-columnName").innerHTML =
-    '';
-  document.querySelector(".div-importfile-columnAccountName").innerHTML =
-    '';
-  document.querySelector(".div-importfile-columnFromBankAccount").innerHTML =
-    '';
-  document.querySelector(".div-importfile-columnToBankAccount").innerHTML =
-    '';
-  document.querySelector(".div-importfile-columnIncome").innerHTML =
-    '';
-  document.querySelector(".div-importfile-columnPayment").innerHTML =
-    '';
-  document.querySelector(".div-importfile-columnText").innerHTML =
-    '';
+  document.querySelector(".div-importfile-columnLineNumber").innerHTML = '';
+  document.querySelector(".div-importfile-columnAccountingDate").innerHTML = '';
+  document.querySelector(".div-importfile-columnName").innerHTML = '';
+  document.querySelector(".div-importfile-columnAccountName").innerHTML = '';
+  document.querySelector(".div-importfile-columnFromBankAccount").innerHTML = '';
+  document.querySelector(".div-importfile-columnToBankAccount").innerHTML = '';
+  document.querySelector(".div-importfile-columnIncome").innerHTML = '';
+  document.querySelector(".div-importfile-columnPayment").innerHTML = '';
+  document.querySelector(".div-importfile-columnText").innerHTML = '';
 }
-
-/*
-function removeBankAccountColumn() {
-
-  document.querySelector(".button-importfile-saveBankAccountMovement").remove();
-}
-*/
 
 //Check if bank account movement exists
 function checkBankAccountMovement(income, payment, date, text) {
@@ -1133,12 +1075,10 @@ function showLeadingText() {
 function showValues() {
 
   // get name of importfile
-  const condominiumRowNumberObj =
-    condominiumArray.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+  const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
   if (condominiumRowNumberObj !== -1) {
 
     // file import text name
-    document.querySelector('.input-importfile-importFileName').value =
-      condominiumArray[condominiumRowNumberObj].importPath;
+    document.querySelector('.input-importfile-importFileName').value = objCondominiums.arrayCondominiums[condominiumRowNumberObj].importPath;
   }
 }

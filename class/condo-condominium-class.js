@@ -2,7 +2,7 @@
 class Condominium extends Condos {
 
   // Condominium information
-  condominiumArray = Array;
+  arrayCondominiums;
 
   // Show all condominiums
   showAllCondominiums(className, condominiumId) {
@@ -30,9 +30,9 @@ class Condominium extends Condos {
       false;
 
     // Check if condominium array is empty
-    const numberOfRows = condominiumArray.length;
+    const numberOfRows = arrayCondominiums.length;
     if (numberOfRows > 0) {
-      condominiumArray.forEach((condominium) => {
+      arrayCondominiums.forEach((condominium) => {
         if (condominium.condominiumId >= 0) {
           if (condominium.condominiumId === condominiumId) {
 
@@ -87,11 +87,11 @@ class Condominium extends Condos {
 
       condominiumId =
         Number(document.querySelector(`.${className}`).value);
-      condominiumId = (condominiumId === 0) ? condominiumArray.at(-1).condominiumId : condominiumId;
+      condominiumId = (condominiumId === 0) ? arrayCondominiums.at(-1).condominiumId : condominiumId;
     } else {
 
       // Get last id in last object in condominium array
-      condominiumId = condominiumArray.at(-1).condominiumId;
+      condominiumId = arrayCondominiums.at(-1).condominiumId;
     }
 
     return condominiumId;
