@@ -106,7 +106,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('userTable');
 
-          userArray = objInfo.tableArray;
+          usersArray = objInfo.tableArray;
           userArrayCreated =
             true;
           break;
@@ -127,7 +127,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           console.log('supplierTable');
 
           // array including objects with supplier information
-          objSuppliers.suppliersArray = objInfo.tableArray;
+          objSuppliers.arraySuppliers = objInfo.tableArray;
           supplierArrayCreated =
             true;
 
@@ -196,7 +196,7 @@ function createEvents() {
     if (event.target.classList.contains('select-suppliers-supplierId')) {
 
       let supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
-      supplierId = (supplierId !== 0) ? supplierId : objSuppliers.suppliersArray.at(-1).supplierId;
+      supplierId = (supplierId !== 0) ? supplierId : objSuppliers.arraySuppliers.at(-1).supplierId;
       if (supplierId) {
         showValues(supplierId);
       }
@@ -230,7 +230,7 @@ function createEvents() {
         await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 
         // Select last suppliers if supplierId is 0
-        if (supplierId === 0) supplierId = objSuppliers.suppliersArray.at(-1).supplierId;
+        if (supplierId === 0) supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
 
         // Show leading text
         showLeadingText(supplierId);
@@ -265,7 +265,7 @@ function createEvents() {
     if (document.querySelector('.select-suppliers-supplierId')) {
       supplierId = objSuppliers.getSelectedSupplierId('select-suppliers-supplierId');
     } else {
-      supplierId = objSuppliers.suppliersArray.at(-1).supplierId;
+      supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
     }
 
     showValues(supplierId);
@@ -299,7 +299,7 @@ function createEvents() {
         await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 
         // Show leading text
-        const supplierId = objSuppliers.suppliersArray.at(-1).supplierId;
+        const supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
         showLeadingText(supplierId);
 
         // Show all values for supplier
@@ -316,7 +316,7 @@ async function deleteSupplier() {
   const supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
 
   // Check if supplier id exist
-  const supplierRowNumberObj = objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
+  const supplierRowNumberObj = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
   if (supplierRowNumberObj !== -1) {
 
     // delete supplier row
@@ -411,7 +411,7 @@ async function updateSupplier(supplierId) {
 
     const condominiumId = objUserPassword.condominiumId;
 
-    const supplierRowNumberObj = objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
+    const supplierRowNumberObj = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 
     // Check if supplier exist
     if (supplierRowNumberObj !== -1) {
@@ -440,7 +440,7 @@ function deleteSupplierRow(supplierId) {
 
     // Check if supplier exist
     const objUserSupplierNumber =
-      objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
+      objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
     if (objUserSupplierNumber !== -1) {
 
       // current date
@@ -542,56 +542,56 @@ function showValues(supplierId) {
   if (supplierId >= 0) {
 
     // find object number for selected supplier Id 
-    const objUserSupplierNumber = objSuppliers.suppliersArray.findIndex(supplier => supplier.supplierId === supplierId);
+    const objUserSupplierNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
     if (objUserSupplierNumber !== -1) {
 
       // Select supplier Id
       document.querySelector('.select-suppliers-supplierId').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].supplierId;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].supplierId;
 
       // name
       document.querySelector('.input-suppliers-name').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].name;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].name;
 
       // street
       document.querySelector('.input-suppliers-street').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].street;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].street;
 
       // address 2
       document.querySelector('.input-suppliers-address2').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].address2;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].address2;
 
       // Postal code
       document.querySelector('.input-suppliers-postalCode').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].postalCode;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].postalCode;
 
       // city
       document.querySelector('.input-suppliers-city').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].city;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].city;
 
       // Show email
       document.querySelector('.input-suppliers-email').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].email;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].email;
 
       // Show phone
       document.querySelector('.input-suppliers-phone').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].phone;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].phone;
 
       // Show bankAccount
       document.querySelector('.input-suppliers-bankAccount').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].bankAccount;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccount;
 
       // Select account Id
       document.querySelector('.select-suppliers-accountId').value =
-        objSuppliers.suppliersArray[objUserSupplierNumber].accountId;
+        objSuppliers.arraySuppliers[objUserSupplierNumber].accountId;
 
       // Select account2 Id
       document.querySelector('.select-suppliers-accountAmountId').value =
-        (objSuppliers.suppliersArray[objUserSupplierNumber].accountAmountId) ? objSuppliers.suppliersArray[objUserSupplierNumber].accountAmountId : 0;
+        (objSuppliers.arraySuppliers[objUserSupplierNumber].accountAmountId) ? objSuppliers.arraySuppliers[objUserSupplierNumber].accountAmountId : 0;
 
       // Select amount
       document.querySelector('.input-suppliers-amount').value =
-        (objSuppliers.suppliersArray[objUserSupplierNumber].amount) ? formatOreToKroner(objSuppliers.suppliersArray[objUserSupplierNumber].amount) : '';
+        (objSuppliers.arraySuppliers[objUserSupplierNumber].amount) ? formatOreToKroner(objSuppliers.arraySuppliers[objUserSupplierNumber].amount) : '';
     }
   }
 }

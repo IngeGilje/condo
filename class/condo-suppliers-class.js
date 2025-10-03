@@ -2,7 +2,7 @@
 class Suppliers extends Condos {
 
   // supplier information
-  suppliersArray;
+  arraySuppliers;
 
   // Show all suppliers
   showAllSuppliers(classValue, supplierId) {
@@ -28,9 +28,9 @@ class Suppliers extends Condos {
       false;
 
     // Check if supplier array is empty
-    const numberOfRows = this.suppliersArray.length;
+    const numberOfRows = this.arraySuppliers.length;
     if (numberOfRows > 0) {
-      this.suppliersArray.forEach((supplier) => {
+      this.arraySuppliers.forEach((supplier) => {
         if (supplier.supplierId >= 0) {
           if (supplier.supplierId === supplierId) {
 
@@ -86,11 +86,11 @@ class Suppliers extends Condos {
 
       supplierId =
         Number(document.querySelector(`.${classValue}`).value);
-      supplierId = (supplierId === 0) ? this.suppliersArray.at(-1).supplierId : supplierId;
+      supplierId = (supplierId === 0) ? this.arraySuppliers.at(-1).supplierId : supplierId;
     } else {
 
       // Get last id in last object in user array
-      supplierId = this.suppliersArray.at(-1).supplierId;
+      supplierId = this.arraySuppliers.at(-1).supplierId;
     }
     return supplierId;
   }
@@ -101,32 +101,32 @@ class Suppliers extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/suppliers?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (users)");
-      this.suppliersArray = await response.json();
+      this.arraySuppliers = await response.json();
     } catch (error) {
       console.log("Error loading suppliers:", error);
     }
   }
 
   // update supplier row
-  async updateSuppliersTable(supplierId,condominiumId,user,lastUpdate,name,street,address2,postalCode,city,email,phone,bankAccount,accountId,accountAmountId,amount) {
+  async updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, accountAmountId, amount) {
 
     try {
-      console.log('accountid: ',accountId);
+      console.log('accountid: ', accountId);
       const response = await fetch(`http://localhost:3000/suppliers?action=update&supplierId=${supplierId}&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${accountId}&accountAmountId=${accountAmountId}&amount=${amount}`);
       if (!response.ok) throw new Error("Network error (suppliers)");
-      this.suppliersArray = await response.json();
+      this.arraySuppliers = await response.json();
     } catch (error) {
       console.log("Error updating supplier:", error);
     }
   }
 
   // insert supplier row
-    async insertSuppliersTable(condominiumId,user,lastUpdate,name,street,address2,postalCode,city,email,phone,bankAccount,accountId,accountAmountId,amount) {
+  async insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, accountAmountId, amount) {
 
     try {
       const response = await fetch(`http://localhost:3000/suppliers?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${accountId}&accountAmountId=${accountAmountId}&amount=${amount}`);
       if (!response.ok) throw new Error("Network error (suppliers)");
-      this.suppliersArray = await response.json();
+      this.arraySuppliers = await response.json();
     } catch (error) {
       console.log("Error inserting supplier:", error);
     }
@@ -138,7 +138,7 @@ class Suppliers extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/suppliers?action=delete&supplierId=${supplierId}&user=${user}&lastUpdate=${lastUpdate}`);
       if (!response.ok) throw new Error("Network error (suppliers)");
-      this.suppliersArray = await response.json();
+      this.arraySuppliers = await response.json();
     } catch (error) {
       console.log("Error deleting supplier:", error);
     }

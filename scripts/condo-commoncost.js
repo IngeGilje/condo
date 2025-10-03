@@ -137,7 +137,7 @@ socket.onmessage = (event) => {
         // user table
         console.log('userTable');
 
-        userArray = objInfo.tableArray;
+        usersArray = objInfo.tableArray;
         userArrayCreated =
           true;
         break;

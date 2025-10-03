@@ -43,7 +43,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     fromDate = Number(convertDateToISOFormat(fromDate));
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-    await objBankAccountMovements.loadBankAccountMovementsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate)
+    await objBankAccountMovements.loadBankAccountMovementsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
 
     // Show leading text for filter
@@ -176,7 +176,7 @@ if (objInfo.CRUD === 'SELECT') {
       // user table
       console.log('userTable');
 
-      userArray = objInfo.tableArray;
+      usersArray = objInfo.tableArray;
       userArrayCreated = true;
       break;
 

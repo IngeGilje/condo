@@ -232,6 +232,37 @@ class Accounts extends Condos {
     }
   }
 
+  // get account id from bank account
+  getAccountIdFromBankAccount(bankAccount, payment) {
+
+    let accountId = 0;
+
+    // Bank Acoount <> Condominium Bank Account
+    let bankAccountRowNumberObj = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
+    if (bankAccountRowNumberObj === -1) {
+
+      // Check user bank account
+      const bankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+      if (bankAccountRowNumberObj !== -1) {
+
+        accountId = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].accountId;
+      }
+
+      // get Account Id from supplier
+      const supplierRowNumberObj = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
+      if (supplierRowNumberObj !== -1) {
+
+        accountId = objSuppliers.arraySuppliers[supplierRowNumberObj].accountId;
+
+        // get Account Id from supplier amount
+        const amount = (objSuppliers.arraySuppliers[supplierRowNumberObj].amount) ? Number(objSuppliers.arraySuppliers[supplierRowNumberObj].amount) : 0;
+
+        accountId = (amount === Number(payment)) ? Number(objSuppliers.arraySuppliers[supplierRowNumberObj].accountAmountId) : accountId;
+      }
+    }
+    return accountId;
+  }
+
   // get accounts
   async loadAccountsTable(condominiumId) {
 
@@ -279,4 +310,6 @@ class Accounts extends Condos {
       console.log("Error delete accounts:", error);
     }
   }
+
+  
 }

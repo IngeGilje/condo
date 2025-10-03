@@ -2,8 +2,7 @@
 class Supplier extends Condos {
 
   // supplier information
-  supplierArray =
-   Array;
+  arraySuppliers;
 
   // Show all suppliers
   showAllSuppliers(classValue, supplierId) {
@@ -29,9 +28,9 @@ class Supplier extends Condos {
       false;
 
     // Check if supplier array is empty
-    const numberOfRows = supplierArray.length;
+    const numberOfRows = arraySuppliers.length;
     if (numberOfRows > 0) {
-      supplierArray.forEach((supplier) => {
+      arraySuppliers.forEach((supplier) => {
         if (supplier.supplierId >= 0) {
           if (supplier.supplierId === supplierId) {
 
@@ -88,11 +87,11 @@ class Supplier extends Condos {
 
       supplierId =
         Number(document.querySelector(`.${classValue}`).value);
-      supplierId = (supplierId === 0) ? supplierArray.at(-1).supplierId : supplierId;
+      supplierId = (supplierId === 0) ? arraySuppliers.at(-1).supplierId : supplierId;
     } else {
 
       // Get last id in last object in user array
-      supplierId = supplierArray.at(-1).supplierId;
+      supplierId = arraySuppliers.at(-1).supplierId;
     }
     return supplierId;
   }

@@ -1,6 +1,8 @@
 
 class ImportFile extends Condos {
 
+  arrayImportFile;
+
   // Show all account movements to update
   showImportFile(columnName, importFileId, alternativeSelect) {
 
@@ -26,9 +28,9 @@ class ImportFile extends Condos {
     let selectedOption = false;
 
     // Check if file import array is empty
-    const numberOfRows = this.importFileArray.length;
+    const numberOfRows = this.arrayImportFile.length;
     if (numberOfRows > 0) {
-      this.importFileArray.forEach((importFile) => {
+      this.arrayImportFile.forEach((importFile) => {
         if (importFile.importFileId >= 0) {
           if (importFile.importFileId === importFileId) {
 
@@ -100,69 +102,20 @@ class ImportFile extends Condos {
         </form >
       `;
 
-    document.querySelector(`.div-${columnName}`).innerHTML =
-      htmlImportFile;
+    document.querySelector(`.div-${columnName}`).innerHTML = htmlImportFile;
   }
 
-  // get text file from local disk
-  async loadTextFile(textFileName) {
+  // get csv file from local disk
+  async loadCsvFile(csvFileName) {
+    console.log('load Csv File');
+    try {
 
-    const response = await fetch("http://localhost:3000/import-text");
-    const result = await response.json();
-    this.importFileArray = result.content;
-
-    // Parse into objects
-    const rawText = objImportFile.importFileArray; // the whole text file as string
-
-    this.importFileArray = parseCSV(rawText);
-
-    console.log(this.importFileArray);
-
-    //this.importFileArray = result.content;
-    //console.log(this.importFileArray);
-
-
-    /*
-   try {
- 
-     const response = await fetch(`http://localhost:3000/import-csv`);
-     if (!response.ok) throw new Error("Network error (import of csv file)");
- 
-     this.importFileArray = await response.json();
-     console.log(this.importFileArray);
-   } catch (error) {
- 
-     console.log("Error loading csv file:", error);
-   }
-   */
-
-
-    /*
-    const response = await fetch("http://localhost:3000/upload-csv");
-    this.importFileArray = await response.json();
-    console.log(this.importFileArray);
-    */
+      const response = await fetch(`http://localhost:3000/import-csvFile?action=upload&csvFileName=${csvFileName}`);
+      if (!response.ok) throw new Error("Network error (load csv file)");
+      const result = await response.json();
+      this.arrayImportFile = result.content;
+    } catch (error) {
+      console.log("Error loading csv file:", error);
+    }
   }
-}
-
-function parseCSV(text) {
-
-  // Split into lines
-  const lines = text.trim().split("\n");
-
-  // First line = headers
-  const headers = lines[0].split(";").map(h => h.trim());
-
-  // Remaining lines = data
-  const data = lines.slice(1).map(line => {
-    const values = line.split(";");
-
-    // Build an object for each row
-    return headers.reduce((obj, header, i) => {
-      obj[header] = values[i] ? values[i].replace(/^"|"$/g, "").trim() : "";
-      return obj;
-    }, {});
-  });
-
-  return data;
 }

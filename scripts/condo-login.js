@@ -49,7 +49,7 @@ socket.onmessage = (event) => {
         // condo table
         console.log('userTable');
 
-        userArray = objInfo.tableArray;
+        usersArray = objInfo.tableArray;
         userArrayCreated =
           true
 
@@ -111,14 +111,14 @@ function createEvents() {
 
       // Security level
       const userRowNumberObj =
-        userArray.findIndex(userRow => userRow.email === email);
+        usersArray.findIndex(userRow => userRow.email === email);
       if (userRowNumberObj !== -1) {
 
         const securityLevel =
-          userArray[userRowNumberObj].securityLevel;
+          usersArray[userRowNumberObj].securityLevel;
 
         const condominiumId =
-          userArray[userRowNumberObj].condominiumId;
+          usersArray[userRowNumberObj].condominiumId;
 
         // Save email/user, password and security level
         sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));

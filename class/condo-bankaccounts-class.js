@@ -106,5 +106,16 @@ class BankAccounts extends Condos {
       console.log("Error loading bank accounts:", error);
     }
   }
+  // update bank accounts row
+  async updateBankAccountsTable(bankAccountId,condominium,user,lastUpdate,bankAccount,name,openingBalance,openingBalanceDate,closingBalance,closingBalanceDate) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&condominium=${condominium}&user=${user}&lastUpdate=${lastUpdate}&bankAccount=${bankAccount}&name=${name}&openingBalance=${openingBalance}&openingBalancedate=${openingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
+      if (!response.ok) throw new Error("Network error (bank account)");
+      this.bankAccountsArray = await response.json();
+    } catch (error) {
+      console.log("Error updating bank account:", error);
+    }
+  }
 }
 

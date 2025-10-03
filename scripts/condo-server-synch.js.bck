@@ -73,10 +73,8 @@ async function main() {
     // Requests for accounts
     app.get("/accounts", async (req, res) => {
 
-      console.log("Received request for accounts", req.query);
       const action = req.query.action;
 
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
@@ -217,10 +215,8 @@ async function main() {
     // Requests for users
     app.get("/users", async (req, res) => {
 
-      console.log("Received request for users", req.query);
       const action = req.query.action;
 
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
@@ -385,10 +381,8 @@ async function main() {
     // Requests for bank accounts
     app.get("/bankaccounts", async (req, res) => {
 
-      console.log("Received request for bank accounts", req.query);
       const action = req.query.action;
 
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
@@ -531,7 +525,6 @@ async function main() {
                   WHERE bankAccountId = ${bankAccountId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -547,15 +540,12 @@ async function main() {
     // Requests for condominiums table
     app.get("/condominiums", async (req, res) => {
 
-      console.log("Received request for condominiums", req.query);
       const action = req.query.action;
 
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
 
-          console.log("Select condominium request received");
           try {
 
             const SQLquery =
@@ -617,7 +607,6 @@ async function main() {
                   importPath = '${importPath}'
                 WHERE condominiumId = ${condominiumId};
               `;
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -735,10 +724,8 @@ async function main() {
     // Requests for budgets table
     app.get("/budgets", async (req, res) => {
 
-      console.log("Received request for budgets", req.query);
       const action = req.query.action;
 
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
@@ -775,7 +762,6 @@ async function main() {
                 ORDER BY year,accountId;
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -811,7 +797,6 @@ async function main() {
                 year = '${year}'
               WHERE budgetId = ${budgetId};
             `;
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -857,7 +842,6 @@ async function main() {
                 );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -889,7 +873,6 @@ async function main() {
                 WHERE budgetId = ${budgetId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -905,22 +888,18 @@ async function main() {
     // Requests for dues table
     app.get("/dues", async (req, res) => {
 
-      console.log("Received request for dues", req.query);
       const action = req.query.action;
 
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
 
-          console.log("Select due request received");
           try {
 
             const condominiumId = req.query.condominiumId;
             const accountId = Number(req.query.accountId);
             const condoId = Number(req.query.condoId);
             const fromDate = Number(req.query.fromDate);
-            console.log('fromDate:', fromDate);
             const toDate = Number(req.query.toDate);
 
             let SQLquery =
@@ -956,7 +935,6 @@ async function main() {
                 ORDER BY date DESC;
               `;
 
-            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1080,7 +1058,6 @@ async function main() {
                 WHERE duesId = ${duesId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1096,10 +1073,8 @@ async function main() {
     // Requests for condo
     app.get("/condo", async (req, res) => {
 
-      console.log("Received request for condo", req.query);
       const action = req.query.action;
 
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
@@ -1155,7 +1130,7 @@ async function main() {
                   squareMeters = '${squareMeters}'
                 WHERE condoId = ${condoId};
               `;
-            console.log("SQLquery: ", SQLquery);
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1211,7 +1186,6 @@ async function main() {
                 );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1244,7 +1218,6 @@ async function main() {
                   WHERE condoId = ${condoId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1261,10 +1234,8 @@ async function main() {
     // Requests for user bank account
     app.get("/userbankaccounts", async (req, res) => {
 
-      console.log("Received request for user bank account", req.query);
       const action = req.query.action;
 
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
@@ -1320,7 +1291,6 @@ async function main() {
                 WHERE userBankAccountId = ${userBankAccountId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1370,7 +1340,6 @@ async function main() {
                 );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1403,7 +1372,6 @@ async function main() {
                   WHERE userBankAccountId = ${userBankAccountId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1420,10 +1388,8 @@ async function main() {
     // Requests for supplier
     app.get("/suppliers", async (req, res) => {
 
-      console.log("Received request for supplier", req.query);
       const action = req.query.action;
 
-      console.log("action: ", action);
       switch (action) {
 
         case 'select': {
@@ -1492,7 +1458,6 @@ async function main() {
                 WHERE supplierId = ${supplierId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1563,7 +1528,6 @@ async function main() {
                 );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1596,7 +1560,6 @@ async function main() {
                   WHERE supplierId = ${supplierId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1613,20 +1576,16 @@ async function main() {
     // Requests for bank account movements
     app.get("/bankaccountmovements", async (req, res) => {
 
-      console.log("Received request for bank account movements", req.query);
       const action = req.query.action;
       switch (action) {
 
         case 'select': {
-
-          console.log("Select bank account movements request received");
 
           const condominiumId = Number(req.query.condominiumId);
           const condoId = Number(req.query.condoId);
           const accountId = Number(req.query.accountId);
           const amount = Number(req.query.amount);
           const fromDate = Number(req.query.fromDate);
-          console.log('fromDate: ', fromDate)
           const toDate = Number(req.query.toDate);
 
           try {
@@ -1660,7 +1619,7 @@ async function main() {
               `
                 ORDER BY date DESC, income DESC;
               `;
-            console.log('SQLquery: ', SQLquery);
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1706,7 +1665,6 @@ async function main() {
                 WHERE bankAccountMovementId = ${bankAccountMovementId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1810,50 +1768,17 @@ async function main() {
       }
     });
 
-    /*
-    // Import text file
-    app.get("/loadTextFile", async (req, res) => {
+    app.get("/import-csvFile", async (req, res) => {
 
-      console.log('/loadTextFile');
+      console.log("Received request for csvFile", req.query);
       try {
 
-        const textFileName = req.query.textFileName;
-        console.log('textFileName: ', textFileName);
+        const csvFileName = req.query.csvFileName;
 
-        const textFile = await fs.readFile(textFileName, "utf8");
-
-        // Text file content
-        res.json({ content: textFile });
-      } catch (err) {
-        console.log("Text file error in /importTextFile:", err.message);
-        res.status(500).json({ error: err.message });
-      }
-    });
-
-
-    app.get("/import-text", async (req, res) => {
-      try {
-        // adjust path to your file
-        const data = await fs.readFile("C:/Websites/condo/transaksjonsliste.csv", "utf8");
-        console.log('data: ', data);
-
-        // here data is your ASCII text file content
+        //const data = await fs.readFile("C:/Websites/condo/data/transaksjonsliste.csv", "utf8");
+        const data = await fs.readFile(csvFileName, "utf8");
         res.json({ content: data });
-      } catch (err) {
-        res.status(500).json({ error: err.message });
-      }
-    });
-    */
-
-    app.get("/import-text", async (req, res) => {
-      console.log('/import-text');
-      try {
-
-        // adjust path to your file
-        const data = await fs.readFile("C:/Websites/condo/data/transaksjonsliste.txt", "utf8");
-        console.log('data :',data);
-        
-        res.json({ content: data });
+        console.log('data :', data);
 
       } catch (err) {
         res.status(500).json({ error: err.message });
