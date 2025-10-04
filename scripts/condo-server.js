@@ -220,17 +220,32 @@ async function main() {
       switch (action) {
 
         case 'select': {
+          
           const condominiumId = Number(req.query.condominiumId);
 
           try {
 
-            const SQLquery =
+            let SQLquery =
               `
                 SELECT * FROM users
-                WHERE condominiumId = ${condominiumId}
-                  AND deleted <> 'Y'
-                ORDER BY userId;
-            `;
+              `;
+
+            if (Number(condominiumId) === 999999999) {
+
+              SQLquery +=
+                `
+                    WHERE deleted <> 'Y'
+                  `;
+
+            } else {
+
+              SQLquery +=
+                `
+                   WHERE condominiumId = ${condominiumId}
+                    AND deleted <> 'Y'
+                `;
+            }
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -840,7 +855,7 @@ async function main() {
                 );
               `;
 
-            console.log('SQLquery: ',SQLquery);
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1614,13 +1629,13 @@ async function main() {
                   AND (income = ${amount} OR payment = ${amount})
                 `;
             }
-            
+
             SQLquery +=
               `
                 ORDER BY date DESC, income DESC;
               `;
 
-            console.log('SQLquery:',SQLquery);
+            console.log('SQLquery:', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {

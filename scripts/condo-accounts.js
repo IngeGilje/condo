@@ -10,8 +10,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-let isEventsCreated
-
 objAccounts.menu();
 objAccounts.markSelectedMenu('Konto');
 
@@ -41,7 +39,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showValues(accountId);
 
     // Make events
-    isEventsCreated = (isEventsCreated) ? true : createEvents();
+    createEvents();
   }
 }
 
@@ -51,8 +49,8 @@ function createEvents() {
   // Select Account
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-accounts-accountId')) {
-      const accountId =
-        Number(document.querySelector('.select-accounts-accountId').value);
+
+      const accountId = Number(document.querySelector('.select-accounts-accountId').value);
       if (accountId) {
         showValues(accountId);
       }
@@ -62,27 +60,32 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-accounts-update')) {
 
+      // Update account row and reload accounts
       updateAccountSync();
-
-      // Main entry point
       async function updateAccountSync() {
 
-        // Load accounts
         let accountId;
-        if (document.querySelector('.select-accounts-accountId')) {
-          accountId = objAccounts.getSelectedAccountId('select-accounts-accountId');
+        if (document.querySelector('.select-accounts-accountId').value === '') {
+
+          // Insert new row into accounts table
+          accountId = 0;
         } else {
-          accountId = objAccounts.accountsArray.at(-1).accountId;
+
+          // Update existing row in accounts table
+          accountId = Number(document.querySelector('.select-accounts-accountId').value);
         }
 
-        updateAccount();
+        updateAccount(accountId);
 
         await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+
+        // Select last account if accountId is 0
+        if (accountId === 0) accountId = objAccounts.accountsArray.at(-1).accountId;
 
         // Show leading text
         showLeadingText(accountId);
 
-        // Show all values for account
+        // Show values for selected account Id
         showValues(accountId);
       }
     }
@@ -125,22 +128,29 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-accounts-cancel')) {
 
-      /*
-      // Sends a request to the server to get all accounts
-      const SQLquery = `
-        SELECT * FROM accounts
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY accountId;
-      `;
-      */
+      // cancel and reload accounts
+      cancelAccountSync();
+
+      // cancel account and reload accounts
+      async function cancelAccountSync() {
+
+        // Load accounts
+        await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+
+        // Show leading text
+        const accountId = objAccounts.accountsArray.at(-1).accountId;
+        showLeadingText(accountId);
+
+        // Show all values for account
+        showValues(accountId);
+      }
     }
   });
   return true;
 }
 
-function updateAccount() {
-  
+async function updateAccount() {
+
   if (validateValues()) {
 
     // User

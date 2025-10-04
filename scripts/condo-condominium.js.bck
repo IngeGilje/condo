@@ -107,7 +107,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
           // user table
           console.log('userTable');
 
-          usersArray = objInfo.tableArray;
+          arrayUsers = objInfo.tableArray;
           userArrayCreated =
             true;
           break;

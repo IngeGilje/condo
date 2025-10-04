@@ -2,7 +2,7 @@
 class Users extends Condos {
 
   // users information
-  usersArray = Array;
+  arrayUsers = Array;
 
   // Show all users
   showAllUsers(classValue, userId) {
@@ -27,12 +27,12 @@ class Users extends Condos {
     `;
 
     // Select last user if userId is 0
-    if (userId === 0) userId = this.usersArray.at(-1).userId;
+    if (userId === 0) userId = this.arrayUsers.at(-1).userId;
 
     // Check if user array is empty
-    const numberOfRows = this.usersArray.length;
+    const numberOfRows = this.arrayUsers.length;
     if (numberOfRows > 0) {
-      this.usersArray.forEach((user) => {
+      this.arrayUsers.forEach((user) => {
         if (user.userId === userId) {
 
           html +=
@@ -87,11 +87,11 @@ class Users extends Condos {
     if (isClassDefined(classValue)) {
 
       userId = Number(document.querySelector(`.${classValue}`).value);
-      userId = (userId === 0) ? this.usersArray.at(-1).userId : userId;
+      userId = (userId === 0) ? this.arrayUsers.at(-1).userId : userId;
     } else {
 
       // Get last id in last object in user array
-      userId = this.usersArray.at(-1).userId;
+      userId = this.arrayUsers.at(-1).userId;
     }
     return userId;
   }
@@ -104,7 +104,7 @@ class Users extends Condos {
       const response = await fetch(`http://localhost:3000/users?action=select&condominiumId=${condominiumId}`);
 
       if (!response.ok) throw new Error("Network error (users)");
-      this.usersArray = await response.json();
+      this.arrayUsers = await response.json();
     } catch (error) {
       console.log("Error loading users:", error);
     }
@@ -117,7 +117,7 @@ class Users extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/users?action=update&user=${user}&lastUpdate=${lastUpdate}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}`);
       if (!response.ok) throw new Error("Network error (users)");
-      this.usersArray = await response.json();
+      this.arrayUsers = await response.json();
     } catch (error) {
       console.log("Error updating users:", error);
     }
@@ -129,7 +129,7 @@ class Users extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/users?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}`);
       if (!response.ok) throw new Error("Network error (users)");
-      this.usersArray = await response.json();
+      this.arrayUsers = await response.json();
     } catch (error) {
       console.log("Error inserting users:", error);
     }
@@ -141,7 +141,7 @@ class Users extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/users?action=delete&userId=${userId}&user=${user}&lastUpdate=${lastUpdate}`);
       if (!response.ok) throw new Error("Network error (users)");
-      this.usersArray = await response.json();
+      this.arrayUsers = await response.json();
     } catch (error) {
       console.log("Error deleting users:", error);
     }

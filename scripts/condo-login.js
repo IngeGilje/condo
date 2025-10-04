@@ -1,98 +1,25 @@
 // Login
 // Activate user class
-const objUser =
-  new User('user');
-const objLogIn =
-  new Login('login');
-
-let userArrayCreated =
-  false
-
-let isEventsCreated
-
-const socket =
-  connectingToServer();
+const objUsers = new Users('users');
+const objLogIn = new Login('login');
 
 sessionStorage.removeItem("user");
 
-// Send a requests to the server
-socket.onopen = () => {
 
-  let SQLquery;
+// Call main when script loads
+main();
 
-  // Sends a request to the server to get users
-  SQLquery =
-    `
-      SELECT * FROM users
-      ORDER BY userId;
-    `;
+// Main entry point
+async function main() {
 
-  updateMySql(SQLquery, 'user', 'SELECT');
-  userArrayCreated =
-    false;
-};
+  const condominiumId = 999999999;
+  await objUsers.loadUsersTable(condominiumId);
 
-// Handle incoming messages from server
-socket.onmessage = (event) => {
+  // Show leading text
+  showLeadingText();
 
-  let messageFromServer =
-    event.data;
-
-  // Converts a JavaScript Object Notation (JSON) string into an object
-  objInfo =
-    JSON.parse(messageFromServer);
-
-  if (objInfo.CRUD === 'SELECT') {
-    switch (objInfo.tableName) {
-      case 'user':
-
-        // condo table
-        console.log('userTable');
-
-        usersArray = objInfo.tableArray;
-        userArrayCreated =
-          true
-
-        if (userArrayCreated) {
-
-          // Show leading text
-          showLeadingText();
-
-          // Make events
-          isEventsCreated =
-           (isEventsCreated) ? true : createEvents();
-        }
-        break;
-    }
-  }
-  if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
-
-    switch (objInfo.tableName) {
-      case 'user':
-
-        // Sends a request to the server to get accounts one more time
-        SQLquery =
-          `
-              SELECT * FROM users
-              ORDER BY userId;
-            `;
-        updateMySql(SQLquery, 'user', 'SELECT');
-        userArrayCreated =
-          false;
-        break;
-    };
-  };
-
-  // Handle errors
-  socket.onerror = (error) => {
-
-    // Close socket on error and let onclose handle reconnection
-    socket.close();
-  }
-
-  // Handle disconnection
-  socket.onclose = () => {
-  }
+  // Make events
+  createEvents();
 }
 
 // Make events for users
@@ -104,21 +31,16 @@ function createEvents() {
     if (event.target.classList.contains('button-link')) {
 
       // validate password
-      const email =
-        document.querySelector('.input-email').value;
-      const password =
-        document.querySelector('.input-password').value;
+      const email = document.querySelector('.input-email').value;
+      const password = document.querySelector('.input-password').value;
 
       // Security level
-      const userRowNumberObj =
-        usersArray.findIndex(userRow => userRow.email === email);
-      if (userRowNumberObj !== -1) {
+      const userRowNumber = objUsers.arrayUsers.findIndex(userRow => userRow.email === email);
+      if (userRowNumber !== -1) {
 
-        const securityLevel =
-          usersArray[userRowNumberObj].securityLevel;
+        const securityLevel = objUsers.arrayUsers[userRowNumber].securityLevel;
 
-        const condominiumId =
-          usersArray[userRowNumberObj].condominiumId;
+        const condominiumId = objUsers.arrayUsers[userRowNumber].condominiumId;
 
         // Save email/user, password and security level
         sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
@@ -150,7 +72,6 @@ function createEvents() {
       }
     }
   });
-  return true;
 }
 
 // Show leading text for login
@@ -158,10 +79,10 @@ function showLeadingText() {
 
   // email
   // Show leading text forinput
-  objUser.showLeadingTextInput('email', 'E-mail(Bruker)', 50, '💁 Bruker');
+  objUsers.showLeadingTextInput('email', 'E-mail(Bruker)', 50, '💁 Bruker');
 
   // password
-  objUser.showLeadingTextInput('password', 'Passord', 50, '🔑 Passord');
+  objUsers.showLeadingTextInput('password', 'Passord', 50, '🔑 Passord');
 
   // login button
   objLogIn.showPageButton('program', 'program');
@@ -171,12 +92,10 @@ function showLeadingText() {
 function resetValues() {
 
   // user
-  document.querySelector('.input-email').value =
-    '';
+  document.querySelector('.input-email').value = '';
 
   // password
-  document.querySelector('.input-password').value =
-    '';
+  document.querySelector('.input-password').value = '';
 
   sessionStorage.removeItem("user");
 }

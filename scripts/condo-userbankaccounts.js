@@ -264,7 +264,7 @@ function showLeadingText(userBankAccountId) {
   objUserBankAccounts.showAllUserBankAccounts('userbankaccounts-userBankAccountId', userBankAccountId);
 
   // Show all users
-  const userId = objUsers.usersArray.at(-1).userId;
+  const userId = objUsers.arrayUsers.at(-1).userId;
   objUsers.showAllUsers('userbankaccounts-userId', userBankAccountId);
 
   // Show all accounts

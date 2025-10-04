@@ -559,11 +559,10 @@ class Condos {
     let validUser = false;
 
     if (!(email === '' || password === '')) {
-      usersArray.forEach(userRow => {
+      objUsers.arrayUsers.forEach(user => {
         if (!validUser) {
-          if (userRow.email === email && userRow.password === password) {
-            validUser = true;
-          }
+
+          if (user.email === email && user.password === password) validUser = true;
         }
       });
     }
@@ -894,12 +893,12 @@ class Condos {
 
         if (userId >= 0) {
 
-          const userRowNumberObj =
-            objUsers.usersArray.findIndex(user => user.userId === userId);
-          if (userRowNumberObj !== -1) {
+          const userRowNumber =
+            objUsers.arrayUsers.findIndex(user => user.userId === userId);
+          if (userRowNumber !== -1) {
 
             condoId =
-              Number(objUsers.usersArray[userRowNumberObj].condoId);
+              Number(objUsers.arrayUsers[userRowNumber].condoId);
           }
         }
       }
@@ -1601,58 +1600,6 @@ function validateEuroAmount(amount) {
   amount = amount.replace(/\,/g, "");
   return isValidNumber(amount);
 }
-
-/*
-// Connection to a web server
-function connectingToServer() {
-
-  let socket;
-  switch (objUsers.serverStatus) {
-
-    // Web server
-    case 1: {
-
-      const protocol =
-        window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const hostname =
-        window.location.hostname;
-      const port =
-        window.location.port ? `:${window.location.port}` : '';
-      const socketUrl =
-        `${protocol}//${hostname}${port}/ws`;
-
-      socket = new WebSocket(socketUrl);
-
-      //socket.onopen = () => console.log('Connected!');
-      socket.onopen = () => {
-        console.log(`Connected to ${socketUrl}`);
-      };
-
-      socket.onclose = () => {
-        console.log("WebSocket connection closed");
-      };
-      //socket.onmessage = (msg) => console.log('Received:', msg.data);
-      break;
-    }
-    // Test web server/ local web server
-    case 2:
-    // Test server/ local test server
-    case 3: {
-
-      const protocol =
-        location.protocol === 'https:' ? 'wss' : 'ws';
-      // ws://localhost:3000
-      socket =
-        new WebSocket(`${protocol}://localhost:3000`);
-      break;
-    }
-    default:
-      break;
-  }
-
-  return socket;
-}
-*/
 
 // Removes the iframe
 function removeIframe() {
