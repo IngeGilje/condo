@@ -34,6 +34,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
+    await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
@@ -43,8 +44,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     fromDate = Number(convertDateToISOFormat(fromDate));
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-    await objBankAccountMovements.loadBankAccountMovementsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate);
-    await objCondo.loadCondoTable(objUserPassword.condominiumId);
+    await objBankAccountMovements.loadBankAccountMovementsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate);                                                                              
 
     // Show leading text for filter
     showLeadingTextFilter();
@@ -356,20 +356,6 @@ function createEvents() {
 
         // Show bank deposit for next year
         showBankDeposit();
-
-        /*
-        // Sends a request to the server to get selected bank account movements
-        SQLquery =
-          `
-            SELECT * FROM bankaccountmovement
-            WHERE condominiumId = ${objUserPassword.condominiumId}
-            AND deleted <> 'Y'
-            AND date BETWEEN ${fromDate} AND ${toDate};
-          `;
-              console.log(SQLquery);
-              updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-              bankAccountMovementArrayCreated = false;
-        */
       };
     };
   });
@@ -664,10 +650,8 @@ function getTotalMovementsBankAccount(accountId) {
       && (Number(bankAccountMovement.date) <= toDate
         && bankAccountMovement.accountId === accountId)) {
 
-      accountAmount +=
-        Number(bankAccountMovement.income);
-      accountAmount +=
-        Number(bankAccountMovement.payment);
+      accountAmount += Number(bankAccountMovement.income);
+      accountAmount += Number(bankAccountMovement.payment);
     }
   })
 
@@ -680,7 +664,6 @@ function getBudgetAmount(accountId, year) {
   let amount = 0;
 
   // Budget Amount
-
   objBudgets.budgetsArray.forEach(budget => {
     if (budget.accountId === accountId
       && Number(budget.year) === year) {
@@ -895,29 +878,6 @@ function showBankDeposit() {
 
   document.querySelector('.div-grid-annualaccounts-bankDeposit').innerHTML = html;
 }
-
-/*
-// Get selected bank account movement 
-function getSelectedBankAccountMovement() {
-
-  const budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
-
-  const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
-  const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
-
-  // Sends a request to the server to get selected bank account movements
-  SQLquery =
-    `
-      SELECT * FROM bankaccountmovement
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND deleted <> 'Y'
-      AND date BETWEEN ${fromDate} AND ${toDate};
-    `;
-  console.log(SQLquery);
-  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-  bankAccountMovementArrayCreated = false;
-}
-*/
 
 // Show remote heating
 function showRemoteHeating() {

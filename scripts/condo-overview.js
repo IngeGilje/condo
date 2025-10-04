@@ -50,181 +50,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     createEvents();
   }
 }
-/*
-// Send a requests to the server
-socket.onopen = () => {
-
-  // Sends a request to the server to get users
-  let SQLquery =
-    `
-      SELECT * FROM users
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      ORDER BY userId;
-    `;
-  updateMySql(SQLquery, 'user', 'SELECT');
-  userArrayCreated =
-    false;
-
-  // Sends a request to the server to get dues
-  let todate =
-    getCurrentDate();
-  todate =
-    convertDateToISOFormat(todate)
-  year =
-    today.getFullYear();
-  SQLquery =
-    `
-      SELECT * FROM due
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-        AND date BETWEEN '${year}0101' AND '${todate}' 
-      ORDER BY date DESC;
-    `;
-
-  updateMySql(SQLquery, 'due', 'SELECT');
-  dueArrayCreated =
-    false;
-
-  // Sends a request to the server to get condos
-  SQLquery =
-    `
-      SELECT * FROM condo
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      ORDER BY name;
-    `;
-
-  updateMySql(SQLquery, 'condo', 'SELECT');
-  condoArrayCreated =
-    false;
-
-  // Sends a request to the server to get bank account movements
-  SQLquery =
-    `
-      SELECT * FROM bankaccountmovement
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-        AND date BETWEEN '${year}0101' AND '${todate}' 
-      ORDER BY bankAccountMovementId;
-    `;
-
-  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-  bankAccountMovementArrayCreated =
-    false;
-};
-
-// Handle incoming messages from server
-socket.onmessage = (event) => {
-
-  let messageFromServer =
-    event.data;
-
-
-  //Converts a JavaScript Object Notation (JSON) string into an object
-  objInfo =
-    JSON.parse(messageFromServer);
-
-  if (objInfo.CRUD === 'SELECT') {
-    switch (objInfo.tableName) {
-      case 'user':
-
-        // user table
-        console.log('userTable');
-
-        usersArray = objInfo.tableArray;
-        userArrayCreated =
-          true;
-        break;
-
-      case 'due':
-
-        // due table
-        console.log('dueTable');
-
-        dueArray = objInfo.tableArray;
-        dueArrayCreated =
-          true;
-        break;
-
-      case 'condo':
-
-        // condo table
-        console.log('condoTable');
-
-        condoArray = objInfo.tableArray;
-        condoArrayCreated =
-          true;
-        break;
-
-      case 'bankaccountmovement':
-
-        // bank account movement table
-        console.log('bankaccountmovementTable');
-
-        // array including objects with bank account movement information
-        bankAccountMovementArray = objInfo.tableArray;
-        bankAccountMovementArrayCreated =
-          true;
-
-        if (userArrayCreated
-          && dueArrayCreated
-          && condoArrayCreated
-          && bankAccountMovementArrayCreated) {
-
-          // Show leading text bank account movement
-          showLeadingText();
-
-          // Show all values for 
-          showValues();
-
-          // Make events
-          isEventsCreated = 
-          (isEventsCreated) ? true : createEvents();
-        }
-        break;
-    }
-  }
-
-  if (objInfo.CRUD === 'UPDATE' || objInfo.CRUD === 'INSERT' || objInfo.CRUD === 'DELETE') {
-
-    switch (objInfo.tableName) {
-      case 'bankaccountmovement':
-
-        // Get selected dues
-        getSelectedDues();
-
-        // Get selected bank account movements
-        getSelectedBankAccountMovements();
-
-    };
-  }
-
-  // Handle errors
-  socket.onerror = (error) => {
-
-    // Close socket on error and let onclose handle reconnection
-    socket.close();
-  }
-
-  // Handle disconnection
-  socket.onclose = () => {
-    console.log('disconnection');
-  }
-}
-
-
-// Handle errors
-socket.onerror = (error) => {
-
-  // Close socket on error and let onclose handle reconnection
-  socket.close();
-}
-
-// Handle disconnection
-socket.onclose = () => {
-}
-*/
 
 // Make overview events
 function createEvents() {
@@ -233,13 +58,6 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-overview-condoId')) {
 
-      /*
-      // Show selected for dues
-      getSelectedDues();
-
-      // Show selected for bank account movements
-      getSelectedBankAccountMovements();
-      */
       // Search for overview and reload
       searchAccountOverviewSync();
 
@@ -266,17 +84,10 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-overview-fromDate')) {
 
-      /*
-      // Show selected for dues
-      getSelectedDues();
-
-      // Show selected for bank account movements
-      getSelectedBankAccountMovements();
-      */
       // Search for overview and reload
-      searchFromOverviewSync();
+      searchFromDateSync();
 
-      async function searchFromOverviewSync() {
+      async function searchFromDateSync() {
 
         const condominiumId = objUserPassword.condominiumId;
 
@@ -303,11 +114,29 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-overview-toDate')) {
 
-      // Show selected for dues
-      getSelectedDues();
+      // Search for overview and reload
+      searchToDateSync();
 
-      // Show selected for bank account movements
-      getSelectedBankAccountMovements();
+      async function searchToDateSync() {
+
+        const condominiumId = objUserPassword.condominiumId;
+
+        // Include all accounts
+        const accountId = 0;
+
+        const condoId = Number(document.querySelector('.select-overview-condoId').value);
+        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value));
+        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-toDate').value));
+
+        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, accountId, 999999999, fromDate, toDate);
+        await objDues.loadDuesTable(objUserPassword.condominiumId, 999999999, condoId, fromDate, toDate);
+
+        // Show filter
+        showLeadingText();
+
+        // Show selected Bank Account Movements
+        showValues();
+      }
     };
   });
   return true;
@@ -620,94 +449,4 @@ function validateValues() {
   }
 
   return (validFromDate && validToDate && validDateInterval) ? true : false;
-}
-
-// Get selected due
-function getSelectedDues() {
-
-  const condoId =
-    Number(document.querySelector('.select-overview-condoId').value);
-
-  const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value));
-  const toDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-toDate').value));
-
-  // Check condo Id 
-  if ((condoId === 999999999)) {
-
-    // Sends a request to the server to get selected dues
-    SQLquery =
-      `
-        SELECT * FROM due
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-          AND date BETWEEN ${fromDate} AND ${toDate} 
-        ORDER BY date DESC;
-      `;
-  }
-
-  // Check if condo Id is selected
-  if ((condoId !== 999999999)) {
-
-    // Sends a request to the server to get selected budgets
-    SQLquery =
-      `
-        SELECT * FROM due
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-          AND date BETWEEN ${fromDate} AND ${toDate} 
-          AND condoId = ${condoId}
-        ORDER BY date DESC;
-      `;
-  }
-
-  updateMySql(SQLquery, 'due', 'SELECT');
-  dueArrayCreated =
-    false;
-}
-
-// Get selected bank account movements
-function getSelectedBankAccountMovements() {
-
-  const condoId =
-    Number(document.querySelector('.select-overview-condoId').value);
-
-  const fromDate = convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value);
-  const toDate = convertDateToISOFormat(document.querySelector('.input-overview-toDate').value);
-
-  // Sends a request to the server to get selected bank account movements
-  let SQLquery =
-    `
-      SELECT * FROM bankaccountmovement
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      AND date BETWEEN ${fromDate} AND ${toDate} 
-    `;
-
-  // Check if condo Id is selected
-  if ((condoId !== 999999999)) {
-
-    // Sends a request to the server to get selected bank account movements
-    SQLquery +=
-      `
-        AND condoId = ${condoId}
-      `;
-  }
-
-  /*
-  if (amount !== '0') {
-    SQLquery +=
-      `
-        AND income = ${amount} OR payment = ${amount}
-      `;
-  }
-  */
-
-  SQLquery +=
-    `
-      ORDER BY date DESC;
-    `;
-
-  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-  bankAccountMovementArrayCreated =
-    false;
 }

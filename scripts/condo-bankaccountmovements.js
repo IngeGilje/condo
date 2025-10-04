@@ -784,12 +784,10 @@ async function updateBankAccountMovement(bankAccountMovementId) {
   // Check values
   if (validateValues()) {
 
+    bankAccountMovementId = Number(bankAccountMovementId);
     const condominiumId = objUserPassword.condominiumId;
-
     const user = objUserPassword.email;
-
     const condoId = Number(document.querySelector('.select-bankaccountmovements-condoId').value);
-
     const accountId = Number(document.querySelector('.select-bankaccountmovements-accountId').value);
 
     let date = document.querySelector('.input-bankaccountmovements-date').value;
@@ -924,43 +922,4 @@ async function getSelectedBankAccountMovements() {
   const amount = Number(formatAmountToOre(document.querySelector('.input-bankaccountmovements-filterAmount').value));
 
   await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, accountId, amount, fromDate, toDate);
-  /*
-  let SQLquery =
-    `
-      SELECT * FROM bankaccountmovement
-      WHERE condominiumId = ${objUserPassword.condominiumId}
-        AND deleted <> 'Y'
-      AND date BETWEEN ${fromDate} AND ${toDate}
-    `;
-
-  if (condoId !== 999999999) {
-    SQLquery +=
-      `
-        AND condoId = ${condoId}
-      `;
-  }
-
-  if (accountId !== 999999999) {
-    SQLquery +=
-      `
-        AND accountId = ${accountId}
-      `;
-  }
-
-  if (amount !== 0) {
-    SQLquery +=
-      `
-        AND income = ${amount} OR payment = ${amount}
-      `;
-  }
-
-  SQLquery +=
-    `
-      ORDER BY date DESC, income DESC;
-    `;
-
-  updateMySql(SQLquery, 'bankaccountmovement', 'SELECT');
-  objBankAccountMovements.objBankAccountMovements.bankAccountMovementsArray.Created =
-    false;
-  */
 }

@@ -1796,7 +1796,7 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   }
   return accountId;
 }
-
+*/
 // HTML start for filters
 function startHTMLFilters() {
 

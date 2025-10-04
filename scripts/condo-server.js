@@ -1612,14 +1612,16 @@ async function main() {
             if (amount !== 0) {
               SQLquery +=
                 `
-                  AND income = ${amount} OR payment = ${amount}
+                  AND (income = ${amount} OR payment = ${amount})
                 `;
             }
+            
             SQLquery +=
               `
                 ORDER BY date DESC, income DESC;
               `;
 
+            console.log('SQLquery:',SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1631,8 +1633,6 @@ async function main() {
         }
 
         case 'update': {
-
-          console.log("Update bank account movements request received");
 
           try {
 

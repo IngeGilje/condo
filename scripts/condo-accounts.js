@@ -29,7 +29,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
-
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
     // Find selected account id
@@ -141,20 +140,15 @@ function createEvents() {
 }
 
 function updateAccount() {
-
-  let SQLquery = "";
-
+  
   if (validateValues()) {
 
     // User
     const user = objUserPassword.email;
-
     // Account number
     const accountId = Number(document.querySelector('.select-accounts-accountId').value);
-
     // Account Name
     const accountName = document.querySelector('.input-accounts-accountName').value;
-
     // Fixed cost
     let fixedCost = document.querySelector('.select-accounts-fixedCost').value;
 
@@ -176,9 +170,7 @@ function updateAccount() {
     if (accountId >= 0) {
 
       const lastUpdate = today.toISOString();
-
       const condominiumId = objUserPassword.condominiumId;
-
       const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
 
       // Check if account number exist
@@ -193,12 +185,9 @@ function updateAccount() {
         objAccounts.insertAccountsTable(condominiumId, user, lastUpdate, accountName, fixedCost, accountName);
       }
 
-      document.querySelector('.select-accounts-accountId').disabled =
-        false;
-      document.querySelector('.button-accounts-delete').disabled =
-        false;
-      document.querySelector('.button--accounts-insert').disabled =
-        false;
+      document.querySelector('.select-accounts-accountId').disabled = false;
+      document.querySelector('.button-accounts-delete').disabled = false;
+      document.querySelector('.button--accounts-insert').disabled = false;
     }
   }
 }

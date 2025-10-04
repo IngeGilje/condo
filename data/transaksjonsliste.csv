@@ -1,18 +1,17 @@
 Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til konto;Til
-03.10.2025;03.10.2025;"OPPGAVE Bedriftsterminal oppgave";;-818,49;Ikke tilgjengelig;Ikke tilgjengelig;Bedriftsterminal oppgave;NOK;32062337272;;;
-30.09.2025;;"FAKT.TJ MOTTATT FAKT NETTBANK 2 TRANS(ER) TYPE 438 437";;-5,00;Ikke tilgjengelig;Ikke tilgjengelig;Gebyr;NOK;32062337272;;;
-22.09.2025;;"Sameie 99a";2281,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32705753007;Åse Myklebust Stapnes;32062337272;
-16.09.2025;;"97A";2275,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32013972337;Kristine Sømme;32062337272;
-15.09.2025;;"Laberget 95B";3139,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32061703445;Inge Svein Gilje;32062337272;
-15.09.2025;;"leil 301 Oskar Fausk 97C";1549,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;36264007849;Oskar Fausk;32062337272;Sameiet sin konto
-15.09.2025;;"ny månedsleiefra 1/2024";3431,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;12016029341;Birgit Ruth M A Schober;32062337272;Sameie Hinna Park B3-08
-12.09.2025;;"Månedsbetaling 95A";2329,00;;Ikke tilgjengelig;Ikke tilgjengelig;Mobilgiro m/meld. forf. i dag;NOK;32016934118;Fabiana Gaspar Franco;32062337272;
-10.09.2025;;"Fellesutgifter";1984,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;05390874660;Ladan Pazoki;32062337272;inge gilje
-10.09.2025;;"20011129151105765069";;-4513,60;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073195801;Lyse Marked AS
-09.09.2025;;"Omkostninger BedriftsNett";;-100,25;Ikke tilgjengelig;Ikke tilgjengelig;Pris;NOK;32062337272;;32019999008;
-08.09.2025;;"20011129161105217292";;-693,00;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073195801;Lyse Marked AS
-03.09.2025;;"800537080710240";;-817,97;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073969815;LYSE AS
+31.07.2025;;"FAKT.TJ MOTTATT FAKT NETTBANK 3 TRANS(ER) TYPE 438 437";;-7,50;Ikke tilgjengelig;Ikke tilgjengelig;Gebyr;NOK;32062337272;;;
+21.07.2025;;"Sameie 99a";2281,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32705753007;Åse Myklebust Stapnes;32062337272;
+16.07.2025;;"97A";2275,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32013972337;Kristine Sømme;32062337272;
+15.07.2025;;"Laberget 95B";3139,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32061703445;Inge Svein Gilje;32062337272;
+15.07.2025;;"ny månedsleiefra 1/2024";3431,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;12016029341;Birgit Ruth M A Schober;32062337272;Sameie Hinna Park B3-08
+14.07.2025;;"leil 301 Oskar Fausk 97C";1549,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;36264007849;Oskar Fausk;32062337272;Sameiet sin konto
+11.07.2025;;"20011129151102199999";;-7120,15;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073195801;Lyse Marked AS
+10.07.2025;;"Fellesutgifter";1984,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;05390874660;Ladan Pazoki;32062337272;inge gilje
+08.07.2025;;"Omkostninger BedriftsNett";;-109,25;Ikke tilgjengelig;Ikke tilgjengelig;Pris;NOK;32062337272;;32019999008;
+07.07.2025;;"20011129161101583440";;-693,00;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073195801;Lyse Marked AS
+04.07.2025;;"800537080710224";;-818,66;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073969815;LYSE AS
+01.07.2025;;"Månedsbetaling 95A";2329,00;;Ikke tilgjengelig;Ikke tilgjengelig;Mobilgiro m/meld. forf. i dag;NOK;32016934118;Fabiana Gaspar Franco;32062337272;
 
 "DRIFT., 3206.23.37272"
-"Inngående saldo pr. 01.09.2025:";"221789.91";"NOK"
-"Utgående saldo pr. 03.10.2025:";"231829.6";"NOK"
+"Inngående saldo pr. 01.07.2025:";"203954.71";"NOK"
+"Utgående saldo pr. 31.07.2025:";"212194.15";"NOK"
