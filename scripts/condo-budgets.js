@@ -155,17 +155,18 @@ function createEvents() {
 
         await updateBudget(budgetId);
 
+        const condominiumId = objUserPassword.condominiumId;
         const year = document.querySelector('.select-budgets-filterYear').value;
         const accountId = Number(document.querySelector('.select-budgets-filterAccountId').value);
-        await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
+        await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
         // Select last budget if budgetId is 0
         if (budgetId === 0) budgetId = objBudgets.budgetsArray.at(-1).budgetId;
 
-        // Show leading text
-        showLeadingText(budgetId);
+        // Show budget
+        showBudget();
 
-        // Show all values for condo
+        // Show values for selected budget Id
         showValues(budgetId);
       }
     };
@@ -331,6 +332,7 @@ function showLeadingText(budgetId) {
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
+
     objBudgets.showButton('budgets-update', 'Oppdater');
 
     // show new button
@@ -346,23 +348,6 @@ function showLeadingText(budgetId) {
 
 // Show values for budget
 function showValues(budgetId) {
-
-  // find object number for selected budget 
-  // Check if budget exist
-  /*
-  let budgetRowNumberObj = -1;
-  if (budgetsArray.length > 0) {
- 
-    budgetRowNumberObj =
-      budgetsArray.findIndex(budget => budget.budgetId === budgetId);
-  }
- 
-  if (budgetRowNumberObj !== -1) {
- 
-  // Select budget
-  const budgetId =
-    budgetsArray[budgetRowNumberObj].budgetId;
-  */
 
   // Check for valid budget Id
   if (budgetId >= 0) {

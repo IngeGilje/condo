@@ -66,36 +66,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make remoteheating events
 function createEvents() {
 
-  // Select condo
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-remoteheating-condoId')) {
-
-      // Get selected Bank Account Movements and show
-      searchCondosSync();
-
-      // Get selected Bank Account Movements
-      async function searchCondosSync() {
-
-        // Get selected Bank Account Movements
-        const condominiumId = objUserPassword.condominiumId;
-        const condoId = Number(document.querySelector('.select-remoteheating-condoId').value);
-
-        const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-        let accountId;
-        if (condominiumRowNumberObj !== -1) {
-          accountId = objCondominiums.arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId;
-        }
-
-        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
-        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, accountId, 0, fromDate, toDate)
-
-        // Show selected Bank Account Movements
-        showSeletedBanAccountMovements();
-      }
-    }
-  });
-
   // From date
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-remoteheating-fromDate')) {
@@ -108,7 +78,7 @@ function createEvents() {
 
         // Get selected Bank Account Movements
         const condominiumId = objUserPassword.condominiumId;
-        const condoId = Number(document.querySelector('.select-remoteheating-condoId').value);
+        const condoId = 999999999;
 
         const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
         let accountId;
@@ -138,7 +108,7 @@ function createEvents() {
 
         // Get selected Bank Account Movements
         const condominiumId = objUserPassword.condominiumId;
-        const condoId = Number(document.querySelector('.select-remoteheating-condoId').value);
+        const condoId = 999999999;
 
         const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
         let accountId;
@@ -158,12 +128,6 @@ function createEvents() {
 
 // Show filter
 function showFilter() {
-
-  // Show all condos
-  if (!isClassDefined('select-remoteheating-condoId')) {
-
-    objCondo.showAllCondos('remoteheating-condoId', 0, 'Alle');
-  }
 
   // from date
   if (!isClassDefined('input-remoteheating-fromDate')) {

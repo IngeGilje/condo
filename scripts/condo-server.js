@@ -809,8 +809,6 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert budget request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
@@ -842,6 +840,7 @@ async function main() {
                 );
               `;
 
+            console.log('SQLquery: ',SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
