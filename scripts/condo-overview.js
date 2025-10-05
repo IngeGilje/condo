@@ -5,7 +5,7 @@ const today = new Date();
 const objUsers = new Users('users');
 const objDues = new Dues('dues');
 const objCondo = new Condo('condo');
-const objBankAccountMovements = new BankAccountMovements('bankaccountmovements');
+const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
 const objOverview = new Overview('overview');
 
 testMode();
@@ -38,7 +38,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objDues.loadDuesTable(objUserPassword.condominiumId, 999999999, 999999999, fromDate, toDate);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
-    await objBankAccountMovements.loadBankAccountMovementsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate);
 
     // Show filter
     showLeadingText();
@@ -71,7 +71,7 @@ function createEvents() {
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-toDate').value));
 
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, 999999999, 0, fromDate, toDate);
         await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
 
         // Get selected Bank Account Movement Id
@@ -98,7 +98,7 @@ function createEvents() {
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-toDate').value));
 
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, accountId, 999999999, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, accountId, 999999999, fromDate, toDate);
         await objDues.loadDuesTable(objUserPassword.condominiumId, 999999999, condoId, fromDate, toDate);
 
         // Show filter
@@ -128,7 +128,7 @@ function createEvents() {
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-overview-toDate').value));
 
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, accountId, 999999999, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, accountId, 999999999, fromDate, toDate);
         await objDues.loadDuesTable(objUserPassword.condominiumId, 999999999, condoId, fromDate, toDate);
 
         // Show filter
@@ -265,20 +265,20 @@ function showValues() {
     // Show bank account movement
 
     // Header
-    let htmlBankAccountMovementCondoName =
+    let htmlBankAccountTransactionCondoName =
       '<div class="columnHeaderRight">Leiliget</div><br>';
-    let htmlBankAccountMovementDate =
+    let htmlBankAccountTransactionDate =
       '<div class="columnHeaderRight">Betalingsdato</div><br>';
-    let htmlBankAccountMovementAmount =
+    let htmlBankAccountTransactionAmount =
       '<div class="columnHeaderRight">Beløp</div><br>';
-    let htmlBankAccountMovementText =
+    let htmlBankAccountTransactionText =
       '<div class="columnHeaderLeft">Tekst</div><br>';
 
-    let sumColumnBankAccountMovement = 0;
+    let sumColumnBankAccountTransaction = 0;
 
     lineNumber = 0;
 
-    objBankAccountMovements.bankAccountMovementsArray.forEach((bankAccountMovement) => {
+    objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankAccountTransaction) => {
 
       lineNumber++;
 
@@ -287,8 +287,8 @@ function showValues() {
         (lineNumber % 2 !== 0) ? "green" : "";
 
       // condo name
-      const condoName = (bankAccountMovement.condoId) ? objCondo.getCondoName(bankAccountMovement.condoId) : "-";
-      htmlBankAccountMovementCondoName +=
+      const condoName = (bankAccountTransaction.condoId) ? objCondo.getCondoName(bankAccountTransaction.condoId) : "-";
+      htmlBankAccountTransactionCondoName +=
         `
           <div class="rightCell ${colorClass}">
             ${condoName}
@@ -296,8 +296,8 @@ function showValues() {
         `;
 
       // date
-      const date = formatToNorDate(bankAccountMovement.date);
-      htmlBankAccountMovementDate +=
+      const date = formatToNorDate(bankAccountTransaction.date);
+      htmlBankAccountTransactionDate +=
         `
           <div class="rightCell ${colorClass}"
           >
@@ -307,8 +307,8 @@ function showValues() {
 
       // income
       const income =
-        formatOreToKroner(bankAccountMovement.income);
-      htmlBankAccountMovementAmount +=
+        formatOreToKroner(bankAccountTransaction.income);
+      htmlBankAccountTransactionAmount +=
         `
           <div 
             class="rightCell ${colorClass}"
@@ -318,18 +318,18 @@ function showValues() {
         `;
 
       // Text has to fit into the column
-      htmlBankAccountMovementText +=
+      htmlBankAccountTransactionText +=
         `
           <div
             class="leftCell one-line ${colorClass}"
           >
-            ${bankAccountMovement.text}
+            ${bankAccountTransaction.text}
           </div>
         `;
 
       // Accomulate
-      sumColumnBankAccountMovement +=
-        bankAccountMovement.income;
+      sumColumnBankAccountTransaction +=
+        bankAccountTransaction.income;
     });
 
     // Show total line
@@ -360,28 +360,28 @@ function showValues() {
       `;
 
     // sum bank account movement
-    htmlBankAccountMovementAmount +=
+    htmlBankAccountTransactionAmount +=
       `
         <div class="sumCellRight">
       `;
-    htmlBankAccountMovementAmount +=
-      formatOreToKroner(String(sumColumnBankAccountMovement));
-    htmlBankAccountMovementAmount +=
+    htmlBankAccountTransactionAmount +=
+      formatOreToKroner(String(sumColumnBankAccountTransaction));
+    htmlBankAccountTransactionAmount +=
       `
         </div>
       `;
 
     // sum guilty
-    htmlBankAccountMovementText +=
+    htmlBankAccountTransactionText +=
       `
         <div class="sumCellLeft"
         >
       `;
     const guilty =
-      sumColumnDue - sumColumnBankAccountMovement;
-    htmlBankAccountMovementText +=
+      sumColumnDue - sumColumnBankAccountTransaction;
+    htmlBankAccountTransactionText +=
       `Skyldig ` + formatOreToKroner(String(guilty));
-    htmlBankAccountMovementText +=
+    htmlBankAccountTransactionText +=
       `
         </div>
       `;
@@ -396,15 +396,15 @@ function showValues() {
     document.querySelector('.div-overview-columnDueText').innerHTML =
       htmlColumnDueText;
 
-    // Show bankaccountmovement. rows
-    document.querySelector('.div-overview-columnBankAccountMovementCondoName').innerHTML =
-      htmlBankAccountMovementCondoName;
-    document.querySelector('.div-overview-columnBankAccountMovementDate').innerHTML =
-      htmlBankAccountMovementDate;
-    document.querySelector('.div-overview-columnBankAccountMovementAmount').innerHTML =
-      htmlBankAccountMovementAmount;
-    document.querySelector('.div-overview-columnBankAccountMovementText').innerHTML =
-      htmlBankAccountMovementText;
+    // Show bankaccounttransaction. rows
+    document.querySelector('.div-overview-columnBankAccountTransactionCondoName').innerHTML =
+      htmlBankAccountTransactionCondoName;
+    document.querySelector('.div-overview-columnBankAccountTransactionDate').innerHTML =
+      htmlBankAccountTransactionDate;
+    document.querySelector('.div-overview-columnBankAccountTransactionAmount').innerHTML =
+      htmlBankAccountTransactionAmount;
+    document.querySelector('.div-overview-columnBankAccountTransactionText').innerHTML =
+      htmlBankAccountTransactionText;
   }
 }
 

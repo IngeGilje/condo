@@ -7,7 +7,7 @@ const objCondominiums = new Condominiums('condominiums');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
-const objBankAccountMovements = new BankAccountMovements('bankaccountmovements');
+const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
 const objCondo = new Condo('condo');
 const objAnnualAccounts = new AnnualAccounts('annualaccounts');
 
@@ -44,7 +44,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     fromDate = Number(convertDateToISOFormat(fromDate));
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-    await objBankAccountMovements.loadBankAccountMovementsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate);                                                                              
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate);                                                                              
 
     // Show leading text for filter
     showLeadingTextFilter();
@@ -86,7 +86,7 @@ function createEvents() {
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -117,7 +117,7 @@ function createEvents() {
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -148,7 +148,7 @@ function createEvents() {
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -183,7 +183,7 @@ function createEvents() {
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -387,14 +387,14 @@ function getTotalMovementsBankAccount(accountId) {
   let toDate = document.querySelector('.input-filter-toDate').value;
   toDate = Number(convertDateToISOFormat(toDate));
 
-  objBankAccountMovements.bankAccountMovementsArray.forEach((bankAccountMovement) => {
+  objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankAccountTransaction) => {
 
-    if (Number(bankAccountMovement.date) >= fromDate
-      && (Number(bankAccountMovement.date) <= toDate
-        && bankAccountMovement.accountId === accountId)) {
+    if (Number(bankAccountTransaction.date) >= fromDate
+      && (Number(bankAccountTransaction.date) <= toDate
+        && bankAccountTransaction.accountId === accountId)) {
 
-      accountAmount += Number(bankAccountMovement.income);
-      accountAmount += Number(bankAccountMovement.payment);
+      accountAmount += Number(bankAccountTransaction.income);
+      accountAmount += Number(bankAccountTransaction.payment);
     }
   })
 
@@ -505,21 +505,21 @@ function getFixedCost(fromDate, toDate) {
 
   let fixedCost = 0;
 
-  objBankAccountMovements.bankAccountMovementsArray.forEach((bankAccountMovement) => {
+  objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankAccountTransaction) => {
 
-    if (Number(bankAccountMovement.date) >= fromDate
-      && (Number(bankAccountMovement.date) <= toDate)) {
+    if (Number(bankAccountTransaction.date) >= fromDate
+      && (Number(bankAccountTransaction.date) <= toDate)) {
 
       // Check for fixed cost
-      const objAccountNumber = objAccounts.accountsArray.findIndex(account => account.accountId === bankAccountMovement.accountId);
+      const objAccountNumber = objAccounts.accountsArray.findIndex(account => account.accountId === bankAccountTransaction.accountId);
       if (objAccountNumber !== -1) {
 
         if (objAccounts.accountsArray[objAccountNumber].fixedCost === 'Y') {
 
           fixedCost +=
-            Number(bankAccountMovement.income);
+            Number(bankAccountTransaction.income);
           fixedCost +=
-            Number(bankAccountMovement.payment);
+            Number(bankAccountTransaction.payment);
         }
       }
     }
@@ -657,9 +657,9 @@ function showRemoteHeating() {
     const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
     if (condominiumRowNumberObj !== -1) {
 
-      objBankAccountMovements.bankAccountMovementsArray.forEach((bankaccountmovement) => {
-        if (bankaccountmovement.accountId === objCondominiums.arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId) {
-          if (Number(bankaccountmovement.date) >= Number(fromDate) && Number(bankaccountmovement.date) <= Number(toDate)) {
+      objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankaccounttransaction) => {
+        if (bankaccounttransaction.accountId === objCondominiums.arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId) {
+          if (Number(bankaccounttransaction.date) >= Number(fromDate) && Number(bankaccounttransaction.date) <= Number(toDate)) {
 
             rowNumber++;
 
@@ -672,7 +672,7 @@ function showRemoteHeating() {
               `;
 
             // date
-            const date = formatToNorDate(bankaccountmovement.date);
+            const date = formatToNorDate(bankaccounttransaction.date);
             // Date
             html +=
               `
@@ -681,7 +681,7 @@ function showRemoteHeating() {
 
             // payment
             let payment =
-              formatOreToKroner(bankaccountmovement.payment);
+              formatOreToKroner(bankaccounttransaction.payment);
             html +=
               `
                 <td>${payment}</td>
@@ -689,7 +689,7 @@ function showRemoteHeating() {
 
             // Number of kw/h
             let numberKWHour =
-              formatOreToKroner(bankaccountmovement.numberKWHour);
+              formatOreToKroner(bankaccounttransaction.numberKWHour);
             html +=
               `
                 <td>${numberKWHour}</td>
@@ -697,9 +697,9 @@ function showRemoteHeating() {
 
             // Price per KWHour
             payment =
-              Number(bankaccountmovement.payment);
+              Number(bankaccounttransaction.payment);
             numberKWHour =
-              Number(bankaccountmovement.numberKWHour);
+              Number(bankaccounttransaction.numberKWHour);
 
             let priceKWHour = '';
             if (numberKWHour !== 0 && payment !== 0) {
@@ -715,10 +715,10 @@ function showRemoteHeating() {
 
             // Accomulate
             // payment
-            sumColumnPayment += Number(bankaccountmovement.payment);
+            sumColumnPayment += Number(bankaccounttransaction.payment);
 
             // KWHour
-            sumColumnNumberKWHour += Number(bankaccountmovement.numberKWHour);
+            sumColumnNumberKWHour += Number(bankaccounttransaction.numberKWHour);
           }
         }
         html +=

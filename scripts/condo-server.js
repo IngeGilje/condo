@@ -1588,7 +1588,7 @@ async function main() {
     });
 
     // Requests for bank account movements
-    app.get("/bankaccountmovements", async (req, res) => {
+    app.get("/bankaccounttransactions", async (req, res) => {
 
       const action = req.query.action;
       switch (action) {
@@ -1606,7 +1606,7 @@ async function main() {
 
             let SQLquery =
               `
-                SELECT * FROM bankaccountmovements
+                SELECT * FROM bankaccounttransactions
                 WHERE condominiumId = ${condominiumId}
                   AND deleted <> 'Y'
                 AND date BETWEEN ${fromDate} AND ${toDate}
@@ -1640,7 +1640,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccountmovements:", err.message);
+            console.log("Database error in /bankaccounttransactions:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1659,12 +1659,12 @@ async function main() {
             const numberKWHour = req.query.numberKWHour;
             const date = req.query.date;
             const text = req.query.text;
-            const bankAccountMovementId = req.query.bankAccountMovementId;
+            const bankAccountTransactionId = req.query.bankAccountTransactionId;
 
             // Update bank account movements table
             const SQLquery =
               `
-                UPDATE bankaccountmovements
+                UPDATE bankaccounttransactions
                 SET 
                   deleted = 'N',
                   user = '${user}',
@@ -1676,14 +1676,14 @@ async function main() {
                   numberKWHour  = '${numberKWHour}',
                   date  = ${date},
                   text = '${text}'
-                WHERE bankAccountMovementId = ${bankAccountMovementId};
+                WHERE bankAccountTransactionId = ${bankAccountTransactionId};
               `;
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccountmovements:", err.message);
+            console.log("Database error in /bankaccounttransactions:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1709,7 +1709,7 @@ async function main() {
             // Insert new bank account movements row
             const SQLquery =
               `
-                INSERT INTO bankaccountmovements (
+                INSERT INTO bankaccounttransactions (
                   deleted,
                   condominiumId,
                   user,
@@ -1741,7 +1741,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccountmovements:", err.message);
+            console.log("Database error in /bankaccounttransactions:", err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -1756,24 +1756,24 @@ async function main() {
 
             const user = req.query.user;
             const lastUpdate = req.query.lastUpdate;
-            const bankAccountMovementId = req.query.bankAccountMovementId;
+            const bankAccountTransactionId = req.query.bankAccountTransactionId;
 
             // Delete table
             const SQLquery =
               `
-                UPDATE bankaccountmovements
+                UPDATE bankaccounttransactions
                   SET 
                     deleted = 'Y',
                     lastUpdate = '${lastUpdate}',
                     user = '${user}'
-                  WHERE bankAccountMovementId = ${bankAccountMovementId};
+                  WHERE bankAccountTransactionId = ${bankAccountTransactionId};
               `;
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccountmovements:", err.message);
+            console.log("Database error in /bankaccounttransactions:", err.message);
             res.status(500).json({ error: err.message });
           }
 

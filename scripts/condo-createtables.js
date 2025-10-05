@@ -53,7 +53,7 @@ const createBudgetTable =
   false;
 
 // 12 Bank account movement
-const createBankAccountMovementTable =
+const createBankAccountTransactionTable =
   false;
 
 // Activate Account class
@@ -93,14 +93,14 @@ socket.onclose = () => {
 function deleteAllTables() {
 
   // 12 Bank account movement
-  if (createBankAccountMovementTable) {
+  if (createBankAccountTransactionTable) {
 
-    console.log('DROP bankaccountmovement Table');
+    console.log('DROP bankaccounttransaction Table');
     SQLquery =
       `
-        DROP TABLE bankaccountmovement;
+        DROP TABLE bankaccounttransaction;
       `;
-    updateMySql(SQLquery, 'bankaccountmovement', 'DROP');
+    updateMySql(SQLquery, 'bankaccounttransaction', 'DROP');
   }
 
   // 11 Budget
@@ -454,13 +454,13 @@ function createAllTables() {
   }
 
   // 12 Bank account movement
-  if (createBankAccountMovementTable) {
-    console.log('CREATE bankaccountmovement Table');
+  if (createBankAccountTransactionTable) {
+    console.log('CREATE bankaccounttransaction Table');
     SQLquery =
       `         
-      CREATE TABLE bankaccountmovement (
+      CREATE TABLE bankaccounttransaction (
         deleted VARCHAR(1),
-        bankAccountMovementId INT AUTO_INCREMENT PRIMARY KEY,
+        bankAccountTransactionId INT AUTO_INCREMENT PRIMARY KEY,
         deleted VARCHAR(1),
         condominiumId INT,
         user VARCHAR (50),
@@ -475,6 +475,6 @@ function createAllTables() {
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
       );
     `;
-    updateMySql(SQLquery, 'bankaccountmovement', 'CREATE');
+    updateMySql(SQLquery, 'bankaccounttransaction', 'CREATE');
   }
 }

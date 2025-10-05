@@ -6,7 +6,7 @@ const objCondominiums = new Condominiums('condominiums');
 const objUsers = new Users('users');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
-const objBankAccountMovements = new BankAccountMovements('bankaccountmovements');
+const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
 const objRemoteheating = new Remoteheating('remoteheating');
 
 testMode();
@@ -50,13 +50,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     fromDate = Number(convertDateToISOFormat(fromDate));
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-    await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, accountId, amount, fromDate, toDate);
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, accountId, amount, fromDate, toDate);
 
     // Show filter
     showFilter();
 
     // Get selected Bank Account Movements
-    showSeletedBanAccountMovements();
+    showSeletedBankAccountTransactions();
 
     // Make events
     createEvents();
@@ -88,10 +88,10 @@ function createEvents() {
 
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, accountId, 0, fromDate, toDate)
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, accountId, 0, fromDate, toDate)
 
         // Show selected Bank Account Movements
-        showSeletedBanAccountMovements();
+        showSeletedBankAccountTransactions();
       }
     };
   });
@@ -117,10 +117,10 @@ function createEvents() {
         }
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
-        await objBankAccountMovements.loadBankAccountMovementsTable(condominiumId, condoId, accountId, 0, fromDate, toDate)
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, accountId, 0, fromDate, toDate)
 
         // Show selected Bank Account Movements
-        showSeletedBanAccountMovements();
+        showSeletedBankAccountTransactions();
       }
     };
   });
@@ -157,7 +157,7 @@ function showFilter() {
 }
 
 // Show selected bank account movements
-function showSeletedBanAccountMovements() {
+function showSeletedBankAccountTransactions() {
 
   // check for valid filter
   if (validateValues()) {
@@ -166,7 +166,7 @@ function showSeletedBanAccountMovements() {
     let sumColumnPayment = 0;
     let sumColumnNumberKWHour = 0;
 
-    // Header bankaccountmovement
+    // Header bankaccounttransaction
     let htmlColumnDate = '<div class="columnHeaderRight">Betalings dato</div><br>';
     let htmlColumnPayment = '<div class="columnHeaderRight">Beløp</div><br>';
     let htmlColumnNumberKWHour = '<div class="columnHeaderRight">Kilowatt timer</div><br>';
@@ -176,7 +176,7 @@ function showSeletedBanAccountMovements() {
     // Make all columns
     let rowNumber = 0;
 
-    objBankAccountMovements.bankAccountMovementsArray.forEach((bankaccountmovement) => {
+    objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankaccounttransaction) => {
 
       rowNumber++;
 
@@ -184,7 +184,7 @@ function showSeletedBanAccountMovements() {
       const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
       // date
-      const date = formatToNorDate(bankaccountmovement.date);
+      const date = formatToNorDate(bankaccounttransaction.date);
       htmlColumnDate +=
         `
           <div 
@@ -195,7 +195,7 @@ function showSeletedBanAccountMovements() {
         `;
 
       // payment
-      let payment = formatOreToKroner(bankaccountmovement.payment);
+      let payment = formatOreToKroner(bankaccounttransaction.payment);
       htmlColumnPayment +=
         `
           <div 
@@ -206,7 +206,7 @@ function showSeletedBanAccountMovements() {
         `;
 
       // Number of kw/h
-      let numberKWHour = formatOreToKroner(bankaccountmovement.numberKWHour);
+      let numberKWHour = formatOreToKroner(bankaccounttransaction.numberKWHour);
       htmlColumnNumberKWHour +=
         `
           <div 
@@ -217,8 +217,8 @@ function showSeletedBanAccountMovements() {
         `;
 
       // Price per KWHour
-      payment = Number(bankaccountmovement.payment);
-      numberKWHour = Number(bankaccountmovement.numberKWHour);
+      payment = Number(bankaccounttransaction.payment);
+      numberKWHour = Number(bankaccounttransaction.numberKWHour);
 
       let priceKWHour = '-';
       if (numberKWHour !== 0 && payment !== 0) {
@@ -239,16 +239,16 @@ function showSeletedBanAccountMovements() {
           <div 
             class="leftCell ${colorClass} one-line"
           >
-            ${bankaccountmovement.text}
+            ${bankaccounttransaction.text}
           </div>
         `;
 
       // Accomulate
       // payment
-      sumColumnPayment += Number(bankaccountmovement.payment);
+      sumColumnPayment += Number(bankaccounttransaction.payment);
 
       // KWHour
-      sumColumnNumberKWHour += Number(bankaccountmovement.numberKWHour);
+      sumColumnNumberKWHour += Number(bankaccounttransaction.numberKWHour);
     });
 
     // Show all sums
