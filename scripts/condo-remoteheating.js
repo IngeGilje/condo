@@ -77,7 +77,7 @@ function createEvents() {
       async function searchFromDateSync() {
 
         // Get selected Bank Account Movements
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = Number(objUserPassword.condominiumId);
         const condoId = 999999999;
 
         const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
@@ -107,7 +107,7 @@ function createEvents() {
       async function searchToDateSync() {
 
         // Get selected Bank Account Movements
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = Number(objUserPassword.condominiumId);
         const condoId = 999999999;
 
         const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);

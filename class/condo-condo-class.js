@@ -2,7 +2,7 @@
 class Condo extends Condos {
 
   // Condo information
-  condoArray;
+  arrayCondo;
 
   // Show all condos
   showAllCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
@@ -29,9 +29,9 @@ class Condo extends Condos {
     `;
 
     // Check if condo array is empty
-    const numberOfRows = this.condoArray.length;
+    const numberOfRows = this.arrayCondo.length;
     if (numberOfRows > 0) {
-      this.condoArray.forEach((condo) => {
+      this.arrayCondo.forEach((condo) => {
         if (condo.condoId >= 0) {
           if (condo.condoId === condoId) {
 
@@ -147,11 +147,11 @@ class Condo extends Condos {
     if (isClassDefined(className)) {
 
       condoId = Number(document.querySelector(`.${className}`).value);
-      condoId = (condoId === 0) ? this.condoArray.at(-1).condoId : condoId;
+      condoId = (condoId === 0) ? this.arrayCondo.at(-1).condoId : condoId;
     } else {
 
       // Get last id in last object in condo array
-      condoId = this.condoArray.at(-1).condoId;
+      condoId = this.arrayCondo.at(-1).condoId;
     }
 
     return condoId;
@@ -161,9 +161,9 @@ class Condo extends Condos {
 
     let condoName;
     const condoRowNumberObj =
-      this.condoArray.findIndex(condo => condo.condoId === condoId);
+      this.arrayCondo.findIndex(condo => condo.condoId === condoId);
     if (condoRowNumberObj !== -1) {
-      condoName = this.condoArray[condoRowNumberObj].name;
+      condoName = this.arrayCondo[condoRowNumberObj].name;
     } else {
       condoName = "-";
     }
@@ -171,7 +171,7 @@ class Condo extends Condos {
   }
 
   // Show all condos
-  showAllCondosHTML(className, selectAll) {
+  showAllCondosHTML(className, condoId, selectAll) {
 
     let html =
       `
@@ -186,18 +186,31 @@ class Condo extends Condos {
       `;
 
     // Check if condo array is empty
-    const numberOfRows = this.condoArray.length;
+    const numberOfRows = this.arrayCondo.length;
     if (numberOfRows > 0) {
-      this.condoArray.forEach((condo) => {
+      this.arrayCondo.forEach((condo) => {
 
-        html +=
-          `
+        if (condo.condoId === condoId) {
+          html +=
+            `
             <option
               value = "${condo.condoId}"
+              selected
             >
               ${condo.condoId} - ${condo.name}
             </option >
           `;
+        } else {
+
+          html +=
+            `
+              <option
+                value = "${condo.condoId}"
+              >
+                ${condo.condoId} - ${condo.name}
+              </option >
+            `;
+        }
       });
 
     } else {
@@ -240,7 +253,7 @@ class Condo extends Condos {
   selectCondoId(condoId, className) {
 
     // Check if condo id exist
-    const condoRowNumberObj = this.condoArray.findIndex(condo => condo.condoId === condoId);
+    const condoRowNumberObj = this.arrayCondo.findIndex(condo => condo.condoId === condoId);
     if (condoRowNumberObj !== -1) {
 
       document.querySelector(`.select-${className}`).value =
@@ -251,7 +264,7 @@ class Condo extends Condos {
       return false;
     }
   }
-  
+
   // get condos
   async loadCondoTable(condominiumId) {
 
@@ -259,7 +272,7 @@ class Condo extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/condo?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (condos)");
-      this.condoArray = await response.json();
+      this.arrayCondo = await response.json();
     } catch (error) {
       console.log("Error loading condos:", error);
     }
@@ -271,7 +284,7 @@ class Condo extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/condo?action=update&condoId=${condoId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
       if (!response.ok) throw new Error("Network error (condo)");
-      this.condoArray = await response.json();
+      this.arrayCondo = await response.json();
     } catch (error) {
       console.log("Error updating condo:", error);
     }
@@ -283,7 +296,7 @@ class Condo extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/condo?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
       if (!response.ok) throw new Error("Network error (condo)");
-      this.condoArray = await response.json();
+      this.arrayCondo = await response.json();
     } catch (error) {
       console.log("Error inserting condo:", error);
     }
@@ -294,7 +307,7 @@ class Condo extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/condo?action=delete&condoId=${condoId}&user=${user}&lastUpdate=${lastUpdate}`);
       if (!response.ok) throw new Error("Network error (condo)");
-      this.condoArray = await response.json();
+      this.arrayCondo = await response.json();
     } catch (error) {
       console.log("Error deleting condo:", error);
     }

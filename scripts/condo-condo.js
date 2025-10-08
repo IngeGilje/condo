@@ -88,7 +88,7 @@ function createEvents() {
         await objCondo.loadCondoTable(objUserPassword.condominiumId);
 
         // Select last condo if condoId is 0
-        if (condoId === 0) condoId = objCondo.condoArray.at(-1).condoId;
+        if (condoId === 0) condoId = objCondo.arrayCondo.at(-1).condoId;
 
         // Show leading text
         showLeadingText(condoId);
@@ -123,7 +123,7 @@ function createEvents() {
         await objCondo.loadCondoTable(objUserPassword.condominiumId);
 
         // Show leading text
-        const condoId = objCondo.condoArray.at(-1).condoId;
+        const condoId = objCondo.arrayCondo.at(-1).condoId;
         showLeadingText(condoId);
 
         // Show all values for condo
@@ -172,7 +172,7 @@ function updateCondoRow(condoId) {
 
     // Check if condo id exist
     const condoRowNumberObj =
-      condoArray.findIndex(condo => condo.condoId === condoId);
+      arrayCondo.findIndex(condo => condo.condoId === condoId);
     if (condoRowNumberObj !== -1) {
 
       // Update condo table
@@ -282,30 +282,30 @@ function showValues(condoId) {
   if (condoId >= 0) {
 
     // find object number for selected condo id
-    const condoRowNumberObj = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
+    const condoRowNumberObj = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
     if (condoRowNumberObj !== -1) {
 
       // Condo id
-      const condoId = objCondo.condoArray[condoRowNumberObj].condoId;
+      const condoId = objCondo.arrayCondo[condoRowNumberObj].condoId;
       objCondo.selectCondoId(condoId, 'condo-condoId')
 
       // Condo name
-      document.querySelector('.input-condo-name').value = objCondo.condoArray[condoRowNumberObj].name;
+      document.querySelector('.input-condo-name').value = objCondo.arrayCondo[condoRowNumberObj].name;
 
       // Show street
-      document.querySelector('.input-condo-street').value = objCondo.condoArray[condoRowNumberObj].street;
+      document.querySelector('.input-condo-street').value = objCondo.arrayCondo[condoRowNumberObj].street;
 
       // Show address 2
-      document.querySelector('.input-condo-address2').value = objCondo.condoArray[condoRowNumberObj].address2;
+      document.querySelector('.input-condo-address2').value = objCondo.arrayCondo[condoRowNumberObj].address2;
 
       // Show postal code
-      document.querySelector('.input-condo-postalCode').value = objCondo.condoArray[condoRowNumberObj].postalCode;
+      document.querySelector('.input-condo-postalCode').value = objCondo.arrayCondo[condoRowNumberObj].postalCode;
 
       // Show city
-      document.querySelector('.input-condo-city').value = objCondo.condoArray[condoRowNumberObj].city;
+      document.querySelector('.input-condo-city').value = objCondo.arrayCondo[condoRowNumberObj].city;
 
       // Show square meters
-      document.querySelector('.input-condo-squareMeters').value = formatOreToKroner(objCondo.condoArray[condoRowNumberObj].squareMeters);
+      document.querySelector('.input-condo-squareMeters').value = formatOreToKroner(objCondo.arrayCondo[condoRowNumberObj].squareMeters);
     }
   }
 }
@@ -373,7 +373,7 @@ async function updateCondo(condoId) {
     const user = objUserPassword.email;
 
     // Condominium
-    const condominiumId = objUserPassword.condominiumId;
+    const condominiumId = Number(objUserPassword.condominiumId);
 
     // current date
     const lastUpdate = today.toISOString();
@@ -400,7 +400,7 @@ async function updateCondo(condoId) {
     const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
 
     // Check if condo id exist
-    const condoRowNumberObj = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
+    const condoRowNumberObj = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
     if (condoRowNumberObj !== -1) {
 
       // update condo
@@ -422,7 +422,7 @@ async function deleteCondo() {
   const condoId = Number(document.querySelector('.select-condo-condoId').value);
 
   // Check if condo id exist
-  const condoRowNumberObj = objCondo.condoArray.findIndex(condo => condo.condoId === condoId);
+  const condoRowNumberObj = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
   if (condoRowNumberObj !== -1) {
 
     // delete condo row

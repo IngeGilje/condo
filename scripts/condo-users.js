@@ -182,7 +182,7 @@ function updateUser(userId) {
     const user = objUserPassword.email;
 
     // condominium Id
-    const condominiumId = objUserPassword.condominiumId;
+    const condominiumId = Number(objUserPassword.condominiumId);
 
     // e-mail
     const email = document.querySelector('.input-users-email').value;
@@ -354,7 +354,7 @@ function showLeadingText(userId) {
   objUsers.showInput('users-email', '* E-mail(Bruker)', 50, '');
 
   // Show all condos
-  const condoId = objCondo.condoArray.at(-1).condoId;
+  const condoId = objCondo.arrayCondo.at(-1).condoId;
   objCondo.showAllCondos('users-condoId', condoId);
 
   // Show first name

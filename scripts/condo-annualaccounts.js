@@ -82,7 +82,7 @@ function createEvents() {
       // Search for bank account movement
       async function searchFromDateSync() {
 
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = Number(objUserPassword.condominiumId);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
@@ -113,7 +113,7 @@ function createEvents() {
       // Search for bank account movements
       async function searchToDateSync() {
 
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = Number(objUserPassword.condominiumId);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
@@ -144,7 +144,7 @@ function createEvents() {
       // Search for bank account movements
       async function searchBudgetYearSync() {
 
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = Number(objUserPassword.condominiumId);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
@@ -179,7 +179,7 @@ function createEvents() {
         priceSquareMeter = formatKronerToOre(priceSquareMeter);
         document.querySelector('.input-filter-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);;
 
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = Number(objUserPassword.condominiumId);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
@@ -275,7 +275,6 @@ function showAnnualAccounts() {
     let totalAccountAmount = 0;
     let rowNumber = 0;
 
-    //const fiscalYear = document.querySelector('.select-filter-fiscalYear').value;
     const budgetYear = document.querySelector('.select-filter-budgetYear').value;
 
     let html = startHTMLTable();
@@ -448,7 +447,7 @@ function showIncomeNextYear() {
   // Header
   html += HTMLTableHeader('Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad år');
 
-  objCondo.condoArray.forEach((condo) => {
+  objCondo.arrayCondo.forEach((condo) => {
 
     rowNumber++;
 

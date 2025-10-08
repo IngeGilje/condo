@@ -122,7 +122,6 @@ async function main() {
                   fixedCost = '${fixedCost}'
                 WHERE accountId = ${accountId};
               `;
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -166,7 +165,6 @@ async function main() {
                   );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -199,7 +197,6 @@ async function main() {
                   WHERE accountId = ${accountId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -220,7 +217,7 @@ async function main() {
       switch (action) {
 
         case 'select': {
-          
+
           const condominiumId = Number(req.query.condominiumId);
 
           try {
@@ -289,7 +286,6 @@ async function main() {
                 WHERE 
                   userId = ${userId};
               `;
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -348,7 +344,6 @@ async function main() {
                 );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -380,7 +375,6 @@ async function main() {
                   WHERE userId = ${userId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -453,7 +447,6 @@ async function main() {
                   closingBalanceDate = '${closingBalanceDate}'
                 WHERE bankAccountId = ${bankAccountId};
               `;
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -508,7 +501,6 @@ async function main() {
                 );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -691,7 +683,6 @@ async function main() {
                 );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -723,7 +714,6 @@ async function main() {
                 WHERE condominiumId = ${condoId};
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -855,9 +845,10 @@ async function main() {
                 );
               `;
 
-            console.log('SQLquery: ', SQLquery);
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /budgets:", err.message);
@@ -946,11 +937,12 @@ async function main() {
 
             SQLquery +=
               `
-                ORDER BY date DESC;
+                ORDER BY condoId, date DESC;
               `;
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /dues:", err.message);
@@ -977,7 +969,7 @@ async function main() {
             // Update row
             const SQLquery =
               `
-                UPDATE due
+                UPDATE dues
                 SET 
                   user = '${user}',
                   lastUpdate = '${lastUpdate}',
@@ -988,9 +980,9 @@ async function main() {
                   text = '${text}'
                 WHERE dueId = ${dueId};
               `;
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /dues:", err.message);
@@ -1017,7 +1009,7 @@ async function main() {
             // Insert new row
             const SQLquery =
               `
-                INSERT INTO due (
+                INSERT INTO dues (
                   deleted,
                   condominiumId,
                   user,
@@ -1040,9 +1032,9 @@ async function main() {
                 );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /dues:", err.message);
@@ -1069,11 +1061,12 @@ async function main() {
                   deleted = 'Y',
                   user = '${user}',
                   lastUpdate = '${lastUpdate}'
-                WHERE duesId = ${duesId};
+                WHERE dueId = ${dueId};
               `;
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /dues:", err.message);
@@ -1736,7 +1729,6 @@ async function main() {
                 );
               `;
 
-            console.log("SQLquery: ", SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {

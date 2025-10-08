@@ -1134,8 +1134,7 @@ function validateEuroDateFormat(dateString) {
 function convertDateToISOFormat(date) {
   if (date.includes('.')) {
     const dateParts = date.split(".");
-    date =
-      `${dateParts[2]}${dateParts[1]}${dateParts[0]}`;
+    date = `${dateParts[2]}${dateParts[1]}${dateParts[0]}`;
   } else {
     date =
       '';

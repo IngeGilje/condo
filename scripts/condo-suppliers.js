@@ -270,7 +270,7 @@ async function updateSupplier(supplierId) {
 
     const lastUpdate = today.toISOString();
 
-    const condominiumId = objUserPassword.condominiumId;
+    const condominiumId = Number(objUserPassword.condominiumId);
 
     const supplierRowNumberObj = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 

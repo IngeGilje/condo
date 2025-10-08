@@ -180,7 +180,7 @@ async function updateAccount() {
     if (accountId >= 0) {
 
       const lastUpdate = today.toISOString();
-      const condominiumId = objUserPassword.condominiumId;
+      const condominiumId = Number(objUserPassword.condominiumId);
       const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
 
       // Check if account number exist

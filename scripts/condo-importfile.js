@@ -46,7 +46,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
 
-    const condominiumId = objUserPassword.condominiumId;
+    const condominiumId = Number(objUserPassword.condominiumId);
     const accountId = 999999999;
     const condoId = 999999999;
     let fromDate = 999999999;
@@ -465,7 +465,7 @@ async function updateBankAccountTransactions() {
   localArrayImportFile.forEach((importFile) => {
 
     const bankAccountTransactionId = 0;  // not in use
-    const condominiumId = objUserPassword.condominiumId;
+    const condominiumId = Number(objUserPassword.condominiumId);
     const user = objUserPassword.email;
     const lastUpdate = today.toISOString();
     const condoId = Number(importFile.condoId);

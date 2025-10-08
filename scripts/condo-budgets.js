@@ -155,7 +155,7 @@ function createEvents() {
 
         await updateBudget(budgetId);
 
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = Number(objUserPassword.condominiumId);
         const year = document.querySelector('.select-budgets-filterYear').value;
         const accountId = Number(document.querySelector('.select-budgets-filterAccountId').value);
         await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
@@ -635,7 +635,7 @@ async function updateBudget(budgetId) {
 
     const budgetId = Number(document.querySelector('.select-budgets-budgetId').value);
 
-    const condominiumId = objUserPassword.condominiumId;
+    const condominiumId = Number(objUserPassword.condominiumId);
     const user = objUserPassword.email;
     const lastUpdate = today.toISOString();
     const accountId = Number(document.querySelector('.select-budgets-accountId').value);

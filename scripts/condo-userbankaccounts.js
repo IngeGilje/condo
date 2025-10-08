@@ -380,7 +380,7 @@ async function updateUserBankAccount(userBankAccountId) {
     const userBankAccountId = Number(document.querySelector('.select-userbankaccounts-userBankAccountId').value);
 
     // Condominium
-    const condominiumId = objUserPassword.condominiumId;
+    const condominiumId = Number(objUserPassword.condominiumId);
 
     // user
     const user = objUserPassword.email;

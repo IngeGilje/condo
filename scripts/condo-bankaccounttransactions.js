@@ -426,20 +426,16 @@ function showLeadingTextFilter() {
   }
 
   // Check for filter from date
-  let date =
-    document.querySelector('.input-bankaccounttransactions-filterFromDate').value;
+  let date = document.querySelector('.input-bankaccounttransactions-filterFromDate').value;
   if (!validateEuroDateFormat(date)) {
 
     // From date is not ok
-    const year =
-      String(today.getFullYear());
-    document.querySelector('.input-bankaccounttransactions-filterFromDate').value =
-      "01.01." + year;
+    const year = String(today.getFullYear());
+    document.querySelector('.input-bankaccounttransactions-filterFromDate').value = "01.01." + year;
   }
 
   // Check for filter to date
-  date =
-    document.querySelector('.input-bankaccounttransactions-filterToDate').value;
+  date = document.querySelector('.input-bankaccounttransactions-filterToDate').value;
   if (!validateEuroDateFormat(date)) {
 
     // To date is not ok
@@ -452,8 +448,7 @@ function showLeadingTextFilter() {
   if (!objBankAccountTransactions.validateAmount(amount)) {
 
     // Amount is not ok
-    document.querySelector('.input-bankaccounttransactions-filterAmount').value =
-      '';
+    document.querySelector('.input-bankaccounttransactions-filterAmount').value = '';
   }
 }
 
@@ -461,11 +456,10 @@ function showLeadingTextFilter() {
 function showLeadingText(bankAccountTransactionId) {
 
   // Show bank Account Movement Id
-  //bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
   objBankAccountTransactions.showAllBankAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId, '', 'Ingen er valgt');
 
   // Show all condos
-  let condoId = objCondo.condoArray.at(-1).condoId;
+  let condoId = objCondo.arrayCondo.at(-1).condoId;
 
   objCondo.showAllCondos('bankaccounttransactions-condoId', condoId, '', 'Ingen er valgt');
 
@@ -554,22 +548,14 @@ function showBankAccountTransactions() {
   if (validateFilter()) {
 
     // Header
-    let htmlColumnLine =
-      '<div class="columnHeaderCenter">Linje</div><br>';
-    let htmlColumnCondoName =
-      '<div class="columnHeaderLeft">Leilighet</div><br>';
-    let htmlColumnAccountName =
-      '<div class="columnHeaderLeft">Konto</div><br>';
-    let htmlColumnDate =
-      '<div class="columnHeaderRight">Dato</div><br>';
-    let htmlColumnIncome =
-      '<div class="columnHeaderRight">Inntekt</div><br>';
-    let htmlColumnPayment =
-      '<div class="columnHeaderRight">Utgift</div><br>';
-    let htmlColumnKiloWattHour =
-      '<div class="columnHeaderRight">Kilovatttimer</div><br>';
-    let htmlColumnText =
-      '<div class="columnHeaderLeft">Tekst</div><br>';
+    let htmlColumnLine = '<div class="columnHeaderCenter">Linje</div><br>';
+    let htmlColumnCondoName = '<div class="columnHeaderLeft">Leilighet</div><br>';
+    let htmlColumnAccountName = '<div class="columnHeaderLeft">Konto</div><br>';
+    let htmlColumnDate = '<div class="columnHeaderRight">Dato</div><br>';
+    let htmlColumnIncome = '<div class="columnHeaderRight">Inntekt</div><br>';
+    let htmlColumnPayment = '<div class="columnHeaderRight">Utgift</div><br>';
+    let htmlColumnKiloWattHour = '<div class="columnHeaderRight">Kilovatttimer</div><br>';
+    let htmlColumnText = '<div class="columnHeaderLeft">Tekst</div><br>';
 
     let sumIncome = 0;
     let sumPayment = 0;
@@ -584,8 +570,8 @@ function showBankAccountTransactions() {
     let amount = document.querySelector('.input-bankaccounttransactions-filterAmount').value;
     amount = Number(formatKronerToOre(amount));
 
-    const condoId = Number(document.querySelector('.select-bankaccounttransactions-filterCondoId').value);
-    const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
+    //const condoId = Number(document.querySelector('.select-bankaccounttransactions-filterCondoId').value);
+    //const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
 
     objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankAccountTransaction) => {
 
@@ -607,10 +593,8 @@ function showBankAccountTransactions() {
       // condo name
       let condoName = "-";
       if (bankAccountTransaction.condoId) {
-        const condoId =
-          Number(bankAccountTransaction.condoId);
-        condoName =
-          objCondo.getCondoName(condoId);
+        const condoId =  Number(bankAccountTransaction.condoId);
+        condoName = objCondo.getCondoName(condoId);
       }
       htmlColumnCondoName +=
         `
@@ -622,8 +606,7 @@ function showBankAccountTransactions() {
         `;
 
       // account name
-      const accountName =
-        objAccounts.getAccountName(bankAccountTransaction.accountId);
+      const accountName = objAccounts.getAccountName(bankAccountTransaction.accountId);
       const colorClassAccountName =
         (accountName === '-') ? 'red' : colorClass;
       htmlColumnAccountName +=
@@ -636,8 +619,7 @@ function showBankAccountTransactions() {
         `;
 
       // date
-      const date =
-        formatToNorDate(bankAccountTransaction.date);
+      const date = formatToNorDate(bankAccountTransaction.date);
       htmlColumnDate +=
         `
           <div
@@ -648,8 +630,7 @@ function showBankAccountTransactions() {
         `;
 
       // income
-      const income =
-        formatOreToKroner(bankAccountTransaction.income);
+      const income = formatOreToKroner(bankAccountTransaction.income);
       htmlColumnIncome +=
         `
           <div
@@ -660,8 +641,7 @@ function showBankAccountTransactions() {
         `;
 
       // payment
-      const payment =
-        formatOreToKroner(bankAccountTransaction.payment);
+      const payment = formatOreToKroner(bankAccountTransaction.payment);
       htmlColumnPayment +=
         `
           <div
@@ -672,8 +652,7 @@ function showBankAccountTransactions() {
         `;
 
       // KiloWatt/Hour
-      const kiloWattHour =
-        formatOreToKroner(bankAccountTransaction.numberKWHour);
+      const kiloWattHour = formatOreToKroner(bankAccountTransaction.numberKWHour);
       htmlColumnKiloWattHour +=
         `
           <div
@@ -694,19 +673,15 @@ function showBankAccountTransactions() {
         `;
 
       // accumulate
-      sumIncome +=
-        Number(bankAccountTransaction.income);
-      sumPayment +=
-        Number(bankAccountTransaction.payment);
-      sumKiloWattHour +=
-        Number(bankAccountTransaction.numberKWHour);
+      sumIncome += Number(bankAccountTransaction.income);
+      sumPayment += Number(bankAccountTransaction.payment);
+      sumKiloWattHour += Number(bankAccountTransaction.numberKWHour);
     });
 
     // Sum line
 
     // income
-    income =
-      formatOreToKroner(sumIncome);
+    income = formatOreToKroner(sumIncome);
     htmlColumnIncome +=
       `
         <div
@@ -717,8 +692,7 @@ function showBankAccountTransactions() {
       `;
 
     // payment
-    payment =
-      formatOreToKroner(sumPayment);
+    payment = formatOreToKroner(sumPayment);
     htmlColumnPayment +=
       `
         <div
@@ -729,8 +703,7 @@ function showBankAccountTransactions() {
       `;
 
     // KiloWatt/Hour
-    kiloWattHour =
-      formatOreToKroner(sumKiloWattHour);
+    kiloWattHour = formatOreToKroner(sumKiloWattHour);
     htmlColumnKiloWattHour +=
       `
         <div
@@ -741,36 +714,28 @@ function showBankAccountTransactions() {
       `;
 
     // Show line number
-    document.querySelector('.div-bankaccounttransactions-columnLine').innerHTML =
-      htmlColumnLine;
+    document.querySelector('.div-bankaccounttransactions-columnLine').innerHTML = htmlColumnLine;
 
     // Show condo name
-    document.querySelector('.div-bankaccounttransactions-columnCondoName').innerHTML =
-      htmlColumnCondoName;
+    document.querySelector('.div-bankaccounttransactions-columnCondoName').innerHTML = htmlColumnCondoName;
 
     // Show bank account name
-    document.querySelector('.div-bankaccounttransactions-columnAccountName').innerHTML =
-      htmlColumnAccountName;
+    document.querySelector('.div-bankaccounttransactions-columnAccountName').innerHTML = htmlColumnAccountName;
 
     // Show date
-    document.querySelector('.div-bankaccounttransactions-columnDate').innerHTML =
-      htmlColumnDate;
+    document.querySelector('.div-bankaccounttransactions-columnDate').innerHTML = htmlColumnDate;
 
     // Show income
-    document.querySelector('.div-bankaccounttransactions-columnIncome').innerHTML =
-      htmlColumnIncome;
+    document.querySelector('.div-bankaccounttransactions-columnIncome').innerHTML = htmlColumnIncome;
 
     // Show payment
-    document.querySelector('.div-bankaccounttransactions-columnPayment').innerHTML =
-      htmlColumnPayment;
+    document.querySelector('.div-bankaccounttransactions-columnPayment').innerHTML = htmlColumnPayment;
 
     // Show KiloWatt/hour
-    document.querySelector('.div-bankaccounttransactions-columnNumberKWHour').innerHTML =
-      htmlColumnKiloWattHour;
+    document.querySelector('.div-bankaccounttransactions-columnNumberKWHour').innerHTML = htmlColumnKiloWattHour;
 
     // Show text
-    document.querySelector('.div-bankaccounttransactions-columnText').innerHTML =
-      htmlColumnText;
+    document.querySelector('.div-bankaccounttransactions-columnText').innerHTML = htmlColumnText;
   }
 }
 
@@ -805,7 +770,7 @@ async function updateBankAccountTransaction(bankAccountTransactionId) {
   if (validateValues()) {
 
     bankAccountTransactionId = Number(bankAccountTransactionId);
-    const condominiumId = objUserPassword.condominiumId;
+    const condominiumId = Number(objUserPassword.condominiumId);
     const user = objUserPassword.email;
     const condoId = Number(document.querySelector('.select-bankaccounttransactions-condoId').value);
     const accountId = Number(document.querySelector('.select-bankaccounttransactions-accountId').value);

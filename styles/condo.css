@@ -45,7 +45,7 @@ body {
 .div-grid-budgets-search,
 .div-grid-budgets,
 
-.div-grid-overview-search,
+/*.div-grid-overview-search,*/
 .div-grid-overview {
   display: grid;
   gap: 4px;
@@ -76,10 +76,11 @@ body {
   grid-template-columns: 200px 200px 150px 150px;
 }
 
-/* Define the grid container with 4 columns*/
+/* Define the grid container with 4 columns
 .div-grid-overview-search {
   grid-template-columns: 200px 200px 200px 200px;
 }
+*/
 
 /* Define the grid container with 4 columns*/
 .div-grid-remoteheating-search {
@@ -458,7 +459,7 @@ body {
 
 .div-grid-budgets label,
 
-.div-grid-overview-search label,
+/*.div-grid-overview-search label,*/
 .div-grid-overview label {
   border-bottom-color: rgb(229, 229, 229);
   border-bottom-style: solid;
@@ -528,7 +529,7 @@ body {
 .div-grid-budgets-search input,
 .div-grid-budgets input,
 
-.div-grid-overview-search input,
+/*.div-grid-overview-search input,*/
 .div-grid-overview input,
 
 .div-grid-condominiums input {
@@ -615,7 +616,7 @@ body {
 .div-grid-budgets-search select,
 .div-grid-budgets select,
 
-.div-grid-overview-search select,
+/*.div-grid-overview-search select,*/
 .div-grid-overview select {
   appearance: auto;
   background-color: rgb(255, 255, 255);
@@ -732,7 +733,7 @@ body {
 .div-grid-budgets-search button,
 .div-grid-budgets button,
 
-.div-grid-overview-search button,
+/*.div-grid-overview-search button,*/
 .div-grid-overview button {
   width: 190px;
   padding: 10px;
@@ -779,7 +780,7 @@ body {
 .div-grid-budgets-search button:hover,
 .div-grid-budgets button:hover,
 
-.div-grid-overview-search button:hover,
+/*.div-grid-overview-search button:hover,*/
 .div-grid-overview button:hover {
   background-color: #3e9441;
 }
@@ -815,7 +816,7 @@ body {
 .div-grid-budgets-search button:active,
 .div-grid-budgets button:active,
 
-.div-grid-overview-search button:active,
+/*.div-grid-overview-search button:active,*/
 .div-grid-overview button:active {
   background-color: #307533;
 }

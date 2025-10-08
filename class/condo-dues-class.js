@@ -3,10 +3,12 @@
 class Dues extends Condos {
 
   // Due information
-  duesArray;
+  arrayDues;
 
   // Show all dues
   showAllDues(className, dueId) {
+
+    dueId = Number(dueId);
 
     let html = `
     <form 
@@ -28,55 +30,51 @@ class Dues extends Condos {
     `;
 
     // Check if due array is empty
-    const numberOfRows = this.duesArray.length;
+    const numberOfRows = this.arrayDues.length;
     if (numberOfRows > 0) {
-      this.duesArray.forEach((due) => {
-        if (due.dueId >= 0) {
-          if (due.dueId === dueId) {
+      this.arrayDues.forEach((due) => {
+        if (due.dueId === dueId) {
 
-            html +=
-              `
-                <option 
-                  value="${due.dueId}"
-                  selected
-                >
-                  ${due.dueId} - ${due.text}
-                </option>
-              `;
-            selectedOption = true;
-          } else {
+          html +=
+            `
+              <option 
+                value="${due.dueId}"
+                selected
+              >
+                ${due.dueId} - ${due.text}
+              </option>
+            `;
+        } else {
 
-            html +=
-              `
-                <option 
-                  value="${due.dueId}">
-                  ${due.dueId} - ${due.text}
-                </option>
-              `;
-          }
+          html +=
+            `
+              <option 
+                value="${due.dueId}">
+                ${due.dueId} - ${due.text}
+              </option>
+            `;
         }
       });
 
     } else {
 
-      html += `
-        <option value="0" 
-          selected
-        >
-          Ingen forfall
-        </option>
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen forfall
+          </option>
       `;
-      selectedOption =
-        true;
     }
 
-    html += `
-        </select >
-      </form>
-    `;
+    html +=
+      `
+          </select >
+        </form>
+      `;
 
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
   // Find selected due id
@@ -89,11 +87,11 @@ class Dues extends Condos {
 
       dueId =
         Number(document.querySelector(`.${className}`).value);
-      dueId = (dueId === 0) ? this.duesArray.at(-1).dueId : dueId;
+      dueId = (dueId === 0) ? this.arrayDues.at(-1).dueId : dueId;
     } else {
 
       // Get last id in last object in monthly payment array
-      dueId = this.duesArray.at(-1).dueId;
+      dueId = this.arrayDues.at(-1).dueId;
     }
 
     return dueId;
@@ -126,9 +124,9 @@ class Dues extends Condos {
       false;
 
     // Check if bank account movement array is empty
-    const numberOfRows = this.duesArray.length;
+    const numberOfRows = this.arrayDues.length;
     if (numberOfRows > 0) {
-      this.duesArray.forEach((due) => {
+      this.arrayDues.forEach((due) => {
 
         lineNumber++;
         if (due.dueId === dueId) {
@@ -184,7 +182,7 @@ class Dues extends Condos {
 
       const response = await fetch(`http://localhost:3000/dues?action=select&condominiumId=${condominiumId}&accountId=${accountId}&condoId=${condoId}&fromDate=${fromDate}&toDate=${toDate}`);
       if (!response.ok) throw new Error("Network error (dues)");
-      this.duesArray = await response.json();
+      this.arrayDues = await response.json();
     } catch (error) {
 
       console.log("Error loading dues:", error);
@@ -192,7 +190,7 @@ class Dues extends Condos {
   }
 
   // update due row in dues table
-  async updateDuesTable(dueId, user, lastUpdate, condoId, accountId, amount,date,text) {
+  async updateDuesTable(dueId, user, lastUpdate, condoId, accountId, amount, date, text) {
 
     try {
       const response = await fetch(`http://localhost:3000/dues?action=update&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
@@ -204,10 +202,10 @@ class Dues extends Condos {
   }
 
   // insert due row in dues table
-  async insertDuesTable(condominiumId, dueId, user, lastUpdate, condoId, accountId, amount, date, text) {
+  async insertDuesTable(condominiumId, user, lastUpdate, condoId, accountId, amount, date, text) {
 
     try {
-      const response = await fetch(`http://localhost:3000/dues?action=insert&condominiumId=${condominiumId}&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
+      const response = await fetch(`http://localhost:3000/dues?action=insert&condominiumId=${condominiumId}&condoId=${condoId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.budgetsArray = await response.json();
     } catch (error) {

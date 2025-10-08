@@ -55,38 +55,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make events for condominium
 function createEvents() {
 
-  /*
-  // Select condominium
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-condominiums-condominiumId')) {
-      showValues(Number(event.target.value));
-    }
-  });
-  */
   // Select condominium
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-condominiums-condominiumId')) {
 
       let condominiumId = Number(document.querySelector('.select-condominiums-condominiumId').value);
-      condominiumId =
-        (condominiumId !== 0) ? condominiumId : objCondominiums.arrayCondominiums.at(-1).condominiumId;
+      condominiumId = (condominiumId !== 0) ? condominiumId : objCondominiums.arrayCondominiums.at(-1).condominiumId;
       if (condominiumId) {
         showValues(condominiumId);
       }
     }
   });
 
-  /*
-  // Update condominium
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominiums-update')) {
-
-      const condominiumId =
-        Number(document.querySelector('.select-condominiums-condominiumId').value);
-      updateCondominium(condominiumId);
-    }
-  });
-  */
   // Update condominiums table
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-condominiums-update')) {
@@ -221,9 +201,8 @@ async function updateCondominium(condominiumId) {
     const importPath = document.querySelector('.input-condominiums-fileName').value;
 
     // Check if condominium id exist
-    const objCondominiumsRowNumber =
-      objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (objCondominiumsRowNumber !== -1) {
+    const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+    if (condominiumsRowNumber !== -1) {
 
       // update user
       objCondominiums.updateCondominiumTable(user, condominiumId, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
@@ -233,77 +212,11 @@ async function updateCondominium(condominiumId) {
       // Insert user row in users table
       objCondominiums.insertCondominiumTable(user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
     }
-    /*
-    // Update condominium table
-    const SQLquery =
-      `
-        UPDATE condominium
-        SET 
-          user = '${objUserPassword.email}',
-          lastUpdate = '${lastUpdate}',
-          name = '${condominiumName}',
-          street = '${street}',
-          address2 = '${address2}',
-          postalCode = '${postalCode}', 
-          city = '${city}',
-          phone = '${phone}',
-          email = '${email}',
-          incomeRemoteHeatingAccountId = ${incomeRemoteHeatingAccountId},
-          paymentRemoteHeatingAccountId = ${paymentRemoteHeatingAccountId},
-          commonCostAccountId = ${commonCostAccountId},
-          organizationNumber = '${organizationNumber}',
-          importPath = '${importPath}'
-        WHERE condominiumId = ${condominiumId};
-      `;
-
-    updateMySql(SQLquery, 'condominium', 'UPDATE');
-  } else {
-
-    SQLquery = `
-      INSERT INTO condominium (
-        deleted,
-        user,
-        lastUpdate,
-        name,
-        street,
-        address2,
-        postalCode,
-        city,
-        phone,
-        email,
-        incomeRemoteHeatingAccountId,
-        paymentRemoteHeatingAccountId,
-        commonCostAccountId,
-        organizationNumber,
-        importPath)
-      VALUES (
-        'N',
-        '${objUserPassword.email}',
-        '${lastUpdate}',
-        '${condominiumName}',
-        '${street}',
-        '${address2}',
-        '${postalCode}',
-        '${city}',
-        '${phone}',
-        '${email}',
-        ${incomeRemoteHeatingAccountId},
-        ${paymentRemoteHeatingAccountId},
-        ${commonCostAccountId},
-        '${organizationNumber}',
-        '${importPath}'
-      );
-    `;
-    updateMySql(SQLquery, 'condominium', 'INSERT');
-    */
   }
 
-  document.querySelector('.select-condominiums-condominiumId').disabled =
-    false;
-  document.querySelector('.button-condominiums-delete').disabled =
-    false;
-  document.querySelector('.button-condominiums-insert').disabled =
-    false;
+  document.querySelector('.select-condominiums-condominiumId').disabled = false;
+  document.querySelector('.button-condominiums-delete').disabled = false;
+  document.querySelector('.button-condominiums-insert').disabled = false;
 }
 
 
@@ -371,67 +284,67 @@ function showValues(condominiumId) {
   if (condominiumId >= 0) {
 
     // get object number for selected condominium id
-    const objCondominiumsRowNumber =
+    const condominiumsRowNumber =
       objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (objCondominiumsRowNumber !== -1) {
+    if (condominiumsRowNumber !== -1) {
 
       // Condominium id
       document.querySelector('.select-condominiums-condominiumId').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].condominiumId;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].condominiumId;
 
       // Condominium name
       document.querySelector('.input-condominiums-name').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].name;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].name;
 
       // Show street
       document.querySelector('.input-condominiums-street').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].street;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].street;
 
       // Show address 2
       document.querySelector('.input-condominiums-address2').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].address2;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].address2;
 
       // Show postal code
       document.querySelector('.input-condominiums-postalCode').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].postalCode;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].postalCode;
 
       // Show city
       document.querySelector('.input-condominiums-city').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].city;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].city;
 
       // Show phone
       document.querySelector('.input-condominiums-phone').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].phone;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].phone;
 
       // Show email
       document.querySelector('.input-condominiums-email').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].email;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].email;
 
       // account id for income remote heating
       document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value =
-        (objCondominiums.arrayCondominiums[objCondominiumsRowNumber].incomeRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[objCondominiumsRowNumber].incomeRemoteHeatingAccountId : 0;
+        (objCondominiums.arrayCondominiums[condominiumsRowNumber].incomeRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].incomeRemoteHeatingAccountId : 0;
       document.querySelector('.label-condominiums-incomeRemoteHeatingAccountId').innerHTML =
         'Inntekt fjernvarmekonto';
 
       // account id for payment remote heating
       document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value =
-        (objCondominiums.arrayCondominiums[objCondominiumsRowNumber].paymentRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[objCondominiumsRowNumber].paymentRemoteHeatingAccountId : 0;
+        (objCondominiums.arrayCondominiums[condominiumsRowNumber].paymentRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].paymentRemoteHeatingAccountId : 0;
       document.querySelector('.label-condominiums-paymentRemoteHeatingAccountId').innerHTML =
         'Utgift fjernvarmekonto';
 
       // account id for common cost
       document.querySelector('.select-condominiums-commoncostAccountId').value =
-        (objCondominiums.arrayCondominiums[objCondominiumsRowNumber].commonCostAccountId) ? objCondominiums.arrayCondominiums[objCondominiumsRowNumber].commonCostAccountId : 0;
+        (objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId : 0;
       document.querySelector('.label-condominiums-commoncostAccountId').innerHTML =
         'Konto for felleskostnader';
 
       // Show organization number
       document.querySelector('.input-condominiums-organizationNumber').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].organizationNumber;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].organizationNumber;
 
       // Show file import path
       document.querySelector('.input-condominiums-fileName').value =
-        objCondominiums.arrayCondominiums[objCondominiumsRowNumber].importPath;
+        objCondominiums.arrayCondominiums[condominiumsRowNumber].importPath;
     }
   }
 }
@@ -510,9 +423,9 @@ function deleteCondominiumRow() {
   if (condominiumId >= 0) {
 
     // Check if condominium exist
-    const objCondominiumsRowNumber =
+    const condominiumsRowNumber =
       objcondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (objCondominiumsRowNumber !== -1) {
+    if (condominiumsRowNumber !== -1) {
 
       // current date
       const lastUpdate =
