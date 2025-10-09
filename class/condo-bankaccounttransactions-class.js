@@ -238,10 +238,10 @@ class BankAccountTransactions extends Condos {
   }
 
   // update Bank account transactions row
-  async updateBankAccountTransactionsTable(bankAccountTransactionId, condominium, user, lastUpdate, condoId, accountId, income, payment, numberKWHour, date, text) {
+  async updateBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, lastUpdate, condoId, accountId, income, payment, numberKWHour, date, text) {
 
     try {
-      const response = await fetch(`http://localhost:3000/bankaccounttransactions?action=update&bankAccountTransactionId=${bankAccountTransactionId}&condominium=${condominium}&user=${user}&lastUpdate=${lastUpdate}&condoId=${condoId}&accountId=${accountId}&income=${income}&payment=${payment}&numberKWHour=${numberKWHour}&date=${date}&text=${text}`);
+      const response = await fetch(`http://localhost:3000/bankaccounttransactions?action=update&bankAccountTransactionId=${bankAccountTransactionId}&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&condoId=${condoId}&accountId=${accountId}&income=${income}&payment=${payment}&numberKWHour=${numberKWHour}&date=${date}&text=${text}`);
       if (!response.ok) throw new Error("Network error (Bank account transactions)");
       this.arrayBankAccountTranactions = await response.json();
     } catch (error) {

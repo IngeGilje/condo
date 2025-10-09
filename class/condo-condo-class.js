@@ -5,7 +5,7 @@ class Condo extends Condos {
   arrayCondo;
 
   // Show all condos
-  showAllCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
+  showAllSelectedCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
 
     let selectedOption;
 

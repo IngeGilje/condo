@@ -468,11 +468,12 @@ async function main() {
             const lastUpdate = req.query.lastUpdate;
             const bankAccount = req.query.bankAccount;
             const name = req.query.name;
-            const openingBalance = req.query.openingBalance;
             const openingBalanceDate = req.query.openingBalanceDate;
-            const closingBalance = req.query.closingBalance;
+            console.log('openingBalanceDate: ',openingBalanceDate);
+            const openingBalance = req.query.openingBalance;
             const closingBalanceDate = req.query.closingBalanceDate;
-
+           const closingBalance = req.query.closingBalance;
+ 
             // Insert new row
             const SQLquery =
               `
@@ -503,6 +504,7 @@ async function main() {
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ',SQLquery);
           } catch (err) {
 
             console.log("Database error in /bankaccounts:", err.message);
@@ -534,6 +536,7 @@ async function main() {
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ',SQLquery);
           } catch (err) {
 
             console.log("Database error in /bankaccounts:", err.message);

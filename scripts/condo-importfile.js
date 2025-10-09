@@ -538,21 +538,21 @@ async function updateOpeningClosingBalance() {
       [text, bankAccountNumber] = accountingDate.split(',');
 
       // Get row number for bank account number in bank account array
-      bankAccountRowNumber = (bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
+      bankAccountRowNumber = (arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
 
       // Get row number for bank account number in bank account table
-      //bankAccountRowNumber = (bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber) + 1);
+      //bankAccountRowNumber = (arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber) + 1);
 
-      bankAccountId = bankAccountsArray[bankAccountRowNumber].bankAccountId;
+      bankAccountId = arrayBankAccounts[bankAccountRowNumber].bankAccountId;
 
       // Get current opening and closing balance
-      currentOpeningBalance = bankAccountsArray[bankAccountRowNumber].openingBalance;
+      currentOpeningBalance = arrayBankAccounts[bankAccountRowNumber].openingBalance;
 
-      currentOpeningBalanceDate = bankAccountsArray[bankAccountRowNumber].openingBalanceDate;
+      currentOpeningBalanceDate = arrayBankAccounts[bankAccountRowNumber].openingBalanceDate;
 
-      currentClosingBalance = bankAccountsArray[bankAccountRowNumber].closingBalance;
+      currentClosingBalance = arrayBankAccounts[bankAccountRowNumber].closingBalance;
 
-      currentClosingBalanceDate = bankAccountsArray[bankAccountRowNumber].closingBalanceDate;
+      currentClosingBalanceDate = arrayBankAccounts[bankAccountRowNumber].closingBalanceDate;
     }
 
     // Update opening balance date

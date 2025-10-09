@@ -58,7 +58,7 @@ function createEvents() {
 
       let userBankAccountId = Number(document.querySelector('.select-userbankaccounts-userBankAccountId').value);
       userBankAccountId =
-        (userBankAccountId !== 0) ? userBankAccountId : userBankAccountsArray.at(-1).userBankAccountId;
+        (userBankAccountId !== 0) ? userBankAccountId : userarrayBankAccounts.at(-1).userBankAccountId;
       if (userBankAccountId) {
         showValues(userBankAccountId);
       }
@@ -92,7 +92,7 @@ function createEvents() {
         await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId);
 
         // Select last user bank account if userBankAccountId is 0
-        if (userBankAccountId === 0) userBankAccountId = objUserBankAccounts.userBankAccountsArray.at(-1).userBankAccountId;
+        if (userBankAccountId === 0) userBankAccountId = objUserBankAccounts.userarrayBankAccounts.at(-1).userBankAccountId;
 
         // Show leading text
         showLeadingText(userBankAccountId);
@@ -127,7 +127,7 @@ function createEvents() {
         await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId);
 
         // Show leading text
-        const userBankAccountId = objUserBankAccounts.userBankAccountsArray.at(-1).userBankAccountId;
+        const userBankAccountId = objUserBankAccounts.userarrayBankAccounts.at(-1).userBankAccountId;
         showLeadingText(userBankAccountId);
 
         // Show all values for supplier
@@ -147,7 +147,7 @@ function createEvents() {
         ORDER BY userBankAccountId;
       `;
     updateMySql(SQLquery, 'userbankaccount', 'SELECT');
-    userBankAccountsArrayCreated =
+    userarrayBankAccountsCreated =
       false;
   }
   */
@@ -166,7 +166,7 @@ function createEvents() {
           ORDER BY userBankAccountId;
         `;
       updateMySql(SQLquery, 'userbankaccount', 'SELECT');
-      userBankAccountsArrayCreated =
+      userarrayBankAccountsCreated =
         false;
     }
   });
@@ -198,7 +198,7 @@ function updateUserBankAccount() {
 
     const lastUpdate = today.toISOString();
 
-    const bankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const bankAccountRowNumber = objUserBankAccounts.userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
     // Check if user bank account exist
     if (bankAccountRowNumber !== -1) {
@@ -299,20 +299,20 @@ function showValues(userBankAccountId) {
   if (userBankAccountId >= 0) {
 
     // find object number for selected user bank accountId
-    const bankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const bankAccountRowNumber = objUserBankAccounts.userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (bankAccountRowNumber !== -1) {
 
       // Select userId
-      document.querySelector('.select-userbankaccounts-userId').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].userId;
+      document.querySelector('.select-userbankaccounts-userId').value = objUserBankAccounts.userarrayBankAccounts[bankAccountRowNumber].userId;
 
       // Select accountId
-      document.querySelector('.select-userbankaccounts-accountId').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].accountId;
+      document.querySelector('.select-userbankaccounts-accountId').value = objUserBankAccounts.userarrayBankAccounts[bankAccountRowNumber].accountId;
 
       // Show bank account name
-      document.querySelector('.input-userbankaccounts-name').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].name;
+      document.querySelector('.input-userbankaccounts-name').value = objUserBankAccounts.userarrayBankAccounts[bankAccountRowNumber].name;
 
       // Show bank account
-      document.querySelector('.input-userbankaccounts-bankAccount').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].bankAccount;
+      document.querySelector('.input-userbankaccounts-bankAccount').value = objUserBankAccounts.userarrayBankAccounts[bankAccountRowNumber].bankAccount;
     }
   }
 }
@@ -402,7 +402,7 @@ async function updateUserBankAccount(userBankAccountId) {
     const bankAccount = document.querySelector('.input-userbankaccounts-bankAccount').value;
 
     // Check if user Bank Account id exist
-    const userBankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const userBankAccountRowNumberObj = objUserBankAccounts.userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (userBankAccountRowNumberObj !== -1) {
 
       // update user bank account
@@ -422,7 +422,7 @@ async function deleteUserBankAccount() {
   const userBankAccountId = Number(document.querySelector('.select-userbankaccounts-userBankAccountId').value);
 
   // Check if user bank account id exist
-  const userBankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+  const userBankAccountRowNumberObj = objUserBankAccounts.userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
   if (userBankAccountRowNumberObj !== -1) {
 
     // delete user bank account row

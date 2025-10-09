@@ -51,7 +51,6 @@ function createEvents() {
 
   // Select Supplier
   document.addEventListener('change', (event) => {
-
     if (event.target.classList.contains('select-suppliers-supplierId')) {
 
       let supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
@@ -87,7 +86,6 @@ function createEvents() {
         if (validateValues()) {
 
           await updateSupplier(supplierId);
-
           await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 
           // Select last suppliers if supplierId is 0
@@ -122,8 +120,6 @@ function createEvents() {
       async function deleteSupplierSync() {
 
         await deleteSupplier();
-
-        // Load supplier
         await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 
         // Show leading text
@@ -142,7 +138,6 @@ function createEvents() {
 
       // Reload supplier
       reloadSupplierSync();
-
       async function reloadSupplierSync() {
 
         let condominiumId = Number(objUserPassword.condominiumId);

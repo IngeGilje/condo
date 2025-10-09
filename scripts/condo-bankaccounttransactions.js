@@ -413,7 +413,7 @@ function showLeadingTextFilter() {
 
   // Show all condos
   const condoId = (isClassDefined('select-bankaccounttransactions-filterCondoId')) ? Number(document.querySelector('.select-bankaccounttransactions-filterCondoId').value) : 0;
-  objCondo.showAllCondos('bankaccounttransactions-filterCondoId', condoId, 'Alle');
+  objCondo.showAllSelectedCondos('bankaccounttransactions-filterCondoId', condoId, 'Alle');
 
   // Show all accounts
   const accountId = (isClassDefined('select-bankaccounttransactions-filterAccountId')) ? Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value) : 0;
@@ -470,7 +470,7 @@ function showLeadingText(bankAccountTransactionId) {
   // Show all condos
   let condoId = objCondo.arrayCondo.at(-1).condoId;
 
-  objCondo.showAllCondos('bankaccounttransactions-condoId', condoId, '', 'Ingen er valgt');
+  objCondo.showAllSelectedCondos('bankaccounttransactions-condoId', condoId, '', 'Ingen er valgt');
 
   // Show all accounts
   let accountId = objAccounts.accountsArray.at(-1).accountId;;

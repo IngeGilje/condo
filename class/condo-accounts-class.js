@@ -238,14 +238,14 @@ class Accounts extends Condos {
     let accountId = 0;
 
     // Bank Acoount <> Condominium Bank Account
-    let bankAccountRowNumber = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
+    let bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
     if (bankAccountRowNumber === -1) {
 
       // Check user bank account
-      const bankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+      const bankAccountRowNumber = objUserBankAccounts.userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
       if (bankAccountRowNumber !== -1) {
 
-        accountId = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].accountId;
+        accountId = objUserBankAccounts.userarrayBankAccounts[bankAccountRowNumber].accountId;
       }
 
       // get Account Id from supplier

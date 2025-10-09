@@ -2,10 +2,10 @@
 class BankAccounts extends Condos {
 
   // bankaccount information
-  bankAccountsArray = [];
+  arrayBankAccounts = [];
 
   // Show bankaccounts
-  showAllBankAccounts(className, bankAccountId) {
+  showAllSeletedBankaccounts(className, bankAccountId) {
 
     let html = `
       <form 
@@ -28,9 +28,9 @@ class BankAccounts extends Condos {
     `;
 
     // Check if bank account array is empty
-    const numberOfRows = this.bankAccountsArray.length;
+    const numberOfRows = this.arrayBankAccounts.length;
     if (numberOfRows > 0) {
-      this.bankAccountsArray.forEach((bankaccount) => {
+      this.arrayBankAccounts.forEach((bankaccount) => {
         if (bankaccount.bankAccountId >= 0) {
           if (bankaccount.bankAccountId === bankAccountId) {
 
@@ -85,11 +85,11 @@ class BankAccounts extends Condos {
 
       bankAccountId =
         Number(document.querySelector(`.${className}`).value);
-      bankAccountId = (bankAccountId === 0) ? this.bankAccountsArray.at(-1).bankAccountId : bankAccountId;
+      bankAccountId = (bankAccountId === 0) ? this.arrayBankAccounts.at(-1).bankAccountId : bankAccountId;
     } else {
 
       // Get last id in last object in bankaccount array
-      bankAccountId = (this.bankAccountsArray.length > 0) ? this.bankAccountsArray.at(-1).bankAccountId : 0;
+      bankAccountId = (this.arrayBankAccounts.length > 0) ? this.arrayBankAccounts.at(-1).bankAccountId : 0;
     }
 
     return bankAccountId;
@@ -101,20 +101,44 @@ class BankAccounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/bankaccounts?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (bank accounts)");
-      this.bankAccountsArray = await response.json();
+      this.arrayBankAccounts = await response.json();
     } catch (error) {
       console.log("Error loading bank accounts:", error);
     }
   }
   // update bank accounts row
-  async updateBankAccountsTable(bankAccountId,condominium,user,lastUpdate,bankAccount,name,openingBalance,openingBalanceDate,closingBalance,closingBalanceDate) {
+  async updateBankAccountsTable(bankAccountId,user,lastUpdate,bankAccount,name,openingBalance,openingBalanceDate,closingBalance,closingBalanceDate) {
 
     try {
-      const response = await fetch(`http://localhost:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&condominium=${condominium}&user=${user}&lastUpdate=${lastUpdate}&bankAccount=${bankAccount}&name=${name}&openingBalance=${openingBalance}&openingBalancedate=${openingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
+      const response = await fetch(`http://localhost:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&condominium=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}`);
       if (!response.ok) throw new Error("Network error (bank account)");
-      this.bankAccountsArray = await response.json();
+      this.arrayBankAccounts = await response.json();
     } catch (error) {
       console.log("Error updating bank account:", error);
+    }
+  }
+
+  // insert bank accounts row
+  async insertBankAccountsTable(condominiumId,user,lastUpdate,bankAccount,name,openingBalanceDate,openingBalance,closingBalanceDate,closingBalance) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/bankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
+      if (!response.ok) throw new Error("Network error (bank account)");
+      this.arrayBankAccounts = await response.json();
+    } catch (error) {
+      console.log("Error updating bank account:", error);
+    }
+  }
+
+  // delete Bank accounts row
+  async deleteBankAccountsTable(bankAccountId, user, lastUpdate) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/bankaccounts?action=delete&bankAccountId=${bankAccountId}&user=${user}&lastUpdate=${lastUpdate}`);
+      if (!response.ok) throw new Error("Network error (bankaccounts)");
+      this.arrayBankAccounts = await response.json();
+    } catch (error) {
+      console.log("Error deleting Bank accounts:", error);
     }
   }
 }

@@ -552,17 +552,17 @@ function showBankDeposit() {
 
   // Date
   let closingBalanceDate = "";
-  const bankAccountRowNumber = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
+  const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
   if (bankAccountRowNumber !== -1) {
 
-    closingBalanceDate = (objBankAccounts.bankAccountsArray[bankAccountRowNumber].closingBalanceDate);
+    closingBalanceDate = (objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate);
     closingBalanceDate = formatToNorDate(closingBalanceDate);
   }
 
   // Bank deposit
   let bankDepositAmount = "";
 
-  bankDepositAmount = (objBankAccounts.bankAccountsArray[bankAccountRowNumber].closingBalance);
+  bankDepositAmount = (objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalance);
   bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
   html += HTMLTableRow('Bankinnskudd', closingBalanceDate, bankDepositAmount);
@@ -610,7 +610,7 @@ function showBankDeposit() {
   colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
   // Dato
-  closingBalanceDate = Number(objBankAccounts.bankAccountsArray[bankAccountRowNumber].closingBalanceDate);
+  closingBalanceDate = Number(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate);
 
   // Next year
   closingBalanceDate = closingBalanceDate + 10000;

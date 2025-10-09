@@ -450,7 +450,7 @@ function showLeadingTextFilter() {
 
   // Show all condos
   const condoId = (isClassDefined('select-dues-filterCondoId')) ? Number(document.querySelector('.select-dues-filterCondoId').value) : 0;
-  objCondo.showAllCondos('dues-filterCondoId', condoId, 'Alle');
+  objCondo.showAllSelectedCondos('dues-filterCondoId', condoId, 'Alle');
 
   // Show all accounts
   const accountId = (isClassDefined('select-dues-filterAccountId')) ? Number(document.querySelector('.select-dues-filterAccountId').value) : 0;
@@ -493,7 +493,7 @@ function showLeadingText(dueId) {
 
   // Show all condos
   const condoId = objCondo.arrayCondo.at(-1).condoId;
-  objCondo.showAllCondos('dues-condoId', condoId, 'Ingen er valgt');
+  objCondo.showAllSelectedCondos('dues-condoId', condoId, 'Ingen er valgt');
 
   // Show all accounts
   const accountId = objAccounts.accountsArray.at(-1).accountId;
