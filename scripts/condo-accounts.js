@@ -50,24 +50,35 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-accounts-accountId')) {
 
+      let accountId = Number(document.querySelector('.select-accounts-accountId').value);
+      accountId = (accountId !== 0) ? accountId : objAccounts.arrayAccounts.at(-1).accountId;
+      if (accountId) {
+        showValues(accountId);
+      }
+
+      /*
       const accountId = Number(document.querySelector('.select-accounts-accountId').value);
       if (accountId) {
         showValues(accountId);
       }
+      */
     }
   });
 
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-accounts-update')) {
 
-      // Update account row and reload accounts
+      // Update accounts and reload accounts
       updateAccountSync();
+
+      // Update account and reload accounts
       async function updateAccountSync() {
 
+        // Load account
         let accountId;
         if (document.querySelector('.select-accounts-accountId').value === '') {
 
-          // Insert new row into accounts table
+          // Insert new row into account table
           accountId = 0;
         } else {
 
@@ -75,21 +86,53 @@ function createEvents() {
           accountId = Number(document.querySelector('.select-accounts-accountId').value);
         }
 
-        updateAccount(accountId);
+        if (validateValues()) {
 
-        await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+          await updateAccount(accountId);
+          await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
-        // Select last account if accountId is 0
-        if (accountId === 0) accountId = objAccounts.accountsArray.at(-1).accountId;
+          // Select last accounts if accountId is 0
+          if (accountId === 0) accountId = objAccounts.arrayAccounts.at(-1).accountId;
 
-        // Show leading text
-        showLeadingText(accountId);
+          // Show leading text
+          showLeadingText(accountId);
 
-        // Show values for selected account Id
-        showValues(accountId);
+          // Show all values for account
+          showValues(accountId);
+        }
       }
     }
   });
+  /*
+  // Update account row and reload accounts
+  updateAccountSync();
+  async function updateAccountSync() {
+  
+    let accountId;
+    if (document.querySelector('.select-accounts-accountId').value === '') {
+  
+      // Insert new row into accounts table
+      accountId = 0;
+    } else {
+  
+      // Update existing row in accounts table
+      accountId = Number(document.querySelector('.select-accounts-accountId').value);
+    }
+  
+    updateAccount(accountId);
+  
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+  
+    // Select last account if accountId is 0
+    if (accountId === 0) accountId = objAccounts.accountsArray.at(-1).accountId;
+  
+    // Show leading text
+    showLeadingText(accountId);
+  
+    // Show values for selected account Id
+    showValues(accountId);
+  }
+  */
 
   // Insert account
   document.addEventListener('click', (event) => {
@@ -103,51 +146,91 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-accounts-delete')) {
 
-      // Delete account and reload accounts
+      // Delete account and reload account
       deleteAccountSync();
 
-      // Delete account and reload accounts
+      // Delete account
       async function deleteAccountSync() {
 
-        deleteAccount();
-
-        // Load accounts
+        await deleteAccount();
         await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
         // Show leading text
-        const accountId = objAccounts.accountsArray.at(-1).accountId;
+        const accountId = objAccounts.arrayAccounts.at(-1).accountId;
         showLeadingText(accountId);
 
         // Show all values for account
         showValues(accountId);
-      }
-    }
+      };
+    };
   });
+
+  /*
+  // Delete account and reload accounts
+  deleteAccountSync();
+  
+  // Delete account and reload accounts
+  async function deleteAccountSync() {
+  
+    deleteAccount();
+  
+    // Load accounts
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+  
+    // Show leading text
+    const accountId = objAccounts.accountsArray.at(-1).accountId;
+    showLeadingText(accountId);
+  
+    // Show all values for account
+    showValues(accountId);
+  }
+  */
 
   // Cancel
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-accounts-cancel')) {
 
-      // cancel and reload accounts
-      cancelAccountSync();
+      // Reload account
+      reloadAccountSync();
+      async function reloadAccountSync() {
 
-      // cancel account and reload accounts
-      async function cancelAccountSync() {
+        let condominiumId = Number(objUserPassword.condominiumId);
+        await objAccounts.loadAccountsTable(condominiumId);
 
-        // Load accounts
-        await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+        // Show leading text for maintenance
+        // Select first account Id
+        if (objAccounts.arrayAccounts.length > 0) {
+          accountId = objAccounts.arrayAccounts[0].accountId;
+          showLeadingText(accountId);
+        }
 
-        // Show leading text
-        const accountId = objAccounts.accountsArray.at(-1).accountId;
-        showLeadingText(accountId);
+        // Show all selected account
+        objAccounts.showAllSelectedAccounts('accounts-accountId', accountId);
 
-        // Show all values for account
+        // Show account Id
         showValues(accountId);
       }
     }
   });
-  return true;
 }
+  /*
+  // cancel and reload accounts
+  cancelAccountSync();
+
+  // cancel account and reload accounts
+  async function cancelAccountSync() {
+
+    // Load accounts
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+
+    // Show leading text
+    const accountId = objAccounts.accountsArray.at(-1).accountId;
+    showLeadingText(accountId);
+
+    // Show all values for account
+    showValues(accountId);
+  }
+  */
 
 async function updateAccount() {
 
@@ -202,7 +285,7 @@ async function updateAccount() {
   }
 }
 
-function deleteAccount() {
+async function deleteAccount() {
 
   // Check for valid account number
   const accountId = Number(document.querySelector('.select-accounts-accountId').value);
