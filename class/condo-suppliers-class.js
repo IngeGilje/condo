@@ -5,7 +5,7 @@ class Suppliers extends Condos {
   arraySuppliers;
 
   // Show all suppliers
-  showAllSuppliers(classValue, supplierId) {
+  showAllSelectedSuppliers(classValue, supplierId) {
 
     let html = `
       <form 
@@ -108,11 +108,11 @@ class Suppliers extends Condos {
   }
 
   // update supplier row
-  async updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, accountAmountId, amount) {
+  async updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId) {
 
     try {
       console.log('accountid: ', accountId);
-      const response = await fetch(`http://localhost:3000/suppliers?action=update&supplierId=${supplierId}&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${accountId}&accountAmountId=${accountAmountId}&amount=${amount}`);
+      const response = await fetch(`http://localhost:3000/suppliers?action=update&supplierId=${supplierId}&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${bankAccountAccountId}&amount=${amount}&amountAccountId=${amountAccountId}`);
       if (!response.ok) throw new Error("Network error (suppliers)");
       this.arraySuppliers = await response.json();
     } catch (error) {
@@ -121,10 +121,10 @@ class Suppliers extends Condos {
   }
 
   // insert supplier row
-  async insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, accountAmountId, amount) {
+  async insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId) {
 
     try {
-      const response = await fetch(`http://localhost:3000/suppliers?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${accountId}&accountAmountId=${accountAmountId}&amount=${amount}`);
+      const response = await fetch(`http://localhost:3000/suppliers?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${accountId}&amount=${amount}&amountAccountId=${amountAccountId}`);
       if (!response.ok) throw new Error("Network error (suppliers)");
       this.arraySuppliers = await response.json();
     } catch (error) {

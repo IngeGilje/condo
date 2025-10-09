@@ -1,4 +1,4 @@
-// Maintenance of users
+// Maintenance of suppliers
 
 // Activate objects
 const today = new Date();
@@ -29,9 +29,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
-
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 
     // Find selected supplier id
@@ -86,55 +84,24 @@ function createEvents() {
           supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
         }
 
-        await updateSupplier(supplierId);
+        if (validateValues()) {
 
-        await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
+          await updateSupplier(supplierId);
 
-        // Select last suppliers if supplierId is 0
-        if (supplierId === 0) supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
+          await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 
-        // Show leading text
-        showLeadingText(supplierId);
+          // Select last suppliers if supplierId is 0
+          if (supplierId === 0) supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
 
-        // Show all values for supplier
-        showValues(supplierId);
+          // Show leading text
+          showLeadingText(supplierId);
+
+          // Show all values for supplier
+          showValues(supplierId);
+        }
       }
     }
   });
-  /*
-  // supplier id
-  let supplierId =
-    Number(document.querySelector('.select-suppliers-supplierId').value);
-  updateSupplier(supplierId);
-
-  updateSupplierSync();
-
-  // Main entry point
-  async function updateSupplierSync() {
-
-    // Load supplier
-
-    await updateSupplier();
-
-    await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
-
-    // Show leading text
-    showLeadingText(supplierId);
-
-    // Show all values for supplier
-    let supplierId;
-    if (document.querySelector('.select-suppliers-supplierId')) {
-      supplierId = objSuppliers.getSelectedSupplierId('select-suppliers-supplierId');
-    } else {
-      supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
-    }
-
-    showValues(supplierId);
-  }
-
-}
-  });
-  */
 
   // New supplier
   document.addEventListener('click', (event) => {
@@ -168,6 +135,34 @@ function createEvents() {
       };
     };
   });
+
+  // Cancel
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('button-suppliers-cancel')) {
+
+      // Reload supplier
+      reloadSupplierSync();
+
+      async function reloadSupplierSync() {
+
+        let condominiumId = Number(objUserPassword.condominiumId);
+        await objSuppliers.loadSuppliersTable(condominiumId);
+
+        // Show leading text for maintenance
+        // Select first supplier Id
+        if (objSuppliers.arraySuppliers.length > 0) {
+          supplierId = objSuppliers.arraySuppliers[0].supplierId;
+          showLeadingText(supplierId);
+        }
+
+        // Show all selected supplier
+        objSuppliers.showAllSelectedSuppliers('suppliers-supplierId', supplierId);
+
+        // Show supplier Id
+        showValues(supplierId);
+      }
+    }
+  });
 }
 
 // Delete supplier
@@ -177,8 +172,8 @@ async function deleteSupplier() {
   const supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
 
   // Check if supplier id exist
-  const supplierRowNumberObj = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-  if (supplierRowNumberObj !== -1) {
+  const supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
+  if (supplierRowNumber !== -1) {
 
     // delete supplier row
     const user = objUserPassword.email;
@@ -186,167 +181,74 @@ async function deleteSupplier() {
     objSuppliers.deleteSuppliersTable(supplierId, user, lastUpdate);
   }
 }
-/*
-const supplierId =
-  Number(document.querySelector('.select-suppliers-supplierId').value);
-deleteSupplierRow(supplierId);
 
-// Sends a request to the server to get all suppliers
-const SQLquery =
-  `
-    SELECT * FROM supplier
-    WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND deleted <> 'Y'
-    ORDER BY supplierId;
-  `;
-updateMySql(SQLquery, 'supplier', 'SELECT');
-supplierArrayCreated =
-  false;
-}
-});
-
-// Cancel
-document.addEventListener('click', (event) => {
-if (event.target.classList.contains('button-suppliers-cancel')) {
-
-// Sends a request to the server to get all user
-const SQLquery =
-  `
-    SELECT * FROM supplier
-    WHERE condominiumId = ${objUserPassword.condominiumId}
-      AND deleted <> 'Y'
-    ORDER BY supplierId;
-  `;
-updateMySql(SQLquery, 'supplier', 'SELECT');
-supplierArrayCreated =
-  false;
-}
-});
-return true;
-}
-*/
 async function updateSupplier(supplierId) {
 
-  if (validateValues(supplierId)) {
+  // user
+  const user = objUserPassword.email;
 
-    // user
-    const user = objUserPassword.email;
+  // supplier Id
+  supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
 
-    // supplier Id
-    const supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
+  // name
+  const name = document.querySelector('.input-suppliers-name').value;
 
-    // name
-    const name = document.querySelector('.input-suppliers-name').value;
+  // street
+  const street = document.querySelector('.input-suppliers-street').value;
 
-    // street
-    const street = document.querySelector('.input-suppliers-street').value;
+  // address 2
+  const address2 = document.querySelector('.input-suppliers-address2').value;
 
-    // address 2
-    const address2 = document.querySelector('.input-suppliers-address2').value;
+  // postal code
+  const postalCode = document.querySelector('.input-suppliers-postalCode').value;
 
-    // postal code
-    const postalCode = document.querySelector('.input-suppliers-postalCode').value;
+  // city
+  const city = document.querySelector('.input-suppliers-city').value;
 
-    // city
-    const city = document.querySelector('.input-suppliers-city').value;
+  // email
+  const email = document.querySelector('.input-suppliers-email').value;
 
-    // email
-    const email = document.querySelector('.input-suppliers-email').value;
+  // phone
+  const phone = document.querySelector('.input-suppliers-phone').value;
 
-    // phone
-    const phone = document.querySelector('.input-suppliers-phone').value;
+  // bank account
+  const bankAccount = document.querySelector('.input-suppliers-bankAccount').value;
 
-    // bank account
-    const bankAccount = document.querySelector('.input-suppliers-bankAccount').value;
+  // account Id
+  const bankAccountAccountId = Number(document.querySelector('.select-suppliers-bankAccountAccountId').value);
 
-    // account Id
-    const accountId = Number(document.querySelector('.select-suppliers-accountId').value);
+  // amount accountId Id
+  const amountAccountId = Number(document.querySelector('.select-suppliers-amountAccountId').value);
 
-    // account2 Id
-    const accountAmountId = Number(document.querySelector('.select-suppliers-accountAmountId').value);
+  // amount
+  const amount = (document.querySelector('.input-suppliers-amount').value) ? formatKronerToOre(document.querySelector('.input-suppliers-amount').value) : '0';
 
-    // amount
-    const amount = (document.querySelector('.input-suppliers-amount').value) ? formatKronerToOre(document.querySelector('.input-suppliers-amount').value) : '0';
+  const lastUpdate = today.toISOString();
+  const condominiumId = Number(objUserPassword.condominiumId);
+  const supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 
-    const lastUpdate = today.toISOString();
+  // Check if supplier exist
+  if (supplierRowNumber !== -1) {
 
-    const condominiumId = Number(objUserPassword.condominiumId);
+    // update supplier
+    objSuppliers.updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId);
 
-    const supplierRowNumberObj = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
+  } else {
 
-    // Check if supplier exist
-    if (supplierRowNumberObj !== -1) {
-
-      // update supplier
-      objSuppliers.updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, accountAmountId, amount);
-
-    } else {
-
-      // insert supplier
-      objSuppliers.insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, accountAmountId, amount);
-    }
-
-    document.querySelector('.select-suppliers-supplierId').disabled = false;
-    document.querySelector('.button-suppliers-delete').disabled = false;
-    document.querySelector('.button-suppliers-insert').disabled = false;
+    // insert supplier
+    objSuppliers.insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId);
   }
+
+  document.querySelector('.select-suppliers-supplierId').disabled = false;
+  document.querySelector('.button-suppliers-delete').disabled = false;
+  document.querySelector('.button-suppliers-insert').disabled = false;
 }
-
-/*
-function deleteSupplierRow(supplierId) {
-
-  let SQLquery = "";
-
-  if (supplierId >= 0) {
-
-    // Check if supplier exist
-    const objUserSupplierNumber =
-      objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-    if (objUserSupplierNumber !== -1) {
-
-      // current date
-      const lastUpdate =
-        today.toISOString();
-
-      // Delete table
-      SQLquery =
-        `
-          UPDATE supplier
-            SET 
-              deleted = 'Y',
-              user = '${objUserPassword.email}',
-              lastUpdate = '${lastUpdate}'
-          WHERE supplierId = ${supplierId};
-      `;
-
-      // Client sends a request to the server
-      updateMySql(SQLquery, 'supplier', 'SELECT');
-      supplierArrayCreated =
-        false;
-    }
-
-    // Get supplier
-    SQLquery =
-      `
-        SELECT * FROM supplier
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY supplierId;
-      `;
-    updateMySql(SQLquery, 'supplier', 'SELECT');
-    supplierArrayCreated =
-      false;
-
-    resetValues();
-  }
-}
-*/
 
 // Show leading text for supplier
 function showLeadingText(supplierId) {
 
   // Show all suppliers
-  objSuppliers.showAllSuppliers('suppliers-supplierId', supplierId);
+  objSuppliers.showAllSelectedSuppliers('suppliers-supplierId', supplierId);
 
   // name
   objSuppliers.showInput('suppliers-name', '* Navn', 50, '');
@@ -373,10 +275,10 @@ function showLeadingText(supplierId) {
   objSuppliers.showInput('suppliers-bankAccount', '* Bankkonto', 11, '');
 
   // Show all accounts
-  objAccounts.showAllAccounts('suppliers-accountId', 0, '', 'Ingen konti er valgt');
+  objAccounts.showAllAccounts('suppliers-bankAccountAccountId', 0, '', 'Ingen konti er valgt');
 
   // Show all accounts
-  objAccounts.showAllAccounts('suppliers-accountAmountId', 0, '', 'Ingen konti er valgt');
+  objAccounts.showAllAccounts('suppliers-amountAccountId', 0, '', 'Ingen konti er valgt');
 
   // Show amount
   objAccounts.showInput('suppliers-amount', 'Beløp', 10, '');
@@ -407,68 +309,54 @@ function showValues(supplierId) {
     if (objUserSupplierNumber !== -1) {
 
       // Select supplier Id
-      document.querySelector('.select-suppliers-supplierId').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].supplierId;
+      document.querySelector('.select-suppliers-supplierId').value = objSuppliers.arraySuppliers[objUserSupplierNumber].supplierId;
 
       // name
-      document.querySelector('.input-suppliers-name').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].name;
+      document.querySelector('.input-suppliers-name').value = objSuppliers.arraySuppliers[objUserSupplierNumber].name;
 
       // street
-      document.querySelector('.input-suppliers-street').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].street;
+      document.querySelector('.input-suppliers-street').value = objSuppliers.arraySuppliers[objUserSupplierNumber].street;
 
       // address 2
-      document.querySelector('.input-suppliers-address2').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].address2;
+      document.querySelector('.input-suppliers-address2').value = objSuppliers.arraySuppliers[objUserSupplierNumber].address2;
 
       // Postal code
-      document.querySelector('.input-suppliers-postalCode').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].postalCode;
+      document.querySelector('.input-suppliers-postalCode').value = objSuppliers.arraySuppliers[objUserSupplierNumber].postalCode;
 
       // city
-      document.querySelector('.input-suppliers-city').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].city;
+      document.querySelector('.input-suppliers-city').value = objSuppliers.arraySuppliers[objUserSupplierNumber].city;
 
       // Show email
-      document.querySelector('.input-suppliers-email').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].email;
+      document.querySelector('.input-suppliers-email').value = objSuppliers.arraySuppliers[objUserSupplierNumber].email;
 
       // Show phone
-      document.querySelector('.input-suppliers-phone').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].phone;
+      document.querySelector('.input-suppliers-phone').value = objSuppliers.arraySuppliers[objUserSupplierNumber].phone;
 
       // Show bankAccount
-      document.querySelector('.input-suppliers-bankAccount').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccount;
+      document.querySelector('.input-suppliers-bankAccount').value = objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccount;
 
-      // Select account Id
-      document.querySelector('.select-suppliers-accountId').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].accountId;
-
-      // Select account2 Id
-      document.querySelector('.select-suppliers-accountAmountId').value =
-        (objSuppliers.arraySuppliers[objUserSupplierNumber].accountAmountId) ? objSuppliers.arraySuppliers[objUserSupplierNumber].accountAmountId : 0;
+      // Select bank account account Id
+      document.querySelector('.select-suppliers-bankAccountAccountId').value = objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccountAccountId;
 
       // Select amount
-      document.querySelector('.input-suppliers-amount').value =
-        (objSuppliers.arraySuppliers[objUserSupplierNumber].amount) ? formatOreToKroner(objSuppliers.arraySuppliers[objUserSupplierNumber].amount) : '';
+      document.querySelector('.input-suppliers-amount').value = (objSuppliers.arraySuppliers[objUserSupplierNumber].amount) ? formatOreToKroner(objSuppliers.arraySuppliers[objUserSupplierNumber].amount) : '';
+
+      // Select amount accountId Id
+      document.querySelector('.select-suppliers-amountAccountId').value = (objSuppliers.arraySuppliers[objUserSupplierNumber].amountAccountId) ? objSuppliers.arraySuppliers[objUserSupplierNumber].amountAccountId : 0;
     }
   }
 }
 
 // Check for valid values
-function validateValues(supplierId) {
+function validateValues() {
 
   // Check name
   const supplierName = document.querySelector('.input-suppliers-name').value;
   const validName = objSuppliers.validateText(supplierName, "label-suppliers-name", "Navn");
 
   // Validate bank account
-  const bankAccount =
-    document.querySelector('.input-suppliers-bankAccount').value;
-  const validBankAccount =
-    objSuppliers.validateBankAccount(bankAccount, "label-suppliers-bankAccount", "Bankkonto");
+  const bankAccount = document.querySelector('.input-suppliers-bankAccount').value;
+  const validBankAccount = objSuppliers.validateBankAccount(bankAccount, "label-suppliers-bankAccount", "Bankkonto");
 
   return (validName && validBankAccount) ? true : false;
 }
@@ -503,10 +391,10 @@ function resetValues() {
   document.querySelector('.input-suppliers-bankAccount').value = '';
 
   // account Id
-  document.querySelector('.select-suppliers-accountId').value = 0;
+  document.querySelector('.select-suppliers-bankAccountAccountId').value = 0;
 
-  // account2 Id
-  document.querySelector('.select-suppliers-accountAmountId').value = 0;
+  // amount accountId Id
+  document.querySelector('.select-suppliers-amountAccountId').value = 0;
 
   // amount
   document.querySelector('.input-suppliers-amount').value = '';

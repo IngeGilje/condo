@@ -39,23 +39,24 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     amount = 0;
     condominiumId = objUserPassword.condominiumId;
+    const deleted = 'N';
     const condoId = 999999999;
 
-    const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
     let accountId;
-    if (condominiumRowNumberObj !== -1) {
-      accountId = objCondominiums.arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId;
+    if (condominiumRowNumber !== -1) {
+      accountId = objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId;
     }
     let fromDate = "01.01." + String(today.getFullYear());
     fromDate = Number(convertDateToISOFormat(fromDate));
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, accountId, amount, fromDate, toDate);
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
     // Show filter
     showFilter();
 
-    // Get selected Bank Account Movements
+    // Get selected Bank account transactions
     showSeletedBankAccountTransactions();
 
     // Make events
@@ -70,27 +71,28 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-remoteheating-fromDate')) {
 
-      // Get selected Bank Account Movements and show
+      // Get selected Bank account transactions and show
       searchFromDateSync();
 
-      // Get selected Bank Account Movements
+      // Get selected Bank account transactions
       async function searchFromDateSync() {
 
-        // Get selected Bank Account Movements
+        // Get selected Bank account transactions
         const condominiumId = Number(objUserPassword.condominiumId);
+        const deleted = 'N';
         const condoId = 999999999;
 
-        const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+        const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
         let accountId;
-        if (condominiumRowNumberObj !== -1) {
-          accountId = objCondominiums.arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId;
+        if (condominiumRowNumber !== -1) {
+          accountId = objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId;
         }
 
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, accountId, 0, fromDate, toDate)
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, 0, fromDate, toDate)
 
-        // Show selected Bank Account Movements
+        // Show selected Bank account transactions
         showSeletedBankAccountTransactions();
       }
     };
@@ -100,26 +102,27 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-remoteheating-toDate')) {
 
-      // Get selected Bank Account Movements and show
+      // Get selected Bank account transactions and show
       searchToDateSync();
 
-      // Get selected Bank Account Movements
+      // Get selected Bank account transactions
       async function searchToDateSync() {
 
-        // Get selected Bank Account Movements
+        // Get selected Bank account transactions
         const condominiumId = Number(objUserPassword.condominiumId);
+        const deleted = 'N';
         const condoId = 999999999;
 
-        const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+        const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
         let accountId;
-        if (condominiumRowNumberObj !== -1) {
-          accountId = objCondominiums.arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId;
+        if (condominiumRowNumber !== -1) {
+          accountId = objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId;
         }
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-remoteheating-toDate').value));
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, accountId, 0, fromDate, toDate)
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, 0, fromDate, toDate)
 
-        // Show selected Bank Account Movements
+        // Show selected Bank account transactions
         showSeletedBankAccountTransactions();
       }
     };
@@ -156,7 +159,7 @@ function showFilter() {
   }
 }
 
-// Show selected bank account movements
+// Show selected bank account transactions
 function showSeletedBankAccountTransactions() {
 
   // check for valid filter
@@ -176,7 +179,7 @@ function showSeletedBankAccountTransactions() {
     // Make all columns
     let rowNumber = 0;
 
-    objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankaccounttransaction) => {
+    objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankaccounttransaction) => {
 
       rowNumber++;
 

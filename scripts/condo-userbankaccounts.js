@@ -198,10 +198,10 @@ function updateUserBankAccount() {
 
     const lastUpdate = today.toISOString();
 
-    const bankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const bankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
     // Check if user bank account exist
-    if (bankAccountRowNumberObj !== -1) {
+    if (bankAccountRowNumber !== -1) {
 
       // Update table
       SQLquery =
@@ -299,20 +299,20 @@ function showValues(userBankAccountId) {
   if (userBankAccountId >= 0) {
 
     // find object number for selected user bank accountId
-    const bankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
-    if (bankAccountRowNumberObj !== -1) {
+    const bankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    if (bankAccountRowNumber !== -1) {
 
       // Select userId
-      document.querySelector('.select-userbankaccounts-userId').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].userId;
+      document.querySelector('.select-userbankaccounts-userId').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].userId;
 
       // Select accountId
-      document.querySelector('.select-userbankaccounts-accountId').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].accountId;
+      document.querySelector('.select-userbankaccounts-accountId').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].accountId;
 
       // Show bank account name
-      document.querySelector('.input-userbankaccounts-name').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].name;
+      document.querySelector('.input-userbankaccounts-name').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].name;
 
       // Show bank account
-      document.querySelector('.input-userbankaccounts-bankAccount').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].bankAccount;
+      document.querySelector('.input-userbankaccounts-bankAccount').value = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].bankAccount;
     }
   }
 }

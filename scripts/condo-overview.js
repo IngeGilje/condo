@@ -30,7 +30,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     const condominiumId = Number(objUserPassword.condominiumId);
-
+    const deleted = 'N';
     const year = String(today.getFullYear());
     let fromDate = "01.01." + year;
     fromDate = convertDateToISOFormat(fromDate);
@@ -42,7 +42,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const condoId = objCondo.arrayCondo.at(-1).condoId;
     await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, 999999999, 0, fromDate, toDate);
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
     // Show leading text Filter
     showLeadingTextFilter();
@@ -53,7 +53,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show dues
     showDues();
 
-    // Bank account movements
+    // Bank account transactions
     showBankAccountMovements();
 
     // show how much to pay
@@ -77,6 +77,7 @@ function createEvents() {
       async function searchAccountOverviewSync() {
 
         const condominiumId = Number(objUserPassword.condominiumId);
+        const deleted = 'N';
 
         // Include all accounts
         const condoId = Number(document.querySelector('.select-filter-condoId').value);
@@ -84,12 +85,12 @@ function createEvents() {
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
         await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
         // show dues
         showDues();
 
-        // Bank account movements
+        // Bank account transactions
         showBankAccountMovements();
 
         // Show how much to pay
@@ -108,6 +109,7 @@ function createEvents() {
       async function searchFromDateSync() {
 
         const condominiumId = Number(objUserPassword.condominiumId);
+        const deleted = 'N';
 
         // Include all accounts
         const accountId = 0;
@@ -117,12 +119,12 @@ function createEvents() {
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
         await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
         // show dues
         showDues();
 
-        // Show bank account movements
+        // Show bank account transactions
         showBankAccountMovements();
 
         // show how much to pay
@@ -141,6 +143,7 @@ function createEvents() {
       async function searchToDateSync() {
 
         const condominiumId = Number(objUserPassword.condominiumId);
+        const deleted = 'N';
 
         // Include all accounts
         const accountId = 0;
@@ -150,12 +153,12 @@ function createEvents() {
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
         await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, condoId, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
         // Show dues
         showDues();
 
-        // Bank account movements
+        // Bank account transactions
         showBankAccountMovements();
 
         // show how much to pay
@@ -257,7 +260,7 @@ function showDues() {
   }
 }
 
-// Show bank account movements
+// Show bank account transactions
 function showBankAccountMovements() {
 
   // check for valid filter
@@ -269,7 +272,7 @@ function showBankAccountMovements() {
     let sumIncome = 0;
 
     // How much is payd
-    objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankAccountTransaction) => {
+    objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 
       // condo name
       const name = (bankAccountTransaction.condoId) ? objCondo.getCondoName(bankAccountTransaction.condoId) : "-";
@@ -309,7 +312,7 @@ function showHowMuchToPay() {
     let sumIncome = 0;
 
     // How much is payd
-    objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankAccountTransaction) => {
+    objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 
       // Accomulate
       sumIncome += Number(bankAccountTransaction.income);
@@ -325,11 +328,11 @@ function showHowMuchToPay() {
     // Header
     let html = startHTMLTable();
 
-    let owes =  sumIncome - sumToPay;
-    html+= (owes > 0) ? HTMLTableHeader('Sum', 'Forfall', 'Betalt', 'Til gode') : HTMLTableHeader('Sum', 'Forfall', 'Betalt', 'Skyldig');
-    
+    let owes = sumIncome - sumToPay;
+    html += (owes > 0) ? HTMLTableHeader('Sum', 'Forfall', 'Betalt', 'Til gode') : HTMLTableHeader('Sum', 'Forfall', 'Betalt', 'Skyldig');
+
     // Sum line
-    if (owes < 0)  owes = (owes * -1) ;
+    if (owes < 0) owes = (owes * -1);
     owes = formatOreToKroner(owes);
     sumIncome = formatOreToKroner(sumIncome);
     sumToPay = formatOreToKroner(sumToPay);
@@ -353,7 +356,7 @@ let sumColumnBankAccountTransaction = 0;
 
 lineNumber = 0;
 
-objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankAccountTransaction) => {
+objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 
   lineNumber++;
 
@@ -430,7 +433,7 @@ htmlColumnDueAmount +=
     </div>
   `;
 
-// sum bank account movement
+// sum Bank account transactions
 htmlBankAccountTransactionAmount +=
   `
     <div class="sumCellRight">

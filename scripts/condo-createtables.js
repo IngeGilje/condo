@@ -52,7 +52,7 @@ const createDueTable =
 const createBudgetTable =
   false;
 
-// 12 Bank account movement
+// 12 Bank account transactions
 const createBankAccountTransactionTable =
   false;
 
@@ -92,7 +92,7 @@ socket.onclose = () => {
 
 function deleteAllTables() {
 
-  // 12 Bank account movement
+  // 12 Bank account transactions
   if (createBankAccountTransactionTable) {
 
     console.log('DROP bankaccounttransaction Table');
@@ -377,7 +377,7 @@ function createAllTables() {
         phone VARCHAR(20) NOT NULL,
         bankAccount VARCHAR(11),
         accountId INT,
-        accountAmountId INT,
+        amountAccountId INT,
         amount VARCHAR(10),
         FOREIGN KEY (accountId) REFERENCES account(accountId),
         FOREIGN KEY (condominiumId) REFERENCES condominium(condominiumId)
@@ -453,7 +453,7 @@ function createAllTables() {
     updateMySql(SQLquery, 'budget', 'CREATE');
   }
 
-  // 12 Bank account movement
+  // 12 Bank account transactions
   if (createBankAccountTransactionTable) {
     console.log('CREATE bankaccounttransaction Table');
     SQLquery =

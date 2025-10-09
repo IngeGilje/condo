@@ -419,8 +419,8 @@ class Condos {
   selectBankAccountId(bankAccountId, className) {
 
     // Check if account id exist
-    const bankAccountRowNumberObj = this.bankAccountsArray.findIndex(bankAccounts => bankAccounts.bankAccountId === bankAccountId);
-    if (bankAccountRowNumberObj !== -1) {
+    const bankAccountRowNumber = this.bankAccountsArray.findIndex(bankAccounts => bankAccounts.bankAccountId === bankAccountId);
+    if (bankAccountRowNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value = bankAccountId;
       return true;
@@ -832,29 +832,29 @@ class Condos {
     let bankAccountName = '';
 
     // Bank account name from bank account table 
-    const bankAccountRowNumberObj = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
-    if (bankAccountRowNumberObj !== -1) {
+    const bankAccountRowNumber = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    if (bankAccountRowNumber !== -1) {
 
-      bankAccountName = objBankAccounts.bankAccountsArray[bankAccountRowNumberObj].name;
+      bankAccountName = objBankAccounts.bankAccountsArray[bankAccountRowNumber].name;
     }
 
     if (!bankAccountName) {
 
       // Bank account name from supplier table
-      const supplierRowNumberObj = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
-      if (supplierRowNumberObj !== -1) {
+      const supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+      if (supplierRowNumber !== -1) {
 
-        bankAccountName = objSuppliers.arraySuppliers[supplierRowNumberObj].name;
+        bankAccountName = objSuppliers.arraySuppliers[supplierRowNumber].name;
       }
     }
 
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const bankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
-      if (bankAccountRowNumberObj !== -1) {
+      const bankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+      if (bankAccountRowNumber !== -1) {
 
-        bankAccountName = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].name;
+        bankAccountName = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].name;
       }
     }
 
@@ -886,10 +886,10 @@ class Condos {
     const bankAccountPattern = /^\d{11}$/;
     if ((bankAccountPattern.test(fromBankAccount))) {
 
-      const bankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
-      if (bankAccountRowNumberObj !== -1) {
+      const bankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
+      if (bankAccountRowNumber !== -1) {
 
-        const userId = Number(objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].userId);
+        const userId = Number(objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].userId);
 
         if (userId >= 0) {
 
@@ -1718,26 +1718,26 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   let accountId = 0;
 
   // Bank Acoount <> Condominium Bank Account
-  let bankAccountRowNumberObj = this.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
-  if (bankAccountRowNumberObj === -1) {
+  let bankAccountRowNumber = this.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
+  if (bankAccountRowNumber === -1) {
 
     // Check user bank account
-    const bankAccountRowNumberObj = userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
-    if (bankAccountRowNumberObj !== -1) {
+    const bankAccountRowNumber = userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+    if (bankAccountRowNumber !== -1) {
 
-      accountId = userBankAccountsArray[bankAccountRowNumberObj].accountId;
+      accountId = userBankAccountsArray[bankAccountRowNumber].accountId;
     }
 
     // get Account Id from supplier
-    const supplierRowNumberObj = arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
-    if (supplierRowNumberObj !== -1) {
+    const supplierRowNumber = arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
+    if (supplierRowNumber !== -1) {
 
-      accountId = arraySuppliers[supplierRowNumberObj].accountId;
+      accountId = arraySuppliers[supplierRowNumber].accountId;
 
       // get Account Id from supplier amount
-      const amount = (arraySuppliers[supplierRowNumberObj].amount) ? Number(arraySuppliers[supplierRowNumberObj].amount) : 0;
+      const amount = (arraySuppliers[supplierRowNumber].amount) ? Number(arraySuppliers[supplierRowNumber].amount) : 0;
 
-      accountId = (amount === Number(payment)) ? Number(arraySuppliers[supplierRowNumberObj].accountAmountId) : accountId;
+      accountId = (amount === Number(payment)) ? Number(arraySuppliers[supplierRowNumber].amountAccountId) : accountId;
     }
   }
   return accountId;

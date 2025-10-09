@@ -39,12 +39,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
+    const condominiumId = Number(objUserPassword.condominiumId);
+    const deleted = "A";
     const year = today.getFullYear();
     let fromDate = "01.01." + year;
     fromDate = Number(convertDateToISOFormat(fromDate));
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(objUserPassword.condominiumId, 999999999, 999999999, 0, fromDate, toDate);                                                                              
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
     // Show leading text for filter
     showLeadingTextFilter();
@@ -76,17 +78,18 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-filter-fromDate')) {
 
-      // Search bank account movement and reload bank account movement
+      // Search Bank account transactions and reload Bank account transactions
       searchFromDateSync();
 
-      // Search for bank account movement
+      // Search for Bank account transactions
       async function searchFromDateSync() {
 
         const condominiumId = Number(objUserPassword.condominiumId);
+        const deleted = 'N';
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -107,17 +110,18 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-filter-toDate')) {
 
-      // Search bank account movement and reload bank account movement
+      // Search Bank account transactions and reload Bank account transactions
       searchToDateSync();
 
-      // Search for bank account movements
+      // Search for bank account transactions
       async function searchToDateSync() {
 
         const condominiumId = Number(objUserPassword.condominiumId);
+        const deleted = 'N';
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -138,17 +142,18 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-filter-budgetYear')) {
 
-      // Search bank account movement and reload bank account movement
+      // Search Bank account transactions and reload Bank account transactions
       searchBudgetYearSync();
 
-      // Search for bank account movements
+      // Search for bank account transactions
       async function searchBudgetYearSync() {
 
         const condominiumId = Number(objUserPassword.condominiumId);
+        const deleted = 'N';
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -169,10 +174,10 @@ function createEvents() {
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('input-filter-priceSquareMeter')) {
 
-      // Search bank account movement and reload bank account movement
+      // Search Bank account transactions and reload Bank account transactions
       searchBudgetYearSync();
 
-      // Search for bank account movements
+      // Search for bank account transactions
       async function searchBudgetYearSync() {
 
         let priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
@@ -180,10 +185,11 @@ function createEvents() {
         document.querySelector('.input-filter-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);;
 
         const condominiumId = Number(objUserPassword.condominiumId);
+        const deleted = 'N';
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, 999999999, 999999999, 0, fromDate, toDate);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -304,7 +310,7 @@ function showAnnualAccounts() {
           break;
       }
 
-      // bank account movement for selected account
+      // Bank account transactions for selected account
       let accountAmount = getTotalMovementsBankAccount(account.accountId);
       accountAmount = formatOreToKroner(accountAmount);
 
@@ -374,7 +380,7 @@ function validateFilter() {
   return (validBudgetYear && validFromDate && validToDate && validDateInterval) ? true : false;
 }
 
-// Accumulate all bank account movement for specified account id
+// Accumulate all Bank account transactions for specified account id
 function getTotalMovementsBankAccount(accountId) {
 
   let accountAmount = 0;
@@ -386,7 +392,7 @@ function getTotalMovementsBankAccount(accountId) {
   let toDate = document.querySelector('.input-filter-toDate').value;
   toDate = Number(convertDateToISOFormat(toDate));
 
-  objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankAccountTransaction) => {
+  objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 
     if (Number(bankAccountTransaction.date) >= fromDate
       && (Number(bankAccountTransaction.date) <= toDate
@@ -504,7 +510,7 @@ function getFixedCost(fromDate, toDate) {
 
   let fixedCost = 0;
 
-  objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankAccountTransaction) => {
+  objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 
     if (Number(bankAccountTransaction.date) >= fromDate
       && (Number(bankAccountTransaction.date) <= toDate)) {
@@ -546,17 +552,17 @@ function showBankDeposit() {
 
   // Date
   let closingBalanceDate = "";
-  const bankAccountRowNumberObj = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
-  if (bankAccountRowNumberObj !== -1) {
+  const bankAccountRowNumber = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.condominiumId === objUserPassword.condominiumId);
+  if (bankAccountRowNumber !== -1) {
 
-    closingBalanceDate = (objBankAccounts.bankAccountsArray[bankAccountRowNumberObj].closingBalanceDate);
+    closingBalanceDate = (objBankAccounts.bankAccountsArray[bankAccountRowNumber].closingBalanceDate);
     closingBalanceDate = formatToNorDate(closingBalanceDate);
   }
 
   // Bank deposit
   let bankDepositAmount = "";
 
-  bankDepositAmount = (objBankAccounts.bankAccountsArray[bankAccountRowNumberObj].closingBalance);
+  bankDepositAmount = (objBankAccounts.bankAccountsArray[bankAccountRowNumber].closingBalance);
   bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
   html += HTMLTableRow('Bankinnskudd', closingBalanceDate, bankDepositAmount);
@@ -604,7 +610,7 @@ function showBankDeposit() {
   colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
   // Dato
-  closingBalanceDate = Number(objBankAccounts.bankAccountsArray[bankAccountRowNumberObj].closingBalanceDate);
+  closingBalanceDate = Number(objBankAccounts.bankAccountsArray[bankAccountRowNumber].closingBalanceDate);
 
   // Next year
   closingBalanceDate = closingBalanceDate + 10000;
@@ -653,11 +659,11 @@ function showRemoteHeating() {
     let sumColumnNumberKWHour = 0;
 
     // Get row number for payment Remote Heating Account Id
-    const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-    if (condominiumRowNumberObj !== -1) {
+    const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    if (condominiumRowNumber !== -1) {
 
-      objBankAccountTransactions.bankAccountTranactionsArray.forEach((bankaccounttransaction) => {
-        if (bankaccounttransaction.accountId === objCondominiums.arrayCondominiums[condominiumRowNumberObj].paymentRemoteHeatingAccountId) {
+      objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankaccounttransaction) => {
+        if (bankaccounttransaction.accountId === objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId) {
           if (Number(bankaccounttransaction.date) >= Number(fromDate) && Number(bankaccounttransaction.date) <= Number(toDate)) {
 
             rowNumber++;

@@ -123,7 +123,7 @@ class Dues extends Condos {
     let selectedOption =
       false;
 
-    // Check if bank account movement array is empty
+    // Check if Bank account transactions array is empty
     const numberOfRows = this.arrayDues.length;
     if (numberOfRows > 0) {
       this.arrayDues.forEach((due) => {

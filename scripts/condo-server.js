@@ -685,6 +685,7 @@ async function main() {
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery :', SQLquery);
           } catch (err) {
 
             console.log("Database error in /condominiums:", err.message);
@@ -695,13 +696,13 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete condo request received");
+          console.log("Delete condominium request received");
 
           try {
 
             const user = req.query.user;
             const lastUpdate = req.query.lastUpdate;
-            const condoId = req.query.condoId;
+            const condominiumId = req.query.condominiumId;
 
             // Delete table
             const SQLquery =
@@ -711,11 +712,12 @@ async function main() {
                   deleted = 'Y',
                   user = '${user}',
                   lastUpdate = '${lastUpdate}'
-                WHERE condominiumId = ${condoId};
+                WHERE condominiumId = ${condominiumId};
               `;
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /condominiums:", err.message);
@@ -844,7 +846,6 @@ async function main() {
                   '${year}'
                 );
               `;
-
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
@@ -1439,8 +1440,8 @@ async function main() {
             const city = req.query.city;
             const phone = req.query.phone;
             const bankAccount = req.query.bankAccount;
-            const accountId = req.query.accountId;
-            const accountAmountId = req.query.accountAmountId;
+            const bankAccountAccountId = req.query.accountId;
+            const amountAccountId = req.query.amountAccountId;
             const amount = req.query.amount;
             const supplierId = req.query.supplierId;
 
@@ -1459,9 +1460,9 @@ async function main() {
                   email = '${email}',
                   phone = '${phone}',
                   bankAccount = '${bankAccount}',
-                  accountId = ${accountId},
-                  accountAmountId = ${accountAmountId},
-                  amount = '${amount}'
+                  bankAccountAccountId = ${bankAccountAccountId},
+                  amount = '${amount}',
+                  amountAccountId = ${amountAccountId}
                 WHERE supplierId = ${supplierId};
               `;
 
@@ -1492,9 +1493,9 @@ async function main() {
             const city = req.query.city;
             const phone = req.query.phone;
             const bankAccount = req.query.bankAccount;
-            const accountId = req.query.accountId;
-            const accountAmountId = req.query.accountAmountId;
+            const bankAccountAccountId = req.query.accountId;
             const amount = req.query.amount;
+            const amountAccountId = req.query.amountAccountId;
             console.log('amount: ', amount);
 
             // Insert new supplier row
@@ -1513,9 +1514,9 @@ async function main() {
                   email,
                   phone,
                   bankAccount,
-                  accountId,
-                  accountAmountId,
-                  amount
+                  bankAccountAccountId,
+                  amount,
+                  amountAccountId,
                 ) VALUES (
                   'N',
                   ${condominiumId},
@@ -1529,9 +1530,9 @@ async function main() {
                   '${email}',
                   '${phone}',
                   '${bankAccount}',
-                  ${accountId},
-                  ${accountAmountId},
-                  ${amount}
+                  ${bankAccountAccountId},
+                  ${amount},
+                  ${amountAccountId}
                 );
               `;
 
@@ -1542,8 +1543,8 @@ async function main() {
             console.log("Database error in /suppliers:", err.message);
             res.status(500).json({ error: err.message });
           }
-          break;
 
+          break;
         }
 
         case 'delete': {
@@ -1580,7 +1581,7 @@ async function main() {
       }
     });
 
-    // Requests for bank account movements
+    // Requests for bank account transactions
     app.get("/bankaccounttransactions", async (req, res) => {
 
       const action = req.query.action;
@@ -1589,6 +1590,7 @@ async function main() {
         case 'select': {
 
           const condominiumId = Number(req.query.condominiumId);
+          const deleted = req.query.deleted;
           const condoId = Number(req.query.condoId);
           const accountId = Number(req.query.accountId);
           const amount = Number(req.query.amount);
@@ -1601,7 +1603,22 @@ async function main() {
               `
                 SELECT * FROM bankaccounttransactions
                 WHERE condominiumId = ${condominiumId}
-                  AND deleted <> 'Y'
+              `;
+            if (deleted === 'Y') {
+              SQLquery +=
+                `
+                  AND deleted = 'Y'
+                `;
+            }
+            if (deleted === 'N') {
+              SQLquery +=
+                `
+                  AND deleted = 'N'
+                `;
+            }
+
+            SQLquery +=
+              `
                 AND date BETWEEN ${fromDate} AND ${toDate}
               `;
             if (condoId !== 999999999) {
@@ -1619,7 +1636,7 @@ async function main() {
             if (amount !== 0) {
               SQLquery +=
                 `
-                  AND (income = ${amount} OR payment = ${amount})
+                  AND(income = ${amount} OR payment = ${amount})
                 `;
             }
 
@@ -1654,23 +1671,23 @@ async function main() {
             const text = req.query.text;
             const bankAccountTransactionId = req.query.bankAccountTransactionId;
 
-            // Update bank account movements table
+            // Update bank account transactions table
             const SQLquery =
               `
                 UPDATE bankaccounttransactions
-                SET 
-                  deleted = 'N',
-                  user = '${user}',
-                  lastUpdate = '${lastUpdate}',
-                  condoId = '${condoId}',
-                  accountId = '${accountId}',
-                  income = ${income},
-                  payment = ${payment},
-                  numberKWHour  = '${numberKWHour}',
-                  date  = ${date},
-                  text = '${text}'
+            SET
+            deleted = 'N',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              condoId = '${condoId}',
+              accountId = '${accountId}',
+              income = ${income},
+            payment = ${payment},
+            numberKWHour = '${numberKWHour}',
+              date = ${date},
+            text = '${text}'
                 WHERE bankAccountTransactionId = ${bankAccountTransactionId};
-              `;
+            `;
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
@@ -1684,7 +1701,7 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert bank account movements request received");
+          console.log("Insert bank account transactions request received");
 
           try {
 
@@ -1699,35 +1716,35 @@ async function main() {
             const date = req.query.date;
             const text = req.query.text;
 
-            // Insert new bank account movements row
+            // Insert new bank account transactions row
             const SQLquery =
               `
-                INSERT INTO bankaccounttransactions (
-                  deleted,
-                  condominiumId,
-                  user,
-                  lastUpdate,
-                  condoId,
-                  accountId,
-                  income,
-                  payment,
-                  numberKWHour,
-                  date,
-                  text
-                ) VALUES (
-                  'N',
-                  ${condominiumId},
-                  '${user}',
-                  '${lastUpdate}',
-                  ${condoId},
-                  ${accountId},
-                  ${income},
-                  ${payment},
-                  '${numberKWHour}',
-                  ${date}, 
-                  '${text}'
-                );
-              `;
+                INSERT INTO bankaccounttransactions(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              condoId,
+              accountId,
+              income,
+              payment,
+              numberKWHour,
+              date,
+              text
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${condoId},
+              ${accountId},
+              ${income},
+              ${payment},
+              '${numberKWHour}',
+              ${date},
+              '${text}'
+            );
+            `;
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
@@ -1742,7 +1759,7 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete bank account movement request received");
+          console.log("Delete Bank account transactions request received");
 
           try {
 
@@ -1754,12 +1771,12 @@ async function main() {
             const SQLquery =
               `
                 UPDATE bankaccounttransactions
-                  SET 
-                    deleted = 'Y',
-                    lastUpdate = '${lastUpdate}',
-                    user = '${user}'
+            SET
+            deleted = 'Y',
+              lastUpdate = '${lastUpdate}',
+              user = '${user}'
                   WHERE bankAccountTransactionId = ${bankAccountTransactionId};
-              `;
+            `;
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);

@@ -238,26 +238,26 @@ class Accounts extends Condos {
     let accountId = 0;
 
     // Bank Acoount <> Condominium Bank Account
-    let bankAccountRowNumberObj = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
-    if (bankAccountRowNumberObj === -1) {
+    let bankAccountRowNumber = objBankAccounts.bankAccountsArray.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
+    if (bankAccountRowNumber === -1) {
 
       // Check user bank account
-      const bankAccountRowNumberObj = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
-      if (bankAccountRowNumberObj !== -1) {
+      const bankAccountRowNumber = objUserBankAccounts.userBankAccountsArray.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+      if (bankAccountRowNumber !== -1) {
 
-        accountId = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumberObj].accountId;
+        accountId = objUserBankAccounts.userBankAccountsArray[bankAccountRowNumber].accountId;
       }
 
       // get Account Id from supplier
-      const supplierRowNumberObj = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
-      if (supplierRowNumberObj !== -1) {
+      const supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
+      if (supplierRowNumber !== -1) {
 
-        accountId = objSuppliers.arraySuppliers[supplierRowNumberObj].accountId;
+        accountId = objSuppliers.arraySuppliers[supplierRowNumber].accountId;
 
         // get Account Id from supplier amount
-        const amount = (objSuppliers.arraySuppliers[supplierRowNumberObj].amount) ? Number(objSuppliers.arraySuppliers[supplierRowNumberObj].amount) : 0;
+        const amount = (objSuppliers.arraySuppliers[supplierRowNumber].amount) ? Number(objSuppliers.arraySuppliers[supplierRowNumber].amount) : 0;
 
-        accountId = (amount === Number(payment)) ? Number(objSuppliers.arraySuppliers[supplierRowNumberObj].accountAmountId) : accountId;
+        accountId = (amount === Number(payment)) ? Number(objSuppliers.arraySuppliers[supplierRowNumber].amountAccountId) : accountId;
       }
     }
     return accountId;

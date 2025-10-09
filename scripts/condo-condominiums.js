@@ -31,11 +31,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
-
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
-
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
 
     // Find selected condominium id
@@ -74,7 +71,7 @@ function createEvents() {
       // Update condominium and reload condominiums
       updateCondominiumSync();
 
-      // Update condominiums and reload users
+      // Update condominium and reload condominiums
       async function updateCondominiumSync() {
 
         // Load condominiums
@@ -89,20 +86,51 @@ function createEvents() {
           condominiumId = Number(document.querySelector('.select-condominiums-condominiumId').value);
         }
 
-        updateCondominium(condominiumId);
+        // check for valid values
+        if (validateValues()) {
 
-        await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
+          await updateCondominium(condominiumId);
+          await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
 
-        // Select last condominium if condominiumId is 0
-        if (condominiumId === 0) condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
+          // Select last condominiums if condominiumId is 0
+          if (condominiumId === 0) condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
 
-        // Show leading text
-        showLeadingText(condominiumId);
+          // Show leading text
+          showLeadingText(condominiumId);
 
-        // Show all values for condominium
-        showValues(condominiumId);
+          // Show all values for condominium
+          showValues(condominiumId);
+        }
       }
     }
+
+    // Cancel
+    document.addEventListener('click', (event) => {
+      if (event.target.classList.contains('button-condominiums-cancel')) {
+
+        // Reload condominiums
+        reloadCondominiumSync();
+
+        async function reloadCondominiumSync() {
+
+          let condominiumId = Number(objUserPassword.condominiumId);
+          await objCondominiums.loadCondominiumsTable(condominiumId);
+
+          // Show leading text for maintenance
+          // Select first condominium Id
+          if (objCondominiums.arrayCondominiums.length > 0) {
+            condominiumId = objCondominiums.arrayCondominiums[0].condominiumId;
+            showLeadingText(condominiumId);
+          }
+
+          // Show all selected condominiums
+          objCondominiums.showAllSelectedCondominiums('condominiums-condominiumId', condominiumId);
+
+          // Show condominium Id
+          showValues(condominiumId);
+        }
+      }
+    });
   });
 
   // New condominium
@@ -112,36 +140,14 @@ function createEvents() {
     }
   });
 
-  /*
   // Delete condominium
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-condominiums-delete')) {
 
-      deleteCondominiumRow();
-
-      // Sends a request to the server to get all condos
-      const SQLquery =
-        `
-          SELECT * FROM condominium
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-            AND deleted <> 'Y'
-          ORDER BY name;
-        `;
-      updateMySql(SQLquery, 'condominium', 'SELECT');
-      condominiumArrayCreated =
-        false;
-    }
-  });
-  */
-
-  // Delete condominium
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominiums-delete')) {
-
-      // Delete user and reload users
+      // Delete condominium and reload users
       deleteCondominiumSync();
 
-      // Delete user and reload users
+      // Delete condominium and reload users
       async function deleteCondominiumSync() {
 
         await deleteCondominium();
@@ -158,60 +164,36 @@ function createEvents() {
       }
     }
   });
-
-  // Cancel
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condominiums-cancel')) {
-
-      // Sends a request to the server to get all condos
-      const SQLquery =
-        `
-          SELECT * FROM condominium
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-            AND deleted <> 'Y'
-          ORDER BY condominiumId;
-        `;
-      updateMySql(SQLquery, 'condominium', 'SELECT');
-      condominiumArrayCreated =
-        false;
-    }
-  });
-  return true;
 }
 
 async function updateCondominium(condominiumId) {
 
-  // Check values
-  if (validateValues()) {
+  // Get values
+  const user = objUserPassword.email;
+  const lastUpdate = today.toISOString();
+  const name = document.querySelector('.input-condominiums-name').value;
+  const street = document.querySelector('.input-condominiums-street').value;
+  const address2 = document.querySelector('.input-condominiums-address2').value;
+  const postalCode = document.querySelector('.input-condominiums-postalCode').value;
+  const city = document.querySelector('.input-condominiums-city').value;
+  const phone = document.querySelector('.input-condominiums-phone').value;
+  const email = document.querySelector('.input-condominiums-email').value;
+  const incomeRemoteHeatingAccountId = Number(document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value);
+  const paymentRemoteHeatingAccountId = Number(document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value);
+  const commonCostAccountId = Number(document.querySelector('.select-condominiums-commoncostAccountId').value);
+  const organizationNumber = document.querySelector('.input-condominiums-organizationNumber').value;
+  const importPath = document.querySelector('.input-condominiums-fileName').value;
 
-    // Get values
-    const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    const name = document.querySelector('.input-condominiums-name').value;
-    const street = document.querySelector('.input-condominiums-street').value;
-    const address2 = document.querySelector('.input-condominiums-address2').value;
-    const postalCode = document.querySelector('.input-condominiums-postalCode').value;
-    const city = document.querySelector('.input-condominiums-city').value;
-    const phone = document.querySelector('.input-condominiums-phone').value;
-    const email = document.querySelector('.input-condominiums-email').value;
-    const incomeRemoteHeatingAccountId = Number(document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value);
-    const paymentRemoteHeatingAccountId = Number(document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value);
-    const commonCostAccountId = Number(document.querySelector('.select-condominiums-commoncostAccountId').value);
-    const organizationNumber = document.querySelector('.input-condominiums-organizationNumber').value;
-    const importPath = document.querySelector('.input-condominiums-fileName').value;
+  // Check if condominium id exist
+  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+  if (condominiumsRowNumber !== -1) {
 
-    // Check if condominium id exist
-    const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (condominiumsRowNumber !== -1) {
+    // update user
+    objCondominiums.updateCondominiumTable(user, condominiumId, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
+  } else {
 
-      // update user
-      objCondominiums.updateCondominiumTable(user, condominiumId, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
-
-    } else {
-
-      // Insert user row in users table
-      objCondominiums.insertCondominiumTable(user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
-    }
+    // Insert user row in users table
+    objCondominiums.insertCondominiumTable(user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
   }
 
   document.querySelector('.select-condominiums-condominiumId').disabled = false;
@@ -219,12 +201,11 @@ async function updateCondominium(condominiumId) {
   document.querySelector('.button-condominiums-insert').disabled = false;
 }
 
-
 // Show leading text for condominium
 function showLeadingText(condominiumId) {
 
   // Show all condominiums
-  objCondominiums.showAllCondominiums('condominiums-condominiumId', condominiumId);
+  objCondominiums.showAllSelectedCondominiums('condominiums-condominiumId', condominiumId);
 
   // Show condominium name
   objCondominiums.showInput('condominiums-name', '* Navn', 50, '');
@@ -264,6 +245,7 @@ function showLeadingText(condominiumId) {
 
   // show update button
   if (Number(objUserPassword.securityLevel) >= 9) {
+
     objCondominiums.showButton('condominiums-update', 'Oppdater');
 
     // show new button
@@ -284,67 +266,50 @@ function showValues(condominiumId) {
   if (condominiumId >= 0) {
 
     // get object number for selected condominium id
-    const condominiumsRowNumber =
-      objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+    const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (condominiumsRowNumber !== -1) {
 
       // Condominium id
-      document.querySelector('.select-condominiums-condominiumId').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].condominiumId;
+      document.querySelector('.select-condominiums-condominiumId').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].condominiumId;
 
       // Condominium name
-      document.querySelector('.input-condominiums-name').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].name;
+      document.querySelector('.input-condominiums-name').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].name;
 
       // Show street
-      document.querySelector('.input-condominiums-street').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].street;
+      document.querySelector('.input-condominiums-street').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].street;
 
       // Show address 2
-      document.querySelector('.input-condominiums-address2').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].address2;
+      document.querySelector('.input-condominiums-address2').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].address2;
 
       // Show postal code
-      document.querySelector('.input-condominiums-postalCode').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].postalCode;
+      document.querySelector('.input-condominiums-postalCode').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].postalCode;
 
       // Show city
-      document.querySelector('.input-condominiums-city').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].city;
+      document.querySelector('.input-condominiums-city').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].city;
 
       // Show phone
-      document.querySelector('.input-condominiums-phone').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].phone;
+      document.querySelector('.input-condominiums-phone').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].phone;
 
       // Show email
-      document.querySelector('.input-condominiums-email').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].email;
+      document.querySelector('.input-condominiums-email').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].email;
 
       // account id for income remote heating
-      document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value =
-        (objCondominiums.arrayCondominiums[condominiumsRowNumber].incomeRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].incomeRemoteHeatingAccountId : 0;
-      document.querySelector('.label-condominiums-incomeRemoteHeatingAccountId').innerHTML =
-        'Inntekt fjernvarmekonto';
+      document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value = (objCondominiums.arrayCondominiums[condominiumsRowNumber].incomeRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].incomeRemoteHeatingAccountId : 0;
+      document.querySelector('.label-condominiums-incomeRemoteHeatingAccountId').innerHTML = 'Inntekt fjernvarmekonto';
 
       // account id for payment remote heating
-      document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value =
-        (objCondominiums.arrayCondominiums[condominiumsRowNumber].paymentRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].paymentRemoteHeatingAccountId : 0;
-      document.querySelector('.label-condominiums-paymentRemoteHeatingAccountId').innerHTML =
-        'Utgift fjernvarmekonto';
+      document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value = (objCondominiums.arrayCondominiums[condominiumsRowNumber].paymentRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].paymentRemoteHeatingAccountId : 0;
+      document.querySelector('.label-condominiums-paymentRemoteHeatingAccountId').innerHTML = 'Utgift fjernvarmekonto';
 
       // account id for common cost
-      document.querySelector('.select-condominiums-commoncostAccountId').value =
-        (objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId : 0;
-      document.querySelector('.label-condominiums-commoncostAccountId').innerHTML =
-        'Konto for felleskostnader';
+      document.querySelector('.select-condominiums-commoncostAccountId').value = (objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId : 0;
+      document.querySelector('.label-condominiums-commoncostAccountId').innerHTML = 'Konto for felleskostnader';
 
       // Show organization number
-      document.querySelector('.input-condominiums-organizationNumber').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].organizationNumber;
+      document.querySelector('.input-condominiums-organizationNumber').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].organizationNumber;
 
       // Show file import path
-      document.querySelector('.input-condominiums-fileName').value =
-        objCondominiums.arrayCondominiums[condominiumsRowNumber].importPath;
+      document.querySelector('.input-condominiums-fileName').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].importPath;
     }
   }
 }
@@ -352,123 +317,54 @@ function showValues(condominiumId) {
 // Reset all values for condominium
 function resetValues() {
 
-  document.querySelector('.select-condominiums-condominiumId').value =
-    '';
+  document.querySelector('.select-condominiums-condominiumId').value = '';
 
-  document.querySelector('.input-condominiums-name').value =
-    '';
+  document.querySelector('.input-condominiums-name').value = '';
 
   // Show street
-  document.querySelector('.input-condominiums-street').value =
-    '';
+  document.querySelector('.input-condominiums-street').value = '';
 
   // Show address 2
-  document.querySelector('.input-condominiums-address2').value =
-    '';
+  document.querySelector('.input-condominiums-address2').value = '';
 
   // Show postal code
-  document.querySelector('.input-condominiums-postalCode').value =
-    '';
+  document.querySelector('.input-condominiums-postalCode').value = '';
 
   // Show city
-  document.querySelector('.input-condominiums-city').value =
-    '';
+  document.querySelector('.input-condominiums-city').value = '';
 
   // Show phone number
-  document.querySelector('.input-condominiums-phone').value =
-    '';
+  document.querySelector('.input-condominiums-phone').value = '';
 
   // Show email
-  document.querySelector('.input-condominiums-email').value =
-    '';
+  document.querySelector('.input-condominiums-email').value = '';
 
   // account id for income remote heating
-  document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value =
-    0;
+  document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value = 0;
 
   // account id for payment remote heating
-  document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value =
-    0;
+  document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value = 0;
 
   // account id for common cost
-  document.querySelector('.select-condominiums-commoncostAccountId').value =
-    0;
+  document.querySelector('.select-condominiums-commoncostAccountId').value = 0;
 
   // Show organization number
-  document.querySelector('.input-condominiums-organizationNumber').value =
-    '';
+  document.querySelector('.input-condominiums-organizationNumber').value = '';
 
   // Show path for file to import
-  document.querySelector('.input-condominiums-fileName').value =
-    '';
+  document.querySelector('.input-condominiums-fileName').value = '';
 
-  document.querySelector('.select-condominiums-condominiumId').disabled =
-    true;
-  document.querySelector('.button-condominiums-delete').disabled =
-    true;
-  document.querySelector('.button-condominiums-insert').disabled =
-    true;
-  //document.querySelector('.button-condominiums-cancel').disabled =
-  //  true;
+  document.querySelector('.select-condominiums-condominiumId').disabled = true;
+  document.querySelector('.button-condominiums-delete').disabled = true;
+  document.querySelector('.button-condominiums-insert').disabled = true;
 }
-
-/*
-// Delete a row in condominium table
-function deleteCondominiumRow() {
-
-  let SQLquery = "";
-
-  // Check for valid condominium Id
-  const condominiumId = Number(document.querySelector('.select-condominiums-condominiumId').value);
-  if (condominiumId >= 0) {
-
-    // Check if condominium exist
-    const condominiumsRowNumber =
-      objcondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (condominiumsRowNumber !== -1) {
-
-      // current date
-      const lastUpdate =
-        today.toISOString();
-
-      // Delete table
-      SQLquery =
-        `
-          UPDATE condominium
-            SET 
-              deleted = 'Y',
-              user = '${objUserPassword.email}',
-              lastUpdate = '${lastUpdate}'
-          WHERE condominiumId = ${condominiumId};
-      `;
-      updateMySql(SQLquery, 'condominium', 'SELECT');
-      condominiumArrayCreated =
-        false;
-    }
-
-    // Get all condominiums from MySQL database
-    const SQLquery =
-      `
-        SELECT * FROM condominium
-        WHERE condominiumId = ${objUserPassword.condominiumId}
-          AND deleted <> 'Y'
-        ORDER BY name;
-      `;
-    updateMySql(SQLquery, 'condominium', 'SELECT');
-    condominiumArrayCreated =
-      false;
-  }
-}
-*/
 
 // Check for valid condominium number
 function validateValues() {
 
   // Check condominium name
-  const condominiumName =
-    document.querySelector('.input-condominiums-name').value;
-  const validCondominiumName =
-    objCondominiums.validateText(condominiumName, "label-condominiums-name", "Navn");
+  const condominiumName = document.querySelector('.input-condominiums-name').value;
+  const validCondominiumName = objCondominiums.validateText(condominiumName, "label-condominiums-name", "Navn");
 
   // Check street name
   const street = document.querySelector('.input-condominiums-street').value;
@@ -494,14 +390,7 @@ function validateValues() {
   const importPath = document.querySelector('.input-condominiums-fileName').value;
   const validImportPath = objCondominiums.validateText(importPath, "condominiums-fileName", "Navn på importfil");
 
-  return (validCondominiumName
-    && validStreet
-    && validPostalCode
-    && validCity
-    && validEmail
-    && validOrganizationNumber
-    && validImportPath
-  ) ? true : false;
+  return (validCondominiumName && validStreet && validPostalCode && validCity && validEmail && validOrganizationNumber && validImportPath);
 }
 
 // Delete condominium
@@ -511,8 +400,8 @@ async function deleteCondominium() {
   const condominiumId = Number(document.querySelector('.select-condominiums-condominiumId').value);
 
   // Check if condominium number exist
-  const condominiumRowNumberObj = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-  if (condominiumRowNumberObj !== -1) {
+  const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+  if (condominiumRowNumber !== -1) {
 
     // delete condominium row
     const user = objUserPassword.email;

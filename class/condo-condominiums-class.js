@@ -5,7 +5,7 @@ class Condominiums extends Condos {
   arrayCondominiums = Array;
 
   // Show all condominiums
-  showAllCondominiums(className, condominiumId) {
+  showAllSelectedCondominiums(className, condominiumId) {
 
     let html =
       `
