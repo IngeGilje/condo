@@ -9,26 +9,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/condo.css">
 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1rem;
+      background: #f5f5f5;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="div-grid-remoteheating-search">
 
-    <div class="div-remoteheating-fromDate grid-column2"></div>
-    <div class="div-remoteheating-toDate grid-column3"></div>
+  <!-- menu -->
+  <div class="div-menu"></div>
+
+  <!-- Start Main -->
+  <div class="main">
+
+    <!-- Filter -->
+    <div class="div-grid-remoteheating-filter"></div>
+
+    <!-- remote heating -->
+    <div class="div-grid-remoteheating-remoteHeating"></div>
   </div>
 
-  <!-- All rows consist of 7 columns -->
-  <div class="div-grid-remoteheating">
-
-    <div class="div-menu"></div>
-    <div class="div-remoteheating-columnDate grid-column2"></div>
-    <div class="div-remoteheating-columnPayment grid-column3"></div>
-    <div class="div-remoteheating-columnNumberKWHour grid-column4"></div>
-    <div class="div-remoteheating-columnPriceKWHour grid-column5"></div>
-    <div class="div-remoteheating-columnText grid-column6"></div>
-
-  </div>
 
   <script src="class/condo-class.js"></script>
   <script src="class/condo-condominiums-class.js"></script>

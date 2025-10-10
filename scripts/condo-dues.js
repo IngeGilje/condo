@@ -488,14 +488,14 @@ function showLeadingTextFilter() {
 // Show leading text for due
 function showLeadingText(dueId) {
 
-  // Show all dues
-  objDues.showAllDues('dues-dueId', dueId);
+  // Show selected dues
+  objDues.showSelectedDues('dues-dueId', dueId);
 
-  // Show all condos
+  // Show selected condos
   const condoId = objCondo.arrayCondo.at(-1).condoId;
   objCondo.showSelectedCondos('dues-condoId', condoId, 'Ingen er valgt');
 
-  // Show all accounts
+  // Show selected accounts
   const accountId = objAccounts.accountsArray.at(-1).accountId;
   objAccounts.showSelectedAccounts('dues-accountId', accountId, 'Ingen er valgt');
 

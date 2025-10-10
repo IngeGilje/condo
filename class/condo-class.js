@@ -851,10 +851,10 @@ class Condos {
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const bankAccountRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+      const bankAccountRowNumber = objUserBankAccounts.userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
       if (bankAccountRowNumber !== -1) {
 
-        bankAccountName = objUserBankAccounts.arrayUserBankAccounts[bankAccountRowNumber].name;
+        bankAccountName = objUserBankAccounts.userarrayBankAccounts[bankAccountRowNumber].name;
       }
     }
 
@@ -886,10 +886,10 @@ class Condos {
     const bankAccountPattern = /^\d{11}$/;
     if ((bankAccountPattern.test(fromBankAccount))) {
 
-      const bankAccountRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
+      const bankAccountRowNumber = objUserBankAccounts.userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
       if (bankAccountRowNumber !== -1) {
 
-        const userId = Number(objUserBankAccounts.arrayUserBankAccounts[bankAccountRowNumber].userId);
+        const userId = Number(objUserBankAccounts.userarrayBankAccounts[bankAccountRowNumber].userId);
 
         if (userId >= 0) {
 
@@ -1721,10 +1721,10 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   if (bankAccountRowNumber === -1) {
 
     // Check user bank account
-    const bankAccountRowNumber = arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+    const bankAccountRowNumber = userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
     if (bankAccountRowNumber !== -1) {
 
-      accountId = arrayUserBankAccounts[bankAccountRowNumber].accountId;
+      accountId = userarrayBankAccounts[bankAccountRowNumber].accountId;
     }
 
     // get Account Id from supplier
