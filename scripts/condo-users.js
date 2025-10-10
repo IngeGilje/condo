@@ -32,7 +32,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
-
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
 
     // Find selected user id
@@ -55,7 +54,20 @@ function createEvents() {
   // Select User
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-users-userId')) {
+      let userId = Number(document.querySelector('.select-users-userId').value);
+      //userId = (userId !== 0) ? userId : objUsers.arrayUsers.at(-1).userId;
+      if (userId === 0) userId = objUsers.arrayUsers.at(-1).userId;
+      if (userId) {
+        showValues(userId);
+      };
+    };
+  });
 
+  /*
+  // Select User
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('select-users-userId')) {
+ 
       let userId = Number(document.querySelector('.select-users-userId').value);
       userId = (userId !== 0) ? userId : objUsers.arrayUsers.at(-1).userId;
       if (userId) {
@@ -63,45 +75,81 @@ function createEvents() {
       }
     }
   });
+  */
 
   // Update
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-users-update')) {
 
-      // Update user and reload users
+      // Update users and reload users
       updateUserSync();
 
       // Update user and reload users
       async function updateUserSync() {
 
-        // Load users
-
+        // Load user
         let userId;
         if (document.querySelector('.select-users-userId').value === '') {
 
-          // Insert new row into users table
+          // Insert new row into user table
           userId = 0;
         } else {
 
           // Update existing row in users table
-          userId = Number(bjUsers.getSelectedUserId('select-users-userId').value);
+          userId = Number(document.querySelector('.select-users-userId').value);
         }
 
-        updateUser(userId);
+        if (validateValues()) {
 
-        await objUsers.loadUsersTable(objUserPassword.condominiumId);
+          await updateUser(userId);
+          await objUsers.loadUsersTable(objUserPassword.condominiumId);
 
-        // Select last user if userId is 0
-        if (userId === 0) userId = objUsers.arrayUsers.at(-1).userId;
+          // Select last users if userId is 0
+          if (userId === 0) userId = objUsers.arrayUsers.at(-1).userId;
 
-        // Show leading text
-        showLeadingText(userId);
+          // Show leading text
+          showLeadingText(userId);
 
-        // Show all values for account
-        showValues(userId);
+          // Show all values for user
+          showValues(userId);
+        }
       }
     }
   });
+  /*
+  // Update user and reload users
+  updateUserSync();
+ 
+  // Update user and reload users
+  async function updateUserSync() {
+ 
+    // Load users
+ 
+    let userId;
+    if (document.querySelector('.select-users-userId').value === '') {
+ 
+      // Insert new row into users table
+      userId = 0;
+    } else {
+ 
+      // Update existing row in users table
+      userId = Number(bjUsers.getSelectedUserId('select-users-userId').value);
+    }
+ 
+    updateUser(userId);
+ 
+    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+ 
+    // Select last user if userId is 0
+    if (userId === 0) userId = objUsers.arrayUsers.at(-1).userId;
+ 
+    // Show leading text
+    showLeadingText(userId);
+ 
+    // Show all values for account
+    showValues(userId);
+  }
+  */
 
   // New user
   document.addEventListener('click', (event) => {
@@ -115,15 +163,13 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-users-delete')) {
 
-      // Delete user and reload users
+      // Delete user and reload user
       deleteUserSync();
 
-      // Delete user and reload users
+      // Delete user
       async function deleteUserSync() {
 
         await deleteUser();
-
-        // Load users
         await objUsers.loadUsersTable(objUserPassword.condominiumId);
 
         // Show leading text
@@ -132,14 +178,36 @@ function createEvents() {
 
         // Show all values for user
         showValues(userId);
-      }
-    }
+      };
+    };
   });
+  /*
+  // Delete user and reload users
+  deleteUserSync();
+ 
+  // Delete user and reload users
+  async function deleteUserSync() {
+ 
+    await deleteUser();
+ 
+    // Load users
+    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+ 
+    // Show leading text
+    const userId = objUsers.arrayUsers.at(-1).userId;
+    showLeadingText(userId);
+ 
+    // Show all values for user
+    showValues(userId);
+  }
+    */
+
+
   /*
   const userId =
     Number(document.querySelector('.select-users-userId').value);
   deleteUserRow(userId);
-
+  
   // Sends a request to the server to get all users
   const SQLquery =
     `
@@ -158,21 +226,46 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-users-cancel')) {
 
-      // Sends a request to the server to get all user
-      const SQLquery =
-        `
-          SELECT * FROM users
-          WHERE condominiumId = ${objUserPassword.condominiumId}
-            AND deleted <> 'Y'
-          ORDER BY userId;
-        `;
-      updateMySql(SQLquery, 'user', 'SELECT');
-      userArrayCreated =
-        false;
+      // Reload user
+      reloadUserSync();
+      async function reloadUserSync() {
+
+        let condominiumId = Number(objUserPassword.condominiumId);
+        await objUsers.loadUsersTable(condominiumId);
+
+        // Show leading text for maintenance
+        // Select first user Id
+        if (objUsers.arrayUsers.length > 0) {
+          userId = objUsers.arrayUsers[0].userId;
+          showLeadingText(userId);
+        }
+
+        // Show all selected user
+        objUsers.showAllSelectedUsers('users-userId', userId);
+
+        // Show user Id
+        showValues(userId);
+      }
     }
   });
-  return true;
 }
+/*
+// Sends a request to the server to get all user
+const SQLquery =
+  `
+    SELECT * FROM users
+    WHERE condominiumId = ${objUserPassword.condominiumId}
+      AND deleted <> 'Y'
+    ORDER BY userId;
+  `;
+updateMySql(SQLquery, 'user', 'SELECT');
+userArrayCreated =
+  false;
+}
+});
+return true;
+}
+*/
 
 function updateUser(userId) {
 
@@ -204,9 +297,7 @@ function updateUser(userId) {
 
     // password
     const password = document.querySelector('.input-users-password').value;
-
     const lastUpdate = today.toISOString();
-
     const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
 
     // Check if user exist
@@ -224,7 +315,7 @@ function updateUser(userId) {
     /*
     // Check if object exist
     if (userRowNumber !== -1) {
-
+ 
       /*
       // Update table
       SQLquery =
@@ -245,7 +336,7 @@ function updateUser(userId) {
         `;
       updateMySql(SQLquery, 'user', 'UPDATE');
     } else {
-
+ 
       // Insert new record
       SQLquery =
         `
@@ -288,30 +379,28 @@ function updateUser(userId) {
       false;
     //document.querySelector('.button-users-cancel').disabled =
     //  false;
-    isUpdated = true;
   }
-  return isUpdated;
 }
 
 /*
 function deleteUserRow(userId) {
-
+ 
   let SQLquery = "";
-
+ 
   if (userId >= 0) {
-
+ 
     const lastUpdate =
       today.toISOString();
-
+ 
     // Check if user exist
     const userRowNumber =
       objUsers.arrayUsers.findIndex(user => user.userId === userId);
     if (userRowNumber !== -1) {
-
+ 
       // current date
       const lastUpdate =
         today.toISOString();
-
+ 
       // Delete table
       SQLquery =
         `
@@ -322,11 +411,11 @@ function deleteUserRow(userId) {
               lastUpdate = '${lastUpdate}'
           WHERE userId = ${userId};
         `;
-
+ 
       // Client sends a request to the server
       updateMySql(SQLquery, 'user', 'DELETE');
     }
-
+ 
     // Get user
     SQLquery =
       `
@@ -338,7 +427,7 @@ function deleteUserRow(userId) {
     updateMySql(SQLquery, 'user', 'SELECT');
     userArrayCreated =
       false;
-
+ 
     resetValues();
   }
 }

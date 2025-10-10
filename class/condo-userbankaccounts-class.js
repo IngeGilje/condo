@@ -2,10 +2,10 @@
 class UserBankAccounts extends Condos {
 
   // user bank account information
-  userarrayBankAccounts;
+  arrayUserBankAccounts;
 
   // Show all user bank accounts
-  showAllUserBankAccounts(className, userBankAccountId) {
+  showAllSelectedUserBankAccounts(className, userBankAccountId) {
 
     let html =
       `
@@ -26,9 +26,9 @@ class UserBankAccounts extends Condos {
       `;
 
     // Check if user bank account array is empty
-    const numberOfRows = this.userarrayBankAccounts.length;
+    const numberOfRows = this.arrayUserBankAccounts.length;
     if (numberOfRows > 0) {
-      this.userarrayBankAccounts.forEach((userBankAccount) => {
+      this.arrayUserBankAccounts.forEach((userBankAccount) => {
         if (userBankAccount.userBankAccountId >= 0) {
           if (userBankAccount.userBankAccountId === userBankAccountId) {
 
@@ -84,11 +84,11 @@ class UserBankAccounts extends Condos {
     if (isClassDefined(className)) {
 
       userBankAccountId = Number(document.querySelector(`.${className}`).value);
-      userBankAccountId = (userBankAccountId === 0) ? this.userarrayBankAccounts.at(-1).userBankAccountId : userBankAccountId;
+      userBankAccountId = (userBankAccountId === 0) ? this.arrayUserBankAccounts.at(-1).userBankAccountId : userBankAccountId;
     } else {
 
       // Get last id in last object in user bank account array
-      userBankAccountId = this.userarrayBankAccounts.at(-1).userBankAccountId;
+      userBankAccountId = this.arrayUserBankAccounts.at(-1).userBankAccountId;
     }
     return userBankAccountId;
   }
@@ -99,7 +99,7 @@ class UserBankAccounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/userbankaccounts?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (user bank accounts)");
-      this.userarrayBankAccounts = await response.json();
+      this.arrayUserBankAccounts = await response.json();
     } catch (error) {
       console.log("Error loading user bank account:", error);
     }
@@ -111,7 +111,7 @@ class UserBankAccounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/userbankaccounts?action=update&userBankAccountId=${userBankAccountId}&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&userId=${userId}&accountId=${accountId}&name=${name}&bankAccount=${bankAccount}`);
       if (!response.ok) throw new Error("Network error (user bank accounts)");
-      this.userarrayBankAccounts = await response.json();
+      this.arrayUserBankAccounts = await response.json();
     } catch (error) {
       console.log("Error updating user bank accounts:", error);
     }
@@ -123,7 +123,7 @@ class UserBankAccounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/userbankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&userId=${userId}&accountId=${accountId}&name=${name}&bankAccount=${bankAccount}`);
       if (!response.ok) throw new Error("Network error (user bank accounts)");
-      this.userarrayBankAccounts = await response.json();
+      this.arrayUserBankAccounts = await response.json();
     } catch (error) {
       console.log("Error inserting user bank accounts:", error);
     }
@@ -135,7 +135,7 @@ class UserBankAccounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/userbankaccounts?action=delete&userBankAccountId=${userBankAccountId}&user=${user}&lastUpdate=${lastUpdate}`);
       if (!response.ok) throw new Error("Network error (user bank accounts)");
-      this.userarrayBankAccounts = await response.json();
+      this.arrayUserBankAccounts = await response.json();
     } catch (error) {
       console.log("Error deleting user bank accounts:", error);
     }
