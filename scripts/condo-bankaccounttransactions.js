@@ -63,7 +63,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showBankAccountTransactions();
 
     // Show bank account transactions Id
-    objBankAccountTransactions.showAllSelectedAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
+    objBankAccountTransactions.showSelectedAccountTransactionsounts('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
 
     // Get selected Bank Account Movement Id
     showValues(bankAccountTransactionId);
@@ -106,7 +106,7 @@ function createEvents() {
 
         // Show bank account transactions Id
         bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
-        objBankAccountTransactions.showAllSelectedAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
+        objBankAccountTransactions.showSelectedAccountTransactionsounts('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
 
         // Get selected Bank Account Movement Id
         showValues(bankAccountTransactionId);
@@ -144,7 +144,7 @@ function createEvents() {
 
         // Show bank account transactions Id
         bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
-        objBankAccountTransactions.showAllSelectedAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
+        objBankAccountTransactions.showSelectedAccountTransactionsounts('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
 
         // Get selected Bank Account Movement Id
         showValues(bankAccountTransactionId);
@@ -182,7 +182,7 @@ function createEvents() {
 
         // Show bank account transactions Id
         bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
-        objBankAccountTransactions.showAllSelectedAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
+        objBankAccountTransactions.showSelectedAccountTransactionsounts('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
 
         // Get selected Bank Account Movement Id
         showValues(bankAccountTransactionId);
@@ -220,7 +220,7 @@ function createEvents() {
 
         // Show bank account transactions Id
         bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
-        objBankAccountTransactions.showAllSelectedAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
+        objBankAccountTransactions.showSelectedAccountTransactionsounts('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
 
         // Get selected Bank Account Movement Id
         showValues(bankAccountTransactionId);
@@ -260,7 +260,7 @@ function createEvents() {
 
         // Show bank account transactions Id
         bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
-        objBankAccountTransactions.showAllSelectedAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
+        objBankAccountTransactions.showSelectedAccountTransactionsounts('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
 
         // Get selected Bank Account Movement Id
         showValues(bankAccountTransactionId);
@@ -311,7 +311,7 @@ function createEvents() {
 
         // Show bank account transactions Id
         bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
-        objBankAccountTransactions.showAllSelectedAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
+        objBankAccountTransactions.showSelectedAccountTransactionsounts('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
 
         // Get selected Bank Account Movement Id
         showValues(bankAccountTransactionId);
@@ -360,7 +360,7 @@ function createEvents() {
 
         // Show bank account transactions Id
         bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
-        objBankAccountTransactions.showAllSelectedAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
+        objBankAccountTransactions.showSelectedAccountTransactionsounts('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
 
         // Get selected Bank Account Movement Id
         showValues(bankAccountTransactionId);
@@ -399,7 +399,7 @@ function createEvents() {
 
         // Show bank account transactions Id
         bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
-        objBankAccountTransactions.showAllSelectedAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
+        objBankAccountTransactions.showSelectedAccountTransactionsounts('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId);
 
         // Get selected Bank Account Movement Id
         showValues(bankAccountTransactionId);
@@ -413,11 +413,11 @@ function showLeadingTextFilter() {
 
   // Show all condos
   const condoId = (isClassDefined('select-bankaccounttransactions-filterCondoId')) ? Number(document.querySelector('.select-bankaccounttransactions-filterCondoId').value) : 0;
-  objCondo.showAllSelectedCondos('bankaccounttransactions-filterCondoId', condoId, 'Alle');
+  objCondo.showSelectedCondos('bankaccounttransactions-filterCondoId', condoId, 'Alle');
 
   // Show all accounts
   const accountId = (isClassDefined('select-bankaccounttransactions-filterAccountId')) ? Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value) : 0;
-  objAccounts.showAllAccounts('bankaccounttransactions-filterAccountId', accountId, 'Alle');
+  objAccounts.showSelectedAccounts('bankaccounttransactions-filterAccountId', accountId, 'Alle');
 
   // Show from date
   if (!isClassDefined('input-bankaccounttransactions-filterFromDate')) {
@@ -465,17 +465,17 @@ function showLeadingTextFilter() {
 function showLeadingText(bankAccountTransactionId) {
 
   // Show bank Account Movement Id
-  objBankAccountTransactions.showAllBankAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId, '', 'Ingen er valgt');
+  objBankAccountTransactions.showSelectedBankAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId, '', 'Ingen er valgt');
 
   // Show all condos
   let condoId = objCondo.arrayCondo.at(-1).condoId;
 
-  objCondo.showAllSelectedCondos('bankaccounttransactions-condoId', condoId, '', 'Ingen er valgt');
+  objCondo.showSelectedCondos('bankaccounttransactions-condoId', condoId, '', 'Ingen er valgt');
 
   // Show all accounts
   let accountId = objAccounts.accountsArray.at(-1).accountId;;
 
-  objAccounts.showAllAccounts('bankaccounttransactions-accountId', accountId, '', 'Ingen er valgt');
+  objAccounts.showSelectedAccounts('bankaccounttransactions-accountId', accountId, '', 'Ingen er valgt');
 
   // Show date
   objBankAccountTransactions.showInput('bankaccounttransactions-date', '* Dato', 10, 'dd.mm.åååå');

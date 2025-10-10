@@ -5,7 +5,7 @@ class Suppliers extends Condos {
   arraySuppliers;
 
   // Show all suppliers
-  showAllSelectedSuppliers(classValue, supplierId) {
+  showSelectedSuppliers(classValue, supplierId) {
 
     let html = `
       <form 

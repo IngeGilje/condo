@@ -318,11 +318,11 @@ function showLeadingText(budgetId) {
   const budgetYear = today.getFullYear();
 
   // Show budget
-  objBudgets.showAllSelectedBudgets('budgets-budgetId', budgetId)
+  objBudgets.showSelectedBudgets('budgets-budgetId', budgetId)
 
   // Show all accounts
   const accountId = objAccounts.accountsArray.at(-1).accountId;
-  objAccounts.showAllAccounts('budgets-accountId', accountId, '', 'Ingen konti er valgt');
+  objAccounts.showSelectedAccounts('budgets-accountId', accountId, '', 'Ingen konti er valgt');
 
   // Show years
   objBudgets.selectNumber('budgets-year', 2020, 2030, budgetYear, 'År');
@@ -486,7 +486,7 @@ function showLeadingTextFilter() {
   // Show all accounts
   const accountId =
     (isClassDefined('select-budgets-filterAccountId')) ? Number(document.querySelector('.select-budgets-filterAccountId').value) : 0;
-  objAccounts.showAllAccounts('budgets-filterAccountId', accountId, 'Alle');
+  objAccounts.showSelectedAccounts('budgets-filterAccountId', accountId, 'Alle');
 
   // Show budget year
   if (!isClassDefined('select-budgets-filterYear')) {

@@ -176,7 +176,7 @@ function showLeadingTextFilter() {
 
   // Show all condos
   const condoId = objCondo.arrayCondo.at(-1).condoId;
-  html += objCondo.showAllCondosHTML('select-filter-condoId', condoId);
+  html += objCondo.showSelectedCondosHTML('select-filter-condoId', condoId);
 
   // from date
   html += objOverview.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');

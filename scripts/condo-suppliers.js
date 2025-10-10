@@ -151,7 +151,7 @@ function createEvents() {
         }
 
         // Show all selected supplier
-        objSuppliers.showAllSelectedSuppliers('suppliers-supplierId', supplierId);
+        objSuppliers.showSelectedSuppliers('suppliers-supplierId', supplierId);
 
         // Show supplier Id
         showValues(supplierId);
@@ -243,7 +243,7 @@ async function updateSupplier(supplierId) {
 function showLeadingText(supplierId) {
 
   // Show all suppliers
-  objSuppliers.showAllSelectedSuppliers('suppliers-supplierId', supplierId);
+  objSuppliers.showSelectedSuppliers('suppliers-supplierId', supplierId);
 
   // name
   objSuppliers.showInput('suppliers-name', '* Navn', 50, '');
@@ -270,10 +270,10 @@ function showLeadingText(supplierId) {
   objSuppliers.showInput('suppliers-bankAccount', '* Bankkonto', 11, '');
 
   // Show all accounts
-  objAccounts.showAllAccounts('suppliers-bankAccountAccountId', 0, '', 'Ingen konti er valgt');
+  objAccounts.showSelectedAccounts('suppliers-bankAccountAccountId', 0, '', 'Ingen konti er valgt');
 
   // Show all accounts
-  objAccounts.showAllAccounts('suppliers-amountAccountId', 0, '', 'Ingen konti er valgt');
+  objAccounts.showSelectedAccounts('suppliers-amountAccountId', 0, '', 'Ingen konti er valgt');
 
   // Show amount
   objAccounts.showInput('suppliers-amount', 'Beløp', 10, '');

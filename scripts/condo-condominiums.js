@@ -124,7 +124,7 @@ function createEvents() {
           }
 
           // Show all selected condominiums
-          objCondominiums.showAllSelectedCondominiums('condominiums-condominiumId', condominiumId);
+          objCondominiums.showSelectedCondominiums('condominiums-condominiumId', condominiumId);
 
           // Show condominium Id
           showValues(condominiumId);
@@ -205,7 +205,7 @@ async function updateCondominium(condominiumId) {
 function showLeadingText(condominiumId) {
 
   // Show all condominiums
-  objCondominiums.showAllSelectedCondominiums('condominiums-condominiumId', condominiumId);
+  objCondominiums.showSelectedCondominiums('condominiums-condominiumId', condominiumId);
 
   // Show condominium name
   objCondominiums.showInput('condominiums-name', '* Navn', 50, '');
@@ -229,13 +229,13 @@ function showLeadingText(condominiumId) {
   objCondominiums.showInput('condominiums-email', '* eMail', 50, '');
 
   // show all account Ids for income remote heating
-  objAccounts.showAllAccounts('condominiums-incomeRemoteHeatingAccountId', 0, "", "Ingen");
+  objAccounts.showSelectedAccounts('condominiums-incomeRemoteHeatingAccountId', 0, "", "Ingen");
 
   // show all account Ids for payment remote heating
-  objAccounts.showAllAccounts('condominiums-paymentRemoteHeatingAccountId', 0, "", "Ingen");
+  objAccounts.showSelectedAccounts('condominiums-paymentRemoteHeatingAccountId', 0, "", "Ingen");
 
   // show all account Ids for common cost accounts
-  objAccounts.showAllAccounts('condominiums-commoncostAccountId', 0, "", "Ingen");
+  objAccounts.showSelectedAccounts('condominiums-commoncostAccountId', 0, "", "Ingen");
 
   // organization Number
   objCondominiums.showInput('condominiums-organizationNumber', '* Organisasjonsnummer', 9, '');

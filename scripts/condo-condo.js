@@ -192,7 +192,7 @@ function createEvents() {
         }
 
         // Show all selected condo
-        objCondo.showAllSelectedCondos('condo-condoId', condoId);
+        objCondo.showSelectedCondos('condo-condoId', condoId);
 
         // Show condo Id
         showValues(condoId);
@@ -219,7 +219,7 @@ condoArrayCreated =
 function showLeadingText(condoId) {
 
   // Show all condos
-  objCondo.showAllSelectedCondos('condo-condoId', condoId);
+  objCondo.showSelectedCondos('condo-condoId', condoId);
 
   // Show condo name
   objCondo.showInput('condo-name', '* Navn', 50, '');

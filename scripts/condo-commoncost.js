@@ -245,7 +245,7 @@ function showLeadingText() {
 
   // Show all condos
   const condoId = objCondo.arrayCondo.at(-1).condoId;
-  objCondo.showAllSelectedCondos('commoncost-condoId', condoId);
+  objCondo.showSelectedCondos('commoncost-condoId', condoId);
 
   // Show years
   const year = today.getFullYear();

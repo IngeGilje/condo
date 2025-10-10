@@ -4,8 +4,8 @@ class Accounts extends Condos {
   // accounts information
   accountsArray;
 
-  // Show all accounts
-  showAllAccounts(className, accountId, alternativeSelect, alternativeSelect2) {
+  // Show all selected accounts
+  showSelectedAccounts(className, accountId, alternativeSelect, alternativeSelect2) {
 
     let selectedOption = false;
 
@@ -152,7 +152,7 @@ class Accounts extends Condos {
 
 
   // Show all accounts
-  showAllAccountsHTML(className, selectAll) {
+  showSelectedAccountsHTML(className, selectAll) {
 
     let html =
       `

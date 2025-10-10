@@ -57,7 +57,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showFilter();
 
     // Get selected Bank account transactions
-    showSeletedBankAccountTransactions();
+    showBankAccountTransactions();
 
     // Make events
     createEvents();
@@ -93,7 +93,7 @@ function createEvents() {
         await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, 0, fromDate, toDate)
 
         // Show selected Bank account transactions
-        showSeletedBankAccountTransactions();
+        showBankAccountTransactions();
       }
     };
   });
@@ -123,7 +123,7 @@ function createEvents() {
         await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, 0, fromDate, toDate)
 
         // Show selected Bank account transactions
-        showSeletedBankAccountTransactions();
+        showBankAccountTransactions();
       }
     };
   });
@@ -160,7 +160,7 @@ function showFilter() {
 }
 
 // Show selected bank account transactions
-function showSeletedBankAccountTransactions() {
+function showBankAccountTransactions() {
 
   // check for valid filter
   if (validateValues()) {

@@ -24,7 +24,7 @@ class Budgets extends Condos {
   }
 
   // Show all selected budgets
-  showAllSelectedBudgets(className, budgetId) {
+  showSelectedBudgets(className, budgetId) {
 
     let html = `
       <form 

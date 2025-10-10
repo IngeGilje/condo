@@ -4,8 +4,8 @@ class Condo extends Condos {
   // Condo information
   arrayCondo;
 
-  // Show all condos
-  showAllSelectedCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
+  // Show selected condos
+  showSelectedCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
 
     let selectedOption;
 
@@ -170,8 +170,8 @@ class Condo extends Condos {
     return condoName;
   }
 
-  // Show all condos
-  showAllCondosHTML(className, condoId, selectAll) {
+  // Show selected condos
+  showSelectedCondosHTML(className, condoId, selectAll) {
 
     let html =
       `

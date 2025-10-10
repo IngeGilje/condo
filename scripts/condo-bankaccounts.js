@@ -157,7 +157,7 @@ function createEvents() {
         }
 
         // Show all selected bankaccounts
-        objBankAccounts.showAllSeletedBankaccounts('bankaccounts-bankAccountId', bankAccountId);
+        objBankAccounts.showSeletedBankaccounts('bankaccounts-bankAccountId', bankAccountId);
 
         // Show bankaccount Id
         showValues(bankAccountId);
@@ -253,7 +253,7 @@ async function deleteBankAccount() {
 function showLeadingText(bankAccountId) {
 
   // Show all bank accounts
-  objBankAccounts.showAllSeletedBankaccounts('bankaccounts-bankAccountId', bankAccountId);
+  objBankAccounts.showSeletedBankaccounts('bankaccounts-bankAccountId', bankAccountId);
 
   // Show bank account number
   objBankAccounts.showInput('bankaccounts-bankAccount', '* Bankkontonummer', 11, '');

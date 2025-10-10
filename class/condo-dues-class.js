@@ -5,7 +5,8 @@ class Dues extends Condos {
   // Due information
   arrayDues;
 
-  // Show all dues
+  /*
+  // Show selected dues
   showAllDues(className, dueId) {
 
     dueId = Number(dueId);
@@ -76,6 +77,7 @@ class Dues extends Condos {
 
     document.querySelector(`.div-${className}`).innerHTML = html;
   }
+  */
 
   // Find selected due id
   getSelectedDueId(className) {
@@ -97,8 +99,8 @@ class Dues extends Condos {
     return dueId;
   }
 
-  // Show all selected dues
-  showAllSelectedDues(className, dueId) {
+  // Show selected dues
+  showSelectedDues(className, dueId) {
 
     let html = `
       <form 

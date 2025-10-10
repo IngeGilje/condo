@@ -65,7 +65,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       showDues();
 
       // Show due Id
-      objDues.showAllSelectedDues('dues-dueId', dueId);
+      objDues.showSelectedDues('dues-dueId', dueId);
 
       showValues(dueId);
 
@@ -110,7 +110,7 @@ function createEvents() {
         showDues();
 
         // Show due Id
-        objDues.showAllSelectedDues('dues-dueId', dueId);
+        objDues.showSelectedDues('dues-dueId', dueId);
         showValues(dueId);
       }
     }
@@ -148,7 +148,7 @@ function createEvents() {
         showDues();
 
         // Show due Id
-        objDues.showAllSelectedDues('dues-dueId', dueId);
+        objDues.showSelectedDues('dues-dueId', dueId);
         showValues(dueId);
       }
     }
@@ -185,7 +185,7 @@ function createEvents() {
           showDues();
 
           // Show due Id
-          objDues.showAllSelectedDues('dues-dueId', dueId);
+          objDues.showSelectedDues('dues-dueId', dueId);
           showValues(dueId);
 
         } else {
@@ -232,7 +232,7 @@ function createEvents() {
         showDues();
 
         // Show due Id
-        objDues.showAllSelectedDues('dues-dueId', dueId);
+        objDues.showSelectedDues('dues-dueId', dueId);
         showValues(dueId);
       }
     }
@@ -438,7 +438,7 @@ function createEvents() {
         showDues();
 
         // Show due Id
-        objDues.showAllSelectedDues('dues-dueId', dueId);
+        objDues.showSelectedDues('dues-dueId', dueId);
         showValues(dueId);
       }
     }
@@ -450,11 +450,11 @@ function showLeadingTextFilter() {
 
   // Show all condos
   const condoId = (isClassDefined('select-dues-filterCondoId')) ? Number(document.querySelector('.select-dues-filterCondoId').value) : 0;
-  objCondo.showAllSelectedCondos('dues-filterCondoId', condoId, 'Alle');
+  objCondo.showSelectedCondos('dues-filterCondoId', condoId, 'Alle');
 
   // Show all accounts
   const accountId = (isClassDefined('select-dues-filterAccountId')) ? Number(document.querySelector('.select-dues-filterAccountId').value) : 0;
-  objAccounts.showAllAccounts('dues-filterAccountId', accountId, 'Alle');
+  objAccounts.showSelectedAccounts('dues-filterAccountId', accountId, 'Alle');
 
   // Show from date
   if (!isClassDefined('input-dues-filterFromDate')) {
@@ -493,11 +493,11 @@ function showLeadingText(dueId) {
 
   // Show all condos
   const condoId = objCondo.arrayCondo.at(-1).condoId;
-  objCondo.showAllSelectedCondos('dues-condoId', condoId, 'Ingen er valgt');
+  objCondo.showSelectedCondos('dues-condoId', condoId, 'Ingen er valgt');
 
   // Show all accounts
   const accountId = objAccounts.accountsArray.at(-1).accountId;
-  objAccounts.showAllAccounts('dues-accountId', accountId, 'Ingen er valgt');
+  objAccounts.showSelectedAccounts('dues-accountId', accountId, 'Ingen er valgt');
 
   // Show amount
   objDues.showInput('dues-date', '* Dato', 10, '');

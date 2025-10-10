@@ -4,8 +4,8 @@ class BankAccounts extends Condos {
   // bankaccount information
   arrayBankAccounts = [];
 
-  // Show bankaccounts
-  showAllSeletedBankaccounts(className, bankAccountId) {
+  // Show selected bankaccounts
+  showSeletedBankaccounts(className, bankAccountId) {
 
     let html = `
       <form 

@@ -4,7 +4,7 @@ class BankAccountTransactions extends Condos {
   arrayBankAccountTranactions;
 
   // Show all selected bank account transactions
-  showAllSelectedAccountTransactions(columnName, bankAccountTransactionId) {
+  showSelectedAccountTransactionsounts(columnName, bankAccountTransactionId) {
 
     let html = `
       <form 
@@ -96,7 +96,7 @@ class BankAccountTransactions extends Condos {
   }
 
   // Show all bank account transactions
-  showAllBankAccountTransactions(className, bankAccountTransactionId, alternativeSelect) {
+  showSelectedBankAccountTransactions(className, bankAccountTransactionId, alternativeSelect) {
 
     document.querySelector(`.div-${className}`).innerHTML = "";
     let html =

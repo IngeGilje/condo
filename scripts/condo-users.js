@@ -444,7 +444,7 @@ function showLeadingText(userId) {
 
   // Show all condos
   const condoId = objCondo.arrayCondo.at(-1).condoId;
-  objCondo.showAllSelectedCondos('users-condoId', condoId);
+  objCondo.showSelectedCondos('users-condoId', condoId);
 
   // Show first name
   objUsers.showInput('users-firstName', '* Fornavn', 50, '');

@@ -308,7 +308,7 @@ async function deleteAccount() {
 function showLeadingText(accountId) {
 
   // Show all accounts
-  objAccounts.showAllAccounts('accounts-accountId', accountId);
+  objAccounts.showSelectedAccounts('accounts-accountId', accountId);
 
   // account name
   objAccounts.showInput('accounts-accountName', '* Kontonavn', 50, '');
