@@ -263,6 +263,21 @@ class Accounts extends Condos {
     return accountId;
   }
 
+  // get account name
+  getAccountName(accountId) {
+
+    let accountName = "-";
+
+    // Account name from account table
+    const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+    if (accountRowNumberObj !== -1) {
+
+      accountName = objAccounts.accountsArray[accountRowNumberObj].name;
+    }
+
+    return (accountName) ? accountName : "-";
+  }
+
   // get accounts
   async loadAccountsTable(condominiumId) {
 

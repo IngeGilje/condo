@@ -142,32 +142,6 @@ function showLeadingTextFilter() {
   // from date
   html += objRemoteHeating.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
 
-  /*
-  if (!isClassDefined('input-filter-fromDate')) {
-
-    objRemoteHeating.showInput('remoteheating-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
-    date = document.querySelector('.input-filter-fromDate').value;
-    if (!validateEuroDateFormat(date)) {
-
-      // From date is not ok
-      const year = String(today.getFullYear());
-      document.querySelector('.input-filter-fromDate').value = "01.01." + year;
-    }
-  }
-  */
-
-  /*
-  // To date
-  if (!isClassDefined('input-filter-toDate')) {
-    objRemoteHeating.showInput('filter-toDate', 'Til dato', 10, 'mm.dd.åååå');
-    date = document.querySelector('.input-filter-toDate').value;
-    if (!validateEuroDateFormat(date)) {
-
-      // To date is not ok
-      document.querySelector('.input-filter-toDate').value = getCurrentDate();
-    }
-  }
-  */
   html += objRemoteHeating.showInputHTML('input-filter-toDate', 'Fra dato', 10, 'mm.dd.åååå');
 
   html += endHTMLFilters();

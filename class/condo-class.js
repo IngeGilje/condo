@@ -862,6 +862,7 @@ class Condos {
     return (bankAccountName) ? bankAccountName : "-";
   }
 
+  /*
   // get account name
   getAccountName(accountId) {
 
@@ -876,6 +877,7 @@ class Condos {
 
     return (accountName) ? accountName : "-";
   }
+  */
 
   // get condo Id from From Bank Account
   getCondoId(fromBankAccount) {

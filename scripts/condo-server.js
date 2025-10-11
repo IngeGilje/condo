@@ -469,11 +469,11 @@ async function main() {
             const bankAccount = req.query.bankAccount;
             const name = req.query.name;
             const openingBalanceDate = req.query.openingBalanceDate;
-            console.log('openingBalanceDate: ',openingBalanceDate);
+            console.log('openingBalanceDate: ', openingBalanceDate);
             const openingBalance = req.query.openingBalance;
             const closingBalanceDate = req.query.closingBalanceDate;
-           const closingBalance = req.query.closingBalance;
- 
+            const closingBalance = req.query.closingBalance;
+
             // Insert new row
             const SQLquery =
               `
@@ -504,7 +504,7 @@ async function main() {
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
-            console.log('SQLquery: ',SQLquery);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /bankaccounts:", err.message);
@@ -536,7 +536,7 @@ async function main() {
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
-            console.log('SQLquery: ',SQLquery);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /bankaccounts:", err.message);
@@ -740,7 +740,6 @@ async function main() {
 
         case 'select': {
 
-          console.log("Select budget request received");
           try {
 
             const condominiumId = req.query.condominiumId;
@@ -1808,6 +1807,37 @@ async function main() {
 
       } catch (err) {
         res.status(500).json({ error: err.message });
+      }
+    });
+
+    // Requests for menu
+    app.get("/menu", async (req, res) => {
+
+      const action = req.query.action;
+
+      switch (action) {
+
+        case 'select': {
+          const condominiumId = Number(req.query.condominiumId);
+
+          try {
+
+            const SQLquery =
+              `
+                SELECT * FROM menu
+                  WHERE deleted <> 'Y'
+                ORDER BY menuId;
+              `;
+            const [rows] = await db.query(SQLquery);
+            res.json(rows);
+            console.log('SQLquery: ', SQLquery);
+          } catch (err) {
+
+            console.log("Database error in /menu:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
       }
     });
 

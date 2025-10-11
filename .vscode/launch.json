@@ -135,8 +135,8 @@
         {
       "type": "chrome",
       "request": "launch",
-      "name": "Test synch",
-      "url": "http://localhost/client.html",
+      "name": "Test",
+      "url": "http://localhost/condo-test.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     }
