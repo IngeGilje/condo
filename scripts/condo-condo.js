@@ -377,7 +377,8 @@ async function updateCondo(condoId) {
     const city = document.querySelector('.input-condo-city').value;
 
     // Square meters
-    const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
+    //const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
+    const squareMeters = formatKronerToOre(document.querySelector('.input-condo-squareMeters').value);
 
     // Check if condo id exist
     const condoRowNumberObj = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);

@@ -152,7 +152,9 @@ class Accounts extends Condos {
 
 
   // Show all accounts
-  showSelectedAccountsHTML(className, selectAll) {
+  showSelectedAccountsHTML(className, accountId, selectAll) {
+
+    accountId = Number(accountId);
 
     let html =
       `
@@ -171,14 +173,28 @@ class Accounts extends Condos {
     if (numberOfRows > 0) {
       this.accountsArray.forEach((account) => {
 
-        html +=
-          `
+        if (account.accountId === accountId) {
+          html +=
+            `
+              <option
+                value = "${account.accountId}"
+                selected
+              >
+                ${account.accountId} - ${account.name}
+              </option >
+            `;
+
+        } else {
+
+          html +=
+            `
             <option
               value = "${account.accountId}"
             >
               ${account.accountId} - ${account.name}
             </option >
           `;
+        }
       });
 
     } else {
@@ -313,7 +329,7 @@ class Accounts extends Condos {
       console.log("Error insert accounts:", error);
     }
   }
-  
+
   // delete account row
   async deleteAccountsTable(accountId, user, lastUpdate) {
 
@@ -326,5 +342,5 @@ class Accounts extends Condos {
     }
   }
 
-  
+
 }

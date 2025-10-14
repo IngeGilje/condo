@@ -109,16 +109,13 @@ function createEvents() {
       async function searchFromDateSync() {
 
         const condominiumId = Number(objUserPassword.condominiumId);
-        const deleted = 'N';
-
-        // Include all accounts
-        const accountId = 0;
 
         const condoId = Number(document.querySelector('.select-filter-condoId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
         await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
+        const deleted = 'N';
         await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
         // show dues

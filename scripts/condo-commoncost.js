@@ -23,8 +23,7 @@ objCommonCost.markSelectedMenu('Felleskostnader');
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  window.location.href =
-    'http://localhost/condo-login.html';
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
   // Call main when script loads
@@ -38,11 +37,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
+    // Show leading text filter
+    showLeadingTextFilter();
+
     // Show filter
     showLeadingText();
-
-    // Show all values for 
-    showValues();
 
     // Show all dues for condo id and common cost account id
     // Get account id for common cost
@@ -53,12 +52,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       accountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
     }
-    const condoId = objCondo.arrayCondo.at(-1).condoId;
+    //const condoId = objCondo.arrayCondo.at(-1).condoId;
+    const condoId = 999999999;
     const year = String(today.getFullYear());
     const fromDate = year + "0101";
     const toDate = year + "1231";
     await objDues.loadDuesTable(objUserPassword.condominiumId, accountId, condoId, fromDate, toDate);
     showCommonCost();
+
+    // Show all values for 
+    showValues();
 
     // Make events
     createEvents();
@@ -70,7 +73,7 @@ function createEvents() {
 
   // Selected condo Id
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-commoncost-condoId')) {
+    if (event.target.classList.contains('select-commoncost-filterCondoId')) {
 
       // reload common cost
       reloadCommonCostCondoIdSync();
@@ -86,10 +89,11 @@ function createEvents() {
 
           accountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
         }
-        const year = document.querySelector('.select-commoncost-year').value;
+        const year = document.querySelector('.select-commoncost-filterYear').value;
         const fromDate = year + "0101";
         const toDate = year + "1231";
         const condoId = Number(event.target.value);
+        document.querySelector('.select-commoncost-condoId').value = condoId;
 
         await objDues.loadDuesTable(objUserPassword.condominiumId, accountId, condoId, fromDate, toDate);
 
@@ -101,7 +105,7 @@ function createEvents() {
 
   // Selected year
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-commoncost-year')) {
+    if (event.target.classList.contains('select-commoncost-filterYear')) {
 
       // reload common cost
       reloadCommonCostYearSync();
@@ -118,6 +122,7 @@ function createEvents() {
           accountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
         }
         const year = Number(event.target.value);
+        document.querySelector('.select-commoncost-year').value = year;
         const fromDate = year + "0101";
         const toDate = year + "1231";
         const condoId = Number(document.querySelector('.select-commoncost-condoId').value);
@@ -443,5 +448,19 @@ function showValues(dueId) {
 
       resetValues();
     }
+  }
+}
+
+// Show filter for search
+function showLeadingTextFilter() {
+
+  // Show all condos
+  const accountId = (isClassDefined('select-commoncost-filterCondoId')) ? Number(document.querySelector('.select-commoncost-filterAccountId').value) : 0;
+  objCondo.showSelectedCondos('commoncost-filterCondoId', accountId, 'Alle');
+
+  // Show common cost year
+  if (!isClassDefined('select-commoncost-filterYear')) {
+    const year = today.getFullYear();
+    objCommonCost.selectNumber('commoncost-filterYear', 2020, 2030, year, 'År');
   }
 }

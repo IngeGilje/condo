@@ -128,7 +128,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Årsregnskap",
-      "url": "http://localhost/condo-annualaccounts.html",
+      "url": "http://localhost/condo-annualaccount.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

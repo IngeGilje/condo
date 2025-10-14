@@ -13,10 +13,10 @@ body {
 .div-grid-bankaccounttransactions-search,
 .div-grid-bankaccounttransactions,
 
-/*.div-grid-annualaccounts-filter,*/
-.div-grid-annualaccounts,
-/*.div-grid-annualaccounts-budgets,*/
-/*.div-grid-annualaccounts-bankdeposit,*/
+/*.div-grid-annualaccount-filter,*/
+.div-grid-annualaccount,
+/*.div-grid-annualaccount-budgets,*/
+/*.div-grid-annualaccount-bankdeposit,*/
 
 .div-grid-userbankaccounts,
 
@@ -37,13 +37,14 @@ body {
 .div-grid-dues-filter,
 .div-grid-dues,
 
-.div-grid-commoncost,
-
 .div-grid-remoteheating-search,
 .div-grid-remoteheating,
 
 .div-grid-budgets-search,
 .div-grid-budgets,
+
+.div-grid-commoncost-search,
+.div-grid-commoncost,
 
 /*.div-grid-overview-search,*/
 .div-grid-overview {
@@ -64,6 +65,7 @@ body {
 /* grid container 3 columns */
 .div-grid-condos,
 .div-grid-budgets-search,
+.div-grid-commoncost-search,
 .div-grid-bankaccounts,
 .div-grid-suppliers,
 .div-grid-user,
@@ -98,7 +100,7 @@ body {
 }
 
 /* Define the grid container with 5 columns*/
-.div-grid-annualaccounts {
+.div-grid-annualaccount {
   grid-template-columns: 200px 200px 150px 150px 150px;
 }
 
@@ -338,7 +340,7 @@ body {
 
 /* menu */
 .a-menu-vertical-accounts,
-.a-menu-vertical-annualaccounts,
+.a-menu-vertical-annualaccount,
 .a-menu-vertical-userbankaccounts,
 .a-menu-vertical-suppliers,
 .a-menu-vertical-importfile,
@@ -367,7 +369,7 @@ body {
   font-size: 16px;
 }
 
-.a-menu-vertical-annualaccounts-green,
+.a-menu-vertical-annualaccount-green,
 .a-menu-vertical-accounts-green,
 .a-menu-vertical-userbankaccounts-green,
 .a-menu-vertical-suppliers-green,
@@ -385,6 +387,7 @@ body {
 .a-menu-vertical-overview-green,
 .a-menu-vertical-remoteheating-green,
 .a-menu-vertical-budgets-green,
+.a-menu-vertical-commoncost-green,
 .a-menu-vertical-condominiums-green {
   display: block;
   color: #4CAF50;
@@ -428,10 +431,10 @@ body {
 .div-grid-bankaccounttransactions-search label,
 .div-grid-bankaccounttransactions label,
 
-/*.div-grid-annualaccounts-filter label,*/
-.div-grid-annualaccounts label,
-/*.div-grid-annualaccounts-budgets label,*/
-/*.div-grid-annualaccounts-bankdeposit label,*/
+/*.div-grid-annualaccount-filter label,*/
+.div-grid-annualaccount label,
+/*.div-grid-annualaccount-budgets label,*/
+/*.div-grid-annualaccount-bankdeposit label,*/
 
 .div-grid-userbankaccounts label,
 
@@ -499,10 +502,10 @@ body {
 .div-grid-bankaccounttransactions-search input,
 .div-grid-bankaccounttransactions input,
 
-/*.div-grid-annualaccounts-filter input,*/
-.div-grid-annualaccounts input,
-/*.div-grid-annualaccounts-budgets input,*/
-/*.div-grid-annualaccounts-bankdeposit input,*/
+/*.div-grid-annualaccount-filter input,*/
+.div-grid-annualaccount input,
+/*.div-grid-annualaccount-budgets input,*/
+/*.div-grid-annualaccount-bankdeposit input,*/
 
 .div-grid-userbankaccounts input,
 
@@ -522,12 +525,16 @@ body {
 .div-grid-dues input,
 
 .div-grid-commoncost input,
+.div-grid-commoncost-search input,
 
 .div-grid-remoteheating-search input,
 .div-grid-remoteheating input,
 
 .div-grid-budgets-search input,
 .div-grid-budgets input,
+
+.div-grid-commoncost-search input,
+.div-grid-commoncost input,
 
 /*.div-grid-overview-search input,*/
 .div-grid-overview input,
@@ -584,10 +591,10 @@ body {
 .div-grid-bankaccounttransactions-search select,
 .div-grid-bankaccounttransactions select,
 
-/*.div-grid-annualaccounts-filter select,*/
-.div-grid-annualaccounts select,
-/*.div-grid-annualaccounts-budgets select,*/
-/*.div-grid-annualaccounts-bankdeposit select,*/
+/*.div-grid-annualaccount-filter select,*/
+.div-grid-annualaccount select,
+/*.div-grid-annualaccount-budgets select,*/
+/*.div-grid-annualaccount-bankdeposit select,*/
 
 .div-grid-userbankaccounts select,
 
@@ -608,13 +615,14 @@ body {
 .div-grid-dues-filter select,
 .div-grid-dues select,
 
-.div-grid-commoncost select,
-
 .div-grid-remoteheating-search select,
 .div-grid-remoteheating select,
 
 .div-grid-budgets-search select,
 .div-grid-budgets select,
+
+.div-grid-commoncost-search select,
+.div-grid-commoncost select,
 
 /*.div-grid-overview-search select,*/
 .div-grid-overview select {
@@ -700,10 +708,10 @@ body {
 .div-grid-bankaccounttransactions-search button,
 .div-grid-bankaccounttransactions button,
 
-/*.div-grid-annualaccounts-filter button,*/
-.div-grid-annualaccounts button,
-/*.div-grid-annualaccounts-budgets button,*/
-/*.div-grid-annualaccounts-bankdeposit button,*/
+/*.div-grid-annualaccount-filter button,*/
+.div-grid-annualaccount button,
+/*.div-grid-annualaccount-budgets button,*/
+/*.div-grid-annualaccount-bankdeposit button,*/
 
 .div-grid-userbankaccounts button,
 
@@ -724,14 +732,15 @@ body {
 .div-grid-dues-filter button,
 .div-grid-dues button,
 
-.div-grid-commoncost button,
-
 .div-grid-remoteheating-search button,
 
 .div-grid-remoteheating button,
 
 .div-grid-budgets-search button,
 .div-grid-budgets button,
+
+.div-grid-commoncost button,
+.div-grid-commoncost-search button,
 
 /*.div-grid-overview-search button,*/
 .div-grid-overview button {
@@ -748,10 +757,10 @@ body {
 /* Darker green on hover */
 .div-grid-bankaccounttransactions-search button:hover .div-grid-bankaccounttransactions button:hover,
 
-/*.div-grid-annualaccounts-filter button:hover,*/
-.div-grid-annualaccounts button:hover,
-/*.div-grid-annualaccounts-budgets button:hover,*/
-/*.div-grid-annualaccounts-bankdeposit button.hover,*/
+/*.div-grid-annualaccount-filter button:hover,*/
+.div-grid-annualaccount button:hover,
+/*.div-grid-annualaccount-budgets button:hover,*/
+/*.div-grid-annualaccount-bankdeposit button.hover,*/
 
 .div-grid-userbankaccounts button:hover,
 
@@ -772,13 +781,14 @@ body {
 .div-grid-dues-filter button:hover,
 .div-grid-dues button:hover,
 
-.div-grid-commoncost button:hover,
-
 .div-grid-remoteheating-search button:hover,
 .div-grid-remoteheating button:hover,
 
 .div-grid-budgets-search button:hover,
 .div-grid-budgets button:hover,
+
+.div-grid-commoncost button:hover,
+.div-grid-commoncost-search button:hover,
 
 /*.div-grid-overview-search button:hover,*/
 .div-grid-overview button:hover {
@@ -789,7 +799,7 @@ body {
 .div-grid-bankaccounttransactions-search button:active,
 .div-grid-bankaccounttransactions button:active,
 
-.div-annualaccounts button:active,
+.div-annualaccount button:active,
 
 .div-userbankaccounts button:active,
 
@@ -808,13 +818,14 @@ body {
 .div-grid-dues-filter button:active,
 .div-grid-dues button:active,
 
-.div-grid-commoncost button:active,
-
 .div-grid-remoteheating-search button:active,
 .div-grid-remoteheating button:active,
 
 .div-grid-budgets-search button:active,
 .div-grid-budgets button:active,
+
+.div-grid-commoncost button:active,
+.div-grid-commoncost-search button:active,
 
 /*.div-grid-overview-search button:active,*/
 .div-grid-overview button:active {
@@ -825,8 +836,8 @@ body {
 .div-grid-bankaccounttransactions select:disabled,
 .div-grid-bankaccounttransactions button:disabled,
 
-.div-grid-annualaccounts select:disabled,
-.div-grid-annualaccounts button:disabled,
+.div-grid-annualaccount select:disabled,
+.div-grid-annualaccount button:disabled,
 
 .div-grid-userbankaccounts select:disabled,
 .div-grid-userbankaccounts button:disabled,
@@ -941,8 +952,8 @@ body {
 .label-bankaccounttransactions-accountId-red,
 .label-bankaccounttransactions-date-red,
 
-.label-annualaccounts-filter-fromDate-red,
-.label-annualaccounts-filter-toDate-red,
+.label-annualaccount-filter-fromDate-red,
+.label-annualaccount-filter-toDate-red,
 
 .label-userbankaccounts-userId-red,
 .label-userbankaccounts-accountId-red,
@@ -989,6 +1000,10 @@ body {
 .label-budgets-text-red,
 .label-budgets-amount-red,
 
+.label-commoncost-condoId-red,
+.label-commoncost-date-red,
+.label-commoncost-amount-red,
+
 .label-remoteheating-fromDate-red,
 .label-remoteheating-toDate-red,
 
@@ -1007,10 +1022,6 @@ body {
 .label-accounts-bankAccountId-red,
 .label-accounts-accountName-red,
 .label-accounts-fixedCost-red,
-
-.label-commoncost-condoId-red,
-.label-commoncost-date-red,
-.label-commoncost-amount-red,
 
 .label-dues-condoId-red,
 .label-dues-date-red,
@@ -1214,11 +1225,20 @@ select {
   height: 54px;
 }
 
-/* Table */
+/* Table
 table {
   width: 25%;
   border-collapse: collapse;
   background: #fff;
+}
+*/
+
+table {
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 th,
@@ -1231,6 +1251,11 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+td {
+  border: 0px;
+}
+
 
 th {
   background: #e0f0e0;

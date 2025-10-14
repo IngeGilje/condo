@@ -866,16 +866,3 @@ function resetValues() {
   document.querySelector('.button-bankaccounttransactions-delete').disabled = true;
 }
 
-/*
-// Get selected bank account transactions
-async function getSelectedBankAccountTransactions() {
-
-  const condoId = Number(document.querySelector('.select-bankaccounttransactions-filterCondoId').value);
-  const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
-  const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
-  const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-  const amount = Number(formatAmountToOre(document.querySelector('.input-bankaccounttransactions-filterAmount').value));
-
-  await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
-}
-*/

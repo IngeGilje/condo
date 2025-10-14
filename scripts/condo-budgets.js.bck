@@ -28,7 +28,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
+
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+
     const year = today.getFullYear();
     const accountId = 999999999;
     await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
@@ -59,7 +61,7 @@ function createEvents() {
   // Select filter
   // budget 
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-budgets-filterAccountId')) {
+    if (event.target.classList.contains('select-filterAccountId')) {
 
       // Reload budgets
       reloadBudgetAccountIdSync();
@@ -67,19 +69,19 @@ function createEvents() {
       // Reload budgets
       async function reloadBudgetAccountIdSync() {
 
-        const year = document.querySelector('.select-budgets-filterYear').value;
-        const accountId = document.querySelector('.select-budgets-filterAccountId').value;
+        const year = document.querySelector('.select-filterYear').value;
+        const accountId = document.querySelector('.select-filterAccountId').value;
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
         // Show budget
         showBudget();
 
         // Show leading text
-        let budgetId = objAccountBudgets.arrayBudgets.at(-1).budgetsId;
+        let budgetId = objAccountBudgets.budgetsArray.at(-1).budgetsId;
         showLeadingText(budgetId);
 
         // Show all values for budget
-        budgetId = objBudgets.getSelectedBudgetId('select-budgets-budgetId');
+        budgetId = objBudgets.getSelectedBudgetId('budgets-budgetId');
         showValues(budgetId);
       };
     };
@@ -87,7 +89,7 @@ function createEvents() {
 
   // select year
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-budgets-filterYear')) {
+    if (event.target.classList.contains('select-filterYear')) {
 
       // Reload budgets
       reloadBudgetYearSync();
@@ -95,15 +97,15 @@ function createEvents() {
       // Reload budgets
       async function reloadBudgetYearSync() {
 
-        const year = document.querySelector('.select-budgets-filterYear').value;
-        const accountId = document.querySelector('.select-budgets-filterAccountId').value;
+        const year = document.querySelector('.select-filterYear').value;
+        const accountId = document.querySelector('.select-filterAccountId').value;
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
         // Show budget
         showBudget();
 
         // Show leading text
-        let budgetId = objBudgets.arrayBudgets.at(-1).budgetId;
+        let budgetId = objBudgets.budgetsArray.at(-1).budgetId;
         showLeadingText(budgetId);
 
         // Show all values for budget
@@ -132,17 +134,18 @@ function createEvents() {
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-budgets-update')) {
 
-      // Update budgets and reload budgets
+      // Update budget and reload budgets
       updateBudgetSync();
 
       // Update budget and reload budgets
       async function updateBudgetSync() {
 
-        // Load budget
+        // Load budgets
+
         let budgetId;
         if (document.querySelector('.select-budgets-budgetId').value === '') {
 
-          // Insert new row into budget table
+          // Insert new row into budgets table
           budgetId = 0;
         } else {
 
@@ -150,32 +153,23 @@ function createEvents() {
           budgetId = Number(document.querySelector('.select-budgets-budgetId').value);
         }
 
-        if (validateValues()) {
+        await updateBudget(budgetId);
 
-          await updateBudget(budgetId);
+        const condominiumId = Number(objUserPassword.condominiumId);
+        const year = document.querySelector('.select-filterYear').value;
+        const accountId = Number(document.querySelector('.select-filterAccountId').value);
+        await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
-          // Show budgets
-          condominiumId = objUserPassword.condominiumId;
-          document.querySelector('.select-budgets-filterYear').value = document.querySelector('.select-budgets-budgetId').value;
-          const year = Number(document.querySelector('.select-budgets-filterYear').value);
-          document.querySelector('.select-budgets-filterAccountId').value = document.querySelector('.select-budgets-budgetId').value;
-          const accountId = Number(document.querySelector('.select-budgets-filterAccountId').value) = document.querySelector('.select-budgets-budgetId').value;
-          await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
+        // Select last budget if budgetId is 0
+        if (budgetId === 0) budgetId = objBudgets.budgetsArray.at(-1).budgetId;
 
-          // Select last budgets if budgetId is 0
-          if (budgetId === 0) budgetId = objBudgets.arrayBudgets.at(-1).budgetId;
+        // Show budget
+        showBudget();
 
-          // Show leading text
-          showLeadingText(budgetId);
-
-          // Show budget
-          showBudget();
-
-          // Show all values for budget
-          showValues(budgetId);
-        }
+        // Show values for selected budget Id
+        showValues(budgetId);
       }
-    }
+    };
   });
 
   // Insert budget
@@ -199,21 +193,17 @@ function createEvents() {
         await deleteBudget();
 
         // Load budgets
-        const year = document.querySelector('.select-budgets-filterYear').value;
-        const accountId = Number(document.querySelector('.select-budgets-filterAccountId').value);
+        const year = document.querySelector('.select-filterYear').value;
+        const accountId = Number(document.querySelector('.select-filterAccountId').value);
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
         // Show leading text
-        const budgetId = objBudgets.arrayBudgets.at(-1).budgetId;
-        
-        // Show leading text
+        const budgetId = objBudgets.budgetsArray.at(-1).budgetId;
         showLeadingText(budgetId);
-
-        // Show budget
-        showBudget();
 
         // Show all values for budget
         showValues(budgetId);
+
       };
     };
   });
@@ -227,12 +217,12 @@ function createEvents() {
       // Main entry point
       async function cancelBudgetSynch() {
 
-        const year = document.querySelector('.select-budgets-filterYear').value;
-        const accountId = Number(document.querySelector('.select-budgets-filterAccountId').value);
+        const year = document.querySelector('.select-filterYear').value;
+        const accountId = Number(document.querySelector('.select-filterAccountId').value);
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
         // Find selected budget id
-        const budgetId = objBudgets.getSelectedBudgetId('select-budgets-budgetId');
+        const budgetId = objBudgets.getSelectedBudgetId('select-budgets-budgetId').value;
 
         // Show leading text
         showLeadingText(budgetId);
@@ -285,18 +275,18 @@ function showValues(budgetId) {
   if (budgetId >= 0) {
 
     // Find object number budget array
-    const budgetRowNumberObj = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
+    const budgetRowNumberObj = objBudgets.budgetsArray.findIndex(budget => budget.budgetId === budgetId);
     if (budgetRowNumberObj !== -1) {
 
       // Select account
-      const accountId = objBudgets.arrayBudgets[budgetRowNumberObj].accountId;
+      const accountId = objBudgets.budgetsArray[budgetRowNumberObj].accountId;
       objAccounts.selectAccountId(accountId, 'budgets-accountId');
 
       // Show select year
-      document.querySelector('.select-budgets-year').value = objBudgets.arrayBudgets[budgetRowNumberObj].year;
+      document.querySelector('.select-budgets-year').value = objBudgets.budgetsArray[budgetRowNumberObj].year;
 
       // Show amount
-      document.querySelector('.input-budgets-amount').value = formatOreToKroner(objBudgets.arrayBudgets[budgetRowNumberObj].amount);
+      document.querySelector('.input-budgets-amount').value = formatOreToKroner(objBudgets.budgetsArray[budgetRowNumberObj].amount);
     }
   }
 }
@@ -343,12 +333,11 @@ function validateValues() {
 function validateFilter() {
 
   // Check account
-  const accountId = document.querySelector('.select-budgets-filterAccountId').value;
-  const validAccountId = validateNumber(accountId, 1, 999999999, 'budgets-filterAccountId', 'Konto');
+  const accountId = document.querySelector('.select-filterAccountId').value;
+  const validAccountId = validateNumber(accountId, 1, 999999999, 'select-filterAccountId', 'Konto');
 
-  const year = document.querySelector('.select-budgets-filterYear').value;
-  const validYear =
-    validateNumber(year, 2020, 2030, 'budgets-year', 'Budsjettår');
+  const year = document.querySelector('.select-filterYear').value;
+  const validYear = validateNumber(year, 2020, 2030, 'budgets-year', 'Budsjettår');
 
   return (validAccountId && validYear) ? true : false;
 }
@@ -356,15 +345,19 @@ function validateFilter() {
 // Show filter for search
 function showLeadingTextFilter() {
 
+  html = "";
+  html += startHTMLFilters();
+
   // Show all accounts
-  const accountId = (isClassDefined('select-budgets-filterAccountId')) ? Number(document.querySelector('.select-budgets-filterAccountId').value) : 0;
-  objAccounts.showSelectedAccounts('budgets-filterAccountId', accountId, 'Alle');
+  const accountId = (isClassDefined('select-filterAccountId')) ? Number(document.querySelector('.select-filterAccountId').value) : 0;
+  html += objAccounts.showSelectedAccountsHTML('select-filterAccountId', accountId, 'Alle');
 
   // Show budget year
-  if (!isClassDefined('select-budgets-filterYear')) {
-    const year = today.getFullYear();
-    objBudgets.selectNumber('budgets-filterYear', 2020, 2030, year, 'År');
-  }
+  const year = today.getFullYear();
+  html += objBudgets.selectNumberHTML('select-filterYear', 2020, 2030, year, 'År');
+
+  html += endHTMLFilters();
+  document.querySelector('.div-grid-budgets-filter').innerHTML = html;
 }
 
 // Show budget
@@ -373,16 +366,16 @@ function showBudget() {
   // Validate search filter
   if (validateFilter()) {
 
-    // Filter
-    let htmlColumnLine = '<div class="columnHeaderCenter">Linje</div><br>';
-    let htmlColumnAccountName = '<div class="columnHeaderLeft">Konto</div><br>';
-    let htmlcolumnBudget = '<div class="columnHeaderRight">Budsjett</div><br>';
+    // Header
+    let html = startHTMLTable();
+    html += HTMLTableHeader('', 'Linje', 'Konto', `Budsjett`);
+    html += startHTMLTableBody();
 
     let sumAmount = 0;
     let lineNumber = 0;
 
-    const budgetYear = Number(document.querySelector('.select-budgets-filterYear').value);
-    objBudgets.arrayBudgets.forEach((budget) => {
+    const budgetYear = Number(document.querySelector('.select-filterYear').value);
+    objBudgets.budgetsArray.forEach((budget) => {
 
       // Check for budget year
       if (Number(budget.year) === budgetYear) {
@@ -390,42 +383,52 @@ function showBudget() {
         lineNumber++;
 
         // check if the number is odd
-        const colorClass =
-          (lineNumber % 2 !== 0) ? "green" : "";
+        const colorClass = (lineNumber % 2 !== 0) ? "green" : "";
 
-        // line number
-        htmlColumnLine +=
-          `
-          <div 
-            class="centerCell ${colorClass}"
-          >
-            ${lineNumber}
-          </div >
-        `;
+        let htmlInput = "";
 
+        switch (lineNumber) {
+
+          // Budget year
+          case 1: {
+            htmlInput += `<div class="centerCell ${colorClass}">`;
+            htmlInput = 'År';
+            htmlInput += '</div>';
+            break;
+          }
+
+          // Budget year
+          case 2: {
+            const year = today.getFullYear();
+            htmlInput += `<div class="centerCell ${colorClass}">`;
+            htmlInput += objBudgets.selectNumberHTML('budgets-year', 2020, 2030, year, '')
+            htmlInput += '</div>';
+            break;
+          }
+
+          // Budget
+          case 3: {
+            htmlInput = '* Budsjett';
+            break;
+          }
+
+          // Budget
+          case 4: {
+            htmlInput = (lineNumber === 4) ? objBudgets.showInputHTML('budgets-amount', '', 10, '', 'dd.mm.aa') : '';
+            break;
+          }
+
+          default:
+            break;
+        }
         // account name
         const accountName = objAccounts.getAccountName(budget.accountId);
         const colorClassAccountName = (accountName === '-') ? 'red' : colorClass;
-        htmlColumnAccountName +=
-          `
-          <div
-            class="leftCell ${colorClassAccountName} one-line"
-          >
-            ${accountName}    
-          </div >
-        `;
 
         // budget
-        const amount =
-          formatOreToKroner(budget.amount);
-        htmlcolumnBudget +=
-          `
-          <div
-            class="rightCell ${colorClass}"
-          >
-            ${amount}
-          </div>
-        `;
+        const amount = formatOreToKroner(budget.amount);
+
+        html += HTMLTableRow(htmlInput, lineNumber, accountName, amount);
 
         // accumulate
         sumAmount += Number(budget.amount);
@@ -436,23 +439,12 @@ function showBudget() {
 
     // budget
     amount = formatOreToKroner(sumAmount);
-    htmlcolumnBudget +=
-      `
-        <div
-          class="sumCellRight"
-        >
-          ${amount}
-        </div >
-      `;
 
-    // Show line number
-    document.querySelector('.div-budgets-columnLine').innerHTML = htmlColumnLine;
+    html += HTMLTableRow('', '', '', amount);
+    html += endHTMLTableBody();
+    html += endHTMLTable();
 
-    // Show account name
-    document.querySelector('.div-budgets-columnAccountName').innerHTML = htmlColumnAccountName;
-
-    // Show budget
-    document.querySelector('.div-budgets-columnAmount').innerHTML = htmlcolumnBudget;
+    document.querySelector('.div-grid-budgets-budgets').innerHTML = html;
   }
 }
 
@@ -472,8 +464,7 @@ async function updateBudget(budgetId) {
     const year = document.querySelector('.select-budgets-year').value;
 
     // Check if budget id exist
-    const objBudgetsRowNumber =
-      objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
+    const objBudgetsRowNumber = objBudgets.budgetsArray.findIndex(budget => budget.budgetId === budgetId);
     if (objBudgetsRowNumber !== -1) {
 
       // update budget
@@ -484,22 +475,5 @@ async function updateBudget(budgetId) {
       // Insert budget row in budgets table
       await objBudgets.insertBudgetsTable(condominiumId, user, lastUpdate, accountId, amount, year);
     }
-  }
-}
-
-// Delete budget row
-async function deleteBudget() {
-
-  // Check for budget Id
-  const budgetId = Number(document.querySelector('.select-budgets-budgetId').value);
-
-  // Check if budget id exist
-  const budgetRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-  if (budgetRowNumber !== -1) {
-
-    // delete budget row
-    const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    objBudgets.deleteBudgetsTable(budgetId, user, lastUpdate);
   }
 }

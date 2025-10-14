@@ -197,7 +197,7 @@ class Dues extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/dues?action=update&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
       if (!response.ok) throw new Error("Network error (dues)");
-      this.budgetsArray = await response.json();
+      this.arrayBudgets = await response.json();
     } catch (error) {
       console.log("Error updating dues:", error);
     }
@@ -209,7 +209,7 @@ class Dues extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/dues?action=insert&condominiumId=${condominiumId}&condoId=${condoId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
       if (!response.ok) throw new Error("Network error (dues)");
-      this.budgetsArray = await response.json();
+      this.arrayBudgets = await response.json();
     } catch (error) {
       console.log("Error inserting dues:", error);
     }
@@ -220,7 +220,7 @@ class Dues extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/dues?action=delete&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}`);
       if (!response.ok) throw new Error("Network error (dues)");
-      this.budgetsArray = await response.json();
+      this.arrayBudgets = await response.json();
     } catch (error) {
       console.log("Error deleting dues:", error);
     }

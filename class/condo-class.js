@@ -688,8 +688,8 @@ class Condos {
           Importer banktransaksjoner
         </a>
 
-        <a href="${url}condo-annualaccounts.html"
-          class="a-menu-vertical-annualaccounts"
+        <a href="${url}condo-annualaccount.html"
+          class="a-menu-vertical-annualaccount"
         >
           Årsregnskap
         </a>
@@ -851,10 +851,10 @@ class Condos {
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const bankAccountRowNumber = objUserBankAccounts.userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+      const bankAccountRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
       if (bankAccountRowNumber !== -1) {
 
-        bankAccountName = objUserBankAccounts.userarrayBankAccounts[bankAccountRowNumber].name;
+        bankAccountName = objUserBankAccounts.arrayUserBankAccounts[bankAccountRowNumber].name;
       }
     }
 
@@ -888,10 +888,10 @@ class Condos {
     const bankAccountPattern = /^\d{11}$/;
     if ((bankAccountPattern.test(fromBankAccount))) {
 
-      const bankAccountRowNumber = objUserBankAccounts.userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
+      const bankAccountRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
       if (bankAccountRowNumber !== -1) {
 
-        const userId = Number(objUserBankAccounts.userarrayBankAccounts[bankAccountRowNumber].userId);
+        const userId = Number(objUserBankAccounts.arrayUserBankAccounts[bankAccountRowNumber].userId);
 
         if (userId >= 0) {
 
@@ -1723,10 +1723,10 @@ function getAccountIdFromBankAccount(bankAccount, payment) {
   if (bankAccountRowNumber === -1) {
 
     // Check user bank account
-    const bankAccountRowNumber = userarrayBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+    const bankAccountRowNumber = arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
     if (bankAccountRowNumber !== -1) {
 
-      accountId = userarrayBankAccounts[bankAccountRowNumber].accountId;
+      accountId = arrayUserBankAccounts[bankAccountRowNumber].accountId;
     }
 
     // get Account Id from supplier

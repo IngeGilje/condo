@@ -1,0 +1,3 @@
+class AnnualAccount extends Condos {
+
+}

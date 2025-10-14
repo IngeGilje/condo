@@ -9,15 +9,15 @@ const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
 const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
 const objCondo = new Condo('condo');
-const objAnnualAccounts = new AnnualAccounts('annualaccounts');
+const objAnnualAccount = new AnnualAccount('annualaccount');
 
 testMode();
 
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-objAnnualAccounts.menu();
-objAnnualAccounts.markSelectedMenu('Årsregnskap');
+objAnnualAccount.menu();
+objAnnualAccount.markSelectedMenu('Årsregnskap');
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -40,7 +40,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
     const condominiumId = Number(objUserPassword.condominiumId);
-    const deleted = "A";
+    const deleted = "N";
     const year = today.getFullYear();
     let fromDate = "01.01." + year;
     fromDate = Number(convertDateToISOFormat(fromDate));
@@ -213,20 +213,20 @@ function showLeadingTextFilter() {
   let html = startHTMLFilters();
 
   // from date
-  html += objAnnualAccounts.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
+  html += objAnnualAccount.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
 
   // To date
-  html += objAnnualAccounts.showInputHTML('input-filter-toDate', 'Til dato', 10, 'mm.dd.åååå');
+  html += objAnnualAccount.showInputHTML('input-filter-toDate', 'Til dato', 10, 'mm.dd.åååå');
 
   // Budget year
   let budgetYear = today.getFullYear();
   html += objBudgets.selectNumberHTML('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
 
   // price per square meter
-  html += objAnnualAccounts.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
+  html += objAnnualAccount.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
 
   html += endHTMLFilters();
-  document.querySelector('.div-grid-annualaccounts-filter').innerHTML = html;
+  document.querySelector('.div-grid-annualaccount-filter').innerHTML = html;
 }
 
 // Show values for filter
@@ -240,7 +240,7 @@ function showValuesFilter() {
     const year = String(today.getFullYear());
     document.querySelector('.input-filter-fromDate').value = "01.01." + year;
   }
-  objAnnualAccounts.showIcon('input-filter-fromDate');
+  objAnnualAccount.showIcon('input-filter-fromDate');
 
   // to date
   date = document.querySelector('.input-filter-toDate').value;
@@ -250,7 +250,7 @@ function showValuesFilter() {
     const year = String(today.getFullYear());
     document.querySelector('.input-filter-toDate').value = getCurrentDate();
   }
-  objAnnualAccounts.showIcon('input-filter-toDate');
+  objAnnualAccount.showIcon('input-filter-toDate');
 
   // Budget year
   budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
@@ -258,17 +258,17 @@ function showValuesFilter() {
 
     budgetYear = today.getFullYear() + 1;
     objBudgets.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
-    objAnnualAccounts.showIcon('select-filter-budgetYear');
+    objAnnualAccount.showIcon('select-filter-budgetYear');
   }
 
   // Price per square meter
   priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
-  if (!objAnnualAccounts.validateAmount(priceSquareMeter)) {
+  if (!objAnnualAccount.validateAmount(priceSquareMeter)) {
 
     // To Price per square meter is not ok
     document.querySelector('.input-filter-priceSquareMeter').value = '30,00'
   }
-  objAnnualAccounts.showIcon('input-filter-priceSquareMeter');
+  objAnnualAccount.showIcon('input-filter-priceSquareMeter');
 }
 
 // Show annual accounts
@@ -285,6 +285,7 @@ function showAnnualAccounts() {
 
     let html = startHTMLTable();
     html += HTMLTableHeader('Konto', 'Kontotype', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
+    html += startHTMLTableBody();
 
     objAccounts.accountsArray.forEach((account) => {
 
@@ -355,7 +356,7 @@ function showAnnualAccounts() {
     html += endHTMLTableBody();
     html += endHTMLTable();
 
-    document.querySelector('.div-grid-annualaccounts-annualAccounts').innerHTML = html;
+    document.querySelector('.div-grid-annualaccount-annualaccount').innerHTML = html;
   }
 }
 
@@ -412,7 +413,7 @@ function getBudgetAmount(accountId, year) {
   let amount = 0;
 
   // Budget Amount
-  objBudgets.budgetsArray.forEach(budget => {
+  objBudgets.arrayBudgets.forEach(budget => {
     if (budget.accountId === accountId
       && Number(budget.year) === year) {
 
@@ -502,7 +503,7 @@ function showIncomeNextYear() {
   html += HTMLTableRow('', strSquareMeters, strFixedCost, strCommonCostsMonth, strCommonCostsYear);
   html += endHTMLTableBody();
   html += endHTMLTable();
-  document.querySelector('.div-grid-annualaccounts-income').innerHTML = html;
+  document.querySelector('.div-grid-annualaccount-income').innerHTML = html;
 }
 
 // Get fixed costs
@@ -570,7 +571,7 @@ function showBankDeposit() {
   accAmount += Number(formatKronerToOre(bankDepositAmount));
 
   // budget
-  objBudgets.budgetsArray.forEach((budget) => {
+  objBudgets.arrayBudgets.forEach((budget) => {
     if (Number(budget.year) === nextBudgetYear) {
       if (Number(budget.amount) !== 0) {
 
@@ -624,7 +625,7 @@ function showBankDeposit() {
   html += endHTMLTableBody();
   html += endHTMLTable();
 
-  document.querySelector('.div-grid-annualaccounts-bankDeposit').innerHTML = html;
+  document.querySelector('.div-grid-annualaccount-bankDeposit').innerHTML = html;
 }
 
 // Show remote heating
@@ -782,7 +783,7 @@ function showRemoteHeating() {
             </table>
           </div>
         `;
-      document.querySelector('.div-grid-annualaccounts-remoteHeating').innerHTML = html;
+      document.querySelector('.div-grid-annualaccount-remoteHeating').innerHTML = html;
     }
   }
 }

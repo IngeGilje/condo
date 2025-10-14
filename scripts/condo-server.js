@@ -423,9 +423,9 @@ async function main() {
 
           try {
 
-
             const user = req.query.user;
             const lastUpdate = req.query.lastUpdate;
+            const bankAccount = req.query.bankAccount;
             const name = req.query.name;
             const openingBalance = req.query.openingBalance;
             const openingBalanceDate = req.query.openingBalanceDate;
