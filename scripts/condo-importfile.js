@@ -414,22 +414,22 @@ function createImportFileArray(fileContent) {
       let accountName;
       if (text.includes('FAKT.TJ')) {
 
-        const accountRowNumber = objAccounts.accountsArray.findIndex(account => account.name.includes('FAKT.TJ'));
+        const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.name.includes('FAKT.TJ'));
         if (accountRowNumber !== -1) {
 
-          accountId = objAccounts.accountsArray[accountRowNumber].accountId;
-          accountName = objAccounts.accountsArray[accountRowNumber].name;
+          accountId = objAccounts.arrayAccounts[accountRowNumber].accountId;
+          accountName = objAccounts.arrayAccounts[accountRowNumber].name;
         }
       }
 
       // Account Name
       if (text.includes('transaksjoner')) {
 
-        const accountRowNumber = accountsArray.findIndex(account => account.name.includes('transaksjoner'));
+        const accountRowNumber = arrayAccounts.findIndex(account => account.name.includes('transaksjoner'));
         if (accountRowNumber !== -1) {
 
-          accountId = accountsArray[accountRowNumber].accountId;
-          accountName = accountsArray[accountRowNumber].name;
+          accountId = arrayAccounts[accountRowNumber].accountId;
+          accountName = arrayAccounts[accountRowNumber].name;
         }
       }
 

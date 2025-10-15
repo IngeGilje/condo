@@ -87,7 +87,7 @@ async function main() {
                 SELECT * FROM accounts
                 WHERE condominiumId = ${condominiumId}
                   AND deleted <> 'Y'
-                ORDER BY accountId;
+                ORDER BY name ASC, accountId ASC;
               `;
             const [rows] = await db.query(SQLquery);
             res.json(rows);
@@ -1200,7 +1200,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /accounts:", err.message);
+            console.log("Database error in /condo:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1232,7 +1232,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /accounts:", err.message);
+            console.log("Database error in /condo:", err.message);
             res.status(500).json({ error: err.message });
           }
 

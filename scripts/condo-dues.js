@@ -180,7 +180,7 @@ function createEvents() {
         if (objDues.arrayDues.length > 0) {
           dueId = objDues.arrayDues[0].dueId;
           showLeadingText(dueId);
-          
+
           // Show dues 
           showDues();
 
@@ -311,11 +311,11 @@ function createEvents() {
           // Show leading text filter
           //showLeadingTextFilter();
 
-          // Show leading text maintenance
-          //showLeadingText(dueId);
-
           // Show dues 
           showDues();
+
+          // Show leading text maintenance
+          showLeadingText(dueId);
 
           // Show due Id
           showValues(dueId);
@@ -496,7 +496,7 @@ function showLeadingText(dueId) {
   objCondo.showSelectedCondos('dues-condoId', condoId, 'Ingen er valgt');
 
   // Show selected accounts
-  const accountId = objAccounts.accountsArray.at(-1).accountId;
+  const accountId = objAccounts.arrayAccounts.at(-1).accountId;
   objAccounts.showSelectedAccounts('dues-accountId', accountId, 'Ingen er valgt');
 
   // Show amount
@@ -591,7 +591,14 @@ function resetValues() {
   document.querySelector('.select-dues-dueId').value = 0;
 
   // Show condo
-  document.querySelector('.select-dues-condoId').value = 0;
+  document.querySelector('.select-dues-condoId').value =
+    (Number(document.querySelector('.select-dues-filterCondoId').value) === 999999999)
+      ? 0 : Number(document.querySelector('.select-dues-filterCondoId').value);
+
+  // Show account
+  document.querySelector('.select-dues-accountId').value =
+    (Number(document.querySelector('.select-dues-filterAccountId').value) === 999999999)
+      ? 0 : Number(document.querySelector('.select-dues-filterAccountId').value);
 
   // Show date
   document.querySelector('.input-dues-date').value = '';

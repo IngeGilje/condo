@@ -124,7 +124,7 @@ function createEvents() {
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
   
     // Select last account if accountId is 0
-    if (accountId === 0) accountId = objAccounts.accountsArray.at(-1).accountId;
+    if (accountId === 0) accountId = objAccounts.arrayAccounts.at(-1).accountId;
   
     // Show leading text
     showLeadingText(accountId);
@@ -178,7 +178,7 @@ function createEvents() {
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
   
     // Show leading text
-    const accountId = objAccounts.accountsArray.at(-1).accountId;
+    const accountId = objAccounts.arrayAccounts.at(-1).accountId;
     showLeadingText(accountId);
   
     // Show all values for account
@@ -224,7 +224,7 @@ function createEvents() {
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
     // Show leading text
-    const accountId = objAccounts.accountsArray.at(-1).accountId;
+    const accountId = objAccounts.arrayAccounts.at(-1).accountId;
     showLeadingText(accountId);
 
     // Show all values for account
@@ -264,7 +264,7 @@ async function updateAccount() {
 
       const lastUpdate = today.toISOString();
       const condominiumId = Number(objUserPassword.condominiumId);
-      const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+      const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
 
       // Check if account number exist
       if (accountRowNumberObj !== -1) {
@@ -293,7 +293,7 @@ async function deleteAccount() {
   if (accountId !== 1) {
 
     // Check if account number exist
-    const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+    const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (accountRowNumberObj !== -1) {
 
       // delete account row
@@ -338,14 +338,14 @@ function showValues(accountId) {
   if (accountId >= 0) {
 
     // find object number for selected account 
-    const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+    const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (accountRowNumberObj !== -1) {
 
       // account name
-      document.querySelector('.input-accounts-accountName').value = objAccounts.accountsArray[accountRowNumberObj].name;
+      document.querySelector('.input-accounts-accountName').value = objAccounts.arrayAccounts[accountRowNumberObj].name;
 
       // fixed cost
-      let fixedCost = objAccounts.accountsArray[accountRowNumberObj].fixedCost;
+      let fixedCost = objAccounts.arrayAccounts[accountRowNumberObj].fixedCost;
       switch (fixedCost) {
         case 'Y':
           fixedCost = 'Ja';

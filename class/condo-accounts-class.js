@@ -2,7 +2,7 @@
 class Accounts extends Condos {
 
   // accounts information
-  accountsArray;
+  arrayAccounts;
 
   // Show all selected accounts
   showSelectedAccounts(className, accountId, alternativeSelect, alternativeSelect2) {
@@ -31,9 +31,9 @@ class Accounts extends Condos {
       `;
 
     // Check if account movement array is empty
-    const numberOfRows = this.accountsArray.length;
+    const numberOfRows = this.arrayAccounts.length;
     if (numberOfRows > 0) {
-      this.accountsArray.forEach((account) => {
+      this.arrayAccounts.forEach((account) => {
         if (account.accountId === accountId) {
 
           html +=
@@ -140,11 +140,11 @@ class Accounts extends Condos {
     if (isClassDefined(className)) {
 
       accountId = Number(document.querySelector(`.${className}`).value);
-      accountId = (accountId === 0) ? this.accountsArray.at(-1).accountId : accountId;
+      accountId = (accountId === 0) ? this.arrayAccounts.at(-1).accountId : accountId;
     } else {
 
       // Get last id in last object in account array
-      accountId = this.accountsArray.at(-1).accountId;
+      accountId = this.arrayAccounts.at(-1).accountId;
     }
 
     return accountId;
@@ -169,9 +169,9 @@ class Accounts extends Condos {
       `;
 
     // Check if account array is empty
-    const numberOfRows = this.accountsArray.length;
+    const numberOfRows = this.arrayAccounts.length;
     if (numberOfRows > 0) {
-      this.accountsArray.forEach((account) => {
+      this.arrayAccounts.forEach((account) => {
 
         if (account.accountId === accountId) {
           html +=
@@ -237,10 +237,10 @@ class Accounts extends Condos {
   selectAccountId(accountId, className) {
 
     // Check if account id exist
-    const objAccountNumber = this.accountsArray.findIndex(account => account.accountId === accountId);
+    const objAccountNumber = this.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (objAccountNumber !== -1) {
 
-      document.querySelector(`.select-${className}`).value = this.accountsArray[objAccountNumber].accountId;
+      document.querySelector(`.select-${className}`).value = this.arrayAccounts[objAccountNumber].accountId;
       return true;
     } else {
 
@@ -285,10 +285,10 @@ class Accounts extends Condos {
     let accountName = "-";
 
     // Account name from account table
-    const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+    const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (accountRowNumberObj !== -1) {
 
-      accountName = objAccounts.accountsArray[accountRowNumberObj].name;
+      accountName = objAccounts.arrayAccounts[accountRowNumberObj].name;
     }
 
     return (accountName) ? accountName : "-";
@@ -300,7 +300,7 @@ class Accounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/accounts?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (users)");
-      this.accountsArray = await response.json();
+      this.arrayAccounts = await response.json();
     } catch (error) {
       console.log("Error loading users:", error);
     }
@@ -312,7 +312,7 @@ class Accounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/accounts?action=update&user=${user}&accountId=${accountId}&fixedCost=${fixedCost}&lastUpdate=${lastUpdate}&accountName=${accountName}`);
       if (!response.ok) throw new Error("Network error (accounts)");
-      this.accountsArray = await response.json();
+      this.arrayAccounts = await response.json();
     } catch (error) {
       console.log("Error updating accounts:", error);
     }
@@ -324,7 +324,7 @@ class Accounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/accounts?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&accountName=${accountName}&fixedCost=${fixedCost}`);
       if (!response.ok) throw new Error("Network error (accounts)");
-      this.accountsArray = await response.json();
+      this.arrayAccounts = await response.json();
     } catch (error) {
       console.log("Error insert accounts:", error);
     }
@@ -336,7 +336,7 @@ class Accounts extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/accounts?action=delete&accountId=${accountId}&user=${user}&lastUpdate=${lastUpdate}`);
       if (!response.ok) throw new Error("Network error (accounts)");
-      this.accountsArray = await response.json();
+      this.arrayAccounts = await response.json();
     } catch (error) {
       console.log("Error delete accounts:", error);
     }

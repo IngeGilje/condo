@@ -473,7 +473,7 @@ function showLeadingText(bankAccountTransactionId) {
   objCondo.showSelectedCondos('bankaccounttransactions-condoId', condoId, '', 'Ingen er valgt');
 
   // Show all accounts
-  let accountId = objAccounts.accountsArray.at(-1).accountId;;
+  let accountId = objAccounts.arrayAccounts.at(-1).accountId;;
 
   objAccounts.showSelectedAccounts('bankaccounttransactions-accountId', accountId, '', 'Ingen er valgt');
 

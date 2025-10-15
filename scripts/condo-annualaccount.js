@@ -284,10 +284,10 @@ function showAnnualAccounts() {
     const budgetYear = document.querySelector('.select-filter-budgetYear').value;
 
     let html = startHTMLTable();
-    html += HTMLTableHeader('Konto', 'Kontotype', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
+    html += HTMLTableHeader('Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
     html += startHTMLTableBody();
 
-    objAccounts.accountsArray.forEach((account) => {
+    objAccounts.arrayAccounts.forEach((account) => {
 
       rowNumber++;
 
@@ -332,7 +332,7 @@ function showAnnualAccounts() {
       accountAmount = formatOreToKroner(String(accountAmount));
       budgetAmount = formatOreToKroner(String(budgetAmount));
       deviation = formatOreToKroner(String(deviation));
-      html += HTMLTableRow(account.name, costType, accountAmount, budgetAmount, deviation);
+      html += HTMLTableRow(account.name, accountAmount, budgetAmount, deviation);
     });
 
     // Sum line
@@ -352,7 +352,7 @@ function showAnnualAccounts() {
     totalAccountAmount = formatOreToKroner(String(totalAccountAmount));
     totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
 
-    html += HTMLTableRow('Sum', '', totalAccountAmount, totalBudgetAmount, deviation);
+    html += HTMLTableRow('Sum', totalAccountAmount, totalBudgetAmount, deviation);
     html += endHTMLTableBody();
     html += endHTMLTable();
 
@@ -500,7 +500,7 @@ function showIncomeNextYear() {
   // Common cost per year
   const strCommonCostsYear = formatOreToKroner(String(totalCommonCostsYear));
 
-  html += HTMLTableRow('', strSquareMeters, strFixedCost, strCommonCostsMonth, strCommonCostsYear);
+  html += HTMLTableRow('Sum', strSquareMeters, strFixedCost, strCommonCostsMonth, strCommonCostsYear);
   html += endHTMLTableBody();
   html += endHTMLTable();
   document.querySelector('.div-grid-annualaccount-income').innerHTML = html;
@@ -517,10 +517,10 @@ function getFixedCost(fromDate, toDate) {
       && (Number(bankAccountTransaction.date) <= toDate)) {
 
       // Check for fixed cost
-      const objAccountNumber = objAccounts.accountsArray.findIndex(account => account.accountId === bankAccountTransaction.accountId);
+      const objAccountNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === bankAccountTransaction.accountId);
       if (objAccountNumber !== -1) {
 
-        if (objAccounts.accountsArray[objAccountNumber].fixedCost === 'Y') {
+        if (objAccounts.arrayAccounts[objAccountNumber].fixedCost === 'Y') {
 
           fixedCost +=
             Number(bankAccountTransaction.income);
@@ -583,10 +583,10 @@ function showBankDeposit() {
         // Account Name
         let name = '';
 
-        const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === budget.accountId);
+        const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === budget.accountId);
         if (accountRowNumberObj !== -1) {
 
-          name = objAccounts.accountsArray[accountRowNumberObj].name;
+          name = objAccounts.arrayAccounts[accountRowNumberObj].name;
         }
 
         // Dato

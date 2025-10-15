@@ -79,7 +79,6 @@ function createEvents() {
         const condominiumId = Number(objUserPassword.condominiumId);
         const deleted = 'N';
 
-        // Include all accounts
         const condoId = Number(document.querySelector('.select-filter-condoId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
@@ -141,9 +140,6 @@ function createEvents() {
 
         const condominiumId = Number(objUserPassword.condominiumId);
         const deleted = 'N';
-
-        // Include all accounts
-        const accountId = 0;
 
         const condoId = Number(document.querySelector('.select-filter-condoId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));

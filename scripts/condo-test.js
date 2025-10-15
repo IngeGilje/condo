@@ -241,7 +241,7 @@ function showLeadingText(budgetId) {
   objBudgets.showSelectedBudgets('budgets-budgetId', budgetId)
 
   // Show all accounts
-  const accountId = objAccounts.accountsArray.at(-1).accountId;
+  const accountId = objAccounts.arrayAccounts.at(-1).accountId;
   objAccounts.showSelectedAccounts('budgets-accountId', accountId, '', 'Ingen konti er valgt');
 
   // Show years

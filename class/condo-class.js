@@ -869,10 +869,10 @@ class Condos {
     let accountName = "-";
 
     // Account name from account table
-    const accountRowNumberObj = objAccounts.accountsArray.findIndex(account => account.accountId === accountId);
+    const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (accountRowNumberObj !== -1) {
 
-      accountName = objAccounts.accountsArray[accountRowNumberObj].name;
+      accountName = objAccounts.arrayAccounts[accountRowNumberObj].name;
     }
 
     return (accountName) ? accountName : "-";

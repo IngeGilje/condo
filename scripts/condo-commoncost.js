@@ -210,7 +210,7 @@ function createEvents() {
           const year = Number(document.querySelector('.select-commoncost-year').value);
           const day = Number(document.querySelector('.select-commoncost-day').value);
           const condoId = Number(document.querySelector('.select-commoncost-condoId').value);
-          const accountId = objAccounts.accountsArray[0].accountId;
+          const accountId = objAccounts.arrayAccounts[0].accountId;
           let amount = Number(formatAmountToOre(document.querySelector('.input-commoncost-amount').value));
           const user = objUserPassword.email;
           const lastUpdate = today.toISOString();
