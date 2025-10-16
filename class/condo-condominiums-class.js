@@ -88,8 +88,7 @@ class Condominiums extends Condos {
     const className = `select-${this.applicationName}-${columnName}`;
     if (isClassDefined(className)) {
 
-      condominiumId =
-        Number(document.querySelector(`.${className}`).value);
+      condominiumId = Number(document.querySelector(`.${className}`).value);
       condominiumId = (condominiumId === 0) ? this.arrayCondominiums.at(-1).condominiumId : condominiumId;
     } else {
 

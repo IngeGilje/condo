@@ -433,6 +433,7 @@ class Condos {
   // Select numbers
   selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
 
+    selectedNumber = Number(selectedNumber);
     let html =
       `
       <form 
@@ -450,8 +451,7 @@ class Condos {
         >
     `;
 
-    let selectedOption =
-      false;
+    let selectedOption = false;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
@@ -482,8 +482,7 @@ class Condos {
     </form>
   `;
 
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
   // Select number

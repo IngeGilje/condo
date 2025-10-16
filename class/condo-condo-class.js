@@ -5,7 +5,7 @@ class Condo extends Condos {
   arrayCondo;
 
   // Show selected condos
-  showSelectedCondos(columnName, condoId, alternativeSelect, alternativeSelect2) {
+  showSelectedCondos(columnName, condoId, selectAll, selectNone) {
 
     let selectedOption;
 
@@ -75,14 +75,14 @@ class Condo extends Condos {
     }
 
     // Alternative select
-    if (alternativeSelect && (numberOfRows > 1)) {
+    if (selectAll && (numberOfRows > 1)) {
       if (selectedOption) {
         html +=
           `
             <option 
               value=999999999
             >
-              ${alternativeSelect}
+              ${selectAll}
             </option>
           `;
       } else {
@@ -93,7 +93,7 @@ class Condo extends Condos {
               value=999999999
               selected
             >
-              ${alternativeSelect}
+              ${selectAll}
             </option>
           `;
         selectedOption =
@@ -102,14 +102,14 @@ class Condo extends Condos {
     }
 
     // Do not select any condo
-    if (alternativeSelect2 && (numberOfRows > 1)) {
+    if (selectNone && (numberOfRows > 1)) {
       if (selectedOption) {
         html +=
           `
             <option 
               value=0
             >
-              ${alternativeSelect2}
+              ${selectNone}
             </option>
           `;
       } else {
@@ -120,7 +120,7 @@ class Condo extends Condos {
               value=0
               selected
             >
-              ${alternativeSelect2}
+              ${selectNone}
             </option>
           `;
         selectedOption =
@@ -171,7 +171,7 @@ class Condo extends Condos {
   }
 
   // Show selected condos
-  showSelectedCondosHTML(className, condoId, selectAll) {
+  showSelectedCondosHTML(className, condoId, selectAll,selectNone) {
 
     let html =
       `
@@ -227,7 +227,7 @@ class Condo extends Condos {
     }
 
     // Select all
-    if (selectAll) {
+    if (selectAll && (numberOfRows > 1)) {
 
       html +=
         `
@@ -238,6 +238,20 @@ class Condo extends Condos {
           ${selectAll}
         </option>
       `;
+    }
+
+    // Select none
+    if (selectNone && (numberOfRows > 1)) {
+
+      html +=
+        `
+          <option 
+            value=0
+            selected
+          >
+            ${selectNone}
+          </option>
+        `;
     }
 
     html +=

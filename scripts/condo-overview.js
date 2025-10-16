@@ -30,25 +30,35 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     const condominiumId = Number(objUserPassword.condominiumId);
-    const deleted = 'N';
-    const year = String(today.getFullYear());
-    let fromDate = "01.01." + year;
-    fromDate = convertDateToISOFormat(fromDate);
-    let toDate = getCurrentDate();
-    toDate = convertDateToISOFormat(toDate);
 
     await objUsers.loadUsersTable(condominiumId);
     await objCondo.loadCondoTable(condominiumId);
-
-    const condoId = objCondo.arrayCondo.at(-1).condoId;
-    await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
     // Show leading text Filter
     showLeadingTextFilter();
 
     // Show values for Filter
     showValuesFilter();
+
+    //const condoId = objCondo.arrayCondo.at(-1).condoId;
+    const condoId = 999999999;
+    const accountId = 999999999;
+    const deleted = 'N';
+    const year = String(today.getFullYear());
+    let fromDate = "01.01." + year;
+    fromDate = convertDateToISOFormat(fromDate);
+    let toDate = getCurrentDate();
+    toDate = convertDateToISOFormat(toDate);
+    await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
+
+    /*
+    // Show leading text Filter
+    showLeadingTextFilter();
+
+    // Show values for Filter
+    showValuesFilter();
+    */
 
     // Show dues
     showDues();
@@ -169,7 +179,7 @@ function showLeadingTextFilter() {
 
   // Show all condos
   const condoId = objCondo.arrayCondo.at(-1).condoId;
-  html += objCondo.showSelectedCondosHTML('select-filter-condoId', condoId);
+  html += objCondo.showSelectedCondosHTML('select-filter-condoId', condoId, "Alle");
 
   // from date
   html += objOverview.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
@@ -208,64 +218,59 @@ function showValuesFilter() {
 // Show dues
 function showDues() {
 
-  // check for valid filter
-  if (validateValues()) {
+  let html = startHTMLTable();
+  html += HTMLTableHeader('Leilighet', 'Forfallsdato', 'Forfallsbeløp', `Tekst`);
 
-    let html = startHTMLTable();
-    html += HTMLTableHeader('Leilighet', 'Forfallsdato', 'Forfallsbeløp', `Tekst`);
+  // Filter
+  let fromDate = convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value);
+  let toDate = convertDateToISOFormat(document.querySelector('.input-filter-toDate').value);
+  toDate = (toDate === 0) ? 99999999 : toDate;
 
-    // Filter
-    let fromDate = convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value);
-    let toDate = convertDateToISOFormat(document.querySelector('.input-filter-toDate').value);
-    toDate = (toDate === 0) ? 99999999 : toDate;
+  const condoId = Number(document.querySelector('.select-filter-condoId').value);
 
-    const condoId = Number(document.querySelector('.select-filter-condoId').value);
+  let lineNumber = 0;
+  let sumDues = 0;
 
-    let lineNumber = 0;
-    let sumDues = 0;
+  objDues.arrayDues.forEach((due) => {
 
-    objDues.arrayDues.forEach((due) => {
+    lineNumber++;
 
-      lineNumber++;
+    // check if the number is odd
+    const colorClass = (lineNumber % 2 !== 0) ? "green" : "";
 
-      // check if the number is odd
-      const colorClass = (lineNumber % 2 !== 0) ? "green" : "";
+    const name = objCondo.getCondoName(due.condoId);
+    const date = formatToNorDate(due.date);
+    const amount = formatOreToKroner(due.amount);
 
-      const name = objCondo.getCondoName(due.condoId);
-      const date = formatToNorDate(due.date);
-      const amount = formatOreToKroner(due.amount);
+    html += HTMLTableRow(name, date, amount, due.text);
 
-      html += HTMLTableRow(name, date, amount, due.text);
+    // Accomulate
+    // due
+    sumDues += due.amount;
+  });
 
-      // Accomulate
-      // due
-      sumDues += due.amount;
-    });
+  // Sum line
+  sumDues = formatOreToKroner(sumDues);
+  html += HTMLTableRow('Sum', '', sumDues, '');
 
-    // Sum line
-    sumDues = formatOreToKroner(sumDues);
-    html += HTMLTableRow('Sum', '', sumDues, '');
+  html += endHTMLTableBody();
+  html += endHTMLTable();
 
-    html += endHTMLTableBody();
-    html += endHTMLTable();
-
-    document.querySelector('.div-grid-overview-dues').innerHTML = html;
-  }
+  document.querySelector('.div-grid-overview-dues').innerHTML = html;
 }
 
 // Show bank account transactions
 function showBankAccountMovements() {
 
-  // check for valid filter
-  if (validateValues()) {
+  let html = startHTMLTable();
+  html += HTMLTableHeader('Leilighet', 'Dato', 'Innbetalt', 'Tekst');
 
-    let html = startHTMLTable();
-    html += HTMLTableHeader('Leilighet', 'Dato', 'Innbetalt', 'Tekst');
+  let sumIncome = 0;
 
-    let sumIncome = 0;
+  // How much is payd
+  objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 
-    // How much is payd
-    objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
+    if (Number(bankAccountTransaction.condoId) !== 0) {
 
       // condo name
       const name = (bankAccountTransaction.condoId) ? objCondo.getCondoName(bankAccountTransaction.condoId) : "-";
@@ -283,59 +288,55 @@ function showBankAccountMovements() {
 
       // Accomulate
       sumIncome += Number(bankAccountTransaction.income);
-    });
+    }
+  });
 
-    // Sum line
-    sumIncome = formatOreToKroner(sumIncome);
-    html += HTMLTableRow('Sum', '', sumIncome, '');
+  // Sum line
+  sumIncome = formatOreToKroner(sumIncome);
+  html += HTMLTableRow('Sum', '', sumIncome, '');
 
-    html += endHTMLTableBody();
-    html += endHTMLTable();
+  html += endHTMLTableBody();
+  html += endHTMLTable();
 
-    document.querySelector('.div-grid-overview-bankAccountTransactions').innerHTML = html;
-  }
+  document.querySelector('.div-grid-overview-bankAccountTransactions').innerHTML = html;
 }
 
 // show how much to pay
 function showHowMuchToPay() {
 
-  // check for valid filter
-  if (validateValues()) {
+  let sumIncome = 0;
 
-    let sumIncome = 0;
+  // How much is payd
+  objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 
-    // How much is payd
-    objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
+    // Accomulate
+    sumIncome += Number(bankAccountTransaction.income);
+  });
 
-      // Accomulate
-      sumIncome += Number(bankAccountTransaction.income);
-    });
+  // How much to pay
+  let sumToPay = 0;
+  objDues.arrayDues.forEach((due) => {
 
-    // How much to pay
-    let sumToPay = 0;
-    objDues.arrayDues.forEach((due) => {
+    sumToPay += due.amount;
+  });
 
-      sumToPay += due.amount;
-    });
+  // Header
+  let html = startHTMLTable();
 
-    // Header
-    let html = startHTMLTable();
+  let owes = sumIncome - sumToPay;
+  html += (owes > 0) ? HTMLTableHeader('Sum', 'Forfall', 'Betalt', 'Til gode') : HTMLTableHeader('Sum', 'Forfall', 'Betalt', 'Skyldig');
 
-    let owes = sumIncome - sumToPay;
-    html += (owes > 0) ? HTMLTableHeader('Sum', 'Forfall', 'Betalt', 'Til gode') : HTMLTableHeader('Sum', 'Forfall', 'Betalt', 'Skyldig');
+  // Sum line
+  if (owes < 0) owes = (owes * -1);
+  owes = formatOreToKroner(owes);
+  sumIncome = formatOreToKroner(sumIncome);
+  sumToPay = formatOreToKroner(sumToPay);
+  html += HTMLTableRow('Sum', sumToPay, sumIncome, owes);
 
-    // Sum line
-    if (owes < 0) owes = (owes * -1);
-    owes = formatOreToKroner(owes);
-    sumIncome = formatOreToKroner(sumIncome);
-    sumToPay = formatOreToKroner(sumToPay);
-    html += HTMLTableRow('Sum', sumToPay, sumIncome, owes);
+  html += endHTMLTableBody();
+  html += endHTMLTable();
 
-    html += endHTMLTableBody();
-    html += endHTMLTable();
-
-    document.querySelector('.div-grid-overview-howMuchToPay').innerHTML = html;
-  }
+  document.querySelector('.div-grid-overview-howMuchToPay').innerHTML = html;
 }
 
 /*
@@ -470,6 +471,7 @@ document.querySelector('.div-overview-columnBankAccountTransactionText').innerHT
 }
 */
 
+/*
 // Check for valid filter values
 function validateValues() {
 
@@ -512,3 +514,4 @@ function validateValues() {
 
   return (validFromDate && validToDate && validDateInterval) ? true : false;
 }
+*/

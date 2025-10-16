@@ -5,7 +5,7 @@ class Accounts extends Condos {
   arrayAccounts;
 
   // Show all selected accounts
-  showSelectedAccounts(className, accountId, alternativeSelect, alternativeSelect2) {
+  showSelectedAccounts(className, accountId, selectAll, selectNone) {
 
     let selectedOption = false;
 
@@ -70,15 +70,15 @@ class Accounts extends Condos {
       selectedOption = true;
     }
 
-    // Alternative select
-    if (alternativeSelect && (numberOfRows > 1)) {
+    // Select all
+    if (selectAll && (numberOfRows > 1)) {
       if (selectedOption) {
         html +=
           `
             <option 
               value=999999999
             >
-              ${alternativeSelect}
+              ${selectAll}
             </option>
           `;
       } else {
@@ -89,22 +89,22 @@ class Accounts extends Condos {
               value=999999999
               selected
             >
-              ${alternativeSelect}
+              ${selectAll}
             </option>
           `;
         selectedOption = true;
       }
     }
 
-    // Alternative select
-    if (alternativeSelect2 && (numberOfRows > 1)) {
+    // Select none
+    if (selectNone && (numberOfRows > 1)) {
       if (selectedOption) {
         html +=
           `
           <option 
             value=0
           >
-            ${alternativeSelect2}
+            ${selectNone}
           </option>
         `;
       } else {
@@ -115,7 +115,7 @@ class Accounts extends Condos {
             value=0
             selected
           >
-            ${alternativeSelect2}
+            ${selectNone}
           </option>
         `;
         selectedOption = true;

@@ -36,14 +36,15 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Find selected budget id
     const budgetId = objBudgets.getSelectedBudgetId('select-budgets-budgetId');
 
+
     // Show leading text filter
     showLeadingTextFilter();
 
+    // Show budget
+    showBudgets();
+
     // Show leading text
     showLeadingText(budgetId);
-
-    // Show budget
-    showBudget();
 
     // Show all values for budget
     showValues(budgetId);
@@ -72,10 +73,11 @@ function createEvents() {
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
         // Show budget
-        showBudget();
+        showBudgets();
 
         // Show leading text
-        let budgetId = objAccountBudgets.arrayBudgets.at(-1).budgetsId;
+        //let budgetId = objAccountBudgets.arrayBudgets.at(-1).budgetsId;
+        let budgetId = (objBudgets.arrayBudgets.length > 0) ? objBudgets.arrayBudgets.at(-1).budgetId : 0;
         showLeadingText(budgetId);
 
         // Show all values for budget
@@ -99,11 +101,12 @@ function createEvents() {
         const accountId = document.querySelector('.select-budgets-filterAccountId').value;
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
-        // Show budget
-        showBudget();
+        // Show budgets
+        showBudgets();
 
         // Show leading text
-        let budgetId = objBudgets.arrayBudgets.at(-1).budgetId;
+        //let budgetId = objBudgets.arrayBudgets.at(-1).budgetId;
+        let budgetId = (objBudgets.arrayBudgets.length > 0) ? objBudgets.arrayBudgets.at(-1).budgetId : 0;
         showLeadingText(budgetId);
 
         // Show all values for budget
@@ -138,40 +141,31 @@ function createEvents() {
       // Update budget and reload budgets
       async function updateBudgetSync() {
 
-        // Load budget
-        let budgetId;
-        if (document.querySelector('.select-budgets-budgetId').value === '') {
-
-          // Insert new row into budget table
-          budgetId = 0;
-        } else {
-
-          // Update existing row in budgets table
-          budgetId = Number(document.querySelector('.select-budgets-budgetId').value);
-        }
-
         if (validateValues()) {
 
-          await updateBudget(budgetId);
+          await updateBudget();
 
-          // Show budgets
           condominiumId = objUserPassword.condominiumId;
-          document.querySelector('.select-budgets-filterYear').value = document.querySelector('.select-budgets-budgetId').value;
+
+          // Account
+          const accountId = Number(document.querySelector('.select-budgets-filterAccountId').value);
+
+          // Year
+          document.querySelector('.select-budgets-filterYear').value = document.querySelector('.select-budgets-year').value;
           const year = Number(document.querySelector('.select-budgets-filterYear').value);
-          document.querySelector('.select-budgets-filterAccountId').value = document.querySelector('.select-budgets-budgetId').value;
-          const accountId = Number(document.querySelector('.select-budgets-filterAccountId').value) = document.querySelector('.select-budgets-budgetId').value;
+
           await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
           // Select last budgets if budgetId is 0
-          if (budgetId === 0) budgetId = objBudgets.arrayBudgets.at(-1).budgetId;
+           let budgetId = (objBudgets.arrayBudgets.length > 0) ? objBudgets.arrayBudgets.at(-1).budgetId : 0;
 
-          // Show leading text
+          // Show dues 
+          showBudgets();
+
+          // Show leading text maintenance
           showLeadingText(budgetId);
 
-          // Show budget
-          showBudget();
-
-          // Show all values for budget
+          // Show due Id
           showValues(budgetId);
         }
       }
@@ -204,13 +198,14 @@ function createEvents() {
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
         // Show leading text
-        const budgetId = objBudgets.arrayBudgets.at(-1).budgetId;
-        
+        //const budgetId = objBudgets.arrayBudgets.at(-1).budgetId;
+        const budgetId = (objBudgets.arrayBudgets.length > 0) ? objBudgets.arrayBudgets.at(-1).budgetId : 0;
+
         // Show leading text
         showLeadingText(budgetId);
 
-        // Show budget
-        showBudget();
+        // Show budgets
+        showBudgets();
 
         // Show all values for budget
         showValues(budgetId);
@@ -247,16 +242,22 @@ function createEvents() {
 // Show leading text for budget
 function showLeadingText(budgetId) {
 
-  const budgetYear = today.getFullYear();
+  //const budgetYear = today.getFullYear();
 
-  // Show budget
-  objBudgets.showSelectedBudgets('budgets-budgetId', budgetId)
+  // Show all budgets
+  //objBudgets.showSelectedBudgets('budgets-budgetId', budgetId)
+  //const budgetId = objAccounts.arrayBudgets.at(-1).budgetId;
+  //budgetId = (objBudgets.arrayBudgets.length > 0) ? this.arrayBudgets.at(-1).budgetId : 0;
+
+  objBudgets.showSelectedBudgets('budgets-budgetId', budgetId, '', 'Ingen budsjett er valgt');
 
   // Show all accounts
-  const accountId = objAccounts.arrayAccounts.at(-1).accountId;
+  //const accountId = objAccounts.arrayAccounts.at(-1).accountId;
+  //budgetId = (objBudgets.arrayBudgets.length > 0) ? this.arrayBudgets.at(-1).budgetId : 0;
   objAccounts.showSelectedAccounts('budgets-accountId', accountId, '', 'Ingen konti er valgt');
 
   // Show years
+  const budgetYear = document.querySelector('.select-budgets-filterYear').value;
   objBudgets.selectNumber('budgets-year', 2020, 2030, budgetYear, 'År');
 
   // amount
@@ -308,10 +309,16 @@ function resetValues() {
   document.querySelector('.select-budgets-budgetId').value = 0;
 
   // selected account Id
-  document.querySelector('.select-budgets-accountId').value = 0;
+  //document.querySelector('.select-budgets-accountId').value = 0;
+  document.querySelector('.select-budgets-accountId').value =
+    (Number(document.querySelector('.select-budgets-filterAccountId').value) === 999999999)
+      ? 0 : Number(document.querySelector('.select-budgets-filterAccountId').value);
 
   // selected year
-  document.querySelector('.select-budgets-year').value = 0;
+  //document.querySelector('.select-budgets-year').value = 0;
+  document.querySelector('.select-budgets-year').value =
+    (Number(document.querySelector('.select-budgets-filterYear').value) === 999999999)
+      ? 0 : Number(document.querySelector('.select-budgets-filterYear').value);
 
   // amount
   document.querySelector('.input-budgets-amount').value = '';
@@ -367,8 +374,8 @@ function showLeadingTextFilter() {
   }
 }
 
-// Show budget
-function showBudget() {
+// Show budgets
+function showBudgets() {
 
   // Validate search filter
   if (validateFilter()) {
@@ -457,7 +464,7 @@ function showBudget() {
 }
 
 // Update budget
-async function updateBudget(budgetId) {
+async function updateBudget() {
 
   // Check values
   if (validateValues()) {
@@ -472,8 +479,7 @@ async function updateBudget(budgetId) {
     const year = document.querySelector('.select-budgets-year').value;
 
     // Check if budget id exist
-    const objBudgetsRowNumber =
-      objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
+    const objBudgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
     if (objBudgetsRowNumber !== -1) {
 
       // update budget

@@ -165,21 +165,6 @@ function createEvents() {
     }
   });
 }
-/*
-// Sends a request to the server to get all bank account
-//objBankAccounts.getBankAccounts(socket);
-const SQLquery = `
-  SELECT * FROM bankaccount
-  WHERE condominiumId = ${objUserPassword.condominiumId}
-    AND deleted <> 'Y'
-  ORDER BY name;
-`;
-updateMySql(SQLquery, 'bankaccount', 'SELECT');
-bankAccountArrayCreated =
-  false;
-}
-*/
-
 
 async function updateBankAccount() {
 

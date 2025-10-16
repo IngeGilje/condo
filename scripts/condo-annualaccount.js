@@ -39,6 +39,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
+    // Show leading text for filter
+    showLeadingTextFilter();
+
+    // Show values for filter
+    showValuesFilter();
+
     const condominiumId = Number(objUserPassword.condominiumId);
     const deleted = "N";
     const year = today.getFullYear();
@@ -47,12 +53,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
     await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
-
-    // Show leading text for filter
-    showLeadingTextFilter();
-
-    // Show values for filter
-    showValuesFilter();
 
     // Show annual accounts
     showAnnualAccounts();
@@ -274,9 +274,6 @@ function showValuesFilter() {
 // Show annual accounts
 function showAnnualAccounts() {
 
-  // check for valid filter
-  if (validateFilter()) {
-
     let totalBudgetAmount = 0;
     let totalAccountAmount = 0;
     let rowNumber = 0;
@@ -289,50 +286,55 @@ function showAnnualAccounts() {
 
     objAccounts.arrayAccounts.forEach((account) => {
 
-      rowNumber++;
-
-      // check if the number is odd
-      const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
-
-      // fixed cost/ variable cost
-      let costType = "";
-      switch (account.fixedCost) {
-
-        case "Y":
-          costType = "Fast kostnad";
-          break;
-
-        case "N":
-          costType = "Variabel kostnad";
-          break;
-
-        default:
-          costType = "Variabel kostnad";
-          break;
-      }
+      // Budget Amount for fiscal
+      const budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
+      let budgetAmount = getBudgetAmount(account.accountId, budgetYear);
+      const numBudgetAmount = Number(formatKronerToOre(budgetAmount));
 
       // Bank account transactions for selected account
       let accountAmount = getTotalMovementsBankAccount(account.accountId);
       accountAmount = formatOreToKroner(accountAmount);
+      const numAccountAmount = Number(formatKronerToOre(accountAmount));
 
-      // Budget Amount for fiscal
-      const budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
-      let budgetAmount = getBudgetAmount(account.accountId, budgetYear);
+      if (numBudgetAmount !== 0 || numAccountAmount !== 0) {
 
-      // Deviation
-      accountAmount = Number(formatKronerToOre(accountAmount));
-      budgetAmount = Number(formatKronerToOre(budgetAmount));
-      let deviation = accountAmount - budgetAmount;
+        rowNumber++;
 
-      // Accomulate
-      totalAccountAmount += Number(accountAmount);
-      totalBudgetAmount += Number(budgetAmount);
+        // check if the number is odd
+        const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
-      // Format amount
-      accountAmount = formatOreToKroner(String(accountAmount));
-      budgetAmount = formatOreToKroner(String(budgetAmount));
-      deviation = formatOreToKroner(String(deviation));
-      html += HTMLTableRow(account.name, accountAmount, budgetAmount, deviation);
+        // fixed cost/ variable cost
+        let costType = "";
+        switch (account.fixedCost) {
+
+          case "Y":
+            costType = "Fast kostnad";
+            break;
+
+          case "N":
+            costType = "Variabel kostnad";
+            break;
+
+          default:
+            costType = "Variabel kostnad";
+            break;
+        }
+
+        // Deviation
+        accountAmount = Number(formatKronerToOre(accountAmount));
+        budgetAmount = Number(formatKronerToOre(budgetAmount));
+        let deviation = accountAmount - budgetAmount;
+
+        // Accomulate
+        totalAccountAmount += Number(accountAmount);
+        totalBudgetAmount += Number(budgetAmount);
+
+        // Format amount
+        accountAmount = formatOreToKroner(String(accountAmount));
+        budgetAmount = formatOreToKroner(String(budgetAmount));
+        deviation = formatOreToKroner(String(deviation));
+        html += HTMLTableRow(account.name, accountAmount, budgetAmount, deviation);
+      }
     });
 
     // Sum line
@@ -357,28 +359,6 @@ function showAnnualAccounts() {
     html += endHTMLTable();
 
     document.querySelector('.div-grid-annualaccount-annualaccount').innerHTML = html;
-  }
-}
-
-// Check for valid filter values
-function validateFilter() {
-
-  let fromDate = document.querySelector('.input-filter-fromDate').value;
-  const validFromDate = validateNorDateHTML(fromDate);
-
-  let toDate = document.querySelector('.input-filter-toDate').value;
-  const validToDate = validateNorDateHTML(toDate);
-
-  let budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
-  const validBudgetYear = validateNumberHTML(budgetYear, 2020, 2030);
-
-  // Check date interval
-  fromDate = Number(convertDateToISOFormat(fromDate));
-  toDate = Number(convertDateToISOFormat(toDate));
-
-  validDateInterval = (fromDate <= toDate) ? true : false;
-
-  return (validBudgetYear && validFromDate && validToDate && validDateInterval) ? true : false;
 }
 
 // Accumulate all Bank account transactions for specified account id
@@ -631,9 +611,6 @@ function showBankDeposit() {
 // Show remote heating
 function showRemoteHeating() {
 
-  // check for valid filter
-  if (validateFilter()) {
-
     let rowNumber = 0;
 
     html =
@@ -785,5 +762,4 @@ function showRemoteHeating() {
         `;
       document.querySelector('.div-grid-annualaccount-remoteHeating').innerHTML = html;
     }
-  }
 }

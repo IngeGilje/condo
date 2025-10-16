@@ -425,11 +425,11 @@ function createImportFileArray(fileContent) {
       // Account Name
       if (text.includes('transaksjoner')) {
 
-        const accountRowNumber = arrayAccounts.findIndex(account => account.name.includes('transaksjoner'));
+        const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.name.includes('transaksjoner'));
         if (accountRowNumber !== -1) {
 
-          accountId = arrayAccounts[accountRowNumber].accountId;
-          accountName = arrayAccounts[accountRowNumber].name;
+          accountId = objAccounts.arrayAccounts[accountRowNumber].accountId;
+          accountName = objAccounts.arrayAccounts[accountRowNumber].name;
         }
       }
 
