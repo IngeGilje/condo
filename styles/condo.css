@@ -172,7 +172,7 @@ body {
   grid-column-start: 2;
 }
 
-.div-importfile-columnLineNumber,
+/*.div-importfile-columnLineNumber,*/
 .div-income-columnIncomeId,
 .grid-column3 {
   grid-column-start: 3;

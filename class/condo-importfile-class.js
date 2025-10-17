@@ -1,7 +1,7 @@
 
 class ImportFile extends Condos {
 
-  arrayImportFile;
+  strCSVTransaction;
 
   // Show all account movements to update
   showImportFile(columnName, importFileId, alternativeSelect) {
@@ -28,9 +28,9 @@ class ImportFile extends Condos {
     let selectedOption = false;
 
     // Check if file import array is empty
-    const numberOfRows = this.arrayImportFile.length;
+    const numberOfRows = this.strCSVTransaction.length;
     if (numberOfRows > 0) {
-      this.arrayImportFile.forEach((importFile) => {
+      this.strCSVTransaction.forEach((importFile) => {
         if (importFile.importFileId >= 0) {
           if (importFile.importFileId === importFileId) {
 
@@ -107,13 +107,13 @@ class ImportFile extends Condos {
 
   // get csv file from local disk
   async loadCsvFile(csvFileName) {
-    console.log('load Csv File');
+    console.log('csv string');
     try {
 
       const response = await fetch(`http://localhost:3000/import-csvFile?action=upload&csvFileName=${csvFileName}`);
       if (!response.ok) throw new Error("Network error (load csv file)");
       const result = await response.json();
-      this.arrayImportFile = result.content;
+      this.strCSVTransaction = result.content;
     } catch (error) {
       console.log("Error loading csv file:", error);
     }
