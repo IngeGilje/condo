@@ -1711,38 +1711,6 @@ function validateInterval(className, labelText, fromValue, toValue) {
   return isTextValid;
 }
 
-/*
-// get account id from bank account
-function getAccountIdFromBankAccount(bankAccount, payment) {
-
-  let accountId = 0;
-
-  // Bank Acoount <> Condominium Bank Account
-  let bankAccountRowNumber = this.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
-  if (bankAccountRowNumber === -1) {
-
-    // Check user bank account
-    const bankAccountRowNumber = arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
-    if (bankAccountRowNumber !== -1) {
-
-      accountId = arrayUserBankAccounts[bankAccountRowNumber].accountId;
-    }
-
-    // get Account Id from supplier
-    const supplierRowNumber = arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
-    if (supplierRowNumber !== -1) {
-
-      accountId = arraySuppliers[supplierRowNumber].accountId;
-
-      // get Account Id from supplier amount
-      const amount = (arraySuppliers[supplierRowNumber].amount) ? Number(arraySuppliers[supplierRowNumber].amount) : 0;
-
-      accountId = (amount === Number(payment)) ? Number(arraySuppliers[supplierRowNumber].amountAccountId) : accountId;
-    }
-  }
-  return accountId;
-}
-*/
 // HTML start for filters
 function startHTMLFilters() {
 

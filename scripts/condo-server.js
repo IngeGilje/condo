@@ -469,7 +469,6 @@ async function main() {
             const bankAccount = req.query.bankAccount;
             const name = req.query.name;
             const openingBalanceDate = req.query.openingBalanceDate;
-            console.log('openingBalanceDate: ', openingBalanceDate);
             const openingBalance = req.query.openingBalance;
             const closingBalanceDate = req.query.closingBalanceDate;
             const closingBalance = req.query.closingBalance;
@@ -1444,7 +1443,10 @@ async function main() {
             const bankAccount = req.query.bankAccount;
             const bankAccountAccountId = req.query.accountId;
             const amountAccountId = req.query.amountAccountId;
+            const text = req.query.text;
+            const textAccountId = req.query.textAccountId;
             const amount = req.query.amount;
+
             const supplierId = req.query.supplierId;
 
             // Update supplier table
@@ -1464,7 +1466,9 @@ async function main() {
                   bankAccount = '${bankAccount}',
                   bankAccountAccountId = ${bankAccountAccountId},
                   amount = '${amount}',
-                  amountAccountId = ${amountAccountId}
+                  amountAccountId = ${amountAccountId},
+                  text = '${text}',
+                  textAccountId = ${textAccountId}
                 WHERE supplierId = ${supplierId};
               `;
 
@@ -1498,7 +1502,8 @@ async function main() {
             const bankAccountAccountId = req.query.accountId;
             const amount = req.query.amount;
             const amountAccountId = req.query.amountAccountId;
-            console.log('amount: ', amount);
+            const text = req.query.text;
+            const textAccountId = req.query.textAccountId;
 
             // Insert new supplier row
             const SQLquery =
@@ -1519,6 +1524,8 @@ async function main() {
                   bankAccountAccountId,
                   amount,
                   amountAccountId,
+                  text,
+                  textAccountId
                 ) VALUES (
                   'N',
                   ${condominiumId},
@@ -1534,10 +1541,11 @@ async function main() {
                   '${bankAccount}',
                   ${bankAccountAccountId},
                   ${amount},
-                  ${amountAccountId}
+                  ${amountAccountId},
+                  '${text}',
+                  ${textAccountId}
                 );
               `;
-
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {

@@ -108,11 +108,16 @@ class Suppliers extends Condos {
   }
 
   // update supplier row
-  async updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId) {
+  async updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId, text, textAccountId) {
 
     try {
       console.log('accountid: ', accountId);
-      const response = await fetch(`http://localhost:3000/suppliers?action=update&supplierId=${supplierId}&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${bankAccountAccountId}&amount=${amount}&amountAccountId=${amountAccountId}`);
+      const response = await fetch(`http://localhost:3000/suppliers?action=update&supplierId=${supplierId}&condominiumId=${condominiumId}
+        &user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}
+        &address2=${address2}&postalCode=${postalCode}&city=${city}&email=${email}
+        &phone=${phone}&bankAccount=${bankAccount}&accountId=${bankAccountAccountId}
+        &amount=${amount}&amountAccountId=${amountAccountId}
+        &text=${text}&textAccountId=${textAccountId}`);
       if (!response.ok) throw new Error("Network error (suppliers)");
       this.arraySuppliers = await response.json();
     } catch (error) {
@@ -121,10 +126,14 @@ class Suppliers extends Condos {
   }
 
   // insert supplier row
-  async insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId) {
+  async insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId) {
 
     try {
-      const response = await fetch(`http://localhost:3000/suppliers?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${accountId}&amount=${amount}&amountAccountId=${amountAccountId}`);
+      const response = await fetch(`http://localhost:3000/suppliers?action=insert&condominiumId=${condominiumId}
+        &user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}
+        &postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${accountId}
+        &amount=${amount}&amountAccountId=${amountAccountId}
+        &text=${text}&textAccountId=${textAccountId}`);
       if (!response.ok) throw new Error("Network error (suppliers)");
       this.arraySuppliers = await response.json();
     } catch (error) {

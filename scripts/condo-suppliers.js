@@ -218,6 +218,12 @@ async function updateSupplier(supplierId) {
   // amount
   const amount = (document.querySelector('.input-suppliers-amount').value) ? formatKronerToOre(document.querySelector('.input-suppliers-amount').value) : '0';
 
+   // amount accountId Id
+  const textAccountId = Number(document.querySelector('.select-suppliers-textAccountId').value);
+
+  // text
+  const text = (document.querySelector('.input-suppliers-text').value);
+
   const lastUpdate = today.toISOString();
   const condominiumId = Number(objUserPassword.condominiumId);
   const supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
@@ -226,12 +232,12 @@ async function updateSupplier(supplierId) {
   if (supplierRowNumber !== -1) {
 
     // update supplier
-    objSuppliers.updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId);
+    objSuppliers.updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId, text, textAccountId);
 
   } else {
 
     // insert supplier
-    objSuppliers.insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId);
+    objSuppliers.insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId,text,textAccountId);
   }
 
   document.querySelector('.select-suppliers-supplierId').disabled = false;
@@ -242,7 +248,7 @@ async function updateSupplier(supplierId) {
 // Show leading text for supplier
 function showLeadingText(supplierId) {
 
-  // Show all suppliers
+  // Show all selected suppliers
   objSuppliers.showSelectedSuppliers('suppliers-supplierId', supplierId);
 
   // name
@@ -267,7 +273,7 @@ function showLeadingText(supplierId) {
   objSuppliers.showInput('suppliers-phone', 'Telefonnummer', 20, '');
 
   // bank account
-  objSuppliers.showInput('suppliers-bankAccount', '* Bankkonto', 11, '');
+  objSuppliers.showInput('suppliers-bankAccount', 'Bankkonto', 11, '');
 
   // Show all accounts
   objAccounts.showSelectedAccounts('suppliers-bankAccountAccountId', 0, '', 'Ingen konti er valgt');
@@ -277,6 +283,12 @@ function showLeadingText(supplierId) {
 
   // Show amount
   objAccounts.showInput('suppliers-amount', 'Beløp', 10, '');
+
+  // Show all accounts
+  objAccounts.showSelectedAccounts('suppliers-textAccountId', 0, '', 'Ingen konti er valgt');
+
+  // Show text
+  objAccounts.showInput('suppliers-text', 'Tekst', 45, '');
 
   // update button
   if (Number(objUserPassword.securityLevel) >= 9) {
@@ -303,41 +315,64 @@ function showValues(supplierId) {
     const objUserSupplierNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
     if (objUserSupplierNumber !== -1) {
 
-      // Select supplier Id
-      document.querySelector('.select-suppliers-supplierId').value = objSuppliers.arraySuppliers[objUserSupplierNumber].supplierId;
+      // Supplier Id
+      document.querySelector('.select-suppliers-supplierId').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].supplierId;
 
       // name
-      document.querySelector('.input-suppliers-name').value = objSuppliers.arraySuppliers[objUserSupplierNumber].name;
+      document.querySelector('.input-suppliers-name').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].name;
 
       // street
-      document.querySelector('.input-suppliers-street').value = objSuppliers.arraySuppliers[objUserSupplierNumber].street;
+      document.querySelector('.input-suppliers-street').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].street;
 
       // address 2
-      document.querySelector('.input-suppliers-address2').value = objSuppliers.arraySuppliers[objUserSupplierNumber].address2;
+      document.querySelector('.input-suppliers-address2').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].address2;
 
       // Postal code
-      document.querySelector('.input-suppliers-postalCode').value = objSuppliers.arraySuppliers[objUserSupplierNumber].postalCode;
+      document.querySelector('.input-suppliers-postalCode').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].postalCode;
 
       // city
-      document.querySelector('.input-suppliers-city').value = objSuppliers.arraySuppliers[objUserSupplierNumber].city;
+      document.querySelector('.input-suppliers-city').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].city;
 
-      // Show email
-      document.querySelector('.input-suppliers-email').value = objSuppliers.arraySuppliers[objUserSupplierNumber].email;
+      // email
+      document.querySelector('.input-suppliers-email').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].email;
 
-      // Show phone
-      document.querySelector('.input-suppliers-phone').value = objSuppliers.arraySuppliers[objUserSupplierNumber].phone;
+      // phone
+      document.querySelector('.input-suppliers-phone').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].phone;
 
-      // Show bankAccount
-      document.querySelector('.input-suppliers-bankAccount').value = objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccount;
+      // bankAccount
+      document.querySelector('.input-suppliers-bankAccount').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccount;
 
-      // Select bank account account Id
-      document.querySelector('.select-suppliers-bankAccountAccountId').value = objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccountAccountId;
+      // bank account account Id
+      document.querySelector('.select-suppliers-bankAccountAccountId').value =
+        objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccountAccountId;
 
-      // Select amount
-      document.querySelector('.input-suppliers-amount').value = (objSuppliers.arraySuppliers[objUserSupplierNumber].amount) ? formatOreToKroner(objSuppliers.arraySuppliers[objUserSupplierNumber].amount) : '';
+      // amount
+      document.querySelector('.input-suppliers-amount').value =
+        (objSuppliers.arraySuppliers[objUserSupplierNumber].amount)
+          ? formatOreToKroner(objSuppliers.arraySuppliers[objUserSupplierNumber].amount) : '';
 
-      // Select amount accountId Id
-      document.querySelector('.select-suppliers-amountAccountId').value = (objSuppliers.arraySuppliers[objUserSupplierNumber].amountAccountId) ? objSuppliers.arraySuppliers[objUserSupplierNumber].amountAccountId : 0;
+      // amount accountId Id
+      document.querySelector('.select-suppliers-amountAccountId').value =
+        (objSuppliers.arraySuppliers[objUserSupplierNumber].amountAccountId)
+          ? objSuppliers.arraySuppliers[objUserSupplierNumber].amountAccountId : 0;
+
+      // Text
+      document.querySelector('.input-suppliers-text').value =
+          objSuppliers.arraySuppliers[objUserSupplierNumber].text;
+
+      // text accountId Id
+      document.querySelector('.select-suppliers-textAccountId').value =
+        (objSuppliers.arraySuppliers[objUserSupplierNumber].textAccountId)
+          ? objSuppliers.arraySuppliers[objUserSupplierNumber].textAccountId : 0;
     }
   }
 }
@@ -349,11 +384,13 @@ function validateValues() {
   const supplierName = document.querySelector('.input-suppliers-name').value;
   const validName = objSuppliers.validateText(supplierName, "label-suppliers-name", "Navn");
 
+  /*
   // Validate bank account
   const bankAccount = document.querySelector('.input-suppliers-bankAccount').value;
   const validBankAccount = objSuppliers.validateBankAccount(bankAccount, "label-suppliers-bankAccount", "Bankkonto");
+  */
 
-  return (validName && validBankAccount) ? true : false;
+  return (validName) ? true : false;
 }
 
 function resetValues() {
@@ -393,6 +430,12 @@ function resetValues() {
 
   // amount
   document.querySelector('.input-suppliers-amount').value = '';
+
+   // text accountId Id
+  document.querySelector('.select-suppliers-textAccountId').value = 0;
+
+  // text
+  document.querySelector('.input-suppliers-text').value = '';
 
   document.querySelector('.select-suppliers-supplierId').disabled = true;
   document.querySelector('.button-suppliers-delete').disabled = true;

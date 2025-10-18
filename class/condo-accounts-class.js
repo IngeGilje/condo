@@ -248,8 +248,8 @@ class Accounts extends Condos {
     }
   }
 
-  // get account id from bank account
-  getAccountIdFromBankAccount(bankAccount, payment) {
+  // get account id from bank account and suppliers
+  getAccountIdFromBankAccount(bankAccount, payment, text) {
 
     let accountId = 0;
 
@@ -264,8 +264,9 @@ class Accounts extends Condos {
         accountId = objUserBankAccounts.arrayUserBankAccounts[bankAccountRowNumber].accountId;
       }
 
-      // get Account Id from supplier
-      const supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
+      let supplierRowNumber;
+      // get Account Id from supplier amount
+      supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
       if (supplierRowNumber !== -1) {
 
         accountId = objSuppliers.arraySuppliers[supplierRowNumber].accountId;
@@ -275,7 +276,23 @@ class Accounts extends Condos {
 
         accountId = (amount === Number(payment)) ? Number(objSuppliers.arraySuppliers[supplierRowNumber].amountAccountId) : accountId;
       }
+
+      // get Account Id from supplier text
+      if (accountId === 0) {
+
+        objSuppliers.arraySuppliers.forEach((supplier) => {
+
+          if (supplier.supplierId === 21) {
+             console.log('supplierId: ', supplier.supplierId,);
+          }
+          if (supplier.text === text) {
+
+            accountId = supplier.textAccountId;
+          }
+        });
+      }
     }
+
     return accountId;
   }
 
