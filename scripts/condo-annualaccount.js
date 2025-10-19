@@ -52,7 +52,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     fromDate = Number(convertDateToISOFormat(fromDate));
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
+    const orderBy = 'condoId ASC, date DESC, income ASC';
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
     // Show annual accounts
     showAnnualAccounts();
@@ -88,8 +89,8 @@ function createEvents() {
         const deleted = 'N';
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -120,8 +121,8 @@ function createEvents() {
         const deleted = 'N';
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -152,8 +153,8 @@ function createEvents() {
         const deleted = 'N';
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -188,8 +189,8 @@ function createEvents() {
         const deleted = 'N';
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, 999999999, 999999999, 0, fromDate, toDate);
 
         // Show annual accounts
         showAnnualAccounts();
@@ -274,91 +275,91 @@ function showValuesFilter() {
 // Show annual accounts
 function showAnnualAccounts() {
 
-    let totalBudgetAmount = 0;
-    let totalAccountAmount = 0;
-    let rowNumber = 0;
+  let totalBudgetAmount = 0;
+  let totalAccountAmount = 0;
+  let rowNumber = 0;
 
-    const budgetYear = document.querySelector('.select-filter-budgetYear').value;
+  const budgetYear = document.querySelector('.select-filter-budgetYear').value;
 
-    let html = startHTMLTable();
-    html += HTMLTableHeader('Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
-    html += startHTMLTableBody();
+  let html = startHTMLTable();
+  html += HTMLTableHeader('Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
+  html += startHTMLTableBody();
 
-    objAccounts.arrayAccounts.forEach((account) => {
+  objAccounts.arrayAccounts.forEach((account) => {
 
-      // Budget Amount for fiscal
-      const budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
-      let budgetAmount = getBudgetAmount(account.accountId, budgetYear);
-      const numBudgetAmount = Number(formatKronerToOre(budgetAmount));
+    // Budget Amount for fiscal
+    const budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
+    let budgetAmount = getBudgetAmount(account.accountId, budgetYear);
+    const numBudgetAmount = Number(formatKronerToOre(budgetAmount));
 
-      // Bank account transactions for selected account
-      let accountAmount = getTotalMovementsBankAccount(account.accountId);
-      accountAmount = formatOreToKroner(accountAmount);
-      const numAccountAmount = Number(formatKronerToOre(accountAmount));
+    // Bank account transactions for selected account
+    let accountAmount = getTotalMovementsBankAccount(account.accountId);
+    accountAmount = formatOreToKroner(accountAmount);
+    const numAccountAmount = Number(formatKronerToOre(accountAmount));
 
-      if (numBudgetAmount !== 0 || numAccountAmount !== 0) {
+    if (numBudgetAmount !== 0 || numAccountAmount !== 0) {
 
-        rowNumber++;
+      rowNumber++;
 
-        // check if the number is odd
-        const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
+      // check if the number is odd
+      const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
-        // fixed cost/ variable cost
-        let costType = "";
-        switch (account.fixedCost) {
+      // fixed cost/ variable cost
+      let costType = "";
+      switch (account.fixedCost) {
 
-          case "Y":
-            costType = "Fast kostnad";
-            break;
+        case "Y":
+          costType = "Fast kostnad";
+          break;
 
-          case "N":
-            costType = "Variabel kostnad";
-            break;
+        case "N":
+          costType = "Variabel kostnad";
+          break;
 
-          default:
-            costType = "Variabel kostnad";
-            break;
-        }
-
-        // Deviation
-        accountAmount = Number(formatKronerToOre(accountAmount));
-        budgetAmount = Number(formatKronerToOre(budgetAmount));
-        let deviation = accountAmount - budgetAmount;
-
-        // Accomulate
-        totalAccountAmount += Number(accountAmount);
-        totalBudgetAmount += Number(budgetAmount);
-
-        // Format amount
-        accountAmount = formatOreToKroner(String(accountAmount));
-        budgetAmount = formatOreToKroner(String(budgetAmount));
-        deviation = formatOreToKroner(String(deviation));
-        html += HTMLTableRow(account.name, accountAmount, budgetAmount, deviation);
+        default:
+          costType = "Variabel kostnad";
+          break;
       }
-    });
 
-    // Sum line
+      // Deviation
+      accountAmount = Number(formatKronerToOre(accountAmount));
+      budgetAmount = Number(formatKronerToOre(budgetAmount));
+      let deviation = accountAmount - budgetAmount;
 
-    // Total amount annual accounts
-    totalAccountAmount = formatOreToKroner(totalAccountAmount);
+      // Accomulate
+      totalAccountAmount += Number(accountAmount);
+      totalBudgetAmount += Number(budgetAmount);
 
-    // Budget fiscal year
-    totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
+      // Format amount
+      accountAmount = formatOreToKroner(String(accountAmount));
+      budgetAmount = formatOreToKroner(String(budgetAmount));
+      deviation = formatOreToKroner(String(deviation));
+      html += HTMLTableRow(account.name, accountAmount, budgetAmount, deviation);
+    }
+  });
 
-    // Total deviation
-    totalAccountAmount = formatKronerToOre(totalAccountAmount);
-    totalBudgetAmount = formatKronerToOre(totalBudgetAmount);
-    let deviation = Number(totalAccountAmount) - Number(totalBudgetAmount);
+  // Sum line
 
-    deviation = formatOreToKroner(String(deviation));
-    totalAccountAmount = formatOreToKroner(String(totalAccountAmount));
-    totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
+  // Total amount annual accounts
+  totalAccountAmount = formatOreToKroner(totalAccountAmount);
 
-    html += HTMLTableRow('Sum', totalAccountAmount, totalBudgetAmount, deviation);
-    html += endHTMLTableBody();
-    html += endHTMLTable();
+  // Budget fiscal year
+  totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
 
-    document.querySelector('.div-grid-annualaccount-annualaccount').innerHTML = html;
+  // Total deviation
+  totalAccountAmount = formatKronerToOre(totalAccountAmount);
+  totalBudgetAmount = formatKronerToOre(totalBudgetAmount);
+  let deviation = Number(totalAccountAmount) - Number(totalBudgetAmount);
+
+  deviation = formatOreToKroner(String(deviation));
+  totalAccountAmount = formatOreToKroner(String(totalAccountAmount));
+  totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
+
+  html += HTMLTableRow('Sum', totalAccountAmount, totalBudgetAmount, deviation);
+  html += endHTMLTableBody();
+  html += endHTMLTable();
+
+  document.querySelector('.div-grid-annualaccount-annualaccount').innerHTML = html;
 }
 
 // Accumulate all Bank account transactions for specified account id
@@ -497,10 +498,10 @@ function getFixedCost(fromDate, toDate) {
       && (Number(bankAccountTransaction.date) <= toDate)) {
 
       // Check for fixed cost
-      const objAccountNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === bankAccountTransaction.accountId);
-      if (objAccountNumber !== -1) {
+      const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === bankAccountTransaction.accountId);
+      if (accountRowNumber !== -1) {
 
-        if (objAccounts.arrayAccounts[objAccountNumber].fixedCost === 'Y') {
+        if (objAccounts.arrayAccounts[accountRowNumber].fixedCost === 'Y') {
 
           fixedCost +=
             Number(bankAccountTransaction.income);
@@ -563,10 +564,10 @@ function showBankDeposit() {
         // Account Name
         let name = '';
 
-        const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === budget.accountId);
-        if (accountRowNumberObj !== -1) {
+        const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === budget.accountId);
+        if (accountRowNumber !== -1) {
 
-          name = objAccounts.arrayAccounts[accountRowNumberObj].name;
+          name = objAccounts.arrayAccounts[accountRowNumber].name;
         }
 
         // Dato
@@ -611,10 +612,10 @@ function showBankDeposit() {
 // Show remote heating
 function showRemoteHeating() {
 
-    let rowNumber = 0;
+  let rowNumber = 0;
 
-    html =
-      `
+  html =
+    `
         <!-- Budget Table Heading -->
         <table>
           <thead>
@@ -628,138 +629,138 @@ function showRemoteHeating() {
         <tbody>
       `;
 
-    // Filter
-    let fromDate = convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value);
-    let toDate = convertDateToISOFormat(document.querySelector('.input-filter-toDate').value);
+  // Filter
+  let fromDate = convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value);
+  let toDate = convertDateToISOFormat(document.querySelector('.input-filter-toDate').value);
 
-    // Accomulate
-    let sumColumnPayment = 0;
-    let sumColumnNumberKWHour = 0;
+  // Accomulate
+  let sumColumnPayment = 0;
+  let sumColumnNumberKWHour = 0;
 
-    // Get row number for payment Remote Heating Account Id
-    const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-    if (condominiumRowNumber !== -1) {
+  // Get row number for payment Remote Heating Account Id
+  const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+  if (condominiumRowNumber !== -1) {
 
-      objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankaccounttransaction) => {
-        if (bankaccounttransaction.accountId === objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId) {
-          if (Number(bankaccounttransaction.date) >= Number(fromDate) && Number(bankaccounttransaction.date) <= Number(toDate)) {
+    objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankaccounttransaction) => {
+      if (bankaccounttransaction.accountId === objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId) {
+        if (Number(bankaccounttransaction.date) >= Number(fromDate) && Number(bankaccounttransaction.date) <= Number(toDate)) {
 
-            rowNumber++;
+          rowNumber++;
 
-            // check if the number is odd
-            const colorClass =
-              (rowNumber % 2 !== 0) ? "green" : "";
-            html +=
-              `
+          // check if the number is odd
+          const colorClass =
+            (rowNumber % 2 !== 0) ? "green" : "";
+          html +=
+            `
                 <tr>
               `;
 
-            // date
-            const date = formatToNorDate(bankaccounttransaction.date);
-            // Date
-            html +=
-              `
+          // date
+          const date = formatToNorDate(bankaccounttransaction.date);
+          // Date
+          html +=
+            `
                 <td>${date}</td>
               `;
 
-            // payment
-            let payment =
-              formatOreToKroner(bankaccounttransaction.payment);
-            html +=
-              `
+          // payment
+          let payment =
+            formatOreToKroner(bankaccounttransaction.payment);
+          html +=
+            `
                 <td>${payment}</td>
               `;
 
-            // Number of kw/h
-            let numberKWHour =
-              formatOreToKroner(bankaccounttransaction.numberKWHour);
-            html +=
-              `
+          // Number of kw/h
+          let numberKWHour =
+            formatOreToKroner(bankaccounttransaction.numberKWHour);
+          html +=
+            `
                 <td>${numberKWHour}</td>
               `;
 
-            // Price per KWHour
-            payment =
-              Number(bankaccounttransaction.payment);
-            numberKWHour =
-              Number(bankaccounttransaction.numberKWHour);
+          // Price per KWHour
+          payment =
+            Number(bankaccounttransaction.payment);
+          numberKWHour =
+            Number(bankaccounttransaction.numberKWHour);
 
-            let priceKWHour = '';
-            if (numberKWHour !== 0 && payment !== 0) {
+          let priceKWHour = '';
+          if (numberKWHour !== 0 && payment !== 0) {
 
-              priceKWHour = (-1 * payment) / numberKWHour;
-              priceKWHour =
-                priceKWHour.toFixed(2);
-            }
-            html +=
-              `
+            priceKWHour = (-1 * payment) / numberKWHour;
+            priceKWHour =
+              priceKWHour.toFixed(2);
+          }
+          html +=
+            `
                 <td>${priceKWHour}</td>
               `;
 
-            // Accomulate
-            // payment
-            sumColumnPayment += Number(bankaccounttransaction.payment);
+          // Accomulate
+          // payment
+          sumColumnPayment += Number(bankaccounttransaction.payment);
 
-            // KWHour
-            sumColumnNumberKWHour += Number(bankaccounttransaction.numberKWHour);
-          }
+          // KWHour
+          sumColumnNumberKWHour += Number(bankaccounttransaction.numberKWHour);
         }
-        html +=
-          `
-            </tr>
-          `;
-      });
-
+      }
       html +=
         `
+            </tr>
+          `;
+    });
+
+    html +=
+      `
             <tr>
           `;
 
 
-      html +=
-        `
+    html +=
+      `
           <td>Sum</td>
         `;
 
-      // Payment
-      let payment = formatOreToKroner(String(sumColumnPayment));
-      html +=
-        `
+    // Payment
+    let payment = formatOreToKroner(String(sumColumnPayment));
+    html +=
+      `
           <td>${payment}</td>
         `;
 
-      // Kilowatt/hour
-      const KWHour = formatOreToKroner(String(sumColumnNumberKWHour));
-      html +=
-        `
+    // Kilowatt/hour
+    const KWHour = formatOreToKroner(String(sumColumnNumberKWHour));
+    html +=
+      `
           <td>${KWHour}</td>
         `;
 
-      // Price per KWHour
-      payment = Number(sumColumnPayment);
-      numberKWHour = Number(sumColumnNumberKWHour);
+    // Price per KWHour
+    payment = Number(sumColumnPayment);
+    numberKWHour = Number(sumColumnNumberKWHour);
 
-      let sumPriceKWHour = '-';
-      if (payment !== 0 && numberKWHour !== 0) {
+    let sumPriceKWHour = '-';
+    if (payment !== 0 && numberKWHour !== 0) {
 
-        sumPriceKWHour =
-          ((-1 * payment) / numberKWHour);
-        sumPriceKWHour =
-          sumPriceKWHour.toFixed(2);
-      }
+      sumPriceKWHour =
+        ((-1 * payment) / numberKWHour);
+      sumPriceKWHour =
+        sumPriceKWHour.toFixed(2);
+    }
 
-      html +=
-        `
+    html +=
+      `
           <td>${sumPriceKWHour}</td>
         `;
 
-      html +=
-        `
+    html +=
+      `
                 </tr>
               </tbody>
             </table>
           </div>
         `;
-      document.querySelector('.div-grid-annualaccount-remoteHeating').innerHTML = html;
-    }
+    document.querySelector('.div-grid-annualaccount-remoteHeating').innerHTML = html;
+  }
 }

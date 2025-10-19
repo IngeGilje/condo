@@ -139,7 +139,7 @@ class Dues extends Condos {
                 value="${due.dueId}"
                 selected
               >
-                ${lineNumber} - ${due.dueId}
+                ${lineNumber} - ${due.text}
               </option>
             `;
           selectedOption =
@@ -150,7 +150,7 @@ class Dues extends Condos {
             `
               <option 
                 value="${due.dueId}">
-                ${lineNumber} - ${due.dueId}
+                ${lineNumber} - ${due.text}
               </option>
             `;
         }

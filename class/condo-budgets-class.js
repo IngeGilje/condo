@@ -46,16 +46,16 @@ class Budgets extends Condos {
 
     let lineNumber = 0;
 
-    let selectedOption =
-      false;
+    let selectedOption = false;
 
     // Check if budget array is empty
-    const numberOfRows =
-      this.arrayBudgets.length;
+    const numberOfRows = this.arrayBudgets.length;
     if (numberOfRows > 0) {
       this.arrayBudgets.forEach((budget) => {
 
         lineNumber++;
+
+        const accountName = objAccounts.getAccountName(budget.accountId);
 
         if (budget.budgetId === budgetId) {
 
@@ -65,7 +65,7 @@ class Budgets extends Condos {
                 value="${budget.budgetId}"
                 selected
               >
-                ${lineNumber} - ${budget.budgetId}
+                ${lineNumber} - ${accountName}
               </option>
             `;
           selectedOption =
@@ -76,7 +76,7 @@ class Budgets extends Condos {
             `
               <option 
                 value="${budget.budgetId}">
-                ${lineNumber} - ${budget.budgetId}
+                ${lineNumber} - ${accountName}
               </option>
             `;
         }

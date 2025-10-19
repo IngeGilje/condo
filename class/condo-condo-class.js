@@ -41,7 +41,7 @@ class Condo extends Condos {
                   value = "${condo.condoId}"
                   selected
                 >
-                  ${condo.condoId} - ${condo.name}
+                  ${condo.name}
                 </option >
               `;
             selectedOption =
@@ -52,7 +52,7 @@ class Condo extends Condos {
               `
                 <option
                   value = "${condo.condoId}">
-                  ${condo.condoId} - ${condo.name}
+                  ${condo.name}
                 </option >
               `;
           }
@@ -160,10 +160,9 @@ class Condo extends Condos {
   getCondoName(condoId) {
 
     let condoName;
-    const condoRowNumberObj =
-      this.arrayCondo.findIndex(condo => condo.condoId === condoId);
-    if (condoRowNumberObj !== -1) {
-      condoName = this.arrayCondo[condoRowNumberObj].name;
+    const condoRowNumber = this.arrayCondo.findIndex(condo => condo.condoId === condoId);
+    if (condoRowNumber !== -1) {
+      condoName = this.arrayCondo[condoRowNumber].name;
     } else {
       condoName = "-";
     }
@@ -267,8 +266,8 @@ class Condo extends Condos {
   selectCondoId(condoId, className) {
 
     // Check if condo id exist
-    const condoRowNumberObj = this.arrayCondo.findIndex(condo => condo.condoId === condoId);
-    if (condoRowNumberObj !== -1) {
+    const condoRowNumber = this.arrayCondo.findIndex(condo => condo.condoId === condoId);
+    if (condoRowNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
         condoId;

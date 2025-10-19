@@ -51,7 +51,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     fromDate = Number(convertDateToISOFormat(fromDate));
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+    const orderBy = 'condoId ASC, date DESC, income ASC';
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
     // Show leding text filter
     showLeadingTextFilter();
@@ -93,7 +94,8 @@ function createEvents() {
 
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, 0, fromDate, toDate)
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, 0, fromDate, toDate)
 
         // Show selected Bank account transactions
         showBankAccountTransactions();
@@ -123,7 +125,8 @@ function createEvents() {
         }
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, 0, fromDate, toDate)
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, 0, fromDate, toDate)
 
         // Show selected Bank account transactions
         showBankAccountTransactions();

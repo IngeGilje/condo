@@ -262,30 +262,30 @@ function showValues(condoId) {
   if (condoId >= 0) {
 
     // find object number for selected condo id
-    const condoRowNumberObj = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
-    if (condoRowNumberObj !== -1) {
+    const condoRowNumber = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
+    if (condoRowNumber !== -1) {
 
       // Condo id
-      const condoId = objCondo.arrayCondo[condoRowNumberObj].condoId;
+      const condoId = objCondo.arrayCondo[condoRowNumber].condoId;
       objCondo.selectCondoId(condoId, 'condo-condoId')
 
       // Condo name
-      document.querySelector('.input-condo-name').value = objCondo.arrayCondo[condoRowNumberObj].name;
+      document.querySelector('.input-condo-name').value = objCondo.arrayCondo[condoRowNumber].name;
 
       // Show street
-      document.querySelector('.input-condo-street').value = objCondo.arrayCondo[condoRowNumberObj].street;
+      document.querySelector('.input-condo-street').value = objCondo.arrayCondo[condoRowNumber].street;
 
       // Show address 2
-      document.querySelector('.input-condo-address2').value = objCondo.arrayCondo[condoRowNumberObj].address2;
+      document.querySelector('.input-condo-address2').value = objCondo.arrayCondo[condoRowNumber].address2;
 
       // Show postal code
-      document.querySelector('.input-condo-postalCode').value = objCondo.arrayCondo[condoRowNumberObj].postalCode;
+      document.querySelector('.input-condo-postalCode').value = objCondo.arrayCondo[condoRowNumber].postalCode;
 
       // Show city
-      document.querySelector('.input-condo-city').value = objCondo.arrayCondo[condoRowNumberObj].city;
+      document.querySelector('.input-condo-city').value = objCondo.arrayCondo[condoRowNumber].city;
 
       // Show square meters
-      document.querySelector('.input-condo-squareMeters').value = formatOreToKroner(objCondo.arrayCondo[condoRowNumberObj].squareMeters);
+      document.querySelector('.input-condo-squareMeters').value = formatOreToKroner(objCondo.arrayCondo[condoRowNumber].squareMeters);
     }
   }
 }
@@ -381,8 +381,8 @@ async function updateCondo(condoId) {
     const squareMeters = formatKronerToOre(document.querySelector('.input-condo-squareMeters').value);
 
     // Check if condo id exist
-    const condoRowNumberObj = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
-    if (condoRowNumberObj !== -1) {
+    const condoRowNumber = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
+    if (condoRowNumber !== -1) {
 
       // update condo
       await objCondo.updateCondoTable(condoId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters);
@@ -403,8 +403,8 @@ async function deleteCondo() {
   const condoId = Number(document.querySelector('.select-condo-condoId').value);
 
   // Check if condo id exist
-  const condoRowNumberObj = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
-  if (condoRowNumberObj !== -1) {
+  const condoRowNumber = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
+  if (condoRowNumber !== -1) {
 
     // delete condo row
     const user = objUserPassword.email;

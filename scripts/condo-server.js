@@ -1599,6 +1599,8 @@ async function main() {
 
         case 'select': {
 
+          const orderBy = req.query.orderBy;
+          console.log('orderBy: ', orderBy)
           const condominiumId = Number(req.query.condominiumId);
           const deleted = req.query.deleted;
           const condoId = Number(req.query.condoId);
@@ -1650,12 +1652,22 @@ async function main() {
                 `;
             }
 
-            SQLquery +=
-              `
-                ORDER BY date DESC, income DESC;
+            if (orderBy) {
+
+              SQLquery +=
+                `
+                ORDER BY ${orderBy};
               `;
 
-            console.log('SQLquery:', SQLquery);
+            } else {
+
+              SQLquery +=
+                `
+                  ORDER BY date DESC, income DESC;
+                `;
+            }
+
+                      console.log('SQLquery:', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {

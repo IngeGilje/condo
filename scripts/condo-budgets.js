@@ -157,7 +157,7 @@ function createEvents() {
           await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
           // Select last budgets if budgetId is 0
-           let budgetId = (objBudgets.arrayBudgets.length > 0) ? objBudgets.arrayBudgets.at(-1).budgetId : 0;
+          let budgetId = (objBudgets.arrayBudgets.length > 0) ? objBudgets.arrayBudgets.at(-1).budgetId : 0;
 
           // Show dues 
           showBudgets();
@@ -242,21 +242,13 @@ function createEvents() {
 // Show leading text for budget
 function showLeadingText(budgetId) {
 
-  //const budgetYear = today.getFullYear();
-
-  // Show all budgets
-  //objBudgets.showSelectedBudgets('budgets-budgetId', budgetId)
-  //const budgetId = objAccounts.arrayBudgets.at(-1).budgetId;
-  //budgetId = (objBudgets.arrayBudgets.length > 0) ? this.arrayBudgets.at(-1).budgetId : 0;
-
+  // Budgets
   objBudgets.showSelectedBudgets('budgets-budgetId', budgetId, '', 'Ingen budsjett er valgt');
 
-  // Show all accounts
-  //const accountId = objAccounts.arrayAccounts.at(-1).accountId;
-  //budgetId = (objBudgets.arrayBudgets.length > 0) ? this.arrayBudgets.at(-1).budgetId : 0;
+  // accounts
   objAccounts.showSelectedAccounts('budgets-accountId', accountId, '', 'Ingen konti er valgt');
 
-  // Show years
+  // years
   const budgetYear = document.querySelector('.select-budgets-filterYear').value;
   objBudgets.selectNumber('budgets-year', 2020, 2030, budgetYear, 'År');
 

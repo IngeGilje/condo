@@ -42,7 +42,7 @@ class Accounts extends Condos {
                 value=${account.accountId}
                 selected
               >
-                ${account.accountId} - ${account.name}
+                ${account.name}
               </option>
             `;
           selectedOption = true;
@@ -52,7 +52,7 @@ class Accounts extends Condos {
             `
               <option 
                 value="${account.accountId}">
-                ${account.accountId} - ${account.name}
+                ${account.name}
               </option>
             `;
         }
@@ -237,10 +237,10 @@ class Accounts extends Condos {
   selectAccountId(accountId, className) {
 
     // Check if account id exist
-    const objAccountNumber = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (objAccountNumber !== -1) {
+    const accountRowNumber = this.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (accountRowNumber !== -1) {
 
-      document.querySelector(`.select-${className}`).value = this.arrayAccounts[objAccountNumber].accountId;
+      document.querySelector(`.select-${className}`).value = this.arrayAccounts[accountRowNumber].accountId;
       return true;
     } else {
 
@@ -283,7 +283,7 @@ class Accounts extends Condos {
         objSuppliers.arraySuppliers.forEach((supplier) => {
 
           if (supplier.supplierId === 21) {
-             console.log('supplierId: ', supplier.supplierId,);
+            console.log('supplierId: ', supplier.supplierId,);
           }
           if (supplier.text === text) {
 
@@ -302,13 +302,26 @@ class Accounts extends Condos {
     let accountName = "-";
 
     // Account name from account table
-    const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumberObj !== -1) {
+    const accountRowNumber = this.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (accountRowNumber !== -1) {
 
-      accountName = objAccounts.arrayAccounts[accountRowNumberObj].name;
+      accountName = objAccounts.arrayAccounts[accountRowNumber].name;
     }
 
-    return (accountName) ? accountName : "-";
+    return accountName;
+  }
+
+  // Get account name
+  getAccountName(accountId) {
+
+    accountId = Number(accountId);
+    let accountName = '';
+    const accountRowNumber = this.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (accountRowNumber !== -1) {
+
+      accountName = this.arrayAccounts[accountRowNumber].name;
+    }
+    return accountName;
   }
 
   // get accounts

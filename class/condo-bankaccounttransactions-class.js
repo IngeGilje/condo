@@ -40,7 +40,7 @@ class BankAccountTransactions extends Condos {
                 value="${bankAccountTransaction.bankAccountTransactionId}"
                 selected
               >
-                ${lineNumber} - ${bankAccountTransaction.bankAccountTransactionId}
+                ${lineNumber} - ${bankAccountTransaction.text}
               </option>
             `;
         } else {
@@ -49,7 +49,7 @@ class BankAccountTransactions extends Condos {
             `
               <option 
                 value="${bankAccountTransaction.bankAccountTransactionId}">
-                ${lineNumber} - ${bankAccountTransaction.bankAccountTransactionId}
+                ${lineNumber} - ${bankAccountTransaction.text}
               </option>
             `;
         }
@@ -138,7 +138,7 @@ class BankAccountTransactions extends Condos {
                   value=${bankaccounttransaction.bankAccountTransactionId}
                   selected
                 >
-                  ${lineNumber} - ${bankaccounttransaction.bankAccountTransactionId} 
+                  ${lineNumber} - ${bankaccounttransaction.text} 
                 </option>
               `;
           selectedOption = true;
@@ -148,7 +148,7 @@ class BankAccountTransactions extends Condos {
             `
               <option 
                 value="${bankaccounttransaction.bankAccountTransactionId}">
-                ${lineNumber} - ${bankaccounttransaction.bankAccountTransactionId} 
+                ${lineNumber} - ${bankaccounttransaction.text} 
               </option>
             `;
         }
@@ -225,12 +225,13 @@ class BankAccountTransactions extends Condos {
   }
 
   // get bank account transactions
-  async loadBankAccountTransactionsTable(condominiumId,deleted,condoId,accountId,amount,fromDate,toDate) {
+  async loadBankAccountTransactionsTable(orderBy,condominiumId,deleted,condoId,accountId,amount,fromDate,toDate) {
 
     try {
 
-      const response = await fetch(`http://localhost:3000/bankaccounttransactions?action=select&condominiumId=${condominiumId}&deleted=${deleted}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&fromDate=${fromDate}&toDate=${toDate}`);
-      if (!response.ok) throw new Error("Network error (users)");
+      const response = await fetch(`http://localhost:3000/bankaccounttransactions?action=select&orderBy=${orderBy}&condominiumId=${condominiumId}&deleted=${deleted}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&fromDate=${fromDate}&toDate=${toDate}`);
+
+      if (!response.ok) throw new Error("Network error (bankaccounttransactions)");
       this.arrayBankAccountTranactions = await response.json();
     } catch (error) {
       console.log("Error loading Bank account transactions:", error);

@@ -264,10 +264,10 @@ async function updateAccount() {
 
       const lastUpdate = today.toISOString();
       const condominiumId = Number(objUserPassword.condominiumId);
-      const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+      const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
 
       // Check if account number exist
-      if (accountRowNumberObj !== -1) {
+      if (accountRowNumber !== -1) {
 
         // update account
         objAccounts.updateAccountsTable(user, accountId, fixedCost, lastUpdate, accountName);
@@ -293,8 +293,8 @@ async function deleteAccount() {
   if (accountId !== 1) {
 
     // Check if account number exist
-    const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumberObj !== -1) {
+    const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (accountRowNumber !== -1) {
 
       // delete account row
       const user = objUserPassword.email;
@@ -338,14 +338,14 @@ function showValues(accountId) {
   if (accountId >= 0) {
 
     // find object number for selected account 
-    const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumberObj !== -1) {
+    const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (accountRowNumber !== -1) {
 
       // account name
-      document.querySelector('.input-accounts-accountName').value = objAccounts.arrayAccounts[accountRowNumberObj].name;
+      document.querySelector('.input-accounts-accountName').value = objAccounts.arrayAccounts[accountRowNumber].name;
 
       // fixed cost
-      let fixedCost = objAccounts.arrayAccounts[accountRowNumberObj].fixedCost;
+      let fixedCost = objAccounts.arrayAccounts[accountRowNumber].fixedCost;
       switch (fixedCost) {
         case 'Y':
           fixedCost = 'Ja';

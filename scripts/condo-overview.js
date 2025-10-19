@@ -50,15 +50,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     let toDate = getCurrentDate();
     toDate = convertDateToISOFormat(toDate);
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
-
-    /*
-    // Show leading text Filter
-    showLeadingTextFilter();
-
-    // Show values for Filter
-    showValuesFilter();
-    */
+    //const orderBy = 'date DESC, income DESC';
+    const orderBy = 'condoId ASC, date DESC, income ASC';
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
     // Show dues
     showDues();
@@ -94,7 +88,8 @@ function createEvents() {
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
         await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
         // show dues
         showDues();
@@ -125,7 +120,8 @@ function createEvents() {
 
         await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
         const deleted = 'N';
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
         // show dues
         showDues();
@@ -156,7 +152,8 @@ function createEvents() {
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-filter-toDate').value));
 
         await objDues.loadDuesTable(condominiumId, 999999999, condoId, fromDate, toDate);
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
 
         // Show dues
         showDues();

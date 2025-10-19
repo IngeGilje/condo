@@ -280,30 +280,30 @@ function showValues(bankAccountId) {
   if (bankAccountId >= 0) {
 
     // find object number for selected account 
-    const accountRowNumberObj = objBankAccounts.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
-    if (accountRowNumberObj !== -1) {
+    const accountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
+    if (accountRowNumber !== -1) {
 
       // Select bank account
-      const bankAccountId = objBankAccounts.arrayBankAccounts[accountRowNumberObj].bankAccountId;
+      const bankAccountId = objBankAccounts.arrayBankAccounts[accountRowNumber].bankAccountId;
       objBankAccounts.selectBankAccountId(bankAccountId, 'bankaccounts-bankAccountId');
 
       // account name
-      document.querySelector('.input-bankaccounts-name').value = objBankAccounts.arrayBankAccounts[accountRowNumberObj].name;
+      document.querySelector('.input-bankaccounts-name').value = objBankAccounts.arrayBankAccounts[accountRowNumber].name;
 
       // account number
-      document.querySelector('.input-bankaccounts-bankAccount').value = objBankAccounts.arrayBankAccounts[accountRowNumberObj].bankAccount;
+      document.querySelector('.input-bankaccounts-bankAccount').value = objBankAccounts.arrayBankAccounts[accountRowNumber].bankAccount;
 
       // opening balance date
-      document.querySelector('.input-bankaccounts-openingBalanceDate').value = formatToNorDate(objBankAccounts.arrayBankAccounts[accountRowNumberObj].openingBalanceDate);
+      document.querySelector('.input-bankaccounts-openingBalanceDate').value = formatToNorDate(objBankAccounts.arrayBankAccounts[accountRowNumber].openingBalanceDate);
 
       // opening balance
-      document.querySelector('.input-bankaccounts-openingBalance').value = formatOreToKroner(objBankAccounts.arrayBankAccounts[accountRowNumberObj].openingBalance);
+      document.querySelector('.input-bankaccounts-openingBalance').value = formatOreToKroner(objBankAccounts.arrayBankAccounts[accountRowNumber].openingBalance);
 
       // closing balance date
-      document.querySelector('.input-bankaccounts-closingBalanceDate').value = formatToNorDate(objBankAccounts.arrayBankAccounts[accountRowNumberObj].closingBalanceDate);
+      document.querySelector('.input-bankaccounts-closingBalanceDate').value = formatToNorDate(objBankAccounts.arrayBankAccounts[accountRowNumber].closingBalanceDate);
 
       // closing balance
-      document.querySelector('.input-bankaccounts-closingBalance').value = formatOreToKroner(objBankAccounts.arrayBankAccounts[accountRowNumberObj].closingBalance);
+      document.querySelector('.input-bankaccounts-closingBalance').value = formatOreToKroner(objBankAccounts.arrayBankAccounts[accountRowNumber].closingBalance);
     }
   }
 }

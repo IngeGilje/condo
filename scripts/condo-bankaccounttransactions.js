@@ -50,8 +50,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     fromDate = Number(convertDateToISOFormat(fromDate));
     let toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+    const orderBy = 'date DESC, income DESC';
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
     // Show leading text maintenance
     const bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
@@ -95,8 +95,8 @@ function createEvents() {
         const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
         // Show bank account transactions 
         showBankAccountTransactions();
@@ -135,8 +135,8 @@ function createEvents() {
         const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
         // Show bank account transactions 
         showBankAccountTransactions();
@@ -176,8 +176,8 @@ function createEvents() {
         const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
         // Show leading text maintenance
         let bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
@@ -214,8 +214,8 @@ function createEvents() {
         const condoId = Number(document.querySelector('.select-bankaccounttransactions-filterCondoId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
         // Show leading text maintenance
         let bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
@@ -254,8 +254,8 @@ function createEvents() {
         const condoId = Number(document.querySelector('.select-bankaccounttransactions-filterCondoId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
         // Show leading text maintenance
         let bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
@@ -297,18 +297,6 @@ function createEvents() {
         let bankAccountTransactionId = document.querySelector('.select-bankaccounttransactions-bankAccountTransactionId').value;
         await updateBankAccountTransaction(bankAccountTransactionId);
 
-        /*
-        let amount = document.querySelector('.input-bankaccounttransactions-filterAmount').value;
-        amount = Number(formatKronerToOre(amount));
-        const condominiumId = objUserPassword.condominiumId;
-        const deleted = 'N';
-        const condoId = Number(document.querySelector('.select-bankaccounttransactions-filterCondoId').value);
-        const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
-        const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
-        const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
-        */
         showLeadingTextFilter();
 
         let amount = document.querySelector('.input-bankaccounttransactions-filterAmount').value;
@@ -319,7 +307,8 @@ function createEvents() {
         const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
         // Show bank account transactions 
         showBankAccountTransactions();
@@ -367,8 +356,8 @@ function createEvents() {
         const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
         // Show leading text maintenance
         let bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');
@@ -406,8 +395,8 @@ function createEvents() {
         const accountId = Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value);
         const fromDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterFromDate').value));
         const toDate = Number(convertDateToISOFormat(document.querySelector('.input-bankaccounttransactions-filterToDate').value));
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
         // Show leading text maintenance
         bankAccountTransactionId = objBankAccountTransactions.getSelectedBankAccountTransactionId('select-bankaccounttransactions-bankAccountTransactionId');

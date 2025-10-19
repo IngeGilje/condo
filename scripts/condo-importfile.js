@@ -61,7 +61,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     fromDate = 0;
     toDate = getCurrentDate();
     toDate = Number(convertDateToISOFormat(toDate));
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+    const orderBy = 'condoId ASC, date DESC, income ASC';
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
     // Sends a request to the server to get bank csv transaction file
     // get name of transactions file
@@ -452,8 +453,7 @@ function createtransactionsArray() {
       // Account Name
       if (text.includes('transaksjoner')) {
 
-        const accountRowNumber =
-          objAccounts.arrayAccounts.findIndex(account => account.name.includes('transaksjoner'));
+        const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.name.includes('transaksjoner'));
         if (accountRowNumber !== -1) {
 
           accountId = objAccounts.arrayAccounts[accountRowNumber].accountId;

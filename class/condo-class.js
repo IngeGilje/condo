@@ -861,23 +861,6 @@ class Condos {
     return (bankAccountName) ? bankAccountName : "-";
   }
 
-  /*
-  // get account name
-  getAccountName(accountId) {
-
-    let accountName = "-";
-
-    // Account name from account table
-    const accountRowNumberObj = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumberObj !== -1) {
-
-      accountName = objAccounts.arrayAccounts[accountRowNumberObj].name;
-    }
-
-    return (accountName) ? accountName : "-";
-  }
-  */
-
   // get condo Id from From Bank Account
   getCondoId(fromBankAccount) {
 
