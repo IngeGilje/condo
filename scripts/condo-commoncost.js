@@ -290,7 +290,7 @@ function validateValues() {
   // Check amount
   const amount = document.querySelector('.input-commoncost-amount').value;
   document.querySelector('.input-commoncost-amount').value = formatAmountToEuroFormat(amount);
-  const validAmount = objDues.validateAmount(amount, "commoncost-amount", "Månedsavgift");
+  const validAmount = objDues.validateNorAmount(amount, "commoncost-amount", "Månedsavgift");
 
   return (validYear && validCondoId && validDay && validAmount) ? true : false;
 }
@@ -345,7 +345,7 @@ function resetValues() {
 function showCommonCost() {
 
   let sumAmount = 0;
-  let lineNumber = 0;
+  let rowNumber = 0;
 
   // Get account id for common cost
   let accountId;
@@ -380,10 +380,10 @@ function showCommonCost() {
 
   objDues.arrayDues.forEach((due) => {
 
-    lineNumber++;
+    rowNumber++;
 
     // check if the number is odd
-    const colorClass = (lineNumber % 2 !== 0) ? "green" : "";
+    const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
     // 20250115 -> 15.01.2025
     date = formatToNorDate(String(due.date));

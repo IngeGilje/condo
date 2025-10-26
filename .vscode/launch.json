@@ -88,7 +88,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Budsjett",
-      "url": "http://localhost/condo-budgets.html",
+      "url": "http://localhost/condo-budget.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

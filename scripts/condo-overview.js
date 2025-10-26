@@ -225,15 +225,15 @@ function showDues() {
 
   const condoId = Number(document.querySelector('.select-filter-condoId').value);
 
-  let lineNumber = 0;
+  let rowNumber = 0;
   let sumDues = 0;
 
   objDues.arrayDues.forEach((due) => {
 
-    lineNumber++;
+    rowNumber++;
 
     // check if the number is odd
-    const colorClass = (lineNumber % 2 !== 0) ? "green" : "";
+    const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
     const name = objCondo.getCondoName(due.condoId);
     const date = formatToNorDate(due.date);
@@ -345,14 +345,14 @@ let htmlBankAccountTransactionText = '<div class="columnHeaderLeft">Tekst</div><
 
 let sumColumnBankAccountTransaction = 0;
 
-lineNumber = 0;
+rowNumber = 0;
 
 objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 
-  lineNumber++;
+  rowNumber++;
 
   // check if the number is odd
-  const colorClass = (lineNumber % 2 !== 0) ? "green" : "";
+  const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
   // condo name
   const condoName = (bankAccountTransaction.condoId) ? objCondo.getCondoName(bankAccountTransaction.condoId) : "-";

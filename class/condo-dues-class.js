@@ -120,7 +120,7 @@ class Dues extends Condos {
         >
     `;
 
-    let lineNumber = 0;
+    let rowNumber = 0;
 
     let selectedOption =
       false;
@@ -130,7 +130,7 @@ class Dues extends Condos {
     if (numberOfRows > 0) {
       this.arrayDues.forEach((due) => {
 
-        lineNumber++;
+        rowNumber++;
         if (due.dueId === dueId) {
 
           html +=
@@ -139,7 +139,7 @@ class Dues extends Condos {
                 value="${due.dueId}"
                 selected
               >
-                ${lineNumber} - ${due.text}
+                ${rowNumber} - ${due.text}
               </option>
             `;
           selectedOption =
@@ -150,7 +150,7 @@ class Dues extends Condos {
             `
               <option 
                 value="${due.dueId}">
-                ${lineNumber} - ${due.text}
+                ${rowNumber} - ${due.text}
               </option>
             `;
         }

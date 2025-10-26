@@ -338,7 +338,7 @@ function validateValues() {
 
   // Check square meters
   const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
-  const validSquareMeters = objCondo.validateAmount(squareMeters, 'label-condo-squareMeters', "Kvadratmeter");
+  const validSquareMeters = objCondo.validateNorAmount(squareMeters, 'label-condo-squareMeters', "Kvadratmeter");
 
   return (validCondoName && validStreet && validPostalCode && validCity && validSquareMeters);
 }

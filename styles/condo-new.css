@@ -1,0 +1,93 @@
+table {
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  width: 60%;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: .5rem;
+  text-align: right;
+  min-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td {
+  border: 0px;
+}
+
+th {
+  background: #e0f0e0;
+  text-align: center;
+}
+
+/* left alignment for menu */
+td:first-child,
+th:first-child {
+  text-align: center;
+}
+
+th,
+td {
+  padding: 10px;
+}
+
+th {
+  height: 30px;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.no-border {
+  border: 0px solid #ddd;
+}
+
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Highlight hover row */
+tr:nth-child(n):hover {background-color: #e0f0e0;}
+
+/* Look like button 
+.button-link {
+  display: inline-block;
+}
+  */
+
+/* menu */
+.menu {
+  padding: 10px 20px;
+}
+
+.menu a {
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+.menu a:hover {
+  color: black;
+}
+
+/* bold */
+.bold {
+  font-weight: 700;
+}

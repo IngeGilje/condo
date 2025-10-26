@@ -24,14 +24,14 @@ class BankAccountTransactions extends Condos {
         >
     `;
 
-    let lineNumber = 0;
+    let rowNumber = 0;
 
     // Check if Bank account transactions array is empty
     const numberOfRows = this.arrayBankAccountTranactions.length;
     if (numberOfRows > 0) {
       this.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 
-        lineNumber++;
+        rowNumber++;
         if (bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId) {
 
           html +=
@@ -40,7 +40,7 @@ class BankAccountTransactions extends Condos {
                 value="${bankAccountTransaction.bankAccountTransactionId}"
                 selected
               >
-                ${lineNumber} - ${bankAccountTransaction.text}
+                ${rowNumber} - ${bankAccountTransaction.text}
               </option>
             `;
         } else {
@@ -49,7 +49,7 @@ class BankAccountTransactions extends Condos {
             `
               <option 
                 value="${bankAccountTransaction.bankAccountTransactionId}">
-                ${lineNumber} - ${bankAccountTransaction.text}
+                ${rowNumber} - ${bankAccountTransaction.text}
               </option>
             `;
         }
@@ -120,7 +120,7 @@ class BankAccountTransactions extends Condos {
           >
       `;
 
-    let lineNumber = 0;
+    let rowNumber = 0;
 
     let selectedOption = false;
 
@@ -129,7 +129,7 @@ class BankAccountTransactions extends Condos {
     if (numberOfRows > 0) {
       this.arrayBankAccountTranactions.forEach((bankaccounttransaction) => {
 
-        lineNumber++;
+        rowNumber++;
         if (bankaccounttransaction.bankAccountTransactionId === bankAccountTransactionId) {
 
           html +=
@@ -138,7 +138,7 @@ class BankAccountTransactions extends Condos {
                   value=${bankaccounttransaction.bankAccountTransactionId}
                   selected
                 >
-                  ${lineNumber} - ${bankaccounttransaction.text} 
+                  ${rowNumber} - ${bankaccounttransaction.text} 
                 </option>
               `;
           selectedOption = true;
@@ -148,7 +148,7 @@ class BankAccountTransactions extends Condos {
             `
               <option 
                 value="${bankaccounttransaction.bankAccountTransactionId}">
-                ${lineNumber} - ${bankaccounttransaction.text} 
+                ${rowNumber} - ${bankaccounttransaction.text} 
               </option>
             `;
         }

@@ -1,5 +1,5 @@
 
-class Budgets extends Condos {
+class Budget extends Condos {
 
   // Budget information
   arrayBudgets = [];
@@ -44,7 +44,7 @@ class Budgets extends Condos {
         >
     `;
 
-    let lineNumber = 0;
+    let rowNumber = 0;
 
     let selectedOption = false;
 
@@ -53,7 +53,7 @@ class Budgets extends Condos {
     if (numberOfRows > 0) {
       this.arrayBudgets.forEach((budget) => {
 
-        lineNumber++;
+        rowNumber++;
 
         const accountName = objAccounts.getAccountName(budget.accountId);
 
@@ -65,7 +65,7 @@ class Budgets extends Condos {
                 value="${budget.budgetId}"
                 selected
               >
-                ${lineNumber} - ${accountName}
+                ${rowNumber} - ${accountName}
               </option>
             `;
           selectedOption =
@@ -76,7 +76,7 @@ class Budgets extends Condos {
             `
               <option 
                 value="${budget.budgetId}">
-                ${lineNumber} - ${accountName}
+                ${rowNumber} - ${accountName}
               </option>
             `;
         }
@@ -100,16 +100,14 @@ class Budgets extends Condos {
     </form>
   `;
 
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
   // Select budget
   selectBudgetId(budgetId, className) {
 
     // Check if budget id exist
-    const objBudgetNumber =
-      arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
+    const objBudgetNumber = arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
     if (objBudgetNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
@@ -120,12 +118,33 @@ class Budgets extends Condos {
       return false;
     }
   }
+
   
+  // get class name for account
+  getAccountClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('account'));
+  }
+
+  // get class name for budget amount
+  getAmountClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('amount'));
+  }
+
+  // get class name for budget year
+  getYearClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('year'));
+  }
+
+  // get class name for delete budgets row
+  getDeleteClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('delete'));
+  }
+
   // get budgets
   async loadBudgetsTable(condominiumId, year, accountId) {
 
     try {
-      
+
       const response = await fetch(`http://localhost:3000/budgets?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}`);
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();

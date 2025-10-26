@@ -2,7 +2,7 @@
 class Budgets extends Condos {
 
   // Budget information
-  budgetsArray = [];
+  arrayBudgets = [];
 
   // Find selected budget id
   getSelectedBudgetId(className) {
@@ -13,11 +13,11 @@ class Budgets extends Condos {
     if (isClassDefined(className)) {
 
       budgetId = Number(document.querySelector(`.${className}`).value);
-      budgetId = (budgetId === 0) ? this.budgetsArray.at(-1).budgetId : budgetId;
+      budgetId = (budgetId === 0) ? this.arrayBudgets.at(-1).budgetId : budgetId;
     } else {
 
       // Get last id in last object in budget array
-      budgetId = (this.budgetsArray.length > 0) ? this.budgetsArray.at(-1).budgetId : 0;
+      budgetId = (this.arrayBudgets.length > 0) ? this.arrayBudgets.at(-1).budgetId : 0;
     }
 
     return budgetId;
@@ -44,18 +44,18 @@ class Budgets extends Condos {
         >
     `;
 
-    let lineNumber = 0;
+    let rowNumber = 0;
 
-    let selectedOption =
-      false;
+    let selectedOption = false;
 
     // Check if budget array is empty
-    const numberOfRows =
-      this.budgetsArray.length;
+    const numberOfRows = this.arrayBudgets.length;
     if (numberOfRows > 0) {
-      this.budgetsArray.forEach((budget) => {
+      this.arrayBudgets.forEach((budget) => {
 
-        lineNumber++;
+        rowNumber++;
+
+        const accountName = objAccounts.getAccountName(budget.accountId);
 
         if (budget.budgetId === budgetId) {
 
@@ -65,7 +65,7 @@ class Budgets extends Condos {
                 value="${budget.budgetId}"
                 selected
               >
-                ${lineNumber} - ${budget.budgetId}
+                ${rowNumber} - ${accountName}
               </option>
             `;
           selectedOption =
@@ -76,7 +76,7 @@ class Budgets extends Condos {
             `
               <option 
                 value="${budget.budgetId}">
-                ${lineNumber} - ${budget.budgetId}
+                ${rowNumber} - ${accountName}
               </option>
             `;
         }
@@ -109,7 +109,7 @@ class Budgets extends Condos {
 
     // Check if budget id exist
     const objBudgetNumber =
-      budgetsArray.findIndex(budget => budget.budgetId === budgetId);
+      arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
     if (objBudgetNumber !== -1) {
 
       document.querySelector(`.select-${className}`).value =
@@ -128,7 +128,7 @@ class Budgets extends Condos {
       
       const response = await fetch(`http://localhost:3000/budgets?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}`);
       if (!response.ok) throw new Error("Network error (budgets)");
-      this.budgetsArray = await response.json();
+      this.arrayBudgets = await response.json();
     } catch (error) {
       console.log("Error loading budgets:", error);
     }
@@ -140,7 +140,7 @@ class Budgets extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/budgets?action=update&budgetId=${budgetId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&year=${year}`);
       if (!response.ok) throw new Error("Network error (budgets)");
-      this.budgetsArray = await response.json();
+      this.arrayBudgets = await response.json();
     } catch (error) {
       console.log("Error updateing budgets:", error);
     }
@@ -152,7 +152,7 @@ class Budgets extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/budgets?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&year=${year}`);
       if (!response.ok) throw new Error("Network error (budgets)");
-      this.budgetsArray = await response.json();
+      this.arrayBudgets = await response.json();
     } catch (error) {
       console.log("Error inserting budgets:", error);
     }
@@ -163,7 +163,7 @@ class Budgets extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/budgets?action=delete&budgetId=${budgetId}&user=${user}&lastUpdate=${lastUpdate}`);
       if (!response.ok) throw new Error("Network error (budgets)");
-      this.budgetsArray = await response.json();
+      this.arrayBudgets = await response.json();
     } catch (error) {
       console.log("Error deleting budgets:", error);
     }

@@ -8,9 +8,96 @@ class Condos {
 
   inactivityTimeout = false;
 
+  /*
   // All year from 2020 until 2039
   #yearArray = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029,
     2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039];
+  */
+
+  // array of menu objects
+  arrayMenu = [
+    {
+      applicationName: "condo-login.html",
+      className: "Menu1",
+      text: "login"
+    },
+    {
+      applicationName: "condo-condominiums.html",
+      className: "Menu2",
+      text: "Sameie"
+    },
+    {
+      applicationName: "condo-condo.html",
+      className: "Menu3",
+      text: "Leilighet"
+    },
+    {
+      applicationName: "condo-bankaccounts.html",
+      className: "Menu4",
+      text: "Bankkonto sameiet"
+    },
+    {
+      applicationName: "condo-accounts.html",
+      className: "Menu5",
+      text: "Konto"
+    },
+    {
+      applicationName: "condo-users.html",
+      className: "Menu6",
+      text: "Bruker"
+    },
+
+    {
+      applicationName: "condo-userbankaccounts.html",
+      className: "Menu7",
+      text: "Bankkonto for bruker"
+    },
+    {
+      applicationName: "condo-suppliers.html",
+      className: "Menu8",
+      text: "Mottaker"
+    },
+    {
+      applicationName: "condo-dues.html",
+      className: "Menu9",
+      text: "Forfall"
+    },
+    {
+      applicationName: "condo-commoncost.html",
+      className: "Menu10",
+      text: "Felleskostnader"
+    },
+    {
+      applicationName: "condo-budget.html",
+      className: "Menu10",
+      text: "Budsjett"
+    },
+    {
+      applicationName: "condo-remoteheating.html",
+      className: "Menu11",
+      text: "Fjernvarme"
+    },
+    {
+      applicationName: "condo-overview.html",
+      className: "Menu12",
+      text: "Betalingsoversikt"
+    },
+    {
+      applicationName: "condo-bankaccounttransactions.html",
+      className: "Menu13",
+      text: "Banktransaksjoner"
+    },
+    {
+      applicationName: "condo-importfile.html",
+      className: "Menu14",
+      text: "Importer banktransaksjoner"
+    },
+    {
+      applicationName: "condo-annualaccount.html",
+      className: "Menu15",
+      text: "Årsregnskap"
+    },
+  ];
 
   constructor(applicationName) {
 
@@ -67,8 +154,7 @@ class Condos {
       document.querySelector(`.input-${className}`);
     inputElement.style.backgroundRepeat = `no-repeat`;
 
-    const iconName =
-      this.getIconName(className);
+    const iconName = this.getIconName(className);
     inputElement.style.backgroundImage = `url('icons/${iconName}')`;
   }
 
@@ -94,8 +180,26 @@ class Condos {
     return html;
   }
 
+  // Show input
+  showInputHTMLNew(className, amount, maxlength) {
+
+    let html =
+      `
+        <td>
+          <input 
+            class=" ${className} center one-line"
+            type="text" 
+            maxlength="${maxlength}"
+            value="${amount}"
+          >
+        </td>
+      `;
+    return html;
+  }
+
+  /*
   // Show input date
-  showInputHTMLDate(className, labelText, maxlength, placeholder) {
+  showInputHTMLDate(className, labelText) {
 
     let html =
       `
@@ -114,6 +218,7 @@ class Condos {
       `;
     return html;
   }
+  */
 
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
@@ -141,6 +246,16 @@ class Condos {
       `;
   }
 
+  // Show label
+  showLabelNew(labelText) {
+    return `
+        <label
+          class="one-line">
+          ${labelText}
+        </label>
+      `;
+  }
+
   // Show button
   showButton(className, buttonText) {
 
@@ -160,6 +275,28 @@ class Condos {
       `;
     document.querySelector(`.div-${className}`).innerHTML =
       html;
+  }
+
+  // Show button
+  showButtonNew(className, buttonText) {
+
+    const iconName = this.getIconName(className);
+
+    const html =
+      `
+        <td class=button>
+          <button 
+            class="${className}"
+          >
+            <img 
+              src="icons/${iconName}" 
+              height="18"
+            >
+              ${buttonText}
+          </button>
+        </td>
+      `;
+    return html;
   }
 
   // Show checkbox
@@ -539,10 +676,126 @@ class Condos {
     return html;
   }
 
+  // Select numbers
+  selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
+
+    selectedNumber = Number(selectedNumber);
+    let html =
+      `
+      <form 
+        id="selectedNumber"
+        action="/submit" method="POST"
+      >
+        <label 
+          class="label-${className}"
+          for="selectedNumber">
+            ${labelText}
+        </label>
+        <select class="select-${className}" 
+          id="selectedNumber"
+          name="selectedNumber"
+        >
+    `;
+
+    let selectedOption = false;
+
+    for (let number = fromNumber; number <= toNumber; number++) {
+      if (number === selectedNumber) {
+
+        html += `
+        <option 
+          value="${number}"
+          selected
+          >
+          ${number}
+        </option>
+      `;
+        selectedOption =
+          true;
+      } else {
+        html += `
+        <option 
+          value="${number}"
+          >
+          ${number}
+        </option>
+      `;
+      }
+    };
+
+    html += `
+      </select >
+    </form>
+  `;
+
+    document.querySelector(`.div-${className}`).innerHTML = html;
+  }
+
+  // Select numbers
+  selectNumberNew(className, fromNumber, toNumber, selectedNumber) {
+
+    selectedNumber = Number(selectedNumber);
+    let html =
+      `
+        <td
+          class="center"
+        >
+          <select
+            class="${className} center"
+          >
+      `;
+
+    for (let number = fromNumber; number <= toNumber; number++) {
+      if (number === selectedNumber) {
+
+        html +=
+          `
+            <option 
+              value="${number}"
+              selected
+              >
+              ${number}
+            </option>
+          `;
+      } else {
+
+        html +=
+          `
+            <option 
+              value="${number}"
+              >
+              ${number}
+            </option>
+          `;
+      }
+    };
+
+    html +=
+      `
+          </select >
+        </td>
+      `;
+
+    return html;
+  }
+
   // show button to start new page
   showPageButton(appName, className) {
 
     document.querySelector(`.div-${className}`).innerHTML =
+      `
+        <a
+          class="button-link"
+        >
+          Login
+        </a>
+      `;
+  }
+
+  // show button to start new page
+  showPageButtonNew() {
+
+    html =
       `
         <a
           class="button-link"
@@ -657,8 +910,8 @@ class Condos {
           Felleskostnader
         </a>
 
-        <a href="${url}condo-budgets.html"
-          class="a-menu-vertical-budgets"
+        <a href="${url}condo-budget.html"
+          class="a-menu-vertical-budget"
         >
           Budsjett
         </a>
@@ -696,8 +949,61 @@ class Condos {
       `;
   }
 
+  menuNew(menuNumber) {
+
+    let html;
+
+    // Check of menu exists
+    if (this.arrayMenu.length > menuNumber) {
+
+      let url;
+      switch (this.serverStatus) {
+
+        // Web server
+        case 1: {
+
+          url = "http://ingegilje.no/";
+          break;
+        }
+        // Test web server/ local web server
+        case 2:
+
+        // Test server/ local test server
+        case 3: {
+
+          url = "http://localhost/";
+          break;
+        }
+
+        default: {
+          break;
+        }
+      }
+
+      const applicationName = this.arrayMenu[menuNumber].applicationName;
+      const text = this.arrayMenu[menuNumber].text;
+      const className = this.arrayMenu[menuNumber].className;
+
+      html =
+        `
+        <td>
+          <a href="${url}${applicationName}"
+            class="${className}"
+          >
+            ${text}
+          </a>
+        </td>
+      `;
+    } else {
+
+      html = "<td></td>";
+    }
+
+    return html;
+  }
+
   // Validate norwegian amount (12 345,67)
-  validateAmount(amount, className, labelText) {
+  validateNorAmount(amount, className, labelText) {
 
     let isValidAmount = true;
 
@@ -727,6 +1033,14 @@ class Condos {
       isValidAmount = true;
     }
     return isValidAmount;
+  }
+
+  // Validate norwegian amount (12 345,67)
+  validateNorAmountNew(amount) {
+
+    // 123456,78 -> 12345678
+    amount = removeComma(amount);
+    return (isNumeric(amount)) ? true : false;
   }
 
   // Show input file
@@ -807,6 +1121,51 @@ class Condos {
 
     document.querySelector(`.div-${className}`).innerHTML =
       html;
+  }
+
+  // Select choices like Yes, No, Ignore
+  showSelectedValuesNew(selectedChoice, ...choices) {
+
+    let html =
+      `
+        <td
+          class="center"
+        >
+          <select 
+          >
+      `;
+
+    choices.forEach((choice) => {
+      if (choice === selectedChoice) {
+
+        html +=
+          `
+            <option 
+              value=${choice}
+              selected
+            >
+              ${choice}
+            </option>
+          `;
+      } else {
+
+        html +=
+          `
+            <option 
+              value="${choice}">
+              ${choice}
+            </option>
+          `;
+      }
+    });
+
+    html +=
+      `
+          </select >
+        </td>
+      `;
+
+    return html;
   }
 
   // get text file name
@@ -1189,6 +1548,12 @@ function validateNumberHTML(number, min, max) {
   return isValidNumber;
 }
 
+// Validate number
+function validateNumberNew(number, min, max) {
+
+  return (Number(number) < Number(min) || Number(number) > Number(max)) ? false : true;
+}
+
 // Validate norwegian date dd.mm.yyyy format
 // Show error message
 function validateNorDate(dateString, className, labelText) {
@@ -1411,14 +1776,12 @@ function formatKronerToOre(amount) {
   let ore = '';
 
   // check for decimal number
-  amount =
-    amount.replace(/\s+/g, "");
+  amount = amount.replace(/\s+/g, "");
   if (amount.includes('.')) {
 
     // decimal number
     [kroner, ore] = amount.split('.');
-    ore =
-      (ore.length === 1) ? ore + '0' : '00';
+    ore = (ore.length === 1) ? ore + '0' : '00';
 
   } else {
     if (amount.includes(',')) {
@@ -1427,10 +1790,8 @@ function formatKronerToOre(amount) {
     } else {
 
       // not decimal number
-      kroner =
-        amount;
-      ore =
-        "00";
+      kroner = amount;
+      ore = "00";
     }
   }
 
@@ -1712,15 +2073,6 @@ function endHTMLFilters() {
     `;
 }
 
-// Start of HTML table
-function startHTMLTable() {
-
-  return `
-        <div class="startHTMLTable">
-          <table>
-      `;
-}
-
 function HTMLTableHeader(...texts) {
 
   let html = `
@@ -1748,7 +2100,7 @@ function startHTMLTableBody() {
   let html = `
       <tbody>
         <tr>
-    `;
+     `;
   return html;
 }
 
@@ -1778,16 +2130,6 @@ function HTMLTableRow(...texts) {
       </tr>
     `;
   return html;
-}
-
-// End of HTML table
-function endHTMLTable() {
-
-  return `
-
-        </table>
-      </div>
-    `;
 }
 
 /*
@@ -1821,3 +2163,86 @@ function exitIfNoActivity() {
   document.addEventListener(event, exitIfNoActivity);
 });
 */
+
+// Start of HTML table
+function startHTMLTable() {
+
+  return `
+        <table>
+    `;
+}
+
+// Show main header table
+function showHTMLMainTableHeader(...texts) {
+
+  let html =
+    `
+      <tr>
+    `;
+
+  texts.forEach((text) => {
+
+    if (text === '') {
+      html +=
+        `
+          <th class="no-border">${text}</th>
+        `;
+    } else {
+      html +=
+        `
+          <th class="center no-border">${text}</th>
+        `;
+    }
+  });
+
+  html +=
+    `
+      </tr>
+    `;
+  return html;
+}
+
+// Show filter header table
+function showHTMLFilterHeader(...texts) {
+
+  let html =
+    `
+      <tr>
+    `;
+
+  texts.forEach((text) => {
+
+    if (text === '') {
+      html +=
+        `
+          <td class="no-border center"
+          >
+            ${text}
+          </td>
+        `;
+    } else {
+
+      html +=
+        `
+          <td class="no-border center"
+          >
+            ${text}
+          </td>
+        `;
+    }
+  });
+
+  html +=
+    `
+      </tr>
+    `;
+  return html;
+}
+
+// End of HTML table
+function endHTMLTable() {
+
+  return `
+      </table>
+    `;
+}

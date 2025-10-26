@@ -470,7 +470,7 @@ function showLeadingTextFilter() {
 
   // Check for filter amount
   amount = document.querySelector('.input-bankaccounttransactions-filterAmount').value;
-  if (!objBankAccountTransactions.validateAmount(amount)) {
+  if (!objBankAccountTransactions.validateNorAmount(amount)) {
 
     // Amount is not ok
     document.querySelector('.input-bankaccounttransactions-filterAmount').value = '';
@@ -780,7 +780,7 @@ function validateFilter() {
   const validToDate = validateNorDate(toDate, 'bankaccounttransactions-filterToDate', 'Til dato');
 
   const amount = (document.querySelector('.input-bankaccounttransactions-filterAmount').value) ? document.querySelector('.input-bankaccounttransactions-filterAmount').value : '0';
-  const validAmount = objBankAccountTransactions.validateAmount(amount, 'bankaccounttransactions-filterAmount', 'Beløp');
+  const validAmount = objBankAccountTransactions.validateNorAmount(amount, 'bankaccounttransactions-filterAmount', 'Beløp');
 
   return (validAccountId && validCondoId && validFromDate && validToDate && validAmount) ? true : false;
 }

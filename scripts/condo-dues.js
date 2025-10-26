@@ -540,7 +540,7 @@ function validateValues(dueId) {
 
   // Check amount
   const amount = formatToNorAmount(document.querySelector('.input-dues-amount').value);
-  const validAmount = objDues.validateAmount(amount, "dues-amount", "Månedsbetaling");
+  const validAmount = objDues.validateNorAmount(amount, "dues-amount", "Månedsbetaling");
 
   // Check text
   const text = document.querySelector('.input-dues-text').value;
@@ -629,22 +629,22 @@ function showDues() {
     let htmlColumnText = '<div class="columnHeaderLeft">Tekst</div><br>';
 
     let sumAmount = 0;
-    let lineNumber = 0;
+    let rowNumber = 0;
 
     objDues.arrayDues.forEach((due) => {
 
-      lineNumber++;
+      rowNumber++;
 
       // check if the number is odd
-      const colorClass = (lineNumber % 2 !== 0) ? "green" : "";
+      const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
 
-      // line number
+      // row number
       htmlColumnLine +=
         `
           <div 
             class="centerCell ${colorClass}"
           >
-            ${lineNumber}
+            ${rowNumber}
           </div >
         `;
 

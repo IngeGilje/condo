@@ -4,7 +4,7 @@
 const today = new Date();
 const objUsers = new Users('users');
 const objCondominiums = new Condominiums('condominiums');
-const objBudgets = new Budgets('budgets');
+const objBudget = new Budget('budget');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
 const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
@@ -35,7 +35,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
-    await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, 999999999, 999999999);
+    await objBudget.loadBudgetsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
@@ -221,7 +221,7 @@ function showLeadingTextFilter() {
 
   // Budget year
   let budgetYear = today.getFullYear();
-  html += objBudgets.selectNumberHTML('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
+  html += objBudget.selectNumberHTML('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
 
   // price per square meter
   html += objAnnualAccount.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
@@ -258,13 +258,13 @@ function showValuesFilter() {
   if (!validateNumberHTML(budgetYear, 2020, 2030)) {
 
     budgetYear = today.getFullYear() + 1;
-    objBudgets.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
+    objBudget.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
     objAnnualAccount.showIcon('select-filter-budgetYear');
   }
 
   // Price per square meter
   priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
-  if (!objAnnualAccount.validateAmount(priceSquareMeter)) {
+  if (!objAnnualAccount.validateNorAmount(priceSquareMeter)) {
 
     // To Price per square meter is not ok
     document.querySelector('.input-filter-priceSquareMeter').value = '30,00'
@@ -394,7 +394,7 @@ function getBudgetAmount(accountId, year) {
   let amount = 0;
 
   // Budget Amount
-  objBudgets.arrayBudgets.forEach(budget => {
+  objBudget.arrayBudgets.forEach(budget => {
     if (budget.accountId === accountId
       && Number(budget.year) === year) {
 
@@ -552,7 +552,7 @@ function showBankDeposit() {
   accAmount += Number(formatKronerToOre(bankDepositAmount));
 
   // budget
-  objBudgets.arrayBudgets.forEach((budget) => {
+  objBudget.arrayBudgets.forEach((budget) => {
     if (Number(budget.year) === nextBudgetYear) {
       if (Number(budget.amount) !== 0) {
 

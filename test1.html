@@ -2,168 +2,23 @@
 <html lang="nb-NO">
 
 <head>
-  <title>Test 1</title>
+
+  <title>test grid</title>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/condo.css">
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 1rem;
-      background: #f5f5f5;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/condo-new.css">
 </head>
 
 <body>
-
-  <!--<div class="container">-->
-
-  <!-- menu -->
-  <div class="div-menu"></div>
-
-  <!-- Start Main -->
-  <div class="main">
-
-    <!-- Filters -->
-    <div class="filters">
-
-      <div>
-        <label>Velg leilighet</label>
-        <select>
-          <option>Alle</option>
-        </select>
-      </div>
-      <div>
-        <label>Fra dato</label>
-        <input type="date">
-      </div>
-      <div>
-        <label>Til dato</label>
-        <input type="date">
-      </div>
-    </div>
-
-    <!-- maintenance -->
-    <div class="maintenance">
-      <div>
-        <label>Velg leilighet</label>
-        <select>
-          <option>3 - 95A</option>
-          <option>4 - 95B</option>
-          <option>5 - 97A</option>
-        </select>
-      </div>
-      <div>
-        <label>År</label>
-        <select>
-          <option>2025</option>
-        </select>
-      </div>
-      <div>
-        <label>Dag</label>
-        <select>
-          <option>15</option>
-        </select>
-      </div>
-      <div>
-        <label>* Måned­savgift</label>
-        <input type="text" value="2 329,00">
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <button class="btn btn-update">Oppdater</button>
-      <button class="btn btn-delete">Slett</button>
-      <button class="btn btn-cancel">Avbryt</button>
-    </div>
-
-    <!-- Table -->
-    <table>
-      <thead>
-        <tr>
-          <th>Rad</th>
-          <th>Forfallsdato</th>
-          <th>Beløp</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>15.12.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>15.11.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>15.10.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>15.09.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>15.08.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>15.07.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>15.06.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>15.05.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>15.04.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>10</td>
-          <td>15.03.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>11</td>
-          <td>15.02.2025</td>
-          <td>2 329,00</td>
-        </tr>
-        <tr>
-          <td>12</td>
-          <td>15.01.2025</td>
-          <td>2 329,00</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td></td>
-          <td>Total</td>
-          <td>37 919,58</td>
-        </tr>
-      </tfoot>
-    </table>
-    </main>
-  </div>
+  <tr class="menu">
+    <td> <a href="http://localhost/condo-login.html" class="Menu1"> login </a> </td>
+    <td class="center"> <select>
+        <option value=Nei selected> Nei </option>
+        <option value="Ja"> Ja </opt…ption>
+        <option value="22"> Velforening </option>
+        <option value=0> Ingen er valgt </option>
+      </select> </td>
+    <td> <input class=" amount20 center one-line" type="text" maxlength="10" value="-93 152,00"> </td>
+  </tr>
 </body>
-
-</html>
