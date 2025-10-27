@@ -45,7 +45,7 @@ class Accounts extends Condos {
                 ${account.name}
               </option>
             `;
-          selectedOption = true;
+          selectedValue = true;
         } else {
 
           html +=
@@ -67,7 +67,7 @@ class Accounts extends Condos {
             Ingen konti
           </option>
         `;
-      selectedOption = true;
+      selectedValue = true;
     }
 
     // Select all
@@ -92,7 +92,7 @@ class Accounts extends Condos {
               ${selectAll}
             </option>
           `;
-        selectedOption = true;
+        selectedValue = true;
       }
     }
 
@@ -183,7 +183,7 @@ class Accounts extends Condos {
                 ${account.accountId} - ${account.name}
               </option >
             `;
-
+          selectedValue = true;
         } else {
 
           html +=
@@ -208,6 +208,7 @@ class Accounts extends Condos {
             Ingen leiligheter
           </option >
         `;
+      selectedValue = true;
     }
 
     // Select all
@@ -222,6 +223,7 @@ class Accounts extends Condos {
           ${selectAll}
         </option>
       `;
+      selectedValue = true;
     }
 
     html +=
@@ -337,19 +339,19 @@ class Accounts extends Condos {
   // Show all selected accounts. Return HTML string.
   showSelectedAccountsNew(className, accountId, selectAll, selectNone) {
 
-    let selectedOption = false;
+    let selectedValue = false;
 
     let html =
       `
         <td
-          class="leftCell one-line"
+          class="centerCell one-line"
         >
           <select 
             class="${className}"
           >
       `;
 
-    // Check if account movement array is empty
+    // Check if accounts array is empty
     const numberOfRows = this.arrayAccounts.length;
     if (numberOfRows > 0) {
       this.arrayAccounts.forEach((account) => {
@@ -364,7 +366,7 @@ class Accounts extends Condos {
                 ${account.name}
               </option>
             `;
-          selectedOption = true;
+          selectedValue = true;
         } else {
 
           html +=
@@ -386,38 +388,27 @@ class Accounts extends Condos {
             Ingen konti
           </option>
         `;
-      selectedOption = true;
+      selectedValue = true;
     }
 
     // Select all
     if (selectAll && (numberOfRows > 1)) {
-      if (selectedOption) {
-        html +=
-          `
-            <option 
-              value=999999999
-            >
-              ${selectAll}
-            </option>
-          `;
-      } else {
 
-        html +=
-          `
-            <option 
-              value=999999999
-              selected
-            >
-              ${selectAll}
-            </option>
-          `;
-        selectedOption = true;
-      }
+      html +=
+        `
+          <option 
+            value=999999999
+            selected
+          >
+            ${selectAll}
+          </option>
+        `;
+      selectedValue = true;
     }
 
     // Select none
     if (selectNone && (numberOfRows > 1)) {
-      if (selectedOption) {
+      if (selectedValue) {
         html +=
           `
           <option 
@@ -437,6 +428,7 @@ class Accounts extends Condos {
               ${selectNone}
             </option>
           `;
+        selectedValue = true;
       }
     }
 

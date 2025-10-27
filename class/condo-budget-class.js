@@ -119,27 +119,6 @@ class Budget extends Condos {
     }
   }
 
-  
-  // get class name for account
-  getAccountClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('account'));
-  }
-
-  // get class name for budget amount
-  getAmountClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('amount'));
-  }
-
-  // get class name for budget year
-  getYearClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('year'));
-  }
-
-  // get class name for delete budgets row
-  getDeleteClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('delete'));
-  }
-
   // get budgets
   async loadBudgetsTable(condominiumId, year, accountId) {
 

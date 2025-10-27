@@ -138,6 +138,111 @@ class Condo extends Condos {
     document.querySelector(`.div-${columnName}`).innerHTML = html;
   }
 
+  // Show all selected condos. Return HTML string.
+  showSelectedCondosNew(className, condoId, selectAll, selectNone) {
+
+    let selectedValue = false;
+
+    let html =
+      `
+        <td
+          class="center one-line"
+        >
+          <select 
+            class="${className}"
+          >
+      `;
+
+    // Check if condo array is empty
+    const numberOfRows = this.arrayCondo.length;
+    if (numberOfRows > 0) {
+      this.arrayCondo.forEach((condo) => {
+        if (condo.condoId === condoId) {
+
+          html +=
+            `
+              <option 
+                value=${condo.condoId}
+                selected
+              >
+                ${condo.name}
+              </option>
+            `;
+            selectedValue = true;
+        } else {
+
+          html +=
+            `
+              <option 
+                value="${condo.condoId}">
+                ${condo.name}
+              </option>
+            `;
+        }
+      });
+    } else {
+
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen konti
+          </option>
+        `;
+        selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (numberOfRows > 1)) {
+
+      html +=
+        `
+          <option 
+            value=999999999
+            selected
+          >
+            ${selectAll}
+          </option>
+        `;
+        selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (numberOfRows > 1)) {
+      if (selectedValue) {
+        html +=
+          `
+          <option 
+            value=0
+          >
+            ${selectNone}
+          </option>
+        `;
+      } else {
+
+        html +=
+          `
+            <option 
+              value=0
+              selected
+            >
+              ${selectNone}
+            </option>
+          `;
+          selectedValue = true;
+      }
+    }
+
+    html +=
+      `
+          </select >
+        </td>
+      `;
+
+    return html;
+  }
+
   // Find selected condo id
   getSelectedCondoId(className) {
 
@@ -170,7 +275,7 @@ class Condo extends Condos {
   }
 
   // Show selected condos
-  showSelectedCondosHTML(className, condoId, selectAll,selectNone) {
+  showSelectedCondosHTML(className, condoId, selectAll, selectNone) {
 
     let html =
       `

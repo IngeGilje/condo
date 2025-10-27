@@ -76,6 +76,14 @@
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
+     {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Forfall test",
+      "url": "http://localhost/condo-due.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
     {
       "type": "chrome",
       "request": "launch",

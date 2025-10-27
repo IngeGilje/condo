@@ -4,7 +4,7 @@ table {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  width: 60%;
+  width: 90%;
 }
 
 th,
@@ -64,8 +64,16 @@ th {
   text-overflow: ellipsis;
 }
 
+/* Highlight only col 4, 5, 6 when hovering a row 
+tr:nth-child(n+5):hover td:nth-child(4),
+tr:nth-child(n+5):hover td:nth-child(5),
+tr:nth-child(n+5):hover td:nth-child(6) {
+  background-color: #e0f0e0;
+}
+*/
+
 /* Highlight hover row */
-tr:nth-child(n):hover {background-color: #e0f0e0;}
+tr:nth-child(n+3):hover {background-color: #e0f0e0;}
 
 /* Look like button 
 .button-link {
@@ -75,7 +83,8 @@ tr:nth-child(n):hover {background-color: #e0f0e0;}
 
 /* menu */
 .menu {
-  padding: 10px 20px;
+  padding: 5px;
+  max-width: 150px;
 }
 
 .menu a {

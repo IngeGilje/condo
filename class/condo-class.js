@@ -37,7 +37,7 @@ class Condos {
       text: "Bankkonto sameiet"
     },
     {
-      applicationName: "condo-accounts.html",
+      applicationName: "condo-account.html",
       className: "Menu5",
       text: "Konto"
     },
@@ -181,7 +181,7 @@ class Condos {
   }
 
   // Show input
-  showInputHTMLNew(className, amount, maxlength) {
+  showInputHTMLNew(className, value, maxlength) {
 
     let html =
       `
@@ -190,35 +190,12 @@ class Condos {
             class=" ${className} center one-line"
             type="text" 
             maxlength="${maxlength}"
-            value="${amount}"
+            value="${value}"
           >
         </td>
       `;
     return html;
   }
-
-  /*
-  // Show input date
-  showInputHTMLDate(className, labelText) {
-
-    let html =
-      `
-        <div>
-          <label
-            class="one-line"
-          >
-            ${labelText}
-          </label>
-          <input 
-            type="date" 
-            class="${className}"
-            value="2025-09-15"
-          >
-        </div>
-      `;
-    return html;
-  }
-  */
 
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
@@ -582,7 +559,8 @@ class Condos {
           for="selectedNumber">
             ${labelText}
         </label>
-        <select class="select-${className}" 
+        <select 
+          class="select-${className}" 
           id="selectedNumber"
           name="selectedNumber"
         >
@@ -986,8 +964,9 @@ class Condos {
 
       html =
         `
-        <td>
-          <a href="${url}${applicationName}"
+        <td class="menu" one-line>
+          <a 
+            href="${url}${applicationName}"
             class="${className}"
           >
             ${text}
@@ -1124,14 +1103,14 @@ class Condos {
   }
 
   // Select choices like Yes, No, Ignore
-  showSelectedValuesNew(selectedChoice, ...choices) {
+  showSelectedValuesNew(className, selectedChoice, ...choices) {
 
     let html =
       `
         <td
-          class="center"
         >
           <select 
+            class="${className} center"
           >
       `;
 
@@ -1424,6 +1403,25 @@ class Condos {
 
     return imageName;
   }
+  // get class name for account
+  getAccountClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('account'));
+  }
+
+  // get class name for budget amount
+  getAmountClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('amount'));
+  }
+
+  // get class name for budget year
+  getYearClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('year'));
+  }
+
+  // get class name for delete budgets row
+  getDeleteClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('delete'));
+  }
 }
 
 // Check if string includes only digits
@@ -1479,8 +1477,7 @@ function convertDateToISOFormat(date) {
     const dateParts = date.split(".");
     date = `${dateParts[2]}${dateParts[1]}${dateParts[0]}`;
   } else {
-    date =
-      '';
+    date = '';
   }
   return date;
 }
@@ -2177,7 +2174,7 @@ function showHTMLMainTableHeader(...texts) {
 
   let html =
     `
-      <tr>
+      <tr class="bold">
     `;
 
   texts.forEach((text) => {
@@ -2242,7 +2239,5 @@ function showHTMLFilterHeader(...texts) {
 // End of HTML table
 function endHTMLTable() {
 
-  return `
-      </table>
-    `;
+  return "</table>";
 }
