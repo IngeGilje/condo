@@ -4,7 +4,7 @@
 const today = new Date();
 const objUsers = new Users('users');
 const objCondo = new Condo('condo');
-const objAccounts = new Accounts('accounts');
+const objAccounts = new Account('account');
 const objDues = new Due('due');
 
 testMode();
@@ -52,7 +52,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       showFilter();
 
       // Show due
-      showDue();
+      showDues();
 
       // Create events
       createEvents();
@@ -68,8 +68,7 @@ function createEvents() {
     if (event.target.classList.contains('filterAccountId')
       || event.target.classList.contains('filterCondoId')
       || event.target.classList.contains('filterFromDate')
-      || event.target.classList.contains('filterToDate')
-    ) {
+      || event.target.classList.contains('filterToDate')) {
 
       filterSync();
 
@@ -84,11 +83,72 @@ function createEvents() {
         toDate = Number(formatNorDateToNumber(toDate));
         await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-        showDue();
+        showDues();
       }
     };
   });
 
+  // update a dues row
+  document.addEventListener('change', (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('condo'))
+      || [...event.target.classList].some(cls => cls.startsWith('account'))
+      || [...event.target.classList].some(cls => cls.startsWith('amount'))
+      || [...event.target.classList].some(cls => cls.startsWith('date'))
+      || [...event.target.classList].some(cls => cls.startsWith('text'))) {
+
+      const prefixes = ['condo', 'account', 'amount', 'date', 'text'];
+
+      // Find the first matching class
+      const className = prefixes
+        .map(prefix => objDues.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
+      // Extract the number in the class name
+      let dueId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = prefixes.find(p => className.startsWith(p));
+        dueId = Number(className.slice(prefix.length));
+      }
+      /*
+      // get class
+      if (objDues.getClassByPrefix(event.target,'condo')) className = objDues.getClassByPrefix(event.target,'condo');
+      if (objDues.getClassByPrefix(event.target,'account')) className = objDues.getClassByPrefix(event.target,'account');
+      if (objDues.getClassByPrefix(event.target,'amount')) className = objDues.getClassByPrefix(event.target,'amount');
+      if (objDues.getClassByPrefix(event.target,'date')) className = objDues.getClassByPrefix(event.target,'date');
+      if (objDues.getClassByPrefix(event.target,'text')) className = objDues.getClassByPrefix(event.target,'text');
+
+      // get number after prefix (rownumber)
+      if (className.startsWith('condo')) dueId = Number(className.substring(5));
+      if (className.startsWith('account')) dueId = Number(className.substring(7));
+      if (className.startsWith('amount')) dueId = Number(className.substring(6));
+      if (className.startsWith('date')) dueId = Number(className.substring(4));
+      if (className.startsWith('text')) dueId = Number(className.substring(4));
+
+      if (objDues.getCondoClass(event.target)) className = objDues.getCondoClass(event.target);
+      if (objDues.getAccountClass(event.target)) className = objDues.getAccountClass(event.target);
+      if (objDues.getAmountClass(event.target)) className = objDues.getAmountClass(event.target);
+      if (objDues.getDateClass(event.target)) className = objDues.getDateClass(event.target);
+      if (objDues.getTextClass(event.target)) className = objDues.getTextClass(event.target);
+
+      if (objDues.getCondoClass(event.target)) dueId = Number(className.substring(7));
+      if (objDues.getAccountClass(event.target)) dueId = Number(className.substring(9));
+      if (objDues.getAmountClass(event.target)) dueId = className.substring(6);
+      if (objDues.getDateClass(event.target)) dueId = className.substring(4);
+      if (objDues.getTextClass(event.target)) dueId = className.substring(4);
+      */
+
+      updateDuesSync();
+
+      // Update a dues row
+      async function updateDuesSync() {
+
+        updateDuesRow(dueId);
+      }
+    };
+  });
+
+  /*
   // Update condo id
   document.addEventListener('change', (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('condo'))) {
@@ -170,6 +230,7 @@ function createEvents() {
       }
     };
   });
+  */
 
   // Delete dues row
   document.addEventListener('change', (event) => {
@@ -179,14 +240,14 @@ function createEvents() {
       const classNameDelete = `.${className}`
       const deleteDueRowValue = document.querySelector(`${classNameDelete}`).value;
       if (deleteDueRowValue === "Ja") {
-        
+
         //const className = objBudgets.getDeleteClass(event.target);
-        const duesId = Number(className.substring(6));
+        const dueId = Number(className.substring(6));
         deleteBudgetSync();
 
         async function deleteBudgetSync() {
 
-          deleteDuesRow(duesId, className);
+          deleteDuesRow(dueId, className);
 
           const condominiumId = Number(objUserPassword.condominiumId);
           const condoId = Number(document.querySelector('.filterCondoId').value);
@@ -197,438 +258,12 @@ function createEvents() {
           toDate = Number(formatNorDateToNumber(toDate));
           await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-          showDue();
+          showDues();
         };
       };
     };
   });
-
-  /*
-  // Selected condo id
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-dues-filterCondoId')) {
-
-      // Search for dues and reload
-      searchDuesCondoIdSync();
-
-      async function searchDuesCondoIdSync() {
-
-        const condominiumId = Number(objUserPassword.condominiumId);
-        const accountId = Number(document.querySelector('.select-dues-filterAccountId').value);
-        const condoId = Number(document.querySelector('.select-dues-filterCondoId').value);
-        let fromDate = document.querySelector('.input-dues-filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
-        let toDate = document.querySelector('.input-dues-filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
-        await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-        // Show leading text filter
-        showLeadingTextFilter();
-
-        // Show leading text for maintenance
-        // Select first due Id
-        if (objDues.arrayDues.length > 0) {
-          dueId = objDues.arrayDues[0].dueId;
-          showLeadingText(dueId);
-        }
-
-        // Show dues 
-        showDues();
-
-        // Show due Id
-        objDues.showSelectedDues('dues-dueId', dueId);
-        showValues(dueId);
-      }
-    }
-  });
-  */
-
-  /*
-  // Selected account id
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-dues-filterAccountId')) {
-
-      // Search for dues and reload
-      searchDuesAccountIdSync();
-
-      async function searchDuesAccountIdSync() {
-
-        const condominiumId = Number(objUserPassword.condominiumId);
-        const accountId = Number(document.querySelector('.select-dues-filterAccountId').value);
-        const condoId = Number(document.querySelector('.select-dues-filterCondoId').value);
-        let fromDate = document.querySelector('.input-dues-filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
-        let toDate = document.querySelector('.input-dues-filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
-        await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-        // Show leading text filter
-        showLeadingTextFilter();
-
-        // Show leading text for maintenance
-        // Select first due Id
-        if (objDues.arrayDues.length > 0) {
-          dueId = objDues.arrayDues[0].dueId;
-          showLeadingText(dueId);
-        }
-
-        // Show dues 
-        showDues();
-
-        // Show due Id
-        objDues.showSelectedDues('dues-dueId', dueId);
-        showValues(dueId);
-      }
-    }
-  });
-  */
-
-  /*
-  // Selected from date
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-dues-filterFromDate')) {
-
-      // Search for dues and reload
-      searchDuesFromDateSync();
-
-      async function searchDuesFromDateSync() {
-
-        const condominiumId = Number(objUserPassword.condominiumId);
-        const accountId = Number(document.querySelector('.select-dues-filterAccountId').value);
-        const condoId = Number(document.querySelector('.select-dues-filterCondoId').value);
-        let fromDate = document.querySelector('.input-dues-filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
-        let toDate = document.querySelector('.input-dues-filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
-        await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-        // Show leading text filter
-        showLeadingTextFilter();
-
-        // Show leading text for maintenance
-        // Select first due Id
-        if (objDues.arrayDues.length > 0) {
-          dueId = objDues.arrayDues[0].dueId;
-          showLeadingText(dueId);
-
-          // Show dues 
-          showDues();
-
-          // Show due Id
-          objDues.showSelectedDues('dues-dueId', dueId);
-          showValues(dueId);
-
-        } else {
-
-          resetValues();
-
-          // Show dues 
-          showDues();
-        }
-
-      }
-    }
-  });
-  */
-
-  /*
-  // Selected to date
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('input-dues-filterToDate')) {
-
-      // Search for dues and reload
-      searchDuesToDateSync();
-
-      async function searchDuesToDateSync() {
-
-        const condominiumId = Number(objUserPassword.condominiumId);
-        const accountId = Number(document.querySelector('.select-dues-filterAccountId').value);
-        const condoId = Number(document.querySelector('.select-dues-filterCondoId').value);
-        let fromDate = document.querySelector('.input-dues-filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
-        let toDate = document.querySelector('.input-dues-filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
-        await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-        // Show leading text filter
-        showLeadingTextFilter();
-
-        // Show leading text for maintenance
-        // Select first due Id
-        if (objDues.arrayDues.length > 0) {
-          dueId = objDues.arrayDues[0].dueId;
-          showLeadingText(dueId);
-        }
-
-        // Show dues 
-        showDues();
-
-        // Show due Id
-        objDues.showSelectedDues('dues-dueId', dueId);
-        showValues(dueId);
-      }
-    }
-  });
-  */
-
-  /*
-  // Selected due Id
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-dues-dueId')) {
-
-      // Search for dues and reload
-      selectDueIdSync();
-
-      async function selectDueIdSync() {
-
-        const condominiumId = Number(objUserPassword.condominiumId);
-        const accountId = Number(document.querySelector('.select-dues-filterAccountId').value);
-        const condoId = Number(document.querySelector('.select-dues-filterCondoId').value);
-        let fromDate = document.querySelector('.input-dues-filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
-        let toDate = document.querySelector('.input-dues-filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
-        await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-        // Show due Id
-        const dueId = document.querySelector('.select-dues-dueId').value;
-        showValues(dueId);
-      }
-    }
-  });
-  */
-
-  /*
-  // Update due
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-dues-update')) {
-
-      // Search for dues and reload
-      updateDueSync();
-
-      async function updateDueSync() {
-
-        // Check for valid values
-        let dueId = Number(document.querySelector('.select-dues-dueId').value);
-        if (validateValues(dueId)) {
-
-          const condominiumId = Number(objUserPassword.condominiumId);
-          const user = objUserPassword.email;
-          let condoId = Number(document.querySelector('.select-dues-condoId').value);
-          let accountId = Number(document.querySelector('.select-dues-accountId').value);
-          const date = Number(formatNorDateToNumber(document.querySelector('.input-dues-date').value));
-          const amount = Number(formatAmountToOre(document.querySelector('.input-dues-amount').value));
-          const text = document.querySelector('.input-dues-text').value;
-          const lastUpdate = today.toISOString();
-
-          // Check if due Id exist
-          // Get selected due Id
-          dueId = Number(document.querySelector('.select-dues-dueId').value);
-          const dueRowNumber = objDues.arrayDues.findIndex(due => due.dueId === dueId);
-          if (dueRowNumber !== -1) {
-
-            // update due row in dues table
-            await objDues.updateDuesTable(dueId, user, lastUpdate, condoId, accountId, amount, date, text);
-          } else {
-
-            // insert due row in dues table
-            await objDues.insertDuesTable(condominiumId, user, lastUpdate, condoId, accountId, amount, date, text);
-            dueId = objDues.arrayDues.at(-1).dueId;
-          }
-
-          accountId = Number(document.querySelector('.select-dues-filterAccountId').value);
-          condoId = Number(document.querySelector('.select-dues-filterCondoId').value);
-          let fromDate = document.querySelector('.input-dues-filterFromDate').value;
-          fromDate = Number(convertDateToISOFormat(fromDate));
-          let toDate = document.querySelector('.input-dues-filterToDate').value;
-          toDate = Number(convertDateToISOFormat(toDate));
-          await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-          // Show leading text filter
-          //showLeadingTextFilter();
-
-          // Show dues 
-          showDues();
-
-          // Show leading text maintenance
-          showLeadingText(dueId);
-
-          // Show due Id
-          showValues(dueId);
-
-          document.querySelector('.select-dues-dueId').disabled = false;
-          document.querySelector('.button-dues-delete').disabled = false;
-          document.querySelector('.button-dues-insert').disabled = false;
-        }
-      }
-    }
-  });
-  */
-
-  /*
-  // insert due
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-dues-insert')) {
-
-      resetValues();
-    }
-  });
-  */
-
-  /*
-  // Delete due
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-dues-delete')) {
-
-      // Delete due row and reload dues
-      deleteDueSync();
-
-      async function deleteDueSync() {
-
-        // Check for valid values
-        const dueId = Number(document.querySelector('.select-dues-dueId').value);
-        if (validateValues(dueId)) {
-
-          const user = objUserPassword.email;
-          let condoId = Number(document.querySelector('.select-dues-condoId').value);
-          let accountId = Number(document.querySelector('.select-dues-accountId').value);
-          const lastUpdate = today.toISOString();
-
-          // Check if due Id exist
-          // Get selected due Id
-          let dueId = Number(document.querySelector('.select-dues-dueId').value);
-          const dueRowNumber = objDues.arrayDues.findIndex(due => due.dueId === dueId);
-          if (dueRowNumber !== -1) {
-
-            // delete due row in dues table
-            await objDues.deleteDuesTable(dueId, user, lastUpdate);
-          }
-
-          const condominiumId = Number(objUserPassword.condominiumId);
-          accountId = Number(document.querySelector('.select-dues-filterAccountId').value);
-          condoId = Number(document.querySelector('.select-dues-filterCondoId').value);
-          let fromDate = document.querySelector('.input-dues-filterFromDate').value;
-          fromDate = Number(convertDateToISOFormat(fromDate));
-          let toDate = document.querySelector('.input-dues-filterToDate').value;
-          toDate = Number(convertDateToISOFormat(toDate));
-          await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-          // Show leading text filter
-          showLeadingTextFilter();
-
-          // Show leading text for maintenance
-          // Select first due Id
-          if (objDues.arrayDues.length > 0) {
-            dueId = objDues.arrayDues[0].dueId;
-            showLeadingText(dueId);
-
-            // Show dues 
-            showDues();
-
-            // Show due Id
-            showValues(dueId);
-          } else {
-
-            resetValues();
-
-            // Show dues 
-            showDues();
-          }
-
-          document.querySelector('.select-dues-dueId').disabled = false;
-          document.querySelector('.button-dues-delete').disabled = false;
-          document.querySelector('.button-dues-insert').disabled = false;
-
-          document.querySelector('.select-dues-filterCondoId').value = document.querySelector('.select-dues-condoId').value;
-          document.querySelector('.select-dues-filterAccountId').value = document.querySelector('.select-dues-accountId').value;
-        }
-      }
-    }
-  });
-  */
-
-  /*
-  // Cancel
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-dues-cancel')) {
-
-      // Reload dues
-      reloadDueSync();
-
-      async function reloadDueSync() {
-
-        const condominiumId = Number(objUserPassword.condominiumId);
-        const accountId = Number(document.querySelector('.select-dues-filterAccountId').value);
-        const condoId = Number(document.querySelector('.select-dues-filterCondoId').value);
-        let fromDate = document.querySelector('.input-dues-filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
-        let toDate = document.querySelector('.input-dues-filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
-        await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-        // Show leading text filter
-        showLeadingTextFilter();
-
-        // Show leading text for maintenance
-        // Select first due Id
-        if (objDues.arrayDues.length > 0) {
-          dueId = objDues.arrayDues[0].dueId;
-          showLeadingText(dueId);
-        }
-
-        // Show dues 
-        showDues();
-
-        // Show due Id
-        objDues.showSelectedDues('dues-dueId', dueId);
-        showValues(dueId);
-      }
-    }
-  });
-  */
 }
-
-/*
-// Show filter for search
-function showLeadingTextFilter() {
-
-  // Show all condos
-  const condoId = (isClassDefined('select-dues-filterCondoId')) ? Number(document.querySelector('.select-dues-filterCondoId').value) : 0;
-  objCondo.showSelectedCondos('dues-filterCondoId', condoId, 'Alle');
-
-  // Show all accounts
-  const accountId = (isClassDefined('select-dues-filterAccountId')) ? Number(document.querySelector('.select-dues-filterAccountId').value) : 0;
-  objAccounts.showSelectedAccounts('dues-filterAccountId', accountId, 'Alle');
-
-  // Show from date
-  if (!isClassDefined('input-dues-filterFromDate')) {
-    objDues.showInput('dues-filterFromDate', 'Fra dato', 10, 'dd.mm.åååå');
-  }
-
-  // Show to date
-  if (!isClassDefined('input-dues-filterToDate')) {
-    objDues.showInput('dues-filterToDate', 'Til dato', 10, 'dd.mm.åååå');
-  }
-
-  // Check for filter from date
-  let date = document.querySelector('.input-dues-filterFromDate').value;
-
-  if (!validateEuroDateFormat(date)) {
-
-    // From date is not ok
-    const year = String(today.getFullYear());
-    document.querySelector('.input-dues-filterFromDate').value = "01.01." + year;
-  }
-
-  // Check for filter to date
-  date = document.querySelector('.input-dues-filterToDate').value;
-  if (!validateEuroDateFormat(date)) {
-
-    // To date is not ok
-    document.querySelector('.input-dues-filterToDate').value = getCurrentDate();
-  }
-}
-*/
 
 // Show leading text for due
 function showLeadingText(dueId) {
@@ -730,197 +365,6 @@ function showValues(dueId) {
   }
 }
 
-/*
-function resetValues() {
-
-  // Show dueid
-  document.querySelector('.select-dues-dueId').value = 0;
-
-  // Show condo
-  document.querySelector('.select-dues-condoId').value =
-    (Number(document.querySelector('.select-dues-filterCondoId').value) === 999999999)
-      ? 0 : Number(document.querySelector('.select-dues-filterCondoId').value);
-
-  // Show account
-  document.querySelector('.select-dues-accountId').value =
-    (Number(document.querySelector('.select-dues-filterAccountId').value) === 999999999)
-      ? 0 : Number(document.querySelector('.select-dues-filterAccountId').value);
-
-  // Show date
-  document.querySelector('.input-dues-date').value = '';
-
-  // Show amount
-  document.querySelector('.input-dues-amount').value = '';
-
-  // Show text
-  document.querySelector('.input-dues-text').value = '';
-
-  document.querySelector('.select-dues-dueId').disabled = true;
-  document.querySelector('.button-dues-delete').disabled = true;
-  document.querySelector('.button-dues-insert').disabled = true;
-}
-*/
-
-/*
-// Show selected dues
-function showDues() {
-
-  // Validate search filter
-  if (validateFilter()) {
-
-    // Header
-    let htmlColumnLine = '<div class="columnHeaderCenter">Linje</div><br>';
-    let htmlColumnDate = '<div class="columnHeaderRight">Dato</div><br>';
-    let htmlColumnCondoName = '<div class="columnHeaderRight">Leilighet</div><br>';
-    let htmlColumnAccountName = '<div class="columnHeaderLeft">Konto</div><br>';
-    let htmlcolumnAmount = '<div class="columnHeaderRight">Beløp</div><br>';
-    let htmlColumnText = '<div class="columnHeaderLeft">Tekst</div><br>';
-
-    let sumAmount = 0;
-    let rowNumber = 0;
-
-    objDues.arrayDues.forEach((due) => {
-
-      rowNumber++;
-
-      // check if the number is odd
-      const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
-
-      // row number
-      htmlColumnLine +=
-        `
-          <div 
-            class="centerCell ${colorClass}"
-          >
-            ${rowNumber}
-          </div >
-        `;
-
-      // condo name
-      let condoName = "-";
-      if (due.condoId) {
-        const condoId =
-          Number(due.condoId);
-        condoName =
-          objCondo.getCondoName(condoId);
-      }
-      htmlColumnCondoName +=
-        `
-          <div
-            class="${colorClass} leftCell one-line"
-          >
-            ${condoName}    
-          </div >
-        `;
-
-      // account name
-      const accountName =
-        objAccounts.getAccountName(due.accountId);
-      const colorClassAccountName =
-        (accountName === '-') ? 'red' : colorClass;
-      htmlColumnAccountName +=
-        `
-          <div
-            class="leftCell ${colorClassAccountName} one-line"
-          >
-            ${accountName}    
-          </div >
-        `;
-
-      // date
-      const date =
-        formatToNorDate(due.date);
-      htmlColumnDate +=
-        `
-          <div
-            class="rightCell ${colorClass}"
-          >
-            ${date}
-          </div >
-        `;
-
-      // amount
-      const amount =
-        formatOreToKroner(due.amount);
-      htmlcolumnAmount +=
-        `
-          <div
-            class="rightCell ${colorClass}"
-          >
-            ${amount}
-          </div>
-        `;
-
-      // text
-      htmlColumnText +=
-        `
-          <div
-            class="leftCell ${colorClass} one-line"
-          >
-            ${due.text}
-          </div>
-        `;
-
-      // accumulate
-      sumAmount += Number(due.amount);
-    });
-
-    // Sum line
-
-    // amount
-    amount = formatOreToKroner(sumAmount);
-    htmlcolumnAmount +=
-      `
-        <div
-          class="sumCellRight"
-        >
-          ${amount}
-        </div >
-      `;
-
-    // Show line number
-    document.querySelector('.div-dues-columnLine').innerHTML = htmlColumnLine;
-
-    // Show date
-    document.querySelector('.div-dues-columnDate').innerHTML = htmlColumnDate;
-
-    // Show condo name
-    document.querySelector('.div-dues-columnCondoName').innerHTML = htmlColumnCondoName;
-
-    // Show account name
-    document.querySelector('.div-dues-columnAccountName').innerHTML = htmlColumnAccountName;
-
-    // Show amount
-    document.querySelector('.div-dues-columnAmount').innerHTML = htmlcolumnAmount;
-
-    // Show text
-    document.querySelector('.div-dues-columnText').innerHTML = htmlColumnText;
-  }
-}
-*/
-
-/*
-// Check for valid filter
-function validateFilter() {
-
-  // Check account
-  const accountId =
-    document.querySelector('.select-dues-filterAccountId').value;
-  const validAccountId = validateNumber(accountId, 1, 999999999, 'dues-filterAccountId', 'Konto');
-
-  const condoId = Number(document.querySelector('.select-dues-filterCondoId').value);
-  const validCondoId = validateNumber(accountId, 1, 999999999, 'dues-filterCondoId', 'Leilighet');
-
-  const fromDate = document.querySelector('.input-dues-filterFromDate').value;
-  const validFromDate = validateNorDate(fromDate, 'dues-filterFromDate', 'Fra dato');
-
-  const toDate = document.querySelector('.input-dues-filterToDate').value;
-  const validToDate = validateNorDate(toDate, 'dues-filterToDate', 'Til dato');
-
-  return (validAccountId && validCondoId && validFromDate && validToDate) ? true : false;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -985,7 +429,11 @@ function showHTMLFilterSearch() {
 // Show dues
 function showDues() {
 
-  let html = "";
+  // Start HTML table
+  html = startHTMLTable();
+
+  // Header
+  html += showHTMLMainTableHeader('Meny', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
 
   let sumAmount = 0;
   let rowNumber = 0;
@@ -1073,17 +521,18 @@ function showDues() {
   rowNumber++;
   html += showRestMenu(rowNumber);
 
-  return html;
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.due').innerHTML = html;
+
 }
 
+/*
 // Show due table
 function showDue() {
 
   // Start HTML table
   html = startHTMLTable();
-
-  // Header
-  html += showHTMLMainTableHeader('Meny', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
 
   // Show dues
   html += showDues();
@@ -1092,6 +541,7 @@ function showDue() {
   html += endHTMLTable();
   document.querySelector('.due').innerHTML = html;
 }
+*/
 
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
@@ -1178,6 +628,7 @@ function showRestMenu(rowNumber) {
   return html;
 }
 
+/*
 // Update dues table
 async function updateDuesRow(columnName, className, dueId) {
 
@@ -1232,9 +683,10 @@ async function updateDuesRow(columnName, className, dueId) {
     }
 
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-    showDue();
+    showDues();
   }
 }
+*/
 
 // Validate dues columns
 function validateColumns(accountId, condoId, date, amount, text) {
@@ -1280,4 +732,58 @@ async function deleteDuesRow(dueId, className) {
   let toDate = document.querySelector('.filterToDate').value;
   toDate = Number(formatNorDateToNumber(toDate));
   await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+}
+
+// Update a dues row
+async function updateDuesRow(dueId) {
+
+  dueId = Number(dueId);
+
+  const condominiumId = Number(objUserPassword.condominiumId);
+  const user = objUserPassword.email;
+  const lastUpdate = today.toISOString();
+
+  // Check dues columns
+  let className = `.condo${dueId}`;
+  let condoId = Number(document.querySelector(className).value);
+
+  className = `.account${dueId}`;
+  let accountId = Number(document.querySelector(className).value);
+
+  className = `.amount${dueId}`;
+  amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
+
+  className = `.date${dueId}`;
+  date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
+
+  className = `.text${dueId}`;
+  let text = document.querySelector(className).value;
+
+  // Validate dues columns
+  if (validateColumns(accountId, condoId, date, amount, text)) {
+
+    // Check if the dues row exist
+    duesRowNumber = objDues.arrayDues.findIndex(dues => dues.dueId === dueId);
+    if (duesRowNumber !== -1) {
+
+      // update the dues row
+      await objDues.updateDuesTable(dueId, user, lastUpdate, condoId, accountId, amount, date, text);
+
+    } else {
+
+      // Insert the account row in accounts table
+      await objDues.insertDuesTable(condominiumId, user, lastUpdate, condoId, accountId, amount, date, text);
+    }
+
+    const condominiumId = Number(objUserPassword.condominiumId);
+    condoId = Number(document.querySelector('.filterCondoId').value);
+    accountId = Number(document.querySelector('.filterAccountId').value);
+    let fromDate = document.querySelector('.filterFromDate').value;
+    fromDate = Number(formatNorDateToNumber(fromDate));
+    let toDate = document.querySelector('.filterToDate').value;
+    toDate = Number(formatNorDateToNumber(toDate));
+    await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+    
+    showDues();
+  }
 }

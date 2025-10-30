@@ -48,7 +48,7 @@ class Condos {
     },
 
     {
-      applicationName: "condo-userbankaccounts.html",
+      applicationName: "condo-userbankaccount.html",
       className: "Menu7",
       text: "Bankkonto for bruker"
     },
@@ -58,7 +58,7 @@ class Condos {
       text: "Mottaker"
     },
     {
-      applicationName: "condo-dues.html",
+      applicationName: "condo-due.html",
       className: "Menu9",
       text: "Forfall"
     },
@@ -185,7 +185,7 @@ class Condos {
 
     let html =
       `
-        <td>
+        <td class="center">
           <input 
             class=" ${className} center one-line"
             type="text" 
@@ -362,21 +362,18 @@ class Condos {
   // Valid text
   validateText(tekst, className, labelText) {
 
-    let validTekst =
-      true;
+    let validTekst = true;
 
     // Check for string
     if (typeof tekst !== "string") {
 
-      validTekst =
-        false;
+      validTekst = false;
     }
 
     // Check length
     if (tekst.length > 50) {
 
-      validTekst =
-        false;
+      validTekst = false;
     };
 
     // Check allowed characters (letters, numbers, spaces)
@@ -852,7 +849,7 @@ class Condos {
           Bankkonto sameie
         </a>
 
-        <a href="${url}condo-accounts.html"
+        <a href="${url}condo-account.html"
           class="a-menu-vertical-accounts"
         >
           Konto
@@ -864,8 +861,8 @@ class Condos {
           Bruker
         </a>
 
-        <a href="${url}condo-userbankaccounts.html"
-          class="a-menu-vertical-userbankaccounts"
+        <a href="${url}condo-userbankaccount.html"
+          class="a-menu-vertical-userbankaccount"
         >
           Bankkonto for bruker
         </a>
@@ -929,7 +926,7 @@ class Condos {
 
   menuNew(menuNumber) {
 
-    let html;
+    let html = "";
 
     // Check of menu exists
     if (this.arrayMenu.length > menuNumber) {
@@ -962,9 +959,9 @@ class Condos {
       const text = this.arrayMenu[menuNumber].text;
       const className = this.arrayMenu[menuNumber].className;
 
-      html =
+      html +=
         `
-        <td class="menu" one-line>
+        <td class="menu one-line">
           <a 
             href="${url}${applicationName}"
             class="${className}"
@@ -975,7 +972,7 @@ class Condos {
       `;
     } else {
 
-      html = "<td></td>";
+      html += "<td></td>";
     }
 
     return html;
@@ -1108,9 +1105,10 @@ class Condos {
     let html =
       `
         <td
+          class="center"
         >
           <select 
-            class="${className} center"
+            class="${className}"
           >
       `;
 
@@ -1403,24 +1401,75 @@ class Condos {
 
     return imageName;
   }
+
+  getClassByPrefix(element, prefix) {
+    return [...element.classList].find(cls => cls.startsWith(prefix));
+  }
   // get class name for account
   getAccountClass(element) {
     return [...element.classList].find(cls => cls.startsWith('account'));
   }
 
-  // get class name for budget amount
+  // get class name for condo
+  getCondoClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('condo'));
+  }
+
+  // get class name for amount
   getAmountClass(element) {
     return [...element.classList].find(cls => cls.startsWith('amount'));
   }
 
-  // get class name for budget year
+  // get class name for year
   getYearClass(element) {
     return [...element.classList].find(cls => cls.startsWith('year'));
   }
 
-  // get class name for delete budgets row
+  // get class name for delete
   getDeleteClass(element) {
     return [...element.classList].find(cls => cls.startsWith('delete'));
+  }
+  // get class name for fixed cost 
+  getFixedCostClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('fixedCost'));
+  }
+  // get class name for name
+  getNameClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('name'));
+  }
+
+  // get class name for date
+  getDateClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('date'));
+  }
+
+  // get class name for text
+  getTextClass(element) {
+    return [...element.classList].find(cls => cls.startsWith('Text'));
+  }
+
+  // Delete Yes/No
+  showDelete(className, selectedChoice) {
+
+    switch (selectedChoice) {
+      case 'Y': {
+
+        selectedChoice = "Ja";
+        break;
+      }
+      case 'N': {
+
+        selectedChoice = "Nei";
+        break;
+      }
+      default: {
+
+        selectedChoice = "Ugyldig verdi";
+        break
+      }
+    }
+    html = this.showSelectedValuesNew(className, selectedChoice, 'Nei', 'Ja')
+    return html;
   }
 }
 
@@ -2162,10 +2211,12 @@ function exitIfNoActivity() {
 */
 
 // Start of HTML table
-function startHTMLTable() {
+function startHTMLTable(style) {
 
   return `
-        <table>
+      <table 
+        style="${style}"
+      >
     `;
 }
 

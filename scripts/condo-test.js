@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUsers = new Users('users');
-const objAccounts = new Accounts('accounts');
+const objAccounts = new Account('account');
 const objBudget = new Budget('budget');
 
 testMode();

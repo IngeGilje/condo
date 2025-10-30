@@ -4,10 +4,10 @@
 const today = new Date();
 const objUsers = new Users('users');
 const objCondo = new Condo('condo');
-const objAccounts = new Accounts('accounts');
+const objAccounts = new Account('account');
 const objBankAccounts = new BankAccounts('bankaccounts');
 const objSuppliers = new Suppliers('suppliers');
-const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
+const objUserBankAccounts = new UserBankAccount('userbankaccount');
 const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
 
 testMode();
@@ -35,7 +35,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
-    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId);
+    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId,999999999,999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 

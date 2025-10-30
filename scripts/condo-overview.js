@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUsers = new Users('users');
-const objDues = new Dues('dues');
+const objDues = new Due('due');
 const objCondo = new Condo('condo');
 const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
 const objOverview = new Overview('overview');

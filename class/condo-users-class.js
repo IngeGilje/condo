@@ -78,6 +78,111 @@ class Users extends Condos {
     document.querySelector(`.div-${classValue}`).innerHTML = html;
   }
 
+  // Show all selected users
+  showSelectedUsersNew(className, userId, selectAll, selectNone) {
+
+    let selectedValue = false;
+
+    let html =
+      `
+        <td
+          class="center one-line"
+        >
+          <select 
+            class="${className}"
+          >
+      `;
+
+    // Check if users array is empty
+    const numberOfRows = this.arrayUsers.length;
+    if (numberOfRows > 0) {
+      this.arrayUsers.forEach((user) => {
+        if (user.userId === userId) {
+
+          html +=
+            `
+              <option 
+                value=${user.userId}
+                selected
+              >
+                ${user.firstName}
+              </option>
+            `;
+          selectedValue = true;
+        } else {
+
+          html +=
+            `
+              <option 
+                value="${user.userId}">
+                ${user.firstName}
+              </option>
+            `;
+        }
+      });
+    } else {
+
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen konti
+          </option>
+        `;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (numberOfRows > 1)) {
+
+      html +=
+        `
+          <option 
+            value=999999999
+            selected
+          >
+            ${selectAll}
+          </option>
+        `;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (numberOfRows > 1)) {
+      if (selectedValue) {
+        html +=
+          `
+          <option 
+            value=0
+          >
+            ${selectNone}
+          </option>
+        `;
+      } else {
+
+        html +=
+          `
+            <option 
+              value=0
+              selected
+            >
+              ${selectNone}
+            </option>
+          `;
+        selectedValue = true;
+      }
+    }
+
+    html +=
+      `
+          </select >
+        </td>
+      `;
+
+    return html;
+  }
+
   // Find selected user id
   getSelectedUserId(classValue) {
 
@@ -109,7 +214,6 @@ class Users extends Condos {
       console.log("Error loading users:", error);
     }
   }
-
 
   // update user row in users table
   async updateUsersTable(user, lastUpdate, email, condoId, firstName, lastName, phone, securityLevel, password) {

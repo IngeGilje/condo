@@ -4,7 +4,6 @@ table {
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  width: 90%;
 }
 
 th,
@@ -84,7 +83,7 @@ tr:nth-child(n+3):hover {background-color: #e0f0e0;}
 /* menu */
 .menu {
   padding: 5px;
-  max-width: 150px;
+  max-width: 75px;
 }
 
 .menu a {

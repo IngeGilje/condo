@@ -6,13 +6,13 @@ let arrayTransactions = [];
 // Activate objects
 const today = new Date();
 const objUsers = new Users('users');
-const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
+const objUserBankAccounts = new UserBankAccount('userbankaccount');
 const objCondominiums = new Condominiums('condominiums');
 const objCondo = new Condo('condo');
 const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
-const objAccounts = new Accounts('accounts');
+const objAccounts = new Account('account');
 const objBankAccounts = new BankAccounts('bankaccounts');
-const objDues = new Dues('dues');
+const objDues = new Due('due');
 const objSuppliers = new Suppliers('suppliers');
 const objImportFile = new ImportFile('importfile');
 
@@ -41,7 +41,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
-    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId);
+    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId,999999999,999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);

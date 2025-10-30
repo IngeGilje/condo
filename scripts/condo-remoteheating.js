@@ -5,7 +5,7 @@ const today = new Date();
 const objCondominiums = new Condominiums('condominiums');
 const objUsers = new Users('users');
 const objCondo = new Condo('condo');
-const objAccounts = new Accounts('accounts');
+const objAccounts = new Account('account');
 const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
 const objRemoteHeating = new Remoteheating('remoteheating');
 

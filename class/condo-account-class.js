@@ -1,5 +1,5 @@
 // class for account
-class Accounts extends Condos {
+class Account extends Condos {
 
   // accounts information
   arrayAccounts;
@@ -118,7 +118,7 @@ class Accounts extends Condos {
             ${selectNone}
           </option>
         `;
-        selectedOption = true;
+        selectedValue = true;
       }
     }
 

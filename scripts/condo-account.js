@@ -3,15 +3,16 @@
 // Activate classes
 const today = new Date();
 const objUsers = new Users('users');
-const objAccounts = new Accounts('accounts');
+const objAccounts = new Account('account');
+
+// Fixed values
+const constVariableCost = 'Variabel kostnad';
+const constFixedCost = 'Fast kostnad';
 
 testMode();
 
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
-
-objAccounts.menu();
-objAccounts.markSelectedMenu('Konto');
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -29,16 +30,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
-    // Find selected account id
-    const accountId = objAccounts.getSelectedAccountId('select-accounts-accountId');
+    // Show header
+    showHeader();
 
-    // Show leading text
-    showLeadingText(accountId);
+    // Show filter
+    showFilter();
 
-    // Show all values for account
-    showValues(accountId);
+    // Show account
+    showAccounts();
 
-    // Make events
+    // Create events
     createEvents();
   }
 }
@@ -46,323 +47,126 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make events for accounts
 function createEvents() {
 
-  // Select Account
+  // Filter
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-accounts-accountId')) {
+    if (event.target.classList.contains('filterFixedCost')) {
 
-      let accountId = Number(document.querySelector('.select-accounts-accountId').value);
-      accountId = (accountId !== 0) ? accountId : objAccounts.arrayAccounts.at(-1).accountId;
-      if (accountId) {
-        showValues(accountId);
-      }
+      filterSync();
 
-      /*
-      const accountId = Number(document.querySelector('.select-accounts-accountId').value);
-      if (accountId) {
-        showValues(accountId);
-      }
-      */
-    }
-  });
+      async function filterSync() {
 
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-accounts-update')) {
-
-      // Update accounts and reload accounts
-      updateAccountSync();
-
-      // Update account and reload accounts
-      async function updateAccountSync() {
-
-        // Load account
-        let accountId;
-        if (document.querySelector('.select-accounts-accountId').value === '') {
-
-          // Insert new row into account table
-          accountId = 0;
-        } else {
-
-          // Update existing row in accounts table
-          accountId = Number(document.querySelector('.select-accounts-accountId').value);
-        }
-
-        if (validateValues()) {
-
-          await updateAccount(accountId);
-          await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-
-          // Select last accounts if accountId is 0
-          if (accountId === 0) accountId = objAccounts.arrayAccounts.at(-1).accountId;
-
-          // Show leading text
-          showLeadingText(accountId);
-
-          // Show all values for account
-          showValues(accountId);
-        }
-      }
-    }
-  });
-  /*
-  // Update account row and reload accounts
-  updateAccountSync();
-  async function updateAccountSync() {
-  
-    let accountId;
-    if (document.querySelector('.select-accounts-accountId').value === '') {
-  
-      // Insert new row into accounts table
-      accountId = 0;
-    } else {
-  
-      // Update existing row in accounts table
-      accountId = Number(document.querySelector('.select-accounts-accountId').value);
-    }
-  
-    updateAccount(accountId);
-  
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-  
-    // Select last account if accountId is 0
-    if (accountId === 0) accountId = objAccounts.arrayAccounts.at(-1).accountId;
-  
-    // Show leading text
-    showLeadingText(accountId);
-  
-    // Show values for selected account Id
-    showValues(accountId);
-  }
-  */
-
-  // Insert account
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button--accounts-insert')) {
-
-      resetValues();
-    }
-  });
-
-  // Delete account
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-accounts-delete')) {
-
-      // Delete account and reload account
-      deleteAccountSync();
-
-      // Delete account
-      async function deleteAccountSync() {
-
-        await deleteAccount();
         await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
-        // Show leading text
-        const accountId = objAccounts.arrayAccounts.at(-1).accountId;
-        showLeadingText(accountId);
-
-        // Show all values for account
-        showValues(accountId);
-      };
+        showAccounts();
+      }
     };
   });
 
-  /*
-  // Delete account and reload accounts
-  deleteAccountSync();
-  
-  // Delete account and reload accounts
-  async function deleteAccountSync() {
-  
-    deleteAccount();
-  
-    // Load accounts
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-  
-    // Show leading text
-    const accountId = objAccounts.arrayAccounts.at(-1).accountId;
-    showLeadingText(accountId);
-  
-    // Show all values for account
-    showValues(accountId);
-  }
-  */
+  // update a accounts row
+  document.addEventListener('change', (event) => {
 
-  // Cancel
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-accounts-cancel')) {
+    if ([...event.target.classList].some(cls => cls.startsWith('fixedCost'))
+      || [...event.target.classList].some(cls => cls.startsWith('name'))) {
 
-      // Reload account
-      reloadAccountSync();
-      async function reloadAccountSync() {
+      const prefixes = ['fixedCost', 'name'];
 
-        let condominiumId = Number(objUserPassword.condominiumId);
-        await objAccounts.loadAccountsTable(condominiumId);
+      // Find the first matching class
+      const className = prefixes
+        .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
 
-        // Show leading text for maintenance
-        // Select first account Id
-        if (objAccounts.arrayAccounts.length > 0) {
-          accountId = objAccounts.arrayAccounts[0].accountId;
-          showLeadingText(accountId);
-        }
-
-        // Show all selected account
-        objAccounts.showAllSelectedAccounts('accounts-accountId', accountId);
-
-        // Show account Id
-        showValues(accountId);
+      // Extract the number in the class name
+      let accountId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = prefixes.find(p => className.startsWith(p));
+        accountId = Number(className.slice(prefix.length));
       }
-    }
+      /*
+      if (objAccounts.getFixedCostClass(event.target)) className = objAccounts.getFixedCostClass(event.target);
+      if (objAccounts.getNameClass(event.target)) className = objAccounts.getNameClass(event.target);
+
+      if (objAccounts.getFixedCostClass(event.target)) accountId = className.substring(9);
+      if (objAccounts.getNameClass(event.target)) accountId = Number(className.substring(4));
+      */
+
+      updateAccountRowSync();
+
+      /*
+      if ([...event.target.classList].some(cls => cls.startsWith('fixedCost'))
+        || [...event.target.classList].some(cls => cls.startsWith('name'))) {
+  
+        const className = objAccounts.getNameClass(event.target);
+        const accountId = Number(className.substring(4));
+  
+        updateAccountRowSync();
+      */
+
+      // Update a accounts row
+      async function updateAccountRowSync() {
+
+        updateAccountsRow(accountId);
+      }
+    };
   });
-}
   /*
-  // cancel and reload accounts
-  cancelAccountSync();
+  // Fixed cost
+  document.addEventListener('change', (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('fixedCost'))) {
 
-  // cancel account and reload accounts
-  async function cancelAccountSync() {
+      const className = objAccounts.getFixedCostClass(event.target);
+      const accountId = Number(className.substring(9));
 
-    // Load accounts
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+      updateFixedCostSync();
 
-    // Show leading text
-    const accountId = objAccounts.arrayAccounts.at(-1).accountId;
-    showLeadingText(accountId);
+      // Update condoId
+      async function updateFixedCostSync() {
 
-    // Show all values for account
-    showValues(accountId);
-  }
+        updateAccountsRow('fixedCost', className, accountId);
+      }
+    };
+  });
+
+  // Update name
+  document.addEventListener('change', (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('name'))) {
+
+      const className = objAccounts.getNameClass(event.target);
+      const accountId = className.substring(4);
+      updateNameSync();
+
+      // Update amount
+      async function updateNameSync() {
+
+        updateAccountsRow('name', className, accountId);
+      }
+    };
+  });
   */
 
-async function updateAccount() {
+  // Delete accounts row
+  document.addEventListener('change', (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
-  if (validateValues()) {
+      const className = objAccounts.getDeleteClass(event.target);
+      const classNameDelete = `.${className}`
+      const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
+      if (deleteAccountRowValue === "Ja") {
 
-    // User
-    const user = objUserPassword.email;
-    // Account number
-    const accountId = Number(document.querySelector('.select-accounts-accountId').value);
-    // Account Name
-    const accountName = document.querySelector('.input-accounts-accountName').value;
-    // Fixed cost
-    let fixedCost = document.querySelector('.select-accounts-fixedCost').value;
+        const accountId = Number(className.substring(6));
+        deleteAccountSync();
 
-    switch (fixedCost) {
+        async function deleteAccountSync() {
 
-      case 'Ja':
-        fixedCost = 'Y';
-        break;
+          deleteAccountRow(accountId, className);
 
-      case 'Nei':
-        fixedCost = 'N';
-        break;
+          await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
-      default:
-        fixedCost = 'Y';
-        break;
-    }
-
-    if (accountId >= 0) {
-
-      const lastUpdate = today.toISOString();
-      const condominiumId = Number(objUserPassword.condominiumId);
-      const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-
-      // Check if account number exist
-      if (accountRowNumber !== -1) {
-
-        // update account
-        objAccounts.updateAccountsTable(user, accountId, fixedCost, lastUpdate, accountName);
-
-      } else {
-
-        // insert account
-        objAccounts.insertAccountsTable(condominiumId, user, lastUpdate, accountName, fixedCost, accountName);
-      }
-
-      document.querySelector('.select-accounts-accountId').disabled = false;
-      document.querySelector('.button-accounts-delete').disabled = false;
-      document.querySelector('.button--accounts-insert').disabled = false;
-    }
-  }
-}
-
-async function deleteAccount() {
-
-  // Check for valid account number
-  const accountId = Number(document.querySelector('.select-accounts-accountId').value);
-
-  if (accountId !== 1) {
-
-    // Check if account number exist
-    const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumber !== -1) {
-
-      // delete account row
-      const user = objUserPassword.email;
-      const lastUpdate = today.toISOString();
-      objAccounts.deleteAccountsTable(accountId, user, lastUpdate);
-    }
-  }
-}
-
-// Show leading text for account
-function showLeadingText(accountId) {
-
-  // Show all accounts
-  objAccounts.showSelectedAccounts('accounts-accountId', accountId);
-
-  // account name
-  objAccounts.showInput('accounts-accountName', '* Kontonavn', 50, '');
-
-  // fixed cost
-  objAccounts.showSelectedValues('accounts-fixedCost', 'No', 'Fast kostnad', 'Ja', 'Nei');
-
-  // update button
-  if (Number(objUserPassword.securityLevel) >= 9) {
-    objAccounts.showButton('accounts-update', 'Oppdater');
-
-    // new button
-    objAccounts.showButton('-accounts-insert', 'Ny');
-
-    // delete button
-    objAccounts.showButton('accounts-delete', 'Slett');
-
-    // cancel button
-    objAccounts.showButton('accounts-cancel', 'Avbryt');
-  }
-}
-
-// Show all values for account
-function showValues(accountId) {
-
-  // Check for valid income Id
-  if (accountId >= 0) {
-
-    // find object number for selected account 
-    const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumber !== -1) {
-
-      // account name
-      document.querySelector('.input-accounts-accountName').value = objAccounts.arrayAccounts[accountRowNumber].name;
-
-      // fixed cost
-      let fixedCost = objAccounts.arrayAccounts[accountRowNumber].fixedCost;
-      switch (fixedCost) {
-        case 'Y':
-          fixedCost = 'Ja';
-          break;
-
-        case 'N':
-          fixedCost = 'Nei';
-          break;
-
-        default:
-          fixedCost = 'Nei';
-          break;
-      }
-      document.querySelector('.select-accounts-fixedCost').value =
-        fixedCost;
-    }
-  }
+          showAccounts();
+        };
+      };
+    };
+  });
 }
 
 // Check for valid values
@@ -373,7 +177,7 @@ function validateValues() {
   const validName = objAccounts.validateText(accountName, "label-accounts-accountName", "Kontonavn");
 
   const fixedCost = document.querySelector('.select-accounts-fixedCost').value;
-  const validFixedCost = objAccounts.validateText(fixedCost, "label-accounts-fixedCost", "Fast kostnad");
+  const validFixedCost = objAccounts.validateText(fixedCost, "label-accounts-fixedCost", fixedCost);
 
   return (validName && validFixedCost) ? true : false;
 }
@@ -392,4 +196,332 @@ function resetValues() {
   document.querySelector('.select-accounts-accountId').disabled = true;
   document.querySelector('.button-accounts-delete').disabled = true;
   document.querySelector('.button--accounts-insert').disabled = true;
+}
+
+function showHeader() {
+
+  // Start table
+  const style = 'width: 50%';
+  let html = startHTMLTable(style);
+
+  // Main header
+  html += showHTMLMainTableHeader('', 'Konto', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.header').innerHTML = html;
+}
+
+// Show filter
+function showFilter() {
+
+  // Start table
+  const style = 'width: 50%';
+  html = startHTMLTable(style);
+
+  // Header filter for search
+  html += showHTMLFilterHeader('', 'Kostnadstype', '', '');
+
+  // Filter for search
+  html += showHTMLFilterSearch();
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.filter').innerHTML = html;
+}
+
+// Filter for search
+function showHTMLFilterSearch() {
+
+  let html =
+    `
+      <tr>
+        <td></td>
+    `;
+
+  // fixed or not fixed cost
+  html += objAccounts.showSelectedValuesNew('filterFixedCost', 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html +=
+    `
+      </tr>
+    `;
+
+  return html;
+}
+
+// Insert empty table row
+function insertEmptyTableRow(rowNumber) {
+
+  let html = "<tr>";
+
+  // Show menu
+  html += objAccounts.menuNew(rowNumber - 1);
+
+  // delete
+  html += "<td class='center'>Ny konto</td>";
+
+  // Fixed cost
+  html += objAccounts.showSelectedValuesNew('fixedCost0', constFixedCost, constFixedCost, constVariableCost);
+
+  // name
+  html += objAccounts.showInputHTMLNew('name0', "", 45);
+
+  html += "</tr>";
+  return html;
+}
+
+// Show table sum row
+function showTableSumRow(rowNumber, amount) {
+
+  let html = "<tr>";
+
+  // Show menu
+  html += objAccounts.menuNew(rowNumber - 1);
+
+  // condo
+  html += "<td></td>";
+  // Date
+  html += "<td></td>";
+  // account
+  html += "<td></td>";
+  // text sum
+  html += "<td class='right bold'>Sum</td>";
+  // Amount
+  html += `<td class="center bold">${amount}</td>`;
+  // Text
+  html += "<td></td>";
+  html += "</tr>"
+
+  return html;
+}
+
+// Show accounts
+function showAccounts() {
+
+  // Start HTML table
+  const style = 'width: 50%';
+  html = startHTMLTable(style);
+
+  // Header
+  html += showHTMLMainTableHeader('Meny', 'Slett', 'Kostnadstype', 'Tekst');
+
+  //let sumAmount = 0;
+  let rowNumber = 0;
+
+  objAccounts.arrayAccounts.forEach((account) => {
+
+    rowNumber++;
+
+    html += "<tr>";
+
+    // Show menu
+    html += objAccounts.menuNew(rowNumber - 1);
+
+    // Delete
+    let selectedChoice = "Ugyldig verdi";
+    switch (account.deleted) {
+      case 'Y': {
+
+        selectedChoice = "Ja";
+        break;
+      }
+      case 'N': {
+
+        selectedChoice = "Nei";
+        break;
+      }
+      default: {
+
+        selectedChoice = "Ugyldig verdi";
+        break
+      }
+    }
+    let className = `delete${account.accountId}`;
+    html += objAccounts.showSelectedValuesNew(className, selectedChoice, 'Nei', 'Ja')
+
+    // fixed cost
+    selectedChoice = "Ugyldig verdi";
+    switch (account.fixedCost) {
+      case 'Y': {
+
+        selectedChoice = constFixedCost;
+        break;
+      }
+      case 'N': {
+
+        selectedChoice = constVariableCost;
+        break;
+      }
+      default: {
+
+        selectedChoice = "Ugyldig verdi";
+        break
+      }
+    }
+
+    className = `fixedCost${account.accountId}`;
+    html += objAccounts.showSelectedValuesNew(className, selectedChoice, constFixedCost, constVariableCost)
+
+    // name
+    const name = account.name;
+    className = `name${account.accountId}`;
+    html += objAccounts.showInputHTMLNew(className, name, 45);
+
+    html += "</tr>";
+  });
+
+  // Make one last table row for insertion in table 
+
+  // Insert empty table row for insertion
+  rowNumber++;
+  html += insertEmptyTableRow(rowNumber);
+
+  /*
+  // Show table sum row
+  rowNumber++;
+  sumAmount = formatOreToKroner(sumAmount);
+  html += showTableSumRow(rowNumber, sumAmount);
+  */
+
+  // Show the rest of the menu
+  rowNumber++;
+  html += showRestMenu(rowNumber);
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.account').innerHTML = html;
+}
+
+// Show the rest of the menu
+function showRestMenu(rowNumber) {
+
+  let html = "";
+  for (; objAccounts.arrayMenu.length > rowNumber; rowNumber++) {
+
+    html += "<tr>";
+
+    // Show menu
+    html += objAccounts.menuNew(rowNumber - 1);
+    html += "</tr>"
+  }
+
+  // The end of the table
+  html += endHTMLTable();
+  return html;
+  //document.querySelector('.account').innerHTML = html;
+}
+
+// Delete one account row
+async function deleteAccountRow(accountId, className) {
+
+  const user = objUserPassword.email;
+  const lastUpdate = today.toISOString();
+
+  // Check if account row exist
+  accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+  if (accountsRowNumber !== -1) {
+
+    // delete account row
+    objAccounts.deleteAccountsTable(accountId, user, lastUpdate);
+  }
+
+  await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+}
+
+// Update a accounts table row
+async function updateAccountsRow(accountId) {
+
+  accountId = Number(accountId);
+
+  const condominiumId = Number(objUserPassword.condominiumId);
+  const user = objUserPassword.email;
+  const lastUpdate = today.toISOString();
+
+  // Check accounts columns
+  let className = `.name${accountId}`;
+  let name = document.querySelector(className).value;
+
+  className = `.fixedCost${accountId}`;
+  let fixedCost = document.querySelector(className).value;
+  if (fixedCost === constFixedCost) fixedCost = 'Y';
+  if (fixedCost === constVariableCost) fixedCost = 'N';
+
+  // Validate accounts columns
+  if (validateColumns(name, fixedCost)) {
+
+    // Check if the account id exist
+    accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (accountRowNumber !== -1) {
+
+      // update the accounts row
+      await objAccounts.updateAccountsTable(user, accountId, fixedCost, lastUpdate, name);
+
+    } else {
+
+      // Insert the account row in accounts table
+      await objAccounts.insertAccountsTable(condominiumId, user, lastUpdate, accountName, fixedCost, accountName);
+    }
+
+    await objAccounts.loadAccountsTable(condominiumId);
+    showAccounts();
+  }
+}
+/*
+// Update accounts table
+async function updateAccountsRow(columnName, className, accountId) {
+
+  accountId = Number(accountId);
+
+  const condominiumId = Number(objUserPassword.condominiumId);
+  const user = objUserPassword.email;
+  const lastUpdate = today.toISOString();
+
+  let accountName = "";
+  let fixedCost = "";
+
+  // Get current accounts values
+  accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+  if (accountsRowNumber !== -1) {
+
+    accountName = objAccounts.arrayAccounts[accountsRowNumber].name;
+    fixedCost = objAccounts.arrayAccounts[accountsRowNumber].fixedCost;
+  }
+
+  // change column value
+  if (columnName === 'name') accountName = document.querySelector(`.${className}`).value;
+  if (columnName === 'fixedCost') fixedCost = document.querySelector(`.${className}`).value;
+  if (fixedCost === fixedCost) fixedCost = 'Y';
+  if (fixedCost === variableCost) fixedCost = 'N';
+
+  // Validate accounts columns
+  if (validateColumns(columnName, fixedCost)) {
+
+    // Check if the account id exist
+    if (accountsRowNumber !== -1) {
+
+      // update the account row
+      await objAccounts.updateAccountsTable(user, accountId, fixedCost, lastUpdate, accountName);
+
+    } else {
+
+      // Insert the account row in accounts table
+      await objAccounts.insertAccountsTable(condominiumId, user, lastUpdate, accountName, fixedCost, accountName);
+    }
+
+    await objAccounts.loadAccountsTable(condominiumId);
+    showAccounts();
+  }
+}
+*/
+
+// Validate accounts columns
+function validateColumns(name, fixedCost) {
+
+  // Check name
+  const validName = objAccounts.validateText(name);
+
+  // Check fixed cost
+  let validFixedCost = (fixedCost === 'N' || fixedCost === 'Y') ? true : false;
+
+  return (validName && validFixedCost) ? true : false;
 }
