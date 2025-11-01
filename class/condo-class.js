@@ -2290,5 +2290,5 @@ function showHTMLFilterHeader(...texts) {
 // End of HTML table
 function endHTMLTable() {
 
-  return "</table>";
+  return `</table>`;
 }
