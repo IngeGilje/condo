@@ -33,14 +33,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const accountId = 999999999;
     await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
-    // Show header
-    showHeader();
-
     // Show filter
     showFilter();
 
-    // Show budget
-    showBudgets();
+    // Show header
+    showHeader();
+
+    // Show result of filter
+    showResult();
 
     // Make events
     createEvents();
@@ -124,7 +124,7 @@ function createEvents() {
         const accountId = Number(document.querySelector('.filterAccountId').value);
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
-        showBudgets();
+        showResult();
       }
     };
   });
@@ -142,7 +142,7 @@ function createEvents() {
         const accountId = Number(document.querySelector('.filterAccountId').value);
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
-        showBudgets();
+        showResult();
       }
     };
   });
@@ -365,67 +365,9 @@ async function updateBudgetsRow(budgetId) {
     accountId = Number(document.querySelector('.filterAccountId').value);
     year = Number(document.querySelector('.filterYear').value);
     await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
-    showBudgets();
+    showResult();
   }
 }
-/*
-// Update budgets table
-async function updateBudgetsRow(columnName, className, budgetId) {
- 
-  budgetId = Number(budgetId);
-  const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
- 
-  let accountId = 0;
-  let amount = 0;
-  let year = 0;
- 
-  // change column value
-  if (columnName === 'accountId') accountId = Number(document.querySelector(`.${className}`).value);
-  if (columnName === 'amount') amount = Number(formatKronerToOre(document.querySelector(`.${className}`).value));
- 
-  // Validate budgets columns
-  if (validateColumns(accountId, amount, year)) {
- 
-    // Check if budget id exist
-    budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-    if (budgetsRowNumber !== -1) {
- 
-      // update budget
-      await objBudgets.updateBudgetsTable(budgetId, user, lastUpdate, accountId, amount, year);
- 
-    } else {
- 
-      // Insert budget row in budgets table
-      const year = Number(document.querySelector('.filterYear').value);
-      await objBudgets.insertBudgetsTable(condominiumId, user, lastUpdate, accountId, amount, year);
-    }
- 
-    await objBudgets.loadBudgetsTable(condominiumId, accountId, condoId, fromDate, toDate);
-    showBudgets();
-  }
-}
-*/
-
-/*
-// Delete budget row
-async function deleteBudget() {
- 
-  // Check for budget Id
-  const budgetId = Number(document.querySelector('.select-budget-budgetId').value);
- 
-  // Check if budget id exist
-  const budgetRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-  if (budgetRowNumber !== -1) {
- 
-    // delete budget row
-    const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    objBudgets.deleteBudgetsTable(budgetId, user, lastUpdate);
-  }
-}
-*/
 
 // Filter for search
 function showHTMLFilterSearch() {
@@ -452,10 +394,10 @@ function showHTMLFilterSearch() {
 }
 
 // Show budgets
-function showBudgets() {
+function showResult() {
 
   // Start HTML table
-  html = startHTMLTable();
+  html = startHTMLTable(`width: 50%`);
 
   let sumAmount = 0;
   let rowNumber = 0;
@@ -534,7 +476,7 @@ function showBudgets() {
 
   // The end of the table
   html += endHTMLTable();
-  document.querySelector('.budget').innerHTML = html;
+  document.querySelector('.table-result').innerHTML = html;
 }
 
 // Insert empty table row
@@ -578,21 +520,21 @@ function calculateSum() {
 function showHeader() {
 
   // Start table
-  let html = startHTMLTable();
+  let html = startHTMLTable(`width: 50%`);
 
   // Main header
   html += showHTMLMainTableHeader('', '', 'Budsjett', '');
 
   // The end of the table
   html += endHTMLTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.table-header').innerHTML = html;
 }
 
 // Show filter
 function showFilter() {
 
   // Start table
-  html = startHTMLTable();
+  html = startHTMLTable(`width: 50%`);
 
   // Header filter for search
   html += showHTMLFilterHeader('', 'Velg konto', 'Velg år', '');
@@ -602,30 +544,14 @@ function showFilter() {
 
   // The end of the table
   html += endHTMLTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.table-filter').innerHTML = html;
 }
-
-/*
-// Show budgets table
-function showBudget() {
- 
-  // Start HTML table
-  html = startHTMLTable();
- 
-  // Show budgets
-  html += showBudgets();
- 
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.budget').innerHTML = html;
-}
-*/
 
 // Show the rest of the menu
 function showRestMenu(rowNumber) {
 
   let html = "";
-  for (; objBudgets.arrayMenu.length > rowNumber; rowNumber++) {
+  for (; objBudgets.arrayMenu.length >= rowNumber; rowNumber++) {
 
     html +=
       `

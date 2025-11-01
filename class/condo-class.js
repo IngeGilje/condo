@@ -2211,7 +2211,7 @@ function exitIfNoActivity() {
 */
 
 // Start of HTML table
-function startHTMLTable(style) {
+function startHTMLTable(style, width) {
 
   return `
       <table 
