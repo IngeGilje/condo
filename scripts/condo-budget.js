@@ -56,10 +56,10 @@ function createEvents() {
     if ([...event.target.classList].some(cls => cls.startsWith('account'))
       || [...event.target.classList].some(cls => cls.startsWith('amount'))) {
 
-      const prefixes = ['account', 'amount'];
+      const arrayPrefixes = ['account', 'amount'];
 
       // Find the first matching class
-      const className = prefixes
+      const className = arrayPrefixes
         .map(prefix => objBudgets.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
@@ -71,21 +71,12 @@ function createEvents() {
         budgetId = Number(className.slice(prefix.length));
       }
 
-      // Update a account row
-      /*
-      document.addEventListener('change', (event) => {
-        if ([...event.target.classList].some(cls => cls.startsWith('account'))) {
-    
-          const className = objBudgets.getAccountClass(event.target);
-          const budgetId = Number(className.substring(7));
-      */
-      updateAccountIdSync();
+      updateAccountSync();
 
       // Update amount
-      async function updateAccountIdSync() {
+      async function updateAccountSync() {
 
-        //updateBudgetsRow('accountId', className, budgetId);
-        updateBudgetsRow(budgetId);
+        await updateBudgetsRow(budgetId);
       }
     };
   });
@@ -148,22 +139,6 @@ function createEvents() {
   });
 };
 
-// Validate budgets columns
-function validateColumns(budgetId, accountId, amount, year) {
-
-  // Check account id
-  const validAccountId = validateNumberNew(accountId, 1, 99999);
-
-  // Check year
-  const validYear = validateNumberNew(year, 2020, 2099);
-
-  // Check amount
-  amount = formatOreToKroner(amount);
-  const validAmount = objBudgets.validateNorAmount(amount);
-
-  return (validAmount && validAccountId && validYear) ? true : false;
-}
-
 // Delete budgets row
 async function deleteBudgetRow(budgetId, className) {
 
@@ -181,144 +156,6 @@ async function deleteBudgetRow(budgetId, className) {
   await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, 999999999);
 }
 
-/*
-// Update accountId
-async function updateAccountId(budgetId, className) {
-
-  const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
-
-  let accountId = 0;
-  let amount = 0;
-  let year = 0;
-
-  // Get current budgets values
-  budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-  if (budgetsRowNumber !== -1) {
-
-    accountId = objBudgets.arrayBudgets[budgetsRowNumber].accountId;
-    amount = objBudgets.arrayBudgets[budgetsRowNumber].amount;
-    year = objBudgets.arrayBudgets[budgetsRowNumber].year;
-  }
-
-  // Account Id
-  accountId = Number(document.querySelector(`.${className}`).value);
-
-  // Validate budgets columns
-  if (validateColumns(accountId, amount, year)) {
-
-    // Check if budget id exist
-    budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-    if (budgetsRowNumber !== -1) {
-
-      // update budget
-      await objBudgets.updateBudgetsTable(budgetId, user, lastUpdate, accountId, amount, year);
-
-    } else {
-
-      // Insert budget row in budgets table
-      const year = Number(document.querySelector('.filterYear').value);
-      await objBudgets.insertBudgetsTable(condominiumId, user, lastUpdate, accountId, amount, year);
-    }
-
-    await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, 999999999);
-  }
-}
-*/
-
-/*
-// Update amount
-async function updateAmount(budgetId, className) {
-
-  updateAccountRow
-  const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
-
-  let accountId = 0;
-  let amount = 0;
-  let year = 0;
-
-  // Get current budgets values
-  budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-  if (budgetsRowNumber !== -1) {
-
-    accountId = objBudgets.arrayBudgets[budgetsRowNumber].accountId;
-    amount = objBudgets.arrayBudgets[budgetsRowNumber].amount;
-    year = objBudgets.arrayBudgets[budgetsRowNumber].year;
-  }
-
-  // amount
-  amount = formatKronerToOre(document.querySelector(`.${className}`).value);
-
-  // Validate budgets columns
-  if (validateColumns(accountId, amount, year)) {
-
-    // Check if budget id exist
-    budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-    if (budgetsRowNumber !== -1) {
-
-      // update budget
-      await objBudgets.updateBudgetsTable(budgetId, user, lastUpdate, accountId, amount, year);
-
-    } else {
-
-      // Insert budget row in budgets table
-      const year = Number(document.querySelector('.filterYear').value);
-      await objBudgets.insertBudgetsTable(condominiumId, user, lastUpdate, accountId, amount, year);
-    }
-
-    await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, 999999999);
-  }
-}
-*/
-
-/*
-// Update year
-async function updateYear(budgetId, className) {
-
-  const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
-
-  let accountId = 0;
-  let amount = 0;
-  let year = 0;
-
-  // Get current budgets values
-  budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-  if (budgetsRowNumber !== -1) {
-
-    accountId = objBudgets.arrayBudgets[budgetsRowNumber].accountId;
-    amount = objBudgets.arrayBudgets[budgetsRowNumber].amount;
-    year = objBudgets.arrayBudgets[budgetsRowNumber].year;
-  }
-
-  // year
-  year = document.querySelector(`.${className}`).value;
-
-  // Validate budgets columns
-  if (validateColumns(accountId, amount, year)) {
-
-    // Check if budget id exist
-    budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-    if (budgetsRowNumber !== -1) {
-
-      // update budget
-      await objBudgets.updateBudgetsTable(budgetId, user, lastUpdate, accountId, amount, year);
-
-    } else {
-
-      // Insert budget row in budgets table
-          const year = Number(document.querySelector('.filterYear').value);
-      await objBudgets.insertBudgetsTable(condominiumId, user, lastUpdate, accountId, amount, year);
-    }
-
-    await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, 999999999);
-  }
-}
-*/
 // Update a budgets row
 async function updateBudgetsRow(budgetId) {
 
@@ -327,9 +164,6 @@ async function updateBudgetsRow(budgetId) {
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
   const lastUpdate = today.toISOString();
-
-  //if (columnName === 'accountId') accountId = Number(document.querySelector(`.${className}`).value);
-  //if (columnName === 'amount') amount = Number(formatKronerToOre(document.querySelector(`.${className}`).value));
 
   // Get budgets row values
 
@@ -347,7 +181,7 @@ async function updateBudgetsRow(budgetId) {
   let year = Number(document.querySelector(`${className}`).value);
 
   // Validate budgets columns
-  if (validateColumns(budgetId, accountId, amount, year)) {
+  if (budgetId, accountId, amount, year) {
 
     // Check if the budgets row exist
     budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budgets => budgets.budgetId === budgetId);
@@ -372,11 +206,7 @@ async function updateBudgetsRow(budgetId) {
 // Filter for search
 function showHTMLFilterSearch() {
 
-  let html =
-    `
-      <tr>
-        <td></td>
-    `;
+  let html = "<tr><td></td>";
 
   // Show all selected accounts
   html += objAccounts.showSelectedAccountsNew('filterAccountId', 0, 'Alle', '');
@@ -385,10 +215,7 @@ function showHTMLFilterSearch() {
   const year = today.getFullYear();
   html += objBudgets.selectNumberNew('filterYear', 2020, 2030, year);
 
-  html +=
-    `
-      </tr>
-    `;
+  html += "</tr>";
 
   return html;
 }

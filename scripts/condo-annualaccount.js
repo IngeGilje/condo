@@ -183,7 +183,7 @@ function createEvents() {
 
         let priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
         priceSquareMeter = formatKronerToOre(priceSquareMeter);
-        document.querySelector('.input-filter-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);;
+        document.querySelector('.input-filter-priceSquareMeter').value = formatOreToKroner(priceSquareMeter);
 
         const condominiumId = Number(objUserPassword.condominiumId);
         const deleted = 'N';
@@ -476,7 +476,7 @@ function showIncomeNextYear() {
   strFixedCost = formatOreToKroner(String(totalFixedCosts));
 
   // Common cost per month
-  const strCommonCostsMonth = formatOreToKroner(String(totalCommonCostsMonth));
+  const strCommonCostsMonth = formatOreToKroner(String(totalCommonCostsMonth + totalFixedCosts));
 
   // Common cost per year
   const strCommonCostsYear = formatOreToKroner(String(totalCommonCostsYear));

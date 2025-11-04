@@ -72,10 +72,10 @@ function createEvents() {
       || [...event.target.classList].some(cls => cls.startsWith('accountId'))
       || [...event.target.classList].some(cls => cls.startsWith('bankAccount'))) {
 
-        const prefixes = ['userId', 'accountId', 'bankAccount'];
+        const arrayPrefixes = ['userId', 'accountId', 'bankAccount'];
 
       // Find the first matching class
-      const className = prefixes
+      const className = arrayPrefixes
         .map(prefix => objDues.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 

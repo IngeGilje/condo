@@ -64,7 +64,7 @@
  }
 
  /* Highlight hover row */
- tr:nth-child(n+3):hover {
+ tr:nth-child(n+1):hover {
    background-color: #e0f0e0;
  }
 

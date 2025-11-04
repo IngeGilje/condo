@@ -416,6 +416,42 @@ class Condos {
     return validTekst;
   }
 
+  // Valid text
+  validateTextNew(tekst) {
+
+    let validTekst = true;
+
+    // Check for string
+    if (typeof tekst !== "string") {
+
+      validTekst = false;
+    }
+
+    // Check length
+    if (tekst.length > 50) {
+
+      validTekst = false;
+    };
+
+    // Check allowed characters (letters, numbers, spaces)
+    if (tekst.length > 0) {
+
+      const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
+      validTekst = (regex.test(tekst)) ? true : false;
+    } else {
+
+      validTekst = false;
+    }
+
+    if (!validTekst) {
+
+      validTekst = false;
+    }
+
+    return validTekst;
+  }
+
+
   // Validate postal code
   validatePostalCode(postalCode, className, labelText) {
 

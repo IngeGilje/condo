@@ -96,10 +96,10 @@ function createEvents() {
       || [...event.target.classList].some(cls => cls.startsWith('date'))
       || [...event.target.classList].some(cls => cls.startsWith('text'))) {
 
-      const prefixes = ['condo', 'account', 'amount', 'date', 'text'];
+      const arrayPrefixes = ['condo', 'account', 'amount', 'date', 'text'];
 
       // Find the first matching class
-      const className = prefixes
+      const className = arrayPrefixes
         .map(prefix => objDues.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
@@ -628,88 +628,6 @@ function showRestMenu(rowNumber) {
   return html;
 }
 
-/*
-// Update dues table
-async function updateDuesRow(columnName, className, dueId) {
-
-  dueId = Number(dueId);
-  const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
-  let fromDate = document.querySelector('.filterFromDate').value;
-  fromDate = Number(formatNorDateToNumber(fromDate));
-  let toDate = document.querySelector('.filterToDate').value;
-  toDate = Number(formatNorDateToNumber(toDate));
-
-  let condoId = 0;
-  let accountId = 0;
-  let amount = 0;
-  let date = 0;
-  let text = "";
-
-  // Get current dues values
-  duesRowNumber = objDues.arrayDues.findIndex(due => due.dueId === dueId);
-  if (duesRowNumber !== -1) {
-
-    condoId = objDues.arrayDues[duesRowNumber].condoId;
-    accountId = objDues.arrayDues[duesRowNumber].accountId;
-    amount = objDues.arrayDues[duesRowNumber].amount;
-    date = objDues.arrayDues[duesRowNumber].date;
-    text = objDues.arrayDues[duesRowNumber].text;
-  }
-
-  // change column value
-  if (columnName === 'condoId') condoId = Number(document.querySelector(`.${className}`).value);
-  if (columnName === 'accountId') accountId = Number(document.querySelector(`.${className}`).value);
-  if (columnName === 'amount') amount = Number(formatKronerToOre(document.querySelector(`.${className}`).value));
-  if (columnName === 'date') date = Number(convertDateToISOFormat(document.querySelector(`.${className}`).value));
-  if (columnName === 'text') text = document.querySelector(`.${className}`).value;
-
-  // Validate dues columns
-  if (validateColumns(accountId, condoId, date, amount, text)) {
-
-    // Check if due id exist
-    duesRowNumber = objDues.arrayDues.findIndex(due => due.dueId === dueId);
-    if (duesRowNumber !== -1) {
-
-      // update due
-      await objDues.updateDuesTable(dueId, user, lastUpdate, condoId, accountId, amount, date, text);
-
-    } else {
-
-      // Insert due row in dues table
-      const year = Number(document.querySelector('.filterYear').value);
-      await objDues.insertDuesTable(condominiumId, user, lastUpdate, condoId, accountId, amount, date, text);
-    }
-
-    await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-    showDues();
-  }
-}
-*/
-
-// Validate dues columns
-function validateColumns(accountId, condoId, date, amount, text) {
-
-  // Check account id
-  const validAccountId = validateNumberNew(accountId, 1, 99999);
-
-  // Check condo id
-  const validCondoId = validateNumberNew(condoId, 1, 99999);
-
-  // Check date
-  const validDate = validateNumberHTML(date, 20200101, 20291231)
-
-  // Check amount
-  amount = formatOreToKroner(amount);
-  const validAmount = objDues.validateNorAmount(amount);
-
-  // Check text
-  const validText = objDues.validateText(text);
-
-  return (validAmount && validAccountId && validCondoId && validDate && validText) ? true : false;
-}
-
 // Delete dues row
 async function deleteDuesRow(dueId, className) {
 
@@ -758,9 +676,14 @@ async function updateDuesRow(dueId) {
 
   className = `.text${dueId}`;
   let text = document.querySelector(className).value;
+  const validText = objDues.validateTextNew(text);
 
   // Validate dues columns
-  if (validateColumns(accountId, condoId, date, amount, text)) {
+  if ((accountId => 1 && accountId <= 999999999)
+    && (condoId => 1 && condoId <= 999999999)
+    && (amount => 0 && amount <= 999999999)
+    && (date => 20000101 && date <= 20991231)
+    && validText ) {
 
     // Check if the dues row exist
     duesRowNumber = objDues.arrayDues.findIndex(dues => dues.dueId === dueId);

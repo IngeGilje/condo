@@ -112,7 +112,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Bankkontobevegelser",
-      "url": "http://localhost/condo-bankaccounttransactions.html",
+      "url": "http://localhost/condo-bankaccounttransaction.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

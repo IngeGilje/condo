@@ -68,10 +68,10 @@ function createEvents() {
     if ([...event.target.classList].some(cls => cls.startsWith('fixedCost'))
       || [...event.target.classList].some(cls => cls.startsWith('name'))) {
 
-      const prefixes = ['fixedCost', 'name'];
+      const arrayPrefixes = ['fixedCost', 'name'];
 
       // Find the first matching class
-      const className = prefixes
+      const className = arrayPrefixes
         .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
@@ -82,14 +82,7 @@ function createEvents() {
         prefix = prefixes.find(p => className.startsWith(p));
         accountId = Number(className.slice(prefix.length));
       }
-      /*
-      if (objAccounts.getFixedCostClass(event.target)) className = objAccounts.getFixedCostClass(event.target);
-      if (objAccounts.getNameClass(event.target)) className = objAccounts.getNameClass(event.target);
-
-      if (objAccounts.getFixedCostClass(event.target)) accountId = className.substring(9);
-      if (objAccounts.getNameClass(event.target)) accountId = Number(className.substring(4));
-      */
-
+ 
       updateAccountRowSync();
 
       /*
@@ -437,9 +430,10 @@ async function updateAccountsRow(accountId) {
   const user = objUserPassword.email;
   const lastUpdate = today.toISOString();
 
-  // Check accounts columns
-  let className = `.name${accountId}`;
-  let name = document.querySelector(className).value;
+  // name
+  className = `.name${bankAccountTransactionId}`;
+  const name = document.querySelector(className).value;
+  const validName = objBankAccountTransactions.validateTextNew(name);
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;
@@ -447,7 +441,7 @@ async function updateAccountsRow(accountId) {
   if (fixedCost === constVariableCost) fixedCost = 'N';
 
   // Validate accounts columns
-  if (validateColumns(name, fixedCost)) {
+  if (validName && (fixedCost === "Y" || fixedCost === "N")) {
 
     // Check if the account id exist
     accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
@@ -465,63 +459,4 @@ async function updateAccountsRow(accountId) {
     await objAccounts.loadAccountsTable(condominiumId);
     showAccounts();
   }
-}
-/*
-// Update accounts table
-async function updateAccountsRow(columnName, className, accountId) {
-
-  accountId = Number(accountId);
-
-  const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
-
-  let accountName = "";
-  let fixedCost = "";
-
-  // Get current accounts values
-  accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-  if (accountsRowNumber !== -1) {
-
-    accountName = objAccounts.arrayAccounts[accountsRowNumber].name;
-    fixedCost = objAccounts.arrayAccounts[accountsRowNumber].fixedCost;
-  }
-
-  // change column value
-  if (columnName === 'name') accountName = document.querySelector(`.${className}`).value;
-  if (columnName === 'fixedCost') fixedCost = document.querySelector(`.${className}`).value;
-  if (fixedCost === fixedCost) fixedCost = 'Y';
-  if (fixedCost === variableCost) fixedCost = 'N';
-
-  // Validate accounts columns
-  if (validateColumns(columnName, fixedCost)) {
-
-    // Check if the account id exist
-    if (accountsRowNumber !== -1) {
-
-      // update the account row
-      await objAccounts.updateAccountsTable(user, accountId, fixedCost, lastUpdate, accountName);
-
-    } else {
-
-      // Insert the account row in accounts table
-      await objAccounts.insertAccountsTable(condominiumId, user, lastUpdate, accountName, fixedCost, accountName);
-    }
-
-    await objAccounts.loadAccountsTable(condominiumId);
-    showAccounts();
-  }
-}
-*/
-
-// Validate accounts columns
-function validateColumns(name, fixedCost) {
-
-  // Check name
-  const validName = objAccounts.validateText(name);
-
-  // Check fixed cost
-  let validFixedCost = (fixedCost === 'N' || fixedCost === 'Y') ? true : false;
-
-  return (validName && validFixedCost) ? true : false;
 }
