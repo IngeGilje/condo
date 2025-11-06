@@ -22,7 +22,6 @@
    white-space: nowrap;
    overflow: hidden;
    text-overflow: ellipsis;
-   padding: 10px;
  }
 
  td {
@@ -35,11 +34,36 @@
    height: 30px;
  }
 
- /* left alignment for menu */
+ a,
+ select,
+ input {
+  cursor: pointer;
+ }
+
+ a {
+  box-shadow: 3px 3px 3px rgba(224, 240, 224, 1);
+ }
+
+ a:hover,
+ select:hover,
+ input:hover {
+background-color: #e0f0e0;
+ }
+
+ input {
+  height: 30px;
+ }
+
+ select {
+  height: 35px;
+ }
+
+ /* left alignment for menu 
  td:first-child,
  th:first-child {
    text-align: center;
  }
+*/
 
  .left {
    text-align: left;
@@ -63,10 +87,11 @@
    text-overflow: ellipsis;
  }
 
- /* Highlight hover row */
+ /* Highlight hover row 
  tr:nth-child(n+1):hover {
    background-color: #e0f0e0;
  }
+*/
 
  /* menu */
  .menu {

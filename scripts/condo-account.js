@@ -194,8 +194,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  const style = 'width: 50%';
-  let html = startHTMLTable(style);
+  let html = startHTMLTable();
 
   // Main header
   html += showHTMLMainTableHeader('', 'Konto', '', '');

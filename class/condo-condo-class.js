@@ -149,7 +149,7 @@ class Condo extends Condos {
           class="center one-line"
         >
           <select 
-            class="${className}"
+            class="${className} center"
           >
       `;
 

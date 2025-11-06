@@ -31,8 +31,7 @@ class Account extends Condos {
       `;
 
     // Check if account movement array is empty
-    const numberOfRows = this.arrayAccounts.length;
-    if (numberOfRows > 0) {
+    if (this.arrayAccounts.length > 0) {
       this.arrayAccounts.forEach((account) => {
         if (account.accountId === accountId) {
 
@@ -71,7 +70,7 @@ class Account extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 1)) {
+    if (selectAll && (this.arrayAccounts.length > 1)) {
       if (selectedValue) {
         html +=
           `
@@ -97,7 +96,7 @@ class Account extends Condos {
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
+    if (selectNone && (this.arrayAccounts.length > 1)) {
       if (selectedValue) {
         html +=
           `
@@ -169,8 +168,7 @@ class Account extends Condos {
       `;
 
     // Check if account array is empty
-    const numberOfRows = this.arrayAccounts.length;
-    if (numberOfRows > 0) {
+    if (this.arrayAccounts.length > 0) {
       this.arrayAccounts.forEach((account) => {
 
         if (account.accountId === accountId) {
@@ -347,13 +345,12 @@ class Account extends Condos {
           class="centerCell one-line"
         >
           <select 
-            class="${className}"
+            class="${className} center"
           >
       `;
 
     // Check if accounts array is empty
-    const numberOfRows = this.arrayAccounts.length;
-    if (numberOfRows > 0) {
+    if (this.arrayAccounts.length > 0) {
       this.arrayAccounts.forEach((account) => {
         if (account.accountId === accountId) {
 
@@ -392,7 +389,7 @@ class Account extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 1)) {
+    if (selectAll && (this.arrayAccounts.length > 1)) {
 
       html +=
         `
@@ -407,7 +404,7 @@ class Account extends Condos {
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
+    if (selectNone && (this.arrayAccounts.length > 1)) {
       if (selectedValue) {
         html +=
           `

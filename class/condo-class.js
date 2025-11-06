@@ -2247,13 +2247,9 @@ function exitIfNoActivity() {
 */
 
 // Start of HTML table
-function startHTMLTable(style, width) {
+function startHTMLTable() {
 
-  return `
-      <table 
-        style="${style}"
-      >
-    `;
+  return "<table>";
 }
 
 // Show main header table
@@ -2279,20 +2275,14 @@ function showHTMLMainTableHeader(...texts) {
     }
   });
 
-  html +=
-    `
-      </tr>
-    `;
+  html += "</tr>";
   return html;
 }
 
 // Show filter header table
 function showHTMLFilterHeader(...texts) {
 
-  let html =
-    `
-      <tr>
-    `;
+  let html = "<tr>";
 
   texts.forEach((text) => {
 
@@ -2308,7 +2298,7 @@ function showHTMLFilterHeader(...texts) {
 
       html +=
         `
-          <td class="no-border center"
+          <td class="no-border center bold"
           >
             ${text}
           </td>
@@ -2316,10 +2306,7 @@ function showHTMLFilterHeader(...texts) {
     }
   });
 
-  html +=
-    `
-      </tr>
-    `;
+  html += "</tr>";
   return html;
 }
 
