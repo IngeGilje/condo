@@ -255,19 +255,19 @@ class Condos {
   }
 
   // Show button
-  showButtonNew(className, buttonText) {
-
-    const iconName = this.getIconName(className);
+  showButtonNew(style, className, buttonText) {
 
     const html =
       `
-        <td class=button>
+        <td 
+          class="center"
+        >
           <button 
-            class="${className}"
+            class="${className} center"
+            style="${style}"
           >
             <img 
-              src="icons/${iconName}" 
-              height="18"
+              src="icons/${className}" 
             >
               ${buttonText}
           </button>
@@ -547,6 +547,14 @@ class Condos {
       }
       return true;
     }
+  }
+
+  // validate bank account 
+  validateBankAccountNew(bankAccount) {
+
+    // Validate Bank Account
+    const bankAccountPattern = /^\d{11}$/;
+    return (bankAccountPattern.test(bankAccount)) ? true : false;
   }
 
   // Mark selected application in menu
@@ -1001,6 +1009,7 @@ class Condos {
           <a 
             href="${url}${applicationName}"
             class="${className}"
+            style="width:100px;"
           >
             ${text}
           </a>
@@ -1136,7 +1145,7 @@ class Condos {
   }
 
   // Select choices like Yes, No, Ignore
-  showSelectedValuesNew(className, selectedChoice, ...choices) {
+  showSelectedValuesNew(className, style, selectedChoice, ...choices) {
 
     let html =
       `
@@ -1144,7 +1153,8 @@ class Condos {
           class="center"
         >
           <select 
-            class="${className}"
+            class="${className} center"
+            style="${style}"
           >
       `;
 
@@ -1504,8 +1514,57 @@ class Condos {
         break
       }
     }
-    html = this.showSelectedValuesNew(className, selectedChoice, 'Nei', 'Ja')
+    html = this.showSelectedValuesNew(className, '', selectedChoice, 'Nei', 'Ja')
     return html;
+  }
+  // Show table header including menu
+  showHTMLTableHeader(style, menuNumber, ...texts) {
+
+    let html = "<tr>";
+
+    html += this.menuNew(menuNumber - 1);
+
+    texts.forEach((text) => {
+
+      if (text === '') {
+        html +=
+          `
+          <td 
+            class="no-border center"
+            style="${style}"
+          >
+            ${text}
+          </td>
+        `;
+      } else {
+
+        html +=
+          `
+          <td 
+            class="no-border center bold"
+            style="${style}"
+          >
+            ${text}
+          </td>
+        `;
+      }
+    });
+
+    html += "</tr>";
+    return html;
+  }
+
+  // Validate interval
+  validateIntervalNew(value, fromValue, toValue) {
+
+    value = Number(value);
+    fromValue = Number(fromValue);
+    toValue = Number(toValue);
+
+    // Validate interval
+    return ((fromValue <= toValue)
+      && (value >= fromValue)
+      && (value <= toValue));
   }
 }
 
@@ -2247,13 +2306,17 @@ function exitIfNoActivity() {
 */
 
 // Start of HTML table
-function startHTMLTable() {
+function startHTMLTable(style) {
 
-  return "<table>";
+  return `
+    <table
+      style = "${style}"
+    >
+  `;
 }
 
 // Show main header table
-function showHTMLMainTableHeader(...texts) {
+function showHTMLMainTableHeader(style, ...texts) {
 
   let html =
     `
@@ -2265,12 +2328,22 @@ function showHTMLMainTableHeader(...texts) {
     if (text === '') {
       html +=
         `
-          <th class="no-border">${text}</th>
+          <th 
+            class="no-border"
+            style="${style}"
+          >
+            ${text}
+          </th>
         `;
     } else {
       html +=
         `
-          <th class="center no-border">${text}</th>
+          <th 
+            class="center no-border"
+            style="${style}"
+          >
+            ${text}
+          </th>
         `;
     }
   });
@@ -2280,7 +2353,7 @@ function showHTMLMainTableHeader(...texts) {
 }
 
 // Show filter header table
-function showHTMLFilterHeader(...texts) {
+function showHTMLFilterHeader(style, ...texts) {
 
   let html = "<tr>";
 
@@ -2289,7 +2362,9 @@ function showHTMLFilterHeader(...texts) {
     if (text === '') {
       html +=
         `
-          <td class="no-border center"
+          <td 
+            class="no-border center"
+            style="${style}"
           >
             ${text}
           </td>
@@ -2298,7 +2373,9 @@ function showHTMLFilterHeader(...texts) {
 
       html +=
         `
-          <td class="no-border center bold"
+          <td 
+            class="no-border center bold"
+            style="${style}"
           >
             ${text}
           </td>

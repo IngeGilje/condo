@@ -529,8 +529,7 @@ async function deleteUserBankAccount() {
 function showHeader() {
 
   // Start table
-  const style = 'width: 50%';
-  let html = startHTMLTable(style);
+  let html = startHTMLTable();
 
   // Main header
   html += showHTMLMainTableHeader('', '', 'Bankkonto for bruker', '');
@@ -544,8 +543,7 @@ function showHeader() {
 function showFilter() {
 
   // Start table
-  const style = 'width: 50%';
-  html = startHTMLTable(style);
+  html = startHTMLTable();
 
   // Header filter for search
   html += showHTMLFilterHeader('', 'Bruker', 'Konto', '');
@@ -572,7 +570,7 @@ function showHTMLFilterSearch() {
   html += objUsers.showSelectedUsersNew('filterUserId', 0, 'Alle', '');
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', 0, 'Alle', '');
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
 
   html += "</tr>";
 
@@ -594,7 +592,7 @@ function insertEmptyTableRow(rowNumber) {
   html += objUsers.showSelectedUsersNew('userId0', 0, '', 'Ingen er valgt');
 
   // Account column
-  html += objAccounts.showSelectedAccountsNew('accountId0', 0, '', 'Ingen er valgt');
+  html += objAccounts.showSelectedAccountsNew('accountId0', '', 0, '', 'Ingen er valgt');
 
   // bank account number
   html += objUserBankAccounts.showInputHTMLNew('bankAccount0', '', 11);
@@ -632,8 +630,7 @@ function showTableSumRow(rowNumber, amount) {
 function showUserBankAccounts() {
 
   // Start HTML table
-  const style = 'width: 50%';
-  html = startHTMLTable(style);
+  html = startHTMLTable();
 
   // Header
   html += showHTMLMainTableHeader('Meny', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
@@ -663,7 +660,7 @@ function showUserBankAccounts() {
     // account
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccounts.showSelectedAccountsNew(className, accountId, '', 'Ingen er valgt');
+    html += objAccounts.showSelectedAccountsNew(className, '', accountId, '', 'Ingen er valgt');
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;

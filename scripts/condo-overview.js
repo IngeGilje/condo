@@ -5,7 +5,7 @@ const today = new Date();
 const objUsers = new Users('users');
 const objDues = new Due('due');
 const objCondo = new Condo('condo');
-const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
+const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 const objOverview = new Overview('overview');
 
 testMode();

@@ -139,7 +139,7 @@ class Condo extends Condos {
   }
 
   // Show all selected condos. Return HTML string.
-  showSelectedCondosNew(className, condoId, selectAll, selectNone) {
+  showSelectedCondosNew(className, style, condoId, selectAll, selectNone) {
 
     let selectedValue = false;
 
@@ -150,6 +150,7 @@ class Condo extends Condos {
         >
           <select 
             class="${className} center"
+            style="${style}"
           >
       `;
 

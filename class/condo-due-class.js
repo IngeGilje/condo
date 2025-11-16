@@ -1,6 +1,6 @@
 
 // Due
-class Due extends Condo {
+class Due extends Condos {
 
   // Due information
   arrayDues;

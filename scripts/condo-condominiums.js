@@ -32,7 +32,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
+    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
 
     // Find selected condominium id

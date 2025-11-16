@@ -35,7 +35,7 @@ class Condominiums extends Condos {
         if (condominium.condominiumId >= 0) {
           if (condominium.condominiumId === condominiumId) {
 
-            html += 
+            html +=
               `
                 <option 
                   value="${condominium.condominiumId}"
@@ -46,8 +46,8 @@ class Condominiums extends Condos {
               `;
             selectedOption = true;
           } else {
-            html += 
-            `
+            html +=
+              `
               <option 
                 value="${condominium.condominiumId}"
               >
@@ -59,7 +59,7 @@ class Condominiums extends Condos {
       });
     } else {
 
-      html += 
+      html +=
         `
           <option value="0" 
             selected
@@ -111,7 +111,7 @@ class Condominiums extends Condos {
     }
   }
   // update condominium row in condominiums table
-  async updateCondominiumTable(user, condominiumId,lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath) {
+  async updateCondominiumsTable(user, condominiumId, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath) {
 
     try {
       const response = await fetch(`http://localhost:3000/condominiums?action=update&user=${user}&condominiumId=${condominiumId}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importPath=${importPath}`);
@@ -123,8 +123,8 @@ class Condominiums extends Condos {
   }
 
   // insert condominium row in users table
-  async insertCondominiumTable(user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath) {
- 
+  async insertCondominiumsTable(user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath) {
+
     try {
       const response = await fetch(`http://localhost:3000/condominiums?action=insert&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importPath=${importPath}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
@@ -144,5 +144,160 @@ class Condominiums extends Condos {
       console.log("Error deleteing condominiums:", error);
     }
   }
+
+  // Show all selected condominiums
+  showSelectedCondominiumsNew(className, style, condominiumId, selectAll, selectNone) {
+
+    let selectedValue = false;
+
+    let html =
+      `
+        <td
+          class="center one-line"
+        >
+          <select 
+            class="${className} center"
+            style="${style}"
+          >
+      `;
+
+    // Check if condominium array is empty
+    const numberOfRows = this.arrayCondominiums.length;
+    if (numberOfRows > 0) {
+      this.arrayCondominiums.forEach((condominium) => {
+        if (condominium.condominiumId === condominiumId) {
+
+          html +=
+            `
+              <option 
+                value=${condominium.condominiumId}
+                selected
+              >
+                ${condominium.name}
+              </option>
+            `;
+          selectedValue = true;
+        } else {
+
+          html +=
+            `
+              <option 
+                value="${condominium.condominiumId}">
+                ${condominium.name}
+              </option>
+            `;
+        }
+      });
+    } else {
+
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen konti
+          </option>
+        `;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (numberOfRows > 1)) {
+
+      html +=
+        `
+          <option 
+            value=999999999
+            selected
+          >
+            ${selectAll}
+          </option>
+        `;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (numberOfRows > 1)) {
+      if (selectedValue) {
+        html +=
+          `
+          <option 
+            value=0
+          >
+            ${selectNone}
+          </option>
+        `;
+      } else {
+
+        html +=
+          `
+            <option 
+              value=0
+              selected
+            >
+              ${selectNone}
+            </option>
+          `;
+        selectedValue = true;
+      }
+    }
+
+    html +=
+      `
+          </select >
+        </td>
+      `;
+
+    return html;
+  }
+  
+  /*
+  // Show condominiums with alternative select options
+  async loadCondominiumsTable(condominiumId) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/condominiums?action=select`);
+      if (!response.ok) throw new Error("Network error (condominiums)");
+      this.arrayCondominiums = await response.json();
+    } catch (error) {
+      console.log("Error loading condominiums:", error);
+    }
+  }
+  // update condominiums row
+  async updateCondominiumsTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, paymentRemoteHeatingAccountId, organizationNumber, importPath) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/condominiums?action=update&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2},&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&organizationNumber=${organizationNumber}&importPath=${importPath}`);
+      if (!response.ok) throw new Error("Network error (condominiums)");
+      this.arrayCondominiums = await response.json();
+    } catch (error) {
+      console.log("Error updating condominiums:", error);
+    }
+  }
+
+  // insert condominiums row
+  async insertCondominiumsTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, paymentRemoteHeatingAccountId, organizationNumber, importPath) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/condominiums?action=insert&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2},&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&organizationNumber=${organizationNumber}&importPath=${importPath}`);
+      if (!response.ok) throw new Error("Network error (condominiums)");
+      this.arrayCondominiums = await response.json();
+    } catch (error) {
+      console.log("Error updating condominiums:", error);
+    }
+  }
+
+  // delete condominiums row
+  async deleteCondominiumsTable(condominiumId, user, lastUpdate) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/condominiums?action=delete&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}`);
+      if (!response.ok) throw new Error("Network error (condominiums)");
+      this.arrayCondominiums = await response.json();
+    } catch (error) {
+      console.log("Error deleting condominiums:", error);
+    }
+  }
+  */
 }
 

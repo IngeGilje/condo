@@ -1,3 +1,4 @@
+
  /* centers body horizontally */
  body {
    display: flex;
@@ -16,46 +17,46 @@
  th,
  td {
    border: 1px solid #ccc;
-   padding: .5rem;
-   text-align: right;
-   min-width: 150px;
+   padding: 10px;
+   text-align: cnter;
+   height: 30px;
    white-space: nowrap;
    overflow: hidden;
    text-overflow: ellipsis;
+ }
+
+ th {
+   background: #e0f0e0;
+   text-align: center;
  }
 
  td {
    border: 0px;
  }
 
- th {
-   background: #e0f0e0;
-   text-align: center;
-   height: 30px;
- }
-
  a,
+ button,
  select,
  input {
-  cursor: pointer;
+   cursor: pointer;
  }
 
  a {
-  box-shadow: 3px 3px 3px rgba(224, 240, 224, 1);
+   box-shadow: 3px 3px 3px rgba(224, 240, 224, 1);
  }
 
  a:hover,
  select:hover,
  input:hover {
-background-color: #e0f0e0;
+   background-color: #e0f0e0;
  }
 
  input {
-  height: 30px;
+   height: 30px;
  }
 
  select {
-  height: 35px;
+   height: 35px;
  }
 
  /* left alignment for menu 
@@ -87,16 +88,9 @@ background-color: #e0f0e0;
    text-overflow: ellipsis;
  }
 
- /* Highlight hover row 
- tr:nth-child(n+1):hover {
-   background-color: #e0f0e0;
- }
-*/
-
  /* menu */
  .menu {
    padding: 5px;
-   max-width: 75px;
  }
 
  .menu a {
@@ -112,3 +106,13 @@ background-color: #e0f0e0;
  .bold {
    font-weight: 700;
  }
+
+ .button {
+  padding: 10px;
+  height: 30px;
+  background-color: #e0f0e0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}

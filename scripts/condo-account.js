@@ -37,7 +37,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showFilter();
 
     // Show account
-    showAccounts();
+    showResult();
 
     // Create events
     createEvents();
@@ -49,7 +49,7 @@ function createEvents() {
 
   // Filter
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('filterFixedCost')) {
+    if ([...event.target.classList].some(cls => cls.startsWith('filterFixedCost'))) {
 
       filterSync();
 
@@ -57,7 +57,7 @@ function createEvents() {
 
         await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
-        showAccounts();
+        showResult();
       }
     };
   });
@@ -82,18 +82,8 @@ function createEvents() {
         prefix = prefixes.find(p => className.startsWith(p));
         accountId = Number(className.slice(prefix.length));
       }
- 
-      updateAccountRowSync();
 
-      /*
-      if ([...event.target.classList].some(cls => cls.startsWith('fixedCost'))
-        || [...event.target.classList].some(cls => cls.startsWith('name'))) {
-  
-        const className = objAccounts.getNameClass(event.target);
-        const accountId = Number(className.substring(4));
-  
-        updateAccountRowSync();
-      */
+      updateAccountRowSync();
 
       // Update a accounts row
       async function updateAccountRowSync() {
@@ -102,40 +92,6 @@ function createEvents() {
       }
     };
   });
-  /*
-  // Fixed cost
-  document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('fixedCost'))) {
-
-      const className = objAccounts.getFixedCostClass(event.target);
-      const accountId = Number(className.substring(9));
-
-      updateFixedCostSync();
-
-      // Update condoId
-      async function updateFixedCostSync() {
-
-        updateAccountsRow('fixedCost', className, accountId);
-      }
-    };
-  });
-
-  // Update name
-  document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('name'))) {
-
-      const className = objAccounts.getNameClass(event.target);
-      const accountId = className.substring(4);
-      updateNameSync();
-
-      // Update amount
-      async function updateNameSync() {
-
-        updateAccountsRow('name', className, accountId);
-      }
-    };
-  });
-  */
 
   // Delete accounts row
   document.addEventListener('change', (event) => {
@@ -155,7 +111,7 @@ function createEvents() {
 
           await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
-          showAccounts();
+          showResult();
         };
       };
     };
@@ -208,8 +164,7 @@ function showHeader() {
 function showFilter() {
 
   // Start table
-  const style = 'width: 50%';
-  html = startHTMLTable(style);
+  html = startHTMLTable();
 
   // Header filter for search
   html += showHTMLFilterHeader('', 'Kostnadstype', '', '');
@@ -232,7 +187,7 @@ function showHTMLFilterSearch() {
     `;
 
   // fixed or not fixed cost
-  html += objAccounts.showSelectedValuesNew('filterFixedCost', 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += objAccounts.showSelectedValuesNew('filterFixedCost', 'width:75px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
   html +=
     `
       </tr>
@@ -253,7 +208,7 @@ function insertEmptyTableRow(rowNumber) {
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
-  html += objAccounts.showSelectedValuesNew('fixedCost0', constFixedCost, constFixedCost, constVariableCost);
+  html += objAccounts.showSelectedValuesNew('fixedCost0', '', constFixedCost, constFixedCost, constVariableCost);
 
   // name
   html += objAccounts.showInputHTMLNew('name0', "", 45);
@@ -288,11 +243,10 @@ function showTableSumRow(rowNumber, amount) {
 }
 
 // Show accounts
-function showAccounts() {
+function showResult() {
 
   // Start HTML table
-  const style = 'width: 50%';
-  html = startHTMLTable(style);
+  html = startHTMLTable();
 
   // Header
   html += showHTMLMainTableHeader('Meny', 'Slett', 'Kostnadstype', 'Tekst');
@@ -329,7 +283,7 @@ function showAccounts() {
       }
     }
     let className = `delete${account.accountId}`;
-    html += objAccounts.showSelectedValuesNew(className, selectedChoice, 'Nei', 'Ja')
+    html += objAccounts.showSelectedValuesNew(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
 
     // fixed cost
     selectedChoice = "Ugyldig verdi";
@@ -352,7 +306,7 @@ function showAccounts() {
     }
 
     className = `fixedCost${account.accountId}`;
-    html += objAccounts.showSelectedValuesNew(className, selectedChoice, constFixedCost, constVariableCost)
+    html += objAccounts.showSelectedValuesNew(className, '', selectedChoice, constFixedCost, constVariableCost)
 
     // name
     const name = account.name;
@@ -456,6 +410,6 @@ async function updateAccountsRow(accountId) {
     }
 
     await objAccounts.loadAccountsTable(condominiumId);
-    showAccounts();
+    showResult();
   }
 }

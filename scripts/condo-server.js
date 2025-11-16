@@ -397,17 +397,23 @@ async function main() {
 
         case 'select': {
           const condominiumId = Number(req.query.condominiumId);
+          const bankAccountId = Number(req.query.bankAccountId);
 
           try {
 
-            const SQLquery =
+            let SQLquery =
               `
                 SELECT * FROM bankaccounts
                 WHERE condominiumId = ${condominiumId}
                   AND deleted <> 'Y'
-                ORDER BY bankAccountId;
-            `;
+              `;
+            if (bankAccountId !== 999999999) SQLquery += `AND bankAccountId=${bankAccountId}`;
 
+            SQLquery +=
+              `
+                ORDER BY bankAccountId;
+              `;
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -770,7 +776,7 @@ async function main() {
               `
                 ORDER BY year,accountId;
               `;
-            console.log('SQLquery: ',SQLquery);
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -806,7 +812,7 @@ async function main() {
                   year = '${year}'
                 WHERE budgetId = ${budgetId};
               `;
-            console.log('SQLquery',SQLquery);
+            console.log('SQLquery', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1251,9 +1257,9 @@ async function main() {
 
           const condominiumId = Number(req.query.condominiumId);
           const userId = Number(req.query.userId);
-          console.log('userId :',userId);
+          console.log('userId :', userId);
           const accountId = Number(req.query.accountId);
-          console.log('accountId :',accountId);
+          console.log('accountId :', accountId);
 
           try {
             let SQLquery =

@@ -32,7 +32,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Bankkonto sameie",
-      "url": "http://localhost/condo-bankaccounts.html",
+      "url": "http://localhost/condo-bankaccount.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

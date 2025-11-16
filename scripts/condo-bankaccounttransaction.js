@@ -31,7 +31,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
+    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
@@ -374,10 +374,10 @@ function showHTMLFilterSearch() {
   let html = "<tr><td></td><td></td>";
 
   // show all selected accounts
-  html += objCondo.showSelectedCondosNew('filterCondoId', 0, 'Alle', '');
+  html += objCondo.showSelectedCondosNew('filterCondoId','', 0, 'Alle', '');
 
   // show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', 0, 'Alle', '');
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
 
   // from date
   const fromDate = "01.01." + today.getFullYear();
@@ -400,7 +400,7 @@ function showHTMLFilterSearch() {
 function showHeader() {
 
   // Start table
-  let html = startHTMLTable(`width: 50%`);
+  let html = startHTMLTable();
 
   // Main header
   html += showHTMLMainTableHeader('', '', '', '', 'Bankkontotransaksjoner', '', '', '', '', );
@@ -415,7 +415,7 @@ function showHeader() {
 function showResult() {
 
   // Start HTML table
-  html = startHTMLTable(`width: 50%`);
+  html = startHTMLTable();
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -436,15 +436,15 @@ function showResult() {
 
     // Delete
     let className = `deleted${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.showSelectedValuesNew(className, 'Nei', 'Nei', 'Ja')
-
+    html += objBankAccountTransactions.showSelectedValuesNew(className, '', 'Nei', 'Nei', 'Ja')
+ 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondo.showSelectedCondosNew(className, bankAccountTransaction.condoId, '', 'Ingen er valgt');
+    html += objCondo.showSelectedCondosNew(className, '', bankAccountTransaction.condoId, '', 'Ingen er valgt');
 
     // accounts
     className = `account${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objAccounts.showSelectedAccountsNew(className, bankAccountTransaction.accountId, '', 'Ingen er valgt');
+    html += objAccounts.showSelectedAccountsNew(className, '', bankAccountTransaction.accountId, '', 'Ingen er valgt');
 
     // date
     const date = formatToNorDate(bankAccountTransaction.date);
@@ -514,11 +514,11 @@ function insertEmptyTableRow(rowNumber) {
 
   // condos
   className = `condo0`;
-  html += objCondo.showSelectedCondosNew(className, '', '', 'Ingen er valgt');
+  html += objCondo.showSelectedCondosNew(className, '', '', '', 'Ingen er valgt');
 
   // accounts
   className = `account0`;
-  html += objAccounts.showSelectedAccountsNew(className, '', '', 'Ingen er valgt');
+  html += objAccounts.showSelectedAccountsNew(className, '', '', '', 'Ingen er valgt');
 
   // date
   className = `date0`;

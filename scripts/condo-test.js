@@ -359,7 +359,7 @@ function showLeadingTextFilter() {
 function showBudget() {
 
   let html = "";
-  html += startHTMLTable();
+  html += startHTMLTable("width:150px;");
   html += HTMLTableHeader('', 'Linje', 'Konto', 'Budsjett');
 
   let sumAmount = 0;

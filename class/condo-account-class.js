@@ -335,7 +335,7 @@ class Account extends Condos {
   }
 
   // Show all selected accounts
-  showSelectedAccountsNew(className, accountId, selectAll, selectNone) {
+  showSelectedAccountsNew(className, style, accountId, selectAll, selectNone) {
 
     let selectedValue = false;
 
@@ -346,6 +346,7 @@ class Account extends Condos {
         >
           <select 
             class="${className} center"
+            style="${style}"
           >
       `;
 

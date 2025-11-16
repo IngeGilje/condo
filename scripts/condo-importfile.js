@@ -40,7 +40,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
+    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId,999999999,999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
@@ -617,7 +617,7 @@ async function updateOpeningClosingBalance() {
           const closingBalance = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalance;
           const closingBalanceDate = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate;
           await objBankAccounts.updateBankAccountsTable(bankAccountId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
+          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
         }
       }
 
@@ -636,7 +636,7 @@ async function updateOpeningClosingBalance() {
           const openingBalance = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalance;
           const openingBalanceDate = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalanceDate;
           await objBankAccounts.updateBankAccountsTable(bankAccountId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
+          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
         };
       };
     };

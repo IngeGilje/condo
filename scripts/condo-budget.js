@@ -209,7 +209,7 @@ function showHTMLFilterSearch() {
   let html = "<tr><td></td>";
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', 0, 'Alle', '');
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
 
   // Show budget year
   const year = today.getFullYear();
@@ -224,7 +224,7 @@ function showHTMLFilterSearch() {
 function showResult() {
 
   // Start HTML table
-  html = startHTMLTable(`width: 50%`);
+  html = startHTMLTable();
 
   let sumAmount = 0;
   let rowNumber = 0;
@@ -261,11 +261,11 @@ function showResult() {
     }
 
     let className = `deleted${budget.budgetId}`;
-    html += objBudgets.showSelectedValuesNew(className, selectedChoice, 'Nei', 'Ja')
+    html += objBudgets.showSelectedValuesNew(className, '', selectedChoice,'', 'Nei', 'Ja')
 
     // accounts
     className = `account${budget.budgetId}`;
-    html += objAccounts.showSelectedAccountsNew(className, budget.accountId, '', 'Ingen er valgt');
+    html += objAccounts.showSelectedAccountsNew(className, '', budget.accountId, '', 'Ingen er valgt');
 
     // budget amount
     const amount = formatOreToKroner(budget.amount);
@@ -318,7 +318,7 @@ function insertEmptyTableRow(rowNumber) {
 
   // accounts
   let className = `account${0}`;
-  html += objAccounts.showSelectedAccountsNew(className, 0, '', 'Ingen er valgt');
+  html += objAccounts.showSelectedAccountsNew(className, '', 0, '', 'Ingen er valgt');
 
   // budget amount
   const amount = "";
@@ -347,7 +347,7 @@ function calculateSum() {
 function showHeader() {
 
   // Start table
-  let html = startHTMLTable(`width: 50%`);
+  let html = startHTMLTable();
 
   // Main header
   html += showHTMLMainTableHeader('', '', 'Budsjett', '');
@@ -361,7 +361,7 @@ function showHeader() {
 function showFilter() {
 
   // Start table
-  html = startHTMLTable(`width: 50%`);
+  html = startHTMLTable();
 
   // Header filter for search
   html += showHTMLFilterHeader('', 'Velg konto', 'Velg år', '');

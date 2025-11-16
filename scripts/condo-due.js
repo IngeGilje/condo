@@ -51,8 +51,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // Show filter
       showFilter();
 
-      // Show due
-      showDues();
+      // Show result
+      showResult();
 
       // Create events
       createEvents();
@@ -83,7 +83,7 @@ function createEvents() {
         toDate = Number(formatNorDateToNumber(toDate));
         await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-        showDues();
+        showResult();
       }
     };
   });
@@ -258,49 +258,11 @@ function createEvents() {
           toDate = Number(formatNorDateToNumber(toDate));
           await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-          showDues();
+          showResult();
         };
       };
     };
   });
-}
-
-// Show leading text for due
-function showLeadingText(dueId) {
-
-  // Show selected dues
-  objDues.showSelectedDues('dues-dueId', dueId);
-
-  // Show selected condos
-  const condoId = objCondo.arrayCondo.at(-1).condoId;
-  objCondo.showSelectedCondos('dues-condoId', condoId, 'Ingen er valgt');
-
-  // Show selected accounts
-  const accountId = objAccounts.arrayAccounts.at(-1).accountId;
-  objAccounts.showSelectedAccounts('dues-accountId', accountId, 'Ingen er valgt');
-
-  // Show amount
-  objDues.showInput('dues-date', '* Dato', 10, '');
-
-  // Show amount
-  objDues.showInput('dues-amount', '* Beløp', 10, '');
-
-  // Show text
-  objDues.showInput('dues-text', 'Tekst', 50, '');
-
-  // show buttons
-  if (Number(objUserPassword.securityLevel) >= 9) {
-    objDues.showButton('dues-update', 'Oppdater');
-
-    // show new button
-    objDues.showButton('dues-insert', 'Ny');
-
-    // show delete button
-    objDues.showButton('dues-delete', 'Slett');
-
-    // show cancel button
-    objDues.showButton('dues-cancel', 'Avbryt');
-  }
 }
 
 // Check for valid values
@@ -372,7 +334,7 @@ function showHeader() {
   let html = startHTMLTable();
 
   // Main header
-  html += showHTMLMainTableHeader('', '', 'Forfall', '', '', '');
+  html += showHTMLMainTableHeader('', '', '', 'Forfall', '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -386,7 +348,7 @@ function showFilter() {
   html = startHTMLTable();
 
   // Header filter for search
-  html += showHTMLFilterHeader('', 'Velg leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+  html += showHTMLFilterHeader('', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato','','');
 
   // Filter for search
   html += showHTMLFilterSearch();
@@ -399,17 +361,13 @@ function showFilter() {
 // Filter for search
 function showHTMLFilterSearch() {
 
-  let html =
-    `
-      <tr>
-        <td></td>
-    `;
+  let html = "<tr><td></td>";
 
   // Show all selected condos
-  html += objCondo.showSelectedCondosNew('filterCondoId', 0, 'Alle', '');
+  html += objCondo.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, 'Alle', '');
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', 0, 'Alle', '');
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
@@ -418,16 +376,13 @@ function showHTMLFilterSearch() {
   // show to date
   html += objDues.showInputHTMLNew('filterToDate', getCurrentDate(), 10);
 
-  html +=
-    `
-      </tr>
-    `;
+  html += "</tr>";
 
   return html;
 }
 
 // Show dues
-function showDues() {
+function showResult() {
 
   // Start HTML table
   html = startHTMLTable();
@@ -442,11 +397,7 @@ function showDues() {
 
     rowNumber++;
 
-    html +=
-      `<tr 
-        class="menu"
-      >
-      `;
+    html += '<tr class="menu">';
 
     // Show menu
     html += objDues.menuNew(rowNumber - 1);
@@ -472,11 +423,11 @@ function showDues() {
     }
 
     let className = `delete${due.dueId}`;
-    html += objDues.showSelectedValuesNew(className, selectedChoice, 'Nei', 'Ja')
+    html += objDues.showSelectedValuesNew(className, 'width:75px;', selectedChoice,'Nei', 'Ja')
 
     // condos
     className = `condo${due.dueId}`;
-    html += objCondo.showSelectedCondosNew(className, due.condoId, '', 'Ingen er valgt');
+    html += objCondo.showSelectedCondosNew(className, '', due.condoId, '', 'Ingen er valgt');
 
     // Date
     const date = formatToNorDate(due.date);
@@ -485,7 +436,7 @@ function showDues() {
 
     // accounts
     className = `account${due.dueId}`;
-    html += objAccounts.showSelectedAccountsNew(className, due.accountId, '', 'Ingen er valgt');
+    html += objAccounts.showSelectedAccountsNew(className, '', due.accountId, '', 'Ingen er valgt');
 
     // due amount
     const amount = formatOreToKroner(due.amount);
@@ -523,25 +474,9 @@ function showDues() {
 
   // The end of the table
   html += endHTMLTable();
-  document.querySelector('.due').innerHTML = html;
+  document.querySelector('.result').innerHTML = html;
 
 }
-
-/*
-// Show due table
-function showDue() {
-
-  // Start HTML table
-  html = startHTMLTable();
-
-  // Show dues
-  html += showDues();
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.due').innerHTML = html;
-}
-*/
 
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
@@ -555,13 +490,13 @@ function insertEmptyTableRow(rowNumber) {
   html += "<td class='center bold'>Nytt forfall</td>";
 
   // condos
-  html += objCondo.showSelectedCondosNew("condo0", 0, '', 'Ingen er valgt');
+  html += objCondo.showSelectedCondosNew("condo0", '', 0, '', 'Ingen er valgt');
 
   // Date
   html += objDues.showInputHTMLNew("date0", "", 10);
 
   // accounts
-  html += objAccounts.showSelectedAccountsNew("account0", 0, '', 'Ingen er valgt');
+  html += objAccounts.showSelectedAccountsNew("account0", '', 0, '', 'Ingen er valgt');
 
   // due amount
   html += objDues.showInputHTMLNew('amount0', "", 10);
@@ -707,6 +642,6 @@ async function updateDuesRow(dueId) {
     toDate = Number(formatNorDateToNumber(toDate));
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
     
-    showDues();
+    showResult();
   }
 }

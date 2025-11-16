@@ -36,7 +36,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objBudget.loadBudgetsTable(objUserPassword.condominiumId, 999999999, 999999999);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId);
+    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
     // Show leading text for filter
