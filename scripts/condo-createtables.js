@@ -239,7 +239,7 @@ function createAllTables() {
         email VARCHAR(50),
         accountId INT,
         organizationNumber VARCHAR(9),
-        importPath VARCHAR(50)
+        importFileName VARCHAR(50)
       );
     `;
     updateMySql(SQLquery, 'condominium', 'CREATE');

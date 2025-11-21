@@ -17,7 +17,6 @@
  th,
  td {
    border: 1px solid #ccc;
-   padding: 10px;
    text-align: cnter;
    height: 30px;
    white-space: nowrap;
@@ -59,13 +58,6 @@
    height: 35px;
  }
 
- /* left alignment for menu 
- td:first-child,
- th:first-child {
-   text-align: center;
- }
-*/
-
  .left {
    text-align: left;
  }
@@ -90,7 +82,7 @@
 
  /* menu */
  .menu {
-   padding: 5px;
+   padding: 1px;
  }
 
  .menu a {
@@ -107,12 +99,13 @@
    font-weight: 700;
  }
 
- .button {
-  padding: 10px;
-  height: 30px;
+.button {
+  width: 190px;
+  height: 35px;
   background-color: #e0f0e0;
   color: white;
   border: none;
   border-radius: 8px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }

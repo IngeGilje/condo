@@ -22,7 +22,7 @@ class Condos {
       text: "login"
     },
     {
-      applicationName: "condo-condominiums.html",
+      applicationName: "condo-condominium.html",
       className: "Menu2",
       text: "Sameie"
     },
@@ -32,7 +32,7 @@ class Condos {
       text: "Leilighet"
     },
     {
-      applicationName: "condo-bankaccounts.html",
+      applicationName: "condo-bankaccount.html",
       className: "Menu4",
       text: "Bankkonto sameiet"
     },
@@ -841,139 +841,12 @@ class Condos {
     return validUser;
   }
 
-  menu() {
-
-    let url;
-    switch (this.serverStatus) {
-
-      // Web server
-      case 1: {
-
-        url = "http://ingegilje.no/";
-        break;
-      }
-      // Test web server/ local web server
-      case 2:
-
-      // Test server/ local test server
-      case 3: {
-
-        url = "http://localhost/";
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-    document.querySelector('.div-menu').innerHTML =
-      `
-        <aside>
-        <a href="${url}condo-login.html"
-          class="a-menu-vertical-login"
-        >
-          Login
-        </a>
-
-        <a href="${url}condo-condominiums.html"
-          class="a-menu-vertical-condominiums"
-        >
-          Sameie
-        </a>
-
-        <a href="${url}condo-condo.html"
-          class="a-menu-vertical-condo"
-        >
-          Leilighet
-        </a>
-
-        <a href="${url}condo-bankaccounts.html"
-          class="a-menu-vertical-bankaccounts"
-        >
-          Bankkonto sameie
-        </a>
-
-        <a href="${url}condo-account.html"
-          class="a-menu-vertical-accounts"
-        >
-          Konto
-        </a>
-
-        <a href="${url}condo-users.html"
-          class="a-menu-vertical-users"
-        >
-          Bruker
-        </a>
-
-        <a href="${url}condo-userbankaccount.html"
-          class="a-menu-vertical-userbankaccount"
-        >
-          Bankkonto for bruker
-        </a>
-
-        <a href="${url}condo-suppliers.html"
-          class="a-menu-vertical-suppliers"
-        >
-          Leverandør
-        </a>
-
-        <a href="${url}condo-dues.html"
-          class="a-menu-vertical-dues"
-        >
-          Forfall
-        </a>
-
-        <a href="${url}condo-commoncost.html"
-          class="a-menu-vertical-commoncost"
-        >
-          Felleskostnader
-        </a>
-
-        <a href="${url}condo-budget.html"
-          class="a-menu-vertical-budget"
-        >
-          Budsjett
-        </a>
-
-        <a href="${url}condo-remoteheating.html"
-          class="a-menu-vertical-remoteheating"
-        >
-          Fjernvarme
-        </a>
-
-        <a href="${url}condo-overview.html"
-          class="a-menu-vertical-overview"
-        >
-          Betalingsoversikt
-        </a>
-
-        <a href="${url}condo-bankaccounttransactions.html"
-          class="a-menu-vertical-bankaccounttransactions"
-        >
-          Banktransaksjoner
-        </a>
-
-        <a href="${url}condo-importfile.html"
-          class="a-menu-vertical-importfile"
-        >
-          Importer banktransaksjoner
-        </a>
-
-        <a href="${url}condo-annualaccount.html"
-          class="a-menu-vertical-annualaccount"
-        >
-          Årsregnskap
-        </a>
-        </aside>
-      `;
-  }
-
   menuNew(menuNumber) {
 
     let html = "";
 
     // Check of menu exists
-    if (this.arrayMenu.length > menuNumber) {
+    if (this.arrayMenu.length >= menuNumber) {
 
       let url;
       switch (this.serverStatus) {
@@ -999,9 +872,9 @@ class Condos {
         }
       }
 
-      const applicationName = this.arrayMenu[menuNumber].applicationName;
-      const text = this.arrayMenu[menuNumber].text;
-      const className = this.arrayMenu[menuNumber].className;
+      const applicationName = this.arrayMenu[menuNumber - 1].applicationName;
+      const text = this.arrayMenu[menuNumber - 1].text;
+      const className = this.arrayMenu[menuNumber - 1].className;
 
       html +=
         `
@@ -1522,7 +1395,7 @@ class Condos {
 
     let html = "<tr>";
 
-    html += this.menuNew(menuNumber - 1);
+    html += this.menuNew(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1565,6 +1438,69 @@ class Condos {
     return ((fromValue <= toValue)
       && (value >= fromValue)
       && (value <= toValue));
+  }
+
+  // Show the rest of the menu
+  showRestMenuNew(rowNumber) {
+
+    let html = "";
+    for (; this.arrayMenu.length >= rowNumber; rowNumber++) {
+
+      html += "<tr>";
+
+      // Show menu
+      html += this.menuNew(rowNumber);
+      html += "</tr>"
+    }
+
+    // The end of the table
+    html += endHTMLTable();
+    return html;
+    //document.querySelector('.account').innerHTML = html;
+  }
+
+  // Validate number
+  validateNumberNew(number, min, max) {
+
+    return (Number(number) < Number(min) || Number(number) > Number(max)) ? false : true;
+  }
+
+  // validate the norwegian date format dd.mm.yyyy
+  validateNorDateFormatNew(date) {
+
+    // Check for valid date String
+    if (date === '' || typeof date === 'undefined') {
+      return false;
+    }
+    // Regular expression for valuating the dd.mm.yyyy format
+    const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
+    const match = date.match(regex);
+
+    if (!match) return false; // Return false if format doesn't match
+
+    // Extract day, month, and year
+    const day = parseInt(match[1], 10);
+    const month = parseInt(match[2], 10);
+    const year = parseInt(match[3], 10);
+
+    // Check if month is between 1 and 12
+    if (month < 1 || month > 12) return false;
+
+    // Create a date object
+    const objDate = new Date(year, month - 1, day);
+
+    // Validate that the date components match
+    return (
+      objDate.getFullYear() === year
+      && objDate.getMonth() === month - 1
+      && objDate.getDate() === day
+    );
+  }
+
+  // Format norwegian date (11.05.1983) to number (19830511)
+  formatNorDateToNumberNew(norDate) {
+
+    return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
   }
 }
 

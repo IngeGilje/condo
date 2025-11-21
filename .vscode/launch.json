@@ -16,7 +16,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Sameie",
-      "url": "http://localhost/condo-condominiums.html",
+      "url": "http://localhost/condo-condominium.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

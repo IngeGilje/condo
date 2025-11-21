@@ -601,7 +601,7 @@ async function main() {
             const paymentRemoteHeatingAccountId = req.query.paymentRemoteHeatingAccountId;
             const commonCostAccountId = req.query.commonCostAccountId;
             const organizationNumber = req.query.organizationNumber;
-            const importPath = req.query.importPath;
+            const importFileName = req.query.importFileName;
 
             const SQLquery =
               `        
@@ -620,7 +620,7 @@ async function main() {
                   paymentRemoteHeatingAccountId = ${paymentRemoteHeatingAccountId},
                   commonCostAccountId = ${commonCostAccountId},
                   organizationNumber = '${organizationNumber}',
-                  importPath = '${importPath}'
+                  importFileName = '${importFileName}'
                 WHERE condominiumId = ${condominiumId};
               `;
             const [rows] = await db.query(SQLquery);
@@ -652,7 +652,7 @@ async function main() {
             const paymentRemoteHeatingAccountId = req.query.paymentRemoteHeatingAccountId;
             const commonCostAccountId = req.query.commonCostAccountId;
             const organizationNumber = req.query.organizationNumber;
-            const importPath = req.query.importPath;
+            const importFileName = req.query.importFileName;
 
             // Insert new row
             const SQLquery =
@@ -672,7 +672,7 @@ async function main() {
                   paymentRemoteHeatingAccountId,
                   commonCostAccountId,
                   organizationNumber,
-                  importPath
+                  importFileName
                 ) VALUES (
                   'N',
                   '${user}',
@@ -688,7 +688,7 @@ async function main() {
                   ${paymentRemoteHeatingAccountId},
                   ${commonCostAccountId},
                   '${organizationNumber}',
-                  '${importPath}'
+                  '${importFileName}'
                 );
               `;
 

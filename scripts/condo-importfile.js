@@ -9,9 +9,9 @@ const objUsers = new Users('users');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
 const objCondominiums = new Condominiums('condominiums');
 const objCondo = new Condo('condo');
-const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
+const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 const objAccounts = new Account('account');
-const objBankAccounts = new BankAccounts('bankaccounts');
+const objBankAccounts = new BankAccount('bankaccount');
 const objDues = new Due('due');
 const objSuppliers = new Suppliers('suppliers');
 const objImportFile = new ImportFile('importfile');
@@ -40,8 +40,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
-    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId,999999999,999999999);
+    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
+    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
@@ -70,7 +70,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     if (condominiumRowNumber !== -1) {
 
       // file import text name
-      const csvFileName = objCondominiums.arrayCondominiums[condominiumRowNumber].importPath;
+      const csvFileName = objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName;
       await objImportFile.loadCsvFile(csvFileName);
 
       // create array from imported csv-file (data string)
@@ -156,7 +156,7 @@ function createEvents() {
         await updateOpeningClosingBalance();
 
         // Start bank account transactions
-        window.location.href = 'http://localhost/condo-bankaccounttransactions.html';
+        window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
       };
     };
   });
@@ -513,9 +513,7 @@ async function updateOpeningClosingBalance() {
   let totalIncome = 0;
   let totalPayment = 0;
 
-  let currentOpeningBalance = '';
   let currentOpeningBalanceDate = '';
-  let currentClosingBalance = '';
   let currentClosingBalanceDate = '';
 
 
@@ -605,19 +603,19 @@ async function updateOpeningClosingBalance() {
 
       // Updating openening balance
       // Check for openening balance date
-      if (Number(currentOpeningBalanceDate) >= Number(openingBalanceDate) || Number(currentOpeningBalanceDate) === 0 || currentOpeningBalanceDate === '') {
+      if (Number(currentOpeningBalanceDate) <= Number(openingBalanceDate) || Number(currentOpeningBalanceDate) === 0 || currentOpeningBalanceDate === '') {
 
         //await objBankAccounts.loadBankAccounts(condominiumId);
         const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
         if (bankAccountRowNumber !== -1) {
 
           const user = objUserPassword.email
-          const bankAccount = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].bankAccount;
-          const name = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name;
-          const closingBalance = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalance;
-          const closingBalanceDate = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate;
+          const bankAccount = Number(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].bankAccount);
+          const name = Number(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name);
+          const closingBalance = Number(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalance);
+          const closingBalanceDate = Number(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate);
           await objBankAccounts.updateBankAccountsTable(bankAccountId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
+          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
         }
       }
 
@@ -636,7 +634,7 @@ async function updateOpeningClosingBalance() {
           const openingBalance = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalance;
           const openingBalanceDate = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalanceDate;
           await objBankAccounts.updateBankAccountsTable(bankAccountId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
+          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
         };
       };
     };
@@ -684,6 +682,7 @@ function getOpeningBalanceDate() {
   return openingBalanceDate ? openingBalanceDate[0] : null;
 }
 
+/*
 // Get closing balance date
 function getClosingBalanceDate() {
 
@@ -703,6 +702,7 @@ function getClosingBalanceDate() {
 
   return (closingBalanceDate) ? closingBalanceDate[0] : null;
 }
+*/
 
 // reset Bank account transactions
 function resetBankAccountTransactions() {
@@ -758,7 +758,7 @@ function showValues() {
   if (condominiumRowNumber !== -1) {
 
     // file import text name
-    document.querySelector('.input-importfile-csvFileName').value = objCondominiums.arrayCondominiums[condominiumRowNumber].importPath;
+    document.querySelector('.input-importfile-csvFileName').value = objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName;
   }
 }
 */

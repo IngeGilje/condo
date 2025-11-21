@@ -2,51 +2,37 @@
 <html lang="nb-NO">
 
 <head>
-  <title>Btalingsoversikt</title>
+
+  <title>Budsjett</title>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/condo.css">
+  <link rel="stylesheet" href="styles/condo-new.css">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 1rem;
-      background: #f5f5f5;
-    }
-  </style>
 </head>
 
 <body>
 
-  <!-- menu -->
-  <div class="div-menu"></div>
+  <!-- show header -->
+  <div class="header"></div>
 
-  <!-- Start Main -->
-  <div class="main">
+  <!-- show filter -->
+  <div class="filter"></div>
 
-    <!-- Filter -->
-    <div class="div-grid-overview-filter"></div>
+  <!-- show result of filter -->
+  <div class="dues"></div>
 
-    <!-- dues -->
-    <div class="div-grid-overview-dues"></div>
+  <div class="bankAccountTransactions"></div>
 
-    <!-- Bank Account Transactions -->
-    <div class="div-grid-overview-bankAccountTransactions"></div>
-
-    <!-- How much to pay -->
-    <div class="div-grid-overview-howMuchToPay"></div>
-  </div>
+   <div class="howMuchToPay"></div>
 
   <script src="class/condo-class.js"></script>
   <script src="class/condo-users-class.js"></script>
   <script src="class/condo-condo-class.js"></script>
   <script src="class/condo-bankaccounttransaction-class.js"></script>
   <script src="class/condo-due-class.js"></script>
-  <script src="class/condo-condominiums-class.js"></script>
+    <script src="class/condo-account-class.js"></script>
+  <script src="class/condo-condominium-class.js"></script>
   <script src="class/condo-overview-class.js"></script>
   <script src="scripts/condo-overview.js"></script>
 </body>
