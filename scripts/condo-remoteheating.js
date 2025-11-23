@@ -32,7 +32,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Main entry point
   async function main() {
 
-    await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
+    await objCondominiums.loadCondominiumsTable();
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);

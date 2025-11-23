@@ -89,9 +89,10 @@ async function main() {
                   AND deleted <> 'Y'
                 ORDER BY name ASC, accountId ASC;
               `;
-            console.log('SQLquery :', SQLquery);
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery :', SQLquery);
           } catch (err) {
 
             console.log("Database error in /accounts:", err.message);
@@ -413,9 +414,10 @@ async function main() {
               `
                 ORDER BY bankAccountId;
               `;
-            console.log('SQLquery: ', SQLquery);
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /bankaccounts:", err.message);
@@ -623,8 +625,10 @@ async function main() {
                   importFileName = '${importFileName}'
                 WHERE condominiumId = ${condominiumId};
               `;
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery :', SQLquery);
           } catch (err) {
 
             console.log("Database error in /condominiums:", err.message);
@@ -776,9 +780,9 @@ async function main() {
               `
                 ORDER BY year,accountId;
               `;
-            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /budgets:", err.message);
@@ -812,9 +816,10 @@ async function main() {
                   year = '${year}'
                 WHERE budgetId = ${budgetId};
               `;
-            console.log('SQLquery', SQLquery);
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /budgets:", err.message);
@@ -948,9 +953,10 @@ async function main() {
               `
                 ORDER BY condoId, date DESC;
               `;
-            console.log('SQLquery: ', SQLquery);
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /dues:", err.message);
@@ -1284,9 +1290,10 @@ async function main() {
               `
                 ORDER BY userBankAccountId;
               `;
-            console.log('SQLquery :', SQLquery);
+
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery :', SQLquery);
           } catch (err) {
 
             console.log("Database error in /userbankaccounts:", err.message);
@@ -1686,9 +1693,9 @@ async function main() {
                 `;
             }
 
-            console.log('SQLquery:', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /bankaccounttransactions:", err.message);

@@ -386,7 +386,7 @@ async function updateAccountsRow(accountId) {
   // name
   className = `.name${bankAccountTransactionId}`;
   const name = document.querySelector(className).value;
-  const validName = objBankAccountTransactions.validateTextNew(name);
+  const validName = objBankAccountTransactions.validateTextNew(name,3,50);
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;

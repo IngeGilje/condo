@@ -33,7 +33,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
-    await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
+    await objCondominiums.loadCondominiumsTable();
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objBudget.loadBudgetsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);

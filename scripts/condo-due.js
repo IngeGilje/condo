@@ -611,7 +611,7 @@ async function updateDuesRow(dueId) {
 
   className = `.text${dueId}`;
   let text = document.querySelector(className).value;
-  const validText = objDues.validateTextNew(text);
+  const validText = objDues.validateTextNew(text, 3, 255);
 
   // Validate dues columns
   if ((accountId => 1 && accountId <= 999999999)

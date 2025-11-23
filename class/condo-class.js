@@ -187,7 +187,7 @@ class Condos {
       `
         <td class="center">
           <input 
-            class=" ${className} center one-line"
+            class="${className} center one-line"
             type="text" 
             maxlength="${maxlength}"
             value="${value}"
@@ -417,40 +417,18 @@ class Condos {
   }
 
   // Valid text
-  validateTextNew(tekst) {
-
-    let validTekst = true;
+  validateTextNew(tekst, minLenght, maxLength) {
 
     // Check for string
-    if (typeof tekst !== "string") {
-
-      validTekst = false;
-    }
+    if (typeof tekst !== "string") return false;
 
     // Check length
-    if (tekst.length > 50) {
-
-      validTekst = false;
-    };
+    if (!(tekst.length >= minLenght) && (tekst.length <= maxLength)) return false;
 
     // Check allowed characters (letters, numbers, spaces)
-    if (tekst.length > 0) {
-
-      const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
-      validTekst = (regex.test(tekst)) ? true : false;
-    } else {
-
-      validTekst = false;
-    }
-
-    if (!validTekst) {
-
-      validTekst = false;
-    }
-
-    return validTekst;
+    const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
+    return (regex.test(tekst)) ? true : false;
   }
-
 
   // Validate postal code
   validatePostalCode(postalCode, className, labelText) {
@@ -537,7 +515,7 @@ class Condos {
       return false;
     } else {
 
-      // Valid valid Organization Number
+      // Valid valid bank account 
       if (isClassDefined(`label-${className}-red`)) {
 
         document.querySelector(`.label-${className}-red`).outerHTML =
@@ -1402,24 +1380,24 @@ class Condos {
       if (text === '') {
         html +=
           `
-          <td 
-            class="no-border center"
-            style="${style}"
-          >
-            ${text}
-          </td>
-        `;
+            <td 
+              class="no-border center"
+              style="${style}"
+            >
+              ${text}
+            </td>
+          `;
       } else {
 
         html +=
           `
-          <td 
-            class="no-border center bold"
-            style="${style}"
-          >
-            ${text}
-          </td>
-        `;
+            <td 
+              class="no-border center bold"
+              style="${style}"
+            >
+              ${text}
+            </td>
+          `;
       }
     });
 
@@ -1502,6 +1480,36 @@ class Condos {
 
     return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
   }
+
+  // Validate phone number
+  validatePhoneNew(phone) {
+
+    // Validate phone number
+    const phonePattern = /^\d{8}$/;
+    return ((phonePattern.test(phone))) ? true : false;
+  }
+
+  // Validate E-mail
+  validateEmailNew(eMail) {
+
+    // Validate eMail
+    const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return ((eMailRegex.test(eMail))) ? true : false;
+  }
+
+  // Validate organization number
+  validateOrganizationNumberNew(organizationNumber) {
+
+    // Validate organization number Organization Number
+    const organizationNumberPattern = /^\d{9}$/;
+    return (organizationNumberPattern.test(organizationNumber)) ? true : false;
+  }
+
+  // Validate filename
+  validateFileNameNew(fileName) {
+  const fileNameRegex = /^(?:[a-zA-Z]:\\)?(?:[^<>:"/\\|?*\x00-\x1F]+\\)*[^<>:"/\\|?*\x00-\x1F]*$/;
+  return fileNameRegex.test(fileName);
+}
 }
 
 // Check if string includes only digits

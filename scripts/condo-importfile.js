@@ -44,7 +44,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
-    await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
+    await objCondominiums.loadCondominiumsTable();
 
     const condominiumId = Number(objUserPassword.condominiumId);
 

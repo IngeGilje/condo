@@ -339,7 +339,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   // text
   className = `.text${bankAccountTransactionId}`;
   const text = document.querySelector(className).value;
-  const validText = objBankAccountTransactions.validateTextNew(text);
+  const validText = objBankAccountTransactions.validateTextNew(text, 3, 255);
 
   // Validate bankAccountTransactions columns
   if ((condoId >= 1 && condoId <= 999999999)

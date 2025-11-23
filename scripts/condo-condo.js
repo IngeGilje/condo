@@ -10,8 +10,8 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-objCondo.menu();
-objCondo.markSelectedMenu('Leilighet');
+//objCondo.menu();
+//objCondo.markSelectedMenu('Leilighet');
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -28,19 +28,20 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
-
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
 
-    // Find selected condo id
-    const condoId = objCondo.getSelectedCondoId('select-condo-condoId');
+            const condoId = objCondo.arrayCondo.at(-1).condoId;
 
-    // Show leading text
-    showLeadingText(condoId);
+     // Show header
+    showHeader();
 
-    // Show all values for condo
-    showValues(condoId);
+    // Show filter
+    showFilter(condominiumId);
 
-    // Make events
+    // Show result
+    showResult(condominiumId);
+
+    // Create events
     createEvents();
   }
 }

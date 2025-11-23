@@ -76,7 +76,7 @@ function createEvents() {
 
       updateBankAccountRowSync();
 
-      // Update a accounts row
+      // Update a bankaccounts row
       async function updateBankAccountRowSync() {
 
         bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
@@ -190,7 +190,7 @@ async function deleteBankAccount() {
     const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
     if (bankAccountRowNumber !== -1) {
 
-      // Delete bank accounts row
+      // Delete bank bankaccounts row
       const user = objUserPassword.email;
       const lastUpdate = today.toISOString();
       objBankAccounts.deleteBankAccountsTable(bankAccountId, user, lastUpdate);
@@ -198,10 +198,11 @@ async function deleteBankAccount() {
   }
 }
 
+/*
 // Show leading text for account
 function showLeadingText(bankAccountId) {
 
-  // Show all bank accounts
+  // Show all bankaccounts
   objBankAccounts.showSeletedBankaccounts('bankaccounts-bankAccountId', bankAccountId);
 
   // Show bank account number
@@ -236,7 +237,9 @@ function showLeadingText(bankAccountId) {
     objBankAccounts.showButton('bankaccounts-cancel', 'Avbryt');
   }
 }
+*/
 
+/*
 // Show all values for bankAccount
 function showValues(bankAccountId) {
 
@@ -271,6 +274,7 @@ function showValues(bankAccountId) {
     }
   }
 }
+*/
 
 // Show filter
 function showFilter() {
@@ -526,9 +530,9 @@ async function updateBankAccountRow(bankAccountId) {
   const bankAccount = document.querySelector('.bankAccount').value;
   const validBankAccount = objBankAccounts.validateBankAccount(bankAccount, "label-bankaccounts-bankAccount", "Bankkontonummer");
 
-  // validate bankaccount Name
+  // validate name
   const name = document.querySelector('.name').value;
-  const validName = objBankAccounts.validateTextNew(name);
+  const validName = objBankAccounts.validateTextNew(name, 3, 50);
 
   // Opening balance date
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
@@ -573,6 +577,7 @@ async function updateBankAccountRow(bankAccountId) {
     showResult();
   }
 }
+
 // Delete one bankaccounts row
 async function deleteBankAccountRow(bankAccountId) {
 

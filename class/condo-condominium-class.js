@@ -100,10 +100,10 @@ class Condominiums extends Condos {
   }
 
   // Show condominiums table with alternative select options
-  async loadCondominiumsTable(condominiumId) {
+  async loadCondominiumsTable() {
 
     try {
-      const response = await fetch(`http://localhost:3000/condominiums?action=select&condominiumId=${condominiumId}`);
+      const response = await fetch(`http://localhost:3000/condominiums?action=select`);
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.arrayCondominiums = await response.json();
     } catch (error) {
@@ -250,54 +250,5 @@ class Condominiums extends Condos {
 
     return html;
   }
-  
-  /*
-  // Show condominiums with alternative select options
-  async loadCondominiumsTable(condominiumId) {
-
-    try {
-      const response = await fetch(`http://localhost:3000/condominiums?action=select`);
-      if (!response.ok) throw new Error("Network error (condominiums)");
-      this.arrayCondominiums = await response.json();
-    } catch (error) {
-      console.log("Error loading condominiums:", error);
-    }
-  }
-  // update condominiums row
-  async updateCondominiumsTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, paymentRemoteHeatingAccountId, organizationNumber, importFileName) {
-
-    try {
-      const response = await fetch(`http://localhost:3000/condominiums?action=update&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2},&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
-      if (!response.ok) throw new Error("Network error (condominiums)");
-      this.arrayCondominiums = await response.json();
-    } catch (error) {
-      console.log("Error updating condominiums:", error);
-    }
-  }
-
-  // insert condominiums row
-  async insertCondominiumsTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, paymentRemoteHeatingAccountId, organizationNumber, importFileName) {
-
-    try {
-      const response = await fetch(`http://localhost:3000/condominiums?action=insert&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2},&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
-      if (!response.ok) throw new Error("Network error (condominiums)");
-      this.arrayCondominiums = await response.json();
-    } catch (error) {
-      console.log("Error updating condominiums:", error);
-    }
-  }
-
-  // delete condominiums row
-  async deleteCondominiumsTable(condominiumId, user, lastUpdate) {
-
-    try {
-      const response = await fetch(`http://localhost:3000/condominiums?action=delete&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}`);
-      if (!response.ok) throw new Error("Network error (condominiums)");
-      this.arrayCondominiums = await response.json();
-    } catch (error) {
-      console.log("Error deleting condominiums:", error);
-    }
-  }
-  */
 }
 

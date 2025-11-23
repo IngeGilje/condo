@@ -34,7 +34,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     await objUsers.loadUsersTable(objUserPassword.condominiumId);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
-    await objCondominiums.loadCondominiumsTable(objUserPassword.condominiumId);
+    await objCondominiums.loadCondominiumsTable();
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
     // Show leading text filter
