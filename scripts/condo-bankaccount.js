@@ -35,7 +35,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showHeader();
 
     // Show filter
-    showFilter();
+    showFilter(objUserPassword.condominiumId);
 
     const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
     const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
@@ -276,6 +276,7 @@ function showValues(bankAccountId) {
 }
 */
 
+/*
 // Show filter
 function showFilter() {
 
@@ -292,7 +293,7 @@ function showFilter() {
   // Get last id in last object in condominiums array
   const condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
   html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'width:100px;', condominiumId, '', '');
-
+                                                      
   // Show all bankaccounts
   // Get last id in last object in bankaccounts array
   const bankAccountId = objBankAccounts.arrayBankAccounts.at(-1).bankAccountId;
@@ -304,6 +305,7 @@ function showFilter() {
   html += endHTMLTable();
   document.querySelector('.filter').innerHTML = html;
 }
+*/
 
 // Check for valid values
 function validateValues() {
@@ -619,4 +621,37 @@ function resetValues() {
 
   document.querySelector('.delete').disabled = true;
   document.querySelector('.insert').disabled = true;
+}
+
+// Show filter
+async function showFilter(condominiumId) {
+
+  // Start table
+  html = startHTMLTable('width:750px;');
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:250px;", '', '', '');
+  html += showHTMLFilterHeader("width:250px;", '', 'Velg leilighet', '');
+
+  // Filter for search
+  html += "<tr>";
+
+  html += "<td></td>";
+
+  // Show selected condominiums 
+  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'width:100px;', condominiumId, '', '');
+
+  // Show all bankaccounts for selected condominiums
+  // Get last id in last object in bankaccounts array
+  const bankAccountId = objBankAccounts.arrayBankAccounts.at(-1).bankAccountId;
+  html += objBankAccounts.showSelectedBankAccountsNew('filterBankAccountId', 'width:100px;', bankAccountId, '', '');
+
+  html += "</tr>";
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:750px;", '', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.filter').innerHTML = html;
 }

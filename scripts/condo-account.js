@@ -147,6 +147,7 @@ function resetValues() {
   document.querySelector('.button--accounts-insert').disabled = true;
 }
 
+/*
 function showHeader() {
 
   // Start table
@@ -159,7 +160,23 @@ function showHeader() {
   html += endHTMLTable();
   document.querySelector('.header').innerHTML = html;
 }
+*/
 
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = startHTMLTable('width:750px;');
+
+  // Main header
+  html += showHTMLMainTableHeader('widht:250px;', '', 'Konto', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.header').innerHTML = html;
+}
+
+/*
 // Show filter
 function showFilter() {
 
@@ -176,7 +193,40 @@ function showFilter() {
   html += endHTMLTable();
   document.querySelector('.filter').innerHTML = html;
 }
+*/
+// Show filter
+function showFilter(accountId) {
 
+  // Start table
+  html = startHTMLTable('width:750px;');
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:250px;", '', '', '');
+  html += showHTMLFilterHeader("width:250px;", '', 'Kostnadstype', '');
+
+  // Filter for search
+  html += "<tr>";
+
+  html += "<td></td>";
+
+  // fixed or not fixed cost
+  html += objAccounts.showSelectedValuesNew('filterFixedCost', 'width:75px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html +=
+    `
+      </tr>
+    `;
+
+  html += "</tr>";
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:750px;", '', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.filter').innerHTML = html;
+}
+
+/*
 // Filter for search
 function showHTMLFilterSearch() {
 
@@ -195,6 +245,7 @@ function showHTMLFilterSearch() {
 
   return html;
 }
+*/
 
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
@@ -249,7 +300,7 @@ function showResult() {
   html = startHTMLTable();
 
   // Header
-  html += showHTMLMainTableHeader('Meny', 'Slett', 'Kostnadstype', 'Tekst');
+  html += showHTMLMainTableHeader('','', 'Slett', 'Kostnadstype', 'Tekst');
 
   //let sumAmount = 0;
   let rowNumber = 0;
@@ -261,7 +312,7 @@ function showResult() {
     html += "<tr>";
 
     // Show menu
-    html += objAccounts.menuNew(rowNumber - 1);
+    html += objAccounts.menuNew(rowNumber);
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
@@ -335,7 +386,7 @@ function showResult() {
 
   // The end of the table
   html += endHTMLTable();
-  document.querySelector('.account').innerHTML = html;
+  document.querySelector('.result').innerHTML = html;
 }
 
 // Show the rest of the menu

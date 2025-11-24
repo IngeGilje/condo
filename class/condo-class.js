@@ -2262,10 +2262,7 @@ function startHTMLTable(style) {
 // Show main header table
 function showHTMLMainTableHeader(style, ...texts) {
 
-  let html =
-    `
-      <tr class="bold">
-    `;
+  let html = `<tr class="bold">`;
 
   texts.forEach((text) => {
 

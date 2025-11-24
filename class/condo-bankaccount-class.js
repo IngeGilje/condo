@@ -114,16 +114,16 @@ class BankAccount extends Condos {
     // Check if bankaccounts array is empty
     const numberOfRows = this.arrayBankAccounts.length;
     if (numberOfRows > 0) {
-      this.arrayBankAccounts.forEach((bankaccount) => {
-        if (bankaccount.bankAccountId === bankAccountId) {
+      this.arrayBankAccounts.forEach((bankAccount) => {
+        if (bankAccount.bankAccountId === bankAccountId) {
 
           html +=
             `
               <option 
-                value=${bankaccount.bankAccountId}
+                value=${bankAccount.bankAccountId}
                 selected
               >
-                ${bankaccount.name}
+                ${bankAccount.name}
               </option>
             `;
           selectedValue = true;
