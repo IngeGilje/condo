@@ -91,15 +91,13 @@ function createEvents() {
 
       async function deleteAccountSync() {
 
-        deleteCondominiumsRow();
+        deleteCondominiumRow();
 
         await objCondominiums.loadCondominiumsTable();
 
         // Show filter
         const condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
         showFilter(condominiumId);
-
-        showResult(condominiumId);
 
         showResult(condominiumId);
       };
@@ -125,6 +123,7 @@ function createEvents() {
         await objCondominiums.loadCondominiumsTable();
 
         let condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+        if (condominiumId === 0) condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
         showResult(condominiumId);
       };
     };
@@ -482,13 +481,13 @@ function validateValues() {
 }
 */
 
-// Delete condominiums row
-async function deleteCondominiumsRow() {
+// Delete condominium row
+async function deleteCondominiumRow() {
 
-  // Check if condominiumId number
+  // condominiumId
   const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
 
-  // Check if condominium number exist
+  // Check if condominiumId exist
   const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
   if (condominiumRowNumber !== -1) {
 
@@ -496,8 +495,6 @@ async function deleteCondominiumsRow() {
     const user = objUserPassword.email;
     const lastUpdate = today.toISOString();
     await objCondominiums.deleteCondominiumsTable(condominiumId, user, lastUpdate);
-
-    await objCondominiums.loadCondominiumsTable();
   }
 }
 // Show header
@@ -530,7 +527,6 @@ function showFilter(condominiumId) {
   html += "<td></td><td></td>";
 
   // condominium
-  //const condominiumId = Number(objUserPassword.condominiumId);
   html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', '', condominiumId, '', '')
 
   html += "</tr>";
@@ -678,13 +674,6 @@ function showResult(condominiumId) {
     html += objCondominiums.showInputHTMLNew('importFileName', objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName, 45);
 
     html += "</tr>";
-
-
-
-
-
-
-
 
     // Show menu
     html += "<tr>";

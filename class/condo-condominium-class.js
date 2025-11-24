@@ -157,9 +157,9 @@ class Condominiums extends Condos {
         >
           <select 
             class="${className} center"
-            style="${style}"
-          >
       `;
+      if (style) html =+ `style="${style}"`;
+      html =+ `>`;
 
     // Check if condominium array is empty
     const numberOfRows = this.arrayCondominiums.length;

@@ -1099,9 +1099,11 @@ async function main() {
       switch (action) {
 
         case 'select': {
-          const condominiumId = Number(req.query.condominiumId);
 
           try {
+
+            const condominiumId = Number(req.query.condominiumId);
+            console.log('condominiumId: ', condominiumId);
 
             const SQLquery =
               `
@@ -1110,8 +1112,10 @@ async function main() {
                   AND deleted <> 'Y'
                 ORDER BY condoId;
               `;
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+
           } catch (err) {
 
             console.log("Database error in /condo:", err.message);
@@ -1123,10 +1127,10 @@ async function main() {
         case 'update': {
 
           console.log("Update condo request received");
-
           try {
 
             const condoId = req.query.condoId;
+            console.log('condoId: ', condoId);
             const user = req.query.user;
             const lastUpdate = req.query.lastUpdate;
             const name = req.query.name;
@@ -1152,11 +1156,13 @@ async function main() {
                 WHERE condoId = ${condoId};
               `;
 
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery:', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /accounts:", err.message);
+            console.log("Database error in /condo:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1227,6 +1233,7 @@ async function main() {
             const user = req.query.user;
             const lastUpdate = req.query.lastUpdate;
             const condoId = req.query.condoId;
+            console.log('condoId: ', condoId);
 
             // Delete table
             const SQLquery =
@@ -1239,6 +1246,7 @@ async function main() {
                   WHERE condoId = ${condoId};
               `;
 
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
