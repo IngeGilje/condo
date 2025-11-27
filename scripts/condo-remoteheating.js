@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objCondominiums = new Condominiums('condominiums');
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objCondo = new Condo('condo');
 const objAccounts = new Account('account');
 const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
@@ -33,7 +33,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     await objCondominiums.loadCondominiumsTable();
-    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    const resident = 'Y';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 

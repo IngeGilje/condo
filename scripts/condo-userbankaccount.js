@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
 
@@ -25,7 +25,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Main entry point
   async function main() {
 
-    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    const resident = 'Y';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
 
@@ -583,7 +584,7 @@ function insertEmptyTableRow(rowNumber) {
   let html = "<tr>";
 
   // Show menu
-  html += objUserBankAccounts.menuNew(rowNumber - 1);
+  html += objUserBankAccounts.menuNew(rowNumber);
 
   // delete column
   html += "<td class='center'>Ny brukerkonto</td>";
@@ -607,7 +608,7 @@ function showTableSumRow(rowNumber, amount) {
   let html = "<tr>";
 
   // Show menu
-  html += objUserBankAccounts.menuNew(rowNumber - 1);
+  html += objUserBankAccounts.menuNew(rowNumber);
 
   // condo
   html += "<td></td>";
@@ -645,12 +646,12 @@ function showUserBankAccounts() {
     html += "<tr>";
 
     // Show menu
-    html += objUserBankAccounts.menuNew(rowNumber - 1);
+    html += objUserBankAccounts.menuNew(rowNumber);
 
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;
     const selectedChoice = 'Nei';
-    html += objUserBankAccounts.showDelete(className, selectedChoice);
+    html += objUserBankAccounts.showYesNo(className, selectedChoice);
 
     // user
     const userId = userBankAccount.userId;
@@ -689,7 +690,7 @@ function showRestMenu(rowNumber) {
     html += "<tr>";
 
     // Show menu
-    html += objUserBankAccounts.menuNew(rowNumber - 1);
+    html += objUserBankAccounts.menuNew(rowNumber);
     html += "</tr>"
   }
 

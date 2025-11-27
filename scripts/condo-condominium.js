@@ -2,7 +2,7 @@
 
 // Activate classes
 const today = new Date();
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objBankAccounts = new BankAccount('bankaccount');
 const objCondominiums = new Condominiums('condominiums');
@@ -31,7 +31,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objCondominiums.loadCondominiumsTable();
     const condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
 
-    await objUsers.loadUsersTable(condominiumId);
+    const resident = 'Y';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objAccounts.loadAccountsTable(condominiumId);
     await objBankAccounts.loadBankAccountsTable(condominiumId, 999999999);
 

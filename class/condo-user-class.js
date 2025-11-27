@@ -1,5 +1,5 @@
 // class for user
-class Users extends Condos {
+class User extends Condos {
 
   // users information
   arrayUsers = Array;
@@ -9,12 +9,8 @@ class Users extends Condos {
 
     if (userId === undefined) userId = 0;
 
-    let html = `
-      <form 
-        id="user"
-        action="/submit"
-        method="POST"
-      >
+    let html =
+      `
         <label class="label-${classValue}"
           id="user"
           for="user">
@@ -24,7 +20,7 @@ class Users extends Condos {
           id="user"
           name="user"
         >
-    `;
+      `;
 
     // Select last user if userId is 0
     if (userId === 0) userId = this.arrayUsers.at(-1).userId;
@@ -72,12 +68,12 @@ class Users extends Condos {
     html +=
       `
           </select>
-        </form>
       `;
 
     document.querySelector(`.div-${classValue}`).innerHTML = html;
   }
 
+  /*
   // Show all selected users
   showSelectedUsersNew(className, userId, selectAll, selectNone) {
 
@@ -182,6 +178,7 @@ class Users extends Condos {
 
     return html;
   }
+  */
 
   // Find selected user id
   getSelectedUserId(classValue) {
@@ -202,12 +199,11 @@ class Users extends Condos {
   }
 
   // get users
-  async loadUsersTable(condominiumId) {
+  async loadUsersTable(condominiumId, resident) {
 
     // Get users
     try {
-      const response = await fetch(`http://localhost:3000/users?action=select&condominiumId=${condominiumId}`);
-
+      const response = await fetch(`http://localhost:3000/users?action=select&condominiumId=${condominiumId}&resident=${resident}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {
@@ -216,10 +212,10 @@ class Users extends Condos {
   }
 
   // update user row in users table
-  async updateUsersTable(user, lastUpdate, email, condoId, firstName, lastName, phone, securityLevel, password) {
+  async updateUsersTable(resident, user, lastUpdate, email, userId, condoId, firstName, lastName, phone, securityLevel, password) {
 
     try {
-      const response = await fetch(`http://localhost:3000/users?action=update&user=${user}&lastUpdate=${lastUpdate}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}`);
+      const response = await fetch(`http://localhost:3000/users?action=update&user=${user}&lastUpdate=${lastUpdate}&userId=${userId}&condoId=${condoId}&email=${email}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {
@@ -228,10 +224,10 @@ class Users extends Condos {
   }
 
   // insert user row in users table
-  async insertUsersTable(condominiumId, user, lastUpdate, email, condoId, firstName, lastName, phone, securityLevel, password) {
+  async insertUsersTable(resident, condominiumId, user, lastUpdate, email, condoId, firstName, lastName, phone, securityLevel, password) {
 
     try {
-      const response = await fetch(`http://localhost:3000/users?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}`);
+      const response = await fetch(`http://localhost:3000/users?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {
@@ -249,5 +245,111 @@ class Users extends Condos {
     } catch (error) {
       console.log("Error deleting users:", error);
     }
+  }
+
+  // Show all selected users
+  showSelectedUsersNew(className, style, userId, selectAll, selectNone) {
+
+    let selectedValue = false;
+
+    let html =
+      `
+        <td
+          class="center one-line"
+        >
+          <select 
+            class="${className} center"
+      `;
+    if (style) html += `style="${style}"`;
+    html += `>`;
+
+    // Check if user array is empty
+    const numberOfRows = this.arrayUsers.length;
+    if (numberOfRows > 0) {
+      this.arrayUsers.forEach((user) => {
+        if (user.userId === userId) {
+
+          html +=
+            `
+              <option 
+                value=${user.userId}
+                selected
+              >
+                ${user.firstName}
+              </option>
+            `;
+          selectedValue = true;
+        } else {
+
+          html +=
+            `
+              <option 
+                value="${user.userId}">
+                ${user.firstName}
+              </option>
+            `;
+        }
+      });
+    } else {
+
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen leilighet
+          </option>
+        `;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (numberOfRows > 1)) {
+
+      html +=
+        `
+          <option 
+            value=999999999
+            selected
+          >
+            ${selectAll}
+          </option>
+        `;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (numberOfRows > 1)) {
+      if (selectedValue) {
+        html +=
+          `
+          <option 
+            value=0
+          >
+            ${selectNone}
+          </option>
+        `;
+      } else {
+
+        html +=
+          `
+            <option 
+              value=0
+              selected
+            >
+              ${selectNone}
+            </option>
+          `;
+        selectedValue = true;
+      }
+    }
+
+    html +=
+      `
+          </select >
+        </td>
+      `;
+
+    return html;
   }
 }

@@ -48,7 +48,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Bruker",
-      "url": "http://localhost/condo-users.html",
+      "url": "http://localhost/condo-user.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

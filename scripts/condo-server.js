@@ -6,29 +6,18 @@
 // const serverStatus = 2; // Test server/ local test server
 const serverStatus = 2;
 
-/*
-import express from "express";
-import cors from "cors";
-import mysql from "mysql2/promise";
-import fs from "fs";
-import csv from "csv-parser";
-//import fs from "fs/promises";
-
-const app = express();
-app.use(cors());          // allow frontend to call backend
-*/
-
 import express from "express";
 import cors from "cors";
 import mysql from "mysql2/promise";
 import fs from "fs/promises";
+
+const today = new Date();
 
 const app = express();
 app.use(cors());          // allow frontend to call backend
 
 // Middleware to parse JSON requests
 app.use(express.json());
-
 
 let db;
 
@@ -73,6 +62,7 @@ async function main() {
     // Requests for accounts
     app.get("/accounts", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {
@@ -108,7 +98,6 @@ async function main() {
           try {
 
             const accountId = req.query.accountId;
-            console.log("accountId: ", accountId);
             const user = req.query.user;
             const fixedCost = req.query.fixedCost;
             const lastUpdate = req.query.lastUpdate;
@@ -214,6 +203,7 @@ async function main() {
     // Requests for users
     app.get("/users", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {
@@ -221,32 +211,21 @@ async function main() {
         case 'select': {
 
           const condominiumId = Number(req.query.condominiumId);
+          const resident = req.query.resident;
 
           try {
 
             let SQLquery =
               `
                 SELECT * FROM users
+                  WHERE deleted <> 'Y'
               `;
-
-            if (Number(condominiumId) === 999999999) {
-
-              SQLquery +=
-                `
-                    WHERE deleted <> 'Y'
-                  `;
-
-            } else {
-
-              SQLquery +=
-                `
-                   WHERE condominiumId = ${condominiumId}
-                    AND deleted <> 'Y'
-                `;
-            }
+            if (Number(condominiumId) !== 999999999) SQLquery += ` AND condominiumId = ${condominiumId}`;
+            if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
 
             const [rows] = await db.query(SQLquery);
             res.json(rows);
+            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /users:", err.message);
@@ -261,9 +240,10 @@ async function main() {
 
           try {
 
+            const resident = req.query.resident;
             const userId = req.query.userId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            //const lastUpdate = req.query.lastUpdate;
             const email = req.query.email;
             const condoId = req.query.condoId;
             const firstName = req.query.firstName;
@@ -276,6 +256,7 @@ async function main() {
               `
                 UPDATE users
                 SET
+                  resident = '${resident}',
                   user = '${user}',
                   lastUpdate = '${lastUpdate}',
                   email = '${email}',
@@ -285,9 +266,9 @@ async function main() {
                   phone = '${phone}',
                   securityLevel = ${securityLevel},
                   password = '${password}'
-                WHERE 
-                  userId = ${userId};
+                WHERE userId = ${userId};
               `;
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -305,8 +286,9 @@ async function main() {
           try {
 
             const condominiumId = req.query.condominiumId;
+            const resident = req.query.resident;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            //const lastUpdate = req.query.lastUpdate;
             const email = req.query.email;
             const condoId = req.query.condoId;
             const firstName = req.query.firstName;
@@ -320,6 +302,7 @@ async function main() {
               `
                 INSERT INTO users(
                   deleted,
+                  resident,
                   condominiumId,
                   user,
                   lastUpdate,
@@ -333,6 +316,7 @@ async function main() {
                 )
                 VALUES(
                   'N',
+                  '${resident}',
                   ${condominiumId},
                   '${user}',
                   '${lastUpdate}',
@@ -392,6 +376,7 @@ async function main() {
     // Requests for bank accounts
     app.get("/bankaccounts", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {
@@ -558,6 +543,7 @@ async function main() {
     // Requests for condominiums table
     app.get("/condominiums", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {
@@ -744,6 +730,7 @@ async function main() {
     // Requests for budgets table
     app.get("/budgets", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {
@@ -908,6 +895,7 @@ async function main() {
     // Requests for dues table
     app.get("/dues", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {
@@ -1094,6 +1082,7 @@ async function main() {
     // Requests for condo
     app.get("/condo", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {
@@ -1263,6 +1252,7 @@ async function main() {
     // Requests for user bank account
     app.get("/userbankaccounts", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {
@@ -1432,6 +1422,7 @@ async function main() {
     // Requests for supplier
     app.get("/suppliers", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {
@@ -1629,7 +1620,9 @@ async function main() {
     // Requests for bank account transactions
     app.get("/bankaccounttransactions", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
+
       switch (action) {
 
         case 'select': {
@@ -1867,6 +1860,7 @@ async function main() {
     // Requests for menu
     app.get("/menu", async (req, res) => {
 
+      const lastUpdate = today.toISOString();
       const action = req.query.action;
 
       switch (action) {

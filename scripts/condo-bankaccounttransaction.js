@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objCondo = new Condo('condo');
 const objAccounts = new Account('account');
 const objBankAccounts = new BankAccount('bankaccount');
@@ -29,9 +29,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Main entry point
   async function main() {
 
-    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    const resident = 'Y';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
+    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
@@ -374,7 +375,7 @@ function showHTMLFilterSearch() {
   let html = "<tr><td></td><td></td>";
 
   // show all selected accounts
-  html += objCondo.showSelectedCondosNew('filterCondoId','', 0, 'Alle', '');
+  html += objCondo.showSelectedCondosNew('filterCondoId', '', 0, 'Alle', '');
 
   // show all selected accounts
   html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
@@ -403,7 +404,7 @@ function showHeader() {
   let html = startHTMLTable();
 
   // Main header
-  html += showHTMLMainTableHeader('', '', '', '', 'Bankkontotransaksjoner', '', '', '', '', );
+  html += showHTMLMainTableHeader('', '', '', '', 'Bankkontotransaksjoner', '', '', '', '',);
 
   // The end of the table
   html += endHTMLTable();
@@ -432,12 +433,12 @@ function showResult() {
     html += "<tr>";
 
     // Show menu
-    html += objBankAccountTransactions.menuNew(rowNumber - 1);
+    html += objBankAccountTransactions.menuNew(rowNumber);
 
     // Delete
     let className = `deleted${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransactions.showSelectedValuesNew(className, '', 'Nei', 'Nei', 'Ja')
- 
+
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
     html += objCondo.showSelectedCondosNew(className, '', bankAccountTransaction.condoId, '', 'Ingen er valgt');
@@ -508,7 +509,7 @@ function insertEmptyTableRow(rowNumber) {
   let html = "<tr>";
 
   // Show menu
-  html += objBankAccountTransactions.menuNew(rowNumber - 1);
+  html += objBankAccountTransactions.menuNew(rowNumber);
 
   html += "<td></td>";
 
@@ -554,7 +555,7 @@ function showTableSumRow(rowNumber, sumIncome, sumPayment) {
       >
     `;
   // Show menu
-  html += objBankAccountTransactions.menuNew(rowNumber - 1);
+  html += objBankAccountTransactions.menuNew(rowNumber);
   html += "<td></td>";
   html += "<td></td>";
   html += "<td></td>";
@@ -579,7 +580,7 @@ function showRestMenu(rowNumber) {
         >
       `;
     // Show menu
-    html += objBankAccountTransactions.menuNew(rowNumber - 1);
+    html += objBankAccountTransactions.menuNew(rowNumber);
     html +=
       `
         </tr>

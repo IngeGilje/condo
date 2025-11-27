@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objBudgets = new Budget('budget');
 
@@ -25,7 +25,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
 
-    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    const resident = 'Y';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
     const condominiumId = objUserPassword.condominiumId;
@@ -213,7 +214,7 @@ function showHTMLFilterSearch() {
 
   // Show budget year
   const year = today.getFullYear();
-  html += objBudgets.selectNumberNew('filterYear', 2020, 2030, year);
+  html += objBudgets.selectNumberNew('filterYear', '', 2020, 2030, year);
 
   html += "</tr>";
 
@@ -239,7 +240,7 @@ function showResult() {
     html += "<tr>";
 
     // Show menu
-    html += objBudgets.menuNew(rowNumber - 1);
+    html += objBudgets.menuNew(rowNumber);
 
     let selectedChoice = "Ugyldig verdi";
     switch (budget.deleted) {
@@ -261,7 +262,7 @@ function showResult() {
     }
 
     let className = `deleted${budget.budgetId}`;
-    html += objBudgets.showSelectedValuesNew(className, '', selectedChoice,'', 'Nei', 'Ja')
+    html += objBudgets.showSelectedValuesNew(className, '', selectedChoice, '', 'Nei', 'Ja')
 
     // accounts
     className = `account${budget.budgetId}`;
@@ -312,7 +313,7 @@ function insertEmptyTableRow(rowNumber) {
   let html = "<tr>";
 
   // Show menu
-  html += objBudgets.menuNew(rowNumber - 1);
+  html += objBudgets.menuNew(rowNumber);
 
   html += "<td></td>";
 
@@ -387,7 +388,7 @@ function showRestMenu(rowNumber) {
         >
       `;
     // Show menu
-    html += objBudgets.menuNew(rowNumber - 1);
+    html += objBudgets.menuNew(rowNumber);
     html +=
       `
         </tr>
@@ -407,7 +408,7 @@ function showTableSumRow(rowNumber, amount) {
       >
     `;
   // Show menu
-  html += objBudgets.menuNew(rowNumber - 1);
+  html += objBudgets.menuNew(rowNumber);
   html += "<td></td>";
   html += "<td class='bold'>Sum</td>";
   html += `<td class="center bold">${amount}</td>`;

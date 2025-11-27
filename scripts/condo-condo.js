@@ -2,7 +2,7 @@
 
 // Activate classes
 const today = new Date();
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objCondos = new Condo('condo');
 
 testMode();
@@ -23,11 +23,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    const resident = 'Y';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objCondos.loadCondoTable(objUserPassword.condominiumId);
 
     const condoId = objCondos.arrayCondo.at(-1).condoId;
@@ -134,353 +133,8 @@ function createEvents() {
 }
 
 /*
-// Make events for condo
-function createEvents() {
-
-  // Select condo
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-condo-condoId')) {
-
-      let CondoId = Number(document.querySelector('.select-condo-condoId').value);
-      CondoId = (CondoId !== 0) ? CondoId : objCondos.arrayCondo.at(-1).CondoId;
-      if (CondoId) {
-        showValues(CondoId);
-      }
-    }
-  });
-
-  // Update condo
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condo-update')) {
-
-      // Update condo and reload condo
-      updateCondoSync();
-
-      // Update condo and reload condo
-      async function updateCondoSync() {
-
-        // Load condo
-        let condoId;
-        if (document.querySelector('.select-condo-condoId').value === '') {
-
-          // Insert new row into condo table
-          condoId = 0;
-        } else {
-
-          // Update existing row in condos table
-          condoId = Number(document.querySelector('.select-condo-condoId').value);
-        }
-
-        if (validateValues()) {
-
-          await updateCondo(condoId);
-          await objCondos.loadCondoTable(objUserPassword.condominiumId);
-
-          // Select last condos if condoId is 0
-          if (condoId === 0) condoId = objCondos.arrayCondo.at(-1).condoId;
-
-          // Show leading text
-          showLeadingText(condoId);
-
-          // Show all values for condo
-          showValues(condoId);
-        }
-
-        // Load condos
-        let condoId;
-        if (document.querySelector('.select-condo-condoId').value === '') {
-
-          // Insert new row into condos table
-          condoId = 0;
-        } else {
-
-          // Update existing row in condos table
-          condoId = Number(document.querySelector('.select-condo-condoId').value);
-        }
-
-        await updateCondo(condoId);
-
-        await objCondos.loadCondoTable(objUserPassword.condominiumId);
-
-        // Select last condo if condoId is 0
-        if (condoId === 0) condoId = objCondos.arrayCondo.at(-1).condoId;
-
-        // Show leading text
-        showLeadingText(condoId);
-
-        // Show all values for condo
-        showValues(condoId);
-      }
-    }
-  });
-
-  // New condo
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condo-insert')) {
-
-      resetValues();
-    }
-  });
-
-  // Delete condo
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-condo-delete')) {
-
-      // Delete sondo and reload condos
-      deleteCondoSync();
-
-      // Delete condo and reload condos
-      async function deleteCondoSync() {
-
-        await deleteCondo();
-
-        // Load condo
-        await objCondos.loadCondoTable(objUserPassword.condominiumId);
-
-        // Show leading text
-        const condoId = objCondos.arrayCondo.at(-1).condoId;
-        showLeadingText(condoId);
-
-        // Show all values for condo
-        showValues(condoId);
-      };
-    };
-  });
-
-await deleteCondo();
-
-// Load condos
-await objCondos.loadCondoTable(objUserPassword.condominiumId);
-
-// Show leading text
-const condoId = objCondos.arrayCondo.at(-1).condoId;
-showLeadingText(condoId);
-
-// Show all values for condo
-showValues(condoId);
-
-// Cancel
-document.addEventListener('click', (event) => {
-  if (event.target.classList.contains('button-condo-cancel')) {
-
-    // Reload condo
-    reloadCondoSync();
-    async function reloadCondoSync() {
-
-      let condominiumId = Number(objUserPassword.condominiumId);
-      await objCondos.loadCondoTable(condominiumId);
-
-      // Show leading text for maintenance
-      // Select first condo Id
-      if (objCondos.arrayCondo.length > 0) {
-        condoId = objCondos.arrayCondo[0].condoId;
-        showLeadingText(condoId);
-      }
-
-      // Show all selected condo
-      objCondos.showSelectedCondos('condo-condoId', condoId);
-
-      // Show condo Id
-      showValues(condoId);
-    }
-  }
-});
-}
-*/
-
-/*
-// Show leading text for condo
-function showLeadingText(condoId) {
-
-  // Show all condos
-  objCondos.showSelectedCondos('condo-condoId', condoId);
-
-  // Show condo name
-  objCondos.showInput('condo-name', '* Navn', 50, '');
-
-  // Show street name
-  objCondos.showInput('condo-street', '* Gateadresse', 50, '');
-
-  // Show address 2
-  objCondos.showInput('condo-address2', 'Adresse 2', 50, '');
-
-  // Postal code
-  objCondos.showInput('condo-postalCode', '* Postnummer', 4, '');
-
-  // City
-  objCondos.showInput('condo-city', '* Poststed', 50, '');
-
-  // square meters
-  objCondos.showInput('condo-squareMeters', '* Kvadratmeter', 5, '');
-
-  // show update button
-  if (Number(objUserPassword.securityLevel) >= 9) {
-
-    objCondos.showButton('condo-update', 'Oppdater');
-
-    // show new button
-    objCondos.showButton('condo-insert', 'Ny');
-
-    // show delete button
-    objCondos.showButton('condo-delete', 'Slett');
-
-    // cancel button
-    objCondos.showButton('condo-cancel', 'Avbryt');
-  }
-}
-*/
-
-/*
-// Show all values for condo
-function showValues(condoId) {
-
-  // Check for valid condo Id
-  if (condoId >= 0) {
-
-    // find object number for selected condo id
-    const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
-    if (condoRowNumber !== -1) {
-
-      // Condo id
-      const condoId = objCondos.arrayCondo[condoRowNumber].condoId;
-      objCondos.selectCondoId(condoId, 'condo-condoId')
-
-      // Condo name
-      document.querySelector('.input-condo-name').value = objCondos.arrayCondo[condoRowNumber].name;
-
-      // Show street
-      document.querySelector('.input-condo-street').value = objCondos.arrayCondo[condoRowNumber].street;
-
-      // Show address 2
-      document.querySelector('.input-condo-address2').value = objCondos.arrayCondo[condoRowNumber].address2;
-
-      // Show postal code
-      document.querySelector('.input-condo-postalCode').value = objCondos.arrayCondo[condoRowNumber].postalCode;
-
-      // Show city
-      document.querySelector('.input-condo-city').value = objCondos.arrayCondo[condoRowNumber].city;
-
-      // Show square meters
-      document.querySelector('.input-condo-squareMeters').value = formatOreToKroner(objCondos.arrayCondo[condoRowNumber].squareMeters);
-    }
-  }
-}
-*/
-
-/*
-// Reset all values for condo
-function resetValues() {
-
-  document.querySelector('.select-condo-condoId').value = '';
-
-  document.querySelector('.input-condo-name').value = '';
-
-  // Show street
-  document.querySelector('.input-condo-street').value = '';
-
-  // Show address 2
-  document.querySelector('.input-condo-address2').value = '';
-
-  // Show postal code
-  document.querySelector('.input-condo-postalCode').value = '';
-
-  // Show city
-  document.querySelector('.input-condo-city').value = '';
-
-  // Show square meters
-  document.querySelector('.input-condo-squareMeters').value = '';
-
-  document.querySelector('.select-condo-condoId').disabled = true;
-  document.querySelector('.button-condo-delete').disabled = true;
-  document.querySelector('.button-condo-insert').disabled = true;
-}
-*/
-
-/*
-// check for valid condo number
-function validateValues() {
-
-  // Check condo name
-  const condoName = document.querySelector('.input-condo-name').value;
-  const validCondoName = objCondos.validateText(condoName, "label-condo-name", "Navn");
-
-  // Check street name
-  const street = document.querySelector('.input-condo-street').value;
-  const validStreet = objCondos.validateText(street, "label-condo-street", "Gateadresse");
-
-  // Check postal code
-  const postalCode = document.querySelector('.input-condo-postalCode').value;
-  const validPostalCode = objCondos.validatePostalCode(postalCode, "label-condo-postalCode", "Postnummer");
-
-  // Validate city
-  const city = document.querySelector('.input-condo-city').value;
-  const validCity = objCondos.validateText(city, "label-condo-city", "Poststed");
-
-  // Check square meters
-  const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
-  const validSquareMeters = objCondos.validateNorAmount(squareMeters, 'label-condo-squareMeters', "Kvadratmeter");
-
-  return (validCondoName && validStreet && validPostalCode && validCity && validSquareMeters);
-}
-*/
-
-/*
-// Update condo row
-async function updateCondoRow(condoId) {
-
-  // Check values
-  if (validateValues()) {
-
-    // user
-    const user = objUserPassword.email;
-
-    // Condominium
-    const condominiumId = Number(objUserPassword.condominiumId);
-
-    // current date
-    const lastUpdate = today.toISOString();
-
-    // Condo id
-    const condoId = Number(document.querySelector('.select-condo-condoId').value);
-
-    // Condo name
-    const name = document.querySelector('.input-condo-name').value;
-
-    // Street
-    const street = document.querySelector('.input-condo-street').value;
-
-    // Address 2
-    const address2 = document.querySelector('.input-condo-address2').value
-
-    // Postal code
-    const postalCode = document.querySelector('.input-condo-postalCode').value;
-
-    // City
-    const city = document.querySelector('.input-condo-city').value;
-
-    // Square meters
-    //const squareMeters = formatToNorAmount(document.querySelector('.input-condo-squareMeters').value);
-    const squareMeters = formatKronerToOre(document.querySelector('.input-condo-squareMeters').value);
-
-    // Check if condo id exist
-    const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
-    if (condoRowNumber !== -1) {
-
-      // update condo
-      await objCondos.updateCondoTable(condoId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters);
-
-    } else {
-
-      // Insert condo row in condo table
-      await objCondos.insertCondoTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters);
-
-    }
-  }
-}
-*/
-
-// Delete condo
-async function deleteCondo() {
+// Delete a condo row
+async function deleteCondoRow() {
 
   // Check for valid condo Id
   const condoId = Number(document.querySelector('.select-condo-condoId').value);
@@ -495,6 +149,7 @@ async function deleteCondo() {
     objCondos.deleteCondoTable(condoId, user, lastUpdate);
   }
 }
+*/
 
 // Show header
 function showHeader() {
@@ -666,6 +321,7 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
+  const validCondoId = validateNumberNew(condoId, -1, 999999999);
 
   const condominiumId = Number(objUserPassword.condominiumId);
 
@@ -696,7 +352,7 @@ async function updateCondoRow(condoId) {
   const squareMeters = Number(formatKronerToOre(document.querySelector('.squareMeters').value));
   const validSquareMeters = objCondos.validateIntervalNew(squareMeters, 1, 100000);
 
-  if (validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
+  if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 
     // Check if the condoId exist
     const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
@@ -762,7 +418,7 @@ async function deleteCondoRow() {
   const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
   if (condoRowNumber !== -1) {
 
-    // delete condo row
+    // delete a condo row
     const user = objUserPassword.email;
     const lastUpdate = today.toISOString();
     await objCondos.deleteCondoTable(condoId, user, lastUpdate);

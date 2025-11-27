@@ -2,7 +2,7 @@
 
 // Activate classes
 const today = new Date();
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objAccounts = new Account('account');
 
 // Fixed values
@@ -27,7 +27,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Main entry point
   async function main() {
 
-    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    const resident = 'Y';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId,resident);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
 
     // Show header
@@ -253,7 +254,7 @@ function insertEmptyTableRow(rowNumber) {
   let html = "<tr>";
 
   // Show menu
-  html += objAccounts.menuNew(rowNumber - 1);
+  html += objAccounts.menuNew(rowNumber);
 
   // delete
   html += "<td class='center'>Ny konto</td>";
@@ -274,7 +275,7 @@ function showTableSumRow(rowNumber, amount) {
   let html = "<tr>";
 
   // Show menu
-  html += objAccounts.menuNew(rowNumber - 1);
+  html += objAccounts.menuNew(rowNumber);
 
   // condo
   html += "<td></td>";
@@ -398,7 +399,7 @@ function showRestMenu(rowNumber) {
     html += "<tr>";
 
     // Show menu
-    html += objAccounts.menuNew(rowNumber - 1);
+    html += objAccounts.menuNew(rowNumber);
     html += "</tr>"
   }
 

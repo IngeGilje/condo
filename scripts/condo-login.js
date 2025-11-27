@@ -1,6 +1,6 @@
 // Login
 // Activate user class
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objLogIn = new Login('login');
 
 sessionStorage.removeItem("user");
@@ -13,7 +13,8 @@ main();
 async function main() {
 
   const condominiumId = 999999999;
-  await objUsers.loadUsersTable(condominiumId);
+  const resident = 'Y';
+  await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
 
   // Show leading text
   showLeadingText();

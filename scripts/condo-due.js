@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objCondo = new Condo('condo');
 const objAccounts = new Account('account');
 const objDues = new Due('due');
@@ -33,7 +33,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     async function main() {
 
       const condominiumId = Number(objUserPassword.condominiumId);
-      await objUsers.loadUsersTable(condominiumId);
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
       await objCondo.loadCondoTable(condominiumId);
       await objAccounts.loadAccountsTable(condominiumId);
 
@@ -348,7 +349,7 @@ function showFilter() {
   html = startHTMLTable();
 
   // Header filter for search
-  html += showHTMLFilterHeader('', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato','','');
+  html += showHTMLFilterHeader('', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', '', '');
 
   // Filter for search
   html += showHTMLFilterSearch();
@@ -400,7 +401,7 @@ function showResult() {
     html += '<tr class="menu">';
 
     // Show menu
-    html += objDues.menuNew(rowNumber - 1);
+    html += objDues.menuNew(rowNumber);
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
@@ -423,7 +424,7 @@ function showResult() {
     }
 
     let className = `delete${due.dueId}`;
-    html += objDues.showSelectedValuesNew(className, 'width:75px;', selectedChoice,'Nei', 'Ja')
+    html += objDues.showSelectedValuesNew(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
 
     // condos
     className = `condo${due.dueId}`;
@@ -484,7 +485,7 @@ function insertEmptyTableRow(rowNumber) {
   let html = "<tr>";
 
   // Show menu
-  html += objDues.menuNew(rowNumber - 1);
+  html += objDues.menuNew(rowNumber);
 
   // delete
   html += "<td class='center bold'>Nytt forfall</td>";
@@ -518,7 +519,7 @@ function showTableSumRow(rowNumber, amount) {
       >
     `;
   // Show menu
-  html += objDues.menuNew(rowNumber - 1);
+  html += objDues.menuNew(rowNumber);
 
   // condo
   html += "<td></td>";
@@ -553,7 +554,7 @@ function showRestMenu(rowNumber) {
         >
       `;
     // Show menu
-    html += objDues.menuNew(rowNumber - 1);
+    html += objDues.menuNew(rowNumber);
     html +=
       `
         </tr>
@@ -618,7 +619,7 @@ async function updateDuesRow(dueId) {
     && (condoId => 1 && condoId <= 999999999)
     && (amount => 0 && amount <= 999999999)
     && (date => 20000101 && date <= 20991231)
-    && validText ) {
+    && validText) {
 
     // Check if the dues row exist
     duesRowNumber = objDues.arrayDues.findIndex(dues => dues.dueId === dueId);
@@ -641,7 +642,7 @@ async function updateDuesRow(dueId) {
     let toDate = document.querySelector('.filterToDate').value;
     toDate = Number(formatNorDateToNumber(toDate));
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-    
+
     showResult();
   }
 }

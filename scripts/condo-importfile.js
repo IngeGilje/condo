@@ -5,7 +5,7 @@ let arrayTransactions = [];
 
 // Activate objects
 const today = new Date();
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
 const objCondominiums = new Condominiums('condominiums');
 const objCondo = new Condo('condo');
@@ -38,7 +38,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Main entry point
   async function main() {
 
-    await objUsers.loadUsersTable(objUserPassword.condominiumId);
+    const resident = 'A';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);

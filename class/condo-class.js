@@ -42,7 +42,7 @@ class Condos {
       text: "Konto"
     },
     {
-      applicationName: "condo-users.html",
+      applicationName: "condo-user.html",
       className: "Menu6",
       text: "Bruker"
     },
@@ -729,7 +729,7 @@ class Condos {
   }
 
   // Select numbers
-  selectNumberNew(className, fromNumber, toNumber, selectedNumber) {
+  selectNumberNew(className, style, fromNumber, toNumber, selectedNumber) {
 
     selectedNumber = Number(selectedNumber);
     let html =
@@ -739,8 +739,9 @@ class Condos {
         >
           <select
             class="${className} center"
-          >
       `;
+    if (style) html += `style="${style}"`;
+    html += `>`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
@@ -1345,8 +1346,8 @@ class Condos {
     return [...element.classList].find(cls => cls.startsWith('Text'));
   }
 
-  // Delete Yes/No
-  showDelete(className, selectedChoice) {
+  // Show Yes/No
+  showYesNo(className, selectedChoice) {
 
     switch (selectedChoice) {
       case 'Y': {
@@ -1485,8 +1486,8 @@ class Condos {
   validatePhoneNew(phone) {
 
     // Validate phone number
-    const phonePattern = /^\d{8}$/;
-    return ((phonePattern.test(phone))) ? true : false;
+    phone = phone.replace(/\s+/g, "");
+    return /^\d{8,15}$/.test(phone);
   }
 
   // Validate E-mail
@@ -1507,9 +1508,117 @@ class Condos {
 
   // Validate filename
   validateFileNameNew(fileName) {
-  const fileNameRegex = /^(?:[a-zA-Z]:\\)?(?:[^<>:"/\\|?*\x00-\x1F]+\\)*[^<>:"/\\|?*\x00-\x1F]*$/;
-  return fileNameRegex.test(fileName);
-}
+    const fileNameRegex = /^(?:[a-zA-Z]:\\)?(?:[^<>:"/\\|?*\x00-\x1F]+\\)*[^<>:"/\\|?*\x00-\x1F]*$/;
+    return fileNameRegex.test(fileName);
+  }
+
+  /* Does not work
+  // Show all selected users
+  showSelectedRowsNew(className, style, arrayName, columnName, id, selectAll, selectNone) {
+
+    let selectedValue = false;
+
+    let html =
+      `
+        <td
+          class="center one-line"
+        >
+          <select 
+            class="${className} center"
+      `;
+    if (style) html += `style="${style}"`;
+    html += `>`;
+
+    // Check if user array is empty
+    const numberOfRows = arrayName.length;
+    if (numberOfRows > 0) {
+      arrayName.forEach((array) => {
+        if (array.columnName === id) {
+
+          html +=
+            `
+              <option 
+                value=${array.id}
+                selected
+              >
+                ${arrayName.columnName}
+              </option>
+            `;
+          selectedValue = true;
+        } else {
+
+          html +=
+            `
+              <option 
+                value="${array.id}">
+                ${array.columnName}
+              </option>
+            `;
+        }
+      });
+    } else {
+
+      html +=
+        `
+          <option value="0" 
+            selected
+          >
+            Ingen leilighet
+          </option>
+        `;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (numberOfRows > 1)) {
+
+      html +=
+        `
+          <option 
+            value=999999999
+            selected
+          >
+            ${selectAll}
+          </option>
+        `;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (numberOfRows > 1)) {
+      if (selectedValue) {
+        html +=
+          `
+          <option 
+            value=0
+          >
+            ${selectNone}
+          </option>
+        `;
+      } else {
+
+        html +=
+          `
+            <option 
+              value=0
+              selected
+            >
+              ${selectNone}
+            </option>
+          `;
+        selectedValue = true;
+      }
+    }
+
+    html +=
+      `
+          </select >
+        </td>
+      `;
+
+    return html;
+  }
+  */
 }
 
 // Check if string includes only digits
@@ -1954,11 +2063,7 @@ function formatNorDateToNumber(norDate) {
 }
 
 // Generate password
-function generatePassword(passwordLenght,
-  includeLowercase,
-  includeUppercase,
-  includeNumbers,
-  includeSymbols) {
+function generatePassword(passwordLenght, includeLowercase, includeUppercase, includeNumbers, includeSymbols) {
 
   const lowecaseChars = "abcdefghijlmnopqrstuvwxyzæøå";
   const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";

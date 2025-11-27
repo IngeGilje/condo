@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUsers = new Users('users');
+const objUsers = new User('user');
 const objDues = new Due('due');
 const objAccounts = new Account('account');
 const objCondo = new Condo('condo');
@@ -32,7 +32,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const condominiumId = Number(objUserPassword.condominiumId);
 
-    await objUsers.loadUsersTable(condominiumId);
+    const resident = 'Y';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objCondo.loadCondoTable(condominiumId);
     await objAccounts.loadAccountsTable(condominiumId);
 
@@ -68,49 +69,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     createEvents();
   }
 }
-
-/*
-// Main entry point
-async function main() {
-
-  const condominiumId = Number(objUserPassword.condominiumId);
-
-  await objUsers.loadUsersTable(condominiumId);
-  await objCondo.loadCondoTable(condominiumId);
-
-  // Show leading text Filter
-  showLeadingTextFilter();
-
-  // Show values for Filter
-  showValuesFilter();
-
-  //const condoId = objCondo.arrayCondo.at(-1).condoId;
-  const condoId = 999999999;
-  const accountId = 999999999;
-  const deleted = 'N';
-  const year = String(today.getFullYear());
-  let fromDate = "01.01." + year;
-  fromDate = convertDateToISOFormat(fromDate);
-  let toDate = getCurrentDate();
-  toDate = convertDateToISOFormat(toDate);
-  await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-  //const orderBy = 'date DESC, income DESC';
-  const orderBy = 'condoId ASC, date DESC, income ASC';
-  await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
-
-  // Show dues
-  showDues();
-
-  // Bank account transactions
-  showBankAccountMovements();
-
-  // show how much to pay
-  showHowMuchToPay();
-
-  // Create events
-  createEvents();
-}
-*/
 
 // Create overview events
 function createEvents() {
