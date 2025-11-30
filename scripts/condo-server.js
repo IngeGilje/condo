@@ -62,21 +62,30 @@ async function main() {
     // Requests for accounts
     app.get("/accounts", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
         case 'select': {
+
           const condominiumId = Number(req.query.condominiumId);
+          const fixedCost = req.query.fixedCost;
 
           try {
 
-            const SQLquery =
+            let SQLquery =
               `
                 SELECT * FROM accounts
                 WHERE condominiumId = ${condominiumId}
                   AND deleted <> 'Y'
+              `;
+            if (fixedCost === 'Y' || fixedCost === 'N') SQLquery += ` AND fixedCost = '${fixedCost}'`;
+            console.log('SQLquery :', SQLquery);
+
+            SQLquery +=
+              `
                 ORDER BY name ASC, accountId ASC;
               `;
 
@@ -93,14 +102,12 @@ async function main() {
 
         case 'update': {
 
-          console.log("Update account request received");
-
           try {
 
             const accountId = req.query.accountId;
             const user = req.query.user;
             const fixedCost = req.query.fixedCost;
-            const lastUpdate = req.query.lastUpdate;
+            
             const accountName = req.query.accountName;
 
             const SQLquery =
@@ -125,13 +132,11 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert account request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const accountName = req.query.accountName;
             const fixedCost = req.query.fixedCost;
 
@@ -169,12 +174,10 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete account request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const accountId = req.query.accountId;
 
             // Delete table
@@ -203,8 +206,9 @@ async function main() {
     // Requests for users
     app.get("/users", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
@@ -236,14 +240,12 @@ async function main() {
 
         case 'update': {
 
-          console.log("Update users request received");
-
           try {
 
             const resident = req.query.resident;
             const userId = req.query.userId;
             const user = req.query.user;
-            //const lastUpdate = req.query.lastUpdate;
+            
             const email = req.query.email;
             const condoId = req.query.condoId;
             const firstName = req.query.firstName;
@@ -281,14 +283,12 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert user request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
             const resident = req.query.resident;
             const user = req.query.user;
-            //const lastUpdate = req.query.lastUpdate;
+            
             const email = req.query.email;
             const condoId = req.query.condoId;
             const firstName = req.query.firstName;
@@ -342,12 +342,10 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete user request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const userId = req.query.userId;
 
             // Delete table
@@ -376,8 +374,9 @@ async function main() {
     // Requests for bank accounts
     app.get("/bankaccounts", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
@@ -413,12 +412,9 @@ async function main() {
 
         case 'update': {
 
-          console.log("Update bank account request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
             const bankAccount = req.query.bankAccount;
             const name = req.query.name;
             const openingBalance = req.query.openingBalance;
@@ -453,13 +449,11 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert bank account request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const bankAccount = req.query.bankAccount;
             const name = req.query.name;
             const openingBalanceDate = req.query.openingBalanceDate;
@@ -508,12 +502,10 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete bank account request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const bankAccountId = req.query.bankAccountId;
 
             // Delete table
@@ -543,8 +535,9 @@ async function main() {
     // Requests for condominiums table
     app.get("/condominiums", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
@@ -571,13 +564,11 @@ async function main() {
 
         case 'update': {
 
-          console.log("Update condominium request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const name = req.query.name;
             const street = req.query.street;
             const address2 = req.query.address2;
@@ -625,12 +616,10 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert condominium request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const name = req.query.name;
             const street = req.query.street;
             const address2 = req.query.address2;
@@ -695,12 +684,10 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete condominium request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const condominiumId = req.query.condominiumId;
 
             // Delete table
@@ -730,8 +717,9 @@ async function main() {
     // Requests for budgets table
     app.get("/budgets", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
@@ -780,13 +768,10 @@ async function main() {
 
         case 'update': {
 
-          console.log("Update budget request received");
-
           try {
 
             const budgetId = req.query.budgetId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
             const accountId = req.query.accountId;
             const amount = req.query.amount;
             const year = req.query.year;
@@ -821,7 +806,7 @@ async function main() {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const accountId = req.query.accountId;
             const amount = req.query.amount;
             const year = req.query.year;
@@ -861,13 +846,10 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete budget request received");
-
           try {
 
             const budgetId = req.query.budgetId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
 
             // Delete table
             const SQLquery =
@@ -895,8 +877,9 @@ async function main() {
     // Requests for dues table
     app.get("/dues", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
@@ -955,13 +938,10 @@ async function main() {
 
         case 'update': {
 
-          console.log("Update due request received");
-
           try {
 
             const dueId = req.query.dueId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
             const condoId = req.query.condoId;
             const accountId = req.query.accountId;
             const amount = req.query.amount;
@@ -995,13 +975,10 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert due request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
             const condoId = req.query.condoId;
             const accountId = req.query.accountId;
             const amount = req.query.amount;
@@ -1047,13 +1024,11 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete due request received");
-
           try {
 
             const dueId = req.query.dueId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
 
             // Delete table
             const SQLquery =
@@ -1082,8 +1057,9 @@ async function main() {
     // Requests for condo
     app.get("/condo", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
@@ -1115,13 +1091,11 @@ async function main() {
 
         case 'update': {
 
-          console.log("Update condo request received");
           try {
 
             const condoId = req.query.condoId;
             console.log('condoId: ', condoId);
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
             const name = req.query.name;
             const street = req.query.street;
             const address2 = req.query.address2;
@@ -1159,14 +1133,11 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert account request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
             console.log('CondominiumId: ', condominiumId);
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
             const name = req.query.name;
             const street = req.query.street;
             const address2 = req.query.address2;
@@ -1215,12 +1186,10 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete account request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const condoId = req.query.condoId;
             console.log('condoId: ', condoId);
 
@@ -1252,8 +1221,9 @@ async function main() {
     // Requests for user bank account
     app.get("/userbankaccounts", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
@@ -1302,12 +1272,9 @@ async function main() {
 
         case 'update': {
 
-          console.log("Update user bank account request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
             const userId = req.query.userId;
             const accountId = req.query.accountId;
             const bankAccount = req.query.bankAccount;
@@ -1338,13 +1305,11 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert user bank account request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const userId = req.query.userId;
             const accountId = req.query.accountId;
             const bankAccount = req.query.bankAccount;
@@ -1381,18 +1346,15 @@ async function main() {
             console.log("Database error in /userbankaccounts:", err.message);
             res.status(500).json({ error: err.message });
           }
+          
           break;
-
         }
 
         case 'delete': {
 
-          console.log("Delete user bank account request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
             const userBankAccountId = req.query.userBankAccountId;
 
             // Delete table
@@ -1422,8 +1384,9 @@ async function main() {
     // Requests for supplier
     app.get("/suppliers", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
@@ -1453,27 +1416,23 @@ async function main() {
 
         case 'update': {
 
-          console.log("Update supplier request received");
-
           try {
 
+            const supplierId = req.query.supplierId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
-            const email = req.query.email;
             const name = req.query.name;
             const street = req.query.street;
             const address2 = req.query.address2;
             const postalCode = req.query.postalCode;
             const city = req.query.city;
+            const email = req.query.email;
             const phone = req.query.phone;
             const bankAccount = req.query.bankAccount;
-            const bankAccountAccountId = req.query.accountId;
+            const accountId = req.query.accountId;
             const amountAccountId = req.query.amountAccountId;
+            const amount = req.query.amount;
             const text = req.query.text;
             const textAccountId = req.query.textAccountId;
-            const amount = req.query.amount;
-
-            const supplierId = req.query.supplierId;
 
             // Update supplier table
             const SQLquery =
@@ -1490,14 +1449,14 @@ async function main() {
                   email = '${email}',
                   phone = '${phone}',
                   bankAccount = '${bankAccount}',
-                  bankAccountAccountId = ${bankAccountAccountId},
+                  accountId = ${accountId},
                   amount = '${amount}',
                   amountAccountId = ${amountAccountId},
                   text = '${text}',
                   textAccountId = ${textAccountId}
                 WHERE supplierId = ${supplierId};
               `;
-
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1510,13 +1469,10 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert supplier request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
             const email = req.query.email;
             const name = req.query.name;
             const street = req.query.street;
@@ -1525,7 +1481,7 @@ async function main() {
             const city = req.query.city;
             const phone = req.query.phone;
             const bankAccount = req.query.bankAccount;
-            const bankAccountAccountId = req.query.accountId;
+            const accountId = req.query.accountId;
             const amount = req.query.amount;
             const amountAccountId = req.query.amountAccountId;
             const text = req.query.text;
@@ -1547,7 +1503,7 @@ async function main() {
                   email,
                   phone,
                   bankAccount,
-                  bankAccountAccountId,
+                  accountId,
                   amount,
                   amountAccountId,
                   text,
@@ -1565,13 +1521,14 @@ async function main() {
                   '${email}',
                   '${phone}',
                   '${bankAccount}',
-                  ${bankAccountAccountId},
+                  ${accountId},
                   ${amount},
                   ${amountAccountId},
                   '${text}',
                   ${textAccountId}
                 );
               `;
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1584,14 +1541,11 @@ async function main() {
         }
 
         case 'delete': {
-
-          console.log("Delete supplier request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
-            const supplierId = req.query.supplierId;
+            
+            const supplierId = req.query.supplierId.trim();
 
             // Delete table
             const SQLquery =
@@ -1604,6 +1558,7 @@ async function main() {
                   WHERE supplierId = ${supplierId};
               `;
 
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1620,8 +1575,9 @@ async function main() {
     // Requests for bank account transactions
     app.get("/bankaccounttransactions", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 
@@ -1710,7 +1666,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const condoId = req.query.condoId;
             const accountId = req.query.accountId;
             const income = req.query.income;
@@ -1750,13 +1706,11 @@ async function main() {
 
         case 'insert': {
 
-          console.log("Insert bank account transactions request received");
-
           try {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const condoId = req.query.condoId;
             const accountId = req.query.accountId;
             const income = req.query.income;
@@ -1808,12 +1762,10 @@ async function main() {
 
         case 'delete': {
 
-          console.log("Delete Bank account transactions request received");
-
           try {
 
             const user = req.query.user;
-            const lastUpdate = req.query.lastUpdate;
+            
             const bankAccountTransactionId = req.query.bankAccountTransactionId;
 
             // Delete table
@@ -1860,8 +1812,9 @@ async function main() {
     // Requests for menu
     app.get("/menu", async (req, res) => {
 
-      const lastUpdate = today.toISOString();
+
       const action = req.query.action;
+      const lastUpdate = today.toISOString();
 
       switch (action) {
 

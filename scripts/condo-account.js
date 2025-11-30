@@ -28,8 +28,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   async function main() {
 
     const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId,resident);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
     // Show header
     showHeader();
@@ -40,23 +41,26 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show account
     showResult();
 
-    // Create events
-    createEvents();
+    // Events
+    events();
   }
 }
 
-// Make events for accounts
-function createEvents() {
+// Events for accounts
+function events() {
 
   // Filter
   document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('filterFixedCost'))) {
+    if (event.target.classList.contains('filterFixedCost')) {
 
       filterSync();
 
       async function filterSync() {
 
-        await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+        let fixedCost = document.querySelector('.filterFixedCost').value;
+        if (fixedCost === 'Fast kostnad') fixedCost = 'Y';
+        if (fixedCost === 'Variabel kostnad') fixedCost = 'N';
+        await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
         showResult();
       }
@@ -64,10 +68,8 @@ function createEvents() {
   });
 
   // update a accounts row
-  document.addEventListener('change', (event) => {
-
-    if ([...event.target.classList].some(cls => cls.startsWith('fixedCost'))
-      || [...event.target.classList].some(cls => cls.startsWith('name'))) {
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('update')) {
 
       const arrayPrefixes = ['fixedCost', 'name'];
 
@@ -94,9 +96,9 @@ function createEvents() {
     };
   });
 
-  // Delete accounts row
-  document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
+  // Delete suppliers row
+  document.addEventListener('cclick', (event) => {
+   if (event.target.classList.contains('delete')) {
 
       const className = objAccounts.getDeleteClass(event.target);
       const classNameDelete = `.${className}`
@@ -110,7 +112,8 @@ function createEvents() {
 
           deleteAccountRow(accountId, className);
 
-          await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+          const fixedCost = 'A';
+          await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
           showResult();
         };
@@ -148,21 +151,6 @@ function resetValues() {
   document.querySelector('.button--accounts-insert').disabled = true;
 }
 
-/*
-function showHeader() {
-
-  // Start table
-  let html = startHTMLTable();
-
-  // Main header
-  html += showHTMLMainTableHeader('', 'Konto', '', '');
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -177,24 +165,6 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-/*
-// Show filter
-function showFilter() {
-
-  // Start table
-  html = startHTMLTable();
-
-  // Header filter for search
-  html += showHTMLFilterHeader('', 'Kostnadstype', '', '');
-
-  // Filter for search
-  html += showHTMLFilterSearch();
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
 // Show filter
 function showFilter(accountId) {
 
@@ -211,11 +181,8 @@ function showFilter(accountId) {
   html += "<td></td>";
 
   // fixed or not fixed cost
-  html += objAccounts.showSelectedValuesNew('filterFixedCost', 'width:75px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
-  html +=
-    `
-      </tr>
-    `;
+  html += objAccounts.showSelectedValuesNew('filterFixedCost', 'width:100px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += "</tr>";
 
   html += "</tr>";
 
@@ -226,27 +193,6 @@ function showFilter(accountId) {
   html += endHTMLTable();
   document.querySelector('.filter').innerHTML = html;
 }
-
-/*
-// Filter for search
-function showHTMLFilterSearch() {
-
-  let html =
-    `
-      <tr>
-        <td></td>
-    `;
-
-  // fixed or not fixed cost
-  html += objAccounts.showSelectedValuesNew('filterFixedCost', 'width:75px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
-  html +=
-    `
-      </tr>
-    `;
-
-  return html;
-}
-*/
 
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
@@ -298,42 +244,27 @@ function showTableSumRow(rowNumber, amount) {
 function showResult() {
 
   // Start HTML table
-  html = startHTMLTable();
+  html = startHTMLTable('width:750px;');
 
   // Header
-  html += showHTMLMainTableHeader('','', 'Slett', 'Kostnadstype', 'Tekst');
+  html += showHTMLMainTableHeader('widht:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
 
   //let sumAmount = 0;
   let rowNumber = 0;
 
   objAccounts.arrayAccounts.forEach((account) => {
 
-    rowNumber++;
-
     html += "<tr>";
 
     // Show menu
+    rowNumber++;
     html += objAccounts.menuNew(rowNumber);
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
-    switch (account.deleted) {
-      case 'Y': {
+    if (account.deleted === 'Y')  selectedChoice = "Ja";
+    if (account.deleted === 'N')  selectedChoice = "Nei";
 
-        selectedChoice = "Ja";
-        break;
-      }
-      case 'N': {
-
-        selectedChoice = "Nei";
-        break;
-      }
-      default: {
-
-        selectedChoice = "Ugyldig verdi";
-        break
-      }
-    }
     let className = `delete${account.accountId}`;
     html += objAccounts.showSelectedValuesNew(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
 
@@ -413,17 +344,17 @@ function showRestMenu(rowNumber) {
 async function deleteAccountRow(accountId, className) {
 
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
 
   // Check if account row exist
   accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
   if (accountsRowNumber !== -1) {
 
     // delete account row
-    objAccounts.deleteAccountsTable(accountId, user, lastUpdate);
+    objAccounts.deleteAccountsTable(accountId, user);
   }
 
-  await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+  const fixedCost = 'A';
+  await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 }
 
 // Update a accounts table row
@@ -433,12 +364,12 @@ async function updateAccountsRow(accountId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+
 
   // name
   className = `.name${bankAccountTransactionId}`;
   const name = document.querySelector(className).value;
-  const validName = objBankAccountTransactions.validateTextNew(name,3,50);
+  const validName = objBankAccountTransactions.validateTextNew(name, 3, 50);
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;
@@ -453,15 +384,16 @@ async function updateAccountsRow(accountId) {
     if (accountRowNumber !== -1) {
 
       // update the accounts row
-      await objAccounts.updateAccountsTable(user, accountId, fixedCost, lastUpdate, name);
+      await objAccounts.updateAccountsTable(user, accountId, fixedCost, name);
 
     } else {
 
       // Insert the account row in accounts table
-      await objAccounts.insertAccountsTable(condominiumId, user, lastUpdate, accountName, fixedCost, accountName);
+      await objAccounts.insertAccountsTable(condominiumId, user, accountName, fixedCost, accountName);
     }
 
-    await objAccounts.loadAccountsTable(condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
     showResult();
   }
 }

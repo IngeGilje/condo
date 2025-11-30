@@ -212,10 +212,10 @@ class User extends Condos {
   }
 
   // update user row in users table
-  async updateUsersTable(resident, user, lastUpdate, email, userId, condoId, firstName, lastName, phone, securityLevel, password) {
+  async updateUsersTable(resident, user, email, userId, condoId, firstName, lastName, phone, securityLevel, password) {
 
     try {
-      const response = await fetch(`http://localhost:3000/users?action=update&user=${user}&lastUpdate=${lastUpdate}&userId=${userId}&condoId=${condoId}&email=${email}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
+      const response = await fetch(`http://localhost:3000/users?action=update&user=${user}&userId=${userId}&condoId=${condoId}&email=${email}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {
@@ -224,10 +224,10 @@ class User extends Condos {
   }
 
   // insert user row in users table
-  async insertUsersTable(resident, condominiumId, user, lastUpdate, email, condoId, firstName, lastName, phone, securityLevel, password) {
+  async insertUsersTable(resident, condominiumId, user, email, condoId, firstName, lastName, phone, securityLevel, password) {
 
     try {
-      const response = await fetch(`http://localhost:3000/users?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
+      const response = await fetch(`http://localhost:3000/users?action=insert&condominiumId=${condominiumId}&user=${user}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {
@@ -236,10 +236,10 @@ class User extends Condos {
   }
 
   // delete user row
-  async deleteUsersTable(userId, user, lastUpdate) {
+  async deleteUsersTable(userId, user) {
 
     try {
-      const response = await fetch(`http://localhost:3000/users?action=delete&userId=${userId}&user=${user}&lastUpdate=${lastUpdate}`);
+      const response = await fetch(`http://localhost:3000/users?action=delete&userId=${userId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {

@@ -28,7 +28,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
     await objCondominiums.loadCondominiumsTable();
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
 
@@ -45,13 +46,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show result
     showResult(bankAccountId);
 
-    // Create events
-    createEvents();
+    // Events
+    events();
   }
 }
 
-// Make events for bankaccounts
-function createEvents() {
+// Events for bankaccounts
+function events() {
 
   // Filter
   document.addEventListener('change', (event) => {
@@ -159,7 +160,6 @@ async function updateBankAccount() {
     const closingBalance = document.querySelector('.input-bankaccounts-closingBalance').value;
 
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
     const name = document.querySelector('.input-bankaccounts-name').value;
     const condominiumId = Number(objUserPassword.condominiumId);
     const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
@@ -168,11 +168,11 @@ async function updateBankAccount() {
     if (bankAccountRowNumber !== -1) {
 
       // update bankAccount
-      objBankAccounts.updateBankAccountsTable(bankAccountId, condominiumId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+      objBankAccounts.updateBankAccountsTable(bankAccountId, condominiumId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
     } else {
 
       // insert bankAccount
-      objBankAccounts.insertBankAccountsTable(condominiumId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+      objBankAccounts.insertBankAccountsTable(condominiumId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
     }
 
     document.querySelector('.select-bankaccounts-bankAccountId').disabled = false;
@@ -193,8 +193,8 @@ async function deleteBankAccount() {
 
       // Delete bank bankaccounts row
       const user = objUserPassword.email;
-      const lastUpdate = today.toISOString();
-      objBankAccounts.deleteBankAccountsTable(bankAccountId, user, lastUpdate);
+      
+      objBankAccounts.deleteBankAccountsTable(bankAccountId, user);
     }
   }
 }
@@ -527,7 +527,7 @@ async function updateBankAccountRow(bankAccountId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
@@ -567,12 +567,12 @@ async function updateBankAccountRow(bankAccountId) {
     if (bankAccountRowNumber !== -1) {
 
       // update the bankaccounts row
-      await objBankAccounts.updateBankAccountsTable(bankAccountId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+      await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
 
     } else {
 
       // Insert the bankaccount row in bankaccounts table
-      await objBankAccounts.insertBankAccountsTable(condominiumId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+      await objBankAccounts.insertBankAccountsTable(condominiumId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
     }
 
     await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
@@ -585,14 +585,14 @@ async function updateBankAccountRow(bankAccountId) {
 async function deleteBankAccountRow(bankAccountId) {
 
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // Check if bankaccount row exist
   bankAccountsRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
   if (bankAccountsRowNumber !== -1) {
 
     // delete bankaccount row
-    objAccounts.deleteBankAccountsTable(bankAccountId, user, lastUpdate);
+    objAccounts.deleteBankAccountsTable(bankAccountId, user);
   }
 }
 

@@ -31,7 +31,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
@@ -58,13 +59,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show result of filter
     showResult();
 
-    // Make events
-    createEvents();
+    // Events
+    events();
   }
 }
 
 // Make Bank account transactions events
-function createEvents() {
+function events() {
 
   // Show bankaccounttransactions after change of filter
   document.addEventListener('change', (event) => {
@@ -353,18 +354,18 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
     const condominiumId = objUserPassword.condominiumId;
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
+    
 
     // Check if the bankaccounttransactions row exist
     if (bankAccountTransactionRowNumber !== -1) {
 
       // update the bankaccounttransactions row
-      await objBankAccountTransactions.updateBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, lastUpdate, condoId, accountId, income, payment, numberKWHour, date, text);
+      await objBankAccountTransactions.updateBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, numberKWHour, date, text);
 
     } else {
 
       // Insert the bankAccountTransactions row in bankAccountTransactions table
-      await objBankAccountTransactions.insertbankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, lastUpdate, condoId, accountId, income, payment, numberKWHour, date, text);
+      await objBankAccountTransactions.insertbankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, numberKWHour, date, text);
     }
   }
 }
@@ -594,14 +595,14 @@ function showRestMenu(rowNumber) {
 async function deleteBankAccountTransactionRow(bankAccountTransationId, className) {
 
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // Check if bankaccounttransaction row exist
   bankAccountTransactionsRowNumber = objBankAccountTransations.arrayBankAccountTransations.findIndex(bankaccounttransaction => bankaccounttransaction.bankAccountTransationId === bankAccountTransationId);
   if (bankAccountTransactionsRowNumber !== -1) {
 
     // delete bankaccounttransaction row
-    objBankAccountTransactions.deleteBankAccountTransationsTable(bankAccountTransationId, user, lastUpdate);
+    objBankAccountTransactions.deleteBankAccountTransationsTable(bankAccountTransationId, user);
   }
   const amount = 0;
   const deleted = 'N';

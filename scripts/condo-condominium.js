@@ -33,7 +33,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objAccounts.loadAccountsTable(condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
     await objBankAccounts.loadBankAccountsTable(condominiumId, 999999999);
 
     // Show header
@@ -45,13 +46,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show result
     showResult(condominiumId);
 
-    // Create events
-    createEvents();
+    // Events
+    events();
   }
 }
 
-// Make events for condominium
-function createEvents() {
+// Events for condominium
+function events() {
 
   // Filter
   document.addEventListener('change', (event) => {
@@ -251,7 +252,7 @@ async function updateCondominium(condominiumId) {
 
   // Get values
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
   const name = document.querySelector('.input-condominiums-name').value;
   const street = document.querySelector('.input-condominiums-street').value;
   const address2 = document.querySelector('.input-condominiums-address2').value;
@@ -270,11 +271,11 @@ async function updateCondominium(condominiumId) {
   if (condominiumsRowNumber !== -1) {
 
     // update user
-    objCondominiums.updateCondominiumTable(user, condominiumId, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
+    objCondominiums.updateCondominiumTable(user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
   } else {
 
     // Insert user row in users table
-    objCondominiums.insertCondominiumTable(user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
+    objCondominiums.insertCondominiumTable(user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
   }
 
   document.querySelector('.select-condominiums-condominiumId').disabled = false;
@@ -494,8 +495,8 @@ async function deleteCondominiumRow() {
 
     // delete condominium row
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    await objCondominiums.deleteCondominiumsTable(condominiumId, user, lastUpdate);
+    
+    await objCondominiums.deleteCondominiumsTable(condominiumId, user);
   }
 }
 // Show header
@@ -724,7 +725,7 @@ async function updateCondominiumRow(condominiumId) {
   condominiumId = Number(condominiumId);
 
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -783,12 +784,12 @@ async function updateCondominiumRow(condominiumId) {
     if (condominiumRowNumber !== -1) {
 
       // update the condominiums row
-      await objCondominiums.updateCondominiumsTable(user, condominiumId, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
+      await objCondominiums.updateCondominiumsTable(user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
       await objCondominiums.loadCondominiumsTable();
     } else {
 
       // Insert the bankaccount row in condominiums table
-      await objCondominiums.insertCondominiumsTable(user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
+      await objCondominiums.insertCondominiumsTable(user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
       await objCondominiums.loadCondominiumsTable();
       condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
       document.querySelector('.filterCondominiumId').value = condominiumId;

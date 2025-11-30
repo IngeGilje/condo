@@ -30,7 +30,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 
     // Find selected supplier id
@@ -173,8 +174,8 @@ async function deleteSupplier() {
 
     // delete supplier row
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    objSuppliers.deleteSuppliersTable(supplierId, user, lastUpdate);
+    
+    objSuppliers.deleteSuppliersTable(supplierId, user);
   }
 }
 
@@ -225,7 +226,7 @@ async function updateSupplier(supplierId) {
   // text
   const text = (document.querySelector('.input-suppliers-text').value);
 
-  const lastUpdate = today.toISOString();
+  
   const condominiumId = Number(objUserPassword.condominiumId);
   const supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 
@@ -233,12 +234,12 @@ async function updateSupplier(supplierId) {
   if (supplierRowNumber !== -1) {
 
     // update supplier
-    objSuppliers.updateSuppliersTable(supplierId, condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId, text, textAccountId);
+    objSuppliers.updateSuppliersTable(supplierId, condominiumId, user, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId, text, textAccountId);
 
   } else {
 
     // insert supplier
-    objSuppliers.insertSuppliersTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId,text,textAccountId);
+    objSuppliers.insertSuppliersTable(condominiumId, user, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountAccountId, amount, amountAccountId,text,textAccountId);
   }
 
   document.querySelector('.select-suppliers-supplierId').disabled = false;

@@ -27,7 +27,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
 
     // Show header
@@ -37,16 +38,16 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showFilter();
 
     // Show accounts
-    showUserBankAccounts();
+    showResult();
 
-    // Create events
-    createEvents();
+    // Events
+    events();
   }
 }
 
 
-// Make events for user bank accounts
-function createEvents() {
+// Events for user bank accounts
+function events() {
 
   // user filter
   document.addEventListener('change', (event) => {
@@ -61,7 +62,7 @@ function createEvents() {
         const accountId = Number(document.querySelector('.filterAccountId').value);
         await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, userId, accountId);
 
-        showUserBankAccounts();
+        showResult();
       }
     };
   });
@@ -131,9 +132,10 @@ function createEvents() {
 
           deleteAccountRow(accountId, className);
 
-          await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
 
-          showUserBankAccounts();
+          showResult();
         };
       };
     };
@@ -293,7 +295,7 @@ function updateUserBankAccount() {
 
     let SQLquery = '';
 
-    const lastUpdate = today.toISOString();
+    
 
     const bankAccountRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
@@ -480,7 +482,7 @@ async function updateUserBankAccount(userBankAccountId) {
     const user = objUserPassword.email;
 
     // current date
-    const lastUpdate = today.toISOString();
+    
 
     // User Id
     const userId = Number(document.querySelector('.select-userbankaccounts-userId').value);
@@ -499,11 +501,11 @@ async function updateUserBankAccount(userBankAccountId) {
     if (userBankAccountRowNumberObj !== -1) {
 
       // update user bank account
-      await objUserBankAccounts.updateUserBankAccountsTable(userBankAccountId, condominiumId, user, lastUpdate, userId, accountId, name, bankAccount);
+      await objUserBankAccounts.updateUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, name, bankAccount);
     } else {
 
       // Insert user bank account row in user bank account table
-      await objUserBankAccounts.insertUserBankAccountsTable(userBankAccountId, condominiumId, user, lastUpdate, userId, accountId, name, bankAccount);
+      await objUserBankAccounts.insertUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, name, bankAccount);
     }
   }
 }
@@ -521,12 +523,13 @@ async function deleteUserBankAccount() {
 
     // delete user bank account row
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    objUserBankAccounts.deleteUserBankAccountsTable(userBankAccountId, user, lastUpdate);
+    
+    objUserBankAccounts.deleteUserBankAccountsTable(userBankAccountId, user);
   }
 }
 */
 
+/*
 function showHeader() {
 
   // Start table
@@ -539,7 +542,23 @@ function showHeader() {
   html += endHTMLTable();
   document.querySelector('.header').innerHTML = html;
 }
+*/
 
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = startHTMLTable('width:750px;');
+
+  // Main header
+  html += showHTMLMainTableHeader('widht:250px;', 'Bankkonto for bruker', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.header').innerHTML = html;
+}
+
+/*
 // Show filter
 function showFilter() {
 
@@ -556,6 +575,44 @@ function showFilter() {
   html += endHTMLTable();
   document.querySelector('.filter').innerHTML = html;
 }
+*/
+
+// Show filter
+function showFilter(userAccountId) {
+
+  // Start table
+  html = startHTMLTable('width:750px;');
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:250px;", '', '', '');
+  html += showHTMLFilterHeader("width:250px;", '', 'Bruker', 'Konto', '');
+
+  // Filter for search
+  html += "<tr>";
+
+  html += "<td></td>";
+
+ // Show all selected users
+  html += objUsers.showSelectedUsersNew('filterUserId', 0, 'Alle', '');
+
+  // Show all selected accounts
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
+
+  html +=
+    `
+      </tr>
+    `;
+
+  html += "</tr>";
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:750px;", '', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.filter').innerHTML = html;
+}
+
 
 // Filter for search
 function showHTMLFilterSearch() {
@@ -628,13 +685,13 @@ function showTableSumRow(rowNumber, amount) {
 }
 
 // Show user bank accounts
-function showUserBankAccounts() {
+function showResult() {
 
   // Start HTML table
-  html = startHTMLTable();
+  html = startHTMLTable('width:750px;');
 
   // Header
-  html += showHTMLMainTableHeader('Meny', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += showHTMLMainTableHeader('widht:250px;','', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   //let sumAmount = 0;
   let rowNumber = 0;
@@ -656,7 +713,7 @@ function showUserBankAccounts() {
     // user
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUsers.showSelectedUsersNew(className, userId, '', 'Ingen er valgt');
+    html += objUsers.showSelectedUsersNew(className, '', userId, '', 'Ingen er valgt');
 
     // account
     const accountId = userBankAccount.accountId;
@@ -701,17 +758,18 @@ function showRestMenu(rowNumber) {
 async function deleteAccountRow(userBankAccountId, className) {
 
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // Check if account row exist
   accountsRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(account => userBankAccount.userBankAccountId === userBankAccountId);
   if (accountsRowNumber !== -1) {
 
     // delete account row
-    objUserBankAccounts.deleteAccountsTable(userBankAccountId, user, lastUpdate);
+    objUserBankAccounts.deleteAccountsTable(userBankAccountId, user);
   }
 
-  await objUserBankAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
 }
 
 // Update userbankaccounts row
@@ -721,7 +779,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // Validate userbankaccounts columns
   if (validateColumns(userBankAccountId)) {
@@ -741,18 +799,18 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     if (userBankAccountRowNumber !== -1) {
 
       // update the userbankaccounts row
-      await objUserBankAccounts.updateUserBankAccountsTable(userBankAccountId, condominiumId, user, lastUpdate, userId, accountId, bankAccount);
+      await objUserBankAccounts.updateUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount);
 
     } else {
 
       // Insert the userbankaccounts row 
-      await objUserBankAccounts.insertUserBankAccountsTable(condominiumId, user, lastUpdate, userId, accountId, bankAccount);
+      await objUserBankAccounts.insertUserBankAccountsTable(condominiumId, user, userId, accountId, bankAccount);
     }
 
     userId = Number(document.querySelector('.filterUserId').value);
     accountId = Number(document.querySelector('.filterAccountId').value);
     await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, userId, accountId);
-    showUserBankAccounts();
+    showResult();
   }
 }
 

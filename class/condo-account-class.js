@@ -440,10 +440,10 @@ class Account extends Condos {
   }
 
   // get accounts from accounts table
-  async loadAccountsTable(condominiumId) {
+  async loadAccountsTable(condominiumId, fixedCost) {
 
     try {
-      const response = await fetch(`http://localhost:3000/accounts?action=select&condominiumId=${condominiumId}`);
+      const response = await fetch(`http://localhost:3000/accounts?action=select&condominiumId=${condominiumId}&fixedCost=${fixedCost}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayAccounts = await response.json();
     } catch (error) {
@@ -452,10 +452,10 @@ class Account extends Condos {
   }
 
   // update account row
-  async updateAccountsTable(user, accountId, fixedCost, lastUpdate, accountName) {
+  async updateAccountsTable(user, accountId, fixedCost, accountName) {
 
     try {
-      const response = await fetch(`http://localhost:3000/accounts?action=update&user=${user}&accountId=${accountId}&fixedCost=${fixedCost}&lastUpdate=${lastUpdate}&accountName=${accountName}`);
+      const response = await fetch(`http://localhost:3000/accounts?action=update&user=${user}&accountId=${accountId}&fixedCost=${fixedCost}&accountName=${accountName}`);
       if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();
     } catch (error) {
@@ -464,10 +464,10 @@ class Account extends Condos {
   }
 
   // insert account row
-  async insertAccountsTable(condominiumId, user, lastUpdate, accountName, fixedCost) {
+  async insertAccountsTable(condominiumId, user, accountName, fixedCost) {
 
     try {
-      const response = await fetch(`http://localhost:3000/accounts?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&accountName=${accountName}&fixedCost=${fixedCost}`);
+      const response = await fetch(`http://localhost:3000/accounts?action=insert&condominiumId=${condominiumId}&user=${user}&accountName=${accountName}&fixedCost=${fixedCost}`);
       if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();
     } catch (error) {
@@ -476,10 +476,10 @@ class Account extends Condos {
   }
 
   // delete account row
-  async deleteAccountsTable(accountId, user, lastUpdate) {
+  async deleteAccountsTable(accountId, user) {
 
     try {
-      const response = await fetch(`http://localhost:3000/accounts?action=delete&accountId=${accountId}&user=${user}&lastUpdate=${lastUpdate}`);
+      const response = await fetch(`http://localhost:3000/accounts?action=delete&accountId=${accountId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();
     } catch (error) {

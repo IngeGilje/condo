@@ -401,11 +401,11 @@ class Condo extends Condos {
   }
 
   // update condo row in condo table
-  async updateCondoTable(condoId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters) {
+  async updateCondoTable(condoId, user, name, street, address2, postalCode, city, squareMeters) {
 
     if (address2 === 'undefined') address2 = '';
     try {
-      const response = await fetch(`http://localhost:3000/condo?action=update&condoId=${condoId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
+      const response = await fetch(`http://localhost:3000/condo?action=update&condoId=${condoId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
     } catch (error) {
@@ -414,10 +414,10 @@ class Condo extends Condos {
   }
 
   // insert condo row in condo table
-  async insertCondoTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters) {
+  async insertCondoTable(condominiumId, user, name, street, address2, postalCode, city, squareMeters) {
     if (address2 === 'undefined') address2 = '';
     try {
-      const response = await fetch(`http://localhost:3000/condo?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
+      const response = await fetch(`http://localhost:3000/condo?action=insert&condominiumId=${condominiumId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
     } catch (error) {
@@ -426,10 +426,10 @@ class Condo extends Condos {
   }
 
   // delete condo row
-  async deleteCondoTable(condoId, user, lastUpdate) {
+  async deleteCondoTable(condoId, user) {
 
     try {
-      const response = await fetch(`http://localhost:3000/condo?action=delete&condoId=${condoId}&user=${user}&lastUpdate=${lastUpdate}`);
+      const response = await fetch(`http://localhost:3000/condo?action=delete&condoId=${condoId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
     } catch (error) {

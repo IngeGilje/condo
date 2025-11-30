@@ -43,13 +43,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show result
     showResult(userId);
 
-    // Create events
-    createEvents();
+    // Events
+    events();
   }
 }
 
-// Make events for users
-function createEvents() {
+// Events for users
+function events() {
 
   // Filter
   document.addEventListener('change', (event) => {
@@ -146,13 +146,13 @@ async function deleteCondo() {
 
     // delete condo row
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    objCondos.deleteCondoTable(userId, user, lastUpdate);
+    
+    objCondos.deleteCondoTable(userId, user);
   }
 }
 /*
-// Make events for users
-function createEvents() {
+// Events for users
+function events() {
 
   // Select User
   document.addEventListener('change', (event) => {
@@ -390,19 +390,19 @@ function updateUser(userId) {
 
     // password
     const password = document.querySelector('.input-users-password').value;
-    const lastUpdate = today.toISOString();
+    
     const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
 
     // Check if user exist
     if (userRowNumber !== -1) {
 
       // update user
-      objUsers.updateUsersTable(user, lastUpdate, email, userId, firstName, lastName, phone, securityLevel, password);
+      objUsers.updateUsersTable(user, email, userId, firstName, lastName, phone, securityLevel, password);
 
     } else {
 
       // Insert user row in users table
-      objUsers.insertUsersTable(condominiumId, user, lastUpdate, email, userId, firstName, lastName, phone, securityLevel, password);
+      objUsers.insertUsersTable(condominiumId, user, email, userId, firstName, lastName, phone, securityLevel, password);
     }
   }
 }
@@ -627,8 +627,8 @@ async function deleteUser() {
 
     // delete user row
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    objUsers.deleteUsersTable(userId, user, lastUpdate);
+    
+    objUsers.deleteUsersTable(userId, user);
   }
 }
 */
@@ -813,7 +813,7 @@ async function updateUserRow(userId) {
   const condominiumId = Number(objUserPassword.condominiumId);
 
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // resident
   let resident = document.querySelector('.resident').value;
@@ -854,12 +854,12 @@ async function updateUserRow(userId) {
     if (userRowNumber !== -1) {
 
       // update the users row
-      await objUsers.updateUsersTable(resident, user, lastUpdate, email, userId, condoId, firstName, lastName, phone, securityLevel, password);
+      await objUsers.updateUsersTable(resident, user, email, userId, condoId, firstName, lastName, phone, securityLevel, password);
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     } else {
 
       // Insert the user row in users table
-      await objUsers.insertUsersTable(resident, condominiumId, user, lastUpdate, email, condoId, firstName, lastName, phone, securityLevel, password);
+      await objUsers.insertUsersTable(resident, condominiumId, user, email, condoId, firstName, lastName, phone, securityLevel, password);
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
       userId = objUsers.arrayUsers.at(-1).userId;
       document.querySelector('.filterUserId').value = userId;
@@ -888,7 +888,7 @@ async function deleteUserRow() {
 
     // delete a user row
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    await objUsers.deleteUsersTable(userId, user, lastUpdate);
+    
+    await objUsers.deleteUsersTable(userId, user);
   }
 }

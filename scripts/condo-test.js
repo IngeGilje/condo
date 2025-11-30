@@ -29,7 +29,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
     const year = today.getFullYear();
     const accountId = 999999999;
     await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
@@ -49,13 +50,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show all values for budget
     //showValues(budgetId);
 
-    // Make events
-    //createEvents();
+    // Events
+    //events();
   }
 }
 
 // Make budget events
-function createEvents() {
+function events() {
 
   // Select filter
   // budget 
@@ -414,7 +415,7 @@ async function updateBudget(budgetId) {
 
     const condominiumId = Number(objUserPassword.condominiumId);
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
+    
     const accountId = Number(document.querySelector('.select-budget-accountId').value);
     const amount = formatKronerToOre(document.querySelector('.input-budget-amount').value);
     const year = document.querySelector('.select-budget-year').value;
@@ -424,12 +425,12 @@ async function updateBudget(budgetId) {
     if (budgetsRowNumber !== -1) {
 
       // update budget
-      await objBudgets.updateBudgetsTable(budgetId, user, lastUpdate, accountId, amount, year);
+      await objBudgets.updateBudgetsTable(budgetId, user, accountId, amount, year);
 
     } else {
 
       // Insert budget row in budgets table
-      await objBudgets.insertBudgetsTable(condominiumId, user, lastUpdate, accountId, amount, year);
+      await objBudgets.insertBudgetsTable(condominiumId, user, accountId, amount, year);
     }
   }
 }

@@ -118,10 +118,10 @@ class Due extends Condos {
   }
 
   // update due row in dues table
-  async updateDuesTable(dueId, user, lastUpdate, condoId, accountId, amount, date, text) {
+  async updateDuesTable(dueId, user, condoId, accountId, amount, date, text) {
 
     try {
-      const response = await fetch(`http://localhost:3000/dues?action=update&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
+      const response = await fetch(`http://localhost:3000/dues?action=update&dueId=${dueId}&user=${user}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayBudgets = await response.json();
     } catch (error) {
@@ -130,10 +130,10 @@ class Due extends Condos {
   }
 
   // insert due row in dues table
-  async insertDuesTable(condominiumId, user, lastUpdate, condoId, accountId, amount, date, text) {
+  async insertDuesTable(condominiumId, user, condoId, accountId, amount, date, text) {
 
     try {
-      const response = await fetch(`http://localhost:3000/dues?action=insert&condominiumId=${condominiumId}&condoId=${condoId}&user=${user}&lastUpdate=${lastUpdate}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
+      const response = await fetch(`http://localhost:3000/dues?action=insert&condominiumId=${condominiumId}&condoId=${condoId}&user=${user}&accountId=${accountId}&amount=${amount}&date=${date}&text=${text}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayBudgets = await response.json();
     } catch (error) {
@@ -141,10 +141,10 @@ class Due extends Condos {
     }
   }
   // delete due row
-  async deleteDuesTable(dueId, user, lastUpdate) {
+  async deleteDuesTable(dueId, user) {
 
     try {
-      const response = await fetch(`http://localhost:3000/dues?action=delete&dueId=${dueId}&user=${user}&lastUpdate=${lastUpdate}`);
+      const response = await fetch(`http://localhost:3000/dues?action=delete&dueId=${dueId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayBudgets = await response.json();
     } catch (error) {

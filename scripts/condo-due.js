@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUsers = new User('user');
-const objCondo = new Condo('condo');
+const objCondos = new Condo('condo');
 const objAccounts = new Account('account');
 const objDues = new Due('due');
 
@@ -35,8 +35,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const condominiumId = Number(objUserPassword.condominiumId);
       const resident = 'Y';
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-      await objCondo.loadCondoTable(condominiumId);
-      await objAccounts.loadAccountsTable(condominiumId);
+      await objCondos.loadCondoTable(condominiumId);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
       const accountId = 999999999;
       const condoId = 999999999;
@@ -55,14 +56,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // Show result
       showResult();
 
-      // Create events
-      createEvents();
+      // Events
+      events();
     }
   }
 }
 
 // Make due events
-function createEvents() {
+function events() {
 
   // Filter
   document.addEventListener('change', (event) => {
@@ -309,7 +310,7 @@ function showValues(dueId) {
 
       // Show condo id
       const condoId = objDues.arrayDues[dueRowNumber].condoId;
-      objCondo.selectCondoId(condoId, 'dues-condoId');
+      objCondos.selectCondoId(condoId, 'dues-condoId');
 
       // Show account id
       const accountId = objDues.arrayDues[dueRowNumber].accountId;
@@ -328,6 +329,7 @@ function showValues(dueId) {
   }
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -341,23 +343,9 @@ function showHeader() {
   html += endHTMLTable();
   document.querySelector('.header').innerHTML = html;
 }
+*/
 
-// Show filter
-function showFilter() {
 
-  // Start table
-  html = startHTMLTable();
-
-  // Header filter for search
-  html += showHTMLFilterHeader('', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', '', '');
-
-  // Filter for search
-  html += showHTMLFilterSearch();
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.filter').innerHTML = html;
-}
 
 // Filter for search
 function showHTMLFilterSearch() {
@@ -365,7 +353,7 @@ function showHTMLFilterSearch() {
   let html = "<tr><td></td>";
 
   // Show all selected condos
-  html += objCondo.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, 'Alle', '');
+  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, 'Alle', '');
 
   // Show all selected accounts
   html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
@@ -386,10 +374,10 @@ function showHTMLFilterSearch() {
 function showResult() {
 
   // Start HTML table
-  html = startHTMLTable();
+  html = startHTMLTable('width:1100px;');
 
   // Header
-  html += showHTMLMainTableHeader('Meny', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
+  html += objDues.showHTMLMainTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
 
   let sumAmount = 0;
   let rowNumber = 0;
@@ -428,7 +416,7 @@ function showResult() {
 
     // condos
     className = `condo${due.dueId}`;
-    html += objCondo.showSelectedCondosNew(className, '', due.condoId, '', 'Ingen er valgt');
+    html += objCondos.showSelectedCondosNew(className, '', due.condoId, '', 'Ingen er valgt');
 
     // Date
     const date = formatToNorDate(due.date);
@@ -491,7 +479,7 @@ function insertEmptyTableRow(rowNumber) {
   html += "<td class='center bold'>Nytt forfall</td>";
 
   // condos
-  html += objCondo.showSelectedCondosNew("condo0", '', 0, '', 'Ingen er valgt');
+  html += objCondos.showSelectedCondosNew("condo0", '', 0, '', 'Ingen er valgt');
 
   // Date
   html += objDues.showInputHTMLNew("date0", "", 10);
@@ -568,14 +556,14 @@ function showRestMenu(rowNumber) {
 async function deleteDuesRow(dueId, className) {
 
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+
 
   // Check if dues row exist
   duesRowNumber = objDues.arrayDues.findIndex(due => due.dueId === dueId);
   if (duesRowNumber !== -1) {
 
     // delete dues row
-    objDues.deleteDuesTable(dueId, user, lastUpdate);
+    objDues.deleteDuesTable(dueId, user);
   }
 
   const condominiumId = Number(objUserPassword.condominiumId);
@@ -595,7 +583,7 @@ async function updateDuesRow(dueId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+
 
   // Check dues columns
   let className = `.condo${dueId}`;
@@ -626,12 +614,12 @@ async function updateDuesRow(dueId) {
     if (duesRowNumber !== -1) {
 
       // update the dues row
-      await objDues.updateDuesTable(dueId, user, lastUpdate, condoId, accountId, amount, date, text);
+      await objDues.updateDuesTable(dueId, user, condoId, accountId, amount, date, text);
 
     } else {
 
       // Insert the account row in accounts table
-      await objDues.insertDuesTable(condominiumId, user, lastUpdate, condoId, accountId, amount, date, text);
+      await objDues.insertDuesTable(condominiumId, user, condoId, accountId, amount, date, text);
     }
 
     const condominiumId = Number(objUserPassword.condominiumId);
@@ -645,4 +633,81 @@ async function updateDuesRow(dueId) {
 
     showResult();
   }
+}
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = startHTMLTable('width:1100px;');
+
+  // Main header
+  html += showHTMLMainTableHeader('widht:250px;', '', '', '', 'Forfall', '', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.header').innerHTML = html;
+}
+
+/*
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = startHTMLTable();
+
+  // Header filter for search
+  html += showHTMLFilterHeader('', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', '', '');
+
+  // Filter for search
+  html += showHTMLFilterSearch();
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.filter').innerHTML = html;
+}
+*/
+
+// Show filter
+function showFilter(dueId) {
+
+  // Start table
+  html = startHTMLTable('width:1100px;');
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
+  html += showHTMLFilterHeader('', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', '');
+
+  // Filter for search
+  html += "<tr>";
+
+  html += "<td></td>";
+
+  // Show all selected condos
+  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, 'Alle', '');
+
+  // Show all selected accounts
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
+
+  // show from date
+  const fromDate = '01.01.' + String(today.getFullYear());
+  html += objDues.showInputHTMLNew('filterFromDate', fromDate, 10);
+
+  // show to date
+  html += objDues.showInputHTMLNew('filterToDate', getCurrentDate(), 10);
+
+  html += "</tr>";
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.filter').innerHTML = html;
+
+  // show icons
+  objDues.showIconNew('filterCondoId');
+  objDues.showIconNew('filterAccountId');
+  objDues.showIconNew('filterFromDate');
+  objDues.showIconNew('filterToDate');
 }

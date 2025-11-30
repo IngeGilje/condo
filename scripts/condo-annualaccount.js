@@ -38,7 +38,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objBudget.loadBudgetsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId,999999999);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
 
     // Show leading text for filter
     showLeadingTextFilter();
@@ -68,13 +69,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show bank deposit for next year
     showBankDeposit();
 
-    // Make events
-    createEvents();
+    // Events
+    events();
   }
 }
 
 // Make budget events
-function createEvents() {
+function events() {
 
   // from date
   document.addEventListener('change', (event) => {

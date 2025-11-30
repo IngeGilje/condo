@@ -213,10 +213,10 @@ class BankAccount extends Condos {
     }
   }
   // update bank accounts row
-  async updateBankAccountsTable(bankAccountId,user,lastUpdate,bankAccount,name,openingBalance,openingBalanceDate,closingBalance,closingBalanceDate) {
+  async updateBankAccountsTable(bankAccountId,user,bankAccount,name,openingBalance,openingBalanceDate,closingBalance,closingBalanceDate) {
 
     try {
-      const response = await fetch(`http://localhost:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&user=${user}&lastUpdate=${lastUpdate}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}`);
+      const response = await fetch(`http://localhost:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}`);
       if (!response.ok) throw new Error("Network error (bank account)");
       this.arrayBankAccounts = await response.json();
     } catch (error) {
@@ -225,10 +225,10 @@ class BankAccount extends Condos {
   }
 
   // insert bank accounts row
-  async insertBankAccountsTable(condominiumId,user,lastUpdate,bankAccount,name,openingBalanceDate,openingBalance,closingBalanceDate,closingBalance) {
+  async insertBankAccountsTable(condominiumId,user,bankAccount,name,openingBalanceDate,openingBalance,closingBalanceDate,closingBalance) {
 
     try {
-      const response = await fetch(`http://localhost:3000/bankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
+      const response = await fetch(`http://localhost:3000/bankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
       if (!response.ok) throw new Error("Network error (bankaccounts)");
       this.arrayBankAccounts = await response.json();
     } catch (error) {
@@ -237,10 +237,10 @@ class BankAccount extends Condos {
   }
 
   // delete bankaccounts row
-  async deleteBankAccountsTable(bankAccountId, user, lastUpdate) {
+  async deleteBankAccountsTable(bankAccountId, user) {
 
     try {
-      const response = await fetch(`http://localhost:3000/bankaccounts?action=delete&bankAccountId=${bankAccountId}&user=${user}&lastUpdate=${lastUpdate}`);
+      const response = await fetch(`http://localhost:3000/bankaccounts?action=delete&bankAccountId=${bankAccountId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (bankaccounts)");
       this.arrayBankAccounts = await response.json();
     } catch (error) {

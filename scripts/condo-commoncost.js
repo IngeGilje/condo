@@ -36,7 +36,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable();
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+     const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
 
     // Show leading text filter
     showLeadingTextFilter();
@@ -64,13 +65,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show all values for 
     showValues();
 
-    // Make events
-    createEvents();
+    // Events
+    events();
   }
 }
 
 // Make monthly amount events
-function createEvents() {
+function events() {
 
   // Selected condo Id
   document.addEventListener('change', (event) => {
@@ -168,7 +169,7 @@ function createEvents() {
           const year = Number(document.querySelector('.select-commoncost-year').value);
           const day = Number(document.querySelector('.select-commoncost-day').value);
           const amount = Number(formatAmountToOre(document.querySelector('.input-commoncost-amount').value));
-          const lastUpdate = today.toISOString();
+          
           const user = objUserPassword.email;
 
           // Insert new monthly amount for every month this year
@@ -179,7 +180,7 @@ function createEvents() {
             const date = String(year) + stringMonth + stringDay;
             const text = String(condoName) + '-' + findNameOfMonth(month);
 
-            await objDues.insertDuesTable(condominiumId, user, lastUpdate, condoId, accountId, amount, date, text);
+            await objDues.insertDuesTable(condominiumId, user, condoId, accountId, amount, date, text);
           }
 
           // Show all dues for condo id, account id
@@ -214,7 +215,7 @@ function createEvents() {
           const accountId = objAccounts.arrayAccounts[0].accountId;
           let amount = Number(formatAmountToOre(document.querySelector('.input-commoncost-amount').value));
           const user = objUserPassword.email;
-          const lastUpdate = today.toISOString();
+          
 
           for (month = 1; month < 13; month++) {
 
@@ -228,7 +229,7 @@ function createEvents() {
             if (dueId >= 0) {
 
               // current date
-              await objDues.deleteDuesTable(dueId, user, lastUpdate);
+              await objDues.deleteDuesTable(dueId, user);
             }
           }
           const condominiumId = Number(objUserPassword.condominiumId);

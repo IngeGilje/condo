@@ -111,10 +111,10 @@ class Condominiums extends Condos {
     }
   }
   // update condominium row in condominiums table
-  async updateCondominiumsTable(user, condominiumId, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName) {
+  async updateCondominiumsTable(user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName) {
 
     try {
-      const response = await fetch(`http://localhost:3000/condominiums?action=update&user=${user}&condominiumId=${condominiumId}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
+      const response = await fetch(`http://localhost:3000/condominiums?action=update&user=${user}&condominiumId=${condominiumId}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.arrayCondominiums = await response.json();
     } catch (error) {
@@ -123,10 +123,10 @@ class Condominiums extends Condos {
   }
 
   // insert condominium row in users table
-  async insertCondominiumsTable(user, lastUpdate, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName) {
+  async insertCondominiumsTable(user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName) {
 
     try {
-      const response = await fetch(`http://localhost:3000/condominiums?action=insert&user=${user}&lastUpdate=${lastUpdate}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
+      const response = await fetch(`http://localhost:3000/condominiums?action=insert&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.arrayCondominiums = await response.json();
     } catch (error) {
@@ -134,10 +134,10 @@ class Condominiums extends Condos {
     }
   }
   // delete condominium row
-  async deleteCondominiumsTable(condominiumId, user, lastUpdate) {
+  async deleteCondominiumsTable(condominiumId, user) {
 
     try {
-      const response = await fetch(`http://localhost:3000/condominiums?action=delete&condominiumId=${condominiumId}&user=${user}&lastUpdate=${lastUpdate}`);
+      const response = await fetch(`http://localhost:3000/condominiums?action=delete&condominiumId=${condominiumId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.arrayCondominiums = await response.json();
     } catch (error) {

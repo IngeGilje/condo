@@ -53,7 +53,7 @@ class Condos {
       text: "Bankkonto for bruker"
     },
     {
-      applicationName: "condo-suppliers.html",
+      applicationName: "condo-supplier.html",
       className: "Menu8",
       text: "Mottaker"
     },
@@ -150,8 +150,7 @@ class Condos {
     document.querySelector(`.div-${className}`).innerHTML = html;
 
     // Set the PNG file
-    const inputElement =
-      document.querySelector(`.input-${className}`);
+    const inputElement = document.querySelector(`.input-${className}`);
     inputElement.style.backgroundRepeat = `no-repeat`;
 
     const iconName = this.getIconName(className);
@@ -194,6 +193,7 @@ class Condos {
           >
         </td>
       `;
+
     return html;
   }
 
@@ -244,7 +244,7 @@ class Condos {
           class="button-${className}"
         >
           <img 
-            src="icons/${iconName}" 
+            src="icons/${iconName}.png" 
             height="18"
           >
           ${buttonText}
@@ -267,7 +267,7 @@ class Condos {
             style="${style}"
           >
             <img 
-              src="icons/${className}" 
+              src="icons/${className}.png" 
             >
               ${buttonText}
           </button>
@@ -1128,12 +1128,55 @@ class Condos {
   showIcon(className) {
 
     // Set the PNG file
-    const inputElement =
-      document.querySelector(`.${className}`);
+    const inputElement = document.querySelector(`.${className}`);
     inputElement.style.backgroundRepeat = `no-repeat`;
 
     const iconName = this.getIconName(`${className}`);
     inputElement.style.backgroundImage = `url('icons/${iconName}')`;
+  }
+
+  // Show icon
+  showIconNew(className) {
+
+    // Set the PNG file
+    const inputElement = document.querySelector(`.${className}`);
+    inputElement.style.backgroundRepeat = `no-repeat`;
+
+    const iconName = this.getIconNameNew(`${className}`);
+    inputElement.style.backgroundImage = `url('icons/${iconName}')`;
+  }
+
+  // get icon name from column name
+  getIconNameNew(className) {
+
+    let imageName;
+    if (className.toLowerCase().includes("name")) imageName = "name.png";
+    if (className.toLowerCase().includes("condo")) imageName = "condo.png";
+    if (className.toLowerCase().includes("address")) imageName = "address.png";
+    if (className.toLowerCase().includes("postalcode")) imageName = "postalCode.png";
+    if (className.toLowerCase().includes("street")) imageName = "street.png";
+    if (className.toLowerCase().includes("city")) imageName = "city.png";
+    if (className.toLowerCase().includes("phone")) imageName = "phone.png";
+    if (className.toLowerCase().includes("email")) imageName = "email.png";
+    if (className.toLowerCase().includes("organization")) imageName = "organizationnumber.png";
+    if (className.toLowerCase().includes("filename")) imageName = "fileName.png";
+    if (className.toLowerCase().includes("date")) imageName = "date.png";
+    if (className.toLowerCase().includes("income")) imageName = "income.png";
+    if (className.toLowerCase().includes("kwhour")) imageName = "numberKWHour.png";
+    if (className.toLowerCase().includes("text")) imageName = "text.png";
+    if (className.toLowerCase().includes("amount")) imageName = "amount.png";
+    if (className.toLowerCase().includes("password")) imageName = "password.png";
+    if (className.toLowerCase().includes("account")) imageName = "account.png";
+    if (className.toLowerCase().includes("balance")) imageName = "accountname.png";
+    if (className.toLowerCase().includes("balancedate")) imageName = "date.png";
+    if (className.toLowerCase().includes("update")) imageName = "save.png";
+    if (className.toLowerCase().includes("save")) imageName = "save.png";
+    if (className.toLowerCase().includes("insert")) imageName = "insert.png";
+    if (className.toLowerCase().includes("cancel")) imageName = "cancel.png";
+    if (className.toLowerCase().includes("delete")) imageName = "cancel.png";
+    if (className.toLowerCase().includes("supplier")) imageName = "supplier.png";
+    if (imageName === 'undefined') imageName = "error.png";
+    return imageName;
   }
 
   // get icon name from column name
@@ -1482,7 +1525,7 @@ class Condos {
     return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
   }
 
-  // Validate phone number
+  // Validate phone number 
   validatePhoneNew(phone) {
 
     // Validate phone number
@@ -1510,6 +1553,40 @@ class Condos {
   validateFileNameNew(fileName) {
     const fileNameRegex = /^(?:[a-zA-Z]:\\)?(?:[^<>:"/\\|?*\x00-\x1F]+\\)*[^<>:"/\\|?*\x00-\x1F]*$/;
     return fileNameRegex.test(fileName);
+  }
+
+  // Show main header table
+  showHTMLMainTableHeaderNew(style, ...texts) {
+
+    let html = `<tr class="bold">`;
+
+    texts.forEach((text) => {
+
+      if (text === '') {
+        html +=
+          `
+          <th 
+            class="no-border"
+            style="${style}"
+          >
+            ${text}
+          </th>
+        `;
+      } else {
+        html +=
+          `
+          <th 
+            class="center no-border"
+            style="${style}"
+          >
+            ${text}
+          </th>
+        `;
+      }
+    });
+
+    html += "</tr>";
+    return html;
   }
 
   /* Does not work

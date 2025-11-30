@@ -35,7 +35,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objCondo.loadCondoTable(condominiumId);
-    await objAccounts.loadAccountsTable(condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
 
     // Show header
     showHeader();
@@ -65,13 +66,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // show how much to pay
     showHowMuchToPay();
 
-    // Create events
-    createEvents();
+    // Events
+    events();
   }
 }
 
 // Create overview events
-function createEvents() {
+function events() {
 
   // Filter
   document.addEventListener('change', (event) => {

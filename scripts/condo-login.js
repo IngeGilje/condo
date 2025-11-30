@@ -19,12 +19,12 @@ async function main() {
   // Show leading text
   showLeadingText();
 
-  // Make events
-  createEvents();
+  // Events
+  events();
 }
 
-// Make events for users
-function createEvents() {
+// Events for users
+function events() {
 
   console.log('createEvents');
 

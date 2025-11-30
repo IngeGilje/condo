@@ -40,7 +40,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const resident = 'A';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
@@ -83,14 +84,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // Show button for update of Bank account transactions
       objImportFile.showButton('importfile-saveBankAccountTransaction', 'Oppdater banktransaksjoner');
 
-      // Make events
-      createEvents();
+      // Events
+      events();
     }
   }
 }
 
 // Make transactions events
-function createEvents() {
+function events() {
 
   /*
   // Start import of text file
@@ -140,7 +141,7 @@ function createEvents() {
           const bankAccountTransactionId = 0;  // not in use
           const condominiumId = Number(objUserPassword.condominiumId);
           const user = objUserPassword.email;
-          const lastUpdate = today.toISOString();
+          
           const condoId = Number(transactions.condoId);
           const accountId = Number(transactions.accountId);
           const income = Number(transactions.income);
@@ -150,7 +151,7 @@ function createEvents() {
           const text = transactions.text;
 
           // insert bank account transactions row
-          await objBankAccountTransactions.insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, lastUpdate, condoId, accountId, income, payment, numberKWHour, date, text)
+          await objBankAccountTransactions.insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, numberKWHour, date, text)
         });
 
         // Update opening balance and closing balance
@@ -600,7 +601,7 @@ async function updateOpeningClosingBalance() {
       // Calculate opening balance
       const openingBalance = Number(closingBalance) - (totalIncome + totalPayment);
       */
-      const lastUpdate = today.toISOString();
+      
 
       // Updating openening balance
       // Check for openening balance date
@@ -615,7 +616,7 @@ async function updateOpeningClosingBalance() {
           const name = Number(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name);
           const closingBalance = Number(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalance);
           const closingBalanceDate = Number(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate);
-          await objBankAccounts.updateBankAccountsTable(bankAccountId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+          await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
           await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
         }
       }
@@ -634,7 +635,7 @@ async function updateOpeningClosingBalance() {
           const name = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name;
           const openingBalance = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalance;
           const openingBalanceDate = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalanceDate;
-          await objBankAccounts.updateBankAccountsTable(bankAccountId, user, lastUpdate, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+          await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
           await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
         };
       };

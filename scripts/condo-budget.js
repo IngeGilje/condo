@@ -27,7 +27,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
 
     const condominiumId = objUserPassword.condominiumId;
     const year = today.getFullYear();
@@ -43,13 +44,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show result of filter
     showResult();
 
-    // Make events
-    createEvents();
+    // Events
+    events();
   }
 }
 
 // Make budget events
-function createEvents() {
+function events() {
 
   // update a accounts row
   document.addEventListener('change', (event) => {
@@ -144,14 +145,14 @@ function createEvents() {
 async function deleteBudgetRow(budgetId, className) {
 
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // Check if budget row exist
   budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
   if (budgetsRowNumber !== -1) {
 
     // delete budget row
-    objBudgets.deleteBudgetsTable(budgetId, user, lastUpdate);
+    objBudgets.deleteBudgetsTable(budgetId, user);
   }
 
   await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, 999999999);
@@ -164,7 +165,7 @@ async function updateBudgetsRow(budgetId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // Get budgets row values
 
@@ -189,12 +190,12 @@ async function updateBudgetsRow(budgetId) {
     if (budgetsRowNumber !== -1) {
 
       // update the budgets row
-      await objBudgets.updateBudgetsTable(budgetId, user, lastUpdate, accountId, amount, year);
+      await objBudgets.updateBudgetsTable(budgetId, user, accountId, amount, year);
 
     } else {
 
       // Insert the budget row in budgets table
-      await objBudgets.insertBudgetsTable(condominiumId, user, lastUpdate, accountId, amount, year);
+      await objBudgets.insertBudgetsTable(condominiumId, user, accountId, amount, year);
     }
 
     accountId = Number(document.querySelector('.filterAccountId').value);

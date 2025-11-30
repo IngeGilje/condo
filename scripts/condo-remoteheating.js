@@ -36,7 +36,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId);
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
 
     amount = 0;
     condominiumId = objUserPassword.condominiumId;
@@ -64,13 +65,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show Bank account transactions
     showBankAccountTransactions();
 
-    // Make events
-    createEvents();
+    // Events
+    events();
   }
 }
 
 // Make remoteheating events
-function createEvents() {
+function events() {
 
   // From date
   document.addEventListener('change', (event) => {

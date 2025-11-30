@@ -40,13 +40,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show result
     showResult(condoId);
 
-    // Create events
-    createEvents();
+    // Events
+    events();
   }
 }
 
-// Make events for condo
-function createEvents() {
+// Events for condo
+function events() {
 
   // Filter
   document.addEventListener('change', (event) => {
@@ -145,8 +145,8 @@ async function deleteCondoRow() {
 
     // delete condo row
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    objCondos.deleteCondoTable(condoId, user, lastUpdate);
+    
+    objCondos.deleteCondoTable(condoId, user);
   }
 }
 */
@@ -326,7 +326,7 @@ async function updateCondoRow(condoId) {
   const condominiumId = Number(objUserPassword.condominiumId);
 
   const user = objUserPassword.email;
-  const lastUpdate = today.toISOString();
+  
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -359,12 +359,12 @@ async function updateCondoRow(condoId) {
     if (condoRowNumber !== -1) {
 
       // update the condos row
-      await objCondos.updateCondoTable(condoId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters);
+      await objCondos.updateCondoTable(condoId, user, name, street, address2, postalCode, city, squareMeters);
       await objCondos.loadCondoTable(condominiumId);
     } else {
 
       // Insert the condo row in condo table
-      await objCondos.insertCondoTable(condominiumId, user, lastUpdate, name, street, address2, postalCode, city, squareMeters);
+      await objCondos.insertCondoTable(condominiumId, user, name, street, address2, postalCode, city, squareMeters);
       await objCondos.loadCondoTable(condominiumId);
       condoId = objCondos.arrayCondo.at(-1).condoId;
       document.querySelector('.filterCondoId').value = condoId;
@@ -420,7 +420,7 @@ async function deleteCondoRow() {
 
     // delete a condo row
     const user = objUserPassword.email;
-    const lastUpdate = today.toISOString();
-    await objCondos.deleteCondoTable(condoId, user, lastUpdate);
+    
+    await objCondos.deleteCondoTable(condoId, user);
   }
 }
