@@ -1,8 +1,8 @@
 
-class Condominiums extends Condos {
+class Condominium extends Condos {
 
   // Condominiums informations
-  arrayCondominiums = Array;
+  arrayCondominium = Array;
 
   // Show all condominiums
   showSelectedCondominiums(className, condominiumId) {

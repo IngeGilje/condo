@@ -107,7 +107,7 @@ async function main() {
             const accountId = req.query.accountId;
             const user = req.query.user;
             const fixedCost = req.query.fixedCost;
-            
+
             const accountName = req.query.accountName;
 
             const SQLquery =
@@ -136,7 +136,7 @@ async function main() {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            
+
             const accountName = req.query.accountName;
             const fixedCost = req.query.fixedCost;
 
@@ -177,7 +177,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            
+
             const accountId = req.query.accountId;
 
             // Delete table
@@ -245,7 +245,7 @@ async function main() {
             const resident = req.query.resident;
             const userId = req.query.userId;
             const user = req.query.user;
-            
+
             const email = req.query.email;
             const condoId = req.query.condoId;
             const firstName = req.query.firstName;
@@ -288,7 +288,7 @@ async function main() {
             const condominiumId = req.query.condominiumId;
             const resident = req.query.resident;
             const user = req.query.user;
-            
+
             const email = req.query.email;
             const condoId = req.query.condoId;
             const firstName = req.query.firstName;
@@ -345,7 +345,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            
+
             const userId = req.query.userId;
 
             // Delete table
@@ -453,7 +453,7 @@ async function main() {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            
+
             const bankAccount = req.query.bankAccount;
             const name = req.query.name;
             const openingBalanceDate = req.query.openingBalanceDate;
@@ -505,7 +505,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            
+
             const bankAccountId = req.query.bankAccountId;
 
             // Delete table
@@ -568,7 +568,7 @@ async function main() {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            
+
             const name = req.query.name;
             const street = req.query.street;
             const address2 = req.query.address2;
@@ -619,7 +619,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            
+
             const name = req.query.name;
             const street = req.query.street;
             const address2 = req.query.address2;
@@ -687,7 +687,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            
+
             const condominiumId = req.query.condominiumId;
 
             // Delete table
@@ -806,7 +806,7 @@ async function main() {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            
+
             const accountId = req.query.accountId;
             const amount = req.query.amount;
             const year = req.query.year;
@@ -1011,9 +1011,9 @@ async function main() {
                 );
               `;
 
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /dues:", err.message);
@@ -1028,7 +1028,7 @@ async function main() {
 
             const dueId = req.query.dueId;
             const user = req.query.user;
-            
+
 
             // Delete table
             const SQLquery =
@@ -1189,7 +1189,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            
+
             const condoId = req.query.condoId;
             console.log('condoId: ', condoId);
 
@@ -1309,7 +1309,7 @@ async function main() {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            
+
             const userId = req.query.userId;
             const accountId = req.query.accountId;
             const bankAccount = req.query.bankAccount;
@@ -1346,7 +1346,7 @@ async function main() {
             console.log("Database error in /userbankaccounts:", err.message);
             res.status(500).json({ error: err.message });
           }
-          
+
           break;
         }
 
@@ -1544,7 +1544,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            
+
             const supplierId = req.query.supplierId.trim();
 
             // Delete table
@@ -1666,7 +1666,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            
+
             const condoId = req.query.condoId;
             const accountId = req.query.accountId;
             const income = req.query.income;
@@ -1710,7 +1710,7 @@ async function main() {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-            
+
             const condoId = req.query.condoId;
             const accountId = req.query.accountId;
             const income = req.query.income;
@@ -1765,7 +1765,7 @@ async function main() {
           try {
 
             const user = req.query.user;
-            
+
             const bankAccountTransactionId = req.query.bankAccountTransactionId;
 
             // Delete table

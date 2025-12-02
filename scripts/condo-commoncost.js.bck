@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUsers = new User('user');
-const objCondo = new Condo('condo');
+const objCondos = new Condo('condo');
 const objAccounts = new Account('account');
 const objDues = new Due('due');
 const objCondominiums = new Condominiums('condominiums');
@@ -16,8 +16,8 @@ testMode();
 //exitIfNoActivity();
 */
 
-objCommonCost.menu();
-objCommonCost.markSelectedMenu('Felleskostnader');
+//objCommonCost.menu();
+//objCommonCost.markSelectedMenu('Felleskostnader');
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -27,6 +27,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 } else {
 
   // Call main when script loads
+  /*
   main();
 
   // Main entry point
@@ -34,7 +35,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objCondo.loadCondoTable(objUserPassword.condominiumId);
+    await objCondos.loadCondoTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable();
      const fixedCost = 'A';
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
@@ -54,7 +55,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       accountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
     }
-    //const condoId = objCondo.arrayCondo.at(-1).condoId;
+    //const condoId = objCondos.arrayCondo.at(-1).condoId;
     const condoId = 999999999;
     const year = String(today.getFullYear());
     const fromDate = year + "0101";
@@ -64,6 +65,49 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     // Show all values for 
     showValues();
+
+    // Events
+    events();
+  }
+}
+*/
+
+  // Call main when script loads
+  main();
+
+  // Main entry point
+  async function main() {
+
+    const resident = 'Y';
+    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+    await objCondos.loadCondoTable(objUserPassword.condominiumId);
+    await objCondominiums.loadCondominiumsTable();
+    const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+
+    // Show header
+    showHeader();
+
+    // Show filter
+    showFilter();
+
+   // Show all dues for condo id and common cost account id
+    // Get account id for common cost
+    let accountId;
+    const condominiumId = Number(objUserPassword.condominiumId);
+    const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+    if (condominiumsRowNumber !== -1) {
+
+      accountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
+    }
+    const condoId = 999999999;
+    const year = String(today.getFullYear());
+    const fromDate = year + "0101";
+    const toDate = year + "1231";
+    await objDues.loadDuesTable(objUserPassword.condominiumId, accountId, condoId, fromDate, toDate);
+
+    // Show accounts
+    showResult();
 
     // Events
     events();
@@ -163,13 +207,13 @@ function events() {
           }
 
           // get condo name 
-          const objTemp = objCondo.arrayCondo.find(condo => condo.condoId === condoId);
+          const objTemp = objCondos.arrayCondo.find(condo => condo.condoId === condoId);
           condoName = objTemp.name;
 
           const year = Number(document.querySelector('.select-commoncost-year').value);
           const day = Number(document.querySelector('.select-commoncost-day').value);
           const amount = Number(formatAmountToOre(document.querySelector('.input-commoncost-amount').value));
-          
+
           const user = objUserPassword.email;
 
           // Insert new monthly amount for every month this year
@@ -215,7 +259,7 @@ function events() {
           const accountId = objAccounts.arrayAccounts[0].accountId;
           let amount = Number(formatAmountToOre(document.querySelector('.input-commoncost-amount').value));
           const user = objUserPassword.email;
-          
+
 
           for (month = 1; month < 13; month++) {
 
@@ -251,8 +295,8 @@ function events() {
 function showLeadingText() {
 
   // Show all condos
-  const condoId = objCondo.arrayCondo.at(-1).condoId;
-  objCondo.showSelectedCondos('commoncost-condoId', condoId);
+  const condoId = objCondos.arrayCondo.at(-1).condoId;
+  objCondos.showSelectedCondos('commoncost-condoId', condoId);
 
   // Show years
   const year = today.getFullYear();
@@ -458,11 +502,162 @@ function showLeadingTextFilter() {
 
   // Show all condos
   const accountId = (isClassDefined('select-commoncost-filterCondoId')) ? Number(document.querySelector('.select-commoncost-filterAccountId').value) : 0;
-  objCondo.showSelectedCondos('commoncost-filterCondoId', accountId, 'Alle');
+  objCondos.showSelectedCondos('commoncost-filterCondoId', accountId, 'Alle');
 
   // Show common cost year
   if (!isClassDefined('select-commoncost-filterYear')) {
     const year = today.getFullYear();
     objCommonCost.selectNumber('commoncost-filterYear', 2020, 2030, year, 'År');
   }
+}
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = startHTMLTable('width:750px;');
+
+  // Main header
+  html += showHTMLMainTableHeader('widht:250px;', 'Felleskostnader', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.header').innerHTML = html;
+}
+
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = startHTMLTable('width:750px;');
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:250px;", '', '', '');
+  html += showHTMLFilterHeader("width:250px;", '', 'Leilighet', 'År', '');
+
+  // Filter for search
+  html += "<tr>";
+
+  html += "<td></td>";
+
+  /*
+ // Show all selected users
+  html += objUsers.showSelectedUsersNew('filterUserId', 0, 'Alle', '');
+
+  // Show all selected accounts
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
+*/
+
+  //  Show all selected condos
+  html += objCondos.showSelectedCondosNew('filterCondoId', 0, 'Alle', '');
+
+  // Show year
+  const year = today.getFullYear();
+  html += objCommonCost.selectNumberNew('filterYear', '', 2020, 2030, year);
+
+  html += "</tr>";
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:750px;", '', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.filter').innerHTML = html;
+}
+
+// Show dues
+function showResult() {
+
+  // Start HTML table
+  html = startHTMLTable('width:750px;');
+
+  // Header
+  html += showHTMLMainTableHeader('widht:250px;', '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+
+  //let sumAmount = 0;
+  let rowNumber = 0;
+
+  objDues.arrayDues.forEach((due) => {
+
+    rowNumber++;
+
+    html += "<tr>";
+
+    // Show menu
+    html += objDues.menuNew(rowNumber);
+
+    // Delete
+    let className = `delete${due.dueId}`;
+    const selectedChoice = 'Nei';
+    html += objDues.showYesNo(className, selectedChoice);
+
+    // condo
+    const condoId = due.accountId;
+    className = `condoId${due.condoId}`;
+    html += objCondos.showSelectedCondosNew(className, '', condoId, '', 'Ingen er valgt');
+
+    // account
+    const accountId = due.accountId;
+    className = `accountId${due.dueId}`;
+    html += objAccounts.showSelectedAccountsNew(className, '', accountId, '', 'Ingen er valgt');
+
+    // amount
+    let amount = due.amount;
+    className = `amount${due.dueId}`;
+    amount = formatOreToKroner(due.amount);
+    html += objCommonCost.showInputHTMLNew(className, amount, 10)
+
+    // date
+    let date = due.date;
+    className = `date${due.dueId}`;
+    date = formatToNorDate(due.date);
+    html += objDues.showInputHTMLNew(className, date, 10);
+
+    // text
+    let text = due.text;
+    className = `text${due.text}`;
+    html += objDues.showInputHTMLNew(className, text, 45);
+
+    html += "</tr>";
+  });
+
+  // Make one last table row for insertion in table 
+
+  // Insert empty table row for insertion
+  rowNumber++;
+  html += insertEmptyTableRow(rowNumber);
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.result').innerHTML = html;
+}
+
+// Insert empty table row
+function insertEmptyTableRow(rowNumber) {
+
+  let html = "<tr>";
+
+  // Show menu
+  html += objDues.menuNew(rowNumber);
+
+  // delete
+  html += "<td class='center bold'>Ny felleskostnad</td>";
+
+  // condos
+  html += objCondos.showSelectedCondosNew("condo0", '', 0, '', 'Ingen er valgt');
+
+  // Date
+  html += objDues.showInputHTMLNew("date0", "", 10);
+
+  // accounts
+  html += objAccounts.showSelectedAccountsNew("account0", '', 0, '', 'Ingen er valgt');
+
+  // due amount
+  html += objDues.showInputHTMLNew('amount0', "", 10);
+
+  // text
+  html += objDues.showInputHTMLNew('text0', "", 10);
+
+  html += "</tr>";
+  return html;
 }

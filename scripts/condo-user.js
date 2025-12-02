@@ -640,7 +640,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', '', 'Bruker', '');
+  html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', '', 'Bruker', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -687,7 +687,7 @@ function showResult(userId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += showHTMLMainTableHeader('widht:250px;', '', '', '');
+    html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', '', '', '');
 
     // email,condoId
     html += "<tr>";
@@ -739,7 +739,7 @@ function showResult(userId) {
     html += objUsers.showInputHTMLNew('password', objUsers.arrayUsers[userRowNumber].password, 45);
 
     // securityLevel
-    html += objUsers.selectNumberNew('securityLevel', "width:100px;", 1, 9, objUsers.arrayUsers[userRowNumber].securityNumber);
+    html += objUsers.showSelectedNumbersNew('securityLevel', "width:100px;", 1, 9, objUsers.arrayUsers[userRowNumber].securityNumber);
 
     html += "</tr>";
 

@@ -4,7 +4,7 @@
 const today = new Date();
 const objUsers = new User('user');
 const objAccounts = new Account('account');
-const objCondominiums = new Condominiums('condominiums');
+const objCondominiums = new Condominium('condominium');
 const objBankAccounts = new BankAccount('bankaccount');
 
 testMode();
@@ -380,7 +380,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', '', 'Bankkonto sameie', '');
+  html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', '', 'Bankkonto sameie', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -420,7 +420,7 @@ function showResult(bankAccountId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += showHTMLMainTableHeader('widht:250px;', '', '', '');
+    html += objBankAccounts.showHTMLMainTableHeader('widht:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu

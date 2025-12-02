@@ -346,9 +346,9 @@ class Account extends Condos {
         >
           <select 
             class="${className} center"
-            style="${style}"
-          >
       `;
+      if (style !== '') html += `style="${style}"`;
+      html += `>`;
 
     // Check if accounts array is empty
     if (this.arrayAccounts.length > 0) {

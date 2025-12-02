@@ -158,7 +158,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', '', 'Leilighet', '');
+  html += objCondos.showHTMLMainTableHeaderNew('widht:250px;', '', 'Leilighet', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -206,7 +206,7 @@ function showResult(condoId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += showHTMLMainTableHeader('widht:250px;', '', '', '');
+    html += objCondos.showHTMLMainTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu

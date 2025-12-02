@@ -529,21 +529,6 @@ async function deleteUserBankAccount() {
 }
 */
 
-/*
-function showHeader() {
-
-  // Start table
-  let html = startHTMLTable();
-
-  // Main header
-  html += showHTMLMainTableHeader('', '', 'Bankkonto for bruker', '');
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -551,7 +536,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', 'Bankkonto for bruker', '', '');
+  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 'Bankkonto for bruker', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -691,7 +676,7 @@ function showResult() {
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += showHTMLMainTableHeader('widht:250px;','', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;','', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   //let sumAmount = 0;
   let rowNumber = 0;

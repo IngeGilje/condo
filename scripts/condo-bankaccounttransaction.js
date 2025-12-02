@@ -405,7 +405,7 @@ function showHeader() {
   let html = startHTMLTable();
 
   // Main header
-  html += showHTMLMainTableHeader('', '', '', '', 'Bankkontotransaksjoner', '', '', '', '',);
+  html += objBankAccountTransactions.showHTMLMainTableHeaderNew('widht:250px;', '', '', '', 'Bankkontotransaksjoner', '', '', '', '',);
 
   // The end of the table
   html += endHTMLTable();
@@ -425,7 +425,7 @@ function showResult() {
   let rowNumber = 0;
 
   // Header
-  html += showHTMLMainTableHeader('Meny', 'Slett', 'Leilighet', 'Konto', 'Dato', 'Inntekt', 'Utgift', 'Kilowattimer', 'tekst');
+  html += objBankAccountTransactions.showHTMLMainTableHeaderNew('widht:250px;', 'Slett', 'Leilighet', 'Konto', 'Dato', 'Inntekt', 'Utgift', 'Kilowattimer', 'tekst');
 
   objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 

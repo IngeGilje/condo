@@ -158,7 +158,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', '', 'Konto', '');
+  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', '', 'Konto', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -247,7 +247,7 @@ function showResult() {
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += showHTMLMainTableHeader('widht:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
+  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
 
   //let sumAmount = 0;
   let rowNumber = 0;

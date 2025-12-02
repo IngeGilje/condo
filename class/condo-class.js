@@ -63,11 +63,6 @@ class Condos {
       text: "Forfall"
     },
     {
-      applicationName: "condo-commoncost.html",
-      className: "Menu10",
-      text: "Felleskostnader"
-    },
-    {
       applicationName: "condo-budget.html",
       className: "Menu10",
       text: "Budsjett"
@@ -729,7 +724,7 @@ class Condos {
   }
 
   // Select numbers
-  selectNumberNew(className, style, fromNumber, toNumber, selectedNumber) {
+  showSelectedNumbersNew(className, style, fromNumber, toNumber, selectedNumber) {
 
     selectedNumber = Number(selectedNumber);
     let html =
@@ -1175,6 +1170,7 @@ class Condos {
     if (className.toLowerCase().includes("cancel")) imageName = "cancel.png";
     if (className.toLowerCase().includes("delete")) imageName = "cancel.png";
     if (className.toLowerCase().includes("supplier")) imageName = "supplier.png";
+    if (className.toLowerCase().includes("year")) imageName = "calendar.png";
     if (imageName === 'undefined') imageName = "error.png";
     return imageName;
   }

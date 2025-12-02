@@ -631,7 +631,7 @@ function showDues() {
   let rowNumber = 0;
 
   // Header
-  html += showHTMLMainTableHeader('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
+  html += objOverview.showHTMLMainTableHeaderNew('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -756,7 +756,7 @@ function showBankAccountTransactions() {
 
   // Header
   html += showHTMLFilterHeader('width:250px;', '', '', '', '', '');
-  html += showHTMLMainTableHeader('width:1100px;', '', 'Leilighet', 'Betalingsdato', 'Betaling', 'Tekst');
+  html += objOverview.showHTMLMainTableHeaderNew('width:1100px;', '', 'Leilighet', 'Betalingsdato', 'Betaling', 'Tekst');
 
   objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
 

@@ -5,6 +5,7 @@ const today = new Date();
 const objUsers = new User('user');
 const objCondos = new Condo('condo');
 const objAccounts = new Account('account');
+const objCondominiums = new Condominium('condominium');
 const objDues = new Due('due');
 
 testMode();
@@ -36,22 +37,26 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const resident = 'Y';
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
       await objCondos.loadCondoTable(condominiumId);
+      await objCondominiums.loadCondominiumsTable();
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-
-      const accountId = 999999999;
-      const condoId = 999999999;
-      const year = String(today.getFullYear());
-      const fromDate = year + "0101";
-      let toDate = getCurrentDate();
-      toDate = Number(convertDateToISOFormat(toDate));
-      await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
       // Show header
       showHeader();
 
       // Show filter
       showFilter();
+
+      const accountId = Number(document.querySelector('.filterAccountId').value);
+      const condoId = Number(document.querySelector('.filterCondoId').value);
+
+      let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = formatNorDateToNumber(fromDate);
+
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = formatNorDateToNumber(toDate);
+
+      await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
       // Show result
       showResult();
@@ -109,36 +114,9 @@ function events() {
       let dueId = 0;
       let prefix = "";
       if (className) {
-        prefix = prefixes.find(p => className.startsWith(p));
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
         dueId = Number(className.slice(prefix.length));
       }
-      /*
-      // get class
-      if (objDues.getClassByPrefix(event.target,'condo')) className = objDues.getClassByPrefix(event.target,'condo');
-      if (objDues.getClassByPrefix(event.target,'account')) className = objDues.getClassByPrefix(event.target,'account');
-      if (objDues.getClassByPrefix(event.target,'amount')) className = objDues.getClassByPrefix(event.target,'amount');
-      if (objDues.getClassByPrefix(event.target,'date')) className = objDues.getClassByPrefix(event.target,'date');
-      if (objDues.getClassByPrefix(event.target,'text')) className = objDues.getClassByPrefix(event.target,'text');
-
-      // get number after prefix (rownumber)
-      if (className.startsWith('condo')) dueId = Number(className.substring(5));
-      if (className.startsWith('account')) dueId = Number(className.substring(7));
-      if (className.startsWith('amount')) dueId = Number(className.substring(6));
-      if (className.startsWith('date')) dueId = Number(className.substring(4));
-      if (className.startsWith('text')) dueId = Number(className.substring(4));
-
-      if (objDues.getCondoClass(event.target)) className = objDues.getCondoClass(event.target);
-      if (objDues.getAccountClass(event.target)) className = objDues.getAccountClass(event.target);
-      if (objDues.getAmountClass(event.target)) className = objDues.getAmountClass(event.target);
-      if (objDues.getDateClass(event.target)) className = objDues.getDateClass(event.target);
-      if (objDues.getTextClass(event.target)) className = objDues.getTextClass(event.target);
-
-      if (objDues.getCondoClass(event.target)) dueId = Number(className.substring(7));
-      if (objDues.getAccountClass(event.target)) dueId = Number(className.substring(9));
-      if (objDues.getAmountClass(event.target)) dueId = className.substring(6);
-      if (objDues.getDateClass(event.target)) dueId = className.substring(4);
-      if (objDues.getTextClass(event.target)) dueId = className.substring(4);
-      */
 
       updateDuesSync();
 
@@ -267,6 +245,7 @@ function events() {
   });
 }
 
+/*
 // Check for valid values
 function validateValues(dueId) {
 
@@ -292,7 +271,9 @@ function validateValues(dueId) {
 
   return (validAccountId && validCondoId && validDate && validAmount && validText) ? true : false;
 }
+*/
 
+/*
 // Show values for due
 function showValues(dueId) {
 
@@ -328,6 +309,7 @@ function showValues(dueId) {
     }
   }
 }
+*/
 
 /*
 // Show header
@@ -415,8 +397,8 @@ function showResult() {
     html += objDues.showSelectedValuesNew(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
 
     // condos
-    className = `condo${due.dueId}`;
-    html += objCondos.showSelectedCondosNew(className, '', due.condoId, '', 'Ingen er valgt');
+    className = `condoId${due.dueId}`;
+    html += objCondos.showSelectedCondosNew(className, 'width:100px;', due.condoId, '', 'Ingen er valgt');
 
     // Date
     const date = formatToNorDate(due.date);
@@ -424,7 +406,7 @@ function showResult() {
     html += objDues.showInputHTMLNew(className, date, 10);
 
     // accounts
-    className = `account${due.dueId}`;
+    className = `accountId${due.dueId}`;
     html += objAccounts.showSelectedAccountsNew(className, '', due.accountId, '', 'Ingen er valgt');
 
     // due amount
@@ -435,12 +417,9 @@ function showResult() {
     // text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objDues.showInputHTMLNew(className, text, 10);
+    html += objDues.showInputHTMLNew(className, text, 45);
 
-    html +=
-      `
-        </tr>
-      `;
+    html += "</tr>";
 
     // accumulate
     sumAmount += Number(due.amount);
@@ -478,20 +457,22 @@ function insertEmptyTableRow(rowNumber) {
   // delete
   html += "<td class='center bold'>Nytt forfall</td>";
 
-  // condos
-  html += objCondos.showSelectedCondosNew("condo0", '', 0, '', 'Ingen er valgt');
+  // condoId
+  const condoId = Number(document.querySelector('.filterCondoId').value);
+  html += objCondos.showSelectedCondosNew("condoId0", 'width:100px;', condoId, '', '');
 
   // Date
   html += objDues.showInputHTMLNew("date0", "", 10);
 
-  // accounts
-  html += objAccounts.showSelectedAccountsNew("account0", '', 0, '', 'Ingen er valgt');
+  // accountId
+  const accountId = Number(document.querySelector('.filterAccountId').value);
+  html += objAccounts.showSelectedAccountsNew("accountId0", '', accountId, '', '');
 
   // due amount
   html += objDues.showInputHTMLNew('amount0', "", 10);
 
   // text
-  html += objDues.showInputHTMLNew('text0', "", 10);
+  html += objDues.showInputHTMLNew('text0', "", 45);
 
   html += "</tr>";
   return html;
@@ -584,30 +565,29 @@ async function updateDuesRow(dueId) {
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
 
-
   // Check dues columns
-  let className = `.condo${dueId}`;
-  let condoId = Number(document.querySelector(className).value);
+  let className = `.condoId${dueId}`;
+  const condoId = Number(document.querySelector(className).value);
+  const validCondoId = validateNumberNew(condoId, 1, 999999999);
 
-  className = `.account${dueId}`;
-  let accountId = Number(document.querySelector(className).value);
+  className = `.accountId${dueId}`;
+  const accountId = Number(document.querySelector(className).value);
+  const validAccountId = validateNumberNew(accountId, 1, 999999999);
 
   className = `.amount${dueId}`;
-  amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
+  const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
+  const validAmount = validateNumberNew(amount, -999999999, 999999999);
 
   className = `.date${dueId}`;
-  date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
+  const date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
+  const validDate = validateNumberNew(date, 20200101, 20991231);
 
   className = `.text${dueId}`;
-  let text = document.querySelector(className).value;
-  const validText = objDues.validateTextNew(text, 3, 255);
+  const text = document.querySelector(className).value;
+  const validText = objDues.validateTextNew(text, 3, 45);
 
   // Validate dues columns
-  if ((accountId => 1 && accountId <= 999999999)
-    && (condoId => 1 && condoId <= 999999999)
-    && (amount => 0 && amount <= 999999999)
-    && (date => 20000101 && date <= 20991231)
-    && validText) {
+  if (validAccountId && validCondoId && validAmount && validDate && validText) {
 
     // Check if the dues row exist
     duesRowNumber = objDues.arrayDues.findIndex(dues => dues.dueId === dueId);
@@ -622,9 +602,8 @@ async function updateDuesRow(dueId) {
       await objDues.insertDuesTable(condominiumId, user, condoId, accountId, amount, date, text);
     }
 
-    const condominiumId = Number(objUserPassword.condominiumId);
-    condoId = Number(document.querySelector('.filterCondoId').value);
-    accountId = Number(document.querySelector('.filterAccountId').value);
+    //condoId = Number(document.querySelector('.filterCondoId').value);
+    //accountId = Number(document.querySelector('.filterAccountId').value);
     let fromDate = document.querySelector('.filterFromDate').value;
     fromDate = Number(formatNorDateToNumber(fromDate));
     let toDate = document.querySelector('.filterToDate').value;
@@ -649,65 +628,57 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-/*
 // Show filter
 function showFilter() {
-
-  // Start table
-  html = startHTMLTable();
-
-  // Header filter for search
-  html += showHTMLFilterHeader('', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', '', '');
-
-  // Filter for search
-  html += showHTMLFilterSearch();
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
-
-// Show filter
-function showFilter(dueId) {
 
   // Start table
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
   html += showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
-  html += showHTMLFilterHeader('', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', '');
+  html += showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
 
   // Filter for search
   html += "<tr>";
 
-  html += "<td></td>";
+  html += "<td></td><td></td>";
 
   // Show all selected condos
-  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, 'Alle', '');
+  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, '', '');
 
-  // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
+  // Get condominiumId
+  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(objUserPassword.condominiumId));
+  if (condominiumsRowNumber !== -1) {
 
-  // show from date
-  const fromDate = '01.01.' + String(today.getFullYear());
-  html += objDues.showInputHTMLNew('filterFromDate', fromDate, 10);
+    const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
+    html += objAccounts.showSelectedAccountsNew('filterAccountId', '', commonCostAccountId, '', '');
 
-  // show to date
-  html += objDues.showInputHTMLNew('filterToDate', getCurrentDate(), 10);
+    // show from date
+    const fromDate = '01.01.' + String(today.getFullYear());
+    html += objDues.showInputHTMLNew('filterFromDate', fromDate, 10);
 
-  html += "</tr>";
+    // show to date
+    // Current date
+    let toDate = getCurrentDate();
 
-  // Header filter for search
-  html += showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+    // Next year
+    toDate = Number(convertDateToISOFormat(toDate)) + 10000;
+    toDate = formatToNorDate(toDate);
+    html += objDues.showInputHTMLNew('filterToDate', toDate, 10);
 
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.filter').innerHTML = html;
+    html += "</tr>";
 
-  // show icons
-  objDues.showIconNew('filterCondoId');
-  objDues.showIconNew('filterAccountId');
-  objDues.showIconNew('filterFromDate');
-  objDues.showIconNew('filterToDate');
+    // Header filter for search
+    html += showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+
+    // The end of the table
+    html += endHTMLTable();
+    document.querySelector('.filter').innerHTML = html;
+
+    // show icons
+    objDues.showIconNew('filterCondoId');
+    objDues.showIconNew('filterAccountId');
+    objDues.showIconNew('filterFromDate');
+    objDues.showIconNew('filterToDate');
+  }
 }

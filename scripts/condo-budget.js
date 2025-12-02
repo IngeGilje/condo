@@ -28,18 +28,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-    const condominiumId = objUserPassword.condominiumId;
-    const year = today.getFullYear();
-    const accountId = 999999999;
-    await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
+    // Show header
+    showHeader();
 
     // Show filter
     showFilter();
 
-    // Show header
-    showHeader();
+    const condominiumId = Number(objUserPassword.condominiumId);
+    const accountId = Number(document.querySelector('.filterAccountId').value);
+    const year = Number(document.querySelector('.filterYear').value);
+    await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
     // Show result of filter
     showResult();
@@ -145,7 +145,7 @@ function events() {
 async function deleteBudgetRow(budgetId, className) {
 
   const user = objUserPassword.email;
-  
+
 
   // Check if budget row exist
   budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
@@ -165,7 +165,7 @@ async function updateBudgetsRow(budgetId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
-  
+
 
   // Get budgets row values
 
@@ -205,6 +205,7 @@ async function updateBudgetsRow(budgetId) {
   }
 }
 
+/*
 // Filter for search
 function showHTMLFilterSearch() {
 
@@ -221,18 +222,19 @@ function showHTMLFilterSearch() {
 
   return html;
 }
+*/
 
 // Show budgets
 function showResult() {
 
   // Start HTML table
-  html = startHTMLTable();
+  html = startHTMLTable('width:750px;');
 
   let sumAmount = 0;
   let rowNumber = 0;
 
   // Header
-  html += showHTMLMainTableHeader('Meny', 'Slett', 'Konto', 'Budsjett');
+  html += objBudgets.showHTMLMainTableHeaderNew('', 'Slett', 'Konto', 'Budsjett')
 
   objBudgets.arrayBudgets.forEach((budget) => {
 
@@ -305,7 +307,7 @@ function showResult() {
 
   // The end of the table
   html += endHTMLTable();
-  document.querySelector('.table-result').innerHTML = html;
+  document.querySelector('.result').innerHTML = html;
 }
 
 // Insert empty table row
@@ -349,16 +351,17 @@ function calculateSum() {
 function showHeader() {
 
   // Start table
-  let html = startHTMLTable();
+  let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += showHTMLMainTableHeader('', '', 'Budsjett', '');
+  html += objBudgets.showHTMLMainTableHeaderNew('','', '', 'Budsjett', '');
 
   // The end of the table
   html += endHTMLTable();
-  document.querySelector('.table-header').innerHTML = html;
+  document.querySelector('.header').innerHTML = html;
 }
 
+/*
 // Show filter
 function showFilter() {
 
@@ -375,6 +378,7 @@ function showFilter() {
   html += endHTMLTable();
   document.querySelector('.table-filter').innerHTML = html;
 }
+*/
 
 // Show the rest of the menu
 function showRestMenu(rowNumber) {
@@ -419,4 +423,40 @@ function showTableSumRow(rowNumber, amount) {
     `;
 
   return html;
+}
+
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = startHTMLTable('width:750px;');
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:200px;", '', '', '', '');
+  html += showHTMLFilterHeader('', '', 'Konto', 'År', '');
+
+  // Filter for search
+  html += "<tr>";
+
+  html += "<td></td>";
+
+  // Selected accounts
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
+
+  // Selected years
+  const year = String(today.getFullYear());
+  html += objBudgets.showSelectedNumbersNew('filterYear', "width:100px;", 2020, 2030, year);
+
+  html += "</tr>";
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:750px;", '', '', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.filter').innerHTML = html;
+
+  // show icons
+  objBudgets.showIconNew('filterAccountId');
+  objBudgets.showIconNew('filterYear');
 }

@@ -79,14 +79,6 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Felleskostnad",
-      "url": "http://localhost/condo-commoncost.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
       "name": "Budsjett",
       "url": "http://localhost/condo-budget.html",
       "webRoot": "c:/websites/condo",

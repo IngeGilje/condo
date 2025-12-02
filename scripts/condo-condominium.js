@@ -5,7 +5,7 @@ const today = new Date();
 const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objBankAccounts = new BankAccount('bankaccount');
-const objCondominiums = new Condominiums('condominiums');
+const objCondominiums = new Condominium('condominium');
 
 testMode();
 
@@ -247,159 +247,6 @@ document.addEventListener('click', (event) => {
 });
 }
 */
-/*
-async function updateCondominium(condominiumId) {
-
-  // Get values
-  const user = objUserPassword.email;
-  
-  const name = document.querySelector('.input-condominiums-name').value;
-  const street = document.querySelector('.input-condominiums-street').value;
-  const address2 = document.querySelector('.input-condominiums-address2').value;
-  const postalCode = document.querySelector('.input-condominiums-postalCode').value;
-  const city = document.querySelector('.input-condominiums-city').value;
-  const phone = document.querySelector('.input-condominiums-phone').value;
-  const email = document.querySelector('.input-condominiums-email').value;
-  const incomeRemoteHeatingAccountId = Number(document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value);
-  const paymentRemoteHeatingAccountId = Number(document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value);
-  const commonCostAccountId = Number(document.querySelector('.select-condominiums-commoncostAccountId').value);
-  const organizationNumber = document.querySelector('.input-condominiums-organizationNumber').value;
-  const importFileName = document.querySelector('.input-condominiums-fileName').value;
-
-  // Check if condominium id exist
-  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-  if (condominiumsRowNumber !== -1) {
-
-    // update user
-    objCondominiums.updateCondominiumTable(user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
-  } else {
-
-    // Insert user row in users table
-    objCondominiums.insertCondominiumTable(user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
-  }
-
-  document.querySelector('.select-condominiums-condominiumId').disabled = false;
-  document.querySelector('.button-condominiums-delete').disabled = false;
-  document.querySelector('.button-condominiums-insert').disabled = false;
-}
-*/
-
-/*
-// Show leading text for condominium
-function showLeadingText(condominiumId) {
-
-  // Show all condominiums
-  objCondominiums.showSelectedCondominiums('condominiums-condominiumId', condominiumId);
-
-  // Show condominium name
-  objCondominiums.showInput('condominiums-name', '* Navn', 50, '');
-
-  // Show street name
-  objCondominiums.showInput('condominiums-street', '* Gateadresse', 50, '');
-
-  // Show address 2
-  objCondominiums.showInput('condominiums-address2', 'Adresse 2', 50, '');
-
-  // Postal code
-  objCondominiums.showInput('condominiums-postalCode', '* Postnummer', 4, '');
-
-  // City
-  objCondominiums.showInput('condominiums-city', '* Poststed', 50, '');
-
-  // phone
-  objCondominiums.showInput('condominiums-phone', 'Telefonnummer', 20, '');
-
-  // email
-  objCondominiums.showInput('condominiums-email', '* eMail', 50, '');
-
-  // show all account Ids for income remote heating
-  objAccounts.showSelectedAccounts('condominiums-incomeRemoteHeatingAccountId', 0, "", "Ingen");
-
-  // show all account Ids for payment remote heating
-  objAccounts.showSelectedAccounts('condominiums-paymentRemoteHeatingAccountId', 0, "", "Ingen");
-
-  // show all account Ids for common cost accounts
-  objAccounts.showSelectedAccounts('condominiums-commoncostAccountId', 0, "", "Ingen");
-
-  // organization Number
-  objCondominiums.showInput('condominiums-organizationNumber', '* Organisasjonsnummer', 9, '');
-
-  // import path
-  objCondominiums.showInput('condominiums-fileName', '* Navn på importfil', 50, '');
-
-  // show update button
-  if (Number(objUserPassword.securityLevel) >= 9) {
-
-    objCondominiums.showButton('condominiums-update', 'Oppdater');
-
-    // show new button
-    objCondominiums.showButton('condominiums-insert', 'Ny');
-
-    // show delete button
-    objCondominiums.showButton('condominiums-delete', 'Slett');
-
-    // cancel button
-    objCondominiums.showButton('condominiums-cancel', 'Avbryt');
-  }
-}
-*/
-
-/*
-// Show all values for condominium
-function showValues(condominiumId) {
-
-  // Check for valid condominium Id
-  if (condominiumId >= 0) {
-
-    // get object number for selected condominium id
-    const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (condominiumsRowNumber !== -1) {
-
-      // Condominium id
-      document.querySelector('.select-condominiums-condominiumId').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].condominiumId;
-
-      // Condominium name
-      document.querySelector('.input-condominiums-name').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].name;
-
-      // Show street
-      document.querySelector('.input-condominiums-street').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].street;
-
-      // Show address 2
-      document.querySelector('.input-condominiums-address2').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].address2;
-
-      // Show postal code
-      document.querySelector('.input-condominiums-postalCode').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].postalCode;
-
-      // Show city
-      document.querySelector('.input-condominiums-city').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].city;
-
-      // Show phone
-      document.querySelector('.input-condominiums-phone').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].phone;
-
-      // Show email
-      document.querySelector('.input-condominiums-email').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].email;
-
-      // account id for income remote heating
-      document.querySelector('.select-condominiums-incomeRemoteHeatingAccountId').value = (objCondominiums.arrayCondominiums[condominiumsRowNumber].incomeRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].incomeRemoteHeatingAccountId : 0;
-      document.querySelector('.label-condominiums-incomeRemoteHeatingAccountId').innerHTML = 'Inntekt fjernvarmekonto';
-
-      // account id for payment remote heating
-      document.querySelector('.select-condominiums-paymentRemoteHeatingAccountId').value = (objCondominiums.arrayCondominiums[condominiumsRowNumber].paymentRemoteHeatingAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].paymentRemoteHeatingAccountId : 0;
-      document.querySelector('.label-condominiums-paymentRemoteHeatingAccountId').innerHTML = 'Utgift fjernvarmekonto';
-
-      // account id for common cost
-      document.querySelector('.select-condominiums-commoncostAccountId').value = (objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId) ? objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId : 0;
-      document.querySelector('.label-condominiums-commoncostAccountId').innerHTML = 'Konto for felleskostnader';
-
-      // Show organization number
-      document.querySelector('.input-condominiums-organizationNumber').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].organizationNumber;
-
-      // Show file import path
-      document.querySelector('.input-condominiums-fileName').value = objCondominiums.arrayCondominiums[condominiumsRowNumber].importFileName;
-    }
-  }
-}
-*/
 
 // Reset all values for condominium
 function resetValues() {
@@ -506,7 +353,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', '', 'Sameie', '');
+  html += objCondominiums.showHTMLMainTableHeaderNew('widht:250px;', '', 'Sameie', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -554,7 +401,7 @@ function showResult(condominiumId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += showHTMLMainTableHeader('widht:250px;', '', '', '');
+    html += objCondominiums.showHTMLMainTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu

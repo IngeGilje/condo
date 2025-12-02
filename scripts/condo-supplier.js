@@ -542,7 +542,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', '', 'Mottaker', '');
+  html += objSuppliers.showHTMLMainTableHeader('widht:250px;', '', 'Mottaker', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -593,7 +593,7 @@ function showResult(supplierId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += showHTMLMainTableHeader('widht:250px;', '', '', '');
+    html += objSuppliers.showHTMLMainTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu
