@@ -248,7 +248,7 @@ class User extends Condos {
   }
 
   // Show all selected users
-  showSelectedUsersNew(className, style, userId, selectAll, selectNone) {
+  showSelectedUsersNew(className, style, userId, selectNone, selectAll) {
 
     let selectedValue = false;
 

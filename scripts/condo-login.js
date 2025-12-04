@@ -51,7 +51,7 @@ function events() {
           // web server
           case 1:
             (objLogIn.validateUser(email, password))
-              ? window.location.href = 'http://localhost/condo-bankaccounttransactions.html'
+              ? window.location.href = 'http://localhost/condo-bankaccounttransaction.html'
               : resetValues();
             break
           // Test web server/ local web server
@@ -61,7 +61,7 @@ function events() {
           case 3: {
 
             (objLogIn.validateUser(email, password))
-              ? window.location.href = 'condo-bankaccounttransactions.html'
+              ? window.location.href = 'condo-bankaccounttransaction.html'
               : resetValues();
             break
           }

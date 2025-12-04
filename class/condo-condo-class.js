@@ -438,18 +438,11 @@ class Condo extends Condos {
   }
 
   // Show all selected condos
-  showSelectedCondosNew(className, style, condoId, selectAll, selectNone) {
+  showSelectedCondosNew(className, style, condoId, selectNone, selectAll) {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="center one-line"
-        >
-          <select 
-            class="${className} center"
-      `;
+    let html = `<td class="center one-line"> <select class="${className} center"`;
     if (style) html += `style="${style}"`;
     html += `>`;
 
@@ -459,86 +452,38 @@ class Condo extends Condos {
       this.arrayCondo.forEach((condo) => {
         if (condo.condoId === condoId) {
 
-          html +=
-            `
-              <option 
-                value=${condo.condoId}
-                selected
-              >
-                ${condo.name}
-              </option>
-            `;
+          html += `<option value=${condo.condoId} selected>${condo.name}</option>`;
           selectedValue = true;
         } else {
 
-          html +=
-            `
-              <option 
-                value="${condo.condoId}">
-                ${condo.name}
-              </option>
-            `;
+          html += `<option value=${condo.condoId}>${condo.name}</option>`;
         }
       });
     } else {
 
-      html +=
-        `
-          <option value="0" 
-            selected
-          >
-            Ingen leilighet
-          </option>
-        `;
+      html += `<option value=0 selected>Ingen leilighet</option>`;
       selectedValue = true;
     }
 
     // Select all
     if (selectAll && (numberOfRows > 1)) {
 
-      html +=
-        `
-          <option 
-            value=999999999
-            selected
-          >
-            ${selectAll}
-          </option>
-        `;
+      html += `<option value=999999999 selected>${selectAll}</option>`;
       selectedValue = true;
     }
 
     // Select none
     if (selectNone && (numberOfRows > 1)) {
       if (selectedValue) {
-        html +=
-          `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
+        html += `<option value=0>${selectNone}</option>`;
       } else {
 
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
+        html += `<option value=0 selected>${selectNone}</option>`;
         selectedValue = true;
       }
     }
 
-    html +=
-      `
-          </select >
-        </td>
-      `;
+    html += `</select></td>`;
 
     return html;
   }

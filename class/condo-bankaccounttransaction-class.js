@@ -1,7 +1,7 @@
 class BankAccountTransaction extends Condos {
 
   // Bank account transactions information
-  arrayBankAccountTranactions;
+  arrayBankAccountTransactions;
 
   // Show all selected bank account transactions
   showSelectedAccountTransactionsounts(columnName, bankAccountTransactionId) {
@@ -27,9 +27,9 @@ class BankAccountTransaction extends Condos {
     let rowNumber = 0;
 
     // Check if Bank account transactions array is empty
-    const numberOfRows = this.arrayBankAccountTranactions.length;
+    const numberOfRows = this.arrayBankAccountTransactions.length;
     if (numberOfRows > 0) {
-      this.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
+      this.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
         rowNumber++;
         if (bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId) {
@@ -89,7 +89,7 @@ class BankAccountTransaction extends Condos {
     } else {
 
       // Get last id in last object in Bank account transactions array
-      bankAccountTransactionId = this.arrayBankAccountTranactions.at(-1).bankAccountTransactionId;
+      bankAccountTransactionId = this.arrayBankAccountTransactions.at(-1).bankAccountTransactionId;
     }
 
     return bankAccountTransactionId;
@@ -125,9 +125,9 @@ class BankAccountTransaction extends Condos {
     let selectedOption = false;
 
     // Check if Bank account transactions array is empty
-    const numberOfRows = this.arrayBankAccountTranactions.length;
+    const numberOfRows = this.arrayBankAccountTransactions.length;
     if (numberOfRows > 0) {
-      this.arrayBankAccountTranactions.forEach((bankaccounttransaction) => {
+      this.arrayBankAccountTransactions.forEach((bankaccounttransaction) => {
 
         rowNumber++;
         if (bankaccounttransaction.bankAccountTransactionId === bankAccountTransactionId) {
@@ -210,14 +210,14 @@ class BankAccountTransaction extends Condos {
     if (isClassDefined(className)) {
 
       bankAccountTransactionId = Number(document.querySelector(`.${className}`).value);
-      if (this.arrayBankAccountTranactions.length > 0) {
-        bankAccountTransactionId = (bankAccountTransactionId === 0) ? this.arrayBankAccountTranactions[0].bankAccountTransactionId : bankAccountTransactionId;
+      if (this.arrayBankAccountTransactions.length > 0) {
+        bankAccountTransactionId = (bankAccountTransactionId === 0) ? this.arrayBankAccountTransactions[0].bankAccountTransactionId : bankAccountTransactionId;
       }
     } else {
 
       // Get first id in bank Account Movement array
-      if (this.arrayBankAccountTranactions.length > 0) {
-        bankAccountTransactionId = this.arrayBankAccountTranactions[0].bankAccountTransactionId;
+      if (this.arrayBankAccountTransactions.length > 0) {
+        bankAccountTransactionId = this.arrayBankAccountTransactions[0].bankAccountTransactionId;
       }
     }
 
@@ -232,7 +232,7 @@ class BankAccountTransaction extends Condos {
       const response = await fetch(`http://localhost:3000/bankaccounttransactions?action=select&orderBy=${orderBy}&condominiumId=${condominiumId}&deleted=${deleted}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&fromDate=${fromDate}&toDate=${toDate}`);
 
       if (!response.ok) throw new Error("Network error (bankaccounttransactions)");
-      this.arrayBankAccountTranactions = await response.json();
+      this.arrayBankAccountTransactions = await response.json();
     } catch (error) {
       console.log("Error loading Bank account transactions:", error);
     }
@@ -244,7 +244,7 @@ class BankAccountTransaction extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/bankaccounttransactions?action=update&bankAccountTransactionId=${bankAccountTransactionId}&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&accountId=${accountId}&income=${income}&payment=${payment}&numberKWHour=${numberKWHour}&date=${date}&text=${text}`);
       if (!response.ok) throw new Error("Network error (Bank account transactions)");
-      this.arrayBankAccountTranactions = await response.json();
+      this.arrayBankAccountTransactions = await response.json();
     } catch (error) {
       console.log("Error updating Bank account transactions:", error);
     }
@@ -256,7 +256,7 @@ class BankAccountTransaction extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/bankaccounttransactions?action=insert&bankAccountTransactionId=${bankAccountTransactionId}&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&accountId=${accountId}&income=${income}&payment=${payment}&numberKWHour=${numberKWHour}&date=${date}&text=${text}`);
       if (!response.ok) throw new Error("Network error (bankaccounttransactions)");
-      this.arrayBankAccountTranactions = await response.json();
+      this.arrayBankAccountTransactions = await response.json();
     } catch (error) {
       console.log("Error inserting Bank account transactions:", error);
     }
@@ -268,7 +268,7 @@ class BankAccountTransaction extends Condos {
     try {
       const response = await fetch(`http://localhost:3000/bankaccounttransactions?action=delete&bankAccountTransactionId=${bankAccountTransactionId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (bankaccounttransactions)");
-      this.arrayBankAccountTranactions = await response.json();
+      this.arrayBankAccountTransactions = await response.json();
     } catch (error) {
       console.log("Error deleting Bank account transactions:", error);
     }

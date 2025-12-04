@@ -2,7 +2,7 @@
 class Condominium extends Condos {
 
   // Condominiums informations
-  arrayCondominium = Array;
+  arrayCondominiums = Array;
 
   // Show all condominiums
   showSelectedCondominiums(className, condominiumId) {
@@ -146,7 +146,7 @@ class Condominium extends Condos {
   }
 
   // Show all selected condominiums
-  showSelectedCondominiumsNew(className, style, condominiumId, selectAll, selectNone) {
+  showSelectedCondominiumsNew(className, style, condominiumId, selectNone, selectAll) {
 
     let selectedValue = false;
 

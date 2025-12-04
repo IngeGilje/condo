@@ -503,7 +503,7 @@ function showResult(condominiumId) {
     html += objCondominiums.menuNew(menuNumber);
 
     // commonCostAccountId
-    html += objAccounts.showSelectedAccountsNew('commonCostAccountId', 'width:170px;', objCondominiums.arrayCondominiums[condominiumRowNumber].commonCostAccountId, '', 'Ingen');
+    html += objAccounts.showSelectedAccountsNew('commonCostAccountId', 'width:170px;', objCondominiums.arrayCondominiums[condominiumRowNumber].commonCostAccountId, 'Ingen', '');
 
     // organizationNumber
     html += objCondominiums.showInputHTMLNew('organizationNumber', objCondominiums.arrayCondominiums[condominiumRowNumber].organizationNumber, 9);

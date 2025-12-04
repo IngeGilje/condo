@@ -24,7 +24,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   // Main entry point
   async function main() {
 
-
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
@@ -45,20 +44,40 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showResult();
 
     // Events
-    events();
+    //events();
   }
 }
 
 // Make budget events
 function events() {
 
+  // Filter
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('filterYear')
+      || event.target.classList.contains('filterAccountId')) {
+
+      filterSync();
+
+      async function filterSync() {
+
+        const year = Number(document.querySelector('.filterYear').value);
+        const accountId = Number(document.querySelector('.filterAccountId').value);
+        await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
+
+        showResult();
+      }
+    };
+  });
+
   // update a accounts row
   document.addEventListener('change', (event) => {
 
-    if ([...event.target.classList].some(cls => cls.startsWith('account'))
-      || [...event.target.classList].some(cls => cls.startsWith('amount'))) {
+    if ([...event.target.classList].some(cls => cls.startsWith('accountId'))
+      || [...event.target.classList].some(cls => cls.startsWith('amount'))
+      || [...event.target.classList].some(cls => cls.startsWith('text'))
+      || [...event.target.classList].some(cls => cls.startsWith('year'))) {
 
-      const arrayPrefixes = ['account', 'amount'];
+      const arrayPrefixes = ['accountId', 'amount', 'year', 'text'];
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -69,7 +88,7 @@ function events() {
       let budgetId = 0;
       let prefix = "";
       if (className) {
-        prefix = prefixes.find(p => className.startsWith(p));
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
         budgetId = Number(className.slice(prefix.length));
       }
 
@@ -82,24 +101,6 @@ function events() {
       }
     };
   });
-
-  /*
-  // Update amount
-  document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('amount'))) {
-
-      const className = objBudgets.getAmountClass(event.target);
-      const budgetId = className.substring(6);
-      updateAmountSync();
-
-      // Update amount
-      async function updateAmountSync() {
-
-        updateBudgetsRow('amount', className, budgetId);
-      }
-    };
-  });
-  */
 
   // Delete budgets row
   document.addEventListener('change', (event) => {
@@ -121,25 +122,7 @@ function events() {
       }
     };
   });
-
-  // Filter
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('filterYear')
-      || event.target.classList.contains('filterAccountId')) {
-
-      filterSync();
-
-      async function filterSync() {
-
-        const year = Number(document.querySelector('.filterYear').value);
-        const accountId = Number(document.querySelector('.filterAccountId').value);
-        await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
-
-        showResult();
-      }
-    };
-  });
-};
+}
 
 // Delete budgets row
 async function deleteBudgetRow(budgetId, className) {
@@ -155,6 +138,7 @@ async function deleteBudgetRow(budgetId, className) {
     objBudgets.deleteBudgetsTable(budgetId, user);
   }
 
+  const year = Number(document.querySelector('.filterYear').value);
   await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, 999999999);
 }
 
@@ -166,36 +150,44 @@ async function updateBudgetsRow(budgetId) {
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
 
-
   // Get budgets row values
 
   // accountId
-  className = `.account${budgetId}`;
+  className = `.accountId${budgetId}`;
   let accountId = Number(document.querySelector(className).value);
+  const validAccountId = validateNumberNew(accountId, 1, 999999999);
 
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
   amount = Number(formatKronerToOre(amount));
+  let validAmount = validateNumberNew(amount, -999999999, 999999999);
+  if (amount === 0) validAmount = false;
 
   // year
-  className = `.filterYear`;
+  className = `.year${budgetId}`;
   let year = Number(document.querySelector(`${className}`).value);
+  const validYear = objBudgets.validateIntervalNew(year, 2020, 2029);
+
+  // text
+  className = `.text${budgetId}`;
+  let text = document.querySelector(`${className}`).value;
+  let validText = objBudgets.validateTextNew(text, 0, 45);
 
   // Validate budgets columns
-  if (budgetId, accountId, amount, year) {
+  if (validAccountId && validAmount && validAmount && validYear && validText) {
 
     // Check if the budgets row exist
     budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budgets => budgets.budgetId === budgetId);
     if (budgetsRowNumber !== -1) {
 
       // update the budgets row
-      await objBudgets.updateBudgetsTable(budgetId, user, accountId, amount, year);
+      await objBudgets.updateBudgetsTable(budgetId, user, accountId, amount, year, text);
 
     } else {
 
       // Insert the budget row in budgets table
-      await objBudgets.insertBudgetsTable(condominiumId, user, accountId, amount, year);
+      await objBudgets.insertBudgetsTable(condominiumId, user, accountId, amount, year, text);
     }
 
     accountId = Number(document.querySelector('.filterAccountId').value);
@@ -206,29 +198,11 @@ async function updateBudgetsRow(budgetId) {
 }
 
 /*
-// Filter for search
-function showHTMLFilterSearch() {
-
-  let html = "<tr><td></td>";
-
-  // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
-
-  // Show budget year
-  const year = today.getFullYear();
-  html += objBudgets.selectNumberNew('filterYear', '', 2020, 2030, year);
-
-  html += "</tr>";
-
-  return html;
-}
-*/
-
 // Show budgets
 function showResult() {
 
   // Start HTML table
-  html = startHTMLTable('width:750px;');
+  html = startHTMLTable('width:1000px;');
 
   let sumAmount = 0;
   let rowNumber = 0;
@@ -309,6 +283,7 @@ function showResult() {
   html += endHTMLTable();
   document.querySelector('.result').innerHTML = html;
 }
+*/
 
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
@@ -322,7 +297,7 @@ function insertEmptyTableRow(rowNumber) {
 
   // accounts
   let className = `account${0}`;
-  html += objAccounts.showSelectedAccountsNew(className, '', 0, '', 'Ingen er valgt');
+  html += objAccounts.showSelectedAccountsNew(className, '', 0, 'Ingen er valgt', '');
 
   // budget amount
   const amount = "";
@@ -351,10 +326,10 @@ function calculateSum() {
 function showHeader() {
 
   // Start table
-  let html = startHTMLTable('width:750px;');
+  let html = startHTMLTable('width:1000px;');
 
   // Main header
-  html += objBudgets.showHTMLMainTableHeaderNew('','', '', 'Budsjett', '');
+  html += objBudgets.showHTMLMainTableHeaderNew('', '', '', 'Budsjett', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -429,11 +404,11 @@ function showTableSumRow(rowNumber, amount) {
 function showFilter() {
 
   // Start table
-  html = startHTMLTable('width:750px;');
+  html = startHTMLTable('width:1000px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:200px;", '', '', '', '');
-  html += showHTMLFilterHeader('', '', 'Konto', 'År', '');
+  html += showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
+  html += showHTMLFilterHeader('', '', 'Konto', 'År', '', '', '');
 
   // Filter for search
   html += "<tr>";
@@ -441,7 +416,7 @@ function showFilter() {
   html += "<td></td>";
 
   // Selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
 
   // Selected years
   const year = String(today.getFullYear());
@@ -450,7 +425,7 @@ function showFilter() {
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:750px;", '', '', '', '');
+  html += showHTMLFilterHeader("width:1000px;", '', '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -459,4 +434,104 @@ function showFilter() {
   // show icons
   objBudgets.showIconNew('filterAccountId');
   objBudgets.showIconNew('filterYear');
+}
+
+// Show bankaccounttransactions
+function showResult() {
+
+  // Start HTML table
+  let html = startHTMLTable('width:1000px;');
+
+  // Header
+  html += objBudgets.showHTMLMainTableHeaderNew("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+
+  let sumAmount = 0;
+  let rowNumber = 0;
+
+  objBudgets.arrayBudgets.forEach((budget) => {
+
+    rowNumber++;
+
+    html += '<tr class="menu">';
+
+    // Show menu
+    html += objBudgets.menuNew(rowNumber);
+
+    // Delete
+    let selectedChoice = "Ugyldig verdi";
+    if (budget.deleted === 'Y') selectedChoice = "Ja";
+    if (budget.deleted === 'N') selectedChoice = "Nei";
+
+    let className = `delete${budget.budgetId}`;
+    html += objBudgets.showSelectedValuesNew(className, 'width:75px;', selectedChoice, 'Nei', 'Ja');
+
+    // accountId
+    className = `accountId${budget.budgetId}`;
+    html += objAccounts.showSelectedAccountsNew(className, '', budget.accountId, '', '');
+
+    // due amount
+    const amount = formatOreToKroner(budget.amount);
+    className = `amount${budget.budgetId}`;
+    html += objBudgets.showInputHTMLNew(className, amount, 10);
+
+    // Year
+    const year = Number(budget.year);
+    className = `year${budget.budgetId}`;
+    html += objBudgets.showSelectedNumbersNew(className, 'width:100px;', 2020, 2030, year);
+
+    // text
+    const text = (budget.text === null) ? '' : budget.text;
+    className = `text${budget.budgetId}`;
+    html += objBudgets.showInputHTMLNew(className, text, 45);
+
+    html += "</tr>";
+
+    // accumulate
+    sumAmount += Number(budget.amount);
+  });
+
+  // Make one last table row for insertion in table 
+  html += "<tr>";
+
+  // Show menu
+  rowNumber++;
+  html += objBudgets.menuNew(rowNumber);
+
+  //html += "<td></td>";
+
+  html += "<td class='bold'>Nytt budsjett</td>";
+
+  // accounts
+  let className = `accountId0`;
+  html += objAccounts.showSelectedAccountsNew(className, '', 0, 'Ingen konto er valgt', '');
+
+  // budget amount
+  const amount = "";
+  html += objBudgets.showInputHTMLNew('amount0', amount, 10);
+
+  // Year
+  const year = Number(document.querySelector('.filterYear').value);
+  className = `year0`;
+  html += objBudgets.showSelectedNumbersNew(className, 'width:100px;', 2020, 2030, year);
+
+  // text
+  const text = "";
+  className = `text0`;
+  html += objBudgets.showInputHTMLNew(className, text, 45);
+
+  html += "</tr>";
+
+  // Show table sum row
+  rowNumber++;
+  sumAmount = formatOreToKroner(sumAmount);
+  html += showTableSumRow(rowNumber, sumAmount);
+
+  // Show the rest of the menu
+  rowNumber++;
+  html += showRestMenu(rowNumber);
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.result').innerHTML = html;
+
 }

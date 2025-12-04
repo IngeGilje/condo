@@ -13,7 +13,7 @@ const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransa
 const objAccounts = new Account('account');
 const objBankAccounts = new BankAccount('bankaccount');
 const objDues = new Due('due');
-const objSuppliers = new Suppliers('suppliers');
+const objSuppliers = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
 testMode();
@@ -726,7 +726,7 @@ function checkBankAccountTransaction(income, payment, date) {
 
   let bankAccountTransactionExist = false;
 
-  objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
+  objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
     if (bankAccountTransaction.income === income && bankAccountTransaction.payment === payment && bankAccountTransaction.date === date) {
 

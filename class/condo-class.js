@@ -78,7 +78,7 @@ class Condos {
       text: "Betalingsoversikt"
     },
     {
-      applicationName: "condo-bankaccounttransactions.html",
+      applicationName: "condo-bankaccounttransaction.html",
       className: "Menu13",
       text: "Banktransaksjoner"
     },
@@ -471,9 +471,11 @@ class Condos {
       if (isClassDefined(className)) {
 
         document.querySelector(`.${className}`).outerHTML =
-          `<div class="${className}-red">
+          `
+            <div class="${className}-red">
               * Ugyldig ${labelText}
-            </div>`;
+            </div>
+          `;
       }
       isValideMail = false;
     } else {
@@ -482,9 +484,10 @@ class Condos {
       if (isClassDefined(`${className}-red`)) {
 
         document.querySelector(`.${className}-red`).outerHTML =
-          `<div class="${className}">
+          ` <div class="${className}">
               * ${labelText}
-            </div>`;
+            </div>
+          `;
       }
       isValideMail = true;
     }
@@ -615,16 +618,11 @@ class Condos {
   }
 
   // Select number
-  selectNumberHTML(className, fromNumber, toNumber, selectedNumber, labelText) {
+  selectNumberHTMLNew(className, fromNumber, toNumber, selectedNumber) {
 
     let html =
       `
-        <div>
-          <label 
-            for="selectedNumber"
-          >
-            ${labelText}
-          </label>
+        <td>
           <select 
             class="${className}" 
             id="selectedNumber"
@@ -663,7 +661,7 @@ class Condos {
     html +=
       `
           </select >
-        </div>
+        </td>
       `;
     return html;
   }
@@ -688,8 +686,6 @@ class Condos {
           name="selectedNumber"
         >
     `;
-
-    let selectedOption = false;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {

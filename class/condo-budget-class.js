@@ -133,10 +133,10 @@ class Budget extends Condos {
   }
 
   // update budget row in budgets table
-  async updateBudgetsTable(budgetId, user, accountId, amount, year) {
+  async updateBudgetsTable(budgetId, user, accountId, amount, year, text) {
 
     try {
-      const response = await fetch(`http://localhost:3000/budgets?action=update&budgetId=${budgetId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}`);
+      const response = await fetch(`http://localhost:3000/budgets?action=update&budgetId=${budgetId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();
     } catch (error) {
@@ -145,10 +145,10 @@ class Budget extends Condos {
   }
 
   // insert budget row in budgets table
-  async insertBudgetsTable(condominiumId, user, accountId, amount, year) {
+  async insertBudgetsTable(condominiumId, user, accountId, amount, year,text) {
 
     try {
-      const response = await fetch(`http://localhost:3000/budgets?action=insert&condominiumId=${condominiumId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}`);
+      const response = await fetch(`http://localhost:3000/budgets?action=insert&condominiumId=${condominiumId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();
     } catch (error) {

@@ -7,7 +7,7 @@ const objCondominiums = new Condominium('condominium');
 const objBudget = new Budget('budget');
 const objAccounts = new Account('account');
 const objBankAccounts = new BankAccount('bankaccount');
-const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
+const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 const objCondo = new Condo('condo');
 const objAnnualAccount = new AnnualAccount('annualaccount');
 
@@ -223,7 +223,7 @@ function showLeadingTextFilter() {
 
   // Budget year
   let budgetYear = today.getFullYear();
-  html += objBudget.selectNumberHTML('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
+  html += objBudget.selectNumberHTMLNew('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
 
   // price per square meter
   html += objAnnualAccount.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
@@ -376,7 +376,7 @@ function getTotalMovementsBankAccount(accountId) {
   let toDate = document.querySelector('.input-filter-toDate').value;
   toDate = Number(convertDateToISOFormat(toDate));
 
-  objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
+  objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
     if (Number(bankAccountTransaction.date) >= fromDate
       && (Number(bankAccountTransaction.date) <= toDate
@@ -494,7 +494,7 @@ function getFixedCost(fromDate, toDate) {
 
   let fixedCost = 0;
 
-  objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankAccountTransaction) => {
+  objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
     if (Number(bankAccountTransaction.date) >= fromDate
       && (Number(bankAccountTransaction.date) <= toDate)) {
@@ -643,7 +643,7 @@ function showRemoteHeating() {
   const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
   if (condominiumRowNumber !== -1) {
 
-    objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankaccounttransaction) => {
+    objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankaccounttransaction) => {
       if (bankaccounttransaction.accountId === objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId) {
         if (Number(bankaccounttransaction.date) >= Number(fromDate) && Number(bankaccounttransaction.date) <= Number(toDate)) {
 

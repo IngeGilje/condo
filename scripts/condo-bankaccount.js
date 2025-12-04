@@ -277,37 +277,6 @@ function showValues(bankAccountId) {
 }
 */
 
-/*
-// Show filter
-function showFilter() {
-
-  // Start table
-  html = startHTMLTable('width:750px;');
-
-  // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', 'Sameie', 'Bankkonto sameie');
-
-  // Filter for search
-  html += "<tr><td></td>";
-
-  // Show all selected condominiums
-  // Get last id in last object in condominiums array
-  const condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
-  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'width:100px;', condominiumId, '', '');
-                                                      
-  // Show all bankaccounts
-  // Get last id in last object in bankaccounts array
-  const bankAccountId = objBankAccounts.arrayBankAccounts.at(-1).bankAccountId;
-  html += objBankAccounts.showSelectedBankAccountsNew('filterBankAccountId', 'width:100px;', bankAccountId, '', '');
-
-  html += "<td></td></tr>";
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
-
 // Check for valid values
 function validateValues() {
 
@@ -420,7 +389,7 @@ function showResult(bankAccountId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objBankAccounts.showHTMLMainTableHeader('widht:250px;', '', '', '');
+    html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu

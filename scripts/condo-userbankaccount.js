@@ -578,10 +578,10 @@ function showFilter(userAccountId) {
   html += "<td></td>";
 
  // Show all selected users
-  html += objUsers.showSelectedUsersNew('filterUserId', 0, 'Alle', '');
+  html += objUsers.showSelectedUsersNew('filterUserId', 0, '', 'Alle');
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
 
   html +=
     `
@@ -610,10 +610,10 @@ function showHTMLFilterSearch() {
 
 
   // Show all selected users
-  html += objUsers.showSelectedUsersNew('filterUserId', 0, 'Alle', '');
+  html += objUsers.showSelectedUsersNew('filterUserId', 0, '', 'Alle');
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
 
   html += "</tr>";
 
@@ -632,10 +632,10 @@ function insertEmptyTableRow(rowNumber) {
   html += "<td class='center'>Ny brukerkonto</td>";
 
   // user column
-  html += objUsers.showSelectedUsersNew('userId0', 0, '', 'Ingen er valgt');
+  html += objUsers.showSelectedUsersNew('userId0', 0, 'Ingen er valgt', '');
 
   // Account column
-  html += objAccounts.showSelectedAccountsNew('accountId0', '', 0, '', 'Ingen er valgt');
+  html += objAccounts.showSelectedAccountsNew('accountId0', '', 0, 'Ingen er valgt', '');
 
   // bank account number
   html += objUserBankAccounts.showInputHTMLNew('bankAccount0', '', 11);
@@ -698,7 +698,7 @@ function showResult() {
     // user
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUsers.showSelectedUsersNew(className, '', userId, '', 'Ingen er valgt');
+    html += objUsers.showSelectedUsersNew(className, '', 'Ingen er valgt', userId, '');
 
     // account
     const accountId = userBankAccount.accountId;

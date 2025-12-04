@@ -311,34 +311,16 @@ function showValues(dueId) {
 }
 */
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = startHTMLTable();
-
-  // Main header
-  html += showHTMLMainTableHeader('', '', '', 'Forfall', '', '', '');
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
-
-
 // Filter for search
 function showHTMLFilterSearch() {
 
   let html = "<tr><td></td>";
 
   // Show all selected condos
-  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, 'Alle', '');
+  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, '', 'Alle');
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, 'Alle', '');
+  html += objAccounts.('filterAccountId', '', 0, '', 'Alle');
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
@@ -375,30 +357,15 @@ function showResult() {
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
-    switch (due.deleted) {
-      case 'Y': {
-
-        selectedChoice = "Ja";
-        break;
-      }
-      case 'N': {
-
-        selectedChoice = "Nei";
-        break;
-      }
-      default: {
-
-        selectedChoice = "Ugyldig verdi";
-        break
-      }
-    }
+    if (due.deleted === 'Y') selectedChoice = "Ja";
+    if (due.deleted === 'N') selectedChoice = "Nei";
 
     let className = `delete${due.dueId}`;
     html += objDues.showSelectedValuesNew(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
 
     // condos
     className = `condoId${due.dueId}`;
-    html += objCondos.showSelectedCondosNew(className, 'width:100px;', due.condoId, '', 'Ingen er valgt');
+    html += objCondos.showSelectedCondosNew(className, 'width:100px;', due.condoId, 'ngen er valgt', '');
 
     // Date
     const date = formatToNorDate(due.date);
@@ -407,7 +374,7 @@ function showResult() {
 
     // accounts
     className = `accountId${due.dueId}`;
-    html += objAccounts.showSelectedAccountsNew(className, '', due.accountId, '', 'Ingen er valgt');
+    html += objAccounts.showSelectedAccountsNew(className, '', due.accountId, 'Ingen er valgt', '');
 
     // due amount
     const amount = formatOreToKroner(due.amount);

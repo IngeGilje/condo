@@ -775,6 +775,7 @@ async function main() {
             const accountId = req.query.accountId;
             const amount = req.query.amount;
             const year = req.query.year;
+            const text = req.query.text;
 
             // Update row
             const SQLquery =
@@ -785,13 +786,14 @@ async function main() {
                   lastUpdate = '${lastUpdate}',
                   accountId = ${accountId},
                   amount = ${amount},
-                  year = '${year}'
+                  year = '${year}',
+                  text = '${text}'
                 WHERE budgetId = ${budgetId};
               `;
 
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /budgets:", err.message);
@@ -810,6 +812,7 @@ async function main() {
             const accountId = req.query.accountId;
             const amount = req.query.amount;
             const year = req.query.year;
+            const text = req.query.text;
 
             // Insert new row
             const SQLquery =
@@ -821,7 +824,8 @@ async function main() {
                   lastUpdate,
                   accountId,
                   amount,
-                  year
+                  year,
+                  text
                   ) VALUES (
                   'N',
                   ${condominiumId},
@@ -829,13 +833,14 @@ async function main() {
                   '${lastUpdate}',
                   ${accountId},
                   ${amount},
-                  '${year}'
+                  '${year}',
+                  '${text}'
                 );
               `;
 
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /budgets:", err.message);

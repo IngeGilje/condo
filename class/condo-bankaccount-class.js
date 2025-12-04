@@ -96,7 +96,7 @@ class BankAccount extends Condos {
   }
 
   // Show all selected bankaccounts
-  showSelectedBankAccountsNew(className, style, bankAccountId, selectAll, selectNone) {
+  showSelectedBankAccountsNew(className, style, bankAccountId, selectNone, selectAll) {
 
     let selectedValue = false;
 

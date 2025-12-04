@@ -1,5 +1,5 @@
-// class for suppliers
-class Suppliers extends Condos {
+// class for supplier
+class Supplier extends Condos {
 
   // supplier information
   arraySuppliers;
@@ -155,7 +155,7 @@ class Suppliers extends Condos {
   }
 
   // Show all selected suppliers
-  showSelectedSuppliersNew(className, style, supplierId, selectAll, selectNone) {
+  showSelectedSuppliersNew(className, style, supplierId, selectNone, selectAll) {
 
     let selectedValue = false;
 

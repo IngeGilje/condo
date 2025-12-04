@@ -6,7 +6,7 @@ const objCondominiums = new Condominium('condominium');
 const objUsers = new User('user');
 const objCondo = new Condo('condo');
 const objAccounts = new Account('account');
-const objBankAccountTransactions = new BankAccountTransactions('bankaccounttransactions');
+const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 const objRemoteHeating = new Remoteheating('remoteheating');
 
 testMode();
@@ -15,8 +15,8 @@ testMode();
 //exitIfNoActivity();
 
 
-objRemoteHeating.menu();
-objRemoteHeating.markSelectedMenu('Fjernvarme');
+//objRemoteHeating.menu();
+//objRemoteHeating.markSelectedMenu('Fjernvarme');
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -37,38 +37,62 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-    amount = 0;
-    condominiumId = objUserPassword.condominiumId;
-    const deleted = 'N';
-    const condoId = 999999999;
+    // Show header
+    showHeader();
 
-    const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-    let accountId;
-    if (condominiumRowNumber !== -1) {
-      accountId = objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId;
-    }
-    let fromDate = "01.01." + String(today.getFullYear());
-    fromDate = Number(convertDateToISOFormat(fromDate));
-    let toDate = getCurrentDate();
-    toDate = Number(convertDateToISOFormat(toDate));
-    const orderBy = 'condoId ASC, date DESC, income ASC';
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+    // Show filter
+    showFilter();
 
-    // Show leding text filter
-    showLeadingTextFilter();
+    const accountId = Number(document.querySelector('.filterAccountId').value);
+    const condoId = Number(document.querySelector('.filterCondoId').value);
 
-    // Show values for Filter
-    showValuesFilter();
+    let fromDate = document.querySelector('.filterFromDate').value;
+    fromDate = formatNorDateToNumber(fromDate);
 
-    // Show Bank account transactions
-    showBankAccountTransactions();
+    let toDate = document.querySelector('.filterToDate').value;
+    toDate = formatNorDateToNumber(toDate);
+
+    await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+
+    // Show result
+    showResult();
 
     // Events
     events();
   }
 }
+/*
+amount = 0;
+condominiumId = objUserPassword.condominiumId;
+const deleted = 'N';
+const condoId = 999999999;
+
+const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+let accountId;
+if (condominiumRowNumber !== -1) {
+  accountId = objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId;
+}
+let fromDate = "01.01." + String(today.getFullYear());
+fromDate = Number(convertDateToISOFormat(fromDate));
+let toDate = getCurrentDate();
+toDate = Number(convertDateToISOFormat(toDate));
+const orderBy = 'condoId ASC, date DESC, income ASC';
+await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+
+// Show leding text filter
+showLeadingTextFilter();
+
+// Show values for Filter
+showValuesFilter();
+
+// Show Bank account transactions
+showBankAccountTransactions();
+
+// Events
+events();
+*/
 
 // Make remoteheating events
 function events() {
@@ -173,7 +197,7 @@ function showBankAccountTransactions() {
     // Make all columns
     let rowNumber = 0;
 
-    objBankAccountTransactions.arrayBankAccountTranactions.forEach((bankaccounttransaction) => {
+    objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankaccounttransaction) => {
 
       rowNumber++;
 
@@ -304,4 +328,87 @@ function showValuesFilter() {
     document.querySelector('.input-filter-toDate').value = getCurrentDate();
   }
   objRemoteHeating.showIcon('input-filter-toDate');
+}
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = startHTMLTable('width:1100px;');
+
+  // Main header
+  html += showHTMLMainTableHeader('widht:250px;', '', '', '', 'Forfall', '', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.header').innerHTML = html;
+}
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = startHTMLTable('width:1100px;');
+
+  // Main header
+  html += showHTMLMainTableHeader('widht:250px;', '', '', '', 'Fjernvarme', '', '', '');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.header').innerHTML = html;
+}
+
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = startHTMLTable('width:1100px;');
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
+  html += showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+
+  // Filter for search
+  html += "<tr>";
+
+  html += "<td></td><td></td>";
+
+  // Show all selected condos
+  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, '', '');
+
+  // Get condominiumId
+  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(objUserPassword.condominiumId));
+  if (condominiumsRowNumber !== -1) {
+
+    const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
+    html += objAccounts.showSelectedAccountsNew('filterAccountId', '', commonCostAccountId, '', '');
+
+    // show from date
+    const fromDate = '01.01.' + String(today.getFullYear());
+    html += objDues.showInputHTMLNew('filterFromDate', fromDate, 10);
+
+    // show to date
+    // Current date
+    let toDate = getCurrentDate();
+
+    // Next year
+    toDate = Number(convertDateToISOFormat(toDate)) + 10000;
+    toDate = formatToNorDate(toDate);
+    html += objDues.showInputHTMLNew('filterToDate', toDate, 10);
+
+    html += "</tr>";
+
+    // Header filter for search
+    html += showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+
+    // The end of the table
+    html += endHTMLTable();
+    document.querySelector('.filter').innerHTML = html;
+
+    // show icons
+    objDues.showIconNew('filterCondoId');
+    objDues.showIconNew('filterAccountId');
+    objDues.showIconNew('filterFromDate');
+    objDues.showIconNew('filterToDate');
+  }
 }
