@@ -330,6 +330,7 @@ function showValuesFilter() {
   objRemoteHeating.showIcon('input-filter-toDate');
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -337,12 +338,13 @@ function showHeader() {
   let html = startHTMLTable('width:1100px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', '', '', '', 'Forfall', '', '', '');
+  html += showHTMLMainTableHeader('widht:250px;','Forfall');
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.header').innerHTML = html;
 }
+*/
 
 // Show header
 function showHeader() {
@@ -351,7 +353,7 @@ function showHeader() {
   let html = startHTMLTable('width:1100px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', '', '', '', 'Fjernvarme', '', '', '');
+  html += showHTMLMainTableHeader('widht:250px;', 'Fjernvarme');
 
   // The end of the table
   html += endHTMLTable();

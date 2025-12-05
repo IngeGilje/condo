@@ -640,7 +640,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', '', 'Bruker', '');
+  html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', 'Bruker');
 
   // The end of the table
   html += endHTMLTable();

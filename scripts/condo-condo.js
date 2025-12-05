@@ -158,7 +158,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objCondos.showHTMLMainTableHeaderNew('widht:250px;', '', 'Leilighet', '');
+  html += objCondos.showHTMLMainTableHeaderNew('widht:250px;', 'Leilighet');
 
   // The end of the table
   html += endHTMLTable();

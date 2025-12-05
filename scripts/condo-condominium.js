@@ -293,43 +293,6 @@ function resetValues() {
   document.querySelector('.insert').disabled = true;
 }
 
-/*
-// Check for valid condominium number
-function validateValues() {
-
-  // Check condominium name
-  const condominiumName = document.querySelector('.input-condominiums-name').value;
-  const validCondominiumName = objCondominiums.validateText(condominiumName, "label-condominiums-name", "Navn");
-
-  // Check street name
-  const street = document.querySelector('.input-condominiums-street').value;
-  const validStreet = objCondominiums.validateText(street, "label-condominiums-street", "Gateadresse");
-
-  // Check postal code
-  const postalCode = document.querySelector('.input-condominiums-postalCode').value;
-  const validPostalCode = objCondominiums.validatePostalCode(postalCode, "label-condominiums-postalCode", "Postnummer");
-
-  // Validate city
-  const city = document.querySelector('.input-condominiums-city').value;
-  const validCity = objCondominiums.validateText(city, "label-condominiums-city", "Poststed");
-
-  // Check email
-  const eMail = document.querySelector('.input-condominiums-email').value;
-  const validEmail = objCondominiums.validateEmail(eMail, "label-condominiums-email", "E-mail");
-
-  // Check organization number
-  const organizationNumber = document.querySelector('.input-condominiums-organizationNumber').value;
-  const validOrganizationNumber = validateOrganizationNumber(organizationNumber, "condominiums-organizationNumber", "Organisasjonsnummer");
-
-  // Check import path
-  const importFileName = document.querySelector('.input-condominiums-fileName').value;
-  const validimportFileName = objCondominiums.validateText(importFileName, "condominiums-fileName", "Navn på importfil");
-
-  return (validCondominiumName && validStreet && validPostalCode && validCity
-    && validEmail && validOrganizationNumber && importFileName);
-}
-*/
-
 // Delete condominium row
 async function deleteCondominiumRow() {
 
@@ -353,7 +316,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objCondominiums.showHTMLMainTableHeaderNew('widht:250px;', '', 'Sameie', '');
+  html += objCondominiums.showHTMLMainTableHeaderNew('widht:250px;', 'Sameie');
 
   // The end of the table
   html += endHTMLTable();
@@ -520,7 +483,7 @@ function showResult(condominiumId) {
     html += objCondominiums.menuNew(menuNumber);
 
     // importFileName
-    html += objCondominiums.showInputHTMLNew('importFileName', objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName, 45);
+    html += objCondominiums.showInputHTMLNew('importFileName', objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName, 100);
 
     html += "</tr>";
 

@@ -1799,13 +1799,15 @@ async function main() {
 
     app.get("/import-csvFile", async (req, res) => {
 
-      console.log("Received request for csvFile", req.query);
       try {
 
         const csvFileName = req.query.csvFileName;
+        console.log('csvFileName: ', csvFileName);
 
         //const data = await fs.readFile("C:/Websites/condo/data/transaksjonsliste.csv", "utf8");
         const data = await fs.readFile(csvFileName, "utf8");
+        console.log('data: ', data);
+
         res.json({ content: data });
         console.log('data :', data);
 

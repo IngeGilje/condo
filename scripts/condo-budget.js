@@ -197,94 +197,6 @@ async function updateBudgetsRow(budgetId) {
   }
 }
 
-/*
-// Show budgets
-function showResult() {
-
-  // Start HTML table
-  html = startHTMLTable('width:1000px;');
-
-  let sumAmount = 0;
-  let rowNumber = 0;
-
-  // Header
-  html += objBudgets.showHTMLMainTableHeaderNew('', 'Slett', 'Konto', 'Budsjett')
-
-  objBudgets.arrayBudgets.forEach((budget) => {
-
-    rowNumber++;
-
-    html += "<tr>";
-
-    // Show menu
-    html += objBudgets.menuNew(rowNumber);
-
-    let selectedChoice = "Ugyldig verdi";
-    switch (budget.deleted) {
-      case 'Y': {
-
-        selectedChoice = "Ja";
-        break;
-      }
-      case 'N': {
-
-        selectedChoice = "Nei";
-        break;
-      }
-      default: {
-
-        selectedChoice = "Ugyldig verdi";
-        break
-      }
-    }
-
-    let className = `deleted${budget.budgetId}`;
-    html += objBudgets.showSelectedValuesNew(className, '', selectedChoice, '', 'Nei', 'Ja')
-
-    // accounts
-    className = `account${budget.budgetId}`;
-    html += objAccounts.showSelectedAccountsNew(className, '', budget.accountId, '', 'Ingen er valgt');
-
-    // budget amount
-    const amount = formatOreToKroner(budget.amount);
-    className = `amount${budget.budgetId}`;
-    html += objBudgets.showInputHTMLNew(className, amount, 10);
-
-    html +=
-      `
-        </tr>
-      `;
-
-    // accumulate
-    sumAmount += Number(budget.amount);
-  });
-
-  // Make one last table row for insertion in table 
-  rowNumber++;
-
-  // Insert empty table row for insertion
-  html += insertEmptyTableRow(rowNumber);
-
-  // Sum row
-  rowNumber++;
-
-  // budget
-  sumAmount = formatOreToKroner(sumAmount);
-
-  // Show table sum row
-  rowNumber++;
-  html += showTableSumRow(rowNumber, sumAmount);
-
-  // Show the rest of the menu
-  rowNumber++;
-  html += showRestMenu(rowNumber);
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.result').innerHTML = html;
-}
-*/
-
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
 
@@ -329,7 +241,7 @@ function showHeader() {
   let html = startHTMLTable('width:1000px;');
 
   // Main header
-  html += objBudgets.showHTMLMainTableHeaderNew('', '', '', 'Budsjett', '');
+  html += objBudgets.showHTMLMainTableHeaderNew('Budsjett');
 
   // The end of the table
   html += endHTMLTable();

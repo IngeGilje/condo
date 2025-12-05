@@ -158,7 +158,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', '', 'Konto', '');
+  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', 'Konto');
 
   // The end of the table
   html += endHTMLTable();
@@ -305,16 +305,9 @@ function showResult() {
   rowNumber++;
   html += insertEmptyTableRow(rowNumber);
 
-  /*
-  // Show table sum row
-  rowNumber++;
-  sumAmount = formatOreToKroner(sumAmount);
-  html += showTableSumRow(rowNumber, sumAmount);
-  */
-
   // Show the rest of the menu
   rowNumber++;
-  html += showRestMenu(rowNumber);
+  html += showRestMenuNew(rowNumber);
 
   // The end of the table
   html += endHTMLTable();

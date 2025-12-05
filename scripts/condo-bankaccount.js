@@ -349,7 +349,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', '', 'Bankkonto sameie', '');
+  html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 'Bankkonto sameie');
 
   // The end of the table
   html += endHTMLTable();

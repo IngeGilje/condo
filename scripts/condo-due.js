@@ -588,7 +588,7 @@ function showHeader() {
   let html = startHTMLTable('width:1100px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', '', '', '', 'Forfall', '', '', '');
+  html += showHTMLMainTableHeader('widht:250px;','Forfall');
 
   // The end of the table
   html += endHTMLTable();

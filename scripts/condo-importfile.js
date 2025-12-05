@@ -22,8 +22,8 @@ testMode();
 //exitIfNoActivity()
 
 // Mark selected menu
-objImportFile.menu();
-objImportFile.markSelectedMenu('Importer banktransaksjoner');
+//objImportFile.menu();
+//objImportFile.markSelectedMenu('Importer banktransaksjoner');
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -41,7 +41,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const resident = 'A';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
@@ -53,16 +53,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const deleted = 'A';
     const accountId = 999999999;
     const condoId = 999999999;
-    let fromDate = 0;
-    let toDate = 999999999;
+    let fromDate = 20200101;
+    let toDate = 20291231;
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
     amount = 0;
-    //fromDate = "01.01." + String(today.getFullYear());
-    //fromDate = Number(convertDateToISOFormat(fromDate));
-    fromDate = 0;
-    toDate = getCurrentDate();
-    toDate = Number(convertDateToISOFormat(toDate));
+    //fromDate = 0;
+    //toDate = getCurrentDate();
+    //toDate = Number(convertDateToISOFormat(toDate));
     const orderBy = 'condoId ASC, date DESC, income ASC';
     await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
@@ -75,6 +73,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const csvFileName = objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName;
       await objImportFile.loadCsvFile(csvFileName);
 
+      /*
       // create array from imported csv-file (data string)
       createtransactionsArray(objImportFile.strCSVTransaction);
 
@@ -86,6 +85,22 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Events
       events();
+      */
+
+      // Show header
+      showHeader();
+
+      // Show filter
+      showFilter();
+
+      // create array from imported csv-file (data string)
+      createtransactionsArray(objImportFile.strCSVTransaction);
+
+      // Show result of filter
+      showResult();
+
+      // Events
+      events();
     }
   }
 }
@@ -93,41 +108,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 // Make transactions events
 function events() {
 
-  /*
-  // Start import of text file
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-importfile-startImport')) {
-
-      // start import of bank account transactions
-      startImportSync();
-
-      // start import of bank account transactions
-      async function startImportSync() {
-
-        // Sends a request to the server to get bank csv transaction file
-        const csvFileName = document.querySelector('.input-importfile-csvFileName').value;
-        await objImportFile.loadCsvFile(csvFileName);
-
-        // Show button for update of Bank account transactions
-        objImportFile.showButton('importfile-saveBankAccountTransaction', 'Oppdater banktransaksjoner');
-
-        // create array from imported csv-file (data string)
-        createtransactionsArray(objImportFile.strCSVTransaction);
-
-        // Show csv file for bank account
-        showBankAccountTransactions();
-
-        // Remove button for import of csv file
-        document.querySelector(".div-importfile-startImport").remove();
-        document.querySelector(".div-importfile-csvFileName").remove();
-      }
-    };
-  });
-  */
-
   // Update bank account transactions
   document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-importfile-saveBankAccountTransaction')) {
+    if (event.target.classList.contains('update')) {
 
       // start import of bank account transactions
       updateImportSync();
@@ -135,24 +118,8 @@ function events() {
       // Update bank account transactions
       async function updateImportSync() {
 
-        // Update bank account transactions table
-        arrayTransactions.forEach(async (transactions) => {
-
-          const bankAccountTransactionId = 0;  // not in use
-          const condominiumId = Number(objUserPassword.condominiumId);
-          const user = objUserPassword.email;
-          
-          const condoId = Number(transactions.condoId);
-          const accountId = Number(transactions.accountId);
-          const income = Number(transactions.income);
-          const payment = Number(transactions.payment);
-          const numberKWHour = 0;
-          const date = convertDateToISOFormat(transactions.accountingDate);
-          const text = transactions.text;
-
-          // insert bank account transactions row
-          await objBankAccountTransactions.insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, numberKWHour, date, text)
-        });
+        // update Bank Account Transactions based on csv file
+        await updateBankAccountTransactions();
 
         // Update opening balance and closing balance
         await updateOpeningClosingBalance();
@@ -173,6 +140,7 @@ function showImportedTextFile() {
 }
 */
 
+/*
 // Show csv file for bank account
 function showBankAccountTransactions() {
 
@@ -205,7 +173,6 @@ function showBankAccountTransactions() {
           ${rowNumber}
         </div>
       `;
-    */
 
     htmlColumnAccountingDate +=
       `
@@ -311,7 +278,6 @@ function showBankAccountTransactions() {
   });
 
   //Show sum row
-  /*
   htmlColumnLineNumber +=
     `
       <div 
@@ -320,7 +286,6 @@ function showBankAccountTransactions() {
        -
       </div>
     `;
-  */
 
   htmlColumnAccountingDate +=
     `
@@ -400,6 +365,7 @@ function showBankAccountTransactions() {
   document.querySelector(".div-importfile-columnPayment").innerHTML = htmlColumnPayment;
   document.querySelector(".div-importfile-columnText").innerHTML = htmlColumnText;
 }
+*/
 
 // Create array for Bank account transactions from imported csv file
 function createtransactionsArray() {
@@ -601,7 +567,7 @@ async function updateOpeningClosingBalance() {
       // Calculate opening balance
       const openingBalance = Number(closingBalance) - (totalIncome + totalPayment);
       */
-      
+
 
       // Updating openening balance
       // Check for openening balance date
@@ -736,31 +702,390 @@ function checkBankAccountTransaction(income, payment, date) {
   return bankAccountTransactionExist;
 }
 
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = startHTMLTable('width:1450px;');
+
+  // Main header
+  html += objImportFile.showHTMLMainTableHeaderNew('widht:250px;', 'Import av bankkontotransaksjoner');
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.header').innerHTML = html;
+}
+
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = startHTMLTable('width:1450px;');
+
+  // Header filter for search
+  html += showHTMLFilterHeader("width:200px;", '');
+
+  // Filter for search
+  html += "<tr>";
+
+  // Header filter
+  html += showHTMLFilterHeader("width:750px;", '');
+
+  html += "</tr>";
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.filter').innerHTML = html;
+}
+
 /*
-// Show leading text for import text file name
-function showLeadingText() {
+// Show csv file for bank account
+function showBankAccountTransactions() {
 
-  // name of import text file
-  objImportFile.showInput('importfile-csvFileName', '* Navn på transaksjonsfil', 50, 'eks.: c://users//user//data//transaksjonsfile.csv');
+  let sumColumnIncome = 0;
+  let sumColumnPayment = 0;
+  let rowNumber = 0;
 
-  // import button
-  if (Number(objUserPassword.securityLevel) >= 9) {
+  //let htmlColumnLineNumber = '<div class = "columnHeaderCenter">Linje</div><br>';
+  let htmlColumnAccountingDate = '<div class = "columnHeaderRight">Dato</div><br>';
+  let htmlColumnCondoName = '<div class = "columnHeaderRight">Leilighet</div><br>';
+  let htmlColumnAccountName = '<div class = "columnHeaderRight">Konto</div><br>';
+  let htmlColumnFromBankAccount = '<div class = "columnHeaderRight">Fra b.konto</div><br>';
+  let htmlColumnToBankAccount = '<div class = "columnHeaderRight">Til b.konto</div><br>';
+  let htmlColumnIncome = '<div class = "columnHeaderRight">Inntekt</div><br>';
+  let htmlColumnPayment = '<div class = "columnHeaderRight">Utgift</div><br>';
+  let htmlColumnText = '<div class = "columnHeaderLeft">Tekst</div><br>';
 
-    objImportFile.showButton('importfile-startImport', 'Importer transaksjonsfil');
-  }
+  arrayTransactions.forEach((transactions) => {
+
+    rowNumber++;
+
+    // check if the number is odd
+    const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
+
+    htmlColumnAccountingDate +=
+      `
+        <div 
+          class = "rightCell ${colorClass}"
+        >
+          ${transactions.accountingDate}
+        </div>
+      `;
+
+    // Condo name
+    htmlColumnCondoName +=
+      `
+        <div
+          class = "rightCell ${colorClass} "
+        >
+          ${transactions.condoName}
+        </div>
+      `;
+
+    if (transactions.accountId) {
+
+      htmlColumnAccountName +=
+        `
+          <div
+            class = "rightCell ${colorClass} one-line"
+          >
+            ${transactions.accountName}
+          </div>
+        `;
+    } else {
+
+      htmlColumnAccountName +=
+        `
+        <div
+          class = "rightCell red one-line"
+        >
+          ${transactions.accountName}
+        </div>
+      `;
+    }
+
+    htmlColumnFromBankAccount +=
+      `
+        <div 
+          class = "rightCell ${colorClass} one-line"
+        />
+          ${transactions.fromBankAccountName}
+        </div>
+      `;
+
+    htmlColumnToBankAccount +=
+      `
+        <div 
+          class = "rightCell ${colorClass} one-line"
+        />
+          ${transactions.toBankAccountName}
+        </div>
+      `;
+
+    // Income
+    const income =
+      formatOreToKroner(transactions.income);
+
+    htmlColumnIncome +=
+      `
+        <div 
+          class = "rightCell ${colorClass}"
+        >
+          ${income}
+        </div>
+      `;
+
+    // Payment
+    const payment = formatOreToKroner(transactions.payment);
+
+    htmlColumnPayment +=
+      `
+        <div 
+          class = "rightCell ${colorClass}"
+        />
+          ${payment}
+        </div>
+      `;
+
+    // Text has to fit into the column
+    htmlColumnText +=
+      `
+        <div
+          class = "leftCell ${colorClass} one-line"
+        />
+          ${transactions.text}
+        </div>
+      `;
+
+    // Accomulate
+
+    // income
+    sumColumnIncome += Number(transactions.income);
+
+    // payment
+    sumColumnPayment += Number(transactions.payment);
+  });
+
+  htmlColumnAccountingDate +=
+    `
+      <div 
+        class = "sumCellRight"
+      >
+        -
+      </div>
+    `;
+
+  htmlColumnCondoName +=
+    `
+      <div 
+        class = "sumCellRight"
+      >
+        -
+      </div>
+    `;
+
+  htmlColumnAccountName +=
+    `
+      <div 
+        class = "sumCellRight"
+      >
+        -
+      </div>
+    `;
+
+  // opening balance date
+  htmlColumnFromBankAccount +=
+    `
+      <div
+        class = "sumCellRight"
+      >
+        -
+      </div>
+    `;
+
+  // opening balance
+  htmlColumnToBankAccount +=
+    `
+      <div
+        class = "sumCellRight"
+      >
+        -
+      </div>
+    `;
+
+  const income = formatOreToKroner(sumColumnIncome);
+  htmlColumnIncome +=
+    `
+      <div 
+        class = "sumCellRight"
+      >
+        ${income}
+      </div>
+    `;
+
+  const payment = formatOreToKroner(sumColumnPayment);
+  htmlColumnPayment +=
+    `
+      <div 
+        class = "sumCellRight"
+      >
+        ${payment}
+      </div>
+    `;
+
+  // Show columns
+  //document.querySelector(".div-importfile-columnLineNumber").innerHTML = htmlColumnLineNumber;
+  document.querySelector(".div-importfile-columnAccountingDate").innerHTML = htmlColumnAccountingDate;
+  document.querySelector(".div-importfile-columnName").innerHTML = htmlColumnCondoName;
+  document.querySelector(".div-importfile-columnAccountName").innerHTML = htmlColumnAccountName;
+  document.querySelector(".div-importfile-columnFromBankAccount").innerHTML = htmlColumnFromBankAccount;
+  document.querySelector(".div-importfile-columnToBankAccount").innerHTML = htmlColumnToBankAccount;
+  document.querySelector(".div-importfile-columnIncome").innerHTML = htmlColumnIncome;
+  document.querySelector(".div-importfile-columnPayment").innerHTML = htmlColumnPayment;
+  document.querySelector(".div-importfile-columnText").innerHTML = htmlColumnText;
 }
 */
 
-/*
-// Show values for Bank account transactions
-function showValues() {
+// // Show csv file for bank account transactions
+function showResult() {
 
-  // get name of transactions
-  const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-  if (condominiumRowNumber !== -1) {
+  let sumIncomes = 0;
+  let sumPayments = 0;
 
-    // file import text name
-    document.querySelector('.input-importfile-csvFileName').value = objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName;
-  }
+  // Start HTML table
+  html = startHTMLTable('width:750px;');
+
+  // Header
+  html += objImportFile.showHTMLMainTableHeaderNew('widht:250px;', '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+
+  let rowNumber = 0;
+
+  arrayTransactions.forEach((transaction) => {
+
+    html += "<tr>";
+
+    // Show menu
+    rowNumber++;
+    html += objImportFile.menuNew(rowNumber);
+
+    // Date
+    let className = `accountingDate${rowNumber}`;
+    html += objImportFile.showInputHTMLNew(className, transaction.accountingDate, 10);
+
+    // Condo name
+    className = `accountName${rowNumber}`;
+    html += objImportFile.showInputHTMLNew(className, transaction.accountName, 45);
+
+    // fromBankAccountName
+    className = `fromBankAccountName${rowNumber}`;
+    html += objImportFile.showInputHTMLNew(className, transaction.fromBankAccountName, 45);
+
+    // toBankAccountName
+    className = `toBankAccountName${rowNumber}`;
+    html += objImportFile.showInputHTMLNew(className, transaction.toBankAccountName, 45);
+
+    // Income
+    const income = formatOreToKroner(transaction.income);
+    className = `income${rowNumber}`;
+    html += objImportFile.showInputHTMLNew(className, income, 10);
+
+    // Payment
+    const payment = formatOreToKroner(transaction.payment);
+    className = `payment${rowNumber}`;
+    html += objImportFile.showInputHTMLNew(className, payment, 10);
+
+    // Text
+    className = `payment${rowNumber}`;
+    html += objImportFile.showInputHTMLNew(className, transaction.text, 10);
+
+    // Accomulate
+
+    // income
+    sumIncomes += Number(transaction.income);
+
+    // payment
+    sumPayments += Number(transaction.payment);
+    html += "</tr>";
+  });
+
+  // Sum incomes
+  sumIncomes = formatOreToKroner(sumIncomes);
+
+  // Sum payments
+  sumPayments = formatOreToKroner(sumPayments);
+
+  // Show sum row
+  rowNumber++;
+  html += showSumRow(rowNumber, sumIncomes, sumPayments);
+
+  // Show update button
+  html += "<tr>";
+
+  // Show menu
+  rowNumber++;
+  html += objCondominiums.menuNew(rowNumber);
+
+  html += objCondominiums.showButtonNew('width:170px;', 'update', 'Oppdater');
+  html += "</tr>";
+
+  // Show the rest of the menu
+  rowNumber++;
+  html += showRestMenu(rowNumber);
+
+  // The end of the table
+  html += endHTMLTable();
+  document.querySelector('.result').innerHTML = html;
 }
-*/
+
+// Show the rest of the menu
+function showRestMenu(rowNumber) {
+
+  let html = "";
+  for (; objImportFile.arrayMenu.length > rowNumber; rowNumber++) {
+
+    html += "<tr>";
+
+    // Show menu
+    html += objImportFile.menuNew(rowNumber);
+    html += "</tr>"
+  }
+
+  return html;
+}
+
+// Show table sum row
+function showSumRow(rowNumber, sumIncomes, sumPayments) {
+
+  let html = '<tr class="menu">';
+
+  // Show menu
+  html += objImportFile.menuNew(rowNumber);
+  html += "<td></td><td></td><td></td>";
+  html += "<td class='bold center'>Sum</td>";
+  html += `<td class="center bold">${sumIncomes}</td>`;
+  html += `<td class="center bold">${sumPayments}</td>`;
+  html += "</tr>";
+
+  return html;
+}
+
+// Update bank account transactions table
+async function updateBankAccountTransactions() {
+  arrayTransactions.forEach(async (transaction) => {
+
+    const bankAccountTransactionId = 0;  // not in use
+    const condominiumId = Number(objUserPassword.condominiumId);
+    const user = objUserPassword.email;
+
+    const condoId = Number(transaction.condoId);
+    const accountId = Number(transaction.accountId);
+    const income = Number(transaction.income);
+    const payment = Number(transaction.payment);
+    const numberKWHour = 0;
+    const date = convertDateToISOFormat(transaction.accountingDate);
+    const text = transaction.text;
+
+    // insert bank account transactions row
+    await objBankAccountTransactions.insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, numberKWHour, date, text)
+  });
+}

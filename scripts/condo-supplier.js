@@ -542,7 +542,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objSuppliers.showHTMLMainTableHeaderNew('widht:250px;', '', 'Mottaker', '');
+  html += objSuppliers.showHTMLMainTableHeaderNew('widht:250px;', 'Mottaker');
 
   // The end of the table
   html += endHTMLTable();

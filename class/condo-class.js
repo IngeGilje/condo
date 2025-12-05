@@ -1470,7 +1470,6 @@ class Condos {
     // The end of the table
     html += endHTMLTable();
     return html;
-    //document.querySelector('.account').innerHTML = html;
   }
 
   // Validate number
@@ -2426,11 +2425,7 @@ function exitIfNoActivity() {
 // Start of HTML table
 function startHTMLTable(style) {
 
-  return `
-    <table
-      style = "${style}"
-    >
-  `;
+  return `<table style="${style}">`;
 }
 
 // Show main header table

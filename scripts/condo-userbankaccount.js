@@ -536,31 +536,12 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 'Bankkonto for bruker', '', '');
+  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 'Bankkonto for bruker');
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.header').innerHTML = html;
 }
-
-/*
-// Show filter
-function showFilter() {
-
-  // Start table
-  html = startHTMLTable();
-
-  // Header filter for search
-  html += showHTMLFilterHeader('', 'Bruker', 'Konto', '');
-
-  // Filter for search
-  html += showHTMLFilterSearch();
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
 
 // Show filter
 function showFilter(userAccountId) {
@@ -723,22 +704,6 @@ function showResult() {
   document.querySelector('.userbankaccount').innerHTML = html;
 }
 
-// Show the rest of the menu
-function showRestMenu(rowNumber) {
-
-  let html = "";
-  for (; objUserBankAccounts.arrayMenu.length > rowNumber; rowNumber++) {
-
-    html += "<tr>";
-
-    // Show menu
-    html += objUserBankAccounts.menuNew(rowNumber);
-    html += "</tr>"
-  }
-
-  return html;
-}
-
 // Delete one account row
 async function deleteAccountRow(userBankAccountId, className) {
 
@@ -817,3 +782,4 @@ function validateColumns(userBankAccountId) {
 
   return (validateUserId && validateAccountId && validateBankAccount) ? true : false;
 }
+

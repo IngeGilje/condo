@@ -83,15 +83,20 @@ function events() {
       // Show bankaccounttransactions after change of filter
       async function showBankAccountTransactionSync() {
 
-        const amount = 0;
         const deleted = 'N';
         const condominiumId = objUserPassword.condominiumId;
         condoId = Number(document.querySelector('.filterCondoId').value);
         accountId = Number(document.querySelector('.filterAccountId').value);
+
         let fromDate = document.querySelector('.filterFromDate').value;
         fromDate = Number(convertDateToISOFormat(fromDate));
+
         let toDate = document.querySelector('.filterToDate').value;
         toDate = Number(convertDateToISOFormat(toDate));
+
+        let amount = document.querySelector('.filterAmount').value;
+        amount = formatKronerToOre(amount);
+
         const orderBy = 'date DESC, income DESC';
         await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
@@ -104,16 +109,15 @@ function events() {
   document.addEventListener('change', (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('condoId'))
       || [...event.target.classList].some(cls => cls.startsWith('accountId'))
-      || [...event.target.classList].some(cls => cls.startsWith('income'))
-      || [...event.target.classList].some(cls => cls.startsWith('payment'))
+      || [...event.target.classList].some(cls => cls.startsWith('numberKWHour'))
       || [...event.target.classList].some(cls => cls.startsWith('date'))
       || [...event.target.classList].some(cls => cls.startsWith('text'))) {
 
-      const arrayPrefixes = ['condo', 'account', 'income', 'payment', 'date', 'text'];
+      const arrayPrefixes = ['condoId', 'accountId', 'income', 'payment', 'numberKWHour', 'date', 'text'];
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objDues.getClassByPrefix(event.target, prefix))
+        .map(prefix => objBankAccountTransactions.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
@@ -130,16 +134,34 @@ function events() {
       async function updateBankAccountTransactionSync() {
 
         updateBankAccountTransactionRow(bankAccountTransactionId);
+
+        const deleted = 'N';
+        const condominiumId = objUserPassword.condominiumId;
+        condoId = Number(document.querySelector('.filterCondoId').value);
+        accountId = Number(document.querySelector('.filterAccountId').value);
+
+        let fromDate = document.querySelector('.filterFromDate').value;
+        fromDate = Number(convertDateToISOFormat(fromDate));
+
+        let toDate = document.querySelector('.filterToDate').value;
+        toDate = Number(convertDateToISOFormat(toDate));
+
+        let amount = document.querySelector('.filterAmount').value;
+        amount = formatKronerToOre(amount);
+
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+
+        showResult();
       }
     };
   });
-
 
   // Delete a bankaccounttransactions row
   document.addEventListener('change', (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
-      const className = objBankAccountTransations.getDeleteClass(event.target);
+      const className = objBankAccountTransactions.getDeleteClass(event.target);
       const bankAccountTransationId = Number(className.substring(6));
       deleteBankAccountTransationSync(bankAccountTransationId);
 
@@ -220,160 +242,6 @@ function showFilter() {
   }
 }
 
-/*
-// Show filter
-function showLeadingTextFilter() {
-
-  // Show condo
-  if (!isClassDefined('select-bankaccounttransactions-condoId')) {
-
-    // Show selected condos
-    const condoId = (isClassDefined('select-bankaccounttransactions-filterCondoId')) ? Number(document.querySelector('.select-bankaccounttransactions-filterCondoId').value) : 0;
-    objCondo.showSelectedCondos('bankaccounttransactions-filterCondoId', condoId, 'Alle');
-  }
-
-  // Show account
-  if (!isClassDefined('select-bankaccounttransactions-accountId')) {
-
-    // Show selected accounts
-    const accountId = (isClassDefined('select-bankaccounttransactions-filterAccountId')) ? Number(document.querySelector('.select-bankaccounttransactions-filterAccountId').value) : 0;
-    objAccounts.showSelectedAccounts('bankaccounttransactions-filterAccountId', accountId, 'Alle');
-  }
-
-  // Show from date
-  if (!isClassDefined('input-bankaccounttransactions-filterFromDate')) {
-    objBankAccountTransactions.showInput('bankaccounttransactions-filterFromDate', 'Fra dato', 10, 'dd.mm.åååå');
-  }
-
-  // Show to date
-  if (!isClassDefined('input-bankaccounttransactions-filterToDate')) {
-    objBankAccountTransactions.showInput('bankaccounttransactions-filterToDate', 'Til dato', 10, 'dd.mm.åååå');
-  }
-
-  // Show amount
-  if (!isClassDefined('input-bankaccounttransactions-filterAmount')) {
-    objBankAccountTransactions.showInput('bankaccounttransactions-filterAmount', 'Beløp', 10, 'Alle');
-  }
-
-  // Check for filter from date
-  let date = document.querySelector('.input-bankaccounttransactions-filterFromDate').value;
-  if (!validateEuroDateFormat(date)) {
-
-    // From date is not ok
-    const year = String(today.getFullYear());
-    document.querySelector('.input-bankaccounttransactions-filterFromDate').value = "01.01." + year;
-  }
-
-  // Check for filter to date
-  date = document.querySelector('.input-bankaccounttransactions-filterToDate').value;
-  if (!validateEuroDateFormat(date)) {
-
-    // To date is not ok
-    document.querySelector('.input-bankaccounttransactions-filterToDate').value =
-      getCurrentDate();
-  }
-
-  // Check for filter amount
-  amount = document.querySelector('.input-bankaccounttransactions-filterAmount').value;
-  if (!objBankAccountTransactions.validateNorAmount(amount)) {
-
-    // Amount is not ok
-    document.querySelector('.input-bankaccounttransactions-filterAmount').value = '';
-  }
-}
-*/
-
-/*
-// Show values for bank Account Transactions
-function showLeadingText(bankAccountTransactionId) {
-
-  // Show bank Account Transaction Id
-  objBankAccountTransactions.showSelectedBankAccountTransactions('bankaccounttransactions-bankAccountTransactionId', bankAccountTransactionId, '', 'Ingen er valgt');
-
-  // Show all condos
-  let condoId = objCondo.arrayCondo.at(-1).condoId;
-  objCondo.showSelectedCondos('bankaccounttransactions-condoId', condoId, '', 'Ingen er valgt');
-
-  // Show all accounts
-  let accountId = objAccounts.arrayAccounts.at(-1).accountId;
-  objAccounts.showSelectedAccounts('bankaccounttransactions-accountId', accountId, '', 'Ingen er valgt');
-
-  // Show date
-  objBankAccountTransactions.showInput('bankaccounttransactions-date', '* Dato', 10, 'dd.mm.åååå');
-
-  // Show income
-  objBankAccountTransactions.showInput('bankaccounttransactions-income', 'Inntekt', 10, '');
-
-  // Show kilo watt per hour
-  objBankAccountTransactions.showInput('bankaccounttransactions-numberKWHour', 'Kilowatt/time', 10, '');
-
-  // Show text
-  objBankAccountTransactions.showInput('bankaccounttransactions-text', 'Tekst', 50, '');
-
-  // Show payment
-  objBankAccountTransactions.showInput('bankaccounttransactions-payment', 'Utgift', 10, '');
-
-  // show update button 
-  objBankAccountTransactions.showButton('bankaccounttransactions-update', 'Oppdater');
-
-  // show insert button
-  objBankAccountTransactions.showButton('bankaccounttransactions-insert', 'Ny');
-
-  // show delete button
-  objBankAccountTransactions.showButton('bankaccounttransactions-delete', 'Slett');
-
-  // show cancel button
-  objBankAccountTransactions.showButton('bankaccounttransactions-cancel', 'Avbryt');
-}
-*/
-
-/*
-// Show values for bank account transcation Id
-function showValues(bankAccountTransactionId) {
-
-  // Check for valid bank Account Transactions Id
-  if (bankAccountTransactionId >= 0) {
-
-    // Find object number in bank account transcation Id array
-    const objBankAccountTransactionRowNumber = objBankAccountTransactions.arrayBankAccountTransactions.findIndex(bankAccountTransaction => bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId);
-    if (objBankAccountTransactionRowNumber !== -1) {
-
-      // Show Bank account transactions id
-      document.querySelector('.select-bankaccounttransactions-bankAccountTransactionId').value = objBankAccountTransactions.arrayBankAccountTransactions[objBankAccountTransactionRowNumber].bankAccountTransactionId;
-
-      // Show condo id
-      document.querySelector('.select-bankaccounttransactions-condoId').value = objBankAccountTransactions.arrayBankAccountTransactions[objBankAccountTransactionRowNumber].condoId;
-
-      // Show account
-      document.querySelector('.select-bankaccounttransactions-accountId').value = objBankAccountTransactions.arrayBankAccountTransactions[objBankAccountTransactionRowNumber].accountId;
-
-      // Show date
-      const date = objBankAccountTransactions.arrayBankAccountTransactions[objBankAccountTransactionRowNumber].date;
-      document.querySelector('.input-bankaccounttransactions-date').value =
-        formatToNorDate(date);
-
-      // Show income
-      const income = objBankAccountTransactions.arrayBankAccountTransactions[objBankAccountTransactionRowNumber].income;
-      document.querySelector('.input-bankaccounttransactions-income').value = formatOreToKroner(income);
-
-      // Show payment
-      const payment = objBankAccountTransactions.arrayBankAccountTransactions[objBankAccountTransactionRowNumber].payment;
-      document.querySelector('.input-bankaccounttransactions-payment').value = formatOreToKroner(payment);
-
-      // Show kilo watt per hour
-      const numberKWHour = objBankAccountTransactions.arrayBankAccountTransactions[objBankAccountTransactionRowNumber].numberKWHour;
-      document.querySelector('.input-bankaccounttransactions-numberKWHour').value = formatOreToKroner(numberKWHour);
-
-      // Show text
-      const text = objBankAccountTransactions.arrayBankAccountTransactions[objBankAccountTransactionRowNumber].text;
-      document.querySelector('.input-bankaccounttransactions-text').value = text;
-
-      objBankAccountTransactions.showButton('bankaccounttransactions-cancel', 'Avbryt');
-    }
-  }
-}
-*/
-
 // update bankaccounttransactions row
 async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
@@ -385,22 +253,23 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   if (bankAccountTransactionRowNumber !== -1) {
 
     // bankaccounttransactions row exist
-    const income = Number(objBankAccountTransactions.arrayBankAccountTransations[bankAccountTransactionRowNumber].income);
-    const payment = Number(objBankAccountTransactions.arrayBankAccountTransations[bankAccountTransactionRowNumber].payment);
-    const date = Number(objBankAccountTransactions.arrayBankAccountTransations[bankAccountTransactionRowNumber].date);
+    const income = Number(objBankAccountTransactions.arrayBankAccountTransactions[bankAccountTransactionRowNumber].income);
+    const payment = Number(objBankAccountTransactions.arrayBankAccountTransactions[bankAccountTransactionRowNumber].payment);
+    const date = Number(objBankAccountTransactions.arrayBankAccountTransactions[bankAccountTransactionRowNumber].date);
 
     // accountId
-    className = `.account${bankAccountTransactionId}`;
+    className = `.accountId${bankAccountTransactionId}`;
     const accountId = Number(document.querySelector(className).value);
-    const validAccountId = validateNumberNew(accountId, 1, 999999999)
+    const validAccountId = validateNumberNew(accountId, 0, 999999999)
 
     // condoId
-    className = `.condo${bankAccountTransactionId}`;
+    className = `.condoId${bankAccountTransactionId}`;
     const condoId = Number(document.querySelector(className).value);
-    const validCondoId = validateNumberNew(condoId, 1, 999999999)
+    const validCondoId = validateNumberNew(condoId, 0, 999999999)
 
+    // numberKWHour
     className = `.numberKWHour${bankAccountTransactionId}`;
-    const numberKWHour = Number(document.querySelector(className).value);
+    const numberKWHour = Number(formatKronerToOre(document.querySelector(className).value));
     const validNumberKWHour = validateNumberNew(numberKWHour, 0, 999999999)
 
     // text
@@ -409,7 +278,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     const validText = objBankAccountTransactions.validateTextNew(text, 3, 255);
 
     // Validate bankAccountTransactions columns
-    if (validAccountId && validAccountId && validNumberKWHour && validText) {
+    if (validCondoId && validAccountId && validNumberKWHour && validText) {
 
       const condominiumId = objUserPassword.condominiumId;
       const user = objUserPassword.email;
@@ -452,22 +321,6 @@ function showHTMLFilterSearch() {
   return html;
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = startHTMLTable();
-
-  // Main header
-  html += objBankAccountTransactions.showHTMLMainTableHeaderNew('widht:250px;', '', '', '', 'Bankkontotransaksjoner', '', '', '', '',);
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.table-header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -475,7 +328,7 @@ function showHeader() {
   let html = startHTMLTable('width:1450px;');
 
   // Main header
-  html += objBankAccountTransactions.showHTMLMainTableHeaderNew('widht:250px;', '', '', '', 'Bankkontotransaksjoner', '', '', '', '',);
+  html += objBankAccountTransactions.showHTMLMainTableHeaderNew('widht:250px;', 'Bankkontotransaksjoner');
 
   // The end of the table
   html += endHTMLTable();
@@ -505,7 +358,7 @@ function showTableSumRow(rowNumber, sumIncome, sumPayment) {
 }
 
 // Show the rest of the menu
-function showRestMenu(rowNumber) {
+function showRestMenuNew(rowNumber) {
 
   let html = "";
   for (; objBankAccountTransactions.arrayMenu.length >= rowNumber; rowNumber++) {
@@ -534,7 +387,7 @@ async function deleteBankAccountTransactionRow(bankAccountTransationId, classNam
 
 
   // Check if bankaccounttransaction row exist
-  bankAccountTransactionsRowNumber = objBankAccountTransations.arrayBankAccountTransations.findIndex(bankaccounttransaction => bankaccounttransaction.bankAccountTransationId === bankAccountTransationId);
+  bankAccountTransactionsRowNumber = objBankAccountTransactions.arrayBankAccountTransactions.findIndex(bankaccounttransaction => bankaccounttransaction.bankAccountTransationId === bankAccountTransationId);
   if (bankAccountTransactionsRowNumber !== -1) {
 
     // delete bankaccounttransaction row
@@ -543,12 +396,16 @@ async function deleteBankAccountTransactionRow(bankAccountTransationId, classNam
   const amount = 0;
   const deleted = 'N';
   const condominiumId = objUserPassword.condominiumId;
+
   condoId = Number(document.querySelector('.filterCondoId').value);
   accountId = Number(document.querySelector('.filterAccountId').value);
+
   let fromDate = document.querySelector('.filterFromDate').value;
   fromDate = Number(convertDateToISOFormat(fromDate));
+
   let toDate = document.querySelector('.filterToDate').value;
   toDate = Number(convertDateToISOFormat(toDate));
+
   const orderBy = 'date DESC, income DESC';
   await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 }
@@ -625,49 +482,6 @@ function showResult() {
 
   // Make one last table row for insertion in table 
 
-  /*
-  // Insert empty table row for insertion
-  html += "<tr>";
-
-  // Show menu
-  rowNumber++;
-  html += objBankAccountTransactions.menuNew(rowNumber);
-
-  html += "<td></td>";
-
-  // condoId
-  const condoId = Number(document.querySelector('.filterCondoId').value);
-  className = `condoId0`;
-  html += objCondos.showSelectedCondosNew(className, 'width:100px;', condoId, '', '');
-
-  // date
-  className = `date0`;
-  html += objBankAccountTransactions.showInputHTMLNew(className, '', 10);
-
-  // accountId
-  const accountId = Number(document.querySelector('.filterAccountId').value);
-  className = `accountId0`;
-  html += objAccounts.showSelectedAccountsNew(className, '', accountId, '', '');
-
-  // income
-  className = `income0`;
-  html += objBankAccountTransactions.showInputHTMLNew(className, '', 10);
-
-  // payment
-  className = `payment0`;
-  html += objBankAccountTransactions.showInputHTMLNew(className, '', 10);
-
-  // numberKWHour
-  className = `numberKWHour0`;
-  html += objBankAccountTransactions.showInputHTMLNew(className, '', 10);
-
-  // Text
-  className = `numberKWHour0`;
-  html += objBankAccountTransactions.showInputHTMLNew(className, '', 45);
-
-  html += "</tr>";
-  */
-
   // Show table sum row
   sumIncome = formatOreToKroner(sumIncome);
   sumPayment = formatOreToKroner(sumPayment);
@@ -677,7 +491,7 @@ function showResult() {
 
   // Show the rest of the menu
   rowNumber++;
-  html += showRestMenu(rowNumber);
+  html += objBankAccountTransactions.showRestMenuNew(rowNumber);
 
   // The end of the table
   html += endHTMLTable();
