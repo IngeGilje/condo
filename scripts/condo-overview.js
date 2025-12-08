@@ -14,9 +14,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-//objOverview.menu();
-//objOverview.markSelectedMenu('Bet.oversikt');
-
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
@@ -134,8 +131,8 @@ function showFilter() {
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', '', '', '', '');
-  html += showHTMLFilterHeader("width:250px;", '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '');
+  html += objOverview.showHTMLFilterHeader("width:250px;", '', '', '', '', '');
+  html += objOverview.showHTMLFilterHeader("width:250px;", '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '');
 
   // Filter for search
   html += "<tr><td></td><td></td>";
@@ -157,7 +154,7 @@ function showFilter() {
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', '', '', '', '');
+  html += objOverview.showHTMLFilterHeader("width:250px;", '', '', '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -174,7 +171,7 @@ function showDues() {
   let rowNumber = 0;
 
   // Header
-  html += objOverview.showHTMLMainTableHeaderNew('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
+  html += objOverview.showHTMLMainTableHeaderNew('width:1100px;', 0, '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -295,8 +292,8 @@ function showBankAccountTransactions() {
   let sumPayments = 0;
 
   // Header
-  html += showHTMLFilterHeader('width:250px;', '', '', '', '', '');
-  html += objOverview.showHTMLMainTableHeaderNew('width:1100px;', '', 'Leilighet', 'Betalingsdato', 'Betaling', 'Tekst');
+  html += objOverview.showHTMLFilterHeader('width:250px;', '', '', '', '', '');
+  html += objOverview.showHTMLMainTableHeaderNew('width:1100px;', 0, '', 'Leilighet', 'Betalingsdato', 'Betaling', 'Tekst');
 
   objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
@@ -366,9 +363,6 @@ function showBankAccountTransactions() {
   html += "<td></td>";
   html += "</tr>"
 
-  // Show the rest of the menu
-  //html += objOverview.showRestMenuNew(999999999);
-
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.bankAccountTransactions').innerHTML = html;
@@ -397,7 +391,7 @@ function showHowMuchToPay() {
   html = startHTMLTable('width:1100px;');
 
   // Header
-  html += showHTMLFilterHeader('width:250px;', '', '', '', '', '');
+  html += objOverview.showHTMLFilterHeader('width:250px;', '', '', '', '', '');
 
   let overPay = sumIncome - sumToPay;
   html += (overPay > 0) ? showHTMLMainTableHeader('width:1100px;', '', 'Forfall', 'Betalt', 'Til gode') : showHTMLMainTableHeader('width:1100px;', 'Sum', 'Forfall', 'Betalt', 'Skyldig');

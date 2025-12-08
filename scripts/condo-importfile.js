@@ -21,10 +21,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity()
 
-// Mark selected menu
-//objImportFile.menu();
-//objImportFile.markSelectedMenu('Importer banktransaksjoner');
-
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
@@ -58,9 +54,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
     amount = 0;
-    //fromDate = 0;
-    //toDate = getCurrentDate();
-    //toDate = Number(convertDateToISOFormat(toDate));
     const orderBy = 'condoId ASC, date DESC, income ASC';
     await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
@@ -72,20 +65,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       // file import text name
       const csvFileName = objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName;
       await objImportFile.loadCsvFile(csvFileName);
-
-      /*
-      // create array from imported csv-file (data string)
-      createtransactionsArray(objImportFile.strCSVTransaction);
-
-      // Show csv file for bank account
-      showBankAccountTransactions();
-
-      // Show button for update of Bank account transactions
-      objImportFile.showButton('importfile-saveBankAccountTransaction', 'Oppdater banktransaksjoner');
-
-      // Events
-      events();
-      */
 
       // Show header
       showHeader();
@@ -709,7 +688,7 @@ function showHeader() {
   let html = startHTMLTable('width:1450px;');
 
   // Main header
-  html += objImportFile.showHTMLMainTableHeaderNew('widht:250px;', 'Import av bankkontotransaksjoner');
+  html += objImportFile.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Import av bankkontotransaksjoner');
 
   // The end of the table
   html += endHTMLTable();
@@ -723,13 +702,13 @@ function showFilter() {
   html = startHTMLTable('width:1450px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:200px;", '');
+  html += objImportFile.showHTMLFilterHeader("width:200px;", '');
 
   // Filter for search
   html += "<tr>";
 
   // Header filter
-  html += showHTMLFilterHeader("width:750px;", '');
+  html += objImportFile.showHTMLFilterHeader("width:750px;", '');
 
   html += "</tr>";
 
@@ -956,7 +935,7 @@ function showResult() {
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += objImportFile.showHTMLMainTableHeaderNew('widht:250px;', '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += objImportFile.showHTMLMainTableHeaderNew('widht:250px;', 0, '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let rowNumber = 0;
 
@@ -1030,27 +1009,11 @@ function showResult() {
 
   // Show the rest of the menu
   rowNumber++;
-  html += showRestMenu(rowNumber);
+  html += objCondominiums.showRestMenuNew(rowNumber);
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.result').innerHTML = html;
-}
-
-// Show the rest of the menu
-function showRestMenu(rowNumber) {
-
-  let html = "";
-  for (; objImportFile.arrayMenu.length > rowNumber; rowNumber++) {
-
-    html += "<tr>";
-
-    // Show menu
-    html += objImportFile.menuNew(rowNumber);
-    html += "</tr>"
-  }
-
-  return html;
 }
 
 // Show table sum row

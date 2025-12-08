@@ -158,7 +158,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', 'Konto');
+  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Konto');
 
   // The end of the table
   html += endHTMLTable();
@@ -172,8 +172,8 @@ function showFilter(accountId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', '', '');
-  html += showHTMLFilterHeader("width:250px;", '', 'Kostnadstype', '');
+  html += objAccounts.showHTMLFilterHeader("width:250px;", '', '', '');
+  html += objAccounts.showHTMLFilterHeader("width:250px;", '', 'Kostnadstype', '');
 
   // Filter for search
   html += "<tr>";
@@ -187,7 +187,7 @@ function showFilter(accountId) {
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objAccounts.showHTMLFilterHeader("width:750px;", '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -247,7 +247,7 @@ function showResult() {
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
+  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, '', 'Slett', 'Kostnadstype', 'Tekst');
 
   //let sumAmount = 0;
   let rowNumber = 0;
@@ -307,30 +307,11 @@ function showResult() {
 
   // Show the rest of the menu
   rowNumber++;
-  html += showRestMenuNew(rowNumber);
+  html += objAccounts.showRestMenuNew(rowNumber);
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.result').innerHTML = html;
-}
-
-// Show the rest of the menu
-function showRestMenu(rowNumber) {
-
-  let html = "";
-  for (; objAccounts.arrayMenu.length > rowNumber; rowNumber++) {
-
-    html += "<tr>";
-
-    // Show menu
-    html += objAccounts.menuNew(rowNumber);
-    html += "</tr>"
-  }
-
-  // The end of the table
-  html += endHTMLTable();
-  return html;
-  //document.querySelector('.account').innerHTML = html;
 }
 
 // Delete one account row

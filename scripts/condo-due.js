@@ -128,90 +128,6 @@ function events() {
     };
   });
 
-  /*
-  // Update condo id
-  document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('condo'))) {
-
-      const className = objDues.getCondoClass(event.target);
-      const dueId = Number(className.substring(5));
-
-      updateCondoIdSync();
-
-      // Update condoId
-      async function updateCondoIdSync() {
-
-        updateDuesRow('condoId', className, dueId);
-      }
-    };
-  });
-
-  // Update account id
-  document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('account'))) {
-
-      const className = objDues.getAccountClass(event.target);
-      const dueId = Number(className.substring(7));
-
-      updateAccountIdSync();
-
-      // Update amount
-      async function updateAccountIdSync() {
-
-        updateDuesRow('accountId', className, dueId);
-      }
-    };
-  });
-
-  // Update amount
-  document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('amount'))) {
-
-      const className = objDues.getAmountClass(event.target);
-      const dueId = className.substring(6);
-      updateAmountSync();
-
-      // Update amount
-      async function updateAmountSync() {
-
-        updateDuesRow('amount', className, dueId);
-      }
-    };
-  });
-
-  // Update date
-  document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('date'))) {
-
-      const className = objDues.getDateClass(event.target);
-      const dueId = className.substring(5);
-      updateDateSync();
-
-      // Update amount
-      async function updateDateSync() {
-
-        updateDuesRow('date', className, dueId);
-      }
-    };
-  });
-
-  // Update text
-  document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('text'))) {
-
-      const className = objDues.getTextClass(event.target);
-      const dueId = className.substring(4);
-      updateTextSync();
-
-      // Update amount
-      async function updateTextSync() {
-
-        updateDuesRow('text', className, dueId);
-      }
-    };
-  });
-  */
-
   // Delete dues row
   document.addEventListener('change', (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
@@ -320,7 +236,7 @@ function showHTMLFilterSearch() {
   html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, '', 'Alle');
 
   // Show all selected accounts
-  html += objAccounts.('filterAccountId', '', 0, '', 'Alle');
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
@@ -341,7 +257,7 @@ function showResult() {
   html = startHTMLTable('width:1100px;');
 
   // Header
-  html += objDues.showHTMLMainTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
+  html += objDues.showHTMLMainTableHeaderNew("width:750px;", 0, '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
 
   let sumAmount = 0;
   let rowNumber = 0;
@@ -405,7 +321,7 @@ function showResult() {
 
   // Show the rest of the menu
   rowNumber++;
-  html += showRestMenu(rowNumber);
+  html += objDues.showRestMenuNew(rowNumber);
 
   // The end of the table
   html += endHTMLTable();
@@ -473,29 +389,6 @@ function showTableSumRow(rowNumber, amount) {
     `
       </tr>
     `;
-
-  return html;
-}
-
-// Show the rest of the menu
-function showRestMenu(rowNumber) {
-
-  let html = "";
-  for (; objDues.arrayMenu.length > rowNumber; rowNumber++) {
-
-    html +=
-      `
-        <tr 
-          class="menu"
-        >
-      `;
-    // Show menu
-    html += objDues.menuNew(rowNumber);
-    html +=
-      `
-        </tr>
-      `;
-  }
 
   return html;
 }
@@ -602,8 +495,8 @@ function showFilter() {
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
-  html += showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+  html += objDues.showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
+  html += objDues.showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
 
   // Filter for search
   html += "<tr>";
@@ -636,7 +529,7 @@ function showFilter() {
     html += "</tr>";
 
     // Header filter for search
-    html += showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+    html += objDues.showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
 
     // The end of the table
     html += endHTMLTable();

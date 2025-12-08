@@ -11,9 +11,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-objBudgets.menu();
-objBudgets.markSelectedMenu('Budsjett');
-
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {

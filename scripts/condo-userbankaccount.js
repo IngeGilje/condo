@@ -88,24 +88,7 @@ function events() {
         prefix = prefixes.find(p => className.startsWith(p));
         userBankAccountId = Number(className.slice(prefix.length));
       }
-      /*
-      if (objDues.getUserClass(event.target)) className = objDues.getUserClass(event.target);
-      if (objDues.getAccountClass(event.target)) className = objDues.getAccountClass(event.target);
-     if (objDues.getBankAccountClass(event.target)) className = objDues.getBankAccountClass(event.target);
 
-      if (objDues.getUserClass(event.target)) userBankAccountId = Number(className.substring(6));
-      if (objDues.getAccountClass(event.target)) userBankAccountId = Number(className.substring(9));
-      if (objDues.getBankAccountClass(event.target)) userBankAccountId = className.substring(11);
-      */
-
-      /*
-      if ([...event.target.classList].some(cls => cls.startsWith('userId'))
-        || [...event.target.classList].some(cls => cls.startsWith('accountId'))
-        || [...event.target.classList].some(cls => cls.startsWith('bankAccount'))) {
-  
-        const className = objUserBankAccounts.getAccountClass(event.target);
-        const userBankAccountId = Number(className.substring(9));
-      */
       updateUserBankAccountSync();
 
       // Update user bank account
@@ -536,7 +519,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 'Bankkonto for bruker');
+  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Bankkonto for bruker');
 
   // The end of the table
   html += endHTMLTable();
@@ -550,8 +533,8 @@ function showFilter(userAccountId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', '', '');
-  html += showHTMLFilterHeader("width:250px;", '', 'Bruker', 'Konto', '');
+  html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", '', '', '');
+  html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", '', 'Bruker', 'Konto', '');
 
   // Filter for search
   html += "<tr>";
@@ -564,15 +547,10 @@ function showFilter(userAccountId) {
   // Show all selected accounts
   html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
 
-  html +=
-    `
-      </tr>
-    `;
-
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objUserBankAccounts.showHTMLFilterHeader("width:750px;", '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -657,7 +635,7 @@ function showResult() {
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;','', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0,'', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   //let sumAmount = 0;
   let rowNumber = 0;

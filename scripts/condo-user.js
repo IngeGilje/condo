@@ -12,9 +12,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-//objUsers.menu();
-//objUsers.markSelectedMenu('Bruker');
-
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
@@ -640,7 +637,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', 'Bruker');
+  html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Bruker');
 
   // The end of the table
   html += endHTMLTable();
@@ -654,8 +651,8 @@ function showFilter(userId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', '', '');
-  html += showHTMLFilterHeader("width:250px;", '', 'Velg bruker', '');
+  html += objUsers.showHTMLFilterHeader("width:250px;", '', '', '');
+  html += objUsers.showHTMLFilterHeader("width:250px;", '', 'Velg bruker', '');
 
   // Filter for search
   html += "<tr>";
@@ -667,7 +664,7 @@ function showFilter(userId) {
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objUsers.showHTMLFilterHeader("width:750px;", '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -687,12 +684,12 @@ function showResult(userId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', '', '', '');
+    html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', 0, '', '', '');
 
     // email,condoId
     html += "<tr>";
     menuNumber++;
-    html += objUsers.showHTMLTableHeader("width:250px;", menuNumber, 'E-mail', 'Leilighet');
+    html += objUsers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'E-mail', 'Leilighet');
 
     // Show menu
     html += "<tr>";
@@ -710,7 +707,7 @@ function showResult(userId) {
     // firstName, lastName
     html += "<tr>";
     menuNumber++;
-    html += objUsers.showHTMLTableHeader("width:250px;", menuNumber, 'Fornavn', 'Etternavn');
+    html += objUsers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Fornavn', 'Etternavn');
 
     // firstName, lastName
     html += "<tr>";
@@ -728,7 +725,7 @@ function showResult(userId) {
     // securityLevel,password
     html += "<tr>";
     menuNumber++;
-    html += objUsers.showHTMLTableHeader("width:250px;", menuNumber, 'Passord', 'Sikkerhetsnivå');
+    html += objUsers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Passord', 'Sikkerhetsnivå');
 
     // Show menu
     html += "<tr>";
@@ -746,7 +743,7 @@ function showResult(userId) {
     // phone
     html += "<tr>";
     menuNumber++;
-    html += objUsers.showHTMLTableHeader("width:250px;", menuNumber, 'Telefonnummer', 'Beboer');
+    html += objUsers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Telefonnummer', 'Beboer');
 
     // Show menu
     html += "<tr>";

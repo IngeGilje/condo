@@ -10,9 +10,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-//objCondos.menu();
-//objCondos.markSelectedMenu('Leilighet');
-
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
@@ -158,7 +155,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objCondos.showHTMLMainTableHeaderNew('widht:250px;', 'Leilighet');
+  html += objCondos.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Leilighet');
 
   // The end of the table
   html += endHTMLTable();
@@ -172,8 +169,8 @@ function showFilter(condoId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', '', '');
-  html += showHTMLFilterHeader("width:250px;", '', 'Velg leilighet', '');
+  html += objCondos.showHTMLFilterHeader("width:250px;", '', '', '');
+  html += objCondos.showHTMLFilterHeader("width:250px;", '', 'Velg leilighet', '');
 
   // Filter for search
   html += "<tr>";
@@ -186,7 +183,7 @@ function showFilter(condoId) {
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objCondos.showHTMLFilterHeader("width:750px;", '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -206,12 +203,12 @@ function showResult(condoId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objCondos.showHTMLMainTableHeaderNew('widht:250px;', '', '', '');
+    html += objCondos.showHTMLMainTableHeaderNew('widht:250px;', 0, '', '', '');
 
     // Show menu
     // Header for value including menu
     menuNumber++;
-    html += objCondos.showHTMLTableHeader("width:250px;", menuNumber, 'Navn');
+    html += objCondos.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Navn');
 
     html += "<tr>";
 
@@ -228,7 +225,7 @@ function showResult(condoId) {
     // street, address2
     html += "<tr>";
     menuNumber++;
-    html += objCondos.showHTMLTableHeader("width:250px;", menuNumber, 'Gate', 'Adresse 2');
+    html += objCondos.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Gate', 'Adresse 2');
 
     // Show menu
     html += "<tr>";
@@ -246,7 +243,7 @@ function showResult(condoId) {
     // postalCode, city
     html += "<tr>";
     menuNumber++;
-    html += objCondos.showHTMLTableHeader("width:250px;", menuNumber, 'Postnummer', 'Poststed');
+    html += objCondos.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Postnummer', 'Poststed');
 
     // Show menu
     html += "<tr>";
@@ -264,7 +261,7 @@ function showResult(condoId) {
     // squareMeters
     html += "<tr>";
     menuNumber++;
-    html += objCondos.showHTMLTableHeader("width:250px;", menuNumber, 'Kvadratmeter');
+    html += objCondos.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Kvadratmeter');
 
     // Show menu
     menuNumber++;

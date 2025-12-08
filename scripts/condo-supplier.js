@@ -11,9 +11,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-//objSuppliers.menu();
-//objSuppliers.markSelectedMenu('Leverandør');
-
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
@@ -542,7 +539,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objSuppliers.showHTMLMainTableHeaderNew('widht:250px;', 'Mottaker');
+  html += objSuppliers.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Mottaker');
 
   // The end of the table
   html += endHTMLTable();
@@ -556,8 +553,8 @@ function showFilter(supplierId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', '', '');
-  html += showHTMLFilterHeader("width:250px;", '', 'Velg mottaker', '');
+  html += objSuppliers.showHTMLFilterHeader("width:250px;", '', '', '');
+  html += objSuppliers.showHTMLFilterHeader("width:250px;", '', 'Velg mottaker', '');
 
   // Filter for search
   html += "<tr>";
@@ -570,7 +567,7 @@ function showFilter(supplierId) {
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objSuppliers.showHTMLFilterHeader("width:750px;", '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -593,12 +590,12 @@ function showResult(supplierId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objSuppliers.showHTMLMainTableHeaderNew('widht:250px;', '', '', '');
+    html += objSuppliers.showHTMLMainTableHeaderNew('widht:250px;', 0, '', '', '');
 
     // Show menu
     // Header for value including menu
     menuNumber++;
-    html += objSuppliers.showHTMLTableHeader("width:250px;", menuNumber, 'Navn');
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Navn');
 
     html += "<tr>";
 
@@ -615,7 +612,7 @@ function showResult(supplierId) {
     // street, address2
     html += "<tr>";
     menuNumber++;
-    html += objSuppliers.showHTMLTableHeader("width:250px;", menuNumber, 'Gate', 'Adresse 2');
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Gate', 'Adresse 2');
 
     // Show menu
     html += "<tr>";
@@ -633,7 +630,7 @@ function showResult(supplierId) {
     // postalCode, city
     html += "<tr>";
     menuNumber++;
-    html += objSuppliers.showHTMLTableHeader("width:250px;", menuNumber, 'Postnummer', 'Poststed');
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Postnummer', 'Poststed');
 
     // Show menu
     html += "<tr>";
@@ -651,7 +648,7 @@ function showResult(supplierId) {
     // email,phone
     html += "<tr>";
     menuNumber++;
-    html += objSuppliers.showHTMLTableHeader("width:250px;", menuNumber, 'e-Mail', 'Telefonnummer');
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'e-Mail', 'Telefonnummer');
 
     // Show menu
     menuNumber++;
@@ -668,7 +665,7 @@ function showResult(supplierId) {
     // bankAccount, accountId
     html += "<tr>";
     menuNumber++;
-    html += objSuppliers.showHTMLTableHeader("width:250px;", menuNumber, 'Bankkonto', 'Konto');
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Bankkonto', 'Konto');
 
     // Show menu
     menuNumber++;
@@ -685,7 +682,7 @@ function showResult(supplierId) {
     // amountAccountId, amount
     html += "<tr>";
     menuNumber++;
-    html += objSuppliers.showHTMLTableHeader("width:250px;", menuNumber, 'Konto for beløp', 'Beløp');
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Konto for beløp', 'Beløp');
 
     // Show menu
     menuNumber++;
@@ -702,7 +699,7 @@ function showResult(supplierId) {
     // textAccountId, text
     html += "<tr>";
     menuNumber++;
-    html += objSuppliers.showHTMLTableHeader("width:250px;", menuNumber, 'Konto for tekst', 'Tekst');
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Konto for tekst', 'Tekst');
 
     // Show menu
     menuNumber++;

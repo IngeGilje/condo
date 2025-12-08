@@ -8,12 +8,6 @@ class Condos {
 
   inactivityTimeout = false;
 
-  /*
-  // All year from 2020 until 2039
-  #yearArray = [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029,
-    2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039];
-  */
-
   // array of menu objects
   arrayMenu = [
     {
@@ -533,6 +527,7 @@ class Condos {
     return (bankAccountPattern.test(bankAccount)) ? true : false;
   }
 
+  /*
   // Mark selected application in menu
   markSelectedMenu(text) {
 
@@ -545,6 +540,7 @@ class Condos {
         </div>
       `;
   }
+  */
 
   // Select bank account
   selectBankAccountId(bankAccountId, className) {
@@ -618,51 +614,26 @@ class Condos {
   }
 
   // Select number
-  selectNumberHTMLNew(className, fromNumber, toNumber, selectedNumber) {
+  selectIntervalHTMLNew(className, style, fromNumber, toNumber, selectedNumber) {
 
-    let html =
-      `
-        <td>
-          <select 
-            class="${className}" 
-            id="selectedNumber"
-            name="selectedNumber"
-          >
-      `;
+    if (style === "") html = `<td class="center"><select class="${className} center">`;
+    if (style !== "") html = `<td class="center"><select class="${className} center" style = "${style}">`;
 
     let selectedOption = false;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
 
-        html +=
-          `
-            <option 
-              value="${number}"
-              selected
-            >
-              ${number}
-            </option>
-          `;
+        html += `<option value="${number}" selected>${number}</option>`;
         selectedOption = true;
       } else {
 
-        html +=
-          `
-            <option 
-              value="${number}"
-            >
-              ${number}
-            </option>
-          `;
+        html += `<option value="${number}">${number}</option>`;
       }
     };
 
-    html +=
-      `
-          </select >
-        </td>
-      `;
+    html += `</select ></td>`;
+
     return html;
   }
 
@@ -860,7 +831,7 @@ class Condos {
       `;
     } else {
 
-      html += "<td></td>";
+      html += "<td> </td>";
     }
 
     return html;
@@ -1338,48 +1309,6 @@ class Condos {
   getClassByPrefix(element, prefix) {
     return [...element.classList].find(cls => cls.startsWith(prefix));
   }
-  // get class name for account
-  getAccountClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('account'));
-  }
-
-  // get class name for condo
-  getCondoClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('condo'));
-  }
-
-  // get class name for amount
-  getAmountClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('amount'));
-  }
-
-  // get class name for year
-  getYearClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('year'));
-  }
-
-  // get class name for delete
-  getDeleteClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('delete'));
-  }
-  // get class name for fixed cost 
-  getFixedCostClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('fixedCost'));
-  }
-  // get class name for name
-  getNameClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('name'));
-  }
-
-  // get class name for date
-  getDateClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('date'));
-  }
-
-  // get class name for text
-  getTextClass(element) {
-    return [...element.classList].find(cls => cls.startsWith('Text'));
-  }
 
   // Show Yes/No
   showYesNo(className, selectedChoice) {
@@ -1405,11 +1334,11 @@ class Condos {
     return html;
   }
   // Show table header including menu
-  showHTMLTableHeader(style, menuNumber, ...texts) {
+  showHTMLTableHeaderNew(style, menuNumber, ...texts) {
 
     let html = "<tr>";
 
-    html += this.menuNew(menuNumber);
+    if (menuNumber > 0) html += this.menuNew(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1547,9 +1476,12 @@ class Condos {
   }
 
   // Show main header table
-  showHTMLMainTableHeaderNew(style, ...texts) {
+  showHTMLMainTableHeaderNew(style, menuNumber, ...texts) {
 
-    let html = `<tr class="bold">`;
+       //let html = `<tr class="bold">`;
+       let html = `<tr>`;
+
+       if (menuNumber > 0) html += this.menuNew(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1574,6 +1506,40 @@ class Condos {
           </th>
         `;
       }
+    });
+
+    html += "</tr>";
+    return html;
+  }
+
+  // Show filter header table
+  showHTMLFilterHeader(style, ...texts) {
+
+    let html = "<tr>";
+
+    texts.forEach((text) => {
+
+      if (text === '') html += `<td class="no-border center" style="${style}">${text}</td>`;
+      if (text !== '' && style !== '') html += `<td class="no-border center bold" style="${style}">${text}</td>`;
+      if (text !== '' && style === '') html += `<td class="no-border center bold">${text}</td>`;
+    });
+
+    html += "</tr>";
+    return html;
+  }
+
+  // Show blank header row
+  showBlankHeaderRow(style, menuNumber, ...texts) {
+
+    let html = "<tr>";
+
+        if (menuNumber > 0) html += this.menuNew(menuNumber);
+
+    texts.forEach((text) => {
+
+      if (text === '') html += `<td class="no-border center" style="${style}">${text}</td>`;
+      if (text !== '' && style !== '') html += `<td class="no-border center bold" style="${style}">${text}</td>`;
+      if (text !== '' && style === '') html += `<td class="no-border center bold">${text}</td>`;
     });
 
     html += "</tr>";
@@ -2057,7 +2023,7 @@ function formatKronerToOre(amount) {
     }
   }
 
-  return kroner + ore;
+  return Number(kroner + ore);
 }
 
 // Format amount to euro format
@@ -2454,41 +2420,6 @@ function showHTMLMainTableHeader(style, ...texts) {
           >
             ${text}
           </th>
-        `;
-    }
-  });
-
-  html += "</tr>";
-  return html;
-}
-
-// Show filter header table
-function showHTMLFilterHeader(style, ...texts) {
-
-  let html = "<tr>";
-
-  texts.forEach((text) => {
-
-    if (text === '') {
-      html +=
-        `
-          <td 
-            class="no-border center"
-            style="${style}"
-          >
-            ${text}
-          </td>
-        `;
-    } else {
-
-      html +=
-        `
-          <td 
-            class="no-border center bold"
-            style="${style}"
-          >
-            ${text}
-          </td>
         `;
     }
   });

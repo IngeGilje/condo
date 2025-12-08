@@ -241,53 +241,11 @@ function showHeader() {
   let html = startHTMLTable('width:1000px;');
 
   // Main header
-  html += objBudgets.showHTMLMainTableHeaderNew('Budsjett');
+  html += objBudgets.showHTMLMainTableHeaderNew('Budsjett', 0);
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.header').innerHTML = html;
-}
-
-/*
-// Show filter
-function showFilter() {
-
-  // Start table
-  html = startHTMLTable();
-
-  // Header filter for search
-  html += showHTMLFilterHeader('', 'Velg konto', 'Velg år', '');
-
-  // Filter for search
-  html += showHTMLFilterSearch();
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.table-filter').innerHTML = html;
-}
-*/
-
-// Show the rest of the menu
-function showRestMenu(rowNumber) {
-
-  let html = "";
-  for (; objBudgets.arrayMenu.length >= rowNumber; rowNumber++) {
-
-    html +=
-      `
-        <tr 
-          class="menu"
-        >
-      `;
-    // Show menu
-    html += objBudgets.menuNew(rowNumber);
-    html +=
-      `
-        </tr>
-      `;
-  }
-
-  return html;
 }
 
 // Show table sum row
@@ -319,8 +277,8 @@ function showFilter() {
   html = startHTMLTable('width:1000px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
-  html += showHTMLFilterHeader('', '', 'Konto', 'År', '', '', '');
+  html += objBudgets.showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
+  html += objBudgets.showHTMLFilterHeader('', '', 'Konto', 'År', '', '', '');
 
   // Filter for search
   html += "<tr>";
@@ -337,7 +295,7 @@ function showFilter() {
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:1000px;", '', '', '', '');
+  html += objBudgets.showHTMLFilterHeader("width:1000px;", '', '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -355,7 +313,7 @@ function showResult() {
   let html = startHTMLTable('width:1000px;');
 
   // Header
-  html += objBudgets.showHTMLMainTableHeaderNew("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+  html += objBudgets.showHTMLMainTableHeaderNew("width:1000px;", 0, '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
 
   let sumAmount = 0;
   let rowNumber = 0;
@@ -440,7 +398,7 @@ function showResult() {
 
   // Show the rest of the menu
   rowNumber++;
-  html += showRestMenu(rowNumber);
+  html += objBudgets.showRestMenuNew(rowNumber);
 
   // The end of the table
   html += endHTMLTable();

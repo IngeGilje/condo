@@ -14,10 +14,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-
-//objRemoteHeating.menu();
-//objRemoteHeating.markSelectedMenu('Fjernvarme');
-
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
@@ -367,8 +363,8 @@ function showFilter() {
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
-  html += showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+  html += objRemoteHeating.showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
+  html += objRemoteHeating.showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
 
   // Filter for search
   html += "<tr>";
@@ -401,7 +397,7 @@ function showFilter() {
     html += "</tr>";
 
     // Header filter for search
-    html += showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+    html += objRemoteHeating.showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
 
     // The end of the table
     html += endHTMLTable();

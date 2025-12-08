@@ -198,8 +198,8 @@ function showFilter() {
     html = startHTMLTable('width:1450px;');
 
     // Header filter for search
-    html += showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
-    html += showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+    html += objBankAccountTransactions.showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
+    html += objBankAccountTransactions.showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
 
     // Filter for search
     html += "<tr>";
@@ -227,7 +227,7 @@ function showFilter() {
     html += "</tr>";
 
     // Header filter
-    html += showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+    html += objBankAccountTransactions.showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
 
     // The end of the table
     html += endHTMLTable();
@@ -328,7 +328,7 @@ function showHeader() {
   let html = startHTMLTable('width:1450px;');
 
   // Main header
-  html += objBankAccountTransactions.showHTMLMainTableHeaderNew('widht:250px;', 'Bankkontotransaksjoner');
+  html += objBankAccountTransactions.showHTMLMainTableHeaderNew('widht:250px;', 0,'Bankkontotransaksjoner');
 
   // The end of the table
   html += endHTMLTable();
@@ -357,6 +357,7 @@ function showTableSumRow(rowNumber, sumIncome, sumPayment) {
   return html;
 }
 
+/*
 // Show the rest of the menu
 function showRestMenuNew(rowNumber) {
 
@@ -379,6 +380,7 @@ function showRestMenuNew(rowNumber) {
 
   return html;
 }
+*/
 
 // Delete bankaccounttransactions row
 async function deleteBankAccountTransactionRow(bankAccountTransationId, className) {
@@ -417,7 +419,7 @@ function showResult() {
   let html = startHTMLTable('width:1450px;');
 
   // Header
-  html += objBankAccountTransactions.showHTMLMainTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
+  html += objBankAccountTransactions.showHTMLMainTableHeaderNew("width:750px;", 0, '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
 
   let sumIncome = 0;
   let sumPayment = 0;

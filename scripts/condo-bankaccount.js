@@ -349,7 +349,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 'Bankkonto sameie');
+  html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Bankkonto sameie');
 
   // The end of the table
   html += endHTMLTable();
@@ -389,12 +389,12 @@ function showResult(bankAccountId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', '', '', '');
+    html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, '', '', '');
 
     // Show menu
     // Header for value including menu
     menuNumber++;
-    html += objBankAccounts.showHTMLTableHeader("width:250px;", menuNumber, 'Navn', 'Bankontonummer');
+    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Navn', 'Bankontonummer');
 
     html += "<tr>";
 
@@ -412,7 +412,7 @@ function showResult(bankAccountId) {
 
     // Show menu
     menuNumber++;
-    html += objBankAccounts.showHTMLTableHeader("width:250px;", menuNumber, 'Dato', 'Inngående saldo');
+    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Dato', 'Inngående saldo');
 
     html += "<tr>";
 
@@ -432,7 +432,7 @@ function showResult(bankAccountId) {
     // Show menu
     // Header for value
     menuNumber++;
-    html += objBankAccounts.showHTMLTableHeader("width:250px;", menuNumber, 'Dato', 'Utgående saldo');
+    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Dato', 'Utgående saldo');
 
     html += "<tr>";
 
@@ -600,8 +600,8 @@ async function showFilter(condominiumId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', '', '');
-  html += showHTMLFilterHeader("width:250px;", '', 'Velg leilighet', '');
+  html += objBankAccounts.showHTMLFilterHeader("width:250px;", '', '', '');
+  html += objBankAccounts.showHTMLFilterHeader("width:250px;", '', 'Velg leilighet', '');
 
   // Filter for search
   html += "<tr>";
@@ -619,7 +619,7 @@ async function showFilter(condominiumId) {
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objBankAccounts.showHTMLFilterHeader("width:750px;", '', '', '');
 
   // The end of the table
   html += endHTMLTable();

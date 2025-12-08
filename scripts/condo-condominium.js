@@ -12,9 +12,6 @@ testMode();
 // Exit application if no activity for 1 hour
 //exitIfNoActivity();
 
-//objCondominiums.menu();
-//objCondominiums.markSelectedMenu('Sameie');
-
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
@@ -316,7 +313,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objCondominiums.showHTMLMainTableHeaderNew('widht:250px;', 'Sameie');
+  html += objCondominiums.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Sameie');
 
   // The end of the table
   html += endHTMLTable();
@@ -330,8 +327,8 @@ function showFilter(condominiumId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '');
-  html += showHTMLFilterHeader("width:250px;", '', '', 'Velg sameie');
+  html += objCondominiums.showHTMLFilterHeader("width:250px;", '');
+  html += objCondominiums.showHTMLFilterHeader("width:250px;", '', '', 'Velg sameie');
 
   // Filter for search
   html += "<tr>";
@@ -344,7 +341,7 @@ function showFilter(condominiumId) {
   html += "</tr>";
 
   // Header filter for search
-  html += showHTMLFilterHeader("width:250px;", '', '', '', '', '');
+  html += objCondominiums.showHTMLFilterHeader("width:250px;", '', '', '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -369,7 +366,7 @@ function showResult(condominiumId) {
     // Show menu
     // Header for value including menu
     menuNumber++;
-    html += objCondominiums.showHTMLTableHeader("width:250px;", menuNumber, 'Navn');
+    html += objCondominiums.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Navn');
 
     html += "<tr>";
 
@@ -389,7 +386,7 @@ function showResult(condominiumId) {
     // street, address2
     html += "<tr>";
     menuNumber++;
-    html += objCondominiums.showHTMLTableHeader("width:250px;", menuNumber, 'Gate', 'Adresse 2');
+    html += objCondominiums.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Gate', 'Adresse 2');
 
     // Show menu
     html += "<tr>";
@@ -407,7 +404,7 @@ function showResult(condominiumId) {
     // postalCode, city
     html += "<tr>";
     menuNumber++;
-    html += objCondominiums.showHTMLTableHeader("width:250px;", menuNumber, 'Postnummer', 'Poststed');
+    html += objCondominiums.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Postnummer', 'Poststed');
 
     // Show menu
     html += "<tr>";
@@ -425,7 +422,7 @@ function showResult(condominiumId) {
     // email, phone
     html += "<tr>";
     menuNumber++;
-    html += objCondominiums.showHTMLTableHeader("width:250px;", menuNumber, 'eMail', 'Telefonnummer');
+    html += objCondominiums.showHTMLTableHeaderNew("width:250px;", menuNumber, 'eMail', 'Telefonnummer');
 
     // Show menu
     menuNumber++;
@@ -442,7 +439,7 @@ function showResult(condominiumId) {
     // incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId
     html += "<tr>";
     menuNumber++;
-    html += objCondominiums.showHTMLTableHeader("width:250px;", menuNumber, 'Inntektskonto fjernvarme', 'Beløp');
+    html += objCondominiums.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Utgiftskonto fjernvarme', 'Beløp');
 
     // Show menu
     menuNumber++;
@@ -459,7 +456,7 @@ function showResult(condominiumId) {
     // commonCostAccountId, organizationNumber
     html += "<tr>";
     menuNumber++;
-    html += objCondominiums.showHTMLTableHeader("width:250px;", menuNumber, 'Inntekstonto husleie', 'Organisasjonsnummer');
+    html += objCondominiums.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Inntekstonto husleie', 'Organisasjonsnummer');
 
     // Show menu
     menuNumber++;
@@ -476,7 +473,7 @@ function showResult(condominiumId) {
     // importFileName
     html += "<tr>";
     menuNumber++;
-    html += objCondominiums.showHTMLTableHeader("width:250px;", menuNumber, 'Navn importfil');
+    html += objCondominiums.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Navn importfil');
 
     // Show menu
     menuNumber++;
