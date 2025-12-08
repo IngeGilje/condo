@@ -1,4 +1,5 @@
 Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til konto;Til
+08.12.2025;;"OPPGAVE Bedriftsterminal oppgave";;-693,00;Ikke tilgjengelig;Ikke tilgjengelig;Bedriftsterminal oppgave;NOK;32062337272;;;
 04.12.2025;;"800537080710273";;-724,65;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073969815;LYSE AS
 30.11.2025;;"FAKT.TJ MOTTATT FAKT NETTBANK 3 TRANS(ER) TYPE 438 437";;-7,50;Ikke tilgjengelig;Ikke tilgjengelig;Gebyr;NOK;32062337272;;;
 20.11.2025;;"Sameie 99a";2281,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32705753007;Åse Myklebust Stapnes;32062337272;
@@ -16,4 +17,4 @@ Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til
 
 "DRIFT., 3206.23.37272"
 "Inngående saldo pr. 01.11.2025:";"242178.00";"NOK"
-"Utgående saldo pr. 05.12.2025:";"252240.7";"NOK"
+"Utgående saldo pr. 08.12.2025:";"251547.7";"NOK"

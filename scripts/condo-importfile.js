@@ -463,13 +463,11 @@ async function updateOpeningClosingBalance() {
   let currentOpeningBalanceDate = '';
   let currentClosingBalanceDate = '';
 
-
   let textFile = objImportFile.strCSVTransaction.split(/\r?\n/);
   textFile.forEach(async (row) => {
 
     [accountingDate, balance, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
-
     if (validateEuroDateFormat(accountingDate)) {
 
       totalIncome += Number(formatKronerToOre(income));
@@ -493,17 +491,16 @@ async function updateOpeningClosingBalance() {
 
       // Get row number for bank account number in bank account array
       bankAccountRowNumber = (objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
+      if (bankAccountRowNumber !== -1) {
 
-      // Get row number for bank account number in bank account table
-      //bankAccountRowNumber = (arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber) + 1);
+        bankAccountId = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].bankAccountId;
 
-      bankAccountId = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].bankAccountId;
-
-      // Get current opening and closing balance
-      currentOpeningBalance = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalance;
-      currentOpeningBalanceDate = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalanceDate;
-      currentClosingBalance = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalance;
-      currentClosingBalanceDate = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate;
+        // Get current opening and closing balance
+        currentOpeningBalance = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalance;
+        currentOpeningBalanceDate = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalanceDate;
+        currentClosingBalance = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalance;
+        currentClosingBalanceDate = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate;
+      }
     }
 
     if (accountingDate.includes("Inngående saldo pr.") || accountingDate.includes("Inngåande saldo pr.")) {
@@ -542,17 +539,10 @@ async function updateOpeningClosingBalance() {
       closingBalance = closingBalance.replace(/ /g, "");
       closingBalance = Number(closingBalance) * 100;
 
-      /*
-      // Calculate opening balance
-      const openingBalance = Number(closingBalance) - (totalIncome + totalPayment);
-      */
-
-
       // Updating openening balance
       // Check for openening balance date
       if (Number(currentOpeningBalanceDate) <= Number(openingBalanceDate) || Number(currentOpeningBalanceDate) === 0 || currentOpeningBalanceDate === '') {
 
-        //await objBankAccounts.loadBankAccounts(condominiumId);
         const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
         if (bankAccountRowNumber !== -1) {
 
@@ -570,9 +560,7 @@ async function updateOpeningClosingBalance() {
       // Check for closing balance date
       if (Number(currentClosingBalanceDate) <= Number(closingBalanceDate) || Number(currentClosingBalanceDate) === 0 || currentClosingBalanceDate === '') {
 
-        //await objBankAccounts.loadBankAccounts(condominiumId);
-
-        const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+         const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
         if (bankAccountRowNumber !== -1) {
 
           const user = objUserPassword.email
@@ -590,8 +578,6 @@ async function updateOpeningClosingBalance() {
 
 // Get opening balance
 function getOpeningBalance() {
-
-  let openingBalace;
 
   textFile.forEach((row) => {
 

@@ -212,6 +212,7 @@ class BankAccount extends Condos {
       console.log("Error loading bank accounts:", error);
     }
   }
+  
   // update bank accounts row
   async updateBankAccountsTable(bankAccountId,user,bankAccount,name,openingBalance,openingBalanceDate,closingBalance,closingBalanceDate) {
 
