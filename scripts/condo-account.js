@@ -122,19 +122,6 @@ function events() {
   });
 }
 
-// Check for valid values
-function validateValues() {
-
-  // Check account Name
-  const accountName = document.querySelector('.input-accounts-accountName').value;
-  const validName = objAccounts.validateText(accountName, "label-accounts-accountName", "Kontonavn");
-
-  const fixedCost = document.querySelector('.select-accounts-fixedCost').value;
-  const validFixedCost = objAccounts.validateText(fixedCost, "label-accounts-fixedCost", fixedCost);
-
-  return (validName && validFixedCost) ? true : false;
-}
-
 function resetValues() {
 
   // account Id

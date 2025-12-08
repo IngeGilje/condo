@@ -349,63 +349,6 @@ class Condos {
   }
 
   // Valid text
-  validateText(tekst, className, labelText) {
-
-    let validTekst = true;
-
-    // Check for string
-    if (typeof tekst !== "string") {
-
-      validTekst = false;
-    }
-
-    // Check length
-    if (tekst.length > 50) {
-
-      validTekst = false;
-    };
-
-    // Check allowed characters (letters, numbers, spaces)
-    if (tekst.length > 0) {
-
-      const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
-      validTekst = (regex.test(tekst)) ? true : false;
-    } else {
-
-      validTekst = false;
-    }
-
-    if (!validTekst) {
-
-      // Invalid text
-      if (isClassDefined(className)) {
-
-        document.querySelector(`.${className}`).outerHTML =
-          `
-            <div class="${className}-red">
-              * Ugyldig ${labelText}
-            </div>
-          `;
-      }
-    }
-
-    if (validTekst) {
-
-      // Valid text
-      if (isClassDefined(`${className}-red`)) {
-
-        document.querySelector(`.${className}-red`).outerHTML =
-          `
-            <div class="${className}">
-              * ${labelText}
-            </div>
-          `;
-      }
-    }
-    return validTekst;
-  }
-
-  // Valid text
   validateTextNew(tekst, minLenght, maxLength) {
 
     // Check for string
@@ -419,6 +362,7 @@ class Condos {
     return (regex.test(tekst)) ? true : false;
   }
 
+  /*
   // Validate postal code
   validatePostalCode(postalCode, className, labelText) {
 
@@ -451,7 +395,9 @@ class Condos {
     }
     return isValidPostalCode;
   }
+  */
 
+  /*
   // Validate E-mail
   validateEmail(eMail, className, labelText) {
 
@@ -487,7 +433,9 @@ class Condos {
     }
     return isValideMail;
   }
+  *
 
+  /*
   // validate bank account 
   validateBankAccount(bankAccount, className, labelText) {
 
@@ -518,6 +466,7 @@ class Condos {
       return true;
     }
   }
+  */
 
   // validate bank account 
   validateBankAccountNew(bankAccount) {

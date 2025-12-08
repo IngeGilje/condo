@@ -537,49 +537,6 @@ function showValues(userId) {
 }
 */
 
-/*
-// Check for valid values
-function validateValues(userId) {
-
-  // Check email
-  const eMail =
-    document.querySelector('.input-users-email').value;
-  const validEmail =
-    objUsers.validateEmail(eMail, "label-users-email", "E-mail(Bruker)");
-
-  // Check condo Id
-  const condoId =
-    Number(document.querySelector('.select-users-condoId').value);
-  const validCondoId =
-    validateNumber(condoId, 1, 99999, "users-condoId", "Vis leilighet");
-
-  // Check first name
-  const firstName = document.querySelector('.input-users-firstName').value;
-  const validFirstName =
-    objUsers.validateText(firstName, "label-users-firstName", "Fornavn");
-
-  // Check last name
-  const lastName =
-    document.querySelector('.input-users-lastName').value;
-  const validLastName =
-    objUsers.validateText(lastName, "label-users-lastName", "Etternavn");
-
-  const securityLevel =
-    Number(document.querySelector('.select-users-securityLevel').value);
-  const validSecuritylevel =
-    validateNumber(securityLevel, 1, 9, "users-securityLevel", "Sikkerhetsnivå");
-
-  // Check password
-  const password =
-    document.querySelector('.input-users-password').value;
-  const validpassword =
-    objUsers.validateText(password, "label-users-password", "Passord");
-
-  return (validEmail && validCondoId && validpassword && validFirstName && validLastName && validSecuritylevel) ? true : false;
-}
-*/
-
-
 function resetValues() {
 
   // user Id

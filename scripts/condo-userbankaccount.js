@@ -400,29 +400,7 @@ function showValues(userBankAccountId) {
   }
 }
 */
-/*
-// Check for valid values
-function validateValues() {
 
-  // Check user Id
-  const userId = Number(document.querySelector('.select-userbankaccounts-userId').value);
-  const validUserId = validateNumber(userId, 1, 99999, "userbankaccounts-userId", "bruker");
-
-  // Check account Id
-  const accountId = Number(document.querySelector('.select-userbankaccounts-accountId').value);
-  const validAccountId = validateNumber(accountId, 1, 99999, "userbankaccounts-accountId", "konto");
-
-  // Check name
-  const userBankAccountName = document.querySelector('.input-userbankaccounts-name').value;
-  const validUserBankAccountName = objUserBankAccounts.validateText(userBankAccountName, "label-userbankaccounts-name", "Navn");
-
-  // Check bank account
-  const bankAccount = document.querySelector('.input-userbankaccounts-bankAccount').value;
-  const validBankAccount = objUserBankAccounts.validateBankAccount(bankAccount, "label-userbankaccounts-bankAccount", "Bankkonto");
-
-  return (validAccountId && validUserId && validBankAccount && validUserBankAccountName) ? true : false;
-}
-*/
 /*
 function resetValues() {
 
@@ -708,7 +686,6 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
   
-
   // Validate userbankaccounts columns
   if (validateColumns(userBankAccountId)) {
 
@@ -748,16 +725,16 @@ function validateColumns(userBankAccountId) {
   // Check user account users columns
   let className = `.userId${userBankAccountId}`;
   const userId = Number(document.querySelector(className).value);
-  const validateUserId = validateNumberNew(userId, 1, 999999998);
+  const validUserId = validateNumberNew(userId, 1, 999999998);
 
   className = `.accountId${userBankAccountId}`;
   const accountId = Number(document.querySelector(className).value);
-  const validateAccountId = validateNumberNew(accountId, 1, 999999998);
+  const validAccountId = validateNumberNew(accountId, 1, 999999998);
 
   className = `.bankAccount${userBankAccountId}`;
   const bankAccount = document.querySelector(className).value;
-  const validateBankAccount = objUserBankAccounts.validateBankAccount(bankAccount);
+  const validBankAccount = objUserBankAccounts.validateBankAccountNew(bankAccount);
 
-  return (validateUserId && validateAccountId && validateBankAccount) ? true : false;
+  return (validUserId && validAccountId && validBankAccount) ? true : false;
 }
 

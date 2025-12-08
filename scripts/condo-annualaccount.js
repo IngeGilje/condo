@@ -1193,6 +1193,9 @@ function showBankDeposit(rowNumber) {
 
   html += "<tr>";
 
+  // Show the rest of the menu
+    html += objBankAccountTransactions.showRestMenuNew(rowNumber);
+
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.bankDeposit').innerHTML = html;

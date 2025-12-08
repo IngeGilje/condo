@@ -31,7 +31,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
     await objBankAccounts.loadBankAccountsTable(condominiumId, 999999999);
 
     // Show header
@@ -302,7 +302,7 @@ async function deleteCondominiumRow() {
 
     // delete condominium row
     const user = objUserPassword.email;
-    
+
     await objCondominiums.deleteCondominiumsTable(condominiumId, user);
   }
 }
@@ -439,7 +439,7 @@ function showResult(condominiumId) {
     // incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId
     html += "<tr>";
     menuNumber++;
-    html += objCondominiums.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Utgiftskonto fjernvarme', 'Beløp');
+    html += objCondominiums.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Utgiftskonto fjernvarme', 'Inntekstkonto fjernvarme');
 
     // Show menu
     menuNumber++;
@@ -449,7 +449,8 @@ function showResult(condominiumId) {
     html += objAccounts.showSelectedAccountsNew('incomeRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[condominiumRowNumber].incomeRemoteHeatingAccountId, '', '');
 
     // paymentRemoteHeatingAccountId
-    html += objCondominiums.showInputHTMLNew('paymentRemoteHeatingAccountId', objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId, 10);
+    //html += objCondominiums.showInputHTMLNew('paymentRemoteHeatingAccountId', objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId, 10);
+    html += objAccounts.showSelectedAccountsNew('paymentRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId, '', '');
 
     html += "</tr>";
 
@@ -492,10 +493,10 @@ function showResult(condominiumId) {
 
     // show buttons
     html += "<tr>";
+
     // Show menu
     menuNumber++;
     html += objCondominiums.menuNew(menuNumber);
-
     html += objCondominiums.showButtonNew('width:170px;', 'update', 'Oppdater');
     html += objCondominiums.showButtonNew('width:170px;', 'cancel', 'Angre');
     html += "</tr>";
@@ -508,10 +509,10 @@ function showResult(condominiumId) {
 
     // show buttons
     html += "<tr>";
+
     // Show menu
     menuNumber++;
     html += objCondominiums.menuNew(menuNumber);
-
     html += objCondominiums.showButtonNew('width:170px;', 'delete', 'Slett');
     html += objCondominiums.showButtonNew('width:170px;', 'insert', 'Ny');
     html += "</tr>";
@@ -532,7 +533,6 @@ async function updateCondominiumRow(condominiumId) {
   condominiumId = Number(condominiumId);
 
   const user = objUserPassword.email;
-  
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -580,7 +580,8 @@ async function updateCondominiumRow(condominiumId) {
 
   // Validate importFileName
   const importFileName = document.querySelector('.importFileName').value;
-  const validImportFileName = objCondominiums.validateFileNameNew(importFileName);
+  //const validImportFileName = objCondominiums.validateFileNameNew(importFileName);
+  const validImportFileName = true;
 
   if (validName && validStreet && validAddress2 && validPostalCode && validCity && validPhone && validEmail
     && validIncomeRemoteHeatingAccountId && validPaymentRemoteHeatingAccountId

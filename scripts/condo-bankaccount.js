@@ -29,7 +29,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
     await objCondominiums.loadCondominiumsTable();
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
 
@@ -132,6 +132,7 @@ function events() {
   });
 }
 
+/*
 async function updateBankAccount() {
 
   // Bank account id
@@ -180,7 +181,7 @@ async function updateBankAccount() {
     document.querySelector('.button-bankaccounts-insert').disabled = false;
   }
 }
-
+*/
 
 async function deleteBankAccount() {
 
@@ -193,7 +194,7 @@ async function deleteBankAccount() {
 
       // Delete bank bankaccounts row
       const user = objUserPassword.email;
-      
+
       objBankAccounts.deleteBankAccountsTable(bankAccountId, user);
     }
   }
@@ -276,31 +277,6 @@ function showValues(bankAccountId) {
   }
 }
 */
-
-// Check for valid values
-function validateValues() {
-
-  // validate bank account number
-  const bankAccount = document.querySelector('.input-bankaccounts-bankAccount').value;
-  const validBankAccount = objBankAccounts.validateBankAccount(bankAccount, "label-bankaccounts-bankAccount", "Bankkontonummer");
-
-  // validate bankaccount Name
-  const bankAccountName = document.querySelector('.input-bankaccounts-name').value;
-  const validName = objBankAccounts.validateText(bankAccountName, "label-bankaccounts-name", "Kontonavn");
-
-  // Opening balance date
-  let openingBalanceDate = document.querySelector('.input-bankaccounts-openingBalanceDate').value;
-  openingBalanceDate = convertDateToISOFormat(openingBalanceDate);
-
-  // Closing balance date
-  let closingBalanceDate = document.querySelector('.input-bankaccounts-closingBalanceDate').value;
-  closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
-
-  const validOpeningDate = validateInterval('label-bankaccounts-openingBalanceDate', 'Dato inngående saldo', openingBalanceDate, closingBalanceDate);
-  const validClosingDate = validateInterval('label-bankaccounts-closingBalanceDate', 'Dato utgående saldo', openingBalanceDate, closingBalanceDate);
-
-  return (validOpeningDate && validClosingDate && validName && validBankAccount) ? true : false;
-}
 
 /*
 function resetValues() {
@@ -496,11 +472,11 @@ async function updateBankAccountRow(bankAccountId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
-  
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
-  const validBankAccount = objBankAccounts.validateBankAccount(bankAccount, "label-bankaccounts-bankAccount", "Bankkontonummer");
+  //const validBankAccount = objBankAccounts.validateBankAccount(bankAccount, "label-bankaccounts-bankAccount", "Bankkontonummer");
+  const validBankAccount = objBankAccounts.validateBankAccountNew(bankAccount);
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -509,6 +485,7 @@ async function updateBankAccountRow(bankAccountId) {
   // Opening balance date
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
   openingBalanceDate = convertDateToISOFormat(openingBalanceDate);
+  const validopeningBalanceDate = objBankAccounts.validateIntervalNew(openingBalanceDate, 20200101, 20291231)
 
   // Opening balance
   let openingBalance = document.querySelector('.openingBalance').value;
@@ -518,6 +495,7 @@ async function updateBankAccountRow(bankAccountId) {
   // Closing balance date
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
   closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
+  const validClosingBalanceDate = objBankAccounts.validateIntervalNew(closingBalanceDate, 20200101, 20291231)
 
   // Closing balance
   let closingBalance = document.querySelector('.closingBalance').value;
@@ -554,7 +532,7 @@ async function updateBankAccountRow(bankAccountId) {
 async function deleteBankAccountRow(bankAccountId) {
 
   const user = objUserPassword.email;
-  
+
 
   // Check if bankaccount row exist
   bankAccountsRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);

@@ -162,34 +162,6 @@ function events() {
 }
 
 /*
-// Check for valid values
-function validateValues(dueId) {
-
-  // Check for valid condo Id
-  const condoId = document.querySelector('.select-dues-condoId').value;
-  const validCondoId = validateNumber(condoId, 1, 99999, 'dues-condoId', 'Leilighet');
-
-  // Check for valid account Id
-  const accountId = document.querySelector('.select-dues-accountId').value;
-  const validAccountId = validateNumber(condoId, 1, 99999, 'dues-accountId', 'Konto');
-
-  // Check for valid date
-  const date = document.querySelector('.input-dues-date').value;
-  const validDate = validateNorDate(date, 'dues-date', 'Dato');
-
-  // Check amount
-  const amount = formatToNorAmount(document.querySelector('.input-dues-amount').value);
-  const validAmount = objDues.validateNorAmount(amount, "dues-amount", "Månedsbetaling");
-
-  // Check text
-  const text = document.querySelector('.input-dues-text').value;
-  const validText = objDues.validateText(text, "label-dues-text", "Tekst");
-
-  return (validAccountId && validCondoId && validDate && validAmount && validText) ? true : false;
-}
-*/
-
-/*
 // Show values for due
 function showValues(dueId) {
 

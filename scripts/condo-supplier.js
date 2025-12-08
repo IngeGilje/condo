@@ -473,18 +473,6 @@ function showValues(supplierId) {
 }
 */
 
-/*
-// Check for valid values
-function validateValues() {
-
-  // Check name
-  const supplierName = document.querySelector('.input-suppliers-name').value;
-  const validName = objSuppliers.validateText(supplierName, "label-suppliers-name", "Navn");
-
-  return (validName) ? true : false;
-}
-*/
-
 function resetValues() {
 
   // supplier Id
