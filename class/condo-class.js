@@ -62,28 +62,23 @@ class Condos {
       text: "Budsjett"
     },
     {
-      applicationName: "condo-remoteheating.html",
-      className: "Menu11",
-      text: "Fjernvarme"
-    },
-    {
       applicationName: "condo-overview.html",
-      className: "Menu12",
+      className: "Menu11",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu13",
+      className: "Menu12",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu14",
+      className: "Menu13",
       text: "Importer banktransaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu15",
+      className: "Menu14",
       text: "Årsregnskap"
     },
   ];
@@ -1424,13 +1419,14 @@ class Condos {
     return fileNameRegex.test(fileName);
   }
 
+  /*
   // Show main header table
   showHTMLMainTableHeaderNew(style, menuNumber, ...texts) {
 
-       //let html = `<tr class="bold">`;
-       let html = `<tr>`;
+    //let html = `<tr class="bold">`;
+    let html = `<tr>`;
 
-       if (menuNumber > 0) html += this.menuNew(menuNumber);
+    if (menuNumber > 0) html += this.menuNew(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1460,11 +1456,31 @@ class Condos {
     html += "</tr>";
     return html;
   }
+  */
+
+  // Show main header table
+  showTableHeaderNew(style, ...texts) {
+
+    let html = `<tr>`;
+
+    texts.forEach((text) => {
+
+      if (text === '' && style === '') html += `<th class="no-border">${text}</th>`;
+      if (text === '' && style !== '') html += `<th class="no-border" style="${style}">${text}</th>`;
+      if (text !== '' && style === '') html += `<th class="center no-border">${text}</th>`;
+      if (text !== '' && style !== '') html += `<th class="center no-border" style="${style}">${text}</th>`;
+    });
+
+    html += "</tr>";
+    return html;
+  }
 
   // Show filter header table
-  showHTMLFilterHeader(style, ...texts) {
+  showHTMLFilterHeader(style, menuNumber, ...texts) {
 
     let html = "<tr>";
+
+    if (menuNumber > 0) html += this.menuNew(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1482,7 +1498,7 @@ class Condos {
 
     let html = "<tr>";
 
-        if (menuNumber > 0) html += this.menuNew(menuNumber);
+    if (menuNumber > 0) html += this.menuNew(menuNumber);
 
     texts.forEach((text) => {
 

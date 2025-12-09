@@ -30,6 +30,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objCondos.loadCondoTable(objUserPassword.condominiumId);
 
     // Show header
+          let menuNumber = 0;
     showHeader();
 
     const userId = objUsers.arrayUsers.at(-1).userId;
@@ -38,7 +39,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showFilter(userId);
 
     // Show result
-    showResult(userId);
+    menuNumber = showResult(userId, menuNumber);
 
     // Events
     events();
@@ -57,7 +58,8 @@ function events() {
       async function filterSync() {
 
         const userId = Number(document.querySelector('.filterUserId').value);
-        showResult(userId);
+        let menuNumber = 0;
+        menuNumber = showResult(userId, menuNumber);
       }
     };
   });
@@ -95,7 +97,8 @@ function events() {
         const userId = objUsers.arrayUsers.at(-1).userId;
         showFilter(userId);
 
-        showResult(userId);
+        let menuNumber = 0;
+        menuNumber = showResult(userId, menuNumber);
       };
     };
   });
@@ -125,7 +128,8 @@ function events() {
         // Show filter
         showFilter(userId);
 
-        showResult(userId);
+        let menuNumber = 0;
+        menuNumber = showResult(userId, menuNumber);
       };
     };
   });
@@ -143,7 +147,7 @@ async function deleteCondo() {
 
     // delete condo row
     const user = objUserPassword.email;
-    
+
     objCondos.deleteCondoTable(userId, user);
   }
 }
@@ -568,25 +572,6 @@ function resetValues() {
   document.querySelector('.insert').disabled = true;
 }
 
-/*
-// Delete user
-async function deleteUser() {
-
-  // Check for valid user number
-  const userId = Number(document.querySelector('.select-users-userId').value);
-
-  // Check if user number exist
-  const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
-  if (userRowNumber !== -1) {
-
-    // delete user row
-    const user = objUserPassword.email;
-    
-    objUsers.deleteUsersTable(userId, user);
-  }
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -594,7 +579,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Bruker');
+  html += objUsers.showTableHeaderNew('widht:250px;', 'Bruker');
 
   // The end of the table
   html += endHTMLTable();
@@ -608,8 +593,8 @@ function showFilter(userId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objUsers.showHTMLFilterHeader("width:250px;", '', '', '');
-  html += objUsers.showHTMLFilterHeader("width:250px;", '', 'Velg bruker', '');
+  html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
+  html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg bruker', '');
 
   // Filter for search
   html += "<tr>";
@@ -621,7 +606,7 @@ function showFilter(userId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objUsers.showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objUsers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -629,29 +614,28 @@ function showFilter(userId) {
 }
 
 // Show result
-function showResult(userId) {
+function showResult(userId, rowNumber) {
 
   // Check if users row exist
   const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
   if (userRowNumber !== -1) {
 
-    let menuNumber = 0;
-
     // Start table
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objUsers.showHTMLMainTableHeaderNew('widht:250px;', 0, '', '', '');
+    rowNumber++;
+    html += objUsers.showTableHeaderNew('widht:250px;', '', '', '');
 
     // email,condoId
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'E-mail', 'Leilighet');
+    rowNumber++;
+    html += objUsers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'E-mail', 'Leilighet');
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.menuNew(menuNumber);
+    rowNumber++;
+    html += objUsers.menuNew(rowNumber);
 
     // email
     html += objUsers.showInputHTMLNew('email', objUsers.arrayUsers[userRowNumber].email, 45);
@@ -663,13 +647,13 @@ function showResult(userId) {
 
     // firstName, lastName
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Fornavn', 'Etternavn');
+    rowNumber++;
+    html += objUsers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Fornavn', 'Etternavn');
 
     // firstName, lastName
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.menuNew(menuNumber);
+    rowNumber++;
+    html += objUsers.menuNew(rowNumber);
 
     // firstName
     html += objUsers.showInputHTMLNew('firstName', objUsers.arrayUsers[userRowNumber].firstName, 45);
@@ -681,13 +665,13 @@ function showResult(userId) {
 
     // securityLevel,password
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Passord', 'Sikkerhetsnivå');
+    rowNumber++;
+    html += objUsers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Passord', 'Sikkerhetsnivå');
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.menuNew(menuNumber);
+    rowNumber++;
+    html += objUsers.menuNew(rowNumber);
 
     // password
     html += objUsers.showInputHTMLNew('password', objUsers.arrayUsers[userRowNumber].password, 45);
@@ -699,13 +683,13 @@ function showResult(userId) {
 
     // phone
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Telefonnummer', 'Beboer');
+    rowNumber++;
+    html += objUsers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Telefonnummer', 'Beboer');
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.menuNew(menuNumber);
+    rowNumber++;
+    html += objUsers.menuNew(rowNumber);
 
     // phone
     html += objUsers.showInputHTMLNew('phone', objUsers.arrayUsers[userRowNumber].phone, 15);
@@ -717,15 +701,15 @@ function showResult(userId) {
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.menuNew(menuNumber);
+    rowNumber++;
+    html += objUsers.menuNew(rowNumber);
     html += "</tr>";
 
     // show buttons
     html += "<tr>";
     // Show menu
-    menuNumber++;
-    html += objUsers.menuNew(menuNumber);
+    rowNumber++;
+    html += objUsers.menuNew(rowNumber);
 
     html += objUsers.showButtonNew('width:170px;', 'update', 'Oppdater');
     html += objUsers.showButtonNew('width:170px;', 'cancel', 'Angre');
@@ -733,26 +717,28 @@ function showResult(userId) {
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objUsers.menuNew(menuNumber);
+    rowNumber++;
+    html += objUsers.menuNew(rowNumber);
     html += "</tr>";
 
     // show buttons
     html += "<tr>";
     // Show menu
-    menuNumber++;
-    html += objUsers.menuNew(menuNumber);
+    rowNumber++;
+    html += objUsers.menuNew(rowNumber);
 
     html += objUsers.showButtonNew('width:170px;', 'delete', 'Slett');
     html += objUsers.showButtonNew('width:170px;', 'insert', 'Ny');
     html += "</tr>";
 
     // Show the rest of the menu
-    html += objUsers.showRestMenuNew(menuNumber);
+    html += objUsers.showRestMenuNew(rowNumber);
 
     // The end of the table
     html += endHTMLTable();
     document.querySelector('.result').innerHTML = html;
+
+    return rowNumber;
   }
 }
 
@@ -767,7 +753,7 @@ async function updateUserRow(userId) {
   const condominiumId = Number(objUserPassword.condominiumId);
 
   const user = objUserPassword.email;
-  
+
 
   // resident
   let resident = document.querySelector('.resident').value;
@@ -822,7 +808,8 @@ async function updateUserRow(userId) {
     // Show filter
     showFilter(userId);
 
-    showResult(userId);
+    let menuNumber = 0;
+    menuNumber = showResult(userId, menuNumber);
 
     document.querySelector('.filterUserId').disabled = false;
     document.querySelector('.delete').disabled = false;
@@ -842,7 +829,7 @@ async function deleteUserRow() {
 
     // delete a user row
     const user = objUserPassword.email;
-    
+
     await objUsers.deleteUsersTable(userId, user);
   }
 }

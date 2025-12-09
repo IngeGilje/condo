@@ -35,13 +35,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const supplierId = objSuppliers.getSelectedSupplierId('select-supplierId');
 
     // Show header
-    showHeader();
+          let menuNumber = 0;
+;
 
     // Show filter
     showFilter(supplierId);
 
     // Show supplier
-    showResult(supplierId);
+    menuNumber = showResult(supplierId, menuNumber);
 
     // Events
     events();
@@ -63,7 +64,9 @@ function events() {
         await objSuppliers.loadSuppliersTable(condominiumId);
 
         const supplierId = Number(document.querySelector('.filterSupplierId').value);
-        showResult(supplierId);
+
+    let menuNumber = 0;
+    menuNumber = showResult(supplierId, menuNumber);
       }
     };
   });
@@ -100,7 +103,8 @@ function events() {
         const supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
         showFilter(supplierId);
 
-        showResult(supplierId);
+    let menuNumber = 0;
+    menuNumber = showResult(supplierId, menuNumber);
       };
     };
   });
@@ -129,7 +133,8 @@ function events() {
         // Show filter
         showFilter(SupplierId);
 
-        showResult(SupplierId);
+    let menuNumber = 0;
+    menuNumber = showResult(supplierId, menuNumber);
       };
     };
   });
@@ -527,7 +532,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objSuppliers.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Mottaker');
+  html += objSuppliers.showTableHeaderNew('widht:250px;', 'Mottaker');
 
   // The end of the table
   html += endHTMLTable();
@@ -541,8 +546,8 @@ function showFilter(supplierId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objSuppliers.showHTMLFilterHeader("width:250px;", '', '', '');
-  html += objSuppliers.showHTMLFilterHeader("width:250px;", '', 'Velg mottaker', '');
+  html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
+  html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg mottaker', '');
 
   // Filter for search
   html += "<tr>";
@@ -555,7 +560,7 @@ function showFilter(supplierId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objSuppliers.showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objSuppliers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -566,31 +571,30 @@ function showFilter(supplierId) {
 }
 
 // Show result
-function showResult(supplierId) {
+function showResult(supplierId, rowNumber) {
 
   // Check if supplier row exist
   const supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
   if (supplierRowNumber !== -1) {
 
-    let menuNumber = 0;
-
     // Start table
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objSuppliers.showHTMLMainTableHeaderNew('widht:250px;', 0, '', '', '');
+    rowNumber++;
+    html += objSuppliers.showTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu
-    menuNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Navn');
+    rowNumber++;
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn');
 
     html += "<tr>";
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
 
     // name
     html += objSuppliers.showInputHTMLNew('name', objSuppliers.arraySuppliers[supplierRowNumber].name, 45);
@@ -599,13 +603,13 @@ function showResult(supplierId) {
 
     // street, address2
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Gate', 'Adresse 2');
+    rowNumber++;
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Gate', 'Adresse 2');
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
 
     // street
     html += objSuppliers.showInputHTMLNew('street', objSuppliers.arraySuppliers[supplierRowNumber].street, 45);
@@ -617,13 +621,13 @@ function showResult(supplierId) {
 
     // postalCode, city
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Postnummer', 'Poststed');
+    rowNumber++;
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Postnummer', 'Poststed');
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
 
     // postalCode
     html += objSuppliers.showInputHTMLNew('postalCode', objSuppliers.arraySuppliers[supplierRowNumber].postalCode, 4);
@@ -635,12 +639,12 @@ function showResult(supplierId) {
 
     // email,phone
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'e-Mail', 'Telefonnummer');
+    rowNumber++;
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'e-Mail', 'Telefonnummer');
 
     // Show menu
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
 
     // email
     html += objSuppliers.showInputHTMLNew('email', objSuppliers.arraySuppliers[supplierRowNumber].email, 50);
@@ -652,12 +656,12 @@ function showResult(supplierId) {
 
     // bankAccount, accountId
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Bankkonto', 'Konto');
+    rowNumber++;
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Bankkonto', 'Konto');
 
     // Show menu
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
 
     // accountId
     html += objAccounts.showSelectedAccountsNew('accountId', '', objSuppliers.arraySuppliers[supplierRowNumber].accountId, 'Ingen konto er valgt', '');
@@ -669,12 +673,12 @@ function showResult(supplierId) {
 
     // amountAccountId, amount
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Konto for beløp', 'Beløp');
+    rowNumber++;
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Konto for beløp', 'Beløp');
 
     // Show menu
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
 
     // amountAccountId
     html += objAccounts.showSelectedAccountsNew('amountAccountId', '', objSuppliers.arraySuppliers[supplierRowNumber].amountAccountId, 'Ingen konto er valgt', '');
@@ -686,12 +690,12 @@ function showResult(supplierId) {
 
     // textAccountId, text
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Konto for tekst', 'Tekst');
+    rowNumber++;
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Konto for tekst', 'Tekst');
 
     // Show menu
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
 
     // textAccountId
     html += objAccounts.showSelectedAccountsNew('textAccountId', '', objSuppliers.arraySuppliers[supplierRowNumber].textAccountId, 'Ingen konto er valgt', '');
@@ -703,15 +707,15 @@ function showResult(supplierId) {
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
     html += "</tr>";
 
     // show buttons
     html += "<tr>";
     // Show menu
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
 
     html += objSuppliers.showButtonNew('width:170px;', 'update', 'Oppdater');
     html += objSuppliers.showButtonNew('width:170px;', 'cancel', 'Angre');
@@ -719,22 +723,22 @@ function showResult(supplierId) {
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
     html += "</tr>";
 
     // show buttons
     html += "<tr>";
     // Show menu
-    menuNumber++;
-    html += objSuppliers.menuNew(menuNumber);
+    rowNumber++;
+    html += objSuppliers.menuNew(rowNumber);
 
     html += objSuppliers.showButtonNew('width:170px;', 'delete', 'Slett');
     html += objSuppliers.showButtonNew('width:170px;', 'insert', 'Ny');
     html += "</tr>";
 
     // Show the rest of the menu
-    html += objSuppliers.showRestMenuNew(menuNumber);
+    html += objSuppliers.showRestMenuNew(rowNumber);
 
     // The end of the table
     html += endHTMLTable();
@@ -846,7 +850,8 @@ async function updateSupplierRow(supplierId) {
     // Show filter
     showFilter(supplierId);
 
-    showResult(supplierId);
+    let menuNumber = 0;
+    menuNumber = showResult(supplierId, menuNumber);
 
     document.querySelector('.filterSupplierId').disabled = false;
     document.querySelector('.delete').disabled = false;

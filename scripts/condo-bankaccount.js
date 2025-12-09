@@ -34,6 +34,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
 
     // Show header
+    let menuNumber = 0;
     showHeader();
 
     // Show filter
@@ -44,7 +45,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
     // Show result
-    showResult(bankAccountId);
+    showResult(bankAccountId, menuNumber);
 
     // Events
     events();
@@ -67,7 +68,8 @@ function events() {
         const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
         await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-        showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(bankAccountId,menuNumber);
       }
     };
   });
@@ -101,7 +103,8 @@ function events() {
         const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
         await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-        showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(bankAccountId,menuNumber);
       };
     };
   });
@@ -126,7 +129,8 @@ function events() {
         const bankAccountId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
         await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-        showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(bankAccountId,menuNumber);
       };
     };
   });
@@ -325,7 +329,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Bankkonto sameie');
+  html += objBankAccounts.showTableHeaderNew('widht:250px;', 'Bankkonto sameie');
 
   // The end of the table
   html += endHTMLTable();
@@ -353,7 +357,8 @@ function showHTMLFilterSearch() {
 }
 
 // Show result
-function showResult(bankAccountId) {
+//function showResult(bankAccountId, rowNumber) {
+function showResult(bankAccountId, rowNumber) {
 
   // Check if bankaccounts row exist
   const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
@@ -365,12 +370,13 @@ function showResult(bankAccountId) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, '', '', '');
+    rowNumber++;
+    html += objBankAccounts.showTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu
     menuNumber++;
-    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Navn', 'Bankontonummer');
+    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn', 'Bankontonummer');
 
     html += "<tr>";
 
@@ -464,6 +470,8 @@ function showResult(bankAccountId) {
     // The end of the table
     html += endHTMLTable();
     document.querySelector('.result').innerHTML = html;
+
+    return rowNumber;
   }
 }
 
@@ -524,7 +532,8 @@ async function updateBankAccountRow(bankAccountId) {
 
     await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-    showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(bankAccountId,menuNumber);
   }
 }
 
@@ -578,8 +587,8 @@ async function showFilter(condominiumId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objBankAccounts.showHTMLFilterHeader("width:250px;", '', '', '');
-  html += objBankAccounts.showHTMLFilterHeader("width:250px;", '', 'Velg leilighet', '');
+  html += objBankAccounts.showHTMLFilterHeader("width:250px;",  0, '', '', '');
+  html += objBankAccounts.showHTMLFilterHeader("width:250px;",  0,'', 'Velg leilighet', '');
 
   // Filter for search
   html += "<tr>";
@@ -597,7 +606,7 @@ async function showFilter(condominiumId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objBankAccounts.showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objBankAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
 
   // The end of the table
   html += endHTMLTable();

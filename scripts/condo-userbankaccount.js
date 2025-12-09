@@ -28,17 +28,18 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const resident = 'Y';
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
     await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
 
     // Show header
+    let menuNumber = 0;
     showHeader();
 
     // Show filter
-    showFilter();
+    showFilter()
 
     // Show accounts
-    showResult();
+    menuNumber = showResult(menuNumber);
 
     // Events
     events();
@@ -62,7 +63,8 @@ function events() {
         const accountId = Number(document.querySelector('.filterAccountId').value);
         await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, userId, accountId);
 
-        showResult();
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -74,7 +76,7 @@ function events() {
       || [...event.target.classList].some(cls => cls.startsWith('accountId'))
       || [...event.target.classList].some(cls => cls.startsWith('bankAccount'))) {
 
-        const arrayPrefixes = ['userId', 'accountId', 'bankAccount'];
+      const arrayPrefixes = ['userId', 'accountId', 'bankAccount'];
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -115,10 +117,11 @@ function events() {
 
           deleteAccountRow(accountId, className);
 
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
+          const fixedCost = 'A';
+          await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-          showResult();
+          let menuNumber = 0;
+          menuNumber = showResult(menuNumber);
         };
       };
     };
@@ -497,7 +500,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Bankkonto for bruker');
+  html += objUserBankAccounts.showTableHeaderNew('widht:250px;', 'Bankkonto for bruker');
 
   // The end of the table
   html += endHTMLTable();
@@ -511,15 +514,15 @@ function showFilter(userAccountId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", '', '', '');
-  html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", '', 'Bruker', 'Konto', '');
+  html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
+  html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Bruker', 'Konto', '');
 
   // Filter for search
   html += "<tr>";
 
   html += "<td></td>";
 
- // Show all selected users
+  // Show all selected users
   html += objUsers.showSelectedUsersNew('filterUserId', 0, '', 'Alle');
 
   // Show all selected accounts
@@ -528,7 +531,7 @@ function showFilter(userAccountId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objUserBankAccounts.showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objUserBankAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -607,16 +610,14 @@ function showTableSumRow(rowNumber, amount) {
 }
 
 // Show user bank accounts
-function showResult() {
+function showResult(rowNumber) {
 
   // Start HTML table
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += objUserBankAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0,'', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
-
-  //let sumAmount = 0;
-  let rowNumber = 0;
+  rowNumber++;
+  html += objUserBankAccounts.showTableHeaderNew('widht:250px;', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   objUserBankAccounts.arrayUserBankAccounts.forEach((userBankAccount) => {
 
@@ -658,13 +659,15 @@ function showResult() {
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.userbankaccount').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Delete one account row
 async function deleteAccountRow(userBankAccountId, className) {
 
   const user = objUserPassword.email;
-  
+
 
   // Check if account row exist
   accountsRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(account => userBankAccount.userBankAccountId === userBankAccountId);
@@ -674,8 +677,8 @@ async function deleteAccountRow(userBankAccountId, className) {
     objUserBankAccounts.deleteAccountsTable(userBankAccountId, user);
   }
 
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
+  const fixedCost = 'A';
+  await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 }
 
 // Update userbankaccounts row
@@ -685,7 +688,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
-  
+
   // Validate userbankaccounts columns
   if (validateColumns(userBankAccountId)) {
 
@@ -715,7 +718,8 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     userId = Number(document.querySelector('.filterUserId').value);
     accountId = Number(document.querySelector('.filterAccountId').value);
     await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, userId, accountId);
-    showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
   }
 }
 

@@ -41,10 +41,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 
     // Show header
+    let menuNumber = 0;
     showHeader();
 
     // Show filter
-    showFilter();
+  showFilter()
 
     const amount = Number(document.querySelector('.filterAmount').value);
     const condominiumId = objUserPassword.condominiumId;
@@ -59,7 +60,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
     // Show result of filter
-    showResult();
+    menuNumber = showResult(menuNumber);
 
     // Events
     events();
@@ -100,7 +101,8 @@ function events() {
         const orderBy = 'date DESC, income DESC';
         await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-        showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
       };
     };
   });
@@ -152,7 +154,8 @@ function events() {
         const orderBy = 'date DESC, income DESC';
         await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-        showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -181,7 +184,8 @@ function events() {
         const orderBy = 'date DESC, income DESC';
         await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-        showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -198,8 +202,8 @@ function showFilter() {
     html = startHTMLTable('width:1450px;');
 
     // Header filter for search
-    html += objBankAccountTransactions.showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
-    html += objBankAccountTransactions.showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+    html += objBankAccountTransactions.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
+    html += objBankAccountTransactions.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
 
     // Filter for search
     html += "<tr>";
@@ -227,7 +231,7 @@ function showFilter() {
     html += "</tr>";
 
     // Header filter
-    html += objBankAccountTransactions.showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+    html += objBankAccountTransactions.showHTMLFilterHeader("width:750px;", 0, '', '', '', '', '', '', '');
 
     // The end of the table
     html += endHTMLTable();
@@ -328,7 +332,7 @@ function showHeader() {
   let html = startHTMLTable('width:1450px;');
 
   // Main header
-  html += objBankAccountTransactions.showHTMLMainTableHeaderNew('widht:250px;', 0,'Bankkontotransaksjoner');
+  html += objBankAccountTransactions.showTableHeaderNew('widht:250px;', 'Bankkontotransaksjoner');
 
   // The end of the table
   html += endHTMLTable();
@@ -413,17 +417,17 @@ async function deleteBankAccountTransactionRow(bankAccountTransationId, classNam
 }
 
 // Show bankaccountransactions
-function showResult() {
+function showResult(rowNumber) {
 
   // Start HTML table
   let html = startHTMLTable('width:1450px;');
 
   // Header
-  html += objBankAccountTransactions.showHTMLMainTableHeaderNew("width:750px;", 0, '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
+  rowNumber++;
+  html += objBankAccountTransactions.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
 
   let sumIncome = 0;
   let sumPayment = 0;
-  let rowNumber = 0;
 
   objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 

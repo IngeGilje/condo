@@ -36,10 +36,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
     // Show header
+          let menuNumber = 0;
     showHeader();
 
     // Show filter
-    showFilter();
+  showFilter()
 
     const accountId = Number(document.querySelector('.filterAccountId').value);
     const condoId = Number(document.querySelector('.filterCondoId').value);
@@ -53,7 +54,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
     // Show result
-    showResult();
+    menuNumber = showResult(menuNumber);
 
     // Events
     events();
@@ -326,22 +327,6 @@ function showValuesFilter() {
   objRemoteHeating.showIcon('input-filter-toDate');
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = startHTMLTable('width:1100px;');
-
-  // Main header
-  html += showHTMLMainTableHeader('widht:250px;','Forfall');
-
-  // The end of the table
-  html += endHTMLTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -363,8 +348,8 @@ function showFilter() {
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += objRemoteHeating.showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
-  html += objRemoteHeating.showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+  html += objRemoteHeating.showHTMLFilterHeader("width:200px;",0, '', '', '', '', '', '', '');
+  html += objRemoteHeating.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
 
   // Filter for search
   html += "<tr>";
@@ -397,7 +382,7 @@ function showFilter() {
     html += "</tr>";
 
     // Header filter for search
-    html += objRemoteHeating.showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+    html += objRemoteHeating.showHTMLFilterHeader("width:750px;", rowNumber, '', '', '', '', '', '', '');
 
     // The end of the table
     html += endHTMLTable();

@@ -67,16 +67,17 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       await objImportFile.loadCsvFile(csvFileName);
 
       // Show header
+            let menuNumber = 0;
       showHeader();
 
       // Show filter
-      showFilter();
+    showFilter()
 
       // create array from imported csv-file (data string)
       createtransactionsArray(objImportFile.strCSVTransaction);
 
       // Show result of filter
-      showResult();
+      menuNumber = showResult(menuNumber);
 
       // Events
       events();
@@ -560,7 +561,7 @@ async function updateOpeningClosingBalance() {
       // Check for closing balance date
       if (Number(currentClosingBalanceDate) <= Number(closingBalanceDate) || Number(currentClosingBalanceDate) === 0 || currentClosingBalanceDate === '') {
 
-         const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+        const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
         if (bankAccountRowNumber !== -1) {
 
           const user = objUserPassword.email
@@ -674,7 +675,7 @@ function showHeader() {
   let html = startHTMLTable('width:1450px;');
 
   // Main header
-  html += objImportFile.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Import av bankkontotransaksjoner');
+  html += objImportFile.showTableHeaderNew('widht:250px;', 'Import av bankkontotransaksjoner');
 
   // The end of the table
   html += endHTMLTable();
@@ -688,13 +689,13 @@ function showFilter() {
   html = startHTMLTable('width:1450px;');
 
   // Header filter for search
-  html += objImportFile.showHTMLFilterHeader("width:200px;", '');
+  html += objImportFile.showHTMLFilterHeader("width:200px;", 0, '');
 
   // Filter for search
   html += "<tr>";
 
   // Header filter
-  html += objImportFile.showHTMLFilterHeader("width:750px;", '');
+  html += objImportFile.showHTMLFilterHeader("width:750px;", 0, '');
 
   html += "</tr>";
 
@@ -912,7 +913,7 @@ function showBankAccountTransactions() {
 */
 
 // // Show csv file for bank account transactions
-function showResult() {
+function showResult(rowNumber) {
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -921,9 +922,8 @@ function showResult() {
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += objImportFile.showHTMLMainTableHeaderNew('widht:250px;', 0, '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
-
-  let rowNumber = 0;
+  rowNumber++;
+  html += objImportFile.showTableHeaderNew('widht:250px;', '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   arrayTransactions.forEach((transaction) => {
 

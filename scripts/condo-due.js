@@ -42,10 +42,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
       // Show header
+      let menuNumber = 0;
       showHeader();
 
       // Show filter
-      showFilter();
+
+    showFilter()
 
       const accountId = Number(document.querySelector('.filterAccountId').value);
       const condoId = Number(document.querySelector('.filterCondoId').value);
@@ -59,7 +61,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
       // Show result
-      showResult();
+      menuNumber = showResult(menuNumber);
 
       // Events
       events();
@@ -90,7 +92,8 @@ function events() {
         toDate = Number(formatNorDateToNumber(toDate));
         await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-        showResult();
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -154,7 +157,8 @@ function events() {
           toDate = Number(formatNorDateToNumber(toDate));
           await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-          showResult();
+          let menuNumber = 0;
+          menuNumber = showResult(menuNumber);
         };
       };
     };
@@ -223,16 +227,16 @@ function showHTMLFilterSearch() {
 }
 
 // Show dues
-function showResult() {
+function showResult(rowNumber) {
 
   // Start HTML table
   html = startHTMLTable('width:1100px;');
 
   // Header
-  html += objDues.showHTMLMainTableHeaderNew("width:750px;", 0, '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
+  rowNumber++;
+  html += objDues.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
 
   let sumAmount = 0;
-  let rowNumber = 0;
 
   objDues.arrayDues.forEach((due) => {
 
@@ -299,6 +303,7 @@ function showResult() {
   html += endHTMLTable();
   document.querySelector('.result').innerHTML = html;
 
+  return rowNumber;
 }
 
 // Insert empty table row
@@ -442,7 +447,8 @@ async function updateDuesRow(dueId) {
     toDate = Number(formatNorDateToNumber(toDate));
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-    showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
   }
 }
 
@@ -453,7 +459,7 @@ function showHeader() {
   let html = startHTMLTable('width:1100px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;','Forfall');
+  html += showHTMLMainTableHeader('widht:250px;', 'Forfall');
 
   // The end of the table
   html += endHTMLTable();
@@ -467,8 +473,8 @@ function showFilter() {
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += objDues.showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
-  html += objDues.showHTMLFilterHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+  html += objDues.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
+  html += objDues.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
 
   // Filter for search
   html += "<tr>";
@@ -501,7 +507,7 @@ function showFilter() {
     html += "</tr>";
 
     // Header filter for search
-    html += objDues.showHTMLFilterHeader("width:750px;", '', '', '', '', '', '', '');
+    html += objDues.showHTMLFilterHeader("width:750px;", 0, '', '', '', '', '', '', '');
 
     // The end of the table
     html += endHTMLTable();

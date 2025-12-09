@@ -33,9 +33,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     await objCondo.loadCondoTable(condominiumId);
     const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId,fixedCost);
+    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
     // Show header
+    let menuNumber = 0;
     showHeader();
 
     // Show filter
@@ -55,13 +56,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Show result
 
     // Show dues
-    showDues();
+    menuNumber = showDues(menuNumber);
 
     // Bank account transactions
-    showBankAccountTransactions();
+    menuNumber = showBankAccountTransactions(menuNumber);
 
     // show how much to pay
-    showHowMuchToPay();
+    menuNumber = showHowMuchToPay(menuNumber);
 
     // Events
     events();
@@ -80,7 +81,24 @@ function events() {
       async function filterSync() {
 
         // valitadate filter
-        if (validateFilter()) {
+        // condo
+        const condoId = Number(document.querySelector('.filterFromDate').value);
+        const validCondoId = objOverview.validateNumberNew(condoId, 1, 999999999);
+
+        // from date
+        let fromDate = document.querySelector('.filterFromDate').value;
+        const validFromDate = objOverview.validateNorDateFormatNew(fromDate);
+
+        // to date
+        let toDate = document.querySelector('.filterFromDate').value;
+        const validToDate = objOverview.validateNorDateFormatNew(toDate);
+
+        // Validate interval
+        fromDate = objOverview.formatNorDateToNumberNew(fromDate);
+        toDate = objOverview.formatNorDateToNumberNew(toDate);
+        const validDates = objOverview.validateIntervalNew(Number(fromDate), Number(fromDate), Number(toDate));
+
+        if (validFromDate && validToDate && validDates && validCondoId) {
 
           const condominiumId = Number(objUserPassword.condominiumId);
           const condoId = Number(document.querySelector('.filterCondoId').value);
@@ -97,13 +115,14 @@ function events() {
           // Show result
 
           // Show dues
-          showDues();
+          let menuNumber = 0;
+          menuNumber = showDues(menuNumber);
 
           // Bank account transactions
-          showBankAccountTransactions();
+          menuNumber = showBankAccountTransactions(menuNumber);
 
           // show how much to pay
-          showHowMuchToPay();
+          menuNumber = showHowMuchToPay(menuNumber);
         }
       }
     };
@@ -131,8 +150,8 @@ function showFilter() {
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += objOverview.showHTMLFilterHeader("width:250px;", '', '', '', '', '');
-  html += objOverview.showHTMLFilterHeader("width:250px;", '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '');
+  html += objOverview.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
+  html += objOverview.showHTMLFilterHeader("width:250px;", 0, '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '');
 
   // Filter for search
   html += "<tr><td></td><td></td>";
@@ -154,7 +173,7 @@ function showFilter() {
   html += "</tr>";
 
   // Header filter for search
-  html += objOverview.showHTMLFilterHeader("width:250px;", '', '', '', '', '');
+  html += objOverview.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -162,16 +181,16 @@ function showFilter() {
 }
 
 // Show dues
-function showDues() {
+function showDues(rowNumber) {
 
   // Start HTML table
   html = startHTMLTable('width:1100px;');
 
   let sumDue = 0;
-  let rowNumber = 0;
 
   // Header
-  html += objOverview.showHTMLMainTableHeaderNew('width:1100px;', 0, '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
+  rowNumber++;
+  html += objOverview.showTableHeaderNew('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -181,17 +200,9 @@ function showDues() {
     rowNumber++;
     html += objDues.menuNew(rowNumber);
 
-    // Delete
-    //let className = `deleted${due.dueId}`;
-    //html += objDues.showSelectedValuesNew(className, '', 'Nei', 'Nei', 'Ja')
-
     // condos
     className = `condo${due.dueId}`;
     html += objCondo.showSelectedCondosNew(className, '', due.condoId, 'Ingen er valgt', '');
-
-    // account
-    //className = `account${due.dueId}`;
-    //html += objAccounts.showSelectedAccountsNew(className, '', due.accountId, '', 'Ingen er valgt');
 
     // date
     const date = formatToNorDate(due.date);
@@ -214,14 +225,9 @@ function showDues() {
     sumDue += Number(due.amount);
   });
 
-  // Make one last table row for insertion in table 
-
-  // Insert empty table row for insertion
-  //html += insertEmptyTableRow(rowNumber);
-
   // Sum row
   sumDue = formatOreToKroner(sumDue);
- 
+
   // Show menu
   rowNumber++;
   html += objAccounts.menuNew(rowNumber);
@@ -234,56 +240,16 @@ function showDues() {
   // due
   html += `<td class="center bold">${sumDue}</td>`;
 
-  html += "<td></td>";
   html += "</tr>"
-
-  // Show the rest of the menu
-  rowNumber++;
-  html += objOverview.showRestMenuNew(rowNumber);
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.dues').innerHTML = html;
+  return rowNumber;
 }
-
-/*
-// Insert empty table row
-function insertEmptyTableRow(rowNumber) {
- 
-  let html = "<tr>";
- 
-  // Show menu
-  html += objBankAccountTransactions.menuNew(rowNumber);
- 
-  html += "<td></td>";
- 
-  // condos
-  className = `condo0`;
-  html += objCondo.showSelectedCondosNew(className, '', '', 'Ingen er valgt', '');
- 
-  // account
-  //className = `account0`;
-  //html += objAccounts.showSelectedAccountsNew(className, '', '', '', 'Ingen er valgt');
- 
-  // date
-  className = `date0`;
-  html += objOverview.showInputHTMLNew(className, '', 10);
- 
-  // amount
-  className = `amount0`;
-  html += objOverview.showInputHTMLNew(className, '', 10);
- 
-  // Text
-  className = `text0`;
-  html += objOverview.showInputHTMLNew(className, '', 45);
- 
-  html += "</tr>";
-  return html;
-}
-*/
 
 // Bank account transactions
-function showBankAccountTransactions() {
+function showBankAccountTransactions(rowNumber) {
 
   // Start HTML table
   html = startHTMLTable('width:1100px;');
@@ -292,20 +258,21 @@ function showBankAccountTransactions() {
   let sumPayments = 0;
 
   // Header
-  html += objOverview.showHTMLFilterHeader('width:250px;', '', '', '', '', '');
-  html += objOverview.showHTMLMainTableHeaderNew('width:1100px;', 0, '', 'Leilighet', 'Betalingsdato', 'Betaling', 'Tekst');
+  html += objOverview.showHTMLFilterHeader('width:250px;', rowNumber, '', '', '', '', '');
+  rowNumber++;
+  html += objOverview.showTableHeaderNew('width:1100px;', '', 'Leilighet', 'Betalingsdato', 'Betaling', 'Tekst');
 
   objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
-    html += "<tr><td></td>";
+    html += "<tr>";
+
+    // Show menu
+    rowNumber++;
+    html += objDues.menuNew(rowNumber);
 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
     html += objCondo.showSelectedCondosNew(className, '', Number(bankAccountTransaction.condoId), 'Ingen er valgt', '');
-
-    // account
-    //className = `account${bankAccountTransaction.bankAccountTransactionId}`;
-    //html += objAccounts.showSelectedAccountsNew(className, '', bankAccountTransaction.accountId, '', 'Ingen er valgt');
 
     // date
     const date = formatToNorDate(bankAccountTransaction.date);
@@ -316,11 +283,6 @@ function showBankAccountTransactions() {
     const income = formatOreToKroner(bankAccountTransaction.income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransactions.showInputHTMLNew(className, income, 10);
-
-    // payment
-    //const payment = formatOreToKroner(bankAccountTransaction.payment);
-    //className = `payment${bankAccountTransaction.bankAccountTransactionId}`;
-    //html += objBankAccountTransactions.showInputHTMLNew(className, payment, 10);
 
     // Text
     const text = bankAccountTransaction.text;
@@ -334,24 +296,17 @@ function showBankAccountTransactions() {
     sumPayments += Number(bankAccountTransaction.payment);
   });
 
-  // Make one last table row for insertion in table 
-
-
-  // Insert empty table row for insertion
-  //html += insertEmptyTableRow(rowNumber);
-
   // Sum row
-
   sumIncomes = formatOreToKroner(sumIncomes);
   sumPayments = formatOreToKroner(sumPayments);
 
-  // Show table sum row
-  //html += showTableSumRow(999999999, sumIncomes, sumPayments);
+  html += "<tr>";
 
   html += "<tr>";
 
-  // due date
-  html += "<td></td><td></td>";
+  // Show menu
+  rowNumber++;
+  html += objDues.menuNew(rowNumber);
 
   // text sum
   html += "<td class='center bold'>Sum</td>";
@@ -360,16 +315,18 @@ function showBankAccountTransactions() {
   html += `<td class="center bold">${sumIncomes}</td>`;
 
   // Text
-  html += "<td></td>";
+  //html += "<td></td>";
   html += "</tr>"
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.bankAccountTransactions').innerHTML = html;
+
+  return rowNumber;
 }
 
 // show how much to pay
-function showHowMuchToPay() {
+function showHowMuchToPay(rowNumber) {
 
   let sumIncome = 0;
 
@@ -391,23 +348,22 @@ function showHowMuchToPay() {
   html = startHTMLTable('width:1100px;');
 
   // Header
-  html += objOverview.showHTMLFilterHeader('width:250px;', '', '', '', '', '');
+  html += objOverview.showHTMLFilterHeader('width:250px;', rowNumber, '', '', '', '', '');
 
   let overPay = sumIncome - sumToPay;
-  html += (overPay > 0) ? showHTMLMainTableHeader('width:1100px;', '', 'Forfall', 'Betalt', 'Til gode') : showHTMLMainTableHeader('width:1100px;', 'Sum', 'Forfall', 'Betalt', 'Skyldig');
+  html += (overPay > 0) ? showHTMLMainTableHeader('width:1100px;', '', '', 'Forfall', 'Betalt', 'Til gode') : showHTMLMainTableHeader('width:1100px;', 'Sum', 'Forfall', 'Betalt', 'Skyldig');
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
   overPay = formatOreToKroner(overPay);
   sumIncome = formatOreToKroner(sumIncome);
   sumToPay = formatOreToKroner(sumToPay);
-  //html += HTMLTableRow('Sum', sumToPay, sumIncome, owes);
-  // Show table sum row
-  //html += showTableSumRow(999999999, 'Sum', sumToPay, sumIncome, owes);
+  
   html += "<tr>";
 
   // Show menu
-  //html += objAccounts.menuNew(rowNumber);
+  rowNumber++;
+  html += objAccounts.menuNew(rowNumber);
 
   // condo
   //html += "<td></td>";
@@ -431,11 +387,18 @@ function showHowMuchToPay() {
   html += "<td></td>";
   html += "</tr>"
 
+  // Show the rest of the menu
+  rowNumber++;
+  html += objOverview.showRestMenuNew(rowNumber);
+
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.howMuchToPay').innerHTML = html;
+
+  return rowNumber;
 }
 
+/*
 // valitadate filter
 function validateFilter() {
 
@@ -444,12 +407,12 @@ function validateFilter() {
   const validCondoId = objOverview.validateNumberNew(condoId, 1, 999999999);
 
   // from date
-   let fromDate = document.querySelector('.filterFromDate').value;
-   const validFromDate = objOverview.validateNorDateFormatNew(fromDate);
+  let fromDate = document.querySelector('.filterFromDate').value;
+  const validFromDate = objOverview.validateNorDateFormatNew(fromDate);
 
   // to date
-   let toDate = document.querySelector('.filterFromDate').value;
-   const validToDate = objOverview.validateNorDateFormatNew(toDate);
+  let toDate = document.querySelector('.filterFromDate').value;
+  const validToDate = objOverview.validateNorDateFormatNew(toDate);
 
   // Validate interval
   fromDate = objOverview.formatNorDateToNumberNew(fromDate);
@@ -458,3 +421,4 @@ function validateFilter() {
 
   return (validFromDate && validToDate && validDates && validCondoId);
 }
+*/

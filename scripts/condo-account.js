@@ -33,13 +33,14 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
     // Show header
+    let menuNumber = 0;
     showHeader();
 
     // Show filter
-    showFilter();
+  showFilter()
 
     // Show account
-    showResult();
+    menuNumber = showResult(menuNumber);
 
     // Events
     events();
@@ -62,7 +63,8 @@ function events() {
         if (fixedCost === 'Variabel kostnad') fixedCost = 'N';
         await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-        showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -115,7 +117,8 @@ function events() {
           const fixedCost = 'A';
           await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-          showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
         };
       };
     };
@@ -145,7 +148,7 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, 'Konto');
+  html += objAccounts.showTableHeaderNew('widht:250px;', 'Konto');
 
   // The end of the table
   html += endHTMLTable();
@@ -159,8 +162,8 @@ function showFilter(accountId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objAccounts.showHTMLFilterHeader("width:250px;", '', '', '');
-  html += objAccounts.showHTMLFilterHeader("width:250px;", '', 'Kostnadstype', '');
+  html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
+  html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Kostnadstype', '');
 
   // Filter for search
   html += "<tr>";
@@ -174,7 +177,7 @@ function showFilter(accountId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objAccounts.showHTMLFilterHeader("width:750px;", '', '', '');
+  html += objAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -228,16 +231,14 @@ function showTableSumRow(rowNumber, amount) {
 }
 
 // Show accounts
-function showResult() {
+function showResult(rowNumber) {
 
   // Start HTML table
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += objAccounts.showHTMLMainTableHeaderNew('widht:250px;', 0, '', 'Slett', 'Kostnadstype', 'Tekst');
-
-  //let sumAmount = 0;
-  let rowNumber = 0;
+  rowNumber++;
+  html += objAccounts.showTableHeaderNew('widht:250px;', 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccounts.arrayAccounts.forEach((account) => {
 
@@ -299,6 +300,8 @@ function showResult() {
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.result').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Delete one account row
@@ -355,6 +358,7 @@ async function updateAccountsRow(accountId) {
 
     const fixedCost = 'A';
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-    showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
   }
 }

@@ -30,10 +30,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
     // Show header
+    let menuNumber = 0;
     showHeader();
 
     // Show filter
-    showFilter();
+  showFilter()
 
     const condominiumId = Number(objUserPassword.condominiumId);
     const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -41,7 +42,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
     // Show result of filter
-    showResult();
+    menuNumber = showResult(menuNumber);
 
     // Events
     //events();
@@ -64,7 +65,8 @@ function events() {
         const accountId = Number(document.querySelector('.filterAccountId').value);
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
-        showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -118,7 +120,8 @@ function events() {
         const accountId = Number(document.querySelector('.filterAccountId').value);
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
-        showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -193,7 +196,8 @@ async function updateBudgetsRow(budgetId) {
     accountId = Number(document.querySelector('.filterAccountId').value);
     year = Number(document.querySelector('.filterYear').value);
     await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
-    showResult();
+    let menuNumber = 0;
+    menuNumber = showResult(menuNumber);
   }
 }
 
@@ -241,7 +245,7 @@ function showHeader() {
   let html = startHTMLTable('width:1000px;');
 
   // Main header
-  html += objBudgets.showHTMLMainTableHeaderNew('Budsjett', 0);
+  html += objBudgets.showTableHeaderNew('Budsjett');
 
   // The end of the table
   html += endHTMLTable();
@@ -277,8 +281,8 @@ function showFilter() {
   html = startHTMLTable('width:1000px;');
 
   // Header filter for search
-  html += objBudgets.showHTMLFilterHeader("width:200px;", '', '', '', '', '', '', '');
-  html += objBudgets.showHTMLFilterHeader('', '', 'Konto', 'År', '', '', '');
+  html += objBudgets.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
+  html += objBudgets.showHTMLFilterHeader('', 0, '', 'Konto', 'År', '', '', '');
 
   // Filter for search
   html += "<tr>";
@@ -295,7 +299,7 @@ function showFilter() {
   html += "</tr>";
 
   // Header filter for search
-  html += objBudgets.showHTMLFilterHeader("width:1000px;", '', '', '', '');
+  html += objBudgets.showHTMLFilterHeader("width:1000px;",  0, '', '', '', '');
 
   // The end of the table
   html += endHTMLTable();
@@ -307,16 +311,16 @@ function showFilter() {
 }
 
 // Show bankaccounttransactions
-function showResult() {
+function showResult(rowNumber) {
 
   // Start HTML table
   let html = startHTMLTable('width:1000px;');
 
   // Header
-  html += objBudgets.showHTMLMainTableHeaderNew("width:1000px;", 0, '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+  rowNumber++;
+  html += objBudgets.showTableHeaderNew("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
 
   let sumAmount = 0;
-  let rowNumber = 0;
 
   objBudgets.arrayBudgets.forEach((budget) => {
 
@@ -404,4 +408,5 @@ function showResult() {
   html += endHTMLTable();
   document.querySelector('.result').innerHTML = html;
 
+  return rowNumber;
 }
