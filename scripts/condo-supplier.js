@@ -35,13 +35,13 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const supplierId = objSuppliers.getSelectedSupplierId('select-supplierId');
 
     // Show header
-          let menuNumber = 0;
-;
+    showHeader();
 
     // Show filter
     showFilter(supplierId);
 
     // Show supplier
+    let menuNumber = 0;
     menuNumber = showResult(supplierId, menuNumber);
 
     // Events
@@ -65,8 +65,8 @@ function events() {
 
         const supplierId = Number(document.querySelector('.filterSupplierId').value);
 
-    let menuNumber = 0;
-    menuNumber = showResult(supplierId, menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(supplierId, menuNumber);
       }
     };
   });
@@ -103,8 +103,8 @@ function events() {
         const supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
         showFilter(supplierId);
 
-    let menuNumber = 0;
-    menuNumber = showResult(supplierId, menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(supplierId, menuNumber);
       };
     };
   });
@@ -133,8 +133,8 @@ function events() {
         // Show filter
         showFilter(SupplierId);
 
-    let menuNumber = 0;
-    menuNumber = showResult(supplierId, menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(supplierId, menuNumber);
       };
     };
   });
@@ -546,8 +546,12 @@ function showFilter(supplierId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
-  html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg mottaker', '');
+  //html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
+  //html += objSuppliers.showTableHeaderNew("width:250px;", '', '', '');
+  html += "<tr><td></td><td></td>";
+  html += "</tr>";
+  //html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg mottaker', '');
+  html += objSuppliers.showTableHeaderNew("width:250px;", '', 'Velg mottaker', '');
 
   // Filter for search
   html += "<tr>";
@@ -560,7 +564,10 @@ function showFilter(supplierId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objSuppliers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objSuppliers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objSuppliers.showTableHeaderNew("width:750px;", '', '', '');
+    html += "<tr><td></td><td></td>";
+  html += "</tr>";
 
   // The end of the table
   html += endHTMLTable();

@@ -461,51 +461,6 @@ function deleteUserRow(userId) {
 */
 
 /*
-// Show leading text for user
-function showLeadingText(userId) {
-
-  // Show all users
-  objUsers.showAllUsers('users-userId', userId);
-
-  // email
-  objUsers.showInput('users-email', '* E-mail(Bruker)', 50, '');
-
-  // Show all condos
-  const condoId = objCondos.arrayCondo.at(-1).condoId;
-  objCondos.showSelectedCondos('users-condoId', condoId);
-
-  // Show first name
-  objUsers.showInput('users-firstName', '* Fornavn', 50, '');
-
-  // Show last name
-  objUsers.showInput('users-lastName', '* Etternavn', 50, '');
-
-  // Phone
-  objUsers.showInput('users-phone', 'Telefonnummer', 20, '');
-
-  // Select securityLevel
-  objUsers.selectNumber('users-securityLevel', 1, 9, 5, 'Sikkerhetsnivå');
-
-  // passord
-  objUsers.showInput('users-password', '* Passord', 50, '');
-
-  // update button
-  if (Number(objUserPassword.securityLevel) >= 9) {
-    objUsers.showButton('users-update', 'Oppdater');
-
-    // new button
-    objUsers.showButton('users-insert', 'Ny');
-
-    // delete button
-    objUsers.showButton('users-delete', 'Slett');
-
-    // cancel button
-    objUsers.showButton('users-cancel', 'Avbryt');
-  }
-}
-*/
-
-/*
 // Show all values for user
 function showValues(userId) {
 
@@ -593,8 +548,13 @@ function showFilter(userId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
-  html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg bruker', '');
+  //html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
+ //html += objUsers.showTableHeaderNew("width:250px;", '', '', '');
+   html += "<tr><td></td><td></td>";
+  html += "</tr>";
+
+  //html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg bruker', '');
+ html += objUsers.showTableHeaderNew("width:250px;", '', 'Velg bruker', '');
 
   // Filter for search
   html += "<tr>";
@@ -606,7 +566,10 @@ function showFilter(userId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objUsers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objUsers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objUsers.showTableHeaderNew("width:750px;", '', '', '');
+   html += "<tr><td></td><td></td>";
+  html += "</tr>";
 
   // The end of the table
   html += endHTMLTable();

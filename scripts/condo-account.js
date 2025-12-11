@@ -37,7 +37,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showHeader();
 
     // Show filter
-  showFilter()
+    showFilter()
 
     // Show account
     menuNumber = showResult(menuNumber);
@@ -63,8 +63,8 @@ function events() {
         if (fixedCost === 'Variabel kostnad') fixedCost = 'N';
         await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -100,7 +100,7 @@ function events() {
 
   // Delete suppliers row
   document.addEventListener('cclick', (event) => {
-   if (event.target.classList.contains('delete')) {
+    if (event.target.classList.contains('delete')) {
 
       const className = objAccounts.getDeleteClass(event.target);
       const classNameDelete = `.${className}`
@@ -117,8 +117,8 @@ function events() {
           const fixedCost = 'A';
           await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+          let menuNumber = 0;
+          menuNumber = showResult(menuNumber);
         };
       };
     };
@@ -162,8 +162,14 @@ function showFilter(accountId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
-  html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Kostnadstype', '');
+  //html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
+  //html += objAccounts.showTableHeaderNew("width:250px;", '', '', '');
+  html += "<tr><td></td><td></td>";
+  html += "<tr>";
+
+
+  //html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Kostnadstype', '');
+  html += objAccounts.showTableHeaderNew("width:250px;", '', 'Kostnadstype', '');
 
   // Filter for search
   html += "<tr>";
@@ -174,10 +180,11 @@ function showFilter(accountId) {
   html += objAccounts.showSelectedValuesNew('filterFixedCost', 'width:100px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
   html += "</tr>";
 
-  html += "</tr>";
-
   // Header filter for search
-  html += objAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objAccounts.showTableHeaderNew("width:750px;", '', '', '');
+  html += "<tr><td></td><td></td>";
+  html += "<tr>";
 
   // The end of the table
   html += endHTMLTable();
@@ -238,7 +245,7 @@ function showResult(rowNumber) {
 
   // Header
   rowNumber++;
-  html += objAccounts.showTableHeaderNew('widht:250px;', 'Slett', 'Kostnadstype', 'Tekst');
+  html += objAccounts.showTableHeaderNew('widht:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccounts.arrayAccounts.forEach((account) => {
 
@@ -250,8 +257,8 @@ function showResult(rowNumber) {
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
-    if (account.deleted === 'Y')  selectedChoice = "Ja";
-    if (account.deleted === 'N')  selectedChoice = "Nei";
+    if (account.deleted === 'Y') selectedChoice = "Ja";
+    if (account.deleted === 'N') selectedChoice = "Nei";
 
     let className = `delete${account.accountId}`;
     html += objAccounts.showSelectedValuesNew(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')

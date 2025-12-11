@@ -45,7 +45,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showHeader();
 
     // Show filter
-  showFilter()
+    showFilter()
 
     const amount = Number(document.querySelector('.filterAmount').value);
     const condominiumId = objUserPassword.condominiumId;
@@ -101,8 +101,8 @@ function events() {
         const orderBy = 'date DESC, income DESC';
         await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       };
     };
   });
@@ -154,8 +154,8 @@ function events() {
         const orderBy = 'date DESC, income DESC';
         await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -184,8 +184,8 @@ function events() {
         const orderBy = 'date DESC, income DESC';
         await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -202,13 +202,18 @@ function showFilter() {
     html = startHTMLTable('width:1450px;');
 
     // Header filter for search
-    html += objBankAccountTransactions.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
-    html += objBankAccountTransactions.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+    //html += objBankAccountTransactions.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
+    //html += objBankAccountTransactions.showTableHeaderNew("width:200px;", '', '', '', '', '', '', '');
+    html += "<tr><td></td><td></td>";
+    html += "</tr>";
+
+    //html += objBankAccountTransactions.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+    html += objBankAccountTransactions.showTableHeaderNew('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp');
 
     // Filter for search
-    html += "<tr>";
+     html += "<tr><td></td><td></td>";
 
-    html += "<td></td><td></td>";
+    //html += "<td></td><td></td>";
 
     // Show all selected condos
     html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 999999999, '', 'Vis alle');
@@ -220,7 +225,6 @@ function showFilter() {
     const fromDate = '01.01.' + String(today.getFullYear());
     html += objBankAccountTransactions.showInputHTMLNew('filterFromDate', fromDate, 10);
 
-    // show to date
     // Current date
     let toDate = getCurrentDate();
     html += objBankAccountTransactions.showInputHTMLNew('filterToDate', toDate, 10);
@@ -231,7 +235,10 @@ function showFilter() {
     html += "</tr>";
 
     // Header filter
-    html += objBankAccountTransactions.showHTMLFilterHeader("width:750px;", 0, '', '', '', '', '', '', '');
+    //html += objBankAccountTransactions.showHTMLFilterHeader("width:750px;", 0, '', '', '', '', '', '', '');
+    //html += objBankAccountTransactions.showTableHeaderNew("width:750px;", '', '', '', '', '', '', '');
+    html += "<tr><td></td><td></td>";
+    html += "</tr>";
 
     // The end of the table
     html += endHTMLTable();
@@ -342,12 +349,8 @@ function showHeader() {
 // Show table sum row
 function showTableSumRow(rowNumber, sumIncome, sumPayment) {
 
-  let html =
-    `
-      <tr 
-        class="menu"
-      >
-    `;
+  let html = `<tr class="menu">`;
+
   // Show menu
   html += objBankAccountTransactions.menuNew(rowNumber);
   html += "<td></td>";

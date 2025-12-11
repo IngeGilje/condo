@@ -67,11 +67,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       await objImportFile.loadCsvFile(csvFileName);
 
       // Show header
-            let menuNumber = 0;
+      let menuNumber = 0;
       showHeader();
 
       // Show filter
-    showFilter()
+      showFilter()
 
       // create array from imported csv-file (data string)
       createtransactionsArray(objImportFile.strCSVTransaction);
@@ -689,228 +689,25 @@ function showFilter() {
   html = startHTMLTable('width:1450px;');
 
   // Header filter for search
-  html += objImportFile.showHTMLFilterHeader("width:200px;", 0, '');
+  //html += objImportFile.showHTMLFilterHeader("width:200px;", 0, '');
+  //html += objImportFile.showTableHeaderNew("width:200px;", '', '', '', '', '', '', '');
+  html += "<tr><td></td></tr>";
 
+  /*
   // Filter for search
   html += "<tr>";
 
   // Header filter
-  html += objImportFile.showHTMLFilterHeader("width:750px;", 0, '');
+  //html += objImportFile.showHTMLFilterHeader("width:750px;", 0, '');
+  html += objImportFile.showTableHeaderNew("width:750px;", '', '', '', '', '', '', '');
 
   html += "</tr>";
+  */
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.filter').innerHTML = html;
 }
-
-/*
-// Show csv file for bank account
-function showBankAccountTransactions() {
-
-  let sumColumnIncome = 0;
-  let sumColumnPayment = 0;
-  let rowNumber = 0;
-
-  //let htmlColumnLineNumber = '<div class = "columnHeaderCenter">Linje</div><br>';
-  let htmlColumnAccountingDate = '<div class = "columnHeaderRight">Dato</div><br>';
-  let htmlColumnCondoName = '<div class = "columnHeaderRight">Leilighet</div><br>';
-  let htmlColumnAccountName = '<div class = "columnHeaderRight">Konto</div><br>';
-  let htmlColumnFromBankAccount = '<div class = "columnHeaderRight">Fra b.konto</div><br>';
-  let htmlColumnToBankAccount = '<div class = "columnHeaderRight">Til b.konto</div><br>';
-  let htmlColumnIncome = '<div class = "columnHeaderRight">Inntekt</div><br>';
-  let htmlColumnPayment = '<div class = "columnHeaderRight">Utgift</div><br>';
-  let htmlColumnText = '<div class = "columnHeaderLeft">Tekst</div><br>';
-
-  arrayTransactions.forEach((transactions) => {
-
-    rowNumber++;
-
-    // check if the number is odd
-    const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
-
-    htmlColumnAccountingDate +=
-      `
-        <div 
-          class = "rightCell ${colorClass}"
-        >
-          ${transactions.accountingDate}
-        </div>
-      `;
-
-    // Condo name
-    htmlColumnCondoName +=
-      `
-        <div
-          class = "rightCell ${colorClass} "
-        >
-          ${transactions.condoName}
-        </div>
-      `;
-
-    if (transactions.accountId) {
-
-      htmlColumnAccountName +=
-        `
-          <div
-            class = "rightCell ${colorClass} one-line"
-          >
-            ${transactions.accountName}
-          </div>
-        `;
-    } else {
-
-      htmlColumnAccountName +=
-        `
-        <div
-          class = "rightCell red one-line"
-        >
-          ${transactions.accountName}
-        </div>
-      `;
-    }
-
-    htmlColumnFromBankAccount +=
-      `
-        <div 
-          class = "rightCell ${colorClass} one-line"
-        />
-          ${transactions.fromBankAccountName}
-        </div>
-      `;
-
-    htmlColumnToBankAccount +=
-      `
-        <div 
-          class = "rightCell ${colorClass} one-line"
-        />
-          ${transactions.toBankAccountName}
-        </div>
-      `;
-
-    // Income
-    const income =
-      formatOreToKroner(transactions.income);
-
-    htmlColumnIncome +=
-      `
-        <div 
-          class = "rightCell ${colorClass}"
-        >
-          ${income}
-        </div>
-      `;
-
-    // Payment
-    const payment = formatOreToKroner(transactions.payment);
-
-    htmlColumnPayment +=
-      `
-        <div 
-          class = "rightCell ${colorClass}"
-        />
-          ${payment}
-        </div>
-      `;
-
-    // Text has to fit into the column
-    htmlColumnText +=
-      `
-        <div
-          class = "leftCell ${colorClass} one-line"
-        />
-          ${transactions.text}
-        </div>
-      `;
-
-    // Accomulate
-
-    // income
-    sumColumnIncome += Number(transactions.income);
-
-    // payment
-    sumColumnPayment += Number(transactions.payment);
-  });
-
-  htmlColumnAccountingDate +=
-    `
-      <div 
-        class = "sumCellRight"
-      >
-        -
-      </div>
-    `;
-
-  htmlColumnCondoName +=
-    `
-      <div 
-        class = "sumCellRight"
-      >
-        -
-      </div>
-    `;
-
-  htmlColumnAccountName +=
-    `
-      <div 
-        class = "sumCellRight"
-      >
-        -
-      </div>
-    `;
-
-  // opening balance date
-  htmlColumnFromBankAccount +=
-    `
-      <div
-        class = "sumCellRight"
-      >
-        -
-      </div>
-    `;
-
-  // opening balance
-  htmlColumnToBankAccount +=
-    `
-      <div
-        class = "sumCellRight"
-      >
-        -
-      </div>
-    `;
-
-  const income = formatOreToKroner(sumColumnIncome);
-  htmlColumnIncome +=
-    `
-      <div 
-        class = "sumCellRight"
-      >
-        ${income}
-      </div>
-    `;
-
-  const payment = formatOreToKroner(sumColumnPayment);
-  htmlColumnPayment +=
-    `
-      <div 
-        class = "sumCellRight"
-      >
-        ${payment}
-      </div>
-    `;
-
-  // Show columns
-  //document.querySelector(".div-importfile-columnLineNumber").innerHTML = htmlColumnLineNumber;
-  document.querySelector(".div-importfile-columnAccountingDate").innerHTML = htmlColumnAccountingDate;
-  document.querySelector(".div-importfile-columnName").innerHTML = htmlColumnCondoName;
-  document.querySelector(".div-importfile-columnAccountName").innerHTML = htmlColumnAccountName;
-  document.querySelector(".div-importfile-columnFromBankAccount").innerHTML = htmlColumnFromBankAccount;
-  document.querySelector(".div-importfile-columnToBankAccount").innerHTML = htmlColumnToBankAccount;
-  document.querySelector(".div-importfile-columnIncome").innerHTML = htmlColumnIncome;
-  document.querySelector(".div-importfile-columnPayment").innerHTML = htmlColumnPayment;
-  document.querySelector(".div-importfile-columnText").innerHTML = htmlColumnText;
-}
-*/
 
 // // Show csv file for bank account transactions
 function showResult(rowNumber) {
@@ -919,7 +716,7 @@ function showResult(rowNumber) {
   let sumPayments = 0;
 
   // Start HTML table
-  html = startHTMLTable('width:750px;');
+  html = startHTMLTable('width:1450px;');
 
   // Header
   rowNumber++;

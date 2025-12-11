@@ -42,7 +42,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showFilter(condominiumId);
 
     // Show result
-    menuNumber = showResult(condominiumId,menuNumber);
+    menuNumber = showResult(condominiumId, menuNumber);
 
     // Events
     events();
@@ -333,13 +333,18 @@ function showFilter(condominiumId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '');
-  html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '', '', 'Velg sameie');
+  //html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '');
+  //html += objCondominiums.showTableHeaderNew("width:250px;", '', '', '');
+  html += "<tr><td></td><td></td>";
+  html += "</tr>";
+
+  //html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '', '', 'Velg sameie');
+  html += objCondominiums.showTableHeaderNew("width:250px;", '', 'Velg sameie', '');
 
   // Filter for search
   html += "<tr>";
 
-  html += "<td></td><td></td>";
+  html += "<td></td>";
 
   // condominium
   html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', '', 0, '', '')
@@ -347,7 +352,10 @@ function showFilter(condominiumId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
+  //html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
+  //html += objCondominiums.showTableHeaderNew("width:250px;", '', '', '');
+  html += "<tr><td></td><td></td>";
+  html += "</tr>";
 
   // The end of the table
   html += endHTMLTable();
@@ -365,11 +373,9 @@ function showResult(condominiumId, rowNumber) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    rowNumber++;
-    html += objCondominiums.showTableHeaderNew('widht:250px;', '', '');
+    html += objCondominiums.showTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
-    // Header for value including menu
     rowNumber++;
     html += objCondominiums.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn');
 

@@ -1475,6 +1475,7 @@ class Condos {
     return html;
   }
 
+  /*
   // Show filter header table
   showHTMLFilterHeader(style, menuNumber, ...texts) {
 
@@ -1492,6 +1493,7 @@ class Condos {
     html += "</tr>";
     return html;
   }
+  */
 
   // Show blank header row
   showBlankHeaderRow(style, menuNumber, ...texts) {

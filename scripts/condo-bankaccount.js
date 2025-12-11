@@ -68,8 +68,8 @@ function events() {
         const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
         await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-    let menuNumber = 0;
-    menuNumber = showResult(bankAccountId,menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(bankAccountId, menuNumber);
       }
     };
   });
@@ -103,8 +103,8 @@ function events() {
         const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
         await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-    let menuNumber = 0;
-    menuNumber = showResult(bankAccountId,menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(bankAccountId, menuNumber);
       };
     };
   });
@@ -129,8 +129,8 @@ function events() {
         const bankAccountId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
         await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-    let menuNumber = 0;
-    menuNumber = showResult(bankAccountId,menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(bankAccountId, menuNumber);
       };
     };
   });
@@ -364,25 +364,23 @@ function showResult(bankAccountId, rowNumber) {
   const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
   if (bankAccountRowNumber !== -1) {
 
-    let menuNumber = 0;
-
     // Start table
     html = startHTMLTable('width:750px;');
 
     // Main header
-    rowNumber++;
+    //rowNumber++;
     html += objBankAccounts.showTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu
-    menuNumber++;
+    rowNumber++;
     html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn', 'Bankontonummer');
 
     html += "<tr>";
 
     // Show menu
-    menuNumber++;
-    html += objBankAccounts.menuNew(menuNumber);
+    rowNumber++;
+    html += objBankAccounts.menuNew(rowNumber);
 
     // name
     html += objBankAccounts.showInputHTMLNew('name', objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name, 45);
@@ -393,13 +391,13 @@ function showResult(bankAccountId, rowNumber) {
     html += "</tr>";
 
     // Show menu
-    menuNumber++;
-    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Dato', 'Inngående saldo');
+    rowNumber++;
+    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Dato', 'Inngående saldo');
 
     html += "<tr>";
 
-    menuNumber++;
-    html += objBankAccounts.menuNew(menuNumber);
+    rowNumber++;
+    html += objBankAccounts.menuNew(rowNumber);
 
     // opening balance date
     const openingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalanceDate);
@@ -413,14 +411,14 @@ function showResult(bankAccountId, rowNumber) {
 
     // Show menu
     // Header for value
-    menuNumber++;
-    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", menuNumber, 'Dato', 'Utgående saldo');
+    rowNumber++;
+    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Dato', 'Utgående saldo');
 
     html += "<tr>";
 
     // Show menu
-    menuNumber++;
-    html += objBankAccounts.menuNew(menuNumber);
+    rowNumber++;
+    html += objBankAccounts.menuNew(rowNumber);
 
     // closing balance date
     const closingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate);
@@ -434,15 +432,15 @@ function showResult(bankAccountId, rowNumber) {
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objBankAccounts.menuNew(menuNumber);
+    rowNumber++;
+    html += objBankAccounts.menuNew(rowNumber);
     html += "</tr>";
 
     // show buttons
     html += "<tr>";
     // Show menu
-    menuNumber++;
-    html += objBankAccounts.menuNew(menuNumber);
+    rowNumber++;
+    html += objBankAccounts.menuNew(rowNumber);
 
     html += objBankAccounts.showButtonNew('width:170px;', 'update', 'Oppdater');
     html += objBankAccounts.showButtonNew('width:170px;', 'cancel', 'Angre');
@@ -450,22 +448,22 @@ function showResult(bankAccountId, rowNumber) {
 
     // Show menu
     html += "<tr>";
-    menuNumber++;
-    html += objBankAccounts.menuNew(menuNumber);
+    rowNumber++;
+    html += objBankAccounts.menuNew(rowNumber);
     html += "</tr>";
 
     // show buttons
     html += "<tr>";
     // Show menu
-    menuNumber++;
-    html += objBankAccounts.menuNew(menuNumber);
+    rowNumber++;
+    html += objBankAccounts.menuNew(rowNumber);
 
     html += objBankAccounts.showButtonNew('width:170px;', 'delete', 'Slett');
     html += objBankAccounts.showButtonNew('width:170px;', 'insert', 'Ny');
     html += "</tr>";
 
     // Show the rest of the menu
-    html += objBankAccounts.showRestMenuNew(menuNumber);
+    html += objBankAccounts.showRestMenuNew(rowNumber);
 
     // The end of the table
     html += endHTMLTable();
@@ -532,8 +530,8 @@ async function updateBankAccountRow(bankAccountId) {
 
     await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-    let menuNumber = 0;
-    menuNumber = showResult(bankAccountId,menuNumber);
+    let rowNumber = 0;
+    rowNumber = showResult(bankAccountId, rowNumber);
   }
 }
 
@@ -587,8 +585,15 @@ async function showFilter(condominiumId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objBankAccounts.showHTMLFilterHeader("width:250px;",  0, '', '', '');
-  html += objBankAccounts.showHTMLFilterHeader("width:250px;",  0,'', 'Velg leilighet', '');
+  //html += objBankAccounts.showHTMLFilterHeader("width:250px;",  0, '', '', '');
+  //html += objBankAccounts.showTableHeaderNew("width:250px;", '', '', '');
+    html += "<tr><td></td><td></td>";
+  html += "</tr>";
+
+  //html += objBankAccounts.showHTMLFilterHeader("width:250px;",  0,'', 'Velg leilighet', 'Bankkono');
+  html += objBankAccounts.showTableHeaderNew("width:250px;", '', 'Velg leilighet', 'Bankkono');
+  html += "<tr><td></td><td></td>";
+  html += "<tr>";
 
   // Filter for search
   html += "<tr>";
@@ -606,7 +611,8 @@ async function showFilter(condominiumId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objBankAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objBankAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objBankAccounts.showTableHeaderNew("width:750px;", '', '', '');
 
   // The end of the table
   html += endHTMLTable();

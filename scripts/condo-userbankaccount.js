@@ -514,13 +514,15 @@ function showFilter(userAccountId) {
   html = startHTMLTable('width:750px;');
 
   // Header filter for search
-  html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
-  html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Bruker', 'Konto', '');
+  //html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
+  //html += objUserBankAccounts.showTableHeaderNew("width:250px;", '', '', '', '', '');
+  html += "<tr><td></td><td></td>";
+  html += "</tr>";
+  //html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Bruker', 'Konto', '');
+  html += objUserBankAccounts.showTableHeaderNew("width:250px;", '', 'Bruker', 'Konto', '', '');
 
   // Filter for search
-  html += "<tr>";
-
-  html += "<td></td>";
+  html += "<tr><td></td>";
 
   // Show all selected users
   html += objUsers.showSelectedUsersNew('filterUserId', 0, '', 'Alle');
@@ -531,34 +533,16 @@ function showFilter(userAccountId) {
   html += "</tr>";
 
   // Header filter for search
-  html += objUserBankAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objUserBankAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
+  //html += objUserBankAccounts.showTableHeaderNew("width:750px;", '','','', '', '');
+  html += "<tr><td></td><td></td>";
+  html += "</tr>";
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.filter').innerHTML = html;
 }
 
-
-// Filter for search
-function showHTMLFilterSearch() {
-
-  let html =
-    `
-      <tr>
-        <td></td>
-    `;
-
-
-  // Show all selected users
-  html += objUsers.showSelectedUsersNew('filterUserId', 0, '', 'Alle');
-
-  // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
-
-  html += "</tr>";
-
-  return html;
-}
 
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
@@ -617,15 +601,14 @@ function showResult(rowNumber) {
 
   // Header
   rowNumber++;
-  html += objUserBankAccounts.showTableHeaderNew('widht:250px;', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += objUserBankAccounts.showTableHeaderNew('widht:250px;', '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   objUserBankAccounts.arrayUserBankAccounts.forEach((userBankAccount) => {
-
-    rowNumber++;
 
     html += "<tr>";
 
     // Show menu
+    rowNumber++;
     html += objUserBankAccounts.menuNew(rowNumber);
 
     // Delete

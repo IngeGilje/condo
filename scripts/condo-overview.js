@@ -150,8 +150,12 @@ function showFilter() {
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += objOverview.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
-  html += objOverview.showHTMLFilterHeader("width:250px;", 0, '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '');
+  //html += objOverview.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
+  //html += objOverview.showTableHeaderNew("width:250px;", '', '', '', '', '', '');
+   html += "<tr><td></td></tr>";
+
+  //html += objOverview.showHTMLFilterHeader("width:250px;", 0, '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '');
+  html += objOverview.showTableHeaderNew("width:250px;", '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '');
 
   // Filter for search
   html += "<tr><td></td><td></td>";
@@ -173,7 +177,10 @@ function showFilter() {
   html += "</tr>";
 
   // Header filter for search
-  html += objOverview.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
+  //html += objOverview.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
+  //html += objOverview.showTableHeaderNew("width:250px;", '', '', '', '', '', '');
+   html += "<tr><td></td></tr>";
+
 
   // The end of the table
   html += endHTMLTable();
@@ -258,7 +265,8 @@ function showBankAccountTransactions(rowNumber) {
   let sumPayments = 0;
 
   // Header
-  html += objOverview.showHTMLFilterHeader('width:250px;', rowNumber, '', '', '', '', '');
+  //html += objOverview.showHTMLFilterHeader('width:250px;', rowNumber, '', '', '', '', '');
+  html += objOverview.showTableHeaderNew('width:250px;', '', '', '', '', '');
   rowNumber++;
   html += objOverview.showTableHeaderNew('width:1100px;', '', 'Leilighet', 'Betalingsdato', 'Betaling', 'Tekst');
 
@@ -348,7 +356,8 @@ function showHowMuchToPay(rowNumber) {
   html = startHTMLTable('width:1100px;');
 
   // Header
-  html += objOverview.showHTMLFilterHeader('width:250px;', rowNumber, '', '', '', '', '');
+  //html += objOverview.showHTMLFilterHeader('width:250px;', rowNumber, '', '', '', '', '');
+  html += objOverview.showTableHeaderNew('width:250px;', '', '', '', '', '');
 
   let overPay = sumIncome - sumToPay;
   html += (overPay > 0) ? showHTMLMainTableHeader('width:1100px;', '', '', 'Forfall', 'Betalt', 'Til gode') : showHTMLMainTableHeader('width:1100px;', 'Sum', 'Forfall', 'Betalt', 'Skyldig');

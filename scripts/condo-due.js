@@ -47,7 +47,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Show filter
 
-    showFilter()
+      showFilter()
 
       const accountId = Number(document.querySelector('.filterAccountId').value);
       const condoId = Number(document.querySelector('.filterCondoId').value);
@@ -473,16 +473,17 @@ function showFilter() {
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += objDues.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
-  html += objDues.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+  //html += objDues.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
+  //html += objDues.showTableHeaderNew("width:200px;", '', '', '', '', '', '', '');
+  html += "<tr><td></td></tr>";
+  //html += objDues.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
+  html += objDues.showTableHeaderNew('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', '');
 
   // Filter for search
-  html += "<tr>";
-
-  html += "<td></td><td></td>";
+  html += "<tr><td></td><td></td>";
 
   // Show all selected condos
-  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, '', '');
+  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0);
 
   // Get condominiumId
   const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(objUserPassword.condominiumId));
@@ -495,7 +496,6 @@ function showFilter() {
     const fromDate = '01.01.' + String(today.getFullYear());
     html += objDues.showInputHTMLNew('filterFromDate', fromDate, 10);
 
-    // show to date
     // Current date
     let toDate = getCurrentDate();
 
@@ -507,7 +507,8 @@ function showFilter() {
     html += "</tr>";
 
     // Header filter for search
-    html += objDues.showHTMLFilterHeader("width:750px;", 0, '', '', '', '', '', '', '');
+    //html += objDues.showTableHeaderNew("width:750px;", '', '', '', '', '', '', '');
+      html += "<tr><td></td></tr>";
 
     // The end of the table
     html += endHTMLTable();

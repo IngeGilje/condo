@@ -30,11 +30,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
     // Show header
-    let menuNumber = 0;
     showHeader();
 
     // Show filter
-  showFilter()
+    showFilter()
 
     const condominiumId = Number(objUserPassword.condominiumId);
     const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -42,6 +41,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
     // Show result of filter
+    let menuNumber = 0;
     menuNumber = showResult(menuNumber);
 
     // Events
@@ -65,8 +65,8 @@ function events() {
         const accountId = Number(document.querySelector('.filterAccountId').value);
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -120,8 +120,8 @@ function events() {
         const accountId = Number(document.querySelector('.filterAccountId').value);
         await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, accountId);
 
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       }
     };
   });
@@ -245,7 +245,7 @@ function showHeader() {
   let html = startHTMLTable('width:1000px;');
 
   // Main header
-  html += objBudgets.showTableHeaderNew('Budsjett');
+  html += objBudgets.showTableHeaderNew('', 'Budsjett');
 
   // The end of the table
   html += endHTMLTable();
@@ -281,25 +281,28 @@ function showFilter() {
   html = startHTMLTable('width:1000px;');
 
   // Header filter for search
-  html += objBudgets.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
-  html += objBudgets.showHTMLFilterHeader('', 0, '', 'Konto', 'År', '', '', '');
+  //html += objBudgets.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
+  //html += objBudgets.showTableHeaderNew("width:200px;", '', '', '', '', '', '');
+  html += "<tr><td></td></tr>";
+  //html += objBudgets.showHTMLFilterHeader('', 0, '', 'Konto', 'År', '', '', '');
+  html += objBudgets.showTableHeaderNew('', '', '', 'Konto', 'År', '', '', '');
 
   // Filter for search
-  html += "<tr>";
-
-  html += "<td></td>";
+  html += "<tr><td></td><td></td>";
 
   // Selected accounts
   html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
 
-  // Selected years
+  // Selected year
   const year = String(today.getFullYear());
   html += objBudgets.showSelectedNumbersNew('filterYear', "width:100px;", 2020, 2030, year);
 
   html += "</tr>";
 
   // Header filter for search
-  html += objBudgets.showHTMLFilterHeader("width:1000px;",  0, '', '', '', '');
+  //html += objBudgets.showHTMLFilterHeader("width:1000px;",  0, '', '', '', '');
+  //html += objBudgets.showTableHeaderNew("width:1000px;", '', '', '', '', '', '');
+    html += "<tr><td></td></tr>";
 
   // The end of the table
   html += endHTMLTable();

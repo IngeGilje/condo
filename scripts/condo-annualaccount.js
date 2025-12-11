@@ -64,13 +64,22 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     menuNumber = showIncomeNextYear(menuNumber);
 
     // Show remote Heating
-    menuNumber = showRemoteHeating(menuNumber);
+    // Get row number for payment Remote Heating Account Id
+    const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    if (condominiumRowNumber !== -1) {
 
-    // Show bank deposit for next year
-    menuNumber = showBankDeposit(menuNumber);
+      const paymentRemoteHeatingAccountId = Number(objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId);
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, 999999999, paymentRemoteHeatingAccountId, 0, fromDate, toDate);
+      menuNumber = showRemoteHeating(menuNumber);
 
-    // Events
-    events();
+      // Show bank deposit for next year
+      const nextBudgetYear = Number(document.querySelector('.filterYear').value) + 1;
+      await objBudget.loadBudgetsTable(objUserPassword.condominiumId, nextBudgetYear, 999999999);
+      menuNumber = showBankDeposit(menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
 
@@ -109,82 +118,24 @@ function events() {
         menuNumber = showIncomeNextYear(menuNumber);
 
         // Show remote Heating
-        menuNumber = showRemoteHeating(menuNumber);
+        // Get row number for payment Remote Heating Account Id
+        const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+        if (condominiumRowNumber !== -1) {
 
-        // Show bank deposit for next year
-        menuNumber = showBankDeposit(menuNumber);
+          const paymentRemoteHeatingAccountId = Number(objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId);
+          await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, 999999999, paymentRemoteHeatingAccountId, 0, fromDate, toDate);
+
+          menuNumber = showRemoteHeating(menuNumber);
+
+          // Show bank deposit for next year
+          const nextBudgetYear = Number(document.querySelector('.filterYear').value) + 1;
+          await objBudget.loadBudgetsTable(objUserPassword.condominiumId, nextBudgetYear, 999999999);
+          menuNumber = showBankDeposit(menuNumber);
+        };
       };
     };
   });
 }
-
-/*
-// Show leading text Filter
-function showLeadingTextFilter() {
-
-  let html = startHTMLFilters();
-
-  // from date
-  html += objAnnualAccount.showInputHTML('input-filter-fromDate', 'Fra dato', 10, 'mm.dd.åååå');
-
-  // To date
-  html += objAnnualAccount.showInputHTML('input-filter-toDate', 'Til dato', 10, 'mm.dd.åååå');
-
-  // Budget year
-  let budgetYear = today.getFullYear();
-  html += objBudget.selectIntervalHTMLNew('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
-
-  // price per square meter
-  html += objAnnualAccount.showInputHTML('input-filter-priceSquareMeter', 'Kvadratmeterpris', 8, '');
-
-  html += endHTMLFilters();
-  document.querySelector('.div-grid-annualaccount-filter').innerHTML = html;
-}
-*/
-
-/*
-// Show values for filter
-function showValuesFilter() {
-
-  // From date
-  date = document.querySelector('.input-filter-fromDate').value;
-  if (!validateEuroDateFormat(date)) {
-
-    // From date is not ok
-    const year = String(today.getFullYear());
-    document.querySelector('.input-filter-fromDate').value = "01.01." + year;
-  }
-  objAnnualAccount.showIcon('input-filter-fromDate');
-
-  // to date
-  date = document.querySelector('.input-filter-toDate').value;
-  if (!validateEuroDateFormat(date)) {
-
-    // To date is not ok
-    const year = String(today.getFullYear());
-    document.querySelector('.input-filter-toDate').value = getCurrentDate();
-  }
-  objAnnualAccount.showIcon('input-filter-toDate');
-
-  // Budget year
-  budgetYear = Number(document.querySelector('.select-filter-budgetYear').value);
-  if (!validateNumberHTML(budgetYear, 2020, 2030)) {
-
-    budgetYear = today.getFullYear() + 1;
-    objBudget.selectNumber('select-filter-budgetYear', 2020, 2030, budgetYear, 'Budsjettår');
-    objAnnualAccount.showIcon('select-filter-budgetYear');
-  }
-
-  // Price per square meter
-  priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
-  if (!objAnnualAccount.validateNorAmount(priceSquareMeter)) {
-
-    // To Price per square meter is not ok
-    document.querySelector('.input-filter-priceSquareMeter').value = '30,00'
-  }
-  objAnnualAccount.showIcon('input-filter-priceSquareMeter');
-}
-*/
 
 // Accumulate all Bank account transactions for specified account id
 function getTotalMovementsBankAccount(accountId) {
@@ -228,90 +179,6 @@ function getBudgetAmount(accountId, year) {
 
   return formatOreToKroner(amount);
 }
-
-/*
-// Show calculated income next year
-function showIncomeNextYear() {
-
-  // Get fixed costs per month
-  let fromDate = document.querySelector('.input-filter-fromDate').value;
-  fromDate = Number(convertDateToISOFormat(fromDate));
-  let toDate = document.querySelector('.input-filter-toDate').value;
-  toDate = Number(convertDateToISOFormat(toDate));
-  let numFixedCost = Number(getFixedCost(fromDate, toDate));
-
-  // // Get fixed costs per year
-  // 12 month and 7 condos
-  let strFixedCost = String(Math.round(numFixedCost / 12 / 7) * (-1));
-
-  // Remove øre
-  strFixedCost = strFixedCost.slice(0, -2) + "00";
-  numFixedCost = Number(strFixedCost);
-  strFixedCost = formatOreToKroner(String(numFixedCost));
-
-  let rowNumber = 0;
-  let totalCommonCostsMonth = 0;
-  let totalCommonCostsYear = 0;
-  let totalSquareMeters = 0;
-  let totalFixedCosts = 0;
-
-  let html = startHTMLTable();
-
-  // Header
-  html += HTMLTableHeader('Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad år');
-
-  objCondo.arrayCondo.forEach((condo) => {
-
-    rowNumber++;
-
-    // check if the number is odd
-    const colorClass = (rowNumber % 2 !== 0) ? "green" : "";
-
-    // Square meters
-    let numSquareMeters = Number(condo.squareMeters);
-    let strSquareMeters = formatOreToKroner(condo.squareMeters);
-
-    // Common costs per month
-    let priceSquareMeter = document.querySelector('.input-filter-priceSquareMeter').value;
-    priceSquareMeter = Number(formatKronerToOre(priceSquareMeter));
-
-    let numCommonCostsMonth = (priceSquareMeter * numSquareMeters) / 100;
-    let strCommonCostsMonth = String(numCommonCostsMonth + numFixedCost);
-    strCommonCostsMonth = formatOreToKroner(strCommonCostsMonth);
-
-    // Common cost per Year
-    let numCommonCostsYear = (numCommonCostsMonth + numFixedCost) * 12;
-    let strCommonCostsYear = formatOreToKroner(String(numCommonCostsYear));
-
-    html += HTMLTableRow(condo.name, strSquareMeters, strFixedCost, strCommonCostsMonth, strCommonCostsYear);
-
-    // Accomulate
-    totalSquareMeters += Number(numSquareMeters);
-    totalFixedCosts += Number(numFixedCost);
-    totalCommonCostsMonth += Number(numCommonCostsMonth);
-    totalCommonCostsYear += Number(numCommonCostsYear);
-  });
-
-  // accumulator row
-
-  // Square meter
-  const strSquareMeters = formatOreToKroner(String(totalSquareMeters));
-
-  // Fixed costs
-  strFixedCost = formatOreToKroner(String(totalFixedCosts));
-
-  // Common cost per month
-  const strCommonCostsMonth = formatOreToKroner(String(totalCommonCostsMonth + totalFixedCosts));
-
-  // Common cost per year
-  const strCommonCostsYear = formatOreToKroner(String(totalCommonCostsYear));
-
-  html += HTMLTableRow('Sum', strSquareMeters, strFixedCost, strCommonCostsMonth, strCommonCostsYear);
-  html += endHTMLTableBody();
-  html += endHTMLTable();
-  document.querySelector('.div-grid-annualaccount-income').innerHTML = html;
-}
-*/
 
 // Get fixed costs
 function getFixedCost(fromDate, toDate) {
@@ -361,17 +228,22 @@ function showFilter() {
   html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += objAnnualAccount.showHTMLFilterHeader("width:200px;", 0, '');
+  //html += objAnnualAccount.showHTMLFilterHeader("width:200px;", 0, '');
+  //html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', '', '', '', '');
+  html += "<tr><td></td><td></td>";
+  html += "<tr>";
+
 
   // Filter for search
   html += "<tr>";
 
   // Header filter
-  html += objAnnualAccount.showHTMLFilterHeader("width:1100px;", 0, 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+  //html += objAnnualAccount.showHTMLFilterHeader("width:1100px;", 0, 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+  html += objAnnualAccount.showTableHeaderNew("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
 
   html += "</tr>";
 
-  html += "<tr>";
+  html += "<tr><td></td><td></td>";
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
@@ -518,11 +390,15 @@ function showIncomeNextYear(rowNumber) {
   let html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += objAnnualAccount.showHTMLFilterHeader("width:200px;", rowNumber, '');
+  //html += objAnnualAccount.showHTMLFilterHeader("width:200px;", rowNumber, '');
+  //html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', '', '', '', '');
+  html += "<tr><td></td><td></td>";
 
   // Header
   //rowNumber++;
   html += objAnnualAccount.showTableHeaderNew("width:200px;", '', 'Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad/år');
+
+  html += "</tr>"
 
   objCondo.arrayCondo.forEach((condo) => {
 
@@ -606,164 +482,6 @@ function showIncomeNextYear(rowNumber) {
   return rowNumber;
 }
 
-/*
-// Show remote heating
-function showRemoteHeating() {
-
-  let rowNumber = 0;
-
-  html =
-    `
-        <!-- Budget Table Heading -->
-        <table>
-          <thead>
-            <tr>
-              <th>Betalings dato</th>
-              <th>Beløp</th>
-              <th>Kilowatt timer</th>
-              <th>Pris/Kilowatt timer</th>
-            </tr>
-          </thead>
-        <tbody>
-      `;
-
-  // Filter
-  let fromDate = convertDateToISOFormat(document.querySelector('.input-filter-fromDate').value);
-  let toDate = convertDateToISOFormat(document.querySelector('.input-filter-toDate').value);
-
-  // Accomulate
-  let sumColumnPayment = 0;
-  let sumColumnNumberKWHour = 0;
-
-  // Get row number for payment Remote Heating Account Id
-  const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-  if (condominiumRowNumber !== -1) {
-
-    objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
-      if (bankAccountTransaction.accountId === objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId) {
-        if (Number(bankAccountTransaction.date) >= Number(fromDate) && Number(bankAccountTransaction.date) <= Number(toDate)) {
-
-          rowNumber++;
-
-          // check if the number is odd
-          const colorClass =
-            (rowNumber % 2 !== 0) ? "green" : "";
-          html +=
-            `
-                <tr>
-              `;
-
-          // date
-          const date = formatToNorDate(bankAccountTransaction.date);
-          // Date
-          html +=
-            `
-                <td>${date}</td>
-              `;
-
-          // payment
-          let payment =
-            formatOreToKroner(bankAccountTransaction.payment);
-          html +=
-            `
-                <td>${payment}</td>
-              `;
-
-          // Number of kw/h
-          let numberKWHour =
-            formatOreToKroner(bankAccountTransaction.numberKWHour);
-          html +=
-            `
-                <td>${numberKWHour}</td>
-              `;
-
-          // Price per KWHour
-          payment =
-            Number(bankAccountTransaction.payment);
-          numberKWHour =
-            Number(bankAccountTransaction.numberKWHour);
-
-          let priceKWHour = '';
-          if (numberKWHour !== 0 && payment !== 0) {
-
-            priceKWHour = (-1 * payment) / numberKWHour;
-            priceKWHour =
-              priceKWHour.toFixed(2);
-          }
-          html +=
-            `
-                <td>${priceKWHour}</td>
-              `;
-
-          // Accomulate
-          // payment
-          sumColumnPayment += Number(bankAccountTransaction.payment);
-
-          // KWHour
-          sumColumnNumberKWHour += Number(bankAccountTransaction.numberKWHour);
-        }
-      }
-      html +=
-        `
-            </tr>
-          `;
-    });
-
-    html +=
-      `
-            <tr>
-          `;
-
-
-    html +=
-      `
-          <td>Sum</td>
-        `;
-
-    // Payment
-    let payment = formatOreToKroner(String(sumColumnPayment));
-    html +=
-      `
-          <td>${payment}</td>
-        `;
-
-    // Kilowatt/hour
-    const KWHour = formatOreToKroner(String(sumColumnNumberKWHour));
-    html +=
-      `
-          <td>${KWHour}</td>
-        `;
-
-    // Price per KWHour
-    payment = Number(sumColumnPayment);
-    numberKWHour = Number(sumColumnNumberKWHour);
-
-    let sumPriceKWHour = '-';
-    if (payment !== 0 && numberKWHour !== 0) {
-
-      sumPriceKWHour =
-        ((-1 * payment) / numberKWHour);
-      sumPriceKWHour =
-        sumPriceKWHour.toFixed(2);
-    }
-
-    html +=
-      `
-          <td>${sumPriceKWHour}</td>
-        `;
-
-    html +=
-      `
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        `;
-    document.querySelector('.div-grid-annualaccount-remoteHeating').innerHTML = html;
-  }
-}
-*/
-
 // Show remote heating
 function showRemoteHeating(rowNumber) {
 
@@ -782,11 +500,14 @@ function showRemoteHeating(rowNumber) {
   let html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += objAnnualAccount.showHTMLFilterHeader("width:200px;", rowNumber, '');
+  //html += objAnnualAccount.showHTMLFilterHeader("width:200px;", rowNumber, '');
+  //html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', '', '', '', '');
+  html += "<tr><td></td><td></td>";
+  html += "<tr>";
 
   // Header
   rowNumber++;
-  html += objAnnualAccount.showTableHeaderNew("width:200px;", '', 'Betalingsdato', 'Beløp', 'Kilowattimer', 'Pris/Kilowatt timer');
+  html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', 'Betalingsdato', 'Beløp', 'Kilowattimer', 'Pris/Kilowatt timer');
 
   // Get row number for payment Remote Heating Account Id
   const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
@@ -794,51 +515,51 @@ function showRemoteHeating(rowNumber) {
 
     const paymentRemoteHeatingAccountId = Number(objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId);
     objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
-      if (bankAccountTransaction.accountId === paymentRemoteHeatingAccountId) {
-        if (Number(bankAccountTransaction.date) >= Number(fromDate) && Number(bankAccountTransaction.date) <= Number(toDate)) {
+      //if (bankAccountTransaction.accountId === paymentRemoteHeatingAccountId) {
+      //if (Number(bankAccountTransaction.date) >= Number(fromDate) && Number(bankAccountTransaction.date) <= Number(toDate)) {
 
-          html += '<tr>';
+      html += '<tr><td></td>';
 
-          // Show menu
-          rowNumber++;
-          html += objBankAccountTransactions.menuNew(rowNumber);
+      // Show menu
+      rowNumber++;
+      html += objBankAccountTransactions.menuNew(rowNumber);
 
-          const date = formatToNorDate(bankAccountTransaction.date);
-          className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-          html += objBankAccountTransactions.showInputHTMLNew(className, date, 10);
+      const date = formatToNorDate(bankAccountTransaction.date);
+      className = `date${bankAccountTransaction.bankAccountTransactionId}`;
+      html += objBankAccountTransactions.showInputHTMLNew(className, date, 10);
 
-          let payment = formatOreToKroner(bankAccountTransaction.payment);
-          className = `payment${bankAccountTransaction.bankAccountTransactionId}`;
-          html += objBankAccountTransactions.showInputHTMLNew(className, payment, 10);
+      let payment = formatOreToKroner(bankAccountTransaction.payment);
+      className = `payment${bankAccountTransaction.bankAccountTransactionId}`;
+      html += objBankAccountTransactions.showInputHTMLNew(className, payment, 10);
 
-          // numberKWHour
-          let numberKWHour = formatOreToKroner(bankAccountTransaction.numberKWHour);
-          className = `numberKWHour${bankAccountTransaction.bankAccountTransactionId}`;
-          html += objBankAccountTransactions.showInputHTMLNew(className, numberKWHour, 10);
+      // numberKWHour
+      let numberKWHour = formatOreToKroner(bankAccountTransaction.numberKWHour);
+      className = `numberKWHour${bankAccountTransaction.bankAccountTransactionId}`;
+      html += objBankAccountTransactions.showInputHTMLNew(className, numberKWHour, 10);
 
-          // Price per KWHour
-          payment = Number(bankAccountTransaction.payment);
-          numberKWHour = Number(bankAccountTransaction.numberKWHour);
+      // Price per KWHour
+      payment = Number(bankAccountTransaction.payment);
+      numberKWHour = Number(bankAccountTransaction.numberKWHour);
 
-          let priceKWHour = '';
-          if (numberKWHour !== 0 && payment !== 0) priceKWHour = (-1 * payment) / numberKWHour;
+      let priceKWHour = '';
+      if (numberKWHour !== 0 && payment !== 0) priceKWHour = (-1 * payment) / numberKWHour;
 
-          if (priceKWHour > 0) priceKWHour = priceKWHour.toFixed(2);
-          priceKWHour = priceKWHour.replace(".", ",");
-          priceKWHour = formatOreToKroner(priceKWHour);
-          className = ` priceKWHour${bankAccountTransaction.bankAccountTransactionId}`;
-          html += objBankAccountTransactions.showInputHTMLNew(className, priceKWHour, 10);
+      if (priceKWHour > 0) priceKWHour = priceKWHour.toFixed(2);
+      priceKWHour = priceKWHour.replace(".", ",");
+      priceKWHour = formatOreToKroner(priceKWHour);
+      className = ` priceKWHour${bankAccountTransaction.bankAccountTransactionId}`;
+      html += objBankAccountTransactions.showInputHTMLNew(className, priceKWHour, 10);
 
-          html += "</tr>";
+      html += "</tr>";
 
-          // Accomulate
-          // payment
-          sumPayment += Number(bankAccountTransaction.payment);
+      // Accomulate
+      // payment
+      sumPayment += Number(bankAccountTransaction.payment);
 
-          // KWHour
-          sumNumberKWHour += Number(bankAccountTransaction.numberKWHour);
-        }
-      }
+      // KWHour
+      sumNumberKWHour += Number(bankAccountTransaction.numberKWHour);
+      //}
+      //}
     });
 
     // Sum row
@@ -848,7 +569,7 @@ function showRemoteHeating(rowNumber) {
     rowNumber++;
     html += objBankAccountTransactions.menuNew(rowNumber);
 
-    html += "<td class='center bold'>Sum</td>";
+    html += "<td></td><td class='center bold'>Sum</td>";
 
     html += objBankAccountTransactions.showInputHTMLNew('sumPayment', formatOreToKroner(String(sumPayment, 10)));
     html += objBankAccountTransactions.showInputHTMLNew('sumNumberKWHour', formatOreToKroner(String(sumNumberKWHour, 10)));
@@ -883,13 +604,17 @@ function showBankDeposit(rowNumber) {
   let html = startHTMLTable('width:1100px;');
 
   // Header filter for search
-  html += objAnnualAccount.showHTMLFilterHeader("width:200px;", rowNumber, '');
-
+  //html += objAnnualAccount.showHTMLFilterHeader("width:200px;", rowNumber, '');
+  //html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', '', '', '', '');
+  html += "<tr><td></td><td></td>";
   html += "<tr>";
 
   // Header
   rowNumber++;
-  html += objAnnualAccount.showTableHeaderNew("width:200px;", '', 'Text', 'Dato', `Budsjett ${nextBudgetYear}`);
+  html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', '', 'Text', 'Dato', `Budsjett ${nextBudgetYear}`);
+  //html += objAnnualAccount.showTableHeaderNew("width:200px;", '');
+
+  html += "<tr><td></td><td></td>";
 
   // Show menu
   rowNumber++;
@@ -924,42 +649,40 @@ function showBankDeposit(rowNumber) {
 
   // budget
   objBudget.arrayBudgets.forEach((budget) => {
-    if (Number(budget.year) === nextBudgetYear) {
-      if (Number(budget.amount) !== 0) {
+    if (Number(budget.amount) !== 0) {
 
-        html += "<tr>";
+      html += "<tr><td></td><td></td>";
 
-        // Show menu
-        rowNumber++;
-        html += objBankAccountTransactions.menuNew(rowNumber);
+      // Show menu
+      rowNumber++;
+      html += objBankAccountTransactions.menuNew(rowNumber);
 
-        // Account Name
-        let name = '';
-        const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === budget.accountId);
-        if (accountRowNumber !== -1) {
+      // Account Name
+      let name = '';
+      const accountRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === budget.accountId);
+      if (accountRowNumber !== -1) {
 
-          name = objAccounts.arrayAccounts[accountRowNumber].name;
-        }
-        className = `name${budget.budgetId}`
-        html += objBankAccountTransactions.showInputHTMLNew(className, name, 10);
-
-        // Date
-        html += "<td></td>";
-
-        // budget amount
-        let amount = formatOreToKroner(budget.amount);
-        className = `amount${budget.budgetId}`
-        html += objBankAccountTransactions.showInputHTMLNew(className, amount, 10);
-
-        html += "</tr>";
-
-        // accumulate
-        accAmount += Number(formatKronerToOre(amount));
+        name = objAccounts.arrayAccounts[accountRowNumber].name;
       }
+      className = `name${budget.budgetId}`
+      html += objBankAccountTransactions.showInputHTMLNew(className, name, 10);
+
+      // Date
+      html += "<td></td>";
+
+      // budget amount
+      let amount = formatOreToKroner(budget.amount);
+      className = `amount${budget.budgetId}`
+      html += objBankAccountTransactions.showInputHTMLNew(className, amount, 10);
+
+      html += "</tr>";
+
+      // accumulate
+      accAmount += Number(formatKronerToOre(amount));
     }
   });
 
-  html += '<tr>';
+  html += '<tr><td></td><td></td>';
 
   // Show menu
   rowNumber++;
