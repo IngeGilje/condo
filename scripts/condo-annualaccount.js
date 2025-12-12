@@ -230,9 +230,7 @@ function showFilter() {
   // Header filter for search
   //html += objAnnualAccount.showHTMLFilterHeader("width:200px;", 0, '');
   //html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', '', '', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "<tr>";
-
+  html += "<tr><td></td><tr>";
 
   // Filter for search
   html += "<tr>";
@@ -276,7 +274,6 @@ function showAnnualAccounts(rowNumber) {
   let html = startHTMLTable('width:1100px;');
 
   // Header
-  rowNumber++;
   html += objAnnualAccount.showTableHeaderNew("width:200px;", '', 'Konto', 'Beløp', 'Budsjett', 'Avvik');
 
   let totalAccountAmount = 0;
@@ -502,8 +499,7 @@ function showRemoteHeating(rowNumber) {
   // Header filter for search
   //html += objAnnualAccount.showHTMLFilterHeader("width:200px;", rowNumber, '');
   //html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', '', '', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "<tr>";
+  html += "<tr><td></td><tr>";
 
   // Header
   rowNumber++;
@@ -606,8 +602,7 @@ function showBankDeposit(rowNumber) {
   // Header filter for search
   //html += objAnnualAccount.showHTMLFilterHeader("width:200px;", rowNumber, '');
   //html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', '', '', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "<tr>";
+  html += "<tr><td></td><tr>";
 
   // Header
   rowNumber++;

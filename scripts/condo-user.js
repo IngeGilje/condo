@@ -550,8 +550,7 @@ function showFilter(userId) {
   // Header filter for search
   //html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
  //html += objUsers.showTableHeaderNew("width:250px;", '', '', '');
-   html += "<tr><td></td><td></td>";
-  html += "</tr>";
+   html += "<tr><td></td></tr>";
 
   //html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg bruker', '');
  html += objUsers.showTableHeaderNew("width:250px;", '', 'Velg bruker', '');
@@ -568,8 +567,7 @@ function showFilter(userId) {
   // Header filter for search
   //html += objUsers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
   //html += objUsers.showTableHeaderNew("width:750px;", '', '', '');
-   html += "<tr><td></td><td></td>";
-  html += "</tr>";
+   html += "<tr><td></td></tr>";
 
   // The end of the table
   html += endHTMLTable();
@@ -587,7 +585,6 @@ function showResult(userId, rowNumber) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    rowNumber++;
     html += objUsers.showTableHeaderNew('widht:250px;', '', '', '');
 
     // email,condoId

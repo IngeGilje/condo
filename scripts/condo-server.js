@@ -1685,17 +1685,17 @@ async function main() {
             const SQLquery =
               `
                 UPDATE bankaccounttransactions
-            SET
-            deleted = 'N',
-              user = '${user}',
-              lastUpdate = '${lastUpdate}',
-              condoId = '${condoId}',
-              accountId = '${accountId}',
-              income = ${income},
-            payment = ${payment},
-            numberKWHour = '${numberKWHour}',
-              date = ${date},
-            text = '${text}'
+                SET
+                  deleted = 'N',
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}',
+                  condoId = '${condoId}',
+                  accountId = '${accountId}',
+                  income = ${income},
+                  payment = ${payment},
+                  numberKWHour = '${numberKWHour}',
+                  date = ${date},
+                  text = '${text}'
                 WHERE bankAccountTransactionId = ${bankAccountTransactionId};
             `;
 
@@ -1728,32 +1728,33 @@ async function main() {
             const SQLquery =
               `
                 INSERT INTO bankaccounttransactions(
-              deleted,
-              condominiumId,
-              user,
-              lastUpdate,
-              condoId,
-              accountId,
-              income,
-              payment,
-              numberKWHour,
-              date,
-              text
-            ) VALUES(
-              'N',
-              ${condominiumId},
-              '${user}',
-              '${lastUpdate}',
-              ${condoId},
-              ${accountId},
-              ${income},
-              ${payment},
-              '${numberKWHour}',
-              ${date},
-              '${text}'
-            );
-            `;
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  condoId,
+                  accountId,
+                  income,
+                  payment,
+                  numberKWHour,
+                  date,
+                  text
+                ) VALUES(
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  ${condoId},
+                  ${accountId},
+                  ${income},
+                  ${payment},
+                  '${numberKWHour}',
+                  ${date},
+                  '${text}'
+                );
+              `;
 
+            console.log('SQLquery: ',SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1802,15 +1803,9 @@ async function main() {
       try {
 
         const csvFileName = req.query.csvFileName;
-        console.log('csvFileName: ', csvFileName);
-
-        //const data = await fs.readFile("C:/Websites/condo/data/transaksjonsliste.csv", "utf8");
+        
         const data = await fs.readFile(csvFileName, "utf8");
-        console.log('data: ', data);
-
         res.json({ content: data });
-        console.log('data :', data);
-
       } catch (err) {
         res.status(500).json({ error: err.message });
       }

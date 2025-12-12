@@ -204,16 +204,13 @@ function showFilter() {
     // Header filter for search
     //html += objBankAccountTransactions.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
     //html += objBankAccountTransactions.showTableHeaderNew("width:200px;", '', '', '', '', '', '', '');
-    html += "<tr><td></td><td></td>";
-    html += "</tr>";
+    html += "<tr><td></td></tr>";
 
     //html += objBankAccountTransactions.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
     html += objBankAccountTransactions.showTableHeaderNew('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp');
 
     // Filter for search
-     html += "<tr><td></td><td></td>";
-
-    //html += "<td></td><td></td>";
+    html += "<tr><td></td><td></td>";
 
     // Show all selected condos
     html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 999999999, '', 'Vis alle');
@@ -235,21 +232,20 @@ function showFilter() {
     html += "</tr>";
 
     // Header filter
-    //html += objBankAccountTransactions.showHTMLFilterHeader("width:750px;", 0, '', '', '', '', '', '', '');
-    //html += objBankAccountTransactions.showTableHeaderNew("width:750px;", '', '', '', '', '', '', '');
-    html += "<tr><td></td><td></td>";
-    html += "</tr>";
+    html += "<tr><td></td></tr>";
 
     // The end of the table
     html += endHTMLTable();
     document.querySelector('.filter').innerHTML = html;
 
+    /*
     // show icons
     objBankAccountTransactions.showIconNew('filterCondoId');
     objBankAccountTransactions.showIconNew('filterAccountId');
     objBankAccountTransactions.showIconNew('filterFromDate');
     objBankAccountTransactions.showIconNew('filterToDate');
     objBankAccountTransactions.showIconNew('filterAmount');
+    */
   }
 }
 
@@ -304,34 +300,6 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   }
 }
 
-// Filter for search
-function showHTMLFilterSearch() {
-
-  let html = "<tr><td></td><td></td>";
-
-  // show all selected accounts
-  html += objCondo.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, '', 'Alle');
-
-  // show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
-
-  // from date
-  const fromDate = "01.01." + today.getFullYear();
-  html += objBankAccountTransactions.showInputHTMLNew('filterFromDate', fromDate, 10);
-
-  // to date
-  const toDate = getCurrentDate();
-  html += objBankAccountTransactions.showInputHTMLNew('filterToDate', toDate, 10);
-
-  // amount
-  html += objBankAccountTransactions.showInputHTMLNew('filterAmount', '', 45);
-  html += "<td></td>";
-  html += "<td></td>";
-  html += "</tr>"
-
-  return html;
-}
-
 // Show header
 function showHeader() {
 
@@ -364,36 +332,10 @@ function showTableSumRow(rowNumber, sumIncome, sumPayment) {
   return html;
 }
 
-/*
-// Show the rest of the menu
-function showRestMenuNew(rowNumber) {
-
-  let html = "";
-  for (; objBankAccountTransactions.arrayMenu.length >= rowNumber; rowNumber++) {
-
-    html +=
-      `
-        <tr 
-          class="menu"
-        >
-      `;
-    // Show menu
-    html += objBankAccountTransactions.menuNew(rowNumber);
-    html +=
-      `
-        </tr>
-      `;
-  }
-
-  return html;
-}
-*/
-
 // Delete bankaccounttransactions row
 async function deleteBankAccountTransactionRow(bankAccountTransationId, className) {
 
   const user = objUserPassword.email;
-
 
   // Check if bankaccounttransaction row exist
   bankAccountTransactionsRowNumber = objBankAccountTransactions.arrayBankAccountTransactions.findIndex(bankaccounttransaction => bankaccounttransaction.bankAccountTransationId === bankAccountTransationId);
@@ -426,7 +368,6 @@ function showResult(rowNumber) {
   let html = startHTMLTable('width:1450px;');
 
   // Header
-  rowNumber++;
   html += objBankAccountTransactions.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
 
   let sumIncome = 0;
@@ -460,7 +401,10 @@ function showResult(rowNumber) {
 
     // accounts
     className = `accountId${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objAccounts.showSelectedAccountsNew(className, '', bankAccountTransaction.accountId, 'Ingen er valgt', '');
+    //html += objAccounts.showSelectedAccountsNew(className, '', bankAccountTransaction.accountId, 'Ingen er valgt', '');
+    html += (bankAccountTransaction.accountId === 0)
+      ? objAccounts.showSelectedAccountsNew(className, 'background-color: #f89595;', bankAccountTransaction.accountId, 'Ingen er valgt', '')
+      : objAccounts.showSelectedAccountsNew(className, '', bankAccountTransaction.accountId, 'Ingen er valgt', '');
 
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);

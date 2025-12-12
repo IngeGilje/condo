@@ -164,17 +164,13 @@ function showFilter(accountId) {
   // Header filter for search
   //html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
   //html += objAccounts.showTableHeaderNew("width:250px;", '', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "<tr>";
-
+  html += "<tr><td></td></tr>";
 
   //html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Kostnadstype', '');
   html += objAccounts.showTableHeaderNew("width:250px;", '', 'Kostnadstype', '');
 
   // Filter for search
-  html += "<tr>";
-
-  html += "<td></td>";
+  html += "<tr><td></td>";
 
   // fixed or not fixed cost
   html += objAccounts.showSelectedValuesNew('filterFixedCost', 'width:100px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
@@ -183,8 +179,7 @@ function showFilter(accountId) {
   // Header filter for search
   //html += objAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
   //html += objAccounts.showTableHeaderNew("width:750px;", '', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "<tr>";
+  html += "<tr><td></td><tr>";
 
   // The end of the table
   html += endHTMLTable();
@@ -244,7 +239,6 @@ function showResult(rowNumber) {
   html = startHTMLTable('width:750px;');
 
   // Header
-  rowNumber++;
   html += objAccounts.showTableHeaderNew('widht:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccounts.arrayAccounts.forEach((account) => {

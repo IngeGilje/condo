@@ -1041,6 +1041,7 @@ class Condos {
     inputElement.style.backgroundImage = `url('icons/${iconName}')`;
   }
 
+  /*
   // Show icon
   showIconNew(className) {
 
@@ -1085,6 +1086,7 @@ class Condos {
     if (imageName === 'undefined') imageName = "error.png";
     return imageName;
   }
+  */
 
   // get icon name from column name
   getIconName(className) {

@@ -156,8 +156,7 @@ function showFilter(condoId) {
   // Header filter for search
   //html += objCondos.showHTMLFilterHeader("width:250px;", 0, '', '', '');
   //html += objCondos.showTableHeaderNew("width:250px;", '', '', '');
-    html += "<tr><td></td><td></td>";
-  html += "</tr>";
+    html += "<tr><td></td></tr>";
 
   //html += objCondos.showHTMLFilterHeader("width:250px;", 0, '', 'Velg leilighet', '');
  html += objCondos.showTableHeaderNew("width:250px;", '', 'Velg leilighet', '');
@@ -175,8 +174,7 @@ function showFilter(condoId) {
   // Header filter for search
   //html += objCondos.showHTMLFilterHeader("width:750px;", 0, '', '', '');
   //html += objCondos.showTableHeaderNew("width:750px;", '', '', '');
-    html += "<tr><td></td><td></td>";
-  html += "</tr>";
+    html += "<tr><td></td></tr>";
 
   // The end of the table
   html += endHTMLTable();
@@ -194,7 +192,6 @@ function showResult(condoId, rowNumber) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    rowNumber++;
     html += objCondos.showTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
@@ -215,7 +212,6 @@ function showResult(condoId, rowNumber) {
     html += "</tr>";
 
     // street, address2
-    html += "<tr>";
     rowNumber++;
     html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Gate', 'Adresse 2');
 
@@ -238,7 +234,6 @@ function showResult(condoId, rowNumber) {
     html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Postnummer', 'Poststed');
 
     // Show menu
-    html += "<tr>";
     rowNumber++;
     html += objCondos.menuNew(rowNumber);
 

@@ -516,8 +516,7 @@ function showFilter(userAccountId) {
   // Header filter for search
   //html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
   //html += objUserBankAccounts.showTableHeaderNew("width:250px;", '', '', '', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "</tr>";
+  html += "<tr><td></td></tr>";
   //html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Bruker', 'Konto', '');
   html += objUserBankAccounts.showTableHeaderNew("width:250px;", '', 'Bruker', 'Konto', '', '');
 
@@ -535,8 +534,7 @@ function showFilter(userAccountId) {
   // Header filter for search
   //html += objUserBankAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
   //html += objUserBankAccounts.showTableHeaderNew("width:750px;", '','','', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "</tr>";
+  html += "<tr><td></td></tr>";
 
   // The end of the table
   html += endHTMLTable();
@@ -600,7 +598,6 @@ function showResult(rowNumber) {
   html = startHTMLTable('width:750px;');
 
   // Header
-  rowNumber++;
   html += objUserBankAccounts.showTableHeaderNew('widht:250px;', '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   objUserBankAccounts.arrayUserBankAccounts.forEach((userBankAccount) => {

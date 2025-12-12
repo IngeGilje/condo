@@ -548,8 +548,7 @@ function showFilter(supplierId) {
   // Header filter for search
   //html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
   //html += objSuppliers.showTableHeaderNew("width:250px;", '', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "</tr>";
+  html += "<tr><td></td></tr>";
   //html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg mottaker', '');
   html += objSuppliers.showTableHeaderNew("width:250px;", '', 'Velg mottaker', '');
 
@@ -566,15 +565,14 @@ function showFilter(supplierId) {
   // Header filter for search
   //html += objSuppliers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
   //html += objSuppliers.showTableHeaderNew("width:750px;", '', '', '');
-    html += "<tr><td></td><td></td>";
-  html += "</tr>";
+    html += "<tr><td></td></tr>";
 
   // The end of the table
   html += endHTMLTable();
   document.querySelector('.filter').innerHTML = html;
 
   // show icons
-  objSuppliers.showIconNew('filterSupplierId');
+  //objSuppliers.showIconNew('filterSupplierId');
 }
 
 // Show result
@@ -588,15 +586,12 @@ function showResult(supplierId, rowNumber) {
     html = startHTMLTable('width:750px;');
 
     // Main header
-    rowNumber++;
     html += objSuppliers.showTableHeaderNew('widht:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu
     rowNumber++;
     html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn');
-
-    html += "<tr>";
 
     // Show menu
     html += "<tr>";
@@ -664,7 +659,7 @@ function showResult(supplierId, rowNumber) {
     // bankAccount, accountId
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Bankkonto', 'Konto');
+    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Bankkonto', 'Bankkontonummer');
 
     // Show menu
     rowNumber++;
@@ -751,6 +746,7 @@ function showResult(supplierId, rowNumber) {
     html += endHTMLTable();
     document.querySelector('.result').innerHTML = html;
 
+    /*
     // Show icons
     objSuppliers.showIconNew('name');
     objSuppliers.showIconNew('street');
@@ -766,6 +762,7 @@ function showResult(supplierId, rowNumber) {
     objSuppliers.showIconNew('amount');
     objSuppliers.showIconNew('amountAccountId');
     objSuppliers.showIconNew('textAccountId');
+    */
   }
 }
 

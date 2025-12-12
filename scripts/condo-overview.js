@@ -196,7 +196,6 @@ function showDues(rowNumber) {
   let sumDue = 0;
 
   // Header
-  rowNumber++;
   html += objOverview.showTableHeaderNew('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {

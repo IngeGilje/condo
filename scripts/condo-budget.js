@@ -308,9 +308,11 @@ function showFilter() {
   html += endHTMLTable();
   document.querySelector('.filter').innerHTML = html;
 
+  /*
   // show icons
   objBudgets.showIconNew('filterAccountId');
   objBudgets.showIconNew('filterYear');
+  */
 }
 
 // Show bankaccounttransactions
@@ -320,7 +322,6 @@ function showResult(rowNumber) {
   let html = startHTMLTable('width:1000px;');
 
   // Header
-  rowNumber++;
   html += objBudgets.showTableHeaderNew("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
 
   let sumAmount = 0;

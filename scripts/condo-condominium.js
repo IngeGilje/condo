@@ -335,8 +335,7 @@ function showFilter(condominiumId) {
   // Header filter for search
   //html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '');
   //html += objCondominiums.showTableHeaderNew("width:250px;", '', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "</tr>";
+  html += "<tr><td></td></tr>";
 
   //html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '', '', 'Velg sameie');
   html += objCondominiums.showTableHeaderNew("width:250px;", '', 'Velg sameie', '');
@@ -354,8 +353,7 @@ function showFilter(condominiumId) {
   // Header filter for search
   //html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
   //html += objCondominiums.showTableHeaderNew("width:250px;", '', '', '');
-  html += "<tr><td></td><td></td>";
-  html += "</tr>";
+  html += "<tr><td></td></tr>";
 
   // The end of the table
   html += endHTMLTable();

@@ -233,7 +233,6 @@ function showResult(rowNumber) {
   html = startHTMLTable('width:1100px;');
 
   // Header
-  rowNumber++;
   html += objDues.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
 
   let sumAmount = 0;
@@ -514,10 +513,12 @@ function showFilter() {
     html += endHTMLTable();
     document.querySelector('.filter').innerHTML = html;
 
+    /*
     // show icons
     objDues.showIconNew('filterCondoId');
     objDues.showIconNew('filterAccountId');
     objDues.showIconNew('filterFromDate');
     objDues.showIconNew('filterToDate');
+    */
   }
 }
