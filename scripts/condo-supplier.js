@@ -559,45 +559,6 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-
-/*
-// Show filter
-function showFilter(supplierId) {
-
-  // Start table
-  html = startHTMLTable('width:750px;');
-
-  // Header filter for search
-  //html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
-  //html += objSuppliers.showTableHeaderNew("width:250px;", '', '', '');
-  html += "<tr><td></td></tr>";
-  //html += objSuppliers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg mottaker', '');
-  html += objSuppliers.showTableHeaderNew("width:250px;", '', 'Velg mottaker', '');
-
-  // Filter for search
-  html += "<tr>";
-
-  html += "<td></td>";
-
-  // supplier
-  html += objSuppliers.showSelectedSuppliersNew('filterSupplierId', 'width:100px;', supplierId, '', '')
-
-  html += "</tr>";
-
-  // Header filter for search
-  //html += objSuppliers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
-  //html += objSuppliers.showTableHeaderNew("width:750px;", '', '', '');
-    html += "<tr><td></td></tr>";
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.filter').innerHTML = html;
-
-  // show icons
-  //objSuppliers.showIconNew('filterSupplierId');
-}
-*/
-
 // Show filter
 function showFilter(supplierId) {
 

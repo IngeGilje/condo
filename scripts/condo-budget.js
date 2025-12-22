@@ -201,28 +201,6 @@ async function updateBudgetsRow(budgetId) {
   }
 }
 
-// Insert empty table row
-function insertEmptyTableRow(rowNumber) {
-
-  let html = "<tr>";
-
-  // Show menu
-  html += objBudgets.menuNew(rowNumber);
-
-  html += "<td></td>";
-
-  // accounts
-  let className = `account${0}`;
-  html += objAccounts.showSelectedAccountsNew(className, '', 0, 'Ingen er valgt', '');
-
-  // budget amount
-  const amount = "";
-  html += objBudgets.inputTableColumnNew('amount0', amount, 10);
-
-  html += "</tr>";
-  return html;
-}
-
 // Calculate sum budget
 function calculateSum() {
 
@@ -269,65 +247,6 @@ function showHeader() {
   html += objBudgets.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
-
-// Show table sum row
-function showTableSumRow(rowNumber, amount) {
-
-  let html =
-    `
-      <tr 
-        class="menu"
-      >
-    `;
-  // Show menu
-  html += objBudgets.menuNew(rowNumber);
-  html += "<td></td>";
-  html += "<td class='bold'>Sum</td>";
-  html += `<td class="center bold">${amount}</td>`;
-  html +=
-    `
-      </tr>
-    `;
-
-  return html;
-}
-
-/*
-// Show filter
-function showFilter() {
-
-  // Start table
-  html = startHTMLTable('width:1000px;');
-
-  // Header filter for search
-  //html += objBudgets.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
-  //html += objBudgets.showTableHeaderNew("width:200px;", '', '', '', '', '', '');
-  html += "<tr><td></td></tr>";
-  //html += objBudgets.showHTMLFilterHeader('', 0, '', 'Konto', 'År', '', '', '');
-  html += objBudgets.showTableHeaderNew('', '', '', 'Konto', 'År', '', '', '');
-
-  // Filter for search
-  html += "<tr><td></td><td></td>";
-
-  // Selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
-
-  // Selected year
-  const year = String(today.getFullYear());
-  html += objBudgets.showSelectedNumbersNew('filterYear', "width:100px;", 2020, 2030, year);
-
-  html += "</tr>";
-
-  // Header filter for search
-  //html += objBudgets.showHTMLFilterHeader("width:1000px;",  0, '', '', '', '');
-  //html += objBudgets.showTableHeaderNew("width:1000px;", '', '', '', '', '', '');
-    html += "<tr><td></td></tr>";
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.filter').innerHTML = html;
- }
-*/
 
 // Show filter
 function showFilter() {
@@ -431,8 +350,6 @@ function showResult(rowNumber) {
   rowNumber++;
   html += objBudgets.menuNew(rowNumber);
 
-  //html += "<td></td>";
-
   html += "<td class='bold'>Nytt budsjett</td>";
 
   // accounts
@@ -456,9 +373,10 @@ function showResult(rowNumber) {
   html += "</tr>";
 
   // Show table sum row
-  rowNumber++;
   sumAmount = formatOreToKroner(sumAmount);
-  html += showTableSumRow(rowNumber, sumAmount);
+
+  rowNumber++;
+  html += objBudgets.insertTableColumnsNew('font-weight: 600;', rowNumber, '', '', 'Sum', sumAmount);
 
   // Show the rest of the menu
   rowNumber++;

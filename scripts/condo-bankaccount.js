@@ -357,26 +357,6 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-// Filter for search
-function showHTMLFilterSearch() {
-
-  let html = "<tr><td></td>";
-
-  // Show all selected condominiums
-  // Get last id in last object in condominiums array
-  const condominiumId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
-  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'width:100px;', condominiumId, '', '');
-
-  // Show all bankaccounts
-  // Get last id in last object in bankaccounts array
-  const bankAccountId = objBankAccounts.arrayBankAccounts.at(-1).bankAccountId;
-  html += objBankAccounts.showSelectedBankAccountsNew('filterBankAccountId', 'width:100px;', bankAccountId, '', '');
-
-  html += "<td></td></tr>";
-
-  return html;
-}
-
 // Show result
 function showResult(bankAccountId, rowNumber) {
 
@@ -603,44 +583,6 @@ function resetValues() {
   document.querySelector('.delete').disabled = true;
   document.querySelector('.insert').disabled = true;
 }
-
-/*
-// Show filter
-async function showFilter(condominiumId) {
-
-  // Start table
-  html = startHTMLTable('width:750px;');
-
-  // Header filter for search
-  //html += objBankAccounts.showHTMLFilterHeader("width:250px;",  0, '', '', '');
-  //html += objBankAccounts.showTableHeaderNew("width:250px;", '', '', '');
-  html += "<tr><td></td></tr>";
- 
-  //html += objBankAccounts.showHTMLFilterHeader("width:250px;",  0,'', 'Velg leilighet', 'Bankkono');
-  html += objBankAccounts.showTableHeaderNew("width:250px;", '', 'Velg leilighet', 'Bankkonto');
-
-  // Filter for search
-  html += "<tr><td></td>";
-
-  // Show selected condominiums 
-  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'width:100px;', condominiumId, '', '');
-
-  // Show all bankaccounts for selected condominiums
-  // Get last id in last object in bankaccounts array
-  const bankAccountId = objBankAccounts.arrayBankAccounts.at(-1).bankAccountId;
-  html += objBankAccounts.showSelectedBankAccountsNew('filterBankAccountId', 'width:100px;', bankAccountId, '', '');
-
-  html += "</tr><tr><td></td></tr>";
-
-  // Header filter for search
-  //html += objBankAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
-  //html += objBankAccounts.showTableHeaderNew("width:750px;", '', '', '');
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
 
 // Show filter
 function showFilter(condominiumId) {

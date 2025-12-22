@@ -191,58 +191,6 @@ function events() {
   });
 }
 
-/*
-// Show filter
-function showFilter() {
-
-  // Get condominiumId
-  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(objUserPassword.condominiumId));
-  if (condominiumsRowNumber !== -1) {
-
-    // Start table
-    html = startHTMLTable('width:1450px;');
-
-    // Header filter for search
-    //html += objBankAccountTransactions.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
-    //html += objBankAccountTransactions.showTableHeaderNew("width:200px;", '', '', '', '', '', '', '');
-    html += "<tr><td></td></tr>";
-
-    //html += objBankAccountTransactions.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
-    html += objBankAccountTransactions.showTableHeaderNew('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp');
-
-    // Filter for search
-    html += "<tr><td></td><td></td>";
-
-    // Show all selected condos
-    html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 999999999, '', 'Vis alle');
-
-    const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
-    html += objAccounts.showSelectedAccountsNew('filterAccountId', '', commonCostAccountId, '', 'Alle');
-
-    // show from date
-    const fromDate = '01.01.' + String(today.getFullYear());
-    html += objBankAccountTransactions.inputTableColumnNew('filterFromDate', fromDate, 10);
-
-    // Current date
-    let toDate = getCurrentDate();
-    html += objBankAccountTransactions.inputTableColumnNew('filterToDate', toDate, 10);
-
-    // Amount
-    html += objBankAccountTransactions.inputTableColumnNew('filterAmount', '', 10);
-
-    html += "</tr>";
-
-    // Header filter
-    html += "<tr><td></td></tr>";
-
-    // The end of the table
-    html += endTableNew();
-    document.querySelector('.filter').innerHTML = html;
-
-   }
-}
-*/
-
 // Show filter
 function showFilter() {
 
@@ -378,24 +326,6 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-// Show table sum row
-function showTableSumRow(rowNumber, sumIncome, sumPayment) {
-
-  let html = `<tr class="menu">`;
-
-  // Show menu
-  html += objBankAccountTransactions.menuNew(rowNumber);
-  html += "<td></td>";
-  html += "<td></td>";
-  html += "<td></td>";
-  html += "<td class='center bold'>Sum</td>";
-  html += `<td class="center bold">${sumIncome}</td>`;
-  html += `<td class="center bold">${sumPayment}</td>`
-  html += "</tr>";
-
-  return html;
-}
-
 // Delete bankaccounttransactions row
 async function deleteBankAccountTransactionRow(bankAccountTransationId, className) {
 
@@ -512,7 +442,7 @@ function showResult(rowNumber) {
   sumPayment = formatOreToKroner(sumPayment);
 
   rowNumber++;
-  html += showTableSumRow(rowNumber, sumIncome, sumPayment);
+  html += objBankAccountTransactions.insertTableColumnsNew('font-weight: 600;', rowNumber, '','','','Sum',sumIncome, sumPayment);
 
   // Show the rest of the menu
   rowNumber++;

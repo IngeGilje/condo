@@ -350,42 +350,6 @@ function showHeader() {
 
 /*
 // Show filter
-function showFilter(condominiumId) {
-
-  // Start table
-  html = startHTMLTable('width:750px;');
-
-  // Header filter for search
-  //html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '');
-  //html += objCondominiums.showTableHeaderNew("width:250px;", '', '', '');
-  html += "<tr><td></td></tr>";
-
-  //html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '', '', 'Velg sameie');
-  html += objCondominiums.showTableHeaderNew("width:250px;", '', 'Velg sameie', '');
-
-  // Filter for search
-  html += "<tr>";
-
-  html += "<td></td>";
-
-  // condominium
-  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', '', 0, '', '')
-
-  html += "</tr>";
-
-  // Header filter for search
-  //html += objCondominiums.showHTMLFilterHeader("width:250px;", 0, '', '', '', '', '');
-  //html += objCondominiums.showTableHeaderNew("width:250px;", '', '', '');
-  html += "<tr><td></td></tr>";
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
-
-/*
-// Show filter
 function showFilter() {
 
   // Start table

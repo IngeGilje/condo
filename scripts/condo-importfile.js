@@ -469,22 +469,6 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-/*
-// Show filter
-function showFilter() {
-
-  // Start table
-  html = startHTMLTable('width:1450px;');
-
-  // Header filter for search
-  html += "<tr><td></td></tr>";
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter() {
 
@@ -586,7 +570,7 @@ function showResult(rowNumber) {
 
   // Show sum row
   rowNumber++;
-  html += showSumRow(rowNumber, sumIncomes, sumPayments);
+  html += objImportFile.insertTableColumnsNew('font-weight: 600;',rowNumber,'','','','Sum',sumIncomes, sumPayments);
 
   // Show update button
   html += "<tr>";
@@ -605,22 +589,6 @@ function showResult(rowNumber) {
   // The end of the table
   html += objCondominiums.endTableNew();
   document.querySelector('.result').innerHTML = html;
-}
-
-// Show table sum row
-function showSumRow(rowNumber, sumIncomes, sumPayments) {
-
-  let html = '<tr class="menu">';
-
-  // Show menu
-  html += objImportFile.menuNew(rowNumber);
-  html += "<td></td><td></td><td></td>";
-  html += "<td class='bold center'>Sum</td>";
-  html += `<td class="center bold">${sumIncomes}</td>`;
-  html += `<td class="center bold">${sumPayments}</td>`;
-  html += "</tr>";
-
-  return html;
 }
 
 // Update bank account transactions table

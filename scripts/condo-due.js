@@ -165,67 +165,6 @@ function events() {
   });
 }
 
-/*
-// Show values for due
-function showValues(dueId) {
-
-  dueId = Number(dueId);
-
-  // Check for valid due Id
-  if (dueId >= 0) {
-
-    // Check if due Id exist
-    const dueRowNumber = objDues.arrayDues.findIndex(due => due.dueId === dueId);
-    if (dueRowNumber !== -1) {
-
-      // Show due id
-      document.querySelector('.select-dues-dueId').value = objDues.arrayDues[dueRowNumber].dueId;
-
-      // Show condo id
-      const condoId = objDues.arrayDues[dueRowNumber].condoId;
-      objCondos.selectCondoId(condoId, 'dues-condoId');
-
-      // Show account id
-      const accountId = objDues.arrayDues[dueRowNumber].accountId;
-      objAccounts.selectAccountId(accountId, 'dues-accountId');
-
-      // Show due date
-      const dueDate = formatToNorDate(objDues.arrayDues[dueRowNumber].date);
-      document.querySelector('.input-dues-date').value = dueDate;
-
-      // Show amount
-      document.querySelector('.input-dues-amount').value = formatOreToKroner(objDues.arrayDues[dueRowNumber].amount);
-
-      // Show text
-      document.querySelector('.input-dues-text').value = objDues.arrayDues[dueRowNumber].text;
-    }
-  }
-}
-*/
-
-// Filter for search
-function showHTMLFilterSearch() {
-
-  let html = "<tr><td></td>";
-
-  // Show all selected condos
-  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0, '', 'Alle');
-
-  // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
-
-  // show from date
-  const fromDate = '01.01.' + String(today.getFullYear());
-  html += objDues.inputTableColumnNew('filterFromDate', fromDate, 10);
-
-  // show to date
-  html += objDues.inputTableColumnNew('filterToDate', getCurrentDate(), 10);
-
-  html += "</tr>";
-
-  return html;
-}
-
 // Show dues
 function showResult(rowNumber) {
 
@@ -234,14 +173,6 @@ function showResult(rowNumber) {
 
   // table header
   html += objCondos.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
-
-  /*
-  // Start HTML table
-  html = startHTMLTable('width:1100px;');
-
-  // Header
-  html += objDues.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
-  */
 
   let sumAmount = 0;
 
@@ -300,7 +231,7 @@ function showResult(rowNumber) {
   // Show table sum row
   rowNumber++;
   sumAmount = formatOreToKroner(sumAmount);
-  html += showTableSumRow(rowNumber, sumAmount);
+  html += objDues.insertTableColumnsNew('font-weight: 600;',rowNumber,'','','','Sum',sumAmount);
 
   // Show the rest of the menu
   rowNumber++;
@@ -342,38 +273,6 @@ function insertEmptyTableRow(rowNumber) {
   html += objDues.inputTableColumnNew('text0', "", 45);
 
   html += "</tr>";
-  return html;
-}
-
-// Show table sum row
-function showTableSumRow(rowNumber, amount) {
-
-  let html =
-    `
-      <tr 
-        class="menu"
-      >
-    `;
-  // Show menu
-  html += objDues.menuNew(rowNumber);
-
-  // condo
-  html += "<td></td>";
-  // Date
-  html += "<td></td>";
-  // account
-  html += "<td></td>";
-  // text sum
-  html += "<td class='right bold'>Sum</td>";
-  // Amount
-  html += `<td class="center bold">${amount}</td>`;
-  // Text
-  html += "<td></td>";
-  html +=
-    `
-      </tr>
-    `;
-
   return html;
 }
 
@@ -493,59 +392,6 @@ function showHeader() {
   html += objDues.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
-
-/*
-// Show filter
-function showFilter() {
-
-  // Start table
-  html = startHTMLTable('width:1100px;');
-
-  // Header filter for search
-  //html += objDues.showHTMLFilterHeader("width:200px;", 0, '', '', '', '', '', '', '');
-  //html += objDues.showTableHeaderNew("width:200px;", '', '', '', '', '', '', '');
-  html += "<tr><td></td></tr>";
-  //html += objDues.showHTMLFilterHeader('', 0, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato');
-  html += objDues.showTableHeaderNew('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', '');
-
-  // Filter for search
-  html += "<tr><td></td><td></td>";
-
-  // Show all selected condos
-  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0);
-
-  // Get condominiumId
-  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(objUserPassword.condominiumId));
-  if (condominiumsRowNumber !== -1) {
-
-    const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
-    html += objAccounts.showSelectedAccountsNew('filterAccountId', '', commonCostAccountId, '', '');
-
-    // show from date
-    const fromDate = '01.01.' + String(today.getFullYear());
-    html += objDues.inputTableColumnNew('filterFromDate', fromDate, 10);
-
-    // Current date
-    let toDate = getCurrentDate();
-
-    // Next year
-    toDate = Number(convertDateToISOFormat(toDate)) + 10000;
-    toDate = formatToNorDate(toDate);
-    html += objDues.inputTableColumnNew('filterToDate', toDate, 10);
-
-    html += "</tr>";
-
-    // Header filter for search
-    //html += objDues.showTableHeaderNew("width:750px;", '', '', '', '', '', '', '');
-      html += "<tr><td></td></tr>";
-
-    // The end of the table
-    html += endTableNew();
-    document.querySelector('.filter').innerHTML = html;
-
-  }
-}
-*/
 
 // Show filter
 function showFilter() {

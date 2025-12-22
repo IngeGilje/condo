@@ -168,42 +168,6 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-/*
-// Show filter
-function showFilter(condoId) {
-
-  // Start table
-  html = startHTMLTable('width:750px;');
-
-  // Header filter for search
-  //html += objCondos.showHTMLFilterHeader("width:250px;", 0, '', '', '');
-  //html += objCondos.showTableHeaderNew("width:250px;", '', '', '');
-    html += "<tr><td></td></tr>";
-
-  //html += objCondos.showHTMLFilterHeader("width:250px;", 0, '', 'Velg leilighet', '');
- html += objCondos.showTableHeaderNew("width:250px;", '', 'Velg leilighet', '');
-
-  // Filter for search
-  html += "<tr>";
-
-  html += "<td></td>";
-
-  // condo
-  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', condoId, '', '')
-
-  html += "</tr>";
-
-  // Header filter for search
-  //html += objCondos.showHTMLFilterHeader("width:750px;", 0, '', '', '');
-  //html += objCondos.showTableHeaderNew("width:750px;", '', '', '');
-    html += "<tr><td></td></tr>";
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter(condoId) {
 

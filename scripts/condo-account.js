@@ -176,39 +176,6 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-/*
-// Show filter
-function showFilter(accountId) {
-
-  // Start table
-  html = startHTMLTable('width:750px;');
-
-  // Header filter for search
-  //html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
-  //html += objAccounts.showTableHeaderNew("width:250px;", '', '', '');
-  html += "<tr><td></td></tr>";
-
-  //html += objAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Kostnadstype', '');
-  html += objAccounts.showTableHeaderNew("width:250px;", '', 'Kostnadstype', '');
-
-  // Filter for search
-  html += "<tr><td></td>";
-
-  // fixed or not fixed cost
-  html += objAccounts.showSelectedValuesNew('filterFixedCost', 'width:100px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
-  html += "</tr>";
-
-  // Header filter for search
-  //html += objAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
-  //html += objAccounts.showTableHeaderNew("width:750px;", '', '', '');
-  html += "<tr><td></td><tr>";
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter() {
 

@@ -528,42 +528,6 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-/*
-// Show filter
-function showFilter(userAccountId) {
-
-  // Start table
-  html = startHTMLTable('width:750px;');
-
-  // Header filter for search
-  //html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', '', '');
-  //html += objUserBankAccounts.showTableHeaderNew("width:250px;", '', '', '', '', '');
-  html += "<tr><td></td></tr>";
-  //html += objUserBankAccounts.showHTMLFilterHeader("width:250px;", 0, '', 'Bruker', 'Konto', '');
-  html += objUserBankAccounts.showTableHeaderNew("width:250px;", '', 'Bruker', 'Konto', '', '');
-
-  // Filter for search
-  html += "<tr><td></td>";
-
-  // Show all selected users
-  html += objUsers.showSelectedUsersNew('filterUserId', 0, '', 'Alle');
-
-  // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
-
-  html += "</tr>";
-
-  // Header filter for search
-  //html += objUserBankAccounts.showHTMLFilterHeader("width:750px;", 0, '', '', '');
-  //html += objUserBankAccounts.showTableHeaderNew("width:750px;", '','','', '', '');
-  html += "<tr><td></td></tr>";
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter() {
 
@@ -617,31 +581,6 @@ function insertEmptyTableRow(rowNumber) {
   html += objUserBankAccounts.inputTableColumnNew('bankAccount0', '', 11);
 
   html += "</tr>";
-  return html;
-}
-
-// Show table sum row
-function showTableSumRow(rowNumber, amount) {
-
-  let html = "<tr>";
-
-  // Show menu
-  html += objUserBankAccounts.menuNew(rowNumber);
-
-  // condo
-  html += "<td></td>";
-  // Date
-  html += "<td></td>";
-  // account
-  html += "<td></td>";
-  // text sum
-  html += "<td class='right bold'>Sum</td>";
-  // Amount
-  html += `<td class="center bold">${amount}</td>`;
-  // Text
-  html += "<td></td>";
-  html += "</tr>"
-
   return html;
 }
 

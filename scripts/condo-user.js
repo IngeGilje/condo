@@ -562,41 +562,6 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
-/*
-// Show filter
-function showFilter(userId) {
-
-  // Start table
-  html = startHTMLTable('width:750px;');
-
-  // Header filter for search
-  //html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', '', '');
- //html += objUsers.showTableHeaderNew("width:250px;", '', '', '');
-   html += "<tr><td></td></tr>";
-
-  //html += objUsers.showHTMLFilterHeader("width:250px;", 0, '', 'Velg bruker', '');
- html += objUsers.showTableHeaderNew("width:250px;", '', 'Velg bruker', '');
-
-  // Filter for search
-  html += "<tr>";
-
-  html += "<td></td>";
-
-  // user
-  html += objUsers.showSelectedUsersNew('filterUserId', 'width:100px;', userId, '', '')
-  html += "</tr>";
-
-  // Header filter for search
-  //html += objUsers.showHTMLFilterHeader("width:750px;", 0, '', '', '');
-  //html += objUsers.showTableHeaderNew("width:750px;", '', '', '');
-   html += "<tr><td></td></tr>";
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.filter').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter(userId) {
 
