@@ -493,6 +493,7 @@ async function deleteUserBankAccount() {
 }
 */
 
+/*
 // Show header
 function showHeader() {
 
@@ -500,13 +501,34 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objUserBankAccounts.showTableHeaderNew('widht:250px;', 'Bankkonto for bruker');
+  html += objUserBankAccounts.showTableHeaderNew('width:250px;', 'Bankkonto for bruker');
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objUserBankAccounts.startTableNew('width:750px;');
+
+  // show main header
+  html += objUserBankAccounts.showTableHeaderNew('width:250px;', 'Bankkonto for bruker');
+
+  //html += objUserBankAccounts.insertEmptyTableRowNew(0,'');
+
+  // The end of the table header
+  //html += objUserBankAccounts.endTableHeaderNew();
+
+  // The end of the table
+  html += objUserBankAccounts.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
 
+/*
 // Show filter
 function showFilter(userAccountId) {
 
@@ -537,10 +559,42 @@ function showFilter(userAccountId) {
   html += "<tr><td></td></tr>";
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
   document.querySelector('.filter').innerHTML = html;
 }
+*/
 
+// Show filter
+function showFilter() {
+
+  // Start table
+  let html = objUserBankAccounts.startTableNew('width:750px;');
+
+  // Header filter
+  html += objUserBankAccounts.showTableHeaderNew("width:250px;", '', 'Bruker', 'Konto', '');
+
+  // start table body
+  html += objUserBankAccounts.startTableBodyNew();
+
+  // insert table columns in start of a row
+  html += objUserBankAccounts.insertTableColumnsNew('', 0, '');
+
+  // Show all selected users
+  html += objUsers.showSelectedUsersNew('filterUserId', '', 0, '', 'Alle');
+
+  // Show all selected accounts
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
+  html += "</tr>";
+
+  html += objUserBankAccounts.insertEmptyTableRowNew(0,'');
+
+  // end table body
+  html += objUserBankAccounts.endTableBodyNew();
+
+  // The end of the table
+  html += objUserBankAccounts.endTableNew();
+  document.querySelector('.filter').innerHTML = html;
+}
 
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
@@ -554,13 +608,13 @@ function insertEmptyTableRow(rowNumber) {
   html += "<td class='center'>Ny brukerkonto</td>";
 
   // user column
-  html += objUsers.showSelectedUsersNew('userId0', 0, 'Ingen er valgt', '');
+  html += objUsers.showSelectedUsersNew('userId0', '', 0, 'Ingen er valgt', '');
 
   // Account column
   html += objAccounts.showSelectedAccountsNew('accountId0', '', 0, 'Ingen er valgt', '');
 
   // bank account number
-  html += objUserBankAccounts.showInputHTMLNew('bankAccount0', '', 11);
+  html += objUserBankAccounts.inputTableColumnNew('bankAccount0', '', 11);
 
   html += "</tr>";
   return html;
@@ -594,11 +648,19 @@ function showTableSumRow(rowNumber, amount) {
 // Show user bank accounts
 function showResult(rowNumber) {
 
+    // start table
+  let html = objUserBankAccounts.startTableNew('width:750px;');
+
+  // table header
+  html += objUserBankAccounts.showTableHeaderNew('width:250px;', '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+
+  /*
   // Start HTML table
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += objUserBankAccounts.showTableHeaderNew('widht:250px;', '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += objUserBankAccounts.showTableHeaderNew('width:250px;', '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  */
 
   objUserBankAccounts.arrayUserBankAccounts.forEach((userBankAccount) => {
 
@@ -616,16 +678,16 @@ function showResult(rowNumber) {
     // user
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUsers.showSelectedUsersNew(className, '', 'Ingen er valgt', userId, '');
+    html += objUsers.showSelectedUsersNew(className, '', userId, 'Ingen er valgt', '');
 
     // account
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccounts.showSelectedAccountsNew(className, '', accountId, '', 'Ingen er valgt');
+    html += objAccounts.showSelectedAccountsNew(className, '', accountId, 'Ingen er valgt', '');
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccounts.showInputHTMLNew(className, userBankAccount.bankAccount, 11);
+    html += objUserBankAccounts.inputTableColumnNew(className, userBankAccount.bankAccount, 11);
 
     html += "</tr>";
   });
@@ -637,7 +699,7 @@ function showResult(rowNumber) {
   html += insertEmptyTableRow(rowNumber);
 
   // The end of the table
-  html += endHTMLTable();
+  html += objUserBankAccounts.endTableNew();
   document.querySelector('.userbankaccount').innerHTML = html;
 
   return rowNumber;

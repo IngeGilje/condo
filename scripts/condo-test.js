@@ -398,7 +398,7 @@ function showBudget() {
   html += HTMLTableRow('','', '', amount);
         
   html += endHTMLTableBody();
-  html += endHTMLTable();
+  html += endTableNew();
   document.querySelector('.div-grid-budget').innerHTML = html;
 }
 

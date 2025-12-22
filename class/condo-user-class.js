@@ -284,7 +284,8 @@ class User extends Condos {
           html +=
             `
               <option 
-                value="${user.userId}">
+                value="${user.userId}"
+              >
                 ${user.firstName}
               </option>
             `;

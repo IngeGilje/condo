@@ -434,6 +434,7 @@ function checkBankAccountTransaction(income, payment, date) {
   return bankAccountTransactionExist;
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -441,13 +442,34 @@ function showHeader() {
   let html = startHTMLTable('width:1450px;');
 
   // Main header
-  html += objImportFile.showTableHeaderNew('widht:250px;', 'Import av bankkontotransaksjoner');
+  html += objImportFile.showTableHeaderNew('width:250px;', 'Import av bankkontotransaksjoner');
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objImportFile.startTableNew('width:1450px;');
+
+  // show main header
+  html += objImportFile.showTableHeaderNew('width:250px;', 'Import av bankkontotransaksjoner');
+
+  //html += objImportFile.insertEmptyTableRowNew(0,'');
+
+  // The end of the table header
+  //html += objImportFile.endTableHeaderNew();
+
+  // The end of the table
+  html += objImportFile.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
 
+/*
 // Show filter
 function showFilter() {
 
@@ -458,21 +480,55 @@ function showFilter() {
   html += "<tr><td></td></tr>";
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.filter').innerHTML = html;
+}
+*/
+
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = objImportFile.startTableNew('width:1450px;');
+
+  // Header filter
+  //html += objImportFile.showTableHeaderNew("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+
+  // start table body
+  html += objImportFile.startTableBodyNew();
+
+  // insert table columns in start of a row
+  //html += objImportFile.insertTableColumnsNew('', 0, '', '');
+
+  html += "</tr>";
+
+  html += objImportFile.insertEmptyTableRowNew(0,'');
+
+  // end table body
+  html += objImportFile.endTableBodyNew();
+
+  // The end of the table
+  html += objImportFile.endTableNew();
   document.querySelector('.filter').innerHTML = html;
 }
 
 // Show csv file for bank account transactions
 function showResult(rowNumber) {
 
+    // start table
+  let html = objImportFile.startTableNew('width:1450px;');
+
+  // table header
+  html += objImportFile.showTableHeaderNew('width:250px;', '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+
   let sumIncomes = 0;
   let sumPayments = 0;
 
   // Start HTML table
-  html = startHTMLTable('width:1450px;');
+  //html = startHTMLTable('width:1450px;');
 
   // Header
-  html += objImportFile.showTableHeaderNew('widht:250px;', '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  //html += objImportFile.showTableHeaderNew('width:250px;', '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   arrayTransactions.forEach((transaction) => {
 
@@ -484,33 +540,33 @@ function showResult(rowNumber) {
 
     // Date
     let className = `accountingDate${rowNumber}`;
-    html += objImportFile.showInputHTMLNew(className, transaction.accountingDate, 10);
+    html += objImportFile.inputTableColumnNew(className, transaction.accountingDate, 10);
 
     // Condo name
     className = `accountName${rowNumber}`;
-    html += objImportFile.showInputHTMLNew(className, transaction.accountName, 45);
+    html += objImportFile.inputTableColumnNew(className, transaction.accountName, 45);
 
     // fromBankAccountName
     className = `fromBankAccountName${rowNumber}`;
-    html += objImportFile.showInputHTMLNew(className, transaction.fromBankAccountName, 45);
+    html += objImportFile.inputTableColumnNew(className, transaction.fromBankAccountName, 45);
 
     // toBankAccountName
     className = `toBankAccountName${rowNumber}`;
-    html += objImportFile.showInputHTMLNew(className, transaction.toBankAccountName, 45);
+    html += objImportFile.inputTableColumnNew(className, transaction.toBankAccountName, 45);
 
     // Income
     const income = formatOreToKroner(transaction.income);
     className = `income${rowNumber}`;
-    html += objImportFile.showInputHTMLNew(className, income, 10);
+    html += objImportFile.inputTableColumnNew(className, income, 10);
 
     // Payment
     const payment = formatOreToKroner(transaction.payment);
     className = `payment${rowNumber}`;
-    html += objImportFile.showInputHTMLNew(className, payment, 10);
+    html += objImportFile.inputTableColumnNew(className, payment, 10);
 
     // Text
     className = `payment${rowNumber}`;
-    html += objImportFile.showInputHTMLNew(className, transaction.text, 10);
+    html += objImportFile.inputTableColumnNew(className, transaction.text, 10);
 
     // Accomulate
 
@@ -547,7 +603,7 @@ function showResult(rowNumber) {
   html += objCondominiums.showRestMenuNew(rowNumber);
 
   // The end of the table
-  html += endHTMLTable();
+  html += objCondominiums.endTableNew();
   document.querySelector('.result').innerHTML = html;
 }
 

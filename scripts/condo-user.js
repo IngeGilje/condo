@@ -30,7 +30,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objCondos.loadCondoTable(objUserPassword.condominiumId);
 
     // Show header
-          let menuNumber = 0;
+    let menuNumber = 0;
     showHeader();
 
     const userId = objUsers.arrayUsers.at(-1).userId;
@@ -527,6 +527,7 @@ function resetValues() {
   document.querySelector('.insert').disabled = true;
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -534,13 +535,34 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objUsers.showTableHeaderNew('widht:250px;', 'Bruker');
+  html += objUsers.showTableHeaderNew('width:250px;', 'Bruker');
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objUsers.startTableNew('width:750px;');
+
+  // show main header
+  html += objUsers.showTableHeaderNew('width:250px;', 'Bruker');
+
+  //html += objUsers.insertEmptyTableRowNew(0,'');
+
+  // The end of the table header
+  //html += objUsers.endTableHeaderNew();
+
+  // The end of the table
+  html += objUsers.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
 
+/*
 // Show filter
 function showFilter(userId) {
 
@@ -570,22 +592,59 @@ function showFilter(userId) {
    html += "<tr><td></td></tr>";
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.filter').innerHTML = html;
+}
+*/
+
+// Show filter
+function showFilter(userId) {
+
+  // Start table
+  html = objUsers.startTableNew('width:750px;');
+
+  // Header filter
+  html += objUsers.showTableHeaderNew('width:250px;', '', 'Velg bruker', '');
+
+  // start table body
+  html += objUsers.startTableBodyNew();
+
+  // insert table columns in start of a row
+  html += objUsers.insertTableColumnsNew('', 0, '');
+
+  // user
+  html += objUsers.showSelectedUsersNew('filterUserId', 'width:100px;', userId, '', '')
+
+  html += "</tr>";
+
+  html += objUsers.insertEmptyTableRowNew(0,'');
+
+  // end table body
+  html += objUsers.endTableBodyNew();
+
+  // The end of the table
+  html += objUsers.endTableNew();
   document.querySelector('.filter').innerHTML = html;
 }
 
 // Show result
 function showResult(userId, rowNumber) {
 
+    // start table
+  let html = objUsers.startTableNew('width:750px;');
+
+  // table header
+  html += objUsers.showTableHeaderNew('width:250px;', '', '', '');
+
   // Check if users row exist
   const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
   if (userRowNumber !== -1) {
 
     // Start table
-    html = startHTMLTable('width:750px;');
+    //html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objUsers.showTableHeaderNew('widht:250px;', '', '', '');
+    //html += objUsers.showTableHeaderNew('width:250px;', '', '', '');
 
     // email,condoId
     html += "<tr>";
@@ -598,7 +657,7 @@ function showResult(userId, rowNumber) {
     html += objUsers.menuNew(rowNumber);
 
     // email
-    html += objUsers.showInputHTMLNew('email', objUsers.arrayUsers[userRowNumber].email, 45);
+    html += objUsers.inputTableColumnNew('email', objUsers.arrayUsers[userRowNumber].email, 45);
 
     // condoId
     html += objCondos.showSelectedCondosNew('condoId', "width:170px;", objUsers.arrayUsers[userRowNumber].condoId, '', '');
@@ -616,10 +675,10 @@ function showResult(userId, rowNumber) {
     html += objUsers.menuNew(rowNumber);
 
     // firstName
-    html += objUsers.showInputHTMLNew('firstName', objUsers.arrayUsers[userRowNumber].firstName, 45);
+    html += objUsers.inputTableColumnNew('firstName', objUsers.arrayUsers[userRowNumber].firstName, 45);
 
     // lastName
-    html += objUsers.showInputHTMLNew('lastName', objUsers.arrayUsers[userRowNumber].lastName, 45);
+    html += objUsers.inputTableColumnNew('lastName', objUsers.arrayUsers[userRowNumber].lastName, 45);
 
     html += "</tr>";
 
@@ -634,7 +693,7 @@ function showResult(userId, rowNumber) {
     html += objUsers.menuNew(rowNumber);
 
     // password
-    html += objUsers.showInputHTMLNew('password', objUsers.arrayUsers[userRowNumber].password, 45);
+    html += objUsers.inputTableColumnNew('password', objUsers.arrayUsers[userRowNumber].password, 45);
 
     // securityLevel
     html += objUsers.showSelectedNumbersNew('securityLevel', "width:100px;", 1, 9, objUsers.arrayUsers[userRowNumber].securityNumber);
@@ -652,7 +711,7 @@ function showResult(userId, rowNumber) {
     html += objUsers.menuNew(rowNumber);
 
     // phone
-    html += objUsers.showInputHTMLNew('phone', objUsers.arrayUsers[userRowNumber].phone, 15);
+    html += objUsers.inputTableColumnNew('phone', objUsers.arrayUsers[userRowNumber].phone, 15);
 
     // Activ user
     html += objUsers.showYesNo('resident', objUsers.arrayUsers[userRowNumber].resident);
@@ -695,7 +754,7 @@ function showResult(userId, rowNumber) {
     html += objUsers.showRestMenuNew(rowNumber);
 
     // The end of the table
-    html += endHTMLTable();
+    html += objUsers.endTableNew();
     document.querySelector('.result').innerHTML = html;
 
     return rowNumber;

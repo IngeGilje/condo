@@ -141,6 +141,7 @@ function resetValues() {
   document.querySelector('.button--accounts-insert').disabled = true;
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -148,13 +149,34 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objAccounts.showTableHeaderNew('widht:250px;', 'Konto');
+  html += objAccounts.showTableHeaderNew('width:250px;', 'Konto');
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objAccounts.startTableNew('width:750px;');
+
+  // show main header
+  html += objAccounts.showTableHeaderNew('width:250px;', 'Konto');
+
+  //html += objAccounts.insertEmptyTableRowNew(0,'');
+
+  // The end of the table header
+  html += objAccounts.endTableHeaderNew();
+
+  // The end of the table
+  html += objAccounts.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
 
+/*
 // Show filter
 function showFilter(accountId) {
 
@@ -182,7 +204,38 @@ function showFilter(accountId) {
   html += "<tr><td></td><tr>";
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.filter').innerHTML = html;
+}
+*/
+
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = objAccounts.startTableNew('width:750px;');
+
+  // Header filter
+  html += objAccounts.showTableHeaderNew('width:250px;', '', 'Kostnadstype', '');
+
+  // start table body
+  html += objAccounts.startTableBodyNew();
+
+  // insert table columns in start of a row
+  html += objAccounts.insertTableColumnsNew('', 0, '');
+
+  // fixed or not fixed cost
+  html += objAccounts.showSelectedValuesNew('filterFixedCost', 'width:100px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
+
+  html += "</tr>";
+
+  html += objAccounts.insertEmptyTableRowNew(0,'');
+
+  // end table body
+  html += objAccounts.endTableBodyNew();
+
+  // The end of the table
+  html += objAccounts.endTableNew();
   document.querySelector('.filter').innerHTML = html;
 }
 
@@ -201,45 +254,28 @@ function insertEmptyTableRow(rowNumber) {
   html += objAccounts.showSelectedValuesNew('fixedCost0', '', constFixedCost, constFixedCost, constVariableCost);
 
   // name
-  html += objAccounts.showInputHTMLNew('name0', "", 45);
+  html += objAccounts.inputTableColumnNew('name0', "", 45);
 
   html += "</tr>";
-  return html;
-}
-
-// Show table sum row
-function showTableSumRow(rowNumber, amount) {
-
-  let html = "<tr>";
-
-  // Show menu
-  html += objAccounts.menuNew(rowNumber);
-
-  // condo
-  html += "<td></td>";
-  // Date
-  html += "<td></td>";
-  // account
-  html += "<td></td>";
-  // text sum
-  html += "<td class='right bold'>Sum</td>";
-  // Amount
-  html += `<td class="center bold">${amount}</td>`;
-  // Text
-  html += "<td></td>";
-  html += "</tr>"
-
   return html;
 }
 
 // Show accounts
 function showResult(rowNumber) {
 
+  // start table
+  let html = objAccounts.startTableNew('width:750px;');
+
+  // table header
+  html += objAccounts.showTableHeaderNew('width:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
+
+  /*
   // Start HTML table
   html = startHTMLTable('width:750px;');
 
   // Header
-  html += objAccounts.showTableHeaderNew('widht:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
+  html += objAccounts.showTableHeaderNew('width:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
+  */
 
   objAccounts.arrayAccounts.forEach((account) => {
 
@@ -283,7 +319,7 @@ function showResult(rowNumber) {
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccounts.showInputHTMLNew(className, name, 45);
+    html += objAccounts.inputTableColumnNew(className, name, 45);
 
     html += "</tr>";
   });
@@ -299,7 +335,7 @@ function showResult(rowNumber) {
   html += objAccounts.showRestMenuNew(rowNumber);
 
   // The end of the table
-  html += endHTMLTable();
+  html += objAccounts.endTableNew();
   document.querySelector('.result').innerHTML = html;
 
   return rowNumber;

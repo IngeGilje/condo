@@ -322,6 +322,7 @@ function resetValues() {
 }
 */
 
+/*
 // Show header
 function showHeader() {
 
@@ -329,10 +330,30 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objBankAccounts.showTableHeaderNew('widht:250px;', 'Bankkonto sameie');
+  html += objBankAccounts.showTableHeaderNew('width:250px;', 'Bankkonto sameie');
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objBankAccounts.startTableNew('width:750px;');
+
+  // show main header
+  html += objBankAccounts.showTableHeaderNew('width:250px;', 'Bankkonto sameie');
+
+  //html += objBankAccounts.insertEmptyTableRowNew(0,'');
+
+  // The end of the table header
+  //html += objBankAccounts.endTableHeaderNew();
+
+  // The end of the table
+  html += objBankAccounts.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -359,21 +380,27 @@ function showHTMLFilterSearch() {
 // Show result
 function showResult(bankAccountId, rowNumber) {
 
+    // start table
+  let html = objBankAccounts.startTableNew('width:750px;');
+
+  // table header
+  html += objBankAccounts.showTableHeaderNew("width:250px;", '', 'Navn', 'Bankkontonummer');
+
   // Check if bankaccounts row exist
   const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
   if (bankAccountRowNumber !== -1) {
 
     // Start table
-    html = startHTMLTable('width:750px;');
+    //html = startHTMLTable('width:750px;');
 
     // Main header
     //rowNumber++;
-    html += objBankAccounts.showTableHeaderNew('widht:250px;', '', '', '');
+    //html += objBankAccounts.showTableHeaderNew('width:250px;', '', '', '');
 
     // Show menu
     // Header for value including menu
-    rowNumber++;
-    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn', 'Bankontonummer');
+    //rowNumber++;
+    //html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn', 'Bankontonummer');
 
     html += "<tr>";
 
@@ -382,10 +409,10 @@ function showResult(bankAccountId, rowNumber) {
     html += objBankAccounts.menuNew(rowNumber);
 
     // name
-    html += objBankAccounts.showInputHTMLNew('name', objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name, 45);
+    html += objBankAccounts.inputTableColumnNew('name', objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name, 45);
 
     // account number
-    html += objBankAccounts.showInputHTMLNew('bankAccount', objBankAccounts.arrayBankAccounts[bankAccountRowNumber].bankAccount, 11);
+    html += objBankAccounts.inputTableColumnNew('bankAccount', objBankAccounts.arrayBankAccounts[bankAccountRowNumber].bankAccount, 11);
 
     html += "</tr>";
 
@@ -400,11 +427,11 @@ function showResult(bankAccountId, rowNumber) {
 
     // opening balance date
     const openingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalanceDate);
-    html += objBankAccounts.showInputHTMLNew('openingBalanceDate', openingBalanceDate, 10);
+    html += objBankAccounts.inputTableColumnNew('openingBalanceDate', openingBalanceDate, 10);
 
     // opening balance
     const openingBalance = formatOreToKroner(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalance);
-    html += objBankAccounts.showInputHTMLNew('openingBalance', openingBalance, 11);
+    html += objBankAccounts.inputTableColumnNew('openingBalance', openingBalance, 11);
 
     html += "</tr>";
 
@@ -421,11 +448,11 @@ function showResult(bankAccountId, rowNumber) {
 
     // closing balance date
     const closingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate);
-    html += objBankAccounts.showInputHTMLNew('closingBalanceDate', closingBalanceDate, 10);
+    html += objBankAccounts.inputTableColumnNew('closingBalanceDate', closingBalanceDate, 10);
 
     // closing balance
     const closingBalance = formatOreToKroner(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalance);
-    html += objBankAccounts.showInputHTMLNew('closingBalance', closingBalance, 11);
+    html += objBankAccounts.inputTableColumnNew('closingBalance', closingBalance, 11);
 
     html += "</tr>";
 
@@ -465,7 +492,7 @@ function showResult(bankAccountId, rowNumber) {
     html += objBankAccounts.showRestMenuNew(rowNumber);
 
     // The end of the table
-    html += endHTMLTable();
+    html += objBankAccounts.endTableNew();
     document.querySelector('.result').innerHTML = html;
 
     return rowNumber;
@@ -577,6 +604,7 @@ function resetValues() {
   document.querySelector('.insert').disabled = true;
 }
 
+/*
 // Show filter
 async function showFilter(condominiumId) {
 
@@ -609,6 +637,42 @@ async function showFilter(condominiumId) {
   //html += objBankAccounts.showTableHeaderNew("width:750px;", '', '', '');
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.filter').innerHTML = html;
+}
+*/
+
+// Show filter
+function showFilter(condominiumId) {
+
+  // Start table
+  html = objBankAccounts.startTableNew('width:750px;');
+
+  // Header filter
+  html += objBankAccounts.showTableHeaderNew("width:250px;", '', 'Velg leilighet', 'Bankkonto');
+
+  // start table body
+  html += objBankAccounts.startTableBodyNew();
+
+  // insert table columns in start of a row
+  html += objBankAccounts.insertTableColumnsNew('', 0, '');
+
+    // Show selected condominiums 
+  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'width:100px;', condominiumId, '', '');
+
+  // Show all bankaccounts for selected condominiums
+  // Get last id in last object in bankaccounts array
+  const bankAccountId = objBankAccounts.arrayBankAccounts.at(-1).bankAccountId;
+  html += objBankAccounts.showSelectedBankAccountsNew('filterBankAccountId', 'width:100px;', bankAccountId, '', '');
+
+  html += "</tr>";
+
+  html += objBankAccounts.insertEmptyTableRowNew(0,'');
+
+  // end table body
+  html += objBankAccounts.endTableBodyNew();
+
+  // The end of the table
+  html += objBankAccounts.endTableNew();
   document.querySelector('.filter').innerHTML = html;
 }

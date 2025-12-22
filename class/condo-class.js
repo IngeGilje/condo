@@ -164,7 +164,7 @@ class Condos {
   }
 
   // Show input
-  showInputHTMLNew(className, value, maxlength) {
+  inputTableColumnNew(className, value, maxlength) {
 
     let html =
       `
@@ -1276,7 +1276,7 @@ class Condos {
         break
       }
     }
-    html = this.showSelectedValuesNew(className, '', selectedChoice, 'Nei', 'Ja')
+    let html = this.showSelectedValuesNew(className, 'width:100px;', selectedChoice, 'Nei', 'Ja')
     return html;
   }
   // Show table header including menu
@@ -1343,7 +1343,7 @@ class Condos {
     }
 
     // The end of the table
-    html += endHTMLTable();
+    html += this.endTableNew();
     return html;
   }
 
@@ -1460,23 +1460,6 @@ class Condos {
   }
   */
 
-  // Show main header table
-  showTableHeaderNew(style, ...texts) {
-
-    let html = `<tr>`;
-
-    texts.forEach((text) => {
-
-      if (text === '' && style === '') html += `<th class="no-border">${text}</th>`;
-      if (text === '' && style !== '') html += `<th class="no-border" style="${style}">${text}</th>`;
-      if (text !== '' && style === '') html += `<th class="center no-border">${text}</th>`;
-      if (text !== '' && style !== '') html += `<th class="center no-border" style="${style}">${text}</th>`;
-    });
-
-    html += "</tr>";
-    return html;
-  }
-
   /*
   // Show filter header table
   showHTMLFilterHeader(style, menuNumber, ...texts) {
@@ -1513,6 +1496,87 @@ class Condos {
 
     html += "</tr>";
     return html;
+  }
+
+  // Start of HTML table
+  startTableNew(style) {
+
+    return `<table style="${style}">`;
+  }
+
+  // Show main header table
+  showTableHeaderNew(style, ...texts) {
+
+    let html = `<thead><tr>`;
+
+    texts.forEach((text) => {
+
+      if (text === '' && style === '') html += `<th class="no-border">${text}</th>`;
+      if (text === '' && style !== '') html += `<th class="no-border" style="${style}">${text}</th>`;
+      if (text !== '' && style === '') html += `<th class="center no-border">${text}</th>`;
+      if (text !== '' && style !== '') html += `<th class="center no-border" style="${style}">${text}</th>`;
+    });
+
+    // empty row
+    html += this.insertEmptyTableRowNew(0, '');
+
+    html += "</thead>";
+    return html;
+  }
+
+  // end table header
+  endTableHeaderNew(style) {
+
+    return `</th></tr></thead>`;
+  }
+
+  // Start body table
+  startTableBodyNew() {
+
+    return "<tbody>";
+  }
+
+  // insert table columns in start of a row
+  insertTableColumnsNew(style, menuNumber, ...texts) {
+
+    let html = "<tr>";
+
+    if (menuNumber > 0) html += this.menuNew(menuNumber);
+
+    texts.forEach((text) => {
+
+      html += (style === '')
+        ? `<td class="center no-border">${text}</td>`
+        : `<td class="center no-border" style="${style}">${text}</td>`;
+    });
+
+    return html;
+  }
+
+  // insert empty table row
+  insertEmptyTableRowNew(menuNumber, ...texts) {
+
+    let html = "<tr>";
+
+    if (menuNumber > 0) html += this.menuNew(menuNumber);
+
+    texts.forEach((text) => {
+
+      html += `<td class="center no-border">${text}</td>`;
+    });
+
+    return html;
+  }
+
+  // end body table
+  endTableBodyNew() {
+
+    return "</tbody>";
+  }
+  // End of the table
+  endTableNew() {
+
+    return `</table>`;
   }
 
   /* Does not work
@@ -2275,9 +2339,7 @@ function HTMLTableHeader(...texts) {
 
   texts.forEach((text) => {
 
-    html += `
-          <th>${text}</th>
-        `;
+    html += `<th>${text}</th>`;
   });
 
   html += `
@@ -2397,8 +2459,4 @@ function showHTMLMainTableHeader(style, ...texts) {
   return html;
 }
 
-// End of HTML table
-function endHTMLTable() {
 
-  return `</table>`;
-}

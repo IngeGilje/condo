@@ -312,6 +312,8 @@ async function deleteCondominiumRow() {
     await objCondominiums.deleteCondominiumsTable(condominiumId, user);
   }
 }
+
+/*
 // Show header
 function showHeader() {
 
@@ -319,13 +321,34 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objCondominiums.showTableHeaderNew('widht:250px;', 'Sameie');
+  html += objCondominiums.showTableHeaderNew('width:250px;', 'Sameie');
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objCondominiums.startTableNew('width:750px;');
+
+  // show main header
+  html += objCondominiums.showTableHeaderNew('width:250px;', 'Sameie');
+
+  //html += objCondominiums.insertEmptyTableRowNew(0,'');
+
+  // The end of the table header
+  //html += objCondominiums.endTableHeaderNew();
+
+  // The end of the table
+  html += objCondominiums.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
 
+/*
 // Show filter
 function showFilter(condominiumId) {
 
@@ -356,22 +379,91 @@ function showFilter(condominiumId) {
   html += "<tr><td></td></tr>";
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.filter').innerHTML = html;
+}
+*/
+
+/*
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = objCondominiums.startTableNew('width:1100px;');
+
+  // Header filter
+  html += objCondominiums.showTableHeaderNew("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+
+  // start table body
+  html += objCondominiums.startTableBodyNew();
+
+  // insert table columns in start of a row
+  html += objCondominiums.insertTableColumnsNew('', 0, '', '');
+
+  // condominium
+  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', '', 0, '', '')
+
+  html += "</tr>";
+
+  html += objCondominiums.insertEmptyTableRowNew(0,'');
+
+  // end table body
+  html += objCondominiums.endTableBodyNew();
+
+  // The end of the table
+  html += objCondominiums.endTableNew();
+  document.querySelector('.filter').innerHTML = html;
+}
+*/
+
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = objCondominiums.startTableNew('width:750px;');
+
+  // Header filter
+  html += objCondominiums.showTableHeaderNew("width:250px;", '', 'Velg sameie', '');
+
+  // start table body
+  html += objCondominiums.startTableBodyNew();
+
+  // insert table columns in start of a row
+  html += objCondominiums.insertTableColumnsNew('', 0, '');
+
+ // condominium
+  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', '', 0, '', '')
+
+  html += "</tr>";
+
+  html += objCondominiums.insertEmptyTableRowNew(0,'');
+
+  // end table body
+  html += objCondominiums.endTableBodyNew();
+
+  // The end of the table
+  html += objCondominiums.endTableNew();
   document.querySelector('.filter').innerHTML = html;
 }
 
 // Show result
 function showResult(condominiumId, rowNumber) {
 
+    // start table
+  let html = objCondominiums.startTableNew('width:750px;');
+
+  // table header
+  html += objCondominiums.showTableHeaderNew('width:250px;', '', '', '');
+
   // Check if condominiums row exist
   const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
   if (condominiumRowNumber !== -1) {
 
     // Start table
-    html = startHTMLTable('width:750px;');
+    //html = startHTMLTable('width:750px;');
 
     // Main header
-    html += objCondominiums.showTableHeaderNew('widht:250px;', '', '', '');
+    //html += objCondominiums.showTableHeaderNew('width:250px;', '', '', '');
 
     // Show menu
     rowNumber++;
@@ -385,7 +477,7 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.menuNew(rowNumber);
 
     // name
-    html += objCondominiums.showInputHTMLNew('name', objCondominiums.arrayCondominiums[condominiumRowNumber].name, 45);
+    html += objCondominiums.inputTableColumnNew('name', objCondominiums.arrayCondominiums[condominiumRowNumber].name, 45);
 
     html += "</tr>";
 
@@ -400,10 +492,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.menuNew(rowNumber);
 
     // street
-    html += objCondominiums.showInputHTMLNew('street', objCondominiums.arrayCondominiums[condominiumRowNumber].street, 45);
+    html += objCondominiums.inputTableColumnNew('street', objCondominiums.arrayCondominiums[condominiumRowNumber].street, 45);
 
     // address2
-    html += objCondominiums.showInputHTMLNew('address2', objCondominiums.arrayCondominiums[condominiumRowNumber].address2, 45);
+    html += objCondominiums.inputTableColumnNew('address2', objCondominiums.arrayCondominiums[condominiumRowNumber].address2, 45);
 
     html += "</tr>";
 
@@ -418,10 +510,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.menuNew(rowNumber);
 
     // postalCode
-    html += objCondominiums.showInputHTMLNew('postalCode', objCondominiums.arrayCondominiums[condominiumRowNumber].postalCode, 4);
+    html += objCondominiums.inputTableColumnNew('postalCode', objCondominiums.arrayCondominiums[condominiumRowNumber].postalCode, 4);
 
     // city
-    html += objCondominiums.showInputHTMLNew('city', objCondominiums.arrayCondominiums[condominiumRowNumber].city, 45);
+    html += objCondominiums.inputTableColumnNew('city', objCondominiums.arrayCondominiums[condominiumRowNumber].city, 45);
 
     html += "</tr>";
 
@@ -435,10 +527,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.menuNew(rowNumber);
 
     // eMail
-    html += objCondominiums.showInputHTMLNew('email', objCondominiums.arrayCondominiums[condominiumRowNumber].email, 45);
+    html += objCondominiums.inputTableColumnNew('email', objCondominiums.arrayCondominiums[condominiumRowNumber].email, 45);
 
     // phone
-    html += objCondominiums.showInputHTMLNew('phone', objCondominiums.arrayCondominiums[condominiumRowNumber].phone, 8);
+    html += objCondominiums.inputTableColumnNew('phone', objCondominiums.arrayCondominiums[condominiumRowNumber].phone, 8);
 
     html += "</tr>";
 
@@ -472,7 +564,7 @@ function showResult(condominiumId, rowNumber) {
     html += objAccounts.showSelectedAccountsNew('commonCostAccountId', 'width:170px;', objCondominiums.arrayCondominiums[condominiumRowNumber].commonCostAccountId, 'Ingen', '');
 
     // organizationNumber
-    html += objCondominiums.showInputHTMLNew('organizationNumber', objCondominiums.arrayCondominiums[condominiumRowNumber].organizationNumber, 9);
+    html += objCondominiums.inputTableColumnNew('organizationNumber', objCondominiums.arrayCondominiums[condominiumRowNumber].organizationNumber, 9);
 
     html += "</tr>";
 
@@ -486,7 +578,7 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.menuNew(rowNumber);
 
     // importFileName
-    html += objCondominiums.showInputHTMLNew('importFileName', objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName, 100);
+    html += objCondominiums.inputTableColumnNew('importFileName', objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName, 100);
 
     html += "</tr>";
 
@@ -526,7 +618,7 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.showRestMenuNew(rowNumber);
 
     // The end of the table
-    html += endHTMLTable();
+    html += objCondominiums.endTableNew();
     document.querySelector('.result').innerHTML = html;
 
     return rowNumber;

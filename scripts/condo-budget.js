@@ -45,7 +45,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     menuNumber = showResult(menuNumber);
 
     // Events
-    //events();
+    events();
   }
 }
 
@@ -217,7 +217,7 @@ function insertEmptyTableRow(rowNumber) {
 
   // budget amount
   const amount = "";
-  html += objBudgets.showInputHTMLNew('amount0', amount, 10);
+  html += objBudgets.inputTableColumnNew('amount0', amount, 10);
 
   html += "</tr>";
   return html;
@@ -238,6 +238,7 @@ function calculateSum() {
   document.querySelector('.sum2').value = sumAmount;
 };
 
+/*
 // Show header
 function showHeader() {
 
@@ -248,7 +249,24 @@ function showHeader() {
   html += objBudgets.showTableHeaderNew('', 'Budsjett');
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objBudgets.startTableNew('width:1000px;');
+
+  // show main header
+  html += objBudgets.showTableHeaderNew('width:200px;', 'Budsjett');
+
+  //html += objBudgets.insertEmptyTableRowNew(0,'');
+
+  // The end of the table
+  html += objBudgets.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -274,6 +292,7 @@ function showTableSumRow(rowNumber, amount) {
   return html;
 }
 
+/*
 // Show filter
 function showFilter() {
 
@@ -305,24 +324,61 @@ function showFilter() {
     html += "<tr><td></td></tr>";
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
   document.querySelector('.filter').innerHTML = html;
+ }
+*/
 
-  /*
-  // show icons
-  objBudgets.showIconNew('filterAccountId');
-  objBudgets.showIconNew('filterYear');
-  */
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = objBudgets.startTableNew('width:1000px;');
+
+  // Header filter
+  html += objBudgets.showTableHeaderNew('', '', '', 'Konto', 'År', '', '', '');
+
+  // start table body
+  html += objBudgets.startTableBodyNew();
+
+  // insert table columns in start of a row
+  html += objBudgets.insertTableColumnsNew('', 0, '', '');
+
+  // Selected accounts
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
+
+  // Selected year
+  const year = String(today.getFullYear());
+  html += objBudgets.showSelectedNumbersNew('filterYear', "width:100px;", 2020, 2030, year);
+
+  html += "</tr>";
+
+  html += objBudgets.insertEmptyTableRowNew(0,'');
+
+  // end table body
+  html += objBudgets.endTableBodyNew();
+
+  // The end of the table
+  html += objBudgets.endTableNew();
+  document.querySelector('.filter').innerHTML = html;
 }
 
 // Show bankaccounttransactions
 function showResult(rowNumber) {
 
+  // start table
+  let html = objBudgets.startTableNew('width:1000px;');
+
+  // table header
+  html += objBudgets.showTableHeaderNew("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+
+  /*
   // Start HTML table
   let html = startHTMLTable('width:1000px;');
 
   // Header
   html += objBudgets.showTableHeaderNew("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+  */
 
   let sumAmount = 0;
 
@@ -350,7 +406,7 @@ function showResult(rowNumber) {
     // due amount
     const amount = formatOreToKroner(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += objBudgets.showInputHTMLNew(className, amount, 10);
+    html += objBudgets.inputTableColumnNew(className, amount, 10);
 
     // Year
     const year = Number(budget.year);
@@ -360,7 +416,7 @@ function showResult(rowNumber) {
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += objBudgets.showInputHTMLNew(className, text, 45);
+    html += objBudgets.inputTableColumnNew(className, text, 45);
 
     html += "</tr>";
 
@@ -385,7 +441,7 @@ function showResult(rowNumber) {
 
   // budget amount
   const amount = "";
-  html += objBudgets.showInputHTMLNew('amount0', amount, 10);
+  html += objBudgets.inputTableColumnNew('amount0', amount, 10);
 
   // Year
   const year = Number(document.querySelector('.filterYear').value);
@@ -395,7 +451,7 @@ function showResult(rowNumber) {
   // text
   const text = "";
   className = `text0`;
-  html += objBudgets.showInputHTMLNew(className, text, 45);
+  html += objBudgets.inputTableColumnNew(className, text, 45);
 
   html += "</tr>";
 
@@ -409,7 +465,7 @@ function showResult(rowNumber) {
   html += objBudgets.showRestMenuNew(rowNumber);
 
   // The end of the table
-  html += endHTMLTable();
+  html += objBudgets.endTableNew();
   document.querySelector('.result').innerHTML = html;
 
   return rowNumber;

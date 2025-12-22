@@ -216,10 +216,10 @@ function showHTMLFilterSearch() {
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
-  html += objDues.showInputHTMLNew('filterFromDate', fromDate, 10);
+  html += objDues.inputTableColumnNew('filterFromDate', fromDate, 10);
 
   // show to date
-  html += objDues.showInputHTMLNew('filterToDate', getCurrentDate(), 10);
+  html += objDues.inputTableColumnNew('filterToDate', getCurrentDate(), 10);
 
   html += "</tr>";
 
@@ -229,11 +229,19 @@ function showHTMLFilterSearch() {
 // Show dues
 function showResult(rowNumber) {
 
+    // start table
+  let html = objCondos.startTableNew('width:1100px;');
+
+  // table header
+  html += objCondos.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
+
+  /*
   // Start HTML table
   html = startHTMLTable('width:1100px;');
 
   // Header
   html += objDues.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
+  */
 
   let sumAmount = 0;
 
@@ -261,7 +269,7 @@ function showResult(rowNumber) {
     // Date
     const date = formatToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objDues.showInputHTMLNew(className, date, 10);
+    html += objDues.inputTableColumnNew(className, date, 10);
 
     // accounts
     className = `accountId${due.dueId}`;
@@ -270,12 +278,12 @@ function showResult(rowNumber) {
     // due amount
     const amount = formatOreToKroner(due.amount);
     className = `amount${due.dueId}`;
-    html += objDues.showInputHTMLNew(className, amount, 10);
+    html += objDues.inputTableColumnNew(className, amount, 10);
 
     // text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objDues.showInputHTMLNew(className, text, 45);
+    html += objDues.inputTableColumnNew(className, text, 45);
 
     html += "</tr>";
 
@@ -299,7 +307,7 @@ function showResult(rowNumber) {
   html += objDues.showRestMenuNew(rowNumber);
 
   // The end of the table
-  html += endHTMLTable();
+  html += objDues.endTableNew();
   document.querySelector('.result').innerHTML = html;
 
   return rowNumber;
@@ -321,17 +329,17 @@ function insertEmptyTableRow(rowNumber) {
   html += objCondos.showSelectedCondosNew("condoId0", 'width:100px;', condoId, '', '');
 
   // Date
-  html += objDues.showInputHTMLNew("date0", "", 10);
+  html += objDues.inputTableColumnNew("date0", "", 10);
 
   // accountId
   const accountId = Number(document.querySelector('.filterAccountId').value);
   html += objAccounts.showSelectedAccountsNew("accountId0", '', accountId, '', '');
 
   // due amount
-  html += objDues.showInputHTMLNew('amount0', "", 10);
+  html += objDues.inputTableColumnNew('amount0', "", 10);
 
   // text
-  html += objDues.showInputHTMLNew('text0', "", 45);
+  html += objDues.inputTableColumnNew('text0', "", 45);
 
   html += "</tr>";
   return html;
@@ -451,6 +459,7 @@ async function updateDuesRow(dueId) {
   }
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -458,13 +467,34 @@ function showHeader() {
   let html = startHTMLTable('width:1100px;');
 
   // Main header
-  html += showHTMLMainTableHeader('widht:250px;', 'Forfall');
+  html += showHTMLMainTableHeader('width:250px;', 'Forfall');
 
   // The end of the table
-  html += endHTMLTable();
+  html += endTableNew();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objDues.startTableNew('width:1100px;');
+
+  // show main header
+  html += objDues.showTableHeaderNew('width:250px;', 'Forfall');
+
+  //html += objDues.insertEmptyTableRowNew(0,'');
+
+  // The end of the table header
+  //html += objDues.endTableHeaderNew();
+
+  // The end of the table
+  html += objDues.endTableNew();
   document.querySelector('.header').innerHTML = html;
 }
 
+/*
 // Show filter
 function showFilter() {
 
@@ -493,7 +523,7 @@ function showFilter() {
 
     // show from date
     const fromDate = '01.01.' + String(today.getFullYear());
-    html += objDues.showInputHTMLNew('filterFromDate', fromDate, 10);
+    html += objDues.inputTableColumnNew('filterFromDate', fromDate, 10);
 
     // Current date
     let toDate = getCurrentDate();
@@ -501,7 +531,7 @@ function showFilter() {
     // Next year
     toDate = Number(convertDateToISOFormat(toDate)) + 10000;
     toDate = formatToNorDate(toDate);
-    html += objDues.showInputHTMLNew('filterToDate', toDate, 10);
+    html += objDues.inputTableColumnNew('filterToDate', toDate, 10);
 
     html += "</tr>";
 
@@ -510,15 +540,59 @@ function showFilter() {
       html += "<tr><td></td></tr>";
 
     // The end of the table
-    html += endHTMLTable();
+    html += endTableNew();
     document.querySelector('.filter').innerHTML = html;
 
-    /*
-    // show icons
-    objDues.showIconNew('filterCondoId');
-    objDues.showIconNew('filterAccountId');
-    objDues.showIconNew('filterFromDate');
-    objDues.showIconNew('filterToDate');
-    */
   }
+}
+*/
+
+// Show filter
+function showFilter() {
+
+  // Start table
+  html = objDues.startTableNew('width:1100px;');
+
+  // Header filter
+  html += objDues.showTableHeaderNew("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+
+  // start table body
+  html += objDues.startTableBodyNew();
+
+  // insert table columns in start of a row
+  html += objDues.insertTableColumnsNew('', 0, '', '');
+
+  // Show all selected condos
+  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 0);
+
+  // Get condominiumId
+  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(objUserPassword.condominiumId));
+  if (condominiumsRowNumber !== -1) {
+
+    const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
+    html += objAccounts.showSelectedAccountsNew('filterAccountId', '', commonCostAccountId, '', '');
+  }
+
+  // show from date
+  const fromDate = '01.01.' + String(today.getFullYear());
+  html += objDues.inputTableColumnNew('filterFromDate', fromDate, 10);
+
+  // Current date
+  let toDate = getCurrentDate();
+
+  // Next year
+  toDate = Number(convertDateToISOFormat(toDate)) + 10000;
+  toDate = formatToNorDate(toDate);
+  html += objDues.inputTableColumnNew('filterToDate', toDate, 10);
+
+  html += "</tr>";
+
+  html += objDues.insertEmptyTableRowNew(0,'');
+
+  // end table body
+  html += objDues.endTableBodyNew();
+
+  // The end of the table
+  html += objDues.endTableNew();
+  document.querySelector('.filter').innerHTML = html;
 }
