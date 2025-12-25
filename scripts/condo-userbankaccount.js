@@ -550,7 +550,9 @@ function showFilter() {
   html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
   html += "</tr>";
 
-  html += objUserBankAccounts.insertEmptyTableRowNew(0,'');
+  //html += objUserBankAccounts.insertEmptyTableRowNew(0,'');
+  // insert table columns in start of a row
+  html += objUserBankAccounts.insertTableColumnsNew('', 0, '');
 
   // end table body
   html += objUserBankAccounts.endTableBodyNew();
@@ -563,13 +565,17 @@ function showFilter() {
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
 
-  let html = "<tr>";
+  let html = "";
 
   // Show menu
-  html += objUserBankAccounts.menuNew(rowNumber);
+  //html += objUserBankAccounts.menuNew(rowNumber);
+
+  // insert table columns in start of a row
+  rowNumber++;
+  html += objUserBankAccounts.insertTableColumnsNew('', rowNumber, 'Ny brukerkonto');
 
   // delete column
-  html += "<td class='center'>Ny brukerkonto</td>";
+  //html += "<td class='center'>Ny brukerkonto</td>";
 
   // user column
   html += objUsers.showSelectedUsersNew('userId0', '', 0, 'Ingen er valgt', '');
@@ -587,7 +593,7 @@ function insertEmptyTableRow(rowNumber) {
 // Show user bank accounts
 function showResult(rowNumber) {
 
-    // start table
+  // start table
   let html = objUserBankAccounts.startTableNew('width:750px;');
 
   // table header
@@ -603,11 +609,15 @@ function showResult(rowNumber) {
 
   objUserBankAccounts.arrayUserBankAccounts.forEach((userBankAccount) => {
 
-    html += "<tr>";
+    //let html = "";
 
     // Show menu
+    //rowNumber++;
+    //html += objUserBankAccounts.menuNew(rowNumber);
+
+    // insert table columns in start of a row
     rowNumber++;
-    html += objUserBankAccounts.menuNew(rowNumber);
+    html += objUserBankAccounts.insertTableColumnsNew('', rowNumber);
 
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;

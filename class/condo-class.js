@@ -726,7 +726,7 @@ class Condos {
     return validUser;
   }
 
-  menuNew(menuNumber) {
+    menuNew(menuNumber) {
 
     let html = "";
 
@@ -763,16 +763,14 @@ class Condos {
 
       html +=
         `
-        <td class="menu one-line">
-          <a 
-            href="${url}${applicationName}"
-            class="${className}"
-            style="width:100px;"
-          >
-            ${text}
-          </a>
-        </td>
-      `;
+          <td class="one-line">
+            <a 
+              href="${url}${applicationName}"
+            >
+              ${text}
+            </a>
+          </td>
+        `;
     } else {
 
       html += "<td> </td>";
@@ -1421,65 +1419,6 @@ class Condos {
     return fileNameRegex.test(fileName);
   }
 
-  /*
-  // Show main header table
-  showHTMLMainTableHeaderNew(style, menuNumber, ...texts) {
-
-    //let html = `<tr class="bold">`;
-    let html = `<tr>`;
-
-    if (menuNumber > 0) html += this.menuNew(menuNumber);
-
-    texts.forEach((text) => {
-
-      if (text === '') {
-        html +=
-          `
-          <th 
-            class="no-border"
-            style="${style}"
-          >
-            ${text}
-          </th>
-        `;
-      } else {
-        html +=
-          `
-          <th 
-            class="center no-border"
-            style="${style}"
-          >
-            ${text}
-          </th>
-        `;
-      }
-    });
-
-    html += "</tr>";
-    return html;
-  }
-  */
-
-  /*
-  // Show filter header table
-  showHTMLFilterHeader(style, menuNumber, ...texts) {
-
-    let html = "<tr>";
-
-    if (menuNumber > 0) html += this.menuNew(menuNumber);
-
-    texts.forEach((text) => {
-
-      if (text === '') html += `<td class="no-border center" style="${style}">${text}</td>`;
-      if (text !== '' && style !== '') html += `<td class="no-border center bold" style="${style}">${text}</td>`;
-      if (text !== '' && style === '') html += `<td class="no-border center bold">${text}</td>`;
-    });
-
-    html += "</tr>";
-    return html;
-  }
-  */
-
   // Show blank header row
   showBlankHeaderRow(style, menuNumber, ...texts) {
 
@@ -1518,7 +1457,7 @@ class Condos {
     });
 
     // empty row
-    html += this.insertEmptyTableRowNew(0, '');
+    html += this.insertTableColumnsNew('', 0, '');
 
     html += "</thead>";
     return html;
@@ -1553,8 +1492,9 @@ class Condos {
     return html;
   }
 
+  /*
   // insert empty table row
-  insertEmptyTableRowNew(menuNumber, ...texts) {
+  //insertEmptyTableRowNew(menuNumber, ...texts) {
 
     let html = "<tr>";
 
@@ -1567,6 +1507,7 @@ class Condos {
 
     return html;
   }
+  */
 
   // end body table
   endTableBodyNew() {
@@ -2423,40 +2364,6 @@ function exitIfNoActivity() {
 function startHTMLTable(style) {
 
   return `<table style="${style}">`;
-}
-
-// Show main header table
-function showHTMLMainTableHeader(style, ...texts) {
-
-  let html = `<tr class="bold">`;
-
-  texts.forEach((text) => {
-
-    if (text === '') {
-      html +=
-        `
-          <th 
-            class="no-border"
-            style="${style}"
-          >
-            ${text}
-          </th>
-        `;
-    } else {
-      html +=
-        `
-          <th 
-            class="center no-border"
-            style="${style}"
-          >
-            ${text}
-          </th>
-        `;
-    }
-  });
-
-  html += "</tr>";
-  return html;
 }
 
 

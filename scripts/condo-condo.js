@@ -188,7 +188,9 @@ function showFilter(condoId) {
 
   html += "</tr>";
 
-  html += objCondos.insertEmptyTableRowNew(0, '');
+  //html += objCondos.insertEmptyTableRowNew(0, '');
+  // insert table columns in start of a row
+  html += objCondos.insertTableColumnsNew('', 0, '');
 
   // end table body
   html += objCondos.endTableBodyNew();
@@ -231,9 +233,11 @@ function showResult(condoId, rowNumber) {
 
     html += "</tr>";
 
-    html += "<tr>";
+    //html += "<tr>";
+    //html += objCondos.menuNew(rowNumber);
+    // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.menuNew(rowNumber);
+    html += objCondos.insertTableColumnsNew('', rowNumber, '');
 
     // name
     html += objCondos.inputTableColumnNew('name', objCondos.arrayCondo[condoRowNumber].name, 45);
@@ -247,11 +251,14 @@ function showResult(condoId, rowNumber) {
     html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Gate', 'Adresse 2');
 
     html += "</tr>";
-    html += "<tr>";
+    //html += "<tr>";
 
     // Show menu
+    //html += objCondos.menuNew(rowNumber);
+
+    // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.menuNew(rowNumber);
+    html += objCondos.insertTableColumnsNew('', rowNumber, '');
 
     // street
     html += objCondos.inputTableColumnNew('street', objCondos.arrayCondo[condoRowNumber].street, 45);
@@ -267,8 +274,12 @@ function showResult(condoId, rowNumber) {
     html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Postnummer', 'Poststed');
 
     // Show menu
+    //rowNumber++;
+    //html += objCondos.menuNew(rowNumber);
+
+    // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.menuNew(rowNumber);
+    html += objCondos.insertTableColumnsNew('', rowNumber, '');
 
     // postalCode
     html += objCondos.inputTableColumnNew('postalCode', objCondos.arrayCondo[condoRowNumber].postalCode, 4);
@@ -284,8 +295,12 @@ function showResult(condoId, rowNumber) {
     html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Kvadratmeter');
 
     // Show menu
+    //rowNumber++;
+    //html += objCondos.menuNew(rowNumber);
+    // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.menuNew(rowNumber);
+    html += objCondos.insertTableColumnsNew('', rowNumber, '');
+
 
     // squareMeters
     html += objCondos.inputTableColumnNew('squareMeters', formatOreToKroner(objCondos.arrayCondo[condoRowNumber].squareMeters), 10);
@@ -293,32 +308,48 @@ function showResult(condoId, rowNumber) {
     html += "</tr>";
 
     // Show menu
-    html += "<tr>";
+    //html += "<tr>";
+    //rowNumber++;
+    //html += objCondos.menuNew(rowNumber);
+    // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.menuNew(rowNumber);
+    html += objCondos.insertTableColumnsNew('', rowNumber, '');
+
     html += "</tr>";
 
     // show buttons
-    html += "<tr>";
+    //html += "<tr>";
     // Show menu
+    //rowNumber++;
+    //html += objCondos.menuNew(rowNumber);
+
+    // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.menuNew(rowNumber);
+    html += objCondos.insertTableColumnsNew('', rowNumber, '');
 
     html += objCondos.showButtonNew('width:170px;', 'update', 'Oppdater');
     html += objCondos.showButtonNew('width:170px;', 'cancel', 'Angre');
     html += "</tr>";
 
     // Show menu
-    html += "<tr>";
+    //html += "<tr>";
+    //rowNumber++;
+    //html += objCondos.menuNew(rowNumber);
+
+    // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.menuNew(rowNumber);
+    html += objCondos.insertTableColumnsNew('', rowNumber, '');
     html += "</tr>";
 
     // show buttons
-    html += "<tr>";
+    //html += "<tr>";
     // Show menu
+    //rowNumber++;
+    //html += objCondos.menuNew(rowNumber);
+
+    // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.menuNew(rowNumber);
+    html += objCondos.insertTableColumnsNew('', rowNumber, '');
 
     html += objCondos.showButtonNew('width:170px;', 'delete', 'Slett');
     html += objCondos.showButtonNew('width:170px;', 'insert', 'Ny');

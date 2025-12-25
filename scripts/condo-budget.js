@@ -272,7 +272,9 @@ function showFilter() {
 
   html += "</tr>";
 
-  html += objBudgets.insertEmptyTableRowNew(0,'');
+  //html += objBudgets.insertEmptyTableRowNew(0, '');
+  // insert table columns in start of a row
+  html += objBudgets.insertTableColumnsNew('', 0, '');
 
   // end table body
   html += objBudgets.endTableBodyNew();
@@ -291,24 +293,16 @@ function showResult(rowNumber) {
   // table header
   html += objBudgets.showTableHeaderNew("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
 
-  /*
-  // Start HTML table
-  let html = startHTMLTable('width:1000px;');
-
-  // Header
-  html += objBudgets.showTableHeaderNew("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
-  */
-
   let sumAmount = 0;
 
   objBudgets.arrayBudgets.forEach((budget) => {
 
-    rowNumber++;
-
-    html += '<tr class="menu">';
+    //html += '<tr>';
 
     // Show menu
-    html += objBudgets.menuNew(rowNumber);
+    //html += objBudgets.menuNew(rowNumber);
+    rowNumber++;
+    html += objBudgets.insertTableColumnsNew('', rowNumber, '');
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
@@ -344,13 +338,14 @@ function showResult(rowNumber) {
   });
 
   // Make one last table row for insertion in table 
-  html += "<tr>";
+  //html += "<tr>";
 
   // Show menu
   rowNumber++;
-  html += objBudgets.menuNew(rowNumber);
-
-  html += "<td class='bold'>Nytt budsjett</td>";
+  //html += objBudgets.menuNew(rowNumber);
+  // insert table columns in start of a row
+  html += objAccounts.insertTableColumnsNew('', rowNumber, '','Nytt budsjett');
+  //html += "<td class='bold'>Nytt budsjett</td>";
 
   // accounts
   let className = `accountId0`;

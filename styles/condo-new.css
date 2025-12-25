@@ -1,104 +1,97 @@
+/* centers body horizontally */
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+}
 
- /* centers body horizontally */
- body {
-   display: flex;
-   flex-direction: column;
-   font-family: sans-serif;
- }
+table {
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
 
- table {
-   border-collapse: collapse;
-   background-color: #f9f9f9;
-   border-radius: 8px;
-   overflow: hidden;
- }
+}
 
- th,
- td {
-   border: 1px solid #ccc;
-   text-align: cnter;
-   height: 30px;
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
- }
+th,
+td {
+  border: 1px solid #ccc;
+  text-align: cnter;
+  height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
- th {
-   background: #e0f0e0;
-   text-align: center;
- }
+th {
+  background: #e0f0e0;
+  text-align: center;
+}
 
- td {
-   border: 0px;
-   font-family: sans-serif;
-   font-size: 13px;
- }
+td {
+  border: 0px;
+  font-family: sans-serif;
+  font-size: 13px;
+}
 
- a,
- button,
- select,
- input {
-   cursor: pointer;
- }
+button,
+select,
+input {
+  cursor: pointer;
+  border-radius: 5px;
+  border-color: #e0f0e0;
+}
 
- a {
-   box-shadow: 3px 3px 3px rgba(224, 240, 224, 1);
- }
+a:hover,
+select:hover,
+input:hover {
+  background-color: #e0f0e0;
+}
 
- a:hover,
- select:hover,
- input:hover {
-   background-color: #e0f0e0;
- }
+input {
+  height: 30px;
+}
 
- input {
-   height: 30px;
- }
+select {
+  height: 35px;
+}
 
- select {
-   height: 35px;
- }
+.left {
+  text-align: left;
+}
 
- .left {
-   text-align: left;
- }
+.center {
+  text-align: center;
+}
 
- .center {
-   text-align: center;
- }
+.right {
+  text-align: right;
+}
 
- .right {
-   text-align: right;
- }
+.no-border {
+  border: 0px solid #ddd;
+}
 
- .no-border {
-   border: 0px solid #ddd;
- }
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
- .one-line {
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
- }
+.menu {
+  text-decoration: none;
+  width: 150px;
+  height: 35px;
+  background-color: #e0f0e0;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-left: 10px;
+}
 
- /* menu */
- .menu {
-   padding: 1px;
- }
-
- .menu a {
-   text-decoration: none;
-   margin: 0 15px;
- }
-
- .menu a:hover {
-   color: black;
- }
-
- /* bold */
- .bold {
-   font-weight: 600;
- }
+/* bold */
+.bold {
+  font-weight: 600;
+}
 
 .button {
   width: 190px;
@@ -109,5 +102,10 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  border-color: #e0f0e0;
 }
 
+a:hover {
+
+  background-color: red;
+}

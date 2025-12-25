@@ -230,7 +230,9 @@ function showFilter() {
 
   html += "</tr>";
 
-  html += objBankAccountTransactions.insertEmptyTableRowNew(0,'');
+  //html += objBankAccountTransactions.insertEmptyTableRowNew(0, '');
+  // insert table columns in start of a row
+  html += objBankAccountTransactions.insertTableColumnsNew('', 0, '');
 
   // end table body
   html += objBankAccountTransactions.endTableBodyNew();
@@ -362,26 +364,19 @@ function showResult(rowNumber) {
   let html = objCondos.startTableNew('width:1450px;');
 
   // table header
-  html += objCondos.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
-
-  /*
-  // Start HTML table
-  let html = startHTMLTable('width:1450px;');
-
-  // Header
-  html += objBankAccountTransactions.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
-  */
+  html += objCondos.showTableHeaderNew("width:750px;", '','', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
 
   let sumIncome = 0;
   let sumPayment = 0;
 
   objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
-    html += '<tr class="menu">';
+    html += '<tr>';
 
     // Show menu
     rowNumber++;
-    html += objBankAccountTransactions.menuNew(rowNumber);
+    //html += objBankAccountTransactions.menuNew(rowNumber);
+    html += objAccounts.insertTableColumnsNew('', rowNumber, '');
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
@@ -442,7 +437,7 @@ function showResult(rowNumber) {
   sumPayment = formatOreToKroner(sumPayment);
 
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumnsNew('font-weight: 600;', rowNumber, '','','','Sum',sumIncome, sumPayment);
+  html += objBankAccountTransactions.insertTableColumnsNew('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncome, sumPayment);
 
   // Show the rest of the menu
   rowNumber++;

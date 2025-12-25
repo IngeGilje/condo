@@ -168,22 +168,23 @@ function events() {
 // Show dues
 function showResult(rowNumber) {
 
-    // start table
+  // start table
   let html = objCondos.startTableNew('width:1100px;');
 
   // table header
-  html += objCondos.showTableHeaderNew("width:750px;", '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
+  html += objCondos.showTableHeaderNew('', '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
 
   let sumAmount = 0;
 
   objDues.arrayDues.forEach((due) => {
 
-    rowNumber++;
-
-    html += '<tr class="menu">';
-
     // Show menu
-    html += objDues.menuNew(rowNumber);
+    //rowNumber++;
+    //html += objDues.menuNew(rowNumber);
+
+    // insert table columns in start of a row
+    rowNumber++;
+    html += objCondominiums.insertTableColumnsNew('', rowNumber)
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
@@ -231,7 +232,7 @@ function showResult(rowNumber) {
   // Show table sum row
   rowNumber++;
   sumAmount = formatOreToKroner(sumAmount);
-  html += objDues.insertTableColumnsNew('font-weight: 600;',rowNumber,'','','','Sum',sumAmount);
+  html += objDues.insertTableColumnsNew('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumAmount);
 
   // Show the rest of the menu
   rowNumber++;
@@ -247,13 +248,17 @@ function showResult(rowNumber) {
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
 
-  let html = "<tr>";
+  let html = "";
 
   // Show menu
-  html += objDues.menuNew(rowNumber);
+  //html += objDues.menuNew(rowNumber);
+
+  // insert table columns in start of a row
+  rowNumber++;
+  html += objCondominiums.insertTableColumnsNew('', rowNumber, 'Nytt forfall');
 
   // delete
-  html += "<td class='center bold'>Nytt forfall</td>";
+  //html += "<td class='center bold'>Nytt forfall</td>";
 
   // condoId
   const condoId = Number(document.querySelector('.filterCondoId').value);
@@ -345,8 +350,6 @@ async function updateDuesRow(dueId) {
       await objDues.insertDuesTable(condominiumId, user, condoId, accountId, amount, date, text);
     }
 
-    //condoId = Number(document.querySelector('.filterCondoId').value);
-    //accountId = Number(document.querySelector('.filterAccountId').value);
     let fromDate = document.querySelector('.filterFromDate').value;
     fromDate = Number(formatNorDateToNumber(fromDate));
     let toDate = document.querySelector('.filterToDate').value;
@@ -358,22 +361,6 @@ async function updateDuesRow(dueId) {
   }
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = startHTMLTable('width:1100px;');
-
-  // Main header
-  html += showHTMLMainTableHeader('width:250px;', 'Forfall');
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -382,11 +369,6 @@ function showHeader() {
 
   // show main header
   html += objDues.showTableHeaderNew('width:250px;', 'Forfall');
-
-  //html += objDues.insertEmptyTableRowNew(0,'');
-
-  // The end of the table header
-  //html += objDues.endTableHeaderNew();
 
   // The end of the table
   html += objDues.endTableNew();
@@ -433,7 +415,9 @@ function showFilter() {
 
   html += "</tr>";
 
-  html += objDues.insertEmptyTableRowNew(0,'');
+  //html += objDues.insertEmptyTableRowNew(0, '');
+  // insert table columns in start of a row
+  html += objDues.insertTableColumnsNew('', 0, '')
 
   // end table body
   html += objDues.endTableBodyNew();

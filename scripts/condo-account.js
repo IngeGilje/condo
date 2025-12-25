@@ -196,7 +196,9 @@ function showFilter() {
 
   html += "</tr>";
 
-  html += objAccounts.insertEmptyTableRowNew(0,'');
+  //html += objAccounts.insertEmptyTableRowNew(0,'');
+  // insert table columns in start of a row
+  html += objAccounts.insertTableColumnsNew('', 0, '');
 
   // end table body
   html += objAccounts.endTableBodyNew();
@@ -209,10 +211,12 @@ function showFilter() {
 // Insert empty table row
 function insertEmptyTableRow(rowNumber) {
 
-  let html = "<tr>";
+  let html = "";
 
   // Show menu
-  html += objAccounts.menuNew(rowNumber);
+  //html += objAccounts.menuNew(rowNumber);
+  // insert table columns in start of a row
+  html += objAccounts.insertTableColumnsNew('', rowNumber);
 
   // delete
   html += "<td class='center'>Ny konto</td>";
@@ -246,11 +250,12 @@ function showResult(rowNumber) {
 
   objAccounts.arrayAccounts.forEach((account) => {
 
-    html += "<tr>";
+    //html += '<tr>';
 
     // Show menu
     rowNumber++;
-    html += objAccounts.menuNew(rowNumber);
+    //html += objAccounts.menuNew(rowNumber);
+    html += objAccounts.insertTableColumnsNew('', rowNumber);
 
     // Delete
     let selectedChoice = "Ugyldig verdi";

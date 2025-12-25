@@ -486,7 +486,7 @@ function showFilter() {
 
   html += "</tr>";
 
-  html += objImportFile.insertEmptyTableRowNew(0,'');
+  html += objImportFile.insertTableColumnsNew('', 0, '');
 
   // end table body
   html += objImportFile.endTableBodyNew();
@@ -499,7 +499,7 @@ function showFilter() {
 // Show csv file for bank account transactions
 function showResult(rowNumber) {
 
-    // start table
+  // start table
   let html = objImportFile.startTableNew('width:1450px;');
 
   // table header
@@ -516,11 +516,14 @@ function showResult(rowNumber) {
 
   arrayTransactions.forEach((transaction) => {
 
-    html += "<tr>";
+    //html += "<tr>";
 
     // Show menu
+    //rowNumber++;
+    //html += objImportFile.menuNew(rowNumber);
+    // insert table columns in start of a row
     rowNumber++;
-    html += objImportFile.menuNew(rowNumber);
+    html += objImportFile.insertTableColumnsNew('', rowNumber, '');
 
     // Date
     let className = `accountingDate${rowNumber}`;
@@ -570,24 +573,28 @@ function showResult(rowNumber) {
 
   // Show sum row
   rowNumber++;
-  html += objImportFile.insertTableColumnsNew('font-weight: 600;',rowNumber,'','','','Sum',sumIncomes, sumPayments);
+  html += objImportFile.insertTableColumnsNew('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncomes, sumPayments);
 
   // Show update button
-  html += "<tr>";
+  //html += "<tr>";
 
   // Show menu
-  rowNumber++;
-  html += objCondominiums.menuNew(rowNumber);
+  //rowNumber++;
+  //html += objImportFile.menuNew(rowNumber);
 
-  html += objCondominiums.showButtonNew('width:170px;', 'update', 'Oppdater');
+  // insert table columns in start of a row
+  rowNumber++;
+  html += objImportFile.insertTableColumnsNew('', rowNumber, '');
+
+  html += objImportFile.showButtonNew('width:170px;', 'update', 'Oppdater');
   html += "</tr>";
 
   // Show the rest of the menu
   rowNumber++;
-  html += objCondominiums.showRestMenuNew(rowNumber);
+  html += objImportFile.showRestMenuNew(rowNumber);
 
   // The end of the table
-  html += objCondominiums.endTableNew();
+  html += objImportFile.endTableNew();
   document.querySelector('.result').innerHTML = html;
 }
 
