@@ -135,7 +135,13 @@ function events() {
   document.addEventListener('change', (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
-      const className = objDues.getDeleteClass(event.target);
+      const arrayPrefixes = ['delete'];
+
+      // Find the first matching class
+      const className = arrayPrefixes
+        .map(prefix => objDues.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
       const classNameDelete = `.${className}`
       const deleteDueRowValue = document.querySelector(`${classNameDelete}`).value;
       if (deleteDueRowValue === "Ja") {

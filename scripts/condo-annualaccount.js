@@ -391,7 +391,7 @@ function showIncomeNextYear(rowNumber) {
   let html = objAnnualAccount.startTableNew('width:1100px;');
 
   // table header
-  html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', 'Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad/år');
+  html += objAnnualAccount.showTableHeaderNew("width:200px;", '', '', '', 'Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad/år');
 
   let totalCommonCostsMonth = 0;
   let totalCommonCostsYear = 0;
@@ -416,11 +416,11 @@ function showIncomeNextYear(rowNumber) {
     //html += '<tr>';
 
     // Show menu
-    rowNumber++;
     //html += objBankAccountTransactions.menuNew(rowNumber);
     //html += objAnnualAccount.insertEmptyTableRowNew(0, '', '');
     // insert table columns in start of a row
-    html += objAnnualAccount.insertTableColumnsNew('', 0, '', '');
+       rowNumber++;
+    html += objAnnualAccount.insertTableColumnsNew('', rowNumber, '', '');
 
     // name
     className = `name${condo.condoId}`;

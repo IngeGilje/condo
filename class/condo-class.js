@@ -471,21 +471,6 @@ class Condos {
     return (bankAccountPattern.test(bankAccount)) ? true : false;
   }
 
-  /*
-  // Mark selected application in menu
-  markSelectedMenu(text) {
-
-    document.querySelector(`.a-menu-vertical-${this.applicationName}`).outerHTML =
-      `
-        <div 
-          class='a-menu-vertical-${this.applicationName}-green'
-        >
-          ${text}
-        </div>
-      `;
-  }
-  */
-
   // Select bank account
   selectBankAccountId(bankAccountId, className) {
 
@@ -726,7 +711,7 @@ class Condos {
     return validUser;
   }
 
-    menuNew(menuNumber) {
+  menuNew(menuNumber) {
 
     let html = "";
 
@@ -763,7 +748,7 @@ class Condos {
 
       html +=
         `
-          <td class="one-line">
+          <td class="one-line menu">
             <a 
               href="${url}${applicationName}"
             >
@@ -1491,23 +1476,6 @@ class Condos {
 
     return html;
   }
-
-  /*
-  // insert empty table row
-  //insertEmptyTableRowNew(menuNumber, ...texts) {
-
-    let html = "<tr>";
-
-    if (menuNumber > 0) html += this.menuNew(menuNumber);
-
-    texts.forEach((text) => {
-
-      html += `<td class="center no-border">${text}</td>`;
-    });
-
-    return html;
-  }
-  */
 
   // end body table
   endTableBodyNew() {

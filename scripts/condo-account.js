@@ -99,10 +99,17 @@ function events() {
   });
 
   // Delete suppliers row
-  document.addEventListener('cclick', (event) => {
+  document.addEventListener('click', (event) => {
     if (event.target.classList.contains('delete')) {
 
-      const className = objAccounts.getDeleteClass(event.target);
+      const arrayPrefixes = ['delete'];
+
+      // Find the first matching class
+      const className = arrayPrefixes
+        .map(prefix => objDues.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
+      //const className = objAccounts.getDeleteClass(event.target);
       const classNameDelete = `.${className}`
       const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
       if (deleteAccountRowValue === "Ja") {

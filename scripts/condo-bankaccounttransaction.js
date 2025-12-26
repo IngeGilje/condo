@@ -164,7 +164,14 @@ function events() {
   document.addEventListener('change', (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
-      const className = objBankAccountTransactions.getDeleteClass(event.target);
+      const arrayPrefixes = ['delete'];
+
+      // Find the first matching class
+      const className = arrayPrefixes
+        .map(prefix => objDues.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
+      //const className = objBankAccountTransactions.getDeleteClass(event.target);
       const bankAccountTransationId = Number(className.substring(6));
       deleteBankAccountTransationSync(bankAccountTransationId);
 

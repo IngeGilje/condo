@@ -108,7 +108,14 @@ function events() {
   document.addEventListener('change', (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
-      const className = objBudgets.getDeleteClass(event.target);
+      const arrayPrefixes = ['delete'];
+
+      // Find the first matching class
+      const className = arrayPrefixes
+        .map(prefix => objDues.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
+      //const className = objBudgets.getDeleteClass(event.target);
       const budgetId = Number(className.substring(6));
       deleteBudgetSync(budgetId);
 
@@ -131,7 +138,6 @@ function events() {
 async function deleteBudgetRow(budgetId, className) {
 
   const user = objUserPassword.email;
-
 
   // Check if budget row exist
   budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
@@ -215,22 +221,6 @@ function calculateSum() {
   sumAmount = formatOreToKroner(String(sumAmount));
   document.querySelector('.sum2').value = sumAmount;
 };
-
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = startHTMLTable('width:1000px;');
-
-  // Main header
-  html += objBudgets.showTableHeaderNew('', 'Budsjett');
-
-  // The end of the table
-  html += endTableNew();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
 
 // Show header
 function showHeader() {
