@@ -10,7 +10,7 @@ const objUsers = new User('user');
 testMode();
 
 // Exit application if no activity for 1 hour
-//exitIfNoActivity();
+exitIfNoActivity();
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -751,6 +751,7 @@ function showResult(userId, rowNumber) {
     html += "</tr>";
 
     // Show the rest of the menu
+    rowNumber++;
     html += objUsers.showRestMenuNew(rowNumber);
 
     // The end of the table

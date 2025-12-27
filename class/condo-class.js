@@ -40,7 +40,6 @@ class Condos {
       className: "Menu6",
       text: "Bruker"
     },
-
     {
       applicationName: "condo-userbankaccount.html",
       className: "Menu7",
@@ -2310,7 +2309,7 @@ function showIcon(className) {
 }
 */
 
-/*
+
 // exit application after 1 hour
 function exitIfNoActivity() {
 
@@ -2326,7 +2325,6 @@ function exitIfNoActivity() {
 ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
   document.addEventListener(event, exitIfNoActivity);
 });
-*/
 
 // Start of HTML table
 function startHTMLTable(style) {

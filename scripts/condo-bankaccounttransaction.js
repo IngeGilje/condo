@@ -14,7 +14,7 @@ const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransa
 testMode();
 
 // Exit application if no activity for 1 hour
-//exitIfNoActivity();
+exitIfNoActivity();
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));

@@ -479,6 +479,8 @@ class Account extends Condos {
   async deleteAccountsTable(accountId, user) {
 
     try {
+      // Fetch for sending a message to server(request)
+      // response is a message in .json format send from server(response)
       const response = await fetch(`http://localhost:3000/accounts?action=delete&accountId=${accountId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();

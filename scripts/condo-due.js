@@ -11,7 +11,7 @@ const objDues = new Due('due');
 testMode();
 
 // Exit application if no activity for 1 hour
-//exitIfNoActivity();
+exitIfNoActivity();
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -49,14 +49,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       showFilter()
 
-      const accountId = Number(document.querySelector('.filterAccountId').value);
       const condoId = Number(document.querySelector('.filterCondoId').value);
-
+      const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = formatNorDateToNumber(fromDate);
-
+      fromDate = Number(formatNorDateToNumber(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = formatNorDateToNumber(toDate);
+      toDate = Number(formatNorDateToNumber(toDate));
 
       await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
@@ -90,6 +88,7 @@ function events() {
         fromDate = Number(formatNorDateToNumber(fromDate));
         let toDate = document.querySelector('.filterToDate').value;
         toDate = Number(formatNorDateToNumber(toDate));
+
         await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
         let menuNumber = 0;
@@ -161,6 +160,7 @@ function events() {
           fromDate = Number(formatNorDateToNumber(fromDate));
           let toDate = document.querySelector('.filterToDate').value;
           toDate = Number(formatNorDateToNumber(toDate));
+
           await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
           let menuNumber = 0;
@@ -308,6 +308,7 @@ async function deleteDuesRow(dueId, className) {
   fromDate = Number(formatNorDateToNumber(fromDate));
   let toDate = document.querySelector('.filterToDate').value;
   toDate = Number(formatNorDateToNumber(toDate));
+
   await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 }
 
@@ -321,11 +322,11 @@ async function updateDuesRow(dueId) {
 
   // Check dues columns
   let className = `.condoId${dueId}`;
-  const condoId = Number(document.querySelector(className).value);
+  let condoId = Number(document.querySelector(className).value);
   const validCondoId = validateNumberNew(condoId, 1, 999999999);
 
   className = `.accountId${dueId}`;
-  const accountId = Number(document.querySelector(className).value);
+  let accountId = Number(document.querySelector(className).value);
   const validAccountId = validateNumberNew(accountId, 1, 999999999);
 
   className = `.amount${dueId}`;
@@ -356,10 +357,14 @@ async function updateDuesRow(dueId) {
       await objDues.insertDuesTable(condominiumId, user, condoId, accountId, amount, date, text);
     }
 
+    const condominiumId = Number(objUserPassword.condominiumId);
+    condoId = Number(document.querySelector('.filterCondoId').value);
+    accountId = Number(document.querySelector('.filterAccountId').value);
     let fromDate = document.querySelector('.filterFromDate').value;
     fromDate = Number(formatNorDateToNumber(fromDate));
     let toDate = document.querySelector('.filterToDate').value;
     toDate = Number(formatNorDateToNumber(toDate));
+
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
     let menuNumber = 0;
@@ -388,7 +393,7 @@ function showFilter() {
   html = objDues.startTableNew('width:1100px;');
 
   // Header filter
-  html += objDues.showTableHeaderNew("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+  html += objDues.showTableHeaderNew("width:1100px;", '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato');
 
   // start table body
   html += objDues.startTableBodyNew();
@@ -404,7 +409,7 @@ function showFilter() {
   if (condominiumsRowNumber !== -1) {
 
     const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
-    html += objAccounts.showSelectedAccountsNew('filterAccountId', '', commonCostAccountId, '', '');
+    html += objAccounts.showSelectedAccountsNew('filterAccountId', '', commonCostAccountId, '', 'Vis alle konti');
   }
 
   // show from date

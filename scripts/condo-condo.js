@@ -8,7 +8,7 @@ const objCondos = new Condo('condo');
 testMode();
 
 // Exit application if no activity for 1 hour
-//exitIfNoActivity();
+exitIfNoActivity();
 
 // Validate user/password
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
@@ -214,17 +214,6 @@ function showResult(condoId, rowNumber) {
   const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
   if (condoRowNumber !== -1) {
 
-    // Start table
-    //html = startHTMLTable('width:750px;');
-
-    // Main header
-    //html += objCondos.showTableHeaderNew('width:250px;', '', '', '');
-
-    // Show menu
-    // Header for value including menu
-    //rowNumber++;
-    //html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn');
-
     // name
     html += "<tr>";
 
@@ -233,32 +222,23 @@ function showResult(condoId, rowNumber) {
 
     html += "</tr>";
 
-    //html += "<tr>";
-    //html += objCondos.menuNew(rowNumber);
-    // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber, '');
+    html += objCondos.insertTableColumnsNew('', rowNumber);
 
     // name
     html += objCondos.inputTableColumnNew('name', objCondos.arrayCondo[condoRowNumber].name, 45);
 
     html += "</tr>";
 
-    html += "<tr>";
-
     // street, address2
     rowNumber++;
     html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Gate', 'Adresse 2');
 
     html += "</tr>";
-    //html += "<tr>";
-
-    // Show menu
-    //html += objCondos.menuNew(rowNumber);
-
+ 
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber, '');
+    html += objCondos.insertTableColumnsNew('', rowNumber);
 
     // street
     html += objCondos.inputTableColumnNew('street', objCondos.arrayCondo[condoRowNumber].street, 45);
@@ -273,13 +253,9 @@ function showResult(condoId, rowNumber) {
     rowNumber++;
     html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Postnummer', 'Poststed');
 
-    // Show menu
-    //rowNumber++;
-    //html += objCondos.menuNew(rowNumber);
-
-    // insert table columns in start of a row
+     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber, '');
+    html += objCondos.insertTableColumnsNew('', rowNumber);
 
     // postalCode
     html += objCondos.inputTableColumnNew('postalCode', objCondos.arrayCondo[condoRowNumber].postalCode, 4);
@@ -294,68 +270,45 @@ function showResult(condoId, rowNumber) {
     rowNumber++;
     html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Kvadratmeter');
 
-    // Show menu
-    //rowNumber++;
-    //html += objCondos.menuNew(rowNumber);
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber, '');
-
+    html += objCondos.insertTableColumnsNew('', rowNumber);
 
     // squareMeters
     html += objCondos.inputTableColumnNew('squareMeters', formatOreToKroner(objCondos.arrayCondo[condoRowNumber].squareMeters), 10);
 
     html += "</tr>";
 
-    // Show menu
-    //html += "<tr>";
-    //rowNumber++;
-    //html += objCondos.menuNew(rowNumber);
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber, '');
+    html += objCondos.insertTableColumnsNew('', rowNumber);
 
     html += "</tr>";
 
-    // show buttons
-    //html += "<tr>";
-    // Show menu
-    //rowNumber++;
-    //html += objCondos.menuNew(rowNumber);
-
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber, '');
+    html += objCondos.insertTableColumnsNew('', rowNumber);
 
     html += objCondos.showButtonNew('width:170px;', 'update', 'Oppdater');
     html += objCondos.showButtonNew('width:170px;', 'cancel', 'Angre');
     html += "</tr>";
 
-    // Show menu
-    //html += "<tr>";
-    //rowNumber++;
-    //html += objCondos.menuNew(rowNumber);
-
+    // insert empty row
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber, '');
+    html += objCondos.insertTableColumnsNew('', rowNumber);
     html += "</tr>";
 
-    // show buttons
-    //html += "<tr>";
-    // Show menu
-    //rowNumber++;
-    //html += objCondos.menuNew(rowNumber);
-
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber, '');
+    html += objCondos.insertTableColumnsNew('', rowNumber);
 
     html += objCondos.showButtonNew('width:170px;', 'delete', 'Slett');
     html += objCondos.showButtonNew('width:170px;', 'insert', 'Ny');
     html += "</tr>";
 
     // Show the rest of the menu
+    rowNumber++;
     html += objCondos.showRestMenuNew(rowNumber);
 
     // The end of the table
