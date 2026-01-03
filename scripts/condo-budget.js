@@ -181,7 +181,7 @@ async function updateBudgetsRow(budgetId) {
   // text
   className = `.text${budgetId}`;
   let text = document.querySelector(`${className}`).value;
-  let validText = objBudgets.validateTextNew(text, 0, 45);
+  let validText = objBudgets.validateText(text, 0, 45);
 
   // Validate budgets columns
   if (validAccountId && validAmount && validAmount && validYear && validText) {
@@ -231,8 +231,6 @@ function showHeader() {
   // show main header
   html += objBudgets.showTableHeaderNew('width:200px;', 'Budsjett');
 
-  //html += objBudgets.insertEmptyTableRowNew(0,'');
-
   // The end of the table
   html += objBudgets.endTableNew();
   document.querySelector('.header').innerHTML = html;
@@ -262,7 +260,6 @@ function showFilter() {
 
   html += "</tr>";
 
-  //html += objBudgets.insertEmptyTableRowNew(0, '');
   // insert table columns in start of a row
   html += objBudgets.insertTableColumnsNew('', 0, '');
 
@@ -290,7 +287,7 @@ function showResult(rowNumber) {
     //html += '<tr>';
 
     // Show menu
-    //html += objBudgets.menuNew(rowNumber);
+    //html += objBudgets.showMenu(rowNumber);
     rowNumber++;
     html += objBudgets.insertTableColumnsNew('', rowNumber, '');
 
@@ -309,7 +306,7 @@ function showResult(rowNumber) {
     // due amount
     const amount = formatOreToKroner(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += objBudgets.inputTableColumnNew(className, amount, 10);
+    html += objBudgets.inputTableColumn(className, amount, 10);
 
     // Year
     const year = Number(budget.year);
@@ -319,7 +316,7 @@ function showResult(rowNumber) {
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += objBudgets.inputTableColumnNew(className, text, 45);
+    html += objBudgets.inputTableColumn(className, text, 45);
 
     html += "</tr>";
 
@@ -332,9 +329,9 @@ function showResult(rowNumber) {
 
   // Show menu
   rowNumber++;
-  //html += objBudgets.menuNew(rowNumber);
+  //html += objBudgets.showMenu(rowNumber);
   // insert table columns in start of a row
-  html += objAccounts.insertTableColumnsNew('', rowNumber, '','Nytt budsjett');
+  html += objAccounts.insertTableColumnsNew('', rowNumber, '', 'Nytt budsjett');
   //html += "<td class='bold'>Nytt budsjett</td>";
 
   // accounts
@@ -343,7 +340,7 @@ function showResult(rowNumber) {
 
   // budget amount
   const amount = "";
-  html += objBudgets.inputTableColumnNew('amount0', amount, 10);
+  html += objBudgets.inputTableColumn('amount0', amount, 10);
 
   // Year
   const year = Number(document.querySelector('.filterYear').value);
@@ -353,7 +350,7 @@ function showResult(rowNumber) {
   // text
   const text = "";
   className = `text0`;
-  html += objBudgets.inputTableColumnNew(className, text, 45);
+  html += objBudgets.inputTableColumn(className, text, 45);
 
   html += "</tr>";
 
@@ -365,7 +362,7 @@ function showResult(rowNumber) {
 
   // Show the rest of the menu
   rowNumber++;
-  html += objBudgets.showRestMenuNew(rowNumber);
+  html += objBudgets.showRestMenu(rowNumber);
 
   // The end of the table
   html += objBudgets.endTableNew();

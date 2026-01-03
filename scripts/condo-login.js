@@ -14,10 +14,13 @@ async function main() {
 
   const condominiumId = 999999999;
   const resident = 'Y';
-  await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+  await objUsers.loadUsersTable(condominiumId, resident);
 
-  // Show leading text
-  showLeadingText();
+  // Show header
+  showHeader();
+
+  // Show supplier
+  showResult();
 
   // Events
   events();
@@ -26,14 +29,13 @@ async function main() {
 // Events for users
 function events() {
 
-  console.log('createEvents');
-
+  /*
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-link')) {
 
       // validate password
-      const email = document.querySelector('.input-email').value;
-      const password = document.querySelector('.input-password').value;
+      const email = document.querySelector('.email').value;
+      const password = document.querySelector('.password').value;
 
       // Security level
       const userRowNumber = objUsers.arrayUsers.findIndex(userRow => userRow.email === email);
@@ -73,30 +75,86 @@ function events() {
       }
     }
   });
-}
-
-// Show leading text for login
-function showLeadingText() {
-
-  // email
-  // Show leading text forinput
-  objUsers.showLeadingTextInput('email', 'E-mail(Bruker)', 50, '💁 Bruker');
-
-  // password
-  objUsers.showLeadingTextInput('password', 'Passord', 50, '🔑 Passord');
-
-  // login button
-  objLogIn.showPageButton('program', 'program');
+  */
 }
 
 // reset values
 function resetValues() {
 
   // user
-  document.querySelector('.input-email').value = '';
+  document.querySelector('.email').value = '';
 
   // password
-  document.querySelector('.input-password').value = '';
+  document.querySelector('.password').value = '';
 
   sessionStorage.removeItem("user");
+}
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objLogIn.startTableNew('width:250px;margin: 0 auto;');
+
+  // show main header
+  html += objLogIn.showTableHeaderNew('width:250px;', 'LogIn');
+
+  // The end of the table
+  html += objLogIn.endTableNew();
+  document.querySelector('.header').innerHTML = html;
+}
+
+// Show result
+function showResult() {
+
+  // start table
+  let html = objLogIn.startTableNew('width:250px;margin: 0 auto;');
+
+  // table header
+  html += objLogIn.showTableHeaderNew('width:250px;', '', '', '');
+
+  // Header for value including menu
+  html += objLogIn.showHTMLTableHeaderNew("width:250px;", 0, 'Email');
+
+  // insert table columns in start of a row
+  html += objLogIn.insertTableColumnsNew('margin: 0 auto;', 0);
+
+  // email
+  html += objLogIn.inputTableColumn('email', '', 45);
+
+  html += "</tr>";
+
+  // password
+  html += "<tr>";
+  html += objLogIn.showHTMLTableHeaderNew("width:250px;", 0, 'Passord');
+
+  // insert table columns in start of a row
+  html += objLogIn.insertTableColumnsNew('', 0);
+
+  // password
+  password = '';
+  html += objLogIn.inputTableColumn('street', password, 45);
+
+  html += "</tr>";
+
+  // insert table columns in start of a row
+  html += objLogIn.insertTableColumnsNew('', 0, '');
+
+  html += "</tr>";
+
+      // insert table columns in start of a row
+    html += objLogIn.insertTableColumnsNew('', 0);
+
+    // Show buttons
+    html += objLogIn.showButtonNew('width:170px;', 'LogIn', 'LogIn');
+    html += "</tr>";
+
+  // insert table columns in start of a row
+  html += objLogIn.insertTableColumnsNew('', 0, '');
+
+  html += "</tr>";
+
+  // The end of the table
+  html += objLogIn.endTableNew();
+  document.querySelector('.result').innerHTML = html;
 }

@@ -138,11 +138,6 @@ function showHeader() {
   // show main header
   html += objOverview.showTableHeaderNew('width:250px;', 'Betalingsoversikt');
 
-  //html += objOverview.insertEmptyTableRowNew(0,'');
-
-  // The end of the table header
-  //html += objOverview.endTableHeaderNew();
-
   // The end of the table
   html += objOverview.endTableNew();
   document.querySelector('.header').innerHTML = html;
@@ -171,16 +166,15 @@ function showFilter() {
   // from date
   const year = String(today.getFullYear());
   let fromDate = "01.01." + year;
-  html += objOverview.inputTableColumnNew('filterFromDate', fromDate, 10);
+  html += objOverview.inputTableColumn('filterFromDate', fromDate, 10);
 
   // to date
   let toDate = getCurrentDate();
-  html += objOverview.inputTableColumnNew('filterToDate', toDate, 10);
+  html += objOverview.inputTableColumn('filterToDate', toDate, 10);
 
   html += "</tr>";
 
-  //html += objOverview.insertEmptyTableRowNew(0, '');
-  // insert table columns in start of a row
+   // insert table columns in start of a row
   html += objOverview.insertTableColumnsNew('', 0, '');
 
   // end table body
@@ -209,7 +203,7 @@ function showDues(rowNumber) {
 
     // Show menu
     //rowNumber++;
-    //html += objDues.menuNew(rowNumber);
+    //html += objDues.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
@@ -222,17 +216,17 @@ function showDues(rowNumber) {
     // date
     const date = formatToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objOverview.inputTableColumnNew(className, date, 10);
+    html += objOverview.inputTableColumn(className, date, 10);
 
     // amount
     const amount = formatOreToKroner(due.amount);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableColumnNew(className, amount, 10);
+    html += objOverview.inputTableColumn(className, amount, 10);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objOverview.inputTableColumnNew(className, text, 45);
+    html += objOverview.inputTableColumn(className, text, 45);
 
     html += "</tr>";
 
@@ -281,7 +275,7 @@ function showBankAccountTransactions(rowNumber) {
 
     // Show menu
     //rowNumber++;
-    //html += objDues.menuNew(rowNumber);
+    //html += objDues.showMenu(rowNumber);
     // insert table columns in start of a row
     rowNumber++;
     html += objDues.insertTableColumnsNew('', rowNumber);
@@ -293,17 +287,17 @@ function showBankAccountTransactions(rowNumber) {
     // date
     const date = formatToNorDate(bankAccountTransaction.date);
     className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumnNew(className, date, 10);
+    html += objBankAccountTransactions.inputTableColumn(className, date, 10);
 
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumnNew(className, income, 10);
+    html += objBankAccountTransactions.inputTableColumn(className, income, 10);
 
     // Text
     const text = bankAccountTransaction.text;
     className = `text${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumnNew(className, text, 45);
+    html += objBankAccountTransactions.inputTableColumn(className, text, 45);
 
     html += "</tr>";
 
@@ -322,7 +316,7 @@ function showBankAccountTransactions(rowNumber) {
 
   // Show menu
   //rowNumber++;
-  //html += objDues.menuNew(rowNumber);
+  //html += objDues.showMenu(rowNumber);
 
   // text sum
   //html += "<td class='center bold'>Sum</td>";
@@ -383,7 +377,7 @@ function showHowMuchToPay(rowNumber) {
 
   // Show the rest of the menu
   rowNumber++;
-  html += objOverview.showRestMenuNew(rowNumber);
+  html += objOverview.showRestMenu(rowNumber);
 
   // The end of the table
   html += objOverview.endTableNew();

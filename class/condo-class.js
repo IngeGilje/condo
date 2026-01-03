@@ -1,6 +1,11 @@
 // class for all applications for the condominium system
 class Condos {
 
+  constructor(applicationName) {
+
+    this.applicationName = applicationName;
+  }
+
   // serverStatus = 1; // Web server
   // serverStatus = 2; // Test web server/ local web server
   // serverStatus = 3; // Test server/ local test server
@@ -73,7 +78,7 @@ class Condos {
     {
       applicationName: "condo-importfile.html",
       className: "Menu13",
-      text: "Importer banktransaksjoner"
+      text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
@@ -81,11 +86,6 @@ class Condos {
       text: "Årsregnskap"
     },
   ];
-
-  constructor(applicationName) {
-
-    this.applicationName = applicationName;
-  }
 
   // Validate application name
   set applicationName(validatedApplicationName) {
@@ -163,7 +163,7 @@ class Condos {
   }
 
   // Show input
-  inputTableColumnNew(className, value, maxlength) {
+  inputTableColumn(className, value, maxlength) {
 
     let html =
       `
@@ -343,7 +343,7 @@ class Condos {
   }
 
   // Valid text
-  validateTextNew(tekst, minLenght, maxLength) {
+  validateText(tekst, minLenght, maxLength) {
 
     // Check for string
     if (typeof tekst !== "string") return false;
@@ -355,112 +355,6 @@ class Condos {
     const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
     return (regex.test(tekst)) ? true : false;
   }
-
-  /*
-  // Validate postal code
-  validatePostalCode(postalCode, className, labelText) {
-
-    let isValidPostalCode = false;
-
-    // Check valid postal code
-    const norwegianPostalCodePattern = /^[0-9]{4}$/;
-    if (!(norwegianPostalCodePattern.test(postalCode))) {
-
-      // Invalid postal code
-      if (isClassDefined(className)) {
-
-        document.querySelector(`.${className}`).outerHTML =
-          `<div class="${className}-red">
-              * Ugyldig ${labelText}
-            </div>`;
-      }
-      isValidPostalCode = false;
-    } else {
-
-      // Valid valid postal code
-      if (isClassDefined(`${className}-red`)) {
-
-        document.querySelector(`.${className}-red`).outerHTML =
-          `<div class="className">
-              * ${labelText}
-            </div>`;
-      }
-      isValidPostalCode = true;
-    }
-    return isValidPostalCode;
-  }
-  */
-
-  /*
-  // Validate E-mail
-  validateEmail(eMail, className, labelText) {
-
-    let isValideMail = false;
-
-    // Validate eMail
-    const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!(eMailRegex.test(eMail))) {
-
-      // Invalid eMail
-      if (isClassDefined(className)) {
-
-        document.querySelector(`.${className}`).outerHTML =
-          `
-            <div class="${className}-red">
-              * Ugyldig ${labelText}
-            </div>
-          `;
-      }
-      isValideMail = false;
-    } else {
-
-      // Valid valid eMail
-      if (isClassDefined(`${className}-red`)) {
-
-        document.querySelector(`.${className}-red`).outerHTML =
-          ` <div class="${className}">
-              * ${labelText}
-            </div>
-          `;
-      }
-      isValideMail = true;
-    }
-    return isValideMail;
-  }
-  *
-
-  /*
-  // validate bank account 
-  validateBankAccount(bankAccount, className, labelText) {
-
-    // Validate Bank Account
-    const bankAccountPattern = /^\d{11}$/;
-    if (!(bankAccountPattern.test(bankAccount))) {
-
-      // Invalid bank account
-      if (isClassDefined(`${className}`)) {
-
-        document.querySelector(`.${className}`).outerHTML =
-          ` <div class="${className}-red">
-              * Ugyldig ${labelText}
-            </div>
-          `;
-      }
-      return false;
-    } else {
-
-      // Valid valid bank account 
-      if (isClassDefined(`label-${className}-red`)) {
-
-        document.querySelector(`.label-${className}-red`).outerHTML =
-          `<div class="label-${className} label-${className}">
-            * ${labelText}
-          </div>`;
-      }
-      return true;
-    }
-  }
-  */
 
   // validate bank account 
   validateBankAccountNew(bankAccount) {
@@ -667,32 +561,6 @@ class Condos {
     return html;
   }
 
-  // show button to start new page
-  showPageButton(appName, className) {
-
-    document.querySelector(`.div-${className}`).innerHTML =
-      `
-        <a
-          class="button-link"
-        >
-          Login
-        </a>
-      `;
-  }
-
-  // show button to start new page
-  showPageButtonNew() {
-
-    html =
-      `
-        <a
-          class="button-link"
-        >
-          Login
-        </a>
-      `;
-  }
-
   // Validate user
   validateUser(email, password) {
 
@@ -710,7 +578,7 @@ class Condos {
     return validUser;
   }
 
-  menuNew(menuNumber) {
+  showMenu(menuNumber) {
 
     let html = "";
 
@@ -745,18 +613,10 @@ class Condos {
       const text = this.arrayMenu[menuNumber - 1].text;
       const className = this.arrayMenu[menuNumber - 1].className;
 
-      html +=
-        `
-          <td class="one-line menu">
-            <a 
-              href="${url}${applicationName}"
-            >
-              ${text}
-            </a>
-          </td>
-        `;
+      html += `<td class="one-line menu"><a href="${url}${applicationName}">${text}</a></td>`;
     } else {
 
+      // Do not show menu
       html += "<td> </td>";
     }
 
@@ -1266,7 +1126,7 @@ class Condos {
 
     let html = "<tr>";
 
-    if (menuNumber > 0) html += this.menuNew(menuNumber);
+    if (menuNumber > 0) html += this.showMenu(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1312,7 +1172,7 @@ class Condos {
   }
 
   // Show the rest of the menu
-  showRestMenuNew(rowNumber) {
+  showRestMenu(rowNumber) {
 
     let html = "";
     for (; this.arrayMenu.length >= rowNumber; rowNumber++) {
@@ -1320,7 +1180,7 @@ class Condos {
       html += "<tr>";
 
       // Show menu
-      html += this.menuNew(rowNumber);
+      html += this.showMenu(rowNumber);
       html += "</tr>"
     }
 
@@ -1408,7 +1268,7 @@ class Condos {
 
     let html = "<tr>";
 
-    if (menuNumber > 0) html += this.menuNew(menuNumber);
+    if (menuNumber > 0) html += this.showMenu(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1464,7 +1324,7 @@ class Condos {
 
     let html = "<tr>";
 
-    if (menuNumber > 0) html += this.menuNew(menuNumber);
+    if (menuNumber > 0) html += this.showMenu(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1487,113 +1347,33 @@ class Condos {
     return `</table>`;
   }
 
-  /* Does not work
-  // Show all selected users
-  showSelectedRowsNew(className, style, arrayName, columnName, id, selectAll, selectNone) {
+  showHorizontalMenu(style) {
 
-    let selectedValue = false;
+    let html = "";
 
-    let html =
-      `
-        <td
-          class="center one-line"
-        >
-          <select 
-            class="${className} center"
-      `;
-    if (style) html += `style="${style}"`;
-    html += `>`;
+    const url = (this.serverStatus === 1) ? "http://ingegilje.no/" : "http://localhost/";
 
-    // Check if user array is empty
-    const numberOfRows = arrayName.length;
-    if (numberOfRows > 0) {
-      arrayName.forEach((array) => {
-        if (array.columnName === id) {
+    // Show horizontal menu
+    this.arrayMenu.forEach((menu) => {
 
-          html +=
-            `
-              <option 
-                value=${array.id}
-                selected
-              >
-                ${arrayName.columnName}
-              </option>
-            `;
-          selectedValue = true;
-        } else {
-
-          html +=
-            `
-              <option 
-                value="${array.id}">
-                ${array.columnName}
-              </option>
-            `;
-        }
-      });
-    } else {
-
+      if (style) {
       html +=
-        `
-          <option value="0" 
-            selected
-          >
-            Ingen leilighet
-          </option>
-        `;
-      selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (numberOfRows > 1)) {
-
-      html +=
-        `
-          <option 
-            value=999999999
-            selected
-          >
-            ${selectAll}
-          </option>
-        `;
-      selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (numberOfRows > 1)) {
-      if (selectedValue) {
-        html +=
-          `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
+        `<td class="one-line menu ${menu.className}">
+          <a href="${url}${menu.applicationName}" style="display: inline; style="${style}">
+            ${menu.text}
+          </a>
+        </td>`;
       } else {
-
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
-        selectedValue = true;
+                `<td class="one-line menu ${menu.className}">
+          <a href="${url}${menu.applicationName}" style="display: inline;>
+            ${menu.text}
+          </a>
+        </td>`;
       }
-    }
-
-    html +=
-      `
-          </select >
-        </td>
-      `;
+    });
 
     return html;
   }
-  */
 }
 
 // Check if string includes only digits

@@ -184,10 +184,6 @@ function showResult(rowNumber) {
 
   objDues.arrayDues.forEach((due) => {
 
-    // Show menu
-    //rowNumber++;
-    //html += objDues.menuNew(rowNumber);
-
     // insert table columns in start of a row
     rowNumber++;
     html += objCondominiums.insertTableColumnsNew('', rowNumber)
@@ -207,7 +203,7 @@ function showResult(rowNumber) {
     // Date
     const date = formatToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objDues.inputTableColumnNew(className, date, 10);
+    html += objDues.inputTableColumn(className, date, 10);
 
     // accounts
     className = `accountId${due.dueId}`;
@@ -216,12 +212,12 @@ function showResult(rowNumber) {
     // due amount
     const amount = formatOreToKroner(due.amount);
     className = `amount${due.dueId}`;
-    html += objDues.inputTableColumnNew(className, amount, 10);
+    html += objDues.inputTableColumn(className, amount, 10);
 
     // text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objDues.inputTableColumnNew(className, text, 45);
+    html += objDues.inputTableColumn(className, text, 45);
 
     html += "</tr>";
 
@@ -242,7 +238,7 @@ function showResult(rowNumber) {
 
   // Show the rest of the menu
   rowNumber++;
-  html += objDues.showRestMenuNew(rowNumber);
+  html += objDues.showRestMenu(rowNumber);
 
   // The end of the table
   html += objDues.endTableNew();
@@ -256,32 +252,26 @@ function insertEmptyTableRow(rowNumber) {
 
   let html = "";
 
-  // Show menu
-  //html += objDues.menuNew(rowNumber);
-
   // insert table columns in start of a row
   rowNumber++;
   html += objCondominiums.insertTableColumnsNew('', rowNumber, 'Nytt forfall');
 
-  // delete
-  //html += "<td class='center bold'>Nytt forfall</td>";
-
-  // condoId
+   // condoId
   const condoId = Number(document.querySelector('.filterCondoId').value);
   html += objCondos.showSelectedCondosNew("condoId0", 'width:100px;', condoId, '', '');
 
   // Date
-  html += objDues.inputTableColumnNew("date0", "", 10);
+  html += objDues.inputTableColumn("date0", "", 10);
 
   // accountId
   const accountId = Number(document.querySelector('.filterAccountId').value);
   html += objAccounts.showSelectedAccountsNew("accountId0", '', accountId, '', '');
 
   // due amount
-  html += objDues.inputTableColumnNew('amount0', "", 10);
+  html += objDues.inputTableColumn('amount0', "", 10);
 
   // text
-  html += objDues.inputTableColumnNew('text0', "", 45);
+  html += objDues.inputTableColumn('text0', "", 45);
 
   html += "</tr>";
   return html;
@@ -339,7 +329,7 @@ async function updateDuesRow(dueId) {
 
   className = `.text${dueId}`;
   const text = document.querySelector(className).value;
-  const validText = objDues.validateTextNew(text, 3, 45);
+  const validText = objDues.validateText(text, 3, 45);
 
   // Validate dues columns
   if (validAccountId && validCondoId && validAmount && validDate && validText) {
@@ -414,7 +404,7 @@ function showFilter() {
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
-  html += objDues.inputTableColumnNew('filterFromDate', fromDate, 10);
+  html += objDues.inputTableColumn('filterFromDate', fromDate, 10);
 
   // Current date
   let toDate = getCurrentDate();
@@ -422,12 +412,11 @@ function showFilter() {
   // Next year
   toDate = Number(convertDateToISOFormat(toDate)) + 10000;
   toDate = formatToNorDate(toDate);
-  html += objDues.inputTableColumnNew('filterToDate', toDate, 10);
+  html += objDues.inputTableColumn('filterToDate', toDate, 10);
 
   html += "</tr>";
 
-  //html += objDues.insertEmptyTableRowNew(0, '');
-  // insert table columns in start of a row
+   // insert table columns in start of a row
   html += objDues.insertTableColumnsNew('', 0, '')
 
   // end table body

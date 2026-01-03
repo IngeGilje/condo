@@ -552,11 +552,6 @@ function showHeader() {
   // show main header
   html += objUsers.showTableHeaderNew('width:250px;', 'Bruker');
 
-  //html += objUsers.insertEmptyTableRowNew(0,'');
-
-  // The end of the table header
-  //html += objUsers.endTableHeaderNew();
-
   // The end of the table
   html += objUsers.endTableNew();
   document.querySelector('.header').innerHTML = html;
@@ -582,8 +577,7 @@ function showFilter(userId) {
 
   html += "</tr>";
 
-  //html += objUsers.insertEmptyTableRowNew(0,'');
-  // insert table columns in start of a row
+   // insert table columns in start of a row
   html += objUsers.insertTableColumnsNew('', 0, '');
 
   // end table body
@@ -621,14 +615,14 @@ function showResult(userId, rowNumber) {
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.menuNew(rowNumber);
+    //html += objUsers.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
     html += objUsers.insertTableColumnsNew('', rowNumber);
 
     // email
-    html += objUsers.inputTableColumnNew('email', objUsers.arrayUsers[userRowNumber].email, 45);
+    html += objUsers.inputTableColumn('email', objUsers.arrayUsers[userRowNumber].email, 45);
 
     // condoId
     html += objCondos.showSelectedCondosNew('condoId', "width:170px;", objUsers.arrayUsers[userRowNumber].condoId, '', '');
@@ -643,17 +637,17 @@ function showResult(userId, rowNumber) {
     // firstName, lastName
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.menuNew(rowNumber);
+    //html += objUsers.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
     html += objUsers.insertTableColumnsNew('', rowNumber);
 
     // firstName
-    html += objUsers.inputTableColumnNew('firstName', objUsers.arrayUsers[userRowNumber].firstName, 45);
+    html += objUsers.inputTableColumn('firstName', objUsers.arrayUsers[userRowNumber].firstName, 45);
 
     // lastName
-    html += objUsers.inputTableColumnNew('lastName', objUsers.arrayUsers[userRowNumber].lastName, 45);
+    html += objUsers.inputTableColumn('lastName', objUsers.arrayUsers[userRowNumber].lastName, 45);
 
     html += "</tr>";
 
@@ -665,14 +659,14 @@ function showResult(userId, rowNumber) {
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.menuNew(rowNumber);
+    //html += objUsers.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
     html += objUsers.insertTableColumnsNew('', rowNumber);
 
     // password
-    html += objUsers.inputTableColumnNew('password', objUsers.arrayUsers[userRowNumber].password, 45);
+    html += objUsers.inputTableColumn('password', objUsers.arrayUsers[userRowNumber].password, 45);
 
     // securityLevel
     html += objUsers.showSelectedNumbersNew('securityLevel', "width:100px;", 1, 9, objUsers.arrayUsers[userRowNumber].securityNumber);
@@ -687,14 +681,14 @@ function showResult(userId, rowNumber) {
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.menuNew(rowNumber);
+    //html += objUsers.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
     html += objUsers.insertTableColumnsNew('', rowNumber);
 
     // phone
-    html += objUsers.inputTableColumnNew('phone', objUsers.arrayUsers[userRowNumber].phone, 15);
+    html += objUsers.inputTableColumn('phone', objUsers.arrayUsers[userRowNumber].phone, 15);
 
     // Activ user
     html += objUsers.showYesNo('resident', objUsers.arrayUsers[userRowNumber].resident);
@@ -704,7 +698,7 @@ function showResult(userId, rowNumber) {
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.menuNew(rowNumber);
+    //html += objUsers.showMenu(rowNumber);
     // insert table columns in start of a row
     rowNumber++;
     html += objUsers.insertTableColumnsNew('', rowNumber);
@@ -715,7 +709,7 @@ function showResult(userId, rowNumber) {
     //html += "<tr>";
     // Show menu
     //rowNumber++;
-    //html += objUsers.menuNew(rowNumber);
+    //html += objUsers.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
@@ -728,7 +722,7 @@ function showResult(userId, rowNumber) {
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.menuNew(rowNumber);
+    //html += objUsers.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
@@ -740,7 +734,7 @@ function showResult(userId, rowNumber) {
     //html += "<tr>";
     // Show menu
     //rowNumber++;
-    //html += objUsers.menuNew(rowNumber);
+    //html += objUsers.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
@@ -752,7 +746,7 @@ function showResult(userId, rowNumber) {
 
     // Show the rest of the menu
     rowNumber++;
-    html += objUsers.showRestMenuNew(rowNumber);
+    html += objUsers.showRestMenu(rowNumber);
 
     // The end of the table
     html += objUsers.endTableNew();
@@ -789,11 +783,11 @@ async function updateUserRow(userId) {
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
-  const validFirstName = objUsers.validateTextNew(firstName, 3, 50);
+  const validFirstName = objUsers.validateText(firstName, 3, 50);
 
   // validate lastName
   const lastName = document.querySelector('.lastName').value;
-  const validLastName = objUsers.validateTextNew(lastName, 3, 50);
+  const validLastName = objUsers.validateText(lastName, 3, 50);
 
   // validate phone
   const phone = document.querySelector('.phone').value;

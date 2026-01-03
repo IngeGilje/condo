@@ -173,8 +173,6 @@ function showHeader() {
   // show main header
   html += objAccounts.showTableHeaderNew('width:250px;', 'Konto');
 
-  //html += objAccounts.insertEmptyTableRowNew(0,'');
-
   // The end of the table header
   html += objAccounts.endTableHeaderNew();
 
@@ -203,7 +201,6 @@ function showFilter() {
 
   html += "</tr>";
 
-  //html += objAccounts.insertEmptyTableRowNew(0,'');
   // insert table columns in start of a row
   html += objAccounts.insertTableColumnsNew('', 0, '');
 
@@ -221,7 +218,7 @@ function insertEmptyTableRow(rowNumber) {
   let html = "";
 
   // Show menu
-  //html += objAccounts.menuNew(rowNumber);
+  //html += objAccounts.showMenu(rowNumber);
   // insert table columns in start of a row
   html += objAccounts.insertTableColumnsNew('', rowNumber);
 
@@ -232,7 +229,7 @@ function insertEmptyTableRow(rowNumber) {
   html += objAccounts.showSelectedValuesNew('fixedCost0', '', constFixedCost, constFixedCost, constVariableCost);
 
   // name
-  html += objAccounts.inputTableColumnNew('name0', "", 45);
+  html += objAccounts.inputTableColumn('name0', "", 45);
 
   html += "</tr>";
   return html;
@@ -261,7 +258,7 @@ function showResult(rowNumber) {
 
     // Show menu
     rowNumber++;
-    //html += objAccounts.menuNew(rowNumber);
+    //html += objAccounts.showMenu(rowNumber);
     html += objAccounts.insertTableColumnsNew('', rowNumber);
 
     // Delete
@@ -298,7 +295,7 @@ function showResult(rowNumber) {
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccounts.inputTableColumnNew(className, name, 45);
+    html += objAccounts.inputTableColumn(className, name, 45);
 
     html += "</tr>";
   });
@@ -311,7 +308,7 @@ function showResult(rowNumber) {
 
   // Show the rest of the menu
   rowNumber++;
-  html += objAccounts.showRestMenuNew(rowNumber);
+  html += objAccounts.showRestMenu(rowNumber);
 
   // The end of the table
   html += objAccounts.endTableNew();
@@ -349,7 +346,7 @@ async function updateAccountsRow(accountId) {
   // name
   className = `.name${bankAccountTransactionId}`;
   const name = document.querySelector(className).value;
-  const validName = objBankAccountTransactions.validateTextNew(name, 3, 50);
+  const validName = objBankAccountTransactions.validateText(name, 3, 50);
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;

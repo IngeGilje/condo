@@ -459,11 +459,6 @@ function showHeader() {
   // show main header
   html += objImportFile.showTableHeaderNew('width:250px;', 'Import av bankkontotransaksjoner');
 
-  //html += objImportFile.insertEmptyTableRowNew(0,'');
-
-  // The end of the table header
-  //html += objImportFile.endTableHeaderNew();
-
   // The end of the table
   html += objImportFile.endTableNew();
   document.querySelector('.header').innerHTML = html;
@@ -520,40 +515,40 @@ function showResult(rowNumber) {
 
     // Show menu
     //rowNumber++;
-    //html += objImportFile.menuNew(rowNumber);
+    //html += objImportFile.showMenu(rowNumber);
     // insert table columns in start of a row
     rowNumber++;
     html += objImportFile.insertTableColumnsNew('', rowNumber, '');
 
     // Date
     let className = `accountingDate${rowNumber}`;
-    html += objImportFile.inputTableColumnNew(className, transaction.accountingDate, 10);
+    html += objImportFile.inputTableColumn(className, transaction.accountingDate, 10);
 
     // Condo name
     className = `accountName${rowNumber}`;
-    html += objImportFile.inputTableColumnNew(className, transaction.accountName, 45);
+    html += objImportFile.inputTableColumn(className, transaction.accountName, 45);
 
     // fromBankAccountName
     className = `fromBankAccountName${rowNumber}`;
-    html += objImportFile.inputTableColumnNew(className, transaction.fromBankAccountName, 45);
+    html += objImportFile.inputTableColumn(className, transaction.fromBankAccountName, 45);
 
     // toBankAccountName
     className = `toBankAccountName${rowNumber}`;
-    html += objImportFile.inputTableColumnNew(className, transaction.toBankAccountName, 45);
+    html += objImportFile.inputTableColumn(className, transaction.toBankAccountName, 45);
 
     // Income
     const income = formatOreToKroner(transaction.income);
     className = `income${rowNumber}`;
-    html += objImportFile.inputTableColumnNew(className, income, 10);
+    html += objImportFile.inputTableColumn(className, income, 10);
 
     // Payment
     const payment = formatOreToKroner(transaction.payment);
     className = `payment${rowNumber}`;
-    html += objImportFile.inputTableColumnNew(className, payment, 10);
+    html += objImportFile.inputTableColumn(className, payment, 10);
 
     // Text
     className = `payment${rowNumber}`;
-    html += objImportFile.inputTableColumnNew(className, transaction.text, 10);
+    html += objImportFile.inputTableColumn(className, transaction.text, 10);
 
     // Accomulate
 
@@ -580,7 +575,7 @@ function showResult(rowNumber) {
 
   // Show menu
   //rowNumber++;
-  //html += objImportFile.menuNew(rowNumber);
+  //html += objImportFile.showMenu(rowNumber);
 
   // insert table columns in start of a row
   rowNumber++;
@@ -591,7 +586,7 @@ function showResult(rowNumber) {
 
   // Show the rest of the menu
   rowNumber++;
-  html += objImportFile.showRestMenuNew(rowNumber);
+  html += objImportFile.showRestMenu(rowNumber);
 
   // The end of the table
   html += objImportFile.endTableNew();

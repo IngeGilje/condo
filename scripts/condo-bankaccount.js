@@ -347,11 +347,6 @@ function showHeader() {
   // show main header
   html += objBankAccounts.showTableHeaderNew('width:250px;', 'Bankkonto sameie');
 
-  //html += objBankAccounts.insertEmptyTableRowNew(0,'');
-
-  // The end of the table header
-  //html += objBankAccounts.endTableHeaderNew();
-
   // The end of the table
   html += objBankAccounts.endTableNew();
   document.querySelector('.header').innerHTML = html;
@@ -386,13 +381,13 @@ function showResult(bankAccountId, rowNumber) {
 
     // Show menu
     rowNumber++;
-    html += objBankAccounts.menuNew(rowNumber);
+    html += objBankAccounts.showMenu(rowNumber);
 
     // name
-    html += objBankAccounts.inputTableColumnNew('name', objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name, 45);
+    html += objBankAccounts.inputTableColumn('name', objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name, 45);
 
     // account number
-    html += objBankAccounts.inputTableColumnNew('bankAccount', objBankAccounts.arrayBankAccounts[bankAccountRowNumber].bankAccount, 11);
+    html += objBankAccounts.inputTableColumn('bankAccount', objBankAccounts.arrayBankAccounts[bankAccountRowNumber].bankAccount, 11);
 
     html += "</tr>";
 
@@ -403,7 +398,7 @@ function showResult(bankAccountId, rowNumber) {
     //html += "<tr>";
 
     //rowNumber++;
-    //html += objBankAccounts.menuNew(rowNumber);
+    //html += objBankAccounts.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
@@ -411,11 +406,11 @@ function showResult(bankAccountId, rowNumber) {
 
     // opening balance date
     const openingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalanceDate);
-    html += objBankAccounts.inputTableColumnNew('openingBalanceDate', openingBalanceDate, 10);
+    html += objBankAccounts.inputTableColumn('openingBalanceDate', openingBalanceDate, 10);
 
     // opening balance
     const openingBalance = formatOreToKroner(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].openingBalance);
-    html += objBankAccounts.inputTableColumnNew('openingBalance', openingBalance, 11);
+    html += objBankAccounts.inputTableColumn('openingBalance', openingBalance, 11);
 
     html += "</tr>";
 
@@ -428,7 +423,7 @@ function showResult(bankAccountId, rowNumber) {
 
     // Show menu
     //rowNumber++;
-    //html += objBankAccounts.menuNew(rowNumber);
+    //html += objBankAccounts.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
@@ -436,18 +431,18 @@ function showResult(bankAccountId, rowNumber) {
 
     // closing balance date
     const closingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalanceDate);
-    html += objBankAccounts.inputTableColumnNew('closingBalanceDate', closingBalanceDate, 10);
+    html += objBankAccounts.inputTableColumn('closingBalanceDate', closingBalanceDate, 10);
 
     // closing balance
     const closingBalance = formatOreToKroner(objBankAccounts.arrayBankAccounts[bankAccountRowNumber].closingBalance);
-    html += objBankAccounts.inputTableColumnNew('closingBalance', closingBalance, 11);
+    html += objBankAccounts.inputTableColumn('closingBalance', closingBalance, 11);
 
     html += "</tr>";
 
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objBankAccounts.menuNew(rowNumber);
+    //html += objBankAccounts.showMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
@@ -455,24 +450,14 @@ function showResult(bankAccountId, rowNumber) {
 
     html += "</tr>";
 
-    // show buttons
-    //html += "<tr>";
-    // Show menu
-    //rowNumber++;
-    //html += objBankAccounts.menuNew(rowNumber);
-
     // insert table columns in start of a row
     rowNumber++;
     html += objBankAccounts.insertTableColumnsNew('', rowNumber);
 
+    // Show buttons
     html += objBankAccounts.showButtonNew('width:170px;', 'update', 'Oppdater');
     html += objBankAccounts.showButtonNew('width:170px;', 'cancel', 'Angre');
     html += "</tr>";
-
-    // Show menu
-    //html += "<tr>";
-    //rowNumber++;
-    //html += objBankAccounts.menuNew(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
@@ -484,7 +469,7 @@ function showResult(bankAccountId, rowNumber) {
     html += "<tr>";
     // Show menu
     rowNumber++;
-    html += objBankAccounts.menuNew(rowNumber);
+    html += objBankAccounts.showMenu(rowNumber);
 
     html += objBankAccounts.showButtonNew('width:170px;', 'delete', 'Slett');
     html += objBankAccounts.showButtonNew('width:170px;', 'insert', 'Ny');
@@ -492,7 +477,7 @@ function showResult(bankAccountId, rowNumber) {
 
     // Show the rest of the menu
     rowNumber++;
-    html += objBankAccounts.showRestMenuNew(rowNumber);
+    html += objBankAccounts.showRestMenu(rowNumber);
 
     // The end of the table
     html += objBankAccounts.endTableNew();
@@ -515,7 +500,7 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objBankAccounts.validateTextNew(name, 3, 50);
+  const validName = objBankAccounts.validateText(name, 3, 50);
 
   // Opening balance date
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
@@ -632,7 +617,6 @@ function showFilter(condominiumId) {
 
   html += "</tr>";
 
-  //html += objBankAccounts.insertEmptyTableRowNew(0,'');
   // insert table columns in start of a row
   html += objBankAccounts.insertTableColumnsNew('', 0, '');
 

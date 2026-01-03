@@ -111,7 +111,7 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Importer banktransaksjoner",
+      "name": "Importer transaksjoner",
       "url": "http://localhost/condo-importfile.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"

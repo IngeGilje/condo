@@ -226,18 +226,17 @@ function showFilter() {
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
-  html += objBankAccountTransactions.inputTableColumnNew('filterFromDate', fromDate, 10);
+  html += objBankAccountTransactions.inputTableColumn('filterFromDate', fromDate, 10);
 
   // Current date
   let toDate = getCurrentDate();
-  html += objBankAccountTransactions.inputTableColumnNew('filterToDate', toDate, 10);
+  html += objBankAccountTransactions.inputTableColumn('filterToDate', toDate, 10);
 
   // Amount
-  html += objBankAccountTransactions.inputTableColumnNew('filterAmount', '', 10);
+  html += objBankAccountTransactions.inputTableColumn('filterAmount', '', 10);
 
   html += "</tr>";
 
-  //html += objBankAccountTransactions.insertEmptyTableRowNew(0, '');
   // insert table columns in start of a row
   html += objBankAccountTransactions.insertTableColumnsNew('', 0, '');
 
@@ -282,7 +281,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     // text
     className = `.text${bankAccountTransactionId}`;
     const text = document.querySelector(className).value;
-    const validText = objBankAccountTransactions.validateTextNew(text, 3, 255);
+    const validText = objBankAccountTransactions.validateText(text, 3, 255);
 
     // Validate bankAccountTransactions columns
     if (validCondoId && validAccountId && validNumberKWHour && validText) {
@@ -324,11 +323,6 @@ function showHeader() {
 
   // show main header
   html += objBankAccountTransactions.showTableHeaderNew('width:250px;', 'Bankkontotransaksjoner');
-
-  //html += objBankAccounts.insertEmptyTableRowNew(0,'');
-
-  // The end of the table header
-  //html += objBankAccountTransactions.endTableHeaderNew();
 
   // The end of the table
   html += objBankAccountTransactions.endTableNew();
@@ -382,7 +376,7 @@ function showResult(rowNumber) {
 
     // Show menu
     rowNumber++;
-    //html += objBankAccountTransactions.menuNew(rowNumber);
+    //html += objBankAccountTransactions.showMenu(rowNumber);
     html += objAccounts.insertTableColumnsNew('', rowNumber, '');
 
     // Delete
@@ -401,7 +395,7 @@ function showResult(rowNumber) {
     // Date
     const date = formatToNorDate(bankAccountTransaction.date);
     className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumnNew(className, date, 10);
+    html += objBankAccountTransactions.inputTableColumn(className, date, 10);
 
     // accounts
     className = `accountId${bankAccountTransaction.bankAccountTransactionId}`;
@@ -413,22 +407,22 @@ function showResult(rowNumber) {
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumnNew(className, income, 10);
+    html += objBankAccountTransactions.inputTableColumn(className, income, 10);
 
     // payment
     const payment = formatOreToKroner(bankAccountTransaction.payment);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumnNew(className, payment, 10);
+    html += objBankAccountTransactions.inputTableColumn(className, payment, 10);
 
     // KilowattHour
     const numberKWHour = formatOreToKroner(bankAccountTransaction.numberKWHour);
     className = `numberKWHour${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumnNew(className, numberKWHour, 10);
+    html += objBankAccountTransactions.inputTableColumn(className, numberKWHour, 10);
 
     // text
     const text = bankAccountTransaction.text;
     className = `text${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumnNew(className, text, 45);
+    html += objBankAccountTransactions.inputTableColumn(className, text, 45);
 
     html += "</tr>";
 
@@ -448,7 +442,7 @@ function showResult(rowNumber) {
 
   // Show the rest of the menu
   rowNumber++;
-  html += objBankAccountTransactions.showRestMenuNew(rowNumber);
+  html += objBankAccountTransactions.showRestMenu(rowNumber);
 
   // The end of the table
   html += objBankAccountTransactions.endTableNew();

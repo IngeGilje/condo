@@ -1,1255 +1,33 @@
-/* body
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 1rem;
-  background: #f5f5f5;
-}
-*/
-
-/* Define the grid container */
-.div-grid-bankaccounttransactions-search,
-.div-grid-bankaccounttransactions,
-
-/*.div-grid-annualaccount-filter,*/
-.div-grid-annualaccount,
-/*.div-grid-annualaccount-budgets,*/
-/*.div-grid-annualaccount-bankdeposit,*/
-
-.div-grid-userbankaccounts,
-
-.div-grid-suppliers,
-
-.div-grid-importfile,
-
-.div-grid-condos,
-
-.div-grid-user,
-
-.div-grid-bankaccounts,
-
-.div-grid-condominiums,
-
-.div-grid-accounts,
-
-.div-grid-dues-filter,
-.div-grid-dues,
-
-.div-grid-remoteheating-search,
-.div-grid-remoteheating,
-
-.div-grid-budget-search,
-.div-grid-budget,
-
-.div-grid-commoncost-search,
-.div-grid-commoncost,
-
-/*.div-grid-overview-search,*/
-.div-grid-overview {
-  display: grid;
-  gap: 4px;
-  padding: 20px;
-  font-size: 16px;
-  font-stretch: 100%;
-  font-weight: 400;
-}
-
-/* grid container 2 columns */
-.div-grid-userbankaccounts,
-.div-grid-accounts {
-  grid-template-columns: 200px 200px;
-}
-
-/* grid container 3 columns */
-.div-grid-condos,
-.div-grid-budget-search,
-.div-grid-commoncost-search,
-.div-grid-bankaccounts,
-.div-grid-suppliers,
-.div-grid-user,
-.div-grid-condominiums {
-  grid-template-columns: 200px 200px 200px;
-}
-
-/* grid container 4 columns */
-.div-grid-commoncost {
-  grid-template-columns: 200px 200px 150px 150px;
-}
-
-/* Define the grid container with 4 columns
-.div-grid-overview-search {
-  grid-template-columns: 200px 200px 200px 200px;
-}
-*/
-
-/* Define the grid container with 4 columns*/
-.div-grid-remoteheating-search {
-  grid-template-columns: 200px 200px 200px 200px;
-}
-
-/* Define the grid container with 5 columns*/
-.div-grid-budget {
-  grid-template-columns: 200px 200px 75px 200px 100px;
-}
-
-/* Define the grid container with 5 columns*/
-.div-grid-dues-filter {
-  grid-template-columns: 200px 200px 200px 200px 200px;
-}
-
-/* Define the grid container with 5 columns*/
-.div-grid-annualaccount {
-  grid-template-columns: 200px 200px 150px 150px 150px;
-}
-
-/* Define the grid container with 7 columns*/
-.div-grid-bankaccounttransactions-search {
-  grid-template-columns: 200px 200px 200px 200px 200px 200px 200px;
-}
-
-/* Define the grid container with 6 columns*/
-.div-grid-remoteheating {
-  grid-template-columns: 200px 150px 150px 150px 150px 200px;
-}
-
-/* Define the grid container with 8 columns*/
-.div-grid-dues {
-  grid-template-columns: 200px 200px 75px 100px 150px 125px 125px 150px;
-}
-
-/* Define the grid container with 9 columns*/
-.div-grid-overview {
-  grid-template-columns: 200px 100px 100px 100px 150px 100px 100px 100px 150px;
-}
-
-/* Define the grid container with 10 columns*/
-.div-grid-bankaccounttransactions {
-  grid-template-columns: 200px 200px 75px 100px 150px 125px 125px 125px 125px 150px;
-}
-
-/* Define the grid container with 11 columns*/
-.div-grid-importfile {
-  grid-template-columns: 200px 200px 75px 100px 75px 150px 150px 150px 100px 100px 200px;
-}
-
-/* column */
-.grid-column1,
-.grid-column2,
-.grid-column3,
-.grid-column4,
-.grid-column5,
-.grid-column6,
-.grid-column7,
-.grid-column8,
-.grid-column9,
-.grid-column10,
-.grid-column11,
-.grid-column12,
-.grid-column13,
-.grid-column14,
-.grid-column15,
-
-.div-payment-columnIncomeId,
-.div-payment-columnDate,
-.div-payment-columnAmount,
-.div-payment-columnText,
-
-.div-income-columnIncomeId,
-.div-income-columnDate,
-.div-income-columnAmount,
-.div-income-columnText {
-  grid-row-start: 1;
-  grid-row-end: 20;
-  display: block;
-  color: #333;
-  text-decoration: none;
-  padding: 2px;
-}
-
-.grid-column2 {
-  grid-column-start: 2;
-}
-
-/*.div-importfile-columnLineNumber,*/
-.div-income-columnIncomeId,
-.grid-column3 {
-  grid-column-start: 3;
-}
-
-.div-bankaccounttransactions-columnCondoName,
-.div-importfile-columnAccountingDate,
-.div-payment-columnIncomeId,
-.div-income-columnDate,
-.grid-column4 {
-  grid-column-start: 4;
-}
-
-.div-bankaccounttransactions-columnAccountName,
-.div-importfile-columnName,
-.div-payment-columnDate,
-.div-income-columnAmount,
-.grid-column5 {
-  grid-column-start: 5;
-}
-
-.div-importfile-columnAccountName,
-.div-payment-columnAmount,
-.div-income-columnText,
-.grid-column6 {
-  grid-column-start: 6;
-}
-
-.div-importfile-columnFromBankAccount,
-.div-payment-columnText,
-.grid-column7 {
-  grid-column-start: 7;
-}
-
-.div-importfile-columnToBankAccount,
-.grid-column8 {
-  grid-column-start: 8;
-}
-
-.div-importfile-columnIncome,
-.grid-column9 {
-  grid-column-start: 9;
-}
-
-.div-importfile-columnPayment,
-.grid-column10 {
-  grid-column-start: 10;
-}
-
-.div-importfile-columnText,
-.grid-column11 {
-  grid-column-start: 11;
-}
-
-/* row number */
-.grid-row1 {
-  grid-row: 1;
-}
-
-.grid-row2 {
-  grid-row: 2;
-}
-
-.grid-row3 {
-  grid-row: 3;
-}
-
-.grid-row4 {
-  grid-row: 4;
-}
-
-.grid-row5 {
-  grid-row: 5;
-}
-
-.grid-row6 {
-  grid-row: 6;
-}
-
-.grid-row7 {
-  grid-row: 7;
-}
-
-.grid-row8 {
-  grid-row: 8;
-}
-
-.grid-row9 {
-  grid-row: 9;
-}
-
-.grid-row9 {
-  grid-row: 10;
-}
-
-.grid-row10 {
-  grid-row: 11;
-}
-
-.grid-row11 {
-  grid-row: 12;
-}
-
-.grid-row12 {
-  grid-row: 13;
-}
-
-.grid-row13 {
-  grid-row: 14;
-}
-
-.grid-row14 {
-  grid-row: 15;
-}
-
-/* menu */
-.div-menu {
-  width: 150px;
-  grid-row-start: 1;
-  grid-row-end: 20;
-  color: #333;
-  text-decoration: none;
-  padding: 12px 20px;
-  border: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ddd;
-  border-radius: 8px;
-  transition: background-color 0.3s, color 0.3s;
-  background: white;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: .5rem;
-}
-
-.div-commoncost-columnAmount,
-.div-commoncost-columnDate {
-  grid-row-start: 1;
-  grid-row-end: 20;
-  display: block;
-  color: #333;
-  text-decoration: none;
-  padding: 2px;
-}
-
-.div-commoncost-columnDate {
-  grid-column-start: 3;
-}
-
-.div-commoncost-columnAmount {
-  grid-column-start: 4;
-}
-
-.div-commoncost-columnDate {
-  grid-column-start: 3;
-  grid-row-start: 1;
-  grid-row-end: 20;
-  display: block;
-  color: #333;
-  text-decoration: none;
-  padding: 2px;
-}
-
-/* menu */
-.a-menu-vertical-accounts,
-.a-menu-vertical-annualaccount,
-.a-menu-vertical-userbankaccounts,
-.a-menu-vertical-suppliers,
-.a-menu-vertical-importfile,
-.a-menu-vertical-login,
-.a-menu-vertical-users,
-.a-menu-vertical-condo,
-.a-menu-vertical-bankaccounts,
-.a-menu-vertical-condominiums,
-.a-menu-vertical-account,
-.a-menu-vertical-income,
-.a-menu-vertical-payment,
-.a-menu-vertical-dues,
-.a-menu-vertical-commoncost,
-.a-menu-vertical-remoteheating,
-.a-menu-vertical-budgets,
-.a-menu-vertical-overview,
-.a-menu-vertical-bankaccounttransactions {
-  display: block;
-  color: #333;
-  text-decoration: none;
-  padding-left: 0px;
-  padding-top: 15px;
-  border-bottom: 1px solid #ddd;
-  transition: background-color 0.3s, color 0.3s;
-  text-align: left;
+  font-family: sans-serif, Arial, Helvetica;
+  margin-left: 35px;
+  margin-top: 35px;
   font-size: 16px;
 }
 
-.a-menu-vertical-annualaccount-green,
-.a-menu-vertical-accounts-green,
-.a-menu-vertical-userbankaccounts-green,
-.a-menu-vertical-suppliers-green,
-.a-menu-vertical-importfile-green,
-.a-menu-vertical-login-green,
-.a-menu-vertical-users-green,
-.a-menu-vertical-bankaccounttransactions-green,
-.a-menu-vertical-bankaccounts-green,
-.a-menu-vertical-condo-green,
-.a-menu-vertical-accounts-green,
-.a-menu-vertical-dues-green,
-.a-menu-vertical-commoncost-green,
-.a-menu-vertical-income-green,
-.a-menu-vertical-payment-green,
-.a-menu-vertical-overview-green,
-.a-menu-vertical-remoteheating-green,
-.a-menu-vertical-budget-green,
-.a-menu-vertical-commoncost-green,
-.a-menu-vertical-condominiums-green {
-  display: block;
-  color: #4CAF50;
-  text-decoration: none;
-  border-bottom: 1px solid #ddd;
-  transition: background-color 0.3s, color 0.3s;
-  padding: 10px;
-  padding-left: 0px;
-  text-align: left;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.div-menu a:hover {
-  background-color: #bcb9b9;
-  color: white;
-}
-
-.div-menu a.active {
-  background-color: #007BFF;
-  color: white;
-  font-weight: bold;
-}
-
-/* Style the grid items */
-.div-bankaccounts-item-info,
-.div-condo-item-info,
-.div-accounts-item-info,
-.div-dues-item-info,
-.div-payment-item-info,
-.div-overview-item-info,
-.div-remoteheating-item-info {
-  background-color: white;
-  color: black;
-  padding: 5px;
-  text-align: left;
-  border: 1px;
-}
-
-/* label */
-.div-grid-bankaccounttransactions-search label,
-.div-grid-bankaccounttransactions label,
-
-/*.div-grid-annualaccount-filter label,*/
-.div-grid-annualaccount label,
-/*.div-grid-annualaccount-budgets label,*/
-/*.div-grid-annualaccount-bankdeposit label,*/
-
-.div-grid-userbankaccounts label,
-
-.div-grid-suppliers label,
-
-.div-grid-importfile label,
-
-.div-grid-user label,
-
-.div-grid-condos label,
-
-.div-grid-bankaccounts label,
-
-.div-grid-condominiums label,
-
-.div-grid-accounts label,
-
-.div-grid-dues label,
-
-.div-grid-commoncost label,
-
-.div-grid-remoteheating-search label,
-
-.div-grid-remoteheating label,
-
-.div-grid-budget label,
-
-/*.div-grid-overview-search label,*/
-.div-grid-overview label {
-  border-bottom-color: rgb(229, 229, 229);
-  border-bottom-style: solid;
-  border-bottom-width: 0px;
-  border-image-outset: 0;
-  border-image-repeat: stretch;
-  border-image-slice: 100%;
-  border-image-source: none;
-  border-image-width: 1;
-  border-left-color: rgb(229, 229, 229);
-  border-left-style: solid;
-  border-left-width: 0px;
-  border-right-color: rgb(229, 229, 229);
-  border-right-style: solid;
-  border-right-width: 0px;
-  border-top-color: rgb(229, 229, 229);
-  border-top-style: solid;
-  border-top-width: 0px;
-  box-sizing: border-box;
-  color: rgb(70, 70, 70);
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
-  height: 22px;
-  line-height: 18px;
-  padding-bottom: 4px;
-  padding-right: 5px;
-  position: relative;
-  tab-size: 4;
-  text-size-adjust: 100%;
-  width: 187.5px;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* input */
-.a-condo-login,
-.div-grid-bankaccounttransactions-search input,
-.div-grid-bankaccounttransactions input,
-
-/*.div-grid-annualaccount-filter input,*/
-.div-grid-annualaccount input,
-/*.div-grid-annualaccount-budgets input,*/
-/*.div-grid-annualaccount-bankdeposit input,*/
-
-.div-grid-userbankaccounts input,
-
-.div-grid-suppliers input,
-
-.div-grid-importfile input,
-
-.div-grid-user input,
-
-.div-grid-condos input,
-
-.div-grid-bankaccounts input,
-
-.div-grid-accounts input,
-
-.div-grid-dues-filter input,
-.div-grid-dues input,
-
-.div-grid-commoncost input,
-.div-grid-commoncost-search input,
-
-.div-grid-remoteheating-search input,
-.div-grid-remoteheating input,
-
-.div-grid-budget-search input,
-.div-grid-budget input,
-
-.div-grid-commoncost-search input,
-.div-grid-commoncost input,
-
-/*.div-grid-overview-search input,*/
-.div-grid-overview input,
-
-.div-grid-condominiums input {
-  appearance: auto;
-  background-color: rgb(255, 255, 255);
-  border-bottom-color: rgb(195, 204, 217);
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 6px;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  appearance: auto;
-  background-color: rgb(255, 255, 255);
-  border-bottom-color: rgb(195, 204, 217);
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-left-color: rgb(195, 204, 217);
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-right-color: rgb(195, 204, 217);
-  border-right-style: solid;
-  border-right-width: 1px;
-  border-top-color: rgb(195, 204, 217);
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  box-sizing: border-box;
-  color: rgb(70, 70, 70);
-  height: 48px;
-  letter-spacing: normal;
-  line-height: 22px;
-  margin-bottom: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 0px;
-  padding-block-end: 12px;
-  padding-block-start: 12px;
-  padding-bottom: 12px;
-  padding-inline-end: 8px;
-  padding-inline-start: 8px;
-  padding-left: 28px;
-  padding-right: 8px;
-  padding-top: 12px;
-  text-size-adjust: 100%;
-  width: 187.5px;
-  cursor: pointer;
-}
-
-/* select */
-.div-grid-bankaccounttransactions-search select,
-.div-grid-bankaccounttransactions select,
-
-/*.div-grid-annualaccount-filter select,*/
-.div-grid-annualaccount select,
-/*.div-grid-annualaccount-budgets select,*/
-/*.div-grid-annualaccount-bankdeposit select,*/
-
-.div-grid-userbankaccounts select,
-
-.div-grid-suppliers select,
-
-.div-grid-importfile select,
-
-.div-grid-user select,
-
-.div-grid-condos select,
-
-.div-grid-bankaccounts select,
-
-.div-grid-condominiums select,
-
-.div-grid-accounts select,
-
-.div-grid-dues-filter select,
-.div-grid-dues select,
-
-.div-grid-remoteheating-search select,
-.div-grid-remoteheating select,
-
-.div-grid-budget-search select,
-.div-grid-budget select,
-
-.div-grid-commoncost-search select,
-.div-grid-commoncost select,
-
-/*.div-grid-overview-search select,*/
-.div-grid-overview select {
-  appearance: auto;
-  background-color: rgb(255, 255, 255);
-  border-bottom-color: rgb(195, 204, 217);
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-image-outset: 0;
-  border-image-repeat: stretch;
-  border-image-slice: 100%;
-  border-image-source: none;
-  border-image-width: 1;
-  border-left-color: rgb(195, 204, 217);
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-right-color: rgb(195, 204, 217);
-  border-right-style: solid;
-  border-right-width: 1px;
-  border-top-color: rgb(195, 204, 217);
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  box-sizing: border-box;
-  color: rgb(70, 70, 70);
-  cursor: text;
-  display: block;
-  height: 48px;
-  letter-spacing: normal;
-  line-height: 22px;
-  margin-bottom: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-top: 0px;
-  overflow-clip-margin: 0px;
-  overflow-x: clip;
-  overflow-y: clip;
-  padding-block-end: 12px;
-  padding-block-start: 12px;
-  padding-bottom: 12px;
-  padding-inline-end: 8px;
-  padding-inline-start: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-top: 12px;
-  tab-size: 4;
-  text-align: start;
-  text-indent: 0px;
-  text-rendering: auto;
-  text-shadow: none;
-  text-size-adjust: 100%;
-  text-transform: none;
-  width: 187.5px;
-  word-spacing: 0px;
-  -webkit-rtl-ordering: logical;
-  cursor: pointer;
-}
-
-/* bold */
-.bold,
-
-.div-overview-text,
-.div-overview-sumPayment,
-.div-overview-dues-payment,
-.div-overview-dues-date,
-.div-overview-payment,
-
-.div-remoteheating-text,
-.div-remoteheating-sumPayment,
-.div-remoteheating-sumNumberKWHour,
-.div-remoteheating-sumPriceKWHour,
-
-.div-overview-dues-sumDue,
-.div-overview-sumIncome,
-.div-overview-income {
-  font-weight: 700;
-}
-
-/* button */
-.div-grid-bankaccounttransactions-search button,
-.div-grid-bankaccounttransactions button,
-
-/*.div-grid-annualaccount-filter button,*/
-.div-grid-annualaccount button,
-/*.div-grid-annualaccount-budgets button,*/
-/*.div-grid-annualaccount-bankdeposit button,*/
-
-.div-grid-userbankaccounts button,
-
-.div-grid-suppliers button,
-
-.div-grid-importfile button,
-
-.div-grid-user button,
-
-.div-grid-condos button,
-
-.div-grid-bankaccounts button,
-
-.div-grid-condominiums button,
-
-.div-grid-accounts button,
-
-.div-grid-dues-filter button,
-.div-grid-dues button,
-
-.div-grid-remoteheating-search button,
-
-.div-grid-remoteheating button,
-
-.div-grid-budget-search button,
-.div-grid-budget button,
-
-.div-grid-commoncost button,
-.div-grid-commoncost-search button,
-
-/*.div-grid-overview-search button,*/
-.div-grid-overview button,
-.button {
-  width: 190px;
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-/* Darker green on hover */
-.div-grid-bankaccounttransactions-search button:hover .div-grid-bankaccounttransactions button:hover,
-
-/*.div-grid-annualaccount-filter button:hover,*/
-.div-grid-annualaccount button:hover,
-/*.div-grid-annualaccount-budgets button:hover,*/
-/*.div-grid-annualaccount-bankdeposit button.hover,*/
-
-.div-grid-userbankaccounts button:hover,
-
-.div-grid-suppliers button:hover,
-
-.div-grid-importfile button:hover,
-
-.div-grid-user button:hover,
-
-.div-grid-condos button:hover,
-
-.div-grid-bankaccounts button:hover,
-
-.div-grid-condominiums button:hover,
-
-.div-grid-accounts button:hover,
-
-.div-grid-dues-filter button:hover,
-.div-grid-dues button:hover,
-
-.div-grid-remoteheating-search button:hover,
-.div-grid-remoteheating button:hover,
-
-.div-grid-budget-search button:hover,
-.div-grid-budget button:hover,
-
-.div-grid-commoncost button:hover,
-.div-grid-commoncost-search button:hover,
-
-/*.div-grid-overview-search button:hover,*/
-.div-grid-overview button:hover,
-.button:hover {
-  background-color: #3e9441;
-}
-
-/* Even darker green on click */
-.div-grid-bankaccounttransactions-search button:active,
-.div-grid-bankaccounttransactions button:active,
-
-.div-annualaccount button:active,
-
-.div-userbankaccounts button:active,
-
-.div-grid-importile button:active,
-
-.div-grid-user button:active,
-
-.div-grid-condos button:active,
-
-.div-grid-bankaccounts button:active,
-
-.div-grid-condominiums button:active,
-
-.div-grid-accounts button:active,
-
-.div-grid-dues-filter button:active,
-.div-grid-dues button:active,
-
-.div-grid-remoteheating-search button:active,
-.div-grid-remoteheating button:active,
-
-.div-grid-budget-search button:active,
-.div-grid-budget button:active,
-
-.div-grid-commoncost button:active,
-.div-grid-commoncost-search button:active,
-
-/*.div-grid-overview-search button:active,*/
-.div-grid-overview button:active,
-.button button:active{
-  background-color: #307533;
-}
-
-/* Gray for disabled state */
-.div-grid-bankaccounttransactions select:disabled,
-.div-grid-bankaccounttransactions button:disabled,
-
-.div-grid-annualaccount select:disabled,
-.div-grid-annualaccount button:disabled,
-
-.div-grid-userbankaccounts select:disabled,
-.div-grid-userbankaccounts button:disabled,
-
-.div-grid-suppliers select:disabled,
-.div-grid-suppliers button:disabled,
-
-.div-grid-importfile select:disabled,
-.div-grid-importfile button:disabled,
-
-.div-grid-user select:disabled,
-.div-grid-user button:disabled,
-
-.div-grid-condos select:disabled,
-.div-grid-condos button:disabled,
-
-.div-grid-bankaccounts select:disabled,
-.div-grid-bankaccounts button:disabled,
-
-.div-grid-condominiums select:disabled,
-.div-grid-condominiums button:disabled,
-
-.div-grid-accounts select:disabled,
-.div-grid-accounts button:disabled,
-
-.div-grid-dues select:disabled,
-.div-grid-dues button:disabled,
-
-.div-grid-commoncost select:disabled,
-.div-grid-commoncost button:disabled,
-
-.div-grid-budget select:disabled,
-.div-grid-budget button:disabled,
-.button button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-/* header */
-.div-commoncost-columnDate-Header,
-.div-commoncost-columnAmount-Header,
-
-.label-bankaccounttransactions-columnCondoName-Header,
-.label-bankaccounttransactions-columnAccountName-Header,
-.label-bankaccounttransactions-columnDate-Header,
-.label-bankaccounttransactions-columnIncome-Header,
-.label-bankaccounttransactions-columnPayment-Header,
-.label-bankaccounttransactions-columnNumberKWHour-Header,
-
-.div-remoteheating-date-Header,
-.div-remoteheating-payment-Header,
-.div-remoteheating-numberKWHour-Header,
-.div-remoteheating-priceKWHour-Header,
-.div-remoteheating-text-Header,
-
-.div-overview-dues-date-Header,
-.div-overview-dues-payment-Header,
-.div-overview-dues-text-Header,
-.div-overview-payment-Header,
-.div-overview-date-Header,
-.div-overview-dues-payment-Header,
-.div-overview-text-Header {
-  background-color: white;
-  text-align: left;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 10px;
-  color: #333;
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-bottom: 4px solid #4CAF50;
-  display: inline-block;
-  padding-bottom: 10px;
-  padding-right: 5px;
-}
-
-/* right */
-.div-montlyfee-amountCondo,
-
-.div-overview-dues-date-Header,
-.div-overview-dues-payment-Header,
-.div-overview-dues-sumDue,
-.div-overview-income,
-.div-overview-sumIncome,
-.div-overview-payment,
-.div-overview-sumPayment,
-.div-overview-dues-payment,
-
-.div-remoteheating-sumPayment,
-.div-remoteheating-sumNumberKWHour,
-.div-remoteheating-numberKWHour,
-.div-remoteheating-sumPriceKWHour,
-.div-remoteheating-priceKWHour,
-.div-remoteheating-text,
-.div-remoteheating-date,
-.div-remoteheating-payment,
-.div-remoteheating-payment-payDate,
-
-.div-overview-text,
-.div-overview-date,
-.div-overview-dues-payment,
-.div-overview-dues-payment,
-.div-overview-payment-payDate,
-.div-overview-payment-Header {
-
-  text-align: right;
-}
-
-/* red */
-.red,
-
-.label-bankaccounttransactions-accountId-red,
-.label-bankaccounttransactions-date-red,
-
-.label-annualaccount-filter-fromDate-red,
-.label-annualaccount-filter-toDate-red,
-
-.label-userbankaccounts-userId-red,
-.label-userbankaccounts-accountId-red,
-.label-userbankaccounts-name-red,
-.label-userbankaccounts-bankAccount-red,
-
-.label-users-condoId-red,
-.label-users-firstName-red,
-.label-users-lastName-red,
-.label-users-phone-red,
-.label-users-email-red,
-.label-users-password-red,
-.label-users-securityLevel-red,
-
-.label-bankaccounttransactions-bankaccounttransactionId-red,
-.label-bankaccounttransactions-amount-red,
-.label-bankaccounttransactions-fromDate-red,
-.label-bankaccounttransactions-toDate-red,
-.label-bankaccounttransactions-text-red,
-
-.label-bankaccounts-bankAccountId-red,
-.label-bankaccounts-bankAccount-red,
-.label-bankaccounts-name-red,
-.label-bankaccounts-openingBalanceDate-red,
-.label-bankaccounts-closingBalanceDate-red,
-
-.label-condominiums-condominiumId-red,
-.label-condominiums-name-red,
-.label-condominiums-street-red,
-.label-condominiums-address2-red,
-.label-condominiums-postalCode-red,
-.label-condominiums-city-red,
-.label-condominiums-phone-red,
-.label-condominiums-email-red,
-.label-condominiums-incomeRemoteHeatingAccountId-red,
-.label-condominiums-organizationNumber-red,
-
-.label-condo-condoId-red,
-.label-condo-name-red,
-.label-condo-street-red,
-.label-condo-postalCode-red,
-.label-condo-city-red,
-
-.label-budget-text-red,
-.label-budget-amount-red,
-
-.label-commoncost-condoId-red,
-.label-commoncost-date-red,
-.label-commoncost-amount-red,
-
-.label-remoteheating-fromDate-red,
-.label-remoteheating-toDate-red,
-
-.label-overview-fromDate-red,
-.label-overview-toDate-red,
-
-.label-payment-text-red,
-.label-payment-date-red,
-.label-payment-amount-red,
-
-.label-income-text-red,
-.label-income-date-red,
-.label-income-amount-red,
-
-.label-accounts-accountId-red,
-.label-accounts-bankAccountId-red,
-.label-accounts-accountName-red,
-.label-accounts-fixedCost-red,
-
-.label-dues-condoId-red,
-.label-dues-date-red,
-.label-dues-amount-red,
-.label-dues-text-red,
-.label-dues-amount-red {
-
-  font-weight: bold;
-  color: rgb(234, 8, 8);
-}
-
-.div-radio-accountType input {
-
-  width: 20px;
-  height: 20px;
-  padding: 20px;
-  font-weight: 700;
-}
-
-/* Column header */
-.columnHeaderCenter,
-.columnHeaderLeft,
-.columnHeaderRight {
-  padding-top: 10px;
-  width: 100%;
-  height: 30px;
-  background-color: white;
-  font-weight: bold;
-  border-bottom: 4px double #4CAF50;
-}
-
-.columnHeaderLeft {
-  text-align: left;
-}
-
-.columnHeaderRight {
-  text-align: right;
-}
-
-.columnHeaderCenter {
-  text-align: center;
-}
-
-.centerCell,
-.rightCell,
-.leftCell {
-  border-bottom: 1px solid #eee;
-}
-
-.leftCell {
-  text-align: left;
-}
-
-.rightCell {
-  text-align: right;
-}
-
-.centerCell {
-  text-align: center;
-}
-
-.sumCellLeft,
-.sumCellRight {
-  border-bottom: 4px double #eee;
-}
-
-.sumCellRight {
-  text-align: right;
-}
-
-.sumCellLeft {
-  text-align: left;
-}
-
-/* Look like button */
-.button-link {
-  display: inline-block;
-  padding-left: 20px;
-  padding-right: 20px;
-  height: 19px;
-  font-weight: 700;
-  background-color: #4CAF50;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-/* green back ground */
-.green {
-  background-color: #4CAF50;
-  opacity: 0.5;
-  color: white;
-}
-
-/* red back ground */
-.red {
-  background-color: #a82d3f;
-  opacity: 0.5;
-  color: white;
-}
-
-/* red back ground */
-.a-condo-login,
-.red {
-  background-color: red;
-  opacity: 0.5;
-  color: white;
-}
-
-.file-input {
-  display: none;
-}
-
-/*
-.custom-file-label {
-  display: inline-block;
-  padding: 8px 12px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.file-name {
-  margin-left: 10px;
-  font-style: italic;
-}
-*/
-
-.one-line {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.icon-input {
-  background-repeat: no-repeat;
-  background-position: 5px center;
-  padding-left: 40px;
-  width: 250px;
-  height: 36px;
-}
-
-.sidebar {
-  background: #fff;
-  padding: 1rem;
-  border-right: 1px solid #ccc;
-  display: flex;
-  flex-direction: column;
-  gap: .5rem;
-}
-
-.sidebar a {
-  text-decoration: none;
-  color: #2a5d2a;
-}
-
-/* Main Content */
-.main {
-  padding: 1rem;
-  display: grid;
-  gap: 2rem;
-}
-
-/* Filter Section */
-.filters {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1rem;
-  background: #fff;
-  padding: 1rem;
-  border-radius: 15px;
-}
-
-/* maintenance section */
-.maintenance {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 16px;
-  border-radius: 15px;
-}
-
-.maintenance div,
-.filters div {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  font-size: 0.85rem;
-  margin-bottom: .25rem;
-}
-
-input,
-select {
-  padding: .5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  height: 54px;
+/* table container for all tables */
+div.tableContainer {
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
 table {
   border-collapse: collapse;
   background-color: #f9f9f9;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 th,
 td {
   border: 1px solid #ccc;
-  padding: .5rem;
-  text-align: right;
-  min-width: 150px;
+  text-align: cnter;
+  height: 30px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-td {
-  border: 0px;
 }
 
 th {
@@ -1257,39 +35,107 @@ th {
   text-align: center;
 }
 
-td:first-child,
-th:first-child {
+td {
+  border: 0px;
+  font-family: sans-serif;
+  font-size: 13px;
+}
+
+button,
+select,
+input {
+  cursor: pointer;
+  border-radius: 5px;
+  border-color: #e0f0e0;
+  
+}
+
+button:hover,
+select:hover,
+input:hover, 
+.menu a:hover {
+  background: #e0f0e0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+input {
+  height: 30px;
+}
+
+select {
+  height: 35px;
+}
+
+.left {
   text-align: left;
 }
 
-/* grid for income next year */
-.incomeNextYear {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 8px;
+.center {
+  text-align: center;
 }
 
-/* start HTML Table */
-.startHTMLTable {
-  overflow-x: auto;
-  background: #fff;
-  padding: 1rem;
-  border-radius: 8px;
+.centerTable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* or parent height */
+}
+
+.right {
+  text-align: right;
 }
 
 .no-border {
   border: 0px solid #ddd;
 }
 
-th,
-td {
-  padding: 10px;
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-th {
-  height: 30px;
+/* bold */
+.bold {
+  font-weight: 600;
 }
 
-.center {
-  text-align: center;
+.button {
+  width: 190px;
+  height: 35px;
+  background-color: #e0f0e0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-color: #e0f0e0;
+}
+
+.menu {
+  /* remove default td padding */
+  padding: 0;
+}
+
+.menu a {
+  /* makes <a> fill the cell */
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 150px;
+  /* space inside the link */
+  padding: 12px;
+  padding-left: 15px;
+  /* include padding in size */
+  box-sizing: border-box;
+  transition: background 0.2s, box-shadow 0.2s;
+
+  border: 2px solid #e0f0e0;
+  border-radius: 10px;
+  border-style: outset;
+  /* remove underscore */
+  text-decoration: none;
+  cursor: pointer;
+  margin-left: 10px;
 }
