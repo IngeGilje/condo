@@ -392,10 +392,10 @@ function updateUser(userId) {
     // password
     const password = document.querySelector('.input-users-password').value;
     
-    const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
 
     // Check if user exist
-    if (userRowNumber !== -1) {
+    if (rowNumberUser !== -1) {
 
       // update user
       objUsers.updateUsersTable(user, email, userId, firstName, lastName, phone, securityLevel, password);
@@ -420,9 +420,9 @@ function deleteUserRow(userId) {
       today.toISOString();
  
     // Check if user exist
-    const userRowNumber =
+    const rowNumberUser =
       objUsers.arrayUsers.findIndex(user => user.userId === userId);
-    if (userRowNumber !== -1) {
+    if (rowNumberUser !== -1) {
  
       // current date
       const lastUpdate =
@@ -468,29 +468,29 @@ function showValues(userId) {
   if (userId >= 0) {
 
     // find object number for selected user Id 
-    const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
-    if (userRowNumber !== -1) {
+    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+    if (rowNumberUser !== -1) {
 
       // Show email
-      document.querySelector('.input-users-email').value = objUsers.arrayUsers[userRowNumber].email;
+      document.querySelector('.input-users-email').value = objUsers.arrayUsers[rowNumberUser].email;
 
       // Select condoId
-      document.querySelector('.select-users-condoId').value = objUsers.arrayUsers[userRowNumber].condoId;
+      document.querySelector('.select-users-condoId').value = objUsers.arrayUsers[rowNumberUser].condoId;
 
       // first name
-      document.querySelector('.input-users-firstName').value = objUsers.arrayUsers[userRowNumber].firstName;
+      document.querySelector('.input-users-firstName').value = objUsers.arrayUsers[rowNumberUser].firstName;
 
       // last name
-      document.querySelector('.input-users-lastName').value = objUsers.arrayUsers[userRowNumber].lastName;
+      document.querySelector('.input-users-lastName').value = objUsers.arrayUsers[rowNumberUser].lastName;
 
       // Show phone number
-      document.querySelector('.input-users-phone').value = objUsers.arrayUsers[userRowNumber].phone;
+      document.querySelector('.input-users-phone').value = objUsers.arrayUsers[rowNumberUser].phone;
 
       // show securityLevel
-      document.querySelector('.select-users-securityLevel').value = objUsers.arrayUsers[userRowNumber].securityLevel;
+      document.querySelector('.select-users-securityLevel').value = objUsers.arrayUsers[rowNumberUser].securityLevel;
 
       // password
-      document.querySelector('.input-users-password').value = objUsers.arrayUsers[userRowNumber].password;
+      document.querySelector('.input-users-password').value = objUsers.arrayUsers[rowNumberUser].password;
     }
   }
 }
@@ -535,10 +535,10 @@ function showHeader() {
   let html = startHTMLTable('width:750px;');
 
   // Main header
-  html += objUsers.showTableHeaderNew('width:250px;', 'Bruker');
+  html += objUsers.showTableHeader('width:250px;', 'Bruker');
 
   // The end of the table
-  html += endTableNew();
+  html += endTable();
   document.querySelector('.header').innerHTML = html;
 }
 */
@@ -547,13 +547,13 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  let html = objUsers.startTableNew('width:750px;');
+  let html = objUsers.startTable('width:750px;');
 
   // show main header
-  html += objUsers.showTableHeaderNew('width:250px;', 'Bruker');
+  html += objUsers.showTableHeader('width:250px;', 'Bruker');
 
   // The end of the table
-  html += objUsers.endTableNew();
+  html += objUsers.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -561,16 +561,16 @@ function showHeader() {
 function showFilter(userId) {
 
   // Start table
-  html = objUsers.startTableNew('width:750px;');
+  html = objUsers.startTable('width:750px;');
 
   // Header filter
-  html += objUsers.showTableHeaderNew('width:250px;', '', 'Velg bruker', '');
+  html += objUsers.showTableHeader('width:250px;', '', 'Velg bruker', '');
 
   // start table body
-  html += objUsers.startTableBodyNew();
+  html += objUsers.startTableBody();
 
   // insert table columns in start of a row
-  html += objUsers.insertTableColumnsNew('', 0, '');
+  html += objUsers.insertTableColumns('', 0, '');
 
   // user
   html += objUsers.showSelectedUsersNew('filterUserId', 'width:100px;', userId, '', '')
@@ -578,13 +578,13 @@ function showFilter(userId) {
   html += "</tr>";
 
    // insert table columns in start of a row
-  html += objUsers.insertTableColumnsNew('', 0, '');
+  html += objUsers.insertTableColumns('', 0, '');
 
   // end table body
-  html += objUsers.endTableBodyNew();
+  html += objUsers.endTableBody();
 
   // The end of the table
-  html += objUsers.endTableNew();
+  html += objUsers.endTable();
   document.querySelector('.filter').innerHTML = html;
 }
 
@@ -592,20 +592,20 @@ function showFilter(userId) {
 function showResult(userId, rowNumber) {
 
   // start table
-  let html = objUsers.startTableNew('width:750px;');
+  let html = objUsers.startTable('width:750px;');
 
   // table header
-  html += objUsers.showTableHeaderNew('width:250px;', '', '', '');
+  html += objUsers.showTableHeader('width:250px;', '', '', '');
 
   // Check if users row exist
-  const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
-  if (userRowNumber !== -1) {
+  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+  if (rowNumberUser !== -1) {
 
     // Start table
     //html = startHTMLTable('width:750px;');
 
     // Main header
-    //html += objUsers.showTableHeaderNew('width:250px;', '', '', '');
+    //html += objUsers.showTableHeader('width:250px;', '', '', '');
 
     // email,condoId
     html += "<tr>";
@@ -615,17 +615,17 @@ function showResult(userId, rowNumber) {
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.showMenu(rowNumber);
+    //html += objUsers.verticalMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumnsNew('', rowNumber);
+    html += objUsers.insertTableColumns('', rowNumber);
 
     // email
-    html += objUsers.inputTableColumn('email', objUsers.arrayUsers[userRowNumber].email, 45);
+    html += objUsers.inputTableColumn('email', objUsers.arrayUsers[rowNumberUser].email, 45);
 
     // condoId
-    html += objCondos.showSelectedCondosNew('condoId', "width:170px;", objUsers.arrayUsers[userRowNumber].condoId, '', '');
+    html += objCondos.showSelectedCondos('condoId', "width:170px;", objUsers.arrayUsers[rowNumberUser].condoId, '', '');
 
     html += "</tr>";
 
@@ -637,17 +637,17 @@ function showResult(userId, rowNumber) {
     // firstName, lastName
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.showMenu(rowNumber);
+    //html += objUsers.verticalMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumnsNew('', rowNumber);
+    html += objUsers.insertTableColumns('', rowNumber);
 
     // firstName
-    html += objUsers.inputTableColumn('firstName', objUsers.arrayUsers[userRowNumber].firstName, 45);
+    html += objUsers.inputTableColumn('firstName', objUsers.arrayUsers[rowNumberUser].firstName, 45);
 
     // lastName
-    html += objUsers.inputTableColumn('lastName', objUsers.arrayUsers[userRowNumber].lastName, 45);
+    html += objUsers.inputTableColumn('lastName', objUsers.arrayUsers[rowNumberUser].lastName, 45);
 
     html += "</tr>";
 
@@ -659,17 +659,17 @@ function showResult(userId, rowNumber) {
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.showMenu(rowNumber);
+    //html += objUsers.verticalMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumnsNew('', rowNumber);
+    html += objUsers.insertTableColumns('', rowNumber);
 
     // password
-    html += objUsers.inputTableColumn('password', objUsers.arrayUsers[userRowNumber].password, 45);
+    html += objUsers.inputTableColumn('password', objUsers.arrayUsers[rowNumberUser].password, 45);
 
     // securityLevel
-    html += objUsers.showSelectedNumbersNew('securityLevel', "width:100px;", 1, 9, objUsers.arrayUsers[userRowNumber].securityNumber);
+    html += objUsers.showSelectedNumbersNew('securityLevel', "width:100px;", 1, 9, objUsers.arrayUsers[rowNumberUser].securityNumber);
 
     html += "</tr>";
 
@@ -681,27 +681,27 @@ function showResult(userId, rowNumber) {
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.showMenu(rowNumber);
+    //html += objUsers.verticalMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumnsNew('', rowNumber);
+    html += objUsers.insertTableColumns('', rowNumber);
 
     // phone
-    html += objUsers.inputTableColumn('phone', objUsers.arrayUsers[userRowNumber].phone, 15);
+    html += objUsers.inputTableColumn('phone', objUsers.arrayUsers[rowNumberUser].phone, 15);
 
     // Activ user
-    html += objUsers.showYesNo('resident', objUsers.arrayUsers[userRowNumber].resident);
+    html += objUsers.showYesNo('resident', objUsers.arrayUsers[rowNumberUser].resident);
 
     html += "</tr>";
 
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.showMenu(rowNumber);
+    //html += objUsers.verticalMenu(rowNumber);
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumnsNew('', rowNumber);
+    html += objUsers.insertTableColumns('', rowNumber);
 
     html += "</tr>";
 
@@ -709,11 +709,11 @@ function showResult(userId, rowNumber) {
     //html += "<tr>";
     // Show menu
     //rowNumber++;
-    //html += objUsers.showMenu(rowNumber);
+    //html += objUsers.verticalMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumnsNew('', rowNumber);
+    html += objUsers.insertTableColumns('', rowNumber);
 
     html += objUsers.showButtonNew('width:170px;', 'update', 'Oppdater');
     html += objUsers.showButtonNew('width:170px;', 'cancel', 'Angre');
@@ -722,11 +722,11 @@ function showResult(userId, rowNumber) {
     // Show menu
     //html += "<tr>";
     //rowNumber++;
-    //html += objUsers.showMenu(rowNumber);
+    //html += objUsers.verticalMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumnsNew('', rowNumber);
+    html += objUsers.insertTableColumns('', rowNumber);
 
     html += "</tr>";
 
@@ -734,11 +734,11 @@ function showResult(userId, rowNumber) {
     //html += "<tr>";
     // Show menu
     //rowNumber++;
-    //html += objUsers.showMenu(rowNumber);
+    //html += objUsers.verticalMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumnsNew('', rowNumber);
+    html += objUsers.insertTableColumns('', rowNumber);
 
     html += objUsers.showButtonNew('width:170px;', 'delete', 'Slett');
     html += objUsers.showButtonNew('width:170px;', 'insert', 'Ny');
@@ -749,7 +749,7 @@ function showResult(userId, rowNumber) {
     html += objUsers.showRestMenu(rowNumber);
 
     // The end of the table
-    html += objUsers.endTableNew();
+    html += objUsers.endTable();
     document.querySelector('.result').innerHTML = html;
 
     return rowNumber;
@@ -804,8 +804,8 @@ async function updateUserRow(userId) {
   if (validUserId && validEmail && validCondoId && validFirstName && validLastName && validPhone && validSecurityLevel && validPassword) {
 
     // Check if the userId exist
-    const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
-    if (userRowNumber !== -1) {
+    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+    if (rowNumberUser !== -1) {
 
       // update the users row
       await objUsers.updateUsersTable(resident, user, email, userId, condoId, firstName, lastName, phone, securityLevel, password);
@@ -838,8 +838,8 @@ async function deleteUserRow() {
   const userId = Number(document.querySelector('.filterUserId').value);
 
   // Check if user exist
-  const userRowNumber = objUsers.arrayUsers.findIndex(user => user.userId === userId);
-  if (userRowNumber !== -1) {
+  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+  if (rowNumberUser !== -1) {
 
     // delete a user row
     const user = objUserPassword.email;

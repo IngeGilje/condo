@@ -133,13 +133,13 @@ function events() {
 function showHeader() {
 
   // Start table
-  let html = objOverview.startTableNew('width:1100px;');
+  let html = objOverview.startTable('width:1100px;');
 
   // show main header
-  html += objOverview.showTableHeaderNew('width:250px;', 'Betalingsoversikt');
+  html += objOverview.showTableHeader('width:250px;', 'Betalingsoversikt');
 
   // The end of the table
-  html += objOverview.endTableNew();
+  html += objOverview.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -147,21 +147,21 @@ function showHeader() {
 function showFilter() {
 
   // Start table
-  html = objOverview.startTableNew('width:1100px;');
+  html = objOverview.startTable('width:1100px;');
 
   // Header filter
-  html += objOverview.showTableHeaderNew('width:250px;', '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '');
+  html += objOverview.showTableHeader('width:250px;', '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '');
 
   // start table body
-  html += objOverview.startTableBodyNew();
+  html += objOverview.startTableBody();
 
   // insert table columns in start of a row
-  html += objOverview.insertTableColumnsNew('', 0, '', '');
+  html += objOverview.insertTableColumns('', 0, '', '');
 
   // Show all selected condos
   // Get last id in last object in condo array
   const condoId = objCondo.arrayCondo.at(-1).condoId;
-  html += objCondo.showSelectedCondosNew('filterCondoId', 'width:100px;', condoId, '', '');
+  html += objCondo.showSelectedCondos('filterCondoId', 'width:100px;', condoId, '', '');
 
   // from date
   const year = String(today.getFullYear());
@@ -175,13 +175,13 @@ function showFilter() {
   html += "</tr>";
 
    // insert table columns in start of a row
-  html += objOverview.insertTableColumnsNew('', 0, '');
+  html += objOverview.insertTableColumns('', 0, '');
 
   // end table body
-  html += objOverview.endTableBodyNew();
+  html += objOverview.endTableBody();
 
   // The end of the table
-  html += objOverview.endTableNew();
+  html += objOverview.endTable();
   document.querySelector('.filter').innerHTML = html;
 }
 
@@ -190,12 +190,12 @@ function showFilter() {
 function showDues(rowNumber) {
 
   // Start HTML table
-  html = objOverview.startTableNew('width:1100px;');
+  html = objOverview.startTable('width:1100px;');
 
   let sumDue = 0;
 
   // Header
-  html += objOverview.showTableHeaderNew('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
+  html += objOverview.showTableHeader('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -203,15 +203,15 @@ function showDues(rowNumber) {
 
     // Show menu
     //rowNumber++;
-    //html += objDues.showMenu(rowNumber);
+    //html += objDues.verticalMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objDues.insertTableColumnsNew('', rowNumber);
+    html += objDues.insertTableColumns('', rowNumber);
 
     // condos
     className = `condo${due.dueId}`;
-    html += objCondo.showSelectedCondosNew(className, '', due.condoId, 'Ingen er valgt', '');
+    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Ingen er valgt', '');
 
     // date
     const date = formatToNorDate(due.date);
@@ -238,7 +238,7 @@ function showDues(rowNumber) {
   sumDue = formatOreToKroner(sumDue);
 
   rowNumber++;
-  html += objOverview.insertTableColumnsNew('font-weight: 600;', rowNumber, '', 'Sum', sumDue);
+  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', sumDue);
 
   // due
   //html += `<td class="center bold">${sumDue}</td>`;
@@ -246,12 +246,12 @@ function showDues(rowNumber) {
   html += "</tr>"
 
   rowNumber++;
-  html += objOverview.insertTableColumnsNew('', rowNumber, '', '', '');
+  html += objOverview.insertTableColumns('', rowNumber, '', '', '');
 
   html += "</tr>"
 
   // The end of the table
-  html += objAccounts.endTableNew();
+  html += objAccounts.endTable();
   document.querySelector('.dues').innerHTML = html;
   return rowNumber;
 }
@@ -260,11 +260,11 @@ function showDues(rowNumber) {
 function showBankAccountTransactions(rowNumber) {
 
   // Start table
-  html = objOverview.startTableNew('width:1100px;');
+  html = objOverview.startTable('width:1100px;');
 
   // Header
   rowNumber++;
-  html += objOverview.showTableHeaderNew('width:1100px;', '', 'Leilighet', 'Betalingsdato', 'Betaling', 'Tekst');
+  html += objOverview.showTableHeader('width:1100px;', '', 'Leilighet', 'Betalingsdato', 'Betaling', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -275,14 +275,14 @@ function showBankAccountTransactions(rowNumber) {
 
     // Show menu
     //rowNumber++;
-    //html += objDues.showMenu(rowNumber);
+    //html += objDues.verticalMenu(rowNumber);
     // insert table columns in start of a row
     rowNumber++;
-    html += objDues.insertTableColumnsNew('', rowNumber);
+    html += objDues.insertTableColumns('', rowNumber);
 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondo.showSelectedCondosNew(className, '', Number(bankAccountTransaction.condoId), 'Ingen er valgt', '');
+    html += objCondo.showSelectedCondos(className, '', Number(bankAccountTransaction.condoId), 'Ingen er valgt', '');
 
     // date
     const date = formatToNorDate(bankAccountTransaction.date);
@@ -316,7 +316,7 @@ function showBankAccountTransactions(rowNumber) {
 
   // Show menu
   //rowNumber++;
-  //html += objDues.showMenu(rowNumber);
+  //html += objDues.verticalMenu(rowNumber);
 
   // text sum
   //html += "<td class='center bold'>Sum</td>";
@@ -325,15 +325,15 @@ function showBankAccountTransactions(rowNumber) {
   //html += `<td class="center bold">${sumIncomes}</td>`;
 
   rowNumber++;
-  html += objOverview.insertTableColumnsNew('font-weight: 600;', rowNumber, '', 'Sum', sumIncomes);
+  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', sumIncomes);
 
   html += "</tr>"
 
   rowNumber++;
-  html += objOverview.insertTableColumnsNew('', rowNumber, '', '', '');
+  html += objOverview.insertTableColumns('', rowNumber, '', '', '');
 
   // The end of the table
-  html += objDues.endTableNew();
+  html += objDues.endTable();
   document.querySelector('.bankAccountTransactions').innerHTML = html;
 
   return rowNumber;
@@ -343,7 +343,7 @@ function showBankAccountTransactions(rowNumber) {
 function showHowMuchToPay(rowNumber) {
 
   // Start table
-  let html = objOverview.startTableNew('width:1100px;');
+  let html = objOverview.startTable('width:1100px;');
 
   let sumIncome = 0;
 
@@ -363,7 +363,7 @@ function showHowMuchToPay(rowNumber) {
 
   // show main header
   let overPay = sumIncome - sumToPay;
-  html += (overPay > 0) ? objOverview.showTableHeaderNew('width:1100px;', '', '', 'Forfall', 'Betalt', 'Til gode') : objOverview.showTableHeaderNew('width:1100px;', '', '', 'Forfall', 'Betalt', 'Skyldig');
+  html += (overPay > 0) ? objOverview.showTableHeader('width:1100px;', '', '', 'Forfall', 'Betalt', 'Til gode') : objOverview.showTableHeader('width:1100px;', '', '', 'Forfall', 'Betalt', 'Skyldig');
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
@@ -373,14 +373,14 @@ function showHowMuchToPay(rowNumber) {
 
   // Show menu
   rowNumber++;
-  html += objOverview.insertTableColumnsNew('font-weight: 600;', rowNumber, 'Sum', sumToPay, sumIncome, overPay);
+  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, 'Sum', sumToPay, sumIncome, overPay);
 
   // Show the rest of the menu
   rowNumber++;
   html += objOverview.showRestMenu(rowNumber);
 
   // The end of the table
-  html += objOverview.endTableNew();
+  html += objOverview.endTable();
   document.querySelector('.howMuchToPay').innerHTML = html;
 
   return rowNumber;

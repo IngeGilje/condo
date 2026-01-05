@@ -717,7 +717,6 @@ async function main() {
     // Requests for budgets table
     app.get("/budgets", async (req, res) => {
 
-
       const action = req.query.action;
       const lastUpdate = today.toISOString();
 
@@ -741,7 +740,7 @@ async function main() {
             if (year !== 999999999) {
               SQLquery +=
                 `
-                  AND year = '${year}'
+                  AND year = ${year}
                 `;
             }
             if (accountId !== 999999999) {
@@ -786,7 +785,7 @@ async function main() {
                   lastUpdate = '${lastUpdate}',
                   accountId = ${accountId},
                   amount = ${amount},
-                  year = '${year}',
+                  year = ${year},
                   text = '${text}'
                 WHERE budgetId = ${budgetId};
               `;
@@ -833,7 +832,7 @@ async function main() {
                   '${lastUpdate}',
                   ${accountId},
                   ${amount},
-                  '${year}',
+                  ${year},
                   '${text}'
                 );
               `;
@@ -1073,7 +1072,6 @@ async function main() {
           try {
 
             const condominiumId = Number(req.query.condominiumId);
-            console.log('condominiumId: ', condominiumId);
 
             const SQLquery =
               `
@@ -1141,7 +1139,6 @@ async function main() {
           try {
 
             const condominiumId = req.query.condominiumId;
-            console.log('CondominiumId: ', condominiumId);
             const user = req.query.user;
             const name = req.query.name;
             const street = req.query.street;
@@ -1455,7 +1452,7 @@ async function main() {
                   phone = '${phone}',
                   bankAccount = '${bankAccount}',
                   accountId = ${accountId},
-                  amount = '${amount}',
+                  amount = ${amount},
                   amountAccountId = ${amountAccountId},
                   text = '${text}',
                   textAccountId = ${textAccountId}
@@ -1655,9 +1652,9 @@ async function main() {
                 `;
             }
 
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /bankaccounttransactions:", err.message);
@@ -1676,7 +1673,7 @@ async function main() {
             const accountId = req.query.accountId;
             const income = req.query.income;
             const payment = req.query.payment;
-            const numberKWHour = req.query.numberKWHour;
+            const kilowattHour = req.query.kilowattHour;
             const date = req.query.date;
             const text = req.query.text;
             const bankAccountTransactionId = req.query.bankAccountTransactionId;
@@ -1689,11 +1686,11 @@ async function main() {
                   deleted = 'N',
                   user = '${user}',
                   lastUpdate = '${lastUpdate}',
-                  condoId = '${condoId}',
-                  accountId = '${accountId}',
+                  condoId = ${condoId},
+                  accountId = ${accountId},
                   income = ${income},
                   payment = ${payment},
-                  numberKWHour = '${numberKWHour}',
+                  kilowattHour = ${kilowattHour},
                   date = ${date},
                   text = '${text}'
                 WHERE bankAccountTransactionId = ${bankAccountTransactionId};
@@ -1720,7 +1717,7 @@ async function main() {
             const accountId = req.query.accountId;
             const income = req.query.income;
             const payment = req.query.payment;
-            const numberKWHour = req.query.numberKWHour;
+            const kilowattHour = req.query.kilowattHour;
             const date = req.query.date;
             const text = req.query.text;
 
@@ -1736,7 +1733,7 @@ async function main() {
                   accountId,
                   income,
                   payment,
-                  numberKWHour,
+                  kilowattHour,
                   date,
                   text
                 ) VALUES(
@@ -1748,13 +1745,13 @@ async function main() {
                   ${accountId},
                   ${income},
                   ${payment},
-                  '${numberKWHour}',
+                  ${kilowattHour},
                   ${date},
                   '${text}'
                 );
               `;
 
-            console.log('SQLquery: ',SQLquery);
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await db.query(SQLquery);
             res.json(rows);
           } catch (err) {
@@ -1803,7 +1800,7 @@ async function main() {
       try {
 
         const csvFileName = req.query.csvFileName;
-        
+
         const data = await fs.readFile(csvFileName, "utf8");
         res.json({ content: data });
       } catch (err) {
@@ -1853,4 +1850,150 @@ async function main() {
     console.log("❌ Database connection failed:", err.message);
     process.exit(1);
   }
+
+  // Requests for remoteheatings table
+  app.get("/remoteheatings", async (req, res) => {
+
+    const action = req.query.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.query.condominiumId;
+          const year = Number(req.query.year);
+          const condoId = Number(req.query.condoId);
+
+          let SQLquery = `SELECT * FROM remoteheatings WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
+
+          if (year !== 999999999) SQLquery += ` AND year = ${year}`;
+          if (condoId !== 999999999) SQLquery += ` AND condoId = ${condoId}`;
+          SQLquery += ` ORDER BY year,condoId;`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /remoteheatings:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+
+          const remoteHeatingId = req.query.remoteHeatingId;
+          const user = req.query.user;
+          const condoId = req.query.condoId;
+          const year = req.query.year;
+          const date = req.query.date;
+          const kilowattHour = req.query.kilowattHour;
+
+          // Update row
+          const SQLquery =
+            `
+              UPDATE remoteheatings
+              SET
+                user = '${user}', 
+                lastUpdate = '${lastUpdate}',
+                condoId = ${condoId},
+                year = ${year},
+                date = ${date},
+                kilowattHour = ${kilowattHour}
+              WHERE remoteHeatingId = ${remoteHeatingId};
+            `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /remoteheatings:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const user = req.query.user;
+          const condominiumId = req.query.condominiumId;
+          const condoId = req.query.condoId;
+          const year = req.query.year;
+          const date = req.query.date;
+          const kilowattHour = req.query.kilowattHour;
+
+          // Insert new row
+          const SQLquery =
+            `
+                INSERT INTO remoteheatings (
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  condoId,
+                  year,
+                  date,
+                  kilowattHour
+                  ) VALUES (
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  ${condoId},
+                  ${year},
+                  ${date},
+                  ${kilowattHour}
+                );
+              `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /remoteheatings:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const remoteHeatingId = req.query.remoteHeatingId;
+          const user = req.query.user;
+
+          // Delete table
+          const SQLquery =
+            `
+                UPDATE remoteheatings
+                SET 
+                  deleted = 'Y',
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}'
+                WHERE remoteHeatingId = ${remoteHeatingId};
+              `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /remoteheatings:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
 }

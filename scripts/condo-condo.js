@@ -28,7 +28,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     const condoId = objCondos.arrayCondo.at(-1).condoId;
 
-    showMenu();
+    let html = objCondos.showHorizontalMenu('width: 750px');
+    document.querySelector(".horizontalMenu").innerHTML = html;
 
     // Show header
     let menuNumber = 0;
@@ -135,35 +136,17 @@ function events() {
   });
 }
 
-// Show menu
-function showMenu() {
-
-  // Start table
-  let html = objCondos.startTableNew('width:750px;');
-
-  html += objCondos.showHorizontalMenu('background-color: #e0f0e0;');
-
-  // insert empty row
-  html += objCondos.insertTableColumnsNew('', 0, '');
-
-  html += "</tr>";
-
-  // The end of the table
-  html += objCondos.endTableNew();
-  document.querySelector('.horizontalMenu').innerHTML = html;
-}
-
 // Show header
 function showHeader() {
 
   // Start table
-  let html = objCondos.startTableNew('width:750px;');
+  let html = objCondos.startTable('width:750px;');
 
   // show main header
-  html += objCondos.showTableHeaderNew('width:250px;', 'Leilighet');
+  html += objCondos.showTableHeader('width:250px;', 'Leilighet');
 
   // The end of the table
-  html += objCondos.endTableNew();
+  html += objCondos.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -171,30 +154,30 @@ function showHeader() {
 function showFilter(condoId) {
 
   // Start table
-  html = objCondos.startTableNew('width:750px;');
+  html = objCondos.startTable('width:750px;');
 
   // Header filter
-  html += objCondos.showTableHeaderNew('width:250px;', '', 'Velg leilighet', '');
+  html += objCondos.showTableHeader('width:250px;', '', 'Velg leilighet', '');
 
   // start table body
-  html += objCondos.startTableBodyNew();
+  html += objCondos.startTableBody();
 
   // insert table columns in start of a row
-  html += objCondos.insertTableColumnsNew('', 0, '');
+  html += objCondos.insertTableColumns('', 0, '');
 
   // condo
-  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', condoId, '', '')
+  html += objCondos.showSelectedCondos('filterCondoId', 'width:100px;', condoId, '', '')
 
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objCondos.insertTableColumnsNew('', 0, '');
+  html += objCondos.insertTableColumns('', 0, '');
 
   // end table body
-  html += objCondos.endTableBodyNew();
+  html += objCondos.endTableBody();
 
   // The end of the table
-  html += objCondos.endTableNew();
+  html += objCondos.endTable();
   document.querySelector('.filter').innerHTML = html;
 }
 
@@ -202,10 +185,10 @@ function showFilter(condoId) {
 function showResult(condoId, rowNumber) {
 
   // start table
-  let html = objCondos.startTableNew('width:750px;');
+  let html = objCondos.startTable('width:750px;');
 
   // table header
-  html += objCondos.showTableHeaderNew("width:250px;", '', '', '');
+  html += objCondos.showTableHeader("width:250px;", '', '', '');
 
   // Check if condos row exist
   const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
@@ -220,7 +203,7 @@ function showResult(condoId, rowNumber) {
     html += "</tr>";
 
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber);
+    html += objCondos.insertTableColumns('', rowNumber);
 
     // name
     html += objCondos.inputTableColumn('name', objCondos.arrayCondo[condoRowNumber].name, 45);
@@ -235,7 +218,7 @@ function showResult(condoId, rowNumber) {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber);
+    html += objCondos.insertTableColumns('', rowNumber);
 
     // street
     html += objCondos.inputTableColumn('street', objCondos.arrayCondo[condoRowNumber].street, 45);
@@ -252,7 +235,7 @@ function showResult(condoId, rowNumber) {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber);
+    html += objCondos.insertTableColumns('', rowNumber);
 
     // postalCode
     html += objCondos.inputTableColumn('postalCode', objCondos.arrayCondo[condoRowNumber].postalCode, 4);
@@ -269,7 +252,7 @@ function showResult(condoId, rowNumber) {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber);
+    html += objCondos.insertTableColumns('', rowNumber);
 
     // squareMeters
     html += objCondos.inputTableColumn('squareMeters', formatOreToKroner(objCondos.arrayCondo[condoRowNumber].squareMeters), 10);
@@ -278,13 +261,13 @@ function showResult(condoId, rowNumber) {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber);
+    html += objCondos.insertTableColumns('', rowNumber);
 
     html += "</tr>";
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber);
+    html += objCondos.insertTableColumns('', rowNumber);
 
     html += objCondos.showButtonNew('width:170px;', 'update', 'Oppdater');
     html += objCondos.showButtonNew('width:170px;', 'cancel', 'Angre');
@@ -293,12 +276,12 @@ function showResult(condoId, rowNumber) {
     // insert empty row
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber);
+    html += objCondos.insertTableColumns('', rowNumber);
     html += "</tr>";
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objCondos.insertTableColumnsNew('', rowNumber);
+    html += objCondos.insertTableColumns('', rowNumber);
 
     html += objCondos.showButtonNew('width:170px;', 'delete', 'Slett');
     html += objCondos.showButtonNew('width:170px;', 'insert', 'Ny');
@@ -309,7 +292,7 @@ function showResult(condoId, rowNumber) {
     html += objCondos.showRestMenu(rowNumber);
 
     // The end of the table
-    html += objCondos.endTableNew();
+    html += objCondos.endTable();
     document.querySelector('.result').innerHTML = html;
 
     return rowNumber;

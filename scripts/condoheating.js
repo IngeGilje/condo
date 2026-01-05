@@ -1,4 +1,4 @@
-// maintenance of accounts
+// maintenance of remote heating
 
 // Activate classes
 const today = new Date();

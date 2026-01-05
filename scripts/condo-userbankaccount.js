@@ -139,13 +139,13 @@ function events() {
 function showHeader() {
 
   // Start table
-  let html = objUserBankAccounts.startTableNew('width:1100px;');
+  let html = objUserBankAccounts.startTable('width:1100px;');
 
   // show main header
-  html += objUserBankAccounts.showTableHeaderNew('width:250px;', 'Bankkonto for bruker');
+  html += objUserBankAccounts.showTableHeader('width:250px;', 'Bankkonto for bruker');
 
   // The end of the table
-  html += objUserBankAccounts.endTableNew();
+  html += objUserBankAccounts.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -153,16 +153,16 @@ function showHeader() {
 function showFilter() {
 
   // Start table
-  let html = objUserBankAccounts.startTableNew('width:1100px;');
+  let html = objUserBankAccounts.startTable('width:1100px;');
 
   // Header filter
-  html += objUserBankAccounts.showTableHeaderNew("width:250px;", '', 'Bruker', 'Konto', '');
+  html += objUserBankAccounts.showTableHeader("width:250px;", '', 'Bruker', 'Konto', '');
 
   // start table body
-  html += objUserBankAccounts.startTableBodyNew();
+  html += objUserBankAccounts.startTableBody();
 
   // insert table columns in start of a row
-  html += objUserBankAccounts.insertTableColumnsNew('', 0, '');
+  html += objUserBankAccounts.insertTableColumns('', 0, '');
 
   // Show all selected users
   html += objUsers.showSelectedUsersNew('filterUserId', '', 0, '', 'Alle');
@@ -172,13 +172,13 @@ function showFilter() {
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objUserBankAccounts.insertTableColumnsNew('', 0, '');
+  html += objUserBankAccounts.insertTableColumns('', 0, '');
 
   // end table body
-  html += objUserBankAccounts.endTableBodyNew();
+  html += objUserBankAccounts.endTableBody();
 
   // The end of the table
-  html += objUserBankAccounts.endTableNew();
+  html += objUserBankAccounts.endTable();
   document.querySelector('.filter').innerHTML = html;
 }
 
@@ -188,11 +188,11 @@ function insertEmptyTableRow(rowNumber) {
   let html = "";
 
   // Show menu
-  //html += objUserBankAccounts.showMenu(rowNumber);
+  //html += objUserBankAccounts.verticalMenu(rowNumber);
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objUserBankAccounts.insertTableColumnsNew('', rowNumber, 'Ny brukerkonto');
+  html += objUserBankAccounts.insertTableColumns('', rowNumber, 'Ny brukerkonto');
 
   // delete column
   //html += "<td class='center'>Ny brukerkonto</td>";
@@ -214,16 +214,16 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objUserBankAccounts.startTableNew('width:1100px;');
+  let html = objUserBankAccounts.startTable('width:1100px;');
 
   // table header
-  html += objUserBankAccounts.showTableHeaderNew('width:250px;', '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += objUserBankAccounts.showTableHeader('width:250px;', '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   objUserBankAccounts.arrayUserBankAccounts.forEach((userBankAccount) => {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUserBankAccounts.insertTableColumnsNew('', rowNumber);
+    html += objUserBankAccounts.insertTableColumns('', rowNumber);
 
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;
@@ -254,7 +254,7 @@ function showResult(rowNumber) {
   html += insertEmptyTableRow(rowNumber);
 
   // The end of the table
-  html += objUserBankAccounts.endTableNew();
+  html += objUserBankAccounts.endTable();
   document.querySelector('.filter').innerHTML = html;
 
   return rowNumber;
@@ -300,8 +300,8 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     let bankAccount = document.querySelector(className).value;
 
     // Check if the userbankaccounts row exist
-    userBankAccountRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
-    if (userBankAccountRowNumber !== -1) {
+    rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    if (rowNumberUserBankAccount !== -1) {
 
       // update the userbankaccounts row
       await objUserBankAccounts.updateUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount);

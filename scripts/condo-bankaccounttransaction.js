@@ -111,11 +111,11 @@ function events() {
   document.addEventListener('change', (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('condoId'))
       || [...event.target.classList].some(cls => cls.startsWith('accountId'))
-      || [...event.target.classList].some(cls => cls.startsWith('numberKWHour'))
+      || [...event.target.classList].some(cls => cls.startsWith('kilowattHour'))
       || [...event.target.classList].some(cls => cls.startsWith('date'))
       || [...event.target.classList].some(cls => cls.startsWith('text'))) {
 
-      const arrayPrefixes = ['condoId', 'accountId', 'income', 'payment', 'numberKWHour', 'date', 'text'];
+      const arrayPrefixes = ['condoId', 'accountId', 'income', 'payment', 'kilowattHour', 'date', 'text'];
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -202,19 +202,19 @@ function events() {
 function showFilter() {
 
   // Start table
-  html = objBankAccountTransactions.startTableNew('width:1450px;');
+  html = objBankAccountTransactions.startTable('width:1450px;');
 
   // Header filter
-  html += objBankAccountTransactions.showTableHeaderNew('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp');
+  html += objBankAccountTransactions.showTableHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp');
 
   // start table body
-  html += objBankAccountTransactions.startTableBodyNew();
+  html += objBankAccountTransactions.startTableBody();
 
   // insert table columns in start of a row
-  html += objBankAccountTransactions.insertTableColumnsNew('', 0, '', '');
+  html += objBankAccountTransactions.insertTableColumns('', 0, '', '');
 
   // Show all selected condos
-  html += objCondos.showSelectedCondosNew('filterCondoId', 'width:100px;', 999999999, '', 'Vis alle');
+  html += objCondos.showSelectedCondos('filterCondoId', 'width:100px;', 999999999, '', 'Vis alle');
 
   // Get condominiumId
   const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(objUserPassword.condominiumId));
@@ -238,13 +238,13 @@ function showFilter() {
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objBankAccountTransactions.insertTableColumnsNew('', 0, '');
+  html += objBankAccountTransactions.insertTableColumns('', 0, '');
 
   // end table body
-  html += objBankAccountTransactions.endTableBodyNew();
+  html += objBankAccountTransactions.endTableBody();
 
   // The end of the table
-  html += objBankAccountTransactions.endTableNew();
+  html += objBankAccountTransactions.endTable();
   document.querySelector('.filter').innerHTML = html;
 }
 
@@ -273,10 +273,10 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     const condoId = Number(document.querySelector(className).value);
     const validCondoId = validateNumberNew(condoId, 0, 999999999)
 
-    // numberKWHour
-    className = `.numberKWHour${bankAccountTransactionId}`;
-    const numberKWHour = Number(formatKronerToOre(document.querySelector(className).value));
-    const validNumberKWHour = validateNumberNew(numberKWHour, 0, 999999999)
+    // kilowattHour
+    className = `.kilowattHour${bankAccountTransactionId}`;
+    const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
+    const validNumberKWHour = validateNumberNew(kilowattHour, 0, 999999999)
 
     // text
     className = `.text${bankAccountTransactionId}`;
@@ -293,7 +293,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
       if (bankAccountTransactionRowNumber !== -1) {
 
         // update the bankaccounttransactions row
-        await objBankAccountTransactions.updateBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, numberKWHour, date, text);
+        await objBankAccountTransactions.updateBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, kilowattHour, date, text);
       }
     }
   }
@@ -307,10 +307,10 @@ function showHeader() {
   let html = startHTMLTable('width:1450px;');
 
   // Main header
-  html += objBankAccountTransactions.showTableHeaderNew('width:250px;', 'Bankkontotransaksjoner');
+  html += objBankAccountTransactions.showTableHeader('width:250px;', 'Bankkontotransaksjoner');
 
   // The end of the table
-  html += endTableNew();
+  html += endTable();
   document.querySelector('.header').innerHTML = html;
 }
 */
@@ -319,13 +319,13 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  let html = objBankAccountTransactions.startTableNew('width:1450px;');
+  let html = objBankAccountTransactions.startTable('width:1450px;');
 
   // show main header
-  html += objBankAccountTransactions.showTableHeaderNew('width:250px;', 'Bankkontotransaksjoner');
+  html += objBankAccountTransactions.showTableHeader('width:250px;', 'Bankkontotransaksjoner');
 
   // The end of the table
-  html += objBankAccountTransactions.endTableNew();
+  html += objBankAccountTransactions.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -362,10 +362,10 @@ async function deleteBankAccountTransactionRow(bankAccountTransationId, classNam
 function showResult(rowNumber) {
 
   // start table
-  let html = objCondos.startTableNew('width:1450px;');
+  let html = objCondos.startTable('width:1450px;');
 
   // table header
-  html += objCondos.showTableHeaderNew("width:750px;", '','', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
+  html += objCondos.showTableHeader("width:750px;", '','', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -376,8 +376,8 @@ function showResult(rowNumber) {
 
     // Show menu
     rowNumber++;
-    //html += objBankAccountTransactions.showMenu(rowNumber);
-    html += objAccounts.insertTableColumnsNew('', rowNumber, '');
+    //html += objBankAccountTransactions.verticalMenu(rowNumber);
+    html += objAccounts.insertTableColumns('', rowNumber, '');
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
@@ -386,11 +386,11 @@ function showResult(rowNumber) {
 
     // delete
     let className = `delete${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.showSelectedValuesNew(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
+    html += objBankAccountTransactions.showSelectedValues(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
 
     // condos
     className = `condoId${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondos.showSelectedCondosNew(className, 'width:100px;', bankAccountTransaction.condoId, 'Ingen er valgt', '');
+    html += objCondos.showSelectedCondos(className, 'width:100px;', bankAccountTransaction.condoId, 'Ingen er valgt', '');
 
     // Date
     const date = formatToNorDate(bankAccountTransaction.date);
@@ -414,10 +414,10 @@ function showResult(rowNumber) {
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransactions.inputTableColumn(className, payment, 10);
 
-    // KilowattHour
-    const numberKWHour = formatOreToKroner(bankAccountTransaction.numberKWHour);
-    className = `numberKWHour${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumn(className, numberKWHour, 10);
+    // kilowattHour
+    const kilowattHour = formatOreToKroner(bankAccountTransaction.kilowattHour);
+    className = `kilowattHour${bankAccountTransaction.bankAccountTransactionId}`;
+    html += objBankAccountTransactions.inputTableColumn(className, kilowattHour, 10);
 
     // text
     const text = bankAccountTransaction.text;
@@ -438,13 +438,13 @@ function showResult(rowNumber) {
   sumPayment = formatOreToKroner(sumPayment);
 
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumnsNew('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncome, sumPayment);
+  html += objBankAccountTransactions.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncome, sumPayment);
 
   // Show the rest of the menu
   rowNumber++;
   html += objBankAccountTransactions.showRestMenu(rowNumber);
 
   // The end of the table
-  html += objBankAccountTransactions.endTableNew();
+  html += objBankAccountTransactions.endTable();
   document.querySelector('.result').innerHTML = html;
 }

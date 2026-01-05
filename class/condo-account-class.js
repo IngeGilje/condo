@@ -237,10 +237,10 @@ class Account extends Condos {
   selectAccountId(accountId, className) {
 
     // Check if account id exist
-    const accountRowNumber = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumber !== -1) {
+    const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (rowNumberAccount !== -1) {
 
-      document.querySelector(`.select-${className}`).value = this.arrayAccounts[accountRowNumber].accountId;
+      document.querySelector(`.select-${className}`).value = this.arrayAccounts[rowNumberAccount].accountId;
       return true;
     } else {
 
@@ -252,8 +252,8 @@ class Account extends Condos {
   selectAccountIdNew(accountId) {
 
     // Check if account id exist
-    const accountRowNumber = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumber !== -1) accountId = this.arrayAccounts[accountRowNumber].accountId;
+    const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (rowNumberAccount !== -1) accountId = this.arrayAccounts[rowNumberAccount].accountId;
 
     return accountId;
   }
@@ -264,27 +264,27 @@ class Account extends Condos {
     let accountId = 0;
 
     // Bank Acoount <> Condominium Bank Account
-    let bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
-    if (bankAccountRowNumber === -1) {
+    let rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccount);
+    if (rowNumberBankAccount === -1) {
 
       // Check user bank account
-      const bankAccountRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
-      if (bankAccountRowNumber !== -1) {
+      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccount);
+      if (rowNumberBankAccount !== -1) {
 
-        accountId = objUserBankAccounts.arrayUserBankAccounts[bankAccountRowNumber].accountId;
+        accountId = objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].accountId;
       }
 
-      let supplierRowNumber;
+      let rowNumberSupplier;
       // get Account Id from supplier amount
-      supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
-      if (supplierRowNumber !== -1) {
+      rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccount);
+      if (rowNumberSupplier !== -1) {
 
-        accountId = objSuppliers.arraySuppliers[supplierRowNumber].accountId;
+        accountId = objSuppliers.arraySuppliers[rowNumberSupplier].accountId;
 
         // get Account Id from supplier amount
-        const amount = (objSuppliers.arraySuppliers[supplierRowNumber].amount) ? Number(objSuppliers.arraySuppliers[supplierRowNumber].amount) : 0;
+        const amount = (objSuppliers.arraySuppliers[rowNumberSupplier].amount) ? Number(objSuppliers.arraySuppliers[rowNumberSupplier].amount) : 0;
 
-        accountId = (amount === Number(payment)) ? Number(objSuppliers.arraySuppliers[supplierRowNumber].amountAccountId) : accountId;
+        accountId = (amount === Number(payment)) ? Number(objSuppliers.arraySuppliers[rowNumberSupplier].amountAccountId) : accountId;
       }
 
       // get Account Id from supplier text
@@ -312,10 +312,10 @@ class Account extends Condos {
     let accountName = "-";
 
     // Account name from account table
-    const accountRowNumber = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumber !== -1) {
+    const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (rowNumberAccount !== -1) {
 
-      accountName = objAccounts.arrayAccounts[accountRowNumber].name;
+      accountName = objAccounts.arrayAccounts[rowNumberAccount].name;
     }
 
     return accountName;
@@ -326,10 +326,10 @@ class Account extends Condos {
 
     accountId = Number(accountId);
     let accountName = '';
-    const accountRowNumber = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (accountRowNumber !== -1) {
+    const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (rowNumberAccount !== -1) {
 
-      accountName = this.arrayAccounts[accountRowNumber].name;
+      accountName = this.arrayAccounts[rowNumberAccount].name;
     }
     return accountName;
   }
@@ -447,7 +447,7 @@ class Account extends Condos {
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayAccounts = await response.json();
     } catch (error) {
-      console.log("Error loading users:", error);
+      console.log("Error loading accounts:", error);
     }
   }
 

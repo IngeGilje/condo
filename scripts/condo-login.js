@@ -38,12 +38,12 @@ function events() {
       const password = document.querySelector('.password').value;
 
       // Security level
-      const userRowNumber = objUsers.arrayUsers.findIndex(userRow => userRow.email === email);
-      if (userRowNumber !== -1) {
+      const rowNumberUser = objUsers.arrayUsers.findIndex(userRow => userRow.email === email);
+      if (rowNumberUser !== -1) {
 
-        const securityLevel = objUsers.arrayUsers[userRowNumber].securityLevel;
+        const securityLevel = objUsers.arrayUsers[rowNumberUser].securityLevel;
 
-        const condominiumId = objUsers.arrayUsers[userRowNumber].condominiumId;
+        const condominiumId = objUsers.arrayUsers[rowNumberUser].condominiumId;
 
         // Save email/user, password and security level
         sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
@@ -94,13 +94,13 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objLogIn.startTableNew('width:250px;margin: 0 auto;');
+  let html = objLogIn.startTable('width:250px;margin: 0 auto;');
 
   // show main header
-  html += objLogIn.showTableHeaderNew('width:250px;', 'LogIn');
+  html += objLogIn.showTableHeader('width:250px;', 'LogIn');
 
   // The end of the table
-  html += objLogIn.endTableNew();
+  html += objLogIn.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -108,16 +108,16 @@ function showHeader() {
 function showResult() {
 
   // start table
-  let html = objLogIn.startTableNew('width:250px;margin: 0 auto;');
+  let html = objLogIn.startTable('width:250px;margin: 0 auto;');
 
   // table header
-  html += objLogIn.showTableHeaderNew('width:250px;', '', '', '');
+  html += objLogIn.showTableHeader('width:250px;', '', '', '');
 
   // Header for value including menu
   html += objLogIn.showHTMLTableHeaderNew("width:250px;", 0, 'Email');
 
   // insert table columns in start of a row
-  html += objLogIn.insertTableColumnsNew('margin: 0 auto;', 0);
+  html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
 
   // email
   html += objLogIn.inputTableColumn('email', '', 45);
@@ -129,7 +129,7 @@ function showResult() {
   html += objLogIn.showHTMLTableHeaderNew("width:250px;", 0, 'Passord');
 
   // insert table columns in start of a row
-  html += objLogIn.insertTableColumnsNew('', 0);
+  html += objLogIn.insertTableColumns('', 0);
 
   // password
   password = '';
@@ -138,23 +138,23 @@ function showResult() {
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objLogIn.insertTableColumnsNew('', 0, '');
+  html += objLogIn.insertTableColumns('', 0, '');
 
   html += "</tr>";
 
       // insert table columns in start of a row
-    html += objLogIn.insertTableColumnsNew('', 0);
+    html += objLogIn.insertTableColumns('', 0);
 
     // Show buttons
     html += objLogIn.showButtonNew('width:170px;', 'LogIn', 'LogIn');
     html += "</tr>";
 
   // insert table columns in start of a row
-  html += objLogIn.insertTableColumnsNew('', 0, '');
+  html += objLogIn.insertTableColumns('', 0, '');
 
   html += "</tr>";
 
   // The end of the table
-  html += objLogIn.endTableNew();
+  html += objLogIn.endTable();
   document.querySelector('.result').innerHTML = html;
 }

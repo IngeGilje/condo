@@ -61,30 +61,113 @@ class Condos {
       text: "Forfall"
     },
     {
-      applicationName: "condo-budget.html",
+      applicationName: "condo-heating.html",
       className: "Menu10",
+      text: "Fjernvarme"
+    },
+    {
+      applicationName: "condo-budget.html",
+      className: "Menu11",
       text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu11",
+      className: "Menu12",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu12",
+      className: "Menu13",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu13",
+      className: "Menu14",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu14",
+      className: "Menu15",
       text: "Årsregnskap"
     },
+  ];
+
+  // array of administration menu objects
+  arrayAdministrationMenu = [
+    {
+      applicationName: "condo-condominium.html",
+      className: "Menu2",
+      text: "Sameie"
+    },
+    {
+      applicationName: "condo-condo.html",
+      className: "Menu3",
+      text: "Leilighet"
+    },
+    {
+      applicationName: "condo-bankaccount.html",
+      className: "Menu4",
+      text: "Bankkonto sameiet"
+    },
+    {
+      applicationName: "condo-account.html",
+      className: "Menu5",
+      text: "Konto"
+    },
+    {
+      applicationName: "condo-user.html",
+      className: "Menu6",
+      text: "Bruker"
+    },
+    {
+      applicationName: "condo-userbankaccount.html",
+      className: "Menu7",
+      text: "Bankkonto for bruker"
+    },
+    {
+      applicationName: "condo-supplier.html",
+      className: "Menu8",
+      text: "Mottaker"
+    },
+    {
+      applicationName: "condo-due.html",
+      className: "Menu9",
+      text: "Forfall"
+    },
+    {
+      applicationName: "condo-heating.html",
+      className: "Menu10",
+      text: "Fjernvarme"
+    },
+    {
+      applicationName: "condo-budget.html",
+      className: "Menu11",
+      text: "Budsjett"
+    },
+    {
+      applicationName: "condo-bankaccounttransaction.html",
+      className: "Menu13",
+      text: "Banktransaksjoner"
+    },
+    {
+      applicationName: "condo-annualaccount.html",
+      className: "Menu15",
+      text: "Årsregnskap"
+    },
+  ];
+
+  // array of horizontal menu objects
+  arrayHorizontalMenu = [
+    {
+      applicationName: "",
+      className: "Menu1",
+      text: "Administrasjon"
+    },
+    {
+      applicationName: "",
+      className: "Menu2",
+      text: "Rapporter"
+    }
   ];
 
   // Validate application name
@@ -368,8 +451,8 @@ class Condos {
   selectBankAccountId(bankAccountId, className) {
 
     // Check if account id exist
-    const bankAccountRowNumber = this.arrayBankAccounts.findIndex(bankAccounts => bankAccounts.bankAccountId === bankAccountId);
-    if (bankAccountRowNumber !== -1) {
+    const rowNumberBankAccount = this.arrayBankAccounts.findIndex(bankAccounts => bankAccounts.bankAccountId === bankAccountId);
+    if (rowNumberBankAccount !== -1) {
 
       document.querySelector(`.select-${className}`).value = bankAccountId;
       return true;
@@ -435,8 +518,8 @@ class Condos {
     document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
-  // Select number
-  selectIntervalHTMLNew(className, style, fromNumber, toNumber, selectedNumber) {
+  // Select interval number
+  selectInterval(className, style, fromNumber, toNumber, selectedNumber) {
 
     if (style === "") html = `<td class="center"><select class="${className} center">`;
     if (style !== "") html = `<td class="center"><select class="${className} center" style = "${style}">`;
@@ -578,7 +661,7 @@ class Condos {
     return validUser;
   }
 
-  showMenu(menuNumber) {
+  verticalMenu(menuNumber) {
 
     let html = "";
 
@@ -682,70 +765,7 @@ class Condos {
   }
 
   // Select choices like Yes, No, Ignore
-  showSelectedValues(className, selectedChoice, labelText, ...choices) {
-
-    let selectedOption =
-      false;
-
-    let html =
-      `
-      <form 
-        id="${accountId}"
-        action="/submit" 
-        method="POST"
-      >
-        <label 
-          class="label-${className}"
-          for="${accountId}"
-          id="${accountId}"
-        >
-          ${labelText}
-        </label>
-        <select 
-          class="select-${className}" 
-          id="${accountId}"
-          name="${accountId}"
-        >
-      `;
-
-    choices.forEach((choice) => {
-      if (choice === selectedChoice) {
-
-        html +=
-          `
-          <option 
-            value=${choice}
-            selected
-          >
-            ${choice}
-          </option>
-        `;
-        selectedOption =
-          true;
-      } else {
-
-        html +=
-          `
-          <option 
-            value="${choice}">
-            ${choice}
-          </option>
-        `;
-      }
-    });
-
-    html +=
-      `
-        </select >
-      </form>
-    `;
-
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
-  }
-
-  // Select choices like Yes, No, Ignore
-  showSelectedValuesNew(className, style, selectedChoice, ...choices) {
+  showSelectedValues(className, style, selectedChoice, ...choices) {
 
     let html =
       `
@@ -813,29 +833,29 @@ class Condos {
     let bankAccountName = '';
 
     // Bank account name from bank account table 
-    const bankAccountRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
-    if (bankAccountRowNumber !== -1) {
+    const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    if (rowNumberBankAccount !== -1) {
 
-      bankAccountName = objBankAccounts.arrayBankAccounts[bankAccountRowNumber].name;
+      bankAccountName = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
     }
 
     if (!bankAccountName) {
 
       // Bank account name from supplier table
-      const supplierRowNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
-      if (supplierRowNumber !== -1) {
+      const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+      if (rowNumberSupplier !== -1) {
 
-        bankAccountName = objSuppliers.arraySuppliers[supplierRowNumber].name;
+        bankAccountName = objSuppliers.arraySuppliers[rowNumberSupplier].name;
       }
     }
 
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const bankAccountRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
-      if (bankAccountRowNumber !== -1) {
+      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+      if (rowNumberBankAccount !== -1) {
 
-        bankAccountName = objUserBankAccounts.arrayUserBankAccounts[bankAccountRowNumber].name;
+        bankAccountName = objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].name;
       }
     }
 
@@ -852,19 +872,19 @@ class Condos {
     const bankAccountPattern = /^\d{11}$/;
     if ((bankAccountPattern.test(fromBankAccount))) {
 
-      const bankAccountRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
-      if (bankAccountRowNumber !== -1) {
+      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
+      if (rowNumberBankAccount !== -1) {
 
-        const userId = Number(objUserBankAccounts.arrayUserBankAccounts[bankAccountRowNumber].userId);
+        const userId = Number(objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].userId);
 
         if (userId >= 0) {
 
-          const userRowNumber =
+          const rowNumberUser =
             objUsers.arrayUsers.findIndex(user => user.userId === userId);
-          if (userRowNumber !== -1) {
+          if (rowNumberUser !== -1) {
 
             condoId =
-              Number(objUsers.arrayUsers[userRowNumber].condoId);
+              Number(objUsers.arrayUsers[rowNumberUser].condoId);
           }
         }
       }
@@ -911,7 +931,7 @@ class Condos {
     if (className.toLowerCase().includes("filename")) imageName = "fileName.png";
     if (className.toLowerCase().includes("date")) imageName = "date.png";
     if (className.toLowerCase().includes("income")) imageName = "income.png";
-    if (className.toLowerCase().includes("kwhour")) imageName = "numberKWHour.png";
+    if (className.toLowerCase().includes("kwhour")) imageName = "kilowattHour.png";
     if (className.toLowerCase().includes("text")) imageName = "text.png";
     if (className.toLowerCase().includes("amount")) imageName = "amount.png";
     if (className.toLowerCase().includes("password")) imageName = "password.png";
@@ -1005,9 +1025,9 @@ class Condos {
           "payment.png";
         break;
       }
-      case "numberKWHour": {
+      case "kilowattHour": {
         imageName =
-          "numberKWHour.png";
+          "kilowattHour.png";
         break;
       }
       case "text": {
@@ -1118,7 +1138,7 @@ class Condos {
         break
       }
     }
-    let html = this.showSelectedValuesNew(className, 'width:100px;', selectedChoice, 'Nei', 'Ja')
+    let html = this.showSelectedValues(className, 'width:100px;', selectedChoice, 'Nei', 'Ja')
     return html;
   }
   // Show table header including menu
@@ -1126,7 +1146,7 @@ class Condos {
 
     let html = "<tr>";
 
-    if (menuNumber > 0) html += this.showMenu(menuNumber);
+    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1180,12 +1200,12 @@ class Condos {
       html += "<tr>";
 
       // Show menu
-      html += this.showMenu(rowNumber);
+      html += this.verticalMenu(rowNumber);
       html += "</tr>"
     }
 
     // The end of the table
-    html += this.endTableNew();
+    html += this.endTable();
     return html;
   }
 
@@ -1268,7 +1288,7 @@ class Condos {
 
     let html = "<tr>";
 
-    if (menuNumber > 0) html += this.showMenu(menuNumber);
+    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1282,13 +1302,13 @@ class Condos {
   }
 
   // Start of HTML table
-  startTableNew(style) {
+  startTable(style) {
 
     return `<table style="${style}">`;
   }
 
   // Show main header table
-  showTableHeaderNew(style, ...texts) {
+  showTableHeader(style, ...texts) {
 
     let html = `<thead><tr>`;
 
@@ -1301,7 +1321,7 @@ class Condos {
     });
 
     // empty row
-    html += this.insertTableColumnsNew('', 0, '');
+    html += this.insertTableColumns('', 0, '');
 
     html += "</thead>";
     return html;
@@ -1314,17 +1334,17 @@ class Condos {
   }
 
   // Start body table
-  startTableBodyNew() {
+  startTableBody() {
 
     return "<tbody>";
   }
 
   // insert table columns in start of a row
-  insertTableColumnsNew(style, menuNumber, ...texts) {
+  insertTableColumns(style, menuNumber, ...texts) {
 
     let html = "<tr>";
 
-    if (menuNumber > 0) html += this.showMenu(menuNumber);
+    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1337,35 +1357,53 @@ class Condos {
   }
 
   // end body table
-  endTableBodyNew() {
+  endTableBody() {
 
     return "</tbody>";
   }
   // End of the table
-  endTableNew() {
+  endTable() {
 
     return `</table>`;
   }
 
-  showHorizontalMenu(style) {
+  // Show horizontal menu
+  showHorizontalMenu(width) {
+
+    // Start table
+    let html = this.startTable(`${width}`);
+
+    html += this.horizontalMenu('background-color: #e0f0e0;');
+
+    // insert a empty row
+    html += this.insertTableColumns('', 0, '');
+
+    html += "</tr>";
+
+    // The end of the table
+    html += this.endTable();
+    return html;
+  }
+
+  horizontalMenu(style) {
 
     let html = "";
 
     const url = (this.serverStatus === 1) ? "http://ingegilje.no/" : "http://localhost/";
 
     // Show horizontal menu
-    this.arrayMenu.forEach((menu) => {
+    this.arrayHorizontalMenu.forEach((menu) => {
 
       if (style) {
-      html +=
-        `<td class="one-line menu ${menu.className}">
-          <a href="${url}${menu.applicationName}" style="display: inline; style="${style}">
-            ${menu.text}
-          </a>
-        </td>`;
+        html +=
+          `<td class="one-line menu ${menu.className}">
+            <a href="${url}${menu.applicationName}" style="display: inline; ${style};">
+              ${menu.text}
+            </a>
+          </td>`;
       } else {
-                `<td class="one-line menu ${menu.className}">
-          <a href="${url}${menu.applicationName}" style="display: inline;>
+        `<td class="one-line menu ${menu.className}">
+          <a href="${url}${menu.applicationName}" style="display: inline;">
             ${menu.text}
           </a>
         </td>`;
@@ -2074,21 +2112,6 @@ function HTMLTableRow(...texts) {
     `;
   return html;
 }
-
-/*
-// Show icon
-function showIcon(className) {
-
-  // Set the PNG file
-  const inputElement =
-    document.querySelector(`.${className}`);
-  inputElement.style.backgroundRepeat = `no-repeat`;
-
-  const iconName = this.getIconName(`${className}`);
-  inputElement.style.backgroundImage = `url('icons/${iconName}')`;
-}
-*/
-
 
 // exit application after 1 hour
 function exitIfNoActivity() {

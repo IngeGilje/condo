@@ -226,13 +226,13 @@ function calculateSum() {
 function showHeader() {
 
   // Start table
-  let html = objBudgets.startTableNew('width:1000px;');
+  let html = objBudgets.startTable('width:1000px;');
 
   // show main header
-  html += objBudgets.showTableHeaderNew('width:200px;', 'Budsjett');
+  html += objBudgets.showTableHeader('width:200px;', 'Budsjett');
 
   // The end of the table
-  html += objBudgets.endTableNew();
+  html += objBudgets.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -240,16 +240,16 @@ function showHeader() {
 function showFilter() {
 
   // Start table
-  html = objBudgets.startTableNew('width:1000px;');
+  html = objBudgets.startTable('width:1000px;');
 
   // Header filter
-  html += objBudgets.showTableHeaderNew('', '', '', 'Konto', 'År', '', '', '');
+  html += objBudgets.showTableHeader('', '', '', 'Konto', 'År', '', '', '');
 
   // start table body
-  html += objBudgets.startTableBodyNew();
+  html += objBudgets.startTableBody();
 
   // insert table columns in start of a row
-  html += objBudgets.insertTableColumnsNew('', 0, '', '');
+  html += objBudgets.insertTableColumns('', 0, '', '');
 
   // Selected accounts
   html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
@@ -261,13 +261,13 @@ function showFilter() {
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objBudgets.insertTableColumnsNew('', 0, '');
+  html += objBudgets.insertTableColumns('', 0, '');
 
   // end table body
-  html += objBudgets.endTableBodyNew();
+  html += objBudgets.endTableBody();
 
   // The end of the table
-  html += objBudgets.endTableNew();
+  html += objBudgets.endTable();
   document.querySelector('.filter').innerHTML = html;
 }
 
@@ -275,10 +275,10 @@ function showFilter() {
 function showResult(rowNumber) {
 
   // start table
-  let html = objBudgets.startTableNew('width:1000px;');
+  let html = objBudgets.startTable('width:1000px;');
 
   // table header
-  html += objBudgets.showTableHeaderNew("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+  html += objBudgets.showTableHeader("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
 
   let sumAmount = 0;
 
@@ -287,9 +287,9 @@ function showResult(rowNumber) {
     //html += '<tr>';
 
     // Show menu
-    //html += objBudgets.showMenu(rowNumber);
+    //html += objBudgets.verticalMenu(rowNumber);
     rowNumber++;
-    html += objBudgets.insertTableColumnsNew('', rowNumber, '');
+    html += objBudgets.insertTableColumns('', rowNumber, '');
 
     // Delete
     let selectedChoice = "Ugyldig verdi";
@@ -297,7 +297,7 @@ function showResult(rowNumber) {
     if (budget.deleted === 'N') selectedChoice = "Nei";
 
     let className = `delete${budget.budgetId}`;
-    html += objBudgets.showSelectedValuesNew(className, 'width:75px;', selectedChoice, 'Nei', 'Ja');
+    html += objBudgets.showSelectedValues(className, 'width:75px;', selectedChoice, 'Nei', 'Ja');
 
     // accountId
     className = `accountId${budget.budgetId}`;
@@ -329,9 +329,9 @@ function showResult(rowNumber) {
 
   // Show menu
   rowNumber++;
-  //html += objBudgets.showMenu(rowNumber);
+  //html += objBudgets.verticalMenu(rowNumber);
   // insert table columns in start of a row
-  html += objAccounts.insertTableColumnsNew('', rowNumber, '', 'Nytt budsjett');
+  html += objAccounts.insertTableColumns('', rowNumber, '', 'Nytt budsjett');
   //html += "<td class='bold'>Nytt budsjett</td>";
 
   // accounts
@@ -358,14 +358,14 @@ function showResult(rowNumber) {
   sumAmount = formatOreToKroner(sumAmount);
 
   rowNumber++;
-  html += objBudgets.insertTableColumnsNew('font-weight: 600;', rowNumber, '', '', 'Sum', sumAmount);
+  html += objBudgets.insertTableColumns('font-weight: 600;', rowNumber, '', '', 'Sum', sumAmount);
 
   // Show the rest of the menu
   rowNumber++;
   html += objBudgets.showRestMenu(rowNumber);
 
   // The end of the table
-  html += objBudgets.endTableNew();
+  html += objBudgets.endTable();
   document.querySelector('.result').innerHTML = html;
 
   return rowNumber;
