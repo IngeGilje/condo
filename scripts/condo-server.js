@@ -1996,4 +1996,135 @@ async function main() {
       }
     }
   });
+
+  // Requests for remoteheatingprices table
+  app.get("/remoteheatingprices", async (req, res) => {
+
+    const action = req.query.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.query.condominiumId;
+
+          let SQLquery = `SELECT * FROM remoteheatingprices WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
+          SQLquery += ` ORDER BY year;`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /remoteheatingprices:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+
+          const remoteHeatingPriceId = req.query.remoteHeatingPriceId;
+          const user = req.query.user;
+          const year = req.query.year;
+          const priceKilowattHour = req.query.priceKilowattHour;
+
+          // Update row
+          const SQLquery =
+            `
+              UPDATE remoteheatingprices
+              SET
+                user = '${user}', 
+                lastUpdate = '${lastUpdate}',
+                year = ${year},
+                priceKilowattHour = ${priceKilowattHour}
+              WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+            `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /remoteheatingprices:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const user = req.query.user;
+          const condominiumId = req.query.condominiumId;
+          const year = req.query.year;
+          const priceKilowattHour = req.query.priceKilowattHour;
+
+          // Insert new row
+          const SQLquery =
+            `
+                INSERT INTO remoteheatingprices (
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  year,
+                  priceKilowattHour
+                  ) VALUES (
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  ${year},
+                  ${priceKilowattHour}
+                );
+              `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /remoteheatingprices:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const remoteHeatingPriceId = req.query.remoteHeatingPriceId;
+          const user = req.query.user;
+
+          // Delete table
+          const SQLquery =
+            `
+              UPDATE remoteheatingprices
+              SET 
+                deleted = 'Y',
+                user = '${user}',
+                lastUpdate = '${lastUpdate}'
+              WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+            `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /remoteheatingprices:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
 }

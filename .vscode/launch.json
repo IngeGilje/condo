@@ -87,6 +87,14 @@
     {
       "type": "chrome",
       "request": "launch",
+      "name": "Pris fjernvarme",
+      "url": "http://localhost/condo-remoteheatingprice.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
       "name": "Fjernvarme",
       "url": "http://localhost/condo-remoteheating.html",
       "webRoot": "c:/websites/condo",

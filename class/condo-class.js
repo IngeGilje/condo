@@ -61,33 +61,38 @@ class Condos {
       text: "Forfall"
     },
     {
-      applicationName: "condo-heating.html",
+      applicationName: "condo-remoteheatingprice.html",
+      className: "Menu11",
+      text: "Pris fjernvarme"
+    },
+    {
+      applicationName: "condo-remoteheating.html",
       className: "Menu10",
       text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
-      className: "Menu11",
+      className: "Menu12",
       text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu12",
+      className: "Menu13",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu13",
+      className: "Menu14",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu14",
+      className: "Menu15",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu15",
+      className: "Menu16",
       text: "Årsregnskap"
     },
   ];
@@ -521,6 +526,7 @@ class Condos {
   // Select interval number
   selectInterval(className, style, fromNumber, toNumber, selectedNumber) {
 
+    let html = "";
     if (style === "") html = `<td class="center"><select class="${className} center">`;
     if (style !== "") html = `<td class="center"><select class="${className} center" style = "${style}">`;
 
