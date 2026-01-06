@@ -1894,6 +1894,7 @@ async function main() {
           const year = req.query.year;
           const date = req.query.date;
           const kilowattHour = req.query.kilowattHour;
+          const priceYear = req.query.priceYear;
 
           // Update row
           const SQLquery =
@@ -1905,7 +1906,8 @@ async function main() {
                 condoId = ${condoId},
                 year = ${year},
                 date = ${date},
-                kilowattHour = ${kilowattHour}
+                kilowattHour = ${kilowattHour},
+                priceYear = ${priceYear}
               WHERE remoteHeatingId = ${remoteHeatingId};
             `;
 
@@ -1930,6 +1932,7 @@ async function main() {
           const year = req.query.year;
           const date = req.query.date;
           const kilowattHour = req.query.kilowattHour;
+          const priceYear = req.query.priceYear;
 
           // Insert new row
           const SQLquery =
@@ -1942,7 +1945,8 @@ async function main() {
                   condoId,
                   year,
                   date,
-                  kilowattHour
+                  kilowattHour,
+                  priceYear
                   ) VALUES (
                   'N',
                   ${condominiumId},
@@ -1951,7 +1955,8 @@ async function main() {
                   ${condoId},
                   ${year},
                   ${date},
-                  ${kilowattHour}
+                  ${kilowattHour},
+                  ${priceYear}
                 );
               `;
 
@@ -2069,22 +2074,22 @@ async function main() {
           // Insert new row
           const SQLquery =
             `
-                INSERT INTO remoteheatingprices (
-                  deleted,
-                  condominiumId,
-                  user,
-                  lastUpdate,
-                  year,
-                  priceKilowattHour
-                  ) VALUES (
-                  'N',
-                  ${condominiumId},
-                  '${user}',
-                  '${lastUpdate}',
-                  ${year},
-                  ${priceKilowattHour}
-                );
-              `;
+              INSERT INTO remoteheatingprices (
+                deleted,
+                condominiumId,
+                user,
+                lastUpdate,
+                year,
+                priceKilowattHour
+                ) VALUES (
+                'N',
+                ${condominiumId},
+                '${user}',
+                '${lastUpdate}',
+                ${year},
+                ${priceKilowattHour}
+              );
+            `;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await db.query(SQLquery);

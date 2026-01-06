@@ -355,10 +355,10 @@ class RemoteHeating extends Condos {
   }
 
   // update a remoteheatings row
-  async updateRemoteHeatingTable(user, remoteHeatingId, condoId, year, date, kilowattHour) {
+  async updateRemoteHeatingTable(user, remoteHeatingId, condoId, year, date, kilowattHour, priceYear) {
 
     try {
-      const response = await fetch(`http://localhost:3000/remoteheatings?action=update&user=${user}&remoteHeatingId=${remoteHeatingId}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}`);
+      const response = await fetch(`http://localhost:3000/remoteheatings?action=update&user=${user}&remoteHeatingId=${remoteHeatingId}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}&priceYear=${priceYear}`);
       if (!response.ok) throw new Error("Network error (remoteheatings)");
       this.arrayRemoteHeatings = await response.json();
     } catch (error) {
@@ -367,10 +367,10 @@ class RemoteHeating extends Condos {
   }
 
   // insert remoteheatings row
-  async insertRemoteHeatingTable(condominiumId, user, condoId, year, date, kilowattHour) {
+  async insertRemoteHeatingTable(condominiumId, user, condoId, year, date, kilowattHour, priceYear) {
 
     try {
-      const response = await fetch(`http://localhost:3000/remoteheatings?action=insert&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}`);
+      const response = await fetch(`http://localhost:3000/remoteheatings?action=insert&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}&priceYear=${priceYear}`);
       if (!response.ok) throw new Error("Network error (remoteheatings)");
       this.arrayRemoteHeatings = await response.json();
     } catch (error) {
