@@ -454,7 +454,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  let html = objImportFile.startTable('width:1450px;');
+  let html = objImportFile.startTable('width:1600px;');
 
   // show main header
   html += objImportFile.showTableHeader('width:250px;', 'Import av bankkontotransaksjoner');
@@ -468,7 +468,7 @@ function showHeader() {
 function showFilter() {
 
   // Start table
-  html = objImportFile.startTable('width:1450px;');
+  html = objImportFile.startTable('width:1600px;');
 
   // Header filter
   //html += objImportFile.showTableHeader("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
@@ -495,36 +495,35 @@ function showFilter() {
 function showResult(rowNumber) {
 
   // start table
-  let html = objImportFile.startTable('width:1450px;');
+  let html = objImportFile.startTable('width:1600px;');
 
   // table header
-  html += objImportFile.showTableHeader('width:250px;', '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += objImportFile.showTableHeader('width:250px;', '', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
 
-  // Start HTML table
-  //html = startHTMLTable('width:1450px;');
-
-  // Header
-  //html += objImportFile.showTableHeader('width:250px;', '', 'Dato', 'Bruker', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
-
   arrayTransactions.forEach((transaction) => {
 
-    //html += "<tr>";
-
-    // Show menu
-    //rowNumber++;
-    //html += objImportFile.verticalMenu(rowNumber);
     // insert table columns in start of a row
     rowNumber++;
-    html += objImportFile.insertTableColumns('', rowNumber, '');
+    html += objImportFile.insertTableColumns('', rowNumber);
 
     // Date
     let className = `accountingDate${rowNumber}`;
     html += objImportFile.inputTableColumn(className, transaction.accountingDate, 10);
 
+    /*
     // Condo name
+    className = `accountName${rowNumber}`;
+    html += objImportFile.inputTableColumn(className, transaction.accountName, 45);
+    */
+
+    // Condo name
+    className = `condoName${rowNumber}`;
+    html += objImportFile.inputTableColumn(className, transaction.condoName, 45);
+
+    // Account name
     className = `accountName${rowNumber}`;
     html += objImportFile.inputTableColumn(className, transaction.accountName, 45);
 
@@ -568,7 +567,7 @@ function showResult(rowNumber) {
 
   // Show sum row
   rowNumber++;
-  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncomes, sumPayments);
+  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '','', '', '', 'Sum', sumIncomes, sumPayments);
 
   // Show update button
   //html += "<tr>";
@@ -579,7 +578,7 @@ function showResult(rowNumber) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objImportFile.insertTableColumns('', rowNumber, '');
+  html += objImportFile.insertTableColumns('', rowNumber);
 
   html += objImportFile.showButtonNew('width:170px;', 'update', 'Oppdater');
   html += "</tr>";

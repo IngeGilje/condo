@@ -866,7 +866,8 @@ class Condos {
     }
 
     bankAccountName = (bankAccountName) ? bankAccountName : bankAccountNumber;
-    return (bankAccountName) ? bankAccountName : "-";
+    //return (bankAccountName) ? bankAccountName : "-";
+    return (bankAccountName);
   }
 
   // get condo Id from From Bank Account
