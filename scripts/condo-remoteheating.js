@@ -51,6 +51,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
   }
 }
 
+
 // Events for remoteheatings
 function events() {
 
