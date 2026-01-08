@@ -678,7 +678,7 @@ async function updateSupplierRow(supplierId) {
 
   if (supplierId === '') supplierId = -1
   supplierId = Number(supplierId);
-  const validSupplierId = validateNumberNew(supplierId, -1, 999999999);
+  const validSupplierId = validateNumberNew(supplierId, -1, objSuppliers.nineNine);
 
   const condominiumId = Number(objUserPassword.condominiumId);
 
@@ -730,7 +730,7 @@ async function updateSupplierRow(supplierId) {
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatKronerToOre(amount));
-  const validAmount = objSuppliers.validateNumberNew(amount, -999999999, 999999999);
+  const validAmount = objSuppliers.validateNumberNew(amount, objSuppliers.minusNineNine, objSuppliers.nineNine);
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);

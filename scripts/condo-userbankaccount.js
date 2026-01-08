@@ -29,7 +29,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
+    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
     // Show header
     let menuNumber = 0;
@@ -255,7 +255,7 @@ function showResult(rowNumber) {
 
   // The end of the table
   html += objUserBankAccounts.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.result').innerHTML = html;
 
   return rowNumber;
 }

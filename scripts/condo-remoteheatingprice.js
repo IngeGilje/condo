@@ -269,7 +269,7 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   className = `.priceKilowattHour${remoteHeatingPriceId}`;
   let priceKilowattHour = document.querySelector(className).value;
   priceKilowattHour = formatKronerToOre(priceKilowattHour);
-  const validKilowattHourPrice = validateNumberNew(priceKilowattHour, 0, 999999999);
+  const validKilowattHourPrice = validateNumberNew(priceKilowattHour, 0, objRemoteHeatingPrices.nineNine);
 
   // Validate remoteheatingprices columns
   if (validYear && validKilowattHourPrice) {

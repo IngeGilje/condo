@@ -13,6 +13,9 @@ class Condos {
 
   inactivityTimeout = false;
 
+  nineNine = 999999999;
+  minusNineNine = -999999999;
+
   // array of menu objects
   arrayMenu = [
     {
@@ -56,8 +59,13 @@ class Condos {
       text: "Mottaker"
     },
     {
-      applicationName: "condo-due.html",
+      applicationName: "condo-commoncost.html",
       className: "Menu9",
+      text: "Felleskostnader"
+    },
+    {
+      applicationName: "condo-due.html",
+      className: "Menu10",
       text: "Forfall"
     },
     {
@@ -67,32 +75,32 @@ class Condos {
     },
     {
       applicationName: "condo-remoteheating.html",
-      className: "Menu10",
+      className: "Menu12",
       text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
-      className: "Menu12",
+      className: "Menu13",
       text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu13",
+      className: "Menu14",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu14",
+      className: "Menu15",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu15",
+      className: "Menu16",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu16",
+      className: "Menu17",
       text: "Årsregnskap"
     },
   ];

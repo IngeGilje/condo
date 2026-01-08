@@ -43,7 +43,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     showFilter();
 
     const condoId = Number(document.querySelector('.filterCondoId').value);
-    const accountId = 999999999;
+    const accountId = objOverview.nineNine;
     const deleted = 'N';
     let fromDate = document.querySelector('.filterFromDate').value;
     fromDate = convertDateToISOFormat(fromDate);
@@ -51,7 +51,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     toDate = convertDateToISOFormat(toDate);
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
     const orderBy = 'condoId ASC, date DESC, income ASC';
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
+    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
 
     // Show result
 
@@ -83,7 +83,7 @@ function events() {
         // valitadate filter
         // condo
         const condoId = Number(document.querySelector('.filterFromDate').value);
-        const validCondoId = objOverview.validateNumberNew(condoId, 1, 999999999);
+        const validCondoId = objOverview.validateNumberNew(condoId, 1, objOverview.nineNine);
 
         // from date
         let fromDate = document.querySelector('.filterFromDate').value;
@@ -102,7 +102,7 @@ function events() {
 
           const condominiumId = Number(objUserPassword.condominiumId);
           const condoId = Number(document.querySelector('.filterCondoId').value);
-          const accountId = 999999999;
+          const accountId = objOverview.nineNine;
           const deleted = 'N';
           let fromDate = document.querySelector('.filterFromDate').value;
           fromDate = convertDateToISOFormat(fromDate);
@@ -110,7 +110,7 @@ function events() {
           toDate = convertDateToISOFormat(toDate);
           await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
           const orderBy = 'condoId ASC, date DESC, income ASC';
-          await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, 999999999, 0, fromDate, toDate);
+          await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
 
           // Show result
 
@@ -385,28 +385,3 @@ function showHowMuchToPay(rowNumber) {
 
   return rowNumber;
 }
-
-/*
-// valitadate filter
-function validateFilter() {
-
-  // condo
-  const condoId = Number(document.querySelector('.filterFromDate').value);
-  const validCondoId = objOverview.validateNumberNew(condoId, 1, 999999999);
-
-  // from date
-  let fromDate = document.querySelector('.filterFromDate').value;
-  const validFromDate = objOverview.validateNorDateFormatNew(fromDate);
-
-  // to date
-  let toDate = document.querySelector('.filterFromDate').value;
-  const validToDate = objOverview.validateNorDateFormatNew(toDate);
-
-  // Validate interval
-  fromDate = objOverview.formatNorDateToNumberNew(fromDate);
-  toDate = objOverview.formatNorDateToNumberNew(toDate);
-  const validDates = objOverview.validateIntervalNew(Number(fromDate), Number(fromDate), Number(toDate));
-
-  return (validFromDate && validToDate && validDates && validCondoId);
-}
-*/

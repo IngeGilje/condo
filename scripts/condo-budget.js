@@ -148,7 +148,7 @@ async function deleteBudgetRow(budgetId, className) {
   }
 
   const year = Number(document.querySelector('.filterYear').value);
-  await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, 999999999);
+  await objBudgets.loadBudgetsTable(objUserPassword.condominiumId, year, objBudgets.nineNine);
 }
 
 // Update a budgets row
@@ -164,13 +164,13 @@ async function updateBudgetsRow(budgetId) {
   // accountId
   className = `.accountId${budgetId}`;
   let accountId = Number(document.querySelector(className).value);
-  const validAccountId = validateNumberNew(accountId, 1, 999999999);
+  const validAccountId = validateNumberNew(accountId, 1, objBudgets.nineNine);
 
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
   amount = Number(formatKronerToOre(amount));
-  let validAmount = validateNumberNew(amount, -999999999, 999999999);
+  let validAmount = validateNumberNew(amount, objBudgets.minusNineNine, objBudgets.nineNine);
   if (amount === 0) validAmount = false;
 
   // year

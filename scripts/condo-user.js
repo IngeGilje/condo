@@ -762,7 +762,7 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = validateNumberNew(userId, -1, 999999999);
+  const validUserId = validateNumberNew(userId, -1, objUsers.nineNine);
 
   const condominiumId = Number(objUserPassword.condominiumId);
 
@@ -779,7 +779,7 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = objUsers.validateNumberNew(condoId, 0, 999999999);
+  const validCondoId = objUsers.validateNumberNew(condoId, 0, objUsers.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;

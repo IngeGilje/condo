@@ -81,7 +81,7 @@ class Condo extends Condos {
         html +=
           `
             <option 
-              value=999999999
+              value=${this.nineNine}
             >
               ${selectAll}
             </option>
@@ -91,7 +91,7 @@ class Condo extends Condos {
         html +=
           `
             <option 
-              value=999999999
+              value=${this.nineNine}
               selected
             >
               ${selectAll}
@@ -268,7 +268,7 @@ class Condo extends Condos {
     // Select all
     if (selectAll && (numberOfRows > 1)) {
 
-      html += `<option value=999999999 selected>${selectAll}</option>`;
+      html += `<option value=${this.nineNine} selected>${selectAll}</option>`;
       selectedValue = true;
     }
 

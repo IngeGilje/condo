@@ -34,8 +34,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
-    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
+    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objBankAccountTransactions.nineNine);
+    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objBankAccountTransactions.nineNine, objBankAccountTransactions.nineNine);
     await objCondos.loadCondoTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable();
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
@@ -214,7 +214,7 @@ function showFilter() {
   html += objBankAccountTransactions.insertTableColumns('', 0, '', '');
 
   // Show all selected condos
-  html += objCondos.showSelectedCondos('filterCondoId', 'width:100px;', 999999999, '', 'Vis alle');
+  html += objCondos.showSelectedCondos('filterCondoId', 'width:100px;', objBankAccountTransactions.nineNine, '', 'Vis alle');
 
   // Get condominiumId
   const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(objUserPassword.condominiumId));
@@ -266,17 +266,17 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     // accountId
     className = `.accountId${bankAccountTransactionId}`;
     const accountId = Number(document.querySelector(className).value);
-    const validAccountId = validateNumberNew(accountId, 0, 999999999)
+    const validAccountId = validateNumberNew(accountId, 0, objBankAccountTransactions.nineNine)
 
     // condoId
     className = `.condoId${bankAccountTransactionId}`;
     const condoId = Number(document.querySelector(className).value);
-    const validCondoId = validateNumberNew(condoId, 0, 999999999)
+    const validCondoId = validateNumberNew(condoId, 0, objBankAccountTransactions.nineNine)
 
     // kilowattHour
     className = `.kilowattHour${bankAccountTransactionId}`;
     const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
-    const validNumberKWHour = validateNumberNew(kilowattHour, 0, 999999999)
+    const validNumberKWHour = validateNumberNew(kilowattHour, 0, objBankAccountTransactions.nineNine)
 
     // text
     className = `.text${bankAccountTransactionId}`;

@@ -38,8 +38,8 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
-    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, 999999999, 999999999);
+    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine);
+    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
     await objCondo.loadCondoTable(objUserPassword.condominiumId);
     await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
     await objCondominiums.loadCondominiumsTable();
@@ -47,10 +47,10 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     const condominiumId = Number(objUserPassword.condominiumId);
 
     const deleted = 'A';
-    const accountId = 999999999;
-    const condoId = 999999999;
+    const accountId = objImportFile.nineNine;
+    const condoId = objImportFile.nineNine;
     let fromDate = 0;
-    let toDate = 999999999;
+    let toDate = objImportFile.nineNine;
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
     amount = 0;
@@ -59,11 +59,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
     // Sends a request to the server to get bank csv transaction file
     // get name of transactions file
-    const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-    if (condominiumRowNumber !== -1) {
+    const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+    if (rowNumberCondominium !== -1) {
 
       // file import text name
-      const csvFileName = objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName;
+      const csvFileName = objCondominiums.arrayCondominiums[rowNumberCondominium].importFileName;
       await objImportFile.loadCsvFile(csvFileName);
 
       // Show header
@@ -316,7 +316,7 @@ async function updateOpeningClosingBalance() {
           const closingBalance = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
           const closingBalanceDate = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
           await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
+          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine);
         }
       }
 
@@ -333,7 +333,7 @@ async function updateOpeningClosingBalance() {
           const openingBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance;
           const openingBalanceDate = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate;
           await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, 999999999);
+          await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine);
         };
       };
     };

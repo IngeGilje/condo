@@ -75,7 +75,7 @@ class ImportFile extends Condos {
         htmlImportFile +=
           `
             <option 
-              value=999999999
+              value=${this.nineNine}
             >
               ${alternativeSelect}
             </option>
@@ -85,7 +85,7 @@ class ImportFile extends Condos {
         htmlImportFile +=
           `
             <option 
-              value=999999999
+              value=${this.nineNine}
               selected
             >
               ${alternativeSelect}

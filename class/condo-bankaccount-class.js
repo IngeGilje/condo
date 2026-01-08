@@ -157,7 +157,7 @@ class BankAccount extends Condos {
       html +=
         `
           <option 
-            value=999999999
+            value=${this.nineNine}
             selected
           >
             ${selectAll}

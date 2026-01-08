@@ -21,6 +21,9 @@ app.use(express.json());
 
 let db;
 
+const nineNine = 999999999;
+const minusNineNine = -999999999;
+
 // Run main
 main();
 
@@ -224,7 +227,7 @@ async function main() {
                 SELECT * FROM users
                   WHERE deleted <> 'Y'
               `;
-            if (Number(condominiumId) !== 999999999) SQLquery += ` AND condominiumId = ${condominiumId}`;
+            if (Number(condominiumId) !== nineNine) SQLquery += ` AND condominiumId = ${condominiumId}`;
             if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
 
             const [rows] = await db.query(SQLquery);
@@ -392,7 +395,7 @@ async function main() {
                 WHERE condominiumId = ${condominiumId}
                   AND deleted <> 'Y'
               `;
-            if (bankAccountId !== 999999999) SQLquery += `AND bankAccountId=${bankAccountId}`;
+            if (bankAccountId !== nineNine) SQLquery += `AND bankAccountId=${bankAccountId}`;
 
             SQLquery +=
               `
@@ -737,13 +740,13 @@ async function main() {
                   AND deleted <> 'Y'
               `;
 
-            if (year !== 999999999) {
+            if (year !== nineNine) {
               SQLquery +=
                 `
                   AND year = ${year}
                 `;
             }
-            if (accountId !== 999999999) {
+            if (accountId !== nineNine) {
               SQLquery +=
                 `
                   AND accountId = ${accountId}
@@ -903,21 +906,21 @@ async function main() {
                   AND deleted <> 'Y'
               `;
 
-            if (fromDate !== 999999999) {
+            if (fromDate !== nineNine) {
               SQLquery +=
                 `
                   AND date BETWEEN ${fromDate} AND ${toDate}
                 `;
             }
 
-            if (condoId !== 999999999) {
+            if (condoId !== nineNine) {
               SQLquery +=
                 `
                   AND condoId = ${condoId}
                 `;
             }
 
-            if (accountId !== 999999999) {
+            if (accountId !== nineNine) {
               SQLquery +=
                 `
                   AND accountId = ${accountId}
@@ -1244,13 +1247,13 @@ async function main() {
                 WHERE condominiumId = ${condominiumId}
                   AND deleted <> 'Y'
                `;
-            if (userId !== 999999999) {
+            if (userId !== nineNine) {
               SQLquery +=
                 `
                   AND userId = ${userId}
                 `;
             }
-            if (accountId !== 999999999) {
+            if (accountId !== nineNine) {
               SQLquery +=
                 `
                   AND accountId = ${accountId}
@@ -1618,13 +1621,13 @@ async function main() {
               `
                 AND date BETWEEN ${fromDate} AND ${toDate}
               `;
-            if (condoId !== 999999999) {
+            if (condoId !== nineNine) {
               SQLquery +=
                 `
                   AND condoId = ${condoId}
                 `;
             }
-            if (accountId !== 999999999) {
+            if (accountId !== nineNine) {
               SQLquery +=
                 `
                   AND accountId = ${accountId}
@@ -1869,8 +1872,8 @@ async function main() {
 
           let SQLquery = `SELECT * FROM remoteheatings WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
 
-          if (year !== 999999999) SQLquery += ` AND year = ${year}`;
-          if (condoId !== 999999999) SQLquery += ` AND condoId = ${condoId}`;
+          if (year !== nineNine) SQLquery += ` AND year = ${year}`;
+          if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
           SQLquery += ` ORDER BY year,condoId;`;
 
           console.log('SQLquery: ', SQLquery);
@@ -2126,6 +2129,137 @@ async function main() {
         } catch (err) {
 
           console.log("Database error in /remoteheatingprices:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+
+  // Requests for commoncosts table
+  app.get("/commoncosts", async (req, res) => {
+
+    const action = req.query.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.query.condominiumId;
+
+          let SQLquery = `SELECT * FROM commoncosts WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
+          SQLquery += ` ORDER BY year;`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /commoncosts:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+
+          const remoteHeatingPriceId = req.query.remoteHeatingPriceId;
+          const user = req.query.user;
+          const year = req.query.year;
+          const amount = req.query.amount;
+
+          // Update row
+          const SQLquery =
+            `
+              UPDATE commoncosts
+              SET
+                user = '${user}', 
+                lastUpdate = '${lastUpdate}',
+                year = ${year},
+                amount = ${amount}
+              WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+            `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /commoncosts:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const user = req.query.user;
+          const condominiumId = req.query.condominiumId;
+          const year = req.query.year;
+          const amount = req.query.amount;
+
+          // Insert new row
+          const SQLquery =
+            `
+              INSERT INTO commoncosts (
+                deleted,
+                condominiumId,
+                user,
+                lastUpdate,
+                year,
+                amount
+                ) VALUES (
+                'N',
+                ${condominiumId},
+                '${user}',
+                '${lastUpdate}',
+                ${year},
+                ${amount}
+              );
+            `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /commoncosts:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const remoteHeatingPriceId = req.query.remoteHeatingPriceId;
+          const user = req.query.user;
+
+          // Delete table
+          const SQLquery =
+            `
+              UPDATE commoncosts
+              SET 
+                deleted = 'Y',
+                user = '${user}',
+                lastUpdate = '${lastUpdate}'
+              WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+            `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await db.query(SQLquery);
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /commoncosts:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;

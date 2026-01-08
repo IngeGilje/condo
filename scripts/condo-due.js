@@ -313,15 +313,15 @@ async function updateDuesRow(dueId) {
   // Check dues columns
   let className = `.condoId${dueId}`;
   let condoId = Number(document.querySelector(className).value);
-  const validCondoId = validateNumberNew(condoId, 1, 999999999);
+  const validCondoId = validateNumberNew(condoId, 1, objDues.nineNine);
 
   className = `.accountId${dueId}`;
   let accountId = Number(document.querySelector(className).value);
-  const validAccountId = validateNumberNew(accountId, 1, 999999999);
+  const validAccountId = validateNumberNew(accountId, 1, objDues.nineNine);
 
   className = `.amount${dueId}`;
   const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
-  const validAmount = validateNumberNew(amount, -999999999, 999999999);
+  const validAmount = validateNumberNew(amount, objDues.minusNineNine, objDues.nineNine);
 
   className = `.date${dueId}`;
   const date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));

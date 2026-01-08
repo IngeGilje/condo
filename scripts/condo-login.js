@@ -12,7 +12,7 @@ main();
 // Main entry point
 async function main() {
 
-  const condominiumId = 999999999;
+  const condominiumId = objLogIn.nineNine;
   const resident = 'Y';
   await objUsers.loadUsersTable(condominiumId, resident);
 

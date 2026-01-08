@@ -32,7 +32,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
     const fixedCost = 'A';
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-    await objBankAccounts.loadBankAccountsTable(condominiumId, 999999999);
+    await objBankAccounts.loadBankAccountsTable(condominiumId, objCondominiums.nineNine);
 
     // Show header
     let menuNumber = 0;
@@ -302,8 +302,8 @@ async function deleteCondominiumRow() {
   const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
 
   // Check if condominiumId exist
-  const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-  if (condominiumRowNumber !== -1) {
+  const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+  if (rowNumberCondominium !== -1) {
 
     // delete condominium row
     const user = objUserPassword.email;
@@ -367,8 +367,8 @@ function showResult(condominiumId, rowNumber) {
   html += objCondominiums.showTableHeader('width:250px;', '', '', '');
 
   // Check if condominiums row exist
-  const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-  if (condominiumRowNumber !== -1) {
+  const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+  if (rowNumberCondominium !== -1) {
 
     // Start table
     //html = startHTMLTable('width:750px;');
@@ -392,7 +392,7 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber);
 
     // name
-    html += objCondominiums.inputTableColumn('name', objCondominiums.arrayCondominiums[condominiumRowNumber].name, 45);
+    html += objCondominiums.inputTableColumn('name', objCondominiums.arrayCondominiums[rowNumberCondominium].name, 45);
 
     html += "</tr>";
 
@@ -410,10 +410,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber);
 
     // street
-    html += objCondominiums.inputTableColumn('street', objCondominiums.arrayCondominiums[condominiumRowNumber].street, 45);
+    html += objCondominiums.inputTableColumn('street', objCondominiums.arrayCondominiums[rowNumberCondominium].street, 45);
 
     // address2
-    html += objCondominiums.inputTableColumn('address2', objCondominiums.arrayCondominiums[condominiumRowNumber].address2, 45);
+    html += objCondominiums.inputTableColumn('address2', objCondominiums.arrayCondominiums[rowNumberCondominium].address2, 45);
 
     html += "</tr>";
 
@@ -432,10 +432,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber);
 
     // postalCode
-    html += objCondominiums.inputTableColumn('postalCode', objCondominiums.arrayCondominiums[condominiumRowNumber].postalCode, 4);
+    html += objCondominiums.inputTableColumn('postalCode', objCondominiums.arrayCondominiums[rowNumberCondominium].postalCode, 4);
 
     // city
-    html += objCondominiums.inputTableColumn('city', objCondominiums.arrayCondominiums[condominiumRowNumber].city, 45);
+    html += objCondominiums.inputTableColumn('city', objCondominiums.arrayCondominiums[rowNumberCondominium].city, 45);
 
     html += "</tr>";
 
@@ -453,10 +453,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber);
 
     // eMail
-    html += objCondominiums.inputTableColumn('email', objCondominiums.arrayCondominiums[condominiumRowNumber].email, 45);
+    html += objCondominiums.inputTableColumn('email', objCondominiums.arrayCondominiums[rowNumberCondominium].email, 45);
 
     // phone
-    html += objCondominiums.inputTableColumn('phone', objCondominiums.arrayCondominiums[condominiumRowNumber].phone, 8);
+    html += objCondominiums.inputTableColumn('phone', objCondominiums.arrayCondominiums[rowNumberCondominium].phone, 8);
 
     html += "</tr>";
 
@@ -474,10 +474,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber);
 
     // incomeRemoteHeatingAccountId
-    html += objAccounts.showSelectedAccountsNew('incomeRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[condominiumRowNumber].incomeRemoteHeatingAccountId, '', '');
+    html += objAccounts.showSelectedAccountsNew('incomeRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '');
 
     // paymentRemoteHeatingAccountId
-    html += objAccounts.showSelectedAccountsNew('paymentRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[condominiumRowNumber].paymentRemoteHeatingAccountId, '', '');
+    html += objAccounts.showSelectedAccountsNew('paymentRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, '', '');
 
     html += "</tr>";
 
@@ -495,10 +495,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber);
 
     // commonCostAccountId
-    html += objAccounts.showSelectedAccountsNew('commonCostAccountId', 'width:170px;', objCondominiums.arrayCondominiums[condominiumRowNumber].commonCostAccountId, 'Ingen', '');
+    html += objAccounts.showSelectedAccountsNew('commonCostAccountId', 'width:170px;', objCondominiums.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '');
 
     // organizationNumber
-    html += objCondominiums.inputTableColumn('organizationNumber', objCondominiums.arrayCondominiums[condominiumRowNumber].organizationNumber, 9);
+    html += objCondominiums.inputTableColumn('organizationNumber', objCondominiums.arrayCondominiums[rowNumberCondominium].organizationNumber, 9);
 
     html += "</tr>";
 
@@ -516,7 +516,7 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber);
 
     // importFileName
-    html += objCondominiums.inputTableColumn('importFileName', objCondominiums.arrayCondominiums[condominiumRowNumber].importFileName, 100);
+    html += objCondominiums.inputTableColumn('importFileName', objCondominiums.arrayCondominiums[rowNumberCondominium].importFileName, 100);
 
     html += "</tr>";
 
@@ -621,15 +621,15 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate incomeRemoteHeatingAccountId
   const incomeRemoteHeatingAccountId = Number(document.querySelector('.incomeRemoteHeatingAccountId').value);
-  const validIncomeRemoteHeatingAccountId = objCondominiums.validateIntervalNew(incomeRemoteHeatingAccountId, 0, 999999999);
+  const validIncomeRemoteHeatingAccountId = objCondominiums.validateIntervalNew(incomeRemoteHeatingAccountId, 0, objCondominiums.nineNine);
 
   // validate paymentRemoteHeatingAccountId
   const paymentRemoteHeatingAccountId = Number(document.querySelector('.paymentRemoteHeatingAccountId').value);
-  const validPaymentRemoteHeatingAccountId = objCondominiums.validateIntervalNew(paymentRemoteHeatingAccountId, 0, 999999999);
+  const validPaymentRemoteHeatingAccountId = objCondominiums.validateIntervalNew(paymentRemoteHeatingAccountId, 0, objCondominiums.nineNine);
 
   // validate commonCostAccountId
   const commonCostAccountId = Number(document.querySelector('.commonCostAccountId').value);
-  const validCommonCostAccountId = objCondominiums.validateIntervalNew(commonCostAccountId, 0, 999999999);
+  const validCommonCostAccountId = objCondominiums.validateIntervalNew(commonCostAccountId, 0, objCondominiums.nineNine);
 
   // validate organizationNumber
   const organizationNumber = Number(document.querySelector('.organizationNumber').value);
@@ -645,8 +645,8 @@ async function updateCondominiumRow(condominiumId) {
     && validCommonCostAccountId && validOrganizationNumber && validImportFileName) {
 
     // Check if the condominiumId exist
-    const condominiumRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-    if (condominiumRowNumber !== -1) {
+    const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+    if (rowNumberCondominium !== -1) {
 
       // update the condominiums row
       await objCondominiums.updateCondominiumsTable(user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName);
