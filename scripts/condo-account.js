@@ -218,11 +218,10 @@ function insertEmptyTableRow(rowNumber) {
   let html = "";
 
   // Show menu
-  //html += objAccounts.verticalMenu(rowNumber);
   // insert table columns in start of a row
   html += objAccounts.insertTableColumns('', rowNumber);
 
-  // delete
+    // delete
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
