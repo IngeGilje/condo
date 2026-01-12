@@ -84,10 +84,11 @@ function events() {
   // update a commoncosts row
   document.addEventListener('change', (event) => {
 
-    const arrayPrefixes = ['year', 'amount'];
+    const arrayPrefixes = ['year', 'commonCostSquareMeter', 'fixedCostCondo'];
 
     if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))) {
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))) {
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -152,7 +153,7 @@ function showHeader() {
   let html = objCommonCosts.startTable('width:750px;');
 
   // show main header
-  html += objCommonCosts.showTableHeader('width:250px;', 'Felleskostnad per m2');
+  html += objCommonCosts.showTableHeader('width:250px;', 'Felleskostnader');
 
   // The end of the table header
   html += objCommonCosts.endTableHeaderNew();
@@ -177,8 +178,12 @@ function insertEmptyTableRow(rowNumber) {
   const year = today.getFullYear();
   html += objCommonCosts.selectInterval('year0', 'width:100px;', 2020, 2030, year);
 
-  // amount 
-  html += objCommonCosts.inputTableColumn('amount0', "", 10);
+  // commonCostSquareMeter 
+  html += objCommonCosts.inputTableColumn('commonCostSquareMeter0', "", 10);
+
+    // fixed cost per condo 
+  html += objCommonCosts.inputTableColumn('fixedCostCondo0', "", 10);
+
 
   html += "</tr>";
   return html;
@@ -190,7 +195,7 @@ function showResult(rowNumber) {
   // start table
   let html = objCommonCosts.startTable('width:750px;');
 
-  html += objCommonCosts.showTableHeader('width:250px;', '', 'Slett', 'År', `Felleskostnad`);
+  html += objCommonCosts.showTableHeader('width:250px;', '1', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
   objCommonCosts.arrayCommonCosts.forEach((commonCost) => {
 
@@ -211,11 +216,17 @@ function showResult(rowNumber) {
     className = `year${commonCost.commonCostId}`;
     html += objCommonCosts.selectInterval(className, 'width:100px;', 2020, 2030, year);
 
-    // amount
-    let amount = commonCost.amount;
-    className = `amount${commonCost.commonCostId}`;
-    amount = formatOreToKroner(amount);
-    html += objCommonCosts.inputTableColumn(className, amount, 10);
+    // common cost per squaremeter
+    let commonCostSquareMeter = commonCost.commonCostSquareMeter;
+    className = `commonCostSquareMeter${commonCost.commonCostId}`;
+    commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
+    html += objCommonCosts.inputTableColumn(className, commonCostSquareMeter, 10);
+
+     // fixed cost per condo
+    let fixedCostCondo = commonCost.fixedCostCondo;
+    className = `fixedCostCondo${commonCost.commonCostId}`;
+    fixedCostCondo = formatOreToKroner(fixedCostCondo);
+    html += objCommonCosts.inputTableColumn(className, fixedCostCondo, 10);
 
     html += "</tr>";
   });
@@ -266,25 +277,31 @@ async function updateCommonCostsRow(commonCostId) {
   let year = document.querySelector(className).value;
   const validYear = objCommonCosts.validateIntervalNew(year, 2020, 2030);
 
-  // amount
-  className = `.amount${commonCostId}`;
-  let amount = document.querySelector(className).value;
-  amount = formatKronerToOre(amount);
-  const validAmount = validateNumberNew(amount, 1, objCommonCosts.nineNine);
+  // commonCostSquareMeter
+  className = `.commonCostSquareMeter${commonCostId}`;
+  let commonCostSquareMeter = document.querySelector(className).value;
+  commonCostSquareMeter = formatKronerToOre(commonCostSquareMeter);
+  const validcommonCostSquareMeter = validateNumberNew(commonCostSquareMeter, 1, objCommonCosts.nineNine);
+
+    // fixedCostCondo
+  className = `.fixedCostCondo${commonCostId}`;
+  let fixedCostCondo = document.querySelector(className).value;
+  fixedCostCondo = formatKronerToOre(fixedCostCondo);
+  const validfixedCostCondo = validateNumberNew(fixedCostCondo, 1, objCommonCosts.nineNine);
 
   // Validate commoncosts columns
-  if (validYear && validAmount) {
+  if (validYear && validcommonCostSquareMeter && validfixedCostCondo) {
 
     // Check if the commonCost id exist
     const rowNumberCommonCosts = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
     if (rowNumberCommonCosts !== -1) {
 
       // update a commoncosts row
-      await objCommonCosts.updateCommonCostsTable(user, commonCostId, year, amount);
+      await objCommonCosts.updateCommonCostsTable(user, commonCostId, year, commonCostSquareMeter, fixedCostCondo);
     } else {
 
       // Insert a commoncosts row
-      await objCommonCosts.insertCommonCostsTable(condominiumId, user, year, amount);
+      await objCommonCosts.insertCommonCostsTable(condominiumId, user, year, commonCostSquareMeter, fixedCostCondo);
     }
 
     await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
@@ -295,7 +312,7 @@ async function updateCommonCostsRow(commonCostId) {
 }
 
 // Delete a commoncosts row
-async function deleteCommonCostsRow(commonCostId, className) {
+async function deleteCommonCostsRow(commonCostId) {
 
   const user = objUserPassword.email;
 

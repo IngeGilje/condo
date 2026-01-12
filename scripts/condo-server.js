@@ -2168,10 +2168,11 @@ async function main() {
 
         try {
 
-          const remoteHeatingPriceId = req.query.remoteHeatingPriceId;
+          const commonCostId = req.query.commonCostId;
           const user = req.query.user;
           const year = req.query.year;
-          const amount = req.query.amount;
+          const commonCostSquareMeter = req.query.commonCostSquareMeter;
+          const fixedCostCondo = req.query.fixedCostCondo;
 
           // Update row
           const SQLquery =
@@ -2181,8 +2182,9 @@ async function main() {
                 user = '${user}', 
                 lastUpdate = '${lastUpdate}',
                 year = ${year},
-                amount = ${amount}
-              WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+                commonCostSquareMeter = ${commonCostSquareMeter},
+                fixedCostCondo = ${fixedCostCondo}
+              WHERE commonCostId = ${commonCostId};
             `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2203,7 +2205,8 @@ async function main() {
           const user = req.query.user;
           const condominiumId = req.query.condominiumId;
           const year = req.query.year;
-          const amount = req.query.amount;
+          const commonCostSquareMeter = req.query.commonCostSquareMeter;
+          const fixedCostCondo = req.query.fixedCostCondo;
 
           // Insert new row
           const SQLquery =
@@ -2214,14 +2217,16 @@ async function main() {
                 user,
                 lastUpdate,
                 year,
-                amount
+                commonCostSquareMeter,
+                fixedCostCondo
                 ) VALUES (
                 'N',
                 ${condominiumId},
                 '${user}',
                 '${lastUpdate}',
                 ${year},
-                ${amount}
+                ${commonCostSquareMeter},
+                ${fixedCostCondo}
               );
             `;
 
