@@ -47,12 +47,11 @@ input {
   cursor: pointer;
   border-radius: 5px;
   border-color: #e0f0e0;
-  
 }
 
 button:hover,
 select:hover,
-input:hover, 
+input:hover,
 .menu a:hover {
   background: #e0f0e0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -137,4 +136,35 @@ select {
   text-decoration: none;
   cursor: pointer;
   margin-left: 10px;
+}
+
+/* horizontal menu */
+.horizontalMenu {
+   display: flex;
+  list-style: none;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+.horizontalMenu li a {
+  display: block;
+  max-width: 150px;
+  padding: 12px 15px;
+  color: black;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+
+  border: 2px outset #e0f0e0;
+  border-radius: 10px;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.horizontalMenu li a:hover {
+  background: #e0f0e0;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }

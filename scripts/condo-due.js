@@ -41,12 +41,15 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-      // Show header
       let menuNumber = 0;
+
+      // Show horizontal menu
+      showHorizontalMenu();
+
+      // Show header
       showHeader();
 
       // Show filter
-
       showFilter()
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
@@ -99,13 +102,13 @@ function events() {
 
   // update a dues row
   document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('condo'))
-      || [...event.target.classList].some(cls => cls.startsWith('account'))
-      || [...event.target.classList].some(cls => cls.startsWith('amount'))
-      || [...event.target.classList].some(cls => cls.startsWith('date'))
-      || [...event.target.classList].some(cls => cls.startsWith('text'))) {
 
-      const arrayPrefixes = ['condo', 'account', 'amount', 'date', 'text'];
+    const arrayPrefixes = ['condoId', 'accountId', 'amount', 'date', 'text'];
+    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[3]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[4]))) {
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -230,7 +233,7 @@ function showResult(rowNumber) {
   // Insert empty table row for insertion
   rowNumber++;
   html += insertEmptyTableRow(rowNumber);
-
+ 
   // Show table sum row
   rowNumber++;
   sumAmount = formatOreToKroner(sumAmount);
@@ -253,10 +256,9 @@ function insertEmptyTableRow(rowNumber) {
   let html = "";
 
   // insert table columns in start of a row
-  rowNumber++;
   html += objCondominiums.insertTableColumns('', rowNumber, 'Nytt forfall');
 
-   // condoId
+  // condoId
   const condoId = Number(document.querySelector('.filterCondoId').value);
   html += objCondos.showSelectedCondos("condoId0", 'width:100px;', condoId, '', '');
 
@@ -264,8 +266,9 @@ function insertEmptyTableRow(rowNumber) {
   html += objDues.inputTableColumn("date0", "", 10);
 
   // accountId
-  const accountId = Number(document.querySelector('.filterAccountId').value);
-  html += objAccounts.showSelectedAccountsNew("accountId0", '', accountId, '', '');
+  let accountId = Number(document.querySelector('.filterAccountId').value);
+  if (Number(document.querySelector('.filterAccountId').value) === objDues.nineNine) accountId = 0;
+  html += objAccounts.showSelectedAccountsNew("accountId0", '', accountId, 'Ingen er valgt', '');
 
   // due amount
   html += objDues.inputTableColumn('amount0', "", 10);
@@ -347,7 +350,6 @@ async function updateDuesRow(dueId) {
       await objDues.insertDuesTable(condominiumId, user, condoId, accountId, amount, date, text);
     }
 
-    const condominiumId = Number(objUserPassword.condominiumId);
     condoId = Number(document.querySelector('.filterCondoId').value);
     accountId = Number(document.querySelector('.filterAccountId').value);
     let fromDate = document.querySelector('.filterFromDate').value;
@@ -416,7 +418,7 @@ function showFilter() {
 
   html += "</tr>";
 
-   // insert table columns in start of a row
+  // insert table columns in start of a row
   html += objDues.insertTableColumns('', 0, '')
 
   // end table body
@@ -426,3 +428,11 @@ function showFilter() {
   html += objDues.endTable();
   document.querySelector('.filter').innerHTML = html;
 }
+
+// show horizontal menu
+function showHorizontalMenu() {
+
+  html = objDues.showHorizontalMenu();
+
+  document.querySelector('.horizontalMenu').innerHTML = html;
+};

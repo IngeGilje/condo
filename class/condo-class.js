@@ -1358,7 +1358,6 @@ class Condos {
   insertTableColumns(style, menuNumber, ...texts) {
 
     let html = "<tr>";
-
     if (menuNumber > 0) html += this.verticalMenu(menuNumber);
 
     texts.forEach((text) => {
@@ -1383,48 +1382,15 @@ class Condos {
   }
 
   // Show horizontal menu
-  showHorizontalMenu(width) {
+  showHorizontalMenu() {
 
-    // Start table
-    let html = this.startTable(`${width}`);
+    let html = "<ul class='horizontalMenu'>";
+    this.arrayHorizontalMenu.forEach((horizontalMenu) => {
 
-    html += this.horizontalMenu('background-color: #e0f0e0;');
-
-    // insert a empty row
-    html += this.insertTableColumns('', 0, '');
-
-    html += "</tr>";
-
-    // The end of the table
-    html += this.endTable();
-    return html;
-  }
-
-  horizontalMenu(style) {
-
-    let html = "";
-
-    const url = (this.serverStatus === 1) ? "http://ingegilje.no/" : "http://localhost/";
-
-    // Show horizontal menu
-    this.arrayHorizontalMenu.forEach((menu) => {
-
-      if (style) {
-        html +=
-          `<td class="one-line menu ${menu.className}">
-            <a href="${url}${menu.applicationName}" style="display: inline; ${style};">
-              ${menu.text}
-            </a>
-          </td>`;
-      } else {
-        `<td class="one-line menu ${menu.className}">
-          <a href="${url}${menu.applicationName}" style="display: inline;">
-            ${menu.text}
-          </a>
-        </td>`;
-      }
+      html += `<li><a href="#home">${horizontalMenu.text} </a></li>`;
     });
 
+    html += "</ul>";
     return html;
   }
 }
@@ -2149,5 +2115,4 @@ function startHTMLTable(style) {
 
   return `<table style="${style}">`;
 }
-
 
