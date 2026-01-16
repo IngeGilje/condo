@@ -69,11 +69,12 @@ function events() {
     };
   });
 
-  // update a accounts row
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('update')) {
+  // update a dues row
+  document.addEventListener('change', (event) => {
 
-      const arrayPrefixes = ['fixedCost', 'name'];
+    const arrayPrefixes = ['fixedCost', 'name'];
+    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))) {
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -84,7 +85,7 @@ function events() {
       let accountId = 0;
       let prefix = "";
       if (className) {
-        prefix = prefixes.find(p => className.startsWith(p));
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
         accountId = Number(className.slice(prefix.length));
       }
 
@@ -221,7 +222,7 @@ function insertEmptyTableRow(rowNumber) {
   // insert table columns in start of a row
   html += objAccounts.insertTableColumns('', rowNumber);
 
-    // delete
+  // delete
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
@@ -341,16 +342,15 @@ async function updateAccountsRow(accountId) {
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
 
-
   // name
-  className = `.name${bankAccountTransactionId}`;
+  className = `.name${accountId}`;
   const name = document.querySelector(className).value;
-  const validName = objBankAccountTransactions.validateText(name, 3, 50);
+  const validName = objAccounts.validateText(name, 3, 50);
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;
-  if (fixedCost === constFixedCost) fixedCost = 'Y';
-  if (fixedCost === constVariableCost) fixedCost = 'N';
+  if (fixedCost === 'Fast') fixedCost = 'Y';
+  if (fixedCost === 'Variabel') fixedCost = 'N';
 
   // Validate accounts columns
   if (validName && (fixedCost === "Y" || fixedCost === "N")) {
@@ -365,10 +365,10 @@ async function updateAccountsRow(accountId) {
     } else {
 
       // Insert the account row in accounts table
-      await objAccounts.insertAccountsTable(condominiumId, user, accountName, fixedCost, accountName);
+      await objAccounts.insertAccountsTable(condominiumId, user, name, fixedCost);
     }
 
-    const fixedCost = 'A';
+    fixedCost = 'A';
     await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
     let menuNumber = 0;
     menuNumber = showResult(menuNumber);

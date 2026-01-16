@@ -59,9 +59,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     toDate = document.querySelector('.filterToDate').value;
     toDate = Number(convertDateToISOFormat(toDate));
 
-    //const orderBy = 'condoId ASC, date DESC, income ASC';
-    //await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
-
     // Show remote Heating
     // Get row number for payment Remote Heating Account Id
     const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
@@ -105,32 +102,6 @@ function events() {
 
       // Show annual account after change of filter
       async function showAnnualAccountSync() {
-
-        // Show annual accounts
-        //let menuNumber = 0;
-        //menuNumber = showAnnualAccounts(menuNumber);
-
-        // Show income for next year
-        //menuNumber = showIncomeNextYear(menuNumber);
-
-        // Show remote Heating
-        // Get row number for payment Remote Heating Account Id
-        //const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-        //if (rowNumberCondominium !== -1) {
-
-        /*
-        const paymentRemoteHeatingAccountId = Number(objCondominiums.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId);
-        fromDate = Number(convertDateToISOFormat(fromDate));
-        toDate = Number(convertDateToISOFormat(toDate));
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, paymentRemoteHeatingAccountId, 0, fromDate, toDate);
-
-        menuNumber = showRemoteHeating(menuNumber);
-
-        // Show bank deposit for next year
-        const nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-        await objBudget.loadBudgetsTable(objUserPassword.condominiumId, nextBudgetYear, objAnnualAccount.nineNine);
-        menuNumber = showBankDeposit(menuNumber);
-        */
 
         let menuNumber = 0;
 
