@@ -498,7 +498,11 @@ function showRemoteHeating(rowNumber) {
       className = `date${bankAccountTransaction.bankAccountTransactionId}`;
       html += objAnnualAccount.inputTableColumn(className, date, 10);
 
-      let payment = formatOreToKroner(bankAccountTransaction.payment);
+      let payment = Number(bankAccountTransaction.payment);
+      let income = Number(bankAccountTransaction.income);
+      payment = (payment + income);
+
+      payment = formatOreToKroner(payment);
       className = `payment${bankAccountTransaction.bankAccountTransactionId}`;
       html += objAnnualAccount.inputTableColumn(className, payment, 10);
 
@@ -524,7 +528,11 @@ function showRemoteHeating(rowNumber) {
 
       // Accomulate
       // payment
-      sumPayment += Number(bankAccountTransaction.payment);
+      payment = Number(bankAccountTransaction.payment);
+      income = Number(bankAccountTransaction.income);
+      payment = (payment + income);
+
+      sumPayment += Number(payment);
 
       // KWHour
       sumNumberKWHour += Number(bankAccountTransaction.kilowattHour);

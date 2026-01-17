@@ -19,7 +19,7 @@ async function main() {
   // Show header
   showHeader();
 
-  // Show supplier
+  // Show login
   showResult();
 
   // Events
@@ -111,16 +111,16 @@ function showResult() {
   let html = objLogIn.startTable('width:250px;margin: 0 auto;');
 
   // table header
-  html += objLogIn.showTableHeader('width:250px;', '', '', '');
+  html += objLogIn.showTableHeader('', '', '');
 
   // Header for value including menu
-  html += objLogIn.showHTMLTableHeaderNew("width:250px;", 0, 'Email');
+  html += objLogIn.showHTMLTableHeaderNew('', 0,'Email');
 
   // insert table columns in start of a row
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
 
   // email
-  html += objLogIn.inputTableColumn('email', '', 45);
+  html += objLogIn.inputTableColumn('email', '', 45, '');
 
   html += "</tr>";
 
