@@ -103,12 +103,14 @@ function events() {
   // update a dues row
   document.addEventListener('change', (event) => {
 
-    const arrayPrefixes = ['condoId', 'accountId', 'amount', 'date', 'text'];
+    const arrayPrefixes = ['condoId', 'accountId', 'amount', 'date', 'kilowattHour', 'text'];
+
     if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
       || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
       || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))
       || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[3]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[4]))) {
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[4]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[5]))) {
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -178,12 +180,13 @@ function events() {
 function showResult(rowNumber) {
 
   // start table
-  let html = objCondos.startTable('width:1100px;');
+  let html = objCondos.startTable('width:1250px;');
 
   // table header
-  html += objCondos.showTableHeader('', '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Tekst');
+  html += objCondos.showTableHeader('', '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'kilowatt Timer', 'Tekst');
 
   let sumAmount = 0;
+  let sumKilowattHour = 0;
 
   objDues.arrayDues.forEach((due) => {
 
@@ -217,6 +220,11 @@ function showResult(rowNumber) {
     className = `amount${due.dueId}`;
     html += objDues.inputTableColumn(className, amount, 10);
 
+        // kilowattHour
+    const kilowattHour = formatOreToKroner(due.kilowattHour);
+    className = `amount${due.dueId}`;
+    html += objDues.inputTableColumn(className, kilowattHour, 10);
+
     // text
     const text = due.text;
     className = `text${due.dueId}`;
@@ -226,6 +234,7 @@ function showResult(rowNumber) {
 
     // accumulate
     sumAmount += Number(due.amount);
+    sumKilowattHour += Number(due.kilowattHour);
   });
 
   // Make one last table row for insertion in table 
@@ -233,11 +242,12 @@ function showResult(rowNumber) {
   // Insert empty table row for insertion
   rowNumber++;
   html += insertEmptyTableRow(rowNumber);
- 
+
   // Show table sum row
   rowNumber++;
   sumAmount = formatOreToKroner(sumAmount);
-  html += objDues.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumAmount);
+  sumKilowattHour = formatOreToKroner(sumKilowattHour);
+  html += objDues.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumAmount, sumKilowattHour);
 
   // Show the rest of the menu
   rowNumber++;
@@ -326,6 +336,10 @@ async function updateDuesRow(dueId) {
   const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
   const validAmount = validateNumberNew(amount, objDues.minusNineNine, objDues.nineNine);
 
+    className = `.kilowattHour${dueId}`;
+  const kilowattHour = Number(formatKronerToOre(document.querySelector(`${className}`).value));
+  const validKilowattHour = validateNumberNew(kilowattHour, 0, objDues.nineNine);
+
   className = `.date${dueId}`;
   const date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
   const validDate = validateNumberNew(date, 20200101, 20991231);
@@ -335,19 +349,19 @@ async function updateDuesRow(dueId) {
   const validText = objDues.validateText(text, 3, 45);
 
   // Validate dues columns
-  if (validAccountId && validCondoId && validAmount && validDate && validText) {
+  if (validAccountId && validCondoId && validAmount && validDate && kilowattHour && validText) {
 
     // Check if the dues row exist
     rowNumberDue = objDues.arrayDues.findIndex(dues => dues.dueId === dueId);
     if (rowNumberDue !== -1) {
 
       // update the dues row
-      await objDues.updateDuesTable(dueId, user, condoId, accountId, amount, date, text);
+      await objDues.updateDuesTable(dueId, user, condoId, accountId, amount, date, kilowattHour, text);
 
     } else {
 
       // Insert the account row in accounts table
-      await objDues.insertDuesTable(condominiumId, user, condoId, accountId, amount, date, text);
+      await objDues.insertDuesTable(condominiumId, user, condoId, accountId, amount, date, kilowattHour, text);
     }
 
     condoId = Number(document.querySelector('.filterCondoId').value);
@@ -368,7 +382,7 @@ async function updateDuesRow(dueId) {
 function showHeader() {
 
   // Start table
-  let html = objDues.startTable('width:1100px;');
+  let html = objDues.startTable('width:1250px;');
 
   // show main header
   html += objDues.showTableHeader('width:250px;', 'Forfall');
@@ -382,10 +396,10 @@ function showHeader() {
 function showFilter() {
 
   // Start table
-  html = objDues.startTable('width:1100px;');
+  html = objDues.startTable('width:1250px;');
 
   // Header filter
-  html += objDues.showTableHeader("width:1100px;", '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato');
+  html += objDues.showTableHeader("width:1250px;", '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato');
 
   // start table body
   html += objDues.startTableBody();

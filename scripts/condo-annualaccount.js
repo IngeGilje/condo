@@ -579,14 +579,14 @@ function showBankDeposit(rowNumber) {
 
   // table header
   let nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-  html += objAnnualAccount.showTableHeader("width:200px;", '', '1', '2', '3', '4', `Budsjett ${nextBudgetYear}`, '6');
-  html += objAnnualAccount.showTableHeader("width:200px;", '', '1', '2', '3', 'Tekst', 'Dato', 'Budsjett');
+  html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', '', `Budsjett ${nextBudgetYear}`, '');
+  html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', 'Tekst', 'Dato', 'Budsjett');
 
   let accAmount = 0;
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '1', '2', '3');
+  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', '', '');
 
   // Text
   className = `text`;
@@ -621,7 +621,7 @@ function showBankDeposit(rowNumber) {
 
       // insert table columns in start of a row
       rowNumber++;
-      html += objAnnualAccount.insertTableColumns('', rowNumber, '1', '2', '3');
+      html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '');
 
       // Account Name
       let name = '';
@@ -653,7 +653,7 @@ function showBankDeposit(rowNumber) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objAnnualAccount.insertTableColumns('', rowNumber, '1', '2', '3');
+  html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '');
 
   className = `estimatedBankDeposit`;
   html += objAnnualAccount.inputTableColumn(className, 'Estimert bankinnskudd', 10);
@@ -672,7 +672,7 @@ function showBankDeposit(rowNumber) {
 
   // insert table columns in start of a 
   rowNumber++;
-  html += objAnnualAccount.insertTableColumns('', rowNumber, '1', '2', '3', '4', '5', '6');
+  html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '', '', '', '');
 
   // Show the rest of the menu
   rowNumber++;

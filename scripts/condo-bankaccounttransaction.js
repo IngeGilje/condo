@@ -107,15 +107,16 @@ function events() {
     };
   });
 
-  // update a dues row
+  // update a bankAccountTransactions row
   document.addEventListener('change', (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('condoId'))
-      || [...event.target.classList].some(cls => cls.startsWith('accountId'))
-      || [...event.target.classList].some(cls => cls.startsWith('kilowattHour'))
-      || [...event.target.classList].some(cls => cls.startsWith('date'))
-      || [...event.target.classList].some(cls => cls.startsWith('text'))) {
 
-      const arrayPrefixes = ['condoId', 'accountId', 'income', 'payment', 'kilowattHour', 'date', 'text'];
+    //const arrayPrefixes = ['condoId', 'accountId', 'income', 'payment', 'kilowattHour', 'date', 'text'];
+    const arrayPrefixes = ['condoId', 'accountId', 'kilowattHour', 'text'];
+
+    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[3]))) {
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -132,7 +133,7 @@ function events() {
 
       updateBankAccountTransactionSync();
 
-      // Update a dues row
+      // Update a bankAccountTransactions row
       async function updateBankAccountTransactionSync() {
 
         updateBankAccountTransactionRow(bankAccountTransactionId);
@@ -365,7 +366,7 @@ function showResult(rowNumber) {
   let html = objCondos.startTable('width:1450px;');
 
   // table header
-  html += objCondos.showTableHeader("width:750px;", '','', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
+  html += objCondos.showTableHeader("width:750px;", '', '', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Kostnad', 'Kilowattimer', 'Tekst');
 
   let sumIncome = 0;
   let sumPayment = 0;

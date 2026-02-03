@@ -69,7 +69,7 @@ function events() {
     };
   });
 
-  // update a dues row
+  // update a accounts row
   document.addEventListener('change', (event) => {
 
     const arrayPrefixes = ['fixedCost', 'name'];

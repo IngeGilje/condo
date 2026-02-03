@@ -166,7 +166,7 @@ class Condo extends Condos {
     if (condoRowNumber !== -1) {
       condoName = this.arrayCondo[condoRowNumber].name;
     } else {
-      condoName = "-";
+      condoName = "";
     }
     return condoName;
   }

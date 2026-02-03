@@ -599,7 +599,7 @@ function showFilter(condominiumId) {
   html = objBankAccounts.startTable('width:750px;');
 
   // Header filter
-  html += objBankAccounts.showTableHeader("width:250px;", '', 'Velg leilighet', 'Bankkonto');
+  html += objBankAccounts.showTableHeader("width:250px;", '', 'Velg Sameie', 'Bankkonto');
 
   // start table body
   html += objBankAccounts.startTableBody();

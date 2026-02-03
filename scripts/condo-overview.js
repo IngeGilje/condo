@@ -203,7 +203,7 @@ function showDues(rowNumber) {
 
   objDues.arrayDues.forEach((due) => {
 
-     // insert table columns in start of a row
+    // insert table columns in start of a row
     rowNumber++;
     html += objDues.insertTableColumns('', rowNumber);
 
@@ -221,6 +221,11 @@ function showDues(rowNumber) {
     className = `income${due.dueId}`;
     html += objOverview.inputTableColumn(className, amount, 10);
 
+    // kilowattHour
+    const kilowattHour = formatOreToKroner(due.kilowattHour);
+    className = `income${due.dueId}`;
+    html += objOverview.inputTableColumn(className, kilowattHour, 10);
+
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
@@ -230,6 +235,7 @@ function showDues(rowNumber) {
 
     // accumulate
     sumDue += Number(due.amount);
+    sumKilowattHour += Number(due.kilowattHour);
   });
 
   // Sum row

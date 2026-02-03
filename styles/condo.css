@@ -23,7 +23,7 @@ table {
 th,
 td {
   border: 1px solid #ccc;
-  text-align: cnter;
+  text-align: center;
   height: 30px;
   white-space: nowrap;
   overflow: hidden;
@@ -167,4 +167,11 @@ select {
 .horizontalMenu li a:hover {
   background: #e0f0e0;
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+img {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
 }

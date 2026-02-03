@@ -953,6 +953,7 @@ async function main() {
             const accountId = req.query.accountId;
             const amount = req.query.amount;
             const date = req.query.date;
+            const kilowattHour = req.query.kilowattHour;
             const text = req.query.text;
 
             // Update row
@@ -966,6 +967,7 @@ async function main() {
                   accountId = ${accountId},
                   amount = ${amount},
                   date = ${date},
+                  kilowattHour = ${kilowattHour}
                   text = '${text}'
                 WHERE dueId = ${dueId};
               `;
@@ -990,6 +992,7 @@ async function main() {
             const accountId = req.query.accountId;
             const amount = req.query.amount;
             const date = req.query.date;
+            const kilowattHour = req.query.kilowattHour;
             const text = req.query.text;
 
             // Insert new row
@@ -1004,6 +1007,7 @@ async function main() {
                   accountId,
                   amount,
                   date,
+                  kilowattHour,
                   text
                 ) VALUES (
                   'N',
@@ -1014,6 +1018,7 @@ async function main() {
                   ${accountId},
                   ${amount},
                   ${date},
+                  ${kilowattHour},
                   '${text}'
                 );
               `;

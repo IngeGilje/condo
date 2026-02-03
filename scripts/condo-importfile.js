@@ -174,10 +174,11 @@ function createtransactionsArray() {
 
       accountName = (accountId) ? objAccounts.getAccountName(accountId) : text;
 
-      // To bank account
-      toBankAccountName = objImportFile.getBankAccountName(toBankAccount);
-
+      // From bank account
       fromBankAccountName = objImportFile.getBankAccountName(fromBankAccount);
+
+            // To bank account
+      toBankAccountName = objImportFile.getBankAccountName(toBankAccount);
 
       date = convertDateToISOFormat(accountingDate);
 
@@ -512,12 +513,6 @@ function showResult(rowNumber) {
     // Date
     let className = `accountingDate${rowNumber}`;
     html += objImportFile.inputTableColumn(className, transaction.accountingDate, 10);
-
-    /*
-    // Condo name
-    className = `accountName${rowNumber}`;
-    html += objImportFile.inputTableColumn(className, transaction.accountName, 45);
-    */
 
     // Condo name
     className = `condoName${rowNumber}`;
