@@ -396,7 +396,7 @@ function showResult(rowNumber) {
     // Date
     const date = formatToNorDate(bankAccountTransaction.date);
     className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumn(className, date, 10,true);
+    html += objBankAccountTransactions.inputTableColumn(className, date, 10, true);
 
     // accounts
     className = `accountId${bankAccountTransaction.bankAccountTransactionId}`;
@@ -408,12 +408,12 @@ function showResult(rowNumber) {
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumn(className, income, 10,true);
+    html += objBankAccountTransactions.inputTableColumn(className, income, 10, true);
 
     // payment
     const payment = formatOreToKroner(bankAccountTransaction.payment);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumn(className, payment, 10,true);
+    html += objBankAccountTransactions.inputTableColumn(className, payment, 10, true);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(bankAccountTransaction.kilowattHour);

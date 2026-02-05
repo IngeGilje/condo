@@ -188,7 +188,6 @@ function showFilter() {
   document.querySelector('.filter').innerHTML = html;
 }
 
-
 // Show dues
 function showDues(rowNumber) {
 
@@ -199,7 +198,7 @@ function showDues(rowNumber) {
   let sumKilowattHour = 0;
 
   // Header
-  html += objOverview.showTableHeader('width:1100px;', '', '', '', 'Forfall', '');
+  html += objOverview.showTableHeader('width:1100px;', '', '', '', 'Forfall', '', '');
   html += objOverview.showTableHeader('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'kilowattimer', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
@@ -210,27 +209,27 @@ function showDues(rowNumber) {
 
     // condo
     className = `condo${due.dueId}`;
-    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Ingen er valgt', '');
+    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Ingen er valgt', '', true);
 
     // date
     const date = formatToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objOverview.inputTableColumn(className, date, 10);
+    html += objOverview.inputTableColumn(className, date, 10, true);
 
     // amount
     const amount = formatOreToKroner(due.amount);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableColumn(className, amount, 10);
+    html += objOverview.inputTableColumn(className, amount, 10, true);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableColumn(className, kilowattHour, 10);
+    html += objOverview.inputTableColumn(className, kilowattHour, 10, true);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objOverview.inputTableColumn(className, text, 45);
+    html += objOverview.inputTableColumn(className, text, 45, true);
 
     html += "</tr>";
 
@@ -278,22 +277,22 @@ function showBankAccountTransactions(rowNumber) {
 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondo.showSelectedCondos(className, '', Number(bankAccountTransaction.condoId), 'Ingen er valgt', '');
+    html += objCondo.showSelectedCondos(className, '', Number(bankAccountTransaction.condoId), 'Ingen er valgt', '', true);
 
     // date
     const date = formatToNorDate(bankAccountTransaction.date);
     className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumn(className, date, 10);
+    html += objBankAccountTransactions.inputTableColumn(className, date, 10, true);
 
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumn(className, income, 10);
+    html += objBankAccountTransactions.inputTableColumn(className, income, 10, true);
 
     // Text
     const text = bankAccountTransaction.text;
     className = `text${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransactions.inputTableColumn(className, text, 45);
+    html += objBankAccountTransactions.inputTableColumn(className, text, 45, true);
 
     html += "</tr>";
 

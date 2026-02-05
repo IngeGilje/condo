@@ -4,142 +4,6 @@ class Condo extends Condos {
   // Condo information
   arrayCondo;
 
-  /*
-  // Show selected condos
-  showSelectedCondos(columnName, condoId, selectAll, selectNone) {
-
-    let selectedOption;
-
-    let html =
-      `
-        <form 
-          id="Condo"
-          action="/submit" 
-          method="POST"
-        >
-          <label 
-            id="Condo"
-            class="label-${columnName}"
-            for="Condo"
-          >
-            Velg leilighet
-          </label>
-          <select 
-            class="select-${columnName}" 
-          >
-    `;
-
-    // Check if condo array is empty
-    const numberOfRows = this.arrayCondo.length;
-    if (numberOfRows > 0) {
-      this.arrayCondo.forEach((condo) => {
-        if (condo.condoId >= 0) {
-          if (condo.condoId === condoId) {
-
-            html +=
-              `
-                <option
-                  value = "${condo.condoId}"
-                  selected
-                >
-                  ${condo.name}
-                </option >
-              `;
-            selectedOption =
-              true;
-
-          } else {
-            html +=
-              `
-                <option
-                  value = "${condo.condoId}">
-                  ${condo.name}
-                </option >
-              `;
-          }
-        }
-      });
-
-    } else {
-
-      html +=
-        `
-          <option 
-            value = "0"
-            selected
-          >
-            Ingen leiligheter
-          </option >
-        `;
-      selectedOption =
-        true;
-    }
-
-    // Alternative select
-    if (selectAll && (numberOfRows > 1)) {
-      if (selectedOption) {
-        html +=
-          `
-            <option 
-              value=${this.nineNine}
-            >
-              ${selectAll}
-            </option>
-          `;
-      } else {
-
-        html +=
-          `
-            <option 
-              value=${this.nineNine}
-              selected
-            >
-              ${selectAll}
-            </option>
-          `;
-        selectedOption =
-          true;
-      }
-    }
-
-    // Do not select any condo
-    if (selectNone && (numberOfRows > 1)) {
-      if (selectedOption) {
-        html +=
-          `
-            <option 
-              value=0
-            >
-              ${selectNone}
-            </option>
-          `;
-      } else {
-
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
-        selectedOption =
-          true;
-
-      }
-    }
-
-    html +=
-      `
-          </select >
-        </form >
-      `;
-
-    document.querySelector(`.div-${columnName}`).innerHTML = html;
-  }
-  */
-
   // Find selected condo id
   getSelectedCondoId(className) {
 
@@ -238,11 +102,16 @@ class Condo extends Condos {
   }
 
   // Show all selected condos
-  showSelectedCondos(className, style, condoId, selectNone, selectAll) {
+  showSelectedCondos(className, style, condoId, selectNone, selectAll, disabled = false) {
 
     let selectedValue = false;
 
-    let html = `<td class="center one-line"> <select class="${className} center"`;
+    let html = `
+      <td 
+        class="center one-line">
+          <select class="${className} center"
+          ${disabled ? 'disabled' : ''}
+      `;
     if (style) html += `style="${style}"`;
     html += `>`;
 

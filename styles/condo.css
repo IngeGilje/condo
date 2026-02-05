@@ -111,6 +111,7 @@ select {
   transition: background-color 0.3s ease;
 }
 
+select[disabled],
 input[readonly] {
   background-color: #f2f2f2;
   color: #555;

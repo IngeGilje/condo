@@ -278,17 +278,17 @@ function showAnnualAccounts(rowNumber) {
       html += objAnnualAccount.insertTableColumns('', rowNumber, '');
 
       // name
-      html += objAnnualAccount.inputTableColumn('name', account.name, 45);
+      html += objAnnualAccount.inputTableColumn('name', account.name, 45, true);
 
       // accountAmount
       accountAmount = formatOreToKroner(accountAmount);
       className = `accountAmount${account.accountId}`;
-      html += objAnnualAccount.inputTableColumn('accountAmount', accountAmount, 10);
+      html += objAnnualAccount.inputTableColumn('accountAmount', accountAmount, 10, true);
 
       // budgetAmount
       budgetAmount = formatOreToKroner(budgetAmount);
       className = `budgetAmount${account.accountId}`;
-      html += objAnnualAccount.inputTableColumn('budgetAmount', budgetAmount, 10);
+      html += objAnnualAccount.inputTableColumn('budgetAmount', budgetAmount, 10, true);
 
       // Deviation
       accountAmount = Number(formatKronerToOre(accountAmount));
@@ -296,7 +296,7 @@ function showAnnualAccounts(rowNumber) {
       let deviation = accountAmount - budgetAmount;
       deviation = formatOreToKroner(deviation);
       className = `deviation${account.accountId}`;
-      html += objAnnualAccount.inputTableColumn('deviation', deviation, 10);
+      html += objAnnualAccount.inputTableColumn('deviation', deviation, 10, true);
 
       html += "</tr>";
 
@@ -307,24 +307,18 @@ function showAnnualAccounts(rowNumber) {
   });
 
   // Sum row
-  //html += "<tr>";
-
-  //html += "<td class='center bold'>Sum</td>";
 
   // Total amount annual accounts
   totalAccountAmount = formatOreToKroner(totalAccountAmount);
-  //html += objBankAccountTransactions.inputTableColumn('totalAccountAmount', totalAccountAmount, 10);
 
   // Budget fiscal year
   totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
-  //html += objBankAccountTransactions.inputTableColumn('totalBudgetAmount', totalBudgetAmount, 10);
 
   // Total deviation
   totalAccountAmount = formatKronerToOre(totalAccountAmount);
   totalBudgetAmount = formatKronerToOre(totalBudgetAmount);
   let totalDeviation = Number(totalAccountAmount) - Number(totalBudgetAmount);
   totalDeviation = formatOreToKroner(String(totalDeviation));
-  //html += objBankAccountTransactions.inputTableColumn('totalDeviation', totalDeviation, 10);
 
   totalAccountAmount = formatOreToKroner(String(totalAccountAmount));
   totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
@@ -383,17 +377,17 @@ function showIncomeNextYear(rowNumber) {
 
     // condo name
     className = `name${condo.condoId}`;
-    html += objAnnualAccount.inputTableColumn(className, condo.name, 45);
+    html += objAnnualAccount.inputTableColumn(className, condo.name, 45, true);
 
     // Square meters
     let squareMeters = formatOreToKroner(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;
-    html += objAnnualAccount.inputTableColumn(className, squareMeters, 10);
+    html += objAnnualAccount.inputTableColumn(className, squareMeters, 10, true);
 
     // fixed cost per month per condo
     fixedCostCondoMonth = formatOreToKroner(fixedCostCondoMonth);
     className = `fixedCostCondoMonth${condo.accountId}`;
-    html += objAnnualAccount.inputTableColumn(className, fixedCostCondoMonth, 10);
+    html += objAnnualAccount.inputTableColumn(className, fixedCostCondoMonth, 10, true);
 
     // Common cost per month per condo
     let commonCostSquareMeter = document.querySelector('.filterCommonCostSquareMeter').value;
@@ -402,7 +396,7 @@ function showIncomeNextYear(rowNumber) {
     let commonCostsMonth = (squareMeters * commonCostSquareMeter) / 100;
     commonCostsMonth = formatOreToKroner(commonCostsMonth);
     className = `commonCostsMonth${condo.accountId}`;
-    html += objAnnualAccount.inputTableColumn(className, commonCostsMonth, 10);
+    html += objAnnualAccount.inputTableColumn(className, commonCostsMonth, 10, true);
 
     // Common cost per year per condo
     commonCostsMonth = formatKronerToOre(commonCostsMonth);
@@ -410,28 +404,7 @@ function showIncomeNextYear(rowNumber) {
     let commonCostsCondoYear = (commonCostsMonth + fixedCostCondoMonth) * 12;
     commonCostsCondoYear = formatOreToKroner(commonCostsCondoYear);
     className = `commonCostsCondoYear${condo.accountId}`;
-    html += objAnnualAccount.inputTableColumn(className, commonCostsCondoYear, 10);
-
-    /*
-    let budgetYear = Number(document.querySelector('.filterBudgetYear').value);
-    let priceSquareMeter = getpriceSquaremeter(++budgetYear);
-    priceSquareMeter = Number(formatKronerToOre(priceSquareMeter));
-    squareMeters = Number(formatKronerToOre(squareMeters));
-    let commonCostsMonth = (priceSquareMeter * squareMeters) / 100;
-    fixedCost = Number(formatKronerToOre(fixedCost));
-    commonCostsMonth = formatOreToKroner(String(commonCostsMonth + fixedCost));
-    className = `commonCostsMonth${condo.accountId}`;
-    html += objAnnualAccount.inputTableColumn(className, commonCostsMonth, 10);
-    */
-
-    //commonCostsMonth = (priceSquareMeter * squareMeters) / 100;
-    //commonCostsMonth = String(commonCostsMonth + fixedCost);
-    //commonCostsMonth = formatOreToKroner(commonCostsMonth);
-
-    // Common cost per Year
-    //commonCostsMonth = formatKronerToOre(commonCostsMonth);
-    //commonCostsYear = ((commonCostsMonth + fixedCost) * 12) / 100;
-    //commonCostsYear = (commonCostsMonth + fixedCost) * 12;
+    html += objAnnualAccount.inputTableColumn(className, commonCostsCondoYear, 10, true);
 
     // Accomulate
     totalSquareMeters += Number(squareMeters);
@@ -496,7 +469,7 @@ function showRemoteHeating(rowNumber) {
 
       const date = formatToNorDate(bankAccountTransaction.date);
       className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objAnnualAccount.inputTableColumn(className, date, 10);
+      html += objAnnualAccount.inputTableColumn(className, date, 10, true);
 
       let payment = Number(bankAccountTransaction.payment);
       let income = Number(bankAccountTransaction.income);
@@ -504,12 +477,12 @@ function showRemoteHeating(rowNumber) {
 
       payment = formatOreToKroner(payment);
       className = `payment${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objAnnualAccount.inputTableColumn(className, payment, 10);
+      html += objAnnualAccount.inputTableColumn(className, payment, 10, true);
 
       // kilowattHour
       let kilowattHour = formatOreToKroner(bankAccountTransaction.kilowattHour);
       className = `kilowattHour${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objAnnualAccount.inputTableColumn(className, kilowattHour, 10);
+      html += objAnnualAccount.inputTableColumn(className, kilowattHour, 10, true);
 
       // Price per KWHour
       payment = Number(bankAccountTransaction.payment);
@@ -522,7 +495,7 @@ function showRemoteHeating(rowNumber) {
       priceKWHour = priceKWHour.replace(".", ",");
       priceKWHour = formatOreToKroner(priceKWHour);
       className = ` priceKWHour${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objAnnualAccount.inputTableColumn(className, priceKWHour, 10);
+      html += objAnnualAccount.inputTableColumn(className, priceKWHour, 10, true);
 
       html += "</tr>";
 
@@ -545,8 +518,8 @@ function showRemoteHeating(rowNumber) {
 
     html += "<td class='center bold'>Sum</td>";
 
-    html += objBankAccountTransactions.inputTableColumn('sumPayment', formatOreToKroner(String(sumPayment, 10)));
-    html += objBankAccountTransactions.inputTableColumn('sumNumberKWHour', formatOreToKroner(String(sumNumberKWHour, 10)));
+    html += objBankAccountTransactions.inputTableColumn('sumPayment', formatOreToKroner(String(sumPayment, 10, true)));
+    html += objBankAccountTransactions.inputTableColumn('sumNumberKWHour', formatOreToKroner(String(sumNumberKWHour, 10, true)));
 
     // Price per KWHour
     let priceKWHour = 0;
@@ -555,7 +528,7 @@ function showRemoteHeating(rowNumber) {
     priceKWHour = priceKWHour.replace(".", ",");
     priceKWHour = formatOreToKroner(priceKWHour);
     className = `priceKWHour`;
-    html += objBankAccountTransactions.inputTableColumn(className, formatOreToKroner(String(priceKWHour, 10)));
+    html += objBankAccountTransactions.inputTableColumn(className, formatOreToKroner(String(priceKWHour, 10, true)));
 
     html += "</tr>";
 
@@ -590,7 +563,7 @@ function showBankDeposit(rowNumber) {
 
   // Text
   className = `text`;
-  html += objAnnualAccount.inputTableColumn(className, 'Bankinnskudd', 10);
+  html += objAnnualAccount.inputTableColumn(className, 'Bankinnskudd', 10, true);
 
   // closingBalanceDate
   let closingBalanceDate = "";
@@ -601,7 +574,7 @@ function showBankDeposit(rowNumber) {
     closingBalanceDate = formatToNorDate(closingBalanceDate);
   }
   className = `closingBalanceDate`;
-  html += objAnnualAccount.inputTableColumn(className, closingBalanceDate, 10);
+  html += objAnnualAccount.inputTableColumn(className, closingBalanceDate, 10, true);
 
   // Bank deposit
   let bankDepositAmount = "";
@@ -609,7 +582,7 @@ function showBankDeposit(rowNumber) {
   bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
   className = `bankDepositAmount`
-  html += objAnnualAccount.inputTableColumn(className, bankDepositAmount, 10);
+  html += objAnnualAccount.inputTableColumn(className, bankDepositAmount, 10, true);
 
   html += "</tr>";
 
@@ -631,16 +604,16 @@ function showBankDeposit(rowNumber) {
         name = objAccounts.arrayAccounts[rowNumberAccount].name;
       }
       className = `name${budget.budgetId}`
-      html += objAnnualAccount.inputTableColumn(className, name, 10);
+      html += objAnnualAccount.inputTableColumn(className, name, 10, true);
 
       //empty column
       className = `emptyColumn${budget.budgetId}`
-      html += objAnnualAccount.inputTableColumn(className, '', 10);
+      html += objAnnualAccount.inputTableColumn(className, '', 10, true);
 
       // budget amount
       let amount = formatOreToKroner(budget.amount);
       className = `amount${budget.budgetId}`
-      html += objAnnualAccount.inputTableColumn(className, amount, 10);
+      html += objAnnualAccount.inputTableColumn(className, amount, 10, true);
 
       html += "</tr>";
 
@@ -656,19 +629,19 @@ function showBankDeposit(rowNumber) {
   html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '');
 
   className = `estimatedBankDeposit`;
-  html += objAnnualAccount.inputTableColumn(className, 'Estimert bankinnskudd', 10);
+  html += objAnnualAccount.inputTableColumn(className, 'Estimert bankinnskudd', 10, true);
 
   // Next year
   closingBalanceDate = Number(convertDateToISOFormat(closingBalanceDate));
   let closingBalanceDateNextYear = closingBalanceDate + 10000;
   closingBalanceDateNextYear = formatToNorDate(closingBalanceDateNextYear);
   className = `closingBalanceDateNextYear`;
-  html += objBankAccountTransactions.inputTableColumn(className, closingBalanceDateNextYear, 10);
+  html += objBankAccountTransactions.inputTableColumn(className, closingBalanceDateNextYear, 10, true);
 
   // Bank deposit next year
   const bankDepositNextYear = formatOreToKroner(String(accAmount));
   className = `bankDepositNextYear`;
-  html += objBankAccountTransactions.inputTableColumn(className, bankDepositNextYear, 10);
+  html += objBankAccountTransactions.inputTableColumn(className, bankDepositNextYear, 10, true);
 
   // insert table columns in start of a 
   rowNumber++;

@@ -263,7 +263,7 @@ class Condos {
   */
 
   // Show input
-  inputTableColumn(className, value, maxlength, locked = false) {
+  inputTableColumn(className, value, maxlength, readOnly = false) {
     return `
       <td class="center">
         <input
@@ -271,7 +271,7 @@ class Condos {
           type="text"
           maxlength="${maxlength}"
           value="${value}"
-          ${locked ? 'readonly' : ''}
+          ${readOnly ? 'readonly' : ''}
         >
       </td>
     `;
