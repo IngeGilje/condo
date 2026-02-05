@@ -36,7 +36,7 @@ class Condos {
     {
       applicationName: "condo-bankaccount.html",
       className: "Menu4",
-      text: "Bankkonto sameiet"
+      text: "Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
@@ -120,7 +120,7 @@ class Condos {
     {
       applicationName: "condo-bankaccount.html",
       className: "Menu4",
-      text: "Bankkonto sameiet"
+      text: "Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
@@ -211,6 +211,7 @@ class Condos {
     `;
   }
 
+  /*
   // Show input
   showInput(className, labelText, maxlength, placeholder) {
 
@@ -235,7 +236,9 @@ class Condos {
     const iconName = this.getIconName(className);
     inputElement.style.backgroundImage = `url('icons/${iconName}')`;
   }
+  */
 
+  /*
   // Show input
   showInputHTML(className, labelText, maxlength, placeholder) {
 
@@ -257,7 +260,24 @@ class Condos {
       `;
     return html;
   }
+  */
 
+  // Show input
+  inputTableColumn(className, value, maxlength, locked = false) {
+    return `
+      <td class="center">
+        <input
+          class="${className} center one-line"
+          type="text"
+          maxlength="${maxlength}"
+          value="${value}"
+          ${locked ? 'readonly' : ''}
+        >
+      </td>
+    `;
+  }
+
+  /*
   // Show input
   inputTableColumn(className, value, maxlength) {
 
@@ -275,6 +295,7 @@ class Condos {
 
     return html;
   }
+  */
 
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
@@ -419,6 +440,7 @@ class Condos {
       html;
   }
 
+  /*
   // Show read only input
   showInputReadOnly(className, labelText) {
 
@@ -437,6 +459,7 @@ class Condos {
         >
       `;
   }
+  */
 
   // Valid text
   validateText(tekst, minLenght, maxLength) {
@@ -761,6 +784,7 @@ class Condos {
     return (isNumeric(amount)) ? true : false;
   }
 
+  /*
   // Show input file
   showInputFile(className, labelText, maxlength, placeholder) {
 
@@ -777,6 +801,7 @@ class Condos {
     document.querySelector(`.div-${className}`)
       .innerHTML = html;
   }
+  */
 
   // Select choices like Yes, No, Ignore
   showSelectedValues(className, style, selectedChoice, ...choices) {

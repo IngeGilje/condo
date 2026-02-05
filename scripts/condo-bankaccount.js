@@ -205,47 +205,6 @@ async function deleteBankAccount() {
 }
 
 /*
-// Show leading text for account
-function showLeadingText(bankAccountId) {
-
-  // Show all bankaccounts
-  objBankAccounts.showSeletedBankaccounts('bankaccounts-bankAccountId', bankAccountId);
-
-  // Show bank account number
-  objBankAccounts.showInput('bankaccounts-bankAccount', '* Bankkontonummer', 11, '');
-
-  // bank account name
-  objBankAccounts.showInput('bankaccounts-name', '* Kontonavn', 50, '');
-
-  // Opening balance date
-  objBankAccounts.showInput('bankaccounts-openingBalanceDate', 'Dato inngående saldo', 10, '');
-
-  // Opening balance
-  objBankAccounts.showInput('bankaccounts-openingBalance', 'Inngående saldo', 10, '');
-
-  // Closing balance date
-  objBankAccounts.showInput('bankaccounts-closingBalanceDate', 'Dato utgående saldo', 10, '');
-
-  // Closing balance
-  objBankAccounts.showInput('bankaccounts-closingBalance', 'Utgående saldo', 10, '');
-
-  // update button
-  if (Number(objUserPassword.securityLevel) >= 9) {
-    objBankAccounts.showButton('bankaccounts-update', 'Oppdater');
-
-    // new button
-    objBankAccounts.showButton('bankaccounts-insert', 'Ny');
-
-    // delete button
-    objBankAccounts.showButton('bankaccounts-delete', 'Slett');
-
-    // cancel button
-    objBankAccounts.showButton('bankaccounts-cancel', 'Avbryt');
-  }
-}
-*/
-
-/*
 // Show all values for bankAccount
 function showValues(bankAccountId) {
 

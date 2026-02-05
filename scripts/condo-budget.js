@@ -278,16 +278,13 @@ function showResult(rowNumber) {
   let html = objBudgets.startTable('width:1000px;');
 
   // table header
-  html += objBudgets.showTableHeader("width:1000px;", '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+  html += objBudgets.showTableHeader("width:1000px;", '', '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
 
   let sumAmount = 0;
 
   objBudgets.arrayBudgets.forEach((budget) => {
 
-    //html += '<tr>';
-
     // Show menu
-    //html += objBudgets.verticalMenu(rowNumber);
     rowNumber++;
     html += objBudgets.insertTableColumns('', rowNumber, '');
 

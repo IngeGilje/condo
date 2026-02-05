@@ -196,10 +196,11 @@ function showDues(rowNumber) {
   html = objOverview.startTable('width:1100px;');
 
   let sumDue = 0;
+  let sumKilowattHour = 0;
 
   // Header
   html += objOverview.showTableHeader('width:1100px;', '', '', '', 'Forfall', '');
-  html += objOverview.showTableHeader('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'Tekst');
+  html += objOverview.showTableHeader('width:1100px;', '', 'Leilighet', 'Forfallsdato', 'Beløp', 'kilowattimer', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -207,7 +208,7 @@ function showDues(rowNumber) {
     rowNumber++;
     html += objDues.insertTableColumns('', rowNumber);
 
-    // condos
+    // condo
     className = `condo${due.dueId}`;
     html += objCondo.showSelectedCondos(className, '', due.condoId, 'Ingen er valgt', '');
 
@@ -240,18 +241,14 @@ function showDues(rowNumber) {
 
   // Sum row
   sumDue = formatOreToKroner(sumDue);
+  sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
   rowNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', sumDue);
-
-  // due
-  //html += `<td class="center bold">${sumDue}</td>`;
-
+  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', sumDue, sumKilowattHour);
   html += "</tr>"
 
   rowNumber++;
   html += objOverview.insertTableColumns('', rowNumber, '', '', '');
-
   html += "</tr>"
 
   // The end of the table
