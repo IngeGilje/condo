@@ -23,27 +23,29 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-    // Show filter
-    showFilter()
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    // Show account
-    menuNumber = showResult(menuNumber);
+      // Show filter
+      showFilter()
 
-    // Events
-    events();
+      // Show account
+      menuNumber = showResult(menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
 
@@ -152,13 +154,13 @@ function resetValues() {
 /*
 // Show header
 function showHeader() {
-
+ 
   // Start table
   let html = startHTMLTable('width:750px;');
-
+ 
   // Main header
   html += objAccounts.showTableHeader('width:250px;', 'Konto');
-
+ 
   // The end of the table
   html += endTable();
   document.querySelector('.header').innerHTML = html;
@@ -247,7 +249,7 @@ function showResult(rowNumber) {
   /*
   // Start HTML table
   html = startHTMLTable('width:750px;');
-
+ 
   // Header
   html += objAccounts.showTableHeader('width:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
   */

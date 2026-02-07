@@ -22,33 +22,35 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-    await objCondominiums.loadCondominiumsTable();
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objBankAccounts.nineNine);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+      await objCondominiums.loadCondominiumsTable();
+      await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objBankAccounts.nineNine);
 
-    // Show filter
-    showFilter(objUserPassword.condominiumId);
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-    const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-    await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
+      // Show filter
+      showFilter(objUserPassword.condominiumId);
 
-    // Show result
-    showResult(bankAccountId, menuNumber);
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
+      await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-    // Events
-    events();
+      // Show result
+      showResult(bankAccountId, menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
 
@@ -138,48 +140,48 @@ function events() {
 
 /*
 async function updateBankAccount() {
-
+ 
   // Bank account id
   const bankAccountId = Number(document.querySelector('.select-bankaccounts-bankAccountId').value);
-
+ 
   if (bankAccountId >= 0) {
-
+ 
     // Bank Account number
     const bankAccount = document.querySelector('.input-bankaccounts-bankAccount').value;
-
+ 
     // BankAccount Name
     const bankAccountName = document.querySelector('.input-bankaccounts-name').value;
-
+ 
     // Opening balance date
     let openingBalanceDate = document.querySelector('.input-bankaccounts-openingBalanceDate').value;
     openingBalanceDate = convertDateToISOFormat(openingBalanceDate);
-
+ 
     // Opening balance
     const openingBalance = document.querySelector('.input-bankaccounts-openingBalance').value;
-
+ 
     // Closing balance date
     let closingBalanceDate = document.querySelector('.input-bankaccounts-closingBalanceDate').value;
     closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
-
+ 
     // Closing balance
     const closingBalance = document.querySelector('.input-bankaccounts-closingBalance').value;
-
+ 
     const user = objUserPassword.email;
     const name = document.querySelector('.input-bankaccounts-name').value;
     const condominiumId = Number(objUserPassword.condominiumId);
     const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
-
+ 
     // Check if bankAccount exist
     if (rowNumberBankAccount !== -1) {
-
+ 
       // update bankAccount
       objBankAccounts.updateBankAccountsTable(bankAccountId, condominiumId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
     } else {
-
+ 
       // insert bankAccount
       objBankAccounts.insertBankAccountsTable(condominiumId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
     }
-
+ 
     document.querySelector('.select-bankaccounts-bankAccountId').disabled = false;
     document.querySelector('.button-bankaccounts-delete').disabled = false;
     document.querySelector('.button-bankaccounts-insert').disabled = false;
@@ -207,33 +209,33 @@ async function deleteBankAccount() {
 /*
 // Show all values for bankAccount
 function showValues(bankAccountId) {
-
+ 
   // Check for valid bankaccount Id
   if (bankAccountId >= 0) {
-
+ 
     // find object number for selected account 
     const rowNumberAccount = objBankAccounts.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
     if (rowNumberAccount !== -1) {
-
+ 
       // Select bank account
       const bankAccountId = objBankAccounts.arrayBankAccounts[rowNumberAccount].bankAccountId;
       objBankAccounts.selectBankAccountId(bankAccountId, 'bankaccounts-bankAccountId');
-
+ 
       // account name
       document.querySelector('.input-bankaccounts-name').value = objBankAccounts.arrayBankAccounts[rowNumberAccount].name;
-
+ 
       // bank account number
       document.querySelector('.input-bankaccounts-bankAccount').value = objBankAccounts.arrayBankAccounts[rowNumberAccount].bankAccount;
-
+ 
       // opening balance date
       document.querySelector('.input-bankaccounts-openingBalanceDate').value = formatToNorDate(objBankAccounts.arrayBankAccounts[rowNumberAccount].openingBalanceDate);
-
+ 
       // opening balance
       document.querySelector('.input-bankaccounts-openingBalance').value = formatOreToKroner(objBankAccounts.arrayBankAccounts[rowNumberAccount].openingBalance);
-
+ 
       // closing balance date
       document.querySelector('.input-bankaccounts-closingBalanceDate').value = formatToNorDate(objBankAccounts.arrayBankAccounts[rowNumberAccount].closingBalanceDate);
-
+ 
       // closing balance
       document.querySelector('.input-bankaccounts-closingBalance').value = formatOreToKroner(objBankAccounts.arrayBankAccounts[rowNumberAccount].closingBalance);
     }
@@ -243,35 +245,35 @@ function showValues(bankAccountId) {
 
 /*
 function resetValues() {
-
+ 
   // Bank account Id
   document.querySelector('.select-bankaccounts-bankAccountId').value =
     '';
-
+ 
   // Bank account number
   document.querySelector('.input-bankaccounts-bankAccount').value =
     '';
-
+ 
   // Bank account Name
   document.querySelector('.input-bankaccounts-name').value =
     '';
-
+ 
   // Opening balance
   document.querySelector('.input-bankaccounts-openingBalance').value =
     '';
-
+ 
   // Opening balance date
   document.querySelector('.input-bankaccounts-openingBalanceDate').value =
     '';
-
+ 
   // Closing balance
   document.querySelector('.input-bankaccounts-closingBalance').value =
     '';
-
+ 
   // Closing balance date
   document.querySelector('.input-bankaccounts-closingBalanceDate').value =
     '';
-
+ 
   document.querySelector('.select-bankaccounts-bankAccountId').disabled =
     true;
   document.querySelector('.button-bankaccounts-delete').disabled =
@@ -284,13 +286,13 @@ function resetValues() {
 /*
 // Show header
 function showHeader() {
-
+ 
   // Start table
   let html = startHTMLTable('width:750px;');
-
+ 
   // Main header
   html += objBankAccounts.showTableHeader('width:250px;', 'Bankkonto sameie');
-
+ 
   // The end of the table
   html += endTable();
   document.querySelector('.header').innerHTML = html;

@@ -20,34 +20,37 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    // Show header
-    showHeader();
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-    // Show filter
-    showFilter()
+      // Show header
+      showHeader();
 
-    const condominiumId = Number(objUserPassword.condominiumId);
-    const accountId = Number(document.querySelector('.filterAccountId').value);
-    const year = Number(document.querySelector('.filterYear').value);
-    await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
+      // Show filter
+      showFilter()
 
-    // Show result of filter
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+      const condominiumId = Number(objUserPassword.condominiumId);
+      const accountId = Number(document.querySelector('.filterAccountId').value);
+      const year = Number(document.querySelector('.filterYear').value);
+      await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
-    // Events
-    events();
+      // Show result of filter
+      let menuNumber = 0;
+      menuNumber = showResult(menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
+
 
 // Make budget events
 function events() {

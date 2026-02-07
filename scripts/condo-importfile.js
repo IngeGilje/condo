@@ -30,57 +30,59 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'A';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine);
-    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
-    await objCondo.loadCondoTable(objUserPassword.condominiumId);
-    await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
-    await objCondominiums.loadCondominiumsTable();
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    const condominiumId = Number(objUserPassword.condominiumId);
+      const resident = 'A';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+      await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
+      await objCondo.loadCondoTable(objUserPassword.condominiumId);
+      await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
+      await objCondominiums.loadCondominiumsTable();
 
-    const deleted = 'A';
-    const accountId = objImportFile.nineNine;
-    const condoId = objImportFile.nineNine;
-    let fromDate = 0;
-    let toDate = objImportFile.nineNine;
-    await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+      const condominiumId = Number(objUserPassword.condominiumId);
 
-    amount = 0;
-    const orderBy = 'condoId ASC, date DESC, income ASC';
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      const deleted = 'A';
+      const accountId = objImportFile.nineNine;
+      const condoId = objImportFile.nineNine;
+      let fromDate = 0;
+      let toDate = objImportFile.nineNine;
+      await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-    // Sends a request to the server to get bank csv transaction file
-    // get name of transactions file
-    const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-    if (rowNumberCondominium !== -1) {
+      amount = 0;
+      const orderBy = 'condoId ASC, date DESC, income ASC';
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-      // file import text name
-      const csvFileName = objCondominiums.arrayCondominiums[rowNumberCondominium].importFileName;
-      await objImportFile.loadCsvFile(csvFileName);
+      // Sends a request to the server to get bank csv transaction file
+      // get name of transactions file
+      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+      if (rowNumberCondominium !== -1) {
 
-      // Show header
-      showHeader();
+        // file import text name
+        const csvFileName = objCondominiums.arrayCondominiums[rowNumberCondominium].importFileName;
+        await objImportFile.loadCsvFile(csvFileName);
 
-      // Show filter
-      showFilter()
+        // Show header
+        showHeader();
 
-      // create array from imported csv-file (data string)
-      createtransactionsArray(objImportFile.strCSVTransaction);
+        // Show filter
+        showFilter()
 
-      // Show result of filter
-      let menuNumber = 0;
-      menuNumber = showResult(menuNumber);
+        // create array from imported csv-file (data string)
+        createtransactionsArray(objImportFile.strCSVTransaction);
 
-      // Events
-      events();
+        // Show result of filter
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
+
+        // Events
+        events();
+      }
     }
   }
 }
@@ -177,7 +179,7 @@ function createtransactionsArray() {
       // From bank account
       fromBankAccountName = objImportFile.getBankAccountName(fromBankAccount);
 
-            // To bank account
+      // To bank account
       toBankAccountName = objImportFile.getBankAccountName(toBankAccount);
 
       date = convertDateToISOFormat(accountingDate);
@@ -383,21 +385,21 @@ function getOpeningBalanceDate() {
 /*
 // Get closing balance date
 function getClosingBalanceDate() {
-
+ 
   let closingBalanceDate;
-
+ 
   textFile.forEach((row) => {
-
+ 
     [accountingDate, description, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
-
+ 
     if (accountingDate.includes("Utgående saldo pr")) {
-
+ 
       closingBalanceDate =
         accountingDate.match(/\d{2}\.\d{2}\.\d{4}/);
     }
   });
-
+ 
   return (closingBalanceDate) ? closingBalanceDate[0] : null;
 }
 */
@@ -438,13 +440,13 @@ function checkBankAccountTransaction(income, payment, date) {
 /*
 // Show header
 function showHeader() {
-
+ 
   // Start table
   let html = startHTMLTable('width:1450px;');
-
+ 
   // Main header
   html += objImportFile.showTableHeader('width:250px;', 'Import av bankkontotransaksjoner');
-
+ 
   // The end of the table
   html += endTable();
   document.querySelector('.header').innerHTML = html;
@@ -562,7 +564,7 @@ function showResult(rowNumber) {
 
   // Show sum row
   rowNumber++;
-  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '','', '', '', 'Sum', sumIncomes, sumPayments);
+  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', '', 'Sum', sumIncomes, sumPayments);
 
   // Show update button
   //html += "<tr>";

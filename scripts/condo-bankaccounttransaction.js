@@ -26,44 +26,46 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objBankAccountTransactions.nineNine);
-    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objBankAccountTransactions.nineNine, objBankAccountTransactions.nineNine);
-    await objCondos.loadCondoTable(objUserPassword.condominiumId);
-    await objCondominiums.loadCondominiumsTable();
-    await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+      await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objBankAccountTransactions.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objBankAccountTransactions.nineNine, objBankAccountTransactions.nineNine);
+      await objCondos.loadCondoTable(objUserPassword.condominiumId);
+      await objCondominiums.loadCondominiumsTable();
+      await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
 
-    // Show filter
-    showFilter()
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    const amount = Number(document.querySelector('.filterAmount').value);
-    const condominiumId = objUserPassword.condominiumId;
-    const deleted = 'N';
-    const condoId = Number(document.querySelector('.filterCondoId').value);
-    const accountId = Number(document.querySelector('.filterAccountId').value);
-    let fromDate = document.querySelector('.filterFromDate').value;
-    fromDate = Number(convertDateToISOFormat(fromDate));
-    let toDate = document.querySelector('.filterToDate').value;
-    toDate = Number(convertDateToISOFormat(toDate));
-    const orderBy = 'date DESC, income DESC';
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      // Show filter
+      showFilter()
 
-    // Show result of filter
-    menuNumber = showResult(menuNumber);
+      const amount = Number(document.querySelector('.filterAmount').value);
+      const condominiumId = objUserPassword.condominiumId;
+      const deleted = 'N';
+      const condoId = Number(document.querySelector('.filterCondoId').value);
+      const accountId = Number(document.querySelector('.filterAccountId').value);
+      let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = Number(convertDateToISOFormat(fromDate));
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = Number(convertDateToISOFormat(toDate));
+      const orderBy = 'date DESC, income DESC';
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-    // Events
-    events();
+      // Show result of filter
+      menuNumber = showResult(menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
 
@@ -303,13 +305,13 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 /*
 // Show header
 function showHeader() {
-
+ 
   // Start table
   let html = startHTMLTable('width:1450px;');
-
+ 
   // Main header
   html += objBankAccountTransactions.showTableHeader('width:250px;', 'Bankkontotransaksjoner');
-
+ 
   // The end of the table
   html += endTable();
   document.querySelector('.header').innerHTML = html;

@@ -26,63 +26,65 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objCondominiums.loadCondominiumsTable();
-    await objCondo.loadCondoTable(objUserPassword.condominiumId);
-    await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
-    await objBudget.loadBudgetsTable(objUserPassword.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
-    await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objAnnualAccount.nineNine);
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objCondominiums.loadCondominiumsTable();
+      await objCondo.loadCondoTable(objUserPassword.condominiumId);
+      await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
+      await objBudget.loadBudgetsTable(objUserPassword.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objAnnualAccount.nineNine);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
 
-    // Show filter
-    const budgetYear = today.getFullYear();
-    let fromDate = '01.01.' + budgetYear;
-    let toDate = getCurrentDate();
-    showFilter(budgetYear, fromDate, toDate);
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    const condominiumId = Number(objUserPassword.condominiumId);
-    const deleted = "N";
+      // Show filter
+      const budgetYear = today.getFullYear();
+      let fromDate = '01.01.' + budgetYear;
+      let toDate = getCurrentDate();
+      showFilter(budgetYear, fromDate, toDate);
 
-    fromDate = document.querySelector('.filterFromDate').value;
-    fromDate = Number(convertDateToISOFormat(fromDate));
+      const condominiumId = Number(objUserPassword.condominiumId);
+      const deleted = "N";
 
-    toDate = document.querySelector('.filterToDate').value;
-    toDate = Number(convertDateToISOFormat(toDate));
+      fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = Number(convertDateToISOFormat(fromDate));
 
-    // Show remote Heating
-    // Get row number for payment Remote Heating Account Id
-    const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
-    if (rowNumberCondominium !== -1) {
+      toDate = document.querySelector('.filterToDate').value;
+      toDate = Number(convertDateToISOFormat(toDate));
 
-      // Show annual accounts
-      const orderBy = 'condoId ASC, date DESC, income ASC';
-      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
-      menuNumber = showAnnualAccounts(menuNumber);
+      // Show remote Heating
+      // Get row number for payment Remote Heating Account Id
+      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+      if (rowNumberCondominium !== -1) {
 
-      const paymentRemoteHeatingAccountId = Number(objCondominiums.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId);
-      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, paymentRemoteHeatingAccountId, 0, fromDate, toDate);
-      menuNumber = showRemoteHeating(menuNumber);
+        // Show annual accounts
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
+        menuNumber = showAnnualAccounts(menuNumber);
 
-      // Show income for next year
-      menuNumber = showIncomeNextYear(menuNumber);
+        const paymentRemoteHeatingAccountId = Number(objCondominiums.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId);
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, paymentRemoteHeatingAccountId, 0, fromDate, toDate);
+        menuNumber = showRemoteHeating(menuNumber);
 
-      // Show bank deposit for next year
-      const nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-      await objBudget.loadBudgetsTable(objUserPassword.condominiumId, nextBudgetYear, objAnnualAccount.nineNine);
-      menuNumber = showBankDeposit(menuNumber);
+        // Show income for next year
+        menuNumber = showIncomeNextYear(menuNumber);
 
-      // Events
-      events();
+        // Show bank deposit for next year
+        const nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
+        await objBudget.loadBudgetsTable(objUserPassword.condominiumId, nextBudgetYear, objAnnualAccount.nineNine);
+        menuNumber = showBankDeposit(menuNumber);
+
+        // Events
+        events();
+      }
     }
   }
 }

@@ -5,25 +5,26 @@ const objLogIn = new Login('login');
 
 sessionStorage.removeItem("user");
 
-
 // Call main when script loads
 main();
-
-// Main entry point
 async function main() {
 
-  const condominiumId = objLogIn.nineNine;
-  const resident = 'Y';
-  await objUsers.loadUsersTable(condominiumId, resident);
+  // Check if server is running
+  if (await objUsers.checkServer()) {
 
-  // Show header
-  showHeader();
+    const condominiumId = objLogIn.nineNine;
+    const resident = 'Y';
+    await objUsers.loadUsersTable(condominiumId, resident);
 
-  // Show login
-  showResult();
+    // Show header
+    showHeader();
 
-  // Events
-  events();
+    // Show login
+    showResult();
+
+    // Events
+    events();
+  }
 }
 
 // Events for users
@@ -32,24 +33,24 @@ function events() {
   /*
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('button-link')) {
-
+ 
       // validate password
       const email = document.querySelector('.email').value;
       const password = document.querySelector('.password').value;
-
+ 
       // Security level
       const rowNumberUser = objUsers.arrayUsers.findIndex(userRow => userRow.email === email);
       if (rowNumberUser !== -1) {
-
+ 
         const securityLevel = objUsers.arrayUsers[rowNumberUser].securityLevel;
-
+ 
         const condominiumId = objUsers.arrayUsers[rowNumberUser].condominiumId;
-
+ 
         // Save email/user, password and security level
         sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
-
+ 
         switch (objUsers.serverStatus) {
-
+ 
           // web server
           case 1:
             (objLogIn.validateUser(email, password))
@@ -58,17 +59,17 @@ function events() {
             break
           // Test web server/ local web server
           case 2:
-
+ 
           // Test server/ local test server
           case 3: {
-
+ 
             (objLogIn.validateUser(email, password))
               ? window.location.href = 'condo-bankaccounttransaction.html'
               : resetValues();
             break
           }
           default: {
-
+ 
             break
           }
         }
@@ -114,7 +115,7 @@ function showResult() {
   html += objLogIn.showTableHeader('', '', '');
 
   // Header for value including menu
-  html += objLogIn.showHTMLTableHeaderNew('', 0,'Email');
+  html += objLogIn.showHTMLTableHeaderNew('', 0, 'Email');
 
   // insert table columns in start of a row
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
@@ -142,12 +143,12 @@ function showResult() {
 
   html += "</tr>";
 
-      // insert table columns in start of a row
-    html += objLogIn.insertTableColumns('', 0);
+  // insert table columns in start of a row
+  html += objLogIn.insertTableColumns('', 0);
 
-    // Show buttons
-    html += objLogIn.showButtonNew('width:170px;', 'LogIn', 'LogIn');
-    html += "</tr>";
+  // Show buttons
+  html += objLogIn.showButtonNew('width:170px;', 'LogIn', 'LogIn');
+  html += "</tr>";
 
   // insert table columns in start of a row
   html += objLogIn.insertTableColumns('', 0, '');

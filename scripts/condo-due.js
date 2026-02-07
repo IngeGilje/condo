@@ -21,17 +21,12 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     'http://localhost/condo-login.html';
 } else {
 
-  // Call main when script loads
+   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    // Call main when script loads
-    main();
-
-    // Main entry point
-    async function main() {
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
       const condominiumId = Number(objUserPassword.condominiumId);
       const resident = 'Y';

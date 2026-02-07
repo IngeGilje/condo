@@ -20,28 +20,30 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objCondos.loadCondoTable(objUserPassword.condominiumId);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    let html = objCommonCosts.showHorizontalMenu('width: 750px');
-    document.querySelector(".horizontalMenu").innerHTML = html;
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objCondos.loadCondoTable(objUserPassword.condominiumId);
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      let html = objCommonCosts.showHorizontalMenu('width: 750px');
+      document.querySelector(".horizontalMenu").innerHTML = html;
 
-    await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    // Show commonCost
-    menuNumber = showResult(menuNumber);
+      await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
 
-    // Events
-    events();
+      // Show commonCost
+      menuNumber = showResult(menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
 
@@ -181,7 +183,7 @@ function insertEmptyTableRow(rowNumber) {
   // commonCostSquareMeter 
   html += objCommonCosts.inputTableColumn('commonCostSquareMeter0', "", 10);
 
-    // fixed cost per condo 
+  // fixed cost per condo 
   html += objCommonCosts.inputTableColumn('fixedCostCondo0', "", 10);
 
 
@@ -222,7 +224,7 @@ function showResult(rowNumber) {
     commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
     html += objCommonCosts.inputTableColumn(className, commonCostSquareMeter, 10);
 
-     // fixed cost per condo
+    // fixed cost per condo
     let fixedCostCondo = commonCost.fixedCostCondo;
     className = `fixedCostCondo${commonCost.commonCostId}`;
     fixedCostCondo = formatOreToKroner(fixedCostCondo);
@@ -283,7 +285,7 @@ async function updateCommonCostsRow(commonCostId) {
   commonCostSquareMeter = formatKronerToOre(commonCostSquareMeter);
   const validcommonCostSquareMeter = validateNumberNew(commonCostSquareMeter, 1, objCommonCosts.nineNine);
 
-    // fixedCostCondo
+  // fixedCostCondo
   className = `.fixedCostCondo${commonCostId}`;
   let fixedCostCondo = document.querySelector(className).value;
   fixedCostCondo = formatKronerToOre(fixedCostCondo);

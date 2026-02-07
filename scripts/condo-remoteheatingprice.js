@@ -20,28 +20,30 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objCondos.loadCondoTable(objUserPassword.condominiumId);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    let html = objRemoteHeatingPrices.showHorizontalMenu('width: 750px');
-    document.querySelector(".horizontalMenu").innerHTML = html;
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objCondos.loadCondoTable(objUserPassword.condominiumId);
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      let html = objRemoteHeatingPrices.showHorizontalMenu('width: 750px');
+      document.querySelector(".horizontalMenu").innerHTML = html;
 
-    await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(objUserPassword.condominiumId);
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    // Show remoteHeatingPrice
-    menuNumber = showResult(menuNumber);
+      await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(objUserPassword.condominiumId);
 
-    // Events
-    events();
+      // Show remoteHeatingPrice
+      menuNumber = showResult(menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
 

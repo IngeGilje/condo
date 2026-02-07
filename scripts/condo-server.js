@@ -62,6 +62,12 @@ async function main() {
 
     console.log("✅ Connected to MySQL");
 
+    // Respond to client that server (this program) is running
+    app.get('/health', (req, res) => {
+      console.log('OK');
+      res.status(200).send('OK');
+    });
+
     // Requests for accounts
     app.get("/accounts", async (req, res) => {
 

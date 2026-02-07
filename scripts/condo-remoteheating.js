@@ -21,33 +21,35 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objCondos.loadCondoTable(objUserPassword.condominiumId);
-    await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(objUserPassword.condominiumId);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    let html = objRemoteHeatings.showHorizontalMenu('width: 750px');
-    document.querySelector(".horizontalMenu").innerHTML = html;
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objCondos.loadCondoTable(objUserPassword.condominiumId);
+      await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(objUserPassword.condominiumId);
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      let html = objRemoteHeatings.showHorizontalMenu('width: 750px');
+      document.querySelector(".horizontalMenu").innerHTML = html;
 
-    // Show filter
-    const year = today.getFullYear();
-    showFilter(year);
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    await objRemoteHeatings.loadRemoteHeatingTable(objUserPassword.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
+      // Show filter
+      const year = today.getFullYear();
+      showFilter(year);
 
-    // Show remoteHeating
-    menuNumber = showResult(menuNumber);
+      await objRemoteHeatings.loadRemoteHeatingTable(objUserPassword.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
-    // Events
-    events();
+      // Show remoteHeating
+      menuNumber = showResult(menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
 
@@ -341,7 +343,7 @@ function showResult(rowNumber) {
 
   // How much to pay for remote heating for all condos
   totalPriceYear = formatOreToKroner(totalPriceYear);
-  html += objRemoteHeatings.insertTableColumns('', rowNumber, '','', '', '', 'Totalt', totalPriceYear);
+  html += objRemoteHeatings.insertTableColumns('', rowNumber, '', '', '', '', 'Totalt', totalPriceYear);
 
   html += "</tr>";
 

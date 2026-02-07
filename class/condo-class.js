@@ -1418,6 +1418,25 @@ class Condos {
     html += "</ul>";
     return html;
   }
+
+  // check if server is running
+  async checkServer() {
+    
+    try {
+      const result = await fetch('http://localhost:3000/health');
+
+      if (result.ok) {
+        console.log('condo-server.js is running');
+        return true;
+      } else {
+        console.log('condo-server.js is running but with an error');
+        return false;
+      }
+    } catch (err) {
+      console.log('condo-server.js is NOT running');
+      return false;
+    }
+  }
 }
 
 // Check if string includes only digits
@@ -2103,19 +2122,13 @@ function endHTMLTableBody() {
 // One row in a table
 function HTMLTableRow(...texts) {
 
-  let html = `
-      <tr>
-    `;
+  let html = `<tr>`;
   texts.forEach((text) => {
 
-    html += `
-        <td>${text}</td>
-      `;
+    html += `<td>${text}</td>`;
   });
 
-  html += `
-      </tr>
-    `;
+  html += `</tr>`;
   return html;
 }
 

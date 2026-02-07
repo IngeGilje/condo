@@ -21,28 +21,30 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objCondos.loadCondoTable(objUserPassword.condominiumId);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objCondos.loadCondoTable(objUserPassword.condominiumId);
 
-    const userId = objUsers.arrayUsers.at(-1).userId;
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    // Show filter
-    showFilter(userId);
+      const userId = objUsers.arrayUsers.at(-1).userId;
 
-    // Show result
-    menuNumber = showResult(userId, menuNumber);
+      // Show filter
+      showFilter(userId);
 
-    // Events
-    events();
+      // Show result
+      menuNumber = showResult(userId, menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
 
@@ -154,7 +156,7 @@ async function deleteCondo() {
 /*
 // Events for users
 function events() {
-
+ 
   // Select User
   document.addEventListener('change', (event) => {
     if (event.target.classList.contains('select-users-userId')) {
@@ -166,7 +168,7 @@ function events() {
       };
     };
   });
-
+ 
   /*
   // Select User
   document.addEventListener('change', (event) => {
@@ -184,36 +186,36 @@ function events() {
 // Update
 document.addEventListener('click', (event) => {
   if (event.target.classList.contains('button-users-update')) {
-
+ 
     // Update users and reload users
     updateUserSync();
-
+ 
     // Update user and reload users
     async function updateUserSync() {
-
+ 
       // Load user
       let userId;
       if (document.querySelector('.select-users-userId').value === '') {
-
+ 
         // Insert new row into user table
         userId = 0;
       } else {
-
+ 
         // Update existing row in users table
         userId = Number(document.querySelector('.select-users-userId').value);
       }
-
+ 
       if (validateValues()) {
-
+ 
         await updateUser(userId);
         await objUsers.loadUsersTable(objUserPassword.condominiumId);
-
+ 
         // Select last users if userId is 0
         if (userId === 0) userId = objUsers.arrayUsers.at(-1).userId;
-
+ 
         // Show leading text
         showLeadingText(userId);
-
+ 
         // Show all values for user
         showValues(userId);
       }
@@ -260,7 +262,7 @@ async function updateUserSync() {
 // New user
 document.addEventListener('click', (event) => {
   if (event.target.classList.contains('button-users-insert')) {
-
+ 
     resetValues();
   }
 });
@@ -270,20 +272,20 @@ document.addEventListener('click', (event) => {
 // Delete user
 document.addEventListener('click', (event) => {
   if (event.target.classList.contains('button-users-delete')) {
-
+ 
     // Delete user and reload user
     deleteUserSync();
-
+ 
     // Delete user
     async function deleteUserSync() {
-
+ 
       await deleteUser();
       await objUsers.loadUsersTable(objUserPassword.condominiumId);
-
+ 
       // Show leading text
       const userId = objUsers.arrayUsers.at(-1).userId;
       showLeadingText(userId);
-
+ 
       // Show all values for user
       showValues(userId);
     };
@@ -334,24 +336,24 @@ userArrayCreated =
 // Cancel
 document.addEventListener('click', (event) => {
   if (event.target.classList.contains('button-users-cancel')) {
-
+ 
     // Reload user
     reloadUserSync();
     async function reloadUserSync() {
-
+ 
       let condominiumId = Number(objUserPassword.condominiumId);
       await objUsers.loadUsersTable(condominiumId);
-
+ 
       // Show leading text for maintenance
       // Select first user Id
       if (objUsers.arrayUsers.length > 0) {
         userId = objUsers.arrayUsers[0].userId;
         showLeadingText(userId);
       }
-
+ 
       // Show all selected user
       objUsers.showAllSelectedUsers('users-userId', userId);
-
+ 
       // Show user Id
       showValues(userId);
     }
@@ -362,46 +364,46 @@ document.addEventListener('click', (event) => {
 
 /*
 function updateUser(userId) {
-
+ 
   if (validateValues(userId)) {
-
+ 
     // user Id
     const user = objUserPassword.email;
-
+ 
     // condominium Id
     const condominiumId = Number(objUserPassword.condominiumId);
-
+ 
     // e-mail
     const email = document.querySelector('.input-users-email').value;
-
+ 
     // condo id
     const userId = Number(document.querySelector('.select-users-userId').value);
-
+ 
     // first name
     const firstName = document.querySelector('.input-users-firstName').value;
-
+ 
     // last name
     const lastName = document.querySelector('.input-users-lastName').value;
-
+ 
     // phone
     const phone = document.querySelector('.input-users-phone').value;
-
+ 
     // securityLevel
     const securityLevel = Number(document.querySelector('.select-users-securityLevel').value);
-
+ 
     // password
     const password = document.querySelector('.input-users-password').value;
     
     const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
-
+ 
     // Check if user exist
     if (rowNumberUser !== -1) {
-
+ 
       // update user
       objUsers.updateUsersTable(user, email, userId, firstName, lastName, phone, securityLevel, password);
-
+ 
     } else {
-
+ 
       // Insert user row in users table
       objUsers.insertUsersTable(condominiumId, user, email, userId, firstName, lastName, phone, securityLevel, password);
     }
@@ -463,32 +465,32 @@ function deleteUserRow(userId) {
 /*
 // Show all values for user
 function showValues(userId) {
-
+ 
   // Check for valid user Id
   if (userId >= 0) {
-
+ 
     // find object number for selected user Id 
     const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
     if (rowNumberUser !== -1) {
-
+ 
       // Show email
       document.querySelector('.input-users-email').value = objUsers.arrayUsers[rowNumberUser].email;
-
+ 
       // Select condoId
       document.querySelector('.select-users-condoId').value = objUsers.arrayUsers[rowNumberUser].condoId;
-
+ 
       // first name
       document.querySelector('.input-users-firstName').value = objUsers.arrayUsers[rowNumberUser].firstName;
-
+ 
       // last name
       document.querySelector('.input-users-lastName').value = objUsers.arrayUsers[rowNumberUser].lastName;
-
+ 
       // Show phone number
       document.querySelector('.input-users-phone').value = objUsers.arrayUsers[rowNumberUser].phone;
-
+ 
       // show securityLevel
       document.querySelector('.select-users-securityLevel').value = objUsers.arrayUsers[rowNumberUser].securityLevel;
-
+ 
       // password
       document.querySelector('.input-users-password').value = objUsers.arrayUsers[rowNumberUser].password;
     }
@@ -530,13 +532,13 @@ function resetValues() {
 /*
 // Show header
 function showHeader() {
-
+ 
   // Start table
   let html = startHTMLTable('width:750px;');
-
+ 
   // Main header
   html += objUsers.showTableHeader('width:250px;', 'Bruker');
-
+ 
   // The end of the table
   html += endTable();
   document.querySelector('.header').innerHTML = html;
@@ -577,7 +579,7 @@ function showFilter(userId) {
 
   html += "</tr>";
 
-   // insert table columns in start of a row
+  // insert table columns in start of a row
   html += objUsers.insertTableColumns('', 0, '');
 
   // end table body

@@ -21,28 +21,30 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
   // Call main when script loads
   main();
-
-  // Main entry point
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-    await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+      await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
-    // Show filter
-    showFilter()
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    // Show accounts
-    menuNumber = showResult(menuNumber);
+      // Show filter
+      showFilter()
 
-    // Events
-    events();
+      // Show accounts
+      menuNumber = showResult(menuNumber);
+
+      // Events
+      events();
+    }
   }
 }
 

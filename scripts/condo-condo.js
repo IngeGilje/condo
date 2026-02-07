@@ -14,35 +14,41 @@ exitIfNoActivity();
 const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
 if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
-  window.location.href =
-    'http://localhost/condo-login.html';
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
   // Call main when script loads
   main();
   async function main() {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-    await objCondos.loadCondoTable(objUserPassword.condominiumId);
+    // Check if server is running
+    if (await objUsers.checkServer()) {
 
-    const condoId = objCondos.arrayCondo.at(-1).condoId;
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objCondos.loadCondoTable(objUserPassword.condominiumId);
 
-    let html = objCondos.showHorizontalMenu('width: 750px');
-    document.querySelector(".horizontalMenu").innerHTML = html;
+      const condoId = objCondos.arrayCondo.at(-1).condoId;
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      let html = objCondos.showHorizontalMenu('width: 750px');
+      document.querySelector(".horizontalMenu").innerHTML = html;
 
-    // Show filter
-    showFilter(condoId);
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    // Show result
-    menuNumber = showResult(condoId, menuNumber);
+      // Show filter
+      showFilter(condoId);
 
-    // Events
-    events();
+      // Show result
+      menuNumber = showResult(condoId, menuNumber);
+
+      // Events
+      events();
+    } else {
+
+      showMessage('Server condo-server.js er ikke startet.');
+    }
   }
 }
 
@@ -148,6 +154,20 @@ function showHeader() {
   // The end of the table
   html += objCondos.endTable();
   document.querySelector('.header').innerHTML = html;
+}
+
+// Show message
+function showMessage(message) {
+
+  // Start table
+  let html = objCondos.startTable('width:750px;');
+
+  // show main header
+  html += objCondos.showTableHeader('width:250px;', message);
+
+  // The end of the table
+  html += objCondos.endTable();
+  document.querySelector('.message').innerHTML = html;
 }
 
 // Show filter
