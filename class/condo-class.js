@@ -334,48 +334,23 @@ class Condos {
   }
 
   // Show button
-  showButton(className, buttonText) {
+  showButton(style, className, text) {
 
-    const iconName = this.getIconName(className);
-
-    const html =
-      `
+    return `
+      <td 
+        class="center"
+      >
         <button 
-          class="button-${className}"
+          class="${className} center one-line"
+          ${(style) ? `style=${style}` : ''}
         >
-          <img 
-            src="icons/${iconName}.png" 
-            height="18"
-          >
-          ${buttonText}
+          ${text}
         </button>
-      `;
-    document.querySelector(`.div-${className}`).innerHTML =
-      html;
+      </td>
+    `;
   }
 
-  // Show button
-  showButtonNew(style, className, buttonText) {
-
-    const html =
-      `
-        <td 
-          class="center"
-        >
-          <button 
-            class="${className} center"
-            style="${style}"
-          >
-            <img 
-              src="icons/${className}.png" 
-            >
-              ${buttonText}
-          </button>
-        </td>
-      `;
-    return html;
-  }
-
+  /*
   // Show checkbox
   showCheckbox(columnName, labelText, ...texts) {
 
@@ -405,7 +380,9 @@ class Condos {
     document.querySelector(`.div-${columnName}`)
       .innerHTML = html;
   }
+  */
 
+  /*
   // Show radio buttons
   showRadioButtons(columnName, ...texts) {
 
@@ -439,6 +416,7 @@ class Condos {
     document.querySelector(`.div-${columnName}`).innerHTML =
       html;
   }
+  */
 
   /*
   // Show read only input
@@ -1181,8 +1159,10 @@ class Condos {
     let html = this.showSelectedValues(className, 'width:100px;', selectedChoice, 'Nei', 'Ja')
     return html;
   }
+
+  /*
   // Show table header including menu
-  showHTMLTableHeaderNew(style, menuNumber, ...texts) {
+  showTableHeaderMenu(style, menuNumber, ...texts) {
 
     let html = "<tr>";
 
@@ -1212,6 +1192,53 @@ class Condos {
             </td>
           `;
       }
+    });
+
+    html += "</tr>";
+    return html;
+  }
+  */
+
+  // Show table header including menu
+  showTableHeaderMenu(style, menuNumber, ...texts) {
+
+    let html = "<tr>";
+
+    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+
+    texts.forEach((text) => {
+
+      html += `
+        <td 
+          class="no-border center"
+          ${(style) ? `style = "${style}"` : ''}
+        >
+          ${text}
+        </td>
+      `;
+    });
+
+    html += "</tr>";
+    return html;
+  }
+
+  // Show label error
+  showLabelError(className, style, menuNumber, ...texts) {
+
+    let html = "<tr>";
+
+    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+
+    texts.forEach((text) => {
+
+      html += `
+        <td 
+          class="${className} no-border center"
+          ${(style) ? `style = "${style}"` : ''}
+        >
+          ${text}
+        </td>
+      `;
     });
 
     html += "</tr>";
@@ -1368,7 +1395,7 @@ class Condos {
   }
 
   // end table header
-  endTableHeaderNew(style) {
+  endTableHeaderNew() {
 
     return `</th></tr></thead>`;
   }
@@ -1421,19 +1448,19 @@ class Condos {
 
   // check if server is running
   async checkServer() {
-    
+
     try {
       const result = await fetch('http://localhost:3000/health');
 
       if (result.ok) {
-        console.log('condo-server.js is running');
+
         return true;
       } else {
-        console.log('condo-server.js is running but with an error');
+
         return false;
       }
     } catch (err) {
-      console.log('condo-server.js is NOT running');
+
       return false;
     }
   }

@@ -96,7 +96,7 @@ class BankAccount extends Condos {
   }
 
   // Show all selected bankaccounts
-  showSelectedBankAccountsNew(className, style, bankAccountId, selectNone, selectAll) {
+  showSelectedBankAccounts(className, style, bankAccountId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -132,8 +132,8 @@ class BankAccount extends Condos {
           html +=
             `
               <option 
-                value="${bankaccount.bankAccountId}">
-                ${bankaccount.name}
+                value="${bankAccount.bankAccountId}">
+                ${bankAccount.name}
               </option>
             `;
         }

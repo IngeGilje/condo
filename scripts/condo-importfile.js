@@ -121,8 +121,8 @@ function createtransactionsArray() {
   let textFile = objImportFile.strCSVTransaction.split(/\r?\n/);
   textFile.forEach((row) => {
 
-    let fromBankAccount = row["Fra konto"];
-    let toBankAccount = row["Til konto"];
+    //let fromBankAccount = row["Fra konto"];
+    //let toBankAccount = row["Til konto"];
 
     [accountingDate, Rentedato, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
@@ -148,7 +148,13 @@ function createtransactionsArray() {
       payment = formatKronerToOre(payment);
 
       // Account Id
+
+      // Account Id from bank account
       let accountId = objAccounts.getAccountIdFromBankAccount(fromBankAccount, payment, text);
+      if (accountId === 0) {
+        // Account Id from to bank account
+        accountId = objAccounts.getAccountIdFromBankAccount(toBankAccount, payment, text);
+      }
 
       // Account Name
       let accountName;
@@ -270,6 +276,7 @@ async function updateOpeningClosingBalance() {
       }
     }
 
+    // Opening balance and opening balance date
     if (accountingDate.includes("Inngående saldo pr.") || accountingDate.includes("Inngåande saldo pr.")) {
 
       // Get date for opening balance date
@@ -287,8 +294,7 @@ async function updateOpeningClosingBalance() {
       openingBalance = Number(openingBalance) * 100;
     }
 
-    // Update closing balance date and closing balance
-    // and opening balance
+    // Closing balance and closing balance date
     if (accountingDate.includes("Utgående saldo pr.") || accountingDate.includes("Utgåande saldo pr.")) {
 
       // Get date for closing balance date
@@ -308,14 +314,14 @@ async function updateOpeningClosingBalance() {
 
       // Updating openening balance
       // Check for openening balance date
-      if (Number(currentOpeningBalanceDate) <= Number(openingBalanceDate) || Number(currentOpeningBalanceDate) === 0 || currentOpeningBalanceDate === '') {
+      if (Number(currentOpeningBalanceDate) >= Number(openingBalanceDate) || Number(currentOpeningBalanceDate) === 0 || currentOpeningBalanceDate === '') {
 
         const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
         if (rowNumberBankAccount !== -1) {
 
           const user = objUserPassword.email
           const bankAccount = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount);
-          const name = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name);
+          const name = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
           const closingBalance = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
           const closingBalanceDate = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
           await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
@@ -567,17 +573,12 @@ function showResult(rowNumber) {
   html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', '', 'Sum', sumIncomes, sumPayments);
 
   // Show update button
-  //html += "<tr>";
-
-  // Show menu
-  //rowNumber++;
-  //html += objImportFile.verticalMenu(rowNumber);
 
   // insert table columns in start of a row
   rowNumber++;
   html += objImportFile.insertTableColumns('', rowNumber);
 
-  html += objImportFile.showButtonNew('width:170px;', 'update', 'Oppdater');
+  html += objImportFile.showButton('width:170px;', 'update', 'Oppdater');
   html += "</tr>";
 
   // Show the rest of the menu
@@ -591,6 +592,7 @@ function showResult(rowNumber) {
 
 // Update bank account transactions table
 async function updateBankAccountTransactions() {
+
   arrayTransactions.forEach(async (transaction) => {
 
     const bankAccountTransactionId = 0;  // not in use

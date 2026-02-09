@@ -115,7 +115,7 @@ function showResult() {
   html += objLogIn.showTableHeader('', '', '');
 
   // Header for value including menu
-  html += objLogIn.showHTMLTableHeaderNew('', 0, 'Email');
+  html += objLogIn.showTableHeaderMenu('', 0, 'Email');
 
   // insert table columns in start of a row
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
@@ -127,7 +127,7 @@ function showResult() {
 
   // password
   html += "<tr>";
-  html += objLogIn.showHTMLTableHeaderNew("width:250px;", 0, 'Passord');
+  html += objLogIn.showTableHeaderMenu("width:250px;", 0, 'Passord');
 
   // insert table columns in start of a row
   html += objLogIn.insertTableColumns('', 0);
@@ -147,7 +147,7 @@ function showResult() {
   html += objLogIn.insertTableColumns('', 0);
 
   // Show buttons
-  html += objLogIn.showButtonNew('width:170px;', 'LogIn', 'LogIn');
+  html += objLogIn.showButton('width:170px;', 'LogIn', 'LogIn');
   html += "</tr>";
 
   // insert table columns in start of a row

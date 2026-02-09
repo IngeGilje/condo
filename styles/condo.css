@@ -20,6 +20,7 @@ table {
   overflow: hidden;
 }
 
+button,
 th,
 td {
   border: 1px solid #ccc;

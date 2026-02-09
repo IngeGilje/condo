@@ -218,7 +218,7 @@ function showResult(condoId, rowNumber) {
     html += "<tr>";
 
     rowNumber++;
-    html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn');
+    html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, 'Navn');
 
     html += "</tr>";
 
@@ -232,8 +232,8 @@ function showResult(condoId, rowNumber) {
 
     // street, address2
     rowNumber++;
-    html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Gate', 'Adresse 2');
-
+    html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, 'Gate', 'Adresse 2');
+    //html += objCondos.showLabelError("labelStreet","width:250px;", rowNumber, 'Gate', 'Adresse 2');
     html += "</tr>";
 
     // insert table columns in start of a row
@@ -251,7 +251,7 @@ function showResult(condoId, rowNumber) {
     // postalCode, city
     html += "<tr>";
     rowNumber++;
-    html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Postnummer', 'Poststed');
+    html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, 'Postnummer', 'Poststed');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -268,7 +268,7 @@ function showResult(condoId, rowNumber) {
     // squareMeters
     html += "<tr>";
     rowNumber++;
-    html += objCondos.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Kvadratmeter');
+    html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, 'Kvadratmeter');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -279,6 +279,8 @@ function showResult(condoId, rowNumber) {
 
     html += "</tr>";
 
+    // Buttons
+
     // insert table columns in start of a row
     rowNumber++;
     html += objCondos.insertTableColumns('', rowNumber);
@@ -289,22 +291,16 @@ function showResult(condoId, rowNumber) {
     rowNumber++;
     html += objCondos.insertTableColumns('', rowNumber);
 
-    html += objCondos.showButtonNew('width:170px;', 'update', 'Oppdater');
-    html += objCondos.showButtonNew('width:170px;', 'cancel', 'Angre');
-    html += "</tr>";
-
-    // insert empty row
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objCondos.insertTableColumns('', rowNumber);
+    html += objCondos.showButton('width:170px;', 'update', 'Oppdater');
+    html += objCondos.showButton('width:170px;', 'cancel', 'Angre');
     html += "</tr>";
 
     // insert table columns in start of a row
     rowNumber++;
     html += objCondos.insertTableColumns('', rowNumber);
 
-    html += objCondos.showButtonNew('width:170px;', 'delete', 'Slett');
-    html += objCondos.showButtonNew('width:170px;', 'insert', 'Ny');
+    html += objCondos.showButton('width:170px;', 'delete', 'Slett');
+    html += objCondos.showButton('width:170px;', 'insert', 'Ny');
     html += "</tr>";
 
     // Show the rest of the menu
@@ -329,7 +325,6 @@ async function updateCondoRow(condoId) {
   const condominiumId = Number(objUserPassword.condominiumId);
 
   const user = objUserPassword.email;
-
 
   // validate name
   const name = document.querySelector('.name').value;

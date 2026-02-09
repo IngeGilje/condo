@@ -441,7 +441,7 @@ function showResult(rowNumber) {
   sumPayment = formatOreToKroner(sumPayment);
 
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncome, sumPayment);
+  html += objBankAccountTransactions.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', '', 'Sum', sumIncome, sumPayment);
 
   // Show the rest of the menu
   rowNumber++;

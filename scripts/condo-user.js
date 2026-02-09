@@ -612,7 +612,7 @@ function showResult(userId, rowNumber) {
     // email,condoId
     html += "<tr>";
     rowNumber++;
-    html += objUsers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'E-mail', 'Leilighet');
+    html += objUsers.showTableHeaderMenu("width:250px;", rowNumber, 'E-mail', 'Leilighet');
 
     // Show menu
     //html += "<tr>";
@@ -634,7 +634,7 @@ function showResult(userId, rowNumber) {
     // firstName, lastName
     html += "<tr>";
     rowNumber++;
-    html += objUsers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Fornavn', 'Etternavn');
+    html += objUsers.showTableHeaderMenu("width:250px;", rowNumber, 'Fornavn', 'Etternavn');
 
     // firstName, lastName
     //html += "<tr>";
@@ -656,7 +656,7 @@ function showResult(userId, rowNumber) {
     // securityLevel,password
     html += "<tr>";
     rowNumber++;
-    html += objUsers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Passord', 'Sikkerhetsnivå');
+    html += objUsers.showTableHeaderMenu("width:250px;", rowNumber, 'Passord', 'Sikkerhetsnivå');
 
     // Show menu
     //html += "<tr>";
@@ -678,7 +678,7 @@ function showResult(userId, rowNumber) {
     // phone
     html += "<tr>";
     rowNumber++;
-    html += objUsers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Telefonnummer', 'Beboer');
+    html += objUsers.showTableHeaderMenu("width:250px;", rowNumber, 'Telefonnummer', 'Beboer');
 
     // Show menu
     //html += "<tr>";
@@ -708,19 +708,24 @@ function showResult(userId, rowNumber) {
     html += "</tr>";
 
     // show buttons
-    //html += "<tr>";
-    // Show menu
-    //rowNumber++;
-    //html += objUsers.verticalMenu(rowNumber);
-
+ 
     // insert table columns in start of a row
     rowNumber++;
     html += objUsers.insertTableColumns('', rowNumber);
 
-    html += objUsers.showButtonNew('width:170px;', 'update', 'Oppdater');
-    html += objUsers.showButtonNew('width:170px;', 'cancel', 'Angre');
+    html += objUsers.showButton('width:170px;', 'update', 'Oppdater');
+    html += objUsers.showButton('width:170px;', 'cancel', 'Angre');
     html += "</tr>";
 
+        // insert table columns in start of a row
+    rowNumber++;
+    html += objUsers.insertTableColumns('', rowNumber);
+
+    html += objUsers.showButton('width:170px;', 'delete', 'Slett');
+    html += objUsers.showButton('width:170px;', 'insert', 'Ny');
+    html += "</tr>";
+
+    /*
     // Show menu
     //html += "<tr>";
     //rowNumber++;
@@ -742,9 +747,10 @@ function showResult(userId, rowNumber) {
     rowNumber++;
     html += objUsers.insertTableColumns('', rowNumber);
 
-    html += objUsers.showButtonNew('width:170px;', 'delete', 'Slett');
-    html += objUsers.showButtonNew('width:170px;', 'insert', 'Ny');
+    html += objUsers.showButton('width:170px;', 'delete', 'Slett');
+    html += objUsers.showButton('width:170px;', 'insert', 'Ny');
     html += "</tr>";
+    */
 
     // Show the rest of the menu
     rowNumber++;

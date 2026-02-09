@@ -4,6 +4,7 @@ class Condominium extends Condos {
   // Condominiums informations
   arrayCondominiums = Array;
 
+  /*
   // Show all condominiums
   showSelectedCondominiums(className, condominiumId) {
 
@@ -78,6 +79,7 @@ class Condominium extends Condos {
       `;
     document.querySelector(`.div-${className}`).innerHTML = html;
   }
+  */
 
   // Find selected condominium id
   getSelectedCondominiumId(columnName) {
@@ -146,18 +148,18 @@ class Condominium extends Condos {
   }
 
   // Show all selected condominiums
-  showSelectedCondominiumsNew(className, style, condominiumId, selectNone, selectAll) {
+  showSelectedCondominiums(className, style, condominiumId, selectNone, selectAll) {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="center one-line"
-        >
-          <select 
-            class="${className} center"
-      `;
+    let html = `
+      <td
+        class="center one-line"
+      >
+        <select 
+          class="${className} center"
+    `;
+    
       if (style) html += `style="${style}"`;
       html += `>`;
 

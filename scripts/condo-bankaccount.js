@@ -327,17 +327,6 @@ function showResult(bankAccountId, rowNumber) {
   if (rowNumberBankAccount !== -1) {
 
     // Start table
-    //html = startHTMLTable('width:750px;');
-
-    // Main header
-    //rowNumber++;
-    //html += objBankAccounts.showTableHeader('width:250px;', '', '', '');
-
-    // Show menu
-    // Header for value including menu
-    //rowNumber++;
-    //html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn', 'Bankontonummer');
-
     html += "<tr>";
 
     // Show menu
@@ -354,7 +343,7 @@ function showResult(bankAccountId, rowNumber) {
 
     // Show menu
     rowNumber++;
-    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Dato', 'Inngående saldo');
+    html += objBankAccounts.showTableHeaderMenu("width:250px;", rowNumber, 'Dato', 'Inngående saldo');
 
     //html += "<tr>";
 
@@ -378,7 +367,7 @@ function showResult(bankAccountId, rowNumber) {
     // Show menu
     // Header for value
     rowNumber++;
-    html += objBankAccounts.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Dato', 'Utgående saldo');
+    html += objBankAccounts.showTableHeaderMenu("width:250px;", rowNumber, 'Dato', 'Utgående saldo');
 
     //html += "<tr>";
 
@@ -416,10 +405,20 @@ function showResult(bankAccountId, rowNumber) {
     html += objBankAccounts.insertTableColumns('', rowNumber);
 
     // Show buttons
-    html += objBankAccounts.showButtonNew('width:170px;', 'update', 'Oppdater');
-    html += objBankAccounts.showButtonNew('width:170px;', 'cancel', 'Angre');
+    html += objBankAccounts.showButton('width:170px;', 'update', 'Oppdater');
+    html += objBankAccounts.showButton('width:170px;', 'cancel', 'Angre');
     html += "</tr>";
 
+    // insert table columns in start of a row
+    rowNumber++;
+    html += objBankAccounts.insertTableColumns('', rowNumber);
+
+    // Show buttons
+    html += objBankAccounts.showButton('width:170px;', 'delete', 'Slett');
+    html += objBankAccounts.showButton('width:170px;', 'insert', 'Ny');
+    html += "</tr>";
+
+    /*
     // insert table columns in start of a row
     rowNumber++;
     html += objBankAccounts.insertTableColumns('', rowNumber);
@@ -432,9 +431,10 @@ function showResult(bankAccountId, rowNumber) {
     rowNumber++;
     html += objBankAccounts.verticalMenu(rowNumber);
 
-    html += objBankAccounts.showButtonNew('width:170px;', 'delete', 'Slett');
-    html += objBankAccounts.showButtonNew('width:170px;', 'insert', 'Ny');
+    html += objBankAccounts.showButton('width:170px;', 'delete', 'Slett');
+    html += objBankAccounts.showButton('width:170px;', 'insert', 'Ny');
     html += "</tr>";
+    */
 
     // Show the rest of the menu
     rowNumber++;
@@ -456,7 +456,6 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
-  //const validBankAccount = objBankAccounts.validateBankAccount(bankAccount, "label-bankaccounts-bankAccount", "Bankkontonummer");
   const validBankAccount = objBankAccounts.validateBankAccountNew(bankAccount);
 
   // validate name
@@ -569,12 +568,12 @@ function showFilter(condominiumId) {
   html += objBankAccounts.insertTableColumns('', 0, '');
 
   // Show selected condominiums 
-  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'width:100px;', condominiumId, '', '');
+  html += objCondominiums.showSelectedCondominiums('filterCondominiumId', 'width:100px;', condominiumId, '', '');
 
   // Show all bankaccounts for selected condominiums
   // Get last id in last object in bankaccounts array
   const bankAccountId = objBankAccounts.arrayBankAccounts.at(-1).bankAccountId;
-  html += objBankAccounts.showSelectedBankAccountsNew('filterBankAccountId', 'width:100px;', bankAccountId, '', '');
+  html += objBankAccounts.showSelectedBankAccounts('filterBankAccountId', 'width:100px;', bankAccountId, '', '');
 
   html += "</tr>";
 

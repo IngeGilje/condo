@@ -524,7 +524,7 @@ function showResult(supplierId, rowNumber) {
 
     // Header for value including menu
     rowNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Navn');
+    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Navn');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -538,7 +538,7 @@ function showResult(supplierId, rowNumber) {
     // street, address2
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Gate', 'Adresse 2');
+    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Gate', 'Adresse 2');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -555,7 +555,7 @@ function showResult(supplierId, rowNumber) {
     // postalCode, city
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Postnummer', 'Poststed');
+    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Postnummer', 'Poststed');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -572,7 +572,7 @@ function showResult(supplierId, rowNumber) {
     // email,phone
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'e-Mail', 'Telefonnummer');
+    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'e-Mail', 'Telefonnummer');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -589,7 +589,7 @@ function showResult(supplierId, rowNumber) {
     // bankAccount, accountId
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Bankkonto', 'Bankkontonummer');
+    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Bankkonto', 'Bankkontonummer');
 
     // Show menu
     rowNumber++;
@@ -606,7 +606,7 @@ function showResult(supplierId, rowNumber) {
     // amountAccountId, amount
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Konto for beløp', 'Beløp');
+    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Konto for beløp', 'Beløp');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -623,7 +623,7 @@ function showResult(supplierId, rowNumber) {
     // textAccountId, text
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showHTMLTableHeaderNew("width:250px;", rowNumber, 'Konto for tekst', 'Tekst');
+    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Konto for tekst', 'Tekst');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -643,14 +643,24 @@ function showResult(supplierId, rowNumber) {
 
     html += "</tr>";
 
+    // Buttons
     // insert table columns in start of a row
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber);
 
-    html += objSuppliers.showButtonNew('width:170px;', 'update', 'Oppdater');
-    html += objSuppliers.showButtonNew('width:170px;', 'cancel', 'Angre');
+    html += objSuppliers.showButton('width:170px;', 'update', 'Oppdater');
+    html += objSuppliers.showButton('width:170px;', 'cancel', 'Angre');
     html += "</tr>";
 
+    // insert table columns in start of a row
+    rowNumber++;
+    html += objSuppliers.insertTableColumns('', rowNumber);
+
+    html += objSuppliers.showButton('width:170px;', 'delete', 'Slett');
+    html += objSuppliers.showButton('width:170px;', 'insert', 'Ny');
+    html += "</tr>";
+
+    /*
     // insert table columns in start of a row
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber, '');
@@ -661,9 +671,10 @@ function showResult(supplierId, rowNumber) {
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber);
 
-    html += objSuppliers.showButtonNew('width:170px;', 'delete', 'Slett');
-    html += objSuppliers.showButtonNew('width:170px;', 'insert', 'Ny');
+    html += objSuppliers.showButton('width:170px;', 'delete', 'Slett');
+    html += objSuppliers.showButton('width:170px;', 'insert', 'Ny');
     html += "</tr>";
+    */
 
     // Show the rest of the menu
     rowNumber++;
