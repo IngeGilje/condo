@@ -63,7 +63,7 @@
         {
       "type": "chrome",
       "request": "launch",
-      "name": "Leverandør",
+      "name": "Mottaker",
       "url": "http://localhost/condo-supplier.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"

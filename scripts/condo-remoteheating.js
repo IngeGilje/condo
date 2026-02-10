@@ -402,13 +402,15 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   className = `.kilowattHour${remoteHeatingId}`;
   let kilowattHour = document.querySelector(className).value;
   kilowattHour = formatKronerToOre(kilowattHour);
-  const validkilowattHour = validateNumberNew(kilowattHour, 1, objRemoteHeatings.nineNine);
+  className = `kilowattHour${remoteHeatingId}`;
+  const validkilowattHour = objRemoteHeatings.validateNumber(className, kilowattHour, 1, objRemoteHeatings.nineNine);
 
   // Price for one year
   className = `.priceYear${remoteHeatingId}`;
   let priceYear = document.querySelector(className).value;
   priceYear = formatKronerToOre(priceYear);
-  const validPriceYear = validateNumberNew(priceYear, 0, objRemoteHeatings.nineNine);
+  className = `priceYear${remoteHeatingId}`;
+  const validPriceYear = objRemoteHeatings.validateNumber(className, priceYear, 0, objRemoteHeatings.nineNine);
 
   // Validate remoteheatings columns
   if (validYear && validDate && validCondoId && validkilowattHour && validPriceYear) {

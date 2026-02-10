@@ -283,22 +283,6 @@ function resetValues() {
 }
 */
 
-/*
-// Show header
-function showHeader() {
- 
-  // Start table
-  let html = startHTMLTable('width:750px;');
- 
-  // Main header
-  html += objBankAccounts.showTableHeader('width:250px;', 'Bankkonto sameie');
- 
-  // The end of the table
-  html += endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -456,7 +440,7 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
-  const validBankAccount = objBankAccounts.validateBankAccountNew(bankAccount);
+  const validBankAccount = objBankAccounts.validateBankAccount('bankAccount', bankAccount);
 
   // validate name
   const name = document.querySelector('.name').value;

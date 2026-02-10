@@ -85,8 +85,8 @@ function events() {
 
         // valitadate filter
         // condo
-        const condoId = Number(document.querySelector('.filterFromDate').value);
-        const validCondoId = objOverview.validateNumberNew(condoId, 1, objOverview.nineNine);
+        const condoId = Number(document.querySelector('.filterCondoId').value);
+        const validCondoId = objOverview.validateNumber('filterCondoId', condoId, 1, objOverview.nineNine);
 
         // from date
         let fromDate = document.querySelector('.filterFromDate').value;

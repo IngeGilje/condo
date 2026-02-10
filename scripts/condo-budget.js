@@ -167,13 +167,15 @@ async function updateBudgetsRow(budgetId) {
   // accountId
   className = `.accountId${budgetId}`;
   let accountId = Number(document.querySelector(className).value);
-  const validAccountId = validateNumberNew(accountId, 1, objBudgets.nineNine);
+  className = `accountId${budgetId}`;
+  const validAccountId = objBudgets.validateNumber(className, accountId, 1, objBudgets.nineNine);
 
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
   amount = Number(formatKronerToOre(amount));
-  let validAmount = validateNumberNew(amount, objBudgets.minusNineNine, objBudgets.nineNine);
+    className = `amount${budgetId}`;
+  let validAmount = objBudgets.validateNumber(className, amount, objBudgets.minusNineNine, objBudgets.nineNine);
   if (amount === 0) validAmount = false;
 
   // year

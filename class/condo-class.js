@@ -309,8 +309,7 @@ class Condos {
           placeholder="${placeholder}"
         >
       `;
-    document.querySelector(`.div-${className}`)
-      .innerHTML = html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
   // Show label
@@ -377,8 +376,7 @@ class Condos {
       `
         </form>
       `;
-    document.querySelector(`.div-${columnName}`)
-      .innerHTML = html;
+    document.querySelector(`.div-${columnName}`).innerHTML = html;
   }
   */
 
@@ -413,29 +411,7 @@ class Condos {
         </div>
       </form>
     `;
-    document.querySelector(`.div-${columnName}`).innerHTML =
-      html;
-  }
-  */
-
-  /*
-  // Show read only input
-  showInputReadOnly(className, labelText) {
-
-    document.querySelector(`.div-${className}`).innerHTML =
-      `
-        <label 
-          class="label-${className}"
-        >
-          ${labelText}
-        </label>
-
-        <input 
-          type="text" 
-          readonly
-          class="input-${className}"
-        >
-      `;
+    document.querySelector(`.div-${columnName}`).innerHTML = html;
   }
   */
 
@@ -453,12 +429,21 @@ class Condos {
     return (regex.test(tekst)) ? true : false;
   }
 
-  // validate bank account 
-  validateBankAccountNew(bankAccount) {
+  // validate bank account
+  validateBankAccount(className, bankAccount) {
 
-    // Validate Bank Account
     const bankAccountPattern = /^\d{11}$/;
-    return (bankAccountPattern.test(bankAccount)) ? true : false;
+    const isValid = bankAccountPattern.test(bankAccount);
+
+    if (this.isClassDefined(className)) {
+      const inputElement = document.querySelector(`.${className}`);
+      if (inputElement) {
+        //inputElement.style.backgroundColor = isValid ? 'white' : 'red';
+        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+      }
+    }
+
+    return isValid;
   }
 
   // Select bank account
@@ -727,8 +712,7 @@ class Condos {
     let isValidAmount = true;
 
     // 123456,78 -> 12345678
-    amount =
-      removeComma(amount);
+    amount = removeComma(amount);
     if (!isNumeric(amount)) {
 
       // Invalid amount
@@ -765,7 +749,7 @@ class Condos {
   /*
   // Show input file
   showInputFile(className, labelText, maxlength, placeholder) {
-
+ 
     let html = this.showLabel(className, labelText);
     html +=
       `
@@ -776,8 +760,7 @@ class Condos {
           accept=".txt,.csv" 
         >
       `;
-    document.querySelector(`.div-${className}`)
-      .innerHTML = html;
+    document.querySelector(`.div-${className}`).innerHTML = html;
   }
   */
 
@@ -924,18 +907,18 @@ class Condos {
   /*
   // Show icon
   showIconNew(className) {
-
+ 
     // Set the PNG file
     const inputElement = document.querySelector(`.${className}`);
     inputElement.style.backgroundRepeat = `no-repeat`;
-
+ 
     const iconName = this.getIconNameNew(`${className}`);
     inputElement.style.backgroundImage = `url('icons/${iconName}')`;
   }
-
+ 
   // get icon name from column name
   getIconNameNew(className) {
-
+ 
     let imageName;
     if (className.toLowerCase().includes("name")) imageName = "name.png";
     if (className.toLowerCase().includes("condo")) imageName = "condo.png";
@@ -1163,13 +1146,13 @@ class Condos {
   /*
   // Show table header including menu
   showTableHeaderMenu(style, menuNumber, ...texts) {
-
+ 
     let html = "<tr>";
-
+ 
     if (menuNumber > 0) html += this.verticalMenu(menuNumber);
-
+ 
     texts.forEach((text) => {
-
+ 
       if (text === '') {
         html +=
           `
@@ -1181,7 +1164,7 @@ class Condos {
             </td>
           `;
       } else {
-
+ 
         html +=
           `
             <td 
@@ -1193,7 +1176,7 @@ class Condos {
           `;
       }
     });
-
+ 
     html += "</tr>";
     return html;
   }
@@ -1277,9 +1260,22 @@ class Condos {
   }
 
   // Validate number
-  validateNumberNew(number, min, max) {
+  validateNumber(className, number, min, max, message) {
 
-    return (Number(number) < Number(min) || Number(number) > Number(max)) ? false : true;
+    const isValid = (Number(number) <= Number(min) || Number(number) >= Number(max));
+
+    // Invalid number
+    if (this.isClassDefined(className)) {
+
+      if (this.isClassDefined(className)) {
+        const inputElement = document.querySelector(`.${className}`);
+        if (inputElement) {
+
+          (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+        }
+      }
+    }
+    return isValid;
   }
 
   // validate the norwegian date format dd.mm.yyyy
@@ -1368,7 +1364,7 @@ class Condos {
     return html;
   }
 
-  // Start of HTML table
+  // Start of table
   startTable(style) {
 
     return `<table style="${style}">`;
@@ -1464,6 +1460,25 @@ class Condos {
       return false;
     }
   }
+
+  /*
+  // Validate number
+  validateNumberNew(number, min, max) {
+
+    return (Number(number) < Number(min) || Number(number) > Number(max)) ? false : true;
+  }
+  */
+
+  // Check if class is defined
+  isClassDefined(className) {
+
+    const element = document.querySelector(`.${className}`);      // Select the element
+    if (element !== null) {
+      return (element.classList.contains(`${className}`)) ? true : false;
+    } else {
+      return false;
+    }
+  }
 }
 
 // Check if string includes only digits
@@ -1532,6 +1547,7 @@ function formatToNorDate(date) {
   return (formatedDate.includes('..')) ? '' : formatedDate;
 }
 
+/*
 // Validate number
 function validateNumber(number, min, max, className, labelText) {
 
@@ -1566,7 +1582,9 @@ function validateNumber(number, min, max, className, labelText) {
 
   return isValidNumber;
 }
+*/
 
+/*
 // Validate number (No error message)
 function validateNumberHTML(number, min, max) {
 
@@ -1586,12 +1604,15 @@ function validateNumberHTML(number, min, max) {
 
   return isValidNumber;
 }
+*/
 
+/*
 // Validate number
 function validateNumberNew(number, min, max) {
 
   return (Number(number) < Number(min) || Number(number) > Number(max)) ? false : true;
 }
+*/
 
 // Validate norwegian date dd.mm.yyyy format
 // Show error message
@@ -1635,28 +1656,7 @@ function validateNorDate(dateString, className, labelText) {
   return isDateValid;
 }
 
-// Validate norwegian date dd.mm.yyyy format
-// Do not show error message
-function validateNorDateHTML(dateString) {
-
-  dateString =
-    (dateString.length === 0) ? '00.00.0000' : String(dateString);
-  [day, month, year] = dateString.split('.');
-  day = day.padStart(2, "0");
-  month = month.padStart(2, "0");
-  dateString = day + '.' + month + '.' + year;
-
-  // Validate date
-  if (!this.validateEuroDateFormat(dateString)) {
-
-    return false;
-  } else {
-
-    return true;
-  }
-}
-
-// Check if HTML class is defined
+// Check if class is defined
 function isClassDefined(className) {
 
   const element =
@@ -2090,73 +2090,13 @@ function validateInterval(className, labelText, fromValue, toValue) {
   return isTextValid;
 }
 
-// HTML start for filters
+// Start of filters
 function startHTMLFilters() {
 
   return `
       <!-- Filters -->
       <div class="filters">
     `;
-}
-
-// HTML end for filters
-function endHTMLFilters() {
-
-  return `
-        <!-- End Filters -->
-        <div>
-    `;
-}
-
-function HTMLTableHeader(...texts) {
-
-  let html = `
-      <thead>
-        <tr>
-    `;
-
-  texts.forEach((text) => {
-
-    html += `<th>${text}</th>`;
-  });
-
-  html += `
-          </tr>   
-        </thead>
-     `;
-  return html;
-}
-
-// Start body table
-function startHTMLTableBody() {
-
-  let html = `
-      <tbody>
-        <tr>
-     `;
-  return html;
-}
-
-// End body table
-function endHTMLTableBody() {
-
-  let html = `
-      </tbody>
-    `;
-  return html;
-}
-
-// One row in a table
-function HTMLTableRow(...texts) {
-
-  let html = `<tr>`;
-  texts.forEach((text) => {
-
-    html += `<td>${text}</td>`;
-  });
-
-  html += `</tr>`;
-  return html;
 }
 
 // exit application after 1 hour
@@ -2174,10 +2114,4 @@ function exitIfNoActivity() {
 ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event => {
   document.addEventListener(event, exitIfNoActivity);
 });
-
-// Start of HTML table
-function startHTMLTable(style) {
-
-  return `<table style="${style}">`;
-}
 

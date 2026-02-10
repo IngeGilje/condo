@@ -443,22 +443,6 @@ function checkBankAccountTransaction(income, payment, date) {
   return bankAccountTransactionExist;
 }
 
-/*
-// Show header
-function showHeader() {
- 
-  // Start table
-  let html = startHTMLTable('width:1450px;');
- 
-  // Main header
-  html += objImportFile.showTableHeader('width:250px;', 'Import av bankkontotransaksjoner');
- 
-  // The end of the table
-  html += endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 

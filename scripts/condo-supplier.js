@@ -589,7 +589,7 @@ function showResult(supplierId, rowNumber) {
     // bankAccount, accountId
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Bankkonto', 'Bankkontonummer');
+    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Konto', 'Bankkontonummer');
 
     // Show menu
     rowNumber++;
@@ -689,12 +689,11 @@ function showResult(supplierId, rowNumber) {
 // Update a supplier row
 async function updateSupplierRow(supplierId) {
 
-  if (supplierId === '') supplierId = -1
+  if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = validateNumberNew(supplierId, -1, objSuppliers.nineNine);
+  const validSupplierId = objSuppliers.validateNumber('supplierId', supplierId, -1, objSuppliers.nineNine);
 
   const condominiumId = Number(objUserPassword.condominiumId);
-
   const user = objUserPassword.email;
 
   // validate name
@@ -729,25 +728,25 @@ async function updateSupplierRow(supplierId) {
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
-  let validBankAccount = objSuppliers.validateBankAccountNew(bankAccount);
+  let validBankAccount = objSuppliers.validateBankAccount('bankAccount', bankAccount);
   if (bankAccount === '') validBankAccount = true;
 
   // validate accountId
   const accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = objSuppliers.validateNumberNew(accountId, 1, 999999998);
+  const validAccountId = objSuppliers.validateNumber('accountId', accountId, 1, 999999998);
 
   // validate amountAccountId
   const amountAccountId = Number(document.querySelector('.amountAccountId').value);
-  const validAmountAccountId = objSuppliers.validateNumberNew(amountAccountId, 0, 999999998);
+  const validAmountAccountId = objSuppliers.validateNumber('amountAccountId', amountAccountId, 0, 999999998);
 
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatKronerToOre(amount));
-  const validAmount = objSuppliers.validateNumberNew(amount, objSuppliers.minusNineNine, objSuppliers.nineNine);
+  const validAmount = objSuppliers.validateNumber(amount, objSuppliers.minusNineNine, objSuppliers.nineNine);
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);
-  const validTextAccountId = objSuppliers.validateNumberNew(textAccountId, 0, 999999998);
+  const validTextAccountId = objSuppliers.validateNumber('textAccountId', textAccountId, 0, 999999998);
 
   // validate text
   const text = document.querySelector('.text').value;

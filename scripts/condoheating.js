@@ -150,22 +150,6 @@ function resetValues() {
   document.querySelector('.button--accounts-insert').disabled = true;
 }
 
-/*
-// Show header
-function showHeader() {
- 
-  // Start table
-  let html = startHTMLTable('width:750px;');
- 
-  // Main header
-  html += objAccounts.showTableHeader('width:250px;', 'Konto');
- 
-  // The end of the table
-  html += endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -245,14 +229,6 @@ function showResult(rowNumber) {
 
   // table header
   html += objAccounts.showTableHeader('width:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
-
-  /*
-  // Start HTML table
-  html = startHTMLTable('width:750px;');
- 
-  // Header
-  html += objAccounts.showTableHeader('width:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
-  */
 
   objAccounts.arrayAccounts.forEach((account) => {
 

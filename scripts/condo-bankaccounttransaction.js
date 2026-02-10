@@ -269,17 +269,20 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     // accountId
     className = `.accountId${bankAccountTransactionId}`;
     const accountId = Number(document.querySelector(className).value);
-    const validAccountId = validateNumberNew(accountId, 0, objBankAccountTransactions.nineNine)
+    className = `accountId${bankAccountTransactionId}`;
+    const validAccountId = objBankAccountTransactions.validateNumber(className, accountId, 0, objBankAccountTransactions.nineNine)
 
     // condoId
     className = `.condoId${bankAccountTransactionId}`;
     const condoId = Number(document.querySelector(className).value);
-    const validCondoId = validateNumberNew(condoId, 0, objBankAccountTransactions.nineNine)
+    className = `condoId${bankAccountTransactionId}`;
+    const validCondoId = objBankAccountTransactions.validateNumber(className, condoId, 0, objBankAccountTransactions.nineNine)
 
     // kilowattHour
     className = `.kilowattHour${bankAccountTransactionId}`;
     const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
-    const validNumberKWHour = validateNumberNew(kilowattHour, 0, objBankAccountTransactions.nineNine)
+    className = `kilowattHour${bankAccountTransactionId}`;
+    const validNumberKWHour = objBankAccountTransactions.validateNumber(className, kilowattHour, 0, objBankAccountTransactions.nineNine)
 
     // text
     className = `.text${bankAccountTransactionId}`;
@@ -301,22 +304,6 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     }
   }
 }
-
-/*
-// Show header
-function showHeader() {
- 
-  // Start table
-  let html = startHTMLTable('width:1450px;');
- 
-  // Main header
-  html += objBankAccountTransactions.showTableHeader('width:250px;', 'Bankkontotransaksjoner');
- 
-  // The end of the table
-  html += endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
 
 // Show header
 function showHeader() {

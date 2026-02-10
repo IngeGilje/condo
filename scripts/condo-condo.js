@@ -320,7 +320,7 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = validateNumberNew(condoId, -1, objCondo.nineNine);
+  const validCondoId = objCondos.validateNumber('condoId', condoId, -1, objCondo.nineNine);
 
   const condominiumId = Number(objUserPassword.condominiumId);
 

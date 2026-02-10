@@ -257,21 +257,10 @@ function showResult(condominiumId, rowNumber) {
   if (rowNumberCondominium !== -1) {
 
     // Start table
-    //html = startHTMLTable('width:750px;');
-
-    // Main header
-    //html += objCondominiums.showTableHeader('width:250px;', '', '', '');
 
     // Show menu
     rowNumber++;
     html += objCondominiums.showTableHeaderMenu("width:250px;", rowNumber, 'Navn');
-
-    //html += "<tr>";
-
-    // Show menu
-    //html += "<tr>";
-
-    //html += objCondominiums.verticalMenu(rowNumber);
 
     // insert table columns in start of a row
     rowNumber++;

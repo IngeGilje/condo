@@ -230,14 +230,6 @@ function showResult(rowNumber) {
   // table header
   html += objAccounts.showTableHeader('width:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
 
-  /*
-  // Start HTML table
-  html = startHTMLTable('width:750px;');
- 
-  // Header
-  html += objAccounts.showTableHeader('width:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
-  */
-
   objAccounts.arrayAccounts.forEach((account) => {
 
     //html += '<tr>';

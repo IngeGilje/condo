@@ -321,23 +321,28 @@ async function updateDuesRow(dueId) {
   // Check dues columns
   let className = `.condoId${dueId}`;
   let condoId = Number(document.querySelector(className).value);
-  const validCondoId = validateNumberNew(condoId, 1, objDues.nineNine);
+  className = `condoId${dueId}`;
+  const validCondoId = objCondos.validateNumber(className, condoId, 1, objDues.nineNine);
 
   className = `.accountId${dueId}`;
   let accountId = Number(document.querySelector(className).value);
-  const validAccountId = validateNumberNew(accountId, 1, objDues.nineNine);
+  className = `accountId${dueId}`;
+  const validAccountId = objCondos.validateNumber(className, accountId, 1, objDues.nineNine);
 
   className = `.amount${dueId}`;
   const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
-  const validAmount = validateNumberNew(amount, objDues.minusNineNine, objDues.nineNine);
+  className = `amount${dueId}`;
+  const validAmount = objCondos.validateNumber(className,amount, objDues.minusNineNine, objDues.nineNine);
 
     className = `.kilowattHour${dueId}`;
   const kilowattHour = Number(formatKronerToOre(document.querySelector(`${className}`).value));
-  const validKilowattHour = validateNumberNew(kilowattHour, 0, objDues.nineNine);
+  className = `kilowattHour${dueId}`;
+  const validKilowattHour = objCondos.validateNumber(className, kilowattHour, 0, objDues.nineNine);
 
   className = `.date${dueId}`;
   const date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
-  const validDate = validateNumberNew(date, 20200101, 20991231);
+  className = `date${dueId}`;
+  const validDate = objCondos.validateNumber(className, date, 20200101, 20991231);
 
   className = `.text${dueId}`;
   const text = document.querySelector(className).value;

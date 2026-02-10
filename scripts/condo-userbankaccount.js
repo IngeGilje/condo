@@ -26,7 +26,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     // Check if server is running
     if (await objUsers.checkServer()) {
 
-      const resident = 'Y';
+      const resident = 'A';
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
@@ -82,14 +82,14 @@ function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objDues.getClassByPrefix(event.target, prefix))
+        .map(prefix => objUserBankAccounts.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
       let userBankAccountId = 0;
       let prefix = "";
       if (className) {
-        prefix = prefixes.find(p => className.startsWith(p));
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
         userBankAccountId = Number(className.slice(prefix.length));
       }
 
@@ -111,7 +111,7 @@ function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objDues.getClassByPrefix(event.target, prefix))
+        .map(prefix => objUserBankAccounts.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       //const className = objAccounts.getDeleteClass(event.target);
@@ -232,12 +232,12 @@ function showResult(rowNumber) {
     const selectedChoice = 'Nei';
     html += objUserBankAccounts.showYesNo(className, selectedChoice);
 
-    // user
+    // user Id
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
     html += objUsers.showSelectedUsersNew(className, '', userId, 'Ingen er valgt', '');
 
-    // account
+    // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
     html += objAccounts.showSelectedAccountsNew(className, '', accountId, 'Ingen er valgt', '');
@@ -288,21 +288,28 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   const condominiumId = Number(objUserPassword.condominiumId);
   const user = objUserPassword.email;
 
-  // Validate userbankaccounts columns
-  if (validateColumns(userBankAccountId)) {
+  // Validate
 
-    // Check userbankaccounts columns
-    let className = `.userId${userBankAccountId}`;
-    let userId = Number(document.querySelector(className).value);
+  // User Id
+  let className = `.userId${userBankAccountId}`;
+  let userId = Number(document.querySelector(className).value);
+  const validUserId = objUserBankAccounts.validateNumber(className, userId, 1, 999999998);
 
-    className = `.accountId${userBankAccountId}`;
-    let accountId = Number(document.querySelector(className).value);
+  // account Id
+  className = `.accountId${userBankAccountId}`;
+  let accountId = Number(document.querySelector(className).value);
+  const validAccountId = objUserBankAccounts.validateNumber(className, accountId, 1, 999999998);
 
-    className = `.bankAccount${userBankAccountId}`;
-    let bankAccount = document.querySelector(className).value;
+  // bank account
+  className = `.bankAccount${userBankAccountId}`;
+  const bankAccount = document.querySelector(className).value;
+  className = `bankAccount${userBankAccountId}`;
+  const validBankAccount = objUserBankAccounts.validateBankAccount(className, bankAccount);
+
+  if (validUserId && validAccountId && validBankAccount) {
 
     // Check if the userbankaccounts row exist
-    rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (rowNumberUserBankAccount !== -1) {
 
       // update the userbankaccounts row
@@ -321,23 +328,3 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     menuNumber = showResult(menuNumber);
   }
 }
-
-// Validate user bank account columns
-function validateColumns(userBankAccountId) {
-
-  // Check user account users columns
-  let className = `.userId${userBankAccountId}`;
-  const userId = Number(document.querySelector(className).value);
-  const validUserId = validateNumberNew(userId, 1, 999999998);
-
-  className = `.accountId${userBankAccountId}`;
-  const accountId = Number(document.querySelector(className).value);
-  const validAccountId = validateNumberNew(accountId, 1, 999999998);
-
-  className = `.bankAccount${userBankAccountId}`;
-  const bankAccount = document.querySelector(className).value;
-  const validBankAccount = objUserBankAccounts.validateBankAccountNew(bankAccount);
-
-  return (validUserId && validAccountId && validBankAccount) ? true : false;
-}
-

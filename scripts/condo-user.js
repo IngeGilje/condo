@@ -529,22 +529,6 @@ function resetValues() {
   document.querySelector('.insert').disabled = true;
 }
 
-/*
-// Show header
-function showHeader() {
- 
-  // Start table
-  let html = startHTMLTable('width:750px;');
- 
-  // Main header
-  html += objUsers.showTableHeader('width:250px;', 'Bruker');
- 
-  // The end of the table
-  html += endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -603,23 +587,12 @@ function showResult(userId, rowNumber) {
   const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
   if (rowNumberUser !== -1) {
 
-    // Start table
-    //html = startHTMLTable('width:750px;');
-
-    // Main header
-    //html += objUsers.showTableHeader('width:250px;', '', '', '');
-
     // email,condoId
     html += "<tr>";
     rowNumber++;
     html += objUsers.showTableHeaderMenu("width:250px;", rowNumber, 'E-mail', 'Leilighet');
 
-    // Show menu
-    //html += "<tr>";
-    //rowNumber++;
-    //html += objUsers.verticalMenu(rowNumber);
-
-    // insert table columns in start of a row
+     // insert table columns in start of a row
     rowNumber++;
     html += objUsers.insertTableColumns('', rowNumber);
 
@@ -770,7 +743,7 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = validateNumberNew(userId, -1, objUsers.nineNine);
+  const validUserId = objUsers.validateNumber('userId', userId, -1, objUsers.nineNine);
 
   const condominiumId = Number(objUserPassword.condominiumId);
 
@@ -787,7 +760,7 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = objUsers.validateNumberNew(condoId, 0, objUsers.nineNine);
+  const validCondoId = objUsers.validateNumber('condoId', condoId, 0, objUsers.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
@@ -803,7 +776,7 @@ async function updateUserRow(userId) {
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = validateNumberNew(securityLevel, 1, 9);
+  const validSecurityLevel = objUsers.validateNumber('securityLevel', securityLevel, 1, 9);
 
   // validate password
   const password = document.querySelector('.password').value;

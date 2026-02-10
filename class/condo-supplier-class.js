@@ -16,7 +16,7 @@ class Supplier extends Condos {
         <label class="label-${classValue}"
           id="supplier"
           for="supplier">
-            Velg leverandør
+            Velg mottaker
         </label>
         <select class="select-${classValue}" 
           id="supplier"

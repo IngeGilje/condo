@@ -1247,9 +1247,7 @@ async function main() {
 
           const condominiumId = Number(req.query.condominiumId);
           const userId = Number(req.query.userId);
-          console.log('userId :', userId);
           const accountId = Number(req.query.accountId);
-          console.log('accountId :', accountId);
 
           try {
             let SQLquery =
@@ -1265,14 +1263,12 @@ async function main() {
                 `;
             }
             if (accountId !== nineNine) {
-              SQLquery +=
-                `
+              SQLquery += `
                   AND accountId = ${accountId}
                 `;
             }
-            SQLquery +=
-              `
-                ORDER BY userBankAccountId;
+            SQLquery += `
+                ORDER BY name;
               `;
 
             const [rows] = await db.query(SQLquery);
