@@ -47,7 +47,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       events();
     } else {
 
-      showMessage('Server condo-server.js er ikke startet.');
+      objCondos.showMessage(objCondos, 'Server condo-server.js har ikke startet.');
     }
   }
 }
@@ -154,20 +154,6 @@ function showHeader() {
   // The end of the table
   html += objCondos.endTable();
   document.querySelector('.header').innerHTML = html;
-}
-
-// Show message
-function showMessage(message) {
-
-  // Start table
-  let html = objCondos.startTable('width:750px;');
-
-  // show main header
-  html += objCondos.showTableHeader('width:250px;', message);
-
-  // The end of the table
-  html += objCondos.endTable();
-  document.querySelector('.message').innerHTML = html;
 }
 
 // Show filter

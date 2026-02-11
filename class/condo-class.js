@@ -440,7 +440,9 @@ class Condos {
 
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+
+        // remove/ add 'input-error' class. Here 'input-error' is css class
+        inputElement.classList.toggle('input-error', !isValid);
       }
     }
 
@@ -1162,7 +1164,7 @@ class Condos {
   // Validate number
   validateNumber(className, number, min, max) {
 
-    const isValid = (Number(number) >= Number(min) || Number(number) <= Number(max));
+    const isValid = (Number(number) >= Number(min) && Number(number) <= Number(max));
 
     // Invalid number
     if (this.isClassDefined(className)) {
@@ -1170,7 +1172,8 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+        // remove/ add 'input-error' class. Here 'input-error' is css class
+        inputElement.classList.toggle('input-error', !isValid);
       }
     }
 
@@ -1230,7 +1233,8 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+        // remove/ add 'input-error' class. Here 'input-error' is css class
+        inputElement.classList.toggle('input-error', !isValid);
       }
     }
     return isValid;
@@ -1248,7 +1252,8 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+        // remove/ add 'input-error' class. Here 'input-error' is css class
+        inputElement.classList.toggle('input-error', !isValid);
       }
     }
 
@@ -1268,7 +1273,8 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+        // remove/ add 'input-error' class. Here 'input-error' is css class
+        inputElement.classList.toggle('input-error', !isValid);
       }
     }
     return isValid;
@@ -1285,7 +1291,8 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+        // remove/ add 'input-error' class. Here 'input-error' is css class
+        inputElement.classList.toggle('input-error', !isValid);
       }
     }
     return isValid;
@@ -1465,6 +1472,20 @@ class Condos {
   formatNorDateToNumber(norDate) {
 
     return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
+  }
+
+  // Show message
+  showMessage(object, message) {
+
+    // Start table
+    let html = object.startTable('width:750px;');
+
+    // show main header
+    html += object.showTableHeader('width:250px;', message);
+
+    // The end of the table
+    html += object.endTable();
+    document.querySelector('.message').innerHTML = html;
   }
 }
 

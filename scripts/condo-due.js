@@ -21,7 +21,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
     'http://localhost/condo-login.html';
 } else {
 
-   // Call main when script loads
+  // Call main when script loads
   main();
   async function main() {
 
@@ -61,6 +61,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Events
       events();
+    } else {
+
+      objDues.showMessage(objDues, 'Server condo-server.js har ikke startet.');
     }
   }
 }
@@ -215,9 +218,9 @@ function showResult(rowNumber) {
     className = `amount${due.dueId}`;
     html += objDues.inputTableColumn(className, amount, 10);
 
-        // kilowattHour
+    // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);
-    className = `amount${due.dueId}`;
+    className = `kilowattHour${due.dueId}`;
     html += objDues.inputTableColumn(className, kilowattHour, 10);
 
     // text
@@ -332,9 +335,9 @@ async function updateDuesRow(dueId) {
   className = `.amount${dueId}`;
   const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
   className = `amount${dueId}`;
-  const validAmount = objCondos.validateNumber(className,amount, objDues.minusNineNine, objDues.nineNine);
+  const validAmount = objCondos.validateNumber(className, amount, objDues.minusNineNine, objDues.nineNine);
 
-    className = `.kilowattHour${dueId}`;
+  className = `.kilowattHour${dueId}`;
   const kilowattHour = Number(formatKronerToOre(document.querySelector(`${className}`).value));
   className = `kilowattHour${dueId}`;
   const validKilowattHour = objCondos.validateNumber(className, kilowattHour, 0, objDues.nineNine);
@@ -349,7 +352,7 @@ async function updateDuesRow(dueId) {
   const validText = objDues.validateText(text, 3, 45);
 
   // Validate dues columns
-  if (validAccountId && validCondoId && validAmount && validDate && kilowattHour && validText) {
+  if (validAccountId && validCondoId && validAmount && validDate && validKilowattHour && validText) {
 
     // Check if the dues row exist
     rowNumberDue = objDues.arrayDues.findIndex(dues => dues.dueId === dueId);

@@ -43,6 +43,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Events
       events();
+    } else {
+
+      objRemoteHeatingPrices.showMessage(objRemoteHeatingPrices, 'Server condo-server.js har ikke startet.');
     }
   }
 }

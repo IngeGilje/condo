@@ -24,7 +24,10 @@ async function main() {
 
     // Events
     events();
-  }
+  } else {
+
+      objLogIn.showMessage(objLogIn, 'Server condo-server.js har ikke startet.');
+    }
 }
 
 // Events for users

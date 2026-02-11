@@ -184,3 +184,8 @@ img {
   top: 0px;
   z-index: -1;
 }
+
+.input-error {
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+}

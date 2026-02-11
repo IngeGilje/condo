@@ -47,6 +47,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Events
       events();
+    } else {
+
+      showMessage(objCondominiums, 'Server condo-server.js har ikke startet.');
     }
   }
 }

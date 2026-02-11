@@ -85,6 +85,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         // Events
         events();
       }
+    } else {
+
+      objAnnualAccount.showMessage(objAnnualAccount, 'Server condo-server.js har ikke startet.');
     }
   }
 }
