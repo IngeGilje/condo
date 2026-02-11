@@ -1279,15 +1279,15 @@ class Condos {
     const fileNameRegex = /^(?:[a-zA-Z]:\\)?(?:[^<>:"/\\|?*\x00-\x1F]+\\)*[^<>:"/\\|?*\x00-\x1F]*$/;
     const isValid = fileNameRegex.test(fileName);
 
-        // Invalid/ Valid  filename
+    // Invalid/ Valid  filename
     if (this.isClassDefined(className)) {
 
-        const inputElement = document.querySelector(`.${className}`);
-        if (inputElement) {
+      const inputElement = document.querySelector(`.${className}`);
+      if (inputElement) {
 
-          (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
-        }
+        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
       }
+    }
     return isValid;
   }
 
@@ -1459,6 +1459,12 @@ class Condos {
     }
 
     return html;
+  }
+
+  // Format norwegian date (11.05.1983) to number (19830511)
+  formatNorDateToNumber(norDate) {
+
+    return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
   }
 }
 

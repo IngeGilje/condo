@@ -50,9 +50,9 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(formatNorDateToNumber(fromDate));
+      fromDate = Number(objDues.formatNorDateToNumber(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(formatNorDateToNumber(toDate));
+      toDate = Number(objDues.formatNorDateToNumber(toDate));
 
       await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
@@ -83,9 +83,9 @@ function events() {
         const condoId = Number(document.querySelector('.filterCondoId').value);
         const accountId = Number(document.querySelector('.filterAccountId').value);
         let fromDate = document.querySelector('.filterFromDate').value;
-        fromDate = Number(formatNorDateToNumber(fromDate));
+        fromDate = Number(objDues.formatNorDateToNumber(fromDate));
         let toDate = document.querySelector('.filterToDate').value;
-        toDate = Number(formatNorDateToNumber(toDate));
+        toDate = Number(objDues.formatNorDateToNumber(toDate));
 
         await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
@@ -157,9 +157,9 @@ function events() {
           const condoId = Number(document.querySelector('.filterCondoId').value);
           const accountId = Number(document.querySelector('.filterAccountId').value);
           let fromDate = document.querySelector('.filterFromDate').value;
-          fromDate = Number(formatNorDateToNumber(fromDate));
+          fromDate = Number(objDues.formatNorDateToNumber(fromDate));
           let toDate = document.querySelector('.filterToDate').value;
-          toDate = Number(formatNorDateToNumber(toDate));
+          toDate = Number(objDues.formatNorDateToNumber(toDate));
 
           await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
@@ -303,9 +303,9 @@ async function deleteDueRow(dueId, className) {
   const condoId = Number(document.querySelector('.filterCondoId').value);
   const accountId = Number(document.querySelector('.filterAccountId').value);
   let fromDate = document.querySelector('.filterFromDate').value;
-  fromDate = Number(formatNorDateToNumber(fromDate));
+  fromDate = Number(objDues.formatNorDateToNumber(fromDate));
   let toDate = document.querySelector('.filterToDate').value;
-  toDate = Number(formatNorDateToNumber(toDate));
+  toDate = Number(objDues.formatNorDateToNumber(toDate));
 
   await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 }
@@ -367,9 +367,9 @@ async function updateDuesRow(dueId) {
     condoId = Number(document.querySelector('.filterCondoId').value);
     accountId = Number(document.querySelector('.filterAccountId').value);
     let fromDate = document.querySelector('.filterFromDate').value;
-    fromDate = Number(formatNorDateToNumber(fromDate));
+    fromDate = Number(objDues.formatNorDateToNumber(fromDate));
     let toDate = document.querySelector('.filterToDate').value;
-    toDate = Number(formatNorDateToNumber(toDate));
+    toDate = Number(objDues.formatNorDateToNumber(toDate));
 
     await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
