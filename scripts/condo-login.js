@@ -29,54 +29,6 @@ async function main() {
 
 // Events for users
 function events() {
-
-  /*
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-link')) {
- 
-      // validate password
-      const email = document.querySelector('.email').value;
-      const password = document.querySelector('.password').value;
- 
-      // Security level
-      const rowNumberUser = objUsers.arrayUsers.findIndex(userRow => userRow.email === email);
-      if (rowNumberUser !== -1) {
- 
-        const securityLevel = objUsers.arrayUsers[rowNumberUser].securityLevel;
- 
-        const condominiumId = objUsers.arrayUsers[rowNumberUser].condominiumId;
- 
-        // Save email/user, password and security level
-        sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
- 
-        switch (objUsers.serverStatus) {
- 
-          // web server
-          case 1:
-            (objLogIn.validateUser(email, password))
-              ? window.location.href = 'http://localhost/condo-bankaccounttransaction.html'
-              : resetValues();
-            break
-          // Test web server/ local web server
-          case 2:
- 
-          // Test server/ local test server
-          case 3: {
- 
-            (objLogIn.validateUser(email, password))
-              ? window.location.href = 'condo-bankaccounttransaction.html'
-              : resetValues();
-            break
-          }
-          default: {
- 
-            break
-          }
-        }
-      }
-    }
-  });
-  */
 }
 
 // reset values

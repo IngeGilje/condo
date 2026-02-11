@@ -644,7 +644,7 @@ function showResult(userId, rowNumber) {
     html += objUsers.inputTableColumn('password', objUsers.arrayUsers[rowNumberUser].password, 45);
 
     // securityLevel
-    html += objUsers.showSelectedNumbersNew('securityLevel', "width:100px;", 1, 9, objUsers.arrayUsers[rowNumberUser].securityNumber);
+    html += objUsers.showSelectedNumbers('securityLevel', "width:100px;", 1, 9, objUsers.arrayUsers[rowNumberUser].securityNumber);
 
     html += "</tr>";
 
@@ -756,7 +756,7 @@ async function updateUserRow(userId) {
 
   // email
   const email = document.querySelector('.email').value;
-  const validEmail = objUsers.validateEmailNew(email);
+  const validEmail = objUsers.validateEmail('email', email);
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
@@ -772,7 +772,7 @@ async function updateUserRow(userId) {
 
   // validate phone
   const phone = document.querySelector('.phone').value;
-  const validPhone = objUsers.validatePhoneNew(phone);
+  const validPhone = objUsers.validatePhone('phone', phone);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);

@@ -183,7 +183,7 @@ function showHeader() {
   html += objRemoteHeatings.showTableHeader('width:250px;', 'Fjernvarme');
 
   // The end of the table header
-  html += objRemoteHeatings.endTableHeaderNew();
+  html += objRemoteHeatings.endTableHeader();
 
   // The end of the table
   html += objRemoteHeatings.endTable();
@@ -385,18 +385,21 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   // year
   className = ".filterYear";
   const year = Number(document.querySelector(className).value);
-  const validYear = objRemoteHeatings.validateIntervalNew(year, 2020, 2030);
+  className = "filterYear";
+  const validYear = objRemoteHeatings.validateNumber(className, year, 2020, 2030);
 
   // date
   className = `.date${remoteHeatingId}`;
   let date = document.querySelector(className).value;
-  date = objRemoteHeatings.formatNorDateToNumberNew(date);
-  const validDate = objRemoteHeatings.validateIntervalNew(Number(date), 20200101, 20291231);
+  date = objRemoteHeatings.formatNorDateToNumber(date);
+  className = `date${remoteHeatingId}`;
+  const validDate = objRemoteHeatings.validateNumber(className, Number(date), 20200101, 20291231);
 
   // condoId
   className = `.condoId${remoteHeatingId}`;
   const condoId = Number(document.querySelector(className).value);
-  const validCondoId = objRemoteHeatings.validateIntervalNew(condoId, 1, objRemoteHeatings.nineNine);
+  className = `condoId${remoteHeatingId}`;
+  const validCondoId = objRemoteHeatings.validateNumber(className, condoId, 1, objRemoteHeatings.nineNine);
 
   // kilowattHour
   className = `.kilowattHour${remoteHeatingId}`;

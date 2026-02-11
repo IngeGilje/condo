@@ -449,27 +449,27 @@ async function updateBankAccountRow(bankAccountId) {
   // Opening balance date
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
   openingBalanceDate = convertDateToISOFormat(openingBalanceDate);
-  const validopeningBalanceDate = objBankAccounts.validateIntervalNew(openingBalanceDate, 20200101, 20291231)
+  const validopeningBalanceDate = objBankAccounts.validateNumber('openingBalanceDate', openingBalanceDate, 20200101, 20291231)
 
   // Opening balance
   let openingBalance = document.querySelector('.openingBalance').value;
   openingBalance = Number(formatKronerToOre(openingBalance));
-  const validOpeningBalance = objBankAccounts.validateIntervalNew(openingBalance, objBankAccounts.minusNineNine, objBankAccounts.nineNine);
+  const validOpeningBalance = objBankAccounts.validateNumber('openingBalance', openingBalance, objBankAccounts.minusNineNine, objBankAccounts.nineNine);
 
   // Closing balance date
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
   closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
-  const validClosingBalanceDate = objBankAccounts.validateIntervalNew(closingBalanceDate, 20200101, 20291231)
+  const validClosingBalanceDate = objBankAccounts.validateNumber('closingBalanceDate', closingBalanceDate, 20200101, 20291231)
 
   // Closing balance
   let closingBalance = document.querySelector('.closingBalance').value;
   closingBalance = formatKronerToOre(closingBalance);
-  const validClosingBalance = objBankAccounts.validateIntervalNew(closingBalance, objBankAccounts.minusNineNine, objBankAccounts.nineNine);
+  const validClosingBalance = objBankAccounts.validateNumber('closingBalance', closingBalance, objBankAccounts.minusNineNine, objBankAccounts.nineNine);
 
   // Validate date interval
   const validBalanceDates = ((Number(openingBalanceDate) <= Number(closingBalanceDate))
-    && (Number(openingBalanceDate) >= 20200101 && Number(openingBalanceDate) <= 20391231)
-    && (Number(closingBalanceDate) >= 20200101 && Number(closingBalanceDate) <= 20391231)) ? true : false;
+    && (Number(openingBalanceDate) >= 20100101 && Number(openingBalanceDate) <= 20391231)
+    && (Number(closingBalanceDate) >= 20100101 && Number(closingBalanceDate) <= 20391231)) ? true : false;
 
   if (validBankAccount && validName && validBalanceDates && validOpeningBalance && validClosingBalance) {
 

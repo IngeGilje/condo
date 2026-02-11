@@ -710,7 +710,7 @@ async function updateSupplierRow(supplierId) {
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = objSuppliers.validateIntervalNew(Number(postalCode), 0, 9999);
+  const validPostalCode = objSuppliers.validateNumber('postalCode', Number(postalCode), 0, 9999);
 
   // validate city
   const city = document.querySelector('.city').value.trim();
@@ -718,12 +718,12 @@ async function updateSupplierRow(supplierId) {
 
   // validate phone
   const phone = document.querySelector('.phone').value.trim();
-  let validPhone = objSuppliers.validatePhoneNew(phone);
+  let validPhone = objSuppliers.validatePhone('phone', phone);
   if (phone === '') validPhone = true;
 
   // validate email
   const email = document.querySelector('.email').value.trim();
-  let validEmail = objSuppliers.validateEmailNew(email);
+  let validEmail = objSuppliers.validateEmail('email', email);
   if (email === '') validEmail = true;
 
   // validate bankAccount

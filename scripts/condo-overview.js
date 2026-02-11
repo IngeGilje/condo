@@ -90,16 +90,16 @@ function events() {
 
         // from date
         let fromDate = document.querySelector('.filterFromDate').value;
-        const validFromDate = objOverview.validateNorDateFormatNew(fromDate);
+        const validFromDate = objOverview.validateNorDate(fromDate);
 
         // to date
-        let toDate = document.querySelector('.filterFromDate').value;
-        const validToDate = objOverview.validateNorDateFormatNew(toDate);
+        let toDate = document.querySelector('.filterToDate').value;
+        const validToDate = objOverview.validateNorDate(toDate);
 
-        // Validate interval
-        fromDate = objOverview.formatNorDateToNumberNew(fromDate);
-        toDate = objOverview.formatNorDateToNumberNew(toDate);
-        const validDates = objOverview.validateIntervalNew(Number(fromDate), Number(fromDate), Number(toDate));
+        // Validate date interval
+        fromDate = objOverview.formatNorDateToNumber(fromDate);
+        toDate = objOverview.formatNorDateToNumber(toDate);
+        const validDates = objOverview.validateNumber('filterFromDate', Number(fromDate), Number(fromDate), Number(toDate));
 
         if (validFromDate && validToDate && validDates && validCondoId) {
 

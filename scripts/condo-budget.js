@@ -181,7 +181,8 @@ async function updateBudgetsRow(budgetId) {
   // year
   className = `.year${budgetId}`;
   let year = Number(document.querySelector(`${className}`).value);
-  const validYear = objBudgets.validateIntervalNew(year, 2020, 2029);
+  className = `year${budgetId}`;
+  const validYear = objBudgets.validateNumber(className, year, 2020, 2029);
 
   // text
   className = `.text${budgetId}`;
@@ -261,7 +262,7 @@ function showFilter() {
 
   // Selected year
   const year = String(today.getFullYear());
-  html += objBudgets.showSelectedNumbersNew('filterYear', "width:100px;", 2020, 2030, year);
+  html += objBudgets.showSelectedNumbers('filterYear', "width:100px;", 2020, 2030, year);
 
   html += "</tr>";
 
@@ -313,7 +314,7 @@ function showResult(rowNumber) {
     // Year
     const year = Number(budget.year);
     className = `year${budget.budgetId}`;
-    html += objBudgets.showSelectedNumbersNew(className, 'width:100px;', 2020, 2030, year);
+    html += objBudgets.showSelectedNumbers(className, 'width:100px;', 2020, 2030, year);
 
     // text
     const text = (budget.text === null) ? '' : budget.text;
@@ -347,7 +348,7 @@ function showResult(rowNumber) {
   // Year
   const year = Number(document.querySelector('.filterYear').value);
   className = `year0`;
-  html += objBudgets.showSelectedNumbersNew(className, 'width:100px;', 2020, 2030, year);
+  html += objBudgets.showSelectedNumbers(className, 'width:100px;', 2020, 2030, year);
 
   // text
   const text = "";

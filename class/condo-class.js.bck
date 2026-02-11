@@ -321,7 +321,6 @@ class Condos {
       `;
   }
 
-  /*
   // Show label
   showLabelNew(labelText) {
     return `
@@ -331,7 +330,6 @@ class Condos {
         </label>
       `;
   }
-  */
 
   // Show button
   showButton(style, className, text) {
@@ -437,7 +435,6 @@ class Condos {
     const isValid = bankAccountPattern.test(bankAccount);
 
     if (this.isClassDefined(className)) {
-
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
         (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
@@ -597,7 +594,7 @@ class Condos {
   }
 
   // Select numbers
-  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber) {
+  showSelectedNumbersNew(className, style, fromNumber, toNumber, selectedNumber) {
 
     selectedNumber = Number(selectedNumber);
     let html =
@@ -1162,23 +1159,24 @@ class Condos {
   // Validate number
   validateNumber(className, number, min, max) {
 
-    const isValid = (Number(number) >= Number(min) || Number(number) <= Number(max));
+    const isValid = (Number(number) <= Number(min) || Number(number) >= Number(max));
 
     // Invalid number
     if (this.isClassDefined(className)) {
 
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
+      if (this.isClassDefined(className)) {
+        const inputElement = document.querySelector(`.${className}`);
+        if (inputElement) {
 
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+          (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
+        }
       }
     }
-
     return isValid;
   }
 
   // validate the norwegian date format dd.mm.yyyy
-  validateNorDate(date) {
+  validateNorDateFormatNew(date) {
 
     // Check for valid date String
     if (date === '' || typeof date === 'undefined') {
@@ -1209,86 +1207,40 @@ class Condos {
     );
   }
 
-  /*
   // Format norwegian date (11.05.1983) to number (19830511)
   formatNorDateToNumberNew(norDate) {
 
     return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
   }
-  */
 
   // Validate phone number 
-  validatePhone(className, phone) {
+  validatePhoneNew(phone) {
 
     // Validate phone number
     phone = phone.replace(/\s+/g, "");
-    const isValid = /^\d{8,15}$/.test(phone);
-
-    // Invalid/ valid phone number
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
-      }
-    }
-    return isValid;
+    return /^\d{8,15}$/.test(phone);
   }
 
   // Validate E-mail
-  validateEmail(className, eMail) {
+  validateEmailNew(eMail) {
 
     // Validate eMail
     const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = ((eMailRegex.test(eMail))) ? true : false;
-
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
-      }
-    }
-
-    return isValid;
+    return ((eMailRegex.test(eMail))) ? true : false;
   }
 
   // Validate organization number
-  validateOrganizationNumber(className, organizationNumber) {
+  validateOrganizationNumberNew(organizationNumber) {
 
     // Validate organization number Organization Number
     const organizationNumberPattern = /^\d{9}$/;
-    const isValid = (organizationNumberPattern.test(organizationNumber)) ? true : false;
-
-    // Invalid/ Valid organization number
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
-      }
-    }
-    return isValid;
+    return (organizationNumberPattern.test(organizationNumber)) ? true : false;
   }
 
   // Validate filename
-  validateFileName(className, fileName) {
+  validateFileNameNew(fileName) {
     const fileNameRegex = /^(?:[a-zA-Z]:\\)?(?:[^<>:"/\\|?*\x00-\x1F]+\\)*[^<>:"/\\|?*\x00-\x1F]*$/;
-    const isValid = fileNameRegex.test(fileName);
-
-        // Invalid/ Valid  filename
-    if (this.isClassDefined(className)) {
-
-        const inputElement = document.querySelector(`.${className}`);
-        if (inputElement) {
-
-          (isValid) ? inputElement.style.backgroundColor = 'white' : inputElement.style.backgroundColor = 'red';
-        }
-      }
-    return isValid;
+    return fileNameRegex.test(fileName);
   }
 
   // Show blank header row
@@ -1336,7 +1288,7 @@ class Condos {
   }
 
   // end table header
-  endTableHeader() {
+  endTableHeaderNew() {
 
     return `</th></tr></thead>`;
   }
@@ -1416,50 +1368,6 @@ class Condos {
       return false;
     }
   }
-  verticalMenu(menuNumber) {
-
-    let html = "";
-
-    // Check of menu exists
-    if (this.arrayMenu.length >= menuNumber) {
-
-      let url;
-      switch (this.serverStatus) {
-
-        // Web server
-        case 1: {
-
-          url = "http://ingegilje.no/";
-          break;
-        }
-        // Test web server/ local web server
-        case 2:
-
-        // Test server/ local test server
-        case 3: {
-
-          url = "http://localhost/";
-          break;
-        }
-
-        default: {
-          break;
-        }
-      }
-
-      const applicationName = this.arrayMenu[menuNumber - 1].applicationName;
-      const text = this.arrayMenu[menuNumber - 1].text;
-      const className = this.arrayMenu[menuNumber - 1].className;
-
-      html += `<td class="one-line menu"><a href="${url}${applicationName}">${text}</a></td>`;
-    } else {
-
-      // Do not show menu
-      html += "<td> </td>";
-    }
-
-    return html;
-  }
 }
 
 // Check if string includes only digits
@@ -1476,7 +1384,6 @@ function removeComma(amount) {
   return (amount === '000') ? '00' : amount;
 }
 
-/*
 // validate the dd.mm.yyyy (European date format) format
 function validateEuroDateFormat(dateString) {
 
@@ -1509,7 +1416,6 @@ function validateEuroDateFormat(dateString) {
     && date.getDate() === day
   );
 }
-*/
 
 // Format date dd.mm.yyyy (European date format) to yyyymmdd ("Basic ISO 8601 format)
 function convertDateToISOFormat(date) {
@@ -1589,7 +1495,6 @@ function validateNumberHTML(number, min, max) {
 }
 */
 
-/*
 // Validate norwegian date dd.mm.yyyy format
 // Show error message
 function validateNorDate(dateString, className, labelText) {
@@ -1631,7 +1536,6 @@ function validateNorDate(dateString, className, labelText) {
   }
   return isDateValid;
 }
-*/
 
 // Check if class is defined
 function isClassDefined(className) {
@@ -1719,7 +1623,6 @@ function checkPhone(phone, className, labelText) {
   }
 }
 
-/*
 // Validate organization number
 function validateOrganizationNumber(organizationNumber, className, labelText) {
 
@@ -1749,7 +1652,6 @@ function validateOrganizationNumber(organizationNumber, className, labelText) {
     return true;
   }
 }
-*/
 
 // Get current date in  European date format (dd.mm.yyyy)
 function getCurrentDate() {
@@ -1880,8 +1782,10 @@ function formatAmountToOre(amount) {
 // Format norwegian date (11.05.1983) to number (19830511)
 function formatNorDateToNumber(norDate) {
 
-  return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
+  const number = norDate.substring(6,) +
+    norDate.substring(3, 5) + norDate.substring(0, 2);
 
+  return number;
 }
 
 // Generate password
@@ -1917,6 +1821,28 @@ function generatePassword(passwordLenght, includeLowercase, includeUppercase, in
     password += allowedChars[randomIndex];
   }
   return password;
+}
+
+// Hide input
+function hideInput(className) {
+
+  let element = null;
+  if (this.isClassDefined(className)) {
+
+    element = document.querySelector(`.${className}`); // Select the element
+    if (element.classList.contains(className)) {
+      document.querySelector(`.${className}`).style.display =
+        'none';
+    }
+  }
+  if (this.isClassDefined(className)) {
+
+    element = document.querySelector(`.${className}`); // Select the element
+    if (element.classList.contains(className)) {
+      document.querySelector(`.${className}`).style.display =
+        'none';
+    }
+  }
 }
 
 // Validate user/password

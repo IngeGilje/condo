@@ -156,7 +156,7 @@ function showHeader() {
   html += objRemoteHeatingPrices.showTableHeader('width:250px;', 'Fjernvarme');
 
   // The end of the table header
-  html += objRemoteHeatingPrices.endTableHeaderNew();
+  html += objRemoteHeatingPrices.endTableHeader();
 
   // The end of the table
   html += objRemoteHeatingPrices.endTable();
@@ -265,7 +265,8 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   // year
   className = `.year${remoteHeatingPriceId}`;
   let year = document.querySelector(className).value;
-  const validYear = objRemoteHeatingPrices.validateIntervalNew(year, 2020, 2030);
+  className = `year${remoteHeatingPriceId}`;
+  const validYear = objRemoteHeatingPrices.validateNumber(className, year, 2020, 2030);
 
   // priceKilowattHour
   className = `.priceKilowattHour${remoteHeatingPriceId}`;

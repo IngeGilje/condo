@@ -160,7 +160,7 @@ function showHeader() {
   html += objAccounts.showTableHeader('width:250px;', 'Konto');
 
   // The end of the table header
-  html += objAccounts.endTableHeaderNew();
+  html += objAccounts.endTableHeader();
 
   // The end of the table
   html += objAccounts.endTable();

@@ -483,7 +483,7 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objCondominiums.validateIntervalNew(Number(postalCode), 1, 9999);
+  const validPostalCode = objCondominiums.validateNumber('postalCode', Number(postalCode), 1, 9999);
 
   // validate city
   const city = document.querySelector('.city').value;
@@ -491,31 +491,30 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate phone
   const phone = document.querySelector('.phone').value;
-  const validPhone = objCondominiums.validatePhoneNew(phone);
+  const validPhone = objCondominiums.validatePhone('phone', phone);
 
   // validate email
   const email = document.querySelector('.email').value;
-  const validEmail = objCondominiums.validateEmailNew(email);
+  const validEmail = objCondominiums.validateEmail('email', email);
 
   // validate incomeRemoteHeatingAccountId
   const incomeRemoteHeatingAccountId = Number(document.querySelector('.incomeRemoteHeatingAccountId').value);
-  const validIncomeRemoteHeatingAccountId = objCondominiums.validateIntervalNew(incomeRemoteHeatingAccountId, 0, objCondominiums.nineNine);
+  const validIncomeRemoteHeatingAccountId = objCondominiums.validateNumber('incomeRemoteHeatingAccountId', incomeRemoteHeatingAccountId, 0, objCondominiums.nineNine);
 
   // validate paymentRemoteHeatingAccountId
   const paymentRemoteHeatingAccountId = Number(document.querySelector('.paymentRemoteHeatingAccountId').value);
-  const validPaymentRemoteHeatingAccountId = objCondominiums.validateIntervalNew(paymentRemoteHeatingAccountId, 0, objCondominiums.nineNine);
+  const validPaymentRemoteHeatingAccountId = objCondominiums.validateNumber('paymentRemoteHeatingAccountId', paymentRemoteHeatingAccountId, 0, objCondominiums.nineNine);
 
   // validate commonCostAccountId
   const commonCostAccountId = Number(document.querySelector('.commonCostAccountId').value);
-  const validCommonCostAccountId = objCondominiums.validateIntervalNew(commonCostAccountId, 0, objCondominiums.nineNine);
+  const validCommonCostAccountId = objCondominiums.validateNumber('commonCostAccountId', commonCostAccountId, 0, objCondominiums.nineNine);
 
   // validate organizationNumber
   const organizationNumber = Number(document.querySelector('.organizationNumber').value);
-  const validOrganizationNumber = objCondominiums.validateOrganizationNumberNew(organizationNumber);
+  const validOrganizationNumber = objCondominiums.validateOrganizationNumber('organizationNumber', organizationNumber);
 
   // Validate importFileName
   const importFileName = document.querySelector('.importFileName').value;
-  //const validImportFileName = objCondominiums.validateFileNameNew(importFileName);
   const validImportFileName = true;
 
   if (validName && validStreet && validAddress2 && validPostalCode && validCity && validPhone && validEmail

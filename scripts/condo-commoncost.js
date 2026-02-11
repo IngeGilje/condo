@@ -158,7 +158,7 @@ function showHeader() {
   html += objCommonCosts.showTableHeader('width:250px;', 'Felleskostnader');
 
   // The end of the table header
-  html += objCommonCosts.endTableHeaderNew();
+  html += objCommonCosts.endTableHeader();
 
   // The end of the table
   html += objCommonCosts.endTable();
@@ -277,7 +277,8 @@ async function updateCommonCostsRow(commonCostId) {
   // year
   className = `.year${commonCostId}`;
   let year = document.querySelector(className).value;
-  const validYear = objCommonCosts.validateIntervalNew(year, 2020, 2030);
+  className = `year${commonCostId}`;
+  const validYear = objCommonCosts.validateNumber(className, year, 2020, 2030);
 
   // commonCostSquareMeter
   className = `.commonCostSquareMeter${commonCostId}`;
