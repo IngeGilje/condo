@@ -13,17 +13,163 @@
 
 <body>
 
-  <table style="width:750px;">
-
+  <table style="width:1750px;">
     <tr>
-      <td class="no-border center labelStreet" style="width:250px;">
-        Gate
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-login.html">
+          login
+        </a>
+      </td>
+      <td class="no-border center" style="width:175px;">
+
       </td>
 
-      <td class="no-border center labelAddress2" style="width:250px;">
-        Adresse 2
+      <td class="no-border center" style="width:175px;">
+
+      </td>
+
+      <td class="no-border center" style="width:175px;">
+        Leilighet
+      </td>
+
+      <td class="no-border center" style="width:175px;">
+        Velg konto
+      </td>
+
+      <td class="no-border center" style="width:175px;">
+        Fra dato
+      </td>
+
+      <td class="no-border center" style="width:175px;">
+        Til dato
+      </td>
+
+      <td class="no-border center" style="width:175px;">
+        Beløp
+      </td>
+
+      <td class="no-border center" style="width:175px;">
+
       </td>
     </tr>
+    <tbody>
+      <tr>
+        <td class="one-line menu" style="width:175px;">
+          <a href="http://localhost/condo-condominium.html">
+            Sameie
+          </a>
+        </td>
+        <td class="center no-border"></td>
+        <td class="center no-border"></td>
+        <td class="center one-line">
+          <select class="filterCondoId center" style="width:175px;">;
+            <option value=3>95A</option>
+            <option value=4>95B</option>
+            <option value=5>97A</option>
+            <option value=6>97B</option>
+            <option value=7>97C</option>
+            <option value=8>99A</option>
+            <option value=9>99B</option>
+            <option value=999999999 selected>Vis alle</option>
+          </select>
+        </td>
+        <form id="accountId" action="/submit" method="POST">
+          <label class="label-filterAccountId" for="accountId" id="accountId">
+            Velg konto
+          </label>
+          <select class="select-filterAccountId" id="accountId" name="accountId">
+
+            <option value="13">
+              1,2,3,4... transaksjoner
+            </option>
+
+            <option value="67">
+              Diverse
+            </option>
+
+            <option value="56">
+              Driftsinntekter
+            </option>
+
+            <option value="9">
+              Driftsutgifter
+            </option>
+
+            <option value="4">
+              Fjernvarme inntekt
+            </option>
+
+            <option value="3">
+              Fjernvarme utgift
+            </option>
+
+            <option value="6">
+              Forsikring
+            </option>
+
+            <option value="10">
+              Gebyr - FAKT.TJ
+            </option>
+
+            <option value=2 selected>
+              Inntekter husleie
+            </option>
+
+            <option value="5">
+              Nettleie Lyse
+            </option>
+
+            <option value="52">
+              Omkostninger BedriftsNett
+            </option>
+
+            <option value="8">
+              TV og bredbånd
+            </option>
+
+            <option value="22">
+              Velforening
+            </option>
+
+            <option value=999999999>
+              Alle
+            </option>
+
+            <option value=0>
+              All
+            </option>
+
+          </select>
+        </form>
+
+        <td class="center">
+          <input class="filterFromDate center one-line" type="text" maxlength="10" value="01.01.2026">
+        </td>
+
+        <td class="center">
+          <input class="filterToDate center one-line" type="text" maxlength="10" value="14.02.2026">
+        </td>
+
+        <td class="center">
+          <input class="filterAmount center one-line" type="text" maxlength="10" value="">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="one-line menu" style="width:175px;">
+          <a href="http://localhost/condo-condo.html">
+            Leilighet
+          </a>
+        </td>
+        <td class="center no-border"></td>
+        <td class="center no-border"></td>
+        <td class="center no-border"></td>
+        <td class="center no-border"></td>
+        <td class="center no-border"></td>
+        <td class="center no-border"></td>
+        <td class="center no-border"></td>
+        <td class="center no-border"></td>
+    </tbody>
   </table>
 </body>
 

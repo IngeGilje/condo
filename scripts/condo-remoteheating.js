@@ -40,7 +40,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Show filter
       const year = today.getFullYear();
-      showFilter(year);
+      menuNumber = showFilter(menuNumber, year);
 
       await objRemoteHeatings.loadRemoteHeatingTable(objUserPassword.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
@@ -68,11 +68,12 @@ function events() {
 
       async function filterSync() {
 
+        let menuNumber = 0;
+
         const year = Number(document.querySelector(".filterYear").value);
-        showFilter(year);
+        menuNumber = showFilter(menuNumber, year);
         await objRemoteHeatings.loadRemoteHeatingTable(objUserPassword.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
-        let menuNumber = 0;
         menuNumber = showResult(menuNumber);
       }
     };
@@ -194,13 +195,15 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(year) {
+function showFilter(rowNumber, year) {
 
   // Start table
   html = objRemoteHeatings.startTable('width:1100px;');
 
   // Header filter
-  html += objRemoteHeatings.showTableHeader('width:250px;', '', 'År', 'Pris per kiloWattimer');
+  //html += objRemoteHeatings.showTableHeader('width:250px;', '', 'År', 'Pris per kiloWattimer');
+  rowNumber++;
+  html += objRemoteHeatings.showTableHeaderMenu('width:150px;', rowNumber, '', 'År', 'Pris per kiloWattimer');
 
   // start table body
   html += objRemoteHeatings.startTableBody();
@@ -227,6 +230,8 @@ function showFilter(year) {
   // The end of the table
   html += objRemoteHeatings.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Insert empty table row

@@ -110,10 +110,12 @@ class Condo extends Condos {
       <td 
         class="center one-line">
           <select class="${className} center"
-          ${disabled ? 'disabled' : ''}
+            ${disabled ? 'disabled' : ''}
+            ${style ? `style="${style}"` : ''}
+          >;
       `;
-    if (style) html += `style="${style}"`;
-    html += `>`;
+    //if (style) html += `style="${style}"`;
+    //html += `>`;
 
     // Check if condo array is empty
     const numberOfRows = this.arrayCondo.length;

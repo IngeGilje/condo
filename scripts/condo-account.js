@@ -38,7 +38,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       showHeader();
 
       // Show filter
-      showFilter()
+      menuNumber = showFilter(menuNumber);
 
       // Show account
       menuNumber = showResult(menuNumber);
@@ -172,13 +172,15 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter() {
+function showFilter(rowNumber) {
 
   // Start table
   html = objAccounts.startTable('width:750px;');
 
   // Header filter
-  html += objAccounts.showTableHeader('width:250px;', '', 'Kostnadstype', '');
+  //html += objAccounts.showTableHeader('width:250px;', '', 'Kostnadstype', '');
+  rowNumber++;
+  html += objAccounts.showTableHeaderMenu('width:150px;', rowNumber,  '', 'Kostnadstype', '');
 
   // start table body
   html += objAccounts.startTableBody();
@@ -218,7 +220,7 @@ function insertEmptyTableRow(rowNumber) {
   html += objAccounts.showSelectedValues('fixedCost0', '', constFixedCost, constFixedCost, constVariableCost);
 
   // name
-  html += objAccounts.inputTableColumn('name0', "", 45);
+  html += objAccounts.inputTableColumn('name0','width:175px;', '', 45);
 
   html += "</tr>";
   return html;
@@ -276,7 +278,7 @@ function showResult(rowNumber) {
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccounts.inputTableColumn(className, name, 45);
+    html += objAccounts.inputTableColumn(className, 'width:175px;',name, 45);
 
     html += "</tr>";
   });

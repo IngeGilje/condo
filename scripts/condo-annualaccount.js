@@ -49,7 +49,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       const budgetYear = today.getFullYear();
       let fromDate = '01.01.' + budgetYear;
       let toDate = getCurrentDate();
-      showFilter(budgetYear, fromDate, toDate);
+      menuNumber = showFilter(menuNumber, budgetYear, fromDate, toDate);
 
       const condominiumId = Number(objUserPassword.condominiumId);
       const deleted = "N";
@@ -202,7 +202,7 @@ function showHeader() {
   let html = objAnnualAccount.startTable('width:1100px;');
 
   // show main header
-  html += objAnnualAccount.showTableHeader("width:200px;", 'Årsregnskap');
+  html += objAnnualAccount.showTableHeader("width:175px;", 'Årsregnskap');
 
   // The end of the table
   html += objAnnualAccount.endTable();
@@ -210,36 +210,40 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(budgetYear, fromDate, toDate) {
+function showFilter(rowNumber, budgetYear, fromDate, toDate) {
 
   // Start table
   html = objAnnualAccount.startTable('width:1100px;');
 
   // Header filter
-  html += objAnnualAccount.showTableHeader("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+  //html += objAnnualAccount.showTableHeader("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+  rowNumber++;
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;', rowNumber,'', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
 
   // start table body
   html += objAnnualAccount.startTableBody();
 
   // insert table columns in start of a row
-  html += objAnnualAccount.insertTableColumns('', 0, '', '');
+  rowNumber++;
+  html += objAnnualAccount.insertTableColumns('', rowNumber,'');
 
   // show from date
-  html += objAnnualAccount.inputTableColumn('filterFromDate', fromDate, 10);
+  html += objAnnualAccount.inputTableColumn('filterFromDate','width:175px;', fromDate, 10);
 
   // show to date
-  html += objAnnualAccount.inputTableColumn('filterToDate', toDate, 10);
+  html += objAnnualAccount.inputTableColumn('filterToDate', 'width:175px;',toDate, 10);
 
   // Budget year
-  html += objAnnualAccount.selectInterval('filterBudgetYear', 'width:100px;', 2020, 2030, budgetYear, 'Budsjettår');
+  html += objAnnualAccount.selectInterval('filterBudgetYear', 'width:175px;', 2020, 2030, budgetYear, 'Budsjettår');
 
   // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(budgetYear);
-  html += objAnnualAccount.inputTableColumn('filterCommonCostSquareMeter', commonCostSquareMeter, 10);
+  html += objAnnualAccount.inputTableColumn('filterCommonCostSquareMeter', 'width:175px;', commonCostSquareMeter, 10);
 
   html += "</tr>";
 
-  html += objAnnualAccount.insertTableColumns('', 0, '', '', '', '', '', '');
+  rowNumber++;
+  html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '', '','');
 
   // end table body
   html += objAnnualAccount.endTableBody();
@@ -247,6 +251,8 @@ function showFilter(budgetYear, fromDate, toDate) {
   // The end of the table
   html += objAnnualAccount.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Show annual accounts
@@ -257,7 +263,11 @@ function showAnnualAccounts(rowNumber) {
 
   // table header
   const budgetYear = document.querySelector('.filterBudgetYear').value;
-  html += objAnnualAccount.showTableHeader("width:200px;", '', '', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
+  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
+  rowNumber++;
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', 'Årsresultat', '', '');
+  rowNumber++;
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;', rowNumber++,'', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
 
   let totalAccountAmount = 0;
   let totalBudgetAmount = 0;
@@ -280,20 +290,20 @@ function showAnnualAccounts(rowNumber) {
 
       // Show menu
       rowNumber++;
-      html += objAnnualAccount.insertTableColumns('', rowNumber, '');
+      html += objAnnualAccount.insertTableColumns('', rowNumber,'');
 
       // name
-      html += objAnnualAccount.inputTableColumn('name', account.name, 45, true);
+      html += objAnnualAccount.inputTableColumn('name',  'width:175px;', account.name, 45, true);
 
       // accountAmount
       accountAmount = formatOreToKroner(accountAmount);
       className = `accountAmount${account.accountId}`;
-      html += objAnnualAccount.inputTableColumn('accountAmount', accountAmount, 10, true);
+      html += objAnnualAccount.inputTableColumn('accountAmount', 'width:175px;', accountAmount, 10, true);
 
       // budgetAmount
       budgetAmount = formatOreToKroner(budgetAmount);
       className = `budgetAmount${account.accountId}`;
-      html += objAnnualAccount.inputTableColumn('budgetAmount', budgetAmount, 10, true);
+      html += objAnnualAccount.inputTableColumn('budgetAmount', 'width:175px;', budgetAmount, 10, true);
 
       // Deviation
       accountAmount = Number(formatKronerToOre(accountAmount));
@@ -301,7 +311,7 @@ function showAnnualAccounts(rowNumber) {
       let deviation = accountAmount - budgetAmount;
       deviation = formatOreToKroner(deviation);
       className = `deviation${account.accountId}`;
-      html += objAnnualAccount.inputTableColumn('deviation', deviation, 10, true);
+      html += objAnnualAccount.inputTableColumn('deviation', 'width:175px;', deviation, 10, true);
 
       html += "</tr>";
 
@@ -329,12 +339,13 @@ function showAnnualAccounts(rowNumber) {
   totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
 
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', '', totalAccountAmount, totalBudgetAmount, totalDeviation);
+  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '','Sum', totalAccountAmount, totalBudgetAmount, totalDeviation);
 
   html += "</tr>";
 
   // empty table row
-  html += objBankAccountTransactions.insertTableColumns('', 0, '');
+  rowNumber++;
+  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '','','','','');
 
   // The end of the table
   html += objAnnualAccount.endTable();
@@ -351,8 +362,12 @@ function showIncomeNextYear(rowNumber) {
 
   // table header
   const budgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-  html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', '', `Budsjettert leieinntekter ${budgetYear}`, '', '');
-  html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', 'Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad/år');
+  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', '', `Budsjettert leieinntekter ${budgetYear}`, '', '');
+  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', 'Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad/år');
+  rowNumber++;
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', `Budsjettert leieinntekter ${budgetYear}`, '','');
+  rowNumber++;
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;', rowNumber, 'Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad/år');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;
@@ -378,21 +393,21 @@ function showIncomeNextYear(rowNumber) {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objAnnualAccount.insertTableColumns('', rowNumber, '', '');
+    html += objAnnualAccount.insertTableColumns('', rowNumber);
 
     // condo name
     className = `name${condo.condoId}`;
-    html += objAnnualAccount.inputTableColumn(className, condo.name, 45, true);
+    html += objAnnualAccount.inputTableColumn(className, 'width:175px;', condo.name, 45, true);
 
     // Square meters
     let squareMeters = formatOreToKroner(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;
-    html += objAnnualAccount.inputTableColumn(className, squareMeters, 10, true);
+    html += objAnnualAccount.inputTableColumn(className, 'width:175px;', squareMeters, 10, true);
 
     // fixed cost per month per condo
     fixedCostCondoMonth = formatOreToKroner(fixedCostCondoMonth);
     className = `fixedCostCondoMonth${condo.accountId}`;
-    html += objAnnualAccount.inputTableColumn(className, fixedCostCondoMonth, 10, true);
+    html += objAnnualAccount.inputTableColumn(className, 'width:175px;', fixedCostCondoMonth, 10, true);
 
     // Common cost per month per condo
     let commonCostSquareMeter = document.querySelector('.filterCommonCostSquareMeter').value;
@@ -401,7 +416,7 @@ function showIncomeNextYear(rowNumber) {
     let commonCostsMonth = (squareMeters * commonCostSquareMeter) / 100;
     commonCostsMonth = formatOreToKroner(commonCostsMonth);
     className = `commonCostsMonth${condo.accountId}`;
-    html += objAnnualAccount.inputTableColumn(className, commonCostsMonth, 10, true);
+    html += objAnnualAccount.inputTableColumn(className, 'width:175px;', commonCostsMonth, 10, true);
 
     // Common cost per year per condo
     commonCostsMonth = formatKronerToOre(commonCostsMonth);
@@ -409,7 +424,7 @@ function showIncomeNextYear(rowNumber) {
     let commonCostsCondoYear = (commonCostsMonth + fixedCostCondoMonth) * 12;
     commonCostsCondoYear = formatOreToKroner(commonCostsCondoYear);
     className = `commonCostsCondoYear${condo.accountId}`;
-    html += objAnnualAccount.inputTableColumn(className, commonCostsCondoYear, 10, true);
+    html += objAnnualAccount.inputTableColumn(className, 'width:175px;', commonCostsCondoYear, 10, true);
 
     // Accomulate
     totalSquareMeters += Number(squareMeters);
@@ -425,12 +440,13 @@ function showIncomeNextYear(rowNumber) {
   totalCommonCostsCondoYear = formatOreToKroner(totalCommonCostsCondoYear, 10);
 
   rowNumber++;
-  html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
+  html += objAnnualAccount.insertTableColumns('', rowNumber, '1 Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
 
   html += "</tr>";
 
   // empty table row
-  html += objAnnualAccount.insertTableColumns('', 0, '', '', '', '', '', '');
+  rowNumber++;
+  html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '', '','');
   html += "</tr>";
 
   // The end of the table
@@ -447,8 +463,13 @@ function showRemoteHeating(rowNumber) {
   let html = objAnnualAccount.startTable('width:1100px;');
 
   // table header
-  html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', 'Fjernvarme', '', '');
-  html += objAnnualAccount.showTableHeader("width:200px;", '', '', 'Betalingsdato', 'Beløp', 'Kilowattimer', 'Pris/Kilowatt timer');
+  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', 'Fjernvarme', '', '');
+  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', 'Betalingsdato', 'Beløp', 'Kilowattimer', 'Pris/Kilowatt timer');
+
+  rowNumber++;
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', 'Fjernvarme', '','');
+  rowNumber++;
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;', rowNumber,'', 'Betalingsdato', 'Beløp', 'Kilowattimer', 'Pris/Kilowatt timer');
 
   // Accomulators
   // payment
@@ -470,11 +491,11 @@ function showRemoteHeating(rowNumber) {
 
       // insert table columns in start of a row
       rowNumber++;
-      html += objAnnualAccount.insertTableColumns('', rowNumber, '');
+      html += objAnnualAccount.insertTableColumns('', rowNumber,'');
 
       const date = formatToNorDate(bankAccountTransaction.date);
       className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objAnnualAccount.inputTableColumn(className, date, 10, true);
+      html += objAnnualAccount.inputTableColumn(className, 'width:175px;', date, 10, true);
 
       let payment = Number(bankAccountTransaction.payment);
       let income = Number(bankAccountTransaction.income);
@@ -482,12 +503,12 @@ function showRemoteHeating(rowNumber) {
 
       payment = formatOreToKroner(payment);
       className = `payment${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objAnnualAccount.inputTableColumn(className, payment, 10, true);
+      html += objAnnualAccount.inputTableColumn(className, 'width:175px;', payment, 10, true);
 
       // kilowattHour
       let kilowattHour = formatOreToKroner(bankAccountTransaction.kilowattHour);
       className = `kilowattHour${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objAnnualAccount.inputTableColumn(className, kilowattHour, 10, true);
+      html += objAnnualAccount.inputTableColumn(className, 'width:175px;', kilowattHour, 10, true);
 
       // Price per KWHour
       payment = Number(bankAccountTransaction.payment);
@@ -500,7 +521,7 @@ function showRemoteHeating(rowNumber) {
       priceKWHour = priceKWHour.replace(".", ",");
       priceKWHour = formatOreToKroner(priceKWHour);
       className = ` priceKWHour${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objAnnualAccount.inputTableColumn(className, priceKWHour, 10, true);
+      html += objAnnualAccount.inputTableColumn(className, 'width:175px;', priceKWHour, 10, true);
 
       html += "</tr>";
 
@@ -517,29 +538,24 @@ function showRemoteHeating(rowNumber) {
     });
 
     // Sum row
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objAnnualAccount.insertTableColumns('', rowNumber, '');
-
-    html += "<td class='center bold'>Sum</td>";
-
-    html += objBankAccountTransactions.inputTableColumn('sumPayment', formatOreToKroner(String(sumPayment, 10, true)));
-    html += objBankAccountTransactions.inputTableColumn('sumNumberKWHour', formatOreToKroner(String(sumNumberKWHour, 10, true)));
-
+   
     // Price per KWHour
     let priceKWHour = 0;
     if (sumNumberKWHour !== 0 && sumPayment !== 0) priceKWHour = (-1 * sumPayment) / sumNumberKWHour;
     priceKWHour = priceKWHour.toFixed(2);
     priceKWHour = priceKWHour.replace(".", ",");
     priceKWHour = formatOreToKroner(priceKWHour);
-    className = `priceKWHour`;
-    html += objBankAccountTransactions.inputTableColumn(className, formatOreToKroner(String(priceKWHour, 10, true)));
 
-    html += "</tr>";
+    //html += "</tr>";
+    sumPayment = formatOreToKroner(sumPayment);
+    sumNumberKWHour = formatOreToKroner(sumNumberKWHour);
+
+    rowNumber++;
+    html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', 'Sum', sumPayment, sumNumberKWHour, priceKWHour);
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objAnnualAccount.insertTableColumns('', 0, '');
+    html += objAnnualAccount.insertTableColumns('', rowNumber);
 
     // The end of the table
     html += objAnnualAccount.endTable();
@@ -557,18 +573,22 @@ function showBankDeposit(rowNumber) {
 
   // table header
   let nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-  html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', '', `Budsjett ${nextBudgetYear}`, '');
-  html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', 'Tekst', 'Dato', 'Budsjett');
+  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', '', `Budsjett ${nextBudgetYear}`, '');
+  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', 'Tekst', 'Dato', 'Budsjett');
 
+  rowNumber++;
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', '', `Budsjett ${nextBudgetYear}`);
+  rowNumber++;
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;', rowNumber, '', '', 'Tekst', 'Dato', 'Budsjett');
   let accAmount = 0;
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', '', '');
+  html += objBankAccountTransactions.insertTableColumns('', rowNumber,'','');
 
   // Text
   className = `text`;
-  html += objAnnualAccount.inputTableColumn(className, 'Bankinnskudd', 10, true);
+  html += objAnnualAccount.inputTableColumn(className, 'width:175px;', 'Bankinnskudd', 10, true);
 
   // closingBalanceDate
   let closingBalanceDate = "";
@@ -579,7 +599,7 @@ function showBankDeposit(rowNumber) {
     closingBalanceDate = formatToNorDate(closingBalanceDate);
   }
   className = `closingBalanceDate`;
-  html += objAnnualAccount.inputTableColumn(className, closingBalanceDate, 10, true);
+  html += objAnnualAccount.inputTableColumn(className, 'width:175px;', closingBalanceDate, 10, true);
 
   // Bank deposit
   let bankDepositAmount = "";
@@ -587,7 +607,7 @@ function showBankDeposit(rowNumber) {
   bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
   className = `bankDepositAmount`
-  html += objAnnualAccount.inputTableColumn(className, bankDepositAmount, 10, true);
+  html += objAnnualAccount.inputTableColumn(className, 'width:175px;', bankDepositAmount, 10, true);
 
   html += "</tr>";
 
@@ -599,7 +619,7 @@ function showBankDeposit(rowNumber) {
 
       // insert table columns in start of a row
       rowNumber++;
-      html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '');
+      html += objAnnualAccount.insertTableColumns('', rowNumber,'','');
 
       // Account Name
       let name = '';
@@ -609,16 +629,16 @@ function showBankDeposit(rowNumber) {
         name = objAccounts.arrayAccounts[rowNumberAccount].name;
       }
       className = `name${budget.budgetId}`
-      html += objAnnualAccount.inputTableColumn(className, name, 10, true);
+      html += objAnnualAccount.inputTableColumn(className, 'width:175px;', name, 10, true);
 
       //empty column
       className = `emptyColumn${budget.budgetId}`
-      html += objAnnualAccount.inputTableColumn(className, '', 10, true);
+      html += objAnnualAccount.inputTableColumn(className, 'width:175px;', '', 10, true);
 
       // budget amount
       let amount = formatOreToKroner(budget.amount);
       className = `amount${budget.budgetId}`
-      html += objAnnualAccount.inputTableColumn(className, amount, 10, true);
+      html += objAnnualAccount.inputTableColumn(className, 'width:175px;', amount, 10, true);
 
       html += "</tr>";
 
@@ -631,26 +651,26 @@ function showBankDeposit(rowNumber) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '');
+  html += objAnnualAccount.insertTableColumns('', rowNumber, '','');
 
   className = `estimatedBankDeposit`;
-  html += objAnnualAccount.inputTableColumn(className, 'Estimert bankinnskudd', 10, true);
+  html += objAnnualAccount.inputTableColumn(className, 'width:175px;', 'Estimert bankinnskudd', 10, true);
 
   // Next year
   closingBalanceDate = Number(convertDateToISOFormat(closingBalanceDate));
   let closingBalanceDateNextYear = closingBalanceDate + 10000;
   closingBalanceDateNextYear = formatToNorDate(closingBalanceDateNextYear);
   className = `closingBalanceDateNextYear`;
-  html += objBankAccountTransactions.inputTableColumn(className, closingBalanceDateNextYear, 10, true);
+  html += objBankAccountTransactions.inputTableColumn(className, 'width:175px;', closingBalanceDateNextYear, 10, true);
 
   // Bank deposit next year
   const bankDepositNextYear = formatOreToKroner(String(accAmount));
   className = `bankDepositNextYear`;
-  html += objBankAccountTransactions.inputTableColumn(className, bankDepositNextYear, 10, true);
+  html += objBankAccountTransactions.inputTableColumn(className, 'width:175px;', bankDepositNextYear, 10, true);
 
   // insert table columns in start of a 
   rowNumber++;
-  html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '', '', '', '');
+  html += objAnnualAccount.insertTableColumns('', rowNumber, '', '', '', '','');
 
   // Show the rest of the menu
   rowNumber++;

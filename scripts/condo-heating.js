@@ -38,7 +38,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       showHeader();
 
       // Show filter
-      showFilter()
+      menuNumber = showFilter(menuNumber);
 
       // Show account
       menuNumber = showResult(menuNumber);
@@ -171,13 +171,15 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter() {
+function showFilter(rowNumber) {
 
   // Start table
   html = objAccounts.startTable('width:750px;');
 
   // Header filter
-  html += objAccounts.showTableHeader('width:250px;', '', 'Kostnadstype', '');
+  //html += objAccounts.showTableHeader('width:250px;', '', 'Kostnadstype', '');
+  rowNumber++;
+  html += objAccounts.showTableHeaderMenu('width:150px;', rowNumber,  '', 'Kostnadstype', '');
 
   // start table body
   html += objAccounts.startTableBody();
@@ -199,6 +201,8 @@ function showFilter() {
   // The end of the table
   html += objAccounts.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Insert empty table row

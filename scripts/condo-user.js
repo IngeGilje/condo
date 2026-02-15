@@ -553,7 +553,9 @@ function showFilter(userId) {
   html = objUsers.startTable('width:750px;');
 
   // Header filter
-  html += objUsers.showTableHeader('width:250px;', '', 'Velg bruker', '');
+  //html += objUsers.showTableHeader('width:250px;', '', 'Velg bruker', '');
+  rowNumber++;
+  html += objUsers.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg bruker', '');
 
   // start table body
   html += objUsers.startTableBody();
@@ -575,6 +577,8 @@ function showFilter(userId) {
   // The end of the table
   html += objUsers.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Show result

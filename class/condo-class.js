@@ -262,7 +262,7 @@ class Condos {
   */
 
   // Show input
-  inputTableColumn(className, value, maxlength, readOnly = false) {
+  inputTableColumn(className, style, value, maxlength, readOnly = false) {
     return `
       <td class="center">
         <input
@@ -270,6 +270,7 @@ class Condos {
           type="text"
           maxlength="${maxlength}"
           value="${value}"
+          ${(style) ? `style=${style}` : "style=width:175px;"}
           ${readOnly ? 'readonly' : ''}
         >
       </td>
@@ -441,7 +442,7 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        // remove/ add 'input-error' class. Here 'input-error' is css class
+        // remove/ add 'input-error' class
         inputElement.classList.toggle('input-error', !isValid);
       }
     }
@@ -1043,52 +1044,13 @@ class Condos {
     return html;
   }
 
-  /*
-  // Show table header including menu
-  showTableHeaderMenu(style, menuNumber, ...texts) {
- 
-    let html = "<tr>";
- 
-    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
- 
-    texts.forEach((text) => {
- 
-      if (text === '') {
-        html +=
-          `
-            <td 
-              class="no-border center"
-              style="${style}"
-            >
-              ${text}
-            </td>
-          `;
-      } else {
- 
-        html +=
-          `
-            <td 
-              class="no-border center bold"
-              style="${style}"
-            >
-              ${text}
-            </td>
-          `;
-      }
-    });
- 
-    html += "</tr>";
-    return html;
-  }
-  */
-
   // Show table header including menu
   showTableHeaderMenu(style, menuNumber, ...texts) {
 
     let html = "<tr>";
 
-    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
-
+    //if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+    html += this.verticalMenu(menuNumber);
     texts.forEach((text) => {
 
       html += `
@@ -1110,7 +1072,8 @@ class Condos {
 
     let html = "<tr>";
 
-    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+    //if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+    html += this.verticalMenu(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1144,15 +1107,15 @@ class Condos {
   */
 
   // Show the rest of the menu
-  showRestMenu(rowNumber) {
+  showRestMenu(menuNumber) {
 
     let html = "";
-    for (; this.arrayMenu.length >= rowNumber; rowNumber++) {
+    for (; this.arrayMenu.length >= menuNumber; menuNumber++) {
 
       html += "<tr>";
 
       // Show menu
-      html += this.verticalMenu(rowNumber);
+      html += this.verticalMenu(menuNumber);
       html += "</tr>"
     }
 
@@ -1172,7 +1135,7 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        // remove/ add 'input-error' class. Here 'input-error' is css class
+        // remove/ add 'input-error' class
         inputElement.classList.toggle('input-error', !isValid);
       }
     }
@@ -1180,6 +1143,60 @@ class Condos {
     return isValid;
   }
 
+  // validate the norwegian date format dd.mm.yyyy
+  validateNorDate(className, date) {
+
+    let isValid = true;
+
+    // Check for valid date String
+    if (date === '' || typeof date === 'undefined') isValid = false;
+    if (isValid) {
+
+      // Regular expression for valuating the dd.mm.yyyy format
+      const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
+      const match = date.match(regex);
+
+      if (!match) isValid = false;
+      //if (!match) return false; // Return false if format doesn't match
+
+      if (isValid) {
+
+        // Extract day, month, and year
+        const day = parseInt(match[1], 10);
+        const month = parseInt(match[2], 10);
+        const year = parseInt(match[3], 10);
+
+        // Check if month is between 1 and 12
+        if (day < 1 || day > 31) isValid = false;
+        if (month < 1 || month > 12) isValid = false;
+        if (year < 1900 || year > 2099) isValid = false;
+      }
+    }
+
+    // Invalid/ valid phone number
+    if (this.isClassDefined(className)) {
+
+      const inputElement = document.querySelector(`.${className}`);
+      if (inputElement) {
+
+        // remove/ add 'input-error' class
+        inputElement.classList.toggle('input-error', !isValid);
+      }
+    }
+
+    return isValid;
+    /*
+    // Create a date object
+    const objDate = new Date(year, month - 1, day);
+
+    // Validate that the date components match
+    return isValid;
+
+    return (objDate.getFullYear() === year && objDate.getMonth() === month - 1 && objDate.getDate() === day);
+    */
+  }
+
+  /*
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(date) {
 
@@ -1211,6 +1228,7 @@ class Condos {
       && objDate.getDate() === day
     );
   }
+  */
 
   /*
   // Format norwegian date (11.05.1983) to number (19830511)
@@ -1233,7 +1251,7 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        // remove/ add 'input-error' class. Here 'input-error' is css class
+        // remove/ add 'input-error' class
         inputElement.classList.toggle('input-error', !isValid);
       }
     }
@@ -1252,7 +1270,7 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        // remove/ add 'input-error' class. Here 'input-error' is css class
+        // remove/ add 'input-error' class
         inputElement.classList.toggle('input-error', !isValid);
       }
     }
@@ -1273,7 +1291,7 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        // remove/ add 'input-error' class. Here 'input-error' is css class
+        // remove/ add 'input-error' class
         inputElement.classList.toggle('input-error', !isValid);
       }
     }
@@ -1291,7 +1309,7 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        // remove/ add 'input-error' class. Here 'input-error' is css class
+        // remove/ add 'input-error' class
         inputElement.classList.toggle('input-error', !isValid);
       }
     }
@@ -1303,7 +1321,8 @@ class Condos {
 
     let html = "<tr>";
 
-    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+    //if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+    html += this.verticalMenu(menuNumber);
 
     texts.forEach((text) => {
 
@@ -1458,11 +1477,21 @@ class Condos {
       const text = this.arrayMenu[menuNumber - 1].text;
       const className = this.arrayMenu[menuNumber - 1].className;
 
-      html += `<td class="one-line menu"><a href="${url}${applicationName}">${text}</a></td>`;
+      html += `
+        <td class="one-line menu"
+          style = "width:175px;">
+          <a href="${url}${applicationName}">
+            ${text}
+          </a>
+        </td>`;
     } else {
 
       // Do not show menu
-      html += "<td> </td>";
+      html += `
+        <td 
+          style = "width:175px;">
+          <a></a>
+        </td>`;
     }
 
     return html;

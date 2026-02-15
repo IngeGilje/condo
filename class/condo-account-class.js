@@ -4,6 +4,7 @@ class Account extends Condos {
   // accounts information
   arrayAccounts;
 
+  /*
   // Show all selected accounts
   showSelectedAccounts(className, accountId, selectAll, selectNone) {
 
@@ -127,8 +128,10 @@ class Account extends Condos {
         </form>
       `;
 
-    document.querySelector(`.div-${className}`).innerHTML = html;
+    return html;
+    //document.querySelector(`.${className}`).innerHTML = html;
   }
+  */
 
   // Get selected account id
   getSelectedAccountId(className) {
@@ -147,90 +150,6 @@ class Account extends Condos {
     }
 
     return accountId;
-  }
-
-
-  // Show all accounts
-  showSelectedAccountsHTML(className, accountId, selectAll) {
-
-    accountId = Number(accountId);
-
-    let html =
-      `
-        <div>
-          <label 
-          >
-            Velg Konto
-          </label>
-          <select
-            class="${className}"
-          > 
-      `;
-
-    // Check if account array is empty
-    if (this.arrayAccounts.length > 0) {
-      this.arrayAccounts.forEach((account) => {
-
-        if (account.accountId === accountId) {
-          html +=
-            `
-              <option
-                value = "${account.accountId}"
-                selected
-              >
-                ${account.accountId} - ${account.name}
-              </option >
-            `;
-          selectedValue = true;
-        } else {
-
-          html +=
-            `
-            <option
-              value = "${account.accountId}"
-            >
-              ${account.accountId} - ${account.name}
-            </option >
-          `;
-        }
-      });
-
-    } else {
-
-      html +=
-        `
-          <option 
-            value = "0"
-            selected
-          >
-            Ingen leiligheter
-          </option >
-        `;
-      selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll) {
-
-      html +=
-        `
-        <option 
-          value=${this.nineNine}
-          selected
-        >
-          ${selectAll}
-        </option>
-      `;
-      selectedValue = true;
-    }
-
-    html +=
-      `
-        </select >
-      </div>
-    `;
-
-    return html;
   }
 
   // Select account
@@ -336,8 +255,7 @@ class Account extends Condos {
     return accountName;
   }
 
-  // Show all selected accounts
-  showSelectedAccountsNew(className, style, accountId, selectNone, selectAll) {
+  showSelectedAccounts(className, style, accountId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -348,9 +266,11 @@ class Account extends Condos {
         >
           <select 
             class="${className} center"
+            ${(style) ? `style=${style}` : ''}
+          >
       `;
-    if (style !== '') html += `style="${style}"`;
-    html += `>`;
+    //if (style !== '') html += `style="${style}"`;
+    //html += `>`;
 
     // Check if accounts array is empty
     if (this.arrayAccounts.length > 0) {

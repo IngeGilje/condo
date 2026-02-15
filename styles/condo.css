@@ -36,6 +36,11 @@ th {
   text-align: center;
 }
 
+.green-background {
+  background: #e0f0e0;
+  text-align: center;
+}
+
 td {
   border: 0px;
   font-family: sans-serif;
@@ -123,6 +128,8 @@ input[readonly] {
 .menu {
   /* remove default td padding */
   padding: 0;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .menu a {

@@ -35,10 +35,11 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
 
       // Show header
       let menuNumber = 0;
+
       showHeader();
 
       // Show filter
-      showFilter(condoId);
+      menuNumber = showFilter(menuNumber, condoId);
 
       // Show result
       menuNumber = showResult(condoId, menuNumber);
@@ -101,11 +102,13 @@ function events() {
         const condominiumId = Number(objUserPassword.condominiumId);
         await objCondos.loadCondoTable(condominiumId);
 
+        let menuNumber = 0;
+
         // Show filter
         const condoId = objCondos.arrayCondo.at(-1).condoId;
-        showFilter(condoId);
+        menuNumber = showFilter(menuNumber, condoId);
 
-        let menuNumber = 0;
+
         menuNumber = showResult(condoId, menuNumber);
       };
     };
@@ -133,9 +136,11 @@ function events() {
         if (condoId === 0) condoId = objCondos.arrayCondo.at(-1).condoId;
 
         // Show filter
-        showFilter(condoId);
-
         let menuNumber = 0;
+
+        // Show filter
+        menuNumber = showFilter(menuNumber, condoId);
+
         menuNumber = showResult(condoId, menuNumber);
       };
     };
@@ -157,13 +162,15 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(condoId) {
+function showFilter(rowNumber, condoId) {
 
   // Start table
   html = objCondos.startTable('width:750px;');
 
   // Header filter
-  html += objCondos.showTableHeader('width:250px;', '', 'Velg leilighet', '');
+  //html += objCondos.showTableHeader('width:250px;', '', 'Velg leilighet', '');
+  rowNumber++;
+  html += objCondos.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg leilighet', '');
 
   // start table body
   html += objCondos.startTableBody();
@@ -185,6 +192,8 @@ function showFilter(condoId) {
   // The end of the table
   html += objCondos.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Show result
@@ -354,10 +363,11 @@ async function updateCondoRow(condoId) {
       document.querySelector('.filterCondoId').value = condoId;
     }
 
-    // Show filter
-    showFilter(condoId);
-
     let menuNumber = 0;
+
+    // Show filter
+    menuNumber = showFilter(menuNumber, condoId);
+
     menuNumber = showResult(condoId, menuNumber);
 
     document.querySelector('.filterCondoId').disabled = false;

@@ -488,7 +488,9 @@ function showFilter(supplierId) {
   html = objSuppliers.startTable('width:750px;');
 
   // Header filter
-  html += objSuppliers.showTableHeader('width:250px;', '', 'Velg mottaker', '');
+  //html += objSuppliers.showTableHeader('width:250px;', '', 'Velg mottaker', '');
+  rowNumber++;
+  html += objSuppliers.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg mottaker', '');
 
   // start table body
   html += objSuppliers.startTableBody();
@@ -510,6 +512,8 @@ function showFilter(supplierId) {
   // The end of the table
   html += objSuppliers.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Show result
@@ -599,7 +603,7 @@ function showResult(supplierId, rowNumber) {
     html += objSuppliers.verticalMenu(rowNumber);
 
     // accountId
-    html += objAccounts.showSelectedAccountsNew('accountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].accountId, 'Ingen konto er valgt', '');
+    html += objAccounts.showSelectedAccounts('accountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].accountId, 'Ingen konto er valgt', '');
 
     // bankAccount
     html += objSuppliers.inputTableColumn('bankAccount', objSuppliers.arraySuppliers[rowNumberSupplier].bankAccount, 11);
@@ -616,7 +620,7 @@ function showResult(supplierId, rowNumber) {
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // amountAccountId
-    html += objAccounts.showSelectedAccountsNew('amountAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].amountAccountId, 'Ingen konto er valgt', '');
+    html += objAccounts.showSelectedAccounts('amountAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].amountAccountId, 'Ingen konto er valgt', '');
 
     // amount
     html += objSuppliers.inputTableColumn('amount', objSuppliers.arraySuppliers[rowNumberSupplier].amount, 11);
@@ -633,7 +637,7 @@ function showResult(supplierId, rowNumber) {
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // textAccountId
-    html += objAccounts.showSelectedAccountsNew('textAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].textAccountId, 'Ingen konto er valgt', '');
+    html += objAccounts.showSelectedAccounts('textAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].textAccountId, 'Ingen konto er valgt', '');
 
     // text
     html += objSuppliers.inputTableColumn('text', objSuppliers.arraySuppliers[rowNumberSupplier].text, 50);

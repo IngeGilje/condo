@@ -321,10 +321,10 @@ function showResult(bankAccountId, rowNumber) {
     html += objBankAccounts.verticalMenu(rowNumber);
 
     // name
-    html += objBankAccounts.inputTableColumn('name', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name, 45);
+    html += objBankAccounts.inputTableColumn('name', 'width:175px;', 'width:175px;', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name, 45);
 
     // account number
-    html += objBankAccounts.inputTableColumn('bankAccount', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount, 11);
+    html += objBankAccounts.inputTableColumn('bankAccount', 'width:175px;', 'width:175px;', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount, 11);
 
     html += "</tr>";
 
@@ -343,11 +343,11 @@ function showResult(bankAccountId, rowNumber) {
 
     // opening balance date
     const openingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
-    html += objBankAccounts.inputTableColumn('openingBalanceDate', openingBalanceDate, 10);
+    html += objBankAccounts.inputTableColumn('openingBalanceDate', 'width:175px;', openingBalanceDate, 10);
 
     // opening balance
     const openingBalance = formatOreToKroner(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance);
-    html += objBankAccounts.inputTableColumn('openingBalance', openingBalance, 11);
+    html += objBankAccounts.inputTableColumn('openingBalance', 'width:175px;', openingBalance, 11);
 
     html += "</tr>";
 
@@ -368,11 +368,11 @@ function showResult(bankAccountId, rowNumber) {
 
     // closing balance date
     const closingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
-    html += objBankAccounts.inputTableColumn('closingBalanceDate', closingBalanceDate, 10);
+    html += objBankAccounts.inputTableColumn('closingBalanceDate', 'width:175px;', closingBalanceDate, 10);
 
     // closing balance
     const closingBalance = formatOreToKroner(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
-    html += objBankAccounts.inputTableColumn('closingBalance', closingBalance, 11);
+    html += objBankAccounts.inputTableColumn('closingBalance', 'width:175px;', closingBalance, 11);
 
     html += "</tr>";
 
@@ -546,7 +546,10 @@ function showFilter(condominiumId) {
   html = objBankAccounts.startTable('width:750px;');
 
   // Header filter
-  html += objBankAccounts.showTableHeader("width:250px;", '', 'Velg Sameie', 'Bankkonto');
+  //html += objBankAccounts.showTableHeader("width:250px;", '', 'Velg Sameie', 'Bankkonto');
+  rowNumber++;
+  html += objBankAccounts.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg Sameie', 'Bankkonto');
+
 
   // start table body
   html += objBankAccounts.startTableBody();
@@ -573,4 +576,6 @@ function showFilter(condominiumId) {
   // The end of the table
   html += objBankAccounts.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }

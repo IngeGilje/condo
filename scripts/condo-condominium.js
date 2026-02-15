@@ -40,7 +40,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       showHeader();
 
       // Show filter
-      showFilter();
+      menuNumber = showFilter(menuNumber);
 
       // Show result
       menuNumber = showResult(condominiumId, menuNumber);
@@ -100,12 +100,13 @@ function events() {
 
         deleteCondominiumRow();
 
+        let menuNumber = 0;
+
         await objCondominiums.loadCondominiumsTable();
 
         // Show filter
-        showFilter();
+        menuNumber = showFilter(menuNumber);
 
-        let menuNumber = 0;
         menuNumber = showResult(condominiumId, menuNumber);
       };
     };
@@ -216,27 +217,31 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter() {
+function showFilter(rowNumber) {
 
   // Start table
   html = objCondominiums.startTable('width:750px;');
 
   // Header filter
-  html += objCondominiums.showTableHeader("width:250px;", '', 'Velg sameie', '');
-
+  rowNumber++;
+  html += objCondominiums.showTableHeaderMenu('width:150px; background:#e0f0e0;', rowNumber, '', 'Velg sameie', '');
+ 
   // start table body
   html += objCondominiums.startTableBody();
 
   // insert table columns in start of a row
-  html += objCondominiums.insertTableColumns('', 0, '');
+  rowNumber++;
+  html += objCondominiums.insertTableColumns('', rowNumber);
 
   // condominium
-  html += objCondominiums.showSelectedCondominiums('filterCondominiumId', '', 0, '', '')
+  rowNumber++;
+  html += objCondominiums.showSelectedCondominiums('filterCondominiumId', '', '', rowNumber, '', '')
 
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objCondominiums.insertTableColumns('', 0, '');
+  rowNumber++;
+  html += objCondominiums.insertTableColumns('', rowNumber, '');
 
   // end table body
   html += objCondominiums.endTableBody();
@@ -244,6 +249,8 @@ function showFilter() {
   // The end of the table
   html += objCondominiums.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Show result
@@ -352,10 +359,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber);
 
     // incomeRemoteHeatingAccountId
-    html += objAccounts.showSelectedAccountsNew('incomeRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '');
+    html += objAccounts.showSelectedAccounts('incomeRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '');
 
     // paymentRemoteHeatingAccountId
-    html += objAccounts.showSelectedAccountsNew('paymentRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, '', '');
+    html += objAccounts.showSelectedAccounts('paymentRemoteHeatingAccountId', 'width:170px;', objCondominiums.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, '', '');
 
     html += "</tr>";
 
@@ -373,7 +380,7 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber);
 
     // commonCostAccountId
-    html += objAccounts.showSelectedAccountsNew('commonCostAccountId', 'width:170px;', objCondominiums.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '');
+    html += objAccounts.showSelectedAccounts('commonCostAccountId', 'width:170px;', objCondominiums.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '');
 
     // organizationNumber
     html += objCondominiums.inputTableColumn('organizationNumber', objCondominiums.arrayCondominiums[rowNumberCondominium].organizationNumber, 9);
@@ -540,9 +547,10 @@ async function updateCondominiumRow(condominiumId) {
       document.querySelector('.filterCondominiumId').value = condominiumId;
     }
 
-    // Show filter
-    showFilter();
     let menuNumber = 0;
+
+    // Show filter
+    menuNumber = showFilter(menuNumber);
     menuNumber = showResult(condominiumId, menuNumber);
 
     document.querySelector('.filterCondominiumId').disabled = false;

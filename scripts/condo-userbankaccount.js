@@ -37,7 +37,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       showHeader();
 
       // Show filter
-      showFilter()
+      menuNumber = showFilter(menuNumber);
 
       // Show accounts
       menuNumber = showResult(menuNumber);
@@ -155,13 +155,15 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter() {
+function showFilter(rowNumber) {
 
   // Start table
   let html = objUserBankAccounts.startTable('width:1100px;');
 
   // Header filter
-  html += objUserBankAccounts.showTableHeader("width:250px;", '', 'Bruker', 'Konto', '');
+  //html += objUserBankAccounts.showTableHeader("width:250px;", '', 'Bruker', 'Konto', '');
+  rowNumber++;
+  html += objUserBankAccounts.showTableHeaderMenu('width:150px;', rowNumber, '', 'Bruker', 'Konto', '');
 
   // start table body
   html += objUserBankAccounts.startTableBody();
@@ -173,7 +175,7 @@ function showFilter() {
   html += objUsers.showSelectedUsersNew('filterUserId', '', 0, '', 'Alle');
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
+  html += objAccounts.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle');
   html += "</tr>";
 
   // insert table columns in start of a row
@@ -185,6 +187,8 @@ function showFilter() {
   // The end of the table
   html += objUserBankAccounts.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Insert empty table row
@@ -206,7 +210,7 @@ function insertEmptyTableRow(rowNumber) {
   html += objUsers.showSelectedUsersNew('userId0', '', 0, 'Ingen er valgt', '');
 
   // Account column
-  html += objAccounts.showSelectedAccountsNew('accountId0', '', 0, 'Ingen er valgt', '');
+  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '');
 
   // bank account number
   html += objUserBankAccounts.inputTableColumn('bankAccount0', '', 11);
@@ -243,7 +247,7 @@ function showResult(rowNumber) {
     // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccounts.showSelectedAccountsNew(className, '', accountId, 'Ingen er valgt', '');
+    html += objAccounts.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '');
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;

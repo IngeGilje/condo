@@ -71,7 +71,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         showHeader();
 
         // Show filter
-        showFilter()
+        menuNumber = showFilter(menuNumber);
 
         // create array from imported csv-file (data string)
         createtransactionsArray(objImportFile.strCSVTransaction);
@@ -132,7 +132,7 @@ function createtransactionsArray() {
 
     // Check for valid date
     // validate the dd.mm.yyyy (Norwegian date format) format
-    if (objImportFile.validateNorDate(accountingDate)) {
+    if (objImportFile.validateNorDate('message', accountingDate)) {
 
       // text
       // remove first and last "
@@ -247,7 +247,7 @@ async function updateOpeningClosingBalance() {
 
     [accountingDate, balance, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
-    if (objImportFile.validateNorDate(accountingDate)) {
+    if (objImportFile.validateNorDate('message', accountingDate)) {
 
       totalIncome += Number(formatKronerToOre(income));
       totalPayment += Number(formatKronerToOre(payment));
@@ -485,13 +485,15 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter() {
+function showFilter(rowNumber) {
 
   // Start table
   html = objImportFile.startTable('width:1600px;');
 
   // Header filter
   //html += objImportFile.showTableHeader("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+  rowNumber++;
+  html += objImportFile.showTableHeaderMenu('width:150px;', rowNumber, '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
 
   // start table body
   html += objImportFile.startTableBody();
@@ -509,6 +511,8 @@ function showFilter() {
   // The end of the table
   html += objImportFile.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Show csv file for bank account transactions

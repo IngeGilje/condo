@@ -34,7 +34,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
       showHeader();
 
       // Show filter
-      showFilter()
+      menuNumber = showFilter(menuNumber);
 
       const condominiumId = Number(objUserPassword.condominiumId);
       const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -246,13 +246,15 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter() {
+function showFilter(rowNumber) {
 
   // Start table
   html = objBudgets.startTable('width:1000px;');
 
   // Header filter
-  html += objBudgets.showTableHeader('', '', '', 'Konto', 'År', '', '', '');
+  //html += objBudgets.showTableHeader('', '', '', 'Konto', 'År', '', '', '');
+  rowNumber++;
+  html += objBudgets.showTableHeaderMenu('width:150px;', rowNumber, '', '', 'Konto', 'År', '', '', '');
 
   // start table body
   html += objBudgets.startTableBody();
@@ -261,7 +263,7 @@ function showFilter() {
   html += objBudgets.insertTableColumns('', 0, '', '');
 
   // Selected accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', '', 0, '', 'Alle');
+  html += objAccounts.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle');
 
   // Selected year
   const year = String(today.getFullYear());
@@ -278,6 +280,8 @@ function showFilter() {
   // The end of the table
   html += objBudgets.endTable();
   document.querySelector('.filter').innerHTML = html;
+
+  return rowNumber;
 }
 
 // Show bankaccounttransactions
@@ -307,7 +311,7 @@ function showResult(rowNumber) {
 
     // accountId
     className = `accountId${budget.budgetId}`;
-    html += objAccounts.showSelectedAccountsNew(className, '', budget.accountId, '', '');
+    html += objAccounts.showSelectedAccounts(className, '', budget.accountId, '', '');
 
     // due amount
     const amount = formatOreToKroner(budget.amount);
@@ -342,7 +346,7 @@ function showResult(rowNumber) {
 
   // accounts
   let className = `accountId0`;
-  html += objAccounts.showSelectedAccountsNew(className, '', 0, 'Ingen konto er valgt', '');
+  html += objAccounts.showSelectedAccounts(className, '', 0, 'Ingen konto er valgt', '');
 
   // budget amount
   const amount = "";
