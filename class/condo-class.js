@@ -1432,6 +1432,19 @@ class Condos {
     }
   }
 
+  // check if table exist
+  async checkIfTableExist(tableName) {
+
+    try {
+      await fetch(`http://localhost:3000/checkIfTableExist?&tableName=${tableName}`);
+
+      if (!response.ok) throw new Error("Network error (checkIfTableExist)");
+      this.arrayUserInfo = await response.json();
+    } catch (error) {
+      console.log("Error check if table exist:", error);
+    }
+  }
+
   // Check if class is defined
   isClassDefined(className) {
 

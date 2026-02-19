@@ -201,8 +201,7 @@ function showFilter(rowNumber, year) {
   html = objRemoteHeatings.startTable('width:1100px;');
 
   // Header filter
-  //html += objRemoteHeatings.showTableHeader('width:250px;', '', 'År', 'Pris per kiloWattimer');
-  rowNumber++;
+   rowNumber++;
   html += objRemoteHeatings.showTableHeaderMenu('width:150px;', rowNumber, '', 'År', 'Pris per kiloWattimer');
 
   // start table body
@@ -275,7 +274,8 @@ function showResult(rowNumber) {
   // table header
   const currentYear = Number(document.querySelector(".filterYear").value);
   const lastYear = currentYear - 1;
-  html += objRemoteHeatings.showTableHeader('width:250px;', '', 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
+  rowNumber++;
+  html += objRemoteHeatings.showTableHeadermenu('width:250px;',rowNumber, '', 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
 
   objRemoteHeatings.arrayRemoteHeatings.forEach((remoteHeating) => {
 

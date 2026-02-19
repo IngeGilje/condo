@@ -307,7 +307,8 @@ function showResult(bankAccountId, rowNumber) {
   let html = objBankAccounts.startTable('width:750px;');
 
   // table header
-  html += objBankAccounts.showTableHeader("width:250px;", '', 'Navn', 'Bankkontonummer');
+  rowNumber++;
+  html += objBankAccounts.showTableHeaderMenu("width:250px;", rowNumber, '', 'Navn', 'Bankkontonummer');
 
   // Check if bankaccounts row exist
   const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
@@ -546,7 +547,6 @@ function showFilter(condominiumId) {
   html = objBankAccounts.startTable('width:750px;');
 
   // Header filter
-  //html += objBankAccounts.showTableHeader("width:250px;", '', 'Velg Sameie', 'Bankkonto');
   rowNumber++;
   html += objBankAccounts.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg Sameie', 'Bankkonto');
 

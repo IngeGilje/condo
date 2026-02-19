@@ -147,8 +147,8 @@ async function deleteCondo() {
   const userId = Number(document.querySelector('.select-condo-userId').value);
 
   // Check if condo id exist
-  const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.userId === userId);
-  if (condoRowNumber !== -1) {
+  const rowNumberCondo = objCondos.arrayCondo.findIndex(condo => condo.userId === userId);
+  if (rowNumberCondo !== -1) {
 
     // delete condo row
     const user = objUserPassword.email;
@@ -553,7 +553,6 @@ function showFilter(userId) {
   html = objUsers.startTable('width:750px;');
 
   // Header filter
-  //html += objUsers.showTableHeader('width:250px;', '', 'Velg bruker', '');
   rowNumber++;
   html += objUsers.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg bruker', '');
 
@@ -588,7 +587,8 @@ function showResult(userId, rowNumber) {
   let html = objUsers.startTable('width:750px;');
 
   // table header
-  html += objUsers.showTableHeader('width:250px;', '', '', '');
+  rowNumber++;
+  html += objUsers.showTableHeaderMenu('width:250px;',rowNumber, '', '', '');
 
   // Check if users row exist
   const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);

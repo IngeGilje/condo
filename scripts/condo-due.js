@@ -403,7 +403,6 @@ function showFilter(rowNumber) {
   html = objDues.startTable('width:1500px;');
 
   // Header filter
-  //html += objDues.showTableHeader("width:1250px;", '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato');
   rowNumber++;
   html += objDues.showTableHeaderMenu('width:175px;', rowNumber, '1', '2', '3 Leilighet', '4 Konto', '5 Fra dato', '6 Til dato','7');
 

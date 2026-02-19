@@ -26,12 +26,26 @@ async function main() {
     events();
   } else {
 
-      objLogIn.showMessage(objLogIn, 'Server condo-server.js har ikke startet.');
-    }
+    objLogIn.showMessage(objLogIn, 'Server condo-server.js har ikke startet.');
+  }
 }
 
 // Events for users
 function events() {
+
+  // check password
+  document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('LogIn')) {
+
+      checkLoginSync();
+
+      // check password
+      async function checkLoginSync() {
+
+        checkLogin();
+      }
+    };
+  });
 }
 
 // reset values
@@ -66,30 +80,32 @@ function showResult() {
   // start table
   let html = objLogIn.startTable('width:250px;margin: 0 auto;');
 
-  // table header
-  html += objLogIn.showTableHeader('', '', '');
-
   // Header for value including menu
-  html += objLogIn.showTableHeaderMenu('', 0, 'Email');
+  html += objLogIn.showTableHeader('', 'Email');
 
   // insert table columns in start of a row
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
 
   // email
-  html += objLogIn.inputTableColumn('email', '', 45, '');
+  html += objLogIn.inputTableColumn('email', '', '', 45, '');
+
+  html += "</tr>";
+
+  // insert table columns in start of a row
+  html += objLogIn.insertTableColumns('', 0, '');
 
   html += "</tr>";
 
   // password
   html += "<tr>";
-  html += objLogIn.showTableHeaderMenu("width:250px;", 0, 'Passord');
+  html += objLogIn.showTableHeader("width:250px;", 'Passord');
 
   // insert table columns in start of a row
   html += objLogIn.insertTableColumns('', 0);
 
   // password
   password = '';
-  html += objLogIn.inputTableColumn('street', password, 45);
+  html += objLogIn.inputTableColumn('password', '', password, 45);
 
   html += "</tr>";
 
@@ -113,4 +129,46 @@ function showResult() {
   // The end of the table
   html += objLogIn.endTable();
   document.querySelector('.result').innerHTML = html;
+}
+
+// check Log In
+function checkLogin() {
+
+  // validate email
+  const email = document.querySelector('.email').value;
+  const validEmail = objUsers.validateEmail('email', email);
+
+  // validate password
+  const password = document.querySelector('.password').value;
+  const validPassword = objUsers.validateText(password, 5, 45)
+
+  if (validEmail && validPassword) {
+
+    // Check user
+    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email === email);
+    if (rowNumberUser !== -1) {
+      if (objUsers.arrayUsers[rowNumberUser].email === email && objUsers.arrayUsers[rowNumberUser].password === password) {
+
+        // save user info
+        const userInfo = `
+        {
+          " email":"${email}",
+          " password":${objUsers.arrayUsers[rowNumberUser].securityLevel},
+          " condominiumId":${objUsers.arrayUsers[rowNumberUser].condominiumId}
+        }`;
+
+        // Store data
+        const objUserInfo = JSON.stringify(userInfo);
+        localStorage.setItem("userInfo", objUserInfo);
+
+        // Start bank account transactions
+        window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
+        return true;
+      }
+
+    }
+  } else {
+    resetValues();
+    return false;
+  }
 }

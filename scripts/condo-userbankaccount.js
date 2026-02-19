@@ -161,7 +161,6 @@ function showFilter(rowNumber) {
   let html = objUserBankAccounts.startTable('width:1100px;');
 
   // Header filter
-  //html += objUserBankAccounts.showTableHeader("width:250px;", '', 'Bruker', 'Konto', '');
   rowNumber++;
   html += objUserBankAccounts.showTableHeaderMenu('width:150px;', rowNumber, '', 'Bruker', 'Konto', '');
 
@@ -226,7 +225,8 @@ function showResult(rowNumber) {
   let html = objUserBankAccounts.startTable('width:1100px;');
 
   // table header
-  html += objUserBankAccounts.showTableHeader('width:250px;', '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  rowNumber++;
+  html += objUserBankAccounts.showTableHeaderMenu('width:250px;', rowNumber, '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   objUserBankAccounts.arrayUserBankAccounts.forEach((userBankAccount) => {
 

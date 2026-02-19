@@ -168,7 +168,6 @@ function showFilter(rowNumber, condoId) {
   html = objCondos.startTable('width:750px;');
 
   // Header filter
-  //html += objCondos.showTableHeader('width:250px;', '', 'Velg leilighet', '');
   rowNumber++;
   html += objCondos.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg leilighet', '');
 
@@ -203,11 +202,12 @@ function showResult(condoId, rowNumber) {
   let html = objCondos.startTable('width:750px;');
 
   // table header
-  html += objCondos.showTableHeader("width:250px;", '', '', '');
+  rowNumber++;
+  html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, '', '', '');
 
   // Check if condos row exist
-  const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
-  if (condoRowNumber !== -1) {
+  const rowNumberCondo = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
+  if (rowNumberCondo !== -1) {
 
     // name
     html += "<tr>";
@@ -221,7 +221,7 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // name
-    html += objCondos.inputTableColumn('name', objCondos.arrayCondo[condoRowNumber].name, 45);
+    html += objCondos.inputTableColumn('name', objCondos.arrayCondo[rowNumberCondo].name, 45);
 
     html += "</tr>";
 
@@ -236,10 +236,10 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // street
-    html += objCondos.inputTableColumn('street', objCondos.arrayCondo[condoRowNumber].street, 45);
+    html += objCondos.inputTableColumn('street', objCondos.arrayCondo[rowNumberCondo].street, 45);
 
     // address2
-    html += objCondos.inputTableColumn('address2', objCondos.arrayCondo[condoRowNumber].address2, 45);
+    html += objCondos.inputTableColumn('address2', objCondos.arrayCondo[rowNumberCondo].address2, 45);
 
     html += "</tr>";
 
@@ -253,10 +253,10 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // postalCode
-    html += objCondos.inputTableColumn('postalCode', objCondos.arrayCondo[condoRowNumber].postalCode, 4);
+    html += objCondos.inputTableColumn('postalCode', objCondos.arrayCondo[rowNumberCondo].postalCode, 4);
 
     // city
-    html += objCondos.inputTableColumn('city', objCondos.arrayCondo[condoRowNumber].city, 45);
+    html += objCondos.inputTableColumn('city', objCondos.arrayCondo[rowNumberCondo].city, 45);
 
     html += "</tr>";
 
@@ -270,7 +270,7 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // squareMeters
-    html += objCondos.inputTableColumn('squareMeters', formatOreToKroner(objCondos.arrayCondo[condoRowNumber].squareMeters), 10);
+    html += objCondos.inputTableColumn('squareMeters', formatOreToKroner(objCondos.arrayCondo[rowNumberCondo].squareMeters), 10);
 
     html += "</tr>";
 
@@ -348,8 +348,8 @@ async function updateCondoRow(condoId) {
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 
     // Check if the condoId exist
-    const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
-    if (condoRowNumber !== -1) {
+    const rowNumberCondo = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
+    if (rowNumberCondo !== -1) {
 
       // update the condos row
       await objCondos.updateCondoTable(condoId, user, name, street, address2, postalCode, city, squareMeters);
@@ -410,8 +410,8 @@ async function deleteCondoRow() {
   const condoId = Number(document.querySelector('.filterCondoId').value);
 
   // Check if condo number exist
-  const condoRowNumber = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
-  if (condoRowNumber !== -1) {
+  const rowNumberCondo = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
+  if (rowNumberCondo !== -1) {
 
     // delete a condo row
     const user = objUserPassword.email;

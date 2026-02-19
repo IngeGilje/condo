@@ -144,7 +144,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Test",
-      "url": "http://localhost/condo-test.html",
+      "url": "http://localhost/test1.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     }

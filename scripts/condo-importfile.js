@@ -491,8 +491,7 @@ function showFilter(rowNumber) {
   html = objImportFile.startTable('width:1600px;');
 
   // Header filter
-  //html += objImportFile.showTableHeader("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
-  rowNumber++;
+   rowNumber++;
   html += objImportFile.showTableHeaderMenu('width:150px;', rowNumber, '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
 
   // start table body
@@ -522,7 +521,8 @@ function showResult(rowNumber) {
   let html = objImportFile.startTable('width:1600px;');
 
   // table header
-  html += objImportFile.showTableHeader('width:250px;', '', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  rowNumber++;
+  html += objImportFile.showTableHeaderMenu('width:250px;',rowNumber, '', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;

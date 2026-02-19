@@ -178,7 +178,6 @@ function showFilter(rowNumber) {
   html = objAccounts.startTable('width:750px;');
 
   // Header filter
-  //html += objAccounts.showTableHeader('width:250px;', '', 'Kostnadstype', '');
   rowNumber++;
   html += objAccounts.showTableHeaderMenu('width:150px;', rowNumber,  '', 'Kostnadstype', '');
 
@@ -233,7 +232,8 @@ function showResult(rowNumber) {
   let html = objAccounts.startTable('width:750px;');
 
   // table header
-  html += objAccounts.showTableHeader('width:250px;', '', 'Slett', 'Kostnadstype', 'Tekst');
+  rowNumber++;
+  html += objAccounts.showTableHeaderMenu('width:250px;', rowNumber, '', 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccounts.arrayAccounts.forEach((account) => {
 

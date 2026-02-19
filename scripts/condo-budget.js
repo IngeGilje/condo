@@ -252,7 +252,6 @@ function showFilter(rowNumber) {
   html = objBudgets.startTable('width:1000px;');
 
   // Header filter
-  //html += objBudgets.showTableHeader('', '', '', 'Konto', 'År', '', '', '');
   rowNumber++;
   html += objBudgets.showTableHeaderMenu('width:150px;', rowNumber, '', '', 'Konto', 'År', '', '', '');
 
@@ -291,7 +290,8 @@ function showResult(rowNumber) {
   let html = objBudgets.startTable('width:1000px;');
 
   // table header
-  html += objBudgets.showTableHeader("width:1000px;", '', '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+  rowNumber++;
+  html += objBudgets.showTableHeaderMenu("width:1000px;", rowNumber, '', '', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
 
   let sumAmount = 0;
 

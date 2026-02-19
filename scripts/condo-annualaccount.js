@@ -216,7 +216,6 @@ function showFilter(rowNumber, budgetYear, fromDate, toDate) {
   html = objAnnualAccount.startTable('width:1100px;');
 
   // Header filter
-  //html += objAnnualAccount.showTableHeader("width:1100px;", '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
   rowNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;', rowNumber,'', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
 
@@ -263,8 +262,7 @@ function showAnnualAccounts(rowNumber) {
 
   // table header
   const budgetYear = document.querySelector('.filterBudgetYear').value;
-  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
-  rowNumber++;
+   rowNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', 'Årsresultat', '', '');
   rowNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;', rowNumber++,'', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
@@ -362,9 +360,7 @@ function showIncomeNextYear(rowNumber) {
 
   // table header
   const budgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', '', `Budsjettert leieinntekter ${budgetYear}`, '', '');
-  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', 'Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad/år');
-  rowNumber++;
+   rowNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', `Budsjettert leieinntekter ${budgetYear}`, '','');
   rowNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;', rowNumber, 'Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad/år');
@@ -463,9 +459,6 @@ function showRemoteHeating(rowNumber) {
   let html = objAnnualAccount.startTable('width:1100px;');
 
   // table header
-  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', 'Fjernvarme', '', '');
-  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', 'Betalingsdato', 'Beløp', 'Kilowattimer', 'Pris/Kilowatt timer');
-
   rowNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', 'Fjernvarme', '','');
   rowNumber++;
@@ -573,8 +566,6 @@ function showBankDeposit(rowNumber) {
 
   // table header
   let nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', '', `Budsjett ${nextBudgetYear}`, '');
-  //html += objAnnualAccount.showTableHeader("width:200px;", '', '', '', '', 'Tekst', 'Dato', 'Budsjett');
 
   rowNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', '', `Budsjett ${nextBudgetYear}`);

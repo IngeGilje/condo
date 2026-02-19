@@ -62,6 +62,8 @@ async function main() {
 
     console.log("✅ Connected to MySQL");
 
+    console.log("request",app.get);
+
     // Respond to client that server (this program) is running
     app.get('/health', (req, res) => {
       console.log('OK');
@@ -70,7 +72,6 @@ async function main() {
 
     // Requests for accounts
     app.get("/accounts", async (req, res) => {
-
 
       const action = req.query.action;
       const lastUpdate = today.toISOString();
@@ -2276,6 +2277,30 @@ async function main() {
         }
         break;
       }
+    }
+  });
+
+  // Requests for check if table exist
+  app.get("/checkIfTableExist", async (req, res) => {
+
+    try {
+
+      const tableName = req.query.tableName;
+      console.log('tableName: ', tableName);
+
+      // check if table exist
+      const SQLquery = `
+        SELECT 1 FROM ${tableName}
+        LIMIT 1
+      `;
+
+      console.log('SQLquery: ', SQLquery);
+      const [rows] = await db.query(SQLquery);
+      res.json(rows);
+    } catch (err) {
+
+      console.log("Database error in /commoncosts:", err.message);
+      res.status(500).json({ error: err.message });
     }
   });
 }

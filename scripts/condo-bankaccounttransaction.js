@@ -11,14 +11,14 @@ const objCondominiums = new Condominium('scondominium');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
 const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 
-testMode();
+//testMode();
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
 // Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+const objUserInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+if ((!objUserInfo && typeof objUserPassword.email === 'undefined')) {
 
   window.location.href =
     'http://localhost/condo-login.html';
@@ -211,7 +211,6 @@ function showFilter(rowNumber) {
   html = objBankAccountTransactions.startTable('width:1750px;');
 
   // Header filter
-  //html += objBankAccountTransactions.showTableHeader('', '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp');
   rowNumber++;
   html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp', '');
 
@@ -235,8 +234,8 @@ function showFilter(rowNumber) {
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
-  html += objBankAccountTransactions.inputTableColumn('filterFromDate','', fromDate, 10);
- 
+  html += objBankAccountTransactions.inputTableColumn('filterFromDate', '', fromDate, 10);
+
   // Current date
   let toDate = getCurrentDate();
   html += objBankAccountTransactions.inputTableColumn('filterToDate', '', toDate, 10);

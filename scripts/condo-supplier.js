@@ -488,7 +488,6 @@ function showFilter(supplierId) {
   html = objSuppliers.startTable('width:750px;');
 
   // Header filter
-  //html += objSuppliers.showTableHeader('width:250px;', '', 'Velg mottaker', '');
   rowNumber++;
   html += objSuppliers.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg mottaker', '');
 
@@ -523,7 +522,7 @@ function showResult(supplierId, rowNumber) {
   let html = objSuppliers.startTable('width:750px;');
 
   // table header
-  html += objSuppliers.showTableHeader('width:250px;', '', '', '');
+  html += objSuppliers.showTableHeaderMenu('width:250px;', rowNumber, '', '', '');
 
   // Check if supplier row exist
   const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);

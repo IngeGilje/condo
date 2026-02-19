@@ -200,7 +200,8 @@ function showResult(rowNumber) {
   // start table
   let html = objCommonCosts.startTable('width:750px;');
 
-  html += objCommonCosts.showTableHeader('width:250px;', '1', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  rowNumber++;
+  html += objCommonCosts.showTableHeaderMenu('width:250px;', rowNumber,'1', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
   objCommonCosts.arrayCommonCosts.forEach((commonCost) => {
 
