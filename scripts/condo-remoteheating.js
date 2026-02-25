@@ -12,10 +12,12 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
+  // LogIn is not valid
   window.location.href = 'http://localhost/condo-login.html';
 } else {
 
@@ -369,7 +371,7 @@ function showResult(rowNumber) {
 // Delete one remoteHeating row
 async function deleteAccountRow(remoteHeatingId, className) {
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // Check if remoteHeating row exist
   accountsRowNumber = objRemoteHeatings.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);
@@ -388,7 +390,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   remoteHeatingId = Number(remoteHeatingId);
 
   const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // year
   className = ".filterYear";
@@ -466,7 +468,7 @@ function getKilowattHourLastYear(condoId) {
 // Delete remoteheatings row
 async function deleteRemoteHeatingRow(remoteHeatingId, className) {
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // Check if remoteheatings row exist
   rowNumberRemoteHeating = objRemoteHeatings.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);

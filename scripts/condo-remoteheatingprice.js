@@ -11,10 +11,12 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
+  // LogIn is not valid
   window.location.href = 'http://localhost/condo-login.html';
 } else {
 
@@ -244,7 +246,7 @@ function showResult(rowNumber) {
 // Delete one remoteHeatingPrice row
 async function deleteAccountRow(remoteHeatingPriceId, className) {
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // Check if remoteHeatingPrice row exist
   accountsRowNumber = objRemoteHeatingPrices.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
@@ -263,7 +265,7 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   remoteHeatingPriceId = Number(remoteHeatingPriceId);
 
   const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // year
   className = `.year${remoteHeatingPriceId}`;
@@ -303,7 +305,7 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
 // Delete a remoteheatingprices row
 async function deleteRemoteHeatingPriceRow(remoteHeatingPriceId, className) {
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // Check if remoteheatingprices row exist
   rowNumberRemoteHeatingPrice = objRemoteHeatingPrices.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);

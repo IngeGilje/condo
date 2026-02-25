@@ -131,6 +131,7 @@ function showResult() {
   document.querySelector('.result').innerHTML = html;
 }
 
+/*
 // check Log In
 function checkLogin() {
 
@@ -170,5 +171,44 @@ function checkLogin() {
   } else {
     resetValues();
     return false;
+  }
+}
+*/
+
+// check user and password
+function checkLogin() {
+
+  // validate email
+  const email = document.querySelector('.email').value;
+  const validEmail = objUsers.validateEmail('email', email);
+
+  // validate password
+  const password = document.querySelector('.password').value;
+  const validPassword = objUsers.validateText(password, 5, 45)
+
+  if (validEmail && validPassword) {
+
+    checkUserPasswordSync();
+    async function checkUserPasswordSync() {
+
+      // Check user and password
+      await objUsers.checkUserPassword(email, password);
+      if (objUsers.arrayUsers.length === 1) {
+
+        // The sessionStorage object stores data for only one session
+        window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[0].condominiumId);
+        window.sessionStorage.setItem("email", objUsers.arrayUsers[0].email);
+        console.log('condominiumId: ', sessionStorage.getItem("condominiumId"));
+        console.log('email: ', sessionStorage.getItem("email"));
+
+        // Start bank account transactions
+        window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
+        return true;
+      } else {
+
+        resetValues();
+        return false;
+      }
+    }
   }
 }

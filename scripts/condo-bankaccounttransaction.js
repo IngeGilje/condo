@@ -16,12 +16,13 @@ const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransa
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-if ((!objUserInfo && typeof objUserPassword.email === 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
-  window.location.href =
-    'http://localhost/condo-login.html';
+  // LogIn is not valid
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
   // Call main when script loads
@@ -31,40 +32,47 @@ if ((!objUserInfo && typeof objUserPassword.email === 'undefined')) {
     // Check if server is running
     if (await objUsers.checkServer()) {
 
-      const resident = 'Y';
-      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-      await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objBankAccountTransactions.nineNine);
-      await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objBankAccountTransactions.nineNine, objBankAccountTransactions.nineNine);
-      await objCondos.loadCondoTable(objUserPassword.condominiumId);
-      await objCondominiums.loadCondominiumsTable();
-      await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
+      // Check user/password
+      if (await objBankAccountTransactions.getUserInfo()) {
 
-      // Show header
-      let menuNumber = 0;
-      showHeader();
+        const resident = 'Y';
+        await objUsers.loadUsersTable(2, resident);
+        const fixedCost = 'A';
+        await objAccounts.loadAccountsTable(2, fixedCost);
+        await objBankAccounts.loadBankAccountsTable(2, objBankAccountTransactions.nineNine);
+        await objUserBankAccounts.loadUserBankAccountsTable(2, objBankAccountTransactions.nineNine, objBankAccountTransactions.nineNine);
+        await objCondos.loadCondoTable(2);
+        await objCondominiums.loadCondominiumsTable();
+        await objSuppliers.loadSuppliersTable(2);
 
-      // Show filter
-      menuNumber = showFilter(menuNumber);
+        // Show header
+        let menuNumber = 0;
+        showHeader();
 
-      const amount = Number(document.querySelector('.filterAmount').value);
-      const condominiumId = objUserPassword.condominiumId;
-      const deleted = 'N';
-      const condoId = Number(document.querySelector('.filterCondoId').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-      let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(convertDateToISOFormat(fromDate));
-      let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(convertDateToISOFormat(toDate));
-      const orderBy = 'date DESC, income DESC';
-      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+        // Show filter
+        menuNumber = showFilter(menuNumber);
 
-      // Show result of filter
-      menuNumber = showResult(menuNumber);
+        const amount = Number(document.querySelector('.filterAmount').value);
+        const condominiumId = 2;
+        const deleted = 'N';
+        const condoId = Number(document.querySelector('.filterCondoId').value);
+        const accountId = Number(document.querySelector('.filterAccountId').value);
+        let fromDate = document.querySelector('.filterFromDate').value;
+        fromDate = Number(convertDateToISOFormat(fromDate));
+        let toDate = document.querySelector('.filterToDate').value;
+        toDate = Number(convertDateToISOFormat(toDate));
+        const orderBy = 'date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-      // Events
-      events();
+        // Show result of filter
+        menuNumber = showResult(menuNumber);
+
+        // Events
+        events();
+      } else {
+
+        window.location.href = 'http://localhost/condo-login.html';
+      }
     } else {
 
       objBankAccountTransactions.showMessage(objBankAccountTransactions, 'Server condo-server.js har ikke startet.');
@@ -90,7 +98,7 @@ function events() {
       async function showBankAccountTransactionSync() {
 
         const deleted = 'N';
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = 2;
         condoId = Number(document.querySelector('.filterCondoId').value);
         accountId = Number(document.querySelector('.filterAccountId').value);
 
@@ -144,7 +152,7 @@ function events() {
         updateBankAccountTransactionRow(bankAccountTransactionId);
 
         const deleted = 'N';
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = 2;
         condoId = Number(document.querySelector('.filterCondoId').value);
         accountId = Number(document.querySelector('.filterAccountId').value);
 
@@ -187,7 +195,7 @@ function events() {
 
         const amount = 0;
         const deleted = 'N';
-        const condominiumId = objUserPassword.condominiumId;
+        const condominiumId = 2;
         condoId = Number(document.querySelector('.filterCondoId').value);
         accountId = Number(document.querySelector('.filterAccountId').value);
         let fromDate = document.querySelector('.filterFromDate').value;
@@ -225,7 +233,7 @@ function showFilter(rowNumber) {
   html += objCondos.showSelectedCondos('filterCondoId', 'width:175px;', objBankAccountTransactions.nineNine, '', 'Vis alle');
 
   // Get condominiumId
-  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(objUserPassword.condominiumId));
+  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(2));
   if (condominiumsRowNumber !== -1) {
 
     const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
@@ -300,8 +308,9 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     // Validate bankAccountTransactions columns
     if (validCondoId && validAccountId && validNumberKWHour && validText) {
 
-      const condominiumId = objUserPassword.condominiumId;
-      const user = objUserPassword.email;
+      //const condominiumId = 2;
+      //const user = objUserInfo.email;
+      const user = email;
 
       // Check if the bankaccounttransactions row exist
       if (bankAccountTransactionRowNumber !== -1) {
@@ -330,7 +339,8 @@ function showHeader() {
 // Delete bankaccounttransactions row
 async function deleteBankAccountTransactionRow(bankAccountTransationId, className) {
 
-  const user = objUserPassword.email;
+  //const user = objUserInfo.email;
+  const user = email;
 
   // Check if bankaccounttransaction row exist
   bankAccountTransactionsRowNumber = objBankAccountTransactions.arrayBankAccountTransactions.findIndex(bankaccounttransaction => bankaccounttransaction.bankAccountTransationId === bankAccountTransationId);
@@ -341,7 +351,7 @@ async function deleteBankAccountTransactionRow(bankAccountTransationId, classNam
   }
   const amount = 0;
   const deleted = 'N';
-  const condominiumId = objUserPassword.condominiumId;
+  const condominiumId = 2;
 
   condoId = Number(document.querySelector('.filterCondoId').value);
   accountId = Number(document.querySelector('.filterAccountId').value);

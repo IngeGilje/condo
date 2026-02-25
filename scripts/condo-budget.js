@@ -11,10 +11,12 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
+  // LogIn is not valid
   window.location.href = 'http://localhost/condo-login.html';
 } else {
 
@@ -143,7 +145,7 @@ function events() {
 // Delete budgets row
 async function deleteBudgetRow(budgetId, className) {
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // Check if budget row exist
   budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
@@ -163,7 +165,7 @@ async function updateBudgetsRow(budgetId) {
   budgetId = Number(budgetId);
 
   const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // Get budgets row values
 

@@ -14,10 +14,12 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
+  // LogIn is not valid
   window.location.href = 'http://localhost/condo-login.html';
 } else {
 

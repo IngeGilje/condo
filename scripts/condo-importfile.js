@@ -21,11 +21,13 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity()
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
-  window.location.href = 'condo-login.html';
+  // LogIn is not valid
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
   // Call main when script loads
@@ -67,6 +69,7 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         const csvFileName = objCondominiums.arrayCondominiums[rowNumberCondominium].importFileName;
         await objImportFile.loadCsvFile(csvFileName);
 
+        let menuNumber = 0;
         // Show header
         showHeader();
 
@@ -77,7 +80,6 @@ if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
         createtransactionsArray(objImportFile.strCSVTransaction);
 
         // Show result of filter
-        let menuNumber = 0;
         menuNumber = showResult(menuNumber);
 
         // Events
@@ -535,37 +537,37 @@ function showResult(rowNumber) {
 
     // Date
     let className = `accountingDate${rowNumber}`;
-    html += objImportFile.inputTableColumn(className, transaction.accountingDate, 10);
+    html += objImportFile.inputTableColumn(className, '', transaction.accountingDate, 10);
 
     // Condo name
     className = `condoName${rowNumber}`;
-    html += objImportFile.inputTableColumn(className, transaction.condoName, 45);
+    html += objImportFile.inputTableColumn(className, '', transaction.condoName, 45);
 
     // Account name
     className = `accountName${rowNumber}`;
-    html += objImportFile.inputTableColumn(className, transaction.accountName, 45);
+    html += objImportFile.inputTableColumn(className, '', transaction.accountName, 45);
 
     // fromBankAccountName
     className = `fromBankAccountName${rowNumber}`;
-    html += objImportFile.inputTableColumn(className, transaction.fromBankAccountName, 45);
+    html += objImportFile.inputTableColumn(className, '', transaction.fromBankAccountName, 45);
 
     // toBankAccountName
     className = `toBankAccountName${rowNumber}`;
-    html += objImportFile.inputTableColumn(className, transaction.toBankAccountName, 45);
+    html += objImportFile.inputTableColumn(className, '', transaction.toBankAccountName, 45);
 
     // Income
     const income = formatOreToKroner(transaction.income);
     className = `income${rowNumber}`;
-    html += objImportFile.inputTableColumn(className, income, 10);
+    html += objImportFile.inputTableColumn(className, '', income, 10);
 
     // Payment
     const payment = formatOreToKroner(transaction.payment);
     className = `payment${rowNumber}`;
-    html += objImportFile.inputTableColumn(className, payment, 10);
+    html += objImportFile.inputTableColumn(className, '', payment, 10);
 
     // Text
     className = `payment${rowNumber}`;
-    html += objImportFile.inputTableColumn(className, transaction.text, 10);
+    html += objImportFile.inputTableColumn(className, '', transaction.text, 10);
 
     // Accomulate
 

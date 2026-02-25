@@ -210,57 +210,6 @@ class Condos {
     `;
   }
 
-  /*
-  // Show input
-  showInput(className, labelText, maxlength, placeholder) {
-
-    let html =
-      this.showLabel(className, labelText);
-
-    html +=
-      `
-        <input 
-          type="text" 
-          class="input-${className} icon-input one-line"
-          maxlength="${maxlength}"
-          placeholder="${placeholder}"
-        >
-      `;
-    document.querySelector(`.div-${className}`).innerHTML = html;
-
-    // Set the PNG file
-    const inputElement = document.querySelector(`.input-${className}`);
-    inputElement.style.backgroundRepeat = `no-repeat`;
-
-    const iconName = this.getIconName(className);
-    inputElement.style.backgroundImage = `url('icons/${iconName}')`;
-  }
-  */
-
-  /*
-  // Show input
-  showInputHTML(className, labelText, maxlength, placeholder) {
-
-    let html =
-      `
-        <div>
-          <label
-            class="one-line"
-          >
-            ${labelText}
-          </label>
-          <input 
-            type="text" 
-            class="${className} icon-input one-line"
-            maxlength="${maxlength}"
-            placeholder="${placeholder}"
-          >
-        </div>
-      `;
-    return html;
-  }
-  */
-
   // Show input
   inputTableColumn(className, style, value, maxlength, readOnly = false) {
     return `
@@ -280,7 +229,7 @@ class Condos {
   /*
   // Show input
   inputTableColumn(className, value, maxlength) {
-
+  
     let html =
       `
         <td class="center">
@@ -292,7 +241,7 @@ class Condos {
           >
         </td>
       `;
-
+  
     return html;
   }
   */
@@ -354,7 +303,7 @@ class Condos {
   /*
   // Show checkbox
   showCheckbox(columnName, labelText, ...texts) {
-
+  
     let html = this.showLabel(columnName, labelText);
     html +=
       `
@@ -373,7 +322,7 @@ class Condos {
           <br>
         `;
     });
-
+  
     html +=
       `
         </form>
@@ -385,7 +334,7 @@ class Condos {
   /*
   // Show radio buttons
   showRadioButtons(columnName, ...texts) {
-
+  
     let html =
       `
         <form 
@@ -394,7 +343,7 @@ class Condos {
         <div class = "div-radio-${columnName}"
         >
       `;
-
+  
     texts.forEach((text) => {
       html +=
         `
@@ -408,7 +357,7 @@ class Condos {
           <br>
         `;
     });
-
+  
     html += `
         </div>
       </form>
@@ -650,7 +599,7 @@ class Condos {
   /*
   // Show input file
   showInputFile(className, labelText, maxlength, placeholder) {
- 
+   
     let html = this.showLabel(className, labelText);
     html +=
       `
@@ -808,18 +757,18 @@ class Condos {
   /*
   // Show icon
   showIconNew(className) {
- 
+   
     // Set the PNG file
     const inputElement = document.querySelector(`.${className}`);
     inputElement.style.backgroundRepeat = `no-repeat`;
- 
+   
     const iconName = this.getIconNameNew(`${className}`);
     inputElement.style.backgroundImage = `url('icons/${iconName}')`;
   }
- 
+   
   // get icon name from column name
   getIconNameNew(className) {
- 
+   
     let imageName;
     if (className.toLowerCase().includes("name")) imageName = "name.png";
     if (className.toLowerCase().includes("condo")) imageName = "condo.png";
@@ -1094,11 +1043,11 @@ class Condos {
   /*
   // Validate interval
   validateIntervalNew(value, fromValue, toValue) {
-
+  
     value = Number(value);
     fromValue = Number(fromValue);
     toValue = Number(toValue);
-
+  
     // Validate interval
     return ((fromValue <= toValue)
       && (value >= fromValue)
@@ -1188,10 +1137,10 @@ class Condos {
     /*
     // Create a date object
     const objDate = new Date(year, month - 1, day);
-
+  
     // Validate that the date components match
     return isValid;
-
+  
     return (objDate.getFullYear() === year && objDate.getMonth() === month - 1 && objDate.getDate() === day);
     */
   }
@@ -1199,7 +1148,7 @@ class Condos {
   /*
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(date) {
-
+  
     // Check for valid date String
     if (date === '' || typeof date === 'undefined') {
       return false;
@@ -1207,20 +1156,20 @@ class Condos {
     // Regular expression for valuating the dd.mm.yyyy format
     const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
     const match = date.match(regex);
-
+  
     if (!match) return false; // Return false if format doesn't match
-
+  
     // Extract day, month, and year
     const day = parseInt(match[1], 10);
     const month = parseInt(match[2], 10);
     const year = parseInt(match[3], 10);
-
+  
     // Check if month is between 1 and 12
     if (month < 1 || month > 12) return false;
-
+  
     // Create a date object
     const objDate = new Date(year, month - 1, day);
-
+  
     // Validate that the date components match
     return (
       objDate.getFullYear() === year
@@ -1233,7 +1182,7 @@ class Condos {
   /*
   // Format norwegian date (11.05.1983) to number (19830511)
   formatNorDateToNumberNew(norDate) {
-
+  
     return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
   }
   */
@@ -1400,26 +1349,29 @@ class Condos {
     return `</table>`;
   }
 
-  // Show horizontal menu
-  showHorizontalMenu() {
+  /*
+  // Get user info
+  async getUserInfo() {
 
-    let html = "<ul class='horizontalMenu'>";
-    this.arrayHorizontalMenu.forEach((horizontalMenu) => {
+    const response = await fetch("http://localhost:3000/profile?credentials='include'"); // IMPORTANT for sessions (cookies)
 
-      html += `<li><a href="#home">${horizontalMenu.text} </a></li>`;
-    });
+    if (response.ok) {
+      const data = await response.json();
 
-    html += "</ul>";
-    return html;
+      console.log(data.username);
+      console.log(data.securityLevel);
+      console.log(data.condominiumId);
+    }
   }
+  */
 
   // check if server is running
   async checkServer() {
 
     try {
-      const result = await fetch('http://localhost:3000/health');
+      const response = await fetch('http://localhost:3000/health');
 
-      if (result.ok) {
+      if (response.ok) {
 
         return true;
       } else {
@@ -1432,17 +1384,17 @@ class Condos {
     }
   }
 
-  // check if table exist
-  async checkIfTableExist(tableName) {
+  // Show horizontal menu
+  showHorizontalMenu() {
 
-    try {
-      await fetch(`http://localhost:3000/checkIfTableExist?&tableName=${tableName}`);
+    let html = "<ul class='horizontalMenu'>";
+    this.arrayHorizontalMenu.forEach((horizontalMenu) => {
 
-      if (!response.ok) throw new Error("Network error (checkIfTableExist)");
-      this.arrayUserInfo = await response.json();
-    } catch (error) {
-      console.log("Error check if table exist:", error);
-    }
+      html += `<li><a href="#home">${horizontalMenu.text} </a></li>`;
+    });
+
+    html += "</ul>";
+    return html;
   }
 
   // Check if class is defined
@@ -1530,6 +1482,7 @@ class Condos {
     document.querySelector('.message').innerHTML = html;
   }
 }
+
 
 // Check if string includes only digits
 function isNumeric(string) {
@@ -1986,12 +1939,6 @@ function generatePassword(passwordLenght, includeLowercase, includeUppercase, in
     password += allowedChars[randomIndex];
   }
   return password;
-}
-
-// Validate user/password
-function checkUserPassword(user, password) {
-
-  return true;
 }
 
 // Validate amount in the (1 234,12 = true) format

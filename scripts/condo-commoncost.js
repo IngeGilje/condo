@@ -11,10 +11,12 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
+  // LogIn is not valid
   window.location.href = 'http://localhost/condo-login.html';
 } else {
 
@@ -257,7 +259,7 @@ function showResult(rowNumber) {
 // Delete one commonCost row
 async function deleteAccountRow(commonCostId, className) {
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // Check if commonCost row exist
   accountsRowNumber = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
@@ -276,7 +278,7 @@ async function updateCommonCostsRow(commonCostId) {
   commonCostId = Number(commonCostId);
 
   const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // year
   className = `.year${commonCostId}`;
@@ -323,7 +325,7 @@ async function updateCommonCostsRow(commonCostId) {
 // Delete a commoncosts row
 async function deleteCommonCostsRow(commonCostId) {
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // Check if commoncosts row exist
   rowNumberCommonCosts = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);

@@ -140,6 +140,37 @@ class User extends Condos {
     }
   }
 
+
+  /*
+  // Check user and password
+  async checkUserPassword(userId, password) {
+
+    let isValid = false;
+    try {
+      const response = await fetch(`http://localhost:3000/login?userId=${userId}&password=${password}`);
+
+      (response.ok) ? isValid = true : isValid = false;
+    } catch (err) {
+
+      isValid = false;
+    }
+
+    return isValid;
+  }
+  */
+
+  // Check user and password
+  async checkUserPassword(userId, password) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/login?userId=${userId}&password=${password}`);
+      if (!response.ok) throw new Error("Network error (check user/password)");
+      this.arrayUsers = await response.json();
+    } catch (error) {
+      console.log("Error checking user/password:", error);
+    }
+  }
+
   // Show all selected users
   showSelectedUsersNew(className, style, userId, selectNone, selectAll) {
 

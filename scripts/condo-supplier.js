@@ -11,12 +11,13 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
-  window.location.href =
-    'http://localhost/condo-login.html';
+  // LogIn is not valid
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
   // Call main when script loads
@@ -271,7 +272,7 @@ async function deleteSupplier() {
   if (rowNumberSupplier !== -1) {
  
     // delete supplier row
-    const user = objUserPassword.email;
+    const user = objUserInfo.email;
  
     objSuppliers.deleteSuppliersTable(supplierId, user);
   }
@@ -281,7 +282,7 @@ async function deleteSupplier() {
 async function updateSupplier(supplierId) {
  
   // user
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
  
   // supplier Id
   supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
@@ -700,7 +701,7 @@ async function updateSupplierRow(supplierId) {
   const validSupplierId = objSuppliers.validateNumber('supplierId', supplierId, -1, objSuppliers.nineNine);
 
   const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -799,7 +800,7 @@ async function deleteSupplierRow() {
   if (rowNumberSupplier !== -1) {
 
     // delete supplier row
-    const user = objUserPassword.email;
+    const user = objUserInfo.email;
 
     objSuppliers.deleteSuppliersTable(supplierId, user);
   }

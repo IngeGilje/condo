@@ -12,10 +12,12 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
+  // LogIn is not valid
   window.location.href = 'http://localhost/condo-login.html';
 } else {
 
@@ -151,7 +153,7 @@ async function deleteCondo() {
   if (rowNumberCondo !== -1) {
 
     // delete condo row
-    const user = objUserPassword.email;
+    const user = objUserInfo.email;
 
     objCondos.deleteCondoTable(userId, user);
   }
@@ -371,7 +373,7 @@ function updateUser(userId) {
   if (validateValues(userId)) {
  
     // user Id
-    const user = objUserPassword.email;
+    const user = objUserInfo.email;
  
     // condominium Id
     const condominiumId = Number(objUserPassword.condominiumId);
@@ -439,7 +441,7 @@ function deleteUserRow(userId) {
           UPDATE user
             SET 
               deleted = 'Y',
-              user = '${objUserPassword.email}',
+              user = '${objUserInfo.email}',
               lastUpdate = '${lastUpdate}'
           WHERE userId = ${userId};
         `;
@@ -754,7 +756,7 @@ async function updateUserRow(userId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
 
   // resident
@@ -830,7 +832,7 @@ async function deleteUserRow() {
   if (rowNumberUser !== -1) {
 
     // delete a user row
-    const user = objUserPassword.email;
+    const user = objUserInfo.email;
 
     await objUsers.deleteUsersTable(userId, user);
   }

@@ -11,12 +11,13 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
-  window.location.href =
-    'http://localhost/condo-login.html';
+  // LogIn is not valid
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
   // Call main when script loads
@@ -272,7 +273,7 @@ function showResult(rowNumber) {
 // Delete one account row
 async function deleteAccountRow(userBankAccountId, className) {
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
 
   // Check if account row exist
@@ -293,7 +294,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   userBankAccountId = Number(userBankAccountId);
 
   const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // Validate
 

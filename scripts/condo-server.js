@@ -7,27 +7,69 @@
 const serverStatus = 2;
 
 import express from "express";
+import session from "express-session";
 import cors from "cors";
 import mysql from "mysql2/promise";
 import fs from "fs/promises";
 
-const today = new Date();
-
-const app = express();
-app.use(cors());          // allow frontend to call backend
-
-// Middleware to parse JSON requests
-app.use(express.json());
-
-let db;
-
 const nineNine = 999999999;
 const minusNineNine = -999999999;
+
+// Middleware in an Express.js server.
+// Middleware = functions that run automatically for every request before your route handlers
+const app = express();
+// If the request body contains JSON, automatically parse it into a JavaScript object
+app.use(express.json());
+app.use(cors());
+
+// Turn ON the ability for server to remember users
+app.use(session({
+  secret: "secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,      // must be false on http
+    sameSite: "lax"     // or "none" if cross-site
+  }
+}));
+
+// Respond to client that server (this program) is running
+app.get('/health', (req, res) => {
+
+  console.log('OK')
+  res.status(200).send('OK');
+});
+
+// Get information from the session
+app.get("/profile", (req, res) => {
+
+  console.log('req.session.username :', req.session.username);
+  if (req.session.username) {
+    res.json({
+      username: req.session.username,
+      securityLevel: req.session.securityLevel,
+      condominiumId: req.session.condominiumId
+    });
+  } else {
+    res.status(401).json({ error: "No session data found" });
+  }
+});
+
+// Destroy / clear session
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.send("Session destroyed");
+  });
+});
+
+let mySqlDB;
+const today = new Date();
 
 // Run main
 main();
 
 async function main() {
+
   try {
 
     // Connect mySQL
@@ -37,7 +79,7 @@ async function main() {
       case 1: {
 
         // Connect to MySQL
-        db = await mysql.createConnection({
+        mySqlDB = await mysql.createConnection({
           host: '127.0.0.1',
           user: 'Inge',
           password: 'Vinter-2025',
@@ -50,7 +92,7 @@ async function main() {
       case 2: {
 
         // Connect to MySQL
-        db = await mysql.createConnection({
+        mySqlDB = await mysql.createConnection({
           host: 'localhost',
           user: 'Inge',
           password: 'Sommer--2025',
@@ -62,12 +104,74 @@ async function main() {
 
     console.log("✅ Connected to MySQL");
 
-    console.log("request",app.get);
+    // Check user and password
+    app.get("/login", async (req, res) => {
 
-    // Respond to client that server (this program) is running
-    app.get('/health', (req, res) => {
-      console.log('OK');
-      res.status(200).send('OK');
+      const userId = req.query.userId;
+      const password = req.query.password;
+
+      // Response from mySQL
+      let rows;
+
+      // get user info from users table
+      try {
+
+        let SQLquery = `
+          SELECT userId, condominiumId, email, securityLevel, password FROM users
+            WHERE deleted <> 'Y'
+            AND password = '${password}'
+            AND email = '${userId}'
+        `;
+        console.log('SQLquery: ', SQLquery);
+
+        // Send request to mySQL
+        [rows] = await mySqlDB.query(SQLquery);
+      } catch (err) {
+
+        console.log("Database error in /login:", err.message);
+        res.status(500).json({ error: err.message });
+      }
+
+      // check input user/password against users Table
+      if (rows.length === 1 && userId === rows[0].email && password === rows[0].password) {
+
+        // save the logged-in user into the session
+        /*
+        req.session.user = {
+          userId: `${rows[0].email}`,
+          securityLevel: `${rows[0].securityLevel}`
+        };
+
+        res.send({ success: true });
+
+        // Save information to the session
+        req.session.username = rows[0].email;
+        req.session.securityLevel = rows[0].securityLevel;
+        req.session.condominiumId = rows[0].condominiumId;
+        res.send("Session data saved");
+        */
+
+        // Send a JSON response to the client containing the data
+        res.json(rows);
+      } else {
+
+        res.json(rows);
+      }
+    });
+
+    // GET CURRENT USER INFO
+    app.get("/me", async (req, res) => {
+
+      console.log('req.session', req.session);
+      if (req.session.user) {
+
+        console.log('send', req.session.user);
+        res.send(req.session.user);
+      } else {
+
+        res.status(401).send("Not logged in");
+        console.log('status Not logged in');
+      }
     });
 
     // Requests for accounts
@@ -99,9 +203,11 @@ async function main() {
                 ORDER BY name ASC, accountId ASC;
               `;
 
-            const [rows] = await db.query(SQLquery);
-            res.json(rows);
             console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
           } catch (err) {
 
             console.log("Database error in /accounts:", err.message);
@@ -130,7 +236,9 @@ async function main() {
                   fixedCost = '${fixedCost}'
                 WHERE accountId = ${accountId};
               `;
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -171,7 +279,9 @@ async function main() {
                   );
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -201,7 +311,9 @@ async function main() {
                   WHERE accountId = ${accountId};
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -231,13 +343,15 @@ async function main() {
 
             let SQLquery =
               `
-                SELECT * FROM users
+                SELECT userId,deleted,resident,condominiumId,user,lastUpdate,email,condoId,firstName,lastName,phone,securityLevel FROM users
                   WHERE deleted <> 'Y'
               `;
             if (Number(condominiumId) !== nineNine) SQLquery += ` AND condominiumId = ${condominiumId}`;
             if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -281,7 +395,9 @@ async function main() {
                 WHERE userId = ${userId};
               `;
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -340,7 +456,9 @@ async function main() {
                 );
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -369,7 +487,8 @@ async function main() {
                   WHERE userId = ${userId};
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -409,7 +528,8 @@ async function main() {
                 ORDER BY bankAccountId;
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -447,7 +567,8 @@ async function main() {
                   closingBalanceDate = '${closingBalanceDate}'
                 WHERE bankAccountId = ${bankAccountId};
               `;
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -499,7 +620,8 @@ async function main() {
                 );
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -529,7 +651,8 @@ async function main() {
                   WHERE bankAccountId = ${bankAccountId};
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -562,7 +685,8 @@ async function main() {
                 ORDER BY condominiumId;
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -613,7 +737,8 @@ async function main() {
                 WHERE condominiumId = ${condominiumId};
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery :', SQLquery);
           } catch (err) {
@@ -681,7 +806,8 @@ async function main() {
                 );
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery :', SQLquery);
           } catch (err) {
@@ -711,7 +837,8 @@ async function main() {
                 WHERE condominiumId = ${condominiumId};
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -760,11 +887,12 @@ async function main() {
                 `;
             }
 
-            SQLquery +=
-              `
-                ORDER BY year,accountId;
-              `;
-            const [rows] = await db.query(SQLquery);
+            SQLquery += `
+              ORDER BY year,accountId;
+            `;
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -801,7 +929,8 @@ async function main() {
               `;
 
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -848,7 +977,8 @@ async function main() {
               `;
 
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -876,7 +1006,8 @@ async function main() {
                 WHERE budgetId = ${budgetId};
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -939,7 +1070,8 @@ async function main() {
                 ORDER BY condoId, date DESC;
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -978,7 +1110,8 @@ async function main() {
                   text = '${text}'
                 WHERE dueId = ${dueId};
               `;
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -1031,7 +1164,8 @@ async function main() {
               `;
 
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1060,7 +1194,8 @@ async function main() {
                 WHERE dueId = ${dueId};
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -1096,7 +1231,8 @@ async function main() {
                 ORDER BY condoId;
               `;
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
 
           } catch (err) {
@@ -1138,7 +1274,8 @@ async function main() {
               `;
 
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery:', SQLquery);
           } catch (err) {
@@ -1190,7 +1327,8 @@ async function main() {
                 );
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1222,7 +1360,8 @@ async function main() {
               `;
 
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1272,7 +1411,8 @@ async function main() {
                 ORDER BY name;
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery :', SQLquery);
           } catch (err) {
@@ -1306,7 +1446,8 @@ async function main() {
                 WHERE userBankAccountId = ${userBankAccountId};
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1352,7 +1493,8 @@ async function main() {
                 );
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1381,7 +1523,8 @@ async function main() {
                   WHERE userBankAccountId = ${userBankAccountId};
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1417,7 +1560,8 @@ async function main() {
                 ORDER BY supplierId;
               `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1470,7 +1614,8 @@ async function main() {
                 WHERE supplierId = ${supplierId};
               `;
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1542,7 +1687,8 @@ async function main() {
                 );
               `;
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1572,7 +1718,8 @@ async function main() {
               `;
 
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1664,7 +1811,8 @@ async function main() {
             }
 
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1707,7 +1855,8 @@ async function main() {
                 WHERE bankAccountTransactionId = ${bankAccountTransactionId};
             `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1763,7 +1912,8 @@ async function main() {
               `;
 
             console.log('SQLquery: ', SQLquery);
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1793,7 +1943,8 @@ async function main() {
                   WHERE bankAccountTransactionId = ${bankAccountTransactionId};
             `;
 
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
 
@@ -1839,7 +1990,8 @@ async function main() {
                   WHERE deleted <> 'Y'
                 ORDER BY menuId;
               `;
-            const [rows] = await db.query(SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
@@ -1885,7 +2037,8 @@ async function main() {
           SQLquery += ` ORDER BY year,condoId;`;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -1923,7 +2076,8 @@ async function main() {
             `;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -1972,7 +2126,8 @@ async function main() {
               `;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2001,7 +2156,8 @@ async function main() {
               `;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2031,7 +2187,8 @@ async function main() {
           SQLquery += ` ORDER BY year;`;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2063,7 +2220,8 @@ async function main() {
             `;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2103,7 +2261,8 @@ async function main() {
             `;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2132,7 +2291,8 @@ async function main() {
             `;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2162,7 +2322,8 @@ async function main() {
           SQLquery += ` ORDER BY year;`;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2196,7 +2357,8 @@ async function main() {
             `;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2239,7 +2401,8 @@ async function main() {
             `;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2268,7 +2431,8 @@ async function main() {
             `;
 
           console.log('SQLquery: ', SQLquery);
-          const [rows] = await db.query(SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
 
@@ -2277,30 +2441,6 @@ async function main() {
         }
         break;
       }
-    }
-  });
-
-  // Requests for check if table exist
-  app.get("/checkIfTableExist", async (req, res) => {
-
-    try {
-
-      const tableName = req.query.tableName;
-      console.log('tableName: ', tableName);
-
-      // check if table exist
-      const SQLquery = `
-        SELECT 1 FROM ${tableName}
-        LIMIT 1
-      `;
-
-      console.log('SQLquery: ', SQLquery);
-      const [rows] = await db.query(SQLquery);
-      res.json(rows);
-    } catch (err) {
-
-      console.log("Database error in /commoncosts:", err.message);
-      res.status(500).json({ error: err.message });
     }
   });
 }

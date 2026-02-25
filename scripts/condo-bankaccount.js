@@ -12,12 +12,13 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate user/password
-const objUserPassword = JSON.parse(sessionStorage.getItem('user'));
-if (!(objUserPassword && typeof objUserPassword.email !== 'undefined')) {
+// Validate LogIn
+const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+const email = sessionStorage.getItem("email");
+if ((condominiumId === 0 || email === null)) {
 
-  window.location.href =
-    'http://localhost/condo-login.html';
+  // LogIn is not valid
+  window.location.href = 'http://localhost/condo-login.html';
 } else {
 
   // Call main when script loads
@@ -169,7 +170,7 @@ async function updateBankAccount() {
     // Closing balance
     const closingBalance = document.querySelector('.input-bankaccounts-closingBalance').value;
  
-    const user = objUserPassword.email;
+    const user = objUserInfo.email;
     const name = document.querySelector('.input-bankaccounts-name').value;
     const condominiumId = Number(objUserPassword.condominiumId);
     const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
@@ -202,7 +203,7 @@ async function deleteBankAccount() {
     if (rowNumberBankAccount !== -1) {
 
       // Delete bank bankaccounts row
-      const user = objUserPassword.email;
+      const user = objUserInfo.email;
 
       objBankAccounts.deleteBankAccountsTable(bankAccountId, user);
     }
@@ -440,7 +441,7 @@ function showResult(bankAccountId, rowNumber) {
 async function updateBankAccountRow(bankAccountId) {
 
   const condominiumId = Number(objUserPassword.condominiumId);
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
@@ -500,7 +501,7 @@ async function updateBankAccountRow(bankAccountId) {
 // Delete one bankaccounts row
 async function deleteBankAccountRow(bankAccountId) {
 
-  const user = objUserPassword.email;
+  const user = objUserInfo.email;
 
 
   // Check if bankaccount row exist
