@@ -21,21 +21,21 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity()
 
-// Validate LogIn
-const condominiumId = Number(sessionStorage.getItem("condominiumId"));
-const email = sessionStorage.getItem("email");
-if ((condominiumId === 0 || email === null)) {
+// Call main when script loads
+main();
+async function main() {
 
-  // LogIn is not valid
-  window.location.href = 'http://localhost/condo-login.html';
-} else {
+  // Check if server is running
+  if (await objUsers.checkServer()) {
 
-  // Call main when script loads
-  main();
-  async function main() {
+    // Validate LogIn
+    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    const email = sessionStorage.getItem("email");
+    if ((condominiumId === 0 || email === null)) {
 
-    // Check if server is running
-    if (await objUsers.checkServer()) {
+      // LogIn is not valid
+      window.location.href = 'http://localhost/condo-login.html';
+    } else {
 
       const resident = 'A';
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
@@ -85,12 +85,13 @@ if ((condominiumId === 0 || email === null)) {
         // Events
         events();
       }
-    } else {
-
-      objImportFile.showMessage(objImportFile, 'Server condo-server.js har ikke startet.');
     }
+  } else {
+
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
   }
 }
+
 
 // Make transactions events
 function events() {
@@ -493,7 +494,7 @@ function showFilter(rowNumber) {
   html = objImportFile.startTable('width:1600px;');
 
   // Header filter
-   rowNumber++;
+  rowNumber++;
   html += objImportFile.showTableHeaderMenu('width:150px;', rowNumber, '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
 
   // start table body
@@ -524,7 +525,7 @@ function showResult(rowNumber) {
 
   // table header
   rowNumber++;
-  html += objImportFile.showTableHeaderMenu('width:250px;',rowNumber, '', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += objImportFile.showTableHeaderMenu('width:250px;', rowNumber, '', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;

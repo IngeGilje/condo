@@ -16,67 +16,62 @@ const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransa
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate LogIn
-const condominiumId = Number(sessionStorage.getItem("condominiumId"));
-const email = sessionStorage.getItem("email");
-if ((condominiumId === 0 || email === null)) {
 
-  // LogIn is not valid
-  window.location.href = 'http://localhost/condo-login.html';
-} else {
 
-  // Call main when script loads
-  main();
-  async function main() {
+// Call main when script loads
+main();
+async function main() {
 
-    // Check if server is running
-    if (await objUsers.checkServer()) {
+  // Check if server is running
+  if (await objUsers.checkServer()) {
 
-      // Check user/password
-      if (await objBankAccountTransactions.getUserInfo()) {
+    // Validate LogIn
+    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    const email = sessionStorage.getItem("email");
+    if ((condominiumId === 0 || email === null)) {
 
-        const resident = 'Y';
-        await objUsers.loadUsersTable(2, resident);
-        const fixedCost = 'A';
-        await objAccounts.loadAccountsTable(2, fixedCost);
-        await objBankAccounts.loadBankAccountsTable(2, objBankAccountTransactions.nineNine);
-        await objUserBankAccounts.loadUserBankAccountsTable(2, objBankAccountTransactions.nineNine, objBankAccountTransactions.nineNine);
-        await objCondos.loadCondoTable(2);
-        await objCondominiums.loadCondominiumsTable();
-        await objSuppliers.loadSuppliersTable(2);
-
-        // Show header
-        let menuNumber = 0;
-        showHeader();
-
-        // Show filter
-        menuNumber = showFilter(menuNumber);
-
-        const amount = Number(document.querySelector('.filterAmount').value);
-        const condominiumId = 2;
-        const deleted = 'N';
-        const condoId = Number(document.querySelector('.filterCondoId').value);
-        const accountId = Number(document.querySelector('.filterAccountId').value);
-        let fromDate = document.querySelector('.filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
-        let toDate = document.querySelector('.filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
-        const orderBy = 'date DESC, income DESC';
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
-
-        // Show result of filter
-        menuNumber = showResult(menuNumber);
-
-        // Events
-        events();
-      } else {
-
-        window.location.href = 'http://localhost/condo-login.html';
-      }
+      // LogIn is not valid
+      window.location.href = 'http://localhost/condo-login.html';
     } else {
 
-      objBankAccountTransactions.showMessage(objBankAccountTransactions, 'Server condo-server.js har ikke startet.');
+      const resident = 'Y';
+      await objUsers.loadUsersTable(2, resident);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(2, fixedCost);
+      await objBankAccounts.loadBankAccountsTable(2, objBankAccountTransactions.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(2, objBankAccountTransactions.nineNine, objBankAccountTransactions.nineNine);
+      await objCondos.loadCondoTable(2);
+      await objCondominiums.loadCondominiumsTable();
+      await objSuppliers.loadSuppliersTable(2);
+
+      // Show header
+      let menuNumber = 0;
+      showHeader();
+
+      // Show filter
+      menuNumber = showFilter(menuNumber);
+
+      const amount = Number(document.querySelector('.filterAmount').value);
+      const condominiumId = 2;
+      const deleted = 'N';
+      const condoId = Number(document.querySelector('.filterCondoId').value);
+      const accountId = Number(document.querySelector('.filterAccountId').value);
+      let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = Number(convertDateToISOFormat(fromDate));
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = Number(convertDateToISOFormat(toDate));
+      const orderBy = 'date DESC, income DESC';
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+
+      // Show result of filter
+      menuNumber = showResult(menuNumber);
+
+      // Events
+      events();
     }
+  } else {
+
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
   }
 }
 

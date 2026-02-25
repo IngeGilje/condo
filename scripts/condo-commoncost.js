@@ -11,21 +11,21 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate LogIn
-const condominiumId = Number(sessionStorage.getItem("condominiumId"));
-const email = sessionStorage.getItem("email");
-if ((condominiumId === 0 || email === null)) {
+// Call main when script loads
+main();
+async function main() {
 
-  // LogIn is not valid
-  window.location.href = 'http://localhost/condo-login.html';
-} else {
+  // Check if server is running
+  if (await objUsers.checkServer()) {
 
-  // Call main when script loads
-  main();
-  async function main() {
+    // Validate LogIn
+    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    const email = sessionStorage.getItem("email");
+    if ((condominiumId === 0 || email === null)) {
 
-    // Check if server is running
-    if (await objUsers.checkServer()) {
+      // LogIn is not valid
+      window.location.href = 'http://localhost/condo-login.html';
+    } else {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
@@ -45,10 +45,10 @@ if ((condominiumId === 0 || email === null)) {
 
       // Events
       events();
-    } else {
-
-      objCommonCosts.showMessage(objCommonCosts, 'Server condo-server.js har ikke startet.');
     }
+  } else {
+
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
   }
 }
 
@@ -203,7 +203,7 @@ function showResult(rowNumber) {
   let html = objCommonCosts.startTable('width:750px;');
 
   rowNumber++;
-  html += objCommonCosts.showTableHeaderMenu('width:250px;', rowNumber,'1', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  html += objCommonCosts.showTableHeaderMenu('width:250px;', rowNumber, '1', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
   objCommonCosts.arrayCommonCosts.forEach((commonCost) => {
 
@@ -291,7 +291,7 @@ async function updateCommonCostsRow(commonCostId) {
   let commonCostSquareMeter = document.querySelector(className).value;
   commonCostSquareMeter = formatKronerToOre(commonCostSquareMeter);
   className = `commonCostSquareMeter${commonCostId}`;
-  const validcommonCostSquareMeter = objCommonCosts.validateNumber(className,commonCostSquareMeter, 1, objCommonCosts.nineNine);
+  const validcommonCostSquareMeter = objCommonCosts.validateNumber(className, commonCostSquareMeter, 1, objCommonCosts.nineNine);
 
   // fixedCostCondo
   className = `.fixedCostCondo${commonCostId}`;

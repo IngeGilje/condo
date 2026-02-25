@@ -26,9 +26,10 @@ async function main() {
     events();
   } else {
 
-    objLogIn.showMessage(objLogIn, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
   }
 }
+
 
 // Events for users
 function events() {

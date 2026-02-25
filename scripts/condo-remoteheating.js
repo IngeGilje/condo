@@ -12,21 +12,21 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate LogIn
-const condominiumId = Number(sessionStorage.getItem("condominiumId"));
-const email = sessionStorage.getItem("email");
-if ((condominiumId === 0 || email === null)) {
+// Call main when script loads
+main();
+async function main() {
 
-  // LogIn is not valid
-  window.location.href = 'http://localhost/condo-login.html';
-} else {
+  // Check if server is running
+  if (await objUsers.checkServer()) {
 
-  // Call main when script loads
-  main();
-  async function main() {
+    // Validate LogIn
+    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    const email = sessionStorage.getItem("email");
+    if ((condominiumId === 0 || email === null)) {
 
-    // Check if server is running
-    if (await objUsers.checkServer()) {
+      // LogIn is not valid
+      window.location.href = 'http://localhost/condo-login.html';
+    } else {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
@@ -51,10 +51,10 @@ if ((condominiumId === 0 || email === null)) {
 
       // Events
       events();
-    } else {
-
-      objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
     }
+  } else {
+
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
   }
 }
 
@@ -203,7 +203,7 @@ function showFilter(rowNumber, year) {
   html = objRemoteHeatings.startTable('width:1100px;');
 
   // Header filter
-   rowNumber++;
+  rowNumber++;
   html += objRemoteHeatings.showTableHeaderMenu('width:150px;', rowNumber, '', 'År', 'Pris per kiloWattimer');
 
   // start table body
@@ -277,7 +277,7 @@ function showResult(rowNumber) {
   const currentYear = Number(document.querySelector(".filterYear").value);
   const lastYear = currentYear - 1;
   rowNumber++;
-  html += objRemoteHeatings.showTableHeadermenu('width:250px;',rowNumber, '', 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
+  html += objRemoteHeatings.showTableHeadermenu('width:250px;', rowNumber, '', 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
 
   objRemoteHeatings.arrayRemoteHeatings.forEach((remoteHeating) => {
 

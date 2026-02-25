@@ -13,21 +13,21 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate LogIn
-const condominiumId = Number(sessionStorage.getItem("condominiumId"));
-const email = sessionStorage.getItem("email");
-if ((condominiumId === 0 || email === null)) {
+// Call main when script loads
+main();
+async function main() {
 
-  // LogIn is not valid
-  window.location.href = 'http://localhost/condo-login.html';
-} else {
+  // Check if server is running
+  if (await objUsers.checkServer()) {
 
-  // Call main when script loads
-  main();
-  async function main() {
+    // Validate LogIn
+    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    const email = sessionStorage.getItem("email");
+    if ((condominiumId === 0 || email === null)) {
 
-    // Check if server is running
-    if (await objUsers.checkServer()) {
+      // LogIn is not valid
+      window.location.href = 'http://localhost/condo-login.html';
+    } else {
 
       const condominiumId = Number(objUserPassword.condominiumId);
       const resident = 'Y';
@@ -62,10 +62,10 @@ if ((condominiumId === 0 || email === null)) {
 
       // Events
       events();
-    } else {
-
-      objDues.showMessage(objDues, 'Server condo-server.js har ikke startet.');
     }
+  } else {
+
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
   }
 }
 
@@ -405,13 +405,13 @@ function showFilter(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objDues.showTableHeaderMenu('width:175px;', rowNumber, '1', '2', '3 Leilighet', '4 Konto', '5 Fra dato', '6 Til dato','7');
+  html += objDues.showTableHeaderMenu('width:175px;', rowNumber, '1', '2', '3 Leilighet', '4 Konto', '5 Fra dato', '6 Til dato', '7');
 
   // start table body
   html += objDues.startTableBody();
 
   // insert table columns in start of a row
-   rowNumber++;
+  rowNumber++;
   html += objDues.insertTableColumns('', rowNumber++, '1', '2');
 
   // Show all selected condos
@@ -441,7 +441,7 @@ function showFilter(rowNumber) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objDues.insertTableColumns('', rowNumber, '1','2','3','4','5','6','7')
+  html += objDues.insertTableColumns('', rowNumber, '1', '2', '3', '4', '5', '6', '7')
 
   // end table body
   html += objDues.endTableBody();

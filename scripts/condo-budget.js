@@ -11,21 +11,22 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate LogIn
-const condominiumId = Number(sessionStorage.getItem("condominiumId"));
-const email = sessionStorage.getItem("email");
-if ((condominiumId === 0 || email === null)) {
-
-  // LogIn is not valid
-  window.location.href = 'http://localhost/condo-login.html';
-} else {
 
   // Call main when script loads
-  main();
-  async function main() {
+main();
+async function main() {
 
-    // Check if server is running
-    if (await objUsers.checkServer()) {
+  // Check if server is running
+  if (await objUsers.checkServer()) {
+
+    // Validate LogIn
+    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    const email = sessionStorage.getItem("email");
+    if ((condominiumId === 0 || email === null)) {
+
+      // LogIn is not valid
+      window.location.href = 'http://localhost/condo-login.html';
+    } else {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
@@ -49,10 +50,10 @@ if ((condominiumId === 0 || email === null)) {
 
       // Events
       events();
-    } else {
-
-      objBudgets.showMessage(objBudgets, 'Server condo-server.js har ikke startet.');
     }
+  } else {
+
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
   }
 }
 

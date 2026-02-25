@@ -14,21 +14,21 @@ testMode();
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
-// Validate LogIn
-const condominiumId = Number(sessionStorage.getItem("condominiumId"));
-const email = sessionStorage.getItem("email");
-if ((condominiumId === 0 || email === null)) {
+// Call main when script loads
+main();
+async function main() {
 
-  // LogIn is not valid
-  window.location.href = 'http://localhost/condo-login.html';
-} else {
+  // Check if server is running
+  if (await objUsers.checkServer()) {
 
-  // Call main when script loads
-  main();
-  async function main() {
+    // Validate LogIn
+    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    const email = sessionStorage.getItem("email");
+    if ((condominiumId === 0 || email === null)) {
 
-    // Check if server is running
-    if (await objUsers.checkServer()) {
+      // LogIn is not valid
+      window.location.href = 'http://localhost/condo-login.html';
+    } else {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
@@ -47,10 +47,10 @@ if ((condominiumId === 0 || email === null)) {
 
       // Events
       events();
-    } else {
-
-      objAccounts.showMessage(objAccounts, 'Server condo-server.js har ikke startet.');
     }
+  } else {
+
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
   }
 }
 
@@ -181,7 +181,7 @@ function showFilter(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objAccounts.showTableHeaderMenu('width:150px;', rowNumber,  '', 'Kostnadstype', '');
+  html += objAccounts.showTableHeaderMenu('width:150px;', rowNumber, '', 'Kostnadstype', '');
 
   // start table body
   html += objAccounts.startTableBody();
@@ -221,7 +221,7 @@ function insertEmptyTableRow(rowNumber) {
   html += objAccounts.showSelectedValues('fixedCost0', '', constFixedCost, constFixedCost, constVariableCost);
 
   // name
-  html += objAccounts.inputTableColumn('name0','width:175px;', '', 45);
+  html += objAccounts.inputTableColumn('name0', 'width:175px;', '', 45);
 
   html += "</tr>";
   return html;
@@ -280,7 +280,7 @@ function showResult(rowNumber) {
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccounts.inputTableColumn(className, 'width:175px;',name, 45);
+    html += objAccounts.inputTableColumn(className, 'width:175px;', name, 45);
 
     html += "</tr>";
   });
