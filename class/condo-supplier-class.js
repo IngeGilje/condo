@@ -159,16 +159,14 @@ class Supplier extends Condos {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="center one-line"
-        >
-          <select 
-            class="${className} center"
-      `;
-    if (style) html += `style="${style}"`;
-    html += `>`;
+    let html = `
+    <td
+      class="center one-line"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style=${style}` : 'style="width:175px;"'}
+      >`;
 
     // Check if supplier array is empty
     const numberOfRows = this.arraySuppliers.length;
@@ -176,16 +174,14 @@ class Supplier extends Condos {
       this.arraySuppliers.forEach((supplier) => {
         if (supplier.supplierId === supplierId) {
 
-          html +=
-            `
-              <option 
-                value=${supplier.supplierId}
-                selected
-              >
-                ${supplier.name}
-              </option>
-            `;
-          selectedValue = true;
+          html += `
+          <option 
+            value=${supplier.supplierId}
+            selected
+          >
+            ${supplier.name}
+          </option>`;
+      selectedValue = true;
         } else {
 
           html +=

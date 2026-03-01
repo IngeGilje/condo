@@ -11,12 +11,10 @@ const objCondominiums = new Condominium('scondominium');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
 const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 
-//testMode();
+let condominium = 0;
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
-
-
 
 // Call main when script loads
 main();
@@ -26,7 +24,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    condominiumId = Number(sessionStorage.getItem("condominiumId"));
     const email = sessionStorage.getItem("email");
     if ((condominiumId === 0 || email === null)) {
 
@@ -52,7 +50,7 @@ async function main() {
       menuNumber = showFilter(menuNumber);
 
       const amount = Number(document.querySelector('.filterAmount').value);
-      const condominiumId = 2;
+      //const condominiumId = 2;
       const deleted = 'N';
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -93,7 +91,7 @@ function events() {
       async function showBankAccountTransactionSync() {
 
         const deleted = 'N';
-        const condominiumId = 2;
+        //const condominiumId = 2;
         condoId = Number(document.querySelector('.filterCondoId').value);
         accountId = Number(document.querySelector('.filterAccountId').value);
 
@@ -147,7 +145,7 @@ function events() {
         updateBankAccountTransactionRow(bankAccountTransactionId);
 
         const deleted = 'N';
-        const condominiumId = 2;
+        //const condominiumId = 2;
         condoId = Number(document.querySelector('.filterCondoId').value);
         accountId = Number(document.querySelector('.filterAccountId').value);
 
@@ -190,7 +188,7 @@ function events() {
 
         const amount = 0;
         const deleted = 'N';
-        const condominiumId = 2;
+        //const condominiumId = 2;
         condoId = Number(document.querySelector('.filterCondoId').value);
         accountId = Number(document.querySelector('.filterAccountId').value);
         let fromDate = document.querySelector('.filterFromDate').value;
@@ -346,7 +344,7 @@ async function deleteBankAccountTransactionRow(bankAccountTransationId, classNam
   }
   const amount = 0;
   const deleted = 'N';
-  const condominiumId = 2;
+  //const condominiumId = 2;
 
   condoId = Number(document.querySelector('.filterCondoId').value);
   accountId = Number(document.querySelector('.filterAccountId').value);

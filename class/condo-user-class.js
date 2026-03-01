@@ -172,7 +172,7 @@ class User extends Condos {
   }
 
   // Show all selected users
-  showSelectedUsersNew(className, style, userId, selectNone, selectAll) {
+   showSelectedUsers(className, style, userId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -183,9 +183,8 @@ class User extends Condos {
         >
           <select 
             class="${className} center"
-      `;
-    if (style) html += `style="${style}"`;
-    html += `>`;
+            ${(style) ? `style=${style}` : 'style="width:175px;"'}
+          >`;
 
     // Check if user array is empty
     const numberOfRows = this.arrayUsers.length;

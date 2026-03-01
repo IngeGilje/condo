@@ -4,8 +4,8 @@
 const today = new Date();
 const objUsers = new User('user');
 const objCondos = new Condo('condo');
-
-testMode();
+ 
+let condominium = 0;
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -18,7 +18,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    condominiumId = Number(sessionStorage.getItem("condominiumId"));
     const email = sessionStorage.getItem("email");
     if ((condominiumId === 0 || email === null)) {
 
@@ -27,13 +27,13 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-      await objCondos.loadCondoTable(objUserPassword.condominiumId);
+      await objUsers.loadUsersTable(condominiumId, resident);
+      await objCondos.loadCondoTable(condominiumId);
 
       const condoId = objCondos.arrayCondo.at(-1).condoId;
 
-      let html = objCondos.showHorizontalMenu('width: 750px');
-      document.querySelector(".horizontalMenu").innerHTML = html;
+      //let html = objCondos.showHorizontalMenu('width: 750px');
+      //document.querySelector(".horizontalMenu").innerHTML = html;
 
       // Show header
       let menuNumber = 0;
@@ -67,7 +67,7 @@ function events() {
 
       async function filterSync() {
 
-        const condominiumId = Number(objUserPassword.condominiumId);
+        //const condominiumId = Number(condominiumId);
         await objCondos.loadCondoTable(condominiumId);
 
         const condoId = Number(document.querySelector('.filterCondoId').value);
@@ -102,7 +102,7 @@ function events() {
 
         deleteCondoRow();
 
-        const condominiumId = Number(objUserPassword.condominiumId);
+        //const condominiumId = Number(condominiumId);
         await objCondos.loadCondoTable(condominiumId);
 
         let menuNumber = 0;
@@ -133,7 +133,7 @@ function events() {
       reloadCondoSync();
       async function reloadCondoSync() {
 
-        await objCondos.loadCondoTable(objUserPassword.condominiumId);
+        await objCondos.loadCondoTable(condominiumId);
 
         let condoId = Number(document.querySelector('.filterCondoId').value);
         if (condoId === 0) condoId = objCondos.arrayCondo.at(-1).condoId;
@@ -154,10 +154,10 @@ function events() {
 function showHeader() {
 
   // Start table
-  let html = objCondos.startTable('width:750px;');
+  let html = objCondos.startTable('width:600px;');
 
   // show main header
-  html += objCondos.showTableHeader('width:250px;', 'Leilighet');
+  html += objCondos.showTableHeader('width:175px;', 'Leilighet');
 
   // The end of the table
   html += objCondos.endTable();
@@ -168,25 +168,23 @@ function showHeader() {
 function showFilter(rowNumber, condoId) {
 
   // Start table
-  html = objCondos.startTable('width:750px;');
+  html = objCondos.startTable('width:600px;');
 
   // Header filter
   rowNumber++;
-  html += objCondos.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg leilighet', '');
+  html += objCondos.showTableHeaderMenu('width:175px;', rowNumber, 'Velg leilighet', '');
 
   // start table body
   html += objCondos.startTableBody();
 
   // insert table columns in start of a row
-  html += objCondos.insertTableColumns('', 0, '');
+  rowNumber++;
+  html += objCondos.insertTableColumns('', rowNumber);
 
   // condo
-  html += objCondos.showSelectedCondos('filterCondoId', 'width:100px;', condoId, '', '')
+  html += objCondos.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '')
 
   html += "</tr>";
-
-  // insert table columns in start of a row
-  html += objCondos.insertTableColumns('', 0, '');
 
   // end table body
   html += objCondos.endTableBody();
@@ -202,11 +200,11 @@ function showFilter(rowNumber, condoId) {
 function showResult(condoId, rowNumber) {
 
   // start table
-  let html = objCondos.startTable('width:750px;');
+  let html = objCondos.startTable('width:600px;');
 
   // table header
   rowNumber++;
-  html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, '', '', '');
+  html += objCondos.showTableHeaderMenu("width:175px;", rowNumber, '', '');
 
   // Check if condos row exist
   const rowNumberCondo = objCondos.arrayCondo.findIndex(condo => condo.condoId === condoId);
@@ -216,7 +214,7 @@ function showResult(condoId, rowNumber) {
     html += "<tr>";
 
     rowNumber++;
-    html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, 'Navn');
+    html += objCondos.showTableHeaderMenu("width:175px;", rowNumber, 'Navn','');
 
     html += "</tr>";
 
@@ -224,14 +222,13 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // name
-    html += objCondos.inputTableColumn('name', objCondos.arrayCondo[rowNumberCondo].name, 45);
+    html += objCondos.inputTableColumn('name', '', objCondos.arrayCondo[rowNumberCondo].name, 45);
 
     html += "</tr>";
 
     // street, address2
     rowNumber++;
-    html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, 'Gate', 'Adresse 2');
-    //html += objCondos.showLabelError("labelStreet","width:250px;", rowNumber, 'Gate', 'Adresse 2');
+    html += objCondos.showTableHeaderMenu("width:175px;", rowNumber, 'Gate', 'Adresse 2');
     html += "</tr>";
 
     // insert table columns in start of a row
@@ -239,41 +236,41 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // street
-    html += objCondos.inputTableColumn('street', objCondos.arrayCondo[rowNumberCondo].street, 45);
+    html += objCondos.inputTableColumn('street', '', objCondos.arrayCondo[rowNumberCondo].street, 45);
 
     // address2
-    html += objCondos.inputTableColumn('address2', objCondos.arrayCondo[rowNumberCondo].address2, 45);
+    html += objCondos.inputTableColumn('address2', '', objCondos.arrayCondo[rowNumberCondo].address2, 45);
 
     html += "</tr>";
 
     // postalCode, city
     html += "<tr>";
     rowNumber++;
-    html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, 'Postnummer', 'Poststed');
+    html += objCondos.showTableHeaderMenu("width:175px;", rowNumber, 'Postnummer', 'Poststed');
 
     // insert table columns in start of a row
     rowNumber++;
     html += objCondos.insertTableColumns('', rowNumber);
 
     // postalCode
-    html += objCondos.inputTableColumn('postalCode', objCondos.arrayCondo[rowNumberCondo].postalCode, 4);
+    html += objCondos.inputTableColumn('postalCode', '', objCondos.arrayCondo[rowNumberCondo].postalCode, 4);
 
     // city
-    html += objCondos.inputTableColumn('city', objCondos.arrayCondo[rowNumberCondo].city, 45);
+    html += objCondos.inputTableColumn('city', '', objCondos.arrayCondo[rowNumberCondo].city, 45);
 
     html += "</tr>";
 
     // squareMeters
     html += "<tr>";
     rowNumber++;
-    html += objCondos.showTableHeaderMenu("width:250px;", rowNumber, 'Kvadratmeter');
+    html += objCondos.showTableHeaderMenu("width:175px;", rowNumber, 'Kvadratmeter');
 
     // insert table columns in start of a row
     rowNumber++;
     html += objCondos.insertTableColumns('', rowNumber);
 
     // squareMeters
-    html += objCondos.inputTableColumn('squareMeters', formatOreToKroner(objCondos.arrayCondo[rowNumberCondo].squareMeters), 10);
+    html += objCondos.inputTableColumn('squareMeters', '', formatOreToKroner(objCondos.arrayCondo[rowNumberCondo].squareMeters), 10);
 
     html += "</tr>";
 
@@ -289,16 +286,16 @@ function showResult(condoId, rowNumber) {
     rowNumber++;
     html += objCondos.insertTableColumns('', rowNumber);
 
-    html += objCondos.showButton('width:170px;', 'update', 'Oppdater');
-    html += objCondos.showButton('width:170px;', 'cancel', 'Angre');
+    html += objCondos.showButton('width:175px;', 'update', 'Oppdater');
+    html += objCondos.showButton('width:175px;', 'cancel', 'Angre');
     html += "</tr>";
 
     // insert table columns in start of a row
     rowNumber++;
     html += objCondos.insertTableColumns('', rowNumber);
 
-    html += objCondos.showButton('width:170px;', 'delete', 'Slett');
-    html += objCondos.showButton('width:170px;', 'insert', 'Ny');
+    html += objCondos.showButton('width:175px;', 'delete', 'Slett');
+    html += objCondos.showButton('width:175px;', 'insert', 'Ny');
     html += "</tr>";
 
     // Show the rest of the menu
@@ -320,7 +317,7 @@ async function updateCondoRow(condoId) {
   condoId = Number(condoId);
   const validCondoId = objCondos.validateNumber('condoId', condoId, -1, objCondo.nineNine);
 
-  const condominiumId = Number(objUserPassword.condominiumId);
+  //const condominiumId = Number(condominiumId);
 
   const user = objUserInfo.email;
 

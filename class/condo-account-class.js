@@ -4,135 +4,6 @@ class Account extends Condos {
   // accounts information
   arrayAccounts;
 
-  /*
-  // Show all selected accounts
-  showSelectedAccounts(className, accountId, selectAll, selectNone) {
-
-    let selectedValue = false;
-
-    let html =
-      `
-        <form 
-          id="accountId"
-          action="/submit" 
-          method="POST"
-        >
-          <label 
-            class="label-${className}"
-            for="accountId"
-            id="accountId"
-          >
-            Velg konto
-          </label>
-          <select 
-            class="select-${className}" 
-            id="accountId"
-            name="accountId"
-          >
-      `;
-
-    // Check if account movement array is empty
-    if (this.arrayAccounts.length > 0) {
-      this.arrayAccounts.forEach((account) => {
-        if (account.accountId === accountId) {
-
-          html +=
-            `
-              <option 
-                value=${account.accountId}
-                selected
-              >
-                ${account.name}
-              </option>
-            `;
-          selectedValue = true;
-        } else {
-
-          html +=
-            `
-              <option 
-                value="${account.accountId}">
-                ${account.name}
-              </option>
-            `;
-        }
-      });
-    } else {
-
-      html +=
-        `
-          <option value="0" 
-            selected
-          >
-            Ingen konti
-          </option>
-        `;
-      selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayAccounts.length > 1)) {
-      if (selectedValue) {
-        html +=
-          `
-            <option 
-              value=${this.nineNine}
-            >
-              ${selectAll}
-            </option>
-          `;
-      } else {
-
-        html +=
-          `
-            <option 
-              value=${this.nineNine}
-              selected
-            >
-              ${selectAll}
-            </option>
-          `;
-        selectedValue = true;
-      }
-    }
-
-    // Select none
-    if (selectNone && (this.arrayAccounts.length > 1)) {
-      if (selectedValue) {
-        html +=
-          `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
-      } else {
-
-        html +=
-          `
-          <option 
-            value=0
-            selected
-          >
-            ${selectNone}
-          </option>
-        `;
-        selectedValue = true;
-      }
-    }
-
-    html +=
-      `
-          </select >
-        </form>
-      `;
-
-    return html;
-    //document.querySelector(`.${className}`).innerHTML = html;
-  }
-  */
-
   // Get selected account id
   getSelectedAccountId(className) {
 
@@ -266,14 +137,15 @@ class Account extends Condos {
         >
           <select 
             class="${className} center"
-            ${(style) ? `style=${style}` : ''}
+            ${(style) ? `style=${style}` : 'style=width:175px;'}
           >
       `;
     //if (style !== '') html += `style="${style}"`;
     //html += `>`;
 
+    const numberOfRows = this.arrayAccounts.length;
     // Check if accounts array is empty
-    if (this.arrayAccounts.length > 0) {
+    if (numberOfRows > 0) {
       this.arrayAccounts.forEach((account) => {
         if (account.accountId === accountId) {
 

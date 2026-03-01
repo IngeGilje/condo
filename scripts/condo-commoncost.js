@@ -5,8 +5,8 @@ const today = new Date();
 const objUsers = new User('user');
 const objCondos = new Condo('condo');
 const objCommonCosts = new CommonCost('commoncost');
-
-testMode();
+ 
+let condominium = 0;
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -19,7 +19,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    condominiumId = Number(sessionStorage.getItem("condominiumId"));
     const email = sessionStorage.getItem("email");
     if ((condominiumId === 0 || email === null)) {
 
@@ -28,17 +28,14 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-      await objCondos.loadCondoTable(objUserPassword.condominiumId);
-
-      let html = objCommonCosts.showHorizontalMenu('width: 750px');
-      document.querySelector(".horizontalMenu").innerHTML = html;
+      await objUsers.loadUsersTable(condominiumId, resident);
+      await objCondos.loadCondoTable(condominiumId);
 
       // Show header
       let menuNumber = 0;
       showHeader();
 
-      await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
+      await objCommonCosts.loadCommonCostsTable(condominiumId);
 
       // Show commonCost
       menuNumber = showResult(menuNumber);
@@ -79,7 +76,7 @@ function events() {
 
           await deleteCommonCostsRow(commonCostId, className);
 
-          await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
+          await objCommonCosts.loadCommonCostsTable(condominiumId);
 
           let menuNumber = 0;
           menuNumber = showResult(menuNumber);
@@ -143,7 +140,7 @@ function events() {
 
           deleteAccountRow(commonCostId, className);
 
-          await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
+          await objCommonCosts.loadCommonCostsTable(condominiumId);
 
           let menuNumber = 0;
           menuNumber = showResult(menuNumber);
@@ -157,10 +154,10 @@ function events() {
 function showHeader() {
 
   // Start table
-  let html = objCommonCosts.startTable('width:750px;');
+  let html = objCommonCosts.startTable('width:950px;');
 
   // show main header
-  html += objCommonCosts.showTableHeader('width:250px;', 'Felleskostnader');
+  html += objCommonCosts.showTableHeader('width:175px;', 'Felleskostnader');
 
   // The end of the table header
   html += objCommonCosts.endTableHeader();
@@ -183,13 +180,13 @@ function insertEmptyTableRow(rowNumber) {
 
   // Select year
   const year = today.getFullYear();
-  html += objCommonCosts.selectInterval('year0', 'width:100px;', 2020, 2030, year);
+  html += objCommonCosts.selectInterval('year0', 'width:175px;', 2020, 2030, year);
 
   // commonCostSquareMeter 
-  html += objCommonCosts.inputTableColumn('commonCostSquareMeter0', "", 10);
+  html += objCommonCosts.inputTableColumn('commonCostSquareMeter0', '', '', 10);
 
   // fixed cost per condo 
-  html += objCommonCosts.inputTableColumn('fixedCostCondo0', "", 10);
+  html += objCommonCosts.inputTableColumn('fixedCostCondo0', '', '', 10);
 
 
   html += "</tr>";
@@ -200,10 +197,10 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objCommonCosts.startTable('width:750px;');
+  let html = objCommonCosts.startTable('width:950px;');
 
   rowNumber++;
-  html += objCommonCosts.showTableHeaderMenu('width:250px;', rowNumber, '1', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  html += objCommonCosts.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
   objCommonCosts.arrayCommonCosts.forEach((commonCost) => {
 
@@ -217,24 +214,24 @@ function showResult(rowNumber) {
     if (commonCost.deleted === 'N') selectedChoice = "Nei";
 
     let className = `delete${commonCost.commonCostId}`;
-    html += objCommonCosts.showSelectedValues(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
+    html += objCommonCosts.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
 
     // Select year
     const year = commonCost.year;
     className = `year${commonCost.commonCostId}`;
-    html += objCommonCosts.selectInterval(className, 'width:100px;', 2020, 2030, year);
+    html += objCommonCosts.selectInterval(className, 'width:175px;', 2020, 2030, year);
 
     // common cost per squaremeter
     let commonCostSquareMeter = commonCost.commonCostSquareMeter;
     className = `commonCostSquareMeter${commonCost.commonCostId}`;
     commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
-    html += objCommonCosts.inputTableColumn(className, commonCostSquareMeter, 10);
+    html += objCommonCosts.inputTableColumn(className, '', commonCostSquareMeter, 10);
 
     // fixed cost per condo
     let fixedCostCondo = commonCost.fixedCostCondo;
     className = `fixedCostCondo${commonCost.commonCostId}`;
     fixedCostCondo = formatOreToKroner(fixedCostCondo);
-    html += objCommonCosts.inputTableColumn(className, fixedCostCondo, 10);
+    html += objCommonCosts.inputTableColumn(className, '', fixedCostCondo, 10);
 
     html += "</tr>";
   });
@@ -269,7 +266,7 @@ async function deleteAccountRow(commonCostId, className) {
     objCommonCosts.deleteAccountsTable(commonCostId, user);
   }
 
-  await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
+  await objCommonCosts.loadCommonCostsTable(condominiumId);
 }
 
 // Update a commoncosts table row
@@ -277,7 +274,7 @@ async function updateCommonCostsRow(commonCostId) {
 
   commonCostId = Number(commonCostId);
 
-  const condominiumId = Number(objUserPassword.condominiumId);
+  //const condominiumId = Number(condominiumId);
   const user = objUserInfo.email;
 
   // year
@@ -315,7 +312,7 @@ async function updateCommonCostsRow(commonCostId) {
       await objCommonCosts.insertCommonCostsTable(condominiumId, user, year, commonCostSquareMeter, fixedCostCondo);
     }
 
-    await objCommonCosts.loadCommonCostsTable(objUserPassword.condominiumId);
+    await objCommonCosts.loadCommonCostsTable(condominiumId);
 
     let menuNumber = 0;
     menuNumber = showResult(menuNumber);

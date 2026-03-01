@@ -5,8 +5,8 @@ const today = new Date();
 const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
-
-testMode();
+ 
+let condominium = 0;
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -19,7 +19,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    condominiumId = Number(sessionStorage.getItem("condominiumId"));
     const email = sessionStorage.getItem("email");
     if ((condominiumId === 0 || email === null)) {
 
@@ -28,10 +28,10 @@ async function main() {
     } else {
 
       const resident = 'A';
-      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objUsers.loadUsersTable(condominiumId, resident);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-      await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
+      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
       // Show header
       let menuNumber = 0;
@@ -67,7 +67,7 @@ function events() {
 
         const userId = Number(document.querySelector('.filterUserId').value);
         const accountId = Number(document.querySelector('.filterAccountId').value);
-        await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, userId, accountId);
+        await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, userId, accountId);
 
         let menuNumber = 0;
         menuNumber = showResult(menuNumber);
@@ -131,7 +131,7 @@ function events() {
           deleteAccountRow(accountId, className);
 
           const fixedCost = 'A';
-          await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+          await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 
           let menuNumber = 0;
           menuNumber = showResult(menuNumber);
@@ -145,10 +145,10 @@ function events() {
 function showHeader() {
 
   // Start table
-  let html = objUserBankAccounts.startTable('width:1100px;');
+  let html = objUserBankAccounts.startTable('width:950px;');
 
   // show main header
-  html += objUserBankAccounts.showTableHeader('width:250px;', 'Bankkonto for bruker');
+  html += objUserBankAccounts.showTableHeader('width:175px;', 'Bankkonto for bruker');
 
   // The end of the table
   html += objUserBankAccounts.endTable();
@@ -159,27 +159,29 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  let html = objUserBankAccounts.startTable('width:1100px;');
+  let html = objUserBankAccounts.startTable('width:950px;');
 
   // Header filter
   rowNumber++;
-  html += objUserBankAccounts.showTableHeaderMenu('width:150px;', rowNumber, '', 'Bruker', 'Konto', '');
+  html += objUserBankAccounts.showTableHeaderMenu('width:175px;', rowNumber, '', 'Bruker', 'Konto', '');
 
   // start table body
   html += objUserBankAccounts.startTableBody();
 
   // insert table columns in start of a row
-  html += objUserBankAccounts.insertTableColumns('', 0, '');
+  rowNumber++;
+  html += objUserBankAccounts.insertTableColumns('', rowNumber, '');
 
   // Show all selected users
-  html += objUsers.showSelectedUsersNew('filterUserId', '', 0, '', 'Alle');
+  html += objUsers. showSelectedUsers('filterUserId', 'width:175px;', '', 'Alle');
 
   // Show all selected accounts
   html += objAccounts.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle');
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objUserBankAccounts.insertTableColumns('', 0, '');
+  rowNumber++;
+  html += objUserBankAccounts.insertTableColumns('', rowNumber, '', '', '', '');
 
   // end table body
   html += objUserBankAccounts.endTableBody();
@@ -196,19 +198,13 @@ function insertEmptyTableRow(rowNumber) {
 
   let html = "";
 
-  // Show menu
-  //html += objUserBankAccounts.verticalMenu(rowNumber);
-
   // insert table columns in start of a row
   rowNumber++;
   html += objUserBankAccounts.insertTableColumns('', rowNumber, 'Ny brukerkonto');
 
-  // delete column
-  //html += "<td class='center'>Ny brukerkonto</td>";
-
   // user column
-  html += objUsers.showSelectedUsersNew('userId0', '', 0, 'Ingen er valgt', '');
-
+  html += objUsers. showSelectedUsers('userId0', 'width:175px;', 0, 'Ingen er valgt', '');
+ 
   // Account column
   html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '');
 
@@ -223,11 +219,11 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objUserBankAccounts.startTable('width:1100px;');
+  let html = objUserBankAccounts.startTable('width:950px;');
 
   // table header
   rowNumber++;
-  html += objUserBankAccounts.showTableHeaderMenu('width:250px;', rowNumber, '', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += objUserBankAccounts.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   objUserBankAccounts.arrayUserBankAccounts.forEach((userBankAccount) => {
 
@@ -243,7 +239,7 @@ function showResult(rowNumber) {
     // user Id
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUsers.showSelectedUsersNew(className, '', userId, 'Ingen er valgt', '');
+    html += objUsers. showSelectedUsers(className, 'width:175px;', userId, 'Ingen er valgt', '');
 
     // account Id
     const accountId = userBankAccount.accountId;
@@ -252,12 +248,10 @@ function showResult(rowNumber) {
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccounts.inputTableColumn(className, userBankAccount.bankAccount, 11);
+    html += objUserBankAccounts.inputTableColumn(className, '', userBankAccount.bankAccount, 11);
 
     html += "</tr>";
   });
-
-  // Make one last table row for insertion in table 
 
   // Insert empty table row for insertion
   rowNumber++;
@@ -285,7 +279,7 @@ async function deleteAccountRow(userBankAccountId, className) {
   }
 
   const fixedCost = 'A';
-  await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+  await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 }
 
 // Update userbankaccounts row
@@ -293,7 +287,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
 
   userBankAccountId = Number(userBankAccountId);
 
-  const condominiumId = Number(objUserPassword.condominiumId);
+  //const condominiumId = Number(condominiumId);
   const user = objUserInfo.email;
 
   // Validate

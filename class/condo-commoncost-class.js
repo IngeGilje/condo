@@ -5,31 +5,29 @@ class CommonCost extends Condos {
   arrayCommonCost;
 
   // Show all selected commoncosts
-  showSelectedCommonCostsNew(className, style,commonCostId, selectNone, selectAll) {
+  showSelectedCommonCosts(className, style,commonCostId, selectNone, selectAll) {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="center one-line"
-        >
-          <select 
-            class="${className} center"
-            style="${style}"
-          >
-      `;
+    let html = `
+    <td
+      class="center one-line"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style=${style}` : 'style=width:175px;'}
+      >`;
 
     // Check if commoncosts array is empty
     const numberOfRows = this.arrayCommonCosts.length;
     if (numberOfRows > 0) {
       this.arrayCommonCosts.forEach((commonCost) => {
-        if (commonCost.commonCostsId ===commonCostId) {
+        if (commonCost.commonCostId ===commonCostId) {
 
           html +=
             `
               <option 
-                value=${commonCost.commonCostsId}
+                value=${commonCost.commonCostId}
                 selected
               >
                 ${commonCost.name}
@@ -41,7 +39,7 @@ class CommonCost extends Condos {
           html +=
             `
               <option 
-                value="${commonCost.commonCostsId}">
+                value="${commonCost.commonCostId}">
                 ${commonCost.name}
               </option>
             `;
@@ -119,11 +117,11 @@ class CommonCost extends Condos {
     if (isClassDefined(className)) {
 
      commonCostId = Number(document.querySelector(`.${className}`).value);
-     commonCostId = (commonCostsId === 0) ? this.arrayCommonCosts.at(-1).commonCostsId :commonCostId;
+     commonCostId = (commonCostId === 0) ? this.arrayCommonCosts.at(-1).commonCostId :commonCostId;
     } else {
 
       // Get last id in last object in commonCost array
-     commonCostId = this.arrayCommonCosts.at(-1).commonCostsId;
+     commonCostId = this.arrayCommonCosts.at(-1).commonCostId;
     }
 
     returncommonCostId;
@@ -132,7 +130,7 @@ class CommonCost extends Condos {
   // Show all CommonCosts
   showSelectedCommonCostsHTML(className,commonCostId, selectAll) {
 
-   commonCostId = Number(commonCostsId);
+   commonCostId = Number(commonCostId);
 
     let html =
       `
@@ -150,14 +148,14 @@ class CommonCost extends Condos {
     if (this.arrayCommonCosts.length > 0) {
       this.arrayCommonCosts.forEach((commonCost) => {
 
-        if (commonCost.commonCostsId ===commonCostId) {
+        if (commonCost.commonCostId ===commonCostId) {
           html +=
             `
               <option
-                value = "${commonCost.commonCostsId}"
+                value = "${commonCost.commonCostId}"
                 selected
               >
-                ${commonCost.commonCostsId} - ${commonCost.name}
+                ${commonCost.commonCostId} - ${commonCost.name}
               </option >
             `;
           selectedValue = true;
@@ -166,9 +164,9 @@ class CommonCost extends Condos {
           html +=
             `
             <option
-              value = "${commonCost.commonCostsId}"
+              value = "${commonCost.commonCostId}"
             >
-              ${commonCost.commonCostsId} - ${commonCost.name}
+              ${commonCost.commonCostId} - ${commonCost.name}
             </option >
           `;
         }
@@ -213,13 +211,13 @@ class CommonCost extends Condos {
   }
 
   // Select common cost Id
-  selectCommonCostId(commonCostsId, className) {
+  selectCommonCostId(commonCostId, className) {
 
     // Check if common cost id exist
-    const rowNumberCommonCost = this.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostsId ===commonCostId);
+    const rowNumberCommonCost = this.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId ===commonCostId);
     if (rowNumberCommonCost !== -1) {
 
-      document.querySelector(`.select-${className}`).value = this.arrayCommonCosts[rowNumberCommonCost].commonCostsId;
+      document.querySelector(`.select-${className}`).value = this.arrayCommonCosts[rowNumberCommonCost].commonCostId;
       return true;
     } else {
 
@@ -228,40 +226,38 @@ class CommonCost extends Condos {
   }
 
   // Select commonCost Id
-  selectCommonCostIdNew(commonCostsId) {
+  selectCommonCostIdNew(commonCostId) {
 
     // Check if common cost id exist
-    const rowNumberCommonCost = this.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostsId ===commonCostId);
-    if (rowNumberCommonCost !== -1)commonCostId = this.arrayCommonCosts[rowNumberCommonCost].commonCostsId;
+    const rowNumberCommonCost = this.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId ===commonCostId);
+    if (rowNumberCommonCost !== -1)commonCostId = this.arrayCommonCosts[rowNumberCommonCost].commonCostId;
 
     returncommonCostId;
   }
 
   // Show all selected commoncosts
-  showSelectedCommonCostsNew(className, style,commonCostId, selectNone, selectAll) {
+  showSelectedCommonCosts(className, style,commonCostId, selectNone, selectAll) {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="centerCell one-line center"
-        >
-          <select 
-            class="${className} center"
-      `;
-      if (style !== '') html += `style="${style}"`;
-      html += `>`;
+    let html = `
+    <td
+      class="centerCell one-line center"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style=${style}` : 'style="width:175px;"'}
+      >`;
 
     // Check if CommonCosts array is empty
     if (this.arrayCommonCosts.length > 0) {
       this.arrayCommonCosts.forEach((commonCost) => {
-        if (commonCost.commonCostsId ===commonCostId) {
+        if (commonCost.commonCostId ===commonCostId) {
 
           html +=
             `
               <option 
-                value=${commonCost.commonCostsId}
+                value=${commonCost.commonCostId}
                 selected
               >
                 ${commonCost.name}
@@ -273,7 +269,7 @@ class CommonCost extends Condos {
           html +=
             `
               <option 
-                value="${commonCost.commonCostsId}">
+                value="${commonCost.commonCostId}">
                 ${commonCost.name}
               </option>
             `;
@@ -379,12 +375,12 @@ class CommonCost extends Condos {
   }
 
   // delete a commoncosts row
-  async deleteCommonCostsTable(commonCostsId, user) {
+  async deleteCommonCostsTable(commonCostId, user) {
 
     try {
       // Fetch for sending a message to server(request)
       // response is a message in .json format send from server(response)
-      const response = await fetch(`http://localhost:3000/commoncosts?action=delete&commonCostsId=${commonCostsId}&user=${user}`);
+      const response = await fetch(`http://localhost:3000/commoncosts?action=delete&commonCostId=${commonCostId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
     } catch (error) {

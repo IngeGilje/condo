@@ -5,8 +5,8 @@ const today = new Date();
 const objUsers = new User('user');
 const objCondos = new Condo('condo');
 const objRemoteHeatingPrices = new RemoteHeatingPrice('remoteheatingprice');
-
-testMode();
+ 
+let condominium = 0;
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -19,7 +19,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    condominiumId = Number(sessionStorage.getItem("condominiumId"));
     const email = sessionStorage.getItem("email");
     if ((condominiumId === 0 || email === null)) {
 
@@ -28,17 +28,14 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
-      await objCondos.loadCondoTable(objUserPassword.condominiumId);
-
-      let html = objRemoteHeatingPrices.showHorizontalMenu('width: 750px');
-      document.querySelector(".horizontalMenu").innerHTML = html;
+      await objUsers.loadUsersTable(condominiumId, resident);
+      await objCondos.loadCondoTable(condominiumId);
 
       // Show header
       let menuNumber = 0;
       showHeader();
 
-      await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(objUserPassword.condominiumId);
+      await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(condominiumId);
 
       // Show remoteHeatingPrice
       menuNumber = showResult(menuNumber);
@@ -78,7 +75,7 @@ async function main() {
 
             await deleteRemoteHeatingPriceRow(remoteHeatingPriceId, className);
 
-            await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(objUserPassword.condominiumId);
+            await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(condominiumId);
 
             let menuNumber = 0;
             menuNumber = showResult(menuNumber);
@@ -141,7 +138,7 @@ async function main() {
 
             deleteAccountRow(remoteHeatingPriceId, className);
 
-            await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(objUserPassword.condominiumId);
+            await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(condominiumId);
 
             let menuNumber = 0;
             menuNumber = showResult(menuNumber);
@@ -155,10 +152,10 @@ async function main() {
   function showHeader() {
 
     // Start table
-    let html = objRemoteHeatingPrices.startTable('width:1100px;');
+    let html = objRemoteHeatingPrices.startTable('width:750px;');
 
     // show main header
-    html += objRemoteHeatingPrices.showTableHeader('width:250px;', 'Fjernvarme');
+    html += objRemoteHeatingPrices.showTableHeader('width:175px;', '',' Fjernvarme','');
 
     // The end of the table header
     html += objRemoteHeatingPrices.endTableHeader();
@@ -175,16 +172,17 @@ async function main() {
     let date = "";
 
     // insert table columns in start of a row
+    rowNumber++;
     html += objRemoteHeatingPrices.insertTableColumns('', rowNumber);
 
     html += "<td class='center'>Ny fjernvarmepris</td>";
 
     // Select year
     const year = today.getFullYear();
-    html += objRemoteHeatingPrices.selectInterval('year0', 'width:100px;', 2020, 2030, year);
+    html += objRemoteHeatingPrices.selectInterval('year0', 'width:175px;', 2020, 2030, year);
 
     // priceKilowattHour 
-    html += objRemoteHeatingPrices.inputTableColumn('priceKilowattHour0', "", 10);
+    html += objRemoteHeatingPrices.inputTableColumn('priceKilowattHour0','', "", 10);
 
     html += "</tr>";
     return html;
@@ -194,9 +192,10 @@ async function main() {
   function showResult(rowNumber) {
 
     // start table
-    let html = objRemoteHeatingPrices.startTable('width:1100px;');
+    let html = objRemoteHeatingPrices.startTable('width:750px;');
 
-    html += objRemoteHeatingPrices.showTableHeaderMenu('width:250px;', rowNumber, '', 'Slett', 'År', `Pris kilowatTimer`);
+    rowNumber++;
+    html += objRemoteHeatingPrices.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'År', `Pris kilowatTimer`);
 
     objRemoteHeatingPrices.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
 
@@ -210,18 +209,18 @@ async function main() {
       if (remoteHeatingPrice.deleted === 'N') selectedChoice = "Nei";
 
       let className = `delete${remoteHeatingPrice.remoteHeatingPriceId}`;
-      html += objRemoteHeatingPrices.showSelectedValues(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
+      html += objRemoteHeatingPrices.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
 
       // Select year
       const year = remoteHeatingPrice.year;
       className = `year${remoteHeatingPrice.remoteHeatingPriceId}`;
-      html += objRemoteHeatingPrices.selectInterval(className, 'width:100px;', 2020, 2030, year);
+      html += objRemoteHeatingPrices.selectInterval(className, 'width:175px;', 2020, 2030, year);
 
       // priceKilowattHour
       let priceKilowattHour = remoteHeatingPrice.priceKilowattHour;
       className = `priceKilowattHour${remoteHeatingPrice.remoteHeatingPriceId}`;
       priceKilowattHour = formatOreToKroner(priceKilowattHour);
-      html += objRemoteHeatingPrices.inputTableColumn(className, priceKilowattHour, 10);
+      html += objRemoteHeatingPrices.inputTableColumn(className, '', priceKilowattHour, 10);
 
       html += "</tr>";
     });
@@ -256,7 +255,7 @@ async function main() {
       objRemoteHeatingPrices.deleteAccountsTable(remoteHeatingPriceId, user);
     }
 
-    await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(objUserPassword.condominiumId);
+    await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(condominiumId);
   }
 
   // Update a remoteheatingprices table row
@@ -264,7 +263,7 @@ async function main() {
 
     remoteHeatingPriceId = Number(remoteHeatingPriceId);
 
-    const condominiumId = Number(objUserPassword.condominiumId);
+    //const condominiumId = Number(condominiumId);
     const user = objUserInfo.email;
 
     // year
@@ -295,7 +294,7 @@ async function main() {
         await objRemoteHeatingPrices.insertRemoteHeatingPricesTable(condominiumId, user, year, priceKilowattHour);
       }
 
-      await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(objUserPassword.condominiumId);
+      await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(condominiumId);
 
       let menuNumber = 0;
       menuNumber = showResult(menuNumber);

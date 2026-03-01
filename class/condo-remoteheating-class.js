@@ -16,9 +16,8 @@ class RemoteHeating extends Condos {
         >
           <select 
             class="${className} center"
-            style="${style}"
-          >
-      `;
+                   ${(style) ? `style=${style}` : 'style="width:175px;"'}
+          >`;
 
     // Check if remoteHeatings array is empty
     const numberOfRows = this.arrayRemoteHeatings.length;
@@ -242,16 +241,14 @@ class RemoteHeating extends Condos {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="centerCell one-line center"
-        >
-          <select 
-            class="${className} center"
-      `;
-      if (style !== '') html += `style="${style}"`;
-      html += `>`;
+    let html = `
+      <td
+        class="centerCell one-line center"
+      >
+        <select 
+          class="${className} center"
+          ${(style) ? `style=${style}` : 'style="width:175px;"'}
+      >`;
 
     // Check if RemoteHeatings array is empty
     if (this.arrayRemoteHeatings.length > 0) {

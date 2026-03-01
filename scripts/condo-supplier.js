@@ -6,13 +6,13 @@ const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objSuppliers = new Supplier('supplier');
 
-testMode();
+let condominium = 0;
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
 // Validate LogIn
-const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+condominiumId = Number(sessionStorage.getItem("condominiumId"));
 const email = sessionStorage.getItem("email");
 if ((condominiumId === 0 || email === null)) {
 
@@ -28,10 +28,10 @@ if ((condominiumId === 0 || email === null)) {
     if (await objUsers.checkServer()) {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objUsers.loadUsersTable(condominiumId, resident);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-      await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
+      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objSuppliers.loadSuppliersTable(condominiumId);
 
       // Find selected supplier id
       const supplierId = objSuppliers.getSelectedSupplierId('select-supplierId');
@@ -40,10 +40,10 @@ if ((condominiumId === 0 || email === null)) {
       showHeader();
 
       // Show filter
-      showFilter(supplierId);
+      let menuNumber = 0;
+      menuNumber = showFilter(supplierId, menuNumber);
 
       // Show supplier
-      let menuNumber = 0;
       menuNumber = showResult(supplierId, menuNumber);
 
       // Events
@@ -66,7 +66,7 @@ function events() {
 
       async function filterSync() {
 
-        const condominiumId = Number(objUserPassword.condominiumId);
+        //const condominiumId = Number(condominiumId);
         await objSuppliers.loadSuppliersTable(condominiumId);
 
         const supplierId = Number(document.querySelector('.filterSupplierId').value);
@@ -102,14 +102,13 @@ function events() {
 
         await deleteSupplierRow();
 
-        const condominiumId = Number(objUserPassword.condominiumId);
+        //const condominiumId = Number(condominiumId);
         await objSuppliers.loadSuppliersTable(condominiumId);
 
         // Show filter
         const supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
-        showFilter(supplierId);
-
         let menuNumber = 0;
+        menuNumber = showFilter(supplierId, menuNumber);
         menuNumber = showResult(supplierId, menuNumber);
       };
     };
@@ -131,296 +130,19 @@ function events() {
       reloadSupplierSync();
       async function reloadSupplierSync() {
 
-        await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
+        await objSuppliers.loadSuppliersTable(condominiumId);
 
-        let SupplierId = Number(document.querySelector('.filterSupplierId').value);
-        if (SupplierId === 0) SupplierId = objSuppliers.arraySuppliers.at(-1).SupplierId;
+        let supplierId = Number(document.querySelector('.filterSupplierId').value);
+        if (supplierId === 0) supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
 
         // Show filter
-        showFilter(SupplierId);
-
         let menuNumber = 0;
+        menuNumber = showFilter(supplierId, menuNumber);
         menuNumber = showResult(supplierId, menuNumber);
       };
     };
   });
 }
-
-/*
-// Events for suppliers
-function events() {
- 
-  // Select Supplier
-  document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('select-suppliers-supplierId')) {
- 
-      let supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
-      supplierId = (supplierId !== 0) ? supplierId : objSuppliers.arraySuppliers.at(-1).supplierId;
-      if (supplierId) {
-        showValues(supplierId);
-      }
-    }
-  });
- 
-  // Update
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-suppliers-update')) {
- 
-      // Update suppliers and reload suppliers
-      updateSupplierSync();
- 
-      // Update supplier and reload suppliers
-      async function updateSupplierSync() {
- 
-        // Load supplier
-        let supplierId;
-        if (document.querySelector('.select-suppliers-supplierId').value === '') {
- 
-          // Insert new row into supplier table
-          supplierId = 0;
-        } else {
- 
-          // Update existing row in suppliers table
-          supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
-        }
- 
-        if (validateValues()) {
- 
-          await updateSupplier(supplierId);
-          await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
- 
-          // Select last suppliers if supplierId is 0
-          if (supplierId === 0) supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
- 
-          // Show leading text
-          showLeadingText(supplierId);
- 
-          // Show all values for supplier
-          showValues(supplierId);
-        }
-      }
-    }
-  });
- 
-  // New supplier
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-suppliers-insert')) {
- 
-      resetValues();
-    }
-  });
- 
-  // Delete supplier
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-suppliers-delete')) {
- 
-      // Delete supplier and reload supplier
-      deleteSupplierSync();
- 
-      // Delete supplier
-      async function deleteSupplierSync() {
- 
-        await deleteSupplier();
-        await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
- 
-        // Show leading text
-        const supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
-        showLeadingText(supplierId);
- 
-        // Show all values for supplier
-        showValues(supplierId);
-      };
-    };
-  });
- 
-  // Cancel
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('button-suppliers-cancel')) {
- 
-      // Reload supplier
-      reloadSupplierSync();
-      async function reloadSupplierSync() {
- 
-        let condominiumId = Number(objUserPassword.condominiumId);
-        await objSuppliers.loadSuppliersTable(condominiumId);
- 
-        // Show leading text for maintenance
-        // Select first supplier Id
-        if (objSuppliers.arraySuppliers.length > 0) {
-          supplierId = objSuppliers.arraySuppliers[0].supplierId;
-          showLeadingText(supplierId);
-        }
- 
-        // Show all selected supplier
-        objSuppliers.showSelectedSuppliers('suppliers-supplierId', supplierId);
- 
-        // Show supplier Id
-        showValues(supplierId);
-      }
-    }
-  });
-}
- 
-// Delete supplier
-async function deleteSupplier() {
- 
-  // Check for supplier Id
-  const supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
- 
-  // Check if supplier id exist
-  const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-  if (rowNumberSupplier !== -1) {
- 
-    // delete supplier row
-    const user = objUserInfo.email;
- 
-    objSuppliers.deleteSuppliersTable(supplierId, user);
-  }
-}
-*/
-/*
-async function updateSupplier(supplierId) {
- 
-  // user
-  const user = objUserInfo.email;
- 
-  // supplier Id
-  supplierId = Number(document.querySelector('.select-suppliers-supplierId').value);
- 
-  // name
-  const name = document.querySelector('.input-suppliers-name').value;
- 
-  // street
-  const street = document.querySelector('.input-suppliers-street').value;
- 
-  // address 2
-  const address2 = document.querySelector('.input-suppliers-address2').value;
- 
-  // postal code
-  const postalCode = document.querySelector('.input-suppliers-postalCode').value;
- 
-  // city
-  const city = document.querySelector('.input-suppliers-city').value;
- 
-  // email
-  const email = document.querySelector('.input-suppliers-email').value;
- 
-  // phone
-  const phone = document.querySelector('.input-suppliers-phone').value;
- 
-  // bank account
-  const bankAccount = document.querySelector('.input-suppliers-bankAccount').value;
- 
-  // account Id
-  const bankAccountId = Number(document.querySelector('.select-suppliers-bankAccountId').value);
- 
-  // amount accountId Id
-  const amountAccountId = Number(document.querySelector('.select-suppliers-amountAccountId').value);
- 
-  // amount
-  const amount = (document.querySelector('.input-suppliers-amount').value) ? formatKronerToOre(document.querySelector('.input-suppliers-amount').value) : '0';
- 
-  // amount accountId Id
-  const textAccountId = Number(document.querySelector('.select-suppliers-textAccountId').value);
- 
-  // text
-  const text = (document.querySelector('.input-suppliers-text').value);
- 
- 
-  const condominiumId = Number(objUserPassword.condominiumId);
-  const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
- 
-  // Check if supplier exist
-  if (rowNumberSupplier !== -1) {
- 
-    // update supplier
-    objSuppliers.updateSuppliersTable(supplierId, user, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountId, amount, amountAccountId, text, textAccountId);
- 
-  } else {
- 
-    // insert supplier
-    objSuppliers.insertSuppliersTable(condominiumId, user, name, street, address2, postalCode, city, email, phone, bankAccount, bankAccountId, amount, amountAccountId, text, textAccountId);
-  }
- 
-  document.querySelector('.select-suppliers-supplierId').disabled = false;
-  document.querySelector('.button-suppliers-delete').disabled = false;
-  document.querySelector('.button-suppliers-insert').disabled = false;
-}
-*/
-
-/*
-// Show values for supplier
-function showValues(supplierId) {
- 
-  // Check for valid supplier Id
-  if (supplierId >= 0) {
- 
-    // find object number for selected supplier Id 
-    const objUserSupplierNumber = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-    if (objUserSupplierNumber !== -1) {
- 
-      // Supplier Id
-      document.querySelector('.select-suppliers-supplierId').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].supplierId;
- 
-      // name
-      document.querySelector('.input-suppliers-name').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].name;
- 
-      // street
-      document.querySelector('.input-suppliers-street').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].street;
- 
-      // address 2
-      document.querySelector('.input-suppliers-address2').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].address2;
- 
-      // Postal code
-      document.querySelector('.input-suppliers-postalCode').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].postalCode;
- 
-      // city
-      document.querySelector('.input-suppliers-city').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].city;
- 
-      // email
-      document.querySelector('.input-suppliers-email').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].email;
- 
-      // phone
-      document.querySelector('.input-suppliers-phone').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].phone;
- 
-      // bankAccount
-      document.querySelector('.input-suppliers-bankAccount').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccount;
- 
-      // bank account account Id
-      document.querySelector('.select-suppliers-bankAccountId').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].bankAccountId;
- 
-      // amount
-      document.querySelector('.input-suppliers-amount').value =
-        (objSuppliers.arraySuppliers[objUserSupplierNumber].amount)
-          ? formatOreToKroner(objSuppliers.arraySuppliers[objUserSupplierNumber].amount) : '';
- 
-      // amount accountId Id
-      document.querySelector('.select-suppliers-amountAccountId').value =
-        (objSuppliers.arraySuppliers[objUserSupplierNumber].amountAccountId)
-          ? objSuppliers.arraySuppliers[objUserSupplierNumber].amountAccountId : 0;
- 
-      // Text
-      document.querySelector('.input-suppliers-text').value =
-        objSuppliers.arraySuppliers[objUserSupplierNumber].text;
- 
-      // text accountId Id
-      document.querySelector('.select-suppliers-textAccountId').value =
-        (objSuppliers.arraySuppliers[objUserSupplierNumber].textAccountId)
-          ? objSuppliers.arraySuppliers[objUserSupplierNumber].textAccountId : 0;
-    }
-  }
-}
-*/
 
 function resetValues() {
 
@@ -472,10 +194,10 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objSuppliers.startTable('width:750px;');
+  let html = objSuppliers.startTable('width:600px;');
 
   // show main header
-  html += objSuppliers.showTableHeader('width:750px;', 'Mottaker');
+  html += objSuppliers.showTableHeader('width:175px;', 'Mottaker');
 
   // The end of the table
   html += objSuppliers.endTable();
@@ -483,28 +205,26 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(supplierId) {
+function showFilter(supplierId, rowNumber) {
 
   // Start table
-  html = objSuppliers.startTable('width:750px;');
+  html = objSuppliers.startTable('width:600px;');
 
   // Header filter
   rowNumber++;
-  html += objSuppliers.showTableHeaderMenu('width:150px;', rowNumber, '', 'Velg mottaker', '');
+  html += objSuppliers.showTableHeaderMenu('width:175px;', rowNumber, 'Velg mottaker', '');
 
   // start table body
   html += objSuppliers.startTableBody();
 
   // insert table columns in start of a row
-  html += objSuppliers.insertTableColumns('', 0, '');
+  rowNumber++;
+  html += objSuppliers.insertTableColumns('', rowNumber);
 
   // supplier
-  html += objSuppliers.showSelectedSuppliersNew('filterSupplierId', 'width:100px;', supplierId, '', '')
+  html += objSuppliers.showSelectedSuppliersNew('filterSupplierId', 'width:175px;', supplierId, '', '')
 
   html += "</tr>";
-
-  // insert table columns in start of a row
-  html += objSuppliers.insertTableColumns('', 0, '');
 
   // end table body
   html += objSuppliers.endTableBody();
@@ -520,10 +240,11 @@ function showFilter(supplierId) {
 function showResult(supplierId, rowNumber) {
 
   // start table
-  let html = objSuppliers.startTable('width:750px;');
+  let html = objSuppliers.startTable('width:600px;');
 
   // table header
-  html += objSuppliers.showTableHeaderMenu('width:250px;', rowNumber, '', '', '');
+  rowNumber++;
+  html += objSuppliers.showTableHeaderMenu('width:175px;', rowNumber, '', '');
 
   // Check if supplier row exist
   const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
@@ -531,72 +252,72 @@ function showResult(supplierId, rowNumber) {
 
     // Header for value including menu
     rowNumber++;
-    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Navn');
+    html += objSuppliers.showTableHeaderMenu("width:175px;", rowNumber, 'Navn');
 
     // insert table columns in start of a row
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // name
-    html += objSuppliers.inputTableColumn('name', objSuppliers.arraySuppliers[rowNumberSupplier].name, 45);
+    html += objSuppliers.inputTableColumn('name', '', objSuppliers.arraySuppliers[rowNumberSupplier].name, 45);
 
     html += "</tr>";
 
     // street, address2
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Gate', 'Adresse 2');
+    html += objSuppliers.showTableHeaderMenu("width:175px;", rowNumber, 'Gate', 'Adresse 2');
 
     // insert table columns in start of a row
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // street
-    html += objSuppliers.inputTableColumn('street', objSuppliers.arraySuppliers[rowNumberSupplier].street, 45);
+    html += objSuppliers.inputTableColumn('street', '', objSuppliers.arraySuppliers[rowNumberSupplier].street, 45);
 
     // address2
-    html += objSuppliers.inputTableColumn('address2', objSuppliers.arraySuppliers[rowNumberSupplier].address2, 45);
+    html += objSuppliers.inputTableColumn('address2', '', objSuppliers.arraySuppliers[rowNumberSupplier].address2, 45);
 
     html += "</tr>";
 
     // postalCode, city
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Postnummer', 'Poststed');
+    html += objSuppliers.showTableHeaderMenu("width:175px;", rowNumber, 'Postnummer', 'Poststed');
 
     // insert table columns in start of a row
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // postalCode
-    html += objSuppliers.inputTableColumn('postalCode', objSuppliers.arraySuppliers[rowNumberSupplier].postalCode, 4);
+    html += objSuppliers.inputTableColumn('postalCode', '', objSuppliers.arraySuppliers[rowNumberSupplier].postalCode, 4);
 
     // city
-    html += objSuppliers.inputTableColumn('city', objSuppliers.arraySuppliers[rowNumberSupplier].city, 45);
+    html += objSuppliers.inputTableColumn('city', '', objSuppliers.arraySuppliers[rowNumberSupplier].city, 45);
 
     html += "</tr>";
 
     // email,phone
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'e-Mail', 'Telefonnummer');
+    html += objSuppliers.showTableHeaderMenu("width:175px;", rowNumber, 'e-Mail', 'Telefonnummer');
 
     // insert table columns in start of a row
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // email
-    html += objSuppliers.inputTableColumn('email', objSuppliers.arraySuppliers[rowNumberSupplier].email, 50);
+    html += objSuppliers.inputTableColumn('email', '', objSuppliers.arraySuppliers[rowNumberSupplier].email, 50);
 
     // phone
-    html += objSuppliers.inputTableColumn('phone', objSuppliers.arraySuppliers[rowNumberSupplier].phone, 8);
+    html += objSuppliers.inputTableColumn('phone', '', objSuppliers.arraySuppliers[rowNumberSupplier].phone, 8);
 
     html += "</tr>";
 
     // bankAccount, accountId
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Konto', 'Bankkontonummer');
+    html += objSuppliers.showTableHeaderMenu("width:175px;", rowNumber, 'Konto', 'Bankkontonummer');
 
     // Show menu
     rowNumber++;
@@ -606,14 +327,14 @@ function showResult(supplierId, rowNumber) {
     html += objAccounts.showSelectedAccounts('accountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].accountId, 'Ingen konto er valgt', '');
 
     // bankAccount
-    html += objSuppliers.inputTableColumn('bankAccount', objSuppliers.arraySuppliers[rowNumberSupplier].bankAccount, 11);
+    html += objSuppliers.inputTableColumn('bankAccount', '', objSuppliers.arraySuppliers[rowNumberSupplier].bankAccount, 11);
 
     html += "</tr>";
 
     // amountAccountId, amount
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Konto for beløp', 'Beløp');
+    html += objSuppliers.showTableHeaderMenu("width:175px;", rowNumber, 'Konto for beløp', 'Beløp');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -623,14 +344,14 @@ function showResult(supplierId, rowNumber) {
     html += objAccounts.showSelectedAccounts('amountAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].amountAccountId, 'Ingen konto er valgt', '');
 
     // amount
-    html += objSuppliers.inputTableColumn('amount', objSuppliers.arraySuppliers[rowNumberSupplier].amount, 11);
+    html += objSuppliers.inputTableColumn('amount', '', objSuppliers.arraySuppliers[rowNumberSupplier].amount, 11);
 
     html += "</tr>";
 
     // textAccountId, text
     html += "<tr>";
     rowNumber++;
-    html += objSuppliers.showTableHeaderMenu("width:250px;", rowNumber, 'Konto for tekst', 'Tekst');
+    html += objSuppliers.showTableHeaderMenu("width:175px;", rowNumber, 'Konto for tekst', 'Tekst');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -640,7 +361,7 @@ function showResult(supplierId, rowNumber) {
     html += objAccounts.showSelectedAccounts('textAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].textAccountId, 'Ingen konto er valgt', '');
 
     // text
-    html += objSuppliers.inputTableColumn('text', objSuppliers.arraySuppliers[rowNumberSupplier].text, 50);
+    html += objSuppliers.inputTableColumn('text', '', objSuppliers.arraySuppliers[rowNumberSupplier].text, 50);
 
     html += "</tr>";
 
@@ -655,33 +376,17 @@ function showResult(supplierId, rowNumber) {
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber);
 
-    html += objSuppliers.showButton('width:170px;', 'update', 'Oppdater');
-    html += objSuppliers.showButton('width:170px;', 'cancel', 'Angre');
+    html += objSuppliers.showButton('width:175px;', 'update', 'Oppdater');
+    html += objSuppliers.showButton('width:175px;', 'cancel', 'Angre');
     html += "</tr>";
 
     // insert table columns in start of a row
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber);
 
-    html += objSuppliers.showButton('width:170px;', 'delete', 'Slett');
-    html += objSuppliers.showButton('width:170px;', 'insert', 'Ny');
+    html += objSuppliers.showButton('width:175px;', 'delete', 'Slett');
+    html += objSuppliers.showButton('width:175px;', 'insert', 'Ny');
     html += "</tr>";
-
-    /*
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objSuppliers.insertTableColumns('', rowNumber, '');
-
-    html += "</tr>";
-
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objSuppliers.insertTableColumns('', rowNumber);
-
-    html += objSuppliers.showButton('width:170px;', 'delete', 'Slett');
-    html += objSuppliers.showButton('width:170px;', 'insert', 'Ny');
-    html += "</tr>";
-    */
 
     // Show the rest of the menu
     rowNumber++;
@@ -700,7 +405,7 @@ async function updateSupplierRow(supplierId) {
   supplierId = Number(supplierId);
   const validSupplierId = objSuppliers.validateNumber('supplierId', supplierId, -1, objSuppliers.nineNine);
 
-  const condominiumId = Number(objUserPassword.condominiumId);
+  //const condominiumId = Number(condominiumId);
   const user = objUserInfo.email;
 
   // validate name
@@ -778,9 +483,8 @@ async function updateSupplierRow(supplierId) {
     }
 
     // Show filter
-    showFilter(supplierId);
-
     let menuNumber = 0;
+    menuNumber = showFilter(supplierId, menuNumber);
     menuNumber = showResult(supplierId, menuNumber);
 
     document.querySelector('.filterSupplierId').disabled = false;

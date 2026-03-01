@@ -3,6 +3,7 @@ class BankAccountTransaction extends Condos {
   // Bank account transactions information
   arrayBankAccountTransactions;
 
+  /*
   // Show all selected bank account transactions
   showSelectedAccountTransactionsounts(columnName, bankAccountTransactionId) {
 
@@ -94,6 +95,7 @@ class BankAccountTransaction extends Condos {
 
     return bankAccountTransactionId;
   }
+  */
 
   // Show all bank account transactions
   showSelectedBankAccountTransactions(className, bankAccountTransactionId, alternativeSelect) {

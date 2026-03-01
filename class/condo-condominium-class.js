@@ -153,30 +153,27 @@ class Condominium extends Condos {
     let selectedValue = false;
 
     let html = `
-      <td
-        class="center one-line"
-      >
-        <select 
-          class="${className} center"
-    `;
+    <td
+      class="center one-line"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style=${style}` : 'style="width:175px;"'}
+      >`;
     
-      if (style) html += `style="${style}"`;
-      html += `>`;
-
     // Check if condominium array is empty
+    const numberOfRows = this.arrayCondominiums.length;
     if (Number(this.arrayCondominiums.length) > 0) {
       this.arrayCondominiums.forEach((condominium) => {
         if (condominium.condominiumId === condominiumId) {
 
-          html +=
-            `
-              <option 
-                value=${condominium.condominiumId}
-                selected
-              >
-                ${condominium.name}
-              </option>
-            `;
+          html += `
+          <option 
+            value=${condominium.condominiumId}
+            selected
+          >
+            ${condominium.name}
+          </option>`;
           selectedValue = true;
         } else {
 

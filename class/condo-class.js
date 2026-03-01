@@ -287,17 +287,17 @@ class Condos {
   showButton(style, className, text) {
 
     return `
-      <td 
-        class="center"
+    <td 
+      class="center"
+      style="background:#e0f0e0"
+    >
+      <button 
+        class="${className} center one-line"
+        ${(style) ? `style=${style}` : 'style="width:175px;"'}
       >
-        <button 
-          class="${className} center one-line"
-          ${(style) ? `style=${style}` : ''}
-        >
-          ${text}
-        </button>
-      </td>
-    `;
+        ${text}
+      </button>
+    </td>`;
   }
 
   /*
@@ -559,9 +559,8 @@ class Condos {
         >
           <select
             class="${className} center"
-      `;
-    if (style) html += `style="${style}"`;
-    html += `>`;
+            ${(style) ? `style=${style}` : 'style=width:175px;'}
+          >`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
@@ -624,9 +623,8 @@ class Condos {
         >
           <select 
             class="${className} center"
-            style="${style}"
-          >
-      `;
+            ${(style) ? `style=${style}` : 'style=width:175px;'}
+          >`;
 
     choices.forEach((choice) => {
       if (choice === selectedChoice) {
@@ -989,7 +987,7 @@ class Condos {
         break
       }
     }
-    let html = this.showSelectedValues(className, 'width:100px;', selectedChoice, 'Nei', 'Ja')
+    let html = this.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
     return html;
   }
 
@@ -1005,7 +1003,7 @@ class Condos {
       html += `
         <td 
           class="no-border center"
-          ${(style) ? `style = "${style}"` : ''}
+          ${(style) ? `style=${style}` : 'style=width:175px;'}
         >
           ${text}
         </td>
@@ -1021,7 +1019,6 @@ class Condos {
 
     let html = "<tr>";
 
-    //if (menuNumber > 0) html += this.verticalMenu(menuNumber);
     html += this.verticalMenu(menuNumber);
 
     texts.forEach((text) => {
@@ -1327,7 +1324,6 @@ class Condos {
 
     let html = "<tr>";
     if (menuNumber > 0) html += this.verticalMenu(menuNumber);
-
     texts.forEach((text) => {
 
       html += (style === '')
@@ -1407,6 +1403,7 @@ class Condos {
       return false;
     }
   }
+
   verticalMenu(menuNumber) {
 
     let html = "";
@@ -1437,7 +1434,9 @@ class Condos {
           break;
         }
       }
-
+      // Check for valid menunumber
+      if (menuNumber < 1) menuNumber = 1;
+      
       const applicationName = this.arrayMenu[menuNumber - 1].applicationName;
       const text = this.arrayMenu[menuNumber - 1].text;
       const className = this.arrayMenu[menuNumber - 1].className;
@@ -1472,7 +1471,7 @@ class Condos {
   showMessage(object, message) {
 
     // Start table
-    let html = object.startTable('width:750px;');
+    let html = object.startTable('width:600px;');
 
     // show main header
     html += object.showTableHeader('width:250px;', message);

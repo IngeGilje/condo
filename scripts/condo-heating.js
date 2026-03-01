@@ -8,8 +8,8 @@ const objAccounts = new Account('account');
 // Fixed values
 const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
-
-testMode();
+ 
+let condominium = 0;
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -22,7 +22,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    condominiumId = Number(sessionStorage.getItem("condominiumId"));
     const email = sessionStorage.getItem("email");
     if ((condominiumId === 0 || email === null)) {
 
@@ -31,9 +31,9 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objUsers.loadUsersTable(condominiumId, resident);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 
       // Show header
       let menuNumber = 0;
@@ -68,7 +68,7 @@ function events() {
         let fixedCost = document.querySelector('.filterFixedCost').value;
         if (fixedCost === 'Fast kostnad') fixedCost = 'Y';
         if (fixedCost === 'Variabel kostnad') fixedCost = 'N';
-        await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+        await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 
         let menuNumber = 0;
         menuNumber = showResult(menuNumber);
@@ -129,7 +129,7 @@ function events() {
           deleteAccountRow(accountId, className);
 
           const fixedCost = 'A';
-          await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+          await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 
           let menuNumber = 0;
           menuNumber = showResult(menuNumber);
@@ -159,7 +159,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objAccounts.startTable('width:750px;');
+  let html = objAccounts.startTable('width:600px;');
 
   // show main header
   html += objAccounts.showTableHeader('width:250px;', 'Konto');
@@ -176,7 +176,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objAccounts.startTable('width:750px;');
+  html = objAccounts.startTable('width:600px;');
 
   // Header filter
   rowNumber++;
@@ -233,10 +233,10 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objAccounts.startTable('width:750px;');
+  let html = objAccounts.startTable('width:600px;');
 
   // table header
-  html += objAccounts.showTableHeaderMenu('width:250px;', rowNumber, '', 'Slett', 'Kostnadstype', 'Tekst');
+  html += objAccounts.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccounts.arrayAccounts.forEach((account) => {
 
@@ -317,7 +317,7 @@ async function deleteAccountRow(accountId, className) {
   }
 
   const fixedCost = 'A';
-  await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+  await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 }
 
 // Update a accounts table row
@@ -325,7 +325,7 @@ async function updateAccountsRow(accountId) {
 
   accountId = Number(accountId);
 
-  const condominiumId = Number(objUserPassword.condominiumId);
+  //const condominiumId = Number(condominiumId);
   const user = objUserInfo.email;
 
 
@@ -356,7 +356,7 @@ async function updateAccountsRow(accountId) {
     }
 
     const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
+    await objAccounts.loadAccountsTable(condominiumId, fixedCost);
     let menuNumber = 0;
     menuNumber = showResult(menuNumber);
   }

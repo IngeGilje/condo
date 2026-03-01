@@ -3,7 +3,7 @@
 const objUsers = new User('user');
 const objLogIn = new Login('login');
 
-sessionStorage.removeItem("user");
+sessionStorage.clear();
 
 // Call main when script loads
 main();
@@ -180,11 +180,13 @@ function checkLogin() {
 function checkLogin() {
 
   // validate email
+  document.querySelector('.email').value = 'inge.gilje@gmail.com'
   const email = document.querySelector('.email').value;
   const validEmail = objUsers.validateEmail('email', email);
 
   // validate password
   const password = document.querySelector('.password').value;
+  document.querySelector('.password').value = '12345';
   const validPassword = objUsers.validateText(password, 5, 45)
 
   if (validEmail && validPassword) {
@@ -199,8 +201,6 @@ function checkLogin() {
         // The sessionStorage object stores data for only one session
         window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[0].condominiumId);
         window.sessionStorage.setItem("email", objUsers.arrayUsers[0].email);
-        console.log('condominiumId: ', sessionStorage.getItem("condominiumId"));
-        console.log('email: ', sessionStorage.getItem("email"));
 
         // Start bank account transactions
         window.location.href = 'http://localhost/condo-bankaccounttransaction.html';

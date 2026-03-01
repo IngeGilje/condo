@@ -16,10 +16,10 @@ const objDues = new Due('due');
 const objSuppliers = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
-testMode();
-
+let condominium = 0;
+ 
 // Exit application if no activity for 1 hour
-exitIfNoActivity()
+exitIfNoActivity();
 
 // Call main when script loads
 main();
@@ -29,7 +29,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    const condominiumId = Number(sessionStorage.getItem("condominiumId"));
+    condominiumId = Number(sessionStorage.getItem("condominiumId"));
     const email = sessionStorage.getItem("email");
     if ((condominiumId === 0 || email === null)) {
 
@@ -38,16 +38,16 @@ async function main() {
     } else {
 
       const resident = 'A';
-      await objUsers.loadUsersTable(objUserPassword.condominiumId, resident);
+      await objUsers.loadUsersTable(condominiumId, resident);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objUserPassword.condominiumId, fixedCost);
-      await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine);
-      await objUserBankAccounts.loadUserBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
-      await objCondo.loadCondoTable(objUserPassword.condominiumId);
-      await objSuppliers.loadSuppliersTable(objUserPassword.condominiumId);
+      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objBankAccounts.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objImportFile.nineNine, objImportFile.nineNine);
+      await objCondo.loadCondoTable(condominiumId);
+      await objSuppliers.loadSuppliersTable(condominiumId);
       await objCondominiums.loadCondominiumsTable();
 
-      const condominiumId = Number(objUserPassword.condominiumId);
+      //const condominiumId = Number(condominiumId);
 
       const deleted = 'A';
       const accountId = objImportFile.nineNine;
@@ -62,7 +62,7 @@ async function main() {
 
       // Sends a request to the server to get bank csv transaction file
       // get name of transactions file
-      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUserPassword.condominiumId);
+      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // file import text name
@@ -350,7 +350,7 @@ async function updateOpeningClosingBalance() {
             const closingBalance = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
             const closingBalanceDate = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
             await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine);
+            await objBankAccounts.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
           }
         }
       }
@@ -371,7 +371,7 @@ async function updateOpeningClosingBalance() {
             const openingBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance;
             const openingBalanceDate = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate;
             await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccounts.loadBankAccountsTable(objUserPassword.condominiumId, objImportFile.nineNine);
+            await objBankAccounts.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
           };
         };
       };
@@ -480,7 +480,7 @@ function showHeader() {
   let html = objImportFile.startTable('width:1600px;');
 
   // show main header
-  html += objImportFile.showTableHeader('width:250px;', 'Import av bankkontotransaksjoner');
+  html += objImportFile.showTableHeader('width:175px;', 'Import av bankkontotransaksjoner');
 
   // The end of the table
   html += objImportFile.endTable();
@@ -495,17 +495,15 @@ function showFilter(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objImportFile.showTableHeaderMenu('width:150px;', rowNumber, '', '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2');
+  html += objImportFile.showTableHeaderMenu('width:175px;', rowNumber, '1', '2 Fra dato', '3 Til dato', '4 Busjettår', '5 Pris per m2','6','7','8');
 
   // start table body
   html += objImportFile.startTableBody();
 
-  // insert table columns in start of a row
-  //html += objImportFile.insertTableColumns('', 0, '', '');
-
   html += "</tr>";
 
-  html += objImportFile.insertTableColumns('', 0, '');
+  rowNumber++;
+  html += objImportFile.insertTableColumns('', rowNumber, '1','2','3','4','5','6','7','8');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -525,7 +523,7 @@ function showResult(rowNumber) {
 
   // table header
   rowNumber++;
-  html += objImportFile.showTableHeaderMenu('width:250px;', rowNumber, '', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += objImportFile.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1 Dato', '2 Leilighet', '3 Konto', '4 Fra bankkonto', '5 Til bankkonto', '6 Inntekt', '7 Utgift', '8 Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -588,16 +586,16 @@ function showResult(rowNumber) {
 
   // Show sum row
   rowNumber++;
-  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', '', 'Sum', sumIncomes, sumPayments);
+  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '1', '2', '3', '4', '5 Sum', sumIncomes, sumPayments,'8');
 
   // Show update button
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objImportFile.insertTableColumns('', rowNumber);
+  html += objImportFile.insertTableColumns('', rowNumber,'1');
 
-  html += objImportFile.showButton('width:170px;', 'update', 'Oppdater');
-  html += "</tr>";
+  html += objImportFile.showButton('width:175px;', 'update', '2 Oppdater');
+  html += "<td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>";
 
   // Show the rest of the menu
   rowNumber++;
@@ -614,7 +612,7 @@ async function updateBankAccountTransactions() {
   arrayTransactions.forEach(async (transaction) => {
 
     const bankAccountTransactionId = 0;  // not in use
-    const condominiumId = Number(objUserPassword.condominiumId);
+    //const condominiumId = Number(condominiumId);
     const user = objUserPassword.email;
 
     const condoId = Number(transaction.condoId);

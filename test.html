@@ -13,163 +13,171 @@
 
 <body>
 
-  <table style="width:1750px;">
+  <table style="width:600px;">
     <tr>
       <td class="one-line menu" style="width:175px;">
-        <a href="http://localhost/condo-login.html">
-          login
+        <a href="http://localhost/condo-bankaccount.html">
+          Bankkonto sameie
         </a>
       </td>
       <td class="no-border center" style="width:175px;">
-
+        Navn
       </td>
 
       <td class="no-border center" style="width:175px;">
-
-      </td>
-
-      <td class="no-border center" style="width:175px;">
-        Leilighet
-      </td>
-
-      <td class="no-border center" style="width:175px;">
-        Velg konto
-      </td>
-
-      <td class="no-border center" style="width:175px;">
-        Fra dato
-      </td>
-
-      <td class="no-border center" style="width:175px;">
-        Til dato
-      </td>
-
-      <td class="no-border center" style="width:175px;">
-        Beløp
-      </td>
-
-      <td class="no-border center" style="width:175px;">
-
+        Bankkontonummer
       </td>
     </tr>
-    <tbody>
-      <tr>
-        <td class="one-line menu" style="width:175px;">
-          <a href="http://localhost/condo-condominium.html">
-            Sameie
-          </a>
-        </td>
-        <td class="center no-border"></td>
-        <td class="center no-border"></td>
-        <td class="center one-line">
-          <select class="filterCondoId center" style="width:175px;">;
-            <option value=3>95A</option>
-            <option value=4>95B</option>
-            <option value=5>97A</option>
-            <option value=6>97B</option>
-            <option value=7>97C</option>
-            <option value=8>99A</option>
-            <option value=9>99B</option>
-            <option value=999999999 selected>Vis alle</option>
-          </select>
-        </td>
-        <form id="accountId" action="/submit" method="POST">
-          <label class="label-filterAccountId" for="accountId" id="accountId">
-            Velg konto
-          </label>
-          <select class="select-filterAccountId" id="accountId" name="accountId">
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-account.html">
+          Konto
+        </a>
+      </td>
+      <td class="center">
+        <input class="name center one-line" type="text" maxlength="Driftskonto" value="" style=width:175px; readonly>
+      </td>
 
-            <option value="13">
-              1,2,3,4... transaksjoner
-            </option>
+      <td class="center">
+        <input class="bankAccount center one-line" type="text" maxlength="32062337272" value="" style=width:175px;
+          readonly>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-user.html">
+          Bruker
+        </a>
+      </td>
+      <td class="no-border center" style="width:175px;">
+        Dato
+      </td>
 
-            <option value="67">
-              Diverse
-            </option>
+      <td class="no-border center" style="width:175px;">
+        Inngående saldo
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-userbankaccount.html">
+          Bankkonto for bruker
+        </a>
+      </td>
+      <td class="center">
+        <input class="openingBalanceDate center one-line" type="text" maxlength="10" value="01.01.2025"
+          style=width:175px;>
+      </td>
 
-            <option value="56">
-              Driftsinntekter
-            </option>
+      <td class="center">
+        <input class="openingBalance center one-line" type="text" maxlength="11" value="231 503,67" style=width:175px;>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-supplier.html">
+          Mottaker
+        </a>
+      </td>
+      <td class="no-border center" style="width:175px;">
+        Dato
+      </td>
 
-            <option value="9">
-              Driftsutgifter
-            </option>
+      <td class="no-border center" style="width:175px;">
+        Utgående saldo
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-commoncost.html">
+          Felleskostnader
+        </a>
+      </td>
+      <td class="center">
+        <input class="closingBalanceDate center one-line" type="text" maxlength="10" value="24.02.2026"
+          style=width:175px;>
+      </td>
 
-            <option value="4">
-              Fjernvarme inntekt
-            </option>
-
-            <option value="3">
-              Fjernvarme utgift
-            </option>
-
-            <option value="6">
-              Forsikring
-            </option>
-
-            <option value="10">
-              Gebyr - FAKT.TJ
-            </option>
-
-            <option value=2 selected>
-              Inntekter husleie
-            </option>
-
-            <option value="5">
-              Nettleie Lyse
-            </option>
-
-            <option value="52">
-              Omkostninger BedriftsNett
-            </option>
-
-            <option value="8">
-              TV og bredbånd
-            </option>
-
-            <option value="22">
-              Velforening
-            </option>
-
-            <option value=999999999>
-              Alle
-            </option>
-
-            <option value=0>
-              All
-            </option>
-
-          </select>
-        </form>
-
-        <td class="center">
-          <input class="filterFromDate center one-line" type="text" maxlength="10" value="01.01.2026">
-        </td>
-
-        <td class="center">
-          <input class="filterToDate center one-line" type="text" maxlength="10" value="14.02.2026">
-        </td>
-
-        <td class="center">
-          <input class="filterAmount center one-line" type="text" maxlength="10" value="">
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td class="one-line menu" style="width:175px;">
-          <a href="http://localhost/condo-condo.html">
-            Leilighet
-          </a>
-        </td>
-        <td class="center no-border"></td>
-        <td class="center no-border"></td>
-        <td class="center no-border"></td>
-        <td class="center no-border"></td>
-        <td class="center no-border"></td>
-        <td class="center no-border"></td>
-        <td class="center no-border"></td>
-        <td class="center no-border"></td>
-    </tbody>
+      <td class="center">
+        <input class="closingBalance center one-line" type="text" maxlength="11" value="387 322,65" style=width:175px;>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-due.html">
+          Forfall
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-remoteheatingprice.html">
+          Pris fjernvarme
+        </a>
+      </td>
+      <td class="center" style="background:#e0f0e0">
+        <button class="update center one-line" style=width:175px;>
+          Oppdater
+        </button>
+      </td>
+      <td class="center" style="background:#e0f0e0">
+        <button class="cancel center one-line" style=width:175px;>
+          Angre
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-remoteheating.html">
+          Fjernvarme
+        </a>
+      </td>
+      <td class="center" style="background:#e0f0e0">
+        <button class="delete center one-line" style=width:175px;>
+          Slett
+        </button>
+      </td>
+      <td class="center" style="background:#e0f0e0">
+        <button class="insert center one-line" style=width:175px;>
+          Ny
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-budget.html">
+          Budsjett
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-overview.html">
+          Betalingsoversikt
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-bankaccounttransaction.html">
+          Banktransaksjoner
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-importfile.html">
+          Importer transaksjoner
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line menu" style="width:175px;">
+        <a href="http://localhost/condo-annualaccount.html">
+          Årsregnskap
+        </a>
+      </td>
+    </tr>
+  </table>
   </table>
 </body>
 

@@ -107,9 +107,8 @@ class BankAccount extends Condos {
         >
           <select 
             class="${className} center"
-            style="${style}"
-          >
-      `;
+            ${(style) ? `style=${style}` : 'style=width:175px;'}
+          >`;
 
     // Check if bankaccounts array is empty
     const numberOfRows = this.arrayBankAccounts.length;

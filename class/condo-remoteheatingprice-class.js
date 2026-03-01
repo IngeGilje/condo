@@ -2,23 +2,21 @@
 class RemoteHeatingPrice extends Condos {
 
   // remote heating information
-  arrayRemoteHeating;
+  arrayRemoteHeatingPrices;
 
   // Show all selected remoteheating prices
   showSelectedRemoteHeatingsNew(className, style, remoteHeatingPriceId, selectNone, selectAll) {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="center one-line"
-        >
-          <select 
-            class="${className} center"
-            style="${style}"
-          >
-      `;
+    let html = `
+    <td
+      class="center one-line"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style=${style}` : 'style="width:175px;"'}
+      >`;
 
     // Check if remoteHeatingprices array is empty
     const numberOfRows = this.arrayRemoteHeatingPrices.length;
@@ -242,16 +240,14 @@ class RemoteHeatingPrice extends Condos {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="centerCell one-line center"
-        >
-          <select 
-            class="${className} center"
-      `;
-      if (style !== '') html += `style="${style}"`;
-      html += `>`;
+    let html = `
+    <td
+      class="centerCell one-line center"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style=${style}` : 'style="width:175px;"'}
+      >`;
 
     // Check if RemoteHeatings array is empty
     if (this.arrayRemoteHeatingPrices.length > 0) {
