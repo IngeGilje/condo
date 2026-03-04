@@ -96,6 +96,7 @@ class User extends Condos {
 
     // Get users
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/users?action=select&condominiumId=${condominiumId}&resident=${resident}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
@@ -108,7 +109,8 @@ class User extends Condos {
   async updateUsersTable(resident, user, email, userId, condoId, firstName, lastName, phone, securityLevel, password) {
 
     try {
-      const response = await fetch(`http://localhost:3000/users?action=update&user=${user}&userId=${userId}&condoId=${condoId}&email=${email}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
+                 // GET request
+      const response = await fetch(`http://localhost:3000/users?action=update&user=${user}&email=${email}&userId=${userId}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {
@@ -140,6 +142,37 @@ class User extends Condos {
     }
   }
 
+  /*
+  // validate User
+  async validateUser(userId, password) {
+
+    try {
+      const response = await fetch(`http://localhost:3000/login?userId=${userId}&password=${password}`);
+      if (!response.ok) throw new Error("Network error (login)");
+      this.arrayUsers = await response.json();
+    } catch (error) {
+      console.log("Error validating user/ password:", error);
+    }
+  }
+  */
+
+
+  // validate User
+  async validateUser(userId, password) {
+
+    const response = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userId: userId,
+        password: password
+      })
+    });
+
+    return response.ok;
+  }
 
   /*
   // Check user and password
@@ -159,6 +192,7 @@ class User extends Condos {
   }
   */
 
+  /*
   // Check user and password
   async checkUserPassword(userId, password) {
 
@@ -170,9 +204,10 @@ class User extends Condos {
       console.log("Error checking user/password:", error);
     }
   }
+  */
 
   // Show all selected users
-   showSelectedUsers(className, style, userId, selectNone, selectAll) {
+  showSelectedUsers(className, style, userId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -275,5 +310,30 @@ class User extends Condos {
       `;
 
     return html;
+  }
+
+  // Check for unique email
+  // Except if the email exist for current user
+  checkUiqueEmail(userId, email) {
+
+    // Check if email exist in users table
+    const rowNumberUser = this.arrayUsers.findIndex(user => user.email === email);
+    if (rowNumberUser !== -1) {
+
+      // email is used
+      if (this.arrayUsers[rowNumberUser].userId === userId) {
+
+        // email exist for current user only
+        return false;
+      } else {
+
+        // email exist for an other user
+        return true;
+      }
+    } else {
+
+      // email does not exist for any user
+      return false;
+    }
   }
 }

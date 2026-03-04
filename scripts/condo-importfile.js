@@ -16,7 +16,8 @@ const objDues = new Due('due');
 const objSuppliers = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
-let condominium = 0;
+let condominiumId = 0;
+let user = "";
  
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -30,8 +31,8 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    const email = sessionStorage.getItem("email");
-    if ((condominiumId === 0 || email === null)) {
+    user= sessionStorage.getItem("user");
+    if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';
@@ -126,9 +127,6 @@ function createtransactionsArray() {
 
   let textFile = objImportFile.strCSVTransaction.split(/\r?\n/);
   textFile.forEach((row) => {
-
-    //let fromBankAccount = row["Fra konto"];
-    //let toBankAccount = row["Til konto"];
 
     [accountingDate, Rentedato, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
@@ -495,7 +493,7 @@ function showFilter(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objImportFile.showTableHeaderMenu('width:175px;', rowNumber, '1', '2 Fra dato', '3 Til dato', '4 Busjettår', '5 Pris per m2','6','7','8');
+  html += objImportFile.showTableHeaderMenu('width:175px;', rowNumber, '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2','','','');
 
   // start table body
   html += objImportFile.startTableBody();
@@ -503,7 +501,7 @@ function showFilter(rowNumber) {
   html += "</tr>";
 
   rowNumber++;
-  html += objImportFile.insertTableColumns('', rowNumber, '1','2','3','4','5','6','7','8');
+  html += objImportFile.insertTableColumns('', rowNumber, '','','','','','','','');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -523,7 +521,7 @@ function showResult(rowNumber) {
 
   // table header
   rowNumber++;
-  html += objImportFile.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1 Dato', '2 Leilighet', '3 Konto', '4 Fra bankkonto', '5 Til bankkonto', '6 Inntekt', '7 Utgift', '8 Tekst');
+  html += objImportFile.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -586,16 +584,16 @@ function showResult(rowNumber) {
 
   // Show sum row
   rowNumber++;
-  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '1', '2', '3', '4', '5 Sum', sumIncomes, sumPayments,'8');
+  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', '', 'Sum', sumIncomes, sumPayments,'');
 
   // Show update button
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objImportFile.insertTableColumns('', rowNumber,'1');
+  html += objImportFile.insertTableColumns('', rowNumber,'');
 
-  html += objImportFile.showButton('width:175px;', 'update', '2 Oppdater');
-  html += "<td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>";
+  html += objImportFile.showButton('width:175px;', 'update', 'Oppdater');
+  html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // Show the rest of the menu
   rowNumber++;

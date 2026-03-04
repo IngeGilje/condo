@@ -237,6 +237,7 @@ class Account extends Condos {
   async loadAccountsTable(condominiumId, fixedCost) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/accounts?action=select&condominiumId=${condominiumId}&fixedCost=${fixedCost}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayAccounts = await response.json();
@@ -249,6 +250,7 @@ class Account extends Condos {
   async updateAccountsTable(user, accountId, fixedCost, accountName) {
 
     try {
+           // GET request
       const response = await fetch(`http://localhost:3000/accounts?action=update&user=${user}&accountId=${accountId}&fixedCost=${fixedCost}&accountName=${accountName}`);
       if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();
@@ -261,6 +263,7 @@ class Account extends Condos {
   async insertAccountsTable(condominiumId, user, accountName, fixedCost) {
 
     try {
+           // GET request
       const response = await fetch(`http://localhost:3000/accounts?action=insert&condominiumId=${condominiumId}&user=${user}&accountName=${accountName}&fixedCost=${fixedCost}`);
       if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();
@@ -273,6 +276,7 @@ class Account extends Condos {
   async deleteAccountsTable(accountId, user) {
 
     try {
+                 // GET request
       // Fetch for sending a message to server(request)
       // response is a message in .json format send from server(response)
       const response = await fetch(`http://localhost:3000/accounts?action=delete&accountId=${accountId}&user=${user}`);

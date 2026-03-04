@@ -111,6 +111,7 @@ class Condo extends Condos {
 
     // Get condos
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/condo?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
@@ -124,6 +125,7 @@ class Condo extends Condos {
 
     if (address2 === 'undefined') address2 = '';
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/condo?action=update&condoId=${condoId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
@@ -136,6 +138,7 @@ class Condo extends Condos {
   async insertCondoTable(condominiumId, user, name, street, address2, postalCode, city, squareMeters) {
     if (address2 === 'undefined') address2 = '';
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/condo?action=insert&condominiumId=${condominiumId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
@@ -148,6 +151,7 @@ class Condo extends Condos {
   async deleteCondoTable(condoId, user) {
 
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/condo?action=delete&condoId=${condoId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();

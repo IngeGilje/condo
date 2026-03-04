@@ -342,6 +342,7 @@ class CommonCost extends Condos {
   async loadCommonCostsTable(condominiumId) {
 
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/commoncosts?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
@@ -354,6 +355,7 @@ class CommonCost extends Condos {
   async updateCommonCostsTable(user, commonCostId, year, commonCostSquareMeter, fixedCostCondo) {
 
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/commoncosts?action=update&user=${user}&commonCostId=${commonCostId}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();

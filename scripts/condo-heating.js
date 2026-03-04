@@ -9,7 +9,8 @@ const objAccounts = new Account('account');
 const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
  
-let condominium = 0;
+let condominiumId = 0;
+let user = "";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -23,8 +24,8 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    const email = sessionStorage.getItem("email");
-    if ((condominiumId === 0 || email === null)) {
+    user= sessionStorage.getItem("user");
+    if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';
@@ -306,7 +307,7 @@ function showResult(rowNumber) {
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
 
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
   // Check if account row exist
   accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
@@ -326,7 +327,7 @@ async function updateAccountsRow(accountId) {
   accountId = Number(accountId);
 
   //const condominiumId = Number(condominiumId);
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
 
   // name

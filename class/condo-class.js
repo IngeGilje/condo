@@ -1103,7 +1103,6 @@ class Condos {
       const match = date.match(regex);
 
       if (!match) isValid = false;
-      //if (!match) return false; // Return false if format doesn't match
 
       if (isValid) {
 
@@ -1125,8 +1124,9 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        // remove/ add 'input-error' class
-        inputElement.classList.toggle('input-error', !isValid);
+        // remove/ add 'message' class
+        //inputElement.classList.toggle('input-error', !isValid);
+        inputElement.classList.toggle('message', !isValid);
       }
     }
 
@@ -1349,6 +1349,7 @@ class Condos {
   // Get user info
   async getUserInfo() {
 
+    // GET request
     const response = await fetch("http://localhost:3000/profile?credentials='include'"); // IMPORTANT for sessions (cookies)
 
     if (response.ok) {
@@ -1365,8 +1366,8 @@ class Condos {
   async checkServer() {
 
     try {
+      // GET request
       const response = await fetch('http://localhost:3000/health');
-
       if (response.ok) {
 
         return true;
@@ -1436,7 +1437,7 @@ class Condos {
       }
       // Check for valid menunumber
       if (menuNumber < 1) menuNumber = 1;
-      
+
       const applicationName = this.arrayMenu[menuNumber - 1].applicationName;
       const text = this.arrayMenu[menuNumber - 1].text;
       const className = this.arrayMenu[menuNumber - 1].className;

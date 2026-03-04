@@ -108,7 +108,7 @@ class ImportFile extends Condos {
   // get csv file from local disk
   async loadCsvFile(csvFileName) {
     try {
-
+           // GET request
       const response = await fetch(`http://localhost:3000/import-csvFile?action=upload&csvFileName=${csvFileName}`);
       if (!response.ok) throw new Error("Network error (load csv file)");
       const result = await response.json();

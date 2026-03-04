@@ -23,8 +23,8 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    const email = sessionStorage.getItem("email");
-    if ((condominiumId === 0 || email === null)) {
+    user= sessionStorage.getItem("user");
+    if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';

@@ -108,6 +108,7 @@ class Due extends Condos {
 
     try {
 
+      // GET request
       const response = await fetch(`http://localhost:3000/dues?action=select&condominiumId=${condominiumId}&accountId=${accountId}&condoId=${condoId}&fromDate=${fromDate}&toDate=${toDate}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayDues = await response.json();
@@ -121,6 +122,7 @@ class Due extends Condos {
   async updateDuesTable(dueId, user, condoId, accountId, amount, date, kilowattHour, text) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/dues?action=update&dueId=${dueId}&user=${user}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&date=${date}&kilowattHour=${kilowattHour}&text=${text}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayBudgets = await response.json();
@@ -133,6 +135,7 @@ class Due extends Condos {
   async insertDuesTable(condominiumId, user, condoId, accountId, amount, date, kilowattHour, text) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/dues?action=insert&condominiumId=${condominiumId}&condoId=${condoId}&user=${user}&accountId=${accountId}&amount=${amount}&date=${date}&kilowattHour=${kilowattHour}&text=${text}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayBudgets = await response.json();
@@ -144,6 +147,7 @@ class Due extends Condos {
   async deleteDuesTable(dueId, user) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/dues?action=delete&dueId=${dueId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayBudgets = await response.json();

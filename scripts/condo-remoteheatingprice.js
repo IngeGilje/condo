@@ -6,7 +6,8 @@ const objUsers = new User('user');
 const objCondos = new Condo('condo');
 const objRemoteHeatingPrices = new RemoteHeatingPrice('remoteheatingprice');
  
-let condominium = 0;
+let condominiumId = 0;
+let user = "";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -20,8 +21,8 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    const email = sessionStorage.getItem("email");
-    if ((condominiumId === 0 || email === null)) {
+    user= sessionStorage.getItem("user");
+    if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';
@@ -245,7 +246,7 @@ async function main() {
   // Delete one remoteHeatingPrice row
   async function deleteAccountRow(remoteHeatingPriceId, className) {
 
-    const user = objUserInfo.email;
+    //const user = objUserInfo.email;
 
     // Check if remoteHeatingPrice row exist
     accountsRowNumber = objRemoteHeatingPrices.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
@@ -264,7 +265,7 @@ async function main() {
     remoteHeatingPriceId = Number(remoteHeatingPriceId);
 
     //const condominiumId = Number(condominiumId);
-    const user = objUserInfo.email;
+    //const user = objUserInfo.email;
 
     // year
     className = `.year${remoteHeatingPriceId}`;
@@ -304,7 +305,7 @@ async function main() {
   // Delete a remoteheatingprices row
   async function deleteRemoteHeatingPriceRow(remoteHeatingPriceId, className) {
 
-    const user = objUserInfo.email;
+    //const user = objUserInfo.email;
 
     // Check if remoteheatingprices row exist
     rowNumberRemoteHeatingPrice = objRemoteHeatingPrices.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);

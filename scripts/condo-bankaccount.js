@@ -7,15 +7,16 @@ const objAccounts = new Account('account');
 const objCondominiums = new Condominium('condominium');
 const objBankAccounts = new BankAccount('bankaccount');
  
-let condominium = 0;
+let condominiumId = 0;
+let user = "";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
 // Validate LogIn
-let condominiumId = Number(sessionStorage.getItem("condominiumId"));
-const email = sessionStorage.getItem("email");
-if ((condominiumId === 0 || email === null)) {
+condominiumId = Number(sessionStorage.getItem("condominiumId"));
+user= sessionStorage.getItem("user");
+if ((condominiumId === 0 || user === null)) {
 
   // LogIn is not valid
   window.location.href = 'http://localhost/condo-login.html';
@@ -152,7 +153,7 @@ async function deleteBankAccount() {
     if (rowNumberBankAccount !== -1) {
 
       // Delete bank bankaccounts row
-      const user = objUserInfo.email;
+      //const user = objUserInfo.email;
 
       objBankAccounts.deleteBankAccountsTable(bankAccountId, user);
     }
@@ -277,7 +278,7 @@ function showResult(bankAccountId, rowNumber) {
 async function updateBankAccountRow(bankAccountId) {
 
   condominiumId = Number(condominiumId);
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
@@ -337,7 +338,7 @@ async function updateBankAccountRow(bankAccountId) {
 // Delete one bankaccounts row
 async function deleteBankAccountRow(bankAccountId) {
 
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
 
   // Check if bankaccount row exist

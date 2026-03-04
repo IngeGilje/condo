@@ -5,7 +5,8 @@ const today = new Date();
 const objUsers = new User('user');
 const objCondos = new Condo('condo');
  
-let condominium = 0;
+let condominiumId = 0;
+let user = "";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -19,8 +20,8 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    const email = sessionStorage.getItem("email");
-    if ((condominiumId === 0 || email === null)) {
+    user= sessionStorage.getItem("user");
+    if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';
@@ -319,7 +320,7 @@ async function updateCondoRow(condoId) {
 
   //const condominiumId = Number(condominiumId);
 
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -414,7 +415,7 @@ async function deleteCondoRow() {
   if (rowNumberCondo !== -1) {
 
     // delete a condo row
-    const user = objUserInfo.email;
+    //const user = objUserInfo.email;
 
     await objCondos.deleteCondoTable(condoId, user);
   }

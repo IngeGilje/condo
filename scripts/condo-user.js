@@ -5,8 +5,9 @@ const today = new Date();
 const objCondos = new Condo('condo');
 const objUsers = new User('user');
 
-let condominium = 0;
- 
+let condominiumId = 0;
+let user = "";
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -19,8 +20,8 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    const email = sessionStorage.getItem("email");
-    if ((condominiumId === 0 || email === null)) {
+    user = sessionStorage.getItem("user");
+    if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';
@@ -101,7 +102,7 @@ function events() {
         // Show filter
         let menuNumber = 0;
         const userId = objUsers.arrayUsers.at(-1).userId;
-        menuNumber = showFilter(userId,menuNumber);
+        menuNumber = showFilter(userId, menuNumber);
         menuNumber = showResult(userId, menuNumber);
       };
     };
@@ -149,7 +150,7 @@ async function deleteCondo() {
   if (rowNumberCondo !== -1) {
 
     // delete condo row
-    const user = objUserInfo.email;
+    //const user = objUserInfo.email;
 
     objCondos.deleteCondoTable(userId, user);
   }
@@ -208,7 +209,7 @@ function showFilter(userId, rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objUsers.showTableHeaderMenu('width:175px;', rowNumber, 'Velg bruker','');
+  html += objUsers.showTableHeaderMenu('width:175px;', rowNumber, 'Velg bruker', '');
 
   // start table body
   html += objUsers.startTableBody();
@@ -218,13 +219,13 @@ function showFilter(userId, rowNumber) {
   html += objUsers.insertTableColumns('', rowNumber);
 
   // user
-  html += objUsers. showSelectedUsers('filterUserId', 'width:175px;', userId, '')
+  html += objUsers.showSelectedUsers('filterUserId', 'width:175px;', userId, '')
 
   html += "</tr>";
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objUsers.insertTableColumns('', rowNumber, '','');
+  html += objUsers.insertTableColumns('', rowNumber, '', '');
 
   // end table body
   html += objUsers.endTableBody();
@@ -294,7 +295,8 @@ function showResult(userId, rowNumber) {
     html += objUsers.insertTableColumns('', rowNumber);
 
     // password
-    html += objUsers.inputTableColumn('password', '', objUsers.arrayUsers[rowNumberUser].password, 45);
+    //html += objUsers.inputTableColumn('password', '', objUsers.arrayUsers[rowNumberUser].password, 45);
+    html += objUsers.inputTableColumn('password', '', '*************', 45);
 
     // securityLevel
     html += objUsers.showSelectedNumbers('securityLevel', "width:175px;", 1, 9, objUsers.arrayUsers[rowNumberUser].securityNumber);
@@ -318,10 +320,6 @@ function showResult(userId, rowNumber) {
 
     html += "</tr>";
 
-    // Show menu
-    //html += "<tr>";
-    //rowNumber++;
-    //html += objUsers.verticalMenu(rowNumber);
     // insert table columns in start of a row
     rowNumber++;
     html += objUsers.insertTableColumns('', rowNumber);
@@ -346,33 +344,6 @@ function showResult(userId, rowNumber) {
     html += objUsers.showButton('width:175px;', 'insert', 'Ny');
     html += "</tr>";
 
-    /*
-    // Show menu
-    //html += "<tr>";
-    //rowNumber++;
-    //html += objUsers.verticalMenu(rowNumber);
-
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objUsers.insertTableColumns('', rowNumber);
-
-    html += "</tr>";
-
-    // show buttons
-    //html += "<tr>";
-    // Show menu
-    //rowNumber++;
-    //html += objUsers.verticalMenu(rowNumber);
-
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objUsers.insertTableColumns('', rowNumber);
-
-    html += objUsers.showButton('width:175px;', 'delete', 'Slett');
-    html += objUsers.showButton('width:175px;', 'insert', 'Ny');
-    html += "</tr>";
-    */
-
     // Show the rest of the menu
     rowNumber++;
     html += objUsers.showRestMenu(rowNumber);
@@ -393,18 +364,17 @@ async function updateUserRow(userId) {
   userId = Number(userId);
   const validUserId = objUsers.validateNumber('userId', userId, -1, objUsers.nineNine);
 
-  //const condominiumId = Number(condominiumId);
-
-  const user = objUserInfo.email;
-
-
   // resident
   let resident = document.querySelector('.resident').value;
   resident = (resident === 'Ja') ? 'Y' : 'N';
 
   // email
   const email = document.querySelector('.email').value;
-  const validEmail = objUsers.validateEmail('email', email);
+  let validEmail = objUsers.validateEmail('email', email);
+  if (validEmail) {
+
+    validEmail = !objUsers.checkUiqueEmail(userId, email);
+  }
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
@@ -441,16 +411,25 @@ async function updateUserRow(userId) {
       await objUsers.loadUsersTable(condominiumId, resident);
     } else {
 
-      // Insert the user row in users table
-      await objUsers.insertUsersTable(resident, condominiumId, user, email, condoId, firstName, lastName, phone, securityLevel, password);
-      await objUsers.loadUsersTable(condominiumId, resident);
-      userId = objUsers.arrayUsers.at(-1).userId;
-      document.querySelector('.filterUserId').value = userId;
+      // check if user exist
+      const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email === user);
+      if (rowNumberUser === -1) {
+
+        // user does not exist
+        // Insert the user row in users table
+        await objUsers.insertUsersTable(resident, condominiumId, user, email, condoId, firstName, lastName, phone, securityLevel, password);
+        await objUsers.loadUsersTable(condominiumId, resident);
+        userId = objUsers.arrayUsers.at(-1).userId;
+        document.querySelector('.filterUserId').value = userId;
+      } else {
+
+        objRemoteHeatings.showMessage(objRemoteHeatings, 'Ugyldig e-mail. Finnes fra før.');
+      }
     }
 
     // Show filter
     let menuNumber = 0;
-    menuNumber = showFilter(userId, menuNumber, );
+    menuNumber = showFilter(userId, menuNumber,);
     menuNumber = showResult(userId, menuNumber);
 
     document.querySelector('.filterUserId').disabled = false;
@@ -470,7 +449,7 @@ async function deleteUserRow() {
   if (rowNumberUser !== -1) {
 
     // delete a user row
-    const user = objUserInfo.email;
+    //const user = objUserInfo.email;
 
     await objUsers.deleteUsersTable(userId, user);
   }

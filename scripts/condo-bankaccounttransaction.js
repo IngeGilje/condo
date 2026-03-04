@@ -11,7 +11,8 @@ const objCondominiums = new Condominium('scondominium');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
 const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 
-let condominium = 0;
+let condominiumId = 0;
+let user = "";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -25,8 +26,8 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    const email = sessionStorage.getItem("email");
-    if ((condominiumId === 0 || email === null)) {
+    user = sessionStorage.getItem("user");
+    if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';
@@ -302,7 +303,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     if (validCondoId && validAccountId && validNumberKWHour && validText) {
 
       //const condominiumId = 2;
-      //const user = objUserInfo.email;
+      ////const user = objUserInfo.email;
       const user = email;
 
       // Check if the bankaccounttransactions row exist
@@ -332,7 +333,7 @@ function showHeader() {
 // Delete bankaccounttransactions row
 async function deleteBankAccountTransactionRow(bankAccountTransationId, className) {
 
-  //const user = objUserInfo.email;
+  ////const user = objUserInfo.email;
   const user = email;
 
   // Check if bankaccounttransaction row exist
@@ -367,7 +368,7 @@ function showResult(rowNumber) {
 
   // table header
   rowNumber++;
-  html += objCondos.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst');
+  html += objCondos.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Bilag', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst');
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -378,9 +379,9 @@ function showResult(rowNumber) {
 
     // Show menu
     rowNumber++;
-    //html += objBankAccountTransactions.verticalMenu(rowNumber);
     html += objAccounts.insertTableColumns('', rowNumber);
 
+    /*
     // Delete
     let selectedChoice = "Ugyldig verdi";
     if (bankAccountTransaction.deleted === 'Y') selectedChoice = "Ja";
@@ -389,6 +390,7 @@ function showResult(rowNumber) {
     // delete
     let className = `delete${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransactions.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
+    */
 
     // condos
     className = `condoId${bankAccountTransaction.bankAccountTransactionId}`;

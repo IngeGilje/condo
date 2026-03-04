@@ -123,7 +123,7 @@ class Budget extends Condos {
   async loadBudgetsTable(condominiumId, year, accountId) {
 
     try {
-
+      // GET request
       const response = await fetch(`http://localhost:3000/budgets?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}`);
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();
@@ -136,6 +136,7 @@ class Budget extends Condos {
   async updateBudgetsTable(budgetId, user, accountId, amount, year, text) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/budgets?action=update&budgetId=${budgetId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();
@@ -145,9 +146,10 @@ class Budget extends Condos {
   }
 
   // insert budget row in budgets table
-  async insertBudgetsTable(condominiumId, user, accountId, amount, year,text) {
+  async insertBudgetsTable(condominiumId, user, accountId, amount, year, text) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/budgets?action=insert&condominiumId=${condominiumId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();
@@ -159,6 +161,7 @@ class Budget extends Condos {
   async deleteBudgetsTable(budgetId, user) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/budgets?action=delete&budgetId=${budgetId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();

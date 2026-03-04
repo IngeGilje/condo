@@ -97,6 +97,7 @@ class UserBankAccount extends Condos {
   async loadUserBankAccountsTable(condominiumId, userId, accountId) {
 
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/userbankaccounts?action=select&condominiumId=${condominiumId}&userId=${userId}&accountId=${accountId}`);
       if (!response.ok) throw new Error("Network error (user bank accounts)");
       this.arrayUserBankAccounts = await response.json();

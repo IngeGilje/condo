@@ -6,15 +6,16 @@ const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objSuppliers = new Supplier('supplier');
 
-let condominium = 0;
+let condominiumId = 0;
+let user = "";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
 // Validate LogIn
 condominiumId = Number(sessionStorage.getItem("condominiumId"));
-const email = sessionStorage.getItem("email");
-if ((condominiumId === 0 || email === null)) {
+user= sessionStorage.getItem("user");
+if ((condominiumId === 0 || user === null)) {
 
   // LogIn is not valid
   window.location.href = 'http://localhost/condo-login.html';
@@ -406,7 +407,7 @@ async function updateSupplierRow(supplierId) {
   const validSupplierId = objSuppliers.validateNumber('supplierId', supplierId, -1, objSuppliers.nineNine);
 
   //const condominiumId = Number(condominiumId);
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -504,7 +505,7 @@ async function deleteSupplierRow() {
   if (rowNumberSupplier !== -1) {
 
     // delete supplier row
-    const user = objUserInfo.email;
+    //const user = objUserInfo.email;
 
     objSuppliers.deleteSuppliersTable(supplierId, user);
   }

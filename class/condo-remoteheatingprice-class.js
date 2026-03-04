@@ -107,7 +107,7 @@ class RemoteHeatingPrice extends Condos {
 
     return html;
   }
-  
+
   // Get selected remote heating id
   getSelectedRemoteHeatingId(className) {
 
@@ -342,6 +342,7 @@ class RemoteHeatingPrice extends Condos {
   async loadRemoteHeatingPricesTable(condominiumId) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/remoteheatingprices?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (remoteheatingprices)");
       this.arrayRemoteHeatingPrices = await response.json();

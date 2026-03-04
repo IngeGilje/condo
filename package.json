@@ -17,5 +17,8 @@
     "socket.io": "^4.8.1",
     "upper-case": "^2.0.2",
     "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
   }
 }

@@ -22,8 +22,8 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    const email = sessionStorage.getItem("email");
-    if ((condominiumId === 0 || email === null)) {
+    user= sessionStorage.getItem("user");
+    if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';
@@ -291,7 +291,7 @@ function insertEmptyTableRow(rowNumber) {
 // Delete dues row
 async function deleteDueRow(dueId, className) {
 
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
 
   // Check if dues row exist
@@ -317,7 +317,7 @@ async function updateDuesRow(dueId) {
 
   dueId = Number(dueId);
 
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
   // Check dues columns
   let className = `.condoId${dueId}`;

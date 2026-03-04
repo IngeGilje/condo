@@ -108,7 +108,7 @@ class RemoteHeating extends Condos {
 
     return html;
   }
-  
+
   // Get selected remote heating id
   getSelectedRemoteHeatingId(className) {
 
@@ -343,6 +343,7 @@ class RemoteHeating extends Condos {
   async loadRemoteHeatingTable(condominiumId, year, condoId) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/remoteheatings?action=select&condominiumId=${condominiumId}&year=${year}&condoId=${condoId}`);
       if (!response.ok) throw new Error("Network error (remoteheatings)");
       this.arrayRemoteHeatings = await response.json();
@@ -355,6 +356,7 @@ class RemoteHeating extends Condos {
   async updateRemoteHeatingTable(user, remoteHeatingId, condoId, year, date, kilowattHour, priceYear) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/remoteheatings?action=update&user=${user}&remoteHeatingId=${remoteHeatingId}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}&priceYear=${priceYear}`);
       if (!response.ok) throw new Error("Network error (remoteheatings)");
       this.arrayRemoteHeatings = await response.json();
@@ -367,6 +369,7 @@ class RemoteHeating extends Condos {
   async insertRemoteHeatingTable(condominiumId, user, condoId, year, date, kilowattHour, priceYear) {
 
     try {
+      // GET request
       const response = await fetch(`http://localhost:3000/remoteheatings?action=insert&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}&priceYear=${priceYear}`);
       if (!response.ok) throw new Error("Network error (remoteheatings)");
       this.arrayRemoteHeatings = await response.json();
@@ -381,6 +384,7 @@ class RemoteHeating extends Condos {
     try {
       // Fetch for sending a message to server(request)
       // response is a message in .json format send from server(response)
+      // GET request
       const response = await fetch(`http://localhost:3000/remoteheatings?action=delete&remoteHeatingId=${remoteHeatingId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (remoteheatings)");
       this.arrayRemoteHeatings = await response.json();

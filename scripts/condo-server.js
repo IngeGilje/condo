@@ -11,6 +11,7 @@ import session from "express-session";
 import cors from "cors";
 import mysql from "mysql2/promise";
 import fs from "fs/promises";
+import bcrypt from "bcrypt";
 
 const nineNine = 999999999;
 const minusNineNine = -999999999;
@@ -104,59 +105,92 @@ async function main() {
 
     console.log("✅ Connected to MySQL");
 
-    // Check user and password
+    /*
+    // validate user
     app.get("/login", async (req, res) => {
 
-      const userId = req.query.userId;
-      const password = req.query.password;
-
-      // Response from mySQL
-      let rows;
-
-      // get user info from users table
+      console.log('req :',req);
+      console.log('/login');
       try {
 
-        let SQLquery = `
-          SELECT userId, condominiumId, email, securityLevel, password FROM users
-            WHERE deleted <> 'Y'
-            AND password = '${password}'
-            AND email = '${userId}'
-        `;
-        console.log('SQLquery: ', SQLquery);
+        let isValid = false;
 
-        // Send request to mySQL
-        [rows] = await mySqlDB.query(SQLquery);
+        const userId = req.query.userId;
+        console.log('userId :',userId);
+        const password = req.query.password;
+         console.log('password :',password);
+
+        // get password
+        const SQLquery = `
+        SELECT password FROM users
+          WHERE 
+            deleted = 'N'
+          AND userId = ${userId};`;
+
+        console.log('SQLquery :', SQLquery);
+        const [rows] = await mySqlDB.query(SQLquery);
+
+        console.log('Number of rows :', rows.length);
+        if (rows.length === 1) isValid = true;
+        console.log('valid 1:', isValid);
+        //if (password === rows[0].password && isValid) isValid = true;
+        if (isValid) {
+
+          console.log('Password :', password);
+          console.log('Password :', rows[0].password);
+          isValid = await bcrypt.compare(password, rows[0].password);
+          console.log('valid 2:', isValid);
+          rows[0].password = (isValid) ? 'OK' : 'Not OK';
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        }
+
       } catch (err) {
 
-        console.log("Database error in /login:", err.message);
-        res.status(500).json({ error: err.message });
       }
+    });
+    */
 
-      // check input user/password against users Table
-      if (rows.length === 1 && userId === rows[0].email && password === rows[0].password) {
+    // validate user
+    app.post("/login", async (req, res) => {
 
-        // save the logged-in user into the session
-        /*
-        req.session.user = {
-          userId: `${rows[0].email}`,
-          securityLevel: `${rows[0].securityLevel}`
-        };
+      console.log('/login');
+      try {
 
-        res.send({ success: true });
+        const userId = req.body.userId;
+        console.log('userId :', userId);
+        const password = req.body.password;
+        console.log('password :', password);
 
-        // Save information to the session
-        req.session.username = rows[0].email;
-        req.session.securityLevel = rows[0].securityLevel;
-        req.session.condominiumId = rows[0].condominiumId;
-        res.send("Session data saved");
-        */
+        // get password
+        const SQLquery = `
+        SELECT password FROM users
+          WHERE 
+            deleted = 'N'
+          AND userId = ${userId};`;
 
-        // Send a JSON response to the client containing the data
-        res.json(rows);
-      } else {
+        console.log('SQLquery :', SQLquery);
+        const [rows] = await mySqlDB.query(SQLquery);
 
-        res.json(rows);
-      }
+        console.log('Number of rows :', rows.length);
+        if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
+
+          console.log('Password :', password);
+          console.log('Password :', rows[0].password);
+          //isValid = await bcrypt.compare(password, rows[0].password);
+
+          // Send a JSON response to the client containing the data
+          //res.json(rows);
+          res.json({ success: true });
+        } else {
+
+          res.json({ success: false });
+        }
+
+      } catch (err) {
+        res.json({ success: false });
+      };
     });
 
     // GET CURRENT USER INFO
@@ -226,16 +260,14 @@ async function main() {
 
             const accountName = req.query.accountName;
 
-            const SQLquery =
-              `
-                UPDATE accounts
-                SET 
-                  user = '${user}',
-                  lastUpdate = '${lastUpdate}',
-                  name = '${accountName}',
-                  fixedCost = '${fixedCost}'
-                WHERE accountId = ${accountId};
-              `;
+            const SQLquery = `
+            UPDATE accounts
+            SET 
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              name = '${accountName}',
+              fixedCost = '${fixedCost}'
+            WHERE accountId = ${accountId};`;
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
@@ -328,7 +360,6 @@ async function main() {
     // Requests for users
     app.get("/users", async (req, res) => {
 
-
       const action = req.query.action;
       const lastUpdate = today.toISOString();
 
@@ -341,11 +372,10 @@ async function main() {
 
           try {
 
-            let SQLquery =
-              `
-                SELECT userId,deleted,resident,condominiumId,user,lastUpdate,email,condoId,firstName,lastName,phone,securityLevel FROM users
-                  WHERE deleted <> 'Y'
-              `;
+            let SQLquery = `
+            SELECT * FROM users
+              WHERE deleted <> 'Y'`;
+
             if (Number(condominiumId) !== nineNine) SQLquery += ` AND condominiumId = ${condominiumId}`;
             if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
 
@@ -376,7 +406,12 @@ async function main() {
             const lastName = req.query.lastName;
             const phone = req.query.phone;
             const securityLevel = req.query.securityLevel;
-            const password = req.query.password;
+            let password = req.query.password;
+
+            // Hash the password
+            const saltRounds = 10;
+            password = await bcrypt.hash(password, saltRounds);
+            console.log('password :', password);
 
             const SQLquery =
               `
@@ -422,6 +457,7 @@ async function main() {
             const phone = req.query.phone;
             const securityLevel = req.query.securityLevel;
             const password = req.query.password;
+            console.log('password :', password);
 
             // Insert new row
             const SQLquery =
@@ -497,12 +533,55 @@ async function main() {
           }
           break;
         }
+
+        // validate user
+        case 'validateUser': {
+
+          console.log('validateUser');
+          try {
+
+            let isValid = false;
+
+            const userId = req.query.userId;
+            const password = req.query.password;
+
+            // get password
+            const SQLquery = `
+            SELECT password FROM users
+              WHERE 
+                deleted = 'N'
+              AND userId = ${userId};`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            console.log('Number of rows :', rows.length);
+            if (rows.length === 1) isValid = true;
+            console.log('valid 1:', isValid);
+            //if (password === rows[0].password && isValid) isValid = true;
+            if (isValid) {
+
+              console.log('Password :', password);
+              console.log('Password :', rows[0].password);
+              console.log('Valid 2:', bcrypt.compare('12345', rows[0].password));
+              isValid = await bcrypt.compare(password, rows[0].password);
+              console.log('valid 3:', isValid);
+              rows[0].password = (isValid) ? 'OK' : 'Not OK';
+
+              // Send a JSON response to the client containing the data
+              res.json(rows);
+            }
+
+          } catch (err) {
+
+          }
+          break;
+        }
       }
     });
 
     // Requests for bank accounts
     app.get("/bankaccounts", async (req, res) => {
-
 
       const action = req.query.action;
       const lastUpdate = today.toISOString();

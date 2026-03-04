@@ -204,6 +204,7 @@ class BankAccount extends Condos {
   async loadBankAccountsTable(condominiumId, bankAccountId) {
 
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/bankaccounts?action=select&condominiumId=${condominiumId}&bankAccountId=${bankAccountId}`);
       if (!response.ok) throw new Error("Network error (bank accounts)");
       this.arrayBankAccounts = await response.json();
@@ -216,6 +217,7 @@ class BankAccount extends Condos {
   async updateBankAccountsTable(bankAccountId,user,bankAccount,name,openingBalance,openingBalanceDate,closingBalance,closingBalanceDate) {
 
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}`);
       if (!response.ok) throw new Error("Network error (bank account)");
       this.arrayBankAccounts = await response.json();
@@ -228,6 +230,7 @@ class BankAccount extends Condos {
   async insertBankAccountsTable(condominiumId,user,bankAccount,name,openingBalanceDate,openingBalance,closingBalanceDate,closingBalance) {
 
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/bankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
       if (!response.ok) throw new Error("Network error (bankaccounts)");
       this.arrayBankAccounts = await response.json();
@@ -240,6 +243,7 @@ class BankAccount extends Condos {
   async deleteBankAccountsTable(bankAccountId, user) {
 
     try {
+                 // GET request
       const response = await fetch(`http://localhost:3000/bankaccounts?action=delete&bankAccountId=${bankAccountId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (bankaccounts)");
       this.arrayBankAccounts = await response.json();

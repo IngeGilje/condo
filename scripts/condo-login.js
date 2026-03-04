@@ -1,5 +1,5 @@
 // Login
-// Activate user class
+// Activate classes
 const objUsers = new User('user');
 const objLogIn = new Login('login');
 
@@ -26,10 +26,9 @@ async function main() {
     events();
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objUsers.showMessage(objUsers, 'Server condo-server.js har ikke startet.');
   }
 }
-
 
 // Events for users
 function events() {
@@ -58,7 +57,7 @@ function resetValues() {
   // password
   document.querySelector('.password').value = '';
 
-  sessionStorage.removeItem("user");
+  sessionStorage.clear();
 }
 
 // Show header
@@ -132,61 +131,17 @@ function showResult() {
   document.querySelector('.result').innerHTML = html;
 }
 
-/*
-// check Log In
-function checkLogin() {
-
-  // validate email
-  const email = document.querySelector('.email').value;
-  const validEmail = objUsers.validateEmail('email', email);
-
-  // validate password
-  const password = document.querySelector('.password').value;
-  const validPassword = objUsers.validateText(password, 5, 45)
-
-  if (validEmail && validPassword) {
-
-    // Check user
-    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email === email);
-    if (rowNumberUser !== -1) {
-      if (objUsers.arrayUsers[rowNumberUser].email === email && objUsers.arrayUsers[rowNumberUser].password === password) {
-
-        // save user info
-        const userInfo = `
-        {
-          " email":"${email}",
-          " password":${objUsers.arrayUsers[rowNumberUser].securityLevel},
-          " condominiumId":${objUsers.arrayUsers[rowNumberUser].condominiumId}
-        }`;
-
-        // Store data
-        const objUserInfo = JSON.stringify(userInfo);
-        localStorage.setItem("userInfo", objUserInfo);
-
-        // Start bank account transactions
-        window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
-        return true;
-      }
-
-    }
-  } else {
-    resetValues();
-    return false;
-  }
-}
-*/
-
 // check user and password
 function checkLogin() {
 
   // validate email
-  document.querySelector('.email').value = 'inge.gilje@gmail.com'
+  document.querySelector('.email').value = 'inge.gilje@ig.no'
   const email = document.querySelector('.email').value;
   const validEmail = objUsers.validateEmail('email', email);
 
   // validate password
-  const password = document.querySelector('.password').value;
   document.querySelector('.password').value = '12345';
+  const password = document.querySelector('.password').value;
   const validPassword = objUsers.validateText(password, 5, 45)
 
   if (validEmail && validPassword) {
@@ -194,22 +149,33 @@ function checkLogin() {
     checkUserPasswordSync();
     async function checkUserPasswordSync() {
 
-      // Check user and password
-      await objUsers.checkUserPassword(email, password);
-      if (objUsers.arrayUsers.length === 1) {
+      // get userId
+      const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email === email);
+      if (rowNumberUser !== -1) {
 
-        // The sessionStorage object stores data for only one session
-        window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[0].condominiumId);
-        window.sessionStorage.setItem("email", objUsers.arrayUsers[0].email);
+        const userId = objUsers.arrayUsers[rowNumberUser].userId;
 
-        // Start bank account transactions
-        window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
-        return true;
-      } else {
+        // Check user and password      
+        if (await objUsers.validateUser(userId, password)) {
 
-        resetValues();
-        return false;
+          // Load users table
+          const condominiumId = objLogIn.nineNine;
+          const resident = 'Y';
+          await objUsers.loadUsersTable(condominiumId, resident);
+
+          // The sessionStorage object stores data for only one session
+          window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[0].condominiumId);
+          window.sessionStorage.setItem("user", objUsers.arrayUsers[0].email);
+
+          // Start bank account transactions
+          window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
+          return true;
+        }
       }
     }
   }
+
+  // password/ user is not OK
+  resetValues();
+  return false;
 }

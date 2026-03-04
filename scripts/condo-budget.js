@@ -21,8 +21,8 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    const email = sessionStorage.getItem("email");
-    if ((condominiumId === 0 || email === null)) {
+    user= sessionStorage.getItem("user");
+    if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';
@@ -145,7 +145,7 @@ function events() {
 // Delete budgets row
 async function deleteBudgetRow(budgetId, className) {
 
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
   // Check if budget row exist
   budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
@@ -164,7 +164,7 @@ async function updateBudgetsRow(budgetId) {
 
   budgetId = Number(budgetId);
 
-  const user = objUserInfo.email;
+  //const user = objUserInfo.email;
 
   // Get budgets row values
 
