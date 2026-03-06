@@ -94,13 +94,18 @@ class Condos {
       text: "Banktransaksjoner"
     },
     {
-      applicationName: "condo-importfile.html",
+      applicationName: "condo-voucher.html",
       className: "Menu16",
+      text: "Bilag"
+    },
+    {
+      applicationName: "condo-importfile.html",
+      className: "Menu17",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu17",
+      className: "Menu18",
       text: "Årsregnskap"
     },
   ];

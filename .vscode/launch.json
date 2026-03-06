@@ -127,6 +127,14 @@
     {
       "type": "chrome",
       "request": "launch",
+      "name": "Bilag",
+      "url": "http://localhost/condo-voucher.html",
+      "webRoot": "c:/websites/condo",
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
       "name": "Importer transaksjoner",
       "url": "http://localhost/condo-importfile.html",
       "webRoot": "c:/websites/condo",

@@ -1,0 +1,4 @@
+
+class Voucher extends Condos {
+
+}

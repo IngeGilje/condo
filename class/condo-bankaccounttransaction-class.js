@@ -97,10 +97,11 @@ class BankAccountTransaction extends Condos {
   }
   */
 
+  /*
   // Show all bank account transactions
   showSelectedBankAccountTransactions(className, bankAccountTransactionId, alternativeSelect) {
 
-    document.querySelector(`.div-${className}`).innerHTML = "";
+    document.querySelector(`.${className}`).innerHTML = "";
     let html =
       `
         <form 
@@ -201,6 +202,62 @@ class BankAccountTransaction extends Condos {
       `;
 
     document.querySelector(`.div-${className}`).innerHTML = html;
+  }
+  */
+
+  // Show all selected bank account transactions
+  showSelectedBankAccountTransactions(className, style, bankAccountTransactionId, selectNone, selectAll, disabled = false) {
+
+    let selectedValue = false;
+
+    let html = `
+      <td 
+        class="center one-line">
+          <select class="${className} center"
+            ${disabled ? 'disabled' : ''}
+            ${style ? `style="${style}"` : ''}
+          >`;
+
+    // Check if bank account transaction array is empty
+    const numberOfRows = this.arrayBankAccountTransactions.length;
+    if (numberOfRows > 0) {
+      this.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
+        if (bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId) {
+
+          html += `<option value=${bankAccountTransaction.bankAccountTransactionId} selected>${bankAccountTransaction.bankAccountTransactionId}</option>`;
+          selectedValue = true;
+        } else {
+
+          html += `<option value=${bankAccountTransaction.bankAccountTransactionId}>${bankAccountTransaction.bankAccountTransactionId}</option>`;
+        }
+      });
+    } else {
+
+      html += `<option value=0 selected>Ingen leilighet</option>`;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (numberOfRows > 1)) {
+
+      html += `<option value=${this.nineNine} selected>${selectAll}</option>`;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (numberOfRows > 1)) {
+      if (selectedValue) {
+        html += `<option value=0>${selectNone}</option>`;
+      } else {
+
+        html += `<option value=0 selected>${selectNone}</option>`;
+        selectedValue = true;
+      }
+    }
+
+    html += `</select></td>`;
+
+    return html;
   }
 
   // Find selected Bank Account Movement Id

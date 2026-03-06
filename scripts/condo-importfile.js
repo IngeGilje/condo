@@ -31,7 +31,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -342,7 +342,7 @@ async function updateOpeningClosingBalance() {
           const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
           if (rowNumberBankAccount !== -1) {
 
-            const user = objUserPassword.email
+            //const user = objUserPassword.email
             const bankAccount = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount);
             const name = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
             const closingBalance = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
@@ -363,7 +363,7 @@ async function updateOpeningClosingBalance() {
           const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
           if (rowNumberBankAccount !== -1) {
 
-            const user = objUserPassword.email
+            //const user = objUserPassword.email
             const bankAccount = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount;
             const name = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
             const openingBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance;
@@ -611,7 +611,7 @@ async function updateBankAccountTransactions() {
 
     const bankAccountTransactionId = 0;  // not in use
     //const condominiumId = Number(condominiumId);
-    const user = objUserPassword.email;
+    //const user = objUserPassword.email;
 
     const condoId = Number(transaction.condoId);
     const accountId = Number(transaction.accountId);
