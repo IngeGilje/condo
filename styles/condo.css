@@ -156,7 +156,7 @@ input[readonly] {
 
 /* horizontal menu */
 .horizontalMenu {
-   display: flex;
+  display: flex;
   list-style: none;
   gap: 10px;
   padding: 0;
@@ -182,7 +182,7 @@ input[readonly] {
 
 .horizontalMenu li a:hover {
   background: #e0f0e0;
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 img {
@@ -195,4 +195,9 @@ img {
 .input-error {
   background-color: #f8d7da;
   border: 1px solid #dc3545;
+}
+
+iframe {
+  width: 600px;
+  height: 400px;
 }

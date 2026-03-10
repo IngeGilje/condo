@@ -11,6 +11,7 @@ import session from "express-session";
 import cors from "cors";
 import mysql from "mysql2/promise";
 import fs from "fs/promises";
+import path from "path";
 import bcrypt from "bcrypt";
 
 const nineNine = 999999999;
@@ -37,7 +38,6 @@ app.use(session({
 // Respond to client that server (this program) is running
 app.get('/health', (req, res) => {
 
-  console.log('OK')
   res.status(200).send('OK');
 });
 
@@ -105,53 +105,6 @@ async function main() {
 
     console.log("✅ Connected to MySQL");
 
-    /*
-    // validate user
-    app.get("/login", async (req, res) => {
-
-      console.log('req :',req);
-      console.log('/login');
-      try {
-
-        let isValid = false;
-
-        const userId = req.query.userId;
-        console.log('userId :',userId);
-        const password = req.query.password;
-         console.log('password :',password);
-
-        // get password
-        const SQLquery = `
-        SELECT password FROM users
-          WHERE 
-            deleted = 'N'
-          AND userId = ${userId};`;
-
-        console.log('SQLquery :', SQLquery);
-        const [rows] = await mySqlDB.query(SQLquery);
-
-        console.log('Number of rows :', rows.length);
-        if (rows.length === 1) isValid = true;
-        console.log('valid 1:', isValid);
-        //if (password === rows[0].password && isValid) isValid = true;
-        if (isValid) {
-
-          console.log('Password :', password);
-          console.log('Password :', rows[0].password);
-          isValid = await bcrypt.compare(password, rows[0].password);
-          console.log('valid 2:', isValid);
-          rows[0].password = (isValid) ? 'OK' : 'Not OK';
-
-          // Send a JSON response to the client containing the data
-          res.json(rows);
-        }
-
-      } catch (err) {
-
-      }
-    });
-    */
-
     // validate user
     app.post("/login", async (req, res) => {
 
@@ -172,16 +125,8 @@ async function main() {
 
         console.log('SQLquery :', SQLquery);
         const [rows] = await mySqlDB.query(SQLquery);
-
-        console.log('Number of rows :', rows.length);
         if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
 
-          console.log('Password :', password);
-          console.log('Password :', rows[0].password);
-          //isValid = await bcrypt.compare(password, rows[0].password);
-
-          // Send a JSON response to the client containing the data
-          //res.json(rows);
           res.json({ success: true });
         } else {
 
@@ -193,18 +138,60 @@ async function main() {
       };
     });
 
-    // GET CURRENT USER INFO
+    app.post("/updateVoucerFileName", async (req, res) => {
+
+      console.log('updateVoucerFileName');
+      try {
+
+        const lastUpdate = today.toISOString();
+        const user = req.body.user;
+        const bankAccountTransactionId = req.body.bankAccountTransactionId;
+        const voucerFileName = req.body.voucerFileName;
+
+        // Update a row in bank account transactions table
+        const SQLquery = `
+        UPDATE bankaccounttransactions
+        SET
+          user = '${user}',
+          lastUpdate = '${lastUpdate}',
+          voucerFileName = '${voucerFileName}'
+        WHERE bankAccountTransactionId = ${bankAccountTransactionId};`;
+
+        console.log('SQLquery :', SQLquery);
+        const [rows] = await mySqlDB.query(SQLquery);
+
+        // Send a JSON response to the client containing the data
+        res.json(rows);
+      } catch (err) {
+
+        console.log("Database error in /updateVoucerFileName:", err.message);
+        res.status(500).json({ error: err.message });
+      }
+    });
+
+    // Check if file exists
+    app.post("/checkIfFileExists", async (req, res) => {
+
+      const fileName = path.join("data", req.body.fileName);
+      try {
+
+        await fs.access(fileName);
+        res.json({ success: true });
+      } catch (err) {
+        res.json({ success: false });
+      }
+    });
+
+    // Get current user info
     app.get("/me", async (req, res) => {
 
       console.log('req.session', req.session);
       if (req.session.user) {
 
-        console.log('send', req.session.user);
         res.send(req.session.user);
       } else {
 
         res.status(401).send("Not logged in");
-        console.log('status Not logged in');
       }
     });
 
@@ -1813,7 +1800,6 @@ async function main() {
 
     // Requests for bank account transactions
     app.get("/bankaccounttransactions", async (req, res) => {
-
 
       const action = req.query.action;
       const lastUpdate = today.toISOString();

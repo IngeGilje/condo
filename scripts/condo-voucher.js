@@ -49,16 +49,16 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objVouchers.showMessage(objVouchers, 'Server condo-server.js har ikke startet.');
   }
 }
 
-// Events for condo
+// Events for voucher
 function events() {
 
   // Filter
   document.addEventListener('change', (event) => {
-    if (event.target.classList.contains('filterbankAccountTransactionId')) {
+    if (event.target.classList.contains('filterBankAccountTransactionId')) {
 
       filterSync();
 
@@ -67,82 +67,25 @@ function events() {
         //const condominiumId = Number(condominiumId);
         await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId);
 
-        const bankAccountTransactionId = Number(document.querySelector('.filterbankAccountTransactionId').value);
+        const bankAccountTransactionId = Number(document.querySelector('.filterBankAccountTransactionId').value);
         let menuNumber = 0;
         menuNumber = showResult(bankAccountTransactionId, menuNumber);
       }
     };
   });
 
-  // update/insert a condos row
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('update')) {
+  // file name pdf document
+  document.addEventListener('change', (event) => {
+    if (event.target.classList.contains('voucerFileName')) {
 
-      updateCondoRowSync();
+      updateBankAccountTransactionRowSync();
 
-      // Update a condos row
-      async function updateCondoRowSync() {
+      // Update a bank account transaction row
+      async function updateBankAccountTransactionRowSync() {
 
-        const bankAccountTransactionId = document.querySelector('.filterbankAccountTransactionId').value;
-        updateCondoRow(bankAccountTransactionId);
+        const bankAccountTransactionId = Number(document.querySelector('.filterBankAccountTransactionId').value);
+        updateBankAccountTransactionRow(bankAccountTransactionId);
       }
-    };
-  });
-
-  // Delete condos row
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('delete')) {
-
-      deleteCondoSync();
-
-      async function deleteCondoSync() {
-
-        deleteCondoRow();
-
-        //const condominiumId = Number(condominiumId);
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId);
-
-        let menuNumber = 0;
-
-        // Show filter
-        const bankAccountTransactionId = objBankAccountTransactions.arrayBankAccountTransactions.at(-1).bankAccountTransactionId;
-        menuNumber = showFilter(menuNumber, bankAccountTransactionId);
-
-
-        menuNumber = showResult(bankAccountTransactionId, menuNumber);
-      };
-    };
-  });
-
-  // Insert a condo row
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('insert')) {
-
-      resetValues();
-    };
-  });
-
-  // Cancel
-  document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('cancel')) {
-
-      // Reload condo table
-      reloadCondoSync();
-      async function reloadCondoSync() {
-
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId);
-
-        let bankAccountTransactionId = Number(document.querySelector('.filterbankAccountTransactionId').value);
-        if (bankAccountTransactionId === 0) bankAccountTransactionId = objBankAccountTransactions.arrayBankAccountTransactions.at(-1).bankAccountTransactionId;
-
-        // Show filter
-        let menuNumber = 0;
-
-        // Show filter
-        menuNumber = showFilter(menuNumber, bankAccountTransactionId);
-
-        menuNumber = showResult(bankAccountTransactionId, menuNumber);
-      };
     };
   });
 }
@@ -151,10 +94,10 @@ function events() {
 function showHeader() {
 
   // Start table
-  let html = objBankAccountTransactions.startTable('width:600px;');
+  let html = objBankAccountTransactions.startTable('width:800px;');
 
   // show main header
-  html += objBankAccountTransactions.showTableHeader('width:175px;', 'Bankkontotransaksjon');
+  html += objBankAccountTransactions.showTableHeader('width:175px;', 'Vis bilag');
 
   // The end of the table
   html += objBankAccountTransactions.endTable();
@@ -165,7 +108,7 @@ function showHeader() {
 function showFilter(rowNumber, bankAccountTransactionId) {
 
   // Start table
-  html = objBankAccountTransactions.startTable('width:600px;');
+  html = objBankAccountTransactions.startTable('width:800px;');
 
   // Header filter
   rowNumber++;
@@ -176,12 +119,12 @@ function showFilter(rowNumber, bankAccountTransactionId) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('', rowNumber);
+  html += objBankAccountTransactions.insertTableColumns('width:175px;', rowNumber);
 
   // show selected bank account transactions
-  html += objBankAccountTransactions.showSelectedBankAccountTransactions('filterBankAccountTransactionId', 'width:175px;', bankAccountTransactionId, '', ''                 )
-  
-  html += "</tr>";
+  html += objBankAccountTransactions.showSelectedBankAccountTransactions('filterBankAccountTransactionId', 'width:175px;', bankAccountTransactionId, '')
+
+  html += "<td></td></tr>";
 
   // end table body
   html += objBankAccountTransactions.endTableBody();
@@ -197,55 +140,58 @@ function showFilter(rowNumber, bankAccountTransactionId) {
 function showResult(bankAccountTransactionId, rowNumber) {
 
   // start table
-  let html = objBankAccountTransactions.startTable('width:600px;');
-
-  // table header
-  rowNumber++;
-  html += objBankAccountTransactions.showTableHeaderMenu("width:175px;", rowNumber, '', '');
+  let html = objBankAccountTransactions.startTable('width:800px;');
 
   // Check if bank account transactin row exist
   const rowNumberBankAccountTransaction = objBankAccountTransactions.arrayBankAccountTransactions.findIndex(bankAccountTransaction => bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId);
   if (rowNumberBankAccountTransaction !== -1) {
 
+    // date and amount
+    rowNumber++;
+    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, 'Dato', 'Beløp');
+    html += "</tr>";
+
+    rowNumber++;
+    html += objBankAccountTransactions.insertTableColumns('', rowNumber);
+
+    // date
+    let date = objBankAccountTransactions.arrayBankAccountTransactions[rowNumberBankAccountTransaction].date;
+    date = (date) ? formatToNorDate(date) : '';
+    html += objBankAccountTransactions.inputTableColumn('date', '', date, 10, true);
+
+    // amount
+    const income = objBankAccountTransactions.arrayBankAccountTransactions[rowNumberBankAccountTransaction].income;
+    const payment = objBankAccountTransactions.arrayBankAccountTransactions[rowNumberBankAccountTransaction].payment;
+    const amount = formatOreToKroner((income) ? income : payment);
+    html += objBankAccountTransactions.inputTableColumn('amount', '', amount, 10, true);
+
+    html += "</tr>";
+
     // file name of the voucher
-    html += "<tr>";
-
     rowNumber++;
-    html += objBankAccountTransactions.showTableHeaderMenu("width:175px;", rowNumber, '', '');
-
+    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, 'Filnavn', '');
     html += "</tr>";
 
     rowNumber++;
     html += objBankAccountTransactions.insertTableColumns('', rowNumber);
 
-    // file name of the voucher
-    html += objBankAccountTransactions.inputTableColumn('eInvoiceFileName', '', objBankAccountTransactions.arrayBankAccountTransactions[rowNumberBankAccountTransaction].eInvoiceFileName, 45);
+    let voucerFileName = objBankAccountTransactions.arrayBankAccountTransactions[rowNumberBankAccountTransaction].voucerFileName;
+    voucerFileName = (voucerFileName) ? voucerFileName : '';
+    html += objBankAccountTransactions.inputTableColumn('voucerFileName', '', voucerFileName, 45);
 
-    html += "</tr>";
+    html += "<td></td></tr>";
 
-    // Buttons
-
-    // insert table columns in start of a row
+    // Show pdf file
     rowNumber++;
     html += objBankAccountTransactions.insertTableColumns('', rowNumber);
 
-    html += "</tr>";
-
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objBankAccountTransactions.insertTableColumns('', rowNumber);
-
-    html += objBankAccountTransactions.showButton('width:175px;', 'update', 'Oppdater');
-    html += objBankAccountTransactions.showButton('width:175px;', 'cancel', 'Angre');
-    html += "</tr>";
-
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objBankAccountTransactions.insertTableColumns('', rowNumber);
-
-    html += objBankAccountTransactions.showButton('width:175px;', 'delete', 'Slett');
-    html += objBankAccountTransactions.showButton('width:175px;', 'insert', 'Ny');
-    html += "</tr>";
+    html += `
+      <td colspan="2" rowspan="13">
+        <iframe
+         src="/data/${voucerFileName}">
+        </iframe>
+      </td>
+    </tr>`;
 
     // Show the rest of the menu
     rowNumber++;
@@ -263,108 +209,41 @@ function showResult(bankAccountTransactionId, rowNumber) {
 async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
   if (bankAccountTransactionId === '') bankAccountTransactionId = -1
-  bankAccountTransactionId = Number(bankAccountTransactionId);
-  const validbankAccountTransactionId = objBankAccountTransactions.validateNumber('bankAccountTransactionId', bankAccountTransactionId, -1, objBankAccountTransactions.nineNine);
+  const validbankAccountTransactionId = objBankAccountTransactions.validateNumber('bankAccountTransactionId', Number(bankAccountTransactionId), -1, objBankAccountTransactions.nineNine);
 
-  //const condominiumId = Number(condominiumId);
+  // validate voucer filename
+  const voucerFileName = document.querySelector('.voucerFileName').value;
+  //const validVoucerFileName = objBankAccountTransactions.validateText(voucerFileName, 3, 45);
 
-  //const user = objUserInfo.email;
+  // Check if the file exist
+  let validVoucerFileName = false;
+  if (await objVouchers.checkIfFileExists(voucerFileName)) {
+    validVoucerFileName = true;
+  } else {
+    objVouchers.showMessage(objVouchers, 'Ugyldig filnavn på bilag.');
+  }
 
-  // validate name
-  const name = document.querySelector('.name').value;
-  const validName = objBankAccountTransactions.validateText(name, 3, 50);
-
-  // validate street
-  const street = document.querySelector('.street').value;
-  const validStreet = objBankAccountTransactions.validateText(street, 3, 50);
-
-  // validate address2
-  const address2 = document.querySelector('.address2').value;
-  const validAddress2 = objBankAccountTransactions.validateText(address2, 0, 50);
-
-  // validate postalCode
-  const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objBankAccountTransactions.validateNumber('postalCode', Number(postalCode), 1, 9999);
-
-  // validate city
-  const city = document.querySelector('.city').value;
-  const validCity = objBankAccountTransactions.validateText(city, 1, 50);
-
-  // validate squaremeters
-  const squareMeters = Number(formatKronerToOre(document.querySelector('.squareMeters').value));
-  const validSquareMeters = objBankAccountTransactions.validateNumber('squareMeters', squareMeters, 1, 100000);
-
-  if (validbankAccountTransactionId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
+  if (validVoucerFileName && validbankAccountTransactionId) {
 
     // Check if the bankAccountTransactionId exist
     const rowNumberBankAccountTransaction = objBankAccountTransactions.arrayBankAccountTransactions.findIndex(condo => condo.bankAccountTransactionId === bankAccountTransactionId);
     if (rowNumberBankAccountTransaction !== -1) {
 
-      // update the condos row
-      await objBankAccountTransactions.updateCondoTable(bankAccountTransactionId, user, name, street, address2, postalCode, city, squareMeters);
-      await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId);
-    } else {
+      // update the bankaccounttransactions row
+      if (await objBankAccountTransactions.updateVoucerFileName(user, bankAccountTransactionId, voucerFileName)) {
 
-      // Insert the condo row in condo table
-      await objBankAccountTransactions.insertCondoTable(condominiumId, user, name, street, address2, postalCode, city, squareMeters);
-      await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId);
-      bankAccountTransactionId = objBankAccountTransactions.arrayBankAccountTransactions.at(-1).bankAccountTransactionId;
-      document.querySelector('.filterbankAccountTransactionId').value = bankAccountTransactionId;
+        await objBankAccountTransactions.loadBankAccountTransactionsTable('condoId ASC, date DESC, income ASC', condominiumId, 'N', objVouchers.nineNine, objVouchers.nineNine, 0, '20000101', '20991231');
+      } else {
+
+        objVouchers.showMessage(objVouchers, 'Navn på bilag er ikke oppdatert.');
+      }
+
+      let menuNumber = 0;
+
+      // Show filter
+      menuNumber = showFilter(menuNumber, bankAccountTransactionId);
+
+      menuNumber = showResult(bankAccountTransactionId, menuNumber);
     }
-
-    let menuNumber = 0;
-
-    // Show filter
-    menuNumber = showFilter(menuNumber, bankAccountTransactionId);
-
-    menuNumber = showResult(bankAccountTransactionId, menuNumber);
-
-    document.querySelector('.filterbankAccountTransactionId').disabled = false;
-    document.querySelector('.delete').disabled = false;
-    document.querySelector('.insert').disabled = false;
-  }
-}
-
-// Reset all values for condo
-function resetValues() {
-
-  document.querySelector('.filterbankAccountTransactionId').value = '';
-
-  document.querySelector('.name').value = '';
-
-  // street
-  document.querySelector('.street').value = '';
-
-  //  address 2
-  document.querySelector('.address2').value = '';
-
-  // postal code
-  document.querySelector('.postalCode').value = '';
-
-  // city
-  document.querySelector('.city').value = '';
-
-  // squareMeters
-  document.querySelector('.squareMeters').value = '';
-
-  document.querySelector('.filterbankAccountTransactionId').disabled = true;
-  document.querySelector('.delete').disabled = true;
-  document.querySelector('.insert').disabled = true;
-}
-
-// Delete condo row
-async function deleteCondoRow() {
-
-  // bankAccountTransactionId
-  const bankAccountTransactionId = Number(document.querySelector('.filterbankAccountTransactionId').value);
-
-  // Check if condo number exist
-  const rowNumberBankAccountTransaction = objBankAccountTransactions.arrayBankAccountTransactions.findIndex(condo => condo.bankAccountTransactionId === bankAccountTransactionId);
-  if (rowNumberBankAccountTransaction !== -1) {
-
-    // delete a condo row
-    //const user = objUserInfo.email;
-
-    await objBankAccountTransactions.deleteCondoTable(bankAccountTransactionId, user);
   }
 }

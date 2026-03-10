@@ -757,53 +757,6 @@ class Condos {
     inputElement.style.backgroundImage = `url('icons/${iconName}')`;
   }
 
-  /*
-  // Show icon
-  showIconNew(className) {
-   
-    // Set the PNG file
-    const inputElement = document.querySelector(`.${className}`);
-    inputElement.style.backgroundRepeat = `no-repeat`;
-   
-    const iconName = this.getIconNameNew(`${className}`);
-    inputElement.style.backgroundImage = `url('icons/${iconName}')`;
-  }
-   
-  // get icon name from column name
-  getIconNameNew(className) {
-   
-    let imageName;
-    if (className.toLowerCase().includes("name")) imageName = "name.png";
-    if (className.toLowerCase().includes("condo")) imageName = "condo.png";
-    if (className.toLowerCase().includes("address")) imageName = "address.png";
-    if (className.toLowerCase().includes("postalcode")) imageName = "postalCode.png";
-    if (className.toLowerCase().includes("street")) imageName = "street.png";
-    if (className.toLowerCase().includes("city")) imageName = "city.png";
-    if (className.toLowerCase().includes("phone")) imageName = "phone.png";
-    if (className.toLowerCase().includes("email")) imageName = "email.png";
-    if (className.toLowerCase().includes("organization")) imageName = "organizationnumber.png";
-    if (className.toLowerCase().includes("filename")) imageName = "fileName.png";
-    if (className.toLowerCase().includes("date")) imageName = "date.png";
-    if (className.toLowerCase().includes("income")) imageName = "income.png";
-    if (className.toLowerCase().includes("kwhour")) imageName = "kilowattHour.png";
-    if (className.toLowerCase().includes("text")) imageName = "text.png";
-    if (className.toLowerCase().includes("amount")) imageName = "amount.png";
-    if (className.toLowerCase().includes("password")) imageName = "password.png";
-    if (className.toLowerCase().includes("account")) imageName = "account.png";
-    if (className.toLowerCase().includes("balance")) imageName = "accountname.png";
-    if (className.toLowerCase().includes("balancedate")) imageName = "date.png";
-    if (className.toLowerCase().includes("update")) imageName = "save.png";
-    if (className.toLowerCase().includes("save")) imageName = "save.png";
-    if (className.toLowerCase().includes("insert")) imageName = "insert.png";
-    if (className.toLowerCase().includes("cancel")) imageName = "cancel.png";
-    if (className.toLowerCase().includes("delete")) imageName = "cancel.png";
-    if (className.toLowerCase().includes("supplier")) imageName = "supplier.png";
-    if (className.toLowerCase().includes("year")) imageName = "calendar.png";
-    if (imageName === 'undefined') imageName = "error.png";
-    return imageName;
-  }
-  */
-
   // get icon name from column name
   getIconName(className) {
 
@@ -1350,23 +1303,6 @@ class Condos {
     return `</table>`;
   }
 
-  /*
-  // Get user info
-  async getUserInfo() {
-
-    // GET request
-    const response = await fetch("http://localhost:3000/profile?credentials='include'"); // IMPORTANT for sessions (cookies)
-
-    if (response.ok) {
-      const data = await response.json();
-
-      console.log(data.username);
-      console.log(data.securityLevel);
-      console.log(data.condominiumId);
-    }
-  }
-  */
-
   // check if server is running
   async checkServer() {
 
@@ -1381,6 +1317,27 @@ class Condos {
         return false;
       }
     } catch (err) {
+
+      return false;
+    }
+  }
+
+  // check if file exists
+  async checkIfFileExists(fileName) {
+
+    const response = await fetch("http://localhost:3000/checkIfFileExists", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        fileName: fileName
+      })
+    });
+    if (response.ok) {
+
+      return true;
+    } else {
 
       return false;
     }

@@ -426,6 +426,8 @@ function showResult(rowNumber) {
     className = `text${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransactions.inputTableColumn(className, '', text, 45);
 
+    // Show voucher
+
     html += "</tr>";
 
     // accumulate
