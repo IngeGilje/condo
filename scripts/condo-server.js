@@ -127,13 +127,18 @@ async function main() {
         const [rows] = await mySqlDB.query(SQLquery);
         if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
 
-          res.json({ success: true });
+          console.log('Gyldig');
+          res.status(200).send('OK');
+          //res.json({ success: true });
         } else {
 
-          res.json({ success: false });
+          console.log('Ugyldig');
+          res.status(401).send("Not OK");
+          //res.json({ success: false });
         }
 
       } catch (err) {
+        console.log('Ugyldig');
         res.json({ success: false });
       };
     });

@@ -132,50 +132,45 @@ function showResult() {
 }
 
 // check user and password
-function checkLogin() {
+async function checkLogin() {
 
   // validate email
-  document.querySelector('.email').value = 'inge.gilje@ig.no'
   const email = document.querySelector('.email').value;
   const validEmail = objUsers.validateEmail('email', email);
 
   // validate password
-  document.querySelector('.password').value = '12345';
   const password = document.querySelector('.password').value;
   const validPassword = objUsers.validateText(password, 5, 45)
 
   if (validEmail && validPassword) {
 
-    checkUserPasswordSync();
-    async function checkUserPasswordSync() {
+    // get userId
+    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email === email);
+    if (rowNumberUser !== -1) {
 
-      // get userId
-      const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email === email);
-      if (rowNumberUser !== -1) {
+      // Check user and password 
+      userId = objUsers.arrayUsers[rowNumberUser].userId;
+      if (await objUsers.validateUser(userId, password)) {
 
-        const userId = objUsers.arrayUsers[rowNumberUser].userId;
+        // Load users table
+        const condominiumId = objLogIn.nineNine;
+        const resident = 'Y';
+        await objUsers.loadUsersTable(condominiumId, resident);
 
-        // Check user and password      
-        if (await objUsers.validateUser(userId, password)) {
+        // The sessionStorage object stores data for only one session
+        window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[0].condominiumId);
+        window.sessionStorage.setItem("user", objUsers.arrayUsers[0].email);
 
-          // Load users table
-          const condominiumId = objLogIn.nineNine;
-          const resident = 'Y';
-          await objUsers.loadUsersTable(condominiumId, resident);
-
-          // The sessionStorage object stores data for only one session
-          window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[0].condominiumId);
-          window.sessionStorage.setItem("user", objUsers.arrayUsers[0].email);
-
-          // Start bank account transactions
-          window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
-          return true;
-        }
+        // Start bank account transactions
+        window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
+        return true;
       }
     }
   }
 
   // password/ user is not OK
+  objUsers.showMessage(objUsers, 'Ugyldig passord/email');
+
   resetValues();
   return false;
 }
