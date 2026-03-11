@@ -3,7 +3,7 @@
 
 // Test- or web server
 // const serverStatus = 1; // Web server
-// const serverStatus = 2; // Test server/ local test server
+// const serverStatus = 2; // Test server
 const serverStatus = 2;
 
 import express from "express";

@@ -1379,7 +1379,7 @@ class Condos {
         // Web server
         case 1: {
 
-          url = "http://192.168.194/";
+          url = "http://localhost/";
           break;
         }
         
@@ -1925,9 +1925,7 @@ function testMode() {
     // Web server
     case 1:
     // Test web server/ local web server
-    case 2:
-    // Test server/ local test server
-    case 3: {
+     case 2: {
 
       sessionStorage.removeItem("user");
 
