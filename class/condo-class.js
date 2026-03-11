@@ -6,10 +6,9 @@ class Condos {
     this.applicationName = applicationName;
   }
 
-  // serverStatus = 1; // Web server
-  // serverStatus = 2; // Test web server/ local web server
-  // serverStatus = 3; // Test server/ local test server
-  serverStatus = 3; // Test server/ local test server
+  // serverStatus = 1;  // Web server
+  // serverStatus = 2;  // Test web server/ local web server
+  serverStatus = 2;     // Test web server/ local web server
 
   inactivityTimeout = false;
 
@@ -1380,14 +1379,12 @@ class Condos {
         // Web server
         case 1: {
 
-          url = "http://ingegilje.no/";
+          url = "http://192.168.194/";
           break;
         }
-        // Test web server/ local web server
-        case 2:
-
-        // Test server/ local test server
-        case 3: {
+        
+        // local web server
+        case 2: {
 
           url = "http://localhost/";
           break;
