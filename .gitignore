@@ -1,5 +1,4 @@
 node_modules/
 .vscode/
 web.config
-web.config.bak
 applicationHost.config
