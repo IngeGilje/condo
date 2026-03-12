@@ -1302,12 +1302,39 @@ class Condos {
     return `</table>`;
   }
 
+  /*
   // check if server is running
   async checkServer() {
 
     try {
       // GET request
       const response = await fetch('http://localhost:3000/health');
+      if (response.ok) {
+
+        return true;
+      } else {
+
+        return false;
+      }
+    } catch (err) {
+
+      return false;
+    }
+  }
+  */
+
+  // check if file exists
+  async checkServer() {
+
+    try {
+      const response = await fetch('http://localhost:3000/health', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+        })
+      });
       if (response.ok) {
 
         return true;
@@ -1382,7 +1409,7 @@ class Condos {
           url = "http://localhost/";
           break;
         }
-        
+
         // local web server
         case 2: {
 
@@ -1925,7 +1952,7 @@ function testMode() {
     // Web server
     case 1:
     // Test web server/ local web server
-     case 2: {
+    case 2: {
 
       sessionStorage.removeItem("user");
 

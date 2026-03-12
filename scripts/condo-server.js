@@ -35,8 +35,16 @@ app.use(session({
   }
 }));
 
+/*
 // Respond to client that server (this program) is running
 app.get('/health', (req, res) => {
+
+  res.status(200).send('OK');
+});
+*/
+
+// Respond to client that server (this program) is running
+app.post('/health', (req, res) => {
 
   res.status(200).send('OK');
 });
