@@ -4,7 +4,7 @@
 // Test- or web server
 // const serverStatus = 1; // Web server
 // const serverStatus = 2; // Test server/ local test server
-const serverStatus = 2;
+const serverStatus = 1;
 
 import express from "express";
 import session from "express-session";
