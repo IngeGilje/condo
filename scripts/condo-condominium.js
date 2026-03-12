@@ -199,7 +199,7 @@ async function deleteCondominiumRow() {
   if (rowNumberCondominium !== -1) {
 
     // delete condominium row
-    //const user = objUserInfo.email;
+    
 
     await objCondominiums.deleteCondominiumsTable(condominiumId, user);
   }
@@ -416,7 +416,7 @@ async function updateCondominiumRow(condominiumId) {
   if (condominiumId === '') condominiumId = -1
   condominiumId = Number(condominiumId);
 
-  //const user = objUserInfo.email;
+  
 
   // validate name
   const name = document.querySelector('.name').value;

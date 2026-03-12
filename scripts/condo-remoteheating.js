@@ -373,7 +373,7 @@ function showResult(rowNumber) {
 // Delete one remoteHeating row
 async function deleteAccountRow(remoteHeatingId, className) {
 
-  //const user = objUserInfo.email;
+  
 
   // Check if remoteHeating row exist
   accountsRowNumber = objRemoteHeatings.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);
@@ -392,7 +392,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   remoteHeatingId = Number(remoteHeatingId);
 
   //const condominiumId = Number(condominiumId);
-  //const user = objUserInfo.email;
+  
 
   // year
   className = ".filterYear";
@@ -470,7 +470,7 @@ function getKilowattHourLastYear(condoId) {
 // Delete remoteheatings row
 async function deleteRemoteHeatingRow(remoteHeatingId, className) {
 
-  //const user = objUserInfo.email;
+  
 
   // Check if remoteheatings row exist
   rowNumberRemoteHeating = objRemoteHeatings.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);

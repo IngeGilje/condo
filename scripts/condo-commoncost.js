@@ -257,7 +257,7 @@ function showResult(rowNumber) {
 // Delete one commonCost row
 async function deleteAccountRow(commonCostId, className) {
 
-  //const user = objUserInfo.email;
+  
 
   // Check if commonCost row exist
   accountsRowNumber = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
@@ -276,7 +276,7 @@ async function updateCommonCostsRow(commonCostId) {
   commonCostId = Number(commonCostId);
 
   //const condominiumId = Number(condominiumId);
-  //const user = objUserInfo.email;
+  
 
   // year
   className = `.year${commonCostId}`;
@@ -323,7 +323,7 @@ async function updateCommonCostsRow(commonCostId) {
 // Delete a commoncosts row
 async function deleteCommonCostsRow(commonCostId) {
 
-  //const user = objUserInfo.email;
+  
 
   // Check if commoncosts row exist
   rowNumberCommonCosts = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);

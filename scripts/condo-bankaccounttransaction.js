@@ -302,10 +302,6 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     // Validate bankAccountTransactions columns
     if (validCondoId && validAccountId && validNumberKWHour && validText) {
 
-      //const condominiumId = 2;
-      ////const user = objUserInfo.email;
-      //const user = email;
-
       // Check if the bankaccounttransactions row exist
       if (bankAccountTransactionRowNumber !== -1) {
 
@@ -332,9 +328,6 @@ function showHeader() {
 
 // Delete bankaccounttransactions row
 async function deleteBankAccountTransactionRow(bankAccountTransationId, className) {
-
-  ////const user = objUserInfo.email;
-  const user = email;
 
   // Check if bankaccounttransaction row exist
   bankAccountTransactionsRowNumber = objBankAccountTransactions.arrayBankAccountTransactions.findIndex(bankaccounttransaction => bankaccounttransaction.bankAccountTransationId === bankAccountTransationId);

@@ -153,7 +153,7 @@ async function deleteBankAccount() {
     if (rowNumberBankAccount !== -1) {
 
       // Delete bank bankaccounts row
-      //const user = objUserInfo.email;
+      
 
       objBankAccounts.deleteBankAccountsTable(bankAccountId, user);
     }
@@ -278,7 +278,7 @@ function showResult(bankAccountId, rowNumber) {
 async function updateBankAccountRow(bankAccountId) {
 
   condominiumId = Number(condominiumId);
-  //const user = objUserInfo.email;
+  
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
@@ -338,7 +338,7 @@ async function updateBankAccountRow(bankAccountId) {
 // Delete one bankaccounts row
 async function deleteBankAccountRow(bankAccountId) {
 
-  //const user = objUserInfo.email;
+  
 
 
   // Check if bankaccount row exist

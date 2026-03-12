@@ -150,7 +150,7 @@ async function deleteCondo() {
   if (rowNumberCondo !== -1) {
 
     // delete condo row
-    //const user = objUserInfo.email;
+    
 
     objCondos.deleteCondoTable(userId, user);
   }
@@ -449,7 +449,7 @@ async function deleteUserRow() {
   if (rowNumberUser !== -1) {
 
     // delete a user row
-    //const user = objUserInfo.email;
+    
 
     await objUsers.deleteUsersTable(userId, user);
   }
