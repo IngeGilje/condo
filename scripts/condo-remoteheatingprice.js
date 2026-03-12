@@ -246,7 +246,7 @@ async function main() {
   // Delete one remoteHeatingPrice row
   async function deleteAccountRow(remoteHeatingPriceId, className) {
 
-    //const user = objUserInfo.email;
+    
 
     // Check if remoteHeatingPrice row exist
     accountsRowNumber = objRemoteHeatingPrices.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
@@ -265,7 +265,7 @@ async function main() {
     remoteHeatingPriceId = Number(remoteHeatingPriceId);
 
     //const condominiumId = Number(condominiumId);
-    //const user = objUserInfo.email;
+    
 
     // year
     className = `.year${remoteHeatingPriceId}`;
@@ -305,7 +305,7 @@ async function main() {
   // Delete a remoteheatingprices row
   async function deleteRemoteHeatingPriceRow(remoteHeatingPriceId, className) {
 
-    //const user = objUserInfo.email;
+    
 
     // Check if remoteheatingprices row exist
     rowNumberRemoteHeatingPrice = objRemoteHeatingPrices.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);

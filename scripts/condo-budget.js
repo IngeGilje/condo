@@ -145,7 +145,7 @@ function events() {
 // Delete budgets row
 async function deleteBudgetRow(budgetId, className) {
 
-  //const user = objUserInfo.email;
+  
 
   // Check if budget row exist
   budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
@@ -164,7 +164,7 @@ async function updateBudgetsRow(budgetId) {
 
   budgetId = Number(budgetId);
 
-  //const user = objUserInfo.email;
+  
 
   // Get budgets row values
 

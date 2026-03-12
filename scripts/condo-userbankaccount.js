@@ -268,7 +268,7 @@ function showResult(rowNumber) {
 // Delete one account row
 async function deleteAccountRow(userBankAccountId, className) {
 
-  //const user = objUserInfo.email;
+  
 
 
   // Check if account row exist
@@ -289,7 +289,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   userBankAccountId = Number(userBankAccountId);
 
   //const condominiumId = Number(condominiumId);
-  //const user = objUserInfo.email;
+  
 
   // Validate
 

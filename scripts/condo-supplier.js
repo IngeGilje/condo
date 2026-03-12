@@ -407,7 +407,7 @@ async function updateSupplierRow(supplierId) {
   const validSupplierId = objSuppliers.validateNumber('supplierId', supplierId, -1, objSuppliers.nineNine);
 
   //const condominiumId = Number(condominiumId);
-  //const user = objUserInfo.email;
+  
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -505,7 +505,7 @@ async function deleteSupplierRow() {
   if (rowNumberSupplier !== -1) {
 
     // delete supplier row
-    //const user = objUserInfo.email;
+    
 
     objSuppliers.deleteSuppliersTable(supplierId, user);
   }

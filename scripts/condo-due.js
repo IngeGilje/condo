@@ -291,7 +291,7 @@ function insertEmptyTableRow(rowNumber) {
 // Delete dues row
 async function deleteDueRow(dueId, className) {
 
-  //const user = objUserInfo.email;
+  
 
 
   // Check if dues row exist
@@ -317,7 +317,7 @@ async function updateDuesRow(dueId) {
 
   dueId = Number(dueId);
 
-  //const user = objUserInfo.email;
+  
 
   // Check dues columns
   let className = `.condoId${dueId}`;

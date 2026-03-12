@@ -307,7 +307,7 @@ function showResult(rowNumber) {
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
 
-  //const user = objUserInfo.email;
+  
 
   // Check if account row exist
   accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
@@ -327,7 +327,7 @@ async function updateAccountsRow(accountId) {
   accountId = Number(accountId);
 
   //const condominiumId = Number(condominiumId);
-  //const user = objUserInfo.email;
+  
 
 
   // name
