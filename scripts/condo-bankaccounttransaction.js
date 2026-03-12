@@ -304,7 +304,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
       //const condominiumId = 2;
       ////const user = objUserInfo.email;
-      const user = email;
+      //const user = email;
 
       // Check if the bankaccounttransactions row exist
       if (bankAccountTransactionRowNumber !== -1) {

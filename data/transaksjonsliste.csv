@@ -1,4 +1,11 @@
 Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til konto;Til
+12.03.2026;;"MOBILGIRO Mobilgiro i dag";3359,00;;Ikke tilgjengelig;Ikke tilgjengelig;;NOK;;;32062337272;
+12.03.2026;;"OPPGAVE Bedriftsterminal oppgave";;-16422,80;Ikke tilgjengelig;Ikke tilgjengelig;Bedriftsterminal oppgave;NOK;32062337272;;;
+11.03.2026;;"97260090317";;-6000,00;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;60010689999;IF SKADEFORSIKRING NUF
+10.03.2026;;"Fellesutgifter";2819,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;05390874660;Ladan Pazoki;32062337272;inge gilje
+10.03.2026;;"Omkostninger BedriftsNett";;-100,25;Ikke tilgjengelig;Ikke tilgjengelig;Pris;NOK;32062337272;;32019999008;
+09.03.2026;;"20011129161115683889";;-693,00;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073195801;Lyse Marked AS
+05.03.2026;;"800537080710307";;-653,65;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073969815;LYSE AS
 28.02.2026;;"FAKT.TJ MOTTATT FAKT NETTBANK 3 TRANS(ER) TYPE 438 437";;-7,50;Ikke tilgjengelig;Ikke tilgjengelig;Gebyr;NOK;32062337272;;;
 23.02.2026;;"Resten av det 10,646 for leilighet . Har betalt alt nå";5000,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;05390874660;Ladan Pazoki;32062337272;Inge Gilje
 23.02.2026;;"Restbet for jan og febr 2026";1976,00;;Ikke tilgjengelig;Ikke tilgjengelig;Mobilgiro m/meld. forf. i dag;NOK;32705753007;Åse Myklebust Stapnes;32062337272;Sameie Hinna Park
@@ -19,20 +26,3 @@ Dato;Rentedato;Beskrivelse;Inn;Ut;Num.Ref;Arkivref;Type;Valuta;Fra konto;Fra;Til
 05.02.2026;;"800537080710299";;-830,51;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073969815;LYSE AS
 04.02.2026;;"Fjernvarme 99a";12447,00;;Ikke tilgjengelig;Ikke tilgjengelig;Mobilgiro m/meld. forf. i dag;NOK;32701025074;Åse Myklebust Stapnes;32062337272;Til: 32062337272
 03.02.2026;;"Laberget 95B";4574,00;;Ikke tilgjengelig;Ikke tilgjengelig;Mobilgiro m/meld. forf. i dag;NOK;32061703445;Inge Svein Gilje;32062337272;Hinna Park B3 sameie
-31.01.2026;;"FAKT.TJ MOTTATT FAKT NETTBANK 3 TRANS(ER) TYPE 438 437";;-7,50;Ikke tilgjengelig;Ikke tilgjengelig;Gebyr;NOK;32062337272;;;
-21.01.2026;;".";5795,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;05390874660;Ladan Pazoki;32062337272;Inge Gilje
-15.01.2026;;"Sameie 99a";2281,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32705753007;Åse Myklebust Stapnes;32062337272;
-15.01.2026;;"97A";3269,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32013972337;Kristine Sømme;32062337272;
-15.01.2026;;"Laberget 95B";4574,00;;Ikke tilgjengelig;Ikke tilgjengelig;Belastet konto etter avtale;NOK;32061703445;Inge Svein Gilje;32062337272;
-15.01.2026;;"fast månedsrate fra Jan 2026";4619,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;12016029341;Birgit Ruth M A Schober;32062337272;Sameie Hinna Park B3-08
-13.01.2026;;"leil 301 Oskar Fausk 97C";2189,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;36264007849;Oskar Fausk;32062337272;Sameiet sin konto
-12.01.2026;;"Fellesutgifter";2819,00;;Ikke tilgjengelig;Ikke tilgjengelig;Overførsel;NOK;05390874660;Ladan Pazoki;32062337272;inge gilje
-12.01.2026;;"Månedsbetaling 95A";3359,00;;Ikke tilgjengelig;Ikke tilgjengelig;Mobilgiro m/meld. forf. i dag;NOK;32016934118;Fabiana Gaspar Franco;32062337272;Sameiet Laberget
-08.01.2026;;"0005061221866";;-11550,00;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32074560368;Lyse Marked AS
-07.01.2026;;"20011129161112003321";;-693,00;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073195801;Lyse Marked AS
-06.01.2026;;"Omkostninger BedriftsNett";;-100,25;Ikke tilgjengelig;Ikke tilgjengelig;Pris;NOK;32062337272;;32019999008;
-05.01.2026;;"800537080710281";;-810,34;Ikke tilgjengelig;Ikke tilgjengelig;Betaling med KID;NOK;32062337272;Sameie Hinna Park B3-08;32073969815;LYSE AS
-
-"DRIFT., 3206.23.37272"
-"Inngående saldo pr. 01.01.2026:";"260478.36";"NOK"
-"Utgående saldo pr. 04.03.2026:";"387315.15";"NOK"
