@@ -98,8 +98,10 @@ class Supplier extends Condos {
   // get suppliers
   async loadSuppliersTable(condominiumId) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-      const response = await fetch(`http://localhost:3000/suppliers?action=select&condominiumId=${condominiumId}`);
+
+      const response = await fetch(`${URL}:3000/suppliers?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (users)");
       this.arraySuppliers = await response.json();
     } catch (error) {
@@ -110,8 +112,10 @@ class Supplier extends Condos {
   // update supplier row
   async updateSuppliersTable(supplierId, user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-      const response = await fetch(`http://localhost:3000/suppliers?action=update&supplierId=${supplierId}
+
+      const response = await fetch(`${URL}:3000/suppliers?action=update&supplierId=${supplierId}
         &name=${name}
         &street=${street}&address2=${address2}
         &postalCode=${postalCode}&city=${city}
@@ -129,8 +133,10 @@ class Supplier extends Condos {
   // insert supplier row
   async insertSuppliersTable(condominiumId, user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-      const response = await fetch(`http://localhost:3000/suppliers?action=insert&condominiumId=${condominiumId}
+
+      const response = await fetch(`${URL}:3000/suppliers?action=insert&condominiumId=${condominiumId}
         &user=${user}&name=${name}&street=${street}&address2=${address2}
         &postalCode=${postalCode}&city=${city}&email=${email}&phone=${phone}&bankAccount=${bankAccount}&accountId=${accountId}
         &amount=${amount}&amountAccountId=${amountAccountId}
@@ -145,8 +151,10 @@ class Supplier extends Condos {
   // delete supplier row
   async deleteSuppliersTable(supplierId, user) {
 
+        const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-      const response = await fetch(`http://localhost:3000/suppliers?action=delete&supplierId=${supplierId}&user=${user}`);
+
+      const response = await fetch(`${URL}:3000/suppliers?action=delete&supplierId=${supplierId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (suppliers)");
       this.arraySuppliers = await response.json();
     } catch (error) {

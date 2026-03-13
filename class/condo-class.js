@@ -6,9 +6,9 @@ class Condos {
     this.applicationName = applicationName;
   }
 
-  // serverStatus = 1;  // Web server
-  // serverStatus = 2;  // Test web server/ local web server
-  serverStatus = 2;     // Test web server/ local web server
+  // const serverStatus = 1; // http://ingegilje.no
+  // const serverStatus = 2; // http://localhost
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -1302,32 +1302,13 @@ class Condos {
     return `</table>`;
   }
 
-  /*
-  // check if server is running
-  async checkServer() {
-
-    try {
-      // GET request
-      const response = await fetch('http://localhost:3000/health');
-      if (response.ok) {
-
-        return true;
-      } else {
-
-        return false;
-      }
-    } catch (err) {
-
-      return false;
-    }
-  }
-  */
-
   // check if file exists
   async checkServer() {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no:3000/health" : "http://localhost:3000/health";
     try {
-      const response = await fetch('http://localhost:3000/health', {
+
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -1335,13 +1316,7 @@ class Condos {
         body: JSON.stringify({
         })
       });
-      if (response.ok) {
-
-        return true;
-      } else {
-
-        return false;
-      }
+      return (response.ok) ? true : false;
     } catch (err) {
 
       return false;
@@ -1351,22 +1326,31 @@ class Condos {
   // check if file exists
   async checkIfFileExists(fileName) {
 
-    const response = await fetch("http://localhost:3000/checkIfFileExists", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        fileName: fileName
-      })
-    });
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    try {
+
+      const response = await fetch(`${URL}:3000/checkIfFileExists`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          fileName: fileName
+        })
+      });
+      return (response.ok) ? true : false;
+    } catch (err) {
+
+      return false;
+    }
+    /*
     if (response.ok) {
 
       return true;
     } else {
 
       return false;
-    }
+    */
   }
 
   // Show horizontal menu

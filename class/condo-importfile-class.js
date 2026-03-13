@@ -72,14 +72,12 @@ class ImportFile extends Condos {
     if (alternativeSelect && (numberOfRows > 1)) {
       if (selectedOption) {
 
-        htmlImportFile +=
-          `
+        htmlImportFile += `
             <option 
               value=${this.nineNine}
             >
               ${alternativeSelect}
-            </option>
-          `;
+            </option>`;
       } else {
 
         htmlImportFile +=
@@ -107,14 +105,17 @@ class ImportFile extends Condos {
 
   // get csv file from local disk
   async loadCsvFile(csvFileName) {
+
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-           // GET request
-      const response = await fetch(`http://localhost:3000/import-csvFile?action=upload&csvFileName=${csvFileName}`);
+
+      // GET request
+      const response = await fetch(`${URL}:3000/import-csvFile?action=upload&csvFileName=${csvFileName}`);
       if (!response.ok) throw new Error("Network error (load csv file)");
       const result = await response.json();
       this.strCSVTransaction = result.content;
     } catch (error) {
-      console.log("Error loading csv file:", error);
+      objImportFile.showMessage(objImportFile, 'Sjekk transaksjonsfil ',csvFileName, '.');
     }
   }
 }

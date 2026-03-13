@@ -27,9 +27,11 @@ class Condominium extends Condos {
   // Show condominiums table with alternative select options
   async loadCondominiumsTable() {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-                 // GET request
-      const response = await fetch(`http://localhost:3000/condominiums?action=select`);
+
+      // GET request
+      const response = await fetch(`${URL}:3000/condominiums?action=select`);
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.arrayCondominiums = await response.json();
     } catch (error) {
@@ -40,8 +42,8 @@ class Condominium extends Condos {
   async updateCondominiumsTable(user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName) {
 
     try {
-                 // GET request
-      const response = await fetch(`http://localhost:3000/condominiums?action=update&user=${user}&condominiumId=${condominiumId}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
+      // GET request
+      const response = await fetch(`${URL}:3000/condominiums?action=update&user=${user}&condominiumId=${condominiumId}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.arrayCondominiums = await response.json();
     } catch (error) {
@@ -52,9 +54,11 @@ class Condominium extends Condos {
   // insert condominium row in users table
   async insertCondominiumsTable(user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-                 // GET request
-      const response = await fetch(`http://localhost:3000/condominiums?action=insert&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
+
+      // GET request
+      const response = await fetch(`${URL}:3000/condominiums?action=insert&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.arrayCondominiums = await response.json();
     } catch (error) {
@@ -64,9 +68,11 @@ class Condominium extends Condos {
   // delete condominium row
   async deleteCondominiumsTable(condominiumId, user) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-                 // GET request
-      const response = await fetch(`http://localhost:3000/condominiums?action=delete&condominiumId=${condominiumId}&user=${user}`);
+
+      // GET request
+      const response = await fetch(`${URL}:3000/condominiums?action=delete&condominiumId=${condominiumId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (condominiums)");
       this.arrayCondominiums = await response.json();
     } catch (error) {
@@ -87,7 +93,7 @@ class Condominium extends Condos {
         class="${className} center"
         ${(style) ? `style=${style}` : 'style="width:175px;"'}
       >`;
-    
+
     // Check if condominium array is empty
     const numberOfRows = this.arrayCondominiums.length;
     if (Number(this.arrayCondominiums.length) > 0) {

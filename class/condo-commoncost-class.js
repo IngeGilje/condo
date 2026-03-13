@@ -5,7 +5,7 @@ class CommonCost extends Condos {
   arrayCommonCost;
 
   // Show all selected commoncosts
-  showSelectedCommonCosts(className, style,commonCostId, selectNone, selectAll) {
+  showSelectedCommonCosts(className, style, commonCostId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -22,7 +22,7 @@ class CommonCost extends Condos {
     const numberOfRows = this.arrayCommonCosts.length;
     if (numberOfRows > 0) {
       this.arrayCommonCosts.forEach((commonCost) => {
-        if (commonCost.commonCostId ===commonCostId) {
+        if (commonCost.commonCostId === commonCostId) {
 
           html +=
             `
@@ -107,7 +107,7 @@ class CommonCost extends Condos {
 
     return html;
   }
-  
+
   // Get selected common cost id
   getSelectedCommonCostId(className) {
 
@@ -116,21 +116,21 @@ class CommonCost extends Condos {
     // Check if HTML class exist
     if (isClassDefined(className)) {
 
-     commonCostId = Number(document.querySelector(`.${className}`).value);
-     commonCostId = (commonCostId === 0) ? this.arrayCommonCosts.at(-1).commonCostId :commonCostId;
+      commonCostId = Number(document.querySelector(`.${className}`).value);
+      commonCostId = (commonCostId === 0) ? this.arrayCommonCosts.at(-1).commonCostId : commonCostId;
     } else {
 
       // Get last id in last object in commonCost array
-     commonCostId = this.arrayCommonCosts.at(-1).commonCostId;
+      commonCostId = this.arrayCommonCosts.at(-1).commonCostId;
     }
 
     returncommonCostId;
   }
 
   // Show all CommonCosts
-  showSelectedCommonCostsHTML(className,commonCostId, selectAll) {
+  showSelectedCommonCostsHTML(className, commonCostId, selectAll) {
 
-   commonCostId = Number(commonCostId);
+    commonCostId = Number(commonCostId);
 
     let html =
       `
@@ -148,7 +148,7 @@ class CommonCost extends Condos {
     if (this.arrayCommonCosts.length > 0) {
       this.arrayCommonCosts.forEach((commonCost) => {
 
-        if (commonCost.commonCostId ===commonCostId) {
+        if (commonCost.commonCostId === commonCostId) {
           html +=
             `
               <option
@@ -214,7 +214,7 @@ class CommonCost extends Condos {
   selectCommonCostId(commonCostId, className) {
 
     // Check if common cost id exist
-    const rowNumberCommonCost = this.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId ===commonCostId);
+    const rowNumberCommonCost = this.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
     if (rowNumberCommonCost !== -1) {
 
       document.querySelector(`.select-${className}`).value = this.arrayCommonCosts[rowNumberCommonCost].commonCostId;
@@ -229,14 +229,14 @@ class CommonCost extends Condos {
   selectCommonCostIdNew(commonCostId) {
 
     // Check if common cost id exist
-    const rowNumberCommonCost = this.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId ===commonCostId);
-    if (rowNumberCommonCost !== -1)commonCostId = this.arrayCommonCosts[rowNumberCommonCost].commonCostId;
+    const rowNumberCommonCost = this.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
+    if (rowNumberCommonCost !== -1) commonCostId = this.arrayCommonCosts[rowNumberCommonCost].commonCostId;
 
     returncommonCostId;
   }
 
   // Show all selected commoncosts
-  showSelectedCommonCosts(className, style,commonCostId, selectNone, selectAll) {
+  showSelectedCommonCosts(className, style, commonCostId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -252,7 +252,7 @@ class CommonCost extends Condos {
     // Check if CommonCosts array is empty
     if (this.arrayCommonCosts.length > 0) {
       this.arrayCommonCosts.forEach((commonCost) => {
-        if (commonCost.commonCostId ===commonCostId) {
+        if (commonCost.commonCostId === commonCostId) {
 
           html +=
             `
@@ -341,9 +341,11 @@ class CommonCost extends Condos {
   // get commoncosts
   async loadCommonCostsTable(condominiumId) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-                 // GET request
-      const response = await fetch(`http://localhost:3000/commoncosts?action=select&condominiumId=${condominiumId}`);
+
+      // GET request
+      const response = await fetch(`${URL}:3000/commoncosts?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
     } catch (error) {
@@ -354,9 +356,11 @@ class CommonCost extends Condos {
   // update a commoncosts row
   async updateCommonCostsTable(user, commonCostId, year, commonCostSquareMeter, fixedCostCondo) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-                 // GET request
-      const response = await fetch(`http://localhost:3000/commoncosts?action=update&user=${user}&commonCostId=${commonCostId}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
+
+      // GET request
+      const response = await fetch(`${URL}:3000/commoncosts?action=update&user=${user}&commonCostId=${commonCostId}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
     } catch (error) {
@@ -367,8 +371,10 @@ class CommonCost extends Condos {
   // insert commoncosts row
   async insertCommonCostsTable(condominiumId, user, year, commonCostSquareMeter, fixedCostCondo) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-      const response = await fetch(`http://localhost:3000/commoncosts?action=insert&condominiumId=${condominiumId}&user=${user}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
+
+      const response = await fetch(`${URL}:3000/commoncosts?action=insert&condominiumId=${condominiumId}&user=${user}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
     } catch (error) {
@@ -379,10 +385,12 @@ class CommonCost extends Condos {
   // delete a commoncosts row
   async deleteCommonCostsTable(commonCostId, user) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
+
       // Fetch for sending a message to server(request)
       // response is a message in .json format send from server(response)
-      const response = await fetch(`http://localhost:3000/commoncosts?action=delete&commonCostId=${commonCostId}&user=${user}`);
+      const response = await fetch(`${URL}:3000/commoncosts?action=delete&commonCostId=${commonCostId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
     } catch (error) {

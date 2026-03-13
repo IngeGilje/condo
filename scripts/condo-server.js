@@ -2,9 +2,9 @@
 // Run with: node scripts/condo-server-synch.js
 
 // Test- or web server
-// const serverStatus = 1; // Web server
-// const serverStatus = 2; // Test server/ local test server
-const serverStatus = 1;
+// const serverStatus = 1; // http://ingegilje.no
+// const serverStatus = 2; // http://localhost
+const serverStatus = 2;
 
 import express from "express";
 import session from "express-session";
@@ -2037,11 +2037,13 @@ async function main() {
 
     app.get("/import-csvFile", async (req, res) => {
 
+      console.log('import-csvFile');
       try {
 
         const csvFileName = req.query.csvFileName;
-
+        console.log('csvFileName :', csvFileName);
         const data = await fs.readFile(csvFileName, "utf8");
+        console.log('data :', data);
         res.json({ content: data });
       } catch (err) {
         res.status(500).json({ error: err.message });

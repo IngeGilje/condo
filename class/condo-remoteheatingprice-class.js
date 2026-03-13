@@ -341,9 +341,11 @@ class RemoteHeatingPrice extends Condos {
   // get remoteheatingprices
   async loadRemoteHeatingPricesTable(condominiumId) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
+
       // GET request
-      const response = await fetch(`http://localhost:3000/remoteheatingprices?action=select&condominiumId=${condominiumId}`);
+      const response = await fetch(`${URL}:3000/remoteheatingprices?action=select&condominiumId=${condominiumId}`);
       if (!response.ok) throw new Error("Network error (remoteheatingprices)");
       this.arrayRemoteHeatingPrices = await response.json();
     } catch (error) {
@@ -354,8 +356,10 @@ class RemoteHeatingPrice extends Condos {
   // update a remoteheatingprices row
   async updateRemoteHeatingPricesTable(user, remoteHeatingPriceId, year, priceKilowattHour) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-      const response = await fetch(`http://localhost:3000/remoteheatingprices?action=update&user=${user}&remoteHeatingPriceId=${remoteHeatingPriceId}&year=${year}&priceKilowattHour=${priceKilowattHour}`);
+
+      const response = await fetch(`${URL}:3000/remoteheatingprices?action=update&user=${user}&remoteHeatingPriceId=${remoteHeatingPriceId}&year=${year}&priceKilowattHour=${priceKilowattHour}`);
       if (!response.ok) throw new Error("Network error (remoteheatingprices)");
       this.arrayRemoteHeatingPrices = await response.json();
     } catch (error) {
@@ -366,8 +370,10 @@ class RemoteHeatingPrice extends Condos {
   // insert remoteheatingprices row
   async insertRemoteHeatingPricesTable(condominiumId, user, year, priceKilowattHour) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
-      const response = await fetch(`http://localhost:3000/remoteheatingprices?action=insert&condominiumId=${condominiumId}&user=${user}&year=${year}&priceKilowattHour=${priceKilowattHour}`);
+
+      const response = await fetch(`${URL}:3000/remoteheatingprices?action=insert&condominiumId=${condominiumId}&user=${user}&year=${year}&priceKilowattHour=${priceKilowattHour}`);
       if (!response.ok) throw new Error("Network error (remoteheatingprices)");
       this.arrayRemoteHeatingPrices = await response.json();
     } catch (error) {
@@ -378,10 +384,12 @@ class RemoteHeatingPrice extends Condos {
   // delete a remoteheatingprices row
   async deleteRemoteHeatingPricesTable(remoteHeatingPriceId, user) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
+
       // Fetch for sending a message to server(request)
       // response is a message in .json format send from server(response)
-      const response = await fetch(`http://localhost:3000/remoteheatingprices?action=delete&remoteHeatingPriceId=${remoteHeatingPriceId}&user=${user}`);
+      const response = await fetch(`${URL}:3000/remoteheatingprices?action=delete&remoteHeatingPriceId=${remoteHeatingPriceId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (remoteheatingprices)");
       this.arrayRemoteHeatingPrices = await response.json();
     } catch (error) {

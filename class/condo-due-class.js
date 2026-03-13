@@ -106,10 +106,11 @@ class Due extends Condos {
   // get dues
   async loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate) {
 
+       const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
 
       // GET request
-      const response = await fetch(`http://localhost:3000/dues?action=select&condominiumId=${condominiumId}&accountId=${accountId}&condoId=${condoId}&fromDate=${fromDate}&toDate=${toDate}`);
+      const response = await fetch(`${URL}:3000/dues?action=select&condominiumId=${condominiumId}&accountId=${accountId}&condoId=${condoId}&fromDate=${fromDate}&toDate=${toDate}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayDues = await response.json();
     } catch (error) {
@@ -121,9 +122,11 @@ class Due extends Condos {
   // update due row in dues table
   async updateDuesTable(dueId, user, condoId, accountId, amount, date, kilowattHour, text) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
+
       // GET request
-      const response = await fetch(`http://localhost:3000/dues?action=update&dueId=${dueId}&user=${user}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&date=${date}&kilowattHour=${kilowattHour}&text=${text}`);
+      const response = await fetch(`${URL}:3000/dues?action=update&dueId=${dueId}&user=${user}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&date=${date}&kilowattHour=${kilowattHour}&text=${text}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayBudgets = await response.json();
     } catch (error) {
@@ -134,9 +137,11 @@ class Due extends Condos {
   // insert due row in dues table
   async insertDuesTable(condominiumId, user, condoId, accountId, amount, date, kilowattHour, text) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
+
       // GET request
-      const response = await fetch(`http://localhost:3000/dues?action=insert&condominiumId=${condominiumId}&condoId=${condoId}&user=${user}&accountId=${accountId}&amount=${amount}&date=${date}&kilowattHour=${kilowattHour}&text=${text}`);
+      const response = await fetch(`${URL}:3000/dues?action=insert&condominiumId=${condominiumId}&condoId=${condoId}&user=${user}&accountId=${accountId}&amount=${amount}&date=${date}&kilowattHour=${kilowattHour}&text=${text}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayBudgets = await response.json();
     } catch (error) {
@@ -146,9 +151,11 @@ class Due extends Condos {
   // delete due row
   async deleteDuesTable(dueId, user) {
 
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
+
       // GET request
-      const response = await fetch(`http://localhost:3000/dues?action=delete&dueId=${dueId}&user=${user}`);
+      const response = await fetch(`${URL}:3000/dues?action=delete&dueId=${dueId}&user=${user}`);
       if (!response.ok) throw new Error("Network error (dues)");
       this.arrayBudgets = await response.json();
     } catch (error) {
