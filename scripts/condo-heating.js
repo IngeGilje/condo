@@ -8,7 +8,7 @@ const objAccounts = new Account('account');
 // Fixed values
 const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
- 
+
 let condominiumId = 0;
 let user = "";
 
@@ -24,7 +24,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -51,7 +51,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -181,7 +181,7 @@ function showFilter(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objAccounts.showTableHeaderMenu('width:150px;', rowNumber,  '', 'Kostnadstype', '');
+  html += objAccounts.showTableHeaderMenu('width:150px;', rowNumber, '', 'Kostnadstype', '');
 
   // start table body
   html += objAccounts.startTableBody();
@@ -307,7 +307,7 @@ function showResult(rowNumber) {
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
 
-  
+
 
   // Check if account row exist
   accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
@@ -327,7 +327,7 @@ async function updateAccountsRow(accountId) {
   accountId = Number(accountId);
 
   //const condominiumId = Number(condominiumId);
-  
+
 
 
   // name

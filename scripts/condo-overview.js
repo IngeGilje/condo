@@ -8,7 +8,7 @@ const objAccounts = new Account('account');
 const objCondo = new Condo('condo');
 const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 const objOverview = new Overview('overview');
- 
+
 let condominiumId = 0;
 
 // Exit application if no activity for 1 hour
@@ -23,57 +23,57 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       window.location.href = 'http://localhost/condo-login.html';
     } else {
 
-    const resident = 'Y';
-    await objUsers.loadUsersTable(condominiumId, resident);
-    await objCondo.loadCondoTable(condominiumId);
-    const fixedCost = 'A';
-    await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      const resident = 'Y';
+      await objUsers.loadUsersTable(condominiumId, resident);
+      await objCondo.loadCondoTable(condominiumId);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 
-    // Show horizontal menu
-    //showHorizontalMenu();
+      // Show horizontal menu
+      //showHorizontalMenu();
 
-    // Show header
-    let menuNumber = 0;
-    showHeader();
+      // Show header
+      let menuNumber = 0;
+      showHeader();
 
-    // Show filter
-    menuNumber = showFilter(menuNumber);
+      // Show filter
+      menuNumber = showFilter(menuNumber);
 
-    const condoId = Number(document.querySelector('.filterCondoId').value);
-    const accountId = objOverview.nineNine;
-    const deleted = 'N';
-    let fromDate = document.querySelector('.filterFromDate').value;
-    fromDate = convertDateToISOFormat(fromDate);
-    let toDate = document.querySelector('.filterToDate').value;
-    toDate = convertDateToISOFormat(toDate);
-    await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-    const orderBy = 'condoId ASC, date DESC, income ASC';
-    await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
+      const condoId = Number(document.querySelector('.filterCondoId').value);
+      const accountId = objOverview.nineNine;
+      const deleted = 'N';
+      let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = convertDateToISOFormat(fromDate);
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = convertDateToISOFormat(toDate);
+      await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+      const orderBy = 'condoId ASC, date DESC, income ASC';
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
 
-    // Show result
+      // Show result
 
-    // Show dues
-    menuNumber = showDues(menuNumber);
+      // Show dues
+      menuNumber = showDues(menuNumber);
 
-    // Bank account transactions
-    menuNumber = showBankAccountTransactions(menuNumber);
+      // Bank account transactions
+      menuNumber = showBankAccountTransactions(menuNumber);
 
-    // show how much to pay
-    menuNumber = showHowMuchToPay(menuNumber);
+      // show how much to pay
+      menuNumber = showHowMuchToPay(menuNumber);
 
       // Events
       events();
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -183,7 +183,7 @@ function showFilter(rowNumber) {
 
   // to date
   let toDate = getCurrentDate();
-  html += objOverview.inputTableColumn('filterToDate','', toDate, 10);
+  html += objOverview.inputTableColumn('filterToDate', '', toDate, 10);
 
   html += "</tr>";
 
@@ -258,7 +258,7 @@ function showDues(rowNumber) {
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
   rowNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', sumDue, sumKilowattHour,'');
+  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', sumDue, sumKilowattHour, '');
   html += "</tr>"
 
   rowNumber++;

@@ -18,7 +18,7 @@ const objImportFile = new ImportFile('importfile');
 
 let condominiumId = 0;
 let user = "";
- 
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -89,7 +89,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -493,7 +493,7 @@ function showFilter(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objImportFile.showTableHeaderMenu('width:175px;', rowNumber, '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2','','','');
+  html += objImportFile.showTableHeaderMenu('width:175px;', rowNumber, '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();
@@ -501,7 +501,7 @@ function showFilter(rowNumber) {
   html += "</tr>";
 
   rowNumber++;
-  html += objImportFile.insertTableColumns('', rowNumber, '','','','','','','','');
+  html += objImportFile.insertTableColumns('', rowNumber, '', '', '', '', '', '', '', '');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -584,13 +584,13 @@ function showResult(rowNumber) {
 
   // Show sum row
   rowNumber++;
-  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', '', 'Sum', sumIncomes, sumPayments,'');
+  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
 
   // Show update button
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objImportFile.insertTableColumns('', rowNumber,'');
+  html += objImportFile.insertTableColumns('', rowNumber, '');
 
   html += objImportFile.showButton('width:175px;', 'update', 'Oppdater');
   html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";

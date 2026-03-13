@@ -4,7 +4,7 @@
 const today = new Date();
 const objUsers = new User('user');
 const objCondos = new Condo('condo');
- 
+
 let condominiumId = 0;
 let user = "";
 
@@ -20,7 +20,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -53,7 +53,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -215,7 +215,7 @@ function showResult(condoId, rowNumber) {
     html += "<tr>";
 
     rowNumber++;
-    html += objCondos.showTableHeaderMenu("width:175px;", rowNumber, 'Navn','');
+    html += objCondos.showTableHeaderMenu("width:175px;", rowNumber, 'Navn', '');
 
     html += "</tr>";
 
@@ -320,7 +320,7 @@ async function updateCondoRow(condoId) {
 
   //const condominiumId = Number(condominiumId);
 
-  
+
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -415,7 +415,7 @@ async function deleteCondoRow() {
   if (rowNumberCondo !== -1) {
 
     // delete a condo row
-    
+
 
     await objCondos.deleteCondoTable(condoId, user);
   }

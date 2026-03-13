@@ -6,7 +6,7 @@ const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objBankAccounts = new BankAccount('bankaccount');
 const objCondominiums = new Condominium('condominium');
- 
+
 let condominiumId = 0;
 let user = "";
 
@@ -22,7 +22,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -53,7 +53,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -199,7 +199,7 @@ async function deleteCondominiumRow() {
   if (rowNumberCondominium !== -1) {
 
     // delete condominium row
-    
+
 
     await objCondominiums.deleteCondominiumsTable(condominiumId, user);
   }
@@ -238,12 +238,12 @@ function showFilter(rowNumber) {
 
   // condominium
   html += objCondominiums.showSelectedCondominiums('filterCondominiumId', 'width:175px;', '')
-  
+
   html += "</tr>";
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objCondominiums.insertTableColumns('', rowNumber,'','');
+  html += objCondominiums.insertTableColumns('', rowNumber, '', '');
 
   // end table body
   html += objCondominiums.endTableBody();
@@ -267,7 +267,7 @@ function showResult(condominiumId, rowNumber) {
 
     // Show menu
     rowNumber++;
-    html += objCondominiums.showTableHeaderMenu("width:175px;", rowNumber, 'Navn','');
+    html += objCondominiums.showTableHeaderMenu("width:175px;", rowNumber, 'Navn', '');
 
     // insert table columns in start of a row
     rowNumber++;
@@ -416,7 +416,7 @@ async function updateCondominiumRow(condominiumId) {
   if (condominiumId === '') condominiumId = -1
   condominiumId = Number(condominiumId);
 
-  
+
 
   // validate name
   const name = document.querySelector('.name').value;

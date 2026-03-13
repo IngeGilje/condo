@@ -1,10 +1,10 @@
 // condo-server-synch.js
 // Run with: node scripts/condo-server-synch.js
 
-// Test- or web server
-// const serverStatus = 1; // http://ingegilje.no
-// const serverStatus = 2; // http://localhost
-const serverStatus = 2;
+// const serverStatus = 1; // http://ingegilje.no on web server
+// const serverStatus = 2; // http://localhost on development PC
+// const serverStatus = 3; // http://localhost on web server
+const serverStatus = 3;
 
 import express from "express";
 import session from "express-session";
@@ -35,17 +35,10 @@ app.use(session({
   }
 }));
 
-/*
-// Respond to client that server (this program) is running
-app.get('/health', (req, res) => {
-
-  res.status(200).send('OK');
-});
-*/
-
 // Respond to client that server (this program) is running
 app.post('/health', (req, res) => {
 
+  console.log('/health',)
   res.status(200).send('OK');
 });
 
@@ -84,7 +77,9 @@ async function main() {
     // Connect mySQL
     switch (serverStatus) {
 
-      // Web server
+      // http://ingegilje.no on web server
+      // http://localhost on web server
+      case 3: 
       case 1: {
 
         // Connect to MySQL
@@ -97,7 +92,7 @@ async function main() {
         break;
       };
 
-      // Test server/ local test server
+      // http://localhost on development PC
       case 2: {
 
         // Connect to MySQL

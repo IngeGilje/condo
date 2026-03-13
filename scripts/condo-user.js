@@ -48,7 +48,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -150,7 +150,7 @@ async function deleteCondo() {
   if (rowNumberCondo !== -1) {
 
     // delete condo row
-    
+
 
     objCondos.deleteCondoTable(userId, user);
   }
@@ -449,7 +449,7 @@ async function deleteUserRow() {
   if (rowNumberUser !== -1) {
 
     // delete a user row
-    
+
 
     await objUsers.deleteUsersTable(userId, user);
   }

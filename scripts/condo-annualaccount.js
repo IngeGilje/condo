@@ -26,7 +26,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -91,7 +91,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -574,7 +574,7 @@ function showBankDeposit(rowNumber) {
   let nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
 
   rowNumber++;
-  html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', `Budsjett ${nextBudgetYear}`,'', '');
+  html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', `Budsjett ${nextBudgetYear}`, '', '');
   rowNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;', rowNumber, '', '', 'Tekst', 'Dato', 'Budsjett');
   let accAmount = 0;

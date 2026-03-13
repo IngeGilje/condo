@@ -21,7 +21,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -52,7 +52,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -145,7 +145,7 @@ function events() {
 // Delete budgets row
 async function deleteBudgetRow(budgetId, className) {
 
-  
+
 
   // Check if budget row exist
   budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
@@ -164,7 +164,7 @@ async function updateBudgetsRow(budgetId) {
 
   budgetId = Number(budgetId);
 
-  
+
 
   // Get budgets row values
 
@@ -339,7 +339,7 @@ function showResult(rowNumber) {
 
   // Show menu
   rowNumber++;
-   html += objAccounts.insertTableColumns('', rowNumber, 'Nytt budsjett');
+  html += objAccounts.insertTableColumns('', rowNumber, 'Nytt budsjett');
 
   // accounts
   let className = `accountId0`;
@@ -365,7 +365,7 @@ function showResult(rowNumber) {
   sumAmount = formatOreToKroner(sumAmount);
 
   rowNumber++;
-  html += objBudgets.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', sumAmount,'','');
+  html += objBudgets.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', sumAmount, '', '');
 
   // Show the rest of the menu
   rowNumber++;

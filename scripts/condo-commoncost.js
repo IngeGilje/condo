@@ -5,7 +5,7 @@ const today = new Date();
 const objUsers = new User('user');
 const objCondos = new Condo('condo');
 const objCommonCosts = new CommonCost('commoncost');
- 
+
 let condominiumId = 0;
 let user = "";
 
@@ -21,7 +21,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -46,7 +46,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -257,7 +257,7 @@ function showResult(rowNumber) {
 // Delete one commonCost row
 async function deleteAccountRow(commonCostId, className) {
 
-  
+
 
   // Check if commonCost row exist
   accountsRowNumber = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
@@ -276,7 +276,7 @@ async function updateCommonCostsRow(commonCostId) {
   commonCostId = Number(commonCostId);
 
   //const condominiumId = Number(condominiumId);
-  
+
 
   // year
   className = `.year${commonCostId}`;
@@ -323,7 +323,7 @@ async function updateCommonCostsRow(commonCostId) {
 // Delete a commoncosts row
 async function deleteCommonCostsRow(commonCostId) {
 
-  
+
 
   // Check if commoncosts row exist
   rowNumberCommonCosts = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);

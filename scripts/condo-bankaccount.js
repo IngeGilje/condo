@@ -6,7 +6,7 @@ const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objCondominiums = new Condominium('condominium');
 const objBankAccounts = new BankAccount('bankaccount');
- 
+
 let condominiumId = 0;
 let user = "";
 
@@ -15,7 +15,7 @@ exitIfNoActivity();
 
 // Validate LogIn
 condominiumId = Number(sessionStorage.getItem("condominiumId"));
-user= sessionStorage.getItem("user");
+user = sessionStorage.getItem("user");
 if ((condominiumId === 0 || user === null)) {
 
   // LogIn is not valid
@@ -54,7 +54,7 @@ if ((condominiumId === 0 || user === null)) {
       events();
     } else {
 
-      objBankAccounts.objBankAccounts.showMessage(objBankAccounts, 'Server condo-server.js har ikke startet.');
+      objBankAccounts.objBankAccounts.showMessage(objBankAccounts, 'Server condo-server.js er ikke startet.');
     }
   }
 }
@@ -153,7 +153,7 @@ async function deleteBankAccount() {
     if (rowNumberBankAccount !== -1) {
 
       // Delete bank bankaccounts row
-      
+
 
       objBankAccounts.deleteBankAccountsTable(bankAccountId, user);
     }
@@ -197,7 +197,7 @@ function showResult(bankAccountId, rowNumber) {
 
     // name
     html += objBankAccounts.inputTableColumn('name', 'width:175px;', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name, 45);
-     // account number
+    // account number
     html += objBankAccounts.inputTableColumn('bankAccount', 'width:175px;', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount, 11);
     html += "</tr>";
 
@@ -278,7 +278,7 @@ function showResult(bankAccountId, rowNumber) {
 async function updateBankAccountRow(bankAccountId) {
 
   condominiumId = Number(condominiumId);
-  
+
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
@@ -338,7 +338,7 @@ async function updateBankAccountRow(bankAccountId) {
 // Delete one bankaccounts row
 async function deleteBankAccountRow(bankAccountId) {
 
-  
+
 
 
   // Check if bankaccount row exist
@@ -397,7 +397,7 @@ function showFilter(condominiumId, rowNumber) {
 
   // Show selected condominiums 
   html += objCondominiums.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '');
- 
+
   // Show all bankaccounts for selected condominiums
   // Get last id in last object in bankaccounts array
   const bankAccountId = objBankAccounts.arrayBankAccounts.at(-1).bankAccountId;
@@ -407,7 +407,7 @@ function showFilter(condominiumId, rowNumber) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objBankAccounts.insertTableColumns('', rowNumber, '','');
+  html += objBankAccounts.insertTableColumns('', rowNumber, '', '');
 
   // end table body
   html += objBankAccounts.endTableBody();

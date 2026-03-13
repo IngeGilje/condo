@@ -1305,16 +1305,16 @@ class Condos {
   // check if file exists
   async checkServer() {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no:3000/health" : "http://localhost:3000/health";
+    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     try {
 
-      const response = await fetch(URL, {
+      //const response = await fetch(`${URL}:3000/health`, {
+      const response = await fetch('/api/health', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-        })
+        body: JSON.stringify({})
       });
       return (response.ok) ? true : false;
     } catch (err) {
@@ -1343,14 +1343,6 @@ class Condos {
 
       return false;
     }
-    /*
-    if (response.ok) {
-
-      return true;
-    } else {
-
-      return false;
-    */
   }
 
   // Show horizontal menu

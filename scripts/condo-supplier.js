@@ -14,7 +14,7 @@ exitIfNoActivity();
 
 // Validate LogIn
 condominiumId = Number(sessionStorage.getItem("condominiumId"));
-user= sessionStorage.getItem("user");
+user = sessionStorage.getItem("user");
 if ((condominiumId === 0 || user === null)) {
 
   // LogIn is not valid
@@ -51,7 +51,7 @@ if ((condominiumId === 0 || user === null)) {
       events();
     } else {
 
-      objSuppliers.showMessage(objSuppliers, 'Server condo-server.js har ikke startet.');
+      objSuppliers.showMessage(objSuppliers, 'Server condo-server.js er ikke startet.');
     }
   }
 }
@@ -407,7 +407,7 @@ async function updateSupplierRow(supplierId) {
   const validSupplierId = objSuppliers.validateNumber('supplierId', supplierId, -1, objSuppliers.nineNine);
 
   //const condominiumId = Number(condominiumId);
-  
+
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -505,7 +505,7 @@ async function deleteSupplierRow() {
   if (rowNumberSupplier !== -1) {
 
     // delete supplier row
-    
+
 
     objSuppliers.deleteSuppliersTable(supplierId, user);
   }

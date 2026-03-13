@@ -49,7 +49,7 @@ async function main() {
     }
   } else {
 
-    objVouchers.showMessage(objVouchers, 'Server condo-server.js har ikke startet.');
+    objVouchers.showMessage(objVouchers, 'Server condo-server.js er ikke startet.');
   }
 }
 

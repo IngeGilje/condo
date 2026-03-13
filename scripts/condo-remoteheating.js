@@ -6,7 +6,7 @@ const objUsers = new User('user');
 const objCondos = new Condo('condo');
 const objRemoteHeatingPrices = new RemoteHeatingPrice('remoteheatingprice');
 const objRemoteHeatings = new RemoteHeating('remoteheating');
- 
+
 let condominiumId = 0;
 let user = "";
 
@@ -22,7 +22,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -52,7 +52,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -202,7 +202,7 @@ function showFilter(rowNumber, year) {
 
   // Header filter
   rowNumber++;
-  html += objRemoteHeatings.showTableHeaderMenu('width:175px;', rowNumber, '', 'År', 'Pris per kiloWattimer','','','');
+  html += objRemoteHeatings.showTableHeaderMenu('width:175px;', rowNumber, '', 'År', 'Pris per kiloWattimer', '', '', '');
 
   // start table body
   html += objRemoteHeatings.startTableBody();
@@ -223,7 +223,7 @@ function showFilter(rowNumber, year) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objRemoteHeatings.insertTableColumns('', rowNumber, '','','','','','');
+  html += objRemoteHeatings.insertTableColumns('', rowNumber, '', '', '', '', '', '');
 
   // end table body
   html += objRemoteHeatings.endTableBody();
@@ -373,7 +373,7 @@ function showResult(rowNumber) {
 // Delete one remoteHeating row
 async function deleteAccountRow(remoteHeatingId, className) {
 
-  
+
 
   // Check if remoteHeating row exist
   accountsRowNumber = objRemoteHeatings.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);
@@ -392,7 +392,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   remoteHeatingId = Number(remoteHeatingId);
 
   //const condominiumId = Number(condominiumId);
-  
+
 
   // year
   className = ".filterYear";
@@ -470,7 +470,7 @@ function getKilowattHourLastYear(condoId) {
 // Delete remoteheatings row
 async function deleteRemoteHeatingRow(remoteHeatingId, className) {
 
-  
+
 
   // Check if remoteheatings row exist
   rowNumberRemoteHeating = objRemoteHeatings.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);

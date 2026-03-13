@@ -22,7 +22,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -64,7 +64,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -243,7 +243,7 @@ function showResult(rowNumber) {
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
-    rowNumber++;
+  rowNumber++;
   html += objDues.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumAmount, sumKilowattHour);
 
   // Show the rest of the menu
@@ -263,7 +263,7 @@ function insertEmptyTableRow(rowNumber) {
   let html = "";
 
   // insert table columns in start of a row
-    rowNumber++;
+  rowNumber++;
   html += objCondominiums.insertTableColumns('', rowNumber, 'Nytt forfall');
 
   // condoId
@@ -291,7 +291,7 @@ function insertEmptyTableRow(rowNumber) {
 // Delete dues row
 async function deleteDueRow(dueId, className) {
 
-  
+
 
 
   // Check if dues row exist
@@ -317,7 +317,7 @@ async function updateDuesRow(dueId) {
 
   dueId = Number(dueId);
 
-  
+
 
   // Check dues columns
   let className = `.condoId${dueId}`;

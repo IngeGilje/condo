@@ -5,7 +5,7 @@ const today = new Date();
 const objUsers = new User('user');
 const objAccounts = new Account('account');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
- 
+
 let condominiumId = 0;
 let user = "";
 
@@ -21,7 +21,7 @@ async function main() {
 
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user= sessionStorage.getItem("user");
+    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -49,7 +49,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js har ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -174,7 +174,7 @@ function showFilter(rowNumber) {
   html += objUserBankAccounts.insertTableColumns('', rowNumber, '');
 
   // Show all selected users
-  html += objUsers. showSelectedUsers('filterUserId', 'width:175px;', '', 'Alle');
+  html += objUsers.showSelectedUsers('filterUserId', 'width:175px;', '', 'Alle');
 
   // Show all selected accounts
   html += objAccounts.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle');
@@ -204,8 +204,8 @@ function insertEmptyTableRow(rowNumber) {
   html += objUserBankAccounts.insertTableColumns('', rowNumber, 'Ny brukerkonto');
 
   // user column
-  html += objUsers. showSelectedUsers('userId0', 'width:175px;', 0, 'Ingen er valgt', '');
- 
+  html += objUsers.showSelectedUsers('userId0', 'width:175px;', 0, 'Ingen er valgt', '');
+
   // Account column
   html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '');
 
@@ -240,7 +240,7 @@ function showResult(rowNumber) {
     // user Id
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUsers. showSelectedUsers(className, 'width:175px;', userId, 'Ingen er valgt', '');
+    html += objUsers.showSelectedUsers(className, 'width:175px;', userId, 'Ingen er valgt', '');
 
     // account Id
     const accountId = userBankAccount.accountId;
@@ -268,7 +268,7 @@ function showResult(rowNumber) {
 // Delete one account row
 async function deleteAccountRow(userBankAccountId, className) {
 
-  
+
 
 
   // Check if account row exist
@@ -289,7 +289,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   userBankAccountId = Number(userBankAccountId);
 
   //const condominiumId = Number(condominiumId);
-  
+
 
   // Validate
 
