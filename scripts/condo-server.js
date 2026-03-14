@@ -4,7 +4,7 @@
 // const serverStatus = 1; // http://ingegilje.no on web server
 // const serverStatus = 2; // http://localhost on development PC
 // const serverStatus = 3; // http://localhost on web server
-const serverStatus = 3;
+const serverStatus = 1;
 
 import express from "express";
 import session from "express-session";
@@ -36,9 +36,14 @@ app.use(session({
 }));
 
 // Respond to client that server (this program) is running
-app.post('/health', (req, res) => {
+app.get('/health', (req, res) => {
 
-  console.log('/health',)
+  console.log('/health GET',)
+  res.status(200).send('OK');
+});
+
+app.post('/health', (req, res) => {
+  console.log('/health POST');
   res.status(200).send('OK');
 });
 

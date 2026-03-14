@@ -12,6 +12,7 @@ async function main() {
   // Check if server is running
   if (await objUsers.checkServer()) {
 
+
     const condominiumId = objLogIn.nineNine;
     const resident = 'Y';
     await objUsers.loadUsersTable(condominiumId, resident);
@@ -35,8 +36,9 @@ async function events() {
 
   // check password
   document.addEventListener('click', (event) => {
+    console.log('click');
     if (event.target.classList.contains('LogIn')) {
-
+    console.log('LogIn');
       checkLogin();
     };
   });
