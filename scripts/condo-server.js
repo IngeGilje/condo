@@ -4,7 +4,7 @@
 // const serverStatus = 1; // http://ingegilje.no on web server
 // const serverStatus = 2; // http://localhost on development PC
 // const serverStatus = 3; // http://localhost on web server
-const serverStatus = 1;
+const serverStatus = 2;
 
 import express from "express";
 import session from "express-session";
@@ -385,14 +385,15 @@ async function main() {
             SELECT * FROM users
               WHERE deleted <> 'Y'`;
 
+            console.log('SQLquery: ', SQLquery);
             if (Number(condominiumId) !== nineNine) SQLquery += ` AND condominiumId = ${condominiumId}`;
             if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
 
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
+            console.log('rows: ', rows);
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /users:", err.message);
