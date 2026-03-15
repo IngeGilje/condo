@@ -11,7 +11,7 @@ const objCondominiums = new Condominium('scondominium');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
 const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 
-let condominium = 0;
+let condominiumId = 0;
 let user = "";
 
 // Exit application if no activity for 1 hour
@@ -34,14 +34,14 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(2, resident);
+      await objUsers.loadUsersTable(condominiumId, resident);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(2, fixedCost);
-      await objBankAccounts.loadBankAccountsTable(2, objBankAccountTransactions.nineNine);
-      await objUserBankAccounts.loadUserBankAccountsTable(2, objBankAccountTransactions.nineNine, objBankAccountTransactions.nineNine);
-      await objCondos.loadCondoTable(2);
+      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objBankAccounts.loadBankAccountsTable(condominiumId, objBankAccountTransactions.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objBankAccountTransactions.nineNine, objBankAccountTransactions.nineNine);
+      await objCondos.loadCondoTable(condominiumId);
       await objCondominiums.loadCondominiumsTable();
-      await objSuppliers.loadSuppliersTable(2);
+      await objSuppliers.loadSuppliersTable(condominiumId);
 
       // Show header
       let menuNumber = 0;
@@ -227,7 +227,7 @@ function showFilter(rowNumber) {
   html += objCondos.showSelectedCondos('filterCondoId', 'width:175px;', objBankAccountTransactions.nineNine, '', 'Vis alle');
 
   // Get condominiumId
-  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(2));
+  const condominiumsRowNumber = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === Number(condominiumId));
   if (condominiumsRowNumber !== -1) {
 
     const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;

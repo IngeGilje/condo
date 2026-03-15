@@ -97,17 +97,6 @@ class User extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
     try {
 
-      // Get users
-      //const response = await fetch(URL, {
-
-      /*
-      //const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
-      try {
-
-        // GET request
-        const response = await fetch(`${URL}:3000/users?action=select&condominiumId=${condominiumId}&resident=${resident}`);
-      */
-
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -183,8 +172,8 @@ class User extends Condos {
   // validate User
   async validateUser(userId, password) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
-    const response = await fetch(`${URL}:3000/login`, {
+    const URL = (this.serverStatus === 1) ? '/api/login' : 'http://localhost:3000/login';
+    const response = await fetch(URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

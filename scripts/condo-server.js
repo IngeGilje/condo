@@ -4,7 +4,7 @@
 // const serverStatus = 1; // http://ingegilje.no on web server
 // const serverStatus = 2; // http://localhost on development PC
 // const serverStatus = 3; // http://localhost on web server
-const serverStatus = 2;
+const serverStatus = 1;
 
 import express from "express";
 import session from "express-session";
@@ -35,24 +35,13 @@ app.use(session({
   }
 }));
 
-/*
-// Respond to client that server (this program) is running
-app.get('/health', (req, res) => {
-
-  console.log('/health GET',)
-  res.status(200).send('OK');
-});
-*/
-
 app.post('/health', (req, res) => {
-  console.log('/health POST');
   res.status(200).send('OK');
 });
 
 // Get information from the session
 app.get("/profile", (req, res) => {
 
-  console.log('req.session.username :', req.session.username);
   if (req.session.username) {
     res.json({
       username: req.session.username,
@@ -139,12 +128,10 @@ async function main() {
 
           console.log('Gyldig');
           res.status(200).send('OK');
-          //res.json({ success: true });
         } else {
 
           console.log('Ugyldig');
           res.status(401).send("Not OK");
-          //res.json({ success: false });
         }
 
       } catch (err) {
@@ -288,7 +275,6 @@ async function main() {
 
             const condominiumId = req.query.condominiumId;
             const user = req.query.user;
-
             const accountName = req.query.accountName;
             const fixedCost = req.query.fixedCost;
 
@@ -331,7 +317,6 @@ async function main() {
           try {
 
             const user = req.query.user;
-
             const accountId = req.query.accountId;
 
             // Delete table
@@ -360,10 +345,8 @@ async function main() {
     });
 
     // Requests for users
-    //app.get("/users", async (req, res) => {
     app.post("/users", async (req, res) => {
 
-      console.log('/users');
       const action = req.body.action;
       console.log('action :', action);
       const lastUpdate = today.toISOString();
@@ -372,13 +355,8 @@ async function main() {
 
         case 'select': {
 
-          /*
-          const condominiumId = Number(req.query.condominiumId);
-          const resident = req.query.resident;
-          */
           const condominiumId = Number(req.body.condominiumId);
           const resident = req.body.resident;
-
           try {
 
             let SQLquery = `
@@ -392,7 +370,6 @@ async function main() {
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
-            console.log('rows: ', rows);
             res.json(rows);
           } catch (err) {
 

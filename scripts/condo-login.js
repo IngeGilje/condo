@@ -36,9 +36,7 @@ async function events() {
 
   // check password
   document.addEventListener('click', (event) => {
-    console.log('click');
     if (event.target.classList.contains('LogIn')) {
-    console.log('LogIn');
       checkLogin();
     };
   });
@@ -136,12 +134,8 @@ async function checkLogin() {
 
   // validate password
   const password = document.querySelector('.password').value;
-  //const validPassword = objUsers.validateText(password, 5, 45)
-
-  //if (validEmail && validPassword) {
-
   // get userId
-  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email === email);
+  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
   if (rowNumberUser !== -1) {
 
     // Check user and password 
@@ -158,7 +152,8 @@ async function checkLogin() {
       window.sessionStorage.setItem("user", objUsers.arrayUsers[0].email);
 
       // Start bank account transactions
-      window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
+      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-bankaccounttransaction.html' : 'http://localhost/condo-bankaccounttransaction.html';
+      window.location.href = URL;
       return true;
     }
   }

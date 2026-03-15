@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 2;
+  serverStatus = 1;
 
   inactivityTimeout = false;
 
@@ -1305,13 +1305,10 @@ class Condos {
   // check if file exists
   async checkServer() {
 
-    //const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
     const URL = (this.serverStatus === 1) ? '/api/health' : 'http://localhost:3000/health';
     try {
 
-      //const response = await fetch(`${URL}:3000/health`, {
-      //const response = await fetch('/api/health', {
-      const response = await fetch(URL, {
+       const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -1948,49 +1945,6 @@ function testMode() {
   }
 }
 
-/*
-function getTextWidth(text, font = '16px Arial') {
-
-  // Create a canvas element (doesn't need to be in the DOM)
-  const canvas =
-    document.createElement('canvas');
-  const context =
-    canvas.getContext('2d');
-
-  // Set the desired font
-  context.font =
-    font;
-
-  // Measure the text
-  const metrics =
-    context.measureText(text);
-
-  // Return the width in pixels
-  return metrics.width;
-}
-*/
-
-/*
-// Sends a request to the sql server
-function updateMySql(SQLquery, tableName, CRUDE) {
-
-  let messageToServer =
-  {
-    tableName: tableName,
-    CRUD: CRUDE,
-    requestId: "requestId",
-    SQLquery: SQLquery
-  };
-
-  // Converts a JavaScript value to a JavaScript Object Notation (JSON) string
-  messageToServer =
-    JSON.stringify(messageToServer);
-
-  // Send message to server
-  socket.send(messageToServer);
-}
-*/
-
 // Validate interval
 function validateInterval(className, labelText, fromValue, toValue) {
 
@@ -2022,17 +1976,6 @@ function validateInterval(className, labelText, fromValue, toValue) {
   }
   return isTextValid;
 }
-
-/*
-// Start of filters
-function startHTMLFilters() {
-
-  return `
-      <!-- Filters -->
-      <div class="filters">
-    `;
-}
-*/
 
 // exit application after 1 hour
 function exitIfNoActivity() {
