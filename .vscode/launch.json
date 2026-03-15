@@ -8,7 +8,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Login",
-      "url": "http://ingegilje.no",
+      "url": "http://localhost/condo-login.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },

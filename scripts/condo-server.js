@@ -4,7 +4,7 @@
 // const serverStatus = 1; // http://ingegilje.no on web server
 // const serverStatus = 2; // http://localhost on development PC
 // const serverStatus = 3; // http://localhost on web server
-const serverStatus = 1;
+const serverStatus = 2;
 
 import express from "express";
 import session from "express-session";
@@ -35,12 +35,14 @@ app.use(session({
   }
 }));
 
+/*
 // Respond to client that server (this program) is running
 app.get('/health', (req, res) => {
 
   console.log('/health GET',)
   res.status(200).send('OK');
 });
+*/
 
 app.post('/health', (req, res) => {
   console.log('/health POST');
@@ -84,7 +86,7 @@ async function main() {
 
       // http://ingegilje.no on web server
       // http://localhost on web server
-      case 3: 
+      case 3:
       case 1: {
 
         // Connect to MySQL
@@ -358,17 +360,24 @@ async function main() {
     });
 
     // Requests for users
-    app.get("/users", async (req, res) => {
+    //app.get("/users", async (req, res) => {
+    app.post("/users", async (req, res) => {
 
-      const action = req.query.action;
+      console.log('/users');
+      const action = req.body.action;
+      console.log('action :', action);
       const lastUpdate = today.toISOString();
 
       switch (action) {
 
         case 'select': {
 
+          /*
           const condominiumId = Number(req.query.condominiumId);
           const resident = req.query.resident;
+          */
+          const condominiumId = Number(req.body.condominiumId);
+          const resident = req.body.resident;
 
           try {
 

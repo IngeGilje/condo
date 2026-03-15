@@ -94,18 +94,48 @@ class User extends Condos {
   // get users
   async loadUsersTable(condominiumId, resident) {
 
-    // Get users
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
     try {
 
-      // GET request
-      const response = await fetch(`${URL}:3000/users?action=select&condominiumId=${condominiumId}&resident=${resident}`);
+      // Get users
+      //const response = await fetch(URL, {
+
+      /*
+      //const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+      try {
+
+        // GET request
+        const response = await fetch(`${URL}:3000/users?action=select&condominiumId=${condominiumId}&resident=${resident}`);
+      */
+
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'select',
+          condominiumId: condominiumId,
+          resident: resident
+        })
+      });
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
+
+    } catch (error) {
+      console.log("Error updating users:", error);
+    }
+  }
+
+  /*
+  if(!response.ok) throw new Error("Network error (users)");
+    this.arrayUsers = await response.json();
+
     } catch (error) {
       console.log("Error loading users:", error);
     }
-  }
+*/
+
 
   // update user row in users table
   async updateUsersTable(resident, user, email, userId, condoId, firstName, lastName, phone, securityLevel, password) {

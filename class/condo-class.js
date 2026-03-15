@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -1305,11 +1305,13 @@ class Condos {
   // check if file exists
   async checkServer() {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    //const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/health' : 'http://localhost:3000/health';
     try {
 
       //const response = await fetch(`${URL}:3000/health`, {
-      const response = await fetch('/api/health', {
+      //const response = await fetch('/api/health', {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
