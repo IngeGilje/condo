@@ -9,6 +9,7 @@
       "request": "launch",
       "name": "Login",
       "url": "http://localhost/condo-login.html",
+      //"url": "http://ingegilje.no",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
@@ -44,7 +45,7 @@
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
-        {
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Bruker",
@@ -60,7 +61,7 @@
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
-        {
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Mottaker",
@@ -100,7 +101,7 @@
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
-     {
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Felleskostnader",
@@ -148,7 +149,7 @@
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
-        {
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Test",
