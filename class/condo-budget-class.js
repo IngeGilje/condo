@@ -122,11 +122,23 @@ class Budget extends Condos {
   // get budgets
   async loadBudgetsTable(condominiumId, year, accountId) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/budgets?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}`);
+      //const response = await fetch(`${URL}:3000/budgets?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'select',
+          condominiumId: condominiumId,
+          year: year,
+          accountId: accountId
+        })
+      });
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();
     } catch (error) {
@@ -137,11 +149,26 @@ class Budget extends Condos {
   // update budget row in budgets table
   async updateBudgetsTable(budgetId, user, accountId, amount, year, text) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/budgets?action=update&budgetId=${budgetId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
+      //const response = await fetch(`${URL}:3000/budgets?action=update&budgetId=${budgetId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'update',
+          budgetId: budgetId,
+          user: user,
+          accountId: accountId,
+          amount: amount,
+          year: year,
+          text: text
+        })
+      });
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();
     } catch (error) {
@@ -152,11 +179,26 @@ class Budget extends Condos {
   // insert budget row in budgets table
   async insertBudgetsTable(condominiumId, user, accountId, amount, year, text) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/budgets?action=insert&condominiumId=${condominiumId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
+      //const response = await fetch(`${URL}:3000/budgets?action=insert&condominiumId=${condominiumId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'insert',
+          condominiumId: condominiumId,
+          user: user,
+          accountId: accountId,
+          amount: amount,
+          year: year,
+          text: text
+        })
+      });
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();
     } catch (error) {
@@ -166,11 +208,22 @@ class Budget extends Condos {
   // delete budget row
   async deleteBudgetsTable(budgetId, user) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/budgets?action=delete&budgetId=${budgetId}&user=${user}`);
+      //const response = await fetch(`${URL}:3000/budgets?action=delete&budgetId=${budgetId}&user=${user}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'delete',
+          budgetId: budgetId,
+          user: user
+        })
+      });
       if (!response.ok) throw new Error("Network error (budgets)");
       this.arrayBudgets = await response.json();
     } catch (error) {

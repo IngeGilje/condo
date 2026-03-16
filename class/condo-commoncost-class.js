@@ -341,11 +341,21 @@ class CommonCost extends Condos {
   // get commoncosts
   async loadCommonCostsTable(condominiumId) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/commoncosts' : 'http://localhost:3000/commoncosts';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/commoncosts?action=select&condominiumId=${condominiumId}`);
+      //const response = await fetch(`${URL}:3000/commoncosts?action=select&condominiumId=${condominiumId}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'select',
+          condominiumId: condominiumId
+        })
+      });
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
     } catch (error) {
@@ -356,11 +366,25 @@ class CommonCost extends Condos {
   // update a commoncosts row
   async updateCommonCostsTable(user, commonCostId, year, commonCostSquareMeter, fixedCostCondo) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/commoncosts' : 'http://localhost:3000/commoncosts';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/commoncosts?action=update&user=${user}&commonCostId=${commonCostId}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
+      //const response = await fetch(`${URL}:3000/commoncosts?action=update&user=${user}&commonCostId=${commonCostId}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'update',
+          user: user,
+          commonCostId: commonCostId,
+          year: year,
+          commonCostSquareMeter: commonCostSquareMeter,
+          fixedCostCondo: fixedCostCondo
+        })
+      });
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
     } catch (error) {
@@ -371,10 +395,24 @@ class CommonCost extends Condos {
   // insert commoncosts row
   async insertCommonCostsTable(condominiumId, user, year, commonCostSquareMeter, fixedCostCondo) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/commoncosts' : 'http://localhost:3000/commoncosts';
     try {
 
-      const response = await fetch(`${URL}:3000/commoncosts?action=insert&condominiumId=${condominiumId}&user=${user}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
+      //const response = await fetch(`${URL}:3000/commoncosts?action=insert&condominiumId=${condominiumId}&user=${user}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'insert',
+          condominiumId: condominiumId,
+          user: user,
+          year: year,
+          commonCostSquareMeter: commonCostSquareMeter,
+          fixedCostCondo: fixedCostCondo
+        })
+      });
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
     } catch (error) {
@@ -385,12 +423,23 @@ class CommonCost extends Condos {
   // delete a commoncosts row
   async deleteCommonCostsTable(commonCostId, user) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/commoncosts' : 'http://localhost:3000/commoncosts';
     try {
 
       // Fetch for sending a message to server(request)
       // response is a message in .json format send from server(response)
-      const response = await fetch(`${URL}:3000/commoncosts?action=delete&commonCostId=${commonCostId}&user=${user}`);
+      //const response = await fetch(`${URL}:3000/commoncosts?action=delete&commonCostId=${commonCostId}&user=${user}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'delete',
+          commonCostId: commonCostId,
+          user: user
+        })
+      });
       if (!response.ok) throw new Error("Network error (commoncosts)");
       this.arrayCommonCosts = await response.json();
     } catch (error) {

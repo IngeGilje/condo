@@ -3,8 +3,7 @@
 
 // const serverStatus = 1; // http://ingegilje.no on web server
 // const serverStatus = 2; // http://localhost on development PC
-// const serverStatus = 3; // http://localhost on web server
-const serverStatus = 1;
+const serverStatus = 2;
 
 import express from "express";
 import session from "express-session";
@@ -40,7 +39,8 @@ app.post('/health', (req, res) => {
 });
 
 // Get information from the session
-app.get("/profile", (req, res) => {
+//app.get("/profile", (req, res) => {
+app.post("/profile", (req, res) => {
 
   if (req.session.username) {
     res.json({
@@ -54,7 +54,8 @@ app.get("/profile", (req, res) => {
 });
 
 // Destroy / clear session
-app.get("/logout", (req, res) => {
+//app.get("/logout", (req, res) => {
+app.post("/logout", (req, res) => {
   req.session.destroy(() => {
     res.send("Session destroyed");
   });
@@ -74,8 +75,6 @@ async function main() {
     switch (serverStatus) {
 
       // http://ingegilje.no on web server
-      // http://localhost on web server
-      case 3:
       case 1: {
 
         // Connect to MySQL
@@ -185,7 +184,8 @@ async function main() {
     });
 
     // Get current user info
-    app.get("/me", async (req, res) => {
+    //app.get("/me", async (req, res) => {
+    app.post("/me", async (req, res) => {
 
       console.log('req.session', req.session);
       if (req.session.user) {
@@ -198,17 +198,18 @@ async function main() {
     });
 
     // Requests for accounts
-    app.get("/accounts", async (req, res) => {
+    //app.get("/accounts", async (req, res) => {
+    app.post("/accounts", async (req, res) => {
 
-      const action = req.query.action;
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
 
         case 'select': {
 
-          const condominiumId = Number(req.query.condominiumId);
-          const fixedCost = req.query.fixedCost;
+          const condominiumId = Number(req.body.condominiumId);
+          const fixedCost = req.body.fixedCost;
 
           try {
 
@@ -243,11 +244,11 @@ async function main() {
 
           try {
 
-            const accountId = req.query.accountId;
-            const user = req.query.user;
-            const fixedCost = req.query.fixedCost;
+            const accountId = req.body.accountId;
+            const user = req.body.user;
+            const fixedCost = req.body.fixedCost;
 
-            const accountName = req.query.accountName;
+            const accountName = req.body.accountName;
 
             const SQLquery = `
             UPDATE accounts
@@ -273,10 +274,10 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const user = req.query.user;
-            const accountName = req.query.accountName;
-            const fixedCost = req.query.fixedCost;
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+            const accountName = req.body.accountName;
+            const fixedCost = req.body.fixedCost;
 
             // Insert new row
             const SQLquery =
@@ -316,8 +317,8 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
-            const accountId = req.query.accountId;
+            const user = req.body.user;
+            const accountId = req.body.accountId;
 
             // Delete table
             const SQLquery =
@@ -383,17 +384,17 @@ async function main() {
 
           try {
 
-            const resident = req.query.resident;
-            const userId = req.query.userId;
-            const user = req.query.user;
+            const resident = req.body.resident;
+            const userId = req.body.userId;
+            const user = req.body.user;
 
-            const email = req.query.email;
-            const condoId = req.query.condoId;
-            const firstName = req.query.firstName;
-            const lastName = req.query.lastName;
-            const phone = req.query.phone;
-            const securityLevel = req.query.securityLevel;
-            let password = req.query.password;
+            const email = req.body.email;
+            const condoId = req.body.condoId;
+            const firstName = req.body.firstName;
+            const lastName = req.body.lastName;
+            const phone = req.body.phone;
+            const securityLevel = req.body.securityLevel;
+            let password = req.body.password;
 
             // Hash the password
             const saltRounds = 10;
@@ -433,17 +434,17 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const resident = req.query.resident;
-            const user = req.query.user;
+            const condominiumId = req.body.condominiumId;
+            const resident = req.body.resident;
+            const user = req.body.user;
 
-            const email = req.query.email;
-            const condoId = req.query.condoId;
-            const firstName = req.query.firstName;
-            const lastName = req.query.lastName;
-            const phone = req.query.phone;
-            const securityLevel = req.query.securityLevel;
-            const password = req.query.password;
+            const email = req.body.email;
+            const condoId = req.body.condoId;
+            const firstName = req.body.firstName;
+            const lastName = req.body.lastName;
+            const phone = req.body.phone;
+            const securityLevel = req.body.securityLevel;
+            const password = req.body.password;
             console.log('password :', password);
 
             // Insert new row
@@ -495,9 +496,9 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
+            const user = req.body.user;
 
-            const userId = req.query.userId;
+            const userId = req.body.userId;
 
             // Delete table
             const SQLquery =
@@ -529,8 +530,8 @@ async function main() {
 
             let isValid = false;
 
-            const userId = req.query.userId;
-            const password = req.query.password;
+            const userId = req.body.userId;
+            const password = req.body.password;
 
             // get password
             const SQLquery = `
@@ -568,16 +569,17 @@ async function main() {
     });
 
     // Requests for bank accounts
-    app.get("/bankaccounts", async (req, res) => {
+    //app.get("/bankaccounts", async (req, res) => {
+    app.post("/bankaccounts", async (req, res) => {
 
-      const action = req.query.action;
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
 
         case 'select': {
-          const condominiumId = Number(req.query.condominiumId);
-          const bankAccountId = Number(req.query.bankAccountId);
+          const condominiumId = Number(req.body.condominiumId);
+          const bankAccountId = Number(req.body.bankAccountId);
 
           try {
 
@@ -610,14 +612,14 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
-            const bankAccount = req.query.bankAccount;
-            const name = req.query.name;
-            const openingBalance = req.query.openingBalance;
-            const openingBalanceDate = req.query.openingBalanceDate;
-            const closingBalance = req.query.closingBalance;
-            const closingBalanceDate = req.query.closingBalanceDate;
-            const bankAccountId = req.query.bankAccountId;
+            const user = req.body.user;
+            const bankAccount = req.body.bankAccount;
+            const name = req.body.name;
+            const openingBalance = req.body.openingBalance;
+            const openingBalanceDate = req.body.openingBalanceDate;
+            const closingBalance = req.body.closingBalance;
+            const closingBalanceDate = req.body.closingBalanceDate;
+            const bankAccountId = req.body.bankAccountId;
 
             const SQLquery =
               `
@@ -648,15 +650,15 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const user = req.query.user;
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
 
-            const bankAccount = req.query.bankAccount;
-            const name = req.query.name;
-            const openingBalanceDate = req.query.openingBalanceDate;
-            const openingBalance = req.query.openingBalance;
-            const closingBalanceDate = req.query.closingBalanceDate;
-            const closingBalance = req.query.closingBalance;
+            const bankAccount = req.body.bankAccount;
+            const name = req.body.name;
+            const openingBalanceDate = req.body.openingBalanceDate;
+            const openingBalance = req.body.openingBalance;
+            const closingBalanceDate = req.body.closingBalanceDate;
+            const closingBalance = req.body.closingBalance;
 
             // Insert new row
             const SQLquery =
@@ -702,9 +704,9 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
+            const user = req.body.user;
 
-            const bankAccountId = req.query.bankAccountId;
+            const bankAccountId = req.body.bankAccountId;
 
             // Delete table
             const SQLquery =
@@ -732,10 +734,11 @@ async function main() {
     });
 
     // Requests for condominiums table
-    app.get("/condominiums", async (req, res) => {
+    //app.get("/condominiums", async (req, res) => {
+    app.post("/condominiums", async (req, res) => {
 
 
-      const action = req.query.action;
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
@@ -766,21 +769,21 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const user = req.query.user;
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
 
-            const name = req.query.name;
-            const street = req.query.street;
-            const address2 = req.query.address2;
-            const postalCode = req.query.postalCode;
-            const city = req.query.city;
-            const phone = req.query.phone;
-            const email = req.query.email;
-            const incomeRemoteHeatingAccountId = req.query.incomeRemoteHeatingAccountId;
-            const paymentRemoteHeatingAccountId = req.query.paymentRemoteHeatingAccountId;
-            const commonCostAccountId = req.query.commonCostAccountId;
-            const organizationNumber = req.query.organizationNumber;
-            const importFileName = req.query.importFileName;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const phone = req.body.phone;
+            const email = req.body.email;
+            const incomeRemoteHeatingAccountId = req.body.incomeRemoteHeatingAccountId;
+            const paymentRemoteHeatingAccountId = req.body.paymentRemoteHeatingAccountId;
+            const commonCostAccountId = req.body.commonCostAccountId;
+            const organizationNumber = req.body.organizationNumber;
+            const importFileName = req.body.importFileName;
 
             const SQLquery =
               `        
@@ -819,20 +822,20 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
+            const user = req.body.user;
 
-            const name = req.query.name;
-            const street = req.query.street;
-            const address2 = req.query.address2;
-            const postalCode = req.query.postalCode;
-            const city = req.query.city;
-            const phone = req.query.phone;
-            const email = req.query.email;
-            const incomeRemoteHeatingAccountId = req.query.incomeRemoteHeatingAccountId;
-            const paymentRemoteHeatingAccountId = req.query.paymentRemoteHeatingAccountId;
-            const commonCostAccountId = req.query.commonCostAccountId;
-            const organizationNumber = req.query.organizationNumber;
-            const importFileName = req.query.importFileName;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const phone = req.body.phone;
+            const email = req.body.email;
+            const incomeRemoteHeatingAccountId = req.body.incomeRemoteHeatingAccountId;
+            const paymentRemoteHeatingAccountId = req.body.paymentRemoteHeatingAccountId;
+            const commonCostAccountId = req.body.commonCostAccountId;
+            const organizationNumber = req.body.organizationNumber;
+            const importFileName = req.body.importFileName;
 
             // Insert new row
             const SQLquery =
@@ -888,9 +891,9 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
+            const user = req.body.user;
 
-            const condominiumId = req.query.condominiumId;
+            const condominiumId = req.body.condominiumId;
 
             // Delete table
             const SQLquery =
@@ -918,9 +921,11 @@ async function main() {
     });
 
     // Requests for budgets table
-    app.get("/budgets", async (req, res) => {
+    //app.get("/budgets", async (req, res) => {
+    app.post("/budgets", async (req, res) => {
 
-      const action = req.query.action;
+
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
@@ -929,9 +934,9 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const year = Number(req.query.year);
-            const accountId = Number(req.query.accountId);
+            const condominiumId = req.body.condominiumId;
+            const year = Number(req.body.year);
+            const accountId = Number(req.body.accountId);
 
             let SQLquery =
               `
@@ -973,12 +978,12 @@ async function main() {
 
           try {
 
-            const budgetId = req.query.budgetId;
-            const user = req.query.user;
-            const accountId = req.query.accountId;
-            const amount = req.query.amount;
-            const year = req.query.year;
-            const text = req.query.text;
+            const budgetId = req.body.budgetId;
+            const user = req.body.user;
+            const accountId = req.body.accountId;
+            const amount = req.body.amount;
+            const year = req.body.year;
+            const text = req.body.text;
 
             // Update row
             const SQLquery =
@@ -1010,13 +1015,13 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const user = req.query.user;
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
 
-            const accountId = req.query.accountId;
-            const amount = req.query.amount;
-            const year = req.query.year;
-            const text = req.query.text;
+            const accountId = req.body.accountId;
+            const amount = req.body.amount;
+            const year = req.body.year;
+            const text = req.body.text;
 
             // Insert new row
             const SQLquery =
@@ -1058,8 +1063,8 @@ async function main() {
 
           try {
 
-            const budgetId = req.query.budgetId;
-            const user = req.query.user;
+            const budgetId = req.body.budgetId;
+            const user = req.body.user;
 
             // Delete table
             const SQLquery =
@@ -1086,10 +1091,10 @@ async function main() {
     });
 
     // Requests for dues table
-    app.get("/dues", async (req, res) => {
+    //app.get("/dues", async (req, res) => {
+    app.post("/dues", async (req, res) => {
 
-
-      const action = req.query.action;
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
@@ -1097,11 +1102,11 @@ async function main() {
         case 'select': {
 
           try {
-            const condominiumId = req.query.condominiumId;
-            const accountId = Number(req.query.accountId);
-            const condoId = Number(req.query.condoId);
-            const fromDate = Number(req.query.fromDate);
-            const toDate = Number(req.query.toDate);
+            const condominiumId = req.body.condominiumId;
+            const accountId = Number(req.body.accountId);
+            const condoId = Number(req.body.condoId);
+            const fromDate = Number(req.body.fromDate);
+            const toDate = Number(req.body.toDate);
 
             let SQLquery =
               `
@@ -1152,14 +1157,14 @@ async function main() {
 
           try {
 
-            const dueId = req.query.dueId;
-            const user = req.query.user;
-            const condoId = req.query.condoId;
-            const accountId = req.query.accountId;
-            const amount = req.query.amount;
-            const date = req.query.date;
-            const kilowattHour = req.query.kilowattHour;
-            const text = req.query.text;
+            const dueId = req.body.dueId;
+            const user = req.body.user;
+            const condoId = req.body.condoId;
+            const accountId = req.body.accountId;
+            const amount = req.body.amount;
+            const date = req.body.date;
+            const kilowattHour = req.body.kilowattHour;
+            const text = req.body.text;
 
             // Update row
             const SQLquery =
@@ -1192,14 +1197,14 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const user = req.query.user;
-            const condoId = req.query.condoId;
-            const accountId = req.query.accountId;
-            const amount = req.query.amount;
-            const date = req.query.date;
-            const kilowattHour = req.query.kilowattHour;
-            const text = req.query.text;
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+            const condoId = req.body.condoId;
+            const accountId = req.body.accountId;
+            const amount = req.body.amount;
+            const date = req.body.date;
+            const kilowattHour = req.body.kilowattHour;
+            const text = req.body.text;
 
             // Insert new row
             const SQLquery =
@@ -1245,8 +1250,8 @@ async function main() {
 
           try {
 
-            const dueId = req.query.dueId;
-            const user = req.query.user;
+            const dueId = req.body.dueId;
+            const user = req.body.user;
 
 
             // Delete table
@@ -1275,10 +1280,10 @@ async function main() {
     });
 
     // Requests for condo
-    app.get("/condo", async (req, res) => {
+    //app.get("/condo", async (req, res) => {
+    app.post("/condo", async (req, res) => {
 
-
-      const action = req.query.action;
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
@@ -1287,7 +1292,7 @@ async function main() {
 
           try {
 
-            const condominiumId = Number(req.query.condominiumId);
+            const condominiumId = Number(req.body.condominiumId);
 
             const SQLquery =
               `
@@ -1313,15 +1318,15 @@ async function main() {
 
           try {
 
-            const condoId = req.query.condoId;
+            const condoId = req.body.condoId;
             console.log('condoId: ', condoId);
-            const user = req.query.user;
-            const name = req.query.name;
-            const street = req.query.street;
-            const address2 = req.query.address2;
-            const postalCode = req.query.postalCode;
-            const city = req.query.city;
-            const squareMeters = req.query.squareMeters;
+            const user = req.body.user;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const squareMeters = req.body.squareMeters;
 
             // Update condo table
             const SQLquery =
@@ -1356,14 +1361,14 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const user = req.query.user;
-            const name = req.query.name;
-            const street = req.query.street;
-            const address2 = req.query.address2;
-            const postalCode = req.query.postalCode;
-            const city = req.query.city;
-            const squareMeters = req.query.squareMeters;
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const squareMeters = req.body.squareMeters;
 
             // Insert new row
             const SQLquery =
@@ -1409,9 +1414,9 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
+            const user = req.body.user;
 
-            const condoId = req.query.condoId;
+            const condoId = req.body.condoId;
             console.log('condoId: ', condoId);
 
             // Delete table
@@ -1441,19 +1446,20 @@ async function main() {
     });
 
     // Requests for user bank account
-    app.get("/userbankaccounts", async (req, res) => {
+    //app.get("/userbankaccounts", async (req, res) => {
+    app.post("/userbankaccounts", async (req, res) => {
 
 
-      const action = req.query.action;
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
 
         case 'select': {
 
-          const condominiumId = Number(req.query.condominiumId);
-          const userId = Number(req.query.userId);
-          const accountId = Number(req.query.accountId);
+          const condominiumId = Number(req.body.condominiumId);
+          const userId = Number(req.body.userId);
+          const accountId = Number(req.body.accountId);
 
           try {
             let SQLquery =
@@ -1493,11 +1499,11 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
-            const userId = req.query.userId;
-            const accountId = req.query.accountId;
-            const bankAccount = req.query.bankAccount;
-            const userBankAccountId = req.query.userBankAccountId;
+            const user = req.body.user;
+            const userId = req.body.userId;
+            const accountId = req.body.accountId;
+            const bankAccount = req.body.bankAccount;
+            const userBankAccountId = req.body.userBankAccountId;
 
             // Update user bank account table
             const SQLquery =
@@ -1527,12 +1533,12 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const user = req.query.user;
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
 
-            const userId = req.query.userId;
-            const accountId = req.query.accountId;
-            const bankAccount = req.query.bankAccount;
+            const userId = req.body.userId;
+            const accountId = req.body.accountId;
+            const bankAccount = req.body.bankAccount;
 
             // Insert new row
             // Insert new record
@@ -1575,8 +1581,8 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
-            const userBankAccountId = req.query.userBankAccountId;
+            const user = req.body.user;
+            const userBankAccountId = req.body.userBankAccountId;
 
             // Delete table
             const SQLquery =
@@ -1604,17 +1610,18 @@ async function main() {
     });
 
     // Requests for supplier
-    app.get("/suppliers", async (req, res) => {
+    //app.get("/suppliers", async (req, res) => {
+    app.post("/suppliers", async (req, res) => {
 
 
-      const action = req.query.action;
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
 
         case 'select': {
 
-          const condominiumId = Number(req.query.condominiumId);
+          const condominiumId = Number(req.body.condominiumId);
 
           try {
 
@@ -1641,21 +1648,21 @@ async function main() {
 
           try {
 
-            const supplierId = req.query.supplierId;
-            const user = req.query.user;
-            const name = req.query.name;
-            const street = req.query.street;
-            const address2 = req.query.address2;
-            const postalCode = req.query.postalCode;
-            const city = req.query.city;
-            const email = req.query.email;
-            const phone = req.query.phone;
-            const bankAccount = req.query.bankAccount;
-            const accountId = req.query.accountId;
-            const amountAccountId = req.query.amountAccountId;
-            const amount = req.query.amount;
-            const text = req.query.text;
-            const textAccountId = req.query.textAccountId;
+            const supplierId = req.body.supplierId;
+            const user = req.body.user;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const email = req.body.email;
+            const phone = req.body.phone;
+            const bankAccount = req.body.bankAccount;
+            const accountId = req.body.accountId;
+            const amountAccountId = req.body.amountAccountId;
+            const amount = req.body.amount;
+            const text = req.body.text;
+            const textAccountId = req.body.textAccountId;
 
             // Update supplier table
             const SQLquery =
@@ -1695,21 +1702,21 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const user = req.query.user;
-            const email = req.query.email;
-            const name = req.query.name;
-            const street = req.query.street;
-            const address2 = req.query.address2;
-            const postalCode = req.query.postalCode;
-            const city = req.query.city;
-            const phone = req.query.phone;
-            const bankAccount = req.query.bankAccount;
-            const accountId = req.query.accountId;
-            const amount = req.query.amount;
-            const amountAccountId = req.query.amountAccountId;
-            const text = req.query.text;
-            const textAccountId = req.query.textAccountId;
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+            const email = req.body.email;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const phone = req.body.phone;
+            const bankAccount = req.body.bankAccount;
+            const accountId = req.body.accountId;
+            const amount = req.body.amount;
+            const amountAccountId = req.body.amountAccountId;
+            const text = req.body.text;
+            const textAccountId = req.body.textAccountId;
 
             // Insert new supplier row
             const SQLquery =
@@ -1768,9 +1775,9 @@ async function main() {
         case 'delete': {
           try {
 
-            const user = req.query.user;
+            const user = req.body.user;
 
-            const supplierId = req.query.supplierId.trim();
+            const supplierId = req.body.supplierId.trim();
 
             // Delete table
             const SQLquery =
@@ -1799,23 +1806,24 @@ async function main() {
     });
 
     // Requests for bank account transactions
-    app.get("/bankaccounttransactions", async (req, res) => {
+    //app.get("/bankaccounttransactions", async (req, res) => {
+    app.post("/bankaccounttransactions", async (req, res) => {
 
-      const action = req.query.action;
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
 
         case 'select': {
 
-          const orderBy = req.query.orderBy;
-          const condominiumId = Number(req.query.condominiumId);
-          const deleted = req.query.deleted;
-          const condoId = Number(req.query.condoId);
-          const accountId = Number(req.query.accountId);
-          const amount = Number(req.query.amount);
-          const fromDate = Number(req.query.fromDate);
-          const toDate = Number(req.query.toDate);
+          const orderBy = req.body.orderBy;
+          const condominiumId = Number(req.body.condominiumId);
+          const deleted = req.body.deleted;
+          const condoId = Number(req.body.condoId);
+          const accountId = Number(req.body.accountId);
+          const amount = Number(req.body.amount);
+          const fromDate = Number(req.body.fromDate);
+          const toDate = Number(req.body.toDate);
 
           try {
 
@@ -1891,16 +1899,16 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
+            const user = req.body.user;
 
-            const condoId = req.query.condoId;
-            const accountId = req.query.accountId;
-            const income = req.query.income;
-            const payment = req.query.payment;
-            const kilowattHour = req.query.kilowattHour;
-            const date = req.query.date;
-            const text = req.query.text;
-            const bankAccountTransactionId = req.query.bankAccountTransactionId;
+            const condoId = req.body.condoId;
+            const accountId = req.body.accountId;
+            const income = req.body.income;
+            const payment = req.body.payment;
+            const kilowattHour = req.body.kilowattHour;
+            const date = req.body.date;
+            const text = req.body.text;
+            const bankAccountTransactionId = req.body.bankAccountTransactionId;
 
             // Update bank account transactions table
             const SQLquery =
@@ -1935,16 +1943,16 @@ async function main() {
 
           try {
 
-            const condominiumId = req.query.condominiumId;
-            const user = req.query.user;
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
 
-            const condoId = req.query.condoId;
-            const accountId = req.query.accountId;
-            const income = req.query.income;
-            const payment = req.query.payment;
-            const kilowattHour = req.query.kilowattHour;
-            const date = req.query.date;
-            const text = req.query.text;
+            const condoId = req.body.condoId;
+            const accountId = req.body.accountId;
+            const income = req.body.income;
+            const payment = req.body.payment;
+            const kilowattHour = req.body.kilowattHour;
+            const date = req.body.date;
+            const text = req.body.text;
 
             // Insert new bank account transactions row
             const SQLquery =
@@ -1993,9 +2001,9 @@ async function main() {
 
           try {
 
-            const user = req.query.user;
+            const user = req.body.user;
 
-            const bankAccountTransactionId = req.query.bankAccountTransactionId;
+            const bankAccountTransactionId = req.body.bankAccountTransactionId;
 
             // Delete table
             const SQLquery =
@@ -2022,12 +2030,13 @@ async function main() {
       }
     });
 
-    app.get("/import-csvFile", async (req, res) => {
+    //app.get("/import-csvFile", async (req, res) => {
+    app.post("/users", async (req, res) => {
 
       console.log('import-csvFile');
       try {
 
-        const csvFileName = req.query.csvFileName;
+        const csvFileName = req.body.csvFileName;
         console.log('csvFileName :', csvFileName);
         const data = await fs.readFile(csvFileName, "utf8");
         console.log('data :', data);
@@ -2038,16 +2047,16 @@ async function main() {
     });
 
     // Requests for menu
-    app.get("/menu", async (req, res) => {
+    //app.get("/menu", async (req, res) => {
+    app.post("/menu", async (req, res) => {
 
-
-      const action = req.query.action;
+      const action = req.body.action;
       const lastUpdate = today.toISOString();
 
       switch (action) {
 
         case 'select': {
-          const condominiumId = Number(req.query.condominiumId);
+          const condominiumId = Number(req.body.condominiumId);
 
           try {
 
@@ -2082,9 +2091,10 @@ async function main() {
   }
 
   // Requests for remoteheatings table
-  app.get("/remoteheatings", async (req, res) => {
+  //app.get("/remoteheatings", async (req, res) => {
+  app.post("/remoteheatings", async (req, res) => {
 
-    const action = req.query.action;
+    const action = req.body.action;
     const lastUpdate = today.toISOString();
 
     switch (action) {
@@ -2093,9 +2103,9 @@ async function main() {
 
         try {
 
-          const condominiumId = req.query.condominiumId;
-          const year = Number(req.query.year);
-          const condoId = Number(req.query.condoId);
+          const condominiumId = req.body.condominiumId;
+          const year = Number(req.body.year);
+          const condoId = Number(req.body.condoId);
 
           let SQLquery = `SELECT * FROM remoteheatings WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
 
@@ -2119,13 +2129,13 @@ async function main() {
 
         try {
 
-          const remoteHeatingId = req.query.remoteHeatingId;
-          const user = req.query.user;
-          const condoId = req.query.condoId;
-          const year = req.query.year;
-          const date = req.query.date;
-          const kilowattHour = req.query.kilowattHour;
-          const priceYear = req.query.priceYear;
+          const remoteHeatingId = req.body.remoteHeatingId;
+          const user = req.body.user;
+          const condoId = req.body.condoId;
+          const year = req.body.year;
+          const date = req.body.date;
+          const kilowattHour = req.body.kilowattHour;
+          const priceYear = req.body.priceYear;
 
           // Update row
           const SQLquery =
@@ -2158,13 +2168,13 @@ async function main() {
 
         try {
 
-          const user = req.query.user;
-          const condominiumId = req.query.condominiumId;
-          const condoId = req.query.condoId;
-          const year = req.query.year;
-          const date = req.query.date;
-          const kilowattHour = req.query.kilowattHour;
-          const priceYear = req.query.priceYear;
+          const user = req.body.user;
+          const condominiumId = req.body.condominiumId;
+          const condoId = req.body.condoId;
+          const year = req.body.year;
+          const date = req.body.date;
+          const kilowattHour = req.body.kilowattHour;
+          const priceYear = req.body.priceYear;
 
           // Insert new row
           const SQLquery =
@@ -2208,8 +2218,8 @@ async function main() {
 
         try {
 
-          const remoteHeatingId = req.query.remoteHeatingId;
-          const user = req.query.user;
+          const remoteHeatingId = req.body.remoteHeatingId;
+          const user = req.body.user;
 
           // Delete table
           const SQLquery =
@@ -2237,9 +2247,10 @@ async function main() {
   });
 
   // Requests for remoteheatingprices table
-  app.get("/remoteheatingprices", async (req, res) => {
+  //app.get("/remoteheatingprices", async (req, res) => {
+  app.post("/remoteheatingprices", async (req, res) => {
 
-    const action = req.query.action;
+    const action = req.body.action;
     const lastUpdate = today.toISOString();
 
     switch (action) {
@@ -2248,7 +2259,7 @@ async function main() {
 
         try {
 
-          const condominiumId = req.query.condominiumId;
+          const condominiumId = req.body.condominiumId;
 
           let SQLquery = `SELECT * FROM remoteheatingprices WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
           SQLquery += ` ORDER BY year;`;
@@ -2269,10 +2280,10 @@ async function main() {
 
         try {
 
-          const remoteHeatingPriceId = req.query.remoteHeatingPriceId;
-          const user = req.query.user;
-          const year = req.query.year;
-          const priceKilowattHour = req.query.priceKilowattHour;
+          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
+          const user = req.body.user;
+          const year = req.body.year;
+          const priceKilowattHour = req.body.priceKilowattHour;
 
           // Update row
           const SQLquery =
@@ -2302,10 +2313,10 @@ async function main() {
 
         try {
 
-          const user = req.query.user;
-          const condominiumId = req.query.condominiumId;
-          const year = req.query.year;
-          const priceKilowattHour = req.query.priceKilowattHour;
+          const user = req.body.user;
+          const condominiumId = req.body.condominiumId;
+          const year = req.body.year;
+          const priceKilowattHour = req.body.priceKilowattHour;
 
           // Insert new row
           const SQLquery =
@@ -2343,8 +2354,8 @@ async function main() {
 
         try {
 
-          const remoteHeatingPriceId = req.query.remoteHeatingPriceId;
-          const user = req.query.user;
+          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
+          const user = req.body.user;
 
           // Delete table
           const SQLquery =
@@ -2372,9 +2383,10 @@ async function main() {
   });
 
   // Requests for commoncosts table
-  app.get("/commoncosts", async (req, res) => {
+  //app.get("/commoncosts", async (req, res) => {
+  app.post("/commoncosts", async (req, res) => {
 
-    const action = req.query.action;
+    const action = req.body.action;
     const lastUpdate = today.toISOString();
 
     switch (action) {
@@ -2383,7 +2395,7 @@ async function main() {
 
         try {
 
-          const condominiumId = req.query.condominiumId;
+          const condominiumId = req.body.condominiumId;
 
           let SQLquery = `SELECT * FROM commoncosts WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
           SQLquery += ` ORDER BY year;`;
@@ -2404,11 +2416,11 @@ async function main() {
 
         try {
 
-          const commonCostId = req.query.commonCostId;
-          const user = req.query.user;
-          const year = req.query.year;
-          const commonCostSquareMeter = req.query.commonCostSquareMeter;
-          const fixedCostCondo = req.query.fixedCostCondo;
+          const commonCostId = req.body.commonCostId;
+          const user = req.body.user;
+          const year = req.body.year;
+          const commonCostSquareMeter = req.body.commonCostSquareMeter;
+          const fixedCostCondo = req.body.fixedCostCondo;
 
           // Update row
           const SQLquery =
@@ -2439,11 +2451,11 @@ async function main() {
 
         try {
 
-          const user = req.query.user;
-          const condominiumId = req.query.condominiumId;
-          const year = req.query.year;
-          const commonCostSquareMeter = req.query.commonCostSquareMeter;
-          const fixedCostCondo = req.query.fixedCostCondo;
+          const user = req.body.user;
+          const condominiumId = req.body.condominiumId;
+          const year = req.body.year;
+          const commonCostSquareMeter = req.body.commonCostSquareMeter;
+          const fixedCostCondo = req.body.fixedCostCondo;
 
           // Insert new row
           const SQLquery =
@@ -2483,8 +2495,8 @@ async function main() {
 
         try {
 
-          const remoteHeatingPriceId = req.query.remoteHeatingPriceId;
-          const user = req.query.user;
+          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
+          const user = req.body.user;
 
           // Delete table
           const SQLquery =

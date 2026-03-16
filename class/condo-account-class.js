@@ -236,11 +236,23 @@ class Account extends Condos {
   // get accounts from accounts table
   async loadAccountsTable(condominiumId, fixedCost) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/accounts?action=select&condominiumId=${condominiumId}&fixedCost=${fixedCost}`);
+      //const response = await fetch(`${URL}:3000/accounts?action=select&condominiumId=${condominiumId}&fixedCost=${fixedCost}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'select',
+          condominiumId: condominiumId,
+          fixedCost: fixedCost
+        })
+      });
+
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayAccounts = await response.json();
     } catch (error) {
@@ -251,11 +263,25 @@ class Account extends Condos {
   // update account row
   async updateAccountsTable(user, accountId, fixedCost, accountName) {
 
-     const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/accounts?action=update&user=${user}&accountId=${accountId}&fixedCost=${fixedCost}&accountName=${accountName}`);
+      //const response = await fetch(`${URL}:3000/accounts?action=update&user=${user}&accountId=${accountId}&fixedCost=${fixedCost}&accountName=${accountName}`);
+
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'update',
+          user: user,
+          accountId: accountId,
+          fixedCost: fixedCost,
+          accountName: accountName
+        })
+      });
       if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();
     } catch (error) {
@@ -266,10 +292,24 @@ class Account extends Condos {
   // insert account row
   async insertAccountsTable(condominiumId, user, accountName, fixedCost) {
 
-        const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
     try {
       // GET request
-      const response = await fetch(`${URL}:3000/accounts?action=insert&condominiumId=${condominiumId}&user=${user}&accountName=${accountName}&fixedCost=${fixedCost}`);
+      //const response = await fetch(`${URL}:3000/accounts?action=insert&condominiumId=${condominiumId}&user=${user}&accountName=${accountName}&fixedCost=${fixedCost}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'insert',
+          condominiumId: condominiumId,
+          user: user,
+          accountName: accountName,
+          fixedCost: fixedCost
+        })
+      });
+
       if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();
     } catch (error) {
@@ -280,12 +320,21 @@ class Account extends Condos {
   // delete account row
   async deleteAccountsTable(accountId, user) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
     try {
-      // GET request
-      // Fetch for sending a message to server(request)
-      // response is a message in .json format send from server(response)
-      const response = await fetch(`${URL}:3000/accounts?action=delete&accountId=${accountId}&user=${user}`);
+      // POST request
+      //const response = await fetch(`${URL}:3000/accounts?action=delete&accountId=${accountId}&user=${user}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'delete',
+          accountId: accountId,
+          user: user
+        })
+      });
       if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();
     } catch (error) {

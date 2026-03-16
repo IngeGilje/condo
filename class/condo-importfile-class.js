@@ -106,16 +106,27 @@ class ImportFile extends Condos {
   // get csv file from local disk
   async loadCsvFile(csvFileName) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/import-csvFile' : 'http://localhost:3000/import-csvFile';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/import-csvFile?action=upload&csvFileName=${csvFileName}`);
+      //const response = await fetch(`${URL}:3000/import-csvFile?action=upload&csvFileName=${csvFileName}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'upload',
+          csvFileName: csvFileName
+        })
+      });
       if (!response.ok) throw new Error("Network error (load csv file)");
       const result = await response.json();
       this.strCSVTransaction = result.content;
     } catch (error) {
-      objImportFile.showMessage(objImportFile, 'Sjekk transaksjonsfil ',csvFileName, '.');
+      objImportFile.showMessage(objImportFile, 'Sjekk transaksjonsfil ', csvFileName, '.');
+      return false;
     }
   }
 }

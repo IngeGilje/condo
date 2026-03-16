@@ -110,10 +110,20 @@ class Condo extends Condos {
   async loadCondoTable(condominiumId) {
 
     // Get condos
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
     try {
       // GET request
-      const response = await fetch(`${URL}:3000/condo?action=select&condominiumId=${condominiumId}`);
+      //const response = await fetch(`${URL}:3000/condo?action=select&condominiumId=${condominiumId}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'select',
+          condominiumId: condominiumId
+        })
+      });
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
     } catch (error) {
@@ -125,11 +135,28 @@ class Condo extends Condos {
   async updateCondoTable(condoId, user, name, street, address2, postalCode, city, squareMeters) {
 
     if (address2 === 'undefined') address2 = '';
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/condo?action=update&condoId=${condoId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
+      //const response = await fetch(`${URL}:3000/condo?action=update&condoId=${condoId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'update',
+          condoId: condoId,
+          user: user,
+          name: name,
+          street: street,
+          address2: address2,
+          postalCode: postalCode,
+          city: city,
+          squareMeters: squareMeters
+        })
+      });
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
     } catch (error) {
@@ -140,10 +167,27 @@ class Condo extends Condos {
   // insert condo row in condo table
   async insertCondoTable(condominiumId, user, name, street, address2, postalCode, city, squareMeters) {
     if (address2 === 'undefined') address2 = '';
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
     try {
       // GET request
-      const response = await fetch(`${URL}:3000/condo?action=insert&condominiumId=${condominiumId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
+      //const response = await fetch(`${URL}:3000/condo?action=insert&condominiumId=${condominiumId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'insert',
+          condominiumId: condominiumId,
+          user: user,
+          name: name,
+          street: street,
+          address2: address2,
+          postalCode: postalCode,
+          city: city,
+          squareMeters: squareMeters
+        })
+      });
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
     } catch (error) {
@@ -154,10 +198,21 @@ class Condo extends Condos {
   // delete condo row
   async deleteCondoTable(condoId, user) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
     try {
       // GET request
-      const response = await fetch(`${URL}:3000/condo?action=delete&condoId=${condoId}&user=${user}`);
+      //const response = await fetch(`${URL}:3000/condo?action=delete&condoId=${condoId}&user=${user}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'delete',
+          condoId: condoId,
+          user: user
+        })
+      });
       if (!response.ok) throw new Error("Network error (condo)");
       this.arrayCondo = await response.json();
     } catch (error) {

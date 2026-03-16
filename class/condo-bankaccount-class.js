@@ -203,10 +203,21 @@ class BankAccount extends Condos {
   // Show bank accounts with alternative select options
   async loadBankAccountsTable(condominiumId, bankAccountId) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
       // GET request
-      const response = await fetch(`${URL}:3000/bankaccounts?action=select&condominiumId=${condominiumId}&bankAccountId=${bankAccountId}`);
+      //const response = await fetch(`${URL}:3000/bankaccounts?action=select&condominiumId=${condominiumId}&bankAccountId=${bankAccountId}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'select',
+          condominiumId: condominiumId,
+          bankAccountId: bankAccountId
+        })
+      });
       if (!response.ok) throw new Error("Network error (bank accounts)");
       this.arrayBankAccounts = await response.json();
     } catch (error) {
@@ -217,10 +228,27 @@ class BankAccount extends Condos {
   // update bank accounts row
   async updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
       // GET request
-      const response = await fetch(`${URL}:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}`);
+      //const response = await fetch(`${URL}:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'update',
+          bankAccountId: bankAccountId,
+          user: user,
+          bankAccount: bankAccount,
+          name: name,
+          openingBalanceDate: openingBalanceDate,
+          openingBalance: openingBalance,
+          closingBalanceDate: closingBalanceDate,
+          closingBalance: closingBalance
+        })
+      });
       if (!response.ok) throw new Error("Network error (bank account)");
       this.arrayBankAccounts = await response.json();
     } catch (error) {
@@ -231,10 +259,28 @@ class BankAccount extends Condos {
   // insert bank accounts row
   async insertBankAccountsTable(condominiumId, user, bankAccount, name, openingBalanceDate, openingBalance, closingBalanceDate, closingBalance) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
       // GET request
-      const response = await fetch(`${URL}:3000/bankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
+      //const response = await fetch(`${URL}:3000/bankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'insert',
+          condominiumId: condominiumId,
+          user: user,
+          bankAccount: bankAccount,
+          name: name,
+          openingBalanceDate: openingBalanceDate,
+          openingBalance: openingBalance,
+          closingBalanceDate: closingBalanceDate,
+          closingBalance: closingBalance,
+          closingBalanceDate: closingBalanceDate
+        })
+      });
       if (!response.ok) throw new Error("Network error (bankaccounts)");
       this.arrayBankAccounts = await response.json();
     } catch (error) {
@@ -245,10 +291,21 @@ class BankAccount extends Condos {
   // delete bankaccounts row
   async deleteBankAccountsTable(bankAccountId, user) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
       // GET request
-      const response = await fetch(`${URL}:3000/bankaccounts?action=delete&bankAccountId=${bankAccountId}&user=${user}`);
+      //const response = await fetch(`${URL}:3000/bankaccounts?action=delete&bankAccountId=${bankAccountId}&user=${user}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'delete',
+          bankAccountId: bankAccountId,
+          user: user
+        })
+      });
       if (!response.ok) throw new Error("Network error (bankaccounts)");
       this.arrayBankAccounts = await response.json();
     } catch (error) {

@@ -38,53 +38,60 @@ async function main() {
       window.location.href = 'http://localhost/condo-login.html';
     } else {
 
-      const resident = 'A';
-      await objUsers.loadUsersTable(condominiumId, resident);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
-      await objBankAccounts.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
-      await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objImportFile.nineNine, objImportFile.nineNine);
-      await objCondo.loadCondoTable(condominiumId);
-      await objSuppliers.loadSuppliersTable(condominiumId);
+      // get name of transaction file from bank
       await objCondominiums.loadCondominiumsTable();
-
-      //const condominiumId = Number(condominiumId);
-
-      const deleted = 'A';
-      const accountId = objImportFile.nineNine;
-      const condoId = objImportFile.nineNine;
-      let fromDate = 0;
-      let toDate = objImportFile.nineNine;
-      await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-      amount = 0;
-      const orderBy = 'condoId ASC, date DESC, income ASC';
-      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
-
-      // Sends a request to the server to get bank csv transaction file
-      // get name of transactions file
       const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // file import text name
         const csvFileName = objCondominiums.arrayCondominiums[rowNumberCondominium].importFileName;
-        await objImportFile.loadCsvFile(csvFileName);
+        if (objImportFile.checkIfFileExists(csvFileName)) {
 
-        let menuNumber = 0;
-        // Show header
-        showHeader();
+          const resident = 'A';
+          await objUsers.loadUsersTable(condominiumId, resident);
+          const fixedCost = 'A';
+          await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+          await objBankAccounts.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
+          await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objImportFile.nineNine, objImportFile.nineNine);
+          await objCondo.loadCondoTable(condominiumId);
+          await objSuppliers.loadSuppliersTable(condominiumId);
 
-        // Show filter
-        menuNumber = showFilter(menuNumber);
+          const deleted = 'A';
+          const accountId = objImportFile.nineNine;
+          const condoId = objImportFile.nineNine;
+          let fromDate = 0;
+          let toDate = objImportFile.nineNine;
+          await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-        // create array from imported csv-file (data string)
-        createtransactionsArray(objImportFile.strCSVTransaction);
+          amount = 0;
+          const orderBy = 'condoId ASC, date DESC, income ASC';
+          await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-        // Show result of filter
-        menuNumber = showResult(menuNumber);
+          // Sends a request to the server to get bank csv transaction file
+          await objImportFile.loadCsvFile(csvFileName);
 
-        // Events
-        events();
+          let menuNumber = 0;
+          // Show header
+          showHeader();
+
+          // Show filter
+          menuNumber = showFilter(menuNumber);
+
+          // create array from imported csv-file (data string)
+          createtransactionsArray(objImportFile.strCSVTransaction);
+
+          // Show result of filter
+          menuNumber = showResult(menuNumber);
+
+          // Events
+          events();
+        } else {
+
+          objRemoteHeatings.showMessage(objRemoteHeatings, 'Finner ikke transaksjonsfilen fra banken :', fileName);
+        }
+      } else {
+
+        objRemoteHeatings.showMessage(objRemoteHeatings, 'Finner ikke transaksjonsfilen fra banken :', fileName);
       }
     }
   } else {
@@ -92,7 +99,6 @@ async function main() {
     objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
   }
 }
-
 
 // Make transactions events
 function events() {

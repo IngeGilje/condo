@@ -97,6 +97,7 @@ class User extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
     try {
 
+      // Get users
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -129,11 +130,30 @@ class User extends Condos {
   // update user row in users table
   async updateUsersTable(resident, user, email, userId, condoId, firstName, lastName, phone, securityLevel, password) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
     try {
 
       // GET request
-      const response = await fetch(`${URL}:3000/users?action=update&user=${user}&email=${email}&userId=${userId}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
+      //const response = await fetch(`${URL}:3000/users?action=update&user=${user}&email=${email}&userId=${userId}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'update',
+          user: user,
+          email: email,
+          userId: userId,
+          condoId: condoId,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phone,
+          securityLevel: securityLevel,
+          password: password,
+          resident: resident
+        })
+      });
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {
@@ -144,10 +164,29 @@ class User extends Condos {
   // insert user row in users table
   async insertUsersTable(resident, condominiumId, user, email, condoId, firstName, lastName, phone, securityLevel, password) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
     try {
 
-      const response = await fetch(`${URL}:3000/users?action=insert&condominiumId=${condominiumId}&user=${user}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
+      //const response = await fetch(`${URL}:3000/users?action=insert&condominiumId=${condominiumId}&user=${user}&email=${email}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'insert',
+          condominiumId: condominiumId,
+          user: user,
+          email: email,
+          condoId: condoId,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phone,
+          securityLevel: securityLevel,
+          password: password,
+          resident: resident
+        })
+      });
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {
@@ -158,10 +197,21 @@ class User extends Condos {
   // delete user row
   async deleteUsersTable(userId, user) {
 
-    const URL = (this.serverStatus === 1) ? "http://ingegilje.no" : "http://localhost";
+    const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
     try {
 
-      const response = await fetch(`${URL}:3000/users?action=delete&userId=${userId}&user=${user}`);
+      //const response = await fetch(`${URL}:3000/users?action=delete&userId=${userId}&user=${user}`);
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'delete',
+          userId: userId,
+          user: user
+        })
+      });
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
     } catch (error) {
