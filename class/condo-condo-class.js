@@ -112,7 +112,7 @@ class Condo extends Condos {
     // Get condos
     const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/condo?action=select&condominiumId=${condominiumId}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -138,7 +138,7 @@ class Condo extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/condo?action=update&condoId=${condoId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -169,7 +169,7 @@ class Condo extends Condos {
     if (address2 === 'undefined') address2 = '';
     const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/condo?action=insert&condominiumId=${condominiumId}&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&squareMeters=${squareMeters}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -200,7 +200,7 @@ class Condo extends Condos {
 
     const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/condo?action=delete&condoId=${condoId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",

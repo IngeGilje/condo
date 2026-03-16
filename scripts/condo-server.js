@@ -3,7 +3,7 @@
 
 // const serverStatus = 1; // http://ingegilje.no on web server
 // const serverStatus = 2; // http://localhost on development PC
-const serverStatus = 1;
+const serverStatus = 2;
 
 import express from "express";
 import session from "express-session";
@@ -2031,7 +2031,7 @@ async function main() {
     });
 
     //app.get("/import-csvFile", async (req, res) => {
-    app.post("/users", async (req, res) => {
+    app.post("/import-csvFile", async (req, res) => {
 
       console.log('import-csvFile');
       try {

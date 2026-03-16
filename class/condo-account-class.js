@@ -85,9 +85,6 @@ class Account extends Condos {
 
       objSuppliers.arraySuppliers.forEach((supplier) => {
 
-        if (supplier.supplierId === 21) {
-          console.log('supplierId: ', supplier.supplierId,);
-        }
         if (supplier.text === text) {
 
           accountId = supplier.textAccountId;
@@ -239,7 +236,7 @@ class Account extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/accounts?action=select&condominiumId=${condominiumId}&fixedCost=${fixedCost}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -266,7 +263,7 @@ class Account extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/accounts?action=update&user=${user}&accountId=${accountId}&fixedCost=${fixedCost}&accountName=${accountName}`);
 
       const response = await fetch(URL, {
@@ -294,7 +291,7 @@ class Account extends Condos {
 
     const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/accounts?action=insert&condominiumId=${condominiumId}&user=${user}&accountName=${accountName}&fixedCost=${fixedCost}`);
       const response = await fetch(URL, {
         method: "POST",

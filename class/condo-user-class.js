@@ -133,7 +133,7 @@ class User extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/users?action=update&user=${user}&email=${email}&userId=${userId}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
       const response = await fetch(URL, {
         method: "POST",

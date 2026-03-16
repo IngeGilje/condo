@@ -27,7 +27,7 @@ async function main() {
     events();
   } else {
 
-    objUsers.showMessage(objUsers, 'Server condo-server.js er ikke startet.');
+    objUsers.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -81,7 +81,7 @@ function showResult() {
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
 
   // email
-  html += objLogIn.inputTableColumn('email', '', '', 45, '');
+  html += objLogIn.inputTableColumn('email', '', 'inge.gilje@gmail.com', 45, '');
 
   html += "</tr>";
 
@@ -98,7 +98,7 @@ function showResult() {
   html += objLogIn.insertTableColumns('', 0);
 
   // password
-  password = '';
+  password = '12345';
   html += objLogIn.inputTableColumn('password', '', password, 45);
 
   html += "</tr>";
@@ -159,7 +159,7 @@ async function checkLogin() {
   }
 
   // password/ user is not OK
-  objUsers.showMessage(objUsers, 'Ugyldig passord/email');
+  objUsers.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Ugyldig passord/email');
 
   resetValues();
   return false;

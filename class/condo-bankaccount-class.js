@@ -205,7 +205,7 @@ class BankAccount extends Condos {
 
     const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/bankaccounts?action=select&condominiumId=${condominiumId}&bankAccountId=${bankAccountId}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -230,7 +230,7 @@ class BankAccount extends Condos {
 
     const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -261,7 +261,7 @@ class BankAccount extends Condos {
 
     const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/bankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -293,7 +293,7 @@ class BankAccount extends Condos {
 
     const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/bankaccounts?action=delete&bankAccountId=${bankAccountId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",

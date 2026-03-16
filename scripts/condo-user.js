@@ -48,7 +48,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -403,7 +403,7 @@ async function updateUserRow(userId) {
         document.querySelector('.filterUserId').value = userId;
       } else {
 
-        objRemoteHeatings.showMessage(objRemoteHeatings, 'Ugyldig e-mail. Finnes fra før.');
+        objRemoteHeatings.showMessage(objRemoteHeatings, '', 'Ugyldig e-mail. Finnes fra før.');
       }
     }
 

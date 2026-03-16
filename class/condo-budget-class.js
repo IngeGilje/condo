@@ -125,7 +125,7 @@ class Budget extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/budgets?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -152,7 +152,7 @@ class Budget extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/budgets?action=update&budgetId=${budgetId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -182,7 +182,7 @@ class Budget extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/budgets?action=insert&condominiumId=${condominiumId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -211,7 +211,7 @@ class Budget extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/budgets?action=delete&budgetId=${budgetId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",

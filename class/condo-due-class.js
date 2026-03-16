@@ -109,7 +109,7 @@ class Due extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/dues' : 'http://localhost:3000/dues';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/dues?action=select&condominiumId=${condominiumId}&accountId=${accountId}&condoId=${condoId}&fromDate=${fromDate}&toDate=${toDate}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -139,7 +139,7 @@ class Due extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/dues' : 'http://localhost:3000/dues';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/dues?action=update&dueId=${dueId}&user=${user}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&date=${date}&kilowattHour=${kilowattHour}&text=${text}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -171,7 +171,7 @@ class Due extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/dues' : 'http://localhost:3000/dues';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/dues?action=insert&condominiumId=${condominiumId}&condoId=${condoId}&user=${user}&accountId=${accountId}&amount=${amount}&date=${date}&kilowattHour=${kilowattHour}&text=${text}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -202,7 +202,7 @@ class Due extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/dues' : 'http://localhost:3000/dues';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/dues?action=delete&dueId=${dueId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",

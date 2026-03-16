@@ -86,7 +86,7 @@ class BankAccountTransaction extends Condos {
 
     const URL = (this.serverStatus === 1) ? '/api/bankaccounttransactions' : 'http://localhost:3000/bankaccounttransactions';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/bankaccounttransactions?action=select&orderBy=${orderBy}&condominiumId=${condominiumId}&deleted=${deleted}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&fromDate=${fromDate}&toDate=${toDate}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -117,7 +117,7 @@ class BankAccountTransaction extends Condos {
 
     const URL = (this.serverStatus === 1) ? '/api/bankaccounttransactions' : 'http://localhost:3000/bankaccounttransactions';
     try {
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/bankaccounttransactions?action=update&bankAccountTransactionId=${bankAccountTransactionId}&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&accountId=${accountId}&income=${income}&payment=${payment}&kilowattHour=${kilowattHour}&date=${date}&text=${text}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -175,7 +175,7 @@ class BankAccountTransaction extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/bankaccounttransactions' : 'http://localhost:3000/bankaccounttransactions';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/bankaccounttransactions?action=insert&bankAccountTransactionId=${bankAccountTransactionId}&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&accountId=${accountId}&income=${income}&payment=${payment}&kilowattHour=${kilowattHour}&date=${date}&text=${text}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -209,7 +209,7 @@ class BankAccountTransaction extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/bankaccounttransactions' : 'http://localhost:3000/bankaccounttransactions';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/bankaccounttransactions?action=delete&bankAccountTransactionId=${bankAccountTransactionId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",

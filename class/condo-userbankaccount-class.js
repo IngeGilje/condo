@@ -99,7 +99,7 @@ class UserBankAccount extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/userbankaccounts' : 'http://localhost:3000/userbankaccounts';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/userbankaccounts?action=select&condominiumId=${condominiumId}&userId=${userId}&accountId=${accountId}`);
       const response = await fetch(URL, {
         method: "POST",

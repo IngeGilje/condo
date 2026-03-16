@@ -344,7 +344,7 @@ class CommonCost extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/commoncosts' : 'http://localhost:3000/commoncosts';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/commoncosts?action=select&condominiumId=${condominiumId}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -369,7 +369,7 @@ class CommonCost extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/commoncosts' : 'http://localhost:3000/commoncosts';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/commoncosts?action=update&user=${user}&commonCostId=${commonCostId}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
       const response = await fetch(URL, {
         method: "POST",

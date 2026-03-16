@@ -45,7 +45,7 @@ async function main() {
 
         // file import text name
         const csvFileName = objCondominiums.arrayCondominiums[rowNumberCondominium].importFileName;
-        if (objImportFile.checkIfFileExists(csvFileName)) {
+        if (await objImportFile.checkIfFileExists(csvFileName)) {
 
           const resident = 'A';
           await objUsers.loadUsersTable(condominiumId, resident);
@@ -68,35 +68,40 @@ async function main() {
           await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
           // Sends a request to the server to get bank csv transaction file
-          await objImportFile.loadCsvFile(csvFileName);
+          if (await objImportFile.loadCsvFile(csvFileName)) {
 
-          let menuNumber = 0;
-          // Show header
-          showHeader();
+            let menuNumber = 0;
+            // Show header
+            showHeader();
 
-          // Show filter
-          menuNumber = showFilter(menuNumber);
+            // Show filter
+            menuNumber = showFilter(menuNumber);
 
-          // create array from imported csv-file (data string)
-          createtransactionsArray(objImportFile.strCSVTransaction);
+            // create array from imported csv-file (data string)
+            createtransactionsArray(objImportFile.strCSVTransaction);
 
-          // Show result of filter
-          menuNumber = showResult(menuNumber);
+            // Show result of filter
+            menuNumber = showResult(menuNumber);
 
-          // Events
-          events();
+            // Events
+            events();
+          } else {
+
+            objImportFile.showMessage(objImportFile, 'width:1600px;', 'Finner ikke transaksjonsfilen fra banken :', fileName);
+          }
+
         } else {
 
-          objRemoteHeatings.showMessage(objRemoteHeatings, 'Finner ikke transaksjonsfilen fra banken :', fileName);
+          objImportFile.showMessage(objImportFile, 'width:1600px;', 'Finner ikke transaksjonsfilen fra banken :', fileName);
         }
       } else {
 
-        objRemoteHeatings.showMessage(objRemoteHeatings, 'Finner ikke transaksjonsfilen fra banken :', fileName);
+        objImportFile.showMessage(objImportFile, 'width:1600px;', 'Finner ikke transaksjonsfilen fra banken :', fileName);
       }
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, 'Server condo-server.js er ikke startet.');
+    objImportFile.showMessage(objImportFile, 'width:1600px;', 'Server condo-server.js er ikke startet.');
   }
 }
 

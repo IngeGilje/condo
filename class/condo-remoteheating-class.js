@@ -345,7 +345,7 @@ class RemoteHeating extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/remoteheatings' : 'http://localhost:3000/remoteheatings';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/remoteheatings?action=select&condominiumId=${condominiumId}&year=${year}&condoId=${condoId}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -372,7 +372,7 @@ class RemoteHeating extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/remoteheatings' : 'http://localhost:3000/remoteheatings';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/remoteheatings?action=update&user=${user}&remoteHeatingId=${remoteHeatingId}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}&priceYear=${priceYear}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -403,7 +403,7 @@ class RemoteHeating extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/remoteheatings' : 'http://localhost:3000/remoteheatings';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/remoteheatings?action=insert&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}&priceYear=${priceYear}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -436,7 +436,7 @@ class RemoteHeating extends Condos {
 
       // Fetch for sending a message to server(request)
       // response is a message in .json format send from server(response)
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/remoteheatings?action=delete&remoteHeatingId=${remoteHeatingId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",

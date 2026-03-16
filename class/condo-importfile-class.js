@@ -109,7 +109,7 @@ class ImportFile extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/import-csvFile' : 'http://localhost:3000/import-csvFile';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/import-csvFile?action=upload&csvFileName=${csvFileName}`);
       const response = await fetch(URL, {
         method: "POST",
@@ -124,8 +124,9 @@ class ImportFile extends Condos {
       if (!response.ok) throw new Error("Network error (load csv file)");
       const result = await response.json();
       this.strCSVTransaction = result.content;
+      return true;
     } catch (error) {
-      objImportFile.showMessage(objImportFile, 'Sjekk transaksjonsfil ', csvFileName, '.');
+      objImportFile.showMessage(objImportFile, '', 'Sjekk transaksjonsfil.');
       return false;
     }
   }

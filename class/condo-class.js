@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -1315,7 +1315,7 @@ class Condos {
         },
         body: JSON.stringify({})
       });
-      return (response.ok) ? true : false;
+      return response.ok;
     } catch (err) {
 
       return false;
@@ -1336,112 +1336,118 @@ class Condos {
         body: JSON.stringify({
           fileName: fileName
         })
-    });
-    return (response.ok) ? true : false;
-  } catch(err) {
+      });
+      return response.ok;
+    } catch (err) {
 
-    return false;
-  }
-}
-
-// Show horizontal menu
-showHorizontalMenu() {
-
-  let html = "<ul class='horizontalMenu'>";
-  this.arrayHorizontalMenu.forEach((horizontalMenu) => {
-
-    html += `<li><a href="#home">${horizontalMenu.text} </a></li>`;
-  });
-
-  html += "</ul>";
-  return html;
-}
-
-// Check if class is defined
-isClassDefined(className) {
-
-  const element = document.querySelector(`.${className}`);      // Select the element
-  if (element !== null) {
-    return (element.classList.contains(`${className}`)) ? true : false;
-  } else {
-    return false;
-  }
-}
-
-verticalMenu(menuNumber) {
-
-  let html = "";
-
-  // Check of menu exists
-  if (this.arrayMenu.length >= menuNumber) {
-
-    let url;
-    switch (this.serverStatus) {
-
-      // Web server
-      case 1: {
-
-        url = "http://localhost/";
-        break;
-      }
-
-      // local web server
-      case 2: {
-
-        url = "http://localhost/";
-        break;
-      }
-
-      default: {
-        break;
-      }
+      return false;
     }
-    // Check for valid menunumber
-    if (menuNumber < 1) menuNumber = 1;
+  }
 
-    const applicationName = this.arrayMenu[menuNumber - 1].applicationName;
-    const text = this.arrayMenu[menuNumber - 1].text;
-    const className = this.arrayMenu[menuNumber - 1].className;
+  // Show horizontal menu
+  showHorizontalMenu() {
 
-    html += `
+    let html = "<ul class='horizontalMenu'>";
+    this.arrayHorizontalMenu.forEach((horizontalMenu) => {
+
+      html += `<li><a href="#home">${horizontalMenu.text} </a></li>`;
+    });
+
+    html += "</ul>";
+    return html;
+  }
+
+  // Check if class is defined
+  isClassDefined(className) {
+
+    const element = document.querySelector(`.${className}`);      // Select the element
+    if (element !== null) {
+      return (element.classList.contains(`${className}`)) ? true : false;
+    } else {
+      return false;
+    }
+  }
+
+  verticalMenu(menuNumber) {
+
+    let html = "";
+
+    // Check of menu exists
+    if (this.arrayMenu.length >= menuNumber) {
+
+      /*
+      let url;
+      switch (this.serverStatus) {
+  
+        insertTableColumns
+        // Web server
+        case 1: {
+  
+          url = "http://localhost/";
+          break;
+        }
+  
+        // local web server
+        case 2: {
+  
+          url = "http://localhost/";
+          break;
+        }
+  
+        default: {
+          break;
+        }
+      }
+      */
+      const URL = (this.serverStatus === 1) ? 'http://ingegilje.no/' : 'http://localhost/';
+
+      // Check for valid menunumber
+      if (menuNumber < 1) menuNumber = 1;
+
+      const applicationName = this.arrayMenu[menuNumber - 1].applicationName;
+      const text = this.arrayMenu[menuNumber - 1].text;
+      const className = this.arrayMenu[menuNumber - 1].className;
+
+      html += `
         <td class="one-line menu"
           style = "width:175px;">
-          <a href="${url}${applicationName}">
+          <a href="${URL}${applicationName}">
             ${text}
           </a>
         </td>`;
-  } else {
+    } else {
 
-    // Do not show menu
-    html += `
+      // Do not show menu
+      html += `
         <td 
           style = "width:175px;">
           <a></a>
         </td>`;
+    }
+
+    return html;
   }
 
-  return html;
-}
+  // Format norwegian date (11.05.1983) to number (19830511)
+  formatNorDateToNumber(norDate) {
 
-// Format norwegian date (11.05.1983) to number (19830511)
-formatNorDateToNumber(norDate) {
+    return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
+  }
 
-  return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
-}
+  // Show message
+  showMessage(object, style, message) {
 
-// Show message
-showMessage(object, message) {
+    // Start table
+    style = (style) ? style : 'width:600px;';
+    let html = object.startTable(style);
 
-  // Start table
-  let html = object.startTable('width:600px;');
+    // show main header
+    html += object.showTableHeader('width:250px;', message);
 
-  // show main header
-  html += object.showTableHeader('width:250px;', message);
-
-  // The end of the table
-  html += object.endTable();
-  document.querySelector('.message').innerHTML = html;
-}
+    // The end of the table
+    html += object.endTable();
+    document.querySelector('.message').innerHTML = html;
+  }
 }
 
 

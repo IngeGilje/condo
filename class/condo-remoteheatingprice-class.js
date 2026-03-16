@@ -344,7 +344,7 @@ class RemoteHeatingPrice extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/remoteheatingprices' : 'http://localhost:3000/remoteheatingprices';
     try {
 
-      // GET request
+      // POST request
       //const response = await fetch(`${URL}:3000/remoteheatingprices?action=select&condominiumId=${condominiumId}`);
       const response = await fetch(URL, {
         method: "POST",

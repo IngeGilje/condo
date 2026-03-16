@@ -49,7 +49,7 @@ async function main() {
     }
   } else {
 
-    objVouchers.showMessage(objVouchers, 'Server condo-server.js er ikke startet.');
+    objVouchers.showMessage(objVouchers, '', 'Server condo-server.js er ikke startet.');
   }
 }
 
@@ -210,7 +210,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   if (await objVouchers.checkIfFileExists(voucerFileName)) {
     validVoucerFileName = true;
   } else {
-    objVouchers.showMessage(objVouchers, 'Ugyldig filnavn på bilag.');
+    objVouchers.showMessage(objVouchers, '', 'Ugyldig filnavn på bilag.');
   }
 
   if (validVoucerFileName && validbankAccountTransactionId) {
@@ -225,7 +225,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
         await objBankAccountTransactions.loadBankAccountTransactionsTable('condoId ASC, date DESC, income ASC', condominiumId, 'N', objVouchers.nineNine, objVouchers.nineNine, 0, '20000101', '20991231');
       } else {
 
-        objVouchers.showMessage(objVouchers, 'Navn på bilag er ikke oppdatert.');
+        objVouchers.showMessage(objVouchers, '', 'Navn på bilag er ikke oppdatert.');
       }
 
       let menuNumber = 0;
