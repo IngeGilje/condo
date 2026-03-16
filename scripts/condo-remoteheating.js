@@ -221,7 +221,6 @@ function insertEmptyTableRow(rowNumber) {
   let date = "";
 
   // insert table columns in start of a row
-  rowNumber++;
   html += objRemoteHeatings.insertTableColumns('', rowNumber);
 
   html += "<td class='center'>Ny fjernvarme</td>";

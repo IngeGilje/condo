@@ -1224,7 +1224,6 @@ class Condos {
 
     let html = "<tr>";
 
-    //if (menuNumber > 0) html += this.verticalMenu(menuNumber);
     html += this.verticalMenu(menuNumber);
 
     texts.forEach((text) => {

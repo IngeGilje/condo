@@ -211,7 +211,6 @@ function showResult(rowNumber) {
   // Make one last table row for insertion in table 
 
   // Insert empty table row for insertion
-  rowNumber++;
   html += insertEmptyTableRow(rowNumber);
 
   // Show the rest of the menu

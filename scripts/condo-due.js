@@ -38,9 +38,6 @@ async function main() {
 
       let menuNumber = 0;
 
-      // Show horizontal menu
-      //showHorizontalMenu();
-
       // Show header
       showHeader();
 
@@ -223,7 +220,6 @@ function showResult(rowNumber) {
   // Make one last table row for insertion in table 
 
   // Insert empty table row for insertion
-  rowNumber++;
   html += insertEmptyTableRow(rowNumber);
 
   // Show table sum row
