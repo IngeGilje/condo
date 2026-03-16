@@ -101,27 +101,20 @@ async function main() {
 }
 
 // Make transactions events
-function events() {
+async function events() {
 
   // Update bank account transactions
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      // start import of bank account transactions
-      updateImportSync();
+      // update Bank Account Transactions based on csv file
+      await updateBankAccountTransactions();
 
-      // Update bank account transactions
-      async function updateImportSync() {
+      // Update opening balance and closing balance
+      await updateOpeningClosingBalance();
 
-        // update Bank Account Transactions based on csv file
-        await updateBankAccountTransactions();
-
-        // Update opening balance and closing balance
-        await updateOpeningClosingBalance();
-
-        // Start bank account transactions
-        window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
-      };
+      // Start bank account transactions
+      window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
     };
   });
 };

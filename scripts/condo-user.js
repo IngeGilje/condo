@@ -53,63 +53,47 @@ async function main() {
 }
 
 // Events for users
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterUserId')) {
 
-      filterSync();
-
-      async function filterSync() {
-
-        const userId = Number(document.querySelector('.filterUserId').value);
-        let menuNumber = 0;
-        menuNumber = showResult(userId, menuNumber);
-      }
+      const userId = Number(document.querySelector('.filterUserId').value);
+      let menuNumber = 0;
+      menuNumber = showResult(userId, menuNumber);
     };
   });
 
   // update/insert a user row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      updateUserRowSync();
-
-      // Update a users row
-      async function updateUserRowSync() {
-
-        const userId = document.querySelector('.filterUserId').value;
-        updateUserRow(userId);
-      }
+      const userId = document.querySelector('.filterUserId').value;
+      updateUserRow(userId);
     };
   });
 
   // Delete users row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      deleteUserSync();
+      deleteUserRow();
 
-      async function deleteUserSync() {
+      //const condominiumId = Number(condominiumId);
+      const resident = 'Y';
+      await objUsers.loadUsersTable(condominiumId, resident);
 
-        deleteUserRow();
-
-        //const condominiumId = Number(condominiumId);
-        const resident = 'Y';
-        await objUsers.loadUsersTable(condominiumId, resident);
-
-        // Show filter
-        let menuNumber = 0;
-        const userId = objUsers.arrayUsers.at(-1).userId;
-        menuNumber = showFilter(userId, menuNumber);
-        menuNumber = showResult(userId, menuNumber);
-      };
+      // Show filter
+      let menuNumber = 0;
+      const userId = objUsers.arrayUsers.at(-1).userId;
+      menuNumber = showFilter(userId, menuNumber);
+      menuNumber = showResult(userId, menuNumber);
     };
   });
 
   // Insert a user row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('insert')) {
 
       resetValues();
@@ -117,24 +101,20 @@ function events() {
   });
 
   // Cancel
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
 
       // Reload users table
-      reloadUsersSync();
-      async function reloadUsersSync() {
+      const resident = 'Y';
+      await objUsers.loadUsersTable(condominiumId, resident);
 
-        const resident = 'Y';
-        await objUsers.loadUsersTable(condominiumId, resident);
+      let userId = Number(document.querySelector('.filterUserId').value);
+      if (userId === 0) userId = objUsers.arrayUsers.at(-1).userId;
 
-        let userId = Number(document.querySelector('.filterUserId').value);
-        if (userId === 0) userId = objUsers.arrayUsers.at(-1).userId;
-
-        // Show filter
-        let menuNumber = 0;
-        menuNumber = showFilter(userId, menuNumber);
-        menuNumber = showResult(userId, menuNumber);
-      };
+      // Show filter
+      let menuNumber = 0;
+      menuNumber = showFilter(userId, menuNumber);
+      menuNumber = showResult(userId, menuNumber);
     };
   });
 }

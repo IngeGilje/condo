@@ -35,7 +35,7 @@ async function main() {
 async function events() {
 
   // check password
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('LogIn')) {
       checkLogin();
     };

@@ -54,38 +54,28 @@ async function main() {
 }
 
 // Events for voucher
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterBankAccountTransactionId')) {
 
-      filterSync();
+      //const condominiumId = Number(condominiumId);
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId);
 
-      async function filterSync() {
-
-        //const condominiumId = Number(condominiumId);
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId);
-
-        const bankAccountTransactionId = Number(document.querySelector('.filterBankAccountTransactionId').value);
-        let menuNumber = 0;
-        menuNumber = showResult(bankAccountTransactionId, menuNumber);
-      }
+      const bankAccountTransactionId = Number(document.querySelector('.filterBankAccountTransactionId').value);
+      let menuNumber = 0;
+      menuNumber = showResult(bankAccountTransactionId, menuNumber);
     };
   });
 
   // file name pdf document
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('voucerFileName')) {
 
-      updateBankAccountTransactionRowSync();
-
       // Update a bank account transaction row
-      async function updateBankAccountTransactionRowSync() {
-
-        const bankAccountTransactionId = Number(document.querySelector('.filterBankAccountTransactionId').value);
-        updateBankAccountTransactionRow(bankAccountTransactionId);
-      }
+      const bankAccountTransactionId = Number(document.querySelector('.filterBankAccountTransactionId').value);
+      updateBankAccountTransactionRow(bankAccountTransactionId);
     };
   });
 }

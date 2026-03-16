@@ -96,63 +96,48 @@ async function main() {
 }
 
 // Make events
-function events() {
+async function events() {
 
   // Show after change of filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     if ([...event.target.classList].some(cls => cls.startsWith('filterFromDate'))
       || [...event.target.classList].some(cls => cls.startsWith('filterToDate'))
       || [...event.target.classList].some(cls => cls.startsWith('filterBudgetYear'))
       || [...event.target.classList].some(cls => cls.startsWith('filterPriceSquareMeter'))) {
 
-      showAnnualAccountSync();
+      let menuNumber = 0;
 
-      // Show annual account after change of filter
-      async function showAnnualAccountSync() {
+      const deleted = "N";
 
-        let menuNumber = 0;
+      fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = Number(convertDateToISOFormat(fromDate));
 
-        const deleted = "N";
+      toDate = document.querySelector('.filterToDate').value;
+      toDate = Number(convertDateToISOFormat(toDate));
 
-        fromDate = document.querySelector('.filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
+      // Show remote Heating
+      // Get row number for payment Remote Heating Account Id
+      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+      if (rowNumberCondominium !== -1) {
 
-        toDate = document.querySelector('.filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
+        // Show annual accounts
+        // Show bank deposit for next year
+        const year = Number(document.querySelector('.filterBudgetYear').value);
+        await objBudget.loadBudgetsTable(condominiumId, year, objAnnualAccount.nineNine);
 
-        //const orderBy = 'condoId ASC, date DESC, income ASC';
-        //await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
+        menuNumber = showAnnualAccounts(menuNumber);
 
-        // Show remote Heating
-        // Get row number for payment Remote Heating Account Id
-        const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-        if (rowNumberCondominium !== -1) {
+        // Show income for next year
+        menuNumber = showIncomeNextYear(menuNumber);
 
-          // Show annual accounts
-          // Show bank deposit for next year
-          const year = Number(document.querySelector('.filterBudgetYear').value);
-          await objBudget.loadBudgetsTable(condominiumId, year, objAnnualAccount.nineNine);
-
-          const orderBy = 'condoId ASC, date DESC, income ASC';
-          await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
-          menuNumber = showAnnualAccounts(menuNumber);
-
-          /*
-          const paymentRemoteHeatingAccountId = Number(objCondominiums.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId);
-          await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, paymentRemoteHeatingAccountId, 0, fromDate, toDate);
-          menuNumber = showRemoteHeating(menuNumber);
-          */
-
-          // Show income for next year
-          menuNumber = showIncomeNextYear(menuNumber);
-
-          // Show bank deposit for next year
-          const nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-          await objBudget.loadBudgetsTable(condominiumId, nextBudgetYear, objAnnualAccount.nineNine);
-          menuNumber = showBankDeposit(menuNumber);
-        }
-      };
+        // Show bank deposit for next year
+        const nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
+        await objBudget.loadBudgetsTable(condominiumId, nextBudgetYear, objAnnualAccount.nineNine);
+        menuNumber = showBankDeposit(menuNumber);
+      }
     };
   });
 }

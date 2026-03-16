@@ -58,29 +58,24 @@ async function main() {
 
 
 // Make budget events
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterYear')
       || event.target.classList.contains('filterAccountId')) {
 
-      filterSync();
+      const year = Number(document.querySelector('.filterYear').value);
+      const accountId = Number(document.querySelector('.filterAccountId').value);
+      await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
-      async function filterSync() {
-
-        const year = Number(document.querySelector('.filterYear').value);
-        const accountId = Number(document.querySelector('.filterAccountId').value);
-        await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
-
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(menuNumber);
     };
   });
 
   // update a accounts row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     if ([...event.target.classList].some(cls => cls.startsWith('accountId'))
       || [...event.target.classList].some(cls => cls.startsWith('amount'))
@@ -102,18 +97,13 @@ function events() {
         budgetId = Number(className.slice(prefix.length));
       }
 
-      updateAccountSync();
-
       // Update amount
-      async function updateAccountSync() {
-
-        await updateBudgetsRow(budgetId);
-      }
+      await updateBudgetsRow(budgetId);
     };
   });
 
   // Delete budgets row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
       const arrayPrefixes = ['delete'];
@@ -125,19 +115,15 @@ function events() {
 
       //const className = objBudgets.getDeleteClass(event.target);
       const budgetId = Number(className.substring(6));
-      deleteBudgetSync(budgetId);
 
-      async function deleteBudgetSync(budgetId) {
+      deleteBudgetRow(budgetId, className);
 
-        deleteBudgetRow(budgetId, className);
+      const year = Number(document.querySelector('.filterYear').value);
+      const accountId = Number(document.querySelector('.filterAccountId').value);
+      await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
 
-        const year = Number(document.querySelector('.filterYear').value);
-        const accountId = Number(document.querySelector('.filterAccountId').value);
-        await objBudgets.loadBudgetsTable(condominiumId, year, accountId);
-
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(menuNumber);
     };
   });
 }

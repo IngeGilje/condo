@@ -57,66 +57,50 @@ if ((condominiumId === 0 || user === null)) {
 }
 
 // Events for suppliers
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterSupplierId')) {
 
-      filterSync();
+      //const condominiumId = Number(condominiumId);
+      await objSuppliers.loadSuppliersTable(condominiumId);
 
-      async function filterSync() {
+      const supplierId = Number(document.querySelector('.filterSupplierId').value);
 
-        //const condominiumId = Number(condominiumId);
-        await objSuppliers.loadSuppliersTable(condominiumId);
-
-        const supplierId = Number(document.querySelector('.filterSupplierId').value);
-
-        let menuNumber = 0;
-        menuNumber = showResult(supplierId, menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(supplierId, menuNumber);
     };
   });
 
   // update/insert a suppliers row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      updateSupplierRowSync();
-
-      // Update a suppliers row
-      async function updateSupplierRowSync() {
-
-        const supplierId = document.querySelector('.filterSupplierId').value;
-        updateSupplierRow(supplierId);
-      }
+      const supplierId = document.querySelector('.filterSupplierId').value;
+      updateSupplierRow(supplierId);
     };
   });
 
   // Delete suppliers row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      deleteSupplierSync();
+      await deleteSupplierRow();
 
-      async function deleteSupplierSync() {
+      //const condominiumId = Number(condominiumId);
+      await objSuppliers.loadSuppliersTable(condominiumId);
 
-        await deleteSupplierRow();
-
-        //const condominiumId = Number(condominiumId);
-        await objSuppliers.loadSuppliersTable(condominiumId);
-
-        // Show filter
-        const supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
-        let menuNumber = 0;
-        menuNumber = showFilter(supplierId, menuNumber);
-        menuNumber = showResult(supplierId, menuNumber);
-      };
+      // Show filter
+      const supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
+      let menuNumber = 0;
+      menuNumber = showFilter(supplierId, menuNumber);
+      menuNumber = showResult(supplierId, menuNumber);
     };
   });
 
   // Insert a supplier row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('insert')) {
 
       resetValues();
@@ -124,23 +108,19 @@ function events() {
   });
 
   // Cancel
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
 
       // Reload suppliers table
-      reloadSupplierSync();
-      async function reloadSupplierSync() {
+      await objSuppliers.loadSuppliersTable(condominiumId);
 
-        await objSuppliers.loadSuppliersTable(condominiumId);
+      let supplierId = Number(document.querySelector('.filterSupplierId').value);
+      if (supplierId === 0) supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
 
-        let supplierId = Number(document.querySelector('.filterSupplierId').value);
-        if (supplierId === 0) supplierId = objSuppliers.arraySuppliers.at(-1).supplierId;
-
-        // Show filter
-        let menuNumber = 0;
-        menuNumber = showFilter(supplierId, menuNumber);
-        menuNumber = showResult(supplierId, menuNumber);
-      };
+      // Show filter
+      let menuNumber = 0;
+      menuNumber = showFilter(supplierId, menuNumber);
+      menuNumber = showResult(supplierId, menuNumber);
     };
   });
 }

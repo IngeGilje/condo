@@ -51,10 +51,10 @@ async function main() {
 }
 
 // Events for remoteheatingprices
-function events() {
+async function events() {
 
   // Delete remoteheatingprices row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     const arrayPrefixes = ['delete'];
 
@@ -70,23 +70,18 @@ function events() {
       if (deleteRemoteHeatingRowValue === "Ja") {
 
         const remoteHeatingPriceId = Number(className.substring(6));
-        deleteRemoteHeatingPriceSync();
+        await deleteRemoteHeatingPriceRow(remoteHeatingPriceId, className);
 
-        async function deleteRemoteHeatingPriceSync() {
+        await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(condominiumId);
 
-          await deleteRemoteHeatingPriceRow(remoteHeatingPriceId, className);
-
-          await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(condominiumId);
-
-          let menuNumber = 0;
-          menuNumber = showResult(menuNumber);
-        };
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       };
     };
   });
 
   // update a remoteheatingprices row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     const arrayPrefixes = ['year', 'priceKilowattHour'];
 
@@ -106,18 +101,13 @@ function events() {
         remoteHeatingPriceId = Number(className.slice(prefix.length));
       }
 
-      updateRemoteHeatingPriceSync();
-
       // Update a remoteheatingprices row
-      async function updateRemoteHeatingPriceSync() {
-
-        await updateRemoteHeatingPricesRow(remoteHeatingPriceId);
-      }
+      await updateRemoteHeatingPricesRow(remoteHeatingPriceId);
     };
   });
 
   // Delete suppliers row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const arrayPrefixes = ['delete'];
@@ -132,18 +122,10 @@ function events() {
       const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
       if (deleteAccountRowValue === "Ja") {
 
-        const remoteHeatingPriceId = Number(className.substring(6));
-        deleteAccountSync();
+        await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(condominiumId);
 
-        async function deleteAccountSync() {
-
-          deleteAccountRow(remoteHeatingPriceId, className);
-
-          await objRemoteHeatingPrices.loadRemoteHeatingPricesTable(condominiumId);
-
-          let menuNumber = 0;
-          menuNumber = showResult(menuNumber);
-        };
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       };
     };
   });

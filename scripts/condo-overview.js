@@ -78,63 +78,58 @@ async function main() {
 }
 
 // Create overview events
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('filter'))) {
 
-      filterSync();
+      // valitadate filter
+      // condo
+      const condoId = Number(document.querySelector('.filterCondoId').value);
+      const validCondoId = objOverview.validateNumber('filterCondoId', condoId, 1, objOverview.nineNine);
 
-      async function filterSync() {
+      // from date
+      let fromDate = document.querySelector('.filterFromDate').value;
+      const validFromDate = objOverview.validateNorDate('filterFromDate', fromDate);
 
-        // valitadate filter
-        // condo
+      // to date
+      let toDate = document.querySelector('.filterToDate').value;
+      const validToDate = objOverview.validateNorDate('filterToDate', toDate);
+
+      // Validate date interval
+      let validDates = false;
+      if (validFromDate && validToDate) {
+
+        fromDate = objOverview.formatNorDateToNumber(fromDate);
+        toDate = objOverview.formatNorDateToNumber(toDate);
+        validDates = objOverview.validateNumber('filterFromDate', Number(fromDate), Number(fromDate), Number(toDate));
+      }
+
+      if (validFromDate && validToDate && validDates && validCondoId) {
+
         const condoId = Number(document.querySelector('.filterCondoId').value);
-        const validCondoId = objOverview.validateNumber('filterCondoId', condoId, 1, objOverview.nineNine);
-
-        // from date
+        const accountId = objOverview.nineNine;
+        const deleted = 'N';
         let fromDate = document.querySelector('.filterFromDate').value;
-        const validFromDate = objOverview.validateNorDate('filterFromDate', fromDate);
-
-        // to date
+        fromDate = convertDateToISOFormat(fromDate);
         let toDate = document.querySelector('.filterToDate').value;
-        const validToDate = objOverview.validateNorDate('filterToDate', toDate);
+        toDate = convertDateToISOFormat(toDate);
+        await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+        const orderBy = 'condoId ASC, date DESC, income ASC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
 
-        // Validate date interval
-        let validDates = false;
-        if (validFromDate && validToDate) {
+        // Show result
 
-          fromDate = objOverview.formatNorDateToNumber(fromDate);
-          toDate = objOverview.formatNorDateToNumber(toDate);
-          validDates = objOverview.validateNumber('filterFromDate', Number(fromDate), Number(fromDate), Number(toDate));
-        }
+        // Show dues
+        let menuNumber = 0;
+        menuNumber = showDues(menuNumber);
 
-        if (validFromDate && validToDate && validDates && validCondoId) {
+        // Bank account transactions
+        menuNumber = showBankAccountTransactions(menuNumber);
 
-          const condoId = Number(document.querySelector('.filterCondoId').value);
-          const accountId = objOverview.nineNine;
-          const deleted = 'N';
-          let fromDate = document.querySelector('.filterFromDate').value;
-          fromDate = convertDateToISOFormat(fromDate);
-          let toDate = document.querySelector('.filterToDate').value;
-          toDate = convertDateToISOFormat(toDate);
-          await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-          const orderBy = 'condoId ASC, date DESC, income ASC';
-          await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
-
-          // Show result
-
-          // Show dues
-          let menuNumber = 0;
-          menuNumber = showDues(menuNumber);
-
-          // Bank account transactions
-          menuNumber = showBankAccountTransactions(menuNumber);
-
-          // show how much to pay
-          menuNumber = showHowMuchToPay(menuNumber);
-        }
+        // show how much to pay
+        menuNumber = showHowMuchToPay(menuNumber);
       }
     };
   });

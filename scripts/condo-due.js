@@ -69,36 +69,31 @@ async function main() {
 }
 
 // Make due events
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterAccountId')
       || event.target.classList.contains('filterCondoId')
       || event.target.classList.contains('filterFromDate')
       || event.target.classList.contains('filterToDate')) {
 
-      filterSync();
+      const condoId = Number(document.querySelector('.filterCondoId').value);
+      const accountId = Number(document.querySelector('.filterAccountId').value);
+      let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = Number(objDues.formatNorDateToNumber(fromDate));
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = Number(objDues.formatNorDateToNumber(toDate));
 
-      async function filterSync() {
+      await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-        const condoId = Number(document.querySelector('.filterCondoId').value);
-        const accountId = Number(document.querySelector('.filterAccountId').value);
-        let fromDate = document.querySelector('.filterFromDate').value;
-        fromDate = Number(objDues.formatNorDateToNumber(fromDate));
-        let toDate = document.querySelector('.filterToDate').value;
-        toDate = Number(objDues.formatNorDateToNumber(toDate));
-
-        await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(menuNumber);
     };
   });
 
   // update a dues row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     const arrayPrefixes = ['condoId', 'accountId', 'amount', 'date', 'kilowattHour', 'text'];
 
@@ -122,18 +117,13 @@ function events() {
         dueId = Number(className.slice(prefix.length));
       }
 
-      updateDuesSync();
-
       // Update a dues row
-      async function updateDuesSync() {
-
-        updateDuesRow(dueId);
-      }
+      updateDuesRow(dueId);
     };
   });
 
   // Delete dues row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
       const arrayPrefixes = ['delete'];
@@ -149,24 +139,20 @@ function events() {
 
         //const className = objBudgets.getDeleteClass(event.target);
         const dueId = Number(className.substring(6));
-        deleteBudgetSync();
 
-        async function deleteBudgetSync() {
+        deleteDueRow(dueId, className);
 
-          deleteDueRow(dueId, className);
+        const condoId = Number(document.querySelector('.filterCondoId').value);
+        const accountId = Number(document.querySelector('.filterAccountId').value);
+        let fromDate = document.querySelector('.filterFromDate').value;
+        fromDate = Number(objDues.formatNorDateToNumber(fromDate));
+        let toDate = document.querySelector('.filterToDate').value;
+        toDate = Number(objDues.formatNorDateToNumber(toDate));
 
-          const condoId = Number(document.querySelector('.filterCondoId').value);
-          const accountId = Number(document.querySelector('.filterAccountId').value);
-          let fromDate = document.querySelector('.filterFromDate').value;
-          fromDate = Number(objDues.formatNorDateToNumber(fromDate));
-          let toDate = document.querySelector('.filterToDate').value;
-          toDate = Number(objDues.formatNorDateToNumber(toDate));
+        await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
-          await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-          let menuNumber = 0;
-          menuNumber = showResult(menuNumber);
-        };
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       };
     };
   });

@@ -56,29 +56,24 @@ async function main() {
 }
 
 // Events for accounts
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterFixedCost')) {
 
-      filterSync();
+      let fixedCost = document.querySelector('.filterFixedCost').value;
+      if (fixedCost === 'Fast kostnad') fixedCost = 'Y';
+      if (fixedCost === 'Variabel kostnad') fixedCost = 'N';
+      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 
-      async function filterSync() {
-
-        let fixedCost = document.querySelector('.filterFixedCost').value;
-        if (fixedCost === 'Fast kostnad') fixedCost = 'Y';
-        if (fixedCost === 'Variabel kostnad') fixedCost = 'N';
-        await objAccounts.loadAccountsTable(condominiumId, fixedCost);
-
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(menuNumber);
     };
   });
 
   // update a accounts row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     const arrayPrefixes = ['fixedCost', 'name'];
     if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
@@ -97,18 +92,12 @@ function events() {
         accountId = Number(className.slice(prefix.length));
       }
 
-      updateAccountRowSync();
-
-      // Update a accounts row
-      async function updateAccountRowSync() {
-
-        updateAccountsRow(accountId);
-      }
+      updateAccountsRow(accountId);
     };
   });
 
   // Delete suppliers row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const arrayPrefixes = ['delete'];
@@ -124,9 +113,6 @@ function events() {
       if (deleteAccountRowValue === "Ja") {
 
         const accountId = Number(className.substring(6));
-        deleteAccountSync();
-
-        async function deleteAccountSync() {
 
           deleteAccountRow(accountId, className);
 
@@ -135,7 +121,7 @@ function events() {
 
           let menuNumber = 0;
           menuNumber = showResult(menuNumber);
-        };
+
       };
     };
   });

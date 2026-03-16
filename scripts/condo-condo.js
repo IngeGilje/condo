@@ -58,68 +58,53 @@ async function main() {
 }
 
 // Events for condo
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterCondoId')) {
 
-      filterSync();
+      //const condominiumId = Number(condominiumId);
+      await objCondos.loadCondoTable(condominiumId);
 
-      async function filterSync() {
-
-        //const condominiumId = Number(condominiumId);
-        await objCondos.loadCondoTable(condominiumId);
-
-        const condoId = Number(document.querySelector('.filterCondoId').value);
-        let menuNumber = 0;
-        menuNumber = showResult(condoId, menuNumber);
-      }
+      const condoId = Number(document.querySelector('.filterCondoId').value);
+      let menuNumber = 0;
+      menuNumber = showResult(condoId, menuNumber);
     };
   });
 
   // update/insert a condos row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      updateCondoRowSync();
-
       // Update a condos row
-      async function updateCondoRowSync() {
-
-        const condoId = document.querySelector('.filterCondoId').value;
-        updateCondoRow(condoId);
-      }
+      const condoId = document.querySelector('.filterCondoId').value;
+      updateCondoRow(condoId);
     };
   });
 
   // Delete condos row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      deleteCondoSync();
+      deleteCondoRow();
 
-      async function deleteCondoSync() {
+      //const condominiumId = Number(condominiumId);
+      await objCondos.loadCondoTable(condominiumId);
 
-        deleteCondoRow();
+      let menuNumber = 0;
 
-        //const condominiumId = Number(condominiumId);
-        await objCondos.loadCondoTable(condominiumId);
-
-        let menuNumber = 0;
-
-        // Show filter
-        const condoId = objCondos.arrayCondo.at(-1).condoId;
-        menuNumber = showFilter(menuNumber, condoId);
+      // Show filter
+      const condoId = objCondos.arrayCondo.at(-1).condoId;
+      menuNumber = showFilter(menuNumber, condoId);
 
 
-        menuNumber = showResult(condoId, menuNumber);
-      };
+      menuNumber = showResult(condoId, menuNumber);
     };
   });
 
   // Insert a condo row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('insert')) {
 
       resetValues();
@@ -127,26 +112,22 @@ function events() {
   });
 
   // Cancel
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
 
       // Reload condo table
-      reloadCondoSync();
-      async function reloadCondoSync() {
+      await objCondos.loadCondoTable(condominiumId);
 
-        await objCondos.loadCondoTable(condominiumId);
+      let condoId = Number(document.querySelector('.filterCondoId').value);
+      if (condoId === 0) condoId = objCondos.arrayCondo.at(-1).condoId;
 
-        let condoId = Number(document.querySelector('.filterCondoId').value);
-        if (condoId === 0) condoId = objCondos.arrayCondo.at(-1).condoId;
+      // Show filter
+      let menuNumber = 0;
 
-        // Show filter
-        let menuNumber = 0;
+      // Show filter
+      menuNumber = showFilter(menuNumber, condoId);
 
-        // Show filter
-        menuNumber = showFilter(menuNumber, condoId);
-
-        menuNumber = showResult(condoId, menuNumber);
-      };
+      menuNumber = showResult(condoId, menuNumber);
     };
   });
 }

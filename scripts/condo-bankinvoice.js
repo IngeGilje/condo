@@ -58,65 +58,48 @@ async function main() {
 }
 
 // Events for condominium
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterCondominiumId')) {
 
-      filterSync();
+      await objBankAccountTransactions.loadCondominiumsTable();
 
-      async function filterSync() {
+      //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
 
-        await objBankAccountTransactions.loadCondominiumsTable();
-
-        //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-
-        let menuNumber = 0;
-        menuNumber = showResult(condominiumId, menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(condominiumId, menuNumber);
     };
   });
 
   // update/insert a condominiums row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      updateCondominiumRowSync();
-
       // Update a condominiums row
-      async function updateCondominiumRowSync() {
-
-        condominiumId = document.querySelector('.filterCondominiumId').value;
-        updateCondominiumRow(condominiumId);
-      }
+      condominiumId = document.querySelector('.filterCondominiumId').value;
+      updateCondominiumRow(condominiumId);
     };
   });
 
   // Delete condominiums row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      deleteAccountSync();
+      deleteCondominiumRow();
 
-      async function deleteAccountSync() {
+      let menuNumber = 0;
+      await objBankAccountTransactions.loadCondominiumsTable();
 
-        deleteCondominiumRow();
-
-        let menuNumber = 0;
-
-        await objBankAccountTransactions.loadCondominiumsTable();
-
-        // Show filter
-        menuNumber = showFilter(menuNumber);
-
-        menuNumber = showResult(condominiumId, menuNumber);
-      };
+      // Show filter
+      menuNumber = showFilter(menuNumber);
+      menuNumber = showResult(condominiumId, menuNumber);
     };
   });
 
   // Insert a condominiums row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('insert')) {
 
       resetValues();
@@ -124,21 +107,17 @@ function events() {
   });
 
   // Cancel
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
 
       // Reload condominiums table
-      reloadCondominiumsSync();
-      async function reloadCondominiumsSync() {
+      await objBankAccountTransactions.loadCondominiumsTable();
 
-        await objBankAccountTransactions.loadCondominiumsTable();
+      let condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      if (condominiumId === 0) condominiumId = objBankAccountTransactions.arrayCondominiums.at(-1).condominiumId;
 
-        let condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-        if (condominiumId === 0) condominiumId = objBankAccountTransactions.arrayCondominiums.at(-1).condominiumId;
-
-        let menuNumber = 0;
-        menuNumber = showResult(condominiumId, menuNumber);
-      };
+      let menuNumber = 0;
+      menuNumber = showResult(condominiumId, menuNumber);
     };
   });
 }

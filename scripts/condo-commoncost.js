@@ -51,10 +51,10 @@ async function main() {
 }
 
 // Events for commoncosts
-function events() {
+async function events() {
 
   // Delete commoncosts row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     const arrayPrefixes = ['delete'];
 
@@ -71,23 +71,18 @@ function events() {
       if (deleteCommonCostRowValue === "Ja") {
 
         const commonCostId = Number(className.substring(6));
-        deleteCommonCostsSync();
+        await deleteCommonCostsRow(commonCostId, className);
 
-        async function deleteCommonCostsSync() {
+        await objCommonCosts.loadCommonCostsTable(condominiumId);
 
-          await deleteCommonCostsRow(commonCostId, className);
-
-          await objCommonCosts.loadCommonCostsTable(condominiumId);
-
-          let menuNumber = 0;
-          menuNumber = showResult(menuNumber);
-        };
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       };
     };
   });
 
   // update a commoncosts row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     const arrayPrefixes = ['year', 'commonCostSquareMeter', 'fixedCostCondo'];
 
@@ -108,18 +103,13 @@ function events() {
         commonCostId = Number(className.slice(prefix.length));
       }
 
-      updateCommonCostsSync();
-
       // Update a commoncosts row
-      async function updateCommonCostsSync() {
-
-        await updateCommonCostsRow(commonCostId);
-      }
+      await updateCommonCostsRow(commonCostId);
     };
   });
 
   // Delete suppliers row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const arrayPrefixes = ['delete'];
@@ -135,17 +125,12 @@ function events() {
       if (deleteAccountRowValue === "Ja") {
 
         const commonCostId = Number(className.substring(6));
-        deleteAccountSync();
 
-        async function deleteAccountSync() {
+        deleteAccountRow(commonCostId, className);
+        await objCommonCosts.loadCommonCostsTable(condominiumId);
 
-          deleteAccountRow(commonCostId, className);
-
-          await objCommonCosts.loadCommonCostsTable(condominiumId);
-
-          let menuNumber = 0;
-          menuNumber = showResult(menuNumber);
-        };
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       };
     };
   });

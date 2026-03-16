@@ -60,64 +60,49 @@ if ((condominiumId === 0 || user === null)) {
 }
 
 // Events for bankaccounts
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (([...event.target.classList].some(cls => cls.startsWith('filterCondominiumId')))
       || ([...event.target.classList].some(cls => cls.startsWith('filterBankAccountId')))) {
 
-      filterSync();
+      condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
+      await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-      async function filterSync() {
-
-        condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-        const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-        await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
-
-        let menuNumber = 0;
-        menuNumber = showResult(bankAccountId, menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(bankAccountId, menuNumber);
     };
   });
 
   // update a bankaccounts row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      updateBankAccountRowSync();
-
-      // Update a bankaccounts row
-      async function updateBankAccountRowSync() {
-
-        bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-        updateBankAccountRow(bankAccountId);
-      }
+      bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
+      updateBankAccountRow(bankAccountId);
     };
   });
 
   // Delete bankaccounts row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
-      deleteAccountSync();
+      deleteBankAccountRow(bankAccountId);
 
-      async function deleteAccountSync() {
+      condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
+      await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-        deleteBankAccountRow(bankAccountId);
+      let menuNumber = 0;
+      menuNumber = showResult(bankAccountId, menuNumber);
 
-        condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-        const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-        await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
-
-        let menuNumber = 0;
-        menuNumber = showResult(bankAccountId, menuNumber);
-      };
     };
   });
 
   // Insert a bankaccounts row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('insert')) {
 
       resetValues();
@@ -125,20 +110,16 @@ function events() {
   });
 
   // Cancel
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
 
       // Reload bankaccounts table
-      reloadBankAccountsSync();
-      async function reloadBankAccountsSync() {
+      let condominiumId = Number(document.querySelector('.filterCondominium').value);
+      const bankAccountId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
+      await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
 
-        let condominiumId = Number(document.querySelector('.filterCondominium').value);
-        const bankAccountId = objCondominiums.arrayCondominiums.at(-1).condominiumId;
-        await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
-
-        let menuNumber = 0;
-        menuNumber = showResult(bankAccountId, menuNumber);
-      };
+      let menuNumber = 0;
+      menuNumber = showResult(bankAccountId, menuNumber);
     };
   });
 }

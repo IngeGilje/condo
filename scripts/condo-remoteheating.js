@@ -57,30 +57,25 @@ async function main() {
 }
 
 // Events for remoteheatings
-function events() {
+async function events() {
 
   // Filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterYear')
       || event.target.classList.contains('filterPrice')) {
 
-      filterSync();
+      let menuNumber = 0;
 
-      async function filterSync() {
+      const year = Number(document.querySelector(".filterYear").value);
+      menuNumber = showFilter(menuNumber, year);
+      await objRemoteHeatings.loadRemoteHeatingTable(condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
-        let menuNumber = 0;
-
-        const year = Number(document.querySelector(".filterYear").value);
-        menuNumber = showFilter(menuNumber, year);
-        await objRemoteHeatings.loadRemoteHeatingTable(condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
-
-        menuNumber = showResult(menuNumber);
-      }
+      menuNumber = showResult(menuNumber);
     };
   });
 
   // Delete remoteheatings row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     const arrayPrefixes = ['delete'];
 
@@ -96,23 +91,18 @@ function events() {
       if (deleteRemoteHeatingRowValue === "Ja") {
 
         const remoteHeatingId = Number(className.substring(6));
-        deleteRemoteHeatingSync();
-
-        async function deleteRemoteHeatingSync() {
-
           await deleteRemoteHeatingRow(remoteHeatingId, className);
 
           await objRemoteHeatings.loadRemoteHeatingTable(condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
           let menuNumber = 0;
           menuNumber = showResult(menuNumber);
-        };
       };
     };
   });
 
   // update a remoteheatings row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     const arrayPrefixes = ['date', 'condoId', 'kilowattHour', 'priceYear'];
 
@@ -134,18 +124,12 @@ function events() {
         remoteHeatingId = Number(className.slice(prefix.length));
       }
 
-      updateRemoteHeatingSync();
-
-      // Update a remoteheatings row
-      async function updateRemoteHeatingSync() {
-
-        await updateRemoteHeatingRow(remoteHeatingId);
-      }
+      await updateRemoteHeatingRow(remoteHeatingId);
     };
   });
 
   // Delete suppliers row
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const arrayPrefixes = ['delete'];
@@ -161,17 +145,12 @@ function events() {
       if (deleteAccountRowValue === "Ja") {
 
         const remoteHeatingId = Number(className.substring(6));
-        deleteAccountSync();
+        deleteAccountRow(remoteHeatingId, className);
 
-        async function deleteAccountSync() {
+        await objRemoteHeatings.loadRemoteHeatingTable(condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
-          deleteAccountRow(remoteHeatingId, className);
-
-          await objRemoteHeatings.loadRemoteHeatingTable(condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
-
-          let menuNumber = 0;
-          menuNumber = showResult(menuNumber);
-        };
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       };
     };
   });

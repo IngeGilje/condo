@@ -75,10 +75,10 @@ async function main() {
 }
 
 // Make Bank account transactions events
-function events() {
+async function events() {
 
   // Show bankaccounttransactions after change of filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     if ([...event.target.classList].some(cls => cls.startsWith('filterCondoId'))
       || [...event.target.classList].some(cls => cls.startsWith('filterAccountId'))
@@ -86,36 +86,32 @@ function events() {
       || [...event.target.classList].some(cls => cls.startsWith('filterToDate'))
       || [...event.target.classList].some(cls => cls.startsWith('filterAmount'))) {
 
-      showBankAccountTransactionSync();
-
       // Show bankaccounttransactions after change of filter
-      async function showBankAccountTransactionSync() {
 
-        const deleted = 'N';
-        //const condominiumId = 2;
-        condoId = Number(document.querySelector('.filterCondoId').value);
-        accountId = Number(document.querySelector('.filterAccountId').value);
+      const deleted = 'N';
+      //const condominiumId = 2;
+      condoId = Number(document.querySelector('.filterCondoId').value);
+      accountId = Number(document.querySelector('.filterAccountId').value);
 
-        let fromDate = document.querySelector('.filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
+      let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = Number(convertDateToISOFormat(fromDate));
 
-        let toDate = document.querySelector('.filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = Number(convertDateToISOFormat(toDate));
 
-        let amount = document.querySelector('.filterAmount').value;
-        amount = formatKronerToOre(amount);
+      let amount = document.querySelector('.filterAmount').value;
+      amount = formatKronerToOre(amount);
 
-        const orderBy = 'date DESC, income DESC';
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      const orderBy = 'date DESC, income DESC';
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
-      };
+      let menuNumber = 0;
+      menuNumber = showResult(menuNumber);
     };
   });
 
   // update a bankAccountTransactions row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     //const arrayPrefixes = ['condoId', 'accountId', 'income', 'payment', 'kilowattHour', 'date', 'text'];
     const arrayPrefixes = ['condoId', 'accountId', 'kilowattHour', 'text'];
@@ -138,38 +134,33 @@ function events() {
         bankAccountTransactionId = Number(className.slice(prefix.length));
       }
 
-      updateBankAccountTransactionSync();
-
       // Update a bankAccountTransactions row
-      async function updateBankAccountTransactionSync() {
+      updateBankAccountTransactionRow(bankAccountTransactionId);
 
-        updateBankAccountTransactionRow(bankAccountTransactionId);
+      const deleted = 'N';
+      //const condominiumId = 2;
+      condoId = Number(document.querySelector('.filterCondoId').value);
+      accountId = Number(document.querySelector('.filterAccountId').value);
 
-        const deleted = 'N';
-        //const condominiumId = 2;
-        condoId = Number(document.querySelector('.filterCondoId').value);
-        accountId = Number(document.querySelector('.filterAccountId').value);
+      let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = Number(convertDateToISOFormat(fromDate));
 
-        let fromDate = document.querySelector('.filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = Number(convertDateToISOFormat(toDate));
 
-        let toDate = document.querySelector('.filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
+      let amount = document.querySelector('.filterAmount').value;
+      amount = formatKronerToOre(amount);
 
-        let amount = document.querySelector('.filterAmount').value;
-        amount = formatKronerToOre(amount);
+      const orderBy = 'date DESC, income DESC';
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-        const orderBy = 'date DESC, income DESC';
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
-
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(menuNumber);
     };
   });
 
   // Delete a bankaccounttransactions row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
       const arrayPrefixes = ['delete'];
@@ -181,27 +172,22 @@ function events() {
 
       //const className = objBankAccountTransactions.getDeleteClass(event.target);
       const bankAccountTransationId = Number(className.substring(6));
-      deleteBankAccountTransationSync(bankAccountTransationId);
+      deleteBankAccountTransactionRow(bankAccountTransationId, className);
 
-      async function deleteBankAccountTransationSync(bankAccountTransationId) {
+      const amount = 0;
+      const deleted = 'N';
+      //const condominiumId = 2;
+      condoId = Number(document.querySelector('.filterCondoId').value);
+      accountId = Number(document.querySelector('.filterAccountId').value);
+      let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = Number(convertDateToISOFormat(fromDate));
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = Number(convertDateToISOFormat(toDate));
+      const orderBy = 'date DESC, income DESC';
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-        deleteBankAccountTransactionRow(bankAccountTransationId, className);
-
-        const amount = 0;
-        const deleted = 'N';
-        //const condominiumId = 2;
-        condoId = Number(document.querySelector('.filterCondoId').value);
-        accountId = Number(document.querySelector('.filterAccountId').value);
-        let fromDate = document.querySelector('.filterFromDate').value;
-        fromDate = Number(convertDateToISOFormat(fromDate));
-        let toDate = document.querySelector('.filterToDate').value;
-        toDate = Number(convertDateToISOFormat(toDate));
-        const orderBy = 'date DESC, income DESC';
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
-
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(menuNumber);
     };
   });
 }

@@ -55,29 +55,24 @@ async function main() {
 
 
 // Events for user bank accounts
-function events() {
+async function events() {
 
   // user filter
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterUserId')
       || event.target.classList.contains('filterAccountId')) {
 
-      filterSync();
+      const userId = Number(document.querySelector('.filterUserId').value);
+      const accountId = Number(document.querySelector('.filterAccountId').value);
+      await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, userId, accountId);
 
-      async function filterSync() {
-
-        const userId = Number(document.querySelector('.filterUserId').value);
-        const accountId = Number(document.querySelector('.filterAccountId').value);
-        await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, userId, accountId);
-
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
-      }
+      let menuNumber = 0;
+      menuNumber = showResult(menuNumber);
     };
   });
 
   // update a user bank accounts row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
 
     if ([...event.target.classList].some(cls => cls.startsWith('userId'))
       || [...event.target.classList].some(cls => cls.startsWith('accountId'))
@@ -98,18 +93,13 @@ function events() {
         userBankAccountId = Number(className.slice(prefix.length));
       }
 
-      updateUserBankAccountSync();
-
       // Update user bank account
-      async function updateUserBankAccountSync() {
-
-        updateUserBankAccountsRow(userBankAccountId);
-      }
+      updateUserBankAccountsRow(userBankAccountId);
     };
   });
 
   // Delete accounts row
-  document.addEventListener('change', (event) => {
+  document.addEventListener('change', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
       const arrayPrefixes = ['delete'];
@@ -125,18 +115,13 @@ function events() {
       if (deleteAccountRowValue === "Ja") {
 
         const accountId = Number(className.substring(6));
-        deleteAccountSync();
+        deleteAccountRow(accountId, className);
 
-        async function deleteAccountSync() {
+        const fixedCost = 'A';
+        await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 
-          deleteAccountRow(accountId, className);
-
-          const fixedCost = 'A';
-          await objAccounts.loadAccountsTable(condominiumId, fixedCost);
-
-          let menuNumber = 0;
-          menuNumber = showResult(menuNumber);
-        };
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
       };
     };
   });
