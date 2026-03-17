@@ -152,14 +152,14 @@ function showFilter(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;', rowNumber, '1', '2Velg leilighet', '3Fra dato', '4Til dato','5', '6');
+  html += objOverview.showTableHeaderMenu('width:175px;', rowNumber, '', '2Velg leilighet', '3Fra dato', 'Til dato','', '');
 
   // start table body
   html += objOverview.startTableBody();
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objOverview.insertTableColumns('', rowNumber, '1');
+  html += objOverview.insertTableColumns('', rowNumber, '');
 
   // Show all selected condos
   // Get last id in last object in condo array
@@ -179,7 +179,7 @@ function showFilter(rowNumber) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objOverview.insertTableColumns('', rowNumber, '1');
+  html += objOverview.insertTableColumns('', rowNumber, '');
 
   // end table body
   html += objOverview.endTableBody();
@@ -202,9 +202,9 @@ function showDues(rowNumber) {
 
   // Header
   rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1', '2', '3', '4Forfall', '5', '6');
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', 'Forfall', '', '');
   rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1Leilighet', '2Forfallsdato', '3Konto', '4Beløp', '5Kilowattimer', '6Tekst');
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -252,11 +252,11 @@ function showDues(rowNumber) {
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
   rowNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '1', '2Sum', sumDue, sumKilowattHour, '5', '6');
+  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', '2Sum', sumDue, sumKilowattHour, '', '');
   html += "</tr>"
 
   rowNumber++;
-  html += objOverview.insertTableColumns('', rowNumber, '1', '2', '3', '4', '5', '6');
+  html += objOverview.insertTableColumns('', rowNumber, '', '', '', '', '', '');
   html += "</tr>"
 
   // The end of the table
@@ -273,9 +273,9 @@ function showBankAccountTransactions(rowNumber) {
 
   // Header
   rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1', '2', '3', '4Innbetalinger', '5', '6');
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', 'Innbetalinger', '', '');
   rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1', '2Leilighet', '3Betalingsdato', '4Konto', '5Betaling', '6Tekst');
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -284,7 +284,7 @@ function showBankAccountTransactions(rowNumber) {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objDues.insertTableColumns('', rowNumber, '1');
+    html += objDues.insertTableColumns('', rowNumber, '');
 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
@@ -321,12 +321,12 @@ function showBankAccountTransactions(rowNumber) {
   sumPayments = formatOreToKroner(sumPayments);
 
   rowNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '1', '2','3', '4Sum', sumIncomes, '6');
+  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', '','', 'Sum', sumIncomes, '');
 
   html += "</tr>"
 
   rowNumber++;
-  html += objOverview.insertTableColumns('', rowNumber, '1', '2', '3', '4', '5', '6');
+  html += objOverview.insertTableColumns('', rowNumber, '', '', '', '', '', '');
 
   // The end of the table
   html += objDues.endTable();
@@ -360,9 +360,9 @@ function showHowMuchToPay(rowNumber) {
   // show main header
   let overPay = sumIncome - sumToPay;
   rowNumber++;
-  html += (overPay >= 0) ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1', '2', '3Til gode', '4', '5','6') : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1', '2', '3', '4Skyldig', '5', '6');
+  html += (overPay >= 0) ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '3Til gode', '', '','') : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', 'Skyldig', '', '');
   rowNumber++;
-  html += (overPay >= 0) ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1', '2', '3Forfall', '4Betalt', '5Til gode','6') : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1', '2', '3', '4Forfall', '5Betalt', '6Skyldig');
+  html += (overPay >= 0) ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '3Forfall', 'Betalt', 'Til gode','') : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', 'Forfall', 'Betalt', 'Skyldig');
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
@@ -372,7 +372,7 @@ function showHowMuchToPay(rowNumber) {
 
   // Show menu
   rowNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '1', '2', '3Sum', sumToPay, sumIncome, overPay);
+  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', '', '3Sum', sumToPay, sumIncome, overPay);
 
   // Show the rest of the menu
   rowNumber++;

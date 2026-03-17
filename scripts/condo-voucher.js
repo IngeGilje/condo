@@ -114,7 +114,7 @@ function showFilter1(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '1Fra dato', '2Til dato', '3');
+  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, 'Fra dato', 'Til dato', '');
 
   // start table body
   html += objBankAccountTransactions.startTableBody();
@@ -132,7 +132,7 @@ function showFilter1(rowNumber) {
   let toDate = getCurrentDate();
   html += objBankAccountTransactions.inputTableColumn('filterToDate', '', toDate, 10);
 
-  html += "<td>3</td></tr>";
+  html += "<td></td></tr>";
 
   // end table body
   html += objBankAccountTransactions.endTableBody();
@@ -152,19 +152,19 @@ function showFilter2(rowNumber, bankAccountTransactionId) {
 
   // Header filter
   rowNumber++;
-  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '1', '2Velg bankkontotransaksjon', '3');
+  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '', 'Velg bankkontotransaksjon', '');
 
   // start table body
   html += objBankAccountTransactions.startTableBody();
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('width:175px;', rowNumber, '1');
+  html += objBankAccountTransactions.insertTableColumns('width:175px;', rowNumber, '');
 
   // show selected bank account transactions
   html += objBankAccountTransactions.showSelectedBankAccountTransactions('filterBankAccountTransactionId', 'width:175px;', bankAccountTransactionId, '')
 
-  html += "<td>3</td></tr>";
+  html += "<td></td></tr>";
 
   // end table body
   html += objBankAccountTransactions.endTableBody();
@@ -188,7 +188,7 @@ function showResult(bankAccountTransactionId, rowNumber) {
 
     // date and amount
     rowNumber++;
-    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, '1Dato', '2Beløp', '3Konto');
+    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, 'Dato', 'Beløp', 'Konto');
     html += "</tr>";
 
     rowNumber++;
@@ -214,7 +214,7 @@ function showResult(bankAccountTransactionId, rowNumber) {
 
     // file name of the voucher
     rowNumber++;
-    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, '1Filnavn', '2', '3');
+    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, 'Filnavn', '', '');
     html += "</tr>";
 
     rowNumber++;
@@ -224,7 +224,7 @@ function showResult(bankAccountTransactionId, rowNumber) {
     voucerFileName = (voucerFileName) ? voucerFileName : `${bankAccountTransactionId}.pdf`;
     html += objBankAccountTransactions.inputTableColumn('voucerFileName', '', voucerFileName, 45);
 
-    html += "<td>2</td><td>3</td></tr>";
+    html += "<td></td><td></td></tr>";
 
     // Show pdf file
     rowNumber++;

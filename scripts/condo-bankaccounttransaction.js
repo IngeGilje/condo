@@ -220,14 +220,14 @@ function showFilter(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '1', '2', '3Leilighet', '4Velg konto', '5Fra dato', '6Til dato', '7Beløp', '8','9');
+  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp', '','');
 
   // start table body
   html += objBankAccountTransactions.startTableBody();
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '1', '2');
+  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', '');
 
   // Show all selected condos
   html += objCondos.showSelectedCondos('filterCondoId', 'width:175px;', objBankAccountTransactions.nineNine, '', 'Vis alle');
@@ -251,11 +251,11 @@ function showFilter(rowNumber) {
   // Amount
   html += objBankAccountTransactions.inputTableColumn('filterAmount', '', '', 10);
 
-  html += "<td>8</td><td>9</td></tr>";
+  html += "<td></td><td></td></tr>";
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '1', '2', '3', '4', '5', '6', '7', '8','9');
+  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', '', '', '', '', '', '', '','');
 
   // end table body
   html += objBankAccountTransactions.endTableBody();
@@ -325,7 +325,7 @@ function showHeader() {
   let html = objBankAccountTransactions.startTable('width:1500px;');
 
   // show main header
-  html += objBankAccountTransactions.showTableHeader('width:175px;','0','1','2','3', 'Bankkontotransaksjoner','5','6','7','8','9');
+  html += objBankAccountTransactions.showTableHeader('width:175px;','0','','','', 'Bankkontotransaksjoner','','','','','');
 
   // The end of the table
   html += objBankAccountTransactions.endTable();
@@ -367,7 +367,7 @@ function showResult(rowNumber) {
 
   // table header
   rowNumber++;
-  html += objCondos.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '1Slett', '2Leilighet', '3Dato', '4Konto', '5Inntekt', '6Utgift', '7Kilowattimer', '8Tekst','9');
+  html += objCondos.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst','');
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -441,7 +441,7 @@ function showResult(rowNumber) {
   sumPayment = formatOreToKroner(sumPayment);
 
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('font-weight: 600;', rowNumber, '1', '2', '3', '4Sum', sumIncome, sumPayment,'7','8','9');
+  html += objBankAccountTransactions.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncome, sumPayment,'','','');
 
   // Show the rest of the menu
   rowNumber++;
