@@ -28,7 +28,9 @@ async function main() {
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
-      window.location.href = 'http://localhost/condo-login.html';
+      //window.location.href = 'http://localhost/condo-login.html';
+           const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      window.location.href = URL;
     } else {
 
       const resident = 'Y';

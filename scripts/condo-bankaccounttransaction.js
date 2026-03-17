@@ -30,7 +30,9 @@ async function main() {
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
-      window.location.href = 'http://localhost/condo-login.html';
+      //window.location.href = 'http://localhost/condo-login.html';
+           const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      window.location.href = URL;
     } else {
 
       const resident = 'Y';
@@ -203,7 +205,7 @@ async function events() {
 
       const bankAccountTransationId = Number(className.substring(7));
 
-      let url = (this.serverStatus === 1) 
+      let url = (objBankAccountTransactions.serverStatus === 1) 
       ? 'http://ingegilje.no/' 
       : 'http://localhost/';
       url = `${url}condo-voucher.html?bankAccountTransactionId=${bankAccountTransationId}`;
