@@ -123,7 +123,7 @@ class Account extends Condos {
     return accountName;
   }
 
-  showSelectedAccounts(className, style, accountId, selectNone, selectAll) {
+  showSelectedAccounts(className, style, accountId, selectNone, selectAll, disabled = false) {
 
     let selectedValue = false;
 
@@ -134,11 +134,10 @@ class Account extends Condos {
         >
           <select 
             class="${className} center"
+            ${disabled ? 'disabled' : ''}
             ${(style) ? `style=${style}` : 'style=width:175px;'}
           >
       `;
-    //if (style !== '') html += `style="${style}"`;
-    //html += `>`;
 
     const numberOfRows = this.arrayAccounts.length;
     // Check if accounts array is empty

@@ -49,7 +49,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'Server condo-server.js er ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -185,7 +185,6 @@ function insertEmptyTableRow(rowNumber) {
   let html = "";
 
   // insert table columns in start of a row
-  rowNumber++;
   html += objUserBankAccounts.insertTableColumns('', rowNumber, 'Ny brukerkonto');
 
   // user column

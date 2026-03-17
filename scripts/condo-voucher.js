@@ -3,11 +3,15 @@
 // Activate classes
 const today = new Date();
 const objUsers = new User('user');
+const objAccounts = new Account('account');
 const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
 const objVouchers = new Voucher('voucher');
 
 let condominiumId = 0;
 let user = "";
+
+const params = new URLSearchParams(window.location.search);
+let bankAccountTransactionId = Number(params.get("bankAccountTransactionId"));
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -28,18 +32,26 @@ async function main() {
       window.location.href = 'http://localhost/condo-login.html';
     } else {
 
-      const orderBy = 'bankAccountTransactionId ASC, date DESC, income ASC';
-      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, 'N', objVouchers.nineNine, objVouchers.nineNine, 0, 0, objVouchers.nineNine);
-
-      const bankAccountTransactionId = objBankAccountTransactions.arrayBankAccountTransactions.at(-1).bankAccountTransactionId;
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
 
       // Show header
       let menuNumber = 0;
 
       showHeader();
 
-      // Show filter
-      menuNumber = showFilter(menuNumber, bankAccountTransactionId);
+      // Show filter #1
+      menuNumber = showFilter1(menuNumber);
+
+      // Show filter #2
+        let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = convertDateToISOFormat(fromDate);
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = convertDateToISOFormat(toDate);
+      const orderBy = 'bankAccountTransactionId DESC, date DESC, income DESC';
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, 'N', objVouchers.nineNine, objVouchers.nineNine, 0, fromDate, toDate);
+      bankAccountTransactionId = (bankAccountTransactionId === 0) ? objBankAccountTransactions.arrayBankAccountTransactions.at(-1).bankAccountTransactionId : bankAccountTransactionId;
+    menuNumber = showFilter2(menuNumber, bankAccountTransactionId);
 
       // Show result
       menuNumber = showResult(bankAccountTransactionId, menuNumber);
@@ -49,7 +61,7 @@ async function main() {
     }
   } else {
 
-    objVouchers.showMessage(objVouchers, '', 'Server condo-server.js er ikke startet.');
+    objVouchers.showMessage(objVouchers, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -60,8 +72,8 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterBankAccountTransactionId')) {
 
-      //const condominiumId = Number(condominiumId);
-      await objBankAccountTransactions.loadBankAccountTransactionsTable(condominiumId);
+      const orderBy = 'bankAccountTransactionId DESC, date DESC, income DESC';
+      await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, 'N', objVouchers.nineNine, objVouchers.nineNine, 0, 0, objVouchers.nineNine);
 
       const bankAccountTransactionId = Number(document.querySelector('.filterBankAccountTransactionId').value);
       let menuNumber = 0;
@@ -95,14 +107,14 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(rowNumber, bankAccountTransactionId) {
+function showFilter1(rowNumber) {
 
   // Start table
   html = objBankAccountTransactions.startTable('width:800px;');
 
   // Header filter
   rowNumber++;
-  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, 'Velg bankkontotransaksjon', '');
+  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '1Fra dato', '2Til dato', '3');
 
   // start table body
   html += objBankAccountTransactions.startTableBody();
@@ -111,17 +123,55 @@ function showFilter(rowNumber, bankAccountTransactionId) {
   rowNumber++;
   html += objBankAccountTransactions.insertTableColumns('width:175px;', rowNumber);
 
-  // show selected bank account transactions
-  html += objBankAccountTransactions.showSelectedBankAccountTransactions('filterBankAccountTransactionId', 'width:175px;', bankAccountTransactionId, '')
+  // from date
+  const year = String(today.getFullYear());
+  let fromDate = "01.01." + year;
+  html += objBankAccountTransactions.inputTableColumn('filterFromDate', '', fromDate, 10);
 
-  html += "<td></td></tr>";
+  // to date
+  let toDate = getCurrentDate();
+  html += objBankAccountTransactions.inputTableColumn('filterToDate', '', toDate, 10);
+
+  html += "<td>3</td></tr>";
 
   // end table body
   html += objBankAccountTransactions.endTableBody();
 
   // The end of the table
   html += objBankAccountTransactions.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.filter1').innerHTML = html;
+
+  return rowNumber;
+}
+
+// Show filter
+function showFilter2(rowNumber, bankAccountTransactionId) {
+
+  // Start table
+  html = objBankAccountTransactions.startTable('width:800px;');
+
+  // Header filter
+  rowNumber++;
+  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '1', '2Velg bankkontotransaksjon', '3');
+
+  // start table body
+  html += objBankAccountTransactions.startTableBody();
+
+  // insert table columns in start of a row
+  rowNumber++;
+  html += objBankAccountTransactions.insertTableColumns('width:175px;', rowNumber, '1');
+
+  // show selected bank account transactions
+  html += objBankAccountTransactions.showSelectedBankAccountTransactions('filterBankAccountTransactionId', 'width:175px;', bankAccountTransactionId, '')
+
+  html += "<td>3</td></tr>";
+
+  // end table body
+  html += objBankAccountTransactions.endTableBody();
+
+  // The end of the table
+  html += objBankAccountTransactions.endTable();
+  document.querySelector('.filter2').innerHTML = html;
 
   return rowNumber;
 }
@@ -138,7 +188,7 @@ function showResult(bankAccountTransactionId, rowNumber) {
 
     // date and amount
     rowNumber++;
-    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, 'Dato', 'Beløp');
+    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, '1Dato', '2Beløp', '3Konto');
     html += "</tr>";
 
     rowNumber++;
@@ -155,28 +205,33 @@ function showResult(bankAccountTransactionId, rowNumber) {
     const amount = formatOreToKroner((income) ? income : payment);
     html += objBankAccountTransactions.inputTableColumn('amount', '', amount, 10, true);
 
+    // account
+    const accountId = objBankAccountTransactions.arrayBankAccountTransactions[rowNumberBankAccountTransaction].accountId;
+    html += objAccounts.showSelectedAccounts('accountId', 'width:175px;', accountId, '', '', true);
+
     html += "</tr>";
+
 
     // file name of the voucher
     rowNumber++;
-    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, 'Filnavn', '');
+    html += objVouchers.showTableHeaderMenu("width:175px;", rowNumber, '1Filnavn', '2', '3');
     html += "</tr>";
 
     rowNumber++;
     html += objBankAccountTransactions.insertTableColumns('', rowNumber);
 
     let voucerFileName = objBankAccountTransactions.arrayBankAccountTransactions[rowNumberBankAccountTransaction].voucerFileName;
-    voucerFileName = (voucerFileName) ? voucerFileName : '';
+    voucerFileName = (voucerFileName) ? voucerFileName : `${bankAccountTransactionId}.pdf`;
     html += objBankAccountTransactions.inputTableColumn('voucerFileName', '', voucerFileName, 45);
 
-    html += "<td></td></tr>";
+    html += "<td>2</td><td>3</td></tr>";
 
     // Show pdf file
     rowNumber++;
     html += objBankAccountTransactions.insertTableColumns('', rowNumber);
 
     html += `
-      <td colspan="2" rowspan="13">
+      <td colspan="3" rowspan="13">
         <iframe
          src="/data/${voucerFileName}">
         </iframe>
@@ -222,16 +277,25 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
       // update the bankaccounttransactions row
       if (await objBankAccountTransactions.updateVoucerFileName(user, bankAccountTransactionId, voucerFileName)) {
 
-        await objBankAccountTransactions.loadBankAccountTransactionsTable('condoId ASC, date DESC, income ASC', condominiumId, 'N', objVouchers.nineNine, objVouchers.nineNine, 0, '20000101', '20991231');
+        const orderBy = 'bankAccountTransactionId DESC, date DESC, income DESC';
+        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, 'N', objVouchers.nineNine, objVouchers.nineNine, 0, 0, objVouchers.nineNine);
       } else {
 
-        objVouchers.showMessage(objVouchers, '', 'Navn på bilag er ikke oppdatert.');
+        objVouchers.showMessage(objVouchers, '', 'Bilag er ikke oppdatert.');
       }
 
       let menuNumber = 0;
 
       // Show filter
-      menuNumber = showFilter(menuNumber, bankAccountTransactionId);
+      menuNumber = showFilter1(menuNumber);
+
+      // Show filter
+      orderBy = 'bankAccountTransactionId DESC, date DESC, income DESC';
+      let fromDate = document.querySelector('.filterFromDate').value;
+      fromDate = convertDateToISOFormat(fromDate);
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = convertDateToISOFormat(toDate);
+      menuNumber = showFilter2(menuNumber, bankAccountTransactionId);
 
       menuNumber = showResult(bankAccountTransactionId, menuNumber);
     }

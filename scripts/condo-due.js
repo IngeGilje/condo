@@ -61,7 +61,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings,'', 'Server condo-server.js er ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings,'', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -220,6 +220,7 @@ function showResult(rowNumber) {
   // Make one last table row for insertion in table 
 
   // Insert empty table row for insertion
+  rowNumber++;
   html += insertEmptyTableRow(rowNumber);
 
   // Show table sum row
@@ -245,7 +246,6 @@ function insertEmptyTableRow(rowNumber) {
   let html = "";
 
   // insert table columns in start of a row
-  rowNumber++;
   html += objCondominiums.insertTableColumns('', rowNumber, 'Nytt forfall');
 
   // condoId

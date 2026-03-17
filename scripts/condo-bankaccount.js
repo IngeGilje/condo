@@ -54,7 +54,7 @@ if ((condominiumId === 0 || user === null)) {
       events();
     } else {
 
-      objBankAccounts.objBankAccounts.showMessage(objBankAccounts, '','Server condo-server.js er ikke startet.');
+      objBankAccounts.objBankAccounts.showMessage(objBankAccounts, '','condo-server.js er ikke startet.');
     }
   }
 }

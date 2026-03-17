@@ -27,7 +27,7 @@ async function main() {
     events();
   } else {
 
-    objUsers.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Server condo-server.js er ikke startet.');
+    objUsers.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'condo-server.js er ikke startet.');
   }
 }
 

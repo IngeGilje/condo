@@ -101,7 +101,7 @@ async function main() {
     }
   } else {
 
-    objImportFile.showMessage(objImportFile, 'width:1600px;', 'Server condo-server.js er ikke startet.');
+    objImportFile.showMessage(objImportFile, 'width:1600px;', 'condo-server.js er ikke startet.');
   }
 }
 

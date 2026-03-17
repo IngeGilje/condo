@@ -162,11 +162,11 @@ class BankAccountTransaction extends Condos {
           voucerFileName: voucerFileName
         })
       });
+      
+      return (response.statusText === 'OK') ? true : false;
     } catch (error) {
       console.log("Error updateVoucerFileName:", error);
     }
-
-    return (response.statusText === 'OK') ? true : false;
   }
 
   // insert Bank account transactions row

@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -1374,30 +1374,6 @@ class Condos {
     // Check of menu exists
     if (this.arrayMenu.length >= menuNumber) {
 
-      /*
-      let url;
-      switch (this.serverStatus) {
-  
-        insertTableColumns
-        // Web server
-        case 1: {
-  
-          url = "http://localhost/";
-          break;
-        }
-  
-        // local web server
-        case 2: {
-  
-          url = "http://localhost/";
-          break;
-        }
-  
-        default: {
-          break;
-        }
-      }
-      */
       const URL = (this.serverStatus === 1) ? 'http://ingegilje.no/' : 'http://localhost/';
 
       // Check for valid menunumber
@@ -1988,8 +1964,14 @@ function exitIfNoActivity() {
   clearTimeout(this.inactivityTimeout);
 
   inactivityTimeout = setTimeout(() => {
-    window.location.href =
-      'condo-login.html'
+
+    const URL = (this.serverStatus === 1)
+      ? 'http://ingegilje.no/condo-voucher.html'
+      : 'http://localhost/condo-voucher.html';
+    window.location.href = URL;
+
+    //window.location.href =
+    //  'condo-login.html'
   }, 1 * 60 * 60 * 1000); // 1 hour
 }
 
