@@ -18,7 +18,7 @@ async function main() {
     await objUsers.loadUsersTable(condominiumId, resident);
 
     // Show header
-    showHeader();
+    //showHeader();
 
     // Show login
     showResult();
@@ -81,7 +81,7 @@ function showResult() {
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
 
   // email
-  html += objLogIn.inputTableColumn('email', '', 'inge.gilje@gmail.com', 45, '');
+  html += objLogIn.inputTableColumn('email', '', '', 45, '');
 
   html += "</tr>";
 
@@ -98,7 +98,7 @@ function showResult() {
   html += objLogIn.insertTableColumns('', 0);
 
   // password
-  password = '12345';
+  password = '';
   html += objLogIn.inputTableColumn('password', '', password, 45);
 
   html += "</tr>";
