@@ -136,8 +136,20 @@ async function events() {
       };
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objCommonCosts.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -149,6 +161,28 @@ function showHeader() {
 
   // The end of the table header
   html += objCommonCosts.endTableHeader();
+
+  // The end of the table
+  html += objCommonCosts.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objCommonCosts.startTable('width:950px;');
+
+  // start table body
+  html += objCommonCosts.startTableBody();
+
+  // show main header
+  html += objCommonCosts.showTableHeaderLogOut('width:175px;', '','','Felleskostnader','','');
+  html += "</tr>";
+
+  // end table body
+  html += objCommonCosts.endTableBody();
 
   // The end of the table
   html += objCommonCosts.endTable();

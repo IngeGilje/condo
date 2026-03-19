@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -1246,7 +1246,8 @@ class Condos {
   // Show main header table
   showTableHeader(style, ...texts) {
 
-    let html = `<thead><tr>`;
+    //let html = `<thead><tr>`;
+    let html = `<tr>`;
 
     texts.forEach((text) => {
 
@@ -1259,7 +1260,31 @@ class Condos {
     // empty row
     html += this.insertTableColumns('', 0, '');
 
-    html += "</thead>";
+    //html += "</thead>";
+    return html;
+  }
+
+  // Show main header table
+  showTableHeaderLogOut(style, ...texts) {
+
+    //let html = `<thead><tr>`;
+    let html = `<tr>`;
+
+    texts.forEach((text) => {
+
+      if (text === '' && style === '') html += `<th class="no-border">${text}</th>`;
+      if (text === '' && style !== '') html += `<th class="no-border" style="${style}">${text}</th>`;
+      if (text !== '' && style === '') html += `<th class="center no-border">${text}</th>`;
+      if (text !== '' && style !== '') html += `<th class="center no-border" style="${style}">${text}</th>`;
+    });
+
+    const className ='logOut';
+    html += this.showButton('width:100px;',className, 'Logg ut');
+    
+    // empty row
+    html += this.insertTableColumns('', 0, '');
+
+    //html += "</thead>";
     return html;
   }
 

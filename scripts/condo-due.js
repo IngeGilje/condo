@@ -155,6 +155,17 @@ async function events() {
       };
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objDues.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
 // Show dues
@@ -363,6 +374,7 @@ async function updateDuesRow(dueId) {
   }
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -371,6 +383,28 @@ function showHeader() {
 
   // show main header
   html += objDues.showTableHeader('width:175px;', 'Forfall');
+
+  // The end of the table
+  html += objDues.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objDues.startTable('width:1450px;');
+
+  // start table body
+  html += objDues.startTableBody();
+
+  // show main header
+  html += objDues.showTableHeaderLogOut('width:175px;', '','','','','Forfall','','','');
+  html += "</tr>";
+
+  // end table body
+  html += objDues.endTableBody();
 
   // The end of the table
   html += objDues.endTable();

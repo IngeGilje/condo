@@ -127,6 +127,18 @@ async function events() {
       };
     };
   });
+  
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objAccounts.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
 function resetValues() {
@@ -145,6 +157,7 @@ function resetValues() {
   document.querySelector('.button--accounts-insert').disabled = true;
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -156,6 +169,28 @@ function showHeader() {
 
   // The end of the table header
   html += objAccounts.endTableHeader();
+
+  // The end of the table
+  html += objAccounts.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objAccounts.startTable('width:750px;');
+
+  // start table body
+  html += objAccounts.startTableBody();
+
+  // show main header
+  html += objAccounts.showTableHeaderLogOut('width:175px;', '','','Konto','');
+  html += "</tr>";
+
+  // end table body
+  html += objAccounts.endTableBody();
 
   // The end of the table
   html += objAccounts.endTable();

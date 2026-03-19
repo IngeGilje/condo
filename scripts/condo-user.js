@@ -119,6 +119,17 @@ async function events() {
       menuNumber = showResult(userId, menuNumber);
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objUsers.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
 // Delete condo
@@ -169,6 +180,7 @@ function resetValues() {
   document.querySelector('.insert').disabled = true;
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -177,6 +189,28 @@ function showHeader() {
 
   // show main header
   html += objUsers.showTableHeader('width:175px;', 'Bruker');
+
+  // The end of the table
+  html += objUsers.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objUsers.startTable('width:600px;');
+
+  // start table body
+  html += objUsers.startTableBody();
+
+  // show main header
+  html += objUsers.showTableHeaderLogOut('width:175px;', '','','Bruker','');
+  html += "</tr>";
+
+  // end table body
+  html += objUsers.endTableBody();
 
   // The end of the table
   html += objUsers.endTable();

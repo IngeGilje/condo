@@ -142,6 +142,17 @@ async function events() {
       }
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objAnnualAccount.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
 // Accumulate all Bank account transactions for specified account id
@@ -186,6 +197,7 @@ function getBudgetAmount(accountId, year) {
   return formatOreToKroner(amount);
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -194,6 +206,28 @@ function showHeader() {
 
   // show main header
   html += objAnnualAccount.showTableHeader("width:175px;", 'Årsregnskap');
+
+  // The end of the table
+  html += objAnnualAccount.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objAnnualAccount.startTable('width:1100px;');
+
+  // start table body
+  html += objAnnualAccount.startTableBody();
+
+  // show main header
+  html += objAnnualAccount.showTableHeaderLogOut('width:175px;','','','', 'Årsregnskap','','');
+  html += "</tr>";
+
+  // end table body
+  html += objAnnualAccount.endTableBody();
 
   // The end of the table
   html += objAnnualAccount.endTable();

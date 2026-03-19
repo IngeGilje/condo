@@ -31,7 +31,7 @@ async function main() {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -203,12 +203,22 @@ async function events() {
         .map(prefix => objBankAccountTransactions.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      const bankAccountTransationId = Number(className.substring(7));
-
-      let url = (objBankAccountTransactions.serverStatus === 1) 
-      ? 'http://ingegilje.no/' 
-      : 'http://localhost/';
+      let url = (objBankAccountTransactions.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
       url = `${url}condo-voucher.html?bankAccountTransactionId=${bankAccountTransationId}`;
+      window.location.href = url;
+    };
+  });
+
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+       let url = (objBankAccountTransactions.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
       window.location.href = url;
     };
   });
@@ -222,7 +232,7 @@ function showFilter(rowNumber) {
 
   // Header filter
   rowNumber++;
-  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp', '','');
+  html += objBankAccountTransactions.showTableHeaderMenu('width:175px;', rowNumber, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp', '', '');
 
   // start table body
   html += objBankAccountTransactions.startTableBody();
@@ -257,7 +267,7 @@ function showFilter(rowNumber) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', '', '', '', '', '', '', '','');
+  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', '', '', '', '', '', '', '', '');
 
   // end table body
   html += objBankAccountTransactions.endTableBody();
@@ -320,6 +330,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   }
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -327,12 +338,13 @@ function showHeader() {
   let html = objBankAccountTransactions.startTable('width:1500px;');
 
   // show main header
-  html += objBankAccountTransactions.showTableHeader('width:175px;','0','','','', 'Bankkontotransaksjoner','','','','','');
+  html += objBankAccountTransactions.showTableHeader('width:175px;','','','','', 'Bankkontotransaksjoner','','','','','');
 
   // The end of the table
   html += objBankAccountTransactions.endTable();
   document.querySelector('.header').innerHTML = html;
 }
+*/
 
 // Delete bankaccounttransactions row
 async function deleteBankAccountTransactionRow(bankAccountTransationId, className) {
@@ -369,7 +381,7 @@ function showResult(rowNumber) {
 
   // table header
   rowNumber++;
-  html += objCondos.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst','');
+  html += objCondos.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', '');
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -443,7 +455,7 @@ function showResult(rowNumber) {
   sumPayment = formatOreToKroner(sumPayment);
 
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncome, sumPayment,'','','');
+  html += objBankAccountTransactions.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncome, sumPayment, '', '', '');
 
   // Show the rest of the menu
   rowNumber++;
@@ -452,4 +464,25 @@ function showResult(rowNumber) {
   // The end of the table
   html += objBankAccountTransactions.endTable();
   document.querySelector('.result').innerHTML = html;
+}
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objBankAccountTransactions.startTable('width:1500px;');
+
+  // start table body
+  html += objBankAccountTransactions.startTableBody();
+
+  // show main header
+  html += objBankAccountTransactions.showTableHeaderLogOut('width:175px;', '', '', '', '', 'Bankkontotransaksjoner', '', '', '', '');
+  html += "</tr>";
+
+  // end table body
+  html += objBankAccountTransactions.endTableBody();
+
+  // The end of the table
+  html += objBankAccountTransactions.endTable();
+  document.querySelector('.header').innerHTML = html;
 }

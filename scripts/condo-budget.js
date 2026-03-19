@@ -128,6 +128,17 @@ async function events() {
       menuNumber = showResult(menuNumber);
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objBudgets.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
 // Delete budgets row
@@ -220,6 +231,7 @@ function calculateSum() {
   document.querySelector('.sum2').value = sumAmount;
 };
 
+/*
 // Show header
 function showHeader() {
 
@@ -228,6 +240,28 @@ function showHeader() {
 
   // show main header
   html += objBudgets.showTableHeader('width:175px;', 'Budsjett');
+
+  // The end of the table
+  html += objBudgets.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objBudgets.startTable('width:1100px;');
+
+  // start table body
+  html += objBudgets.startTableBody();
+
+  // show main header
+  html += objBudgets.showTableHeaderLogOut('width:175px;', '','','','Budsjett','','');
+  html += "</tr>";
+
+  // end table body
+  html += objBudgets.endTableBody();
 
   // The end of the table
   html += objBudgets.endTable();

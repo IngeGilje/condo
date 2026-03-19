@@ -124,6 +124,17 @@ async function events() {
       window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objImportFile.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 };
 
 // Create array for Bank account transactions from imported csv file
@@ -477,6 +488,7 @@ function checkBankAccountTransaction(income, payment, date) {
   return bankAccountTransactionExist;
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -485,6 +497,28 @@ function showHeader() {
 
   // show main header
   html += objImportFile.showTableHeader('width:175px;', 'Import av bankkontotransaksjoner');
+
+  // The end of the table
+  html += objImportFile.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objImportFile.startTable('width:1600px;');
+
+  // start table body
+  html += objImportFile.startTableBody();
+
+  // show main header
+  html += objImportFile.showTableHeaderLogOut('width:175px;', '','','','','Import av bankkontotransaksjoner','','','');
+  html += "</tr>";
+
+  // end table body
+  html += objImportFile.endTableBody();
 
   // The end of the table
   html += objImportFile.endTable();

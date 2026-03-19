@@ -127,8 +127,20 @@ async function events() {
       };
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+       let url = (objUserBankAccounts.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -137,6 +149,28 @@ function showHeader() {
 
   // show main header
   html += objUserBankAccounts.showTableHeader('width:175px;', 'Bankkonto for bruker');
+
+  // The end of the table
+  html += objUserBankAccounts.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objUserBankAccounts.startTable('width:950px;');
+
+  // start table body
+  html += objUserBankAccounts.startTableBody();
+
+  // show main header
+  html += objUserBankAccounts.showTableHeaderLogOut('width:175px;', '','','','Bankkonto for bruker','');
+  html += "</tr>";
+
+  // end table body
+  html += objUserBankAccounts.endTableBody();
 
   // The end of the table
   html += objUserBankAccounts.endTable();

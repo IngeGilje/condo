@@ -54,6 +54,7 @@ function resetValues() {
   sessionStorage.clear();
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -67,6 +68,7 @@ function showHeader() {
   html += objLogIn.endTable();
   document.querySelector('.header').innerHTML = html;
 }
+*/
 
 // Show result
 function showResult() {
@@ -81,7 +83,8 @@ function showResult() {
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
 
   // email
-  html += objLogIn.inputTableColumn('email', '', '', 45, '');
+  const email = 'inge.gilje@gmail.com';
+  html += objLogIn.inputTableColumn('email', '', email, 45, '');
 
   html += "</tr>";
 
@@ -98,7 +101,7 @@ function showResult() {
   html += objLogIn.insertTableColumns('', 0);
 
   // password
-  password = '';
+  password = '12345';
   html += objLogIn.inputTableColumn('password', '', password, 45);
 
   html += "</tr>";

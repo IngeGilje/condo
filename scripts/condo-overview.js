@@ -130,8 +130,20 @@ async function events() {
       }
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+       let url = (objOverview.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -140,6 +152,28 @@ function showHeader() {
 
   // show main header
   html += objOverview.showTableHeader('width:175px;', '', '', '', 'Betalingsoversikt', '', '',);
+
+  // The end of the table
+  html += objOverview.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objOverview.startTable('width:1250px;');
+
+  // start table body
+  html += objOverview.startTableBody();
+
+  // show main header
+  html += objOverview.showTableHeaderLogOut('width:175px;', '','','','','Betalingsoversikt','','','');
+  html += "</tr>";
+
+  // end table body
+  html += objOverview.endTableBody();
 
   // The end of the table
   html += objOverview.endTable();
@@ -177,7 +211,7 @@ function showFilter(rowNumber) {
   let toDate = getCurrentDate();
   html += objOverview.inputTableColumn('filterToDate', '', toDate, 10);
 
-  html += "<td>5</td><td>6</td></tr>";
+  html += "<td></td><td></td></tr>";
 
   // insert table columns in start of a row
   rowNumber++;

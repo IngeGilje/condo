@@ -156,8 +156,20 @@ async function events() {
       };
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objRemoteHeatings.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -169,6 +181,28 @@ function showHeader() {
 
   // The end of the table header
   html += objRemoteHeatings.endTableHeader();
+
+  // The end of the table
+  html += objRemoteHeatings.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objRemoteHeatings.startTable('width:1250px;');
+
+  // start table body
+  html += objRemoteHeatings.startTableBody();
+
+  // show main header
+  html += objRemoteHeatings.showTableHeaderLogOut('width:175px;', '','','','','Fjernvarme','','');
+  html += "</tr>";
+
+  // end table body
+  html += objRemoteHeatings.endTableBody();
 
   // The end of the table
   html += objRemoteHeatings.endTable();

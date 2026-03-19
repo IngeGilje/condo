@@ -124,6 +124,17 @@ async function events() {
       menuNumber = showResult(bankAccountId, menuNumber);
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objBankAccounts.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
 async function deleteBankAccount() {
@@ -143,6 +154,7 @@ async function deleteBankAccount() {
   }
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -151,6 +163,28 @@ function showHeader() {
 
   // show main header
   html += objBankAccounts.showTableHeader('width:175px;', 'Bankkonto sameie');
+
+  // The end of the table
+  html += objBankAccounts.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objBankAccounts.startTable('width:600px;');
+
+  // start table body
+  html += objBankAccounts.startTableBody();
+
+  // show main header
+  html += objBankAccounts.showTableHeaderLogOut('width:175px;', '','Bankkonto sameie','');
+  html += "</tr>";
+
+  // end table body
+  html += objBankAccounts.endTableBody();
 
   // The end of the table
   html += objBankAccounts.endTable();

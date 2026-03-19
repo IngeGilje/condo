@@ -123,6 +123,17 @@ async function events() {
       menuNumber = showResult(condominiumId, menuNumber);
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objCondominiums.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
 // Reset all values for condominium
@@ -187,6 +198,7 @@ async function deleteCondominiumRow() {
   }
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -195,6 +207,28 @@ function showHeader() {
 
   // show main header
   html += objCondominiums.showTableHeader('width:175px;', 'Sameie');
+
+  // The end of the table
+  html += objCondominiums.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objCondominiums.startTable('width:600px;');
+
+  // start table body
+  html += objCondominiums.startTableBody();
+
+  // show main header
+  html += objCondominiums.showTableHeaderLogOut('width:175px;', '','','Sameie','');
+  html += "</tr>";
+
+  // end table body
+  html += objCondominiums.endTableBody();
 
   // The end of the table
   html += objCondominiums.endTable();

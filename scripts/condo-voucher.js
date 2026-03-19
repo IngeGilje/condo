@@ -92,8 +92,20 @@ async function events() {
       updateBankAccountTransactionRow(bankAccountTransactionId);
     };
   });
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objVouchers.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -102,6 +114,28 @@ function showHeader() {
 
   // show main header
   html += objBankAccountTransactions.showTableHeader('width:175px;', 'Vis bilag');
+
+  // The end of the table
+  html += objBankAccountTransactions.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+*/
+
+// Show header
+function showHeader() {
+
+  // Start table
+  html = objBankAccountTransactions.startTable('width:800px;');
+
+  // start table body
+  html += objBankAccountTransactions.startTableBody();
+
+  // show main header
+  html += objBankAccountTransactions.showTableHeaderLogOut('width:175px;', '','','Vis bilag','');
+  html += "</tr>";
+
+  // end table body
+  html += objBankAccountTransactions.endTableBody();
 
   // The end of the table
   html += objBankAccountTransactions.endTable();
