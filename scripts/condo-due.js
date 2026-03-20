@@ -24,6 +24,7 @@ async function main() {
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
     user = sessionStorage.getItem("user");
+        securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -286,9 +287,6 @@ function insertEmptyTableRow(rowNumber) {
 
 // Delete dues row
 async function deleteDueRow(dueId, className) {
-
-
-
 
   // Check if dues row exist
   rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);

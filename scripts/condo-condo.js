@@ -7,6 +7,7 @@ const objCondos = new Condo('condo');
 
 let condominiumId = 0;
 let user = "";
+let securityLevel = 0;
 const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
@@ -22,11 +23,12 @@ async function main() {
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
     user = sessionStorage.getItem("user");
+        securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -56,7 +58,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings,'', 'condo-server.js er ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -172,7 +174,7 @@ function showHeader() {
   html += objCondos.startTableBody();
 
   // show main header
-  html += objCondos.showTableHeaderLogOut('width:175px;', '','','Leilighet','','');
+  html += objCondos.showTableHeaderLogOut('width:175px;', '', '', 'Leilighet', '', '');
   html += "</tr>";
 
   // end table body
@@ -301,22 +303,23 @@ function showResult(condoId, rowNumber) {
 
     html += "</tr>";
 
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objCondos.insertTableColumns('', rowNumber);
+    if (securityLevel > 5) {
+      // insert table columns in start of a row
+      rowNumber++;
+      html += objCondos.insertTableColumns('', rowNumber);
 
-    html += objCondos.showButton('width:175px;', 'update', 'Oppdater');
-    html += objCondos.showButton('width:175px;', 'cancel', 'Angre');
-    html += "</tr>";
+      html += objCondos.showButton('width:175px;', 'update', 'Oppdater');
+      html += objCondos.showButton('width:175px;', 'cancel', 'Angre');
+      html += "</tr>";
 
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objCondos.insertTableColumns('', rowNumber);
+      // insert table columns in start of a row
+      rowNumber++;
+      html += objCondos.insertTableColumns('', rowNumber);
 
-    html += objCondos.showButton('width:175px;', 'delete', 'Slett');
-    html += objCondos.showButton('width:175px;', 'insert', 'Ny');
-    html += "</tr>";
-
+      html += objCondos.showButton('width:175px;', 'delete', 'Slett');
+      html += objCondos.showButton('width:175px;', 'insert', 'Ny');
+      html += "</tr>";
+    }
     // Show the rest of the menu
     rowNumber++;
     html += objCondos.showRestMenu(rowNumber);

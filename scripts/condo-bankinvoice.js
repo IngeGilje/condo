@@ -9,6 +9,7 @@ const objBankAccountTransactions = new BankAccountMovements('bankaccountmovement
 
 let condominiumId = 0;
 let user = "";
+let securityLevel = 0;
 const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
@@ -24,11 +25,12 @@ async function main() {
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
     user = sessionStorage.getItem("user");
+        securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-                 const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -56,7 +58,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings,'', 'condo-server.js er ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -224,7 +226,7 @@ function showHeader() {
   html += objBankAccountTransactions.startTableBody();
 
   // show main header
-  html += objBankAccountTransactions.showTableHeaderLogOut('width:175px;', '','','Sameie');
+  html += objBankAccountTransactions.showTableHeaderLogOut('width:175px;', '', '', 'Sameie');
   html += "</tr>";
 
   // end table body
@@ -398,21 +400,24 @@ function showResult(condominiumId, rowNumber) {
 
     html += "</tr>";
 
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objBankAccountTransactions.insertTableColumns('', rowNumber);
+    if (securityLevel > 5) {
 
-    html += objBankAccountTransactions.showButton('width:175px; background:#e0f0e0;', 'update', 'Oppdater');
-    html += objBankAccountTransactions.showButton('width:175px; background:#e0f0e0;', 'cancel', 'Angre');
-    html += "</tr>";
+      // insert table columns in start of a row
+      rowNumber++;
+      html += objBankAccountTransactions.insertTableColumns('', rowNumber);
 
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objBankAccountTransactions.insertTableColumns('', rowNumber);
+      html += objBankAccountTransactions.showButton('width:175px; background:#e0f0e0;', 'update', 'Oppdater');
+      html += objBankAccountTransactions.showButton('width:175px; background:#e0f0e0;', 'cancel', 'Angre');
+      html += "</tr>";
 
-    html += objBankAccountTransactions.showButton('width:175px;', 'delete', 'Slett');
-    html += objBankAccountTransactions.showButton('width:175px;', 'insert', 'Ny');
-    html += "</tr>";
+      // insert table columns in start of a row
+      rowNumber++;
+      html += objBankAccountTransactions.insertTableColumns('', rowNumber);
+
+      html += objBankAccountTransactions.showButton('width:175px;', 'delete', 'Slett');
+      html += objBankAccountTransactions.showButton('width:175px;', 'insert', 'Ny');
+      html += "</tr>";
+    }
 
     // Show the rest of the menu
     rowNumber++;

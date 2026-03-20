@@ -8,6 +8,7 @@ const objCommonCosts = new CommonCost('commoncost');
 
 let condominiumId = 0;
 let user = "";
+let securityLevel = 0;
 const tableWidth = 'width:950px';
 
 // Exit application if no activity for 1 hour
@@ -23,6 +24,7 @@ async function main() {
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
     user = sessionStorage.getItem("user");
+        securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid

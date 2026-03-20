@@ -9,6 +9,7 @@ const objVouchers = new Voucher('voucher');
 
 let condominiumId = 0;
 let user = "";
+let securityLevel = 0;
 const tableWidth = 'width:800px;';
 
 const params = new URLSearchParams(window.location.search);
@@ -27,6 +28,7 @@ async function main() {
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
     user = sessionStorage.getItem("user");
+        securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid

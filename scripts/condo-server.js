@@ -39,7 +39,6 @@ app.post('/health', (req, res) => {
 });
 
 // Get information from the session
-//app.get("/profile", (req, res) => {
 app.post("/profile", (req, res) => {
 
   if (req.session.username) {
@@ -53,8 +52,21 @@ app.post("/profile", (req, res) => {
   }
 });
 
+// Get current user info
+//app.get("/me", async (req, res) => {
+app.post("/me", async (req, res) => {
+
+  console.log('req.session', req.session);
+  if (req.session.user) {
+
+    res.send(req.session.user);
+  } else {
+
+    res.status(401).send("Not logged in");
+  }
+});
+
 // Destroy / clear session
-//app.get("/logout", (req, res) => {
 app.post("/logout", (req, res) => {
   req.session.destroy(() => {
     res.send("Session destroyed");
@@ -180,20 +192,6 @@ async function main() {
         res.json({ success: true });
       } catch (err) {
         res.json({ success: false });
-      }
-    });
-
-    // Get current user info
-    //app.get("/me", async (req, res) => {
-    app.post("/me", async (req, res) => {
-
-      console.log('req.session', req.session);
-      if (req.session.user) {
-
-        res.send(req.session.user);
-      } else {
-
-        res.status(401).send("Not logged in");
       }
     });
 
@@ -393,13 +391,6 @@ async function main() {
             const firstName = req.body.firstName;
             const lastName = req.body.lastName;
             const phone = req.body.phone;
-            const securityLevel = req.body.securityLevel;
-            let password = req.body.password;
-
-            // Hash the password
-            const saltRounds = 10;
-            password = await bcrypt.hash(password, saltRounds);
-            console.log('password :', password);
 
             const SQLquery =
               `
@@ -412,7 +403,43 @@ async function main() {
                   condoId = ${condoId},
                   firstName = '${firstName}',
                   lastName = '${lastName}',
-                  phone = '${phone}',
+                  phone = '${phone}'
+                WHERE userId = ${userId};
+              `;
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /users:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'updateUserPassword': {
+
+          try {
+
+            const userId = req.body.userId;
+            const user = req.body.user;
+
+            const securityLevel = req.body.securityLevel;
+            let password = req.body.password;
+
+            // Hash the password
+            const saltRounds = 10;
+            password = await bcrypt.hash(password, saltRounds);
+            console.log('password :', password);
+
+            const SQLquery =
+              `
+                UPDATE users
+                SET
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}',
                   securityLevel = ${securityLevel},
                   password = '${password}'
                 WHERE userId = ${userId};

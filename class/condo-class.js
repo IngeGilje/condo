@@ -1987,8 +1987,8 @@ function exitIfNoActivity() {
   inactivityTimeout = setTimeout(() => {
 
     const URL = (this.serverStatus === 1)
-      ? 'http://ingegilje.no/condo-voucher.html'
-      : 'http://localhost/condo-voucher.html';
+      ? 'http://ingegilje.no/condo-login.html'
+      : 'http://localhost/condo-login.html';
     window.location.href = URL;
 
     //window.location.href =

@@ -9,6 +9,7 @@ const objBankAccounts = new BankAccount('bankaccount');
 
 let condominiumId = 0;
 let user = "";
+let securityLevel = 0;
 
 const tableWidth = 'width:600px;';
 
@@ -18,12 +19,14 @@ exitIfNoActivity();
 // Validate LogIn
 condominiumId = Number(sessionStorage.getItem("condominiumId"));
 user = sessionStorage.getItem("user");
+    securityLevel = sessionStorage.getItem("securityLevel");
+securityLevel = Number(sessionStorage.getItem("securityLevel"));
 if ((condominiumId === 0 || user === null)) {
 
   // LogIn is not valid
   //window.location.href = 'http://localhost/condo-login.html';
-       const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
-      window.location.href = URL;
+  const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+  window.location.href = URL;
 } else {
 
   // Call main when script loads
@@ -58,7 +61,7 @@ if ((condominiumId === 0 || user === null)) {
       events();
     } else {
 
-      objBankAccounts.objBankAccounts.showMessage(objBankAccounts, '','condo-server.js er ikke startet.');
+      objBankAccounts.objBankAccounts.showMessage(objBankAccounts, '', 'condo-server.js er ikke startet.');
     }
   }
 }
@@ -182,7 +185,7 @@ function showHeader() {
   html += objBankAccounts.startTableBody();
 
   // show main header
-  html += objBankAccounts.showTableHeaderLogOut('width:175px;', '','Bankkonto sameie','');
+  html += objBankAccounts.showTableHeaderLogOut('width:175px;', '', 'Bankkonto sameie', '');
   html += "</tr>";
 
   // end table body
@@ -263,23 +266,26 @@ function showResult(bankAccountId, rowNumber) {
 
     html += "</tr>";
 
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objBankAccounts.insertTableColumns('', rowNumber);
+    if (securityLevel > 5) {
 
-    // Show buttons
-    html += objBankAccounts.showButton('width:175px;', 'update', 'Oppdater');
-    html += objBankAccounts.showButton('width:175px;', 'cancel', 'Angre');
-    html += "</tr>";
+      // insert table columns in start of a row
+      rowNumber++;
+      html += objBankAccounts.insertTableColumns('', rowNumber);
 
-    // insert table columns in start of a row
-    rowNumber++;
-    html += objBankAccounts.insertTableColumns('', rowNumber);
+      // Show buttons
+      html += objBankAccounts.showButton('width:175px;', 'update', 'Oppdater');
+      html += objBankAccounts.showButton('width:175px;', 'cancel', 'Angre');
+      html += "</tr>";
 
-    // Show buttons
-    html += objBankAccounts.showButton('width:175px;', 'delete', 'Slett');
-    html += objBankAccounts.showButton('width:175px;', 'insert', 'Ny');
-    html += "</tr>";
+      // insert table columns in start of a row
+      rowNumber++;
+      html += objBankAccounts.insertTableColumns('', rowNumber);
+
+      // Show buttons
+      html += objBankAccounts.showButton('width:175px;', 'delete', 'Slett');
+      html += objBankAccounts.showButton('width:175px;', 'insert', 'Ny');
+      html += "</tr>";
+    }
 
     // Show the rest of the menu
     rowNumber++;
