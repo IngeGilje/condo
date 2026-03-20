@@ -9,6 +9,7 @@ const objCondominiums = new Condominium('condominium');
 const objDues = new Due('due');
 
 let condominiumId = 0;
+tableWidth = 'width:1450px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -172,7 +173,7 @@ async function events() {
 function showResult(rowNumber) {
 
   // start table
-  let html = objCondos.startTable('width:1450px;');
+  let html = objCondos.startTable(tableWidth);
 
   // table header
   rowNumber++;
@@ -379,7 +380,7 @@ async function updateDuesRow(dueId) {
 function showHeader() {
 
   // Start table
-  let html = objDues.startTable('width:1450px;');
+  let html = objDues.startTable(tableWidth);
 
   // show main header
   html += objDues.showTableHeader('width:175px;', 'Forfall');
@@ -394,7 +395,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objDues.startTable('width:1450px;');
+  html = objDues.startTable(tableWidth);
 
   // start table body
   html += objDues.startTableBody();
@@ -415,7 +416,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objDues.startTable('width:1450px;');
+  html = objDues.startTable(tableWidth);
 
   // Header filter
   rowNumber++;

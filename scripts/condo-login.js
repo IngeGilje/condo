@@ -59,7 +59,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objLogIn.startTable('width:250px;margin: 0 auto;');
+  let html = objLogIn.startTable(tableWidth,'margin: 0 auto;');
 
   // show main header
   html += objLogIn.showTableHeader('width:250px;', 'LogIn');

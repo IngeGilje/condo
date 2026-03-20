@@ -230,25 +230,21 @@ class Condos {
     `;
   }
 
-  /*
-  // Show input
-  inputTableColumn(className, value, maxlength) {
-  
-    let html =
-      `
-        <td class="center">
-          <input 
-            class="${className} center one-line"
-            type="text" 
-            maxlength="${maxlength}"
-            value="${value}"
-          >
-        </td>
-      `;
-  
-    return html;
+  // Show password
+  inputTablePassword(className, style, value, maxlength, readOnly = false) {
+    return `
+      <td class="center">
+        <input
+          class="${className} center one-line"
+          type="password"
+          maxlength="${maxlength}"
+          value="${value}"
+          ${(style) ? `style=${style}` : "style=width:175px;"}
+          ${readOnly ? 'readonly' : ''}
+        >
+      </td>
+    `;
   }
-  */
 
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {

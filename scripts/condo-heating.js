@@ -12,6 +12,8 @@ const constFixedCost = 'Fast kostnad';
 let condominiumId = 0;
 let user = "";
 
+const tableWidth = 'width:600px;';
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -161,7 +163,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objAccounts.startTable('width:600px;');
+  let html = objAccounts.startTable(tableWidth);
 
   // show main header
   html += objAccounts.showTableHeader('width:250px;', 'Konto');
@@ -179,7 +181,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objAccounts.startTable('width:600px;');
+  html = objAccounts.startTable(tableWidth);
 
   // start table body
   html += objAccounts.startTableBody();
@@ -200,7 +202,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objAccounts.startTable('width:600px;');
+  html = objAccounts.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -257,7 +259,7 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objAccounts.startTable('width:600px;');
+  let html = objAccounts.startTable(tableWidth);
 
   // table header
   html += objAccounts.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', 'Slett', 'Kostnadstype', 'Tekst');

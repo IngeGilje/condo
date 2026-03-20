@@ -19,6 +19,8 @@ const objImportFile = new ImportFile('importfile');
 let condominiumId = 0;
 let user = "";
 
+const tableWidth = 'width:1600px;';
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -89,21 +91,21 @@ async function main() {
             events();
           } else {
 
-            objImportFile.showMessage(objImportFile, 'width:1600px;', 'Finner ikke transaksjonsfilen fra banken :', fileName);
+            objImportFile.showMessage(objImportFile, tableWidth, 'Finner ikke transaksjonsfilen fra banken :', fileName);
           }
 
         } else {
 
-          objImportFile.showMessage(objImportFile, 'width:1600px;', 'Finner ikke transaksjonsfilen fra banken :', fileName);
+          objImportFile.showMessage(objImportFile, tableWidth, 'Finner ikke transaksjonsfilen fra banken :', fileName);
         }
       } else {
 
-        objImportFile.showMessage(objImportFile, 'width:1600px;', 'Finner ikke transaksjonsfilen fra banken :', fileName);
+        objImportFile.showMessage(objImportFile, tableWidth, 'Finner ikke transaksjonsfilen fra banken :', fileName);
       }
     }
   } else {
 
-    objImportFile.showMessage(objImportFile, 'width:1600px;', 'condo-server.js er ikke startet.');
+    objImportFile.showMessage(objImportFile, tableWidth, 'condo-server.js er ikke startet.');
   }
 }
 
@@ -493,7 +495,7 @@ function checkBankAccountTransaction(income, payment, date) {
 function showHeader() {
 
   // Start table
-  let html = objImportFile.startTable('width:1600px;');
+  let html = objImportFile.startTable(tableWidth);
 
   // show main header
   html += objImportFile.showTableHeader('width:175px;', 'Import av bankkontotransaksjoner');
@@ -508,7 +510,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objImportFile.startTable('width:1600px;');
+  html = objImportFile.startTable(tableWidth);
 
   // start table body
   html += objImportFile.startTableBody();
@@ -529,7 +531,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objImportFile.startTable('width:1600px;');
+  html = objImportFile.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -557,7 +559,7 @@ function showFilter(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objImportFile.startTable('width:1600px;');
+  let html = objImportFile.startTable(tableWidth);
 
   // table header
   rowNumber++;

@@ -8,6 +8,7 @@ const objSuppliers = new Supplier('supplier');
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -189,7 +190,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objSuppliers.startTable('width:600px;');
+  let html = objSuppliers.startTable(tableWidth);
 
   // show main header
   html += objSuppliers.showTableHeader('width:175px;', 'Mottaker');
@@ -204,7 +205,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objSuppliers.startTable('width:600px;');
+  html = objSuppliers.startTable(tableWidth);
 
   // start table body
   html += objSuppliers.startTableBody();
@@ -225,7 +226,7 @@ function showHeader() {
 function showFilter(supplierId, rowNumber) {
 
   // Start table
-  html = objSuppliers.startTable('width:600px;');
+  html = objSuppliers.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -257,7 +258,7 @@ function showFilter(supplierId, rowNumber) {
 function showResult(supplierId, rowNumber) {
 
   // start table
-  let html = objSuppliers.startTable('width:600px;');
+  let html = objSuppliers.startTable(tableWidth);
 
   // table header
   rowNumber++;

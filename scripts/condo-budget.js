@@ -7,6 +7,7 @@ const objAccounts = new Account('account');
 const objBudgets = new Budget('budget');
 
 let condominiumId = 0;
+const tableWidth = 'width:1100px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -236,7 +237,7 @@ function calculateSum() {
 function showHeader() {
 
   // Start table
-  let html = objBudgets.startTable('width:1100px;');
+  let html = objBudgets.startTable(tableWidth);
 
   // show main header
   html += objBudgets.showTableHeader('width:175px;', 'Budsjett');
@@ -251,7 +252,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objBudgets.startTable('width:1100px;');
+  html = objBudgets.startTable(tableWidth);
 
   // start table body
   html += objBudgets.startTableBody();
@@ -272,7 +273,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objBudgets.startTable('width:1100px;');
+  html = objBudgets.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -312,7 +313,7 @@ function showFilter(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objBudgets.startTable('width:1100px;');
+  let html = objBudgets.startTable(tableWidth);
 
   // table header
   rowNumber++;

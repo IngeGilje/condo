@@ -11,6 +11,7 @@ const constFixedCost = 'Fast kostnad';
 
 let condominiumId = 0;
 let user = "";
+tableWidth = 'width:750px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -162,7 +163,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objAccounts.startTable('width:750px;');
+  let html = objAccounts.startTable(tableWidth);
 
   // show main header
   html += objAccounts.showTableHeader('width:175px;', 'Konto');
@@ -180,7 +181,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objAccounts.startTable('width:750px;');
+  html = objAccounts.startTable(tableWidth);
 
   // start table body
   html += objAccounts.startTableBody();
@@ -201,7 +202,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objAccounts.startTable('width:750px;');
+  html = objAccounts.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -259,7 +260,7 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objAccounts.startTable('width:750px;');
+  let html = objAccounts.startTable(tableWidth);
 
   // table header
   rowNumber++;

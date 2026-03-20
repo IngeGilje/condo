@@ -9,6 +9,7 @@ const objBankAccountTransactions = new BankAccountMovements('bankaccountmovement
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -202,7 +203,7 @@ async function deleteCondominiumRow() {
 function showHeader() {
 
   // Start table
-  let html = objBankAccountTransactions.startTable('width:600px;');
+  let html = objBankAccountTransactions.startTable(tableWidth);
 
   // show main header
   html += objBankAccountTransactions.showTableHeader('width:175px;', 'Sameie');
@@ -217,7 +218,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objBankAccountTransactions.startTable('width:750px;');
+  html = objBankAccountTransactions.startTable(tableWidth);
 
   // start table body
   html += objBankAccountTransactions.startTableBody();
@@ -238,7 +239,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objBankAccountTransactions.startTable('width:600px;');
+  html = objBankAccountTransactions.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -274,7 +275,7 @@ function showFilter(rowNumber) {
 function showResult(condominiumId, rowNumber) {
 
   // start table
-  let html = objBankAccountTransactions.startTable('width:600px;');
+  let html = objBankAccountTransactions.startTable(tableWidth);
 
   // Check if condominiums row exist
   const rowNumberCondominium = objBankAccountTransactions.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);

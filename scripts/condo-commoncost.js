@@ -8,6 +8,7 @@ const objCommonCosts = new CommonCost('commoncost');
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = 'width:950px';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -154,7 +155,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objCommonCosts.startTable('width:950px;');
+  let html = objCommonCosts.startTable(tableWidth);
 
   // show main header
   html += objCommonCosts.showTableHeader('width:175px;', 'Felleskostnader');
@@ -172,7 +173,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objCommonCosts.startTable('width:950px;');
+  html = objCommonCosts.startTable(tableWidth);
 
   // start table body
   html += objCommonCosts.startTableBody();
@@ -219,7 +220,7 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objCommonCosts.startTable('width:950px;');
+  let html = objCommonCosts.startTable(tableWidth);
 
   rowNumber++;
   html += objCommonCosts.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);

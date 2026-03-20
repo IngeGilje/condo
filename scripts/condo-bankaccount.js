@@ -10,6 +10,8 @@ const objBankAccounts = new BankAccount('bankaccount');
 let condominiumId = 0;
 let user = "";
 
+const tableWidth = 'width:600px;';
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -159,7 +161,7 @@ async function deleteBankAccount() {
 function showHeader() {
 
   // Start table
-  let html = objBankAccounts.startTable('width:600px;');
+  let html = objBankAccounts.startTable(tableWidth);
 
   // show main header
   html += objBankAccounts.showTableHeader('width:175px;', 'Bankkonto sameie');
@@ -174,7 +176,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objBankAccounts.startTable('width:600px;');
+  html = objBankAccounts.startTable(tableWidth);
 
   // start table body
   html += objBankAccounts.startTableBody();
@@ -195,7 +197,7 @@ function showHeader() {
 function showResult(bankAccountId, rowNumber) {
 
   // start table
-  let html = objBankAccounts.startTable('width:600px;');
+  let html = objBankAccounts.startTable(tableWidth);
 
   // table header
   rowNumber++;
@@ -399,7 +401,7 @@ function resetValues() {
 function showFilter(condominiumId, rowNumber) {
 
   // Start table
-  html = objBankAccounts.startTable('width:600px;');
+  html = objBankAccounts.startTable(tableWidth);
 
   // Header filter
   rowNumber++;

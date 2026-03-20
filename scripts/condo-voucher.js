@@ -9,6 +9,7 @@ const objVouchers = new Voucher('voucher');
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = 'width:800px;';
 
 const params = new URLSearchParams(window.location.search);
 let bankAccountTransactionId = Number(params.get("bankAccountTransactionId"));
@@ -110,7 +111,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objBankAccountTransactions.startTable('width:800px;');
+  let html = objBankAccountTransactions.startTable(tableWidth);
 
   // show main header
   html += objBankAccountTransactions.showTableHeader('width:175px;', 'Vis bilag');
@@ -125,7 +126,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objBankAccountTransactions.startTable('width:800px;');
+  html = objBankAccountTransactions.startTable(tableWidth);
 
   // start table body
   html += objBankAccountTransactions.startTableBody();
@@ -146,7 +147,7 @@ function showHeader() {
 function showFilter1(rowNumber) {
 
   // Start table
-  html = objBankAccountTransactions.startTable('width:800px;');
+  html = objBankAccountTransactions.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -184,7 +185,7 @@ function showFilter1(rowNumber) {
 function showFilter2(rowNumber, bankAccountTransactionId) {
 
   // Start table
-  html = objBankAccountTransactions.startTable('width:800px;');
+  html = objBankAccountTransactions.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -216,7 +217,7 @@ function showFilter2(rowNumber, bankAccountTransactionId) {
 function showResult(bankAccountTransactionId, rowNumber) {
 
   // start table
-  let html = objBankAccountTransactions.startTable('width:800px;');
+  let html = objBankAccountTransactions.startTable(tableWidth);
 
   // Check if bank account transactin row exist
   const rowNumberBankAccountTransaction = objBankAccountTransactions.arrayBankAccountTransactions.findIndex(bankAccountTransaction => bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId);

@@ -9,6 +9,7 @@ const objRemoteHeatings = new RemoteHeating('remoteheating');
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = 'width:1250px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -174,7 +175,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objRemoteHeatings.startTable('width:1250px;');
+  let html = objRemoteHeatings.startTable(tableWidth);
 
   // show main header
   html += objRemoteHeatings.showTableHeader('width:175px;', 'Fjernvarme');
@@ -192,7 +193,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objRemoteHeatings.startTable('width:1250px;');
+  html = objRemoteHeatings.startTable(tableWidth);
 
   // start table body
   html += objRemoteHeatings.startTableBody();
@@ -213,7 +214,7 @@ function showHeader() {
 function showFilter(rowNumber, year) {
 
   // Start table
-  html = objRemoteHeatings.startTable('width:1250px;');
+  html = objRemoteHeatings.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -286,7 +287,7 @@ function showResult(rowNumber) {
   let totalPriceYear = 0;
 
   // start table
-  let html = objRemoteHeatings.startTable('width:1250px;');
+  let html = objRemoteHeatings.startTable(tableWidth);
 
   // table header
   const currentYear = Number(document.querySelector(".filterYear").value);

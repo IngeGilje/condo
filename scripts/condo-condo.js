@@ -7,6 +7,7 @@ const objCondos = new Condo('condo');
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -150,7 +151,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objCondos.startTable('width:600px;');
+  let html = objCondos.startTable(tableWidth);
 
   // show main header
   html += objCondos.showTableHeader('width:175px;', 'Leilighet');
@@ -165,7 +166,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objCondos.startTable('width:600px;');
+  html = objCondos.startTable(tableWidth);
 
   // start table body
   html += objCondos.startTableBody();
@@ -186,7 +187,7 @@ function showHeader() {
 function showFilter(rowNumber, condoId) {
 
   // Start table
-  html = objCondos.startTable('width:600px;');
+  html = objCondos.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -218,7 +219,7 @@ function showFilter(rowNumber, condoId) {
 function showResult(condoId, rowNumber) {
 
   // start table
-  let html = objCondos.startTable('width:600px;');
+  let html = objCondos.startTable(tableWidth);
 
   // table header
   rowNumber++;

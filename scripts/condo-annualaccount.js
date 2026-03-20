@@ -13,6 +13,7 @@ const objCommonCosts = new CommonCost('commoncost');
 const objAnnualAccount = new AnnualAccount('annualaccount');
 
 let condominiumId = 0;
+const tableWidth = 'width:1100px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -202,7 +203,7 @@ function getBudgetAmount(accountId, year) {
 function showHeader() {
 
   // Start table
-  let html = objAnnualAccount.startTable('width:1100px;');
+  let html = objAnnualAccount.startTable(tableWidth);
 
   // show main header
   html += objAnnualAccount.showTableHeader("width:175px;", 'Årsregnskap');
@@ -217,13 +218,13 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objAnnualAccount.startTable('width:1100px;');
+  html = objAnnualAccount.startTable(tableWidth);
 
   // start table body
   html += objAnnualAccount.startTableBody();
 
   // show main header
-  html += objAnnualAccount.showTableHeaderLogOut('width:175px;','','','', 'Årsregnskap','','');
+  html += objAnnualAccount.showTableHeaderLogOut('width:175px;','','','', 'Årsregnskap','',);
   html += "</tr>";
 
   // end table body
@@ -238,7 +239,7 @@ function showHeader() {
 function showFilter(rowNumber, budgetYear, fromDate, toDate) {
 
   // Start table
-  html = objAnnualAccount.startTable('width:1100px;');
+  html = objAnnualAccount.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -283,7 +284,7 @@ function showFilter(rowNumber, budgetYear, fromDate, toDate) {
 function showAnnualAccounts(rowNumber) {
 
   // start table
-  let html = objAnnualAccount.startTable('width:1100px;');
+  let html = objAnnualAccount.startTable(tableWidth);
 
   // table header
   const budgetYear = document.querySelector('.filterBudgetYear').value;
@@ -381,7 +382,7 @@ function showAnnualAccounts(rowNumber) {
 function showIncomeNextYear(rowNumber) {
 
   // start table
-  let html = objAnnualAccount.startTable('width:1100px;');
+  let html = objAnnualAccount.startTable(tableWidth);
 
   // table header
   const budgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
@@ -482,7 +483,7 @@ function showIncomeNextYear(rowNumber) {
 function showRemoteHeating(rowNumber) {
 
   // start table
-  let html = objAnnualAccount.startTable('width:1100px;');
+  let html = objAnnualAccount.startTable(tableWidth);
 
   // table header
   rowNumber++;
@@ -589,7 +590,7 @@ function showRemoteHeating(rowNumber) {
 function showBankDeposit(rowNumber) {
 
   // start table
-  let html = objAnnualAccount.startTable('width:1100px;');
+  let html = objAnnualAccount.startTable(tableWidth);
 
   // table header
   let nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;

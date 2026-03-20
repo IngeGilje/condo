@@ -10,6 +10,7 @@ const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransa
 const objOverview = new Overview('overview');
 
 let condominiumId = 0;
+const tableWidth = 'width:1250px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -148,7 +149,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objOverview.startTable('width:1250px;');
+  let html = objOverview.startTable(tableWidth);
 
   // show main header
   html += objOverview.showTableHeader('width:175px;', '', '', '', 'Betalingsoversikt', '', '',);
@@ -163,7 +164,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objOverview.startTable('width:1250px;');
+  html = objOverview.startTable(tableWidth);
 
   // start table body
   html += objOverview.startTableBody();
@@ -184,7 +185,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objOverview.startTable('width:1250px;');
+  html = objOverview.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -231,7 +232,7 @@ function showFilter(rowNumber) {
 function showDues(rowNumber) {
 
   // Start HTML table
-  html = objOverview.startTable('width:1250px;');
+  html = objOverview.startTable(tableWidth);
 
   let sumDue = 0;
   let sumKilowattHour = 0;
@@ -305,7 +306,7 @@ function showDues(rowNumber) {
 function showBankAccountTransactions(rowNumber) {
 
   // Start table
-  html = objOverview.startTable('width:1250px;');
+  html = objOverview.startTable(tableWidth);
 
   // Header
   rowNumber++;
@@ -375,7 +376,7 @@ function showBankAccountTransactions(rowNumber) {
 function showHowMuchToPay(rowNumber) {
 
   // Start table
-  let html = objOverview.startTable('width:1250px;');
+  let html = objOverview.startTable(tableWidth);
 
   let sumIncome = 0;
 

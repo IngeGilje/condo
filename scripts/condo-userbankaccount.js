@@ -8,6 +8,7 @@ const objUserBankAccounts = new UserBankAccount('userbankaccount');
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = 'width:950px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -145,7 +146,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objUserBankAccounts.startTable('width:950px;');
+  let html = objUserBankAccounts.startTable(tableWidth);
 
   // show main header
   html += objUserBankAccounts.showTableHeader('width:175px;', 'Bankkonto for bruker');
@@ -160,7 +161,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objUserBankAccounts.startTable('width:950px;');
+  html = objUserBankAccounts.startTable(tableWidth);
 
   // start table body
   html += objUserBankAccounts.startTableBody();
@@ -181,7 +182,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  let html = objUserBankAccounts.startTable('width:950px;');
+  let html = objUserBankAccounts.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -240,7 +241,7 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objUserBankAccounts.startTable('width:950px;');
+  let html = objUserBankAccounts.startTable(tableWidth);
 
   // table header
   rowNumber++;

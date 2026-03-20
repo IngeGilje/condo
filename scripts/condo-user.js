@@ -7,6 +7,7 @@ const objUsers = new User('user');
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = "width:600px;";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -180,27 +181,11 @@ function resetValues() {
   document.querySelector('.insert').disabled = true;
 }
 
-/*
 // Show header
 function showHeader() {
 
   // Start table
-  let html = objUsers.startTable('width:600px;');
-
-  // show main header
-  html += objUsers.showTableHeader('width:175px;', 'Bruker');
-
-  // The end of the table
-  html += objUsers.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
-// Show header
-function showHeader() {
-
-  // Start table
-  html = objUsers.startTable('width:600px;');
+  html = objUsers.startTable(tableWidth);
 
   // start table body
   html += objUsers.startTableBody();
@@ -221,7 +206,7 @@ function showHeader() {
 function showFilter(userId, rowNumber) {
 
   // Start table
-  html = objUsers.startTable('width:600px;');
+  html = objUsers.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -257,7 +242,7 @@ function showFilter(userId, rowNumber) {
 function showResult(userId, rowNumber) {
 
   // start table
-  let html = objUsers.startTable('width:600px;');
+  let html = objUsers.startTable(tableWidth);
 
   // table header
   rowNumber++;
@@ -312,7 +297,7 @@ function showResult(userId, rowNumber) {
 
     // password
     //html += objUsers.inputTableColumn('password', '', objUsers.arrayUsers[rowNumberUser].password, 45);
-    html += objUsers.inputTableColumn('password', '', '*************', 45);
+    html += objUsers.inputTablePassword('password', '', '**********', 45);
 
     // securityLevel
     html += objUsers.showSelectedNumbers('securityLevel', "width:175px;", 1, 9, objUsers.arrayUsers[rowNumberUser].securityNumber);
@@ -413,7 +398,10 @@ async function updateUserRow(userId) {
   const validSecurityLevel = objUsers.validateNumber('securityLevel', securityLevel, 1, 9);
 
   // validate password
-  const password = document.querySelector('.password').value;
+  let password = document.querySelector('.securityLevel').value;
+   password = (password === '**********') 
+   ? objUsers.arrayUsers[rowNumberUser].password
+   : password;
   const validPassword = (password.length >= 5);
 
   if (validUserId && validEmail && validCondoId && validFirstName && validLastName && validPhone && validSecurityLevel && validPassword) {

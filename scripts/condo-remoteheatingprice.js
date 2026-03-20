@@ -8,6 +8,7 @@ const objRemoteHeatingPrices = new RemoteHeatingPrice('remoteheatingprice');
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = 'width:750px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -149,7 +150,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objRemoteHeatingPrices.startTable('width:750px;');
+  let html = objRemoteHeatingPrices.startTable(tableWidth);
 
   // show main header
   html += objRemoteHeatingPrices.showTableHeader('width:175px;', '', ' Fjernvarme', '');
@@ -167,7 +168,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objRemoteHeatingPrices.startTable('width:750px;');
+  html = objRemoteHeatingPrices.startTable(tableWidth);
 
   // start table body
   html += objRemoteHeatingPrices.startTableBody();
@@ -191,7 +192,6 @@ function insertEmptyTableRow(rowNumber) {
   let date = "";
 
   // insert table columns in start of a row
-  rowNumber++;
   html += objRemoteHeatingPrices.insertTableColumns('', rowNumber);
 
   html += "<td class='center'>Ny fjernvarmepris</td>";
@@ -211,7 +211,7 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objRemoteHeatingPrices.startTable('width:750px;');
+  let html = objRemoteHeatingPrices.startTable(tableWidth);
 
   rowNumber++;
   html += objRemoteHeatingPrices.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'År', `Pris kilowatTimer`);

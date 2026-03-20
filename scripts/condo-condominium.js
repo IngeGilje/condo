@@ -9,6 +9,7 @@ const objCondominiums = new Condominium('condominium');
 
 let condominiumId = 0;
 let user = "";
+const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -203,7 +204,7 @@ async function deleteCondominiumRow() {
 function showHeader() {
 
   // Start table
-  let html = objCondominiums.startTable('width:600px;');
+  let html = objCondominiums.startTable(tableWidth);
 
   // show main header
   html += objCondominiums.showTableHeader('width:175px;', 'Sameie');
@@ -218,7 +219,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objCondominiums.startTable('width:600px;');
+  html = objCondominiums.startTable(tableWidth);
 
   // start table body
   html += objCondominiums.startTableBody();
@@ -239,7 +240,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objCondominiums.startTable('width:600px;');
+  html = objCondominiums.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -275,7 +276,7 @@ function showFilter(rowNumber) {
 function showResult(condominiumId, rowNumber) {
 
   // start table
-  let html = objCondominiums.startTable('width:600px;');
+  let html = objCondominiums.startTable(tableWidth);
 
   // Check if condominiums row exist
   const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
