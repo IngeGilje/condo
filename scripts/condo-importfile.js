@@ -5,20 +5,21 @@ let arrayTransactions = [];
 
 // Activate objects
 const today = new Date();
-const objUsers = new User('user');
+const objUser = new User('user');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
-const objCondominiums = new Condominium('condominium');
+const objCondominium = new Condominium('condominium');
 const objCondo = new Condo('condo');
-const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransaction');
-const objAccounts = new Account('account');
-const objBankAccounts = new BankAccount('bankaccount');
-const objDues = new Due('due');
+const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransaction');
+const objAccount = new Account('account');
+const objBankAccount = new BankAccount('bankaccount');
+const objDue = new Due('due');
 const objSuppliers = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
-let condominiumId = 0;
-let user = "";
-let securityLevel = 0;
+const disableChanges = (objImportFile.securityLevel < 5);
+const condominiumId = objImportFile.condominiumId;
+const user = objImportFile.user;
+
 const tableWidth = 'width:1600px;';
 
 // Exit application if no activity for 1 hour
@@ -29,34 +30,31 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUsers.checkServer()) {
+  if (await objUser.checkServer()) {
 
     // Validate LogIn
-    condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user = sessionStorage.getItem("user");
-        securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+           const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       // get name of transaction file from bank
-      await objCondominiums.loadCondominiumsTable();
-      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+      await objCondominium.loadCondominiumsTable();
+      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // file import text name
-        const csvFileName = objCondominiums.arrayCondominiums[rowNumberCondominium].importFileName;
+        const csvFileName = objCondominium.arrayCondominiums[rowNumberCondominium].importFileName;
         if (await objImportFile.checkIfFileExists(csvFileName)) {
 
           const resident = 'A';
-          await objUsers.loadUsersTable(condominiumId, resident);
+          await objUser.loadUsersTable(condominiumId, resident);
           const fixedCost = 'A';
-          await objAccounts.loadAccountsTable(condominiumId, fixedCost);
-          await objBankAccounts.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
+          await objAccount.loadAccountsTable(condominiumId, fixedCost);
+          await objBankAccount.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
           await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objImportFile.nineNine, objImportFile.nineNine);
           await objCondo.loadCondoTable(condominiumId);
           await objSuppliers.loadSuppliersTable(condominiumId);
@@ -66,11 +64,11 @@ async function main() {
           const condoId = objImportFile.nineNine;
           let fromDate = 0;
           let toDate = objImportFile.nineNine;
-          await objDues.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+          await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
           amount = 0;
           const orderBy = 'condoId ASC, date DESC, income ASC';
-          await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+          await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
           // Sends a request to the server to get bank csv transaction file
           if (await objImportFile.loadCsvFile(csvFileName)) {
@@ -174,10 +172,10 @@ function createtransactionsArray() {
       // Account Id
 
       // Account Id from bank account
-      let accountId = objAccounts.getAccountIdFromBankAccount(fromBankAccount, payment, text);
+      let accountId = objAccount.getAccountIdFromBankAccount(fromBankAccount, payment, text);
       if (accountId === 0) {
         // Account Id from to bank account
-        accountId = objAccounts.getAccountIdFromBankAccount(toBankAccount, payment, text);
+        accountId = objAccount.getAccountIdFromBankAccount(toBankAccount, payment, text);
       }
 
       // Account Name
@@ -185,26 +183,26 @@ function createtransactionsArray() {
       if (text.includes('FAKT.TJ')) {
 
         // Check if any of account includes text 'FAKT.TJ'
-        const rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.name.includes('FAKT.TJ'));
+        const rowNumberAccount = objAccount.arrayAccounts.findIndex(account => account.name.includes('FAKT.TJ'));
         if (rowNumberAccount !== -1) {
 
-          accountId = objAccounts.arrayAccounts[rowNumberAccount].accountId;
-          accountName = objAccounts.arrayAccounts[rowNumberAccount].name;
+          accountId = objAccount.arrayAccounts[rowNumberAccount].accountId;
+          accountName = objAccount.arrayAccounts[rowNumberAccount].name;
         }
       }
 
       // Account Name
       if (text.includes('transaksjoner')) {
 
-        const rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.name.includes('transaksjoner'));
+        const rowNumberAccount = objAccount.arrayAccounts.findIndex(account => account.name.includes('transaksjoner'));
         if (rowNumberAccount !== -1) {
 
-          accountId = objAccounts.arrayAccounts[rowNumberAccount].accountId;
-          accountName = objAccounts.arrayAccounts[rowNumberAccount].name;
+          accountId = objAccount.arrayAccounts[rowNumberAccount].accountId;
+          accountName = objAccount.arrayAccounts[rowNumberAccount].name;
         }
       }
 
-      accountName = (accountId) ? objAccounts.getAccountName(accountId) : text;
+      accountName = (accountId) ? objAccount.getAccountName(accountId) : text;
 
       // From bank account
       fromBankAccountName = objImportFile.getBankAccountName(fromBankAccount);
@@ -290,16 +288,16 @@ async function updateOpeningClosingBalance() {
       [text, bankAccountNumber] = accountingDate.split(',');
 
       // Get row number for bank account number in bank account array
-      rowNumberBankAccount = (objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
+      rowNumberBankAccount = (objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber));
       if (rowNumberBankAccount !== -1) {
 
-        bankAccountId = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccountId;
+        bankAccountId = objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccountId;
 
         // Get current opening and closing balance
-        currentOpeningBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance;
-        currentOpeningBalanceDate = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate;
-        currentClosingBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance;
-        currentClosingBalanceDate = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate;
+        currentOpeningBalance = objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance;
+        currentOpeningBalanceDate = objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate;
+        currentClosingBalance = objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance;
+        currentClosingBalanceDate = objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate;
       }
     }
 
@@ -359,16 +357,16 @@ async function updateOpeningClosingBalance() {
         // Check for openening balance date
         if (Number(currentOpeningBalanceDate) >= Number(openingBalanceDate) || Number(currentOpeningBalanceDate) === 0 || currentOpeningBalanceDate === '') {
 
-          const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+          const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
           if (rowNumberBankAccount !== -1) {
 
             //const user = objUserPassword.email
-            const bankAccount = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount);
-            const name = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
-            const closingBalance = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
-            const closingBalanceDate = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
-            await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccounts.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
+            const bankAccount = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount);
+            const name = objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;
+            const closingBalance = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
+            const closingBalanceDate = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
+            await objBankAccount.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+            await objBankAccount.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
           }
         }
       }
@@ -380,16 +378,16 @@ async function updateOpeningClosingBalance() {
         // Check for closing balance date
         if (Number(currentClosingBalanceDate) <= Number(closingBalanceDate) || Number(currentClosingBalanceDate) === 0 || currentClosingBalanceDate === '') {
 
-          const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+          const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
           if (rowNumberBankAccount !== -1) {
 
             //const user = objUserPassword.email
-            const bankAccount = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount;
-            const name = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
-            const openingBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance;
-            const openingBalanceDate = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate;
-            await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccounts.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
+            const bankAccount = objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount;
+            const name = objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;
+            const openingBalance = objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance;
+            const openingBalanceDate = objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate;
+            await objBankAccount.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+            await objBankAccount.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
           };
         };
       };
@@ -478,7 +476,7 @@ function checkBankAccountTransaction(income, payment, date) {
 
   let bankAccountTransactionExist = false;
 
-  objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
+  objBankAccountTransaction.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
     if (bankAccountTransaction.bankAccountTransactionId === 1300) {
       console.log('bankAccountTransactionId: ', bankAccountTransaction.bankAccountTransactionId);
@@ -665,6 +663,6 @@ async function updateBankAccountTransactions() {
     const text = transaction.text;
 
     // insert bank account transactions row
-    await objBankAccountTransactions.insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, kilowattHour, date, text)
+    await objBankAccountTransaction.insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, kilowattHour, date, text)
   });
 }

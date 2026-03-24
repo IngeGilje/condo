@@ -2,15 +2,19 @@
 
 // Activate objects
 const today = new Date();
-const objUsers = new User('user');
-const objCondominiums = new Condominium('condominium');
+const objUser = new User('user');
+const objCondominium = new Condominium('condominium');
 const objBudget = new Budget('budget');
-const objAccounts = new Account('account');
-const objBankAccounts = new BankAccount('bankaccount');
-const objBankAccountTransactions = new BankAccountTransaction('bankAccountTransaction');
+const objAccount = new Account('account');
+const objBankAccount = new BankAccount('bankaccount');
+const objBankAccountTransaction = new BankAccountTransaction('bankAccountTransaction');
 const objCondo = new Condo('condo');
-const objCommonCosts = new CommonCost('commoncost');
+const objCommonCost = new CommonCost('commoncost');
 const objAnnualAccount = new AnnualAccount('annualaccount');
+
+const disableChanges = (objAnnualAccount.securityLevel < 5);
+const condominiumId = objAnnualAccount.condominiumId;
+const user = objAnnualAccount.user;
 
 const tableWidth = 'width:1100px;';
 
@@ -22,26 +26,26 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUsers.checkServer()) {
+  if (await objUser.checkServer()) {
 
     // Validate LogIn
     if ((objAnnualAccount.condominiumId === 0 || objAnnualAccount.user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(objAnnualAccount.condominiumId, resident);
-      await objCondominiums.loadCondominiumsTable();
+      await objUser.loadUsersTable(objAnnualAccount.condominiumId, resident);
+      await objCondominium.loadCondominiumsTable();
       await objCondo.loadCondoTable(objAnnualAccount.condominiumId);
-      await objCommonCosts.loadCommonCostsTable(objAnnualAccount.condominiumId);
+      await objCommonCost.loadCommonCostsTable(objAnnualAccount.condominiumId);
       await objBudget.loadBudgetsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
-      await objBankAccounts.loadBankAccountsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
+      await objBankAccount.loadBankAccountsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAnnualAccount.condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objAnnualAccount.condominiumId, fixedCost);
 
       // Show header
       let menuNumber = 0;
@@ -63,12 +67,12 @@ async function main() {
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
-      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
+      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // Show annual accounts
         const orderBy = 'condoId ASC, date DESC, income ASC';
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
+        await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
         menuNumber = showAnnualAccounts(menuNumber);
 
         // Show income for next year
@@ -85,7 +89,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'condo-server.js er ikke startet.');
+    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -112,7 +116,7 @@ async function events() {
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
-      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
+      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // Show annual accounts
@@ -121,7 +125,7 @@ async function events() {
         await objBudget.loadBudgetsTable(objAnnualAccount.condominiumId, year, objAnnualAccount.nineNine);
 
         const orderBy = 'condoId ASC, date DESC, income ASC';
-        await objBankAccountTransactions.loadBankAccountTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
+        await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
         menuNumber = showAnnualAccounts(menuNumber);
 
         // Show income for next year
@@ -158,7 +162,7 @@ function getTotalMovementsBankAccount(accountId) {
   let toDate = document.querySelector('.filterToDate').value;
   toDate = Number(convertDateToISOFormat(toDate));
 
-  objBankAccountTransactions.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
+  objBankAccountTransaction.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
     if (Number(bankAccountTransaction.date) >= fromDate
       && (Number(bankAccountTransaction.date) <= toDate
@@ -287,7 +291,7 @@ function showAnnualAccounts(rowNumber) {
   let totalAccountAmount = 0;
   let totalBudgetAmount = 0;
 
-  objAccounts.arrayAccounts.forEach((account) => {
+  objAccount.arrayAccounts.forEach((account) => {
 
     // Budget Amount for fiscal
     const budgetYear = Number(document.querySelector('.filterBudgetYear').value);
@@ -354,13 +358,13 @@ function showAnnualAccounts(rowNumber) {
   totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
 
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', totalAccountAmount, totalBudgetAmount, totalDeviation);
+  html += objBankAccountTransaction.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', totalAccountAmount, totalBudgetAmount, totalDeviation);
 
   html += "</tr>";
 
   // empty table row
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', '', '', '', '');
+  html += objBankAccountTransaction.insertTableColumns('', rowNumber, '', '', '', '', '');
 
   // The end of the table
   html += objAnnualAccount.endTable();
@@ -390,11 +394,11 @@ function showIncomeNextYear(rowNumber) {
   // Get fixed costs per month
   const year = Number(document.querySelector(".filterBudgetYear").value);
   let fixedCostCondoMonth = 0;
-  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
+  const rowNumberCommonCost = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
   if (rowNumberCommonCost !== -1) {
 
     // Fixed cost per month per condo
-    fixedCostCondoMonth = Number(objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo);
+    fixedCostCondoMonth = Number(objCommonCost.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo);
 
     // Get fixed costs per year
     // 12 month and 7 condos
@@ -486,7 +490,7 @@ function showBankDeposit(rowNumber) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objBankAccountTransactions.insertTableColumns('', rowNumber, '', '');
+  html += objBankAccountTransaction.insertTableColumns('', rowNumber, '', '');
 
   // Text
   className = `text`;
@@ -494,10 +498,10 @@ function showBankDeposit(rowNumber) {
 
   // closingBalanceDate
   let closingBalanceDate = "";
-  let rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objAnnualAccount.condominiumId);
+  let rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objAnnualAccount.condominiumId);
   if (rowNumberBankAccount !== -1) {
 
-    closingBalanceDate = (objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
+    closingBalanceDate = (objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
     closingBalanceDate = formatToNorDate(closingBalanceDate);
   }
   className = `closingBalanceDate`;
@@ -505,7 +509,7 @@ function showBankDeposit(rowNumber) {
 
   // Bank deposit
   let bankDepositAmount = "";
-  bankDepositAmount = (objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
+  bankDepositAmount = (objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
   bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
   className = `bankDepositAmount`
@@ -525,10 +529,10 @@ function showBankDeposit(rowNumber) {
 
       // Account Name
       let name = '';
-      const rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === budget.accountId);
+      const rowNumberAccount = objAccount.arrayAccounts.findIndex(account => account.accountId === budget.accountId);
       if (rowNumberAccount !== -1) {
 
-        name = objAccounts.arrayAccounts[rowNumberAccount].name;
+        name = objAccount.arrayAccounts[rowNumberAccount].name;
       }
       className = `name${budget.budgetId}`
       html += objAnnualAccount.inputTableColumn(className, 'width:175px;', name, 10, true);
@@ -563,12 +567,12 @@ function showBankDeposit(rowNumber) {
   let closingBalanceDateNextYear = closingBalanceDate + 10000;
   closingBalanceDateNextYear = formatToNorDate(closingBalanceDateNextYear);
   className = `closingBalanceDateNextYear`;
-  html += objBankAccountTransactions.inputTableColumn(className, 'width:175px;', closingBalanceDateNextYear, 10, true);
+  html += objBankAccountTransaction.inputTableColumn(className, 'width:175px;', closingBalanceDateNextYear, 10, true);
 
   // Bank deposit next year
   const bankDepositNextYear = formatOreToKroner(String(accAmount));
   className = `bankDepositNextYear`;
-  html += objBankAccountTransactions.inputTableColumn(className, 'width:175px;', bankDepositNextYear, 10, true);
+  html += objBankAccountTransaction.inputTableColumn(className, 'width:175px;', bankDepositNextYear, 10, true);
 
   // insert table columns in start of a 
   rowNumber++;
@@ -576,7 +580,7 @@ function showBankDeposit(rowNumber) {
 
   // Show the rest of the menu
   rowNumber++;
-  html += objBankAccountTransactions.showRestMenu(rowNumber);
+  html += objBankAccountTransaction.showRestMenu(rowNumber);
 
   // The end of the table
   html += objAnnualAccount.endTable();
@@ -590,7 +594,7 @@ function getpriceSquaremeter(budgetYear) {
 
   budgetYear = Number(budgetYear);
   let commonCostSquareMeter = 0;
-  objCommonCosts.arrayCommonCosts.forEach((commonCost) => {
+  objCommonCost.arrayCommonCosts.forEach((commonCost) => {
 
     if (commonCost.year === budgetYear) commonCostSquareMeter = Number(commonCost.commonCostSquareMeter);
   });

@@ -2,13 +2,14 @@
 
 // Activate objects
 const today = new Date();
-const objUsers = new User('user');
-const objAccounts = new Account('account');
+const objUser = new User('user');
+const objAccount = new Account('account');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
 
-let condominiumId = 0;
-let user = "";
-let securityLevel = 0;
+const disableChanges = (objUserBankAccounts.securityLevel < 5);
+const condominiumId = objUserBankAccounts.condominiumId;
+const user = objUserBankAccounts.user;
+
 const tableWidth = 'width:950px;';
 
 // Exit application if no activity for 1 hour
@@ -19,24 +20,21 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUsers.checkServer()) {
+  if (await objUser.checkServer()) {
 
     // Validate LogIn
-    condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user = sessionStorage.getItem("user");
-    securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'A';
-      await objUsers.loadUsersTable(condominiumId, resident);
+      await objUser.loadUsersTable(condominiumId, resident);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(condominiumId, fixedCost);
       await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
       // Show header
@@ -54,7 +52,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'condo-server.js er ikke startet.');
+    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -114,7 +112,7 @@ async function events() {
         .map(prefix => objUserBankAccounts.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      //const className = objAccounts.getDeleteClass(event.target);
+      //const className = objAccount.getDeleteClass(event.target);
       const classNameDelete = `.${className}`
       const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
       if (deleteAccountRowValue === "Ja") {
@@ -123,7 +121,7 @@ async function events() {
         deleteAccountRow(accountId, className);
 
         const fixedCost = 'A';
-        await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+        await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
         let menuNumber = 0;
         menuNumber = showResult(menuNumber);
@@ -198,10 +196,10 @@ function showFilter(rowNumber) {
   html += objUserBankAccounts.insertTableColumns('', rowNumber, '');
 
   // Show all selected users
-  html += objUsers.showSelectedUsers('filterUserId', 'width:175px;', false, '', 'Alle');
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', false, '', 'Alle');
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', false);
+  html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', false);
   html += "</tr>";
 
   // insert table columns in start of a row
@@ -227,13 +225,13 @@ function insertEmptyTableRow(rowNumber) {
   html += objUserBankAccounts.insertTableColumns('', rowNumber, 'Ny brukerkonto');
 
   // user column
-  html += objUsers.showSelectedUsers('userId0', 'width:175px;', (objUserBankAccounts.securityLevel < 5), 0, 'Ingen er valgt', '');
+  html += objUser.showSelectedUsers('userId0', 'width:175px;', disableChanges, 0, 'Ingen er valgt', '');
 
   // Account column
-  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '', (objUserBankAccounts.securityLevel < 5));
+  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '', disableChanges);
 
   // bank account number
-  html += objUserBankAccounts.inputTableColumn('bankAccount0', '', 11);
+  html += objUserBankAccounts.inputTableColumn('bankAccount0', '', 11, disableChanges);
 
   html += "</tr>";
   return html;
@@ -263,21 +261,21 @@ function showResult(rowNumber) {
     // user Id
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUsers.showSelectedUsers(className, 'width:175px;', userId, (objUserBankAccounts.securityLevel < 5), 'Ingen er valgt', '');
+    html += objUser.showSelectedUsers(className, 'width:175px;', userId, disableChanges, 'Ingen er valgt', '');
 
     // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccounts.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '', (objUserBankAccounts.securityLevel < 5));
+    html += objAccount.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '', disableChanges);
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccounts.inputTableColumn(className, '', userBankAccount.bankAccount, 11, (objUserBankAccounts.securityLevel < 5));
+    html += objUserBankAccounts.inputTableColumn(className, '', userBankAccount.bankAccount, 11, disableChanges);
 
     html += "</tr>";
   });
 
-  if (objUserBankAccounts.securityLevel >= 5) {
+  if (!disableChanges) {
 
     // Insert empty table row for insertion
     rowNumber++;
@@ -306,7 +304,7 @@ async function deleteAccountRow(userBankAccountId, className) {
   }
 
   const fixedCost = 'A';
-  await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+  await objAccount.loadAccountsTable(condominiumId, fixedCost);
 }
 
 // Update userbankaccounts row

@@ -576,7 +576,7 @@ class Condos {
   }
 
   // Select numbers
-  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber) {
+  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, disabled = false) {
 
     selectedNumber = Number(selectedNumber);
     let html = `
@@ -585,6 +585,7 @@ class Condos {
     >
       <select
         class="${className} center"
+        ${(disabled) ? 'disabled' : ''}
         ${(style) ? `style=${style}` : 'style=width:175px;'}
       >`;
 
@@ -620,24 +621,6 @@ class Condos {
 
     return html;
   }
-
-  /*
-  // Show input file
-  showInputFile(className, labelText, maxlength, placeholder) {
-   
-    let html = this.showLabel(className, labelText);
-    html +=
-      `
-        <input
-          type="file"
-          class="input-${className}"
-          placeholder="${placeholder}"
-          accept=".txt,.csv" 
-        >
-      `;
-    document.querySelector(`.div-${className}`).innerHTML = html;
-  }
-  */
 
   // Select choices like Yes, No, Ignore
   showSelectedValues(className, style, disabled = false, selected, ...choices) {
@@ -692,10 +675,10 @@ class Condos {
     let bankAccountName = '';
 
     // Bank account name from bank account table 
-    const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
     if (rowNumberBankAccount !== -1) {
 
-      bankAccountName = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
+      bankAccountName = objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;
     }
 
     if (!bankAccountName) {
@@ -740,11 +723,11 @@ class Condos {
         if (userId >= 0) {
 
           const rowNumberUser =
-            objUsers.arrayUsers.findIndex(user => user.userId === userId);
+            objUser.arrayUsers.findIndex(user => user.userId === userId);
           if (rowNumberUser !== -1) {
 
             condoId =
-              Number(objUsers.arrayUsers[rowNumberUser].condoId);
+              Number(objUser.arrayUsers[rowNumberUser].condoId);
           }
         }
       }

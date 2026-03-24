@@ -1,6 +1,6 @@
 // Login
 // Activate classes
-const objUsers = new User('user');
+const objUser = new User('user');
 const objLogIn = new Login('login');
 
 sessionStorage.clear();
@@ -10,12 +10,12 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUsers.checkServer()) {
+  if (await objUser.checkServer()) {
 
 
     const condominiumId = objLogIn.nineNine;
     const resident = 'Y';
-    await objUsers.loadUsersTable(condominiumId, resident);
+    await objUser.loadUsersTable(condominiumId, resident);
 
     // Show header
     //showHeader();
@@ -27,7 +27,7 @@ async function main() {
     events();
   } else {
 
-    objUsers.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'condo-server.js er ikke startet.');
+    objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -137,27 +137,27 @@ async function checkLogin() {
   // validate password
   const password = document.querySelector('.password').value;
   // get userId
-  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
+  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
   if (rowNumberUser !== -1) {
 
     // Check user and password 
-    userId = objUsers.arrayUsers[rowNumberUser].userId;
-    if (await objUsers.validateUser(userId, password)) {
+    userId = objUser.arrayUsers[rowNumberUser].userId;
+    if (await objUser.validateUser(userId, password)) {
 
       // The sessionStorage object stores data for only one session
-      window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[rowNumberUser].condominiumId);
-      window.sessionStorage.setItem("user", objUsers.arrayUsers[rowNumberUser].email);
-      window.sessionStorage.setItem("securityLevel", objUsers.arrayUsers[rowNumberUser].securityLevel);
+      window.sessionStorage.setItem("condominiumId", objUser.arrayUsers[rowNumberUser].condominiumId);
+      window.sessionStorage.setItem("user", objUser.arrayUsers[rowNumberUser].email);
+      window.sessionStorage.setItem("securityLevel", objUser.arrayUsers[rowNumberUser].securityLevel);
 
       // Start bank account transactions
-      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-bankaccounttransaction.html' : 'http://localhost/condo-bankaccounttransaction.html';
+      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-bankaccounttransaction.html' : 'http://localhost/condo-bankaccounttransaction.html';
       window.location.href = URL;
       return true;
     }
   }
 
   // password/ user is not OK
-  objUsers.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Ugyldig passord/email');
+  objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Ugyldig passord/email');
 
   resetValues();
   return false;

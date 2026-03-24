@@ -2,8 +2,8 @@
 
 // Activate objects
 const today = new Date();
-const objCondos = new Condo('condo');
-const objUsers = new User('user');
+const objCondo = new Condo('condo');
+const objUser = new User('user');
 const objPassword = new Password('password');
 
 let condominiumId = 0;
@@ -19,29 +19,25 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUsers.checkServer()) {
+  if (await objUser.checkServer()) {
 
     // Validate LogIn
-    condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user = sessionStorage.getItem("user");
-        securityLevel = sessionStorage.getItem("securityLevel");
-    securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(condominiumId, resident);
-      await objCondos.loadCondoTable(condominiumId);
+      await objUser.loadUsersTable(condominiumId, resident);
+      await objCondo.loadCondoTable(condominiumId);
 
       // Show header
       showHeader();
 
-      const userId = objUsers.arrayUsers.at(-1).userId;
+      const userId = objUser.arrayUsers.at(-1).userId;
 
       // Show filter
       let menuNumber = 0;
@@ -55,7 +51,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'condo-server.js er ikke startet.');
+    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -85,7 +81,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objUsers.serverStatus === 1)
+      let url = (objUser.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -101,13 +97,13 @@ async function deleteCondo() {
   const userId = Number(document.querySelector('.select-condo-userId').value);
 
   // Check if condo id exist
-  const rowNumberCondo = objCondos.arrayCondo.findIndex(condo => condo.userId === userId);
+  const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.userId === userId);
   if (rowNumberCondo !== -1) {
 
     // delete condo row
 
 
-    objCondos.deleteCondoTable(userId, user);
+    objCondo.deleteCondoTable(userId, user);
   }
 }
 
@@ -115,20 +111,20 @@ async function deleteCondo() {
 function showHeader() {
 
   // Start table
-  html = objUsers.startTable(tableWidth);
+  html = objUser.startTable(tableWidth);
 
   // start table body
-  html += objUsers.startTableBody();
+  html += objUser.startTableBody();
 
   // show main header
-  html += objUsers.showTableHeaderLogOut('width:175px;', '', '', 'Passord', '');
+  html += objUser.showTableHeaderLogOut('width:175px;', '', '', 'Passord', '');
   html += "</tr>";
 
   // end table body
-  html += objUsers.endTableBody();
+  html += objUser.endTableBody();
 
   // The end of the table
-  html += objUsers.endTable();
+  html += objUser.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -136,33 +132,33 @@ function showHeader() {
 function showFilter(userId, rowNumber) {
 
   // Start table
-  html = objUsers.startTable(tableWidth);
+  html = objUser.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
-  html += objUsers.showTableHeaderMenu('width:175px;', rowNumber, 'Velg bruker', '');
+  html += objUser.showTableHeaderMenu('width:175px;', rowNumber, 'Velg bruker', '');
 
   // start table body
-  html += objUsers.startTableBody();
+  html += objUser.startTableBody();
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objUsers.insertTableColumns('', rowNumber);
+  html += objUser.insertTableColumns('', rowNumber);
 
   // user
-  html += objUsers.showSelectedUsers('filterUserId', 'width:175px;', false,userId, '')
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', false,userId, '')
 
   html += "</tr>";
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objUsers.insertTableColumns('', rowNumber, '', '');
+  html += objUser.insertTableColumns('', rowNumber, '', '');
 
   // end table body
-  html += objUsers.endTableBody();
+  html += objUser.endTableBody();
 
   // The end of the table
-  html += objUsers.endTable();
+  html += objUser.endTable();
   document.querySelector('.filter').innerHTML = html;
 
   return rowNumber;
@@ -172,32 +168,32 @@ function showFilter(userId, rowNumber) {
 function showResult(userId, rowNumber) {
 
   // start table
-  let html = objUsers.startTable(tableWidth);
+  let html = objUser.startTable(tableWidth);
 
   // Check if users row exist
-  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
   if (rowNumberUser !== -1) {
 
     // password, securityLevel,
     html += "<tr>";
     rowNumber++;
-    html += objUsers.showTableHeaderMenu("width:175px;", rowNumber, 'Passord', 'Sikkerhetsnivå');
+    html += objUser.showTableHeaderMenu("width:175px;", rowNumber, 'Passord', 'Sikkerhetsnivå');
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumns('', rowNumber);
+    html += objUser.insertTableColumns('', rowNumber);
 
     // password
-    html += objUsers.inputTablePassword('password', '', '**********', 45);
+    html += objUser.inputTablePassword('password', '', '**********', 45);
 
     // securityLevel
-    html += objUsers.showSelectedNumbers('securityLevel', "width:175px;", 1, 9,objUsers.arrayUsers[rowNumberUser].securityLevel);
+    html += objUser.showSelectedNumbers('securityLevel', "width:175px;", 1, 9,objUser.arrayUsers[rowNumberUser].securityLevel);
 
     html += "</tr>";
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumns('', rowNumber);
+    html += objUser.insertTableColumns('', rowNumber);
 
     html += "</tr>";
 
@@ -205,17 +201,17 @@ function showResult(userId, rowNumber) {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUsers.insertTableColumns('', rowNumber);
+    html += objUser.insertTableColumns('', rowNumber);
 
-    html += objUsers.showButton('width:175px;', 'update', 'Oppdater');
+    html += objUser.showButton('width:175px;', 'update', 'Oppdater');
     html += "</tr>";
 
     // Show the rest of the menu
     rowNumber++;
-    html += objUsers.showRestMenu(rowNumber);
+    html += objUser.showRestMenu(rowNumber);
 
     // The end of the table
-    html += objUsers.endTable();
+    html += objUser.endTable();
     document.querySelector('.result').innerHTML = html;
 
     return rowNumber;
@@ -228,29 +224,29 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = objUsers.validateNumber('userId', userId, -1, objUsers.nineNine);
+  const validUserId = objUser.validateNumber('userId', userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = objUsers.validateNumber('securityLevel', securityLevel, 1, 9);
+  const validSecurityLevel = objUser.validateNumber('securityLevel', securityLevel, 1, 9);
 
   // validate password
   let password = document.querySelector('.password').value;
   password = (password === '**********')
-    ? objUsers.arrayUsers[rowNumberUser].password
+    ? objUser.arrayUsers[rowNumberUser].password
     : password;
   const validPassword = (password.length >= 5);
 
   if (validUserId && validSecurityLevel && validPassword) {
 
     // Check if the userId exist
-    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+    const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
     if (rowNumberUser !== -1) {
 
       // update the users row
-      await objUsers.updateUserPassword(user, userId, securityLevel, password);
+      await objUser.updateUserPassword(user, userId, securityLevel, password);
       const resident = 'Y';
-      await objUsers.loadUsersTable(condominiumId, resident);
+      await objUser.loadUsersTable(condominiumId, resident);
     }
 
     // Show filter
@@ -261,7 +257,7 @@ async function updateUserRow(userId) {
     document.querySelector('.filterUserId').disabled = false;
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'Ugyldig passord.');
+    objRemoteHeating.showMessage(objRemoteHeating, '', 'Ugyldig passord.');
   }
 }
 
@@ -272,12 +268,12 @@ async function deleteUserRow() {
   const userId = Number(document.querySelector('.filterUserId').value);
 
   // Check if user exist
-  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
   if (rowNumberUser !== -1) {
 
     // delete a user row
 
 
-    await objUsers.deleteUsersTable(userId, user);
+    await objUser.deleteUsersTable(userId, user);
   }
 }
