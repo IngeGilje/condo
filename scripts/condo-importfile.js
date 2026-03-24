@@ -6,7 +6,7 @@ let arrayTransactions = [];
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
-const objUserBankAccounts = new UserBankAccount('userbankaccount');
+const objUserBankAccount = new UserBankAccount('userbankaccount');
 const objCondominium = new Condominium('condominium');
 const objCondo = new Condo('condo');
 const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransaction');
@@ -55,7 +55,7 @@ async function main() {
           const fixedCost = 'A';
           await objAccount.loadAccountsTable(condominiumId, fixedCost);
           await objBankAccount.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
-          await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objImportFile.nineNine, objImportFile.nineNine);
+          await objUserBankAccount.loadUserBankAccountsTable(condominiumId, objImportFile.nineNine, objImportFile.nineNine);
           await objCondo.loadCondoTable(condominiumId);
           await objSupplier.loadSuppliersTable(condominiumId);
 

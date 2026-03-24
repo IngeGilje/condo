@@ -3,7 +3,7 @@
 
 // const serverStatus = 1; // http://ingegilje.no on web server
 // const serverStatus = 2; // http://localhost on development PC
-const serverStatus = 1;
+const serverStatus = 2;
 
 import express from "express";
 import session from "express-session";
@@ -123,7 +123,6 @@ async function main() {
 
         const userId = req.body.userId;
         const password = req.body.password;
-        console.log('password :', password);
 
         // get password
         const SQLquery = `

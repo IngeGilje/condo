@@ -8,11 +8,14 @@ const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 const objSupplier = new Supplier('supplier');
 const objCondominium = new Condominium('scondominium');
-const objUserBankAccounts = new UserBankAccount('userbankaccount');
+const objUserBankAccount = new UserBankAccount('userbankaccount');
 const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransaction');
 
-let condominiumId = 0;
-let user = "";
+const disableChanges = (objAccount.securityLevel < 5);
+const condominiumId = objAccount.condominiumId;
+const user = objAccount.user;
+
+const tableWidth = 'width:1400px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -39,7 +42,7 @@ async function main() {
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(condominiumId, objBankAccountTransaction.nineNine);
-      await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objBankAccountTransaction.nineNine, objBankAccountTransaction.nineNine);
+      await objUserBankAccount.loadUserBankAccountsTable(condominiumId, objBankAccountTransaction.nineNine, objBankAccountTransaction.nineNine);
       await objCondo.loadCondoTable(condominiumId);
       await objCondominium.loadCondominiumsTable();
       await objSupplier.loadSuppliersTable(condominiumId);

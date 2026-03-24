@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -700,10 +700,10 @@ class Condos {
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+      const rowNumberBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
       if (rowNumberBankAccount !== -1) {
 
-        bankAccountName = objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].name;
+        bankAccountName = objUserBankAccount.arrayUserBankAccounts[rowNumberBankAccount].name;
       }
     }
 
@@ -721,10 +721,10 @@ class Condos {
     const bankAccountPattern = /^\d{11}$/;
     if ((bankAccountPattern.test(fromBankAccount))) {
 
-      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
+      const rowNumberBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
       if (rowNumberBankAccount !== -1) {
 
-        const userId = Number(objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].userId);
+        const userId = Number(objUserBankAccount.arrayUserBankAccounts[rowNumberBankAccount].userId);
 
         if (userId >= 0) {
 
