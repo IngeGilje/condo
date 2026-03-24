@@ -216,7 +216,7 @@ function showFilter(rowNumber) {
   html += objAccounts.insertTableColumns('', 0, '');
 
   // fixed or not fixed cost
-  html += objAccounts.showSelectedValues('filterFixedCost', 'width:100px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += objAccounts.showSelectedValues('filterFixedCost', 'width:100px;',false, 'Alle', constFixedCost, constVariableCost, 'Alle');
 
   html += "</tr>";
 
@@ -247,7 +247,7 @@ function insertEmptyTableRow(rowNumber) {
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
-  html += objAccounts.showSelectedValues('fixedCost0', '', constFixedCost, constFixedCost, constVariableCost);
+  html += objAccounts.showSelectedValues('fixedCost0', '', (objAccounts.secityLevel < 5),constFixedCost, constFixedCost, constVariableCost);
 
   // name
   html += objAccounts.inputTableColumn('name0', "", 45);
@@ -267,8 +267,6 @@ function showResult(rowNumber) {
 
   objAccounts.arrayAccounts.forEach((account) => {
 
-    //html += '<tr>';
-
     // Show menu
     rowNumber++;
     //html += objAccounts.verticalMenu(rowNumber);
@@ -280,7 +278,7 @@ function showResult(rowNumber) {
     if (account.deleted === 'N') selectedChoice = "Nei";
 
     let className = `delete${account.accountId}`;
-    html += objAccounts.showSelectedValues(className, 'width:75px;', selectedChoice, 'Nei', 'Ja')
+    html += objAccounts.showSelectedValues(className, 'width:75px;', (objAccounts.secityLevel < 5),selectedChoice, 'Nei', 'Ja')
 
     // fixed cost
     selectedChoice = "Ugyldig verdi";
@@ -303,7 +301,7 @@ function showResult(rowNumber) {
     }
 
     className = `fixedCost${account.accountId}`;
-    html += objAccounts.showSelectedValues(className, '', selectedChoice, constFixedCost, constVariableCost)
+    html += objAccounts.showSelectedValues(className, '',(objAccounts.secityLevel < 5), selectedChoice, constFixedCost, constVariableCost)
 
     // name
     const name = account.name;

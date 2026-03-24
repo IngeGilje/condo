@@ -83,8 +83,8 @@ function showResult() {
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
 
   // email
-  const email = '';
-  html += objLogIn.inputTableColumn('email', '', email, 45, '');
+  const email = 'inge.gilje@gmail.com';
+  html += objLogIn.inputTableColumn('email', '', email, 45, false, true);
 
   html += "</tr>";
 
@@ -101,8 +101,8 @@ function showResult() {
   html += objLogIn.insertTableColumns('', 0);
 
   // password
-  password = '';
-  html += objLogIn.inputTableColumn('password', '', password, 45);
+  password = '12345';
+  html += objLogIn.inputTableColumnPassword('password', '', password, 45);
 
   html += "</tr>";
 
@@ -143,13 +143,6 @@ async function checkLogin() {
     // Check user and password 
     userId = objUsers.arrayUsers[rowNumberUser].userId;
     if (await objUsers.validateUser(userId, password)) {
-
-      /*
-      // Load users table
-      const condominiumId = objLogIn.nineNine;
-      const resident = 'Y';
-      await objUsers.loadUsersTable(condominiumId, resident);
-      */
 
       // The sessionStorage object stores data for only one session
       window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[rowNumberUser].condominiumId);

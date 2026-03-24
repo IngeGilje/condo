@@ -311,7 +311,7 @@ function showResult(rowNumber) {
       if (remoteHeating.deleted === 'N') selectedChoice = "Nei";
 
       let className = `delete${remoteHeating.remoteHeatingId}`;
-      html += objRemoteHeatings.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
+      html += objRemoteHeatings.showSelectedValues(className, 'width:175px;', (objRemoteHeatings.secityLevel < 5),selectedChoice, 'Nei', 'Ja')
 
       // date
       let date = remoteHeating.date;

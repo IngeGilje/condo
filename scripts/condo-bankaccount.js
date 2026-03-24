@@ -7,24 +7,15 @@ const objAccounts = new Account('account');
 const objCondominiums = new Condominium('condominium');
 const objBankAccounts = new BankAccount('bankaccount');
 
-let condominiumId = 0;
-let user = "";
-let securityLevel = 0;
-
 const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
 // Validate LogIn
-condominiumId = Number(sessionStorage.getItem("condominiumId"));
-user = sessionStorage.getItem("user");
-    securityLevel = sessionStorage.getItem("securityLevel");
-securityLevel = Number(sessionStorage.getItem("securityLevel"));
-if ((condominiumId === 0 || user === null)) {
+if ((objBankAccounts.condominiumId === 0 || objBankAccounts.user === null)) {
 
   // LogIn is not valid
-  //window.location.href = 'http://localhost/condo-login.html';
   const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
   window.location.href = URL;
 } else {
@@ -37,18 +28,18 @@ if ((condominiumId === 0 || user === null)) {
     if (await objUsers.checkServer()) {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(condominiumId, resident);
+      await objUsers.loadUsersTable(objBankAccounts.condominiumId, resident);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objBankAccounts.condominiumId, fixedCost);
       await objCondominiums.loadCondominiumsTable();
-      await objBankAccounts.loadBankAccountsTable(condominiumId, objBankAccounts.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objBankAccounts.condominiumId, objBankAccounts.nineNine);
 
       // Show header
       let menuNumber = 0;
       showHeader();
 
       // Show filter
-      menuNumber = showFilter(condominiumId, menuNumber);
+      menuNumber = showFilter(objBankAccounts.condominiumId, menuNumber);
 
       condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
@@ -218,9 +209,9 @@ function showResult(bankAccountId, rowNumber) {
     html += objBankAccounts.verticalMenu(rowNumber);
 
     // name
-    html += objBankAccounts.inputTableColumn('name', 'width:175px;', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name, 45);
+    html += objBankAccounts.inputTableColumn('name', 'width:175px;', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name, 45, (objBankAccounts.securityLevel < 5));
     // account number
-    html += objBankAccounts.inputTableColumn('bankAccount', 'width:175px;', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount, 11);
+    html += objBankAccounts.inputTableColumn('bankAccount', 'width:175px;', objBankAccounts.arrayBankAccounts[rowNumberBankAccount].bankAccount, 11, (objBankAccounts.securityLevel < 5));
     html += "</tr>";
 
     // Show menu
@@ -233,11 +224,11 @@ function showResult(bankAccountId, rowNumber) {
 
     // opening balance date
     const openingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
-    html += objBankAccounts.inputTableColumn('openingBalanceDate', 'width:175px;', openingBalanceDate, 10);
+    html += objBankAccounts.inputTableColumn('openingBalanceDate', 'width:175px;', openingBalanceDate, 10, (objBankAccounts.securityLevel < 5));
 
     // opening balance
     const openingBalance = formatOreToKroner(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance);
-    html += objBankAccounts.inputTableColumn('openingBalance', 'width:175px;', openingBalance, 11);
+    html += objBankAccounts.inputTableColumn('openingBalance', 'width:175px;', openingBalance, 11, (objBankAccounts.securityLevel < 5));
 
     html += "</tr>";
 
@@ -252,11 +243,11 @@ function showResult(bankAccountId, rowNumber) {
 
     // closing balance date
     const closingBalanceDate = formatToNorDate(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
-    html += objBankAccounts.inputTableColumn('closingBalanceDate', 'width:175px;', closingBalanceDate, 10);
+    html += objBankAccounts.inputTableColumn('closingBalanceDate', 'width:175px;', closingBalanceDate, 10, (objBankAccounts.securityLevel < 5));
 
     // closing balance
     const closingBalance = formatOreToKroner(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
-    html += objBankAccounts.inputTableColumn('closingBalance', 'width:175px;', closingBalance, 11);
+    html += objBankAccounts.inputTableColumn('closingBalance', 'width:175px;', closingBalance, 11, (objBankAccounts.securityLevel < 5));
 
     html += "</tr>";
 
@@ -266,7 +257,7 @@ function showResult(bankAccountId, rowNumber) {
 
     html += "</tr>";
 
-    if (securityLevel > 5) {
+    if (objBankAccounts.securityLevel > 5) {
 
       // insert table columns in start of a row
       rowNumber++;
@@ -301,9 +292,6 @@ function showResult(bankAccountId, rowNumber) {
 
 // Update a bankaccounts row
 async function updateBankAccountRow(bankAccountId) {
-
-  condominiumId = Number(condominiumId);
-
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
@@ -350,10 +338,10 @@ async function updateBankAccountRow(bankAccountId) {
     } else {
 
       // Insert the bankaccount row in bankaccounts table
-      await objBankAccounts.insertBankAccountsTable(condominiumId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+      await objBankAccounts.insertBankAccountsTable(objBankAccounts.condominiumId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
     }
 
-    await objBankAccounts.loadBankAccountsTable(condominiumId, bankAccountId);
+    await objBankAccounts.loadBankAccountsTable(objBankAccounts.condominiumId, bankAccountId);
 
     let rowNumber = 0;
     rowNumber = showResult(bankAccountId, rowNumber);

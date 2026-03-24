@@ -279,7 +279,7 @@ function showResult(supplierId, rowNumber) {
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // name
-    html += objSuppliers.inputTableColumn('name', '', objSuppliers.arraySuppliers[rowNumberSupplier].name, 45);
+    html += objSuppliers.inputTableColumn('name', '', objSuppliers.arraySuppliers[rowNumberSupplier].name, 45,(objSuppliers.securityLevel < 5));
 
     html += "</tr>";
 
@@ -293,10 +293,10 @@ function showResult(supplierId, rowNumber) {
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // street
-    html += objSuppliers.inputTableColumn('street', '', objSuppliers.arraySuppliers[rowNumberSupplier].street, 45);
+    html += objSuppliers.inputTableColumn('street', '', objSuppliers.arraySuppliers[rowNumberSupplier].street, 45,(objSuppliers.securityLevel < 5));
 
     // address2
-    html += objSuppliers.inputTableColumn('address2', '', objSuppliers.arraySuppliers[rowNumberSupplier].address2, 45);
+    html += objSuppliers.inputTableColumn('address2', '', objSuppliers.arraySuppliers[rowNumberSupplier].address2, 45,(objSuppliers.securityLevel < 5));
 
     html += "</tr>";
 
@@ -310,10 +310,10 @@ function showResult(supplierId, rowNumber) {
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // postalCode
-    html += objSuppliers.inputTableColumn('postalCode', '', objSuppliers.arraySuppliers[rowNumberSupplier].postalCode, 4);
+    html += objSuppliers.inputTableColumn('postalCode', '', objSuppliers.arraySuppliers[rowNumberSupplier].postalCode, 4,(objSuppliers.securityLevel < 5));
 
     // city
-    html += objSuppliers.inputTableColumn('city', '', objSuppliers.arraySuppliers[rowNumberSupplier].city, 45);
+    html += objSuppliers.inputTableColumn('city', '', objSuppliers.arraySuppliers[rowNumberSupplier].city, 45,(objSuppliers.securityLevel < 5));
 
     html += "</tr>";
 
@@ -327,10 +327,10 @@ function showResult(supplierId, rowNumber) {
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // email
-    html += objSuppliers.inputTableColumn('email', '', objSuppliers.arraySuppliers[rowNumberSupplier].email, 50);
+    html += objSuppliers.inputTableColumn('email', '', objSuppliers.arraySuppliers[rowNumberSupplier].email, 50,(objSuppliers.securityLevel < 5));
 
     // phone
-    html += objSuppliers.inputTableColumn('phone', '', objSuppliers.arraySuppliers[rowNumberSupplier].phone, 8);
+    html += objSuppliers.inputTableColumn('phone', '', objSuppliers.arraySuppliers[rowNumberSupplier].phone, 8,(objSuppliers.securityLevel < 5));
 
     html += "</tr>";
 
@@ -344,10 +344,10 @@ function showResult(supplierId, rowNumber) {
     html += objSuppliers.verticalMenu(rowNumber);
 
     // accountId
-    html += objAccounts.showSelectedAccounts('accountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].accountId, 'Ingen konto er valgt', '');
+    html += objAccounts.showSelectedAccounts('accountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].accountId, 'Ingen konto er valgt', '',(objSuppliers.securityLevel < 5));
 
-    // bankAccount
-    html += objSuppliers.inputTableColumn('bankAccount', '', objSuppliers.arraySuppliers[rowNumberSupplier].bankAccount, 11);
+    // bankAccount number
+    html += objSuppliers.inputTableColumn('bankAccount', '', objSuppliers.arraySuppliers[rowNumberSupplier].bankAccount, 11,(objSuppliers.securityLevel < 5));
 
     html += "</tr>";
 
@@ -361,10 +361,10 @@ function showResult(supplierId, rowNumber) {
     html += objSuppliers.insertTableColumns('', rowNumber);
 
     // amountAccountId
-    html += objAccounts.showSelectedAccounts('amountAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].amountAccountId, 'Ingen konto er valgt', '');
+    html += objAccounts.showSelectedAccounts('amountAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].amountAccountId, 'Ingen konto er valgt', '',(objSuppliers.securityLevel < 5));
 
     // amount
-    html += objSuppliers.inputTableColumn('amount', '', objSuppliers.arraySuppliers[rowNumberSupplier].amount, 11);
+    html += objSuppliers.inputTableColumn('amount', '', objSuppliers.arraySuppliers[rowNumberSupplier].amount, 11,(objSuppliers.securityLevel < 5));
 
     html += "</tr>";
 
@@ -377,11 +377,11 @@ function showResult(supplierId, rowNumber) {
     rowNumber++;
     html += objSuppliers.insertTableColumns('', rowNumber);
 
-    // textAccountId
-    html += objAccounts.showSelectedAccounts('textAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].textAccountId, 'Ingen konto er valgt', '');
+    // AccountId for text
+    html += objAccounts.showSelectedAccounts('textAccountId', '', objSuppliers.arraySuppliers[rowNumberSupplier].textAccountId, 'Ingen konto er valgt', '',(objSuppliers.securityLevel < 5));
 
-    // text
-    html += objSuppliers.inputTableColumn('text', '', objSuppliers.arraySuppliers[rowNumberSupplier].text, 50);
+    // text for account id
+    html += objSuppliers.inputTableColumn('text', '', objSuppliers.arraySuppliers[rowNumberSupplier].text, 50,(objSuppliers.securityLevel < 5));
 
     html += "</tr>";
 

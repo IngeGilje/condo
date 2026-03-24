@@ -150,7 +150,7 @@ function showFilter(userId, rowNumber) {
   html += objUsers.insertTableColumns('', rowNumber);
 
   // user
-  html += objUsers.showSelectedUsers('filterUserId', 'width:175px;', userId, '')
+  html += objUsers.showSelectedUsers('filterUserId', 'width:175px;', false,userId, '')
 
   html += "</tr>";
 

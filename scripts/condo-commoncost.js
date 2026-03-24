@@ -239,7 +239,7 @@ function showResult(rowNumber) {
     if (commonCost.deleted === 'N') selectedChoice = "Nei";
 
     let className = `delete${commonCost.commonCostId}`;
-    html += objCommonCosts.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
+    html += objCommonCosts.showSelectedValues(className, 'width:175px;', (objCommonCosts.secityLevel < 5),selectedChoice, 'Nei', 'Ja')
 
     // Select year
     const year = commonCost.year;

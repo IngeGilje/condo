@@ -127,104 +127,70 @@ class Account extends Condos {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="centerCell one-line center"
-        >
-          <select 
-            class="${className} center"
-            ${disabled ? 'disabled' : ''}
-            ${(style) ? `style=${style}` : 'style=width:175px;'}
-          >
-      `;
+    let html = `
+    <td
+      class="centerCell one-line center"
+    >
+      <select 
+        class="${className} center"
+        ${disabled ? 'disabled' : ''}
+        ${(style) ? `style=${style}` : 'style=width:175px;'}
+      >`;
 
     const numberOfRows = this.arrayAccounts.length;
+
     // Check if accounts array is empty
     if (numberOfRows > 0) {
       this.arrayAccounts.forEach((account) => {
-        if (account.accountId === accountId) {
 
-          html +=
-            `
-              <option 
-                value=${account.accountId}
-                selected
-              >
-                ${account.name}
-              </option>
-            `;
-          selectedValue = true;
-        } else {
-
-          html +=
-            `
-              <option 
-                value="${account.accountId}">
-                ${account.name}
-              </option>
-            `;
-        }
+        html += `
+          <option 
+            value=${account.accountId}
+            ${(account.accountId === accountId) ? 'selected' : ''}
+          >
+            ${account.name}
+          </option>`;
+        if (account.accountId === accountId) selectedValue = true;
       });
     } else {
 
-      html +=
-        `
-          <option value="0" 
-            selected
-          >
-            Ingen konti
-          </option>
-        `;
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen konti
+      </option>`;
       selectedValue = true;
     }
 
     // Select all
     if (selectAll && (this.arrayAccounts.length > 1)) {
 
-      html +=
-        `
-          <option 
-            value=${this.nineNine}
-            selected
-          >
-            ${selectAll}
-          </option>
-        `;
+      html += `
+      <option 
+        value=${this.nineNine}
+        selected
+      >
+        ${selectAll}
+      </option>`;
       selectedValue = true;
     }
 
     // Select none
     if (selectNone && (this.arrayAccounts.length > 1)) {
-      if (selectedValue) {
-        html +=
-          `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
-      } else {
-
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
-        selectedValue = true;
-      }
+      html += `
+        <option 
+          value=0
+          ${(selectedValue) ? selectNone : ''}
+        >
+          ${selectNone}
+        </option>`;
+      selectedValue = true;
     }
 
-    html +=
-      `
-          </select >
-        </td>
-      `;
+    html += `
+      </select >
+    </td>`;
 
     return html;
   }

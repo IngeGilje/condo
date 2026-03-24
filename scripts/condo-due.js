@@ -195,7 +195,7 @@ function showResult(rowNumber) {
     if (due.deleted === 'N') selectedChoice = "Nei";
 
     let className = `delete${due.dueId}`;
-    html += objDues.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
+    html += objDues.showSelectedValues(className, 'width:175px;', selectedChoice, (objDues.secityLevel < 5),'Nei', 'Ja')
 
     // condos
     className = `condoId${due.dueId}`;
@@ -273,7 +273,7 @@ function insertEmptyTableRow(rowNumber) {
   // accountId
   let accountId = Number(document.querySelector('.filterAccountId').value);
   if (Number(document.querySelector('.filterAccountId').value) === objDues.nineNine) accountId = 0;
-  html += objAccounts.showSelectedAccounts("accountId0", '', accountId, 'Ingen er valgt', '');
+  html += objAccounts.showSelectedAccounts("accountId0", '', accountId, 'Ingen er valgt', '',(objDues.selectedChoice < 5));
 
   // due amount
   html += objDues.inputTableColumn('amount0', '', "", 10);
@@ -435,7 +435,7 @@ function showFilter(rowNumber) {
   if (condominiumsRowNumber !== -1) {
 
     const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
-    html += objAccounts.showSelectedAccounts('filterAccountId', 'width:175px;', commonCostAccountId, '', 'Vis alle konti');
+    html += objAccounts.showSelectedAccounts('filterAccountId', 'width:175px;', commonCostAccountId, '', 'Vis alle konti',false);
   }
 
   // show from date

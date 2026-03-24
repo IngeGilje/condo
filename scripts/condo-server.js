@@ -347,7 +347,6 @@ async function main() {
     app.post("/users", async (req, res) => {
 
       const action = req.body.action;
-      console.log('action :', action);
       const lastUpdate = today.toISOString();
 
       switch (action) {

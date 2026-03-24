@@ -5,9 +5,6 @@ const today = new Date();
 const objUsers = new User('user');
 const objCondos = new Condo('condo');
 
-let condominiumId = 0;
-let user = "";
-let securityLevel = 0;
 const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
@@ -21,10 +18,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user = sessionStorage.getItem("user");
-        securityLevel = sessionStorage.getItem("securityLevel");
-    if ((condominiumId === 0 || user === null)) {
+    if ((objCondos.condominiumId === 0 || objCondos.user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
@@ -33,8 +27,8 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(condominiumId, resident);
-      await objCondos.loadCondoTable(condominiumId);
+      await objUsers.loadUsersTable(objCondos.condominiumId, resident);
+      await objCondos.loadCondoTable(objCondos.condominiumId);
 
       const condoId = objCondos.arrayCondo.at(-1).condoId;
 
@@ -69,8 +63,7 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterCondoId')) {
 
-      //const condominiumId = Number(condominiumId);
-      await objCondos.loadCondoTable(condominiumId);
+      await objCondos.loadCondoTable(objCondos.condominiumId);
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
       let menuNumber = 0;
@@ -94,8 +87,7 @@ async function events() {
 
       deleteCondoRow();
 
-      //const condominiumId = Number(condominiumId);
-      await objCondos.loadCondoTable(condominiumId);
+      await objCondos.loadCondoTable(objCondos.condominiumId);
 
       let menuNumber = 0;
 
@@ -121,7 +113,7 @@ async function events() {
     if (event.target.classList.contains('cancel')) {
 
       // Reload condo table
-      await objCondos.loadCondoTable(condominiumId);
+      await objCondos.loadCondoTable(objCondos.condominiumId);
 
       let condoId = Number(document.querySelector('.filterCondoId').value);
       if (condoId === 0) condoId = objCondos.arrayCondo.at(-1).condoId;
@@ -243,7 +235,7 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // name
-    html += objCondos.inputTableColumn('name', '', objCondos.arrayCondo[rowNumberCondo].name, 45);
+    html += objCondos.inputTableColumn('name', '', objCondos.arrayCondo[rowNumberCondo].name, 45, (objCondos.securityLevel < 5));
 
     html += "</tr>";
 
@@ -257,10 +249,10 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // street
-    html += objCondos.inputTableColumn('street', '', objCondos.arrayCondo[rowNumberCondo].street, 45);
+    html += objCondos.inputTableColumn('street', '', objCondos.arrayCondo[rowNumberCondo].street, 45, (objCondos.securityLevel < 5));
 
     // address2
-    html += objCondos.inputTableColumn('address2', '', objCondos.arrayCondo[rowNumberCondo].address2, 45);
+    html += objCondos.inputTableColumn('address2', '', objCondos.arrayCondo[rowNumberCondo].address2, 45, (objCondos.securityLevel < 5));
 
     html += "</tr>";
 
@@ -274,10 +266,10 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // postalCode
-    html += objCondos.inputTableColumn('postalCode', '', objCondos.arrayCondo[rowNumberCondo].postalCode, 4);
+    html += objCondos.inputTableColumn('postalCode', '', objCondos.arrayCondo[rowNumberCondo].postalCode, 4, (objCondos.securityLevel < 5));
 
     // city
-    html += objCondos.inputTableColumn('city', '', objCondos.arrayCondo[rowNumberCondo].city, 45);
+    html += objCondos.inputTableColumn('city', '', objCondos.arrayCondo[rowNumberCondo].city, 45, (objCondos.securityLevel < 5));
 
     html += "</tr>";
 
@@ -291,7 +283,7 @@ function showResult(condoId, rowNumber) {
     html += objCondos.insertTableColumns('', rowNumber);
 
     // squareMeters
-    html += objCondos.inputTableColumn('squareMeters', '', formatOreToKroner(objCondos.arrayCondo[rowNumberCondo].squareMeters), 10);
+    html += objCondos.inputTableColumn('squareMeters', '', formatOreToKroner(objCondos.arrayCondo[rowNumberCondo].squareMeters), 10, (objCondos.securityLevel < 5));
 
     html += "</tr>";
 
@@ -303,7 +295,7 @@ function showResult(condoId, rowNumber) {
 
     html += "</tr>";
 
-    if (securityLevel > 5) {
+    if (objCondos.securityLevel > 5) {
       // insert table columns in start of a row
       rowNumber++;
       html += objCondos.insertTableColumns('', rowNumber);
@@ -337,11 +329,7 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = objCondos.validateNumber('condoId', condoId, -1, objCondo.nineNine);
-
-  //const condominiumId = Number(condominiumId);
-
-
+  const validCondoId = objCondos.validateNumber('condoId', condoId, -1, objCondos.nineNine);
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -375,12 +363,12 @@ async function updateCondoRow(condoId) {
 
       // update the condos row
       await objCondos.updateCondoTable(condoId, user, name, street, address2, postalCode, city, squareMeters);
-      await objCondos.loadCondoTable(condominiumId);
+      await objCondos.loadCondoTable(objCondos.condominiumId);
     } else {
 
       // Insert the condo row in condo table
-      await objCondos.insertCondoTable(condominiumId, user, name, street, address2, postalCode, city, squareMeters);
-      await objCondos.loadCondoTable(condominiumId);
+      await objCondos.insertCondoTable(objCondos.condominiumId, user, name, street, address2, postalCode, city, squareMeters);
+      await objCondos.loadCondoTable(objCondos.condominiumId);
       condoId = objCondos.arrayCondo.at(-1).condoId;
       document.querySelector('.filterCondoId').value = condoId;
     }

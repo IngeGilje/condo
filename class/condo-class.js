@@ -15,6 +15,11 @@ class Condos {
   nineNine = 999999999;
   minusNineNine = -999999999;
 
+  // User info
+  condominiumId = Number(sessionStorage.getItem("condominiumId"));
+  user = sessionStorage.getItem("user");
+  securityLevel = Number(sessionStorage.getItem("securityLevel"));
+
   // array of menu objects
   arrayMenu = [
     {
@@ -216,22 +221,37 @@ class Condos {
 
   // Show input
   inputTableColumn(className, style, value, maxlength, readOnly = false) {
+
     return `
-      <td class="center">
-        <input
-          class="${className} center one-line"
-          type="text"
-          maxlength="${maxlength}"
-          value="${value}"
-          ${(style) ? `style=${style}` : "style=width:175px;"}
-          ${readOnly ? 'readonly' : ''}
-        >
-      </td>
-    `;
+    <td class="center">
+      <input
+        class="${className} center one-line"
+        type="text"
+        maxlength="${maxlength}"
+        value="${value}"
+        ${(style) ? `style=${style}` : "style=width:175px;"}
+        ${readOnly ? 'readonly' : ''}
+      >
+    </td>`;
+  }
+
+  // Show input
+  inputTableColumnPassword(className, style, value, maxlength) {
+
+    return `
+    <td class="center">
+      <input
+        class="${className} center one-line"
+        type="password"
+        maxlength="${maxlength}"
+        value="${value}"
+        ${(style) ? `style=${style}` : "style=width:175px;"}
+      >
+    </td>`;
   }
 
   // Show password
-  inputTablePassword(className, style, value, maxlength, readOnly = false) {
+  inputTablePassword(className, style, value, maxlength) {
     return `
       <td class="center">
         <input
@@ -240,7 +260,6 @@ class Condos {
           maxlength="${maxlength}"
           value="${value}"
           ${(style) ? `style=${style}` : "style=width:175px;"}
-          ${readOnly ? 'readonly' : ''}
         >
       </td>
     `;
@@ -613,6 +632,7 @@ class Condos {
   }
   */
 
+  /*
   // Select choices like Yes, No, Ignore
   showSelectedValues(className, style, selectedChoice, ...choices) {
 
@@ -655,6 +675,38 @@ class Condos {
           </select >
         </td>
       `;
+
+    return html;
+  }
+  */
+
+  // Select choices like Yes, No, Ignore
+  showSelectedValues(className, style, disabled = false, selectedChoice, ...choices) {
+
+    let html = `
+    <td
+      class="center"
+    >
+      <select 
+        class="${className} center"
+        ${disabled ? 'disabled' : ''}
+        ${(style) ? `style=${style}` : 'style=width:175px;'}>`;
+
+    choices.forEach((choice) => {
+
+      html += `
+        <option 
+          value=${choice}
+          ${(choice === selectedChoice) ? 'selected' : ''}
+        >
+          ${choice}
+        </option>
+      `;
+    });
+
+    html += `
+      </select >
+    </td>`;
 
     return html;
   }
@@ -993,11 +1045,11 @@ class Condos {
   /*
   // Validate interval
   validateIntervalNew(value, fromValue, toValue) {
-  
+   
     value = Number(value);
     fromValue = Number(fromValue);
     toValue = Number(toValue);
-  
+   
     // Validate interval
     return ((fromValue <= toValue)
       && (value >= fromValue)
@@ -1087,10 +1139,10 @@ class Condos {
     /*
     // Create a date object
     const objDate = new Date(year, month - 1, day);
-  
+   
     // Validate that the date components match
     return isValid;
-  
+   
     return (objDate.getFullYear() === year && objDate.getMonth() === month - 1 && objDate.getDate() === day);
     */
   }
@@ -1098,7 +1150,7 @@ class Condos {
   /*
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(date) {
-  
+   
     // Check for valid date String
     if (date === '' || typeof date === 'undefined') {
       return false;
@@ -1106,20 +1158,20 @@ class Condos {
     // Regular expression for valuating the dd.mm.yyyy format
     const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
     const match = date.match(regex);
-  
+   
     if (!match) return false; // Return false if format doesn't match
-  
+   
     // Extract day, month, and year
     const day = parseInt(match[1], 10);
     const month = parseInt(match[2], 10);
     const year = parseInt(match[3], 10);
-  
+   
     // Check if month is between 1 and 12
     if (month < 1 || month > 12) return false;
-  
+   
     // Create a date object
     const objDate = new Date(year, month - 1, day);
-  
+   
     // Validate that the date components match
     return (
       objDate.getFullYear() === year
@@ -1132,7 +1184,7 @@ class Condos {
   /*
   // Format norwegian date (11.05.1983) to number (19830511)
   formatNorDateToNumberNew(norDate) {
-  
+   
     return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
   }
   */
@@ -1274,9 +1326,9 @@ class Condos {
       if (text !== '' && style !== '') html += `<th class="center no-border" style="${style}">${text}</th>`;
     });
 
-    const className ='logOut';
-    html += this.showButton('width:100px;',className, 'Logg ut');
-    
+    const className = 'logOut';
+    html += this.showButton('width:100px;', className, 'Logg ut');
+
     // empty row
     html += this.insertTableColumns('', 0, '');
 
@@ -1445,7 +1497,6 @@ class Condos {
     document.querySelector('.message').innerHTML = html;
   }
 }
-
 
 // Check if string includes only digits
 function isNumeric(string) {
@@ -1919,31 +1970,6 @@ function removeIframe() {
   const iframe = document.getElementById("div-condo-login");
   if (iframe) {
     iframe.remove();
-  }
-}
-
-function testMode() {
-
-  switch (objUsers.serverStatus) {
-
-    // Web server
-    case 1:
-    // Test web server/ local web server
-    case 2: {
-
-      sessionStorage.removeItem("user");
-
-      // Save email/user, password and security level
-      const email = 'inge.gilje@gmail.com';
-      const password = '12345';
-      const securityLevel = 9;
-      const condominiumId = 2;
-      sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
-      break;
-    }
-    default: {
-      break;
-    }
   }
 }
 

@@ -334,7 +334,7 @@ function showResult(rowNumber) {
     if (budget.deleted === 'N') selectedChoice = "Nei";
 
     let className = `delete${budget.budgetId}`;
-    html += objBudgets.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja');
+    html += objBudgets.showSelectedValues(className, 'width:175px;', (objBudgets.secityLevel < 5),selectedChoice, 'Nei', 'Ja');
 
     // accountId
     className = `accountId${budget.budgetId}`;

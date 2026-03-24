@@ -24,12 +24,12 @@ async function main() {
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
     user = sessionStorage.getItem("user");
-        securityLevel = sessionStorage.getItem("securityLevel");
+    securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -134,7 +134,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-       let url = (objUserBankAccounts.serverStatus === 1)
+      let url = (objUserBankAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -169,7 +169,7 @@ function showHeader() {
   html += objUserBankAccounts.startTableBody();
 
   // show main header
-  html += objUserBankAccounts.showTableHeaderLogOut('width:175px;', '','','','Bankkonto for bruker','');
+  html += objUserBankAccounts.showTableHeaderLogOut('width:175px;', '', '', '', 'Bankkonto for bruker', '');
   html += "</tr>";
 
   // end table body
@@ -198,10 +198,10 @@ function showFilter(rowNumber) {
   html += objUserBankAccounts.insertTableColumns('', rowNumber, '');
 
   // Show all selected users
-  html += objUsers.showSelectedUsers('filterUserId', 'width:175px;', '', 'Alle');
+  html += objUsers.showSelectedUsers('filterUserId', 'width:175px;', false, '', 'Alle');
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle');
+  html += objAccounts.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', false);
   html += "</tr>";
 
   // insert table columns in start of a row
@@ -227,10 +227,10 @@ function insertEmptyTableRow(rowNumber) {
   html += objUserBankAccounts.insertTableColumns('', rowNumber, 'Ny brukerkonto');
 
   // user column
-  html += objUsers.showSelectedUsers('userId0', 'width:175px;', 0, 'Ingen er valgt', '');
+  html += objUsers.showSelectedUsers('userId0', 'width:175px;', (objUserBankAccounts.securityLevel < 5), 0, 'Ingen er valgt', '');
 
   // Account column
-  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '');
+  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '', (objUserBankAccounts.securityLevel < 5));
 
   // bank account number
   html += objUserBankAccounts.inputTableColumn('bankAccount0', '', 11);
@@ -263,23 +263,26 @@ function showResult(rowNumber) {
     // user Id
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUsers.showSelectedUsers(className, 'width:175px;', userId, 'Ingen er valgt', '');
+    html += objUsers.showSelectedUsers(className, 'width:175px;', userId, (objUserBankAccounts.securityLevel < 5), 'Ingen er valgt', '');
 
     // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccounts.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '');
+    html += objAccounts.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '', (objUserBankAccounts.securityLevel < 5));
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccounts.inputTableColumn(className, '', userBankAccount.bankAccount, 11);
+    html += objUserBankAccounts.inputTableColumn(className, '', userBankAccount.bankAccount, 11, (objUserBankAccounts.securityLevel < 5));
 
     html += "</tr>";
   });
 
-  // Insert empty table row for insertion
-  rowNumber++;
-  html += insertEmptyTableRow(rowNumber);
+  if (objUserBankAccounts.securityLevel >= 5) {
+
+    // Insert empty table row for insertion
+    rowNumber++;
+    html += insertEmptyTableRow(rowNumber);
+  }
 
   // The end of the table
   html += objUserBankAccounts.endTable();
