@@ -13,6 +13,7 @@ const objBankAccountTransactions = new BankAccountTransaction('bankaccounttransa
 
 let condominiumId = 0;
 let user = "";
+let bankAccountTransationId = 0;
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -172,7 +173,7 @@ async function events() {
         .map(prefix => objDues.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      const bankAccountTransationId = Number(className.substring(6));
+      bankAccountTransationId = Number(className.substring(6));
       deleteBankAccountTransactionRow(bankAccountTransationId, className);
 
       const amount = 0;
@@ -198,12 +199,7 @@ async function events() {
 
       const arrayPrefixes = ['voucher'];
 
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objBankAccountTransactions.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      let url = (objBankAccountTransactions.serverStatus === 1)
+       let url = (objBankAccountTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-voucher.html?bankAccountTransactionId=${bankAccountTransationId}`;
