@@ -54,10 +54,10 @@ class Account extends Condos {
     let accountId = 0;
 
     // Bank Account <> Condominium Bank Account
-    let rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    let rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
     if (rowNumberBankAccount !== -1) {
 
-      //accountId = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].accountId;
+      //accountId = objBankAccount.arrayBankAccounts[rowNumberBankAccount].accountId;
     }
 
     // Check user bank account
@@ -69,21 +69,21 @@ class Account extends Condos {
 
     let rowNumberSupplier;
     // get Account Id from supplier amount
-    rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+    rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
     if (rowNumberSupplier !== -1) {
 
-      accountId = objSuppliers.arraySuppliers[rowNumberSupplier].accountId;
+      accountId = objSupplier.arraySuppliers[rowNumberSupplier].accountId;
 
       // get Account Id from supplier amount
-      const amount = (objSuppliers.arraySuppliers[rowNumberSupplier].amount) ? Number(objSuppliers.arraySuppliers[rowNumberSupplier].amount) : 0;
+      const amount = (objSupplier.arraySuppliers[rowNumberSupplier].amount) ? Number(objSupplier.arraySuppliers[rowNumberSupplier].amount) : 0;
 
-      accountId = (amount === Number(payment)) ? Number(objSuppliers.arraySuppliers[rowNumberSupplier].amountAccountId) : accountId;
+      accountId = (amount === Number(payment)) ? Number(objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId) : accountId;
     }
 
     // get Account Id from supplier text
     if (accountId === 0) {
 
-      objSuppliers.arraySuppliers.forEach((supplier) => {
+      objSupplier.arraySuppliers.forEach((supplier) => {
 
         if (supplier.text === text) {
 
@@ -104,7 +104,7 @@ class Account extends Condos {
     const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (rowNumberAccount !== -1) {
 
-      accountName = objAccounts.arrayAccounts[rowNumberAccount].name;
+      accountName = objAccount.arrayAccounts[rowNumberAccount].name;
     }
 
     return accountName;
@@ -127,104 +127,70 @@ class Account extends Condos {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="centerCell one-line center"
-        >
-          <select 
-            class="${className} center"
-            ${disabled ? 'disabled' : ''}
-            ${(style) ? `style=${style}` : 'style=width:175px;'}
-          >
-      `;
+    let html = `
+    <td
+      class="centerCell one-line center"
+    >
+      <select 
+        class="${className} center"
+        ${(disabled) ? 'disabled' : ''}
+        ${(style) ? `style=${style}` : 'style=width:175px;'}
+      >`;
 
     const numberOfRows = this.arrayAccounts.length;
+
     // Check if accounts array is empty
     if (numberOfRows > 0) {
       this.arrayAccounts.forEach((account) => {
-        if (account.accountId === accountId) {
 
-          html +=
-            `
-              <option 
-                value=${account.accountId}
-                selected
-              >
-                ${account.name}
-              </option>
-            `;
-          selectedValue = true;
-        } else {
-
-          html +=
-            `
-              <option 
-                value="${account.accountId}">
-                ${account.name}
-              </option>
-            `;
-        }
+        html += `
+          <option 
+            value=${account.accountId}
+            ${(account.accountId === accountId) ? 'selected' : ''}
+          >
+            ${account.name}
+          </option>`;
+        if (account.accountId === accountId) selectedValue = true;
       });
     } else {
 
-      html +=
-        `
-          <option value="0" 
-            selected
-          >
-            Ingen konti
-          </option>
-        `;
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen konti
+      </option>`;
       selectedValue = true;
     }
 
     // Select all
     if (selectAll && (this.arrayAccounts.length > 1)) {
 
-      html +=
-        `
-          <option 
-            value=${this.nineNine}
-            selected
-          >
-            ${selectAll}
-          </option>
-        `;
+      html += `
+      <option 
+        value=${this.nineNine}
+        selected
+      >
+        ${selectAll}
+      </option>`;
       selectedValue = true;
     }
 
     // Select none
     if (selectNone && (this.arrayAccounts.length > 1)) {
-      if (selectedValue) {
-        html +=
-          `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
-      } else {
-
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
-        selectedValue = true;
-      }
+      html += `
+        <option 
+          value=0
+          ${(selectedValue) ? selectNone : ''}
+        >
+          ${selectNone}
+        </option>`;
+      selectedValue = true;
     }
 
-    html +=
-      `
-          </select >
-        </td>
-      `;
+    html += `
+      </select >
+    </td>`;
 
     return html;
   }

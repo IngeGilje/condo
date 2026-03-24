@@ -2,12 +2,15 @@
 
 // Activate classes
 const today = new Date();
-const objUsers = new User('user');
-const objCondos = new Condo('condo');
-const objCommonCosts = new CommonCost('commoncost');
+const objUser = new User('user');
+const objCondo = new Condo('condo');
+const objCommonCost = new CommonCost('commoncost');
 
-let condominiumId = 0;
-let user = "";
+const disableChanges = (objCommonCost.securityLevel < 5);
+const condominiumId = objCommonCost.condominiumId;
+const user = objCommonCost.user;
+
+const tableWidth = 'width:950px';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -17,28 +20,25 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUsers.checkServer()) {
+  if (await objUser.checkServer()) {
 
     // Validate LogIn
-    condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
-      //window.location.href = 'http://localhost/condo-login.html';
-      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objCommonCost.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(condominiumId, resident);
-      await objCondos.loadCondoTable(condominiumId);
+      await objUser.loadUsersTable(condominiumId, resident, objCommonCost.nineNine);
+      await objCondo.loadCondoTable(condominiumId);
 
       // Show header
       let menuNumber = 0;
       showHeader();
 
-      await objCommonCosts.loadCommonCostsTable(condominiumId);
+      await objCommonCost.loadCommonCostsTable(condominiumId);
 
       // Show commonCost
       menuNumber = showResult(menuNumber);
@@ -48,7 +48,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings,'', 'condo-server.js er ikke startet.');
+    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -64,7 +64,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objCommonCosts.getClassByPrefix(event.target, prefix))
+        .map(prefix => objCommonCost.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // delete
@@ -75,7 +75,7 @@ async function events() {
         const commonCostId = Number(className.substring(6));
         await deleteCommonCostsRow(commonCostId, className);
 
-        await objCommonCosts.loadCommonCostsTable(condominiumId);
+        await objCommonCost.loadCommonCostsTable(condominiumId);
 
         let menuNumber = 0;
         menuNumber = showResult(menuNumber);
@@ -94,7 +94,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objCommonCosts.getClassByPrefix(event.target, prefix))
+        .map(prefix => objCommonCost.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract commonCostId in the class name
@@ -118,10 +118,10 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objCommonCosts.getClassByPrefix(event.target, prefix))
+        .map(prefix => objCommonCost.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      //const className = objCommonCosts.getDeleteClass(event.target);
+      //const className = objCommonCost.getDeleteClass(event.target);
       const classNameDelete = `.${className}`
       const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
       if (deleteAccountRowValue === "Ja") {
@@ -129,7 +129,7 @@ async function events() {
         const commonCostId = Number(className.substring(6));
 
         deleteAccountRow(commonCostId, className);
-        await objCommonCosts.loadCommonCostsTable(condominiumId);
+        await objCommonCost.loadCommonCostsTable(condominiumId);
 
         let menuNumber = 0;
         menuNumber = showResult(menuNumber);
@@ -140,7 +140,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objCommonCosts.serverStatus === 1)
+      let url = (objCommonCost.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -154,16 +154,16 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objCommonCosts.startTable('width:950px;');
+  let html = objCommonCost.startTable(tableWidth);
 
   // show main header
-  html += objCommonCosts.showTableHeader('width:175px;', 'Felleskostnader');
+  html += objCommonCost.showTableHeader('width:175px;', 'Felleskostnader');
 
   // The end of the table header
-  html += objCommonCosts.endTableHeader();
+  html += objCommonCost.endTableHeader();
 
   // The end of the table
-  html += objCommonCosts.endTable();
+  html += objCommonCost.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 */
@@ -172,20 +172,20 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objCommonCosts.startTable('width:950px;');
+  html = objCommonCost.startTable(tableWidth);
 
   // start table body
-  html += objCommonCosts.startTableBody();
+  html += objCommonCost.startTableBody();
 
   // show main header
-  html += objCommonCosts.showTableHeaderLogOut('width:175px;', '','','Felleskostnader','','');
+  html += objCommonCost.showTableHeaderLogOut('width:175px;', '', '', 'Felleskostnader', '', '');
   html += "</tr>";
 
   // end table body
-  html += objCommonCosts.endTableBody();
+  html += objCommonCost.endTableBody();
 
   // The end of the table
-  html += objCommonCosts.endTable();
+  html += objCommonCost.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -193,22 +193,21 @@ function showHeader() {
 function insertEmptyTableRow(rowNumber) {
 
   let html = "";
-  let date = "";
 
   // insert table columns in start of a row
-  html += objCommonCosts.insertTableColumns('', rowNumber);
+  html += objCommonCost.insertTableColumns('', rowNumber);
 
   html += "<td class='center'>Ny felleskostnad</td>";
 
   // Select year
   const year = today.getFullYear();
-  html += objCommonCosts.selectInterval('year0', 'width:175px;', 2020, 2030, year);
+  html += objCommonCost.selectInterval('year0', 'width:175px;', 2020, 2030, year, disableChanges);
 
   // commonCostSquareMeter 
-  html += objCommonCosts.inputTableColumn('commonCostSquareMeter0', '', '', 10);
+  html += objCommonCost.inputTableColumn('commonCostSquareMeter0', '', '', 10);
 
   // fixed cost per condo 
-  html += objCommonCosts.inputTableColumn('fixedCostCondo0', '', '', 10);
+  html += objCommonCost.inputTableColumn('fixedCostCondo0', '', '', 10);
 
 
   html += "</tr>";
@@ -219,57 +218,60 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objCommonCosts.startTable('width:950px;');
+  let html = objCommonCost.startTable(tableWidth);
 
   rowNumber++;
-  html += objCommonCosts.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  html += objCommonCost.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
-  objCommonCosts.arrayCommonCosts.forEach((commonCost) => {
+  objCommonCost.arrayCommonCosts.forEach((commonCost) => {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objCommonCosts.insertTableColumns('', rowNumber);
+    html += objCommonCost.insertTableColumns('', rowNumber);
 
     // Delete
-    let selectedChoice = "Ugyldig verdi";
-    if (commonCost.deleted === 'Y') selectedChoice = "Ja";
-    if (commonCost.deleted === 'N') selectedChoice = "Nei";
+    let selected = "Ugyldig verdi";
+    if (commonCost.deleted === 'Y') selected = "Ja";
+    if (commonCost.deleted === 'N') selected = "Nei";
 
     let className = `delete${commonCost.commonCostId}`;
-    html += objCommonCosts.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
+    html += objCommonCost.showSelectedValues(className, 'width:175px;', disableChanges, selected, 'Nei', 'Ja');
 
     // Select year
     const year = commonCost.year;
     className = `year${commonCost.commonCostId}`;
-    html += objCommonCosts.selectInterval(className, 'width:175px;', 2020, 2030, year);
+    html += objCommonCost.selectInterval(className, 'width:175px;', 2020, 2030, year, disableChanges);
 
     // common cost per squaremeter
     let commonCostSquareMeter = commonCost.commonCostSquareMeter;
     className = `commonCostSquareMeter${commonCost.commonCostId}`;
     commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
-    html += objCommonCosts.inputTableColumn(className, '', commonCostSquareMeter, 10);
+    html += objCommonCost.inputTableColumn(className, '', commonCostSquareMeter, 10, disableChanges);
 
     // fixed cost per condo
     let fixedCostCondo = commonCost.fixedCostCondo;
     className = `fixedCostCondo${commonCost.commonCostId}`;
     fixedCostCondo = formatOreToKroner(fixedCostCondo);
-    html += objCommonCosts.inputTableColumn(className, '', fixedCostCondo, 10);
+    html += objCommonCost.inputTableColumn(className, '', fixedCostCondo, 10, disableChanges);
 
     html += "</tr>";
   });
 
   // Make one last table row for insertion in table 
 
-  // Insert empty table row for insertion
-  rowNumber++;
-  html += insertEmptyTableRow(rowNumber);
+  if (!disableChanges) {
+
+    // Insert empty table row for insertion
+    rowNumber++;
+    html += insertEmptyTableRow(rowNumber);
+  }
 
   // Show the rest of the menu
   rowNumber++;
-  html += objCommonCosts.showRestMenu(rowNumber);
+  html += objCommonCost.showRestMenu(rowNumber);
 
   // The end of the table
-  html += objCommonCosts.endTable();
+  html += objCommonCost.endTable();
   document.querySelector('.result').innerHTML = html;
 
   return rowNumber;
@@ -281,14 +283,14 @@ async function deleteAccountRow(commonCostId, className) {
 
 
   // Check if commonCost row exist
-  accountsRowNumber = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
+  accountsRowNumber = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
   if (accountsRowNumber !== -1) {
 
     // delete commonCost row
-    objCommonCosts.deleteAccountsTable(commonCostId, user);
+    objCommonCost.deleteAccountsTable(commonCostId, user);
   }
 
-  await objCommonCosts.loadCommonCostsTable(condominiumId);
+  await objCommonCost.loadCommonCostsTable(condominiumId);
 }
 
 // Update a commoncosts table row
@@ -303,38 +305,38 @@ async function updateCommonCostsRow(commonCostId) {
   className = `.year${commonCostId}`;
   let year = document.querySelector(className).value;
   className = `year${commonCostId}`;
-  const validYear = objCommonCosts.validateNumber(className, year, 2020, 2030);
+  const validYear = objCommonCost.validateNumber(className, year, 2020, 2030);
 
   // commonCostSquareMeter
   className = `.commonCostSquareMeter${commonCostId}`;
   let commonCostSquareMeter = document.querySelector(className).value;
   commonCostSquareMeter = formatKronerToOre(commonCostSquareMeter);
   className = `commonCostSquareMeter${commonCostId}`;
-  const validcommonCostSquareMeter = objCommonCosts.validateNumber(className, commonCostSquareMeter, 1, objCommonCosts.nineNine);
+  const validcommonCostSquareMeter = objCommonCost.validateNumber(className, commonCostSquareMeter, 1, objCommonCost.nineNine);
 
   // fixedCostCondo
   className = `.fixedCostCondo${commonCostId}`;
   let fixedCostCondo = document.querySelector(className).value;
   fixedCostCondo = formatKronerToOre(fixedCostCondo);
   className = `fixedCostCondo${commonCostId}`;
-  const validfixedCostCondo = objCommonCosts.validateNumber(className, fixedCostCondo, 1, objCommonCosts.nineNine);
+  const validfixedCostCondo = objCommonCost.validateNumber(className, fixedCostCondo, 1, objCommonCost.nineNine);
 
   // Validate commoncosts columns
   if (validYear && validcommonCostSquareMeter && validfixedCostCondo) {
 
     // Check if the commonCost id exist
-    const rowNumberCommonCosts = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
+    const rowNumberCommonCosts = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
     if (rowNumberCommonCosts !== -1) {
 
       // update a commoncosts row
-      await objCommonCosts.updateCommonCostsTable(user, commonCostId, year, commonCostSquareMeter, fixedCostCondo);
+      await objCommonCost.updateCommonCostsTable(user, commonCostId, year, commonCostSquareMeter, fixedCostCondo);
     } else {
 
       // Insert a commoncosts row
-      await objCommonCosts.insertCommonCostsTable(condominiumId, user, year, commonCostSquareMeter, fixedCostCondo);
+      await objCommonCost.insertCommonCostsTable(condominiumId, user, year, commonCostSquareMeter, fixedCostCondo);
     }
 
-    await objCommonCosts.loadCommonCostsTable(condominiumId);
+    await objCommonCost.loadCommonCostsTable(condominiumId);
 
     let menuNumber = 0;
     menuNumber = showResult(menuNumber);
@@ -347,10 +349,10 @@ async function deleteCommonCostsRow(commonCostId) {
 
 
   // Check if commoncosts row exist
-  rowNumberCommonCosts = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
+  rowNumberCommonCosts = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
   if (rowNumberCommonCosts !== -1) {
 
     // delete commoncosts row
-    objCommonCosts.deleteCommonCostsTable(commonCostId, user);
+    objCommonCost.deleteCommonCostsTable(commonCostId, user);
   }
 }

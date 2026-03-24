@@ -51,57 +51,74 @@ class Condo extends Condos {
     }
   }
 
-  // Show all selected condos
-  showSelectedCondos(className, style, condoId, selectNone, selectAll, disabled = false) {
+ showSelectedCondos(className, style, condoId, selectNone, selectAll, disabled = false) {
 
     let selectedValue = false;
 
     let html = `
-      <td 
-        class="center one-line">
-          <select class="${className} center"
-            ${disabled ? 'disabled' : ''}
-            ${style ? `style="${style}"` : ''}
-          >`;
+    <td
+      class="centerCell one-line center"
+    >
+      <select 
+        class="${className} center"
+        ${(disabled) ? 'disabled' : ''}
+        ${(style) ? `style=${style}` : 'style=width:175px;'}
+      >`;
+
+    const numberOfRows = this.arrayCondo.length;
 
     // Check if condo array is empty
-    const numberOfRows = this.arrayCondo.length;
     if (numberOfRows > 0) {
       this.arrayCondo.forEach((condo) => {
-        if (condo.condoId === condoId) {
 
-          html += `<option value=${condo.condoId} selected>${condo.name}</option>`;
-          selectedValue = true;
-        } else {
-
-          html += `<option value=${condo.condoId}>${condo.name}</option>`;
-        }
+        html += `
+          <option 
+            value=${condo.condoId}
+            ${(condo.condoId === condoId) ? 'selected' : ''}
+          >
+            ${condo.name}
+          </option>`;
+        if (condo.condoId === condoId) selectedValue = true;
       });
     } else {
 
-      html += `<option value=0 selected>Ingen leilighet</option>`;
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen konti
+      </option>`;
       selectedValue = true;
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 1)) {
+    if (selectAll && (this.arrayCondo.length > 1)) {
 
-      html += `<option value=${this.nineNine} selected>${selectAll}</option>`;
+      html += `
+      <option 
+        value=${this.nineNine}
+        selected
+      >
+        ${selectAll}
+      </option>`;
       selectedValue = true;
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
-      if (selectedValue) {
-        html += `<option value=0>${selectNone}</option>`;
-      } else {
-
-        html += `<option value=0 selected>${selectNone}</option>`;
-        selectedValue = true;
-      }
+    if (selectNone && (this.arrayCondo.length > 1)) {
+      html += `
+        <option 
+          value=0
+          ${(selectedValue) ? selectNone : ''}
+        >
+          ${selectNone}
+        </option>`;
+      selectedValue = true;
     }
 
-    html += `</select></td>`;
+    html += `
+      </select >
+    </td>`;
 
     return html;
   }

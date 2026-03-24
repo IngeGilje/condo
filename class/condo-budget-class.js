@@ -55,7 +55,7 @@ class Budget extends Condos {
 
         rowNumber++;
 
-        const accountName = objAccounts.getAccountName(budget.accountId);
+        const accountName = objAccount.getAccountName(budget.accountId);
 
         if (budget.budgetId === budgetId) {
 

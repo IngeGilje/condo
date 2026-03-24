@@ -2,15 +2,18 @@
 
 // Activate classes
 const today = new Date();
-const objUsers = new User('user');
-const objAccounts = new Account('account');
+const objUser = new User('user');
+const objAccount = new Account('account');
 
 // Fixed values
 const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
 
-let condominiumId = 0;
-let user = "";
+const disableChanges = (objAccount.securityLevel < 5);
+const condominiumId = objAccount.condominiumId;
+const user = objAccount.user;
+
+const tableWidth = 'width:750px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -20,23 +23,22 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUsers.checkServer()) {
+  if (await objUser.checkServer()) {
 
     // Validate LogIn
-    condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user = sessionStorage.getItem("user");
-    if ((condominiumId === 0 || user === null)) {
+    if ((objAccount.condominiumId === 0 || objAccount.user === null)) {
 
       // LogIn is not valid
-      //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(condominiumId, resident);
+      await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show header
       let menuNumber = 0;
@@ -53,7 +55,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, '','condo-server.js er ikke startet.');
+    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -67,7 +69,7 @@ async function events() {
       let fixedCost = document.querySelector('.filterFixedCost').value;
       if (fixedCost === 'Fast kostnad') fixedCost = 'Y';
       if (fixedCost === 'Variabel kostnad') fixedCost = 'N';
-      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
       let menuNumber = 0;
       menuNumber = showResult(menuNumber);
@@ -83,7 +85,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
+        .map(prefix => objAccount.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
@@ -106,33 +108,31 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objDues.getClassByPrefix(event.target, prefix))
+        .map(prefix => objDue.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      //const className = objAccounts.getDeleteClass(event.target);
       const classNameDelete = `.${className}`
       const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
       if (deleteAccountRowValue === "Ja") {
 
         const accountId = Number(className.substring(6));
+        deleteAccountRow(accountId, className);
 
-          deleteAccountRow(accountId, className);
+        const fixedCost = 'A';
+        await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
-          const fixedCost = 'A';
-          await objAccounts.loadAccountsTable(condominiumId, fixedCost);
-
-          let menuNumber = 0;
-          menuNumber = showResult(menuNumber);
+        let menuNumber = 0;
+        menuNumber = showResult(menuNumber);
 
       };
     };
   });
-  
+
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objAccounts.serverStatus === 1)
+      let url = (objAccount.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -162,16 +162,16 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objAccounts.startTable('width:750px;');
+  let html = objAccount.startTable(tableWidth);
 
   // show main header
-  html += objAccounts.showTableHeader('width:175px;', 'Konto');
+  html += objAccount.showTableHeader('width:175px;', 'Konto');
 
   // The end of the table header
-  html += objAccounts.endTableHeader();
+  html += objAccount.endTableHeader();
 
   // The end of the table
-  html += objAccounts.endTable();
+  html += objAccount.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 */
@@ -180,20 +180,20 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objAccounts.startTable('width:750px;');
+  html = objAccount.startTable(tableWidth);
 
   // start table body
-  html += objAccounts.startTableBody();
+  html += objAccount.startTableBody();
 
   // show main header
-  html += objAccounts.showTableHeaderLogOut('width:175px;', '','','Konto','');
+  html += objAccount.showTableHeaderLogOut('width:175px;', '', '', 'Konto', '');
   html += "</tr>";
 
   // end table body
-  html += objAccounts.endTableBody();
+  html += objAccount.endTableBody();
 
   // The end of the table
-  html += objAccounts.endTable();
+  html += objAccount.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -201,33 +201,33 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  html = objAccounts.startTable('width:750px;');
+  html = objAccount.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
-  html += objAccounts.showTableHeaderMenu('width:175px;', rowNumber, '', 'Kostnadstype', '');
+  html += objAccount.showTableHeaderMenu('width:175px;', rowNumber, '', 'Kostnadstype', '');
 
   // start table body
-  html += objAccounts.startTableBody();
+  html += objAccount.startTableBody();
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objAccounts.insertTableColumns('', rowNumber, '');
+  html += objAccount.insertTableColumns('', rowNumber, '');
 
   // fixed or not fixed cost
-  html += objAccounts.showSelectedValues('filterFixedCost', 'width:175px;', 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += objAccount.showSelectedValues('filterFixedCost', 'width:175px;', false, 'Alle', constFixedCost, constVariableCost, 'Alle');
 
   html += "</tr>";
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objAccounts.insertTableColumns('', rowNumber, '');
+  html += objAccount.insertTableColumns('', rowNumber, '');
 
   // end table body
-  html += objAccounts.endTableBody();
+  html += objAccount.endTableBody();
 
   // The end of the table
-  html += objAccounts.endTable();
+  html += objAccount.endTable();
   document.querySelector('.filter').innerHTML = html;
 
   return rowNumber;
@@ -240,16 +240,16 @@ function insertEmptyTableRow(rowNumber) {
 
   // Show menu
   // insert table columns in start of a row
-  html += objAccounts.insertTableColumns('', rowNumber);
+  html += objAccount.insertTableColumns('', rowNumber);
 
   // delete
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
-  html += objAccounts.showSelectedValues('fixedCost0', '', constFixedCost, constFixedCost, constVariableCost);
+  html += objAccount.showSelectedValues('fixedCost0', '', disableChanges, constFixedCost, constFixedCost, constVariableCost);
 
   // name
-  html += objAccounts.inputTableColumn('name0', 'width:175px;', '', 45);
+  html += objAccount.inputTableColumn('name0', 'width:175px;', '', 45);
 
   html += "</tr>";
   return html;
@@ -259,69 +259,73 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objAccounts.startTable('width:750px;');
+  let html = objAccount.startTable(tableWidth);
 
   // table header
   rowNumber++;
-  html += objAccounts.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Kostnadstype', 'Tekst');
+  html += objAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Kostnadstype', 'Tekst');
 
-  objAccounts.arrayAccounts.forEach((account) => {
+  objAccount.arrayAccounts.forEach((account) => {
 
     // Show menu
     rowNumber++;
-    html += objAccounts.insertTableColumns('', rowNumber);
+    html += objAccount.insertTableColumns('', rowNumber);
+
 
     // Delete
-    let selectedChoice = "Ugyldig verdi";
-    if (account.deleted === 'Y') selectedChoice = "Ja";
-    if (account.deleted === 'N') selectedChoice = "Nei";
+    let selected = "Ugyldig verdi";
+    if (account.deleted === 'Y') selected = "Ja";
+    if (account.deleted === 'N') selected = "Nei";
 
     let className = `delete${account.accountId}`;
-    html += objAccounts.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
+    html += objAccount.showSelectedValues(className, 'width:175px;', disableChanges, selected, 'Nei', 'Ja')
 
     // fixed cost
-    selectedChoice = "Ugyldig verdi";
+    selected = "Ugyldig verdi";
     switch (account.fixedCost) {
       case 'Y': {
 
-        selectedChoice = constFixedCost;
+        selected = constFixedCost;
         break;
       }
       case 'N': {
 
-        selectedChoice = constVariableCost;
+        selected = constVariableCost;
         break;
       }
       default: {
 
-        selectedChoice = "Ugyldig verdi";
+        selected = "Ugyldig verdi";
         break
       }
     }
 
     className = `fixedCost${account.accountId}`;
-    html += objAccounts.showSelectedValues(className, '', selectedChoice, constFixedCost, constVariableCost)
+    html += objAccount.showSelectedValues(className, '', disableChanges, selected, constFixedCost, constVariableCost)
 
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccounts.inputTableColumn(className, 'width:175px;', name, 45);
+    html += objAccount.inputTableColumn(className, 'width:175px;', name, 45, disableChanges);
 
     html += "</tr>";
   });
 
   // Make one last table row for insertion in table 
 
-  // Insert empty table row for insertion
-  rowNumber++;
-  html += insertEmptyTableRow(rowNumber);
+  if (!disableChanges) {
+
+    // Insert empty table row for insertion
+    rowNumber++;
+    html += insertEmptyTableRow(rowNumber);
+  };
 
   // Show the rest of the menu
   rowNumber++;
-  html += objAccounts.showRestMenu(rowNumber);
+  html += objAccount.showRestMenu(rowNumber);
 
   // The end of the table
-  html += objAccounts.endTable();
+  html += objAccount.endTable();
   document.querySelector('.result').innerHTML = html;
 
   return rowNumber;
@@ -330,18 +334,16 @@ function showResult(rowNumber) {
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
 
-
-
   // Check if account row exist
-  accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+  accountsRowNumber = objAccount.arrayAccounts.findIndex(account => account.accountId === accountId);
   if (accountsRowNumber !== -1) {
 
     // delete account row
-    objAccounts.deleteAccountsTable(accountId, user);
+    objAccount.deleteAccountsTable(accountId, objAccount.user);
   }
 
   const fixedCost = 'A';
-  await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+  await objAccount.loadAccountsTable(condominiumId, fixedCost);
 }
 
 // Update a accounts table row
@@ -349,12 +351,10 @@ async function updateAccountsRow(accountId) {
 
   accountId = Number(accountId);
 
-
-
   // name
   className = `.name${accountId}`;
   const name = document.querySelector(className).value;
-  const validName = objAccounts.validateText(name, 3, 50);
+  const validName = objAccount.validateText(name, 3, 50);
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;
@@ -365,20 +365,20 @@ async function updateAccountsRow(accountId) {
   if (validName && (fixedCost === "Y" || fixedCost === "N")) {
 
     // Check if the account id exist
-    rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+    rowNumberAccount = objAccount.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (rowNumberAccount !== -1) {
 
       // update the accounts row
-      await objAccounts.updateAccountsTable(user, accountId, fixedCost, name);
+      await objAccount.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
 
     } else {
 
       // Insert the account row in accounts table
-      await objAccounts.insertAccountsTable(condominiumId, user, name, fixedCost);
+      await objAccount.insertAccountsTable(objAccount.condominiumId, objAccount.user, name, fixedCost);
     }
 
     fixedCost = 'A';
-    await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+    await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
     let menuNumber = 0;
     menuNumber = showResult(menuNumber);
   }

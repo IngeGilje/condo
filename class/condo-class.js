@@ -15,6 +15,12 @@ class Condos {
   nineNine = 999999999;
   minusNineNine = -999999999;
 
+  // User info
+  condominiumId = Number(sessionStorage.getItem("condominiumId"));
+  user = sessionStorage.getItem("user");
+  securityLevel = Number(sessionStorage.getItem("securityLevel"));
+  userId = Number(sessionStorage.getItem("userId"));
+
   // array of menu objects
   arrayMenu = [
     {
@@ -48,63 +54,68 @@ class Condos {
       text: "Bruker"
     },
     {
-      applicationName: "condo-userbankaccount.html",
+      applicationName: "condo-password.html",
       className: "Menu7",
+      text: "Passord"
+    },
+    {
+      applicationName: "condo-userbankaccount.html",
+      className: "Menu8",
       text: "Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
-      className: "Menu8",
+      className: "Menu9",
       text: "Mottaker"
     },
     {
       applicationName: "condo-commoncost.html",
-      className: "Menu9",
+      className: "Menu10",
       text: "Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
-      className: "Menu10",
+      className: "Menu11",
       text: "Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
-      className: "Menu11",
+      className: "Menu12",
       text: "Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
-      className: "Menu12",
+      className: "Menu13",
       text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
-      className: "Menu13",
+      className: "Menu14",
       text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu14",
+      className: "Menu15",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu15",
+      className: "Menu16",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-voucher.html",
-      className: "Menu16",
+      className: "Menu17",
       text: "Bilag"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu17",
+      className: "Menu18",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu18",
+      className: "Menu19",
       text: "Årsregnskap"
     },
   ];
@@ -216,39 +227,49 @@ class Condos {
 
   // Show input
   inputTableColumn(className, style, value, maxlength, readOnly = false) {
+
+    return `
+    <td class="center">
+      <input
+        class="${className} center one-line"
+        type="text"
+        maxlength="${maxlength}"
+        value="${value}"
+        ${(style) ? `style=${style}` : "style=width:175px;"}
+        ${readOnly ? 'readonly' : ''}
+      >
+    </td>`;
+  }
+
+  // Show input
+  inputTableColumnPassword(className, style, value, maxlength) {
+
+    return `
+    <td class="center">
+      <input
+        class="${className} center one-line"
+        type="password"
+        maxlength="${maxlength}"
+        value="${value}"
+        ${(style) ? `style=${style}` : "style=width:175px;"}
+      >
+    </td>`;
+  }
+
+  // Show password
+  inputTablePassword(className, style, value, maxlength) {
     return `
       <td class="center">
         <input
           class="${className} center one-line"
-          type="text"
+          type="password"
           maxlength="${maxlength}"
           value="${value}"
           ${(style) ? `style=${style}` : "style=width:175px;"}
-          ${readOnly ? 'readonly' : ''}
         >
       </td>
     `;
   }
-
-  /*
-  // Show input
-  inputTableColumn(className, value, maxlength) {
-  
-    let html =
-      `
-        <td class="center">
-          <input 
-            class="${className} center one-line"
-            type="text" 
-            maxlength="${maxlength}"
-            value="${value}"
-          >
-        </td>
-      `;
-  
-    return html;
-  }
-  */
 
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
@@ -475,18 +496,26 @@ class Condos {
   }
 
   // Select interval number
-  selectInterval(className, style, fromNumber, toNumber, selectedNumber) {
-
-    let html = "";
-    if (style === "") html = `<td class="center"><select class="${className} center">`;
-    if (style !== "") html = `<td class="center"><select class="${className} center" style = "${style}">`;
+  selectInterval(className, style, fromNumber, toNumber, selectedNumber, disabled = false) {
 
     let selectedOption = false;
+
+    let html = `
+    <td class="center"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style=${style}` : "style=width:175px;"}
+        ${(disabled) ? 'disabled' : ''}
+      >`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
 
-        html += `<option value="${number}" selected>${number}</option>`;
+        html += `
+        <option 
+          value="${number}"
+          selected>${number}</option>`;
         selectedOption = true;
       } else {
 
@@ -553,18 +582,18 @@ class Condos {
   }
 
   // Select numbers
-  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber) {
+  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, disabled = false) {
 
     selectedNumber = Number(selectedNumber);
-    let html =
-      `
-        <td
-          class="center"
-        >
-          <select
-            class="${className} center"
-            ${(style) ? `style=${style}` : 'style=width:175px;'}
-          >`;
+    let html = `
+    <td
+      class="center"
+    >
+      <select
+        class="${className} center"
+        ${(disabled) ? 'disabled' : ''}
+        ${(style) ? `style=${style}` : 'style=width:175px;'}
+      >`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
@@ -599,66 +628,33 @@ class Condos {
     return html;
   }
 
-  /*
-  // Show input file
-  showInputFile(className, labelText, maxlength, placeholder) {
-   
-    let html = this.showLabel(className, labelText);
-    html +=
-      `
-        <input
-          type="file"
-          class="input-${className}"
-          placeholder="${placeholder}"
-          accept=".txt,.csv" 
-        >
-      `;
-    document.querySelector(`.div-${className}`).innerHTML = html;
-  }
-  */
-
   // Select choices like Yes, No, Ignore
-  showSelectedValues(className, style, selectedChoice, ...choices) {
+  showSelectedValues(className, style, disabled = false, selected, ...choices) {
 
-    let html =
-      `
-        <td
-          class="center"
-        >
-          <select 
-            class="${className} center"
-            ${(style) ? `style=${style}` : 'style=width:175px;'}
-          >`;
+    let html = `
+    <td
+      class="center"
+    >
+      <select 
+        class="${className} center"
+        ${(disabled) ? 'disabled' : ''}
+        ${(style) ? `style=${style}` : 'style=width:175px;'}>`;
 
     choices.forEach((choice) => {
-      if (choice === selectedChoice) {
 
-        html +=
-          `
-            <option 
-              value=${choice}
-              selected
-            >
-              ${choice}
-            </option>
-          `;
-      } else {
-
-        html +=
-          `
-            <option 
-              value="${choice}">
-              ${choice}
-            </option>
-          `;
-      }
+      html += `
+        <option 
+          value=${choice}
+          ${(choice === selected) ? 'selected' : ''}
+        >
+          ${choice}
+        </option>
+      `;
     });
 
-    html +=
-      `
-          </select >
-        </td>
-      `;
+    html += `
+      </select >
+    </td>`;
 
     return html;
   }
@@ -685,19 +681,19 @@ class Condos {
     let bankAccountName = '';
 
     // Bank account name from bank account table 
-    const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
     if (rowNumberBankAccount !== -1) {
 
-      bankAccountName = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
+      bankAccountName = objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;
     }
 
     if (!bankAccountName) {
 
       // Bank account name from supplier table
-      const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+      const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
       if (rowNumberSupplier !== -1) {
 
-        bankAccountName = objSuppliers.arraySuppliers[rowNumberSupplier].name;
+        bankAccountName = objSupplier.arraySuppliers[rowNumberSupplier].name;
       }
     }
 
@@ -733,11 +729,11 @@ class Condos {
         if (userId >= 0) {
 
           const rowNumberUser =
-            objUsers.arrayUsers.findIndex(user => user.userId === userId);
+            objUser.arrayUsers.findIndex(user => user.userId === userId);
           if (rowNumberUser !== -1) {
 
             condoId =
-              Number(objUsers.arrayUsers[rowNumberUser].condoId);
+              Number(objUser.arrayUsers[rowNumberUser].condoId);
           }
         }
       }
@@ -925,26 +921,26 @@ class Condos {
   }
 
   // Show Yes/No
-  showYesNo(className, selectedChoice) {
+  showYesNo(className, selected) {
 
-    switch (selectedChoice) {
+    switch (selected) {
       case 'Y': {
 
-        selectedChoice = "Ja";
+        selected = "Ja";
         break;
       }
       case 'N': {
 
-        selectedChoice = "Nei";
+        selected = "Nei";
         break;
       }
       default: {
 
-        selectedChoice = "Ugyldig verdi";
+        selected = "Ugyldig verdi";
         break
       }
     }
-    let html = this.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
+    let html = this.showSelectedValues(className, 'width:175px;', selected, 'Nei', 'Ja')
     return html;
   }
 
@@ -983,7 +979,7 @@ class Condos {
       html += `
         <td 
           class="${className} no-border center"
-          ${(style) ? `style = "${style}"` : ''}
+          ${(style) ? `style=${style}` : 'style=width:175px;'}
         >
           ${text}
         </td>
@@ -997,11 +993,11 @@ class Condos {
   /*
   // Validate interval
   validateIntervalNew(value, fromValue, toValue) {
-  
+   
     value = Number(value);
     fromValue = Number(fromValue);
     toValue = Number(toValue);
-  
+   
     // Validate interval
     return ((fromValue <= toValue)
       && (value >= fromValue)
@@ -1091,10 +1087,10 @@ class Condos {
     /*
     // Create a date object
     const objDate = new Date(year, month - 1, day);
-  
+   
     // Validate that the date components match
     return isValid;
-  
+   
     return (objDate.getFullYear() === year && objDate.getMonth() === month - 1 && objDate.getDate() === day);
     */
   }
@@ -1102,7 +1098,7 @@ class Condos {
   /*
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(date) {
-  
+   
     // Check for valid date String
     if (date === '' || typeof date === 'undefined') {
       return false;
@@ -1110,20 +1106,20 @@ class Condos {
     // Regular expression for valuating the dd.mm.yyyy format
     const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
     const match = date.match(regex);
-  
+   
     if (!match) return false; // Return false if format doesn't match
-  
+   
     // Extract day, month, and year
     const day = parseInt(match[1], 10);
     const month = parseInt(match[2], 10);
     const year = parseInt(match[3], 10);
-  
+   
     // Check if month is between 1 and 12
     if (month < 1 || month > 12) return false;
-  
+   
     // Create a date object
     const objDate = new Date(year, month - 1, day);
-  
+   
     // Validate that the date components match
     return (
       objDate.getFullYear() === year
@@ -1136,7 +1132,7 @@ class Condos {
   /*
   // Format norwegian date (11.05.1983) to number (19830511)
   formatNorDateToNumberNew(norDate) {
-  
+   
     return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
   }
   */
@@ -1278,9 +1274,9 @@ class Condos {
       if (text !== '' && style !== '') html += `<th class="center no-border" style="${style}">${text}</th>`;
     });
 
-    const className ='logOut';
-    html += this.showButton('width:100px;',className, 'Logg ut');
-    
+    const className = 'logOut';
+    html += this.showButton('width:100px;', className, 'Logg ut');
+
     // empty row
     html += this.insertTableColumns('', 0, '');
 
@@ -1449,7 +1445,6 @@ class Condos {
     document.querySelector('.message').innerHTML = html;
   }
 }
-
 
 // Check if string includes only digits
 function isNumeric(string) {
@@ -1926,31 +1921,6 @@ function removeIframe() {
   }
 }
 
-function testMode() {
-
-  switch (objUsers.serverStatus) {
-
-    // Web server
-    case 1:
-    // Test web server/ local web server
-    case 2: {
-
-      sessionStorage.removeItem("user");
-
-      // Save email/user, password and security level
-      const email = 'inge.gilje@gmail.com';
-      const password = '12345';
-      const securityLevel = 9;
-      const condominiumId = 2;
-      sessionStorage.setItem('user', JSON.stringify({ email, password, securityLevel, condominiumId }));
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-}
-
 // Validate interval
 function validateInterval(className, labelText, fromValue, toValue) {
 
@@ -1991,8 +1961,8 @@ function exitIfNoActivity() {
   inactivityTimeout = setTimeout(() => {
 
     const URL = (this.serverStatus === 1)
-      ? 'http://ingegilje.no/condo-voucher.html'
-      : 'http://localhost/condo-voucher.html';
+      ? 'http://ingegilje.no/condo-login.html'
+      : 'http://localhost/condo-login.html';
     window.location.href = URL;
 
     //window.location.href =

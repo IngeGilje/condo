@@ -2,12 +2,15 @@
 
 // Activate objects
 const today = new Date();
-const objUsers = new User('user');
-const objAccounts = new Account('account');
+const objUser = new User('user');
+const objAccount = new Account('account');
 const objUserBankAccounts = new UserBankAccount('userbankaccount');
 
-let condominiumId = 0;
-let user = "";
+const disableChanges = (objUserBankAccounts.securityLevel < 5);
+const condominiumId = objUserBankAccounts.condominiumId;
+const user = objUserBankAccounts.user;
+
+const tableWidth = 'width:950px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -17,23 +20,21 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUsers.checkServer()) {
+  if (await objUser.checkServer()) {
 
     // Validate LogIn
-    condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user = sessionStorage.getItem("user");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'A';
-      await objUsers.loadUsersTable(condominiumId, resident);
+      await objUser.loadUsersTable(condominiumId, resident, objUserBankAccount.nineNine);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(condominiumId, fixedCost);
       await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
       // Show header
@@ -51,7 +52,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'condo-server.js er ikke startet.');
+    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -111,7 +112,7 @@ async function events() {
         .map(prefix => objUserBankAccounts.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      //const className = objAccounts.getDeleteClass(event.target);
+      //const className = objAccount.getDeleteClass(event.target);
       const classNameDelete = `.${className}`
       const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
       if (deleteAccountRowValue === "Ja") {
@@ -120,7 +121,7 @@ async function events() {
         deleteAccountRow(accountId, className);
 
         const fixedCost = 'A';
-        await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+        await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
         let menuNumber = 0;
         menuNumber = showResult(menuNumber);
@@ -131,7 +132,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-       let url = (objUserBankAccounts.serverStatus === 1)
+      let url = (objUserBankAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -145,7 +146,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objUserBankAccounts.startTable('width:950px;');
+  let html = objUserBankAccounts.startTable(tableWidth);
 
   // show main header
   html += objUserBankAccounts.showTableHeader('width:175px;', 'Bankkonto for bruker');
@@ -160,13 +161,13 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objUserBankAccounts.startTable('width:950px;');
+  html = objUserBankAccounts.startTable(tableWidth);
 
   // start table body
   html += objUserBankAccounts.startTableBody();
 
   // show main header
-  html += objUserBankAccounts.showTableHeaderLogOut('width:175px;', '','','','Bankkonto for bruker','');
+  html += objUserBankAccounts.showTableHeaderLogOut('width:175px;', '', '', '', 'Bankkonto for bruker', '');
   html += "</tr>";
 
   // end table body
@@ -181,7 +182,7 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  let html = objUserBankAccounts.startTable('width:950px;');
+  let html = objUserBankAccounts.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
@@ -195,10 +196,10 @@ function showFilter(rowNumber) {
   html += objUserBankAccounts.insertTableColumns('', rowNumber, '');
 
   // Show all selected users
-  html += objUsers.showSelectedUsers('filterUserId', 'width:175px;', '', 'Alle');
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', false, '', 'Alle');
 
   // Show all selected accounts
-  html += objAccounts.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle');
+  html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', false);
   html += "</tr>";
 
   // insert table columns in start of a row
@@ -224,13 +225,13 @@ function insertEmptyTableRow(rowNumber) {
   html += objUserBankAccounts.insertTableColumns('', rowNumber, 'Ny brukerkonto');
 
   // user column
-  html += objUsers.showSelectedUsers('userId0', 'width:175px;', 0, 'Ingen er valgt', '');
+  html += objUser.showSelectedUsers('userId0', 'width:175px;', disableChanges, 0, 'Ingen er valgt', '');
 
   // Account column
-  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '');
+  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '', disableChanges);
 
   // bank account number
-  html += objUserBankAccounts.inputTableColumn('bankAccount0', '', 11);
+  html += objUserBankAccounts.inputTableColumn('bankAccount0', '', 11, disableChanges);
 
   html += "</tr>";
   return html;
@@ -240,7 +241,7 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objUserBankAccounts.startTable('width:950px;');
+  let html = objUserBankAccounts.startTable(tableWidth);
 
   // table header
   rowNumber++;
@@ -254,29 +255,32 @@ function showResult(rowNumber) {
 
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;
-    const selectedChoice = 'Nei';
-    html += objUserBankAccounts.showYesNo(className, selectedChoice);
+    const selected = 'Nei';
+    html += objUserBankAccounts.showYesNo(className, selected);
 
     // user Id
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUsers.showSelectedUsers(className, 'width:175px;', userId, 'Ingen er valgt', '');
+    html += objUser.showSelectedUsers(className, 'width:175px;', userId, disableChanges, 'Ingen er valgt', '');
 
     // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccounts.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '');
+    html += objAccount.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '', disableChanges);
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccounts.inputTableColumn(className, '', userBankAccount.bankAccount, 11);
+    html += objUserBankAccounts.inputTableColumn(className, '', userBankAccount.bankAccount, 11, disableChanges);
 
     html += "</tr>";
   });
 
-  // Insert empty table row for insertion
-  rowNumber++;
-  html += insertEmptyTableRow(rowNumber);
+  if (!disableChanges) {
+
+    // Insert empty table row for insertion
+    rowNumber++;
+    html += insertEmptyTableRow(rowNumber);
+  }
 
   // The end of the table
   html += objUserBankAccounts.endTable();
@@ -300,7 +304,7 @@ async function deleteAccountRow(userBankAccountId, className) {
   }
 
   const fixedCost = 'A';
-  await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+  await objAccount.loadAccountsTable(condominiumId, fixedCost);
 }
 
 // Update userbankaccounts row

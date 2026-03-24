@@ -92,9 +92,11 @@ class User extends Condos {
   }
 
   // get users
-  async loadUsersTable(condominiumId, resident) {
+  async loadUsersTable(condominiumId, resident, userId) {
 
-    const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
+    const URL = (this.serverStatus === 1)
+      ? '/api/users'
+      : 'http://localhost:3000/users';
     try {
 
       // Get users
@@ -106,6 +108,7 @@ class User extends Condos {
         body: JSON.stringify({
           action: 'select',
           condominiumId: condominiumId,
+          userId: userId,
           resident: resident
         })
       });
@@ -113,28 +116,17 @@ class User extends Condos {
       this.arrayUsers = await response.json();
 
     } catch (error) {
-      console.log("Error updating users:", error);
+      console.log("Error loading users:", error);
     }
   }
 
-  /*
-  if(!response.ok) throw new Error("Network error (users)");
-    this.arrayUsers = await response.json();
-
-    } catch (error) {
-      console.log("Error loading users:", error);
-    }
-*/
-
-
   // update user row in users table
-  async updateUsersTable(resident, user, email, userId, condoId, firstName, lastName, phone, securityLevel, password) {
+  async updateUsersTable(resident, user, email, userId, condoId, firstName, lastName, phone) {
 
     const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/users?action=update&user=${user}&email=${email}&userId=${userId}&condoId=${condoId}&firstName=${firstName}&lastName=${lastName}&phone=${phone}&securityLevel=${securityLevel}&password=${password}&resident=${resident}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -149,8 +141,6 @@ class User extends Condos {
           firstName: firstName,
           lastName: lastName,
           phone: phone,
-          securityLevel: securityLevel,
-          password: password,
           resident: resident
         })
       });
@@ -158,6 +148,33 @@ class User extends Condos {
       this.arrayUsers = await response.json();
     } catch (error) {
       console.log("Error updating users:", error);
+    }
+  }
+
+  // update user row in users table
+  async updateUserPassword(user, userId, securityLevel, password) {
+
+    const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
+    try {
+
+      // POST request
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'updateUserPassword',
+          user: user,
+          userId: userId,
+          securityLevel: securityLevel,
+          password: password
+        })
+      });
+      if (!response.ok) throw new Error("Network error (users)");
+      this.arrayUsers = await response.json();
+    } catch (error) {
+      console.log("Error updating password:", error);
     }
   }
 
@@ -238,19 +255,18 @@ class User extends Condos {
   }
 
   // Show all selected users
-  showSelectedUsers(className, style, userId, selectNone, selectAll) {
+  showSelectedUsers(className, style, disabled = false, userId, selectNone, selectAll,) {
 
     let selectedValue = false;
 
-    let html =
-      `
+    let html = `
         <td
           class="center one-line"
         >
           <select 
             class="${className} center"
-            ${(style) ? `style=${style}` : 'style="width:175px;"'}
-          >`;
+            ${(disabled) ? 'disabled' : ''}
+            ${(style) ? `style=${style}` : 'style="width:175px;"'}>`;
 
     // Check if user array is empty
     const numberOfRows = this.arrayUsers.length;

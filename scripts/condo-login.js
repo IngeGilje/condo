@@ -1,6 +1,6 @@
 // Login
 // Activate classes
-const objUsers = new User('user');
+const objUser = new User('user');
 const objLogIn = new Login('login');
 
 sessionStorage.clear();
@@ -10,12 +10,11 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUsers.checkServer()) {
-
+  if (await objUser.checkServer()) {
 
     const condominiumId = objLogIn.nineNine;
     const resident = 'Y';
-    await objUsers.loadUsersTable(condominiumId, resident);
+    await objUser.loadUsersTable(condominiumId, resident, objLogIn.nineNine);
 
     // Show header
     //showHeader();
@@ -27,7 +26,7 @@ async function main() {
     events();
   } else {
 
-    objUsers.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'condo-server.js er ikke startet.');
+    objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -59,7 +58,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objLogIn.startTable('width:250px;margin: 0 auto;');
+  let html = objLogIn.startTable(tableWidth,'margin: 0 auto;');
 
   // show main header
   html += objLogIn.showTableHeader('width:250px;', 'LogIn');
@@ -83,8 +82,8 @@ function showResult() {
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
 
   // email
-  const email = 'inge.gilje@gmail.com';
-  html += objLogIn.inputTableColumn('email', '', email, 45, '');
+  const email = 'inge.gilje@ig.no';
+  html += objLogIn.inputTableColumn('email', '', email, 45, false, true);
 
   html += "</tr>";
 
@@ -102,7 +101,7 @@ function showResult() {
 
   // password
   password = '12345';
-  html += objLogIn.inputTableColumn('password', '', password, 45);
+  html += objLogIn.inputTableColumnPassword('password', '', password, 45);
 
   html += "</tr>";
 
@@ -133,36 +132,34 @@ async function checkLogin() {
 
   // validate email
   const email = document.querySelector('.email').value;
-  //const validEmail = objUsers.validateEmail('email', email);
 
   // validate password
   const password = document.querySelector('.password').value;
   // get userId
-  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
+  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
   if (rowNumberUser !== -1) {
 
     // Check user and password 
-    userId = objUsers.arrayUsers[rowNumberUser].userId;
-    if (await objUsers.validateUser(userId, password)) {
-
-      // Load users table
-      const condominiumId = objLogIn.nineNine;
-      const resident = 'Y';
-      await objUsers.loadUsersTable(condominiumId, resident);
+    userId = objUser.arrayUsers[rowNumberUser].userId;
+    if (await objUser.validateUser(userId, password)) {
 
       // The sessionStorage object stores data for only one session
-      window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[0].condominiumId);
-      window.sessionStorage.setItem("user", objUsers.arrayUsers[0].email);
+      window.sessionStorage.setItem("condominiumId", objUser.arrayUsers[rowNumberUser].condominiumId);
+      window.sessionStorage.setItem("user", objUser.arrayUsers[rowNumberUser].email);
+      window.sessionStorage.setItem("securityLevel", objUser.arrayUsers[rowNumberUser].securityLevel);
+      window.sessionStorage.setItem("userId", objUser.arrayUsers[rowNumberUser].userId);
 
       // Start bank account transactions
-      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-bankaccounttransaction.html' : 'http://localhost/condo-bankaccounttransaction.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-bankaccounttransaction.html'
+        : 'http://localhost/condo-bankaccounttransaction.html';
       window.location.href = URL;
       return true;
     }
   }
 
   // password/ user is not OK
-  objUsers.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Ugyldig passord/email');
+  objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Ugyldig passord/email');
 
   resetValues();
   return false;

@@ -12,8 +12,8 @@ class BankAccountTransaction extends Condos {
       <td 
         class="center one-line">
           <select class="${className} center"
-            ${disabled ? 'disabled' : ''}
-            ${style ? `style="${style}"` : ''}
+            ${(disabled) ? 'disabled' : ''}
+            ${(style) ? `style="${style}"` : ''}
           >`;
 
     // Check if bank account transaction array is empty

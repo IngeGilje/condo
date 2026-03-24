@@ -39,13 +39,13 @@ app.post('/health', (req, res) => {
 });
 
 // Get information from the session
-//app.get("/profile", (req, res) => {
 app.post("/profile", (req, res) => {
 
   if (req.session.username) {
     res.json({
       username: req.session.username,
       securityLevel: req.session.securityLevel,
+      userId: req.session.userId,
       condominiumId: req.session.condominiumId
     });
   } else {
@@ -53,8 +53,21 @@ app.post("/profile", (req, res) => {
   }
 });
 
+// Get current user info
+//app.get("/me", async (req, res) => {
+app.post("/me", async (req, res) => {
+
+  console.log('req.session', req.session);
+  if (req.session.user) {
+
+    res.send(req.session.user);
+  } else {
+
+    res.status(401).send("Not logged in");
+  }
+});
+
 // Destroy / clear session
-//app.get("/logout", (req, res) => {
 app.post("/logout", (req, res) => {
   req.session.destroy(() => {
     res.send("Session destroyed");
@@ -106,11 +119,9 @@ async function main() {
     // validate user
     app.post("/login", async (req, res) => {
 
-      console.log('/login');
       try {
 
         const userId = req.body.userId;
-        console.log('userId :', userId);
         const password = req.body.password;
         console.log('password :', password);
 
@@ -125,16 +136,13 @@ async function main() {
         const [rows] = await mySqlDB.query(SQLquery);
         if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
 
-          console.log('Gyldig');
           res.status(200).send('OK');
         } else {
 
-          console.log('Ugyldig');
           res.status(401).send("Not OK");
         }
 
       } catch (err) {
-        console.log('Ugyldig');
         res.json({ success: false });
       };
     });
@@ -180,20 +188,6 @@ async function main() {
         res.json({ success: true });
       } catch (err) {
         res.json({ success: false });
-      }
-    });
-
-    // Get current user info
-    //app.get("/me", async (req, res) => {
-    app.post("/me", async (req, res) => {
-
-      console.log('req.session', req.session);
-      if (req.session.user) {
-
-        res.send(req.session.user);
-      } else {
-
-        res.status(401).send("Not logged in");
       }
     });
 
@@ -345,11 +339,10 @@ async function main() {
       }
     });
 
-    // Requests for users
+    // Requests for users tabel
     app.post("/users", async (req, res) => {
 
       const action = req.body.action;
-      console.log('action :', action);
       const lastUpdate = today.toISOString();
 
       switch (action) {
@@ -358,16 +351,18 @@ async function main() {
 
           const condominiumId = Number(req.body.condominiumId);
           const resident = req.body.resident;
+          const userId = req.body.userId;
           try {
 
             let SQLquery = `
             SELECT * FROM users
               WHERE deleted <> 'Y'`;
 
-            console.log('SQLquery: ', SQLquery);
             if (Number(condominiumId) !== nineNine) SQLquery += ` AND condominiumId = ${condominiumId}`;
             if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
-
+            if (Number(userId) !== nineNine) SQLquery += ` AND userId = ${userId}`;
+            
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
@@ -393,13 +388,6 @@ async function main() {
             const firstName = req.body.firstName;
             const lastName = req.body.lastName;
             const phone = req.body.phone;
-            const securityLevel = req.body.securityLevel;
-            let password = req.body.password;
-
-            // Hash the password
-            const saltRounds = 10;
-            password = await bcrypt.hash(password, saltRounds);
-            console.log('password :', password);
 
             const SQLquery =
               `
@@ -412,7 +400,42 @@ async function main() {
                   condoId = ${condoId},
                   firstName = '${firstName}',
                   lastName = '${lastName}',
-                  phone = '${phone}',
+                  phone = '${phone}'
+                WHERE userId = ${userId};
+              `;
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /users:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'updateUserPassword': {
+
+          try {
+
+            const userId = req.body.userId;
+            const user = req.body.user;
+
+            const securityLevel = req.body.securityLevel;
+            let password = req.body.password;
+
+            // Hash the password
+            const saltRounds = 10;
+            password = await bcrypt.hash(password, saltRounds);
+
+            const SQLquery =
+              `
+                UPDATE users
+                SET
+                  user = '${user}',
+                  lastUpdate = '${lastUpdate}',
                   securityLevel = ${securityLevel},
                   password = '${password}'
                 WHERE userId = ${userId};
