@@ -35,7 +35,7 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident);
+      await objUser.loadUsersTable(condominiumId, resident, objOverview.nineNine);
       await objCondo.loadCondoTable(condominiumId);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(condominiumId, fixedCost);

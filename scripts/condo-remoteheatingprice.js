@@ -26,13 +26,14 @@ async function main() {
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
-      //window.location.href = 'http://localhost/condo-login.html';
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident);
+      await objUser.loadUsersTable(condominiumId, resident, objRemoteHeatingPrice.nineNine);
       await objCondo.loadCondoTable(condominiumId);
 
       // Show header
@@ -248,7 +249,7 @@ function showResult(rowNumber) {
 
   // Insert empty table row for insertion
   if (!disableChanges) {
-    
+
     rowNumber++;
     html += insertEmptyTableRow(rowNumber);
   }

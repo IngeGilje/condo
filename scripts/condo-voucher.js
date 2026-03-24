@@ -31,7 +31,7 @@ async function main() {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -43,20 +43,16 @@ async function main() {
 
       showHeader();
 
-      // Show filter #1
-      menuNumber = showFilter1(menuNumber);
-
-      // Show filter #2
-        let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = convertDateToISOFormat(fromDate);
-      let toDate = document.querySelector('.filterToDate').value;
-      toDate = convertDateToISOFormat(toDate);
+      // Show filter
+      let fromDate = 20000101;
+      let toDate = 20991231;
       const orderBy = 'bankAccountTransactionId DESC, date DESC, income DESC';
       await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, 0, fromDate, toDate);
-      bankAccountTransactionId = (bankAccountTransactionId === 0) ? objBankAccountTransaction.arrayBankAccountTransactions.at(-1).bankAccountTransactionId : bankAccountTransactionId;
-    menuNumber = showFilter2(menuNumber, bankAccountTransactionId);
+
+      menuNumber = showFilter(menuNumber);
 
       // Show result
+      if (bankAccountTransactionId === 0) bankAccountTransactionId = objBankAccountTransaction.arrayBankAccountTransactions[0].bankAccountTransactionId;
       menuNumber = showResult(bankAccountTransactionId, menuNumber);
 
       // Events
@@ -93,6 +89,7 @@ async function events() {
       updateBankAccountTransactionRow(bankAccountTransactionId);
     };
   });
+
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -104,23 +101,20 @@ async function events() {
       window.location.href = url;
     };
   });
+
+  // Back
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('bankAccountTransaction')) {
+
+      let url = (objBankAccountTransaction.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      const bankAccountTransationId = document.querySelector('.filterBankAccountTransactionId').value;
+      url = `${url}condo-bankAccountTransaction.html?bankAccountTransactionId=${bankAccountTransationId}`;
+      window.location.href = url;
+    };
+  });
 }
-
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objBankAccountTransaction.startTable(tableWidth);
-
-  // show main header
-  html += objBankAccountTransaction.showTableHeader('width:175px;', 'Vis bilag');
-
-  // The end of the table
-  html += objBankAccountTransaction.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
 
 // Show header
 function showHeader() {
@@ -132,7 +126,7 @@ function showHeader() {
   html += objBankAccountTransaction.startTableBody();
 
   // show main header
-  html += objBankAccountTransaction.showTableHeaderLogOut('width:175px;', '','','Vis bilag','');
+  html += objBankAccountTransaction.showTableHeaderLogOut('width:175px;', '', '', 'Vis bilag', '');
   html += "</tr>";
 
   // end table body
@@ -143,6 +137,7 @@ function showHeader() {
   document.querySelector('.header').innerHTML = html;
 }
 
+/*
 // Show filter
 function showFilter1(rowNumber) {
 
@@ -180,9 +175,10 @@ function showFilter1(rowNumber) {
 
   return rowNumber;
 }
+*/
 
 // Show filter
-function showFilter2(rowNumber, bankAccountTransactionId) {
+function showFilter(rowNumber, bankAccountTransactionId) {
 
   // Start table
   html = objBankAccountTransaction.startTable(tableWidth);
@@ -259,9 +255,24 @@ function showResult(bankAccountTransactionId, rowNumber) {
 
     let voucerFileName = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].voucerFileName;
     voucerFileName = (voucerFileName) ? voucerFileName : `${bankAccountTransactionId}.pdf`;
-    html += objBankAccountTransaction.inputTableColumn('voucerFileName', '', voucerFileName, 45);
+    html += objBankAccountTransaction.inputTableColumn('voucerFileName', '', voucerFileName, 45, disableChanges);
 
     html += "<td></td><td></td></tr>";
+
+    // Show button
+    rowNumber++;
+    html += objBankAccountTransaction.insertTableColumns('', rowNumber, '', '', '');
+    html += "</tr>";
+
+    rowNumber++;
+    html += objBankAccountTransaction.insertTableColumns('', rowNumber);
+
+    html += objBankAccountTransaction.showButton('width:175px;', 'bankAccountTransaction', 'Tilbake');
+    html += "</tr>";
+
+    rowNumber++;
+    html += objBankAccountTransaction.insertTableColumns('', rowNumber, '', '', '');
+    html += "</tr>";
 
     // Show pdf file
     rowNumber++;
@@ -332,7 +343,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
       fromDate = convertDateToISOFormat(fromDate);
       let toDate = document.querySelector('.filterToDate').value;
       toDate = convertDateToISOFormat(toDate);
-      menuNumber = showFilter2(menuNumber, bankAccountTransactionId);
+      menuNumber = showFilter(menuNumber, bankAccountTransactionId);
 
       menuNumber = showResult(bankAccountTransactionId, menuNumber);
     }

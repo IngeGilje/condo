@@ -13,7 +13,7 @@ const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransac
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 const objDue = new Due('due');
-const objSuppliers = new Supplier('supplier');
+const objSupplier = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
 const disableChanges = (objImportFile.securityLevel < 5);
@@ -37,7 +37,7 @@ async function main() {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -51,13 +51,13 @@ async function main() {
         if (await objImportFile.checkIfFileExists(csvFileName)) {
 
           const resident = 'A';
-          await objUser.loadUsersTable(condominiumId, resident);
+          await objUser.loadUsersTable(condominiumId, resident, objImportFile.nineNine);
           const fixedCost = 'A';
           await objAccount.loadAccountsTable(condominiumId, fixedCost);
           await objBankAccount.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
           await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objImportFile.nineNine, objImportFile.nineNine);
           await objCondo.loadCondoTable(condominiumId);
-          await objSuppliers.loadSuppliersTable(condominiumId);
+          await objSupplier.loadSuppliersTable(condominiumId);
 
           const deleted = 'A';
           const accountId = objImportFile.nineNine;
@@ -515,7 +515,7 @@ function showHeader() {
   html += objImportFile.startTableBody();
 
   // show main header
-  html += objImportFile.showTableHeaderLogOut('width:175px;', '','','','','Import av bankkontotransaksjoner','','','');
+  html += objImportFile.showTableHeaderLogOut('width:175px;', '', '', '', '', 'Import av bankkontotransaksjoner', '', '', '');
   html += "</tr>";
 
   // end table body

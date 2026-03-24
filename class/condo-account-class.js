@@ -69,21 +69,21 @@ class Account extends Condos {
 
     let rowNumberSupplier;
     // get Account Id from supplier amount
-    rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+    rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
     if (rowNumberSupplier !== -1) {
 
-      accountId = objSuppliers.arraySuppliers[rowNumberSupplier].accountId;
+      accountId = objSupplier.arraySuppliers[rowNumberSupplier].accountId;
 
       // get Account Id from supplier amount
-      const amount = (objSuppliers.arraySuppliers[rowNumberSupplier].amount) ? Number(objSuppliers.arraySuppliers[rowNumberSupplier].amount) : 0;
+      const amount = (objSupplier.arraySuppliers[rowNumberSupplier].amount) ? Number(objSupplier.arraySuppliers[rowNumberSupplier].amount) : 0;
 
-      accountId = (amount === Number(payment)) ? Number(objSuppliers.arraySuppliers[rowNumberSupplier].amountAccountId) : accountId;
+      accountId = (amount === Number(payment)) ? Number(objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId) : accountId;
     }
 
     // get Account Id from supplier text
     if (accountId === 0) {
 
-      objSuppliers.arraySuppliers.forEach((supplier) => {
+      objSupplier.arraySuppliers.forEach((supplier) => {
 
         if (supplier.text === text) {
 

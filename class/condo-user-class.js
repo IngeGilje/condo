@@ -92,9 +92,11 @@ class User extends Condos {
   }
 
   // get users
-  async loadUsersTable(condominiumId, resident) {
+  async loadUsersTable(condominiumId, resident, userId) {
 
-    const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
+    const URL = (this.serverStatus === 1)
+      ? '/api/users'
+      : 'http://localhost:3000/users';
     try {
 
       // Get users
@@ -106,6 +108,7 @@ class User extends Condos {
         body: JSON.stringify({
           action: 'select',
           condominiumId: condominiumId,
+          userId: userId,
           resident: resident
         })
       });
@@ -113,7 +116,7 @@ class User extends Condos {
       this.arrayUsers = await response.json();
 
     } catch (error) {
-      console.log("Error updating users:", error);
+      console.log("Error loading users:", error);
     }
   }
 

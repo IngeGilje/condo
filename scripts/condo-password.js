@@ -6,9 +6,11 @@ const objCondo = new Condo('condo');
 const objUser = new User('user');
 const objPassword = new Password('password');
 
-let condominiumId = 0;
-let user = "";
-let securityLevel = 0;
+const disableChanges = (objPassword.securityLevel < 5);
+const condominiumId = objPassword.condominiumId;
+const user = objPassword.user;
+const userId = objPassword.userId;
+
 const tableWidth = "width:600px;";
 
 // Exit application if no activity for 1 hour
@@ -25,13 +27,19 @@ async function main() {
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
-      //window.location.href = 'http://localhost/condo-login.html';
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident);
+
+      // Verify whether the user has permission to change all passwords
+      // or only their own password
+      (disableChanges)
+        ? await objUser.loadUsersTable(condominiumId, resident, objPassword.userId)
+        : await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
       await objCondo.loadCondoTable(condominiumId);
 
       // Show header
@@ -146,7 +154,7 @@ function showFilter(userId, rowNumber) {
   html += objUser.insertTableColumns('', rowNumber);
 
   // user
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', false,userId, '')
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', false, userId, '')
 
   html += "</tr>";
 
@@ -187,7 +195,7 @@ function showResult(userId, rowNumber) {
     html += objUser.inputTablePassword('password', '', '**********', 45);
 
     // securityLevel
-    html += objUser.showSelectedNumbers('securityLevel', "width:175px;", 1, 9,objUser.arrayUsers[rowNumberUser].securityLevel);
+    html += objUser.showSelectedNumbers('securityLevel', "width:175px;", 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, disableChanges);
 
     html += "</tr>";
 
@@ -246,7 +254,12 @@ async function updateUserRow(userId) {
       // update the users row
       await objUser.updateUserPassword(user, userId, securityLevel, password);
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident);
+
+      // Verify whether the user has permission to change all passwords
+      // or only their own password
+      (disableChanges)
+        ? await objUser.loadUsersTable(condominiumId, resident, objPassword.userId)
+        : await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
     }
 
     // Show filter

@@ -12,10 +12,9 @@ async function main() {
   // Check if server is running
   if (await objUser.checkServer()) {
 
-
     const condominiumId = objLogIn.nineNine;
     const resident = 'Y';
-    await objUser.loadUsersTable(condominiumId, resident);
+    await objUser.loadUsersTable(condominiumId, resident, objLogIn.nineNine);
 
     // Show header
     //showHeader();
@@ -148,9 +147,12 @@ async function checkLogin() {
       window.sessionStorage.setItem("condominiumId", objUser.arrayUsers[rowNumberUser].condominiumId);
       window.sessionStorage.setItem("user", objUser.arrayUsers[rowNumberUser].email);
       window.sessionStorage.setItem("securityLevel", objUser.arrayUsers[rowNumberUser].securityLevel);
+      window.sessionStorage.setItem("userId", objUser.arrayUsers[rowNumberUser].userId);
 
       // Start bank account transactions
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-bankaccounttransaction.html' : 'http://localhost/condo-bankaccounttransaction.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-bankaccounttransaction.html'
+        : 'http://localhost/condo-bankaccounttransaction.html';
       window.location.href = URL;
       return true;
     }

@@ -31,7 +31,7 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objUser.condominiumId, resident);
+      await objUser.loadUsersTable(objUser.condominiumId, resident,objUser.nineNine);
       await objCondo.loadCondoTable(objUser.condominiumId);
 
       // Show header
@@ -84,7 +84,7 @@ async function events() {
       deleteUserRow();
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objUser.condominiumId, resident);
+      await objUser.loadUsersTable(objUser.condominiumId, resident,objUser.nineNine);
 
       // Show filter
       let menuNumber = 0;
@@ -108,7 +108,7 @@ async function events() {
 
       // Reload users table
       const resident = 'Y';
-      await objUser.loadUsersTable(objUser.condominiumId, resident);
+      await objUser.loadUsersTable(objUser.condominiumId, resident,objUser.nineNine);
 
       let userId = Number(document.querySelector('.filterUserId').value);
       if (userId === 0) userId = objUser.arrayUsers.at(-1).userId;
@@ -379,7 +379,7 @@ async function updateUserRow(userId) {
 
       // update the users row
       await objUser.updateUsersTable(resident, objUser.user, email, userId, condoId, firstName, lastName, phone);
-      await objUser.loadUsersTable(objUser.condominiumId, resident);
+      await objUser.loadUsersTable(objUser.condominiumId, resident,objUser.nineNine);
     } else {
 
       // check if user exist
@@ -391,7 +391,7 @@ async function updateUserRow(userId) {
         const securityLevel = 1;
         const password = "";
         await objUser.insertUsersTable(resident, objUser.condominiumId, objUser.user, email, condoId, firstName, lastName, phone, securityLevel, password);
-        await objUser.loadUsersTable(objUser.condominiumId, resident);
+        await objUser.loadUsersTable(objUser.condominiumId, resident,objUser.nineNine);
         userId = objUser.arrayUsers.at(-1).userId;
         document.querySelector('.filterUserId').value = userId;
       } else {

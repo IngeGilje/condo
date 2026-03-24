@@ -45,6 +45,7 @@ app.post("/profile", (req, res) => {
     res.json({
       username: req.session.username,
       securityLevel: req.session.securityLevel,
+      userId: req.session.userId,
       condominiumId: req.session.condominiumId
     });
   } else {
@@ -118,11 +119,9 @@ async function main() {
     // validate user
     app.post("/login", async (req, res) => {
 
-      console.log('/login');
       try {
 
         const userId = req.body.userId;
-        console.log('userId :', userId);
         const password = req.body.password;
         console.log('password :', password);
 
@@ -137,16 +136,13 @@ async function main() {
         const [rows] = await mySqlDB.query(SQLquery);
         if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
 
-          console.log('Gyldig');
           res.status(200).send('OK');
         } else {
 
-          console.log('Ugyldig');
           res.status(401).send("Not OK");
         }
 
       } catch (err) {
-        console.log('Ugyldig');
         res.json({ success: false });
       };
     });
@@ -343,7 +339,7 @@ async function main() {
       }
     });
 
-    // Requests for users
+    // Requests for users tabel
     app.post("/users", async (req, res) => {
 
       const action = req.body.action;
@@ -355,16 +351,18 @@ async function main() {
 
           const condominiumId = Number(req.body.condominiumId);
           const resident = req.body.resident;
+          const userId = req.body.userId;
           try {
 
             let SQLquery = `
             SELECT * FROM users
               WHERE deleted <> 'Y'`;
 
-            console.log('SQLquery: ', SQLquery);
             if (Number(condominiumId) !== nineNine) SQLquery += ` AND condominiumId = ${condominiumId}`;
             if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
-
+            if (Number(userId) !== nineNine) SQLquery += ` AND userId = ${userId}`;
+            
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
@@ -431,7 +429,6 @@ async function main() {
             // Hash the password
             const saltRounds = 10;
             password = await bcrypt.hash(password, saltRounds);
-            console.log('password :', password);
 
             const SQLquery =
               `

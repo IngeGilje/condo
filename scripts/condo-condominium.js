@@ -24,7 +24,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objCondominium.condominiumId === 0 || objCondominium.user === null)) {
+    if ((condominiumId === 0 || objCondominium.user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
@@ -33,13 +33,12 @@ async function main() {
     } else {
 
       await objCondominium.loadCondominiumsTable();
-      //const condominiumId = objCondominium.arrayCondominiums.at(-1).condominiumId;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objCondominium.condominiumId, resident);
+      await objUser.loadUsersTable(condominiumId, resident, objCondominium.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objCondominium.condominiumId, fixedCost);
-      await objBankAccount.loadBankAccountsTable(objCondominium.condominiumId, objCondominium.nineNine);
+      await objAccount.loadAccountsTable(condominiumId, fixedCost);
+      await objBankAccount.loadBankAccountsTable(condominiumId, objCondominium.nineNine);
 
       // Show header
       let menuNumber = 0;
@@ -49,7 +48,7 @@ async function main() {
       menuNumber = showFilter(menuNumber);
 
       // Show result
-      menuNumber = showResult(objCondominium.condominiumId, menuNumber);
+      menuNumber = showResult(condominiumId, menuNumber);
 
       // Events
       events();
@@ -319,10 +318,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominium.insertTableColumns('', rowNumber);
 
     // postalCode
-    html += objCondominium.inputTableColumn('postalCode', '', objCondominium.arrayCondominiums[rowNumberCondominium].postalCode, 4,disableChanges);
+    html += objCondominium.inputTableColumn('postalCode', '', objCondominium.arrayCondominiums[rowNumberCondominium].postalCode, 4, disableChanges);
 
     // city
-    html += objCondominium.inputTableColumn('city', '', objCondominium.arrayCondominiums[rowNumberCondominium].city, 45,disableChanges);
+    html += objCondominium.inputTableColumn('city', '', objCondominium.arrayCondominiums[rowNumberCondominium].city, 45, disableChanges);
 
     html += "</tr>";
 
@@ -353,10 +352,10 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominium.insertTableColumns('', rowNumber);
 
     // incomeRemoteHeatingAccountId
-    html += objAccount.showSelectedAccounts('incomeRemoteHeatingAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '',disableChanges);
+    html += objAccount.showSelectedAccounts('incomeRemoteHeatingAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '', disableChanges);
 
     // paymentRemoteHeatingAccountId
-    html += objAccount.showSelectedAccounts('paymentRemoteHeatingAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, '', '',disableChanges);
+    html += objAccount.showSelectedAccounts('paymentRemoteHeatingAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, '', '', disableChanges);
 
     html += "</tr>";
 
@@ -370,7 +369,7 @@ function showResult(condominiumId, rowNumber) {
     html += objCondominium.insertTableColumns('', rowNumber);
 
     // commonCostAccountId
-    html += objAccount.showSelectedAccounts('commonCostAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '',disableChanges);
+    html += objAccount.showSelectedAccounts('commonCostAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '', disableChanges);
 
     // organizationNumber
     html += objCondominium.inputTableColumn('organizationNumber', '', objCondominium.arrayCondominiums[rowNumberCondominium].organizationNumber, 9, disableChanges);

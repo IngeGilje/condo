@@ -17,7 +17,7 @@ const tableWidth = 'width:600px;';
 exitIfNoActivity();
 
 // Validate LogIn
-if ((objBankAccount.condominiumId === 0 || objBankAccount.user === null)) {
+if ((condominiumId === 0 || objBankAccount.user === null)) {
 
   // LogIn is not valid
   const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
@@ -32,18 +32,18 @@ if ((objBankAccount.condominiumId === 0 || objBankAccount.user === null)) {
     if (await objUser.checkServer()) {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objBankAccount.condominiumId, resident);
+      await objUser.loadUsersTable(condominiumId, resident,objBankAccount.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objBankAccount.condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(condominiumId, fixedCost);
       await objCondominium.loadCondominiumsTable();
-      await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, objBankAccount.nineNine);
+      await objBankAccount.loadBankAccountsTable(condominiumId, objBankAccount.nineNine);
 
       // Show header
       let menuNumber = 0;
       showHeader();
 
       // Show filter
-      menuNumber = showFilter(objBankAccount.condominiumId, menuNumber);
+      menuNumber = showFilter(condominiumId, menuNumber);
 
       const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
       await objBankAccount.loadBankAccountsTable(condominiumId, bankAccountId);
@@ -341,10 +341,10 @@ async function updateBankAccountRow(bankAccountId) {
     } else {
 
       // Insert the bankaccount row in bankaccounts table
-      await objBankAccount.insertBankAccountsTable(objBankAccount.condominiumId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+      await objBankAccount.insertBankAccountsTable(condominiumId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
     }
 
-    await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, bankAccountId);
+    await objBankAccount.loadBankAccountsTable(condominiumId, bankAccountId);
 
     let rowNumber = 0;
     rowNumber = showResult(bankAccountId, rowNumber);

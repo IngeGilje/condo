@@ -30,12 +30,14 @@ async function main() {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) 
+      ? 'http://ingegilje.no/condo-login.html' 
+      : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident);
+      await objUser.loadUsersTable(condominiumId, resident, objAccount.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
@@ -54,7 +56,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeating.showMessage(objRemoteHeating,'', 'condo-server.js er ikke startet.');
+    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -186,7 +188,7 @@ function showHeader() {
   html += objAccount.startTableBody();
 
   // show main header
-  html += objAccount.showTableHeaderLogOut('width:175px;', '','','Konto','');
+  html += objAccount.showTableHeaderLogOut('width:175px;', '', '', 'Konto', '');
   html += "</tr>";
 
   // end table body
@@ -214,7 +216,7 @@ function showFilter(rowNumber) {
   html += objAccount.insertTableColumns('', 0, '');
 
   // fixed or not fixed cost
-  html += objAccount.showSelectedValues('filterFixedCost', 'width:100px;',false, 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += objAccount.showSelectedValues('filterFixedCost', 'width:100px;', false, 'Alle', constFixedCost, constVariableCost, 'Alle');
 
   html += "</tr>";
 
@@ -245,7 +247,7 @@ function insertEmptyTableRow(rowNumber) {
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
-  html += objAccount.showSelectedValues('fixedCost0', '', disableChanges,constFixedCost, constFixedCost, constVariableCost);
+  html += objAccount.showSelectedValues('fixedCost0', '', disableChanges, constFixedCost, constFixedCost, constVariableCost);
 
   // name
   html += objAccount.inputTableColumn('name0', "", 45);
@@ -276,7 +278,7 @@ function showResult(rowNumber) {
     if (account.deleted === 'N') selected = "Nei";
 
     let className = `delete${account.accountId}`;
-    html += objAccount.showSelectedValues(className, 'width:75px;', disableChanges,selected, 'Nei', 'Ja')
+    html += objAccount.showSelectedValues(className, 'width:75px;', disableChanges, selected, 'Nei', 'Ja')
 
     // fixed cost
     selected = "Ugyldig verdi";
@@ -299,7 +301,7 @@ function showResult(rowNumber) {
     }
 
     className = `fixedCost${account.accountId}`;
-    html += objAccount.showSelectedValues(className, '',disableChanges, selected, constFixedCost, constVariableCost)
+    html += objAccount.showSelectedValues(className, '', disableChanges, selected, constFixedCost, constVariableCost)
 
     // name
     const name = account.name;

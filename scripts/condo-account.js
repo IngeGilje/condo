@@ -36,7 +36,7 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objAccount.condominiumId, resident);
+      await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
@@ -334,8 +334,6 @@ function showResult(rowNumber) {
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
 
-
-
   // Check if account row exist
   accountsRowNumber = objAccount.arrayAccounts.findIndex(account => account.accountId === accountId);
   if (accountsRowNumber !== -1) {
@@ -352,8 +350,6 @@ async function deleteAccountRow(accountId, className) {
 async function updateAccountsRow(accountId) {
 
   accountId = Number(accountId);
-
-
 
   // name
   className = `.name${accountId}`;

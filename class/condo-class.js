@@ -19,6 +19,7 @@ class Condos {
   condominiumId = Number(sessionStorage.getItem("condominiumId"));
   user = sessionStorage.getItem("user");
   securityLevel = Number(sessionStorage.getItem("securityLevel"));
+  userId = Number(sessionStorage.getItem("userId"));
 
   // array of menu objects
   arrayMenu = [
@@ -53,63 +54,68 @@ class Condos {
       text: "Bruker"
     },
     {
-      applicationName: "condo-userbankaccount.html",
+      applicationName: "condo-password.html",
       className: "Menu7",
+      text: "Passord"
+    },
+    {
+      applicationName: "condo-userbankaccount.html",
+      className: "Menu8",
       text: "Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
-      className: "Menu8",
+      className: "Menu9",
       text: "Mottaker"
     },
     {
       applicationName: "condo-commoncost.html",
-      className: "Menu9",
+      className: "Menu10",
       text: "Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
-      className: "Menu10",
+      className: "Menu11",
       text: "Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
-      className: "Menu11",
+      className: "Menu12",
       text: "Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
-      className: "Menu12",
+      className: "Menu13",
       text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
-      className: "Menu13",
+      className: "Menu14",
       text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu14",
+      className: "Menu15",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu15",
+      className: "Menu16",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-voucher.html",
-      className: "Menu16",
+      className: "Menu17",
       text: "Bilag"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu17",
+      className: "Menu18",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu18",
+      className: "Menu19",
       text: "Årsregnskap"
     },
   ];
@@ -684,10 +690,10 @@ class Condos {
     if (!bankAccountName) {
 
       // Bank account name from supplier table
-      const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+      const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
       if (rowNumberSupplier !== -1) {
 
-        bankAccountName = objSuppliers.arraySuppliers[rowNumberSupplier].name;
+        bankAccountName = objSupplier.arraySuppliers[rowNumberSupplier].name;
       }
     }
 

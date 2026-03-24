@@ -8,6 +8,10 @@ const objAccount = new Account('account');
 const objCondominium = new Condominium('condominium');
 const objDue = new Due('due');
 
+const disableChanges = (objDue.securityLevel < 5);
+const condominiumId = objDue.condominiumId;
+const user = objDue.user;
+
 tableWidth = 'width:1450px;';
 
 // Exit application if no activity for 1 hour
@@ -21,19 +25,21 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objDue.condominiumId === 0 || objDue.user === null)) {
+    if ((condominiumId === 0 || objDue.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objDue.condominiumId, resident);
-      await objCondo.loadCondoTable(objDue.condominiumId);
+      await objUser.loadUsersTable(condominiumId, resident, objDue.nineNine);
+      await objCondo.loadCondoTable(condominiumId);
       await objCondominium.loadCondominiumsTable();
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objDue.condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
       let menuNumber = 0;
 
@@ -50,7 +56,7 @@ async function main() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-      await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
+      await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
       // Show result
       menuNumber = showResult(menuNumber);
@@ -81,7 +87,7 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-      await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
+      await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
       let menuNumber = 0;
       menuNumber = showResult(menuNumber);
@@ -145,7 +151,7 @@ async function events() {
         let toDate = document.querySelector('.filterToDate').value;
         toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-        await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
+        await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
         let menuNumber = 0;
         menuNumber = showResult(menuNumber);
@@ -230,7 +236,7 @@ function showResult(rowNumber) {
   // Make one last table row for insertion in table 
 
   if (!disableChanges) {
-    
+
     // Insert empty table row for insertion
     rowNumber++;
     html += insertEmptyTableRow(rowNumber);
@@ -301,7 +307,7 @@ async function deleteDueRow(dueId, className) {
   let toDate = document.querySelector('.filterToDate').value;
   toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-  await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
+  await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 }
 
 // Update a dues row
@@ -354,7 +360,7 @@ async function updateDuesRow(dueId) {
     } else {
 
       // Insert the account row in accounts table
-      await objDue.insertDuesTable(objDue.condominiumId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
+      await objDue.insertDuesTable(condominiumId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
     }
 
     condoId = Number(document.querySelector('.filterCondoId').value);
@@ -364,7 +370,7 @@ async function updateDuesRow(dueId) {
     let toDate = document.querySelector('.filterToDate').value;
     toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-    await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
+    await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
 
     let menuNumber = 0;
     menuNumber = showResult(menuNumber);
@@ -429,7 +435,7 @@ function showFilter(rowNumber) {
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', 0);
 
   // Get condominiumId
-  const condominiumsRowNumber = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objDue.condominiumId);
+  const condominiumsRowNumber = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
   if (condominiumsRowNumber !== -1) {
 
     const commonCostAccountId = objCondominium.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
