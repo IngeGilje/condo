@@ -24,7 +24,7 @@ async function main() {
     // Validate LogIn
     condominiumId = Number(sessionStorage.getItem("condominiumId"));
     user = sessionStorage.getItem("user");
-        securityLevel = sessionStorage.getItem("securityLevel");
+    securityLevel = sessionStorage.getItem("securityLevel");
     if ((condominiumId === 0 || user === null)) {
 
       // LogIn is not valid
@@ -51,7 +51,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings,'', 'condo-server.js er ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -181,7 +181,7 @@ function showHeader() {
   html += objCommonCosts.startTableBody();
 
   // show main header
-  html += objCommonCosts.showTableHeaderLogOut('width:175px;', '','','Felleskostnader','','');
+  html += objCommonCosts.showTableHeaderLogOut('width:175px;', '', '', 'Felleskostnader', '', '');
   html += "</tr>";
 
   // end table body
@@ -196,7 +196,6 @@ function showHeader() {
 function insertEmptyTableRow(rowNumber) {
 
   let html = "";
-  let date = "";
 
   // insert table columns in start of a row
   html += objCommonCosts.insertTableColumns('', rowNumber);
@@ -205,7 +204,7 @@ function insertEmptyTableRow(rowNumber) {
 
   // Select year
   const year = today.getFullYear();
-  html += objCommonCosts.selectInterval('year0', 'width:175px;', 2020, 2030, year);
+  html += objCommonCosts.selectInterval('year0', 'width:175px;', 2020, 2030, year, (objCommonCosts.securityLevel < 5));
 
   // commonCostSquareMeter 
   html += objCommonCosts.inputTableColumn('commonCostSquareMeter0', '', '', 10);
@@ -234,38 +233,41 @@ function showResult(rowNumber) {
     html += objCommonCosts.insertTableColumns('', rowNumber);
 
     // Delete
-    let selectedChoice = "Ugyldig verdi";
-    if (commonCost.deleted === 'Y') selectedChoice = "Ja";
-    if (commonCost.deleted === 'N') selectedChoice = "Nei";
+    let selected = "Ugyldig verdi";
+    if (commonCost.deleted === 'Y') selected = "Ja";
+    if (commonCost.deleted === 'N') selected = "Nei";
 
     let className = `delete${commonCost.commonCostId}`;
-    html += objCommonCosts.showSelectedValues(className, 'width:175px;', (objCommonCosts.secityLevel < 5),selectedChoice, 'Nei', 'Ja')
+    html += objCommonCosts.showSelectedValues(className, 'width:175px;', (objCommonCosts.securityLevel < 5), selected, 'Nei', 'Ja');
 
     // Select year
     const year = commonCost.year;
     className = `year${commonCost.commonCostId}`;
-    html += objCommonCosts.selectInterval(className, 'width:175px;', 2020, 2030, year);
+    html += objCommonCosts.selectInterval(className, 'width:175px;', 2020, 2030, year, (objCommonCosts.securityLevel < 5));
 
     // common cost per squaremeter
     let commonCostSquareMeter = commonCost.commonCostSquareMeter;
     className = `commonCostSquareMeter${commonCost.commonCostId}`;
     commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
-    html += objCommonCosts.inputTableColumn(className, '', commonCostSquareMeter, 10);
+    html += objCommonCosts.inputTableColumn(className, '', commonCostSquareMeter, 10,(objCommonCosts.securityLevel < 5));
 
     // fixed cost per condo
     let fixedCostCondo = commonCost.fixedCostCondo;
     className = `fixedCostCondo${commonCost.commonCostId}`;
     fixedCostCondo = formatOreToKroner(fixedCostCondo);
-    html += objCommonCosts.inputTableColumn(className, '', fixedCostCondo, 10);
+    html += objCommonCosts.inputTableColumn(className, '', fixedCostCondo, 10,(objCommonCosts.securityLevel < 5));
 
     html += "</tr>";
   });
 
   // Make one last table row for insertion in table 
 
-  // Insert empty table row for insertion
-  rowNumber++;
-  html += insertEmptyTableRow(rowNumber);
+  if (objCommonCosts.securityLevel >= 5) {
+
+    // Insert empty table row for insertion
+    rowNumber++;
+    html += insertEmptyTableRow(rowNumber);
+  }
 
   // Show the rest of the menu
   rowNumber++;

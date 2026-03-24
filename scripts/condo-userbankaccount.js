@@ -257,8 +257,8 @@ function showResult(rowNumber) {
 
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;
-    const selectedChoice = 'Nei';
-    html += objUserBankAccounts.showYesNo(className, selectedChoice);
+    const selected = 'Nei';
+    html += objUserBankAccounts.showYesNo(className, selected);
 
     // user Id
     const userId = userBankAccount.userId;

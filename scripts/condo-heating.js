@@ -247,7 +247,7 @@ function insertEmptyTableRow(rowNumber) {
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
-  html += objAccounts.showSelectedValues('fixedCost0', '', (objAccounts.secityLevel < 5),constFixedCost, constFixedCost, constVariableCost);
+  html += objAccounts.showSelectedValues('fixedCost0', '', (objAccounts.securityLevel < 5),constFixedCost, constFixedCost, constVariableCost);
 
   // name
   html += objAccounts.inputTableColumn('name0', "", 45);
@@ -273,35 +273,35 @@ function showResult(rowNumber) {
     html += objAccounts.insertTableColumns('', rowNumber);
 
     // Delete
-    let selectedChoice = "Ugyldig verdi";
-    if (account.deleted === 'Y') selectedChoice = "Ja";
-    if (account.deleted === 'N') selectedChoice = "Nei";
+    let selected = "Ugyldig verdi";
+    if (account.deleted === 'Y') selected = "Ja";
+    if (account.deleted === 'N') selected = "Nei";
 
     let className = `delete${account.accountId}`;
-    html += objAccounts.showSelectedValues(className, 'width:75px;', (objAccounts.secityLevel < 5),selectedChoice, 'Nei', 'Ja')
+    html += objAccounts.showSelectedValues(className, 'width:75px;', (objAccounts.securityLevel < 5),selected, 'Nei', 'Ja')
 
     // fixed cost
-    selectedChoice = "Ugyldig verdi";
+    selected = "Ugyldig verdi";
     switch (account.fixedCost) {
       case 'Y': {
 
-        selectedChoice = constFixedCost;
+        selected = constFixedCost;
         break;
       }
       case 'N': {
 
-        selectedChoice = constVariableCost;
+        selected = constVariableCost;
         break;
       }
       default: {
 
-        selectedChoice = "Ugyldig verdi";
+        selected = "Ugyldig verdi";
         break
       }
     }
 
     className = `fixedCost${account.accountId}`;
-    html += objAccounts.showSelectedValues(className, '',(objAccounts.secityLevel < 5), selectedChoice, constFixedCost, constVariableCost)
+    html += objAccounts.showSelectedValues(className, '',(objAccounts.securityLevel < 5), selected, constFixedCost, constVariableCost)
 
     // name
     const name = account.name;

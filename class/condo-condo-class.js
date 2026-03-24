@@ -61,7 +61,7 @@ class Condo extends Condos {
     >
       <select 
         class="${className} center"
-        ${disabled ? 'disabled' : ''}
+        ${(disabled) ? 'disabled' : ''}
         ${(style) ? `style=${style}` : 'style=width:175px;'}
       >`;
 

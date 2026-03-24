@@ -490,18 +490,26 @@ class Condos {
   }
 
   // Select interval number
-  selectInterval(className, style, fromNumber, toNumber, selectedNumber) {
-
-    let html = "";
-    if (style === "") html = `<td class="center"><select class="${className} center">`;
-    if (style !== "") html = `<td class="center"><select class="${className} center" style = "${style}">`;
+  selectInterval(className, style, fromNumber, toNumber, selectedNumber, disabled = false) {
 
     let selectedOption = false;
+
+    let html = `
+    <td class="center"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style=${style}` : "style=width:175px;"}
+        ${(disabled) ? 'disabled' : ''}
+      >`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
 
-        html += `<option value="${number}" selected>${number}</option>`;
+        html += `
+        <option 
+          value="${number}"
+          selected>${number}</option>`;
         selectedOption = true;
       } else {
 
@@ -571,15 +579,14 @@ class Condos {
   showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber) {
 
     selectedNumber = Number(selectedNumber);
-    let html =
-      `
-        <td
-          class="center"
-        >
-          <select
-            class="${className} center"
-            ${(style) ? `style=${style}` : 'style=width:175px;'}
-          >`;
+    let html = `
+    <td
+      class="center"
+    >
+      <select
+        class="${className} center"
+        ${(style) ? `style=${style}` : 'style=width:175px;'}
+      >`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
@@ -632,56 +639,8 @@ class Condos {
   }
   */
 
-  /*
   // Select choices like Yes, No, Ignore
-  showSelectedValues(className, style, selectedChoice, ...choices) {
-
-    let html =
-      `
-        <td
-          class="center"
-        >
-          <select 
-            class="${className} center"
-            ${(style) ? `style=${style}` : 'style=width:175px;'}
-          >`;
-
-    choices.forEach((choice) => {
-      if (choice === selectedChoice) {
-
-        html +=
-          `
-            <option 
-              value=${choice}
-              selected
-            >
-              ${choice}
-            </option>
-          `;
-      } else {
-
-        html +=
-          `
-            <option 
-              value="${choice}">
-              ${choice}
-            </option>
-          `;
-      }
-    });
-
-    html +=
-      `
-          </select >
-        </td>
-      `;
-
-    return html;
-  }
-  */
-
-  // Select choices like Yes, No, Ignore
-  showSelectedValues(className, style, disabled = false, selectedChoice, ...choices) {
+  showSelectedValues(className, style, disabled = false, selected, ...choices) {
 
     let html = `
     <td
@@ -689,7 +648,7 @@ class Condos {
     >
       <select 
         class="${className} center"
-        ${disabled ? 'disabled' : ''}
+        ${(disabled) ? 'disabled' : ''}
         ${(style) ? `style=${style}` : 'style=width:175px;'}>`;
 
     choices.forEach((choice) => {
@@ -697,7 +656,7 @@ class Condos {
       html += `
         <option 
           value=${choice}
-          ${(choice === selectedChoice) ? 'selected' : ''}
+          ${(choice === selected) ? 'selected' : ''}
         >
           ${choice}
         </option>
@@ -973,26 +932,26 @@ class Condos {
   }
 
   // Show Yes/No
-  showYesNo(className, selectedChoice) {
+  showYesNo(className, selected) {
 
-    switch (selectedChoice) {
+    switch (selected) {
       case 'Y': {
 
-        selectedChoice = "Ja";
+        selected = "Ja";
         break;
       }
       case 'N': {
 
-        selectedChoice = "Nei";
+        selected = "Nei";
         break;
       }
       default: {
 
-        selectedChoice = "Ugyldig verdi";
+        selected = "Ugyldig verdi";
         break
       }
     }
-    let html = this.showSelectedValues(className, 'width:175px;', selectedChoice, 'Nei', 'Ja')
+    let html = this.showSelectedValues(className, 'width:175px;', selected, 'Nei', 'Ja')
     return html;
   }
 
@@ -1031,7 +990,7 @@ class Condos {
       html += `
         <td 
           class="${className} no-border center"
-          ${(style) ? `style = "${style}"` : ''}
+          ${(style) ? `style=${style}` : 'style=width:175px;'}
         >
           ${text}
         </td>

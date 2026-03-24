@@ -8,7 +8,6 @@ const objAccounts = new Account('account');
 const objCondominiums = new Condominium('condominium');
 const objDues = new Due('due');
 
-let condominiumId = 0;
 tableWidth = 'width:1450px;';
 
 // Exit application if no activity for 1 hour
@@ -22,14 +21,10 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    condominiumId = Number(sessionStorage.getItem("condominiumId"));
-    user = sessionStorage.getItem("user");
-        securityLevel = sessionStorage.getItem("securityLevel");
-    if ((condominiumId === 0 || user === null)) {
+    if ((objDues.condominiumId === 0 || objDues.user === null)) {
 
       // LogIn is not valid
-      //window.location.href = 'http://localhost/condo-login.html';
-           const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUsers.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -65,7 +60,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeatings.showMessage(objRemoteHeatings,'', 'condo-server.js er ikke startet.');
+    objRemoteHeatings.showMessage(objRemoteHeatings, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -190,12 +185,12 @@ function showResult(rowNumber) {
     html += objCondominiums.insertTableColumns('', rowNumber)
 
     // Delete
-    let selectedChoice = "Ugyldig verdi";
-    if (due.deleted === 'Y') selectedChoice = "Ja";
-    if (due.deleted === 'N') selectedChoice = "Nei";
+    let selected = "Ugyldig verdi";
+    if (due.deleted === 'Y') selected = "Ja";
+    if (due.deleted === 'N') selected = "Nei";
 
     let className = `delete${due.dueId}`;
-    html += objDues.showSelectedValues(className, 'width:175px;', selectedChoice, (objDues.secityLevel < 5),'Nei', 'Ja')
+    html += objDues.showSelectedValues(className, 'width:175px;', selected, (objDues.securityLevel < 5), 'Nei', 'Ja')
 
     // condos
     className = `condoId${due.dueId}`;
@@ -273,7 +268,7 @@ function insertEmptyTableRow(rowNumber) {
   // accountId
   let accountId = Number(document.querySelector('.filterAccountId').value);
   if (Number(document.querySelector('.filterAccountId').value) === objDues.nineNine) accountId = 0;
-  html += objAccounts.showSelectedAccounts("accountId0", '', accountId, 'Ingen er valgt', '',(objDues.selectedChoice < 5));
+  html += objAccounts.showSelectedAccounts("accountId0", '', accountId, 'Ingen er valgt', '', (objDues.selected < 5));
 
   // due amount
   html += objDues.inputTableColumn('amount0', '', "", 10);
@@ -399,7 +394,7 @@ function showHeader() {
   html += objDues.startTableBody();
 
   // show main header
-  html += objDues.showTableHeaderLogOut('width:175px;', '','','','','Forfall','','','');
+  html += objDues.showTableHeaderLogOut('width:175px;', '', '', '', '', 'Forfall', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -435,7 +430,7 @@ function showFilter(rowNumber) {
   if (condominiumsRowNumber !== -1) {
 
     const commonCostAccountId = objCondominiums.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
-    html += objAccounts.showSelectedAccounts('filterAccountId', 'width:175px;', commonCostAccountId, '', 'Vis alle konti',false);
+    html += objAccounts.showSelectedAccounts('filterAccountId', 'width:175px;', commonCostAccountId, '', 'Vis alle konti', false);
   }
 
   // show from date

@@ -399,13 +399,13 @@ function showResult(rowNumber) {
     // Delete
     if (objBankAccountTransactions.securityLevel >= 5) {
 
-      let selectedChoice = "Ugyldig verdi";
-      if (bankAccountTransaction.deleted === 'Y') selectedChoice = "Ja";
-      if (bankAccountTransaction.deleted === 'N') selectedChoice = "Nei";
+      let selected = "Ugyldig verdi";
+      if (bankAccountTransaction.deleted === 'Y') selected = "Ja";
+      if (bankAccountTransaction.deleted === 'N') selected = "Nei";
 
       // delete
       let className = `delete${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objBankAccountTransactions.showSelectedValues(className, 'width:75px;', (objBankAccountTransactions.secityLevel < 5),selectedChoice, 'Nei', 'Ja')
+      html += objBankAccountTransactions.showSelectedValues(className, 'width:75px;', (objBankAccountTransactions.securityLevel < 5),selected, 'Nei', 'Ja')
     }
 
     // condos

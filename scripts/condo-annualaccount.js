@@ -250,7 +250,7 @@ function showFilter(rowNumber, budgetYear, fromDate, toDate) {
   html += objAnnualAccount.inputTableColumn('filterToDate', 'width:175px;', toDate, 10);
 
   // Budget year
-  html += objAnnualAccount.selectInterval('filterBudgetYear', 'width:175px;', 2020, 2030, budgetYear, 'Budsjettår');
+  html += objAnnualAccount.selectInterval('filterBudgetYear', 'width:175px;', 2020, 2030, budgetYear, 'Budsjettår',false);
 
   // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(budgetYear);

@@ -200,7 +200,7 @@ function insertEmptyTableRow(rowNumber) {
 
   // Select year
   const year = today.getFullYear();
-  html += objRemoteHeatingPrices.selectInterval('year0', 'width:175px;', 2020, 2030, year);
+  html += objRemoteHeatingPrices.selectInterval('year0', 'width:175px;', 2020, 2030, year,(objRemoteHeatingPrices.securityLevel < 5));
 
   // priceKilowattHour 
   html += objRemoteHeatingPrices.inputTableColumn('priceKilowattHour0', '', "", 10);
@@ -225,17 +225,17 @@ function showResult(rowNumber) {
     html += objRemoteHeatingPrices.insertTableColumns('', rowNumber);
 
     // Delete
-    let selectedChoice = "Ugyldig verdi";
-    if (remoteHeatingPrice.deleted === 'Y') selectedChoice = "Ja";
-    if (remoteHeatingPrice.deleted === 'N') selectedChoice = "Nei";
+    let selected = "Ugyldig verdi";
+    if (remoteHeatingPrice.deleted === 'Y') selected = "Ja";
+    if (remoteHeatingPrice.deleted === 'N') selected = "Nei";
 
     let className = `delete${remoteHeatingPrice.remoteHeatingPriceId}`;
-    html += objRemoteHeatingPrices.showSelectedValues(className, 'width:175px;', (objRemoteHeatingPrices.secityLevel < 5),selectedChoice, 'Nei', 'Ja')
+    html += objRemoteHeatingPrices.showSelectedValues(className, 'width:175px;', (objRemoteHeatingPrices.securityLevel < 5),selected, 'Nei', 'Ja')
 
     // Select year
     const year = remoteHeatingPrice.year;
     className = `year${remoteHeatingPrice.remoteHeatingPriceId}`;
-    html += objRemoteHeatingPrices.selectInterval(className, 'width:175px;', 2020, 2030, year);
+    html += objRemoteHeatingPrices.selectInterval(className, 'width:175px;', 2020, 2030, year,(objRemoteHeatingPrices.securityLevel < 5));
 
     // priceKilowattHour
     let priceKilowattHour = remoteHeatingPrice.priceKilowattHour;

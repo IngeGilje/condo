@@ -329,12 +329,12 @@ function showResult(rowNumber) {
     html += objBudgets.insertTableColumns('', rowNumber,);
 
     // Delete
-    let selectedChoice = "Ugyldig verdi";
-    if (budget.deleted === 'Y') selectedChoice = "Ja";
-    if (budget.deleted === 'N') selectedChoice = "Nei";
+    let selected = "Ugyldig verdi";
+    if (budget.deleted === 'Y') selected = "Ja";
+    if (budget.deleted === 'N') selected = "Nei";
 
     let className = `delete${budget.budgetId}`;
-    html += objBudgets.showSelectedValues(className, 'width:175px;', (objBudgets.secityLevel < 5),selectedChoice, 'Nei', 'Ja');
+    html += objBudgets.showSelectedValues(className, 'width:175px;', (objBudgets.securityLevel < 5),selected, 'Nei', 'Ja');
 
     // accountId
     className = `accountId${budget.budgetId}`;

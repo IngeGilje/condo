@@ -83,7 +83,7 @@ function showResult() {
   html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
 
   // email
-  const email = 'inge.gilje@gmail.com';
+  const email = 'inge.gilje@ig.no';
   html += objLogIn.inputTableColumn('email', '', email, 45, false, true);
 
   html += "</tr>";
