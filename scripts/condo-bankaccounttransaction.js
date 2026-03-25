@@ -15,7 +15,7 @@ const disableChanges = (objAccount.securityLevel < 5);
 const condominiumId = objAccount.condominiumId;
 const user = objAccount.user;
 
-const tableWidth = 'width:1400px;';
+const tableWidth = 'width:1650px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();

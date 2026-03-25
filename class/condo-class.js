@@ -700,10 +700,10 @@ class Condos {
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const rowNumberBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
       if (rowNumberBankAccount !== -1) {
 
-        bankAccountName = objUserBankAccount.arrayUserBankAccounts[rowNumberBankAccount].name;
+        bankAccountName = objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].name;
       }
     }
 
@@ -721,10 +721,10 @@ class Condos {
     const bankAccountPattern = /^\d{11}$/;
     if ((bankAccountPattern.test(fromBankAccount))) {
 
-      const rowNumberBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
+      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
       if (rowNumberBankAccount !== -1) {
 
-        const userId = Number(objUserBankAccount.arrayUserBankAccounts[rowNumberBankAccount].userId);
+        const userId = Number(objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].userId);
 
         if (userId >= 0) {
 

@@ -4,11 +4,11 @@
 const today = new Date();
 const objUser = new User('user');
 const objAccount = new Account('account');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
+const objUserBankAccounts = new UserBankAccount('userbankaccount');
 
-const disableChanges = (objUserBankAccount.securityLevel < 5);
-const condominiumId = objUserBankAccount.condominiumId;
-const user = objUserBankAccount.user;
+const disableChanges = (objUserBankAccounts.securityLevel < 5);
+const condominiumId = objUserBankAccounts.condominiumId;
+const user = objUserBankAccounts.user;
 
 const tableWidth = 'width:950px;';
 
@@ -35,7 +35,7 @@ async function main() {
       await objUser.loadUsersTable(condominiumId, resident, objUserBankAccount.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
-      await objUserBankAccount.loadUserBankAccountsTable(condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
       // Show header
       let menuNumber = 0;
@@ -67,7 +67,7 @@ async function events() {
 
       const userId = Number(document.querySelector('.filterUserId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
-      await objUserBankAccount.loadUserBankAccountsTable(condominiumId, userId, accountId);
+      await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, userId, accountId);
 
       let menuNumber = 0;
       menuNumber = showResult(menuNumber);
@@ -85,7 +85,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objUserBankAccount.getClassByPrefix(event.target, prefix))
+        .map(prefix => objUserBankAccounts.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
@@ -109,7 +109,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objUserBankAccount.getClassByPrefix(event.target, prefix))
+        .map(prefix => objUserBankAccounts.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       //const className = objAccount.getDeleteClass(event.target);
@@ -132,7 +132,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objUserBankAccount.serverStatus === 1)
+      let url = (objUserBankAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -146,13 +146,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objUserBankAccount.startTable(tableWidth);
+  let html = objUserBankAccounts.startTable(tableWidth);
 
   // show main header
-  html += objUserBankAccount.showTableHeader('width:175px;', 'Bankkonto for bruker');
+  html += objUserBankAccounts.showTableHeader('width:175px;', 'Bankkonto for bruker');
 
   // The end of the table
-  html += objUserBankAccount.endTable();
+  html += objUserBankAccounts.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 */
@@ -161,20 +161,20 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objUserBankAccount.startTable(tableWidth);
+  html = objUserBankAccounts.startTable(tableWidth);
 
   // start table body
-  html += objUserBankAccount.startTableBody();
+  html += objUserBankAccounts.startTableBody();
 
   // show main header
-  html += objUserBankAccount.showTableHeaderLogOut('width:175px;', '', '', '', 'Bankkonto for bruker', '');
+  html += objUserBankAccounts.showTableHeaderLogOut('width:175px;', '', '', '', 'Bankkonto for bruker', '');
   html += "</tr>";
 
   // end table body
-  html += objUserBankAccount.endTableBody();
+  html += objUserBankAccounts.endTableBody();
 
   // The end of the table
-  html += objUserBankAccount.endTable();
+  html += objUserBankAccounts.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -182,18 +182,18 @@ function showHeader() {
 function showFilter(rowNumber) {
 
   // Start table
-  let html = objUserBankAccount.startTable(tableWidth);
+  let html = objUserBankAccounts.startTable(tableWidth);
 
   // Header filter
   rowNumber++;
-  html += objUserBankAccount.showTableHeaderMenu('width:175px;', rowNumber, '', 'Bruker', 'Konto', '');
+  html += objUserBankAccounts.showTableHeaderMenu('width:175px;', rowNumber, '', 'Bruker', 'Konto', '');
 
   // start table body
-  html += objUserBankAccount.startTableBody();
+  html += objUserBankAccounts.startTableBody();
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objUserBankAccount.insertTableColumns('', rowNumber, '');
+  html += objUserBankAccounts.insertTableColumns('', rowNumber, '');
 
   // Show all selected users
   html += objUser.showSelectedUsers('filterUserId', 'width:175px;', false, '', 'Alle');
@@ -204,13 +204,13 @@ function showFilter(rowNumber) {
 
   // insert table columns in start of a row
   rowNumber++;
-  html += objUserBankAccount.insertTableColumns('', rowNumber, '', '', '', '');
+  html += objUserBankAccounts.insertTableColumns('', rowNumber, '', '', '', '');
 
   // end table body
-  html += objUserBankAccount.endTableBody();
+  html += objUserBankAccounts.endTableBody();
 
   // The end of the table
-  html += objUserBankAccount.endTable();
+  html += objUserBankAccounts.endTable();
   document.querySelector('.filter').innerHTML = html;
 
   return rowNumber;
@@ -222,7 +222,7 @@ function insertEmptyTableRow(rowNumber) {
   let html = "";
 
   // insert table columns in start of a row
-  html += objUserBankAccount.insertTableColumns('', rowNumber, 'Ny brukerkonto');
+  html += objUserBankAccounts.insertTableColumns('', rowNumber, 'Ny brukerkonto');
 
   // user column
   html += objUser.showSelectedUsers('userId0', 'width:175px;', disableChanges, 0, 'Ingen er valgt', '');
@@ -231,7 +231,7 @@ function insertEmptyTableRow(rowNumber) {
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '', disableChanges);
 
   // bank account number
-  html += objUserBankAccount.inputTableColumn('bankAccount0', '', 11, disableChanges);
+  html += objUserBankAccounts.inputTableColumn('bankAccount0', '', 11, disableChanges);
 
   html += "</tr>";
   return html;
@@ -241,22 +241,22 @@ function insertEmptyTableRow(rowNumber) {
 function showResult(rowNumber) {
 
   // start table
-  let html = objUserBankAccount.startTable(tableWidth);
+  let html = objUserBankAccounts.startTable(tableWidth);
 
   // table header
   rowNumber++;
-  html += objUserBankAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += objUserBankAccounts.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
-  objUserBankAccount.arrayUserBankAccounts.forEach((userBankAccount) => {
+  objUserBankAccounts.arrayUserBankAccounts.forEach((userBankAccount) => {
 
     // insert table columns in start of a row
     rowNumber++;
-    html += objUserBankAccount.insertTableColumns('', rowNumber);
+    html += objUserBankAccounts.insertTableColumns('', rowNumber);
 
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;
     const selected = 'Nei';
-    html += objUserBankAccount.showYesNo(className, selected);
+    html += objUserBankAccounts.showYesNo(className, selected);
 
     // user Id
     const userId = userBankAccount.userId;
@@ -270,7 +270,7 @@ function showResult(rowNumber) {
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccount.inputTableColumn(className, '', userBankAccount.bankAccount, 11, disableChanges);
+    html += objUserBankAccounts.inputTableColumn(className, '', userBankAccount.bankAccount, 11, disableChanges);
 
     html += "</tr>";
   });
@@ -283,7 +283,7 @@ function showResult(rowNumber) {
   }
 
   // The end of the table
-  html += objUserBankAccount.endTable();
+  html += objUserBankAccounts.endTable();
   document.querySelector('.result').innerHTML = html;
 
   return rowNumber;
@@ -296,11 +296,11 @@ async function deleteAccountRow(userBankAccountId, className) {
 
 
   // Check if account row exist
-  accountsRowNumber = objUserBankAccount.arrayUserBankAccounts.findIndex(account => userBankAccount.userBankAccountId === userBankAccountId);
+  accountsRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(account => userBankAccount.userBankAccountId === userBankAccountId);
   if (accountsRowNumber !== -1) {
 
     // delete account row
-    objUserBankAccount.deleteAccountsTable(userBankAccountId, user);
+    objUserBankAccounts.deleteAccountsTable(userBankAccountId, user);
   }
 
   const fixedCost = 'A';
@@ -320,37 +320,37 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   // User Id
   let className = `.userId${userBankAccountId}`;
   let userId = Number(document.querySelector(className).value);
-  const validUserId = objUserBankAccount.validateNumber(className, userId, 1, 999999998);
+  const validUserId = objUserBankAccounts.validateNumber(className, userId, 1, 999999998);
 
   // account Id
   className = `.accountId${userBankAccountId}`;
   let accountId = Number(document.querySelector(className).value);
-  const validAccountId = objUserBankAccount.validateNumber(className, accountId, 1, 999999998);
+  const validAccountId = objUserBankAccounts.validateNumber(className, accountId, 1, 999999998);
 
   // bank account
   className = `.bankAccount${userBankAccountId}`;
   const bankAccount = document.querySelector(className).value;
   className = `bankAccount${userBankAccountId}`;
-  const validBankAccount = objUserBankAccount.validateBankAccount(className, bankAccount);
+  const validBankAccount = objUserBankAccounts.validateBankAccount(className, bankAccount);
 
   if (validUserId && validAccountId && validBankAccount) {
 
     // Check if the userbankaccounts row exist
-    const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (rowNumberUserBankAccount !== -1) {
 
       // update the userbankaccounts row
-      await objUserBankAccount.updateUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount);
+      await objUserBankAccounts.updateUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount);
 
     } else {
 
       // Insert the userbankaccounts row 
-      await objUserBankAccount.insertUserBankAccountsTable(condominiumId, user, userId, accountId, bankAccount);
+      await objUserBankAccounts.insertUserBankAccountsTable(condominiumId, user, userId, accountId, bankAccount);
     }
 
     userId = Number(document.querySelector('.filterUserId').value);
     accountId = Number(document.querySelector('.filterAccountId').value);
-    await objUserBankAccount.loadUserBankAccountsTable(condominiumId, userId, accountId);
+    await objUserBankAccounts.loadUserBankAccountsTable(condominiumId, userId, accountId);
     let menuNumber = 0;
     menuNumber = showResult(menuNumber);
   }

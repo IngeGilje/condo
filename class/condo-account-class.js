@@ -61,10 +61,10 @@ class Account extends Condos {
     }
 
     // Check user bank account
-    const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+    const rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
     if (rowNumberUserBankAccount !== -1) {
 
-      accountId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount].accountId;
+      accountId = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount].accountId;
     }
 
     let rowNumberSupplier;
