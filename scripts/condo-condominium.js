@@ -8,7 +8,7 @@ const objBankAccount = new BankAccount('bankaccount');
 const objCondominium = new Condominium('condominium');
 
 const disableChanges = (objCondominium.securityLevel < 5);
-const condominiumId = objCondominium.condominiumId;
+let condominiumId = objCondominium.condominiumId;
 const user = objCondominium.user;
 
 const tableWidth = 'width:600px;';

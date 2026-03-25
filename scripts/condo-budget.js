@@ -128,6 +128,7 @@ async function events() {
       menuNumber = showResult(menuNumber);
     };
   });
+
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -143,8 +144,6 @@ async function events() {
 
 // Delete budgets row
 async function deleteBudgetRow(budgetId, className) {
-
-
 
   // Check if budget row exist
   budgetsRowNumber = objBudget.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
@@ -359,7 +358,7 @@ function showResult(rowNumber) {
     sumAmount += Number(budget.amount);
   });
 
-  // Insert empty table row for insertion
+   // Insert empty table row for insertion
   if (!disableChanges) {
 
     rowNumber++;
@@ -368,7 +367,6 @@ function showResult(rowNumber) {
 
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
-
   rowNumber++;
   html += objBudget.insertTableColumns('font-weight: 600;', rowNumber, '', 'Sum', sumAmount, '', '');
 
@@ -385,7 +383,7 @@ function showResult(rowNumber) {
 
 function insertEmptyTableRow(rowNumber) {
 
-  html += objAccount.insertTableColumns('', rowNumber, 'Nytt budsjett');
+  html = objAccount.insertTableColumns('', rowNumber, 'Nytt budsjett');
 
   // accounts
   let className = `accountId0`;

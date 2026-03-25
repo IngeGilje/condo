@@ -27,7 +27,9 @@ class Condominium extends Condos {
   // Show condominiums table with alternative select options
   async loadCondominiumsTable() {
 
-    const URL = (this.serverStatus === 1) ? '/api/condominiums' : 'http://localhost:3000/condominiums';
+    const URL = (this.serverStatus === 1)
+      ? '/api/condominiums'
+      : 'http://localhost:3000/condominiums';
     try {
 
       // POST request
@@ -50,9 +52,12 @@ class Condominium extends Condos {
   // update condominium row in condominiums table
   async updateCondominiumsTable(user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName) {
 
+    const URL = (this.serverStatus === 1)
+      ? '/api/condominiums'
+      : 'http://localhost:3000/condominiums';
+
     try {
       // POST request
-      //const response = await fetch(`${URL}:3000/condominiums?action=update&user=${user}&condominiumId=${condominiumId}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -99,7 +104,7 @@ class Condominium extends Condos {
         body: JSON.stringify({
           action: 'insert',
           user: user,
-          name:name,
+          name: name,
           street: street,
           address2: address2,
           postalCode: postalCode,

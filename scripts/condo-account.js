@@ -110,6 +110,7 @@ async function events() {
       const className = arrayPrefixes
         .map(prefix => objDue.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
+        
 
       const classNameDelete = `.${className}`
       const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;

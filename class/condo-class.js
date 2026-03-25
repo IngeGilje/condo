@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -700,10 +700,10 @@ class Condos {
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+      const rowNumberBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
       if (rowNumberBankAccount !== -1) {
 
-        bankAccountName = objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].name;
+        bankAccountName = objUserBankAccount.arrayUserBankAccounts[rowNumberBankAccount].name;
       }
     }
 
@@ -721,10 +721,10 @@ class Condos {
     const bankAccountPattern = /^\d{11}$/;
     if ((bankAccountPattern.test(fromBankAccount))) {
 
-      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
+      const rowNumberBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
       if (rowNumberBankAccount !== -1) {
 
-        const userId = Number(objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].userId);
+        const userId = Number(objUserBankAccount.arrayUserBankAccounts[rowNumberBankAccount].userId);
 
         if (userId >= 0) {
 
@@ -1514,114 +1514,10 @@ function formatToNorDate(date) {
   return (formatedDate.includes('..')) ? '' : formatedDate;
 }
 
-/*
-// Validate number
-function validateNumber(number, min, max, className, labelText) {
-
-  let isValidNumber = true;
-  number = Number(number);
-  min = Number(min);
-  max = Number(max);
-
-  // Validate number
-  if (number < min || number > max) {
-
-    // Invalid number
-    if (this.isClassDefined(`label-${className}`)) {
-
-      document.querySelector(`.label-${className}`).outerHTML =
-        `<div class="label-${className}-red">
-            * Ugyldig ${labelText}
-          </div>`;
-    }
-    isValidNumber = false;
-  } else {
-
-    // Valid number
-    if (this.isClassDefined(`label-${className}-red`)) {
-
-      document.querySelector(`.label-${className}-red`).outerHTML =
-        `<div class="label-${className} label-${className}">
-            * ${labelText}
-          </div>`;
-    }
-  }
-
-  return isValidNumber;
-}
-*/
-
-/*
-// Validate number (No error message)
-function validateNumberHTML(number, min, max) {
-
-  let isValidNumber;
-  number = Number(number);
-  min = Number(min);
-  max = Number(max);
-
-  // Validate number
-  if (number < min || number > max) {
-
-    isValidNumber = false;
-  } else {
-
-    isValidNumber = true;
-  }
-
-  return isValidNumber;
-}
-*/
-
-/*
-// Validate norwegian date dd.mm.yyyy format
-// Show error message
-function validateNorDate(dateString, className, labelText) {
-
-  let isDateValid = true;
-
-  dateString =
-    (dateString.length === 0) ? '00.00.0000' : String(dateString);
-  [day, month, year] = dateString.split('.');
-  day = day.padStart(2, "0");
-  month = month.padStart(2, "0");
-  dateString = day + '.' + month + '.' + year;
-
-  // Validate date
-  if (!this.validateEuroDateFormat(dateString)) {
-
-    // Invalid date
-    if (this.isClassDefined(`label-${className}`)) {
-
-      document.querySelector(`.label-${className}`).outerHTML =
-        `<div class="label-${className}-red">
-            * Ugyldig ${labelText}
-          </div>`;
-      isDateValid = false;
-    }
-  } else {
-
-    // Valid date
-    document.querySelector(`.input-${className}`).value =
-      dateString;
-
-    if (this.isClassDefined(`label-${className}-red`)) {
-
-      document.querySelector(`.label-${className}-red`).outerHTML =
-        `<div class="label-${className} label-${className}">
-            * ${labelText}
-          </div>`;
-    }
-  }
-  return isDateValid;
-}
-*/
-
 // Check if class is defined
 function isClassDefined(className) {
 
-  const element =
-    document.querySelector(`.${className}`);      // Select the element
+  const element = document.querySelector(`.${className}`);      // Select the element
   if (element !== null) {
     return (element.classList.contains(`${className}`)) ? true : false;
   } else {
@@ -1702,38 +1598,6 @@ function checkPhone(phone, className, labelText) {
     return true;
   }
 }
-
-/*
-// Validate organization number
-function validateOrganizationNumber(organizationNumber, className, labelText) {
-
-  // Validate organization number Organization Number
-  const organizationNumberPattern = /^\d{9}$/;
-  if (!(organizationNumberPattern.test(organizationNumber))) {
-
-    // Invalid Organization Number
-    if (this.isClassDefined(`label-${className}`)) {
-
-      document.querySelector(`.label-${className}`).outerHTML =
-        `<div class="label-${className}-red">
-            * Ugyldig ${labelText}
-          </div>`;
-    }
-    return false;
-  } else {
-
-    // Valid Organization Number
-    if (this.isClassDefined(`label-${className}-red`)) {
-
-      document.querySelector(`.label-${className}-red`).outerHTML =
-        `<div class="label-${className} label-${className}">
-            * ${labelText}
-          </div>`;
-    }
-    return true;
-  }
-}
-*/
 
 // Get current date in  European date format (dd.mm.yyyy)
 function getCurrentDate() {

@@ -82,7 +82,7 @@ async function events() {
     if (event.target.classList.contains('update')) {
 
       const supplierId = document.querySelector('.filterSupplierId').value;
-      updateSupplierRow(supplierId);
+      updateSuppliersRow(supplierId);
     };
   });
 
@@ -421,14 +421,11 @@ function showResult(supplierId, rowNumber) {
 }
 
 // Update a supplier row
-async function updateSupplierRow(supplierId) {
+async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
   const validSupplierId = objSupplier.validateNumber('supplierId', supplierId, -1, objSupplier.nineNine);
-
-  //const condominiumId = Number(condominiumId);
-
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -452,13 +449,13 @@ async function updateSupplierRow(supplierId) {
 
   // validate phone
   const phone = document.querySelector('.phone').value.trim();
-  let validPhone = objSupplier.validatePhone('phone', phone);
-  if (phone === '') validPhone = true;
+  //let validPhone = objSupplier.validatePhone('phone', phone);
+  //if (phone === '') validPhone = true;
 
   // validate email
   const email = document.querySelector('.email').value.trim();
-  let validEmail = objSupplier.validateEmail('email', email);
-  if (email === '') validEmail = true;
+  //let validEmail = objSupplier.validateEmail('email', email);
+  //if (email === '') validEmail = true;
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
@@ -476,7 +473,7 @@ async function updateSupplierRow(supplierId) {
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatKronerToOre(amount));
-  const validAmount = objSupplier.validateNumber(amount, objSupplier.minusNineNine, objSupplier.nineNine);
+  const validAmount = objSupplier.validateNumber('amount', amount, objSupplier.minusNineNine, objSupplier.nineNine);
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);
@@ -486,7 +483,7 @@ async function updateSupplierRow(supplierId) {
   const text = document.querySelector('.text').value;
   const validText = objSupplier.validateText(text, 0, 50);
 
-  if (validSupplierId && validName && validStreet && validAddress2 && validPostalCode && validCity && validPhone && validEmail && validBankAccount && validAccountId && validAmountAccountId && validAmount && validTextAccountId) {
+  if (validSupplierId && validName && validStreet && validAddress2 && validPostalCode && validCity && validBankAccount && validAccountId && validAmountAccountId && validAmount && validTextAccountId) {
 
     // Check if the supplierId exist
     const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);

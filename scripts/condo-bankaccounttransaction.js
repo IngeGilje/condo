@@ -170,6 +170,14 @@ async function events() {
         .map(prefix => objDue.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
+        // Extract the number in the class name
+      let bankAccountTransationId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        bankAccountTransationId = Number(className.slice(prefix.length));
+      }
+
       bankAccountTransationId = Number(className.substring(6));
       deleteBankAccountTransactionRow(bankAccountTransationId, className);
 
@@ -199,6 +207,14 @@ async function events() {
       const className = arrayPrefixes
         .map(prefix => objBankAccountTransaction.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
+
+      // Extract the number in the class name
+      let bankAccountTransationId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        bankAccountTransationId = Number(className.slice(prefix.length));
+      }
 
       let url = (objBankAccountTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
