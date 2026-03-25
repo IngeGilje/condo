@@ -31,14 +31,14 @@ async function main() {
     if ((condominiumId === 0 || objBankAccountTransaction.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1) 
-      ? 'http://ingegilje.no/condo-login.html' 
-      : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident,objBankAccountTransaction.nineNine);
+      await objUser.loadUsersTable(condominiumId, resident, objBankAccountTransaction.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(condominiumId, objBankAccountTransaction.nineNine);
@@ -197,10 +197,10 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objBankAccountTransactions.getClassByPrefix(event.target, prefix))
+        .map(prefix => objBankAccountTransaction.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      let url = (objBankAccountTransactions.serverStatus === 1)
+      let url = (objBankAccountTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-voucher.html?bankAccountTransactionId=${bankAccountTransationId}`;
@@ -402,7 +402,7 @@ function showResult(rowNumber) {
 
       // delete
       let className = `delete${bankAccountTransaction.bankAccountTransactionId}`;
-      html += objBankAccountTransaction.showSelectedValues(className, 'width:75px;', disableChanges,selected, 'Nei', 'Ja')
+      html += objBankAccountTransaction.showSelectedValues(className, 'width:75px;', disableChanges, selected, 'Nei', 'Ja')
     }
 
     // condos
@@ -419,7 +419,7 @@ function showResult(rowNumber) {
 
     // Mark invalid account red
     html += (bankAccountTransaction.accountId === 0)
-      ? objAccount.showSelectedAccounts(className, 'width:175px;background-color: #f89595;', bankAccountTransaction.accountId, 'Ingen er valgt', '',disableChanges)
+      ? objAccount.showSelectedAccounts(className, 'width:175px;background-color: #f89595;', bankAccountTransaction.accountId, 'Ingen er valgt', '', disableChanges)
       : objAccount.showSelectedAccounts(className, 'width:175px;', bankAccountTransaction.accountId, 'Ingen er valgt', '', disableChanges);
 
     // income
