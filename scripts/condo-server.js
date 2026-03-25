@@ -2052,16 +2052,12 @@ async function main() {
       }
     });
 
-    //app.get("/import-csvFile", async (req, res) => {
     app.post("/import-csvFile", async (req, res) => {
 
-      console.log('import-csvFile');
       try {
 
         const csvFileName = req.body.csvFileName;
-        console.log('csvFileName :', csvFileName);
         const data = await fs.readFile(csvFileName, "utf8");
-        console.log('data :', data);
         res.json({ content: data });
       } catch (err) {
         res.status(500).json({ error: err.message });
