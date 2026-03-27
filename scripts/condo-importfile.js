@@ -16,9 +16,7 @@ const objDue = new Due('due');
 const objSupplier = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
-const disableChanges = (objImportFile.securityLevel < 5);
-const condominiumId = objImportFile.condominiumId;
-const user = objImportFile.user;
+const enableChanges = (objImportFile.securityLevel > 5);
 
 const tableWidth = 'width:1600px;';
 
@@ -527,22 +525,22 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(rowNumber) {
+function showFilter(menuNumber) {
 
   // Start table
   html = objImportFile.startTable(tableWidth);
 
   // Header filter
-  rowNumber++;
-  html += objImportFile.showTableHeaderMenu('width:175px;', rowNumber, '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2', '', '', '');
+  menuNumber++;
+  html += objImportFile.showTableHeaderMenu('width:175px;', menuNumber, '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();
 
   html += "</tr>";
 
-  rowNumber++;
-  html += objImportFile.insertTableColumns('', rowNumber, '', '', '', '', '', '', '', '');
+  menuNumber++;
+  html += objImportFile.insertTableColumns('', menuNumber, '', '', '', '', '', '', '', '');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -551,18 +549,18 @@ function showFilter(rowNumber) {
   html += objImportFile.endTable();
   document.querySelector('.filter').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // Show csv file for bank account transactions
-function showResult(rowNumber) {
+function showResult(menuNumber) {
 
   // start table
   let html = objImportFile.startTable(tableWidth);
 
   // table header
-  rowNumber++;
-  html += objImportFile.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  menuNumber++;
+  html += objImportFile.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -570,41 +568,41 @@ function showResult(rowNumber) {
   arrayTransactions.forEach((transaction) => {
 
     // insert table columns in start of a row
-    rowNumber++;
-    html += objImportFile.insertTableColumns('', rowNumber);
+    menuNumber++;
+    html += objImportFile.insertTableColumns('', menuNumber);
 
     // Date
-    let className = `accountingDate${rowNumber}`;
+    let className = `accountingDate${menuNumber}`;
     html += objImportFile.inputTableColumn(className, '', transaction.accountingDate, 10);
 
     // Condo name
-    className = `condoName${rowNumber}`;
+    className = `condoName${menuNumber}`;
     html += objImportFile.inputTableColumn(className, '', transaction.condoName, 45);
 
     // Account name
-    className = `accountName${rowNumber}`;
+    className = `accountName${menuNumber}`;
     html += objImportFile.inputTableColumn(className, '', transaction.accountName, 45);
 
     // fromBankAccountName
-    className = `fromBankAccountName${rowNumber}`;
+    className = `fromBankAccountName${menuNumber}`;
     html += objImportFile.inputTableColumn(className, '', transaction.fromBankAccountName, 45);
 
     // toBankAccountName
-    className = `toBankAccountName${rowNumber}`;
+    className = `toBankAccountName${menuNumber}`;
     html += objImportFile.inputTableColumn(className, '', transaction.toBankAccountName, 45);
 
     // Income
     const income = formatOreToKroner(transaction.income);
-    className = `income${rowNumber}`;
+    className = `income${menuNumber}`;
     html += objImportFile.inputTableColumn(className, '', income, 10);
 
     // Payment
     const payment = formatOreToKroner(transaction.payment);
-    className = `payment${rowNumber}`;
+    className = `payment${menuNumber}`;
     html += objImportFile.inputTableColumn(className, '', payment, 10);
 
     // Text
-    className = `payment${rowNumber}`;
+    className = `payment${menuNumber}`;
     html += objImportFile.inputTableColumn(className, '', transaction.text, 10);
 
     // Accomulate
@@ -624,21 +622,21 @@ function showResult(rowNumber) {
   sumPayments = formatOreToKroner(sumPayments);
 
   // Show sum row
-  rowNumber++;
-  html += objImportFile.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
+  menuNumber++;
+  html += objImportFile.insertTableColumns('font-weight: 600;', menuNumber, '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
 
   // Show update button
 
   // insert table columns in start of a row
-  rowNumber++;
-  html += objImportFile.insertTableColumns('', rowNumber, '');
+  menuNumber++;
+  html += objImportFile.insertTableColumns('', menuNumber, '');
 
   html += objImportFile.showButton('width:175px;', 'update', 'Oppdater');
   html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // Show the rest of the menu
-  rowNumber++;
-  html += objImportFile.showRestMenu(rowNumber);
+  menuNumber++;
+  html += objImportFile.showRestMenu(menuNumber);
 
   // The end of the table
   html += objImportFile.endTable();

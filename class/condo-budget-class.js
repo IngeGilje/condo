@@ -44,7 +44,7 @@ class Budget extends Condos {
         >
     `;
 
-    let rowNumber = 0;
+    let menuNumber = 0;
 
     let selectedOption = false;
 
@@ -53,7 +53,7 @@ class Budget extends Condos {
     if (numberOfRows > 0) {
       this.arrayBudgets.forEach((budget) => {
 
-        rowNumber++;
+        menuNumber++;
 
         const accountName = objAccount.getAccountName(budget.accountId);
 
@@ -65,7 +65,7 @@ class Budget extends Condos {
                 value="${budget.budgetId}"
                 selected
               >
-                ${rowNumber} - ${accountName}
+                ${menuNumber} - ${accountName}
               </option>
             `;
           selectedOption =
@@ -76,7 +76,7 @@ class Budget extends Condos {
             `
               <option 
                 value="${budget.budgetId}">
-                ${rowNumber} - ${accountName}
+                ${menuNumber} - ${accountName}
               </option>
             `;
         }

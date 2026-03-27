@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -26,97 +26,92 @@ class Condos {
     {
       applicationName: "condo-login.html",
       className: "Menu1",
-      text: "login"
+      text: "1login"
+    },
+    {
+      applicationName: "condo-user.html",
+      className: "Menu2",
+      text: "2Bruker"
     },
     {
       applicationName: "condo-condominium.html",
       className: "Menu2",
-      text: "Sameie"
+      text: "3Sameie"
     },
     {
       applicationName: "condo-condo.html",
       className: "Menu3",
-      text: "Leilighet"
+      text: "4Leilighet"
     },
     {
       applicationName: "condo-bankaccount.html",
       className: "Menu4",
-      text: "Bankkonto sameie"
+      text: "5Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
       className: "Menu5",
-      text: "Konto"
-    },
-    {
-      applicationName: "condo-user.html",
-      className: "Menu6",
-      text: "Bruker"
+      text: "6Konto"
     },
     {
       applicationName: "condo-password.html",
       className: "Menu7",
-      text: "Passord"
+      text: "7Passord"
     },
     {
       applicationName: "condo-userbankaccount.html",
       className: "Menu8",
-      text: "Bankkonto for bruker"
+      text: "8Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
       className: "Menu9",
-      text: "Mottaker"
+      text: "9Mottaker"
     },
     {
       applicationName: "condo-commoncost.html",
       className: "Menu10",
-      text: "Felleskostnader"
+      text: "10Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
       className: "Menu11",
-      text: "Forfall"
+      text: "11Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
       className: "Menu12",
-      text: "Pris fjernvarme"
+      text: "12Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
       className: "Menu13",
-      text: "Fjernvarme"
+      text: "13Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
       className: "Menu14",
-      text: "Budsjett"
+      text: "14Budsjett"
     },
     {
       applicationName: "condo-overview.html",
       className: "Menu15",
-      text: "Betalingsoversikt"
+      text: "15Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
       className: "Menu16",
-      text: "Banktransaksjoner"
-    },
-    {
-      applicationName: "condo-voucher.html",
-      className: "Menu17",
-      text: "Bilag"
+      text: "16Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu18",
-      text: "Importer transaksjoner"
+      className: "Menu17",
+      text: "18Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu19",
-      text: "Årsregnskap"
+      className: "Menu18",
+      text: "19Årsregnskap"
     },
   ];
 
@@ -226,7 +221,7 @@ class Condos {
   }
 
   // Show input
-  inputTableColumn(className, style, value, maxlength, readOnly = false) {
+  inputTableColumn(className, style, value, maxlength, enableChanges) {
 
     return `
     <td class="center">
@@ -236,7 +231,7 @@ class Condos {
         maxlength="${maxlength}"
         value="${value}"
         ${(style) ? `style=${style}` : "style=width:175px;"}
-        ${readOnly ? 'readonly' : ''}
+        ${(enableChanges) ? '' : 'readonly'}
       >
     </td>`;
   }
@@ -496,7 +491,7 @@ class Condos {
   }
 
   // Select interval number
-  selectInterval(className, style, fromNumber, toNumber, selectedNumber, disabled = false) {
+  selectInterval(className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
 
     let selectedOption = false;
 
@@ -506,7 +501,7 @@ class Condos {
       <select 
         class="${className} center"
         ${(style) ? `style=${style}` : "style=width:175px;"}
-        ${(disabled) ? 'disabled' : ''}
+        ${(enableChanges) ? '' : 'disabled'}
       >`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
@@ -582,7 +577,7 @@ class Condos {
   }
 
   // Select numbers
-  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, disabled = false) {
+  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, enabled) {
 
     selectedNumber = Number(selectedNumber);
     let html = `
@@ -591,7 +586,7 @@ class Condos {
     >
       <select
         class="${className} center"
-        ${(disabled) ? 'disabled' : ''}
+        ${(enabled) ? 'enabled' : 'disabled'}
         ${(style) ? `style=${style}` : 'style=width:175px;'}
       >`;
 
@@ -629,7 +624,7 @@ class Condos {
   }
 
   // Select choices like Yes, No, Ignore
-  showSelectedValues(className, style, disabled = false, selected, ...choices) {
+  showSelectedValues(className, style, enableChanges, selected, ...choices) {
 
     let html = `
     <td
@@ -637,7 +632,7 @@ class Condos {
     >
       <select 
         class="${className} center"
-        ${(disabled) ? 'disabled' : ''}
+        ${(enableChanges) ? '' : 'disabled'}
         ${(style) ? `style=${style}` : 'style=width:175px;'}>`;
 
     choices.forEach((choice) => {
@@ -918,30 +913,6 @@ class Condos {
 
   getClassByPrefix(element, prefix) {
     return [...element.classList].find(cls => cls.startsWith(prefix));
-  }
-
-  // Show Yes/No
-  showYesNo(className, selected) {
-
-    switch (selected) {
-      case 'Y': {
-
-        selected = "Ja";
-        break;
-      }
-      case 'N': {
-
-        selected = "Nei";
-        break;
-      }
-      default: {
-
-        selected = "Ugyldig verdi";
-        break
-      }
-    }
-    let html = this.showSelectedValues(className, 'width:175px;', selected, 'Nei', 'Ja')
-    return html;
   }
 
   // Show table header including menu

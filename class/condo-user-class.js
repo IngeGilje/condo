@@ -255,7 +255,7 @@ class User extends Condos {
   }
 
   // Show all selected users
-  showSelectedUsers(className, style, disabled = false, userId, selectNone, selectAll,) {
+  showSelectedUsers(className, style, userId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -265,76 +265,69 @@ class User extends Condos {
         >
           <select 
             class="${className} center"
-            ${(disabled) ? 'disabled' : ''}
+            ${(enableChanges) ? '' : 'disabled'}
             ${(style) ? `style=${style}` : 'style="width:175px;"'}>`;
 
     // Check if user array is empty
     const numberOfRows = this.arrayUsers.length;
     if (numberOfRows > 0) {
       this.arrayUsers.forEach((user) => {
-        if (user.userId === userId) {
-
-          html +=
-            `
-              <option 
-                value=${user.userId}
-                selected
-              >
-                ${user.firstName}
-              </option>
-            `;
-          selectedValue = true;
-        } else {
-
-          html +=
-            `
-              <option 
-                value="${user.userId}"
-              >
-                ${user.firstName}
-              </option>
-            `;
-        }
+        html += `
+          <option 
+            value=${user.userId}
+            ${(user.userId === userId) ? 'selected' : ''}
+          >
+            ${user.firstName}
+          </option>`;
+        if (user.userId === userId) selectedValue = true;
       });
     } else {
 
-      html +=
-        `
-          <option value="0" 
-            selected
-          >
-            Ingen leilighet
-          </option>
-        `;
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen leilighet
+      </option>`;
       selectedValue = true;
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 1)) {
+    if (selectAll && (numberOfRows > 0)) {
 
-      html +=
-        `
-          <option 
-            value=${this.nineNine}
-            selected
-          >
-            ${selectAll}
-          </option>
-        `;
+      html += `
+      <option 
+        value=${this.nineNine}
+        selected
+      >
+        ${selectAll}
+      </option>`;
       selectedValue = true;
     }
 
     // Select none
     if (selectNone && (numberOfRows > 1)) {
-      if (selectedValue) {
-        html +=
-          `
+
+      html +=
+        `
           <option 
             value=0
           >
             ${selectNone}
           </option>
         `;
+
+      //if (selectedValue) {
+      html +=
+        `
+          <option 
+            value=0
+            ${(!selectedValue) ? 'selected' : ''}
+          >
+            ${selectNone}
+          </option>`;
+      if (!selectedValue) selectedValue = true;
+      /*
       } else {
 
         html +=
@@ -348,6 +341,7 @@ class User extends Condos {
           `;
         selectedValue = true;
       }
+      */
     }
 
     html +=

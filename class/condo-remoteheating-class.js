@@ -60,7 +60,7 @@ class RemoteHeating extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 1)) {
+    if (selectAll && (numberOfRows > 0)) {
 
       html +=
         `

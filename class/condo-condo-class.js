@@ -51,7 +51,7 @@ class Condo extends Condos {
     }
   }
 
- showSelectedCondos(className, style, condoId, selectNone, selectAll, disabled = false) {
+ showSelectedCondos(className, style, condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -61,7 +61,7 @@ class Condo extends Condos {
     >
       <select 
         class="${className} center"
-        ${(disabled) ? 'disabled' : ''}
+        ${(enableChanges) ? '' : 'disabled'}
         ${(style) ? `style=${style}` : 'style=width:175px;'}
       >`;
 

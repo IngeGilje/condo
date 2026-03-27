@@ -9,9 +9,7 @@ const objAccount = new Account('account');
 const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
 
-const disableChanges = (objAccount.securityLevel < 5);
-const condominiumId = objAccount.condominiumId;
-const user = objAccount.user;
+const enableChanges = (objAccount.securityLevel > 5);
 
 const tableWidth = 'width:750px;';
 
@@ -48,7 +46,7 @@ async function main() {
       menuNumber = showFilter(menuNumber);
 
       // Show account
-      menuNumber = showResult(menuNumber);
+      showResult(menuNumber);
 
       // Events
       events();
@@ -67,12 +65,12 @@ async function events() {
     if (event.target.classList.contains('filterFixedCost')) {
 
       let fixedCost = document.querySelector('.filterFixedCost').value;
-      if (fixedCost === 'Fast kostnad') fixedCost = 'Y';
-      if (fixedCost === 'Variabel kostnad') fixedCost = 'N';
+      if (fixedCost === 'Fast') fixedCost = 'Y';
+      if (fixedCost === 'Variabel') fixedCost = 'N';
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
-      let menuNumber = 0;
-      menuNumber = showResult(menuNumber);
+      // Show account
+      showResult(3);
     };
   });
 
@@ -110,7 +108,7 @@ async function events() {
       const className = arrayPrefixes
         .map(prefix => objDue.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
-        
+
 
       const classNameDelete = `.${className}`
       const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
@@ -122,9 +120,8 @@ async function events() {
         const fixedCost = 'A';
         await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
-
+        // Show account
+        showResult(3);
       };
     };
   });
@@ -199,30 +196,30 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(rowNumber) {
+function showFilter(menuNumber) {
 
   // Start table
   html = objAccount.startTable(tableWidth);
 
   // Header filter
-  rowNumber++;
-  html += objAccount.showTableHeaderMenu('width:175px;', rowNumber, '', 'Kostnadstype', '');
+  menuNumber++;
+  html += objAccount.showTableHeaderMenu('width:175px;', menuNumber, '', 'Kostnadstype', '');
 
   // start table body
   html += objAccount.startTableBody();
 
   // insert table columns in start of a row
-  rowNumber++;
-  html += objAccount.insertTableColumns('', rowNumber, '');
+  menuNumber++;
+  html += objAccount.insertTableColumns('', menuNumber, '');
 
   // fixed or not fixed cost
-  html += objAccount.showSelectedValues('filterFixedCost', 'width:175px;', false, 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += objAccount.showSelectedValues('filterFixedCost', 'width:175px;', true, 'Alle', constFixedCost, constVariableCost, 'Alle');
 
   html += "</tr>";
 
   // insert table columns in start of a row
-  rowNumber++;
-  html += objAccount.insertTableColumns('', rowNumber, '');
+  menuNumber++;
+  html += objAccount.insertTableColumns('', menuNumber, '');
 
   // end table body
   html += objAccount.endTableBody();
@@ -231,46 +228,46 @@ function showFilter(rowNumber) {
   html += objAccount.endTable();
   document.querySelector('.filter').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // Insert empty table row
-function insertEmptyTableRow(rowNumber) {
+function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
   // Show menu
   // insert table columns in start of a row
-  html += objAccount.insertTableColumns('', rowNumber);
+  html += objAccount.insertTableColumns('', menuNumber);
 
   // delete
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
-  html += objAccount.showSelectedValues('fixedCost0', '', disableChanges, constFixedCost, constFixedCost, constVariableCost);
+  html += objAccount.showSelectedValues('fixedCost0', '', enableChanges, constFixedCost, constFixedCost, constVariableCost);
 
   // name
-  html += objAccount.inputTableColumn('name0', 'width:175px;', '', 45);
+  html += objAccount.inputTableColumn('name0', 'width:175px;', '', 45,enableChanges);
 
   html += "</tr>";
   return html;
 }
 
 // Show accounts
-function showResult(rowNumber) {
+function showResult(menuNumber) {
 
   // start table
   let html = objAccount.startTable(tableWidth);
 
   // table header
-  rowNumber++;
-  html += objAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Kostnadstype', 'Tekst');
+  menuNumber++;
+  html += objAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccount.arrayAccounts.forEach((account) => {
 
     // Show menu
-    rowNumber++;
-    html += objAccount.insertTableColumns('', rowNumber);
+    menuNumber++;
+    html += objAccount.insertTableColumns('', menuNumber);
 
 
     // Delete
@@ -279,7 +276,7 @@ function showResult(rowNumber) {
     if (account.deleted === 'N') selected = "Nei";
 
     let className = `delete${account.accountId}`;
-    html += objAccount.showSelectedValues(className, 'width:175px;', disableChanges, selected, 'Nei', 'Ja')
+    html += objAccount.showSelectedValues(className, 'width:175px;', enableChanges, selected, 'Nei', 'Ja')
 
     // fixed cost
     selected = "Ugyldig verdi";
@@ -302,34 +299,34 @@ function showResult(rowNumber) {
     }
 
     className = `fixedCost${account.accountId}`;
-    html += objAccount.showSelectedValues(className, '', disableChanges, selected, constFixedCost, constVariableCost)
+    html += objAccount.showSelectedValues(className, '', enableChanges, selected, constFixedCost, constVariableCost)
 
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccount.inputTableColumn(className, 'width:175px;', name, 45, disableChanges);
+    html += objAccount.inputTableColumn(className, 'width:175px;', name, 45, enableChanges);
 
     html += "</tr>";
   });
 
   // Make one last table row for insertion in table 
 
-  if (!disableChanges) {
+  if (enableChanges) {
 
     // Insert empty table row for insertion
-    rowNumber++;
-    html += insertEmptyTableRow(rowNumber);
+    menuNumber++;
+    html += insertEmptyTableRow(menuNumber);
   };
 
   // Show the rest of the menu
-  rowNumber++;
-  html += objAccount.showRestMenu(rowNumber);
+  menuNumber++;
+  html += objAccount.showRestMenu(menuNumber);
 
   // The end of the table
   html += objAccount.endTable();
   document.querySelector('.result').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // Delete one account row
@@ -380,7 +377,8 @@ async function updateAccountsRow(accountId) {
 
     fixedCost = 'A';
     await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+ 
+    // Show account
+    showResult(3);
   }
 }

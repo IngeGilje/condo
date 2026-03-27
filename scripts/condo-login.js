@@ -16,9 +16,6 @@ async function main() {
     const resident = 'Y';
     await objUser.loadUsersTable(condominiumId, resident, objLogIn.nineNine);
 
-    // Show header
-    //showHeader();
-
     // Show login
     showResult();
 
@@ -83,7 +80,7 @@ function showResult() {
 
   // email
   const email = '';
-  html += objLogIn.inputTableColumn('email', '', email, 45, false, true);
+  html += objLogIn.inputTableColumn('email', '', email, 45, true);
 
   html += "</tr>";
 
@@ -101,7 +98,7 @@ function showResult() {
 
   // password
   password = '';
-  html += objLogIn.inputTableColumnPassword('password', '', password, 45);
+  html += objLogIn.inputTableColumnPassword('password', '', password, 45, true);
 
   html += "</tr>";
 

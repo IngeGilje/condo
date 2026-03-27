@@ -6,10 +6,7 @@ const objUser = new User('user');
 const objAccount = new Account('account');
 const objUserBankAccount = new UserBankAccount('userbankaccount');
 
-const disableChanges = (objUserBankAccount.securityLevel < 5);
-const condominiumId = objUserBankAccount.condominiumId;
-const user = objUserBankAccount.user;
-
+const enableChanges = (objUserBankAccount.securityLevel > 5);
 const tableWidth = 'width:950px;';
 
 // Exit application if no activity for 1 hour
@@ -69,8 +66,7 @@ async function events() {
       const accountId = Number(document.querySelector('.filterAccountId').value);
       await objUserBankAccount.loadUserBankAccountsTable(condominiumId, userId, accountId);
 
-      let menuNumber = 0;
-      menuNumber = showResult(menuNumber);
+      showResult(3);
     };
   });
 
@@ -123,8 +119,7 @@ async function events() {
         const fixedCost = 'A';
         await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
-        let menuNumber = 0;
-        menuNumber = showResult(menuNumber);
+        showResult(3);
       };
     };
   });
@@ -179,32 +174,32 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(rowNumber) {
+function showFilter(menuNumber) {
 
   // Start table
   let html = objUserBankAccount.startTable(tableWidth);
 
   // Header filter
-  rowNumber++;
-  html += objUserBankAccount.showTableHeaderMenu('width:175px;', rowNumber, '', 'Bruker', 'Konto', '');
+  menuNumber++;
+  html += objUserBankAccount.showTableHeaderMenu('width:175px;', menuNumber, '', 'Bruker', 'Konto', '');
 
   // start table body
   html += objUserBankAccount.startTableBody();
 
   // insert table columns in start of a row
-  rowNumber++;
-  html += objUserBankAccount.insertTableColumns('', rowNumber, '');
+  menuNumber++;
+  html += objUserBankAccount.insertTableColumns('', menuNumber, '');
 
   // Show all selected users
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', false, '', 'Alle');
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', objUserBankAccount.userId, '', 'Alle', true);
 
   // Show all selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', false);
+  html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
   html += "</tr>";
 
   // insert table columns in start of a row
-  rowNumber++;
-  html += objUserBankAccount.insertTableColumns('', rowNumber, '', '', '', '');
+  menuNumber++;
+  html += objUserBankAccount.insertTableColumns('', menuNumber, '', '', '', '');
 
   // end table body
   html += objUserBankAccount.endTableBody();
@@ -213,80 +208,85 @@ function showFilter(rowNumber) {
   html += objUserBankAccount.endTable();
   document.querySelector('.filter').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // Insert empty table row
-function insertEmptyTableRow(rowNumber) {
+function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
   // insert table columns in start of a row
-  html += objUserBankAccount.insertTableColumns('', rowNumber, 'Ny brukerkonto');
+  html += objUserBankAccount.insertTableColumns('', menuNumber, 'Ny brukerkonto');
 
   // user column
-  html += objUser.showSelectedUsers('userId0', 'width:175px;', disableChanges, 0, 'Ingen er valgt', '');
+  html += objUser.showSelectedUsers('userId0', 'width:175px;', 0, 'Ingen er valgt', '', enableChanges);
 
   // Account column
-  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '', disableChanges);
+  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '', enableChanges);
 
   // bank account number
-  html += objUserBankAccount.inputTableColumn('bankAccount0', '', 11, disableChanges);
+  html += objUserBankAccount.inputTableColumn('bankAccount0', '', 11, enableChanges);
 
   html += "</tr>";
   return html;
 }
 
 // Show user bank accounts
-function showResult(rowNumber) {
+function showResult(menuNumber) {
 
   // start table
   let html = objUserBankAccount.startTable(tableWidth);
 
   // table header
-  rowNumber++;
-  html += objUserBankAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  menuNumber++;
+  html += objUserBankAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   objUserBankAccount.arrayUserBankAccounts.forEach((userBankAccount) => {
 
     // insert table columns in start of a row
-    rowNumber++;
-    html += objUserBankAccount.insertTableColumns('', rowNumber);
+    menuNumber++;
+    html += objUserBankAccount.insertTableColumns('', menuNumber);
 
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;
     const selected = 'Nei';
-    html += objUserBankAccount.showYesNo(className, selected);
+    html += objUserBankAccount.showSelectedValues('resident', '', enableChanges, 'Nei', 'Nei', 'Ja')
 
     // user Id
     const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUser.showSelectedUsers(className, 'width:175px;', userId, disableChanges, 'Ingen er valgt', '');
+    html += objUser.showSelectedUsers(className, 'width:175px;', userId, 'Ingen er valgt', '', enableChanges);
 
     // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccount.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '', disableChanges);
+    html += objAccount.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '', enableChanges);
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccount.inputTableColumn(className, '', userBankAccount.bankAccount, 11, disableChanges);
+    html += objUserBankAccount.inputTableColumn(className, '', userBankAccount.bankAccount, 11, enableChanges);
 
     html += "</tr>";
   });
 
-  if (!disableChanges) {
+  // Insert empty table row for insertion
+  if (enableChanges) {
 
     // Insert empty table row for insertion
-    rowNumber++;
-    html += insertEmptyTableRow(rowNumber);
+    menuNumber++;
+    html += insertEmptyTableRow(menuNumber);
   }
+
+    // Show the rest of the menu
+  menuNumber++;
+  html += objUserBankAccount.showRestMenu(menuNumber);
 
   // The end of the table
   html += objUserBankAccount.endTable();
   document.querySelector('.result').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // Delete one account row
@@ -351,7 +351,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     userId = Number(document.querySelector('.filterUserId').value);
     accountId = Number(document.querySelector('.filterAccountId').value);
     await objUserBankAccount.loadUserBankAccountsTable(condominiumId, userId, accountId);
-    let menuNumber = 0;
-    menuNumber = showResult(menuNumber);
+
+    menuNumber = showResult(3);
   }
 }

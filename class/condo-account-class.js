@@ -123,7 +123,7 @@ class Account extends Condos {
     return accountName;
   }
 
-  showSelectedAccounts(className, style, accountId, selectNone, selectAll, disabled = false) {
+  showSelectedAccounts(className, style, accountId, selectNone, selectAll, enableChanges = false) {
 
     let selectedValue = false;
 
@@ -133,7 +133,7 @@ class Account extends Condos {
     >
       <select 
         class="${className} center"
-        ${(disabled) ? 'disabled' : ''}
+        ${(enableChanges) ? '' : 'disabled'}
         ${(style) ? `style=${style}` : 'style=width:175px;'}
       >`;
 

@@ -6,9 +6,7 @@ const objUser = new User('user');
 const objCondo = new Condo('condo');
 const objCommonCost = new CommonCost('commoncost');
 
-const disableChanges = (objCommonCost.securityLevel < 5);
-const condominiumId = objCommonCost.condominiumId;
-const user = objCommonCost.user;
+const enableChanges = (objCommonCost.securityLevel > 5);
 
 const tableWidth = 'width:950px';
 
@@ -190,18 +188,18 @@ function showHeader() {
 }
 
 // Insert empty table row
-function insertEmptyTableRow(rowNumber) {
+function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
   // insert table columns in start of a row
-  html += objCommonCost.insertTableColumns('', rowNumber);
+  html += objCommonCost.insertTableColumns('', menuNumber);
 
   html += "<td class='center'>Ny felleskostnad</td>";
 
   // Select year
   const year = today.getFullYear();
-  html += objCommonCost.selectInterval('year0', 'width:175px;', 2020, 2030, year, disableChanges);
+  html += objCommonCost.selectInterval('year0', 'width:175px;', 2020, 2030, year, enableChanges);
 
   // commonCostSquareMeter 
   html += objCommonCost.inputTableColumn('commonCostSquareMeter0', '', '', 10);
@@ -215,19 +213,19 @@ function insertEmptyTableRow(rowNumber) {
 }
 
 // Show commoncosts
-function showResult(rowNumber) {
+function showResult(menuNumber) {
 
   // start table
   let html = objCommonCost.startTable(tableWidth);
 
-  rowNumber++;
-  html += objCommonCost.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  menuNumber++;
+  html += objCommonCost.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
   objCommonCost.arrayCommonCosts.forEach((commonCost) => {
 
     // insert table columns in start of a row
-    rowNumber++;
-    html += objCommonCost.insertTableColumns('', rowNumber);
+    menuNumber++;
+    html += objCommonCost.insertTableColumns('', menuNumber);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -235,46 +233,45 @@ function showResult(rowNumber) {
     if (commonCost.deleted === 'N') selected = "Nei";
 
     let className = `delete${commonCost.commonCostId}`;
-    html += objCommonCost.showSelectedValues(className, 'width:175px;', disableChanges, selected, 'Nei', 'Ja');
+    html += objCommonCost.showSelectedValues(className, 'width:175px;', enableChanges, selected, 'Nei', 'Ja');
 
     // Select year
     const year = commonCost.year;
     className = `year${commonCost.commonCostId}`;
-    html += objCommonCost.selectInterval(className, 'width:175px;', 2020, 2030, year, disableChanges);
+    html += objCommonCost.selectInterval(className, 'width:175px;', 2020, 2030, year, enableChanges);
 
     // common cost per squaremeter
     let commonCostSquareMeter = commonCost.commonCostSquareMeter;
     className = `commonCostSquareMeter${commonCost.commonCostId}`;
     commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
-    html += objCommonCost.inputTableColumn(className, '', commonCostSquareMeter, 10, disableChanges);
+    html += objCommonCost.inputTableColumn(className, '', commonCostSquareMeter, 10, enableChanges);
 
     // fixed cost per condo
     let fixedCostCondo = commonCost.fixedCostCondo;
     className = `fixedCostCondo${commonCost.commonCostId}`;
     fixedCostCondo = formatOreToKroner(fixedCostCondo);
-    html += objCommonCost.inputTableColumn(className, '', fixedCostCondo, 10, disableChanges);
+    html += objCommonCost.inputTableColumn(className, '', fixedCostCondo, 10, enableChanges);
 
     html += "</tr>";
   });
 
   // Make one last table row for insertion in table 
-
-  if (!disableChanges) {
+  if (enableChanges) {
 
     // Insert empty table row for insertion
-    rowNumber++;
-    html += insertEmptyTableRow(rowNumber);
+    menuNumber++;
+    html += insertEmptyTableRow(menuNumber);
   }
 
   // Show the rest of the menu
-  rowNumber++;
-  html += objCommonCost.showRestMenu(rowNumber);
+  menuNumber++;
+  html += objCommonCost.showRestMenu(menuNumber);
 
   // The end of the table
   html += objCommonCost.endTable();
   document.querySelector('.result').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // Delete one commonCost row

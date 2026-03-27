@@ -33,7 +33,6 @@ class Condominium extends Condos {
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/condominiums?action=select`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -168,86 +167,55 @@ class Condominium extends Condos {
     const numberOfRows = this.arrayCondominiums.length;
     if (Number(this.arrayCondominiums.length) > 0) {
       this.arrayCondominiums.forEach((condominium) => {
-        if (condominium.condominiumId === condominiumId) {
 
-          html += `
-          <option 
-            value=${condominium.condominiumId}
-            selected
-          >
-            ${condominium.name}
-          </option>`;
-          selectedValue = true;
-        } else {
-
-          html +=
-            `
-              <option 
-                value="${condominium.condominiumId}">
-                ${condominium.name}
-              </option>
-            `;
-        }
+        html += `
+        <option 
+          value=${condominium.condominiumId}
+          ${(condominium.condominiumId === condominiumId) ? 'selected' : ''}
+        >
+          ${condominium.name}
+        </option>`;
+        if (condominium.condominiumId === condominiumId) selectedValue = true;
       });
     } else {
 
-      html +=
-        `
-          <option value="0" 
-            selected
-          >
-            Ingen konti
-          </option>
-        `;
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen konti
+      </option>`;
       selectedValue = true;
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 1)) {
+    if (selectAll && (numberOfRows > 0)) {
 
-      html +=
-        `
-          <option 
-            value=${this.nineNine}
-            selected
-          >
-            ${selectAll}
-          </option>
-        `;
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectAll) ? '' : 'selected'}
+      >
+        ${selectAll}
+      </option>`;
       selectedValue = true;
     }
 
     // Select none
     if (selectNone && (numberOfRows > 1)) {
-      if (selectedValue) {
-        html +=
-          `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
-      } else {
-
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
-        selectedValue = true;
-      }
+      html += `
+      <option 
+        value=0
+        ${(selectedValue) ? '' : 'selected'}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
     }
 
-    html +=
-      `
-          </select >
-        </td>
-      `;
+    html += `
+      </select >
+    </td>`;
 
     return html;
   }

@@ -9,9 +9,7 @@ const objCondo = new Condo('condo');
 const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransaction');
 const objOverview = new Overview('overview');
 
-const disableChanges = (objOverview.securityLevel < 5);
-const condominiumId = objOverview.condominiumId;
-const user = objOverview.user;
+const enableChanges = (objOverview.securityLevel > 5);
 
 const tableWidth = 'width:1250px;';
 
@@ -121,7 +119,7 @@ async function events() {
         // Show result
 
         // Show dues
-        let menuNumber = 0;
+        let menuNumber = 3;
         menuNumber = showDues(menuNumber);
 
         // Bank account transactions
@@ -183,41 +181,41 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(rowNumber) {
+function showFilter(menuNumber) {
 
   // Start table
   html = objOverview.startTable(tableWidth);
 
   // Header filter
-  rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;', rowNumber, '', '2Velg leilighet', '3Fra dato', 'Til dato', '', '');
+  menuNumber++;
+  html += objOverview.showTableHeaderMenu('width:175px;', menuNumber, '', '2Velg leilighet', '3Fra dato', 'Til dato', '', '');
 
   // start table body
   html += objOverview.startTableBody();
 
   // insert table columns in start of a row
-  rowNumber++;
-  html += objOverview.insertTableColumns('', rowNumber, '');
+  menuNumber++;
+  html += objOverview.insertTableColumns('', menuNumber, '');
 
   // Show all selected condos
   // Get last id in last object in condo array
   const condoId = objCondo.arrayCondo.at(-1).condoId;
-  html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', '');
+  html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', '', true);
 
   // from date
   const year = String(today.getFullYear());
   let fromDate = "01.01." + year;
-  html += objOverview.inputTableColumn('filterFromDate', '', fromDate, 10);
+  html += objOverview.inputTableColumn('filterFromDate', '', fromDate, 10, CSSViewTransitionRule);
 
   // to date
   let toDate = getCurrentDate();
-  html += objOverview.inputTableColumn('filterToDate', '', toDate, 10);
+  html += objOverview.inputTableColumn('filterToDate', '', toDate, 10, true);
 
   html += "<td></td><td></td></tr>";
 
   // insert table columns in start of a row
-  rowNumber++;
-  html += objOverview.insertTableColumns('', rowNumber, '');
+  menuNumber++;
+  html += objOverview.insertTableColumns('', menuNumber, '');
 
   // end table body
   html += objOverview.endTableBody();
@@ -226,11 +224,11 @@ function showFilter(rowNumber) {
   html += objOverview.endTable();
   document.querySelector('.filter').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // Show dues
-function showDues(rowNumber) {
+function showDues(menuNumber) {
 
   // Start HTML table
   html = objOverview.startTable(tableWidth);
@@ -239,44 +237,44 @@ function showDues(rowNumber) {
   let sumKilowattHour = 0;
 
   // Header
-  rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', 'Forfall', '', '');
-  rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  menuNumber++;
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', '', 'Forfall', '', '');
+  menuNumber++;
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDue.arrayDues.forEach((due) => {
 
     // insert table columns in start of a row
-    rowNumber++;
-    html += objDue.insertTableColumns('', rowNumber);
+    menuNumber++;
+    html += objDue.insertTableColumns('', menuNumber);
 
     // condo
     className = `condo${due.dueId}`;
-    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Ingen er valgt', '', true);
+    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Ingen er valgt', '', enableChanges);
 
     // date
     const date = formatToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objOverview.inputTableColumn(className, '', date, 10, true);
+    html += objOverview.inputTableColumn(className, '', date, 10, enableChanges);
 
     // account
     className = `account${due.dueId}`;
-    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Ingen er valgt', '', true);
+    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Ingen er valgt', '', enableChanges);
 
     // amount
     const amount = formatOreToKroner(due.amount);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableColumn(className, '', amount, 10, true);
+    html += objOverview.inputTableColumn(className, '', amount, 10, enableChanges);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableColumn(className, '', kilowattHour, 10, true);
+    html += objOverview.inputTableColumn(className, '', kilowattHour, 10, enableChanges);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objOverview.inputTableColumn(className, '', text, 45, true);
+    html += objOverview.inputTableColumn(className, '', text, 45, enableChanges);
 
     html += "</tr>";
 
@@ -289,31 +287,31 @@ function showDues(rowNumber) {
   sumDue = formatOreToKroner(sumDue);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
-  rowNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', '2Sum', sumDue, sumKilowattHour, '', '');
+  menuNumber++;
+  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, '', '2Sum', sumDue, sumKilowattHour, '', '');
   html += "</tr>"
 
-  rowNumber++;
-  html += objOverview.insertTableColumns('', rowNumber, '', '', '', '', '', '');
+  menuNumber++;
+  html += objOverview.insertTableColumns('', menuNumber, '', '', '', '', '', '');
   html += "</tr>"
 
   // The end of the table
   html += objAccount.endTable();
   document.querySelector('.dues').innerHTML = html;
-  return rowNumber;
+  return menuNumber;
 }
 
 // Bank account transactions
-function showBankAccountTransactions(rowNumber) {
+function showBankAccountTransactions(menuNumber) {
 
   // Start table
   html = objOverview.startTable(tableWidth);
 
   // Header
-  rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', 'Innbetalinger', '', '');
-  rowNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  menuNumber++;
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Innbetalinger', '', '');
+  menuNumber++;
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -321,31 +319,31 @@ function showBankAccountTransactions(rowNumber) {
   objBankAccountTransaction.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
     // insert table columns in start of a row
-    rowNumber++;
-    html += objDue.insertTableColumns('', rowNumber, '');
+    menuNumber++;
+    html += objDue.insertTableColumns('', menuNumber, '');
 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondo.showSelectedCondos(className, '', Number(bankAccountTransaction.condoId), 'Ingen er valgt', '', true);
+    html += objCondo.showSelectedCondos(className, '', Number(bankAccountTransaction.condoId), 'Ingen er valgt', '', enableChanges);
 
     // date
     const date = formatToNorDate(bankAccountTransaction.date);
     className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumn(className, '', date, 10, true);
+    html += objBankAccountTransaction.inputTableColumn(className, '', date, 10, enableChanges);
 
     // account
     className = `account${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objAccount.showSelectedAccounts(className, '', Number(bankAccountTransaction.accountId), 'Ingen er valgt', '', true);
+    html += objAccount.showSelectedAccounts(className, '', Number(bankAccountTransaction.accountId), 'Ingen er valgt', '', enableChanges);
 
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumn(className, '', income, 10, true);
+    html += objBankAccountTransaction.inputTableColumn(className, '', income, 10, enableChanges);
 
     // Text
     const text = bankAccountTransaction.text;
     className = `text${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumn(className, '', text, 45, true);
+    html += objBankAccountTransaction.inputTableColumn(className, '', text, 45, enableChanges);
 
     html += "</tr>";
 
@@ -358,23 +356,23 @@ function showBankAccountTransactions(rowNumber) {
   sumIncomes = formatOreToKroner(sumIncomes);
   sumPayments = formatOreToKroner(sumPayments);
 
-  rowNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', '', '', 'Sum', sumIncomes, '');
+  menuNumber++;
+  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, '', '', '', 'Sum', sumIncomes, '');
 
   html += "</tr>"
 
-  rowNumber++;
-  html += objOverview.insertTableColumns('', rowNumber, '', '', '', '', '', '');
+  menuNumber++;
+  html += objOverview.insertTableColumns('', menuNumber, '', '', '', '', '', '');
 
   // The end of the table
   html += objDue.endTable();
   document.querySelector('.bankAccountTransactions').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // show how much to pay
-function showHowMuchToPay(rowNumber) {
+function showHowMuchToPay(menuNumber) {
 
   // Start table
   let html = objOverview.startTable(tableWidth);
@@ -397,10 +395,14 @@ function showHowMuchToPay(rowNumber) {
 
   // show main header
   let overPay = sumIncome - sumToPay;
-  rowNumber++;
-  html += (overPay >= 0) ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '3Til gode', '', '', '') : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', 'Skyldig', '', '');
-  rowNumber++;
-  html += (overPay >= 0) ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '3Forfall', 'Betalt', 'Til gode', '') : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', '', '', 'Forfall', 'Betalt', 'Skyldig');
+  menuNumber++;
+  html += (overPay >= 0)
+    ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Til gode', '', '')
+    : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Skyldig', '', '');
+  menuNumber++;
+  html += (overPay >= 0)
+    ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '','', 'Forfall', 'Betalt', 'Til gode')
+    : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Forfall', 'Betalt', 'Skyldig');
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
@@ -409,18 +411,18 @@ function showHowMuchToPay(rowNumber) {
   sumToPay = formatOreToKroner(sumToPay);
 
   // Show menu
-  rowNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', rowNumber, '', '', '3Sum', sumToPay, sumIncome, overPay);
+  menuNumber++;
+  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, '', '', 'Sum', sumToPay, sumIncome, overPay);
 
   // Show the rest of the menu
-  rowNumber++;
-  html += objOverview.showRestMenu(rowNumber);
+  menuNumber++;
+  html += objOverview.showRestMenu(menuNumber);
 
   // The end of the table
   html += objOverview.endTable();
   document.querySelector('.howMuchToPay').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 /*

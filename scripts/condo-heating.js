@@ -9,9 +9,7 @@ const objAccount = new Account('account');
 const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
 
-const disableChanges = (objAccount.securityLevel < 5);
-const condominiumId = objAccount.condominiumId;
-const user = objAccount.user;
+const enableChanges = (objAccount.securityLevel > 5);
 
 const tableWidth = 'width:600px;';
 
@@ -200,14 +198,14 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(rowNumber) {
+function showFilter(menuNumber) {
 
   // Start table
   html = objAccount.startTable(tableWidth);
 
   // Header filter
-  rowNumber++;
-  html += objAccount.showTableHeaderMenu('width:150px;', rowNumber, '', 'Kostnadstype', '');
+  menuNumber++;
+  html += objAccount.showTableHeaderMenu('width:150px;', menuNumber, '', 'Kostnadstype', '');
 
   // start table body
   html += objAccount.startTableBody();
@@ -216,7 +214,7 @@ function showFilter(rowNumber) {
   html += objAccount.insertTableColumns('', 0, '');
 
   // fixed or not fixed cost
-  html += objAccount.showSelectedValues('filterFixedCost', 'width:100px;', false, 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += objAccount.showSelectedValues('filterFixedCost', 'width:100px;', true, 'Alle', constFixedCost, constVariableCost, 'Alle');
 
   html += "</tr>";
 
@@ -230,24 +228,24 @@ function showFilter(rowNumber) {
   html += objAccount.endTable();
   document.querySelector('.filter').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // Insert empty table row
-function insertEmptyTableRow(rowNumber) {
+function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
   // Show menu
-  //html += objAccount.verticalMenu(rowNumber);
+  //html += objAccount.verticalMenu(menuNumber);
   // insert table columns in start of a row
-  html += objAccount.insertTableColumns('', rowNumber);
+  html += objAccount.insertTableColumns('', menuNumber);
 
   // delete
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
-  html += objAccount.showSelectedValues('fixedCost0', '', disableChanges, constFixedCost, constFixedCost, constVariableCost);
+  html += objAccount.showSelectedValues('fixedCost0', '', enableChanges, constFixedCost, constFixedCost, constVariableCost);
 
   // name
   html += objAccount.inputTableColumn('name0', "", 45);
@@ -257,20 +255,20 @@ function insertEmptyTableRow(rowNumber) {
 }
 
 // Show accounts
-function showResult(rowNumber) {
+function showResult(menuNumber) {
 
   // start table
   let html = objAccount.startTable(tableWidth);
 
   // table header
-  html += objAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', rowNumber, '', 'Slett', 'Kostnadstype', 'Tekst');
+  html += objAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccount.arrayAccounts.forEach((account) => {
 
     // Show menu
-    rowNumber++;
-    //html += objAccount.verticalMenu(rowNumber);
-    html += objAccount.insertTableColumns('', rowNumber);
+    menuNumber++;
+    //html += objAccount.verticalMenu(menuNumber);
+    html += objAccount.insertTableColumns('', menuNumber);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -278,7 +276,7 @@ function showResult(rowNumber) {
     if (account.deleted === 'N') selected = "Nei";
 
     let className = `delete${account.accountId}`;
-    html += objAccount.showSelectedValues(className, 'width:75px;', disableChanges, selected, 'Nei', 'Ja')
+    html += objAccount.showSelectedValues(className, 'width:75px;', enableChanges, selected, 'Nei', 'Ja')
 
     // fixed cost
     selected = "Ugyldig verdi";
@@ -301,7 +299,7 @@ function showResult(rowNumber) {
     }
 
     className = `fixedCost${account.accountId}`;
-    html += objAccount.showSelectedValues(className, '', disableChanges, selected, constFixedCost, constVariableCost)
+    html += objAccount.showSelectedValues(className, '', enableChanges, selected, constFixedCost, constVariableCost)
 
     // name
     const name = account.name;
@@ -314,18 +312,18 @@ function showResult(rowNumber) {
   // Make one last table row for insertion in table 
 
   // Insert empty table row for insertion
-  rowNumber++;
-  html += insertEmptyTableRow(rowNumber);
+  menuNumber++;
+  html += insertEmptyTableRow(menuNumber);
 
   // Show the rest of the menu
-  rowNumber++;
-  html += objAccount.showRestMenu(rowNumber);
+  menuNumber++;
+  html += objAccount.showRestMenu(menuNumber);
 
   // The end of the table
   html += objAccount.endTable();
   document.querySelector('.result').innerHTML = html;
 
-  return rowNumber;
+  return menuNumber;
 }
 
 // Delete one account row
