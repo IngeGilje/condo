@@ -69,10 +69,11 @@ async function events() {
       let menuNumber = 0;
 
       const year = Number(document.querySelector(".filterYear").value);
-      menuNumber = showFilter(menuNumber, year);
+      //menuNumber = showFilter(menuNumber, year);
       await objRemoteHeating.loadRemoteHeatingTable(condominiumId, objRemoteHeating.nineNine, objRemoteHeating.nineNine);
 
-      menuNumber = showResult(menuNumber);
+      //menuNumber = showResult(menuNumber);
+      showResult(3);
     };
   });
 

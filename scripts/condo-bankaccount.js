@@ -15,7 +15,7 @@ const tableWidth = 'width:600px;';
 exitIfNoActivity();
 
 // Validate LogIn
-if ((condominiumId === 0 || objBankAccount.user === null)) {
+if ((objBankAccount.condominiumId === 0 || objBankAccount.user === null)) {
 
   // LogIn is not valid
   const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
@@ -286,6 +286,7 @@ function showResult(bankAccountId, menuNumber) {
     // The end of the table
     html += objBankAccount.endTable();
     document.querySelector('.result').innerHTML = html;
+    document.querySelector('.cancel').disabled = true;
 
     return menuNumber;
   }
@@ -300,7 +301,7 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objBankAccount.validateText(name, 3, 50);
+  const validName = objBankAccount.validateText('name',name, 3, 45,objBankAccount, '', 'Ugyldig navn');
 
   // Opening balance date
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
@@ -395,6 +396,7 @@ function resetValues() {
 
   document.querySelector('.delete').disabled = true;
   document.querySelector('.insert').disabled = true;
+  document.querySelector('.cancel').disabled = false;
 }
 
 // Show filter

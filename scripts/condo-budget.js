@@ -185,7 +185,7 @@ async function updateBudgetsRow(budgetId) {
   // text
   className = `.text${budgetId}`;
   let text = document.querySelector(`${className}`).value;
-  let validText = objBudget.validateText(text, 0, 45);
+  let validText = objBudget.validateText(className,text, 0, 45,objBudget, '', 'Ugyldig tekst');
 
   // Validate budgets columns
   if (validAccountId && validAmount && validAmount && validYear && validText) {

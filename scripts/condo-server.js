@@ -358,9 +358,13 @@ async function main() {
               WHERE deleted <> 'Y'`;
 
             if (Number(condominiumId) !== nineNine) SQLquery += ` AND condominiumId = ${condominiumId}`;
-            if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
+
+            if (resident === 'Y' || resident === 'N') {
+              if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
+            }
+
             if (Number(userId) !== nineNine) SQLquery += ` AND userId = ${userId}`;
-            
+            SQLquery += ` ORDER BY firstName`;
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
@@ -429,16 +433,14 @@ async function main() {
             const saltRounds = 10;
             password = await bcrypt.hash(password, saltRounds);
 
-            const SQLquery =
-              `
-                UPDATE users
-                SET
-                  user = '${user}',
-                  lastUpdate = '${lastUpdate}',
-                  securityLevel = ${securityLevel},
-                  password = '${password}'
-                WHERE userId = ${userId};
-              `;
+            const SQLquery = `
+            UPDATE users
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              securityLevel = ${securityLevel},
+              password = '${password}'
+            WHERE userId = ${userId};`;
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
@@ -470,38 +472,37 @@ async function main() {
             console.log('password :', password);
 
             // Insert new row
-            const SQLquery =
-              `
-                INSERT INTO users(
-                  deleted,
-                  resident,
-                  condominiumId,
-                  user,
-                  lastUpdate,
-                  email,
-                  condoId,
-                  firstName,
-                  lastName,
-                  phone,
-                  securityLevel,
-                  password
-                )
-                VALUES(
-                  'N',
-                  '${resident}',
-                  ${condominiumId},
-                  '${user}',
-                  '${lastUpdate}',
-                  '${email}',
-                  ${condoId},
-                  '${firstName}',
-                  '${lastName}',
-                  '${phone}',
-                  ${securityLevel},
-                  '${password}'
-                );
-              `;
+            const SQLquery = `
+            INSERT INTO users(
+              deleted,
+              resident,
+              condominiumId,
+              user,
+              lastUpdate,
+              email,
+              condoId,
+              firstName,
+              lastName,
+              phone,
+              securityLevel,
+              password
+            )
+            VALUES(
+              'N',
+              '${resident}',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              '${email}',
+              ${condoId},
+              '${firstName}',
+              '${lastName}',
+              '${phone}',
+              ${securityLevel},
+              '${password}'
+            );`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
@@ -805,7 +806,7 @@ async function main() {
             const paymentRemoteHeatingAccountId = req.body.paymentRemoteHeatingAccountId;
             const commonCostAccountId = req.body.commonCostAccountId;
             const organizationNumber = req.body.organizationNumber;
-            const importFileName = req.body.importFileName;
+            const importPath = req.body.importPath;
 
             const SQLquery =
               `        
@@ -824,7 +825,7 @@ async function main() {
                   paymentRemoteHeatingAccountId = ${paymentRemoteHeatingAccountId},
                   commonCostAccountId = ${commonCostAccountId},
                   organizationNumber = '${organizationNumber}',
-                  importFileName = '${importFileName}'
+                  importPath = '${importPath}'
                 WHERE condominiumId = ${condominiumId};
               `;
 
@@ -857,7 +858,7 @@ async function main() {
             const paymentRemoteHeatingAccountId = req.body.paymentRemoteHeatingAccountId;
             const commonCostAccountId = req.body.commonCostAccountId;
             const organizationNumber = req.body.organizationNumber;
-            const importFileName = req.body.importFileName;
+            const importPath = req.body.importPath;
 
             // Insert new row
             const SQLquery =
@@ -877,7 +878,7 @@ async function main() {
                   paymentRemoteHeatingAccountId,
                   commonCostAccountId,
                   organizationNumber,
-                  importFileName
+                  importPath
                 ) VALUES (
                   'N',
                   '${user}',
@@ -893,7 +894,7 @@ async function main() {
                   ${paymentRemoteHeatingAccountId},
                   ${commonCostAccountId},
                   '${organizationNumber}',
-                  '${importFileName}'
+                  '${importPath}'
                 );
               `;
 

@@ -70,8 +70,11 @@ async function events() {
       if (fixedCost === 'Variabel kostnad') fixedCost = 'N';
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
+      /*
       let menuNumber = 0;
       menuNumber = showResult(menuNumber);
+      */
+     showResult(3);
     };
   });
 
@@ -355,7 +358,7 @@ async function updateAccountsRow(accountId) {
   // name
   className = `.name${bankAccountTransactionId}`;
   const name = document.querySelector(className).value;
-  const validName = objBankAccountTransaction.validateText(name, 3, 50);
+  const validName = objBankAccountTransaction.validateText(className,name, 3, 45,objBankAccountTransaction, '', 'Ugyldig navn');
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;

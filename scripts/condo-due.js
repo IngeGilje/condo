@@ -23,7 +23,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((condominiumId === 0 || objDue.user === null)) {
+    if ((objDue.condominiumId === 0 || objDue.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -341,7 +341,7 @@ async function updateDuesRow(dueId) {
 
   className = `.text${dueId}`;
   const text = document.querySelector(className).value;
-  const validText = objDue.validateText(text, 3, 45);
+  const validText = objDue.validateText(className,text, 3, 45,objDue, '', 'Ugyldig forfall');
 
   // Validate dues columns
   if (validAccountId && validCondoId && validAmount && validDate && validKilowattHour && validText) {

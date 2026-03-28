@@ -263,7 +263,6 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
   // validate voucer filename
   const voucerFileName = document.querySelector('.voucerFileName').value;
-  //const validVoucerFileName = objBankAccountTransaction.validateText(voucerFileName, 3, 45);
 
   // Check if the file exist
   let validVoucerFileName = false;

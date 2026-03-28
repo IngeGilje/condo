@@ -29,14 +29,14 @@ class Condos {
       text: "1login"
     },
     {
-      applicationName: "condo-user.html",
-      className: "Menu2",
-      text: "2Bruker"
-    },
-    {
       applicationName: "condo-condominium.html",
       className: "Menu2",
-      text: "3Sameie"
+      text: "2Sameie"
+    },
+    {
+      applicationName: "condo-user.html",
+      className: "Menu3",
+      text: "3Bruker"
     },
     {
       applicationName: "condo-condo.html",
@@ -320,84 +320,30 @@ class Condos {
     </td>`;
   }
 
-  /*
-  // Show checkbox
-  showCheckbox(columnName, labelText, ...texts) {
-  
-    let html = this.showLabel(columnName, labelText);
-    html +=
-      `
-        <form 
-          id="${columnName}"
-        >
-      `;
-    texts.forEach((text) => {
-      html +=
-        `
-          <input type="checkbox" 
-            class="input-${columnName}"
-            id="${text}"
-          >
-            ${text}
-          <br>
-        `;
-    });
-  
-    html +=
-      `
-        </form>
-      `;
-    document.querySelector(`.div-${columnName}`).innerHTML = html;
-  }
-  */
-
-  /*
-  // Show radio buttons
-  showRadioButtons(columnName, ...texts) {
-  
-    let html =
-      `
-        <form 
-          id="${columnName}"
-        >
-        <div class = "div-radio-${columnName}"
-        >
-      `;
-  
-    texts.forEach((text) => {
-      html +=
-        `
-          ${text}
-          <input type="radio"
-            id="${text}"
-            name="${columnName}"
-            value="${columnName}"
-            class="input-radio-${text}"
-          >
-          <br>
-        `;
-    });
-  
-    html += `
-        </div>
-      </form>
-    `;
-    document.querySelector(`.div-${columnName}`).innerHTML = html;
-  }
-  */
-
   // Valid text
-  validateText(tekst, minLenght, maxLength) {
+  validateText(className, text, minLenght, maxLength, object, style, message) {
+
+    let valid = true;
 
     // Check for string
-    if (typeof tekst !== "string") return false;
+    if (typeof text !== "string") valid = false;
 
     // Check length
-    if (!(tekst.length >= minLenght) && (tekst.length <= maxLength)) return false;
+    if (!(text.length >= minLenght) && (text.length <= maxLength)) valid = false;
 
     // Check allowed characters (letters, numbers, spaces)
     const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
-    return (regex.test(tekst)) ? true : false;
+    if (!regex.test(text)) valid = false;
+
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement && !valid) {
+
+      // remove/ add 'input-error' class
+      inputElement.classList.toggle('input-error', !valid);
+      this.showMessage(object, style, message);
+    }
+
+    return valid;
   }
 
   // validate bank account
@@ -870,7 +816,7 @@ class Condos {
           "date.png";
         break;
       }
-      case "importFileName": {
+      case "importPath": {
         imageName =
           "filename.png";
         break;
@@ -1129,7 +1075,7 @@ class Condos {
   }
 
   // Validate E-mail
-  validateEmail(className, eMail) {
+  validateEmail(className, eMail, object, style, message) {
 
     // Validate eMail
     const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1144,7 +1090,7 @@ class Condos {
         inputElement.classList.toggle('input-error', !isValid);
       }
     }
-
+    if (!isValid) object.showMessage(object, style, message)
     return isValid;
   }
 

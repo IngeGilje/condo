@@ -355,7 +355,7 @@ class User extends Condos {
 
   // Check for unique email
   // Except if the email exist for current user
-  checkUiqueEmail(userId, email) {
+  checkUiqueEmail(userId, email,object, style, message) {
 
     // Check if email exist in users table
     const rowNumberUser = this.arrayUsers.findIndex(user => user.email === email);
@@ -365,6 +365,7 @@ class User extends Condos {
       if (this.arrayUsers[rowNumberUser].userId === userId) {
 
         // email exist for current user only
+        object.showMessage(object, style, message)
         return false;
       } else {
 

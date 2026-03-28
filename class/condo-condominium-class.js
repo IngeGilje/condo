@@ -49,7 +49,9 @@ class Condominium extends Condos {
     }
   }
   // update condominium row in condominiums table
-  async updateCondominiumsTable(user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName) {
+  async updateCondominiumsTable(user, condominiumId, name, street, address2,
+    postalCode, city, phone, email, incomeRemoteHeatingAccountId,
+    paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/condominiums'
@@ -77,7 +79,7 @@ class Condominium extends Condos {
           paymentRemoteHeatingAccountId: paymentRemoteHeatingAccountId,
           commonCostAccountId: commonCostAccountId,
           organizationNumber: organizationNumber,
-          importFileName: importFileName
+          importPath: importPath
         })
       });
       if (!response.ok) throw new Error("Network error (condominiums)");
@@ -88,13 +90,13 @@ class Condominium extends Condos {
   }
 
   // insert condominium row in users table
-  async insertCondominiumsTable(user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importFileName) {
+  async insertCondominiumsTable(user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath) {
 
     const URL = (this.serverStatus === 1) ? '/api/condominiums' : 'http://localhost:3000/condominiums';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/condominiums?action=insert&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importFileName=${importFileName}`);
+      //const response = await fetch(`${URL}:3000/condominiums?action=insert&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importPath=${importPath}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -114,7 +116,7 @@ class Condominium extends Condos {
           paymentRemoteHeatingAccountId: paymentRemoteHeatingAccountId,
           commonCostAccountId: commonCostAccountId,
           organizationNumber: organizationNumber,
-          importFileName: importFileName
+          importPath: importPath
         })
       });
       if (!response.ok) throw new Error("Network error (condominiums)");

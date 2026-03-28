@@ -21,7 +21,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((condominiumId === 0 || user === null)) {
+    if ((objPassword.condominiumId === 0 || objPassword.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -68,8 +68,11 @@ async function events() {
     if (event.target.classList.contains('filterUserId')) {
 
       const userId = Number(document.querySelector('.filterUserId').value);
+      /*
       let menuNumber = 0;
       menuNumber = showResult(userId, menuNumber);
+      */
+     showResult(userId, 3);
     };
   });
 

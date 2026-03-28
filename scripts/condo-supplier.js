@@ -120,7 +120,7 @@ async function events() {
       // Show filter
       //let menuNumber = 0;
       //menuNumber = showFilter(supplierId, menuNumber);
-      showResult(supplierId,2);
+      showResult(supplierId, 2);
     };
   });
   // Log out
@@ -180,6 +180,7 @@ function resetValues() {
   document.querySelector('.filterSupplierId').disabled = true;
   document.querySelector('.delete').disabled = true;
   document.querySelector('.insert').disabled = true;
+  document.querySelector('.cancel').disabled = false;
 }
 
 /*
@@ -413,6 +414,7 @@ function showResult(supplierId, menuNumber) {
     // The end of the table
     html += objSupplier.endTable();
     document.querySelector('.result').innerHTML = html;
+    document.querySelector('.cancel').disabled = true;
   }
 }
 
@@ -425,15 +427,15 @@ async function updateSuppliersRow(supplierId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objSupplier.validateText(name, 3, 50);
+  const validName = objSupplier.validateText('name',name, 3, 45, objSupplier, '', 'Ugyldig navn');
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = objSupplier.validateText(street, 0, 50);
+  const validStreet = objSupplier.validateText('street',street, 0, 45, objSupplier, '', 'Ugyldig adresse');
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = objSupplier.validateText(address2, 0, 50);
+  const validAddress2 = objSupplier.validateText('address2',address2, 0, 45, objSupplier, '', 'Ugyldig adresse');
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
@@ -441,7 +443,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate city
   const city = document.querySelector('.city').value.trim();
-  const validCity = objSupplier.validateText(city, 0, 45);
+  const validCity = objSupplier.validateText('city',city, 0, 45, objSupplier, '', 'Ugyldig poststed');
 
   // validate phone
   const phone = document.querySelector('.phone').value.trim();
@@ -450,7 +452,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate email
   const email = document.querySelector('.email').value.trim();
-  //let validEmail = objSupplier.validateEmail('email', email);
+  const validEmail = objSupplier.validateEmail('email', email, objSupplier, '', 'Ugyldig mail');
   //if (email === '') validEmail = true;
 
   // validate bankAccount
@@ -477,9 +479,12 @@ async function updateSuppliersRow(supplierId) {
 
   // validate text
   const text = document.querySelector('.text').value;
-  const validText = objSupplier.validateText(text, 0, 50);
+  const validText = objSupplier.validateText('text',text, 0, 45, objSupplier, '', 'Ugyldig tekst');
 
-  if (validSupplierId && validName && validStreet && validAddress2 && validPostalCode && validCity && validBankAccount && validAccountId && validAmountAccountId && validAmount && validTextAccountId) {
+  if (validSupplierId && validName && validStreet && validAddress2
+    && validPostalCode && validCity && validBankAccount && validAccountId
+    && validAmountAccountId && validAmount && validTextAccountId
+    && validEmail && validText) {
 
     // Check if the supplierId exist
     const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);

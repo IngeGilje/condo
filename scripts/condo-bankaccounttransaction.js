@@ -26,7 +26,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((condominiumId === 0 || objBankAccountTransaction.user === null)) {
+    if ((objBankAccountTransaction.condominiumId === 0 || objBankAccountTransaction.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -36,14 +36,14 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident, objBankAccountTransaction.nineNine);
+      await objUser.loadUsersTable(objBankAccountTransaction.condominiumId, resident, objBankAccountTransaction.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(condominiumId, fixedCost);
-      await objBankAccount.loadBankAccountsTable(condominiumId, objBankAccountTransaction.nineNine);
-      await objUserBankAccount.loadUserBankAccountsTable(condominiumId, objBankAccountTransaction.nineNine, objBankAccountTransaction.nineNine);
-      await objCondo.loadCondoTable(condominiumId);
+      await objAccount.loadAccountsTable(objBankAccountTransaction.condominiumId, fixedCost);
+      await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine);
+      await objUserBankAccount.loadUserBankAccountsTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine, objBankAccountTransaction.nineNine);
+      await objCondo.loadCondoTable(objBankAccountTransaction.condominiumId);
       await objCondominium.loadCondominiumsTable();
-      await objSupplier.loadSuppliersTable(condominiumId);
+      await objSupplier.loadSuppliersTable(objBankAccountTransaction.condominiumId);
 
       // Show header
       let menuNumber = 0;
@@ -61,7 +61,7 @@ async function main() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = Number(convertDateToISOFormat(toDate));
       const orderBy = 'date DESC, income DESC';
-      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
       // Show result of filter
       menuNumber = showResult(menuNumber);
@@ -252,7 +252,7 @@ function showFilter(menuNumber) {
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', objBankAccountTransaction.nineNine, '', 'Vis alle',true);
 
   // Get condominiums row number
-  const condominiumsRowNumber = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+  const condominiumsRowNumber = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objBankAccountTransaction.condominiumId);
   if (condominiumsRowNumber !== -1) {
 
     const commonCostAccountId = objCondominium.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
@@ -322,7 +322,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     // text
     className = `.text${bankAccountTransactionId}`;
     const text = document.querySelector(className).value;
-    const validText = objBankAccountTransaction.validateText(text, 3, 255);
+    const validText = objBankAccountTransaction.validateText(className,text, 3, 255,objBankAccountTransaction, '', 'Ugyldig tekst');
 
     // Validate bankAccountTransactions columns
     if (validCondoId && validAccountId && validNumberKWHour && validText) {

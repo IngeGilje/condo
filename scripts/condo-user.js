@@ -24,12 +24,13 @@ async function main() {
     if ((objUser.condominiumId === 0 || objUser.user === null)) {
 
       // LogIn is not valid
-      //window.location.href = 'http://localhost/condo-login.html';
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
-      const resident = 'Y';
+      const resident = 'A';
       await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
       await objCondominium.loadCondominiumsTable(objUser.condominiumId);
       await objCondo.loadCondoTable(objUser.condominiumId);
@@ -50,7 +51,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
+    objUser.showMessage(objUser, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -62,8 +63,15 @@ async function events() {
     if (event.target.classList.contains('filterUserId')) {
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      //let menuNumber = 0;
-      showResult(userId, 3);
+      const resident = 'A';
+      await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
+
+      /*
+      let menuNumber = 0;
+      menuNumber = showFilter(userId, menuNumber);
+      showResult(userId, menuNumber);
+      */
+     showResult(userId, 3);
     };
   });
 
@@ -82,12 +90,16 @@ async function events() {
 
       deleteUserRow();
 
-      const resident = 'Y';
+      const resident = 'A';
       await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
 
       // Show filter
       const userId = objUser.arrayUsers.at(-1).userId;
-      showResult(userId, 3);
+
+      // Show filter
+      menuNumber = 0;
+      menuNumber = showFilter(userId, menuNumber);
+      showResult(userId, menuNumber);
     };
   });
 
@@ -104,17 +116,19 @@ async function events() {
     if (event.target.classList.contains('cancel')) {
 
       // Reload users table
-      const resident = 'Y';
+      const resident = 'A';
       await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
 
       let userId = Number(document.querySelector('.filterUserId').value);
       if (userId === 0) userId = objUser.arrayUsers.at(-1).userId;
 
       // Show filter
-      //menuNumber = showFilter(userId, menuNumber);
-      showResult(userId, 3);
+      menuNumber = 0;
+      menuNumber = showFilter(userId, menuNumber);
+      showResult(userId, menuNumber);
     };
   });
+
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -165,9 +179,16 @@ function resetValues() {
   // reset phone number
   document.querySelector('.phone').value = '';
 
+  // resident
+  document.querySelector('.resident').value = '';
+
+  // condominium
+  document.querySelector('.condominiumId').value = '';
+
   document.querySelector('.filterUserId').disabled = true;
   document.querySelector('.delete').disabled = true;
   document.querySelector('.insert').disabled = true;
+  document.querySelector('.cancel').disabled = false;
 }
 
 // Show header
@@ -208,8 +229,19 @@ function showFilter(userId, menuNumber) {
   menuNumber++;
   html += objUser.insertTableColumns('', menuNumber);
 
+  /*
+  // Activ user
+  // Check if users row exist
+  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+  if (rowNumberUser !== -1) {
+
+    const resident = (objUser.arrayUsersresident[rowNumberUser].resident === 'Ja') ? 'Y' : 'N';
+    html += objUser.showSelectedValues('filterResident', '', enableChanges, resident, 'Ja', 'Nei');
+  }
+  */
   // user
   html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', true)
+
   html += "</tr>";
 
   // insert table columns in start of a row
@@ -284,11 +316,11 @@ function showResult(userId, menuNumber) {
     html += objUser.inputTableColumn('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
 
     // Activ user
-    html += objUser.showSelectedValues('resident', '', enableChanges, 'Nei', 'Nei', 'Ja')
+    resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
+    html += objUser.showSelectedValues('resident', '', enableChanges, resident, 'Ja', 'Nei')
 
     html += "</tr>";
 
-    // condominium
     if (objUser.securityLevel >= 9) {
 
       html += "<tr>";
@@ -302,9 +334,8 @@ function showResult(userId, menuNumber) {
       const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objUser.condominiumId);
 
       // Show selected condominiums 
-      if (rowNumberCondominium !== -1)
-        html += objCondominium.showSelectedCondominiums('condominiumId', "width:175px;", objCondominium.arrayCondominiums[rowNumberCondominium].condominiumId, '', 'Nytt sameie', enableChanges);
-       html += "</tr>";
+      if (rowNumberCondominium !== -1) html += objCondominium.showSelectedCondominiums('condominiumId', "width:175px;", objCondominium.arrayCondominiums[rowNumberCondominium].condominiumId, '', '', enableChanges);
+      html += "</tr>";
     }
 
     // insert table columns in start of a row
@@ -330,7 +361,6 @@ function showResult(userId, menuNumber) {
       html += objUser.showButton('width:175px;', 'delete', 'Slett');
       html += objUser.showButton('width:175px;', 'insert', 'Ny');
       html += "</tr>";
-
     }
 
     // Show the rest of the menu
@@ -340,6 +370,7 @@ function showResult(userId, menuNumber) {
     // The end of the table
     html += objUser.endTable();
     document.querySelector('.result').innerHTML = html;
+    document.querySelector('.cancel').disabled = true;
 
     return menuNumber;
   }
@@ -359,10 +390,10 @@ async function updateUserRow(userId) {
 
   // email
   const email = document.querySelector('.email').value;
-  let validEmail = objUser.validateEmail('email', email);
+  let validEmail = objUser.validateEmail('email', email,objUser, '', 'Ugyldig mail');
   if (validEmail) {
 
-    validEmail = !objUser.checkUiqueEmail(userId, email);
+    validEmail = !objUser.checkUiqueEmail(userId, email,objUser, '', 'Mail er brukt før');
   }
 
   // condoId
@@ -371,17 +402,22 @@ async function updateUserRow(userId) {
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
-  const validFirstName = objUser.validateText(firstName, 3, 50);
+  const validFirstName = objUser.validateText('firstName',firstName, 3, 45,objUser, '', 'Ugyldig fornavn');
 
   // validate lastName
   const lastName = document.querySelector('.lastName').value;
-  const validLastName = objUser.validateText(lastName, 3, 50);
+  const validLastName = objUser.validateText('lastName',lastName, 3, 45,objUser, '', 'Ugyldig etternavn');
 
   // validate phone
   const phone = document.querySelector('.phone').value;
   const validPhone = objUser.validatePhone('phone', phone);
 
-  if (validUserId && validEmail && validCondoId && validFirstName && validLastName && validPhone) {
+  // validate condominium
+  const condominiumId = objUser.condominiumId;
+  const validCondominiumId = objUser.validateNumber('condominium', condominiumId, 0, objUser.nineNine);
+
+  if (validUserId && validEmail && validCondoId && validFirstName && validLastName
+    && validPhone && validCondominiumId) {
 
     // Check if the userId exist
     const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
@@ -389,28 +425,32 @@ async function updateUserRow(userId) {
 
       // update the users row
       await objUser.updateUsersTable(resident, objUser.user, email, userId, condoId, firstName, lastName, phone);
+      resident = 'A';
       await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
     } else {
 
       // check if user exist
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email === objUser.user);
+      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email === email);
       if (rowNumberUser === -1) {
 
         // user does not exist
         // Insert the user row in users table
         const securityLevel = 1;
-        const password = "";
-        await objUser.insertUsersTable(resident, objUser.condominiumId, objUser.user, email, condoId, firstName, lastName, phone, securityLevel, password);
+        const password = "12345";
+        await objUser.insertUsersTable(resident, condominiumId, objUser.user, email, condoId, firstName, lastName, phone, securityLevel, password);
+        resident = 'A';
         await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
         userId = objUser.arrayUsers.at(-1).userId;
         document.querySelector('.filterUserId').value = userId;
       } else {
 
-        objRemoteHeating.showMessage(objRemoteHeating, '', 'Ugyldig e-mail. Finnes fra før.');
+        objUser.showMessage(objUser, '', 'Ugyldig e-mail. Finnes fra før.');
       }
     }
 
     // Show filter
+    let menuNumber = 0;
+    menuNumber = showFilter(userId, menuNumber);
     menuNumber = showResult(userId, 3);
 
     document.querySelector('.filterUserId').disabled = false;

@@ -20,7 +20,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((condominiumId === 0 || objCondo.user === null)) {
+    if ((objCondo.condominiumId === 0 || objCondo.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -63,10 +63,9 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterCondoId')) {
 
-      await objCondo.loadCondoTable(condominiumId);
+      //await objCondo.loadCondoTable(condominiumId);
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
-
       showResult(condoId, 2);
     };
   });
@@ -328,15 +327,15 @@ async function updateCondoRow(condoId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objCondo.validateText(name, 3, 50);
+  const validName = objCondo.validateText('name',name, 3, 45,objCondo, '', 'Ugyldig kontonavn');
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = objCondo.validateText(street, 3, 50);
+  const validStreet = objCondo.validateText('street',street, 3, 45,objCondo, '', 'Ugyldig gatenavn');
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = objCondo.validateText(address2, 0, 50);
+  const validAddress2 = objCondo.validateText('address2',address2, 0, 45,objCondo, '', 'Ugyldig adresse');
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
@@ -344,7 +343,7 @@ async function updateCondoRow(condoId) {
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = objCondo.validateText(city, 1, 50);
+  const validCity = objCondo.validateText('city',city, 1, 45,objCondo, '', 'Ugyldig poststed');
 
   // validate squaremeters
   const squareMeters = Number(formatKronerToOre(document.querySelector('.squareMeters').value));
@@ -401,6 +400,7 @@ function resetValues() {
   document.querySelector('.filterCondoId').disabled = true;
   document.querySelector('.delete').disabled = true;
   document.querySelector('.insert').disabled = true;
+  document.querySelector('.cancel').disabled = false;
 }
 
 // Delete condo row

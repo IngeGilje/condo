@@ -45,7 +45,7 @@ async function main() {
       if (rowNumberCondominium !== -1) {
 
         // file import text name
-        const csvFileName = objCondominium.arrayCondominiums[rowNumberCondominium].importFileName;
+        const csvFileName = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
         if (await objImportFile.checkIfFileExists(csvFileName)) {
 
           const resident = 'A';
