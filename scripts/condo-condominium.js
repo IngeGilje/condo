@@ -179,6 +179,7 @@ function resetValues() {
   // name of importfile
   document.querySelector('.importPath').value = '';
 
+  objCondominium.removeMessage();
   document.querySelector('.filterCondominiumId').disabled = true;
   document.querySelector('.delete').disabled = true;
   document.querySelector('.insert').disabled = true;

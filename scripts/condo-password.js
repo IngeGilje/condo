@@ -3,6 +3,7 @@
 // Activate objects
 const today = new Date();
 const objCondo = new Condo('condo');
+const objCondominium = new Condominium('condominium');
 const objUser = new User('user');
 const objPassword = new Password('password');
 
@@ -30,14 +31,15 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      const resident = 'Y';
+      const resident = 'A';
 
       // Verify whether the user has permission to change all passwords
       // or only their own password
       (enableChanges)
-        ? await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine)
-        : await objUser.loadUsersTable(condominiumId, resident, objPassword.userId);
-      await objCondo.loadCondoTable(condominiumId);
+        ? await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine)
+        : await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.userId);
+      await objCondominium.loadCondominiumsTable(objPassword.condominiumId);
+      await objCondo.loadCondoTable(objPassword.condominiumId);
 
       // Show header
       showHeader();
@@ -46,7 +48,7 @@ async function main() {
 
       // Show filter
       let menuNumber = 0;
-      menuNumber = showFilter(userId, menuNumber);
+      menuNumber = showFilter(objPassword.condominiumId,userId, menuNumber);
 
       // Show result
       menuNumber = showResult(userId, menuNumber);
@@ -68,11 +70,22 @@ async function events() {
     if (event.target.classList.contains('filterUserId')) {
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      /*
-      let menuNumber = 0;
+      showResult(userId, 3);
+    };
+  });
+
+  // Filter
+  document.addEventListener('change', async (event) => {
+    if (event.target.classList.contains('filterCondominiumId')) {
+
+      const resident = "A";
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
+      
+      const userId = Number(document.querySelector('.filterUserId').value);
+      menuNumber = 0;
+      menuNumber = showFilter(condominiumId, userId, menuNumber);
       menuNumber = showResult(userId, menuNumber);
-      */
-     showResult(userId, 3);
     };
   });
 
@@ -137,14 +150,14 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(userId, menuNumber) {
+function showFilter(condominiumId, userId, menuNumber) {
 
   // Start table
   html = objUser.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
-  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, 'Velg bruker', '');
+  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
@@ -152,6 +165,9 @@ function showFilter(userId, menuNumber) {
   // insert table columns in start of a row
   menuNumber++;
   html += objUser.insertTableColumns('', menuNumber);
+
+  // Show selected condominiums 
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '');
 
   // user
   html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', true)
@@ -252,11 +268,12 @@ async function updateUserRow(userId) {
     if (rowNumberUser !== -1) {
 
       // update the users row
-      await objUser.updateUserPassword(user, userId, securityLevel, password);
-      const resident = 'Y';
+      await objUser.updateUserPassword(objPassword.user, userId, securityLevel, password);
 
       // Verify whether the user has permission to change all passwords
-      // or only their own password
+      // or only personal password
+      const resident = 'A';
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       (enableChanges)
         ? await objUser.loadUsersTable(condominiumId, resident, objPassword.userId)
         : await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
@@ -264,7 +281,8 @@ async function updateUserRow(userId) {
 
     // Show filter
     let menuNumber = 0;
-    menuNumber = showFilter(userId, menuNumber,);
+    const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+    menuNumber = showFilter(condominiumId, userId, menuNumber,);
     menuNumber = showResult(userId, menuNumber);
 
     document.querySelector('.filterUserId').disabled = false;

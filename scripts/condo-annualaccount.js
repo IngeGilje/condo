@@ -507,11 +507,14 @@ function showBankDeposit(menuNumber) {
   html += objAnnualAccount.inputTableColumn(className, 'width:175px;', closingBalanceDate, 10, false);
 
   // Bank deposit
-  let bankDepositAmount = "";
-  bankDepositAmount = (objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
-  bankDepositAmount = formatOreToKroner(bankDepositAmount);
+  //let bankDepositAmount = "";
+  const bankDepositAmount = (rowNumberBankAccount === -1)
+    ? ''
+    : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankDepositAmount);
+  //bankDepositAmount = (objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
+  //bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
-  className = `bankDepositAmount`
+  className = `bankDepositAmount`;
   html += objAnnualAccount.inputTableColumn(className, 'width:175px;', bankDepositAmount, 10, false);
 
   html += "</tr>";

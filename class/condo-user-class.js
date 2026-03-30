@@ -120,10 +120,38 @@ class User extends Condos {
     }
   }
 
-  // update user row in users table
-  async updateUsersTable(resident, user, email, userId, condoId, firstName, lastName, phone) {
+  // get all users even they are deleted
+  async loadAllUsersTable() {
 
-    const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
+    const URL = (this.serverStatus === 1)
+      ? '/api/users'
+      : 'http://localhost:3000/users';
+    try {
+
+      // Get users
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'selectAll'
+        })
+      });
+      if (!response.ok) throw new Error("Network error (users)");
+      this.arrayUsers = await response.json();
+
+    } catch (error) {
+      console.log("Error loading users:", error);
+    }
+  }
+
+  // update user row in users table
+  async updateUsersTable(condominiumId, resident, user, email, userId, condoId, firstName, lastName, phone) {
+
+    const URL = (this.serverStatus === 1)
+      ? '/api/users'
+      : 'http://localhost:3000/users';
     try {
 
       // POST request
@@ -135,6 +163,7 @@ class User extends Condos {
         body: JSON.stringify({
           action: 'update',
           user: user,
+          condominiumId: condominiumId,
           email: email,
           userId: userId,
           condoId: condoId,
@@ -260,13 +289,13 @@ class User extends Condos {
     let selectedValue = false;
 
     let html = `
-        <td
-          class="center one-line"
-        >
-          <select 
-            class="${className} center"
-            ${(enableChanges) ? '' : 'disabled'}
-            ${(style) ? `style=${style}` : 'style="width:175px;"'}>`;
+    <td
+      class="center one-line"
+    >
+      <select 
+        class="${className} center"
+        ${(enableChanges) ? '' : 'disabled'}
+        ${(style) ? `style=${style}` : 'style="width:175px;"'}>`;
 
     // Check if user array is empty
     const numberOfRows = this.arrayUsers.length;
@@ -345,37 +374,28 @@ class User extends Condos {
     }
 
     html +=
-      `
-          </select >
-        </td>
-      `;
+    `
+        </select >
+      </td>
+    `;
 
     return html;
   }
 
   // Check for unique email
-  // Except if the email exist for current user
-  checkUiqueEmail(userId, email,object, style, message) {
+  checkUiqueEmail(email, object, style, message) {
 
     // Check if email exist in users table
-    const rowNumberUser = this.arrayUsers.findIndex(user => user.email === email);
+    const rowNumberUser = this.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
     if (rowNumberUser !== -1) {
 
-      // email is used
-      if (this.arrayUsers[rowNumberUser].userId === userId) {
-
-        // email exist for current user only
-        object.showMessage(object, style, message)
-        return false;
-      } else {
-
-        // email exist for an other user
-        return true;
-      }
+      // email exist
+      object.showMessage(object, style, message)
+      return false;
     } else {
 
       // email does not exist for any user
-      return false;
+      return true;
     }
   }
 }

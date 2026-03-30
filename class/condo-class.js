@@ -39,24 +39,24 @@ class Condos {
       text: "3Bruker"
     },
     {
+      applicationName: "condo-password.html",
+      className: "Menu4",
+      text: "4Passord"
+    },
+    {
       applicationName: "condo-condo.html",
-      className: "Menu3",
-      text: "4Leilighet"
+      className: "Menu5",
+      text: "5Leilighet"
     },
     {
       applicationName: "condo-bankaccount.html",
-      className: "Menu4",
-      text: "5Bankkonto sameie"
+      className: "Menu6",
+      text: "6Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
-      className: "Menu5",
-      text: "6Konto"
-    },
-    {
-      applicationName: "condo-password.html",
       className: "Menu7",
-      text: "7Passord"
+      text: "7Konto"
     },
     {
       applicationName: "condo-userbankaccount.html",
@@ -329,40 +329,30 @@ class Condos {
     if (typeof text !== "string") valid = false;
 
     // Check length
-    if (!(text.length >= minLenght) && (text.length <= maxLength)) valid = false;
+    if (!(text.length > minLenght) && (text.length < maxLength)) valid = false;
 
     // Check allowed characters (letters, numbers, spaces)
     const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
     if (!regex.test(text)) valid = false;
 
     const inputElement = document.querySelector(`.${className}`);
-    if (inputElement && !valid) {
-
-      // remove/ add 'input-error' class
-      inputElement.classList.toggle('input-error', !valid);
-      this.showMessage(object, style, message);
-    }
+    if (inputElement) inputElement.classList.toggle('input-error', !valid);
+    if (!valid) this.showMessage(object, style, message);
 
     return valid;
   }
 
   // validate bank account
-  validateBankAccount(className, bankAccount) {
+  validateBankAccount(className, bankAccount, object, style, message) {
 
     const bankAccountPattern = /^\d{11}$/;
-    const isValid = bankAccountPattern.test(bankAccount);
+    const valid = bankAccountPattern.test(bankAccount);
 
-    if (this.isClassDefined(className)) {
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement) inputElement.classList.toggle('input-error', !valid);
+    if (!valid) this.showMessage(object, style, message);
 
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        // remove/ add 'input-error' class
-        inputElement.classList.toggle('input-error', !isValid);
-      }
-    }
-
-    return isValid;
+    return valid;
   }
 
   // Select bank account
@@ -884,43 +874,23 @@ class Condos {
     return html;
   }
 
-  // Show label error
-  showLabelError(className, style, menuNumber, ...texts) {
-
-    let html = "<tr>";
-
-    html += this.verticalMenu(menuNumber);
-
-    texts.forEach((text) => {
-
-      html += `
-        <td 
-          class="${className} no-border center"
-          ${(style) ? `style=${style}` : 'style=width:175px;'}
-        >
-          ${text}
-        </td>
-      `;
-    });
-
-    html += "</tr>";
-    return html;
-  }
-
-  /*
   // Validate interval
-  validateIntervalNew(value, fromValue, toValue) {
-   
+  validateInterval(className, value, fromValue, toValue, object, style, message) {
+
+    let valid = true;
+
     value = Number(value);
     fromValue = Number(fromValue);
     toValue = Number(toValue);
-   
-    // Validate interval
-    return ((fromValue <= toValue)
-      && (value >= fromValue)
-      && (value <= toValue));
+
+    if ((fromValue > toValue) || (value < fromValue) || (value > toValue)) valid = false;
+
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement) inputElement.classList.toggle('input-error', !valid);
+    if (!valid) this.showMessage(object, style, message);
+
+    return valid;
   }
-  */
 
   // Show the rest of the menu
   showRestMenu(menuNumber) {
@@ -941,40 +911,36 @@ class Condos {
   }
 
   // Validate number
-  validateNumber(className, number, min, max) {
+  validateNumber(className, number, min, max, object, style, message) {
 
-    const isValid = (Number(number) >= Number(min) && Number(number) <= Number(max));
+    let valid = (Number(number) >= Number(min) && Number(number) <= Number(max));
 
     // Invalid number
     if (this.isClassDefined(className)) {
 
       const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        // remove/ add 'input-error' class
-        inputElement.classList.toggle('input-error', !isValid);
-      }
+      if (inputElement) valid = true;
     }
 
-    return isValid;
+    return valid;
   }
 
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(className, date) {
 
-    let isValid = true;
+    let valid = true;
 
     // Check for valid date String
-    if (date === '' || typeof date === 'undefined') isValid = false;
-    if (isValid) {
+    if (date === '' || typeof date === 'undefined') valid = false;
+    if (valid) {
 
       // Regular expression for valuating the dd.mm.yyyy format
       const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
       const match = date.match(regex);
 
-      if (!match) isValid = false;
+      if (!match) valid = false;
 
-      if (isValid) {
+      if (valid) {
 
         // Extract day, month, and year
         const day = parseInt(match[1], 10);
@@ -982,9 +948,9 @@ class Condos {
         const year = parseInt(match[3], 10);
 
         // Check if month is between 1 and 12
-        if (day < 1 || day > 31) isValid = false;
-        if (month < 1 || month > 12) isValid = false;
-        if (year < 1900 || year > 2099) isValid = false;
+        if (day < 1 || day > 31) valid = false;
+        if (month < 1 || month > 12) valid = false;
+        if (year < 1900 || year > 2099) valid = false;
       }
     }
 
@@ -995,21 +961,12 @@ class Condos {
       if (inputElement) {
 
         // remove/ add 'message' class
-        //inputElement.classList.toggle('input-error', !isValid);
-        inputElement.classList.toggle('message', !isValid);
+        //inputElement.classList.toggle('input-error', !valid);
+        inputElement.classList.toggle('message', !valid);
       }
     }
 
-    return isValid;
-    /*
-    // Create a date object
-    const objDate = new Date(year, month - 1, day);
-   
-    // Validate that the date components match
-    return isValid;
-   
-    return (objDate.getFullYear() === year && objDate.getMonth() === month - 1 && objDate.getDate() === day);
-    */
+    return valid;
   }
 
   /*
@@ -1059,7 +1016,7 @@ class Condos {
 
     // Validate phone number
     phone = phone.replace(/\s+/g, "");
-    const isValid = /^\d{8,15}$/.test(phone);
+    const valid = /^\d{8,15}$/.test(phone);
 
     // Invalid/ valid phone number
     if (this.isClassDefined(className)) {
@@ -1068,10 +1025,10 @@ class Condos {
       if (inputElement) {
 
         // remove/ add 'input-error' class
-        inputElement.classList.toggle('input-error', !isValid);
+        inputElement.classList.toggle('input-error', !valid);
       }
     }
-    return isValid;
+    return valid;
   }
 
   // Validate E-mail
@@ -1079,19 +1036,13 @@ class Condos {
 
     // Validate eMail
     const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = ((eMailRegex.test(eMail))) ? true : false;
+    const valid = ((eMailRegex.test(eMail))) ? true : false;
 
-    if (this.isClassDefined(className)) {
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement) inputElement.classList.toggle('input-error', !valid);
+    if (!valid) this.showMessage(object, style, message);
 
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        // remove/ add 'input-error' class
-        inputElement.classList.toggle('input-error', !isValid);
-      }
-    }
-    if (!isValid) object.showMessage(object, style, message)
-    return isValid;
+    return valid;
   }
 
   // Validate organization number
@@ -1099,7 +1050,7 @@ class Condos {
 
     // Validate organization number Organization Number
     const organizationNumberPattern = /^\d{9}$/;
-    const isValid = (organizationNumberPattern.test(organizationNumber)) ? true : false;
+    const valid = (organizationNumberPattern.test(organizationNumber)) ? true : false;
 
     // Invalid/ Valid organization number
     if (this.isClassDefined(className)) {
@@ -1108,16 +1059,16 @@ class Condos {
       if (inputElement) {
 
         // remove/ add 'input-error' class
-        inputElement.classList.toggle('input-error', !isValid);
+        inputElement.classList.toggle('input-error', !valid);
       }
     }
-    return isValid;
+    return valid;
   }
 
   // Validate filename
   validateFileName(className, fileName) {
     const fileNameRegex = /^(?:[a-zA-Z]:\\)?(?:[^<>:"/\\|?*\x00-\x1F]+\\)*[^<>:"/\\|?*\x00-\x1F]*$/;
-    const isValid = fileNameRegex.test(fileName);
+    const valid = fileNameRegex.test(fileName);
 
     // Invalid/ Valid  filename
     if (this.isClassDefined(className)) {
@@ -1126,10 +1077,10 @@ class Condos {
       if (inputElement) {
 
         // remove/ add 'input-error' class
-        inputElement.classList.toggle('input-error', !isValid);
+        inputElement.classList.toggle('input-error', !valid);
       }
     }
-    return isValid;
+    return valid;
   }
 
   // Show blank header row
@@ -1360,6 +1311,12 @@ class Condos {
     // The end of the table
     html += object.endTable();
     document.querySelector('.message').innerHTML = html;
+  }
+
+  // Remove message
+  removeMessage() {
+
+    document.querySelector(".message").style.display = "none";
   }
 }
 
@@ -1702,6 +1659,7 @@ function removeIframe() {
   }
 }
 
+/*
 // Validate interval
 function validateInterval(className, labelText, fromValue, toValue) {
 
@@ -1733,6 +1691,7 @@ function validateInterval(className, labelText, fromValue, toValue) {
   }
   return isTextValid;
 }
+*/
 
 // exit application after 1 hour
 function exitIfNoActivity() {

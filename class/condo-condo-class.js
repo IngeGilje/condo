@@ -86,7 +86,7 @@ class Condo extends Condos {
       <option value="0" 
         selected
       >
-        Ingen konti
+        Ingen leilighet
       </option>`;
       selectedValue = true;
     }
@@ -130,7 +130,6 @@ class Condo extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
     try {
       // POST request
-      //const response = await fetch(`${URL}:3000/condo?action=select&condominiumId=${condominiumId}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {

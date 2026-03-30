@@ -358,13 +358,28 @@ async function main() {
               WHERE deleted <> 'Y'`;
 
             if (Number(condominiumId) !== nineNine) SQLquery += ` AND condominiumId = ${condominiumId}`;
-
-            if (resident === 'Y' || resident === 'N') {
-              if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
-            }
-
+            if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
             if (Number(userId) !== nineNine) SQLquery += ` AND userId = ${userId}`;
             SQLquery += ` ORDER BY firstName`;
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /users:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'selectAll': {
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM users`;
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
@@ -385,7 +400,7 @@ async function main() {
             const resident = req.body.resident;
             const userId = req.body.userId;
             const user = req.body.user;
-
+            const condominiumId = req.body.condominiumId;
             const email = req.body.email;
             const condoId = req.body.condoId;
             const firstName = req.body.firstName;
@@ -398,6 +413,7 @@ async function main() {
                 SET
                   resident = '${resident}',
                   user = '${user}',
+                  condominiumId = '${condominiumId}',
                   lastUpdate = '${lastUpdate}',
                   email = '${email}',
                   condoId = ${condoId},

@@ -457,7 +457,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
-  let validBankAccount = objSupplier.validateBankAccount('bankAccount', bankAccount);
+  let validBankAccount = objSupplier.validateBankAccount('bankAccount', bankAccount,objSupplier, '', 'Ugyldig bankkonto');
   if (bankAccount === '') validBankAccount = true;
 
   // validate accountId

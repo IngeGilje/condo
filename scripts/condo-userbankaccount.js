@@ -20,7 +20,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((condominiumId === 0 || user === null)) {
+    if ((objUserBankAccount.condominiumId === 0 || objUserBankAccount.user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';
@@ -29,7 +29,7 @@ async function main() {
     } else {
 
       const resident = 'A';
-      await objUser.loadUsersTable(condominiumId, resident, objUserBankAccount.nineNine);
+      await objUser.loadUsersTable(objUserBankAccount.condominiumId, resident, objUserBankAccount.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
       await objUserBankAccount.loadUserBankAccountsTable(condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
@@ -278,7 +278,7 @@ function showResult(menuNumber) {
     html += insertEmptyTableRow(menuNumber);
   }
 
-    // Show the rest of the menu
+  // Show the rest of the menu
   menuNumber++;
   html += objUserBankAccount.showRestMenu(menuNumber);
 
@@ -331,7 +331,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   className = `.bankAccount${userBankAccountId}`;
   const bankAccount = document.querySelector(className).value;
   className = `bankAccount${userBankAccountId}`;
-  const validBankAccount = objUserBankAccount.validateBankAccount(className, bankAccount);
+  const validBankAccount = objUserBankAccount.validateBankAccount(className, bankAccount, objUserBankAccount, '', 'Ugyldig bankkonto');
 
   if (validUserId && validAccountId && validBankAccount) {
 
