@@ -49,8 +49,7 @@ class Budget extends Condos {
     let selectedOption = false;
 
     // Check if budget array is empty
-    const numberOfRows = this.arrayBudgets.length;
-    if (numberOfRows > 0) {
+    if (this.arrayBudgets.length > 0) {
       this.arrayBudgets.forEach((budget) => {
 
         menuNumber++;

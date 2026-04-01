@@ -4,6 +4,7 @@ class Supplier extends Condos {
   // supplier information
   arraySuppliers;
 
+  /*
   // Show all suppliers
   showSelectedSuppliers(classValue, supplierId) {
 
@@ -24,12 +25,10 @@ class Supplier extends Condos {
         >
     `;
 
-    let selectedOption =
-      false;
+    let selectedOption = false;
 
     // Check if supplier array is empty
-    const numberOfRows = this.arraySuppliers.length;
-    if (numberOfRows > 0) {
+    if (this.arraySuppliers.length > 0) {
       this.arraySuppliers.forEach((supplier) => {
         if (supplier.supplierId >= 0) {
           if (supplier.supplierId === supplierId) {
@@ -70,10 +69,80 @@ class Supplier extends Condos {
 
     html += `
       </select >
-    </form>
-  `;
+    </form>`;
 
     document.querySelector(`.div-${classValue}`).innerHTML = html;
+  }
+  */
+
+  showSelectedSuppliers(className, style, supplierId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <td
+      class="centerCell one-line center"
+    >
+      <select 
+        class="${className} center"
+        ${(enableChanges) ? '' : 'disabled'}
+        ${(style) ? `style=${style}` : 'style=width:175px;'}
+      >`;
+
+    // Check if Suppliers array is empty
+    if (this.arraySuppliers.length > 0) {
+      this.arraySuppliers.forEach((supplier) => {
+
+        html += `
+        <option 
+          value=${supplier.supplierId}
+          ${(supplier.supplierId === supplierId) ? 'selected' : ''}
+        >
+          ${supplier.name}
+        </option>`;
+        if (supplier.supplierId === supplierId) selectedValue = true;
+      });
+    } else {
+
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen mottakere
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arraySuppliers.length > 1)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        selected
+      >
+        ${selectAll}
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arraySuppliers.length > 1)) {
+      html += `
+        <option 
+          value=0
+          ${(selectedValue) ? selectNone : ''}
+        >
+          ${selectNone}
+        </option>`;
+      selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </td>`;
+
+    return html;
   }
 
   // Find selected supplier id
@@ -84,13 +153,14 @@ class Supplier extends Condos {
     // Check if HTML class exist
     if (isClassDefined(classValue)) {
 
-      supplierId =
-        Number(document.querySelector(`.${classValue}`).value);
+      supplierId = Number(document.querySelector(`.${classValue}`).value);
       supplierId = (supplierId === 0) ? this.arraySuppliers.at(-1).supplierId : supplierId;
     } else {
 
-      // Get last id in last object in user array
-      supplierId = this.arraySuppliers.at(-1).supplierId;
+      // Get last supplier Id
+      (this.arraySuppliers.length > 0)
+        ? supplierId = this.arraySuppliers.at(-1).supplierId
+        : 0;
     }
     return supplierId;
   }
@@ -225,108 +295,6 @@ class Supplier extends Condos {
     } catch (error) {
       console.log("Error deleting supplier:", error);
     }
-  }
-
-  // Show all selected suppliers
-  showSelectedSuppliersNew(className, style, supplierId, selectNone, selectAll) {
-
-    let selectedValue = false;
-
-    let html = `
-    <td
-      class="center one-line"
-    >
-      <select 
-        class="${className} center"
-        ${(style) ? `style=${style}` : 'style="width:175px;"'}
-      >`;
-
-    // Check if supplier array is empty
-    const numberOfRows = this.arraySuppliers.length;
-    if (numberOfRows > 0) {
-      this.arraySuppliers.forEach((supplier) => {
-        if (supplier.supplierId === supplierId) {
-
-          html += `
-          <option 
-            value=${supplier.supplierId}
-            selected
-          >
-            ${supplier.name}
-          </option>`;
-          selectedValue = true;
-        } else {
-
-          html +=
-            `
-              <option 
-                value="${supplier.supplierId}">
-                ${supplier.name}
-              </option>
-            `;
-        }
-      });
-    } else {
-
-      html +=
-        `
-          <option value="0" 
-            selected
-          >
-            Ingen leilighet
-          </option>
-        `;
-      selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (numberOfRows > 0)) {
-
-      html +=
-        `
-          <option 
-            value=${this.nineNine}
-            selected
-          >
-            ${selectAll}
-          </option>
-        `;
-      selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (numberOfRows > 1)) {
-      if (selectedValue) {
-        html +=
-          `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
-      } else {
-
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
-        selectedValue = true;
-      }
-    }
-
-    html +=
-      `
-          </select >
-        </td>
-      `;
-
-    return html;
   }
 }
 

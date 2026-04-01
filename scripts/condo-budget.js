@@ -166,21 +166,21 @@ async function updateBudgetsRow(budgetId) {
   className = `.accountId${budgetId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${budgetId}`;
-  const validAccountId = objBudget.validateNumber(className, accountId, 1, objBudget.nineNine);
+  const validAccountId = objBudget.validateNumber(className, accountId, 1, objBudget.nineNine, object, style, message);
 
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
   amount = Number(formatKronerToOre(amount));
   className = `amount${budgetId}`;
-  let validAmount = objBudget.validateNumber(className, amount, objBudget.minusNineNine, objBudget.nineNine);
+  let validAmount = objBudget.validateNumber(className, amount, objBudget.minusNineNine, objBudget.nineNine, object, style, message);
   if (amount === 0) validAmount = false;
 
   // year
   className = `.year${budgetId}`;
   let year = Number(document.querySelector(`${className}`).value);
   className = `year${budgetId}`;
-  const validYear = objBudget.validateNumber(className, year, 2020, 2029);
+  const validYear = objBudget.validateNumber(className, year, 2020, 2029, object, style, message);
 
   // text
   className = `.text${budgetId}`;

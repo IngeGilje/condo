@@ -305,19 +305,19 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     className = `.accountId${bankAccountTransactionId}`;
     const accountId = Number(document.querySelector(className).value);
     className = `accountId${bankAccountTransactionId}`;
-    const validAccountId = objBankAccountTransaction.validateNumber(className, accountId, 0, objBankAccountTransaction.nineNine)
+    const validAccountId = objBankAccountTransaction.validateNumber(className, accountId, 0, objBankAccountTransaction.nineNine, object, style, message)
 
     // condoId
     className = `.condoId${bankAccountTransactionId}`;
     const condoId = Number(document.querySelector(className).value);
     className = `condoId${bankAccountTransactionId}`;
-    const validCondoId = objBankAccountTransaction.validateNumber(className, condoId, 0, objBankAccountTransaction.nineNine)
+    const validCondoId = objBankAccountTransaction.validateNumber(className, condoId, 0, objBankAccountTransaction.nineNine, object, style, message)
 
     // kilowattHour
     className = `.kilowattHour${bankAccountTransactionId}`;
     const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
     className = `kilowattHour${bankAccountTransactionId}`;
-    const validNumberKWHour = objBankAccountTransaction.validateNumber(className, kilowattHour, 0, objBankAccountTransaction.nineNine)
+    const validNumberKWHour = objBankAccountTransaction.validateNumber(className, kilowattHour, 0, objBankAccountTransaction.nineNine, object, style, message)
 
     // text
     className = `.text${bankAccountTransactionId}`;

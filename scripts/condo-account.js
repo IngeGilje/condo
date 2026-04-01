@@ -67,7 +67,7 @@ async function events() {
       let fixedCost = document.querySelector('.filterFixedCost').value;
       if (fixedCost === 'Fast') fixedCost = 'Y';
       if (fixedCost === 'Variabel') fixedCost = 'N';
-      await objAccount.loadAccountsTable(condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show account
       showResult(3);
@@ -351,7 +351,7 @@ async function updateAccountsRow(accountId) {
 
   // name
   className = `name${accountId}`;
-  const name = document.querySelector(className).value;
+  const name = document.querySelector(`.${className}`).value;
   const validName = objAccount.validateText(className,name,         3,        50, objAccount,    '', 'Ugyldig kontonavn');
  
   className = `.fixedCost${accountId}`;

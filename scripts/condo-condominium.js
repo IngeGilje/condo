@@ -439,7 +439,7 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objCondominium.validateNumber('postalCode', Number(postalCode), 1, 9999);
+  const validPostalCode = objCondominium.validateNumber('postalCode', Number(postalCode), 1, objCondominium.nineNine, object, style, message);
 
   // validate city
   const city = document.querySelector('.city').value;
@@ -455,15 +455,15 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate incomeRemoteHeatingAccountId
   const incomeRemoteHeatingAccountId = Number(document.querySelector('.incomeRemoteHeatingAccountId').value);
-  const validIncomeRemoteHeatingAccountId = objCondominium.validateNumber('incomeRemoteHeatingAccountId', incomeRemoteHeatingAccountId, 0, objCondominium.nineNine);
+  const validIncomeRemoteHeatingAccountId = objCondominium.validateNumber('incomeRemoteHeatingAccountId', incomeRemoteHeatingAccountId, 0, objCondominium.nineNine, object, style, message);
 
   // validate paymentRemoteHeatingAccountId
   const paymentRemoteHeatingAccountId = Number(document.querySelector('.paymentRemoteHeatingAccountId').value);
-  const validPaymentRemoteHeatingAccountId = objCondominium.validateNumber('paymentRemoteHeatingAccountId', paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
+  const validPaymentRemoteHeatingAccountId = objCondominium.validateNumber('paymentRemoteHeatingAccountId', paymentRemoteHeatingAccountId, 0, objCondominium.nineNine, object, style, message);
 
   // validate commonCostAccountId
   const commonCostAccountId = Number(document.querySelector('.commonCostAccountId').value);
-  const validCommonCostAccountId = objCondominium.validateNumber('commonCostAccountId', commonCostAccountId, 0, objCondominium.nineNine);
+  const validCommonCostAccountId = objCondominium.validateNumber('commonCostAccountId', commonCostAccountId, 0, objCondominium.nineNine, object, style, message);
 
   // validate organizationNumber
   const organizationNumber = Number(document.querySelector('.organizationNumber').value);

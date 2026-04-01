@@ -26,8 +26,7 @@ class User extends Condos {
     if (userId === 0) userId = this.arrayUsers.at(-1).userId;
 
     // Check if user array is empty
-    const numberOfRows = this.arrayUsers.length;
-    if (numberOfRows > 0) {
+    if (this.arrayUsers.length > 0) {
       this.arrayUsers.forEach((user) => {
         if (user.userId === userId) {
 
@@ -298,8 +297,7 @@ class User extends Condos {
         ${(style) ? `style=${style}` : 'style="width:175px;"'}>`;
 
     // Check if user array is empty
-    const numberOfRows = this.arrayUsers.length;
-    if (numberOfRows > 0) {
+    if (this.arrayUsers.length > 0) {
       this.arrayUsers.forEach((user) => {
         html += `
           <option 
@@ -322,7 +320,7 @@ class User extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 0)) {
+    if (selectAll && (this.arrayUsers.length > 0)) {
 
       html += `
       <option 
@@ -335,7 +333,7 @@ class User extends Condos {
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
+    if (selectNone && (this.arrayUsers.length > 1)) {
 
       html +=
         `

@@ -259,7 +259,7 @@ function showResult(bankAccountTransactionId, menuNumber) {
 async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
   if (bankAccountTransactionId === '') bankAccountTransactionId = -1
-  const validbankAccountTransactionId = objBankAccountTransaction.validateNumber('bankAccountTransactionId', Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine);
+  const validbankAccountTransactionId = objBankAccountTransaction.validateNumber('bankAccountTransactionId', Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine, object, style, message);
 
   // validate voucer filename
   const voucerFileName = document.querySelector('.voucerFileName').value;

@@ -252,7 +252,7 @@ async function updateUserRow(userId) {
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = objUser.validateNumber('securityLevel', securityLevel, 1, 9);
+  const validSecurityLevel = objUser.validateNumber('securityLevel', securityLevel, 1, 9, object, style, message);
 
   // validate password
   let password = document.querySelector('.password').value;

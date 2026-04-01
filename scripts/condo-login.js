@@ -156,7 +156,7 @@ async function checkLogin() {
   }
 
   // password/ user is not OK
-  objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Ugyldig passord/email');
+  objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Ugyldig email/passord');
 
   resetValues();
   return false;

@@ -52,8 +52,7 @@ class Due extends Condos {
       false;
 
     // Check if Bank account transactions array is empty
-    const numberOfRows = this.arrayDues.length;
-    if (numberOfRows > 0) {
+    if (this.arrayDues.length > 0) {
       this.arrayDues.forEach((due) => {
 
         menuNumber++;

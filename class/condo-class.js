@@ -12,8 +12,8 @@ class Condos {
 
   inactivityTimeout = false;
 
-  nineNine = 999999999;
-  minusNineNine = -999999999;
+  nineNine = 999999998;
+  minusNineNine = -999999998;
 
   // User info
   condominiumId = Number(sessionStorage.getItem("condominiumId"));
@@ -329,7 +329,7 @@ class Condos {
     if (typeof text !== "string") valid = false;
 
     // Check length
-    if (!(text.length > minLenght) && (text.length < maxLength)) valid = false;
+    if (!(text.length >= minLenght) && (text.length <= maxLength)) valid = false;
 
     // Check allowed characters (letters, numbers, spaces)
     const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
@@ -919,7 +919,7 @@ class Condos {
     if (this.isClassDefined(className)) {
 
       const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) valid = true;
+      if (!valid) this.showMessage(object, style, message);
     }
 
     return valid;

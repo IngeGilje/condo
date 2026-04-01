@@ -28,8 +28,7 @@ class BankAccount extends Condos {
     `;
 
     // Check if bank account array is empty
-    const numberOfRows = this.arrayBankAccounts.length;
-    if (numberOfRows > 0) {
+    if (this.arrayBankAccounts.length > 0) {
       this.arrayBankAccounts.forEach((bankaccount) => {
         if (bankaccount.bankAccountId >= 0) {
           if (bankaccount.bankAccountId === bankAccountId) {
@@ -111,8 +110,7 @@ class BankAccount extends Condos {
           >`;
 
     // Check if bankaccounts array is empty
-    const numberOfRows = this.arrayBankAccounts.length;
-    if (numberOfRows > 0) {
+    if (this.arrayBankAccounts.length > 0) {
       this.arrayBankAccounts.forEach((bankAccount) => {
         if (bankAccount.bankAccountId === bankAccountId) {
 
@@ -151,7 +149,7 @@ class BankAccount extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 0)) {
+    if (selectAll && (this.arrayBankAccounts.length > 0)) {
 
       html +=
         `
@@ -166,7 +164,7 @@ class BankAccount extends Condos {
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
+    if (selectNone && (this.arrayBankAccounts.length > 1)) {
       if (selectedValue) {
         html +=
           `

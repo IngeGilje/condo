@@ -358,7 +358,7 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1;
   userId = Number(userId);
-  const validUserId = objUser.validateNumber('userId', userId, -1, objUser.nineNine);
+  const validUserId = objUser.validateNumber('userId', userId, -1, objUser.nineNine, object, style, message);
 
   // resident
   let resident = document.querySelector('.resident').value;
@@ -394,7 +394,7 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = objUser.validateNumber('condoId', condoId, 0, objUser.nineNine);
+  const validCondoId = objUser.validateNumber('condoId', condoId, 0, objUser.nineNine, object, style, message);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
@@ -410,7 +410,7 @@ async function updateUserRow(userId) {
 
   // validate condominium
   const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-  const validCondominiumId = objUser.validateNumber('condominium', condominiumId, 0, objUser.nineNine);
+  const validCondominiumId = objUser.validateNumber('condominium', condominiumId, 0, objUser.nineNine, object, style, message);
 
   if (validUserId && validEmail && validCondoId && validFirstName && validLastName
     && validPhone && validCondominiumId) {

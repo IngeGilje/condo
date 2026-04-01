@@ -65,10 +65,8 @@ class Condo extends Condos {
         ${(style) ? `style=${style}` : 'style=width:175px;'}
       >`;
 
-    const numberOfRows = this.arrayCondo.length;
-
     // Check if condo array is empty
-    if (numberOfRows > 0) {
+    if (this.arrayCondo.length > 0) {
       this.arrayCondo.forEach((condo) => {
 
         html += `

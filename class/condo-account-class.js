@@ -137,19 +137,17 @@ class Account extends Condos {
         ${(style) ? `style=${style}` : 'style=width:175px;'}
       >`;
 
-    const numberOfRows = this.arrayAccounts.length;
-
     // Check if accounts array is empty
-    if (numberOfRows > 0) {
+    if (this.arrayAccounts.length > 0) {
       this.arrayAccounts.forEach((account) => {
 
         html += `
-          <option 
-            value=${account.accountId}
-            ${(account.accountId === accountId) ? 'selected' : ''}
-          >
-            ${account.name}
-          </option>`;
+        <option 
+          value=${account.accountId}
+          ${(account.accountId === accountId) ? 'selected' : ''}
+        >
+          ${account.name}
+        </option>`;
         if (account.accountId === accountId) selectedValue = true;
       });
     } else {
@@ -164,7 +162,7 @@ class Account extends Condos {
     }
 
     // Select all
-    if (selectAll && (this.arrayAccounts.length > 1)) {
+    if (selectAll && (this.arrayAccounts.length > 0)) {
 
       html += `
       <option 
@@ -177,14 +175,15 @@ class Account extends Condos {
     }
 
     // Select none
-    if (selectNone && (this.arrayAccounts.length > 1)) {
+    if (selectNone && (this.arrayAccounts.length > 0)) {
       html += `
-        <option 
-          value=0
-          ${(selectedValue) ? selectNone : ''}
-        >
-          ${selectNone}
-        </option>`;
+      <option 
+        value=0
+        ${(selectedValue) ? selectNone : ''}
+        ${(accountId === 0) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
       selectedValue = true;
     }
 

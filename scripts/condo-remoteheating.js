@@ -416,7 +416,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   className = ".filterYear";
   const year = Number(document.querySelector(className).value);
   className = "filterYear";
-  const validYear = objRemoteHeating.validateNumber(className, year, 2020, 2030);
+  const validYear = objRemoteHeating.validateNumber(className, year, 2020, 2030, object, style, message);
 
   // date
   className = `.date${remoteHeatingId}`;
@@ -429,21 +429,21 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   className = `.condoId${remoteHeatingId}`;
   const condoId = Number(document.querySelector(className).value);
   className = `condoId${remoteHeatingId}`;
-  const validCondoId = objRemoteHeating.validateNumber(className, condoId, 1, objRemoteHeating.nineNine);
+  const validCondoId = objRemoteHeating.validateNumber(className, condoId, 1, objRemoteHeating.nineNine, object, style, message);
 
   // kilowattHour
   className = `.kilowattHour${remoteHeatingId}`;
   let kilowattHour = document.querySelector(className).value;
   kilowattHour = formatKronerToOre(kilowattHour);
   className = `kilowattHour${remoteHeatingId}`;
-  const validkilowattHour = objRemoteHeating.validateNumber(className, kilowattHour, 1, objRemoteHeating.nineNine);
+  const validkilowattHour = objRemoteHeating.validateNumber(className, kilowattHour, 1, objRemoteHeating.nineNine, object, style, message);
 
   // Price for one year
   className = `.priceYear${remoteHeatingId}`;
   let priceYear = document.querySelector(className).value;
   priceYear = formatKronerToOre(priceYear);
   className = `priceYear${remoteHeatingId}`;
-  const validPriceYear = objRemoteHeating.validateNumber(className, priceYear, 0, objRemoteHeating.nineNine);
+  const validPriceYear = objRemoteHeating.validateNumber(className, priceYear, 0, objRemoteHeating.nineNine, object, style, message);
 
   // Validate remoteheatings columns
   if (validYear && validDate && validCondoId && validkilowattHour && validPriceYear) {

@@ -20,8 +20,7 @@ class RemoteHeating extends Condos {
           >`;
 
     // Check if remoteHeatings array is empty
-    const numberOfRows = this.arrayRemoteHeatings.length;
-    if (numberOfRows > 0) {
+    if (this.arrayRemoteHeatings.length > 0) {
       this.arrayRemoteHeatings.forEach((remoteHeating) => {
         if (remoteHeating.remoteHeatingId === remoteHeatingId) {
 
@@ -60,7 +59,7 @@ class RemoteHeating extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 0)) {
+    if (selectAll && (this.arrayRemoteHeatings.length > 0)) {
 
       html +=
         `
@@ -75,7 +74,7 @@ class RemoteHeating extends Condos {
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
+    if (selectNone && (this.arrayRemoteHeatings.length > 1)) {
       if (selectedValue) {
         html +=
           `

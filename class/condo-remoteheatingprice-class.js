@@ -19,8 +19,7 @@ class RemoteHeatingPrice extends Condos {
       >`;
 
     // Check if remoteHeatingprices array is empty
-    const numberOfRows = this.arrayRemoteHeatingPrices.length;
-    if (numberOfRows > 0) {
+    if (this.arrayRemoteHeatingPrices.length > 0) {
       this.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
         if (remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId) {
 
@@ -59,7 +58,7 @@ class RemoteHeatingPrice extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 0)) {
+    if (selectAll && (this.arrayRemoteHeatingPrices.length > 0)) {
 
       html +=
         `
@@ -74,7 +73,7 @@ class RemoteHeatingPrice extends Condos {
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
+    if (selectNone && (this.arrayRemoteHeatingPrices.length > 1)) {
       if (selectedValue) {
         html +=
           `

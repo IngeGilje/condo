@@ -14,7 +14,7 @@ const tableWidth = 'width:600px;';
 exitIfNoActivity();
 
 // Validate LogIn
-if ((condominiumId === 0 || user === null)) {
+if ((objSupplier.condominiumId === 0 || objSupplier.user === null)) {
 
   // LogIn is not valid
   //window.location.href = 'http://localhost/condo-login.html';
@@ -30,10 +30,10 @@ if ((condominiumId === 0 || user === null)) {
     if (await objUser.checkServer()) {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident, objSupplier.nineNine);
+      await objUser.loadUsersTable(objSupplier.condominiumId, resident, objSupplier.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(condominiumId, fixedCost);
-      await objSupplier.loadSuppliersTable(condominiumId);
+      await objAccount.loadAccountsTable(objSupplier.condominiumId, fixedCost);
+      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
 
       // Find selected supplier id
       const supplierId = objSupplier.getSelectedSupplierId('select-supplierId');
@@ -43,10 +43,10 @@ if ((condominiumId === 0 || user === null)) {
 
       // Show filter
       let menuNumber = 0;
-      menuNumber = showFilter(supplierId, menuNumber);
+      menuNumber = showFilter(menuNumber, supplierId);
 
       // Show supplier
-      menuNumber = showResult(supplierId, menuNumber);
+      menuNumber = showSupplier(menuNumber, supplierId);
 
       // Events
       events();
@@ -65,11 +65,11 @@ async function events() {
     if (event.target.classList.contains('filterSupplierId')) {
 
       //const condominiumId = Number(condominiumId);
-      await objSupplier.loadSuppliersTable(condominiumId);
+      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
 
       const supplierId = Number(document.querySelector('.filterSupplierId').value);
 
-      showResult(supplierId, 2);
+      showSupplier(2, supplierId);
     };
   });
 
@@ -89,13 +89,15 @@ async function events() {
       await deleteSupplierRow();
 
       //const condominiumId = Number(condominiumId);
-      await objSupplier.loadSuppliersTable(condominiumId);
+      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
 
       // Show filter
-      const supplierId = objSupplier.arraySuppliers.at(-1).supplierId;
+      const supplierId = (objSupplier.arraySuppliers.length > 0)
+        ? objSupplier.arraySuppliers.at(-1).supplierId
+        : 0;
       //let menuNumber = 0;
-      //menuNumber = showFilter(supplierId, menuNumber);
-      menuNumber = showResult(supplierId, 2);
+      //menuNumber = showFilter(menuNumber,supplierId);
+      menuNumber = showSupplier(2, supplierId);
     };
   });
 
@@ -112,15 +114,15 @@ async function events() {
     if (event.target.classList.contains('cancel')) {
 
       // Reload suppliers table
-      await objSupplier.loadSuppliersTable(condominiumId);
+      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
 
       let supplierId = Number(document.querySelector('.filterSupplierId').value);
       if (supplierId === 0) supplierId = objSupplier.arraySuppliers.at(-1).supplierId;
 
       // Show filter
       //let menuNumber = 0;
-      //menuNumber = showFilter(supplierId, menuNumber);
-      showResult(supplierId, 2);
+      //menuNumber = showFilter(menuNumber,supplierId);
+      showSupplier(2, supplierId);
     };
   });
   // Log out
@@ -183,22 +185,6 @@ function resetValues() {
   document.querySelector('.cancel').disabled = false;
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objSupplier.startTable(tableWidth);
-
-  // show main header
-  html += objSupplier.showTableHeader('width:175px;', 'Mottaker');
-
-  // The end of the table
-  html += objSupplier.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -221,7 +207,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(supplierId, menuNumber) {
+function showFilter(menuNumber, supplierId) {
 
   // Start table
   html = objSupplier.startTable(tableWidth);
@@ -238,7 +224,7 @@ function showFilter(supplierId, menuNumber) {
   html += objSupplier.insertTableColumns('', menuNumber);
 
   // supplier
-  html += objSupplier.showSelectedSuppliersNew('filterSupplierId', 'width:175px;', supplierId, '', '')
+  html += objSupplier.showSelectedSuppliers('filterSupplierId', 'width:175px;', supplierId, '', '', enableChanges)
 
   html += "</tr>";
 
@@ -253,7 +239,7 @@ function showFilter(supplierId, menuNumber) {
 }
 
 // Show result
-function showResult(supplierId, menuNumber) {
+function showSupplier(menuNumber, supplierId) {
 
   // start table
   let html = objSupplier.startTable(tableWidth);
@@ -264,158 +250,199 @@ function showResult(supplierId, menuNumber) {
 
   // Check if supplier row exist
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-  if (rowNumberSupplier !== -1) {
+  //if (rowNumberSupplier !== -1) {
 
-    // Header for value including menu
-    menuNumber++;
-    html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Navn');
+  // Header for value including menu
+  menuNumber++;
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Navn');
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objSupplier.insertTableColumns('', menuNumber);
+
+  // name
+  const name = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].name;
+
+  html += objSupplier.inputTableColumn('name', '', name, 45, enableChanges);
+
+  html += "</tr>";
+
+  // street, address2
+  html += "<tr>";
+  menuNumber++;
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Gate', 'Adresse 2');
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objSupplier.insertTableColumns('', menuNumber);
+
+  // street
+  const street = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].street;
+  html += objSupplier.inputTableColumn('street', '', street, 45, enableChanges);
+
+  // address2
+  const address2 = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].address2;
+  html += objSupplier.inputTableColumn('address2', '', address2, 45, enableChanges);
+
+  html += "</tr>";
+
+  // postalCode, city
+  html += "<tr>";
+  menuNumber++;
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Postnummer', 'Poststed');
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objSupplier.insertTableColumns('', menuNumber);
+
+  // postalCode
+  const postalCode = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
+
+  html += objSupplier.inputTableColumn('postalCode', '', postalCode, 4, enableChanges);
+
+  // city
+  const city = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].city;
+  html += objSupplier.inputTableColumn('city', '', city, 45, enableChanges);
+
+  html += "</tr>";
+
+  // email,phone
+  html += "<tr>";
+  menuNumber++;
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'e-Mail', 'Telefonnummer');
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objSupplier.insertTableColumns('', menuNumber);
+
+  // email
+  const email = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].email;
+  html += objSupplier.inputTableColumn('email', '', email, 50, enableChanges);
+
+  // phone
+  const phone = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].phone;
+  html += objSupplier.inputTableColumn('phone', '', phone, 8, enableChanges);
+
+  html += "</tr>";
+
+  // bankAccount, accountId
+  html += "<tr>";
+  menuNumber++;
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Konto', 'Bankkontonummer');
+
+  // Show menu
+  menuNumber++;
+  html += objSupplier.verticalMenu(menuNumber);
+
+  // accountId
+  const accountId = (rowNumberSupplier === -1)
+    ? 0
+    : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
+  html += objAccount.showSelectedAccounts('accountId', '', accountId, 'Ingen konti er valgt', '', enableChanges);
+
+  // bankAccount number
+  const bankAccount = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
+  html += objSupplier.inputTableColumn('bankAccount', '', bankAccount, 11, enableChanges);
+
+  html += "</tr>";
+
+  // amountAccountId, amount
+  html += "<tr>";
+  menuNumber++;
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Konto for beløp', 'Beløp');
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objSupplier.insertTableColumns('', menuNumber);
+
+  // amountAccountId
+  const amountAccountId = (rowNumberSupplier === -1)
+    ? 0
+    : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
+  html += objAccount.showSelectedAccounts('amountAccountId', '', amountAccountId, 'Ingen konto er valgt', '', enableChanges);
+
+  // amount
+  const amount = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].amount;
+  html += objSupplier.inputTableColumn('amount', '', amount, 11, enableChanges);
+
+  html += "</tr>";
+
+  // textAccountId, text
+  html += "<tr>";
+  menuNumber++;
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Konto for tekst', 'Tekst');
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objSupplier.insertTableColumns('', menuNumber);
+
+  // AccountId for text
+  const textAccountId = (rowNumberSupplier === -1)
+    ? 0
+    : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
+  html += objAccount.showSelectedAccounts('textAccountId', '', textAccountId, 'Ingen konto er valgt', '', enableChanges);
+
+  // text for account id
+  const text = (rowNumberSupplier === -1)
+    ? ''
+    : objSupplier.arraySuppliers[rowNumberSupplier].text;
+  html += objSupplier.inputTableColumn('text', '', text, 50, enableChanges);
+
+  html += "</tr>";
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objSupplier.insertTableColumns('', menuNumber, '');
+
+  html += "</tr>";
+
+  // Show buttons
+  if (enableChanges) {
 
     // insert table columns in start of a row
     menuNumber++;
     html += objSupplier.insertTableColumns('', menuNumber);
 
-    // name
-    html += objSupplier.inputTableColumn('name', '', objSupplier.arraySuppliers[rowNumberSupplier].name, 45, enableChanges);
-
+    html += objSupplier.showButton('width:175px;', 'update', 'Oppdater');
+    html += objSupplier.showButton('width:175px;', 'cancel', 'Angre');
     html += "</tr>";
-
-    // street, address2
-    html += "<tr>";
-    menuNumber++;
-    html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Gate', 'Adresse 2');
 
     // insert table columns in start of a row
     menuNumber++;
     html += objSupplier.insertTableColumns('', menuNumber);
 
-    // street
-    html += objSupplier.inputTableColumn('street', '', objSupplier.arraySuppliers[rowNumberSupplier].street, 45, enableChanges);
-
-    // address2
-    html += objSupplier.inputTableColumn('address2', '', objSupplier.arraySuppliers[rowNumberSupplier].address2, 45, enableChanges);
-
+    html += objSupplier.showButton('width:175px;', 'delete', 'Slett');
+    html += objSupplier.showButton('width:175px;', 'insert', 'Ny');
     html += "</tr>";
-
-    // postalCode, city
-    html += "<tr>";
-    menuNumber++;
-    html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Postnummer', 'Poststed');
-
-    // insert table columns in start of a row
-    menuNumber++;
-    html += objSupplier.insertTableColumns('', menuNumber);
-
-    // postalCode
-    html += objSupplier.inputTableColumn('postalCode', '', objSupplier.arraySuppliers[rowNumberSupplier].postalCode, 4, enableChanges);
-
-    // city
-    html += objSupplier.inputTableColumn('city', '', objSupplier.arraySuppliers[rowNumberSupplier].city, 45, enableChanges);
-
-    html += "</tr>";
-
-    // email,phone
-    html += "<tr>";
-    menuNumber++;
-    html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'e-Mail', 'Telefonnummer');
-
-    // insert table columns in start of a row
-    menuNumber++;
-    html += objSupplier.insertTableColumns('', menuNumber);
-
-    // email
-    html += objSupplier.inputTableColumn('email', '', objSupplier.arraySuppliers[rowNumberSupplier].email, 50, enableChanges);
-
-    // phone
-    html += objSupplier.inputTableColumn('phone', '', objSupplier.arraySuppliers[rowNumberSupplier].phone, 8, enableChanges);
-
-    html += "</tr>";
-
-    // bankAccount, accountId
-    html += "<tr>";
-    menuNumber++;
-    html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Konto', 'Bankkontonummer');
-
-    // Show menu
-    menuNumber++;
-    html += objSupplier.verticalMenu(menuNumber);
-
-    // accountId
-    html += objAccount.showSelectedAccounts('accountId', '', objSupplier.arraySuppliers[rowNumberSupplier].accountId, 'Ingen konto er valgt', '', enableChanges);
-
-    // bankAccount number
-    html += objSupplier.inputTableColumn('bankAccount', '', objSupplier.arraySuppliers[rowNumberSupplier].bankAccount, 11, enableChanges);
-
-    html += "</tr>";
-
-    // amountAccountId, amount
-    html += "<tr>";
-    menuNumber++;
-    html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Konto for beløp', 'Beløp');
-
-    // insert table columns in start of a row
-    menuNumber++;
-    html += objSupplier.insertTableColumns('', menuNumber);
-
-    // amountAccountId
-    html += objAccount.showSelectedAccounts('amountAccountId', '', objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId, 'Ingen konto er valgt', '', enableChanges);
-
-    // amount
-    html += objSupplier.inputTableColumn('amount', '', objSupplier.arraySuppliers[rowNumberSupplier].amount, 11, enableChanges);
-
-    html += "</tr>";
-
-    // textAccountId, text
-    html += "<tr>";
-    menuNumber++;
-    html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Konto for tekst', 'Tekst');
-
-    // insert table columns in start of a row
-    menuNumber++;
-    html += objSupplier.insertTableColumns('', menuNumber);
-
-    // AccountId for text
-    html += objAccount.showSelectedAccounts('textAccountId', '', objSupplier.arraySuppliers[rowNumberSupplier].textAccountId, 'Ingen konto er valgt', '', enableChanges);
-
-    // text for account id
-    html += objSupplier.inputTableColumn('text', '', objSupplier.arraySuppliers[rowNumberSupplier].text, 50, enableChanges);
-
-    html += "</tr>";
-
-    // insert table columns in start of a row
-    menuNumber++;
-    html += objSupplier.insertTableColumns('', menuNumber, '');
-
-    html += "</tr>";
-
-    // Show buttons
-    if (enableChanges) {
-
-      // insert table columns in start of a row
-      menuNumber++;
-      html += objSupplier.insertTableColumns('', menuNumber);
-
-      html += objSupplier.showButton('width:175px;', 'update', 'Oppdater');
-      html += objSupplier.showButton('width:175px;', 'cancel', 'Angre');
-      html += "</tr>";
-
-      // insert table columns in start of a row
-      menuNumber++;
-      html += objSupplier.insertTableColumns('', menuNumber);
-
-      html += objSupplier.showButton('width:175px;', 'delete', 'Slett');
-      html += objSupplier.showButton('width:175px;', 'insert', 'Ny');
-      html += "</tr>";
-    }
-
-    // Show the rest of the menu
-    menuNumber++;
-    html += objSupplier.showRestMenu(menuNumber);
-
-    // The end of the table
-    html += objSupplier.endTable();
-    document.querySelector('.result').innerHTML = html;
-    document.querySelector('.cancel').disabled = true;
   }
+
+  // Show the rest of the menu
+  menuNumber++;
+  html += objSupplier.showRestMenu(menuNumber);
+
+  // The end of the table
+  html += objSupplier.endTable();
+  document.querySelector('.result').innerHTML = html;
+  document.querySelector('.cancel').disabled = true;
+  //}
 }
 
 // Update a supplier row
@@ -423,63 +450,64 @@ async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = objSupplier.validateNumber('supplierId', supplierId, -1, objSupplier.nineNine);
+  const validSupplierId = objSupplier.validateNumber('supplierId', supplierId, -1, objSupplier.nineNine, objSupplier, '', 'Ugyldig mottaker');
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objSupplier.validateText('name',name, 3, 45, objSupplier, '', 'Ugyldig navn');
+  const validName = objSupplier.validateText('name', name, 3, 45, objSupplier, '', 'Ugyldig navn');
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = objSupplier.validateText('street',street, 0, 45, objSupplier, '', 'Ugyldig adresse');
+  const validStreet = objSupplier.validateText('street', street, 0, 45, objSupplier, '', 'Ugyldig adresse');
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = objSupplier.validateText('address2',address2, 0, 45, objSupplier, '', 'Ugyldig adresse');
+  const validAddress2 = objSupplier.validateText('address2', address2, 0, 45, objSupplier, '', 'Ugyldig adresse');
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = objSupplier.validateNumber('postalCode', Number(postalCode), 0, 9999);
+  const validPostalCode = objSupplier.validateNumber('postalCode', Number(postalCode), 0, objSupplier.nineNine, objSupplier, '', 'Ugyldig poststed');
 
   // validate city
   const city = document.querySelector('.city').value.trim();
-  const validCity = objSupplier.validateText('city',city, 0, 45, objSupplier, '', 'Ugyldig poststed');
+  const validCity = objSupplier.validateText('city', city, 0, 45, objSupplier, '', 'Ugyldig poststed');
+
+  // validate email
+  const email = document.querySelector('.email').value.trim();
+  const validEmail = (email === '')
+    ? true
+    : objSupplier.validateEmail('email', email, objSupplier, '', 'Ugyldig mail');
 
   // validate phone
   const phone = document.querySelector('.phone').value.trim();
   //let validPhone = objSupplier.validatePhone('phone', phone);
-  //if (phone === '') validPhone = true;
-
-  // validate email
-  const email = document.querySelector('.email').value.trim();
-  const validEmail = objSupplier.validateEmail('email', email, objSupplier, '', 'Ugyldig mail');
-  //if (email === '') validEmail = true;
-
-  // validate bankAccount
-  const bankAccount = document.querySelector('.bankAccount').value.trim();
-  let validBankAccount = objSupplier.validateBankAccount('bankAccount', bankAccount,objSupplier, '', 'Ugyldig bankkonto');
-  if (bankAccount === '') validBankAccount = true;
+  if (phone === '') validPhone = true;
 
   // validate accountId
   const accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = objSupplier.validateNumber('accountId', accountId, 1, 999999998);
+  const validAccountId = objSupplier.validateNumber('accountId', accountId, 1, objSupplier.nineNine, objSupplier, '', 'Ugyldig konto');
+
+  // validate bankAccount
+  const bankAccount = document.querySelector('.bankAccount').value.trim();
+  let validBankAccount = objSupplier.validateBankAccount('bankAccount', bankAccount, objSupplier, '', 'Ugyldig bankkontonummer');
+  if (bankAccount === '') validBankAccount = true;
 
   // validate amountAccountId
   const amountAccountId = Number(document.querySelector('.amountAccountId').value);
-  const validAmountAccountId = objSupplier.validateNumber('amountAccountId', amountAccountId, 0, 999999998);
+  const validAmountAccountId = objSupplier.validateNumber('amountAccountId', amountAccountId, 0, objSupplier.nineNine, objSupplier, '', 'Ugyldig konto for beløp');
 
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatKronerToOre(amount));
-  const validAmount = objSupplier.validateNumber('amount', amount, objSupplier.minusNineNine, objSupplier.nineNine);
+  const validAmount = objSupplier.validateNumber('amount', amount, objSupplier.minusNineNine, objSupplier.nineNine, objSupplier, '', 'Ugyldig beløp');
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);
-  const validTextAccountId = objSupplier.validateNumber('textAccountId', textAccountId, 0, 999999998);
+  const validTextAccountId = objSupplier.validateNumber('textAccountId', textAccountId, 0, objSupplier.nineNine, objSupplier, '', 'Ugyldig konto for tekst');
 
   // validate text
   const text = document.querySelector('.text').value;
-  const validText = objSupplier.validateText('text',text, 0, 45, objSupplier, '', 'Ugyldig tekst');
+  const validText = objSupplier.validateText('text', text, 0, 45, objSupplier, '', 'Ugyldig tekst');
 
   if (validSupplierId && validName && validStreet && validAddress2
     && validPostalCode && validCity && validBankAccount && validAccountId
@@ -491,25 +519,26 @@ async function updateSuppliersRow(supplierId) {
     if (rowNumberSupplier !== -1) {
 
       // update the suppliers row
-      await objSupplier.updateSuppliersTable(supplierId, user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
-      await objSupplier.loadSuppliersTable(condominiumId);
+      await objSupplier.updateSuppliersTable(supplierId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
+      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
     } else {
 
       // Insert the supplier row in supplier table
-      await objSupplier.insertSuppliersTable(condominiumId, user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
-      await objSupplier.loadSuppliersTable(condominiumId);
+      await objSupplier.insertSuppliersTable(objSupplier.condominiumId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
+      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
       supplierId = objSupplier.arraySuppliers.at(-1).supplierId;
-      document.querySelector('.filterSupplierId').value = supplierId;
+      //document.querySelector('.filterSupplierId').value = supplierId;
     }
 
     // Show filter
-    //let menuNumber = 0;
-    //menuNumber = showFilter(supplierId, menuNumber);
-    showResult(supplierId, 2);
+    let menuNumber = 0;
+    menuNumber = showFilter(menuNumber, supplierId);
+    menuNumber = showSupplier(menuNumber, supplierId);
 
     document.querySelector('.filterSupplierId').disabled = false;
     document.querySelector('.delete').disabled = false;
     document.querySelector('.insert').disabled = false;
+    document.querySelector('.cancel').disabled = true;
   }
 }
 
@@ -524,8 +553,6 @@ async function deleteSupplierRow() {
   if (rowNumberSupplier !== -1) {
 
     // delete supplier row
-
-
-    objSupplier.deleteSuppliersTable(supplierId, user);
+    objSupplier.deleteSuppliersTable(supplierId, objSupplier.user);
   }
 }

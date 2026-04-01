@@ -28,11 +28,11 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      const resident = 'A';
+      const resident = 'Y';
       await objUser.loadUsersTable(objUserBankAccount.condominiumId, resident, objUserBankAccount.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(condominiumId, fixedCost);
-      await objUserBankAccount.loadUserBankAccountsTable(condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+      await objAccount.loadAccountsTable(objUserBankAccount.condominiumId, fixedCost);
+      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 
       // Show header
       let menuNumber = 0;
@@ -64,7 +64,7 @@ async function events() {
 
       const userId = Number(document.querySelector('.filterUserId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
-      await objUserBankAccount.loadUserBankAccountsTable(condominiumId, userId, accountId);
+      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
       showResult(3);
     };
@@ -114,10 +114,10 @@ async function events() {
       if (deleteAccountRowValue === "Ja") {
 
         const accountId = Number(className.substring(6));
-        deleteAccountRow(accountId, className);
+        deleteUserBankAccountRow(accountId, className);
 
-        const fixedCost = 'A';
-        await objAccount.loadAccountsTable(condominiumId, fixedCost);
+        const userId = Number(document.querySelector('.filterUserId').value);
+        await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 
         showResult(3);
       };
@@ -226,7 +226,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '', enableChanges);
 
   // bank account number
-  html += objUserBankAccount.inputTableColumn('bankAccount0', '', 11, enableChanges);
+  html += objUserBankAccount.inputTableColumn('bankAccount0', '', '', 11, enableChanges);
 
   html += "</tr>";
   return html;
@@ -251,7 +251,7 @@ function showResult(menuNumber) {
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;
     const selected = 'Nei';
-    html += objUserBankAccount.showSelectedValues('resident', '', enableChanges, 'Nei', 'Nei', 'Ja')
+    html += objUserBankAccount.showSelectedValues(className, '', enableChanges, selected, 'Nei', 'Ja')
 
     // user Id
     const userId = userBankAccount.userId;
@@ -290,21 +290,17 @@ function showResult(menuNumber) {
 }
 
 // Delete one account row
-async function deleteAccountRow(userBankAccountId, className) {
-
-
-
+async function deleteUserBankAccountRow(userBankAccountId, className) {
 
   // Check if account row exist
-  accountsRowNumber = objUserBankAccount.arrayUserBankAccounts.findIndex(account => userBankAccount.userBankAccountId === userBankAccountId);
+  accountsRowNumber = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
   if (accountsRowNumber !== -1) {
 
-    // delete account row
-    objUserBankAccount.deleteAccountsTable(userBankAccountId, user);
+    // delete user bank account row
+    objUserBankAccount.deleteUserBankAccountsTable(userBankAccountId, objUserBankAccount.user);
   }
 
-  const fixedCost = 'A';
-  await objAccount.loadAccountsTable(condominiumId, fixedCost);
+  await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 }
 
 // Update userbankaccounts row
@@ -312,25 +308,21 @@ async function updateUserBankAccountsRow(userBankAccountId) {
 
   userBankAccountId = Number(userBankAccountId);
 
-  //const condominiumId = Number(condominiumId);
-
-
   // Validate
 
   // User Id
-  let className = `.userId${userBankAccountId}`;
-  let userId = Number(document.querySelector(className).value);
-  const validUserId = objUserBankAccount.validateNumber(className, userId, 1, 999999998);
+  let className = `userId${userBankAccountId}`;
+  let userId = Number(document.querySelector(`.${className}`).value);
+  const validUserId = objUserBankAccount.validateNumber(className, userId, 1, objUserBankAccount.nineNine, objUserBankAccount, '', 'Ugyldig bruker');
 
   // account Id
-  className = `.accountId${userBankAccountId}`;
-  let accountId = Number(document.querySelector(className).value);
-  const validAccountId = objUserBankAccount.validateNumber(className, accountId, 1, 999999998);
+  className = `accountId${userBankAccountId}`;
+  let accountId = Number(document.querySelector(`.${className}`).value);
+  const validAccountId = objUserBankAccount.validateNumber(className, accountId, 1, objUserBankAccount.nineNine, objUserBankAccount, '', 'Ugyldig konto');
 
   // bank account
-  className = `.bankAccount${userBankAccountId}`;
-  const bankAccount = document.querySelector(className).value;
   className = `bankAccount${userBankAccountId}`;
+  const bankAccount = document.querySelector(`.${className}`).value;
   const validBankAccount = objUserBankAccount.validateBankAccount(className, bankAccount, objUserBankAccount, '', 'Ugyldig bankkonto');
 
   if (validUserId && validAccountId && validBankAccount) {
@@ -340,17 +332,17 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     if (rowNumberUserBankAccount !== -1) {
 
       // update the userbankaccounts row
-      await objUserBankAccount.updateUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount);
+      await objUserBankAccount.updateUserBankAccountsTable(userBankAccountId, objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
 
     } else {
 
       // Insert the userbankaccounts row 
-      await objUserBankAccount.insertUserBankAccountsTable(condominiumId, user, userId, accountId, bankAccount);
+      await objUserBankAccount.insertUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
     }
 
     userId = Number(document.querySelector('.filterUserId').value);
     accountId = Number(document.querySelector('.filterAccountId').value);
-    await objUserBankAccount.loadUserBankAccountsTable(condominiumId, userId, accountId);
+    await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
     menuNumber = showResult(3);
   }

@@ -166,7 +166,6 @@ class Condominium extends Condos {
       >`;
 
     // Check if condominium array is empty
-    const numberOfRows = this.arrayCondominiums.length;
     if (Number(this.arrayCondominiums.length) > 0) {
       this.arrayCondominiums.forEach((condominium) => {
 
@@ -191,7 +190,7 @@ class Condominium extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 0)) {
+    if (selectAll && (this.arrayCondominiums.length > 0)) {
 
       html += `
       <option 
@@ -204,7 +203,7 @@ class Condominium extends Condos {
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
+    if (selectNone && (this.arrayCondominiums.length > 1)) {
       html += `
       <option 
         value=0

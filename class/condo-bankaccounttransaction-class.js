@@ -17,8 +17,7 @@ class BankAccountTransaction extends Condos {
           >`;
 
     // Check if bank account transaction array is empty
-    const numberOfRows = this.arrayBankAccountTransactions.length;
-    if (numberOfRows > 0) {
+    if (this.arrayBankAccountTransactions.length > 0) {
       this.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
         if (bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId) {
 
@@ -36,14 +35,14 @@ class BankAccountTransaction extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 0)) {
+    if (selectAll && (this.arrayBankAccountTransactions.length > 0)) {
 
       html += `<option value=${this.nineNine} selected>${selectAll}</option>`;
       selectedValue = true;
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
+    if (selectNone && (this.arrayBankAccountTransactions.length > 1)) {
       if (selectedValue) {
         html += `<option value=0>${selectNone}</option>`;
       } else {

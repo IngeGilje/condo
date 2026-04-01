@@ -19,8 +19,7 @@ class CommonCost extends Condos {
       >`;
 
     // Check if commoncosts array is empty
-    const numberOfRows = this.arrayCommonCosts.length;
-    if (numberOfRows > 0) {
+    if (this.arrayCommonCosts.length > 0) {
       this.arrayCommonCosts.forEach((commonCost) => {
         if (commonCost.commonCostId === commonCostId) {
 
@@ -59,7 +58,7 @@ class CommonCost extends Condos {
     }
 
     // Select all
-    if (selectAll && (numberOfRows > 0)) {
+    if (selectAll && (this.arrayCommonCosts.length > 0)) {
 
       html +=
         `
@@ -74,7 +73,7 @@ class CommonCost extends Condos {
     }
 
     // Select none
-    if (selectNone && (numberOfRows > 1)) {
+    if (selectNone && (this.arrayCommonCosts.length > 1)) {
       if (selectedValue) {
         html +=
           `

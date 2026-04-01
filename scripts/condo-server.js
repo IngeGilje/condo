@@ -13,8 +13,8 @@ import fs from "fs/promises";
 import path from "path";
 import bcrypt from "bcrypt";
 
-const nineNine = 999999999;
-const minusNineNine = -999999999;
+const nineNine = 999999998;
+const minusNineNine = -999999998;
 
 // Middleware in an Express.js server.
 // Middleware = functions that run automatically for every request before your route handlers
@@ -608,7 +608,6 @@ async function main() {
     });
 
     // Requests for bank accounts
-    //app.get("/bankaccounts", async (req, res) => {
     app.post("/bankaccounts", async (req, res) => {
 
       const action = req.body.action;
@@ -634,7 +633,7 @@ async function main() {
               `
                 ORDER BY bankAccountId;
               `;
-
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -674,6 +673,7 @@ async function main() {
                   closingBalanceDate = '${closingBalanceDate}'
                 WHERE bankAccountId = ${bankAccountId};
               `;
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -726,7 +726,7 @@ async function main() {
                   '${closingBalanceDate}'
                 );
               `;
-
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -758,6 +758,7 @@ async function main() {
                   WHERE bankAccountId = ${bankAccountId};
               `;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -773,7 +774,6 @@ async function main() {
     });
 
     // Requests for condominiums table
-    //app.get("/condominiums", async (req, res) => {
     app.post("/condominiums", async (req, res) => {
 
 
@@ -1485,7 +1485,6 @@ async function main() {
     });
 
     // Requests for user bank account
-    //app.get("/userbankaccounts", async (req, res) => {
     app.post("/userbankaccounts", async (req, res) => {
 
 
@@ -1501,28 +1500,18 @@ async function main() {
           const accountId = Number(req.body.accountId);
 
           try {
-            let SQLquery =
-              `
-                SELECT * FROM userbankaccounts
-                WHERE condominiumId = ${condominiumId}
-                  AND deleted <> 'Y'
-               `;
-            if (userId !== nineNine) {
-              SQLquery +=
-                `
-                  AND userId = ${userId}
-                `;
-            }
-            if (accountId !== nineNine) {
-              SQLquery += `
-                  AND accountId = ${accountId}
-                `;
-            }
-            SQLquery += `
-                ORDER BY name;
-              `;
+
+            let SQLquery = `
+            SELECT * FROM userbankaccounts
+            WHERE condominiumId = ${condominiumId}
+              AND deleted <> 'Y'`;
+            if (userId !== nineNine) SQLquery += ` AND userId = ${userId}`;
+            if (accountId !== nineNine) SQLquery += ` AND accountId = ${accountId}`;
+
+            SQLquery += ` ORDER BY name;`;
 
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery :', SQLquery);
@@ -1649,7 +1638,6 @@ async function main() {
     });
 
     // Requests for supplier
-    //app.get("/suppliers", async (req, res) => {
     app.post("/suppliers", async (req, res) => {
 
 
@@ -1815,8 +1803,7 @@ async function main() {
           try {
 
             const user = req.body.user;
-
-            const supplierId = req.body.supplierId.trim();
+            const supplierId = req.body.supplierId;
 
             // Delete table
             const SQLquery =

@@ -84,7 +84,7 @@ async function events() {
       // valitadate filter
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      const validCondoId = objOverview.validateNumber('filterCondoId', condoId, 1, objOverview.nineNine);
+      const validCondoId = objOverview.validateNumber('filterCondoId', condoId, 1, objOverview.nineNine, object, style, message);
 
       // from date
       let fromDate = document.querySelector('.filterFromDate').value;
@@ -100,7 +100,7 @@ async function events() {
 
         fromDate = objOverview.formatNorDateToNumber(fromDate);
         toDate = objOverview.formatNorDateToNumber(toDate);
-        validDates = objOverview.validateNumber('filterFromDate', Number(fromDate), Number(fromDate), Number(toDate));
+        validDates = objOverview.validateNumber('filterFromDate', Number(fromDate), Number(fromDate), Number(toDate), object, style, message);
       }
 
       if (validFromDate && validToDate && validDates && validCondoId) {

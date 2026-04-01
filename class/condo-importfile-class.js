@@ -28,8 +28,7 @@ class ImportFile extends Condos {
     let selectedOption = false;
 
     // Check if file import array is empty
-    const numberOfRows = this.strCSVTransaction.length;
-    if (numberOfRows > 0) {
+    if (this.strCSVTransaction.length > 0) {
       this.strCSVTransaction.forEach((importFile) => {
         if (importFile.importFileId >= 0) {
           if (importFile.importFileId === importFileId) {
@@ -69,7 +68,7 @@ class ImportFile extends Condos {
     }
 
     // Alternative select
-    if (alternativeSelect && (numberOfRows > 1)) {
+    if (alternativeSelect && (this.strCSVTransaction.length > 1)) {
       if (selectedOption) {
 
         htmlImportFile += `

@@ -26,8 +26,7 @@ class UserBankAccount extends Condos {
       `;
 
     // Check if user bank account array is empty
-    const numberOfRows = this.arrayUserBankAccounts.length;
-    if (numberOfRows > 0) {
+    if (this.arrayUserBankAccounts.length > 0) {
       this.arrayUserBankAccounts.forEach((userBankAccount) => {
         if (userBankAccount.userBankAccountId >= 0) {
           if (userBankAccount.userBankAccountId === userBankAccountId) {
@@ -100,8 +99,7 @@ class UserBankAccount extends Condos {
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/userbankaccounts?action=select&condominiumId=${condominiumId}&userId=${userId}&accountId=${accountId}`);
-      const response = await fetch(URL, {
+       const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -155,7 +153,6 @@ class UserBankAccount extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/userbankaccounts' : 'http://localhost:3000/userbankaccounts';
     try {
 
-      //const response = await fetch(`${URL}:3000/userbankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&userId=${userId}&accountId=${accountId}&name=${name}&bankAccount=${bankAccount}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {

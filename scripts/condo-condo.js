@@ -330,7 +330,7 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = objCondo.validateNumber('condoId', condoId, -1, objCondo.nineNine);
+  const validCondoId = objCondo.validateNumber('condoId', condoId, -1, objCondo.nineNine, object, style, message);
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -346,7 +346,7 @@ async function updateCondoRow(condoId) {
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objCondo.validateNumber('postalCode', Number(postalCode), 1, 9999);
+  const validPostalCode = objCondo.validateNumber('postalCode', Number(postalCode), 1, objCondo.nineNine, object, style, message);
 
   // validate city
   const city = document.querySelector('.city').value;
@@ -354,7 +354,7 @@ async function updateCondoRow(condoId) {
 
   // validate squaremeters
   const squareMeters = Number(formatKronerToOre(document.querySelector('.squareMeters').value));
-  const validSquareMeters = objCondo.validateNumber('squareMeters', squareMeters, 1, 100000);
+  const validSquareMeters = objCondo.validateNumber('squareMeters', squareMeters, 1, objCondo.nineNine, object, style, message);
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 
