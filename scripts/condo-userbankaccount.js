@@ -20,7 +20,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objUserBankAccount.condominiumId === 0 || objUserBankAccount.user === null)) {
+    if ((objUserBankAccount.condominiumId === 0) || (objUserBankAccount.user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';

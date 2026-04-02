@@ -51,6 +51,7 @@ class Condo extends Condos {
     }
   }
 
+  /*
  showSelectedCondos(className, style, condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
@@ -90,7 +91,7 @@ class Condo extends Condos {
     }
 
     // Select all
-    if (selectAll && (this.arrayCondo.length > 1)) {
+    if (selectAll && (this.arrayCondo.length > 0)) {
 
       html += `
       <option 
@@ -103,7 +104,7 @@ class Condo extends Condos {
     }
 
     // Select none
-    if (selectNone && (this.arrayCondo.length > 1)) {
+    if (selectNone && (this.arrayCondo.length > 0)) {
       html += `
         <option 
           value=0
@@ -111,6 +112,78 @@ class Condo extends Condos {
         >
           ${selectNone}
         </option>`;
+      selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </td>`;
+
+    return html;
+  }
+  */
+
+  showSelectedCondos(className, style, condoId, selectNone, selectAll, enableChanges = false) {
+
+    let selectedValue = false;
+
+    let html = `
+    <td
+      class="centerCell one-line center"
+    >
+      <select 
+        class="${className} center"
+        ${(enableChanges) ? '' : 'disabled'}
+        ${(style) ? `style=${style}` : 'style=width:175px;'}
+      >`;
+
+    // Check if condos array is empty
+    if (this.arrayCondo.length > 0) {
+      this.arrayCondo.forEach((condo) => {
+
+        html += `
+        <option 
+          value=${condo.condoId}
+          ${(condo.condoId === condoId) ? 'selected' : ''}
+        >
+          ${condo.name}
+        </option>`;
+        if (condo.condoId === condoId) selectedValue = true;
+      });
+    } else {
+
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen konti
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayCondo.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        selected
+      >
+        ${selectAll}
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayCondo.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(selectedValue) ? selectNone : ''}
+        ${(condoId === 0) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
       selectedValue = true;
     }
 

@@ -1,0 +1,4 @@
+
+class Heating extends Condos {
+
+}

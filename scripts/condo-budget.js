@@ -21,7 +21,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((condominiumId === 0 || user === null)) {
+    if ((objBudget.condominiumId === 0) || (objBudget.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
@@ -29,9 +29,9 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident, objBudget.nineNine);
+      await objUser.loadUsersTable(objBudget.condominiumId, resident, objBudget.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objBudget.condominiumId, fixedCost);
 
       // Show header
       showHeader();
@@ -42,10 +42,10 @@ async function main() {
 
       const accountId = Number(document.querySelector('.filterAccountId').value);
       const year = Number(document.querySelector('.filterYear').value);
-      await objBudget.loadBudgetsTable(condominiumId, year, accountId);
+      await objBudget.loadBudgetsTable(objBudget.condominiumId, year, accountId);
 
       // Show result of filter
-      showResult(menuNumber);
+      menuNumber = showBudgets(menuNumber);
 
       // Events
       events();
@@ -67,21 +67,20 @@ async function events() {
 
       const year = Number(document.querySelector('.filterYear').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
-      await objBudget.loadBudgetsTable(condominiumId, year, accountId);
+      await objBudget.loadBudgetsTable(objBudget.condominiumId, year, accountId);
 
-      showResult(3);
+      showBudgets(3);
     };
   });
 
   // update a accounts row
   document.addEventListener('change', async (event) => {
 
-    if ([...event.target.classList].some(cls => cls.startsWith('accountId'))
-      || [...event.target.classList].some(cls => cls.startsWith('amount'))
-      || [...event.target.classList].some(cls => cls.startsWith('text'))
-      || [...event.target.classList].some(cls => cls.startsWith('year'))) {
+    const arrayPrefixes = ['accountId', 'amount', 'text'];
 
-      const arrayPrefixes = ['accountId', 'amount', 'year', 'text'];
+    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
+      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))) {
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -109,7 +108,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objDue.getClassByPrefix(event.target, prefix))
+        .map(prefix => objBudget.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       //const className = objBudget.getDeleteClass(event.target);
@@ -119,9 +118,9 @@ async function events() {
 
       const year = Number(document.querySelector('.filterYear').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
-      await objBudget.loadBudgetsTable(condominiumId, year, accountId);
+      await objBudget.loadBudgetsTable(objBudget.condominiumId, year, accountId);
 
-      showResult(3);
+      showBudgets(3);
     };
   });
 
@@ -146,11 +145,11 @@ async function deleteBudgetRow(budgetId, className) {
   if (budgetsRowNumber !== -1) {
 
     // delete budget row
-    objBudget.deleteBudgetsTable(budgetId, user);
+    objBudget.deleteBudgetsTable(budgetId, objBudget.user);
   }
 
   const year = Number(document.querySelector('.filterYear').value);
-  await objBudget.loadBudgetsTable(condominiumId, year, objBudget.nineNine);
+  await objBudget.loadBudgetsTable(objBudget.condominiumId, year, objBudget.nineNine);
 }
 
 // Update a budgets row
@@ -164,26 +163,27 @@ async function updateBudgetsRow(budgetId) {
   className = `.accountId${budgetId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${budgetId}`;
-  const validAccountId = objBudget.validateNumber(className, accountId, 1, objBudget.nineNine, object, style, message);
+  const validAccountId = objBudget.validateNumber(className, accountId, 1, objBudget.nineNine, objBudget, '', 'Ugyldig konto');
 
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
   amount = Number(formatKronerToOre(amount));
   className = `amount${budgetId}`;
-  let validAmount = objBudget.validateNumber(className, amount, objBudget.minusNineNine, objBudget.nineNine, object, style, message);
+  let validAmount = objBudget.validateNumber(className, amount, objBudget.minusNineNine, objBudget.nineNine, objBudget, '', 'Ugyldig budsjett');
   if (amount === 0) validAmount = false;
 
   // year
   className = `.year${budgetId}`;
   let year = Number(document.querySelector(`${className}`).value);
   className = `year${budgetId}`;
-  const validYear = objBudget.validateNumber(className, year, 2020, 2029, object, style, message);
+  const validYear = objBudget.validateNumber(className, year, 2020, 2029, objBudget, '', 'Ugyldig budsjettår');
 
   // text
   className = `.text${budgetId}`;
-  let text = document.querySelector(`${className}`).value;
-  let validText = objBudget.validateText(className,text, 0, 45,objBudget, '', 'Ugyldig tekst');
+  let text = document.querySelector(className).value;
+  className = `text${budgetId}`;
+  let validText = objBudget.validateText(className, text, 0, 45, objBudget, '', 'Ugyldig tekst');
 
   // Validate budgets columns
   if (validAccountId && validAmount && validAmount && validYear && validText) {
@@ -195,18 +195,18 @@ async function updateBudgetsRow(budgetId) {
     if (budgetsRowNumber !== -1) {
 
       // update the budgets row
-      await objBudget.updateBudgetsTable(budgetId, user, accountId, amount, year, text);
+      await objBudget.updateBudgetsTable(budgetId, objBudget.user, accountId, amount, year, text);
 
     } else {
 
       // Insert the budget row in budgets table
-      await objBudget.insertBudgetsTable(condominiumId, user, accountId, amount, year, text);
+      await objBudget.insertBudgetsTable(objBudget.condominiumId, objBudget.user, accountId, amount, year, text);
     }
 
     accountId = Number(document.querySelector('.filterAccountId').value);
     year = Number(document.querySelector('.filterYear').value);
-    await objBudget.loadBudgetsTable(condominiumId, year, accountId);
-    showResult(3);
+    await objBudget.loadBudgetsTable(objBudget.condominiumId, year, accountId);
+    showBudgets(3);
   }
 }
 
@@ -303,7 +303,7 @@ function showFilter(menuNumber) {
 }
 
 // Show bankaccounttransactions
-function showResult(menuNumber) {
+function showBudgets(menuNumber) {
 
   // start table
   let html = objBudget.startTable(tableWidth);
@@ -335,17 +335,17 @@ function showResult(menuNumber) {
     // due amount
     const amount = formatOreToKroner(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += objBudget.inputTableColumn(className, '', amount, 10,enableChanges);
+    html += objBudget.inputTableColumn(className, '', amount, 10, enableChanges);
 
     // Year
     const year = Number(budget.year);
     className = `year${budget.budgetId}`;
-    html += objBudget.showSelectedNumbers(className, 'width:175px;', 2020, 2030, year,enableChanges);
+    html += objBudget.showSelectedNumbers(className, 'width:175px;', 2020, 2030, year, enableChanges);
 
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += objBudget.inputTableColumn(className, '', text, 45,enableChanges);
+    html += objBudget.inputTableColumn(className, '', text, 45, enableChanges);
 
     html += "</tr>";
 
@@ -353,7 +353,7 @@ function showResult(menuNumber) {
     sumAmount += Number(budget.amount);
   });
 
-   // Insert empty table row for insertion
+  // Insert empty table row for insertion
   if (enableChanges) {
 
     menuNumber++;
@@ -381,22 +381,19 @@ function insertEmptyTableRow(menuNumber) {
   html = objAccount.insertTableColumns('', menuNumber, 'Nytt budsjett');
 
   // accounts
-  let className = `accountId0`;
-  html += objAccount.showSelectedAccounts(className, '', 0, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen konto er valgt', '', enableChanges);
 
   // budget amount
   const amount = "";
-  html += objBudget.inputTableColumn('amount0', '', amount, 10);
+  html += objBudget.inputTableColumn('amount0', '0,00', amount, 10, enableChanges);
 
   // Year
   const year = Number(document.querySelector('.filterYear').value);
-  className = `year0`;
-  html += objBudget.showSelectedNumbers(className, enableChanges, 'width:175px;', 2020, 2030, year);
+  html += objBudget.showSelectedNumbers('year0', '', 2020, 2030, year, false);
 
   // text
   const text = "";
-  className = `text0`;
-  html += objBudget.inputTableColumn(className, '', text, 45);
+  html += objBudget.inputTableColumn('text0',    '',  text,        45, enableChanges);
 
   html += "</tr>";
   return html;

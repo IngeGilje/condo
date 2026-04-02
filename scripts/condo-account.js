@@ -24,7 +24,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objAccount.condominiumId === 0 || objAccount.user === null)) {
+    if ((objAccount.condominiumId === 0) || (objAccount.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -106,7 +106,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objDue.getClassByPrefix(event.target, prefix))
+        .map(prefix => objAccount.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
 

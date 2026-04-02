@@ -22,7 +22,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objCondominium.condominiumId === 0 || objCondominium.user === null)) {
+    if ((objCondominium.condominiumId === 0) || (objCondominium.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';

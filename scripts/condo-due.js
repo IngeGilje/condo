@@ -23,7 +23,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objDue.condominiumId === 0 || objDue.user === null)) {
+    if ((objDue.condominiumId === 0) || (objDue.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -33,11 +33,11 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident, objDue.nineNine);
-      await objCondo.loadCondoTable(condominiumId);
+      await objUser.loadUsersTable(objDue.condominiumId, resident, objDue.nineNine);
+      await objCondo.loadCondoTable(objDue.condominiumId);
       await objCondominium.loadCondominiumsTable();
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objDue.condominiumId, fixedCost);
 
       let menuNumber = 0;
 
@@ -45,7 +45,7 @@ async function main() {
       showHeader();
 
       // Show filter
-      menuNumber = showFilter(menuNumber);
+      menuNumber = showFilter(menuNumber, objDue.condominiumId);
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -54,10 +54,10 @@ async function main() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-      await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+      await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
       // Show result
-      showResult(menuNumber);
+      showDues(menuNumber);
 
       // Events
       events();
@@ -85,9 +85,9 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-      await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+      await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
-      showResult(3);
+      showDues(3);
     };
   });
 
@@ -110,7 +110,7 @@ async function events() {
 
       // Extract the number in the class name
       let dueId = 0;
-      let prefix = "";
+      let prefix = '';
       if (className) {
         prefix = arrayPrefixes.find(p => className.startsWith(p));
         dueId = Number(className.slice(prefix.length));
@@ -148,9 +148,9 @@ async function events() {
         let toDate = document.querySelector('.filterToDate').value;
         toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-        await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+        await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
-        showResult(3);
+        showDues(3);
       };
     };
   });
@@ -168,7 +168,7 @@ async function events() {
 }
 
 // Show dues
-function showResult(menuNumber) {
+function showDues(menuNumber) {
 
   // start table
   let html = objCondo.startTable(tableWidth);
@@ -192,10 +192,9 @@ function showResult(menuNumber) {
     if (due.deleted === 'N') selected = "Nei";
 
     let className = `delete${due.dueId}`;
-    //html +=                   objDue.showSelectedValues(className, 'width:175px;',     selected, enableChanges, 'Nei', 'Ja')
     html += objDue.showSelectedValues(className, 'width:75px;', enableChanges, selected, 'Nei', 'Ja')
 
-     // condos
+    // condos
     className = `condoId${due.dueId}`;
     html += objCondo.showSelectedCondos(className, 'width:175px;', due.condoId, 'ngen er valgt', '', enableChanges);
 
@@ -206,7 +205,7 @@ function showResult(menuNumber) {
 
     // accounts
     className = `accountId${due.dueId}`;
-    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Ingen er valgt', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', enableChanges);
 
     // due amount
     const amount = formatOreToKroner(due.amount);
@@ -258,28 +257,29 @@ function showResult(menuNumber) {
 // Insert empty table row
 function insertEmptyTableRow(menuNumber) {
 
-  let html = "";
+  let html = '';
 
   // insert table columns in start of a row
   html += objCondominium.insertTableColumns('', menuNumber, 'Nytt forfall');
 
   // condoId
   const condoId = Number(document.querySelector('.filterCondoId').value);
-  html += objCondo.showSelectedCondos("condoId0", 'width:175px;', condoId, '', '', enableChanges);
+  html += objCondo.showSelectedCondos("condoId0", '', 0, 'Velg leilighet', '', enableChanges);
 
   // Date
-  html += objDue.inputTableColumn("date0", '', "", 10);
+  html += objDue.inputTableColumn("date0", '', '', 10, enableChanges);
 
   // accountId
-  let accountId = Number(document.querySelector('.filterAccountId').value);
-  if (Number(document.querySelector('.filterAccountId').value) === objDue.nineNine) accountId = 0;
-  html += objAccount.showSelectedAccounts("accountId0", '', accountId, 'Ingen er valgt', '', (objDue.selected < 5));
+  html += objAccount.showSelectedAccounts("accountId0", '', 0, 'Velg konto', '', enableChanges);
 
   // due amount
-  html += objDue.inputTableColumn('amount0', '', "", 10);
+  html += objDue.inputTableColumn('amount0', '', '0,00', 10, enableChanges);
+
+  // kilowatt hour
+  html += objDue.inputTableColumn('kilowattHour0', '', '0,00', 10, enableChanges);
 
   // text
-  html += objDue.inputTableColumn('text0', '', "", 45);
+  html += objDue.inputTableColumn('text0', '', '', 45, enableChanges);
 
   html += "</tr>";
   return html;
@@ -303,7 +303,7 @@ async function deleteDueRow(dueId, className) {
   let toDate = document.querySelector('.filterToDate').value;
   toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-  await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+  await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 }
 
 // Update a dues row
@@ -315,37 +315,43 @@ async function updateDuesRow(dueId) {
   let className = `.condoId${dueId}`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId${dueId}`;
-  const validCondoId = objCondo.validateNumber(className, condoId, 1, objDue.nineNine);
-
-  className = `.accountId${dueId}`;
-  let accountId = Number(document.querySelector(className).value);
-  className = `accountId${dueId}`;
-  const validAccountId = objCondo.validateNumber(className, accountId, 1, objDue.nineNine);
-
-  className = `.amount${dueId}`;
-  const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
-  className = `amount${dueId}`;
-  const validAmount = objCondo.validateNumber(className, amount, objDue.minusNineNine, objDue.nineNine);
-
-  className = `.kilowattHour${dueId}`;
-  const kilowattHour = Number(formatKronerToOre(document.querySelector(`${className}`).value));
-  className = `kilowattHour${dueId}`;
-  const validKilowattHour = objCondo.validateNumber(className, kilowattHour, 0, objDue.nineNine);
+  const validCondoId = objCondo.validateNumber(className, condoId, 1, objDue.nineNine, objDue, '', 'Ugyldig leilighet');
 
   className = `.date${dueId}`;
   const date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
   className = `date${dueId}`;
-  const validDate = objCondo.validateNumber(className, date, 20200101, 20991231);
+  const validDate = objCondo.validateNumber(className, date, 20200101, 20991231, objDue, '', 'Ugyldig dato');
 
+  className = `.accountId${dueId}`;
+  let accountId = Number(document.querySelector(className).value);
+  className = `accountId${dueId}`;
+  const validAccountId = objCondo.validateNumber(className, accountId, 1, objDue.nineNine, objDue, '', 'Ugyldig konto');
+
+  className = `.amount${dueId}`;
+  const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
+  className = `amount${dueId}`;
+  const validAmount = objCondo.validateNumber(className, amount, objDue.minusNineNine, objDue.nineNine, objDue, '', 'Ugyldig beløp');
+
+  className = `.kilowattHour${dueId}`;
+  const kilowattHour = Number(formatKronerToOre(document.querySelector(`${className}`).value));
+  className = `kilowattHour${dueId}`;
+  const validKilowattHour = objCondo.validateNumber(className, kilowattHour, 0, objDue.nineNine, objDue, '', 'Ugyldig kilowattimer');
+
+  /*
   className = `.text${dueId}`;
   const text = document.querySelector(className).value;
-  const validText = objDue.validateText(className,text, 3, 45,objDue, '', 'Ugyldig forfall');
+   className = `text${dueId}`;
+  const validText = objDue.validateText(className, text, 3, 45, objDue, '', 'Ugyldig forfall');
+  */
+  className = `.text${dueId}`;
+  const text = document.querySelector(className).value;
+  const validText = true;
 
   // Validate dues columns
   if (validAccountId && validCondoId && validAmount && validDate && validKilowattHour && validText) {
 
     document.querySelector('.message').style.display = "none";
-  
+
     // Check if the dues row exist
     rowNumberDue = objDue.arrayDues.findIndex(dues => dues.dueId === dueId);
     if (rowNumberDue !== -1) {
@@ -356,7 +362,7 @@ async function updateDuesRow(dueId) {
     } else {
 
       // Insert the account row in accounts table
-      await objDue.insertDuesTable(condominiumId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
+      await objDue.insertDuesTable(objDue.condominiumId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
     }
 
     condoId = Number(document.querySelector('.filterCondoId').value);
@@ -366,9 +372,9 @@ async function updateDuesRow(dueId) {
     let toDate = document.querySelector('.filterToDate').value;
     toDate = Number(objDue.formatNorDateToNumber(toDate));
 
-    await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+    await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
-    showResult(3);
+    showDues(3);
   }
 }
 
@@ -410,7 +416,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber) {
+function showFilter(menuNumber, condominiumId) {
 
   // Start table
   html = objDue.startTable(tableWidth);
@@ -440,7 +446,7 @@ function showFilter(menuNumber) {
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
-  html += objDue.inputTableColumn('filterFromDate', '', fromDate, 10,true);
+  html += objDue.inputTableColumn('filterFromDate', '', fromDate, 10, enableChanges);
 
   // Current date
   let toDate = getCurrentDate();
@@ -448,7 +454,7 @@ function showFilter(menuNumber) {
   // Next year
   toDate = Number(convertDateToISOFormat(toDate)) + 10000;
   toDate = formatToNorDate(toDate);
-  html += objDue.inputTableColumn('filterToDate', '', toDate, 10,true);
+  html += objDue.inputTableColumn('filterToDate', '', toDate, 10, enableChanges);
 
   html += "<td><td></tr>";
 

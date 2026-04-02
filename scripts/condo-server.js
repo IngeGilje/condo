@@ -2480,26 +2480,23 @@ async function main() {
           const fixedCostCondo = req.body.fixedCostCondo;
 
           // Insert new row
-          const SQLquery =
-            `
-              INSERT INTO commoncosts (
-                deleted,
-                condominiumId,
-                user,
-                lastUpdate,
-                year,
-                commonCostSquareMeter,
-                fixedCostCondo
-                ) VALUES (
-                'N',
-                ${condominiumId},
-                '${user}',
-                '${lastUpdate}',
-                ${year},
-                ${commonCostSquareMeter},
-                ${fixedCostCondo}
-              );
-            `;
+          const SQLquery = `
+          INSERT INTO commoncosts (
+            deleted,
+            condominiumId,
+            user,
+            lastUpdate,
+            year,
+            commonCostSquareMeter,
+            fixedCostCondo
+          ) VALUES (
+            'N',
+            ${condominiumId},
+            '${user}',
+            '${lastUpdate}',
+            ${year},
+            ${commonCostSquareMeter},
+            ${fixedCostCondo});`;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -2517,19 +2514,17 @@ async function main() {
 
         try {
 
-          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
+          const commonCostId = req.body.commonCostId;
           const user = req.body.user;
 
           // Delete table
-          const SQLquery =
-            `
-              UPDATE commoncosts
-              SET 
-                deleted = 'Y',
-                user = '${user}',
-                lastUpdate = '${lastUpdate}'
-              WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
-            `;
+          const SQLquery = `
+          UPDATE commoncosts
+          SET 
+            deleted = 'Y',
+            user = '${user}',
+            lastUpdate = '${lastUpdate}'
+          WHERE commonCostId = ${commonCostId};`;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);

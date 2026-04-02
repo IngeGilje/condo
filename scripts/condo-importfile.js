@@ -31,7 +31,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((condominiumId === 0 || user === null)) {
+    if ((objImportFile.condominiumId === 0) || (objImportFile.user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';

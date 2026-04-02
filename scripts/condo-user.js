@@ -21,7 +21,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objUser.condominiumId === 0 || objUser.user === null)) {
+    if ((objUser.condominiumId === 0) || (objUser.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)

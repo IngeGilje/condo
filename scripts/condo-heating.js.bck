@@ -4,6 +4,7 @@
 const today = new Date();
 const objUser = new User('user');
 const objAccount = new Account('account');
+const objHeating = new Heating('heating');
 
 // Fixed values
 const constVariableCost = 'Variabel kostnad';
@@ -24,7 +25,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((condominiumId === 0 || user === null)) {
+    if ((objHeating.condominiumId === 0 || objHeating.user === null)) {
 
       // LogIn is not valid
       //window.location.href = 'http://localhost/condo-login.html';

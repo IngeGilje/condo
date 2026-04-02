@@ -21,7 +21,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objCommonCost.condominiumId === 0 || objCommonCost.user === null)) {
+    if ((objCommonCost.condominiumId === 0) || (objCommonCost.user === null)) {
 
       // LogIn is not valid
       const URL = (objCommonCost.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
@@ -148,25 +148,6 @@ async function events() {
   });
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objCommonCost.startTable(tableWidth);
-
-  // show main header
-  html += objCommonCost.showTableHeader('width:175px;', 'Felleskostnader');
-
-  // The end of the table header
-  html += objCommonCost.endTableHeader();
-
-  // The end of the table
-  html += objCommonCost.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -203,7 +184,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objCommonCost.selectInterval('year0', 'width:175px;', 2020, 2030, year, enableChanges);
 
   // commonCostSquareMeter 
-  html += objCommonCost.inputTableColumn('commonCostSquareMeter0', '', '', 10, enableChanges);
+  html += objCommonCost.inputTableColumn('commonCostSquareMeter0', '', '0,00', 10, enableChanges);
 
   // fixed cost per condo 
   html += objCommonCost.inputTableColumn('fixedCostCondo0', '', '', 10, enableChanges);
@@ -323,11 +304,11 @@ async function updateCommonCostsRow(commonCostId) {
     if (rowNumberCommonCosts !== -1) {
 
       // update a commoncosts row
-      await objCommonCost.updateCommonCostsTable(user, commonCostId, year, commonCostSquareMeter, fixedCostCondo);
+      await objCommonCost.updateCommonCostsTable(objCommonCost.user, commonCostId, year, commonCostSquareMeter, fixedCostCondo);
     } else {
 
       // Insert a commoncosts row
-      await objCommonCost.insertCommonCostsTable(objCommonCost.condominiumId, user, year, commonCostSquareMeter, fixedCostCondo);
+      await objCommonCost.insertCommonCostsTable(objCommonCost.condominiumId, objCommonCost.user, year, commonCostSquareMeter, fixedCostCondo);
     }
 
     await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
@@ -340,13 +321,11 @@ async function updateCommonCostsRow(commonCostId) {
 // Delete a commoncosts row
 async function deleteCommonCostsRow(commonCostId) {
 
-
-
   // Check if commoncosts row exist
   rowNumberCommonCosts = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
   if (rowNumberCommonCosts !== -1) {
 
     // delete commoncosts row
-    objCommonCost.deleteCommonCostsTable(commonCostId, user);
+    objCommonCost.deleteCommonCostsTable(commonCostId, objCommonCost.user);
   }
 }

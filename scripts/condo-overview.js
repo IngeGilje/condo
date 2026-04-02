@@ -25,7 +25,7 @@ async function main() {
 
     // Validate LogIn
     securityLevel = sessionStorage.getItem("securityLevel");
-    if ((condominiumId === 0 || user === null)) {
+    if ((objOverview.condominiumId === 0) || (objOverview.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
@@ -33,10 +33,10 @@ async function main() {
     } else {
 
       const resident = 'Y';
-      await objUser.loadUsersTable(condominiumId, resident, objOverview.nineNine);
-      await objCondo.loadCondoTable(condominiumId);
+      await objUser.loadUsersTable(objOverview.condominiumId, resident, objOverview.nineNine);
+      await objCondo.loadCondoTable(objOverview.condominiumId);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objOverview.condominiumId, fixedCost);
 
       // Show header
       let menuNumber = 0;
@@ -52,7 +52,7 @@ async function main() {
       fromDate = convertDateToISOFormat(fromDate);
       let toDate = document.querySelector('.filterToDate').value;
       toDate = convertDateToISOFormat(toDate);
-      await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+      await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
       const orderBy = 'condoId ASC, date DESC, income ASC';
       await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
 
@@ -112,7 +112,7 @@ async function events() {
         fromDate = convertDateToISOFormat(fromDate);
         let toDate = document.querySelector('.filterToDate').value;
         toDate = convertDateToISOFormat(toDate);
-        await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
+        await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
         const orderBy = 'condoId ASC, date DESC, income ASC';
         await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
 
@@ -401,7 +401,7 @@ function showHowMuchToPay(menuNumber) {
     : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Skyldig', '', '');
   menuNumber++;
   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '','', 'Forfall', 'Betalt', 'Til gode')
+    ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Forfall', 'Betalt', 'Til gode')
     : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Forfall', 'Betalt', 'Skyldig');
 
   // Sum line

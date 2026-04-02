@@ -513,7 +513,7 @@ class Condos {
   }
 
   // Select numbers
-  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, enabled) {
+  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
 
     selectedNumber = Number(selectedNumber);
     let html = `
@@ -522,7 +522,7 @@ class Condos {
     >
       <select
         class="${className} center"
-        ${(enabled) ? 'enabled' : 'disabled'}
+        ${(enableChanges) ? '' : 'disabled'}
         ${(style) ? `style=${style}` : 'style=width:175px;'}
       >`;
 

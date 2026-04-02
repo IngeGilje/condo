@@ -14,7 +14,7 @@ const tableWidth = 'width:600px;';
 exitIfNoActivity();
 
 // Validate LogIn
-if ((objSupplier.condominiumId === 0 || objSupplier.user === null)) {
+if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
 
   // LogIn is not valid
   //window.location.href = 'http://localhost/condo-login.html';

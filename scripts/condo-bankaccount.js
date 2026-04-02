@@ -15,7 +15,7 @@ const tableWidth = 'width:600px;';
 exitIfNoActivity();
 
 // Validate LogIn
-if ((objBankAccount.condominiumId === 0 || objBankAccount.user === null)) {
+if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 
   // LogIn is not valid
   const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
