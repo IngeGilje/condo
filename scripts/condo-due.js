@@ -311,8 +311,6 @@ async function updateDuesRow(dueId) {
 
   dueId = Number(dueId);
 
-
-
   // Check dues columns
   let className = `.condoId${dueId}`;
   let condoId = Number(document.querySelector(className).value);
@@ -346,6 +344,8 @@ async function updateDuesRow(dueId) {
   // Validate dues columns
   if (validAccountId && validCondoId && validAmount && validDate && validKilowattHour && validText) {
 
+    document.querySelector('.message').style.display = "none";
+  
     // Check if the dues row exist
     rowNumberDue = objDue.arrayDues.findIndex(dues => dues.dueId === dueId);
     if (rowNumberDue !== -1) {

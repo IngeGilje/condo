@@ -415,6 +415,8 @@ async function updateUserRow(userId) {
   if (validUserId && validEmail && validCondoId && validFirstName && validLastName
     && validPhone && validCondominiumId) {
 
+      document.querySelector('.message').style.display = "none";
+  
     // Check if the userId exist
     const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
     if (rowNumberUser !== -1) {

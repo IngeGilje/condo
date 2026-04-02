@@ -284,9 +284,6 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
 
   remoteHeatingPriceId = Number(remoteHeatingPriceId);
 
-  //const condominiumId = Number(condominiumId);
-
-
   // year
   className = `.year${remoteHeatingPriceId}`;
   let year = document.querySelector(className).value;
@@ -303,6 +300,8 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   // Validate remoteheatingprices columns
   if (validYear && validKilowattHourPrice) {
 
+    document.querySelector('.message').style.display = "none";
+  
     // Check if the remoteHeatingPrice id exist
     const rowNumberRemoteHeatingPrice = objRemoteHeatingPrice.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
     if (rowNumberRemoteHeatingPrice !== -1) {

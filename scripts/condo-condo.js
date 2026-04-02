@@ -358,6 +358,8 @@ async function updateCondoRow(condoId) {
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 
+    document.querySelector('.message').style.display = "none";
+
     // Check if the condoId exist
     const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
     if (rowNumberCondo !== -1) {

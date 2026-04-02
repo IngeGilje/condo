@@ -274,6 +274,8 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
   if (validVoucerFileName && validbankAccountTransactionId) {
 
+    document.querySelector('.message').style.display = "none";
+  
     // Check if the bankAccountTransactionId exist
     const rowNumberBankAccountTransaction = objBankAccountTransaction.arrayBankAccountTransactions.findIndex(condo => condo.bankAccountTransactionId === bankAccountTransactionId);
     if (rowNumberBankAccountTransaction !== -1) {

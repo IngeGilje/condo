@@ -66,7 +66,7 @@ class Condos {
     {
       applicationName: "condo-supplier.html",
       className: "Menu9",
-      text: "9Mottaker"
+      text: "9Leverandør"
     },
     {
       applicationName: "condo-commoncost.html",
@@ -150,7 +150,7 @@ class Condos {
     {
       applicationName: "condo-supplier.html",
       className: "Menu8",
-      text: "Mottaker"
+      text: "leverandør"
     },
     {
       applicationName: "condo-due.html",
@@ -919,6 +919,7 @@ class Condos {
     if (this.isClassDefined(className)) {
 
       const inputElement = document.querySelector(`.${className}`);
+      if (inputElement) inputElement.classList.toggle('input-error', !valid);
       if (!valid) this.showMessage(object, style, message);
     }
 

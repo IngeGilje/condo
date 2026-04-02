@@ -327,6 +327,8 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     // Validate bankAccountTransactions columns
     if (validCondoId && validAccountId && validNumberKWHour && validText) {
 
+      document.querySelector('.message').style.display = "none";
+
       // Check if the bankaccounttransactions row exist
       if (bankAccountTransactionRowNumber !== -1) {
 

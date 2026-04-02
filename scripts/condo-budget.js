@@ -158,8 +158,6 @@ async function updateBudgetsRow(budgetId) {
 
   budgetId = Number(budgetId);
 
-
-
   // Get budgets row values
 
   // accountId
@@ -189,6 +187,8 @@ async function updateBudgetsRow(budgetId) {
 
   // Validate budgets columns
   if (validAccountId && validAmount && validAmount && validYear && validText) {
+
+    document.querySelector('.message').style.display = "none";
 
     // Check if the budgets row exist
     budgetsRowNumber = objBudget.arrayBudgets.findIndex(budgets => budgets.budgetId === budgetId);

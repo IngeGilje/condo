@@ -409,9 +409,6 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
 
   remoteHeatingId = Number(remoteHeatingId);
 
-  //const condominiumId = Number(condominiumId);
-
-
   // year
   className = ".filterYear";
   const year = Number(document.querySelector(className).value);
@@ -448,6 +445,8 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   // Validate remoteheatings columns
   if (validYear && validDate && validCondoId && validkilowattHour && validPriceYear) {
 
+    document.querySelector('.message').style.display = "none";
+  
     // Check if the remoteHeating id exist
     rowNumberRemoteHeating = objRemoteHeating.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);
     if (rowNumberRemoteHeating !== -1) {

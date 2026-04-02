@@ -17,7 +17,7 @@ class Supplier extends Condos {
         <label class="label-${classValue}"
           id="supplier"
           for="supplier">
-            Velg mottaker
+            Velg leverandør
         </label>
         <select class="select-${classValue}" 
           id="supplier"
@@ -108,7 +108,7 @@ class Supplier extends Condos {
       <option value="0" 
         selected
       >
-        Ingen mottakere
+        Ingen leverandører
       </option>`;
       selectedValue = true;
     }

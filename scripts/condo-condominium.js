@@ -477,6 +477,8 @@ async function updateCondominiumRow(condominiumId) {
     && validIncomeRemoteHeatingAccountId && validPaymentRemoteHeatingAccountId
     && validCommonCostAccountId && validOrganizationNumber && validimportPath) {
 
+      document.querySelector('.message').style.display = "none";
+
     // Check if the condominiumId exist
     let condominiumId = 0;
     const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);

@@ -386,6 +386,8 @@ async function updateBankAccountRow(bankAccountId) {
   if (validBankAccount && validName && validBalanceDates && validOpeningBalanceDate && validOpeningBalance
     && validClosingBalanceDate && validOpeningBalance) {
 
+      document.querySelector('.message').style.display = "none";
+
     // Check if the account id exist
     const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
     if (rowNumberBankAccount !== -1) {

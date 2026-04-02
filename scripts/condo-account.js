@@ -362,6 +362,8 @@ async function updateAccountsRow(accountId) {
   // Validate accounts columns
   if (validName && (fixedCost === "Y" || fixedCost === "N")) {
 
+    document.querySelector('.message').style.display = "none";
+
     // Check if the account id exist
     rowNumberAccount = objAccount.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (rowNumberAccount !== -1) {

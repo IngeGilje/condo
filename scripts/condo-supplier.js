@@ -95,9 +95,10 @@ async function events() {
       const supplierId = (objSupplier.arraySuppliers.length > 0)
         ? objSupplier.arraySuppliers.at(-1).supplierId
         : 0;
-      //let menuNumber = 0;
-      //menuNumber = showFilter(menuNumber,supplierId);
-      menuNumber = showSupplier(2, supplierId);
+      // Show filter
+      let menuNumber = 0;
+      menuNumber = showFilter(menuNumber, supplierId);
+      menuNumber = showSupplier(menuNumber, supplierId);
     };
   });
 
@@ -120,11 +121,12 @@ async function events() {
       if (supplierId === 0) supplierId = objSupplier.arraySuppliers.at(-1).supplierId;
 
       // Show filter
-      //let menuNumber = 0;
-      //menuNumber = showFilter(menuNumber,supplierId);
-      showSupplier(2, supplierId);
+      let menuNumber = 0;
+      menuNumber = showFilter(menuNumber,supplierId);
+      menuNumber = showSupplier(menuNumber, supplierId);
     };
   });
+  
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -195,7 +197,7 @@ function showHeader() {
   html += objSupplier.startTableBody();
 
   // show main header
-  html += objSupplier.showTableHeaderLogOut('width:175px;', '', '', 'Mottaker', '');
+  html += objSupplier.showTableHeaderLogOut('width:175px;', '', '', 'Leverandør', '');
   html += "</tr>";
 
   // end table body
@@ -214,7 +216,7 @@ function showFilter(menuNumber, supplierId) {
 
   // Header filter
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu('width:175px;', menuNumber, 'Velg mottaker', '');
+  html += objSupplier.showTableHeaderMenu('width:175px;', menuNumber, 'Velg leverandør', '');
 
   // start table body
   html += objSupplier.startTableBody();
@@ -450,7 +452,7 @@ async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = objSupplier.validateNumber('supplierId', supplierId, -1, objSupplier.nineNine, objSupplier, '', 'Ugyldig mottaker');
+  const validSupplierId = objSupplier.validateNumber('supplierId', supplierId, -1, objSupplier.nineNine, objSupplier, '', 'Ugyldig leverandør');
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -480,7 +482,6 @@ async function updateSuppliersRow(supplierId) {
 
   // validate phone
   const phone = document.querySelector('.phone').value.trim();
-  //let validPhone = objSupplier.validatePhone('phone', phone);
   if (phone === '') validPhone = true;
 
   // validate accountId
@@ -514,6 +515,8 @@ async function updateSuppliersRow(supplierId) {
     && validAmountAccountId && validAmount && validTextAccountId
     && validEmail && validText) {
 
+      document.querySelector('.message').style.display = "none";
+  
     // Check if the supplierId exist
     const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
     if (rowNumberSupplier !== -1) {

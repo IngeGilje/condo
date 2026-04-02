@@ -308,8 +308,6 @@ async function updateUserBankAccountsRow(userBankAccountId) {
 
   userBankAccountId = Number(userBankAccountId);
 
-  // Validate
-
   // User Id
   let className = `userId${userBankAccountId}`;
   let userId = Number(document.querySelector(`.${className}`).value);
@@ -327,6 +325,8 @@ async function updateUserBankAccountsRow(userBankAccountId) {
 
   if (validUserId && validAccountId && validBankAccount) {
 
+    document.querySelector('.message').style.display = "none";
+  
     // Check if the userbankaccounts row exist
     const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (rowNumberUserBankAccount !== -1) {
