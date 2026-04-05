@@ -33,7 +33,7 @@ async function main() {
     } else {
 
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objVoucher.condominiumId, fixedCost);
 
       // Show header
       let menuNumber = 0;
@@ -44,7 +44,7 @@ async function main() {
       let fromDate = 20000101;
       let toDate = 20991231;
       const orderBy = 'bankAccountTransactionId DESC, date DESC, income DESC';
-      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, 0, fromDate, toDate);
+      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, 0, fromDate, toDate);
 
       menuNumber = showFilter(menuNumber);
 
