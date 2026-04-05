@@ -44,21 +44,21 @@ async function main() {
       // Show header
       showHeader();
 
-      const userId = objUser.arrayUsers.at(-1).userId;
+      //const userId = objUser.arrayUsers.at(-1).userId;
 
       // Show filter
       let menuNumber = 0;
-      menuNumber = showFilter(objPassword.condominiumId,userId, menuNumber);
+      menuNumber = showFilter(menuNumber, objPassword.condominiumId, objPassword.userId);
 
       // Show result
-      menuNumber = showResult(userId, menuNumber);
+      menuNumber = showUser(menuNumber, objPassword.userId);
 
       // Events
       events();
     }
   } else {
 
-    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
+    objPassword.showMessage(objPassword, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -70,7 +70,10 @@ async function events() {
     if (event.target.classList.contains('filterUserId')) {
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      showResult(userId, 3);
+      //showUser(3, userId);
+      menuNumber = 0;
+      menuNumber = showFilter(menuNumber, condominiumId, userId);
+      menuNumber = showUser(menuNumber, userId);
     };
   });
 
@@ -81,11 +84,11 @@ async function events() {
       const resident = "A";
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
-      
+
       const userId = Number(document.querySelector('.filterUserId').value);
       menuNumber = 0;
-      menuNumber = showFilter(condominiumId, userId, menuNumber);
-      menuNumber = showResult(userId, menuNumber);
+      menuNumber = showFilter(menuNumber, condominiumId, userId);
+      menuNumber = showUser(menuNumber, userId);
     };
   });
 
@@ -150,7 +153,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(condominiumId, userId, menuNumber) {
+function showFilter(menuNumber, condominiumId, userId) {
 
   // Start table
   let html = objUser.startTable(tableWidth);
@@ -188,8 +191,8 @@ function showFilter(condominiumId, userId, menuNumber) {
   return menuNumber;
 }
 
-// Show result
-function showResult(userId, menuNumber) {
+// Show user
+function showUser(menuNumber, userId) {
 
   // start table
   let html = objUser.startTable(tableWidth);
@@ -208,7 +211,7 @@ function showResult(userId, menuNumber) {
     html += objUser.insertTableColumns('', menuNumber);
 
     // password
-    html += objUser.inputTablePassword('password', '', '**********', 45);
+    html += objUser.inputTablePassword('password', '', '', 45);
 
     // securityLevel
     html += objUser.showSelectedNumbers('securityLevel', "width:175px;", 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
@@ -256,15 +259,17 @@ async function updateUserRow(userId) {
 
   // validate password
   let password = document.querySelector('.password').value;
-  password = (password === '**********')
+  /*
+  let password = (password === '')
     ? objUser.arrayUsers[rowNumberUser].password
-    : password;
-  const validPassword = (password.length >= 5);
+    : document.querySelector('.password').value;
+  */
+  const validPassword = ((password.length >= 5) || (password === ''));
 
   if (validUserId && validSecurityLevel && validPassword) {
 
     document.querySelector('.message').style.display = "none";
-  
+
     // Check if the userId exist
     const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
     if (rowNumberUser !== -1) {
@@ -276,21 +281,24 @@ async function updateUserRow(userId) {
       // or only personal password
       const resident = 'A';
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      /*
       (enableChanges)
         ? await objUser.loadUsersTable(condominiumId, resident, objPassword.userId)
         : await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
+      */
+      if (enableChanges) await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
     }
 
     // Show filter
     let menuNumber = 0;
     const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-    menuNumber = showFilter(condominiumId, userId, menuNumber,);
-    menuNumber = showResult(userId, menuNumber);
+    menuNumber = showFilter(menuNumber, condominiumId, userId);
+    menuNumber = showUser(menuNumber, userId);
 
     document.querySelector('.filterUserId').disabled = false;
   } else {
 
-    objRemoteHeating.showMessage(objRemoteHeating, '', 'Ugyldig passord.');
+    objPassword.showMessage(objPassword, '', 'Ugyldig passord.');
   }
 }
 

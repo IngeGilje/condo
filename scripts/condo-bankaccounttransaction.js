@@ -71,7 +71,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
+    objBankAccountTransaction.showMessage(objBankAccountTransaction, '', 'condo-server.js er ikke startet.');
   }
 }
 

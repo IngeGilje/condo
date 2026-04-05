@@ -8,144 +8,8 @@
       "type": "chrome",
       "request": "launch",
       "name": "Login",
-      //"url": "http://localhost/condo-login.html",
-      "url": "http://ingegilje.no",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Sameie",
-      "url": "http://localhost/condo-condominium.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Leilighet",
-      "url": "http://localhost/condo-condo.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Bankkonto sameie",
-      "url": "http://localhost/condo-bankaccount.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Konto",
-      "url": "http://localhost/condo-account.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Bruker",
-      "url": "http://localhost/condo-user.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Bankkonto for bruker",
-      "url": "http://localhost/condo-userbankaccount.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "leverandør",
-      "url": "http://localhost/condo-supplier.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Forfall",
-      "url": "http://localhost/condo-due.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Budsjett",
-      "url": "http://localhost/condo-budget.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Fjernvarme priser",
-      "url": "http://localhost/condo-remoteheatingprice.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Fjernvarme",
-      "url": "http://localhost/condo-remoteheating.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Felleskostnader",
-      "url": "http://localhost/condo-commoncost.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Betalingsoversikt",
-      "url": "http://localhost/condo-overview.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Bankkontobevegelser",
-      "url": "http://localhost/condo-bankaccounttransaction.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Bilag",
-      "url": "http://localhost/condo-voucher.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Importer transaksjoner",
-      "url": "http://localhost/condo-importfile.html",
-      "webRoot": "c:/websites/condo",
-      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Årsregnskap",
-      "url": "http://localhost/condo-annualaccount.html",
+      "url": "http://localhost/condo-login.html",
+      //"url": "http://ingegilje.no",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
@@ -153,7 +17,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Test",
-      "url": "http://localhost/test1.html",
+      "url": "http://localhost/test.html",
       "webRoot": "c:/websites/condo",
       "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     }

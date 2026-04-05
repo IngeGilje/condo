@@ -52,7 +52,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
+    objCondominium.showMessage(objCondominium, '', 'condo-server.js er ikke startet.');
   }
 }
 

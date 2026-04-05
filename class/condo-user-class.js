@@ -182,7 +182,9 @@ class User extends Condos {
   // update user row in users table
   async updateUserPassword(user, userId, securityLevel, password) {
 
-    const URL = (this.serverStatus === 1) ? '/api/users' : 'http://localhost:3000/users';
+    const URL = (this.serverStatus === 1)
+      ? '/api/users'
+      : 'http://localhost:3000/users';
     try {
 
       // POST request
@@ -372,7 +374,7 @@ class User extends Condos {
     }
 
     html +=
-    `
+      `
         </select >
       </td>
     `;

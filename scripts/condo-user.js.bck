@@ -62,22 +62,21 @@ async function events() {
     if (event.target.classList.contains('filterUserId')) {
 
       const resident = 'A';
-      //const condominiumId = Number(document.querySelector('.filterCondominiumId').value)
-      await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value)
+      await objUser.loadUsersTable(condominiumId, resident, objUser.nineNine);
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      showResult(objUser.condominiumId, userId, 3);
+      showResult(condominiumId, userId, 3);
     };
   });
 
-  /*
   // Filter condominium
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterCondominiumId')) {
 
       // condoId
-      //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      await objCondo.loadCondoTable(objUser.condominiumId);
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      await objCondo.loadCondoTable(condominiumId);
 
       const resident = 'A';
       await objUser.loadUsersTable(condominiumId, resident, objUser.nineNine);
@@ -88,7 +87,6 @@ async function events() {
       showResult(condominiumId, userId, menuNumber);
     };
   });
-  */
 
   // update/insert a user row
   document.addEventListener('click', async (event) => {
@@ -136,7 +134,7 @@ async function events() {
       // Reload users table
       const resident = 'A';
       const condominiumId = objUser.condominiumId;
-      await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
+      await objUser.loadUsersTable(condominiumId, resident, objUser.nineNine);
 
       const userId = objUser.userId;
       if (userId === 0) userId = objUser.arrayUsers.at(-1).userId;
@@ -222,7 +220,7 @@ function showFilter(condominiumId, userId, menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, 'Bruker','');
+  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
@@ -232,12 +230,12 @@ function showFilter(condominiumId, userId, menuNumber) {
   html += objUser.insertTableColumns('', menuNumber);
 
   // sameie
-  //html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', true)
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', true)
 
   // user
   html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', true)
 
-  html += "<td></td></tr>";
+  html += "</tr>";
 
   // insert table columns in start of a row
   menuNumber++;
@@ -411,13 +409,11 @@ async function updateUserRow(userId) {
   const validPhone = objUser.validatePhone('phone', phone);
 
   // validate condominium
-  //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-  //const validCondominiumId = objUser.validateNumber('condominium', condominiumId, 0, objUser.nineNine, objUser, '', 'Ugyldig sameie');
+  const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+  const validCondominiumId = objUser.validateNumber('condominium', condominiumId, 0, objUser.nineNine, objUser, '', 'Ugyldig sameie');
 
-  //if (validUserId && validEmail && validCondoId && validFirstName && validLastName
-    //&& validPhone && validCondominiumId) {
   if (validUserId && validEmail && validCondoId && validFirstName && validLastName
-    && validPhone) {
+    && validPhone && validCondominiumId) {
 
       document.querySelector('.message').style.display = "none";
   
@@ -448,7 +444,7 @@ async function updateUserRow(userId) {
     menuNumber = showResult(condominiumId, userId, menuNumber);
     objUser.removeMessage();
 
-    //document.querySelector('.filterCondominiumId').disabled = false;
+    document.querySelector('.filterCondominiumId').disabled = false;
     document.querySelector('.filterUserId').disabled = false;
     document.querySelector('.delete').disabled = false;
     document.querySelector('.insert').disabled = false;
