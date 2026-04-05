@@ -245,7 +245,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objBudget.startTable(tableWidth);
+  let html = objBudget.startTable(tableWidth);
 
   // start table body
   html += objBudget.startTableBody();
@@ -266,7 +266,7 @@ function showHeader() {
 function showFilter(menuNumber) {
 
   // Start table
-  html = objBudget.startTable(tableWidth);
+  let html = objBudget.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
@@ -378,7 +378,7 @@ function showBudgets(menuNumber) {
 
 function insertEmptyTableRow(menuNumber) {
 
-  html = objAccount.insertTableColumns('', menuNumber, 'Nytt budsjett');
+  let html = objAccount.insertTableColumns('', menuNumber, 'Nytt budsjett');
 
   // accounts
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen konto er valgt', '', enableChanges);

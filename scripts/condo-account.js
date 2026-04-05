@@ -178,7 +178,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objAccount.startTable(tableWidth);
+  let html = objAccount.startTable(tableWidth);
 
   // start table body
   html += objAccount.startTableBody();
@@ -199,7 +199,7 @@ function showHeader() {
 function showFilter(menuNumber) {
 
   // Start table
-  html = objAccount.startTable(tableWidth);
+  let html = objAccount.startTable(tableWidth);
 
   // Header filter
   menuNumber++;

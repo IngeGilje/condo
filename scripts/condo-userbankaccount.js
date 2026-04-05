@@ -156,7 +156,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objUserBankAccount.startTable(tableWidth);
+  let html = objUserBankAccount.startTable(tableWidth);
 
   // start table body
   html += objUserBankAccount.startTableBody();

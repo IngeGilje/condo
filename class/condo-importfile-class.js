@@ -102,14 +102,15 @@ class ImportFile extends Condos {
     document.querySelector(`.div-${columnName}`).innerHTML = htmlImportFile;
   }
 
-  // get csv file from local disk
-  async loadCsvFile(csvFileName) {
+  // get file from local disk
+  async loadTextFile(fileName) {
 
-    const URL = (this.serverStatus === 1) ? '/api/import-csvFile' : 'http://localhost:3000/import-csvFile';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/importFile' 
+    : 'http://localhost:3000/importFile';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/import-csvFile?action=upload&csvFileName=${csvFileName}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -117,15 +118,15 @@ class ImportFile extends Condos {
         },
         body: JSON.stringify({
           action: 'upload',
-          csvFileName: csvFileName
+          fileName: fileName
         })
       });
-      if (!response.ok) throw new Error("Network error (load csv file)");
+      if (!response.ok) throw new Error("Network error (load text file)");
       const result = await response.json();
       this.strCSVTransaction = result.content;
       return true;
     } catch (error) {
-      objImportFile.showMessage(objImportFile, '', 'Sjekk transaksjonsfil.');
+      objImportFile.showMessage(objImportFile, '', 'Ugyldig navn på transaksjonsfil.');
       return false;
     }
   }

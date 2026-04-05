@@ -11,7 +11,11 @@ import cors from "cors";
 import mysql from "mysql2/promise";
 import fs from "fs/promises";
 import path from "path";
+import { fileURLToPath } from "url";
 import bcrypt from "bcrypt";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const nineNine = 999999998;
 const minusNineNine = -999999998;
@@ -177,16 +181,26 @@ async function main() {
       }
     });
 
-    // Check if file exists
-    app.post("/checkIfFileExists", async (req, res) => {
+    // Check if file exist
+    app.post("/checkIfFileExist", async (req, res) => {
 
-      const fileName = path.join("data", req.body.fileName);
+      let fileName;
+      if (path.isAbsolute(req.body.fileName)) {
+
+        fileName = req.body.fileName;
+      } else {
+
+        fileName = path.join(__dirname, "data", req.body.fileName);
+      }
+
       try {
 
         await fs.access(fileName);
-        res.json({ success: true });
+        res.sendStatus(200);
       } catch (err) {
-        res.json({ success: false });
+
+        console.log('access error:', err.message);
+        res.sendStatus(404);
       }
     });
 
@@ -2028,21 +2042,19 @@ async function main() {
           try {
 
             const user = req.body.user;
-
             const bankAccountTransactionId = req.body.bankAccountTransactionId;
 
             // Delete table
-            const SQLquery =
-              `
-                UPDATE bankaccounttransactions
+            const SQLquery = `
+            UPDATE bankaccounttransactions
             SET
-            deleted = 'Y',
+              deleted = 'Y',
               lastUpdate = '${lastUpdate}',
               user = '${user}'
-                  WHERE bankAccountTransactionId = ${bankAccountTransactionId};
-            `;
+            WHERE bankAccountTransactionId = ${bankAccountTransactionId};`;
 
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -2056,14 +2068,16 @@ async function main() {
       }
     });
 
-    app.post("/import-csvFile", async (req, res) => {
+    app.post("/importFile", async (req, res) => {
 
       try {
 
-        const csvFileName = req.body.csvFileName;
-        const data = await fs.readFile(csvFileName, "utf8");
+        const fileName = req.body.fileName;
+        console.log('fileName', fileName);
+        const data = await fs.readFile(fileName, "utf8");
         res.json({ content: data });
       } catch (err) {
+
         res.status(500).json({ error: err.message });
       }
     });

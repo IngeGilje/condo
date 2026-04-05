@@ -106,91 +106,13 @@ class Condos {
     {
       applicationName: "condo-importfile.html",
       className: "Menu17",
-      text: "18Importer transaksjoner"
+      text: "17Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
       className: "Menu18",
-      text: "19Årsregnskap"
+      text: "18Årsregnskap"
     },
-  ];
-
-  // array of administration menu objects
-  arrayAdministrationMenu = [
-    {
-      applicationName: "condo-condominium.html",
-      className: "Menu2",
-      text: "Sameie"
-    },
-    {
-      applicationName: "condo-condo.html",
-      className: "Menu3",
-      text: "Leilighet"
-    },
-    {
-      applicationName: "condo-bankaccount.html",
-      className: "Menu4",
-      text: "Bankkonto sameie"
-    },
-    {
-      applicationName: "condo-account.html",
-      className: "Menu5",
-      text: "Konto"
-    },
-    {
-      applicationName: "condo-user.html",
-      className: "Menu6",
-      text: "Bruker"
-    },
-    {
-      applicationName: "condo-userbankaccount.html",
-      className: "Menu7",
-      text: "Bankkonto for bruker"
-    },
-    {
-      applicationName: "condo-supplier.html",
-      className: "Menu8",
-      text: "leverandør"
-    },
-    {
-      applicationName: "condo-due.html",
-      className: "Menu9",
-      text: "Forfall"
-    },
-    {
-      applicationName: "condo-heating.html",
-      className: "Menu10",
-      text: "Fjernvarme"
-    },
-    {
-      applicationName: "condo-budget.html",
-      className: "Menu11",
-      text: "Budsjett"
-    },
-    {
-      applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu13",
-      text: "Banktransaksjoner"
-    },
-    {
-      applicationName: "condo-annualaccount.html",
-      className: "Menu15",
-      text: "Årsregnskap"
-    },
-  ];
-
-  // array of horizontal menu objects
-  arrayHorizontalMenu = [
-    {
-      applicationName: "",
-      className: "Menu1",
-      text: "Administrasjon"
-    },
-    {
-      applicationName: "",
-      className: "Menu2",
-      text: "Rapporter"
-    }
   ];
 
   // Validate application name
@@ -856,7 +778,6 @@ class Condos {
 
     let html = "<tr>";
 
-    //if (menuNumber > 0) html += this.verticalMenu(menuNumber);
     html += this.verticalMenu(menuNumber);
     texts.forEach((text) => {
 
@@ -927,7 +848,7 @@ class Condos {
   }
 
   // validate the norwegian date format dd.mm.yyyy
-  validateNorDate(className, date) {
+  validateNorDate(className, date, object, style, message) {
 
     let valid = true;
 
@@ -967,50 +888,9 @@ class Condos {
       }
     }
 
+    if ((!valid) && (message.lenght > 0)) this.showMessage(object, style, message);
     return valid;
   }
-
-  /*
-  // validate the norwegian date format dd.mm.yyyy
-  validateNorDate(date) {
-   
-    // Check for valid date String
-    if (date === '' || typeof date === 'undefined') {
-      return false;
-    }
-    // Regular expression for valuating the dd.mm.yyyy format
-    const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
-    const match = date.match(regex);
-   
-    if (!match) return false; // Return false if format doesn't match
-   
-    // Extract day, month, and year
-    const day = parseInt(match[1], 10);
-    const month = parseInt(match[2], 10);
-    const year = parseInt(match[3], 10);
-   
-    // Check if month is between 1 and 12
-    if (month < 1 || month > 12) return false;
-   
-    // Create a date object
-    const objDate = new Date(year, month - 1, day);
-   
-    // Validate that the date components match
-    return (
-      objDate.getFullYear() === year
-      && objDate.getMonth() === month - 1
-      && objDate.getDate() === day
-    );
-  }
-  */
-
-  /*
-  // Format norwegian date (11.05.1983) to number (19830511)
-  formatNorDateToNumberNew(norDate) {
-   
-    return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
-  }
-  */
 
   // Validate phone number 
   validatePhone(className, phone) {
@@ -1111,7 +991,6 @@ class Condos {
   // Show main header table
   showTableHeader(style, ...texts) {
 
-    //let html = `<thead><tr>`;
     let html = `<tr>`;
 
     texts.forEach((text) => {
@@ -1132,7 +1011,6 @@ class Condos {
   // Show main header table
   showTableHeaderLogOut(style, ...texts) {
 
-    //let html = `<thead><tr>`;
     let html = `<tr>`;
 
     texts.forEach((text) => {
@@ -1191,7 +1069,7 @@ class Condos {
     return `</table>`;
   }
 
-  // check if file exists
+  // check if server is started
   async checkServer() {
 
     const URL = (this.serverStatus === 1) ? '/api/health' : 'http://localhost:3000/health';
@@ -1212,9 +1090,11 @@ class Condos {
   }
 
   // check if file exists
-  async checkIfFileExists(fileName) {
+  async checkIfFileExist(fileName) {
 
-    const URL = (this.serverStatus === 1) ? '/api/checkIfFileExists' : 'http://localhost:3000/checkIfFileExists';
+    const URL = (this.serverStatus === 1)
+      ? '/api/checkIfFileExist'
+      : 'http://localhost:3000/checkIfFileExist';
     try {
 
       const response = await fetch(URL, {
@@ -1226,6 +1106,7 @@ class Condos {
           fileName: fileName
         })
       });
+
       return response.ok;
     } catch (err) {
 

@@ -186,7 +186,7 @@ async function deleteBankAccount() {
 function showHeader() {
 
   // Start table
-  html = objBankAccount.startTable(tableWidth);
+  let html = objBankAccount.startTable(tableWidth);
 
   // start table body
   html += objBankAccount.startTableBody();
@@ -458,7 +458,7 @@ function resetValues() {
 function showFilter(menuNumber, condominiumId) {
 
   // Start table
-  html = objBankAccount.startTable(tableWidth);
+  let html = objBankAccount.startTable(tableWidth);
 
   // Header filter
   menuNumber++;

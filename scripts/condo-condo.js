@@ -151,7 +151,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objCondo.startTable(tableWidth);
+  let html = objCondo.startTable(tableWidth);
 
   // start table body
   html += objCondo.startTableBody();
@@ -172,7 +172,7 @@ function showHeader() {
 function showFilter(menuNumber, condoId) {
 
   // Start table
-  html = objCondo.startTable(tableWidth);
+  let html = objCondo.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
@@ -274,7 +274,7 @@ function showResult(menuNumber,condoId) {
   // squareMeters
   html += "<tr>";
   menuNumber++;
-  html += objCondo.showTableHeaderMenu("width:175px;", menuNumber, 'Kvadratmeter');
+  html += objCondo.showTableHeaderMenu("width:175px;", menuNumber, 'Areal i m2');
 
   // insert table columns in start of a row
   menuNumber++;
@@ -330,7 +330,7 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = objCondo.validateNumber('condoId', condoId, -1, objCondo.nineNine, object, style, message);
+  const validCondoId = objCondo.validateNumber('condoId', condoId, -1, objCondo.nineNine, objCondo, '', 'Ugyldig leilighet');
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -346,7 +346,7 @@ async function updateCondoRow(condoId) {
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objCondo.validateNumber('postalCode', Number(postalCode), 1, objCondo.nineNine, object, style, message);
+  const validPostalCode = objCondo.validateNumber('postalCode', Number(postalCode), 1, objCondo.nineNine, objCondo, '', 'Ugyldig postnummer');
 
   // validate city
   const city = document.querySelector('.city').value;
@@ -354,7 +354,7 @@ async function updateCondoRow(condoId) {
 
   // validate squaremeters
   const squareMeters = Number(formatKronerToOre(document.querySelector('.squareMeters').value));
-  const validSquareMeters = objCondo.validateNumber('squareMeters', squareMeters, 1, objCondo.nineNine, object, style, message);
+  const validSquareMeters = objCondo.validateNumber('squareMeters', squareMeters, 1, objCondo.nineNine, objCondo, '', 'Ugyldig areal');
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 

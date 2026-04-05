@@ -132,7 +132,7 @@ async function deleteCondo() {
 function showHeader() {
 
   // Start table
-  html = objUser.startTable(tableWidth);
+  let html = objUser.startTable(tableWidth);
 
   // start table body
   html += objUser.startTableBody();
@@ -153,7 +153,7 @@ function showHeader() {
 function showFilter(condominiumId, userId, menuNumber) {
 
   // Start table
-  html = objUser.startTable(tableWidth);
+  let html = objUser.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
@@ -252,7 +252,7 @@ async function updateUserRow(userId) {
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = objUser.validateNumber('securityLevel', securityLevel, 1, 9, object, style, message);
+  const validSecurityLevel = objUser.validateNumber('securityLevel', securityLevel, 1, 9, objUser, '', 'Ugyldig sikkerhetsnivå');
 
   // validate password
   let password = document.querySelector('.password').value;

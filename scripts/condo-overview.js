@@ -54,7 +54,7 @@ async function main() {
       toDate = convertDateToISOFormat(toDate);
       await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
       const orderBy = 'condoId ASC, date DESC, income ASC';
-      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
+      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
 
       // Show dues
       menuNumber = showDues(menuNumber);
@@ -84,15 +84,15 @@ async function events() {
       // valitadate filter
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      const validCondoId = objOverview.validateNumber('filterCondoId', condoId, 1, objOverview.nineNine, object, style, message);
+      const validCondoId = objOverview.validateNumber('filterCondoId', condoId, 1, objOverview.nineNine, objOverview, '', 'Ugyldig leilighet');
 
       // from date
       let fromDate = document.querySelector('.filterFromDate').value;
-      const validFromDate = objOverview.validateNorDate('filterFromDate', fromDate);
+      const validFromDate = objOverview.validateNorDate('filterFromDate', fromDate, objOverview, '', 'Ugyldig fra dato');
 
       // to date
       let toDate = document.querySelector('.filterToDate').value;
-      const validToDate = objOverview.validateNorDate('filterToDate', toDate);
+      const validToDate = objOverview.validateNorDate('filterToDate', toDate, objOverview, '', 'Ugyldig til dato');
 
       // Validate date interval
       let validDates = false;
@@ -100,7 +100,7 @@ async function events() {
 
         fromDate = objOverview.formatNorDateToNumber(fromDate);
         toDate = objOverview.formatNorDateToNumber(toDate);
-        validDates = objOverview.validateNumber('filterFromDate', Number(fromDate), Number(fromDate), Number(toDate), object, style, message);
+        validDates = objOverview.validateNumber('filterFromDate', Number(fromDate), Number(fromDate), Number(toDate), objOverview, '', 'Ugyldig fra dato');
       }
 
       if (validFromDate && validToDate && validDates && validCondoId) {
@@ -114,7 +114,7 @@ async function events() {
         toDate = convertDateToISOFormat(toDate);
         await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
         const orderBy = 'condoId ASC, date DESC, income ASC';
-        await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
+        await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
 
         // Show result
 
@@ -163,7 +163,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objOverview.startTable(tableWidth);
+  let html = objOverview.startTable(tableWidth);
 
   // start table body
   html += objOverview.startTableBody();
@@ -184,11 +184,11 @@ function showHeader() {
 function showFilter(menuNumber) {
 
   // Start table
-  html = objOverview.startTable(tableWidth);
+  let html = objOverview.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;', menuNumber, '', '2Velg leilighet', '3Fra dato', 'Til dato', '', '');
+  html += objOverview.showTableHeaderMenu('width:175px;', menuNumber, '', 'Velg leilighet', 'Fra dato', 'Til dato', '', '');
 
   // start table body
   html += objOverview.startTableBody();
@@ -231,14 +231,14 @@ function showFilter(menuNumber) {
 function showDues(menuNumber) {
 
   // Start HTML table
-  html = objOverview.startTable(tableWidth);
+  let html = objOverview.startTable(tableWidth);
 
   let sumDue = 0;
   let sumKilowattHour = 0;
 
   // Header
   menuNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', '', 'Forfall', '', '');
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', '', 'Forfall', '');
   menuNumber++;
   html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
@@ -288,7 +288,7 @@ function showDues(menuNumber) {
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
   menuNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, '', '2Sum', sumDue, sumKilowattHour, '', '');
+  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, '', 'Sum', sumDue, sumKilowattHour, '', '');
   html += "</tr>"
 
   menuNumber++;
@@ -305,7 +305,7 @@ function showDues(menuNumber) {
 function showBankAccountTransactions(menuNumber) {
 
   // Start table
-  html = objOverview.startTable(tableWidth);
+  let html = objOverview.startTable(tableWidth);
 
   // Header
   menuNumber++;
@@ -424,13 +424,3 @@ function showHowMuchToPay(menuNumber) {
 
   return menuNumber;
 }
-
-/*
-// show horizontal menu
-function showHorizontalMenu() {
-
-  html = objDue.showHorizontalMenu();
-
-  document.querySelector('.horizontalMenu').innerHTML = html;
-};
-*/

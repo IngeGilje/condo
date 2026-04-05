@@ -152,7 +152,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  html = objCommonCost.startTable(tableWidth);
+  let html = objCommonCost.startTable(tableWidth);
 
   // start table body
   html += objCommonCost.startTableBody();

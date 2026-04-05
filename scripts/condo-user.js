@@ -195,7 +195,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  html = objUser.startTable(tableWidth);
+  let html = objUser.startTable(tableWidth);
 
   // start table body
   html += objUser.startTableBody();
@@ -216,7 +216,7 @@ function showHeader() {
 function showFilter(condominiumId, userId, menuNumber) {
 
   // Start table
-  html = objUser.startTable(tableWidth);
+  let html = objUser.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
@@ -358,7 +358,7 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1;
   userId = Number(userId);
-  const validUserId = objUser.validateNumber('userId', userId, -1, objUser.nineNine, object, style, message);
+  const validUserId = objUser.validateNumber('userId', userId, -1, objUser.nineNine, objUser, '', 'Ugyldig bruker');
 
   // resident
   let resident = document.querySelector('.resident').value;
@@ -394,7 +394,7 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = objUser.validateNumber('condoId', condoId, 0, objUser.nineNine, object, style, message);
+  const validCondoId = objUser.validateNumber('condoId', condoId, 0, objUser.nineNine, objUser, '', 'Ugyldig leilighet');
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
@@ -410,7 +410,7 @@ async function updateUserRow(userId) {
 
   // validate condominium
   const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-  const validCondominiumId = objUser.validateNumber('condominium', condominiumId, 0, objUser.nineNine, object, style, message);
+  const validCondominiumId = objUser.validateNumber('condominium', condominiumId, 0, objUser.nineNine, objUser, '', 'Ugyldig sameie');
 
   if (validUserId && validEmail && validCondoId && validFirstName && validLastName
     && validPhone && validCondominiumId) {

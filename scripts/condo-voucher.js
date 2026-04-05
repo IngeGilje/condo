@@ -117,7 +117,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  html = objBankAccountTransaction.startTable(tableWidth);
+  let html = objBankAccountTransaction.startTable(tableWidth);
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
@@ -138,7 +138,7 @@ function showHeader() {
 function showFilter(menuNumber, bankAccountTransactionId) {
 
   // Start table
-  html = objBankAccountTransaction.startTable(tableWidth);
+  let html = objBankAccountTransaction.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
@@ -259,14 +259,14 @@ function showResult(bankAccountTransactionId, menuNumber) {
 async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
   if (bankAccountTransactionId === '') bankAccountTransactionId = -1
-  const validbankAccountTransactionId = objBankAccountTransaction.validateNumber('bankAccountTransactionId', Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine, object, style, message);
+  const validbankAccountTransactionId = objBankAccountTransaction.validateNumber('bankAccountTransactionId', Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig bankkonto');
 
   // validate voucer filename
   const voucerFileName = document.querySelector('.voucerFileName').value;
 
   // Check if the file exist
   let validVoucerFileName = false;
-  if (await objVoucher.checkIfFileExists(voucerFileName)) {
+  if (await objVoucher.checkIfFileExist(voucerFileName)) {
     validVoucerFileName = true;
   } else {
     objVoucher.showMessage(objVoucher, '', 'Ugyldig filnavn på bilag.');

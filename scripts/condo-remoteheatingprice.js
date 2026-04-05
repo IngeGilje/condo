@@ -148,7 +148,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  html = objRemoteHeatingPrice.startTable(tableWidth);
+  let html = objRemoteHeatingPrice.startTable(tableWidth);
 
   // start table body
   html += objRemoteHeatingPrice.startTableBody();

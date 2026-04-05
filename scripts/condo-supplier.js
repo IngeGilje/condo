@@ -191,7 +191,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  html = objSupplier.startTable(tableWidth);
+  let html = objSupplier.startTable(tableWidth);
 
   // start table body
   html += objSupplier.startTableBody();
@@ -212,7 +212,7 @@ function showHeader() {
 function showFilter(menuNumber, supplierId) {
 
   // Start table
-  html = objSupplier.startTable(tableWidth);
+  let html = objSupplier.startTable(tableWidth);
 
   // Header filter
   menuNumber++;

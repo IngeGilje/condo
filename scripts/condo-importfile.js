@@ -17,8 +17,8 @@ const objSupplier = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
 const enableChanges = (objImportFile.securityLevel > 5);
-
-const tableWidth = 'width:1600px;';
+const tableWidth = 'width:1700px;';
+let menuNumber = 0;
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -34,71 +34,81 @@ async function main() {
     if ((objImportFile.condominiumId === 0) || (objImportFile.user === null)) {
 
       // LogIn is not valid
-      //window.location.href = 'http://localhost/condo-login.html';
       const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
+      let transactionFile = true;
+
+      /*
       // get name of transaction file from bank
       await objCondominium.loadCondominiumsTable();
-      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
-      if (rowNumberCondominium !== -1) {
+      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominium.condominiumId);
+
+      if (rowNumberCondominium === -1) {
+
+        transactionFile = false;
+      } else {
 
         // file import text name
         const csvFileName = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
-        if (await objImportFile.checkIfFileExists(csvFileName)) {
+        if (!await objImportFile.checkIfFileExist(csvFileName)) {
 
-          const resident = 'A';
-          await objUser.loadUsersTable(condominiumId, resident, objImportFile.nineNine);
-          const fixedCost = 'A';
-          await objAccount.loadAccountsTable(condominiumId, fixedCost);
-          await objBankAccount.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
-          await objUserBankAccount.loadUserBankAccountsTable(condominiumId, objImportFile.nineNine, objImportFile.nineNine);
-          await objCondo.loadCondoTable(condominiumId);
-          await objSupplier.loadSuppliersTable(condominiumId);
-
-          const deleted = 'A';
-          const accountId = objImportFile.nineNine;
-          const condoId = objImportFile.nineNine;
-          let fromDate = 0;
-          let toDate = objImportFile.nineNine;
-          await objDue.loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate);
-
-          amount = 0;
-          const orderBy = 'condoId ASC, date DESC, income ASC';
-          await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
-
-          // Sends a request to the server to get bank csv transaction file
-          if (await objImportFile.loadCsvFile(csvFileName)) {
-
-            let menuNumber = 0;
-            // Show header
-            showHeader();
-
-            // Show filter
-            menuNumber = showFilter(menuNumber);
-
-            // create array from imported csv-file (data string)
-            createtransactionsArray(objImportFile.strCSVTransaction);
-
-            // Show result of filter
-            menuNumber = showResult(menuNumber);
-
-            // Events
-            events();
-          } else {
-
-            objImportFile.showMessage(objImportFile, tableWidth, 'Finner ikke transaksjonsfilen fra banken :', fileName);
-          }
-
+          transactionFile = false;
         } else {
+        */
 
-          objImportFile.showMessage(objImportFile, tableWidth, 'Finner ikke transaksjonsfilen fra banken :', fileName);
-        }
+      const resident = 'A';
+      await objUser.loadUsersTable(objBankAccountTransaction.condominiumId, resident, objImportFile.nineNine);
+      const fixedCost = 'A';
+      await objAccount.loadAccountsTable(objBankAccountTransaction.condominiumId, fixedCost);
+      await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine);
+      await objUserBankAccount.loadUserBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
+      await objCondo.loadCondoTable(objBankAccountTransaction.condominiumId);
+      await objSupplier.loadSuppliersTable(objBankAccountTransaction.condominiumId);
+
+      const deleted = 'A';
+      const accountId = objImportFile.nineNine;
+      const condoId = objImportFile.nineNine;
+      let fromDate = 0;
+      let toDate = objImportFile.nineNine;
+      await objDue.loadDuesTable(objBankAccountTransaction.condominiumId, accountId, condoId, fromDate, toDate);
+
+      amount = 0;
+      const orderBy = 'condoId ASC, date DESC, income ASC';
+      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objCondominium.loadCondominiumsTable();
+
+      /*
+      // Sends a request to the server to get bank csv transaction file
+      if (!await objImportFile.loadImportFile(csvFileName)) {
+
+        transactionFile = false;
       } else {
+      */
 
-        objImportFile.showMessage(objImportFile, tableWidth, 'Finner ikke transaksjonsfilen fra banken :', fileName);
-      }
+      // Show header
+      showHeader();
+
+      // Name of importfile
+      menuNumber = importFileName(menuNumber);
+
+      /*
+      // Show filter
+      //menuNumber = showFilter(menuNumber);
+
+      // create array from imported csv-file (data string)
+      createtransactionsArray(objImportFile.strCSVTransaction);
+
+      // Show result of filter
+      menuNumber = showResult(menuNumber);
+      */
+
+      // Events
+      events();
+      //}
+      //}
+      //}
     }
   } else {
 
@@ -123,6 +133,7 @@ async function events() {
       window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
     };
   });
+
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -133,6 +144,33 @@ async function events() {
       url = `${url}condo-login.html`;
       window.location.href = url;
     };
+  });
+
+  // Start import of transaction file
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('importTransacionFile')) {
+
+      // check if file exist
+      let importFileName = document.querySelector('.nameImportFile').value;
+      const importTransacionFileExist = await objImportFile.loadTextFile(importFileName);
+      if (importTransacionFileExist) {
+
+        // Sends a request to the server to get bank transaction file
+        if (await objImportFile.loadTextFile(importFileName)) {
+
+          document.querySelector('.importFileName').style.display = "none";
+
+          // create array from imported csv-file (data string)
+          createtransactionsArray(objImportFile.strCSVTransaction);
+
+          // Show result of filter
+          menuNumber = showResult(menuNumber);
+        }
+      } else {
+
+        objImportFile.showMessage(objImportFile, tableWidth, 'Ugyldig navn på transaksjonsfil');
+      }
+    }
   });
 };
 
@@ -148,8 +186,8 @@ function createtransactionsArray() {
       row.split(';');
 
     // Check for valid date
-    // validate the dd.mm.yyyy (Norwegian date format) format
-    if (objImportFile.validateNorDate('message', accountingDate)) {
+    // validate the dd.mm.yyyy (Norwegian date format)
+    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '', '')) {
 
       // text
       // remove first and last "
@@ -264,7 +302,7 @@ async function updateOpeningClosingBalance() {
 
     [accountingDate, balance, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
-    if (objImportFile.validateNorDate('message', accountingDate)) {
+    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '', 'Ugyldig dato')) {
 
       totalIncome += Number(formatKronerToOre(income));
       totalPayment += Number(formatKronerToOre(payment));
@@ -364,7 +402,7 @@ async function updateOpeningClosingBalance() {
             const closingBalance = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
             const closingBalanceDate = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
             await objBankAccount.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccount.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
+            await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine);
           }
         }
       }
@@ -385,7 +423,7 @@ async function updateOpeningClosingBalance() {
             const openingBalance = objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance;
             const openingBalanceDate = objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate;
             await objBankAccount.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccount.loadBankAccountsTable(condominiumId, objImportFile.nineNine);
+            await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine);
           };
         };
       };
@@ -490,13 +528,13 @@ function checkBankAccountTransaction(income, payment, date) {
 /*
 // Show header
 function showHeader() {
-
+ 
   // Start table
   let html = objImportFile.startTable(tableWidth);
-
+ 
   // show main header
   html += objImportFile.showTableHeader('width:175px;', 'Import av bankkontotransaksjoner');
-
+ 
   // The end of the table
   html += objImportFile.endTable();
   document.querySelector('.header').innerHTML = html;
@@ -507,7 +545,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objImportFile.startTable(tableWidth);
+  let html = objImportFile.startTable(tableWidth);
 
   // start table body
   html += objImportFile.startTableBody();
@@ -528,15 +566,10 @@ function showHeader() {
 function showFilter(menuNumber) {
 
   // Start table
-  html = objImportFile.startTable(tableWidth);
-
-  // Header filter
-  menuNumber++;
-  html += objImportFile.showTableHeaderMenu('width:175px;', menuNumber, '', 'Fra dato', 'Til dato', 'Busjettår', 'Pris per m2', '', '', '');
+  let html = objImportFile.startTable(tableWidth);
 
   // start table body
   html += objImportFile.startTableBody();
-
   html += "</tr>";
 
   menuNumber++;
@@ -663,4 +696,65 @@ async function updateBankAccountTransactions() {
     // insert bank account transactions row
     await objBankAccountTransaction.insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, kilowattHour, date, text)
   });
+}
+
+// Import fileName
+function importFileName(menuNumber) {
+
+  // Start table
+  let html = objImportFile.startTable(tableWidth);
+
+  // Header filter
+  menuNumber++;
+  html += objImportFile.showTableHeaderMenu('width:175px;', menuNumber, '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
+
+  // start table body
+  html += objImportFile.startTableBody();
+
+  menuNumber++;
+  html += objImportFile.verticalMenu(menuNumber);
+  let importFileName = "Ugyldig filnavn";
+  const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominium.condominiumId);
+  if (rowNumberCondominium !== -1) {
+
+    importFileName = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
+  }
+  html += `
+    <td class="center no-border"></td>
+    <td class="center" colspan="3">
+      <input class="nameImportFile center one-line" type="text" maxlength="255" value="${importFileName}" style=width:500px;>
+    </td>
+    <td></td><td></td><td></td><td></td>
+  </tr>`;
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objBankAccount.insertTableColumns('', menuNumber);
+  html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objImportFile.insertTableColumns('', menuNumber, '', '');
+
+  // Show buttons
+  html += objBankAccount.showButton('width:175px;', 'importTransacionFile', 'Start import', 'Importer transaksjonsfil');
+  html += "<td></td><td></td><td></td><td></td><td></td></tr>";
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objBankAccount.insertTableColumns('', menuNumber);
+  html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+
+  // Show the rest of the menu
+  menuNumber++;
+  html += objImportFile.showRestMenu(menuNumber);
+
+  // end table body
+  html += objImportFile.endTableBody();
+
+  // The end of the table
+  html += objImportFile.endTable();
+  document.querySelector('.importFileName').innerHTML = html;
+
+  return menuNumber;
 }

@@ -74,7 +74,7 @@ async function events() {
     if (event.target.classList.contains('update')) {
 
       // Update a condominiums row
-      condominiumId = document.querySelector('.filterCondominiumId').value;
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       updateCondominiumRow(condominiumId);
     };
   });
@@ -206,7 +206,7 @@ async function deleteCondominiumRow() {
 function showHeader() {
 
   // Start table
-  html = objCondominium.startTable(tableWidth);
+  let html = objCondominium.startTable(tableWidth);
 
   // start table body
   html += objCondominium.startTableBody();
@@ -227,7 +227,7 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId) {
 
   // Start table
-  html = objCondominium.startTable(tableWidth);
+  let html = objCondominium.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
@@ -439,7 +439,7 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objCondominium.validateNumber('postalCode', Number(postalCode), 1, objCondominium.nineNine, object, style, message);
+  const validPostalCode = objCondominium.validateNumber('postalCode', Number(postalCode), 1, objCondominium.nineNine, objCondominium, '', 'Ugyldig postnummer');
 
   // validate city
   const city = document.querySelector('.city').value;
@@ -455,15 +455,15 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate incomeRemoteHeatingAccountId
   const incomeRemoteHeatingAccountId = Number(document.querySelector('.incomeRemoteHeatingAccountId').value);
-  const validIncomeRemoteHeatingAccountId = objCondominium.validateNumber('incomeRemoteHeatingAccountId', incomeRemoteHeatingAccountId, 0, objCondominium.nineNine, object, style, message);
+  const validIncomeRemoteHeatingAccountId = objCondominium.validateNumber('incomeRemoteHeatingAccountId', incomeRemoteHeatingAccountId, 0, objCondominium.nineNine, objCondominium, '', 'Ugyldig inntektskonto for husleie');
 
   // validate paymentRemoteHeatingAccountId
   const paymentRemoteHeatingAccountId = Number(document.querySelector('.paymentRemoteHeatingAccountId').value);
-  const validPaymentRemoteHeatingAccountId = objCondominium.validateNumber('paymentRemoteHeatingAccountId', paymentRemoteHeatingAccountId, 0, objCondominium.nineNine, object, style, message);
+  const validPaymentRemoteHeatingAccountId = objCondominium.validateNumber('paymentRemoteHeatingAccountId', paymentRemoteHeatingAccountId, 0, objCondominium.nineNine, objCondominium, '', 'Ugyldig inntektskonto for fjernvarme');
 
   // validate commonCostAccountId
   const commonCostAccountId = Number(document.querySelector('.commonCostAccountId').value);
-  const validCommonCostAccountId = objCondominium.validateNumber('commonCostAccountId', commonCostAccountId, 0, objCondominium.nineNine, object, style, message);
+  const validCommonCostAccountId = objCondominium.validateNumber('commonCostAccountId', commonCostAccountId, 0, objCondominium.nineNine, objCondominium, '', 'Ugyldig konto');
 
   // validate organizationNumber
   const organizationNumber = Number(document.querySelector('.organizationNumber').value);
@@ -480,14 +480,13 @@ async function updateCondominiumRow(condominiumId) {
       document.querySelector('.message').style.display = "none";
 
     // Check if the condominiumId exist
-    let condominiumId = 0;
     const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (rowNumberCondominium !== -1) {
 
       // update the condominiums row
       await objCondominium.updateCondominiumsTable(objCondominium.user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
       await objCondominium.loadCondominiumsTable();
-      condominiumId = Number(document.querySelector('.filterCondominiumId').value = condominiumId);
+      //condominiumId = Number(document.querySelector('.filterCondominiumId').value = condominiumId);
     } else {
 
       // Insert the bankaccount row in condominiums table

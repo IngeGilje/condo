@@ -398,7 +398,7 @@ function showHeader() {
 function showHeader() {
 
   // Start table
-  html = objDue.startTable(tableWidth);
+  let html = objDue.startTable(tableWidth);
 
   // start table body
   html += objDue.startTableBody();
@@ -419,7 +419,7 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId) {
 
   // Start table
-  html = objDue.startTable(tableWidth);
+  let html = objDue.startTable(tableWidth);
 
   // Header filter
   menuNumber++;

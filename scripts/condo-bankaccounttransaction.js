@@ -235,7 +235,7 @@ async function events() {
 function showFilter(menuNumber) {
 
   // Start table
-  html = objBankAccountTransaction.startTable(tableWidth);
+  let html = objBankAccountTransaction.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
@@ -305,19 +305,19 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     className = `.accountId${bankAccountTransactionId}`;
     const accountId = Number(document.querySelector(className).value);
     className = `accountId${bankAccountTransactionId}`;
-    const validAccountId = objBankAccountTransaction.validateNumber(className, accountId, 0, objBankAccountTransaction.nineNine, object, style, message)
+    const validAccountId = objBankAccountTransaction.validateNumber(className, accountId, 0, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig konto')
 
     // condoId
     className = `.condoId${bankAccountTransactionId}`;
     const condoId = Number(document.querySelector(className).value);
     className = `condoId${bankAccountTransactionId}`;
-    const validCondoId = objBankAccountTransaction.validateNumber(className, condoId, 0, objBankAccountTransaction.nineNine, object, style, message)
+    const validCondoId = objBankAccountTransaction.validateNumber(className, condoId, 0, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig leilighet')
 
     // kilowattHour
     className = `.kilowattHour${bankAccountTransactionId}`;
     const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
     className = `kilowattHour${bankAccountTransactionId}`;
-    const validNumberKWHour = objBankAccountTransaction.validateNumber(className, kilowattHour, 0, objBankAccountTransaction.nineNine, object, style, message)
+    const validNumberKWHour = objBankAccountTransaction.validateNumber(className, kilowattHour, 0, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig kilowattime')
 
     // text
     className = `.text${bankAccountTransactionId}`;
@@ -461,7 +461,7 @@ function showResult(menuNumber) {
 function showHeader() {
 
   // Start table
-  html = objBankAccountTransaction.startTable(tableWidth);
+  let html = objBankAccountTransaction.startTable(tableWidth);
 
   // start table body
   html += objBankAccountTransaction.startTableBody();

@@ -173,7 +173,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  html = objRemoteHeating.startTable(tableWidth);
+  let html = objRemoteHeating.startTable(tableWidth);
 
   // start table body
   html += objRemoteHeating.startTableBody();
@@ -194,7 +194,7 @@ function showHeader() {
 function showFilter(menuNumber, year) {
 
   // Start table
-  html = objRemoteHeating.startTable(tableWidth);
+  let html = objRemoteHeating.startTable(tableWidth);
 
   // Header filter
   menuNumber++;
