@@ -327,7 +327,7 @@ class User extends Condos {
       html += `
       <option 
         value=${this.nineNine}
-        selected
+        ${(!selectedValue) ? 'select' : ''}
       >
         ${selectAll}
       </option>`;
@@ -346,7 +346,6 @@ class User extends Condos {
           </option>
         `;
 
-      //if (selectedValue) {
       html +=
         `
           <option 
@@ -356,28 +355,11 @@ class User extends Condos {
             ${selectNone}
           </option>`;
       if (!selectedValue) selectedValue = true;
-      /*
-      } else {
-
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
-        selectedValue = true;
-      }
-      */
     }
 
-    html +=
-      `
+    html += `
         </select >
-      </td>
-    `;
+      </td>`;
 
     return html;
   }

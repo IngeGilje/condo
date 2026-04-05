@@ -6,7 +6,6 @@ const objUser = new User('user');
 const objCondo = new Condo('condo');
 
 const enableChanges = (objCondo.securityLevel > 5);
-
 const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
@@ -36,6 +35,10 @@ async function main() {
       let condoId = 0;
       if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo.at(-1).condoId;
 
+      // get condoId
+      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objCondo.userId); 
+      if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
+
       // Show header
       let menuNumber = 0;
 
@@ -45,7 +48,7 @@ async function main() {
       menuNumber = showFilter(menuNumber, condoId);
 
       // Show result
-      menuNumber = showResult(menuNumber, condoId);
+      menuNumber = showCondo(menuNumber, condoId);
 
       // Events
       events();
@@ -66,7 +69,7 @@ async function events() {
       //await objCondo.loadCondoTable(condominiumId);
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      showResult(2,condoId);
+      showCondo(2,condoId);
     };
   });
 
@@ -93,7 +96,7 @@ async function events() {
       // Show filter
       const condoId = objCondo.arrayCondo.at(-1).condoId;
       menuNumber = showFilter(menuNumber, condoId);
-      menuNumber = showResult(menuNumber,condoId);
+      menuNumber = showCondo(menuNumber,condoId);
     };
   });
 
@@ -115,7 +118,7 @@ async function events() {
       let condoId = Number(document.querySelector('.filterCondoId').value);
       if (condoId === 0) condoId = objCondo.arrayCondo.at(-1).condoId;
 
-      showResult(2,condoId);
+      showCondo(2,condoId);
     };
   });
   // Log out
@@ -201,7 +204,7 @@ function showFilter(menuNumber, condoId) {
 }
 
 // Show result
-function showResult(menuNumber,condoId) {
+function showCondo(menuNumber,condoId) {
 
   // start table
   let html = objCondo.startTable(tableWidth);
@@ -378,7 +381,7 @@ async function updateCondoRow(condoId) {
 
     menuNumber = 0;
     menuNumber = showFilter(menuNumber, condoId);
-    menuNumber = showResult(menuNumber, condoId);
+    menuNumber = showCondo(menuNumber, condoId);
 
     objCondo.removeMessage();
     document.querySelector('.filterCondoId').disabled = false;

@@ -32,17 +32,18 @@ async function main() {
       await objUser.loadUsersTable(objUserBankAccount.condominiumId, resident, objUserBankAccount.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objUserBankAccount.condominiumId, fixedCost);
-      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+      //await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 
       // Show header
       let menuNumber = 0;
       showHeader();
 
       // Show filter
-      menuNumber = showFilter(menuNumber);
+      menuNumber = showFilter(menuNumber, objUserBankAccount.userId);
 
       // Show accounts
-      menuNumber = showResult(menuNumber);
+        await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.userId, objUserBankAccount.nineNine);
+      menuNumber = showUserBankAccount(menuNumber);
 
       // Events
       events();
@@ -66,7 +67,7 @@ async function events() {
       const accountId = Number(document.querySelector('.filterAccountId').value);
       await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
-      showResult(3);
+      showUserBankAccount(3);
     };
   });
 
@@ -119,7 +120,7 @@ async function events() {
         const userId = Number(document.querySelector('.filterUserId').value);
         await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 
-        showResult(3);
+        showUserBankAccount(3);
       };
     };
   });
@@ -174,7 +175,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber) {
+function showFilter(menuNumber, userId) {
 
   // Start table
   let html = objUserBankAccount.startTable(tableWidth);
@@ -191,7 +192,7 @@ function showFilter(menuNumber) {
   html += objUserBankAccount.insertTableColumns('', menuNumber, '');
 
   // Show all selected users
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', objUserBankAccount.userId, '', 'Alle', true);
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', 'Alle', true);
 
   // Show all selected accounts
   html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
@@ -233,7 +234,7 @@ function insertEmptyTableRow(menuNumber) {
 }
 
 // Show user bank accounts
-function showResult(menuNumber) {
+function showUserBankAccount(menuNumber) {
 
   // start table
   let html = objUserBankAccount.startTable(tableWidth);
@@ -254,9 +255,9 @@ function showResult(menuNumber) {
     html += objUserBankAccount.showSelectedValues(className, '', enableChanges, selected, 'Nei', 'Ja')
 
     // user Id
-    const userId = userBankAccount.userId;
+    //const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUser.showSelectedUsers(className, 'width:175px;', userId, 'Ingen er valgt', '', enableChanges);
+    html += objUser.showSelectedUsers(className, 'width:175px;',userBankAccount.userId, 'Ingen er valgt', '', enableChanges);
 
     // account Id
     const accountId = userBankAccount.accountId;
@@ -326,7 +327,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   if (validUserId && validAccountId && validBankAccount) {
 
     document.querySelector('.message').style.display = "none";
-  
+
     // Check if the userbankaccounts row exist
     const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (rowNumberUserBankAccount !== -1) {
@@ -344,6 +345,6 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     accountId = Number(document.querySelector('.filterAccountId').value);
     await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
-    menuNumber = showResult(3);
+    menuNumber = showUserBankAccount(3);
   }
 }

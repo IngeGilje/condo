@@ -497,7 +497,7 @@ function showBankDeposit(menuNumber) {
 
   // closingBalanceDate
   let closingBalanceDate = "";
-  let rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === condominiumId);
+  let rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objAnnualAccount.condominiumId);
   if (rowNumberBankAccount !== -1) {
 
     closingBalanceDate = (objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
