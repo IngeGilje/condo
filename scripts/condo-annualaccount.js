@@ -115,7 +115,7 @@ async function events() {
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
-      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // Show annual accounts
@@ -124,7 +124,7 @@ async function events() {
         await objBudget.loadBudgetsTable(objAnnualAccount.condominiumId, year, objAnnualAccount.nineNine);
 
         const orderBy = 'condoId ASC, date DESC, income ASC';
-        await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
+        await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
         menuNumber = showAnnualAccounts(3);
 
         // Show income for next year
@@ -509,8 +509,8 @@ function showBankDeposit(menuNumber) {
   // Bank deposit
   //let bankDepositAmount = "";
   const bankDepositAmount = (rowNumberBankAccount === -1)
-    ? ''
-    : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankDepositAmount);
+    ? 0
+    : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
   //bankDepositAmount = (objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
   //bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
