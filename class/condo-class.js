@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -26,92 +26,92 @@ class Condos {
     {
       applicationName: "condo-login.html",
       className: "Menu1",
-      text: "1login"
+      text: "login"
     },
     {
       applicationName: "condo-condominium.html",
       className: "Menu2",
-      text: "2Sameie"
+      text: "Sameie"
     },
     {
       applicationName: "condo-user.html",
       className: "Menu3",
-      text: "3Bruker"
+      text: "Bruker"
     },
     {
       applicationName: "condo-password.html",
       className: "Menu4",
-      text: "4Passord"
+      text: "Passord"
     },
     {
       applicationName: "condo-condo.html",
       className: "Menu5",
-      text: "5Leilighet"
+      text: "Leilighet"
     },
     {
       applicationName: "condo-bankaccount.html",
       className: "Menu6",
-      text: "6Bankkonto sameie"
+      text: "Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
       className: "Menu7",
-      text: "7Konto"
+      text: "Konto"
     },
     {
       applicationName: "condo-userbankaccount.html",
       className: "Menu8",
-      text: "8Bankkonto for bruker"
+      text: "Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
       className: "Menu9",
-      text: "9Leverandør"
+      text: "Leverandør"
     },
     {
       applicationName: "condo-commoncost.html",
       className: "Menu10",
-      text: "10Felleskostnader"
+      text: "Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
       className: "Menu11",
-      text: "11Forfall"
+      text: "Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
       className: "Menu12",
-      text: "12Pris fjernvarme"
+      text: "Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
       className: "Menu13",
-      text: "13Fjernvarme"
+      text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
       className: "Menu14",
-      text: "14Budsjett"
+      text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
       className: "Menu15",
-      text: "15Betalingsoversikt"
+      text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
       className: "Menu16",
-      text: "16Banktransaksjoner"
+      text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
       className: "Menu17",
-      text: "17Importer transaksjoner"
+      text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
       className: "Menu18",
-      text: "18Årsregnskap"
+      text: "Årsregnskap"
     },
   ];
 

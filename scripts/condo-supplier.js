@@ -17,8 +17,9 @@ exitIfNoActivity();
 if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
 
   // LogIn is not valid
-  //window.location.href = 'http://localhost/condo-login.html';
-  const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+  const URL = (objUser.serverStatus === 1) 
+  ? 'http://ingegilje.no/condo-login.html' 
+  : 'http://localhost/condo-login.html';
   window.location.href = URL;
 } else {
 

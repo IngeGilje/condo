@@ -27,8 +27,9 @@ async function main() {
     if ((objVoucher.condominiumId === 0) || (objVoucher.user === null)) {
 
       // LogIn is not valid
-      //window.location.href = 'http://localhost/condo-login.html';
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -275,7 +276,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   if (validVoucerFileName && validbankAccountTransactionId) {
 
     document.querySelector('.message').style.display = "none";
-  
+
     // Check if the bankAccountTransactionId exist
     const rowNumberBankAccountTransaction = objBankAccountTransaction.arrayBankAccountTransactions.findIndex(condo => condo.bankAccountTransactionId === bankAccountTransactionId);
     if (rowNumberBankAccountTransaction !== -1) {

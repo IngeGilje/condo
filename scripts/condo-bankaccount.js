@@ -8,7 +8,6 @@ const objCondominium = new Condominium('condominium');
 const objBankAccount = new BankAccount('bankaccount');
 
 const enableChanges = (objBankAccount.securityLevel > 5);
-
 const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
@@ -68,7 +67,7 @@ async function events() {
 
       // Show filter
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      await objBankAccount.loadBankAccountsTable(condominiumId, objBankAccount.nineNine);
+      await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, objBankAccount.nineNine);
 
       menuNumber = 0;
       menuNumber = showFilter(menuNumber, condominiumId);
@@ -101,7 +100,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
+      const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
       updateBankAccountRow(bankAccountId);
     };
   });
@@ -114,9 +113,9 @@ async function events() {
       let bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
       deleteBankAccountRow(bankAccountId);
       await objBankAccount.loadBankAccountsTable(condominiumId, objBankAccount.nineNine);
-      bankAccountId = (objBankAccount.arrayBankAccounts.length === 0) 
-      ? 0
-      : objBankAccount.arrayBankAccounts.at(-1) .bankAccountId;
+      bankAccountId = (objBankAccount.arrayBankAccounts.length === 0)
+        ? 0
+        : objBankAccount.arrayBankAccounts.at(-1).bankAccountId;
 
       let menuNumber = 0;
       showHeader();
@@ -214,10 +213,9 @@ function showResult(menuNumber, bankAccountId) {
   html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, 'Navn', 'Bankkontonummer');
 
   // Check if bankaccounts row exist
-  const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
-  //if (rowNumberBankAccount !== -1) {
+  const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
 
-  // Start table
+  // Start row
   html += "<tr>";
 
   // Show menu
@@ -352,29 +350,23 @@ async function updateBankAccountRow(bankAccountId) {
     validOpeningBalanceDate = objBankAccount.validateNumber('openingBalanceDate', openingBalanceDate, 20200101, 20291231, objBankAccount, '', 'Ugyldig dato')
   }
 
-  // Opening balance date
+  // Opening balance
   let validOpeningBalance = true;
   let openingBalance = document.querySelector('.openingBalance').value;
-  if (openingBalance.length > 0) {
-    openingBalance = convertDateToISOFormat(openingBalanceDate);
-    validOpeningBalance = objBankAccount.validateNumber('openingBalance', openingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine, objBankAccount, '', 'Ugyldig beløp')
-  }
+  openingBalance = formatKronerToOre(openingBalance);
+  validOpeningBalance = objBankAccount.validateNumber('openingBalance', openingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine, objBankAccount, '', 'Ugyldig beløp')
 
   // Closing balance date
   let validClosingBalanceDate = true;
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
-  if (closingBalanceDate.length > 0) {
-    closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
-    validClosingBalanceDate = objBankAccount.validateNumber('closingBalanceDate', closingBalanceDate, 20200101, 20291231, objBankAccount, '', 'Ugyldig dato')
-  }
+  closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
+  validClosingBalanceDate = objBankAccount.validateNumber('closingBalanceDate', closingBalanceDate, 20200101, 20291231, objBankAccount, '', 'Ugyldig dato')
 
-  // Closing balance date
+  // Closing balance
   let validClosingBalance = true;
   let closingBalance = document.querySelector('.closingBalance').value;
-  if (closingBalance.length > 0) {
-    closingBalance = convertDateToISOFormat(closingBalanceDate);
-    validClosingBalance = objBankAccount.validateNumber('closingBalance', closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine, objBankAccount, '', 'Ugyldig beløp')
-  }
+  closingBalance = formatKronerToOre(closingBalance);
+  validClosingBalance = objBankAccount.validateNumber('closingBalance', closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine, objBankAccount, '', 'Ugyldig beløp')
 
   // Validate date interval
   let validBalanceDates = true;
@@ -386,7 +378,7 @@ async function updateBankAccountRow(bankAccountId) {
   if (validBankAccount && validName && validBalanceDates && validOpeningBalanceDate && validOpeningBalance
     && validClosingBalanceDate && validOpeningBalance) {
 
-      document.querySelector('.message').style.display = "none";
+    document.querySelector('.message').style.display = "none";
 
     // Check if the account id exist
     const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
@@ -394,6 +386,7 @@ async function updateBankAccountRow(bankAccountId) {
 
       // update the bankaccounts row
       await objBankAccount.updateBankAccountsTable(bankAccountId, objBankAccount.user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+      await objBankAccount.loadBankAccountsTable(condominiumId, objBankAccount.nineNine);
 
     } else {
 

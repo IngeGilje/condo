@@ -130,7 +130,9 @@ async function events() {
       await updateOpeningClosingBalance();
 
       // Start bank account transactions
-      window.location.href = 'http://localhost/condo-bankaccounttransaction.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-bankaccounttransaction.html'
+        : 'http://localhost/condo-bankaccounttransaction.html';
     };
   });
 
@@ -285,11 +287,7 @@ async function updateOpeningClosingBalance() {
   let openingBalanceDate;
   let openingBalance;
 
-  let closingBalanceDate;
   let closingBalance;
-
-  let fromBankAccount;
-  let toBankAccount;
 
   let totalIncome = 0;
   let totalPayment = 0;
