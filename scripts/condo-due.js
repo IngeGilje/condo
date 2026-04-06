@@ -45,9 +45,14 @@ async function main() {
       showHeader();
 
       // Show filter
-      menuNumber = showFilter(menuNumber, objDue.condominiumId);
+      let condoId = 0;
+      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objUser.userId);
+      if (rowNumberUser !== -1) {
+        condoId = objUser.arrayUsers[rowNumberUser].condoId;
+      }
+      menuNumber = showFilter(menuNumber, objDue.condominiumId, condoId);
 
-      const condoId = Number(document.querySelector('.filterCondoId').value);
+      //const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
       fromDate = Number(objDue.formatNorDateToNumber(fromDate));
@@ -416,7 +421,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber, condominiumId) {
+function showFilter(menuNumber, condominiumId, condoId) {
 
   // Start table
   let html = objDue.startTable(tableWidth);
@@ -432,8 +437,8 @@ function showFilter(menuNumber, condominiumId) {
   menuNumber++;
   html += objDue.insertTableColumns('', menuNumber, '', '');
 
-  // Show all selected condos
-  html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', objDue.nineNine, '', 'Vis alle', true);
+  // Show selected condos
+  html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
 
   // Get condominiumId
   const condominiumsRowNumber = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
