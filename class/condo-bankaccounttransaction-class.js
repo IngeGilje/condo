@@ -161,7 +161,7 @@ class BankAccountTransaction extends Condos {
           voucerFileName: voucerFileName
         })
       });
-      
+
       return (response.statusText === 'OK') ? true : false;
     } catch (error) {
       console.log("Error updateVoucerFileName:", error);
@@ -205,7 +205,9 @@ class BankAccountTransaction extends Condos {
   // delete Bank account transactions row
   async deleteBankAccountTransactionsTable(bankAccountTransactionId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/bankaccounttransactions' : 'http://localhost:3000/bankaccounttransactions';
+    const URL = (this.serverStatus === 1)
+      ? '/api/bankaccounttransactions'
+      : 'http://localhost:3000/bankaccounttransactions';
     try {
 
       // POST request

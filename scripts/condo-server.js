@@ -1861,7 +1861,6 @@ async function main() {
     });
 
     // Requests for bank account transactions
-    //app.get("/bankaccounttransactions", async (req, res) => {
     app.post("/bankaccounttransactions", async (req, res) => {
 
       const action = req.body.action;
@@ -1966,24 +1965,24 @@ async function main() {
             const bankAccountTransactionId = req.body.bankAccountTransactionId;
 
             // Update bank account transactions table
-            const SQLquery =
-              `
-                UPDATE bankaccounttransactions
-          SET
-          deleted = 'N',
-            user = '${user}',
-            lastUpdate = '${lastUpdate}',
-            condoId = ${condoId},
-          accountId = ${accountId},
-          income = ${income},
-          payment = ${payment},
-          kilowattHour = ${kilowattHour},
-          date = ${date},
-          text = '${text}'
-                WHERE bankAccountTransactionId = ${bankAccountTransactionId};
-          `;
+            const SQLquery = `
+            UPDATE bankaccounttransactions
+            SET
+              deleted = 'N',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              condoId = ${condoId},
+              accountId = ${accountId},
+              income = ${income},
+              payment = ${payment},
+              kilowattHour = ${kilowattHour},
+              date = ${date},
+              text = '${text}'
+            WHERE bankAccountTransactionId = ${bankAccountTransactionId};`;
 
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -2062,12 +2061,13 @@ async function main() {
             // Delete table
             const SQLquery = `
             UPDATE bankaccounttransactions
-          SET
-          deleted = 'Y',
-            lastUpdate = '${lastUpdate}',
-            user = '${user}'
+            SET
+              deleted = 'Y',
+              lastUpdate = '${lastUpdate}',
+              user = '${user}'
             WHERE bankAccountTransactionId = ${bankAccountTransactionId}; `;
 
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data

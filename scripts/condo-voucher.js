@@ -11,7 +11,9 @@ const enableChanges = (objVoucher.securityLevel > 5);
 const tableWidth = 'width:800px;';
 
 const params = new URLSearchParams(window.location.search);
-let bankAccountTransactionId = Number(params.get("bankAccountTransactionId"));
+const paramCondoId = Number(params.get("condoId"));
+const paramAccountId = Number(params.get("accountId"));
+const paramBankAccountTransactionId = Number(params.get("bankAccountTransactionId"));
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -50,8 +52,8 @@ async function main() {
       menuNumber = showFilter(menuNumber);
 
       // Show result
-      if (bankAccountTransactionId === 0) bankAccountTransactionId = objBankAccountTransaction.arrayBankAccountTransactions[0].bankAccountTransactionId;
-      menuNumber = showResult(bankAccountTransactionId, menuNumber);
+      //if (bankAccountTransactionId === 0) bankAccountTransactionId = objBankAccountTransaction.arrayBankAccountTransactions[0].bankAccountTransactionId;
+      menuNumber = showVoucher(paramBankAccountTransactionId, menuNumber);
 
       // Events
       events();
@@ -74,7 +76,7 @@ async function events() {
 
       const bankAccountTransactionId = Number(document.querySelector('.filterBankAccountTransactionId').value);
 
-      showResult(bankAccountTransactionId, 2);
+      showVoucher(bankAccountTransactionId, 2);
     };
   });
 
@@ -92,11 +94,11 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objVoucher.serverStatus === 1)
+      let URL = (objVoucher.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
+      URL = `${URL}condo-login.html`;
+      window.location.href = URL;
     };
   });
 
@@ -104,12 +106,12 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('bankAccountTransaction')) {
 
-      let url = (objBankAccountTransaction.serverStatus === 1)
+      let URL = (objBankAccountTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      const bankAccountTransationId = document.querySelector('.filterBankAccountTransactionId').value;
-      url = `${url}condo-bankAccountTransaction.html?bankAccountTransactionId=${bankAccountTransationId}`;
-      window.location.href = url;
+      const bankAccountTransactionId = document.querySelector('.filterBankAccountTransactionId').value;
+      URL = `${URL}condo-bankAccountTransaction.html?bankAccountTransactionId=${bankAccountTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}`;
+      window.location.href = URL;
     };
   });
 }
@@ -168,7 +170,7 @@ function showFilter(menuNumber, bankAccountTransactionId) {
 }
 
 // Show result
-function showResult(bankAccountTransactionId, menuNumber) {
+function showVoucher(bankAccountTransactionId, menuNumber) {
 
   // start table
   let html = objBankAccountTransaction.startTable(tableWidth);
@@ -301,7 +303,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
       menuNumber = showFilter(menuNumber, bankAccountTransactionId);
       */
 
-      showResult(bankAccountTransactionId, 2);
+      showVoucher(bankAccountTransactionId, 2);
     }
   }
 }

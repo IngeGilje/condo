@@ -167,7 +167,7 @@ class Account extends Condos {
       html += `
       <option 
         value=${this.nineNine}
-        selected
+        ${(selectedValue) ? '' : 'selected'}
       >
         ${selectAll}
       </option>`;
