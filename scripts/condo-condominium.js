@@ -64,7 +64,9 @@ async function events() {
     if (event.target.classList.contains('filterCondominiumId')) {
 
       // Show result
+      const fixedCost = 'A';
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      await objAccount.loadAccountsTable(condominiumId, fixedCost);
       menuNumber = showResult(condominiumId, 3);
     };
   });
@@ -241,7 +243,7 @@ function showFilter(menuNumber, condominiumId) {
   html += objCondominium.insertTableColumns('', menuNumber);
 
   // condominium
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId,'','')
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '')
 
   html += "</tr>";
 
@@ -427,15 +429,15 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objCondominium.validateText('name',name, 3, 45, objCondominium, '', 'Ugyldig navn');
+  const validName = objCondominium.validateText('name', name, 3, 45, objCondominium, '', 'Ugyldig navn');
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = objCondominium.validateText('street',street, 3, 45, objCondominium, '', 'Ugyldig addresse');
+  const validStreet = objCondominium.validateText('street', street, 3, 45, objCondominium, '', 'Ugyldig addresse');
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = objCondominium.validateText('address2',address2, 0, 45, objCondominium, '', 'Ugyldig addresse');
+  const validAddress2 = objCondominium.validateText('address2', address2, 0, 45, objCondominium, '', 'Ugyldig addresse');
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
@@ -443,7 +445,7 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = objCondominium.validateText('city',city, 1, 45, objCondominium, '', 'Ugyldig poststed');
+  const validCity = objCondominium.validateText('city', city, 1, 45, objCondominium, '', 'Ugyldig poststed');
 
   // validate phone
   const phone = document.querySelector('.phone').value;
@@ -477,7 +479,7 @@ async function updateCondominiumRow(condominiumId) {
     && validIncomeRemoteHeatingAccountId && validPaymentRemoteHeatingAccountId
     && validCommonCostAccountId && validOrganizationNumber && validimportPath) {
 
-      document.querySelector('.message').style.display = "none";
+    document.querySelector('.message').style.display = "none";
 
     // Check if the condominiumId exist
     const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);

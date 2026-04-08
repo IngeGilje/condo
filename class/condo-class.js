@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -1540,40 +1540,6 @@ function removeIframe() {
     iframe.remove();
   }
 }
-
-/*
-// Validate interval
-function validateInterval(className, labelText, fromValue, toValue) {
-
-  let isIntervalValid = false;
-
-  // Validate interval
-  if (Number(toValue) < Number(fromValue)) {
-
-    // Invalid interval
-    if (isClassDefined(className)) {
-
-      document.querySelector(`.${className}`).outerHTML =
-        `<div class="${className}-red">
-            * Ugyldig ${labelText}
-          </div>`;
-    }
-    isTextValid = false;
-  } else {
-
-    // Valid interval
-    if (isClassDefined(`${className}-red`)) {
-
-      document.querySelector(`.${className}-red`).outerHTML =
-        `<div class="${className}">
-            * ${labelText}
-          </div>`;
-    }
-    isTextValid = true;
-  }
-  return isTextValid;
-}
-*/
 
 // exit application after 1 hour
 function exitIfNoActivity() {
