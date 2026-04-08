@@ -40,24 +40,6 @@ async function main() {
 
       let transactionFile = true;
 
-      /*
-      // get name of transaction file from bank
-      await objCondominium.loadCondominiumsTable();
-      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominium.condominiumId);
-
-      if (rowNumberCondominium === -1) {
-
-        transactionFile = false;
-      } else {
-
-        // file import text name
-        const csvFileName = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
-        if (!await objImportFile.checkIfFileExist(csvFileName)) {
-
-          transactionFile = false;
-        } else {
-        */
-
       const resident = 'A';
       await objUser.loadUsersTable(objBankAccountTransaction.condominiumId, resident, objImportFile.nineNine);
       const fixedCost = 'A';
@@ -133,6 +115,7 @@ async function events() {
       const URL = (objUser.serverStatus === 1)
         ? 'http://ingegilje.no/condo-bankaccounttransaction.html'
         : 'http://localhost/condo-bankaccounttransaction.html';
+        window.location.href = URL;
     };
   });
 
@@ -140,11 +123,11 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objImportFile.serverStatus === 1)
+      let URL = (objImportFile.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
+      URL = `${URL}condo-login.html`;
+      window.location.href = URL;
     };
   });
 
@@ -680,8 +663,6 @@ async function updateBankAccountTransactions() {
   arrayTransactions.forEach(async (transaction) => {
 
     const bankAccountTransactionId = 0;  // not in use
-    //const condominiumId = Number(condominiumId);
-    //const user = objUserPassword.email;
 
     const condoId = Number(transaction.condoId);
     const accountId = Number(transaction.accountId);
@@ -692,7 +673,7 @@ async function updateBankAccountTransactions() {
     const text = transaction.text;
 
     // insert bank account transactions row
-    await objBankAccountTransaction.insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, kilowattHour, date, text)
+    await objBankAccountTransaction.insertBankAccountTransactionsTable(bankAccountTransactionId, objBankAccountTransaction.condominiumId, objBankAccountTransaction.user, condoId, accountId, income, payment, kilowattHour, date, text)
   });
 }
 

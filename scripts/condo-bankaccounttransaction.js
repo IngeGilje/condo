@@ -13,6 +13,11 @@ const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransac
 
 const enableChanges = (objAccount.securityLevel > 5);
 
+const params = new URLSearchParams(window.location.search);
+const paramCondoId = Number(params.get("condoId"));
+const paramAccountId = Number(params.get("accountId"));
+const paramBankAccountTransactionId = Number(params.get("bankAccountTransactionId"));
+
 const tableWidth = 'width:1650px;';
 
 // Exit application if no activity for 1 hour
@@ -50,15 +55,22 @@ async function main() {
       showHeader();
 
       // Show filter
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objBankAccountTransaction.userId);
       let condoId = 0;
-      if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
-      menuNumber = showFilter(menuNumber, condoId);
+      if (paramCondoId === 0) {
+
+        const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objBankAccountTransaction.userId);
+        if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
+      } else {
+        
+        condoId = paramCondoId;
+      }
+      let accountId = (paramAccountId === 0) ? objBankAccountTransaction.nineNine : paramAccountId;
+      menuNumber = showFilter(menuNumber, condoId, accountId);
 
       const amount = Number(document.querySelector('.filterAmount').value);
       const deleted = 'N';
-      //const condoId = Number(document.querySelector('.filterCondoId').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
+      condoId = Number(document.querySelector('.filterCondoId').value);
+      accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
       fromDate = Number(convertDateToISOFormat(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
@@ -105,7 +117,7 @@ async function events() {
       amount = formatKronerToOre(amount);
 
       const orderBy = 'date DESC, income DESC';
-      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
       showResult(3);
     };
@@ -151,7 +163,7 @@ async function events() {
       amount = formatKronerToOre(amount);
 
       const orderBy = 'date DESC, income DESC';
-      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
       showResult(3);
     };
@@ -169,15 +181,15 @@ async function events() {
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
-      let bankAccountTransationId = 0;
+      let bankAccountTransactionId = 0;
       let prefix = "";
       if (className) {
         prefix = arrayPrefixes.find(p => className.startsWith(p));
-        bankAccountTransationId = Number(className.slice(prefix.length));
+        bankAccountTransactionId = Number(className.slice(prefix.length));
       }
 
-      bankAccountTransationId = Number(className.substring(6));
-      deleteBankAccountTransactionRow(bankAccountTransationId, className);
+      bankAccountTransactionId = Number(className.substring(6));
+      deleteBankAccountTransactionRow(bankAccountTransactionId, className);
 
       const amount = 0;
       const deleted = 'N';
@@ -188,7 +200,7 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = Number(convertDateToISOFormat(toDate));
       const orderBy = 'date DESC, income DESC';
-      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
       showResult(3);
     };
@@ -206,18 +218,20 @@ async function events() {
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
-      let bankAccountTransationId = 0;
+      let bankAccountTransactionId = 0;
       let prefix = "";
       if (className) {
         prefix = arrayPrefixes.find(p => className.startsWith(p));
-        bankAccountTransationId = Number(className.slice(prefix.length));
+        bankAccountTransactionId = Number(className.slice(prefix.length));
       }
 
-      let url = (objBankAccountTransaction.serverStatus === 1)
+      let URL = (objBankAccountTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      url = `${url}condo-voucher.html?bankAccountTransactionId=${bankAccountTransationId}`;
-      window.location.href = url;
+      const condoId = Number(document.querySelector('.filterCondoId').value);
+      const accountId = Number(document.querySelector('.filterAccountId').value)
+      URL = `${URL}condo-voucher.html?bankAccountTransactionId=${bankAccountTransactionId}&condoId=${condoId}&accountId=${accountId}`;
+      window.location.href = URL;
     };
   });
 
@@ -225,17 +239,17 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objBankAccountTransaction.serverStatus === 1)
+      let URL = (objBankAccountTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
+      URL = `${URL}condo-login.html`;
+      window.location.href = URL;
     };
   });
 }
 
 // Show filter
-function showFilter(menuNumber,condoId) {
+function showFilter(menuNumber, condoId, accountId) {
 
   // Start table
   let html = objBankAccountTransaction.startTable(tableWidth);
@@ -252,15 +266,10 @@ function showFilter(menuNumber,condoId) {
   html += objBankAccountTransaction.insertTableColumns('', menuNumber, '', '');
 
   // Show all selected condos
-  html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', 'Vis alle',true);
+  html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', 'Vis alle', true);
 
-  // Get condominiums row number
-  const condominiumsRowNumber = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objBankAccountTransaction.condominiumId);
-  if (condominiumsRowNumber !== -1) {
-
-    const commonCostAccountId = objCondominium.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
-    html += objAccount.showSelectedAccounts('filterAccountId', '', commonCostAccountId, '', 'Alle',true);
-  }
+  // Show all selected accounts
+  html += objAccount.showSelectedAccounts('filterAccountId', '', accountId, '', 'Alle', true);
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
@@ -325,7 +334,8 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     // text
     className = `.text${bankAccountTransactionId}`;
     const text = document.querySelector(className).value;
-    const validText = objBankAccountTransaction.validateText(className,text, 3, 255,objBankAccountTransaction, '', 'Ugyldig tekst');
+    className = `text${bankAccountTransactionId}`;
+    const validText = objBankAccountTransaction.validateText(className, text, 3, 255, objBankAccountTransaction, '', 'Ugyldig tekst');
 
     // Validate bankAccountTransactions columns
     if (validCondoId && validAccountId && validNumberKWHour && validText) {
@@ -336,21 +346,21 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
       if (bankAccountTransactionRowNumber !== -1) {
 
         // update the bankaccounttransactions row
-        await objBankAccountTransaction.updateBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, objBankAccountTransaction.user, condoId, accountId, income, payment, kilowattHour, date, text);
+        await objBankAccountTransaction.updateBankAccountTransactionsTable(bankAccountTransactionId, objBankAccountTransaction.condominiumId, objBankAccountTransaction.user, condoId, accountId, income, payment, kilowattHour, date, text);
       }
     }
   }
 }
 
 // Delete bankaccounttransactions row
-async function deleteBankAccountTransactionRow(bankAccountTransationId, className) {
+async function deleteBankAccountTransactionRow(bankAccountTransactionId, className) {
 
-  // Check if bankaccounttransaction row exist
-  bankAccountTransactionsRowNumber = objBankAccountTransaction.arrayBankAccountTransactions.findIndex(bankaccounttransaction => bankaccounttransaction.bankAccountTransationId === bankAccountTransationId);
+  // Check if bankAccountTransactions row exist
+  const bankAccountTransactionsRowNumber = objBankAccountTransaction.arrayBankAccountTransactions.findIndex(bankaccounttransaction => bankaccounttransaction.bankAccountTransactionId === bankAccountTransactionId);
   if (bankAccountTransactionsRowNumber !== -1) {
 
     // delete bankaccounttransaction row
-    objBankAccountTransaction.deleteBankAccountTransationsTable(bankAccountTransationId, objBankAccountTransaction.user);
+    objBankAccountTransaction.deleteBankAccountTransactionsTable(bankAccountTransactionId, objBankAccountTransaction.user);
   }
   const amount = 0;
   const deleted = 'N';
@@ -364,7 +374,7 @@ async function deleteBankAccountTransactionRow(bankAccountTransationId, classNam
   toDate = Number(convertDateToISOFormat(toDate));
 
   const orderBy = 'date DESC, income DESC';
-  await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+  await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 }
 
 // Show bankaccountransactions
@@ -430,7 +440,7 @@ function showResult(menuNumber) {
     // text
     const text = bankAccountTransaction.text;
     className = `text${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumn(className, 'width:175px;', text, 45, false);
+    html += objBankAccountTransaction.inputTableColumn(className, 'width:175px;', text, 45, enableChanges);
 
     // Show voucher
     className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
