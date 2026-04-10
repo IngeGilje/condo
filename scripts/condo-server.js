@@ -1159,7 +1159,6 @@ async function main() {
     });
 
     // Requests for dues table
-    //app.get("/dues", async (req, res) => {
     app.post("/dues", async (req, res) => {
 
       const action = req.body.action;
@@ -1235,24 +1234,22 @@ async function main() {
             const text = req.body.text;
 
             // Update row
-            const SQLquery =
-              `
-                UPDATE dues
-          SET
-          user = '${user}',
-            lastUpdate = '${lastUpdate}',
-            condoId = ${condoId},
-          accountId = ${accountId},
-          amount = ${amount},
-          date = ${date},
-          kilowattHour = ${kilowattHour}
-          text = '${text}'
-                WHERE dueId = ${dueId};
-          `;
+            const SQLquery = `
+            UPDATE dues
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              condoId = ${condoId},
+              accountId = ${accountId},
+              amount = ${amount},
+              date = ${date},
+              kilowattHour = ${kilowattHour},
+              text = '${text}'
+            WHERE dueId = ${dueId};`;
+            console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log("Database error in /dues:", err.message);
@@ -1275,32 +1272,29 @@ async function main() {
             const text = req.body.text;
 
             // Insert new row
-            const SQLquery =
-              `
-                INSERT INTO dues(
-            deleted,
-            condominiumId,
-            user,
-            lastUpdate,
-            condoId,
-            accountId,
-            amount,
-            date,
-            kilowattHour,
-            text
-          ) VALUES(
-            'N',
-            ${condominiumId},
-            '${user}',
-            '${lastUpdate}',
-            ${condoId},
-            ${accountId},
-            ${amount},
-            ${date},
-            ${kilowattHour},
-            '${text}'
-          );
-          `;
+            const SQLquery = `
+            INSERT INTO dues(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              condoId,
+              accountId,
+              amount,
+              date,
+              kilowattHour,
+              text
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${condoId},
+              ${accountId},
+              ${amount},
+              ${date},
+              ${kilowattHour},
+              '${text}');`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1321,18 +1315,16 @@ async function main() {
             const dueId = req.body.dueId;
             const user = req.body.user;
 
-
             // Delete table
-            const SQLquery =
-              `
-                UPDATE dues
-          SET
-          deleted = 'Y',
-            user = '${user}',
-            lastUpdate = '${lastUpdate}'
-                WHERE dueId = ${dueId};
-          `;
+            const SQLquery = `
+            UPDATE dues
+            SET
+              deleted = 'Y',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}'
+            WHERE dueId = ${dueId};`;
 
+            console.log('SQLquery :',SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);

@@ -69,7 +69,7 @@ async function main() {
     }
   } else {
 
-    objDue.showMessage(objDue, '', 'condo-server.js er ikke startet.');
+    objDue.showMessage(objDue, '', 'Server er ikke startet.');
   }
 }
 
@@ -246,7 +246,7 @@ function showDues(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
   menuNumber++;
-  html += objDue.insertTableColumns('font-weight: 600;', menuNumber, '', '', '', 'Sum', sumAmount, sumKilowattHour);
+  html += objDue.insertTableColumns('font-weight: 600;', menuNumber, '', '', '', 'Sum', sumAmount, '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -268,14 +268,23 @@ function insertEmptyTableRow(menuNumber) {
   html += objCondominium.insertTableColumns('', menuNumber, 'Nytt forfall');
 
   // condoId
+  // Check for valid condo Id
   const condoId = Number(document.querySelector('.filterCondoId').value);
-  html += objCondo.showSelectedCondos("condoId0", '', 0, 'Velg leilighet', '', enableChanges);
+  const validCondoId = objCondo.validateNumber('filterCondoId', condoId, 1, objDue.nineNine, objDue, '', '', false);
+  html += (validCondoId)
+    ? objCondo.showSelectedCondos("condoId0", '', condoId, 'Velg leilighet', '', enableChanges)
+    : objCondo.showSelectedCondos("condoId0", '', 0, 'Velg leilighet', '', enableChanges);
 
   // Date
   html += objDue.inputTableColumn("date0", '', '', 10, enableChanges);
 
   // accountId
-  html += objAccount.showSelectedAccounts("accountId0", '', 0, 'Velg konto', '', enableChanges);
+  // Check for valid account Id
+  const accountId = Number(document.querySelector('.filterAccountId').value);
+  const validAccountId = objCondo.validateNumber('filterAccountId', accountId, 1, objDue.nineNine, objDue, '', '', false);
+  html += (validAccountId)
+    ? objAccount.showSelectedAccounts("accountId0", '', accountId, 'Velg konto', '', enableChanges)
+    : objAccount.showSelectedAccounts("accountId0", '', 0, 'Velg konto', '', enableChanges);
 
   // due amount
   html += objDue.inputTableColumn('amount0', '', '0,00', 10, enableChanges);
@@ -325,7 +334,7 @@ async function updateDuesRow(dueId) {
   className = `.date${dueId}`;
   const date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
   className = `date${dueId}`;
-  const validDate = objCondo.validateNumber(className, date, 20200101, 20991231, objDue, '', 'Ugyldig dato');
+  const validDate = objCondo.validateNumber(className, date, 20150101, 20991231, objDue, '', 'Ugyldig dato');
 
   className = `.accountId${dueId}`;
   let accountId = Number(document.querySelector(className).value);
@@ -342,12 +351,6 @@ async function updateDuesRow(dueId) {
   className = `kilowattHour${dueId}`;
   const validKilowattHour = objCondo.validateNumber(className, kilowattHour, 0, objDue.nineNine, objDue, '', 'Ugyldig kilowattimer');
 
-  /*
-  className = `.text${dueId}`;
-  const text = document.querySelector(className).value;
-   className = `text${dueId}`;
-  const validText = objDue.validateText(className, text, 3, 45, objDue, '', 'Ugyldig forfall');
-  */
   className = `.text${dueId}`;
   const text = document.querySelector(className).value;
   const validText = true;

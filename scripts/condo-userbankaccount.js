@@ -49,7 +49,7 @@ async function main() {
     }
   } else {
 
-    objUserBankAccount.showMessage(objUserBankAccount, '', 'condo-server.js er ikke startet.');
+    objUserBankAccount.showMessage(objUserBankAccount, '', 'Server er ikke startet.');
   }
 }
 
@@ -220,10 +220,10 @@ function insertEmptyTableRow(menuNumber) {
   html += objUserBankAccount.insertTableColumns('', menuNumber, 'Ny brukerkonto');
 
   // user column
-  html += objUser.showSelectedUsers('userId0', 'width:175px;', 0, 'Ingen er valgt', '', enableChanges);
+  html += objUser.showSelectedUsers('userId0', 'width:175px;', 0, 'Velg bruker', '', enableChanges);
 
   // Account column
-  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
 
   // bank account number
   html += objUserBankAccount.inputTableColumn('bankAccount0', '', '', 11, enableChanges);
@@ -256,12 +256,12 @@ function showUserBankAccount(menuNumber) {
     // user Id
     //const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUser.showSelectedUsers(className, 'width:175px;',userBankAccount.userId, 'Ingen er valgt', '', enableChanges);
+    html += objUser.showSelectedUsers(className, 'width:175px;',userBankAccount.userId, 'Velg bruker', '', enableChanges);
 
     // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccount.showSelectedAccounts(className, '', accountId, 'Ingen er valgt', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className, '', accountId, 'Velg konto', '', enableChanges);
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;

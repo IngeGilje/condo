@@ -52,7 +52,7 @@ async function main() {
     }
   } else {
 
-    showBudgets.showMessage(showBudgets, '', 'condo-server.js er ikke startet.');
+    showBudgets.showMessage(showBudgets, '', 'Server er ikke startet.');
   }
 }
 

@@ -53,7 +53,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       events();
     } else {
 
-      objSupplier.showMessage(objSupplier, '', 'condo-server.js er ikke startet.');
+      objSupplier.showMessage(objSupplier, '', 'Server er ikke startet.');
     }
   }
 }

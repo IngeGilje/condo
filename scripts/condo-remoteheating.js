@@ -54,7 +54,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeating.showMessage(objRemoteHeating, '', 'condo-server.js er ikke startet.');
+    objRemoteHeating.showMessage(objRemoteHeating, '', 'Server er ikke startet.');
   }
 }
 
@@ -399,7 +399,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   if (date === '') date = '01.01.2000';
   date = objRemoteHeating.formatNorDateToNumber(date);
   className = `date${remoteHeatingId}`;
-  const validDate = objRemoteHeating.validateNumber(className, Number(date), 20200101, 20291231, objRemoteHeating, '', 'Ugyldig dato');
+  const validDate = objRemoteHeating.validateNumber(className, Number(date), 20150101, 20291231, objRemoteHeating, '', 'Ugyldig dato');
 
   // condoId
   className = `.condoId${remoteHeatingId}`;

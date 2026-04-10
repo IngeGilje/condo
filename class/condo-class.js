@@ -832,7 +832,7 @@ class Condos {
   }
 
   // Validate number
-  validateNumber(className, number, min, max, object, style, message) {
+  validateNumber(className, number, min, max, object, style, message, showMessage = true) {
 
     let valid = (Number(number) >= Number(min) && Number(number) <= Number(max));
 
@@ -841,7 +841,7 @@ class Condos {
 
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) inputElement.classList.toggle('input-error', !valid);
-      if (!valid) this.showMessage(object, style, message);
+      if (!valid && !showMessage) this.showMessage(object, style, message);
     }
 
     return valid;

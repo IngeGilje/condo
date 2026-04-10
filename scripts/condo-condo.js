@@ -55,7 +55,7 @@ async function main() {
     }
   } else {
 
-    objCondo.showMessage(objCondo, '', 'condo-server.js er ikke startet.');
+    objCondo.showMessage(objCondo, '', 'Server er ikke startet.');
   }
 }
 

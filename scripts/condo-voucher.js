@@ -60,7 +60,7 @@ async function main() {
     }
   } else {
 
-    objVoucher.showMessage(objVoucher, '', 'condo-server.js er ikke startet.');
+    objVoucher.showMessage(objVoucher, '', 'Server er ikke startet.');
   }
 }
 

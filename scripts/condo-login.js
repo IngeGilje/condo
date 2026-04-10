@@ -23,7 +23,7 @@ async function main() {
     events();
   } else {
 
-    objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'condo-server.js er ikke startet.');
+    objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Server er ikke startet.');
   }
 }
 

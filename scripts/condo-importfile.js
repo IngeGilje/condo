@@ -61,40 +61,18 @@ async function main() {
       await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
       await objCondominium.loadCondominiumsTable();
 
-      /*
-      // Sends a request to the server to get bank csv transaction file
-      if (!await objImportFile.loadImportFile(csvFileName)) {
-
-        transactionFile = false;
-      } else {
-      */
-
       // Show header
       showHeader();
 
       // Name of importfile
       menuNumber = importFileName(menuNumber);
 
-      /*
-      // Show filter
-      //menuNumber = showFilter(menuNumber);
-
-      // create array from imported csv-file (data string)
-      createtransactionsArray(objImportFile.strCSVTransaction);
-
-      // Show result of filter
-      menuNumber = showResult(menuNumber);
-      */
-
       // Events
       events();
-      //}
-      //}
-      //}
     }
   } else {
 
-    objImportFile.showMessage(objImportFile, tableWidth, 'condo-server.js er ikke startet.');
+    objImportFile.showMessage(objImportFile, tableWidth, 'Server er ikke startet.');
   }
 }
 
@@ -115,7 +93,7 @@ async function events() {
       const URL = (objUser.serverStatus === 1)
         ? 'http://ingegilje.no/condo-bankaccounttransaction.html'
         : 'http://localhost/condo-bankaccounttransaction.html';
-        window.location.href = URL;
+      window.location.href = URL;
     };
   });
 
@@ -131,14 +109,14 @@ async function events() {
     };
   });
 
-  // Start import of transaction file
+  // Start import of transaction file from bank
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('importTransacionFile')) {
 
       // check if file exist
       let importFileName = document.querySelector('.nameImportFile').value;
-      const importTransacionFileExist = await objImportFile.loadTextFile(importFileName);
-      if (importTransacionFileExist) {
+      const bankAccountTransacionFileExist = await objImportFile.loadTextFile(importFileName);
+      if (bankAccountTransacionFileExist) {
 
         // Sends a request to the server to get bank transaction file
         if (await objImportFile.loadTextFile(importFileName)) {
@@ -146,7 +124,7 @@ async function events() {
           document.querySelector('.importFileName').style.display = "none";
 
           // create array from imported csv-file (data string)
-          createtransactionsArray(objImportFile.strCSVTransaction);
+          createTransactionsArray(objImportFile.strCSVTransaction);
 
           // Show result of filter
           menuNumber = showResult(menuNumber);
@@ -160,14 +138,16 @@ async function events() {
 };
 
 // Create array for Bank account transactions from imported csv file
-function createtransactionsArray() {
+function createTransactionsArray() {
 
   let transactionsId = 0;
 
   let textFile = objImportFile.strCSVTransaction.split(/\r?\n/);
   textFile.forEach((row) => {
 
-    [accountingDate, Rentedato, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
+    //  [accountingDate, Rentedato, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
+    //    row.split(';');
+    [accountingDate, Type, Antall, Konto, income, payment, Valuta, text, fromBankAccount, toBankAccount, toAccount] =
       row.split(';');
 
     // Check for valid date
@@ -188,7 +168,7 @@ function createtransactionsArray() {
       income = formatKronerToOre(income);
 
       // Payment
-      payment = formatKronerToOre(payment);
+      payment = (-1)*(formatKronerToOre(payment));
 
       // Account Id
 

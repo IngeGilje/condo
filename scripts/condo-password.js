@@ -58,7 +58,7 @@ async function main() {
     }
   } else {
 
-    objPassword.showMessage(objPassword, '', 'condo-server.js er ikke startet.');
+    objPassword.showMessage(objPassword, '', 'Server er ikke startet.');
   }
 }
 

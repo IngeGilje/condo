@@ -52,7 +52,7 @@ async function main() {
     }
   } else {
 
-    objCondominium.showMessage(objCondominium, '', 'condo-server.js er ikke startet.');
+    objCondominium.showMessage(objCondominium, '', 'Server er ikke startet.');
   }
 }
 

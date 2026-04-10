@@ -50,7 +50,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
       events();
     } else {
 
-      objBankAccount.objBankAccount.showMessage(objBankAccount, '', 'condo-server.js er ikke startet.');
+      objBankAccount.objBankAccount.showMessage(objBankAccount, '', 'Server er ikke startet.');
     }
   }
 }
@@ -347,7 +347,7 @@ async function updateBankAccountRow(bankAccountId) {
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
   if (openingBalanceDate.length > 0) {
     openingBalanceDate = convertDateToISOFormat(openingBalanceDate);
-    validOpeningBalanceDate = objBankAccount.validateNumber('openingBalanceDate', openingBalanceDate, 20200101, 20291231, objBankAccount, '', 'Ugyldig dato')
+    validOpeningBalanceDate = objBankAccount.validateNumber('openingBalanceDate', openingBalanceDate, 20150101, 20291231, objBankAccount, '', 'Ugyldig dato')
   }
 
   // Opening balance
@@ -360,7 +360,7 @@ async function updateBankAccountRow(bankAccountId) {
   let validClosingBalanceDate = true;
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
   closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
-  validClosingBalanceDate = objBankAccount.validateNumber('closingBalanceDate', closingBalanceDate, 20200101, 20291231, objBankAccount, '', 'Ugyldig dato')
+  validClosingBalanceDate = objBankAccount.validateNumber('closingBalanceDate', closingBalanceDate, 20150101, 20291231, objBankAccount, '', 'Ugyldig dato')
 
   // Closing balance
   let validClosingBalance = true;

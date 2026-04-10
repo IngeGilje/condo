@@ -61,7 +61,7 @@ async function main() {
         const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objBankAccountTransaction.userId);
         if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
       } else {
-        
+
         condoId = paramCondoId;
       }
       let accountId = (paramAccountId === 0) ? objBankAccountTransaction.nineNine : paramAccountId;
@@ -86,7 +86,7 @@ async function main() {
     }
   } else {
 
-    objBankAccountTransaction.showMessage(objBankAccountTransaction, '', 'condo-server.js er ikke startet.');
+    objBankAccountTransaction.showMessage(objBankAccountTransaction, '', 'Server er ikke startet.');
   }
 }
 
@@ -269,7 +269,7 @@ function showFilter(menuNumber, condoId, accountId) {
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', 'Vis alle', true);
 
   // Show all selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', '', accountId, '', 'Alle', true);
+  html += objAccount.showSelectedAccounts('filterAccountId', '', accountId, '', 'Vis alle', true);
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
@@ -407,7 +407,7 @@ function showResult(menuNumber) {
 
     // condos
     className = `condoId${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondo.showSelectedCondos(className, 'width:150px;', bankAccountTransaction.condoId, 'Ingen er valgt', '', enableChanges);
+    html += objCondo.showSelectedCondos(className, 'width:150px;', bankAccountTransaction.condoId, 'Velg leilighet', '', enableChanges);
 
     // Date
     const date = formatToNorDate(bankAccountTransaction.date);
@@ -419,8 +419,8 @@ function showResult(menuNumber) {
 
     // Mark invalid account red
     html += (bankAccountTransaction.accountId === 0)
-      ? objAccount.showSelectedAccounts(className, 'width:175px;background-color: #f89595;', bankAccountTransaction.accountId, 'Ingen er valgt', '', enableChanges)
-      : objAccount.showSelectedAccounts(className, 'width:175px;', bankAccountTransaction.accountId, 'Ingen er valgt', '', enableChanges);
+      ? objAccount.showSelectedAccounts(className, 'width:175px;background-color: #f89595;', bankAccountTransaction.accountId, 'Velg konto', '', enableChanges)
+      : objAccount.showSelectedAccounts(className, 'width:175px;', bankAccountTransaction.accountId, 'Velg konto', '', enableChanges);
 
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
@@ -452,7 +452,12 @@ function showResult(menuNumber) {
     sumPayment += Number(bankAccountTransaction.payment);
   });
 
-  // Make one last table row for insertion in table 
+  // Insert empty table row for insertion
+  if (enableChanges) {
+
+    menuNumber++;
+    html += insertEmptyTableRow(menuNumber);
+  }
 
   // Show table sum row
   sumIncome = formatOreToKroner(sumIncome);
@@ -489,4 +494,54 @@ function showHeader() {
   // The end of the table
   html += objBankAccountTransaction.endTable();
   document.querySelector('.header').innerHTML = html;
+}
+
+// Insert empty table row
+function insertEmptyTableRow(menuNumber) {
+
+  let html = "";
+
+  // insert table columns in start of a row
+  html += objBankAccountTransaction.insertTableColumns('', menuNumber);
+
+  html += "<td class='center'>Ny transaksjon</td>";
+
+  // condo
+  const condoId = Number(document.querySelector('.filterCondoId').value);
+  className = `condoId0`;
+  html += objCondo.showSelectedCondos(className, 'width:150px;', condoId, 'Velg leilighet', '', enableChanges);
+
+  // Date
+  const date = '';
+  className = `date0`;
+  html += objBankAccountTransaction.inputTableColumn(className, 'width:150px;', date, 10, enableChanges);
+
+  // account
+  let accountId = Number(document.querySelector('.filterAccountId').value);
+  if (accountId === objBankAccountTransaction.nineNine) accountId = 0;
+  className = `accountId0`;
+  html += objAccount.showSelectedAccounts(className, 'width:175px;', accountId, 'Velg konto', '', enableChanges);
+
+  // income
+  const income = '0,00';
+  className = 'income0';
+  html += objBankAccountTransaction.inputTableColumn(className, 'width:150px;', income, 10, enableChanges);
+
+  // payment
+  const payment = '0,00'
+  className = 'income0';
+  html += objBankAccountTransaction.inputTableColumn(className, 'width:150px;', payment, 10, enableChanges);
+
+  // kilowattHour
+  const kilowattHour = '0,00';
+  className = `kilowattHour0`;
+  html += objBankAccountTransaction.inputTableColumn(className, 'width:150px;', kilowattHour, 10, enableChanges);
+
+  // text
+  const text = '';
+  className = `text0`;
+  html += objBankAccountTransaction.inputTableColumn(className, 'width:175px;', text, 45, enableChanges);
+
+  html += "</tr>";
+  return html;
 }

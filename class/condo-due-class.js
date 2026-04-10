@@ -135,7 +135,9 @@ class Due extends Condos {
   // update due row in dues table
   async updateDuesTable(dueId, user, condoId, accountId, amount, date, kilowattHour, text) {
 
-    const URL = (this.serverStatus === 1) ? '/api/dues' : 'http://localhost:3000/dues';
+    const URL = (this.serverStatus === 1)
+      ? '/api/dues'
+      : 'http://localhost:3000/dues';
     try {
 
       // POST request

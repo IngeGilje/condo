@@ -76,7 +76,7 @@ async function main() {
     }
   } else {
 
-    objOverview.showMessage(objOverview, '', 'condo-server.js er ikke startet.');
+    objOverview.showMessage(objOverview, '', 'Server er ikke startet.');
   }
 }
 
@@ -239,7 +239,7 @@ function showDues(menuNumber) {
 
     // condo
     className = `condo${due.dueId}`;
-    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Ingen er valgt', '', false);
+    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Velg leilighet', '', false);
 
     // date
     const date = formatToNorDate(due.date);
@@ -248,7 +248,7 @@ function showDues(menuNumber) {
 
     // account
     className = `account${due.dueId}`;
-    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Ingen er valgt', '', false);
+    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
 
     // amount
     const amount = formatOreToKroner(due.amount);
@@ -313,7 +313,7 @@ function showBankAccountTransactions(menuNumber) {
 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondo.showSelectedCondos(className, '', Number(bankAccountTransaction.condoId), 'Ingen er valgt', '', false);
+    html += objCondo.showSelectedCondos(className, '', Number(bankAccountTransaction.condoId), 'Velg leilighet', '', false);
 
     // date
     const date = formatToNorDate(bankAccountTransaction.date);
@@ -322,7 +322,7 @@ function showBankAccountTransactions(menuNumber) {
 
     // account
     className = `account${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objAccount.showSelectedAccounts(className, '', Number(bankAccountTransaction.accountId), 'Ingen er valgt', '', false);
+    html += objAccount.showSelectedAccounts(className, '', Number(bankAccountTransaction.accountId), 'Velg konto', '', false);
 
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
@@ -347,7 +347,6 @@ function showBankAccountTransactions(menuNumber) {
 
   menuNumber++;
   html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, '', '', '', 'Sum', sumIncomes, '');
-
   html += "</tr>"
 
   menuNumber++;

@@ -88,7 +88,7 @@ async function main() {
     }
   } else {
 
-    objBudget.showMessage(objBudget, '', 'condo-server.js er ikke startet.');
+    objBudget.showMessage(objBudget, '', 'Server er ikke startet.');
   }
 }
 

@@ -134,8 +134,7 @@ class Account extends Condos {
       <select 
         class="${className} center"
         ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style=${style}` : 'style=width:175px;'}
-      >`;
+        ${(style) ? `style=${style}` : 'style=width:175px;'}>`;
 
     // Check if accounts array is empty
     if (this.arrayAccounts.length > 0) {
@@ -171,7 +170,7 @@ class Account extends Condos {
       >
         ${selectAll}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select none
@@ -179,18 +178,17 @@ class Account extends Condos {
       html += `
       <option 
         value=0
-        ${(selectedValue) ? selectNone : ''}
+        ${(selectedValue) ? '' : selectNone}
         ${(accountId === 0) ? 'selected' : ''}
       >
         ${selectNone}
       </option>`;
-      selectedValue = true;
+      if (accountId === 0) selectedValue = true;
+
+      html += `
+        </select >
+      </td>`;
     }
-
-    html += `
-      </select >
-    </td>`;
-
     return html;
   }
 

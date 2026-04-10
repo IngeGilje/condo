@@ -46,7 +46,7 @@ async function main() {
     }
   } else {
 
-    objCommonCost.showMessage(objCommonCost, '', 'condo-server.js er ikke startet.');
+    objCommonCost.showMessage(objCommonCost, '', 'Server er ikke startet.');
   }
 }
 
