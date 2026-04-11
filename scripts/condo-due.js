@@ -279,10 +279,8 @@ function insertEmptyTableRow(menuNumber) {
   html += objDue.inputTableColumn("date0", '', '', 10, enableChanges);
 
   // accountId
-  // Check for valid account Id
   const accountId = Number(document.querySelector('.filterAccountId').value);
-  const validAccountId = objCondo.validateNumber('filterAccountId', accountId, 1, objDue.nineNine, objDue, '', '', false);
-  html += (validAccountId)
+  html += (accountId !== objDue.nineNine)
     ? objAccount.showSelectedAccounts("accountId0", '', accountId, 'Velg konto', '', enableChanges)
     : objAccount.showSelectedAccounts("accountId0", '', 0, 'Velg konto', '', enableChanges);
 
@@ -443,14 +441,16 @@ function showFilter(menuNumber, condominiumId, condoId) {
   // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
 
+  /*
   // Get condominiumId
   const condominiumsRowNumber = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
   if (condominiumsRowNumber !== -1) {
 
     const commonCostAccountId = objCondominium.arrayCondominiums[condominiumsRowNumber].commonCostAccountId;
     html += objAccount.showSelectedAccounts('filterAccountId', '', commonCostAccountId, '', 'Vis alle', true);
-
   }
+  */
+  html += objAccount.showSelectedAccounts('filterAccountId', '', objDue.nineNine, '', 'Vis alle', true);
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());

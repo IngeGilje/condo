@@ -841,7 +841,7 @@ class Condos {
 
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) inputElement.classList.toggle('input-error', !valid);
-      if (!valid && !showMessage) this.showMessage(object, style, message);
+      if ((valid === false) && showMessage) this.showMessage(object, style, message);
     }
 
     return valid;
@@ -1216,46 +1216,14 @@ function removeComma(amount) {
   return (amount === '000') ? '00' : amount;
 }
 
-/*
-// validate the dd.mm.yyyy (European date format) format
-function validateEuroDateFormat(dateString) {
-
-  // Check for valid date String
-  if (dateString === '' || typeof dateString === 'undefined') {
-    return false;
-  }
-  // Regular expression for valuating the dd.mm.yyyy format
-  const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
-  const match = dateString.match(regex);
-
-  if (!match) return false; // Return false if format doesn't match
-
-  // Extract day, month, and year
-  const day = parseInt(match[1], 10);
-  const month = parseInt(match[2], 10);
-  const year = parseInt(match[3], 10);
-
-  // Check if month is between 1 and 12
-  if (month < 1 || month > 12) return false;
-
-  // Create a date object
-  const date =
-    new Date(year, month - 1, day);
-
-  // Validate that the date components match
-  return (
-    date.getFullYear() === year
-    && date.getMonth() === month - 1
-    && date.getDate() === day
-  );
-}
-*/
-
 // Format date dd.mm.yyyy (European date format) to yyyymmdd ("Basic ISO 8601 format)
 function convertDateToISOFormat(date) {
   if (date.includes('.')) {
     const dateParts = date.split(".");
     date = `${dateParts[2]}${dateParts[1]}${dateParts[0]}`;
+    date = (isNumeric(date))
+      ? date
+      : 0;
   } else {
     date = '';
   }

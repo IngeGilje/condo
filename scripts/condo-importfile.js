@@ -653,7 +653,7 @@ async function updateBankAccountTransactions() {
     const text = transaction.text;
 
     // insert bank account transactions row
-    await objBankAccountTransaction.insertBankAccountTransactionsTable(bankAccountTransactionId, objBankAccountTransaction.condominiumId, objBankAccountTransaction.user, condoId, accountId, income, payment, kilowattHour, date, text)
+    await objBankAccountTransaction.insertBankAccountTransactionsTable(bankAccountTransactionId, objBankAccountTransaction.condominiumId, objBankAccountTransaction.user, condoId, accountId, income, payment, kilowattHour, date, text, 'Y')
   });
 }
 

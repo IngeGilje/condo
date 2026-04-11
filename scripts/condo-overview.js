@@ -49,7 +49,7 @@ async function main() {
       if (rowNumberUser !== -1) {
         condoId = objUser.arrayUsers[rowNumberUser].condoId;
       }
-      menuNumber = showFilter(menuNumber,condoId);
+      menuNumber = showFilter(menuNumber, condoId);
 
       condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = objOverview.nineNine;
@@ -100,6 +100,7 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       const validToDate = objOverview.validateNorDate('filterToDate', toDate, objOverview, '', 'Ugyldig til dato');
 
+      /*
       // Validate date interval
       let validDates = false;
       if (validFromDate && validToDate) {
@@ -108,8 +109,9 @@ async function events() {
         toDate = objOverview.formatNorDateToNumber(toDate);
         validDates = objOverview.validateNumber('filterFromDate', Number(fromDate), Number(fromDate), Number(toDate), objOverview, '', 'Ugyldig fra dato');
       }
+      */
 
-      if (validFromDate && validToDate && validDates && validCondoId) {
+      if (validFromDate && validToDate && validCondoId) {
 
         const condoId = Number(document.querySelector('.filterCondoId').value);
         const accountId = objOverview.nineNine;
@@ -172,7 +174,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber,condoId) {
+function showFilter(menuNumber, condoId) {
 
   // Start table
   let html = objOverview.startTable(tableWidth);
@@ -227,7 +229,7 @@ function showDues(menuNumber) {
 
   // Header
   menuNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', '', 'Forfall', '');
+  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', 'Forfall', '', '', '');
   menuNumber++;
   html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
@@ -277,7 +279,7 @@ function showDues(menuNumber) {
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
   menuNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, '','', 'Sum', sumDue, sumKilowattHour, '');
+  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, '', '', 'Sum', sumDue, '', '');
   html += "</tr>"
 
   menuNumber++;
@@ -324,8 +326,11 @@ function showBankAccountTransactions(menuNumber) {
     className = `account${bankAccountTransaction.bankAccountTransactionId}`;
     html += objAccount.showSelectedAccounts(className, '', Number(bankAccountTransaction.accountId), 'Velg konto', '', false);
 
-    // income
-    const income = formatOreToKroner(bankAccountTransaction.income);
+    // income - payment
+    let income = bankAccountTransaction.income;
+    const payment = bankAccountTransaction.payment;
+    income += payment;
+    income = formatOreToKroner(income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransaction.inputTableColumn(className, '', income, 10, false);
 
@@ -342,6 +347,7 @@ function showBankAccountTransactions(menuNumber) {
   });
 
   // Sum row
+  sumIncomes += sumPayments;
   sumIncomes = formatOreToKroner(sumIncomes);
   sumPayments = formatOreToKroner(sumPayments);
 
@@ -366,6 +372,7 @@ function showHowMuchToPay(menuNumber) {
   let html = objOverview.startTable(tableWidth);
 
   let sumIncome = 0;
+  let sumPayment = 0;
 
   // How much to pay
   let sumToPay = 0;
@@ -379,9 +386,11 @@ function showHowMuchToPay(menuNumber) {
 
     // Accomulate
     sumIncome += Number(bankAccountTransaction.income);
+    sumPayment += Number(bankAccountTransaction.payment);
   });
 
   // show main header
+  sumIncome += sumPayment;
   let overPay = sumIncome - sumToPay;
   menuNumber++;
   html += (overPay >= 0)

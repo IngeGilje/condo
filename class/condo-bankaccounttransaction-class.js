@@ -169,13 +169,14 @@ class BankAccountTransaction extends Condos {
   }
 
   // insert Bank account transactions row
-  async insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, kilowattHour, date, text) {
+  async insertBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, kilowattHour, date, text, imported = 'Y') {
 
-    const URL = (this.serverStatus === 1) ? '/api/bankaccounttransactions' : 'http://localhost:3000/bankaccounttransactions';
+    const URL = (this.serverStatus === 1)
+      ? '/api/bankaccounttransactions'
+      : 'http://localhost:3000/bankaccounttransactions';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/bankaccounttransactions?action=insert&bankAccountTransactionId=${bankAccountTransactionId}&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&accountId=${accountId}&income=${income}&payment=${payment}&kilowattHour=${kilowattHour}&date=${date}&text=${text}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -192,7 +193,8 @@ class BankAccountTransaction extends Condos {
           payment: payment,
           kilowattHour: kilowattHour,
           date: date,
-          text: text
+          text: text,
+          imported: imported
         })
       });
       if (!response.ok) throw new Error("Network error (bankaccounttransactions)");
