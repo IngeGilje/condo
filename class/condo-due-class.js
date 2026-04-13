@@ -3,7 +3,8 @@
 class Due extends Condos {
 
   // Due information
-  arrayDues;
+  arrayDues = Array;
+  #arrayDues = Array;
 
   // Find selected due id
   getSelectedDueId(className) {
@@ -103,13 +104,15 @@ class Due extends Condos {
   }
 
   // get dues
-  async loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate) {
+  async loadDuesTable(condominiumId, accountId, condoId, fromDate, toDate, alternativArray = false) {
 
-    const URL = (this.serverStatus === 1) ? '/api/dues' : 'http://localhost:3000/dues';
+    const URL = (this.serverStatus === 1)
+      ? '/api/dues'
+      : 'http://localhost:3000/dues';
+
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/dues?action=select&condominiumId=${condominiumId}&accountId=${accountId}&condoId=${condoId}&fromDate=${fromDate}&toDate=${toDate}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -125,7 +128,9 @@ class Due extends Condos {
         })
       });
       if (!response.ok) throw new Error("Network error (dues)");
-      this.arrayDues = await response.json();
+      (alternativArray)
+        ? this.#arrayDues = await response.json()
+        : this.arrayDues = await response.json()
     } catch (error) {
 
       console.log("Error loading dues:", error);
@@ -222,5 +227,18 @@ class Due extends Condos {
       console.log("Error deleting dues:", error);
     }
   }
-}
 
+  // get dues from start (20200101) to toDate
+  async getDues(condominiumId, condoId, toDate) {
+
+    let openingBalance = 0;
+
+    await this.loadDuesTable(condominiumId, this.nineNine, condoId, 20200101, toDate, true);
+    this.#arrayDues.forEach((due) => {
+
+      openingBalance -= due.amount;
+    });
+
+    return openingBalance;
+  }
+}

@@ -122,12 +122,13 @@ async function events() {
         if (await objImportFile.loadTextFile(importFileName)) {
 
           document.querySelector('.importFileName').style.display = "none";
+          document.querySelector('.message').style.display = "none";
 
-          // create array from imported csv-file (data string)
+          // create array from imported csv-file
           createTransactionsArray(objImportFile.strCSVTransaction);
 
-          // Show result of filter
-          menuNumber = showResult(menuNumber);
+          // Show bank account transactions
+          menuNumber = showBankAccountTransactions(0);
         }
       } else {
 
@@ -547,7 +548,7 @@ function showFilter(menuNumber) {
 }
 
 // Show csv file for bank account transactions
-function showResult(menuNumber) {
+function showBankAccountTransactions(menuNumber) {
 
   // start table
   let html = objImportFile.startTable(tableWidth);

@@ -79,7 +79,7 @@ async function main() {
       await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
       // Show result of filter
-      menuNumber = showResult(menuNumber);
+      menuNumber = showBankAccountTransactions(menuNumber);
 
       // Events
       events();
@@ -119,7 +119,7 @@ async function events() {
       const orderBy = 'date DESC, income DESC';
       await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-      showResult(3);
+      showBankAccountTransactions(3);
     };
   });
 
@@ -188,7 +188,7 @@ async function events() {
       const orderBy = 'date DESC, income DESC';
       await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-      showResult(3);
+      showBankAccountTransactions(3);
     };
   });
 
@@ -299,7 +299,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   className = `.condoId${bankAccountTransactionId}`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId${bankAccountTransactionId}`;
-  const validCondoId = objBankAccountTransaction.validateNumber(className, condoId, 1, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig leilighet')
+  const validCondoId = objBankAccountTransaction.validateNumber(className, condoId, 0, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig leilighet')
 
   // kilowattHour
   className = `.kilowattHour${bankAccountTransactionId}`;
@@ -372,7 +372,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     const orderBy = 'date DESC, income DESC';
     await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-    showResult(3);
+    showBankAccountTransactions(3);
   }
 }
 
@@ -402,7 +402,7 @@ async function deleteBankAccountTransactionRow(bankAccountTransactionId, classNa
 }
 
 // Show bankaccountransactions
-function showResult(menuNumber) {
+function showBankAccountTransactions(menuNumber) {
 
   // start table
   let html = objCondo.startTable(tableWidth);
@@ -431,7 +431,7 @@ function showResult(menuNumber) {
 
     // condos
     className = `condoId${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondo.showSelectedCondos(className, 'width:150px;', bankAccountTransaction.condoId, 'Velg leilighet', '', enableChanges);
+    html += objCondo.showSelectedCondos(className, 'width:150px;', bankAccountTransaction.condoId, 'Ingen leilighet', '', enableChanges);
 
     // Date
     const date = formatToNorDate(bankAccountTransaction.date);

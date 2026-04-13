@@ -1,7 +1,10 @@
 class BankAccountTransaction extends Condos {
 
   // Bank account transactions information
-  arrayBankAccountTransactions;
+  arrayBankAccountTransactions = Array;;
+  #arrayBankAccountTransactions = Array;
+
+  //arrayBankAccountMovements;  // alternative array used in this class only
 
   // Show all selected bank account transactions
   showSelectedBankAccountTransactions(className, style, bankAccountTransactionId, selectNone, selectAll, disabled = false) {
@@ -81,12 +84,15 @@ class BankAccountTransaction extends Condos {
   }
 
   // get bank account transactions
-  async loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate) {
+  async loadBankAccountTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate, alternativeArray = false) {
 
-    const URL = (this.serverStatus === 1) ? '/api/bankaccounttransactions' : 'http://localhost:3000/bankaccounttransactions';
+    const URL = (this.serverStatus === 1)
+      ? '/api/bankaccounttransactions'
+      : 'http://localhost:3000/bankaccounttransactions';
+
     try {
+
       // POST request
-      //const response = await fetch(`${URL}:3000/bankaccounttransactions?action=select&orderBy=${orderBy}&condominiumId=${condominiumId}&deleted=${deleted}&condoId=${condoId}&accountId=${accountId}&amount=${amount}&fromDate=${fromDate}&toDate=${toDate}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -105,7 +111,10 @@ class BankAccountTransaction extends Condos {
         })
       });
       if (!response.ok) throw new Error("Network error (bankaccounttransactions)");
-      this.arrayBankAccountTransactions = await response.json();
+      (alternativeArray)
+        ? this.#arrayBankAccountTransactions = await response.json()
+        : this.arrayBankAccountTransactions = await response.json();
+
     } catch (error) {
       console.log("Error loading Bank account transactions:", error);
     }
@@ -114,7 +123,9 @@ class BankAccountTransaction extends Condos {
   // update Bank account transactions row
   async updateBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, kilowattHour, date, text) {
 
-    const URL = (this.serverStatus === 1) ? '/api/bankaccounttransactions' : 'http://localhost:3000/bankaccounttransactions';
+    const URL = (this.serverStatus === 1)
+      ? '/api/bankaccounttransactions'
+      : 'http://localhost:3000/bankaccounttransactions';
     try {
       // POST request
       //const response = await fetch(`${URL}:3000/bankaccounttransactions?action=update&bankAccountTransactionId=${bankAccountTransactionId}&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&accountId=${accountId}&income=${income}&payment=${payment}&kilowattHour=${kilowattHour}&date=${date}&text=${text}`);
@@ -147,7 +158,9 @@ class BankAccountTransaction extends Condos {
   // update Voucer FileName
   async updateVoucerFileName(user, bankAccountTransactionId, voucerFileName) {
 
-    const URL = (this.serverStatus === 1) ? '/api/updateVoucerFileName' : 'http://localhost:3000/updateVoucerFileName';
+    const URL = (this.serverStatus === 1)
+      ? '/api/updateVoucerFileName'
+      : 'http://localhost:3000/updateVoucerFileName';
     try {
       //const response = await fetch(`${URL}:3000/updateVoucerFileName?user=${user}&bankAccountTransactionId=${bankAccountTransactionId}&voucerFileName=${voucerFileName}`, {
       const response = await fetch(URL, {
@@ -230,6 +243,22 @@ class BankAccountTransaction extends Condos {
     } catch (error) {
       console.log("Error deleting Bank account transactions:", error);
     }
+  }
+
+  // get Bank Account Transactions from start (20200101) to toDate
+  async getBankAccountTransactions(condominiumId, condoId, toDate) {
+
+    let openingBalance = 0;
+
+    const orderBy = 'date ASC';
+    await this.loadBankAccountTransactionsTable(orderBy, condominiumId, 'N', condoId, this.nineNine, 0, 20200101, toDate, true);
+    objBankAccountTransaction.#arrayBankAccountTransactions.forEach((bankAccountMovement) => {
+
+      openingBalance += bankAccountMovement.income;
+      openingBalance += bankAccountMovement.payment;
+    });
+
+    return openingBalance;
   }
 }
 

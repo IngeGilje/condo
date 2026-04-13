@@ -1044,6 +1044,7 @@ class Condos {
   }
 
   // insert table columns in start of a row
+  // and show vertical menu
   insertTableColumns(style, menuNumber, ...texts) {
 
     let html = "<tr>";

@@ -100,17 +100,6 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       const validToDate = objOverview.validateNorDate('filterToDate', toDate, objOverview, '', 'Ugyldig til dato');
 
-      /*
-      // Validate date interval
-      let validDates = false;
-      if (validFromDate && validToDate) {
-
-        fromDate = objOverview.formatNorDateToNumber(fromDate);
-        toDate = objOverview.formatNorDateToNumber(toDate);
-        validDates = objOverview.validateNumber('filterFromDate', Number(fromDate), Number(fromDate), Number(toDate), objOverview, '', 'Ugyldig fra dato');
-      }
-      */
-
       if (validFromDate && validToDate && validCondoId) {
 
         const condoId = Number(document.querySelector('.filterCondoId').value);
@@ -366,7 +355,7 @@ function showBankAccountTransactions(menuNumber) {
 }
 
 // show how much to pay
-function showHowMuchToPay(menuNumber) {
+async function showHowMuchToPay(menuNumber) {
 
   // Start table
   let html = objOverview.startTable(tableWidth);
@@ -398,8 +387,8 @@ function showHowMuchToPay(menuNumber) {
     : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Skyldig', '', '');
   menuNumber++;
   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Forfall', 'Betalt', 'Skyldig');
+    ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', 'IB', 'Forfall', 'Betalt', 'Til gode')
+    : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', 'IB', 'Forfall', 'Betalt', 'Skyldig');
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
@@ -407,8 +396,21 @@ function showHowMuchToPay(menuNumber) {
   sumIncome = formatOreToKroner(sumIncome);
   sumToPay = formatOreToKroner(sumToPay);
 
-  // Show menu
+  // Show sum
+  let toDate = document.querySelector('.filterToDate').value;
+  toDate = formatNorDateToNumber(toDate);
+
+  // get current condo id
+  let condoId = 0;
+  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objOverview.userId);
+  if (rowNumberUser !== -1) {
+    condoId = objUser.arrayUsers[rowNumberUser].condoId;
+  }
+  let openingBalance = await objBankAccountTransaction.getBankAccountTransactions(objOverview.condominiumId, condoId, toDate);
+  openingBalance += await objDue.getDues(objOverview.condominiumId, condoId, toDate);
+
   menuNumber++;
+  openingBalance = formatOreToKroner(openingBalance);
   html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, '', '', 'Sum', sumToPay, sumIncome, overPay);
 
   // Show the rest of the menu
