@@ -46,7 +46,7 @@ async function main() {
       await objAccount.loadAccountsTable(objBankAccountTransaction.condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine);
       await objUserBankAccount.loadUserBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
-      await objCondo.loadCondoTable(objBankAccountTransaction.condominiumId);
+      await objCondo.loadCondoTable(objBankAccountTransaction.condominiumId,objBankAccountTransaction.nineNine);
       await objSupplier.loadSuppliersTable(objBankAccountTransaction.condominiumId);
 
       const deleted = 'A';

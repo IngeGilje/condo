@@ -152,7 +152,7 @@ class Condominium extends Condos {
   }
 
   // Show all selected condominiums
-  showSelectedCondominiums(className, style, condominiumId, selectNone, selectAll) {
+  showSelectedCondominiums(className, style, condominiumId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -162,6 +162,7 @@ class Condominium extends Condos {
     >
       <select 
         class="${className} center"
+        ${(enableChanges) ? '' : 'disabled'}
         ${(style) ? `style=${style}` : 'style="width:175px;"'}
       >`;
 

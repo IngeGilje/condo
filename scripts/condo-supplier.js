@@ -17,9 +17,9 @@ exitIfNoActivity();
 if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
 
   // LogIn is not valid
-  const URL = (objUser.serverStatus === 1) 
-  ? 'http://ingegilje.no/condo-login.html' 
-  : 'http://localhost/condo-login.html';
+  const URL = (objUser.serverStatus === 1)
+    ? 'http://ingegilje.no/condo-login.html'
+    : 'http://localhost/condo-login.html';
   window.location.href = URL;
 } else {
 
@@ -123,11 +123,11 @@ async function events() {
 
       // Show filter
       let menuNumber = 0;
-      menuNumber = showFilter(menuNumber,supplierId);
+      menuNumber = showFilter(menuNumber, supplierId);
       menuNumber = showSupplier(menuNumber, supplierId);
     };
   });
-  
+
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -183,9 +183,12 @@ function resetValues() {
   document.querySelector('.text').value = '';
 
   document.querySelector('.filterSupplierId').disabled = true;
-  document.querySelector('.delete').disabled = true;
-  document.querySelector('.insert').disabled = true;
-  document.querySelector('.cancel').disabled = false;
+
+  if (enableChanges) {
+    document.querySelector('.delete').disabled = true;
+    document.querySelector('.insert').disabled = true;
+    document.querySelector('.cancel').disabled = false;
+  }
 }
 
 // Show header
@@ -227,7 +230,7 @@ function showFilter(menuNumber, supplierId) {
   html += objSupplier.insertTableColumns('', menuNumber);
 
   // supplier
-  html += objSupplier.showSelectedSuppliers('filterSupplierId', 'width:175px;', supplierId, '', '', enableChanges)
+  html += objSupplier.showSelectedSuppliers('filterSupplierId', 'width:175px;', supplierId, '', '', true)
 
   html += "</tr>";
 
@@ -444,7 +447,7 @@ function showSupplier(menuNumber, supplierId) {
   // The end of the table
   html += objSupplier.endTable();
   document.querySelector('.result').innerHTML = html;
-  document.querySelector('.cancel').disabled = true;
+  if (enableChanges) document.querySelector('.cancel').disabled = true;
   //}
 }
 
@@ -516,8 +519,8 @@ async function updateSuppliersRow(supplierId) {
     && validAmountAccountId && validAmount && validTextAccountId
     && validEmail && validText) {
 
-      document.querySelector('.message').style.display = "none";
-  
+    document.querySelector('.message').style.display = "none";
+
     // Check if the supplierId exist
     const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
     if (rowNumberSupplier !== -1) {
@@ -539,10 +542,12 @@ async function updateSuppliersRow(supplierId) {
     menuNumber = showFilter(menuNumber, supplierId);
     menuNumber = showSupplier(menuNumber, supplierId);
 
-    document.querySelector('.filterSupplierId').disabled = false;
-    document.querySelector('.delete').disabled = false;
-    document.querySelector('.insert').disabled = false;
-    document.querySelector('.cancel').disabled = true;
+    if (enableChanges) {
+      document.querySelector('.filterSupplierId').disabled = false;
+      document.querySelector('.delete').disabled = false;
+      document.querySelector('.insert').disabled = false;
+      document.querySelector('.cancel').disabled = true;
+    }
   }
 }
 

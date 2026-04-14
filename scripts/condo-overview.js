@@ -34,7 +34,7 @@ async function main() {
 
       const resident = 'Y';
       await objUser.loadUsersTable(objOverview.condominiumId, resident, objOverview.nineNine);
-      await objCondo.loadCondoTable(objOverview.condominiumId);
+      await objCondo.loadCondoTable(objOverview.condominiumId,objOverview.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objOverview.condominiumId, fixedCost);
 
@@ -387,8 +387,8 @@ async function showHowMuchToPay(menuNumber) {
     : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Skyldig', '', '');
   menuNumber++;
   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', 'IB', 'Forfall', 'Betalt', 'Til gode')
-    : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', 'IB', 'Forfall', 'Betalt', 'Skyldig');
+    ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Forfall', 'Betalt', 'Skyldig');
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);

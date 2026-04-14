@@ -30,13 +30,13 @@ async function main() {
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);
-      await objCondo.loadCondoTable(objCondo.condominiumId);
+      await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
 
       let condoId = 0;
       if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo.at(-1).condoId;
 
       // get condoId
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objCondo.userId); 
+      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objCondo.userId);
       if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
 
       // Show header
@@ -66,10 +66,8 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterCondoId')) {
 
-      //await objCondo.loadCondoTable(condominiumId);
-
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      showCondo(2,condoId);
+      showCondo(2, condoId);
     };
   });
 
@@ -89,14 +87,14 @@ async function events() {
 
       deleteCondoRow();
 
-      await objCondo.loadCondoTable(objCondo.condominiumId);
+      await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
 
       let menuNumber = 0;
 
       // Show filter
       const condoId = objCondo.arrayCondo.at(-1).condoId;
       menuNumber = showFilter(menuNumber, condoId);
-      menuNumber = showCondo(menuNumber,condoId);
+      menuNumber = showCondo(menuNumber, condoId);
     };
   });
 
@@ -113,12 +111,12 @@ async function events() {
     if (event.target.classList.contains('cancel')) {
 
       // Reload condo table
-      await objCondo.loadCondoTable(condominiumId);
+      await objCondo.loadCondoTable(condominiumId, objCondo.nineNine);
 
       let condoId = Number(document.querySelector('.filterCondoId').value);
       if (condoId === 0) condoId = objCondo.arrayCondo.at(-1).condoId;
 
-      showCondo(2,condoId);
+      showCondo(2, condoId);
     };
   });
   // Log out
@@ -204,7 +202,7 @@ function showFilter(menuNumber, condoId) {
 }
 
 // Show result
-function showCondo(menuNumber,condoId) {
+function showCondo(menuNumber, condoId) {
 
   // start table
   let html = objCondo.startTable(tableWidth);
@@ -244,9 +242,9 @@ function showCondo(menuNumber,condoId) {
   html += objCondo.insertTableColumns('', menuNumber);
 
   // street
-  const street = (rowNumberCondo === -1) 
-  ? '' 
-  : objCondo.arrayCondo[rowNumberCondo].street;
+  const street = (rowNumberCondo === -1)
+    ? ''
+    : objCondo.arrayCondo[rowNumberCondo].street;
   html += objCondo.inputTableColumn('street', '', street, 45, enableChanges);
 
   // address2
@@ -369,12 +367,12 @@ async function updateCondoRow(condoId) {
 
       // update the condos row
       await objCondo.updateCondoTable(condoId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
-      await objCondo.loadCondoTable(objCondo.condominiumId);
+      await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
     } else {
 
       // Insert the condo row in condo table
       await objCondo.insertCondoTable(objCondo.condominiumId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
-      await objCondo.loadCondoTable(objCondo.condominiumId);
+      await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
       condoId = objCondo.arrayCondo.at(-1).condoId;
       document.querySelector('.filterCondoId').value = condoId;
     }
@@ -413,9 +411,12 @@ function resetValues() {
   document.querySelector('.squareMeters').value = '';
 
   document.querySelector('.filterCondoId').disabled = true;
-  document.querySelector('.delete').disabled = true;
-  document.querySelector('.insert').disabled = true;
-  document.querySelector('.cancel').disabled = false;
+
+  if (enableChanges) {
+    document.querySelector('.delete').disabled = true;
+    document.querySelector('.insert').disabled = true;
+    document.querySelector('.cancel').disabled = false;
+  }
 }
 
 // Delete condo row

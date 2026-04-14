@@ -322,7 +322,7 @@ function showResult(menuNumber, bankAccountId) {
   // The end of the table
   html += objBankAccount.endTable();
   document.querySelector('.result').innerHTML = html;
-  document.querySelector('.cancel').disabled = true;
+  if (enableChanges) document.querySelector('.cancel').disabled = true;
 
   return menuNumber;
   //}
@@ -442,9 +442,11 @@ function resetValues() {
   document.querySelector('.closingBalanceDate').value = '';
 
   objBankAccount.removeMessage();
-  document.querySelector('.delete').disabled = true;
-  document.querySelector('.insert').disabled = true;
-  document.querySelector('.cancel').disabled = false;
+  if (enableChanges) {
+    document.querySelector('.delete').disabled = true;
+    document.querySelector('.insert').disabled = true;
+    document.querySelector('.cancel').disabled = false;
+  }
 }
 
 // Show filter
@@ -465,7 +467,7 @@ function showFilter(menuNumber, condominiumId) {
   html += objBankAccount.insertTableColumns('', menuNumber);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '');
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '',enableChanges);
 
   // Show all bankaccounts for selected condominiums
   // Get last id in last object in bankaccounts array

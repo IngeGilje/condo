@@ -33,7 +33,7 @@ async function main() {
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeating.condominiumId, resident, objRemoteHeating.nineNine);
-      await objCondo.loadCondoTable(objRemoteHeating.condominiumId);
+      await objCondo.loadCondoTable(objRemoteHeating.condominiumId,objRemoteHeating.nineNine);
       await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeating.condominiumId);
 
       // Show header

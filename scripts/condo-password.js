@@ -39,7 +39,7 @@ async function main() {
         ? await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine)
         : await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.userId);
       await objCondominium.loadCondominiumsTable(objPassword.condominiumId);
-      await objCondo.loadCondoTable(objPassword.condominiumId);
+      await objCondo.loadCondoTable(objPassword.condominiumId,objPassword.nineNine);
 
       // Show header
       showHeader();
@@ -170,10 +170,10 @@ function showFilter(menuNumber, condominiumId, userId) {
   html += objUser.insertTableColumns('', menuNumber);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '');
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '',enableChanges);
 
   // user
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', true)
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', enableChanges)
 
   html += "</tr>";
 

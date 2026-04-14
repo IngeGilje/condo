@@ -32,7 +32,7 @@ async function main() {
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeatingPrice.condominiumId, resident, objRemoteHeatingPrice.nineNine);
-      await objCondo.loadCondoTable(objRemoteHeatingPrice.condominiumId);
+      await objCondo.loadCondoTable(objRemoteHeatingPrice.condominiumId,objRemoteHeatingPrice.nineNine);
 
       // Show header
       let menuNumber = 0;

@@ -46,7 +46,7 @@ async function main() {
       await objAccount.loadAccountsTable(objBankAccountTransaction.condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine);
       await objUserBankAccount.loadUserBankAccountsTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine, objBankAccountTransaction.nineNine);
-      await objCondo.loadCondoTable(objBankAccountTransaction.condominiumId);
+      await objCondo.loadCondoTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine);
       await objCondominium.loadCondominiumsTable();
       await objSupplier.loadSuppliersTable(objBankAccountTransaction.condominiumId);
 

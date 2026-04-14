@@ -123,10 +123,12 @@ class Condo extends Condos {
   }
 
   // get condos
-  async loadCondoTable(condominiumId) {
+  async loadCondoTable(condominiumId, condoId) {
 
     // Get condos
-    const URL = (this.serverStatus === 1) ? '/api/condo' : 'http://localhost:3000/condo';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/condo' 
+    : 'http://localhost:3000/condo';
     try {
       // POST request
       const response = await fetch(URL, {
@@ -136,7 +138,8 @@ class Condo extends Condos {
         },
         body: JSON.stringify({
           action: 'select',
-          condominiumId: condominiumId
+          condominiumId: condominiumId,
+          condoId : condoId
         })
       });
       if (!response.ok) throw new Error("Network error (condo)");

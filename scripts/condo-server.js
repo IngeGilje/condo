@@ -229,10 +229,7 @@ async function main() {
             if (fixedCost === 'Y' || fixedCost === 'N') SQLquery += ` AND fixedCost = '${fixedCost}'`;
             console.log('SQLquery :', SQLquery);
 
-            SQLquery +=
-              `
-                ORDER BY name ASC, accountId ASC;
-              `;
+            SQLquery += ` ORDER BY name ASC, accountId ASC;`;
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1324,7 +1321,7 @@ async function main() {
               lastUpdate = '${lastUpdate}'
             WHERE dueId = ${dueId};`;
 
-            console.log('SQLquery :',SQLquery);
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -1340,7 +1337,6 @@ async function main() {
     });
 
     // Requests for condo
-    //app.get("/condo", async (req, res) => {
     app.post("/condo", async (req, res) => {
 
       const action = req.body.action;
@@ -1353,14 +1349,17 @@ async function main() {
           try {
 
             const condominiumId = Number(req.body.condominiumId);
+            const condoId = Number(req.body.condoId);
 
-            const SQLquery =
-              `
-          SELECT * FROM condo
-                WHERE condominiumId = ${condominiumId}
-                  AND deleted <> 'Y'
-                ORDER BY condoId;
-          `;
+            let SQLquery = `
+            SELECT * FROM condo
+            WHERE condominiumId = ${condominiumId}
+              AND deleted <> 'Y'`;
+            console.log('SQLquery: ', SQLquery);
+            if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
+           console.log('SQLquery: ', SQLquery);
+            SQLquery += ` ORDER BY condoId;`;
+
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
@@ -1389,20 +1388,18 @@ async function main() {
             const squareMeters = req.body.squareMeters;
 
             // Update condo table
-            const SQLquery =
-              `
-                UPDATE condo
-          SET
-          user = '${user}',
-            lastUpdate = '${lastUpdate}',
-            name = '${name}',
-            street = '${street}',
-            address2 = '${address2}',
-            postalCode = '${postalCode}',
-            city = '${city}',
-            squareMeters = '${squareMeters}'
-                WHERE condoId = ${condoId};
-          `;
+            const SQLquery = `
+            UPDATE condo
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              name = '${name}',
+              street = '${street}',
+              address2 = '${address2}',
+              postalCode = '${postalCode}',
+              city = '${city}',
+              squareMeters = '${squareMeters}'
+            WHERE condoId = ${condoId};`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1431,32 +1428,29 @@ async function main() {
             const squareMeters = req.body.squareMeters;
 
             // Insert new row
-            const SQLquery =
-              `
-                INSERT INTO condo(
-            deleted,
-            condominiumId,
-            user,
-            lastUpdate,
-            name,
-            street,
-            address2,
-            postalCode,
-            city,
-            squareMeters
-          ) VALUES(
-            'N',
-            ${condominiumId},
-            '${user}',
-            '${lastUpdate}',
-            '${name}',
-            '${street}',
-            '${address2}',
-            '${postalCode}',
-            '${city}',
-            '${squareMeters}'
-          );
-          `;
+            const SQLquery = `
+            INSERT INTO condo(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              name,
+              street,
+              address2,
+              postalCode,
+              city,
+              squareMeters
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              '${name}',
+              '${street}',
+              '${address2}',
+              '${postalCode}',
+              '${city}',
+              '${squareMeters}');`;
 
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
@@ -1480,15 +1474,13 @@ async function main() {
             console.log('condoId: ', condoId);
 
             // Delete table
-            const SQLquery =
-              `
-                UPDATE condo
-          SET
-          deleted = 'Y',
-            lastUpdate = '${lastUpdate}',
-            user = '${user}'
-                  WHERE condoId = ${condoId};
-          `;
+            const SQLquery = `
+            UPDATE condo
+            SET
+              deleted = 'Y',
+              lastUpdate = '${lastUpdate}',
+              user = '${user}'
+            WHERE condoId = ${condoId};`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1508,7 +1500,6 @@ async function main() {
     // Requests for user bank account
     app.post("/userbankaccounts", async (req, res) => {
 
-
       const action = req.body.action;
       const lastUpdate = today.toISOString();
 
@@ -1523,12 +1514,11 @@ async function main() {
           try {
 
             let SQLquery = `
-          SELECT * FROM userbankaccounts
+            SELECT * FROM userbankaccounts
             WHERE condominiumId = ${condominiumId}
               AND deleted <> 'Y'`;
             if (userId !== nineNine) SQLquery += ` AND userId = ${userId} `;
             if (accountId !== nineNine) SQLquery += ` AND accountId = ${accountId} `;
-
             SQLquery += ` ORDER BY name; `;
 
             const [rows] = await mySqlDB.query(SQLquery);

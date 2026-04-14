@@ -30,7 +30,7 @@ async function main() {
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCommonCost.condominiumId, resident, objCommonCost.nineNine);
-      await objCondo.loadCondoTable(objCommonCost.condominiumId);
+      await objCondo.loadCondoTable(objCommonCost.condominiumId,objCommonCost.nineNine);
 
       // Show header
       let menuNumber = 0;

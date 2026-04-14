@@ -182,10 +182,14 @@ function resetValues() {
   document.querySelector('.importPath').value = '';
 
   objCondominium.removeMessage();
+
   document.querySelector('.filterCondominiumId').disabled = true;
-  document.querySelector('.delete').disabled = true;
-  document.querySelector('.insert').disabled = true;
-  document.querySelector('.cancel').disabled = false;
+
+  if (enableChanges) {
+    document.querySelector('.delete').disabled = true;
+    document.querySelector('.insert').disabled = true;
+    document.querySelector('.cancel').disabled = false;
+  }
 
 }
 
@@ -243,7 +247,7 @@ function showFilter(menuNumber, condominiumId) {
   html += objCondominium.insertTableColumns('', menuNumber);
 
   // condominium
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '')
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '',enableChanges)
 
   html += "</tr>";
 
@@ -415,7 +419,7 @@ function showResult(condominiumId, menuNumber) {
     // The end of the table
     html += objCondominium.endTable();
     document.querySelector('.result').innerHTML = html;
-    document.querySelector('.cancel').disabled = true;
+    if (enableChanges) document.querySelector('.cancel').disabled = true;
 
     return menuNumber;
   }
