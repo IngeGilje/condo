@@ -225,7 +225,7 @@ function showCommonCost(menuNumber) {
     let commonCostSquareMeter = commonCost.commonCostSquareMeter;
     className = `commonCostSquareMeter${commonCost.commonCostId}`;
     commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
-    html += objCommonCost.inputTableColumn(className, '', commonCostSquareMeter, 10, enableChanges);
+    html += objCommonCost.inputTableColumn(className, '', commonCostSquareMeter, 11, enableChanges);
 
     // fixed cost per condo
     let fixedCostCondo = commonCost.fixedCostCondo;

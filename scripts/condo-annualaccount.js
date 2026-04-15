@@ -247,17 +247,17 @@ function showFilter(menuNumber, budgetYear, fromDate, toDate) {
   html += objAnnualAccount.insertTableColumns('', menuNumber, '');
 
   // show from date
-  html += objAnnualAccount.inputTableColumn('filterFromDate', 'width:175px;', fromDate, 10,true);
+  html += objAnnualAccount.inputTableColumn('filterFromDate', 'width:175px;', fromDate, 10, true);
 
   // show to date
-  html += objAnnualAccount.inputTableColumn('filterToDate', 'width:175px;', toDate, 10,true);
+  html += objAnnualAccount.inputTableColumn('filterToDate', 'width:175px;', toDate, 10, true);
 
   // Budget year
   html += objAnnualAccount.selectInterval('filterBudgetYear', 'width:175px;', 2020, 2030, budgetYear, 'Budsjettår', true);
 
   // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(budgetYear);
-  html += objAnnualAccount.inputTableColumn('filterCommonCostSquareMeter', 'width:175px;', commonCostSquareMeter, 10,true);
+  html += objAnnualAccount.inputTableColumn('filterCommonCostSquareMeter', 'width:175px;', commonCostSquareMeter, 11, true);
 
   html += "</tr>";
 
@@ -316,12 +316,12 @@ function showAnnualAccounts(menuNumber) {
       // accountAmount
       accountAmount = formatOreToKroner(accountAmount);
       className = `accountAmount${account.accountId}`;
-      html += objAnnualAccount.inputTableColumn('accountAmount', 'width:175px;', accountAmount, 10, false);
+      html += objAnnualAccount.inputTableColumn('accountAmount', 'width:175px;', accountAmount, 11, false);
 
       // budgetAmount
       budgetAmount = formatOreToKroner(budgetAmount);
       className = `budgetAmount${account.accountId}`;
-      html += objAnnualAccount.inputTableColumn('budgetAmount', 'width:175px;', budgetAmount, 10, false);
+      html += objAnnualAccount.inputTableColumn('budgetAmount', 'width:175px;', budgetAmount, 11, false);
 
       // Deviation
       accountAmount = Number(formatKronerToOre(accountAmount));
@@ -329,7 +329,7 @@ function showAnnualAccounts(menuNumber) {
       let deviation = accountAmount - budgetAmount;
       deviation = formatOreToKroner(deviation);
       className = `deviation${account.accountId}`;
-      html += objAnnualAccount.inputTableColumn('deviation', 'width:175px;', deviation, 10, false);
+      html += objAnnualAccount.inputTableColumn('deviation', 'width:175px;', deviation, 11, false);
 
       html += "</tr>";
 
@@ -418,7 +418,7 @@ function showIncomeNextYear(menuNumber) {
     // Square meters
     let squareMeters = formatOreToKroner(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;
-    html += objAnnualAccount.inputTableColumn(className, 'width:175px;', squareMeters, 10, false);
+    html += objAnnualAccount.inputTableColumn(className, 'width:175px;', squareMeters, 11, false);
 
     // fixed cost per month per condo
     fixedCostCondoMonth = formatOreToKroner(fixedCostCondoMonth);
@@ -432,7 +432,7 @@ function showIncomeNextYear(menuNumber) {
     let commonCostsMonth = (squareMeters * commonCostSquareMeter) / 100;
     commonCostsMonth = formatOreToKroner(commonCostsMonth);
     className = `commonCostsMonth${condo.accountId}`;
-    html += objAnnualAccount.inputTableColumn(className, 'width:175px;', commonCostsMonth, 10, false);
+    html += objAnnualAccount.inputTableColumn(className, 'width:175px;', commonCostsMonth, 11, false);
 
     // Common cost per year per condo
     commonCostsMonth = formatKronerToOre(commonCostsMonth);
@@ -450,10 +450,10 @@ function showIncomeNextYear(menuNumber) {
     totalCommonCostsCondoYear += commonCostsCondoYear;
   });
 
-  totalSquareMeters = formatOreToKroner(totalSquareMeters, 10);
-  totalFixedCostsCondoYear = formatOreToKroner(totalFixedCostsCondoYear, 10);
-  totalCommonCostsCondoMonth = formatOreToKroner(totalCommonCostsCondoMonth, 10);
-  totalCommonCostsCondoYear = formatOreToKroner(totalCommonCostsCondoYear, 10);
+  totalSquareMeters = formatOreToKroner(totalSquareMeters);
+  totalFixedCostsCondoYear = formatOreToKroner(totalFixedCostsCondoYear);
+  totalCommonCostsCondoMonth = formatOreToKroner(totalCommonCostsCondoMonth);
+  totalCommonCostsCondoYear = formatOreToKroner(totalCommonCostsCondoYear);
 
   menuNumber++;
   html += objAnnualAccount.insertTableColumns('', menuNumber, 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
@@ -515,7 +515,7 @@ function showBankDeposit(menuNumber) {
   //bankDepositAmount = formatOreToKroner(bankDepositAmount);
 
   className = `bankDepositAmount`;
-  html += objAnnualAccount.inputTableColumn(className, 'width:175px;', bankDepositAmount, 10, false);
+  html += objAnnualAccount.inputTableColumn(className, 'width:175px;', bankDepositAmount, 11, false);
 
   html += "</tr>";
 
@@ -546,7 +546,7 @@ function showBankDeposit(menuNumber) {
       // budget amount
       let amount = formatOreToKroner(budget.amount);
       className = `amount${budget.budgetId}`
-      html += objAnnualAccount.inputTableColumn(className, 'width:175px;', amount, 10, false);
+      html += objAnnualAccount.inputTableColumn(className, 'width:175px;', amount, 11, false);
 
       html += "</tr>";
 

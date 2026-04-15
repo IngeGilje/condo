@@ -335,7 +335,7 @@ function showBudgets(menuNumber) {
     // due amount
     const amount = formatOreToKroner(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += objBudget.inputTableColumn(className, '', amount, 10, enableChanges);
+    html += objBudget.inputTableColumn(className, '', amount, 11, enableChanges);
 
     // Year
     const year = Number(budget.year);
@@ -385,7 +385,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // budget amount
   const amount = "";
-  html += objBudget.inputTableColumn('amount0', '0,00', amount, 10, enableChanges);
+  html += objBudget.inputTableColumn('amount0', '0,00', amount, 11, enableChanges);
 
   // Year
   const year = Number(document.querySelector('.filterYear').value);

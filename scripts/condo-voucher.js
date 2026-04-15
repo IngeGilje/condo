@@ -196,7 +196,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     const income = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].income;
     const payment = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].payment;
     const amount = formatOreToKroner((income) ? income : payment);
-    html += objBankAccountTransaction.inputTableColumn('amount', '', amount, 10, false);
+    html += objBankAccountTransaction.inputTableColumn('amount', '', amount, 11, false);
 
     // account
     const accountId = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].accountId;

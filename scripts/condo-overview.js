@@ -244,7 +244,7 @@ function showDues(menuNumber) {
     // amount
     const amount = formatOreToKroner(due.amount);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableColumn(className, '', amount, 10, false);
+    html += objOverview.inputTableColumn(className, '', amount, 11, false);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);

@@ -431,7 +431,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
     if (rowNumberRemoteHeating !== -1) {
 
       // update a remoteheatings row
-      await objRemoteHeating.updateRemoteHeatingTable(user, remoteHeatingId, condoId, year, date, kilowattHour, priceYear);
+      await objRemoteHeating.updateRemoteHeatingTable(objRemoteHeating.user, remoteHeatingId, condoId, year, date, kilowattHour, priceYear);
     } else {
 
       // Insert a remoteheatings row
