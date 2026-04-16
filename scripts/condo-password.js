@@ -70,7 +70,7 @@ async function events() {
     if (event.target.classList.contains('filterUserId')) {
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      //showUser(3, userId);
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       menuNumber = 0;
       menuNumber = showFilter(menuNumber, condominiumId, userId);
       menuNumber = showUser(menuNumber, userId);
