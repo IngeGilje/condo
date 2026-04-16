@@ -91,28 +91,33 @@ async function main() {
     // Connect mySQL
     switch (serverStatus) {
 
-      // http://ingegilje.no on web server
       case 1: {
 
         // Connect to MySQL
-        mySqlDB = await mysql.createConnection({
-          host: '127.0.0.1',
+        mySqlDB = mysql.createPool({
+          host: 'localhost',
           user: 'Inge',
           password: 'Vinter-2025',
-          database: "condos"
+          database: 'condos',
+          waitForConnections: true,
+          connectionLimit: 10,
+          queueLimit: 0
         });
+
         break;
       };
 
-      // http://localhost on development PC
       case 2: {
 
         // Connect to MySQL
-        mySqlDB = await mysql.createConnection({
+        mySqlDB = mysql.createPool({
           host: 'localhost',
           user: 'Inge',
           password: 'Sommer--2025',
-          database: "condos"
+          database: 'condos',
+          waitForConnections: true,
+          connectionLimit: 10,
+          queueLimit: 0
         });
         break;
       }
@@ -150,15 +155,15 @@ async function main() {
       };
     });
 
-    app.post("/updateVoucerFileName", async (req, res) => {
+    app.post("/updateVoucherFileName", async (req, res) => {
 
-      console.log('updateVoucerFileName');
+      console.log('updateVoucherFileName');
       try {
 
         const lastUpdate = today.toISOString();
         const user = req.body.user;
         const bankAccountTransactionId = req.body.bankAccountTransactionId;
-        const voucerFileName = req.body.voucerFileName;
+        const voucherFileName = req.body.voucherFileName;
 
         // Update a row in bank account transactions table
         const SQLquery = `
@@ -166,7 +171,7 @@ async function main() {
         SET
           user = '${user}',
           lastUpdate = '${lastUpdate}',
-          voucerFileName = '${voucerFileName}'
+          voucherFileName = '${voucherFileName}'
         WHERE bankAccountTransactionId = ${bankAccountTransactionId};`;
 
         console.log('SQLquery :', SQLquery);
@@ -176,7 +181,7 @@ async function main() {
         res.json(rows);
       } catch (err) {
 
-        console.log("Database error in /updateVoucerFileName:", err.message);
+        console.log("Database error in /updateVoucherFileName:", err.message);
         res.status(500).json({ error: err.message });
       }
     });
@@ -188,9 +193,11 @@ async function main() {
       if (path.isAbsolute(req.body.fileName)) {
 
         fileName = req.body.fileName;
+        console.log('Absolute path :', fileName);
       } else {
 
         fileName = path.join(__dirname, "data", req.body.fileName);
+        console.log('Relative path :', fileName);
       }
 
       try {
@@ -1357,7 +1364,7 @@ async function main() {
               AND deleted <> 'Y'`;
             console.log('SQLquery: ', SQLquery);
             if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
-           console.log('SQLquery: ', SQLquery);
+            console.log('SQLquery: ', SQLquery);
             SQLquery += ` ORDER BY condoId;`;
 
             console.log('SQLquery: ', SQLquery);

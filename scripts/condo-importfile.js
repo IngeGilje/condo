@@ -270,7 +270,7 @@ async function updateOpeningClosingBalance() {
       totalPayment += Number(formatKronerToOre(payment));
     } else {
 
-      // Not transacting row
+      // Not transactiong row
       // Remove "
       accountingDate = accountingDate.replace(/\"/g, "");
     }

@@ -1090,7 +1090,7 @@ class Condos {
     }
   }
 
-  // check if file exists
+  // check if file exist
   async checkIfFileExist(fileName) {
 
     const URL = (this.serverStatus === 1)

@@ -155,14 +155,14 @@ class BankAccountTransaction extends Condos {
     }
   }
 
-  // update Voucer FileName
-  async updateVoucerFileName(user, bankAccountTransactionId, voucerFileName) {
+  // update Voucher FileName
+  async updateVoucherFileName(user, bankAccountTransactionId, voucherFileName) {
 
     const URL = (this.serverStatus === 1)
-      ? '/api/updateVoucerFileName'
-      : 'http://localhost:3000/updateVoucerFileName';
+      ? '/api/updateVoucherFileName'
+      : 'http://localhost:3000/updateVoucherFileName';
     try {
-      //const response = await fetch(`${URL}:3000/updateVoucerFileName?user=${user}&bankAccountTransactionId=${bankAccountTransactionId}&voucerFileName=${voucerFileName}`, {
+      //const response = await fetch(`${URL}:3000/updateVoucherFileName?user=${user}&bankAccountTransactionId=${bankAccountTransactionId}&voucherFileName=${voucherFileName}`, {
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -171,13 +171,13 @@ class BankAccountTransaction extends Condos {
         body: JSON.stringify({
           user: user,
           bankAccountTransactionId: bankAccountTransactionId,
-          voucerFileName: voucerFileName
+          voucherFileName: voucherFileName
         })
       });
 
       return (response.statusText === 'OK') ? true : false;
     } catch (error) {
-      console.log("Error updateVoucerFileName:", error);
+      console.log("Error updateVoucherFileName:", error);
     }
   }
 
