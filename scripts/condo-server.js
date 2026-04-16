@@ -193,11 +193,9 @@ async function main() {
       if (path.isAbsolute(req.body.fileName)) {
 
         fileName = req.body.fileName;
-        console.log('Absolute path :', fileName);
       } else {
 
         fileName = path.join(__dirname, "data", req.body.fileName);
-        console.log('Relative path :', fileName);
       }
 
       try {

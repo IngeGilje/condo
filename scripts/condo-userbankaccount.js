@@ -191,7 +191,7 @@ function showFilter(menuNumber, userId) {
   html += objUserBankAccount.insertTableColumns('', menuNumber, '');
 
   // Show all selected users
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', 'Alle', true);
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', 'Alle', enableChanges);
 
   // Show all selected accounts
   html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
