@@ -82,7 +82,7 @@ async function events() {
 
   // file name pdf document
   document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('voucerFileName')) {
+    if (event.target.classList.contains('voucherFileName')) {
 
       // Update a bank account transaction row
       const bankAccountTransactionId = Number(document.querySelector('.filterBankAccountTransactionId').value);
@@ -175,7 +175,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
   // start table
   let html = objBankAccountTransaction.startTable(tableWidth);
 
-  // Check if bank account transactin row exist
+  // Check if bank account transaction row exist
   const rowNumberBankAccountTransaction = objBankAccountTransaction.arrayBankAccountTransactions.findIndex(bankAccountTransaction => bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId);
   if (rowNumberBankAccountTransaction !== -1) {
 
@@ -204,7 +204,6 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     html += "</tr>";
 
-
     // file name of the voucher
     menuNumber++;
     html += objVoucher.showTableHeaderMenu("width:175px;", menuNumber, 'Filnavn', '', '');
@@ -213,9 +212,11 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     menuNumber++;
     html += objBankAccountTransaction.insertTableColumns('', menuNumber);
 
-    let voucerFileName = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].voucerFileName;
-    voucerFileName = (voucerFileName) ? voucerFileName : `${bankAccountTransactionId}.pdf`;
-    html += objBankAccountTransaction.inputTableColumn('voucerFileName', '', voucerFileName, 45, enableChanges);
+    let voucherFileName = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].voucherFileName;
+    voucherFileName = (voucherFileName) 
+    ? voucherFileName 
+    : `${bankAccountTransactionId}.pdf`;
+    html += objBankAccountTransaction.inputTableColumn('voucherFileName', '', voucherFileName, 45, enableChanges);
 
     html += "<td></td><td></td></tr>";
 
@@ -241,7 +242,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     html += `
       <td colspan="3" rowspan="13">
         <iframe
-         src="/data/${voucerFileName}">
+         src="/data/${voucherFileName}">
         </iframe>
       </td>
     </tr>`;
@@ -264,18 +265,18 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   if (bankAccountTransactionId === '') bankAccountTransactionId = -1
   const validbankAccountTransactionId = objBankAccountTransaction.validateNumber('bankAccountTransactionId', Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig bankkonto');
 
-  // validate voucer filename
-  const voucerFileName = document.querySelector('.voucerFileName').value;
+  // validate voucher filename
+  const voucherFileName = document.querySelector('.voucherFileName').value;
 
   // Check if the file exist
-  let validVoucerFileName = false;
-  if (await objVoucher.checkIfFileExist(voucerFileName)) {
-    validVoucerFileName = true;
+  let validVoucherFileName = false;
+  if (await objVoucher.checkIfFileExist(voucherFileName)) {
+    validVoucherFileName = true;
   } else {
     objVoucher.showMessage(objVoucher, '', 'Ugyldig filnavn på bilag.');
   }
 
-  if (validVoucerFileName && validbankAccountTransactionId) {
+  if (validVoucherFileName && validbankAccountTransactionId) {
 
     document.querySelector('.message').style.display = "none";
 
@@ -284,7 +285,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     if (rowNumberBankAccountTransaction !== -1) {
 
       // update the bankaccounttransactions row
-      if (await objBankAccountTransaction.updateVoucerFileName(user, bankAccountTransactionId, voucerFileName)) {
+      if (await objBankAccountTransaction.updateVoucherFileName(user, bankAccountTransactionId, voucherFileName)) {
 
         const orderBy = 'bankAccountTransactionId DESC, date DESC, income DESC';
         await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, 0, 0, objVoucher.nineNine);

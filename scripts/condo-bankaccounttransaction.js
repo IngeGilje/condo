@@ -402,19 +402,20 @@ async function deleteBankAccountTransactionRow(bankAccountTransactionId, classNa
 }
 
 // Show bankaccountransactions
-function showBankAccountTransactions(menuNumber) {
+async function showBankAccountTransactions(menuNumber) {
 
   // start table
   let html = objCondo.startTable(tableWidth);
 
   // table header
   menuNumber++;
-  html += objCondo.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', '');
+  html += objCondo.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag');
 
   let sumIncome = 0;
   let sumPayment = 0;
 
-  objBankAccountTransaction.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
+  //objBankAccountTransaction.arrayBankAccountTransactions.forEach(async (bankAccountTransaction) => {
+  for (const bankAccountTransaction of objBankAccountTransaction.arrayBankAccountTransactions) {
 
     html += '<tr>';
 
@@ -467,14 +468,35 @@ function showBankAccountTransactions(menuNumber) {
     html += objBankAccountTransaction.inputTableColumn(className, 'width:175px;', text, 45, enableChanges);
 
     // Show voucher
-    className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.showButton('width:100px;', className, 'Vis bilag')
+    //className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
+    //html += objBankAccountTransaction.showButton('width:100px;', className, 'Vis bilag');
+
+    // validate voucher filename
+    const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objBankAccountTransaction.condominiumId);
+    if (rowNumberCondominium !== -1) {
+      const path = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
+      const voucherFileName = `${path}${bankAccountTransaction.bankAccountTransactionId}.pdf`;
+
+      // Check if the file exist
+      if (await objBankAccountTransaction.checkIfFileExist(voucherFileName)) {
+
+        className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
+        html += objBankAccountTransaction.showButton('width:100px;', className, 'Vis bilag');
+      } else {
+
+        html += "<td style='width:100px;'></td>";
+      }
+    } else {
+
+      html += "<td style='width:100px;'></td>";
+    }
+
     html += "</tr>";
 
     // accumulate
     sumIncome += Number(bankAccountTransaction.income);
     sumPayment += Number(bankAccountTransaction.payment);
-  });
+  };
 
   // Insert empty table row for insertion
   if (enableChanges) {
