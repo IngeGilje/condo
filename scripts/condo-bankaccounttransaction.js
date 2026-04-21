@@ -435,7 +435,7 @@ async function showBankAccountTransactions(menuNumber) {
     html += objCondo.showSelectedCondos(className, 'width:150px;', bankAccountTransaction.condoId, 'Ingen leilighet', '', enableChanges);
 
     // Date
-    const date = formatToNorDate(bankAccountTransaction.date);
+    const date = formatNumberToNorDate(bankAccountTransaction.date);
     className = `date${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransaction.inputTableColumn(className, 'width:150px;', date, 10, false);
 
@@ -480,11 +480,15 @@ async function showBankAccountTransactions(menuNumber) {
       // Check if the file exist
       if (await objBankAccountTransaction.checkIfFileExist(voucherFileName)) {
 
+        // Show button if the file exist
         className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
         html += objBankAccountTransaction.showButton('width:100px;', className, 'Vis bilag');
       } else {
 
-        html += "<td style='width:100px;'></td>";
+        // Show empty column if the file does not exist
+        //html += "<td style='width:100px;'></td>";
+        className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
+        html += objBankAccountTransaction.showButton('width:100px; background-color: #f89595;', className, 'Vis bilag');
       }
     } else {
 

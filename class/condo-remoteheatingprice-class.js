@@ -5,7 +5,7 @@ class RemoteHeatingPrice extends Condos {
   arrayRemoteHeatingPrices;
 
   // Show all selected remoteheating prices
-  showSelectedRemoteHeatingsNew(className, style, remoteHeatingPriceId, selectNone, selectAll) {
+  showSelectedRemoteHeatings(className, style, remoteHeatingPriceId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -136,7 +136,7 @@ class RemoteHeatingPrice extends Condos {
         <div>
           <label 
           >
-            Velg Konto
+            Velg fjernvarme
           </label>
           <select
             class="${className}"
@@ -235,7 +235,7 @@ class RemoteHeatingPrice extends Condos {
   }
 
   // Show all selected remoteheatingprices
-  showSelectedRemoteHeatingsNew(className, style, remoteHeatingPriceId, selectNone, selectAll) {
+  showSelectedRemoteHeatings(className, style, remoteHeatingPriceId, selectNone, selectAll) {
 
     let selectedValue = false;
 

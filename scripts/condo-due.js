@@ -204,7 +204,7 @@ function showDues(menuNumber) {
     html += objCondo.showSelectedCondos(className, 'width:175px;', due.condoId, 'ngen er valgt', '', enableChanges);
 
     // Date
-    const date = formatToNorDate(due.date);
+    const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
     html += objDue.inputTableColumn(className, '', date, 10, enableChanges);
 
@@ -461,7 +461,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   // Next year
   toDate = Number(convertDateToISOFormat(toDate)) + 10000;
-  toDate = formatToNorDate(toDate);
+  toDate = formatNumberToNorDate(toDate);
   html += objDue.inputTableColumn('filterToDate', '', toDate, 10, enableChanges);
 
   html += "<td><td></tr>";

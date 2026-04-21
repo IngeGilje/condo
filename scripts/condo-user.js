@@ -361,7 +361,7 @@ function showResult(menuNumber, userId) {
     // The end of the table
     html += objUser.endTable();
     document.querySelector('.result').innerHTML = html;
-    if (objUser.securityLevel >= 9) document.querySelector('.cancel').disabled = true;
+    if (enableChanges) document.querySelector('.cancel').disabled = true;
 
     return menuNumber;
   }

@@ -1,9 +1,9 @@
-// condo-server-synch.js
-// Run with: node scripts/condo-server-synch.js
+// condo-server.js
+// Run with: node scripts/condo-server.js
 
-// const serverStatus = 1; // http://ingegilje.no on web server
-// const serverStatus = 2; // http://localhost on development PC
-const serverStatus = 1;
+// const serverStatus = 1;  // http://ingegilje.no on web server
+// const serverStatus = 2;  // http://localhost on development PC
+const serverStatus = 2;     // http://localhost on development PC
 
 import express from "express";
 import session from "express-session";
@@ -991,9 +991,7 @@ async function main() {
     });
 
     // Requests for budgets table
-    //app.get("/budgets", async (req, res) => {
     app.post("/budgets", async (req, res) => {
-
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -1008,29 +1006,26 @@ async function main() {
             const year = Number(req.body.year);
             const accountId = Number(req.body.accountId);
 
-            let SQLquery =
-              `
-          SELECT * FROM budgets
-                WHERE condominiumId = ${condominiumId}
-                  AND deleted <> 'Y'
+            let SQLquery = `
+              SELECT * FROM budgets
+              WHERE condominiumId = ${condominiumId}
+                AND deleted <> 'Y'
             `;
 
             if (year !== nineNine) {
-              SQLquery +=
-                `
-                  AND year = ${year}
-          `;
+              SQLquery += `
+                AND year = ${year}
+              `;
             }
             if (accountId !== nineNine) {
-              SQLquery +=
-                `
-                  AND accountId = ${accountId}
-          `;
+              SQLquery += `
+                AND accountId = ${accountId}
+              `;
             }
 
             SQLquery += `
               ORDER BY year, accountId;
-          `;
+            `;
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
@@ -1056,18 +1051,17 @@ async function main() {
             const text = req.body.text;
 
             // Update row
-            const SQLquery =
-              `
-                UPDATE budgets
-          SET
-          user = '${user}',
-            lastUpdate = '${lastUpdate}',
-            accountId = ${accountId},
-          amount = ${amount},
-          year = ${year},
-          text = '${text}'
-                WHERE budgetId = ${budgetId};
-          `;
+            const SQLquery = `
+              UPDATE budgets
+              SET
+                user = '${user}',
+                lastUpdate = '${lastUpdate}',
+                accountId = ${accountId},
+                amount = ${amount},
+                year = ${year},
+                text = '${text}'
+              WHERE budgetId = ${budgetId};
+            `;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1094,28 +1088,26 @@ async function main() {
             const text = req.body.text;
 
             // Insert new row
-            const SQLquery =
-              `
-                INSERT INTO budgets(
-            deleted,
-            condominiumId,
-            user,
-            lastUpdate,
-            accountId,
-            amount,
-            year,
-            text
-          ) VALUES(
-            'N',
-            ${condominiumId},
-            '${user}',
-            '${lastUpdate}',
-            ${accountId},
-            ${amount},
-            ${year},
-            '${text}'
-          );
-          `;
+            const SQLquery = `
+              INSERT INTO budgets(
+                deleted,
+                condominiumId,
+                user,
+                lastUpdate,
+                accountId,
+                amount,
+                year,
+                text
+              ) VALUES(
+                'N',
+                ${condominiumId},
+                '${user}',
+                '${lastUpdate}',
+                ${accountId},
+                ${amount},
+                ${year},
+                '${text}');
+              `;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1137,15 +1129,14 @@ async function main() {
             const user = req.body.user;
 
             // Delete table
-            const SQLquery =
-              `
-                UPDATE budgets
-          SET
-          deleted = 'Y',
-            user = '${user}',
-            lastUpdate = '${lastUpdate}'
-                WHERE budgetId = ${budgetId};
-          `;
+            const SQLquery = `
+              UPDATE budgets
+              SET
+                deleted = 'Y',
+                user = '${user}',
+                lastUpdate = '${lastUpdate}'
+              WHERE budgetId = ${budgetId};
+            `;
 
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
@@ -2421,7 +2412,6 @@ async function main() {
   });
 
   // Requests for commoncosts table
-  //app.get("/commoncosts", async (req, res) => {
   app.post("/commoncosts", async (req, res) => {
 
     const action = req.body.action;
@@ -2549,6 +2539,154 @@ async function main() {
         } catch (err) {
 
           console.log("Database error in /commoncosts:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+
+  // Requests for news table
+  app.post("/news", async (req, res) => {
+
+    const action = req.body.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+
+          let SQLquery = `
+              SELECT * FROM news
+              WHERE condominiumId = ${condominiumId}
+              AND deleted <> 'Y'
+              ORDER BY date DESC;`;
+
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+          console.log('SQLquery: ', SQLquery);
+        } catch (err) {
+
+          console.log("Database error in /news:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+          const newsId = req.body.newsId;
+          const user = req.body.user;
+          const date = req.body.date;
+          const title = req.body.title;
+          const image = req.body.image;
+          const content = req.body.content;
+          const author = req.body.author;
+
+          // Update row
+          const SQLquery = `
+            UPDATE news
+            SET
+              user = '${user}',
+              deleted = 'N',
+              lastUpdate = '${lastUpdate}',
+              date = ${date},
+              author = '${author}',
+              title = '${title}',
+              content = '${content}',
+              image = '${image}'
+            WHERE newsId = ${newsId};`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /news:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+          const user = req.body.user;
+
+          const date = req.body.date;
+          const author = req.body.author;
+          const title = req.body.title;
+          const content = req.body.content;
+          const image = req.body.image;
+
+          // Insert new row
+          const SQLquery = `
+            INSERT INTO news(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              date,
+              title,
+              author,
+              content,
+              image
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${date},
+              '${title}',
+              '${author}',
+              '${content}',
+              '${image}');
+          `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /news:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const newsId = req.body.newsId;
+          const user = req.body.user;
+
+          // Delete table
+          const SQLquery = `
+            UPDATE news
+            SET
+              deleted = 'Y',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}'
+            WHERE newsId = ${newsId};
+          `;
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /news:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;

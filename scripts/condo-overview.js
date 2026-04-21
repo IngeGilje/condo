@@ -219,6 +219,7 @@ function showDues(menuNumber) {
   // Header
   menuNumber++;
   html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', 'Forfall', '', '', '');
+
   menuNumber++;
   html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
@@ -233,7 +234,7 @@ function showDues(menuNumber) {
     html += objCondo.showSelectedCondos(className, '', due.condoId, 'Velg leilighet', '', false);
 
     // date
-    const date = formatToNorDate(due.date);
+    const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
     html += objOverview.inputTableColumn(className, '', date, 10, false);
 
@@ -290,6 +291,7 @@ function showBankAccountTransactions(menuNumber) {
   // Header
   menuNumber++;
   html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', '', 'Innbetalinger', '', '');
+  
   menuNumber++;
   html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
@@ -307,7 +309,7 @@ function showBankAccountTransactions(menuNumber) {
     html += objCondo.showSelectedCondos(className, '', Number(bankAccountTransaction.condoId), 'Velg leilighet', '', false);
 
     // date
-    const date = formatToNorDate(bankAccountTransaction.date);
+    const date = formatNumberToNorDate(bankAccountTransaction.date);
     className = `date${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransaction.inputTableColumn(className, '', date, 10, false);
 

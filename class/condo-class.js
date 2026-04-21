@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -29,88 +29,93 @@ class Condos {
       text: "login"
     },
     {
-      applicationName: "condo-condominium.html",
+      applicationName: "condo-news.html",
       className: "Menu2",
+      text: "Nyheter"
+    },
+    {
+      applicationName: "condo-condominium.html",
+      className: "Menu3",
       text: "Sameie"
     },
     {
       applicationName: "condo-user.html",
-      className: "Menu3",
+      className: "Menu4",
       text: "Bruker"
     },
     {
       applicationName: "condo-password.html",
-      className: "Menu4",
+      className: "Menu5",
       text: "Passord"
     },
     {
       applicationName: "condo-condo.html",
-      className: "Menu5",
+      className: "Menu6",
       text: "Leilighet"
     },
     {
       applicationName: "condo-bankaccount.html",
-      className: "Menu6",
+      className: "Menu7",
       text: "Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
-      className: "Menu7",
+      className: "Menu8",
       text: "Konto"
     },
     {
       applicationName: "condo-userbankaccount.html",
-      className: "Menu8",
+      className: "Menu9",
       text: "Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
-      className: "Menu9",
+      className: "Menu10",
       text: "Leverandør"
     },
     {
       applicationName: "condo-commoncost.html",
-      className: "Menu10",
+      className: "Menu11",
       text: "Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
-      className: "Menu11",
+      className: "Menu12",
       text: "Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
-      className: "Menu12",
+      className: "Menu13",
       text: "Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
-      className: "Menu13",
+      className: "Menu14",
       text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
-      className: "Menu14",
+      className: "Menu15",
       text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu15",
+      className: "Menu16",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu16",
+      className: "Menu17",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu17",
+      className: "Menu18",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu18",
+      className: "Menu19",
       text: "Årsregnskap"
     },
   ];
@@ -143,22 +148,46 @@ class Condos {
   }
 
   // Show input
-  inputTableColumn(className, style, value, maxlength, enableChanges) {
+  inputTableColumn(className, style, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
     return `
-    <td class="center">
+    <td 
+      class="center" 
+      colspan="${colspan}" 
+      rowspan="${rowspan}"
+    >
       <input
         class="${className} center one-line"
         type="text"
         maxlength="${maxlength}"
         value="${value}"
-        ${(style) ? `style=${style}` : "style=width:175px;"}
+        ${(style) ? `style="${style}"` : "style='width:175px;'"}
         ${(enableChanges) ? '' : 'readonly'}
       >
     </td>`;
   }
 
-  // Show input
+  // Show textarea
+  texteraTableColumn(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+
+    return `
+    <td 
+      colspan="${colspan}" 
+      rowspan="${rowspan}" 
+    >
+      <textarea 
+        cols="50" 
+        rows="6"
+        class="${className}"
+        maxlength="${maxlength}"
+        value=""
+      >
+        ${value}
+      </textarea>
+    </td>`;
+  }
+
+  // Show password input
   inputTableColumnPassword(className, style, value, maxlength) {
 
     return `
@@ -168,7 +197,7 @@ class Condos {
         type="password"
         maxlength="${maxlength}"
         value="${value}"
-        ${(style) ? `style=${style}` : "style=width:175px;"}
+        ${(style) ? `style="${style}"` : "style='width:175px;'"}
       >
     </td>`;
   }
@@ -176,16 +205,15 @@ class Condos {
   // Show password
   inputTablePassword(className, style, value, maxlength) {
     return `
-      <td class="center">
-        <input
-          class="${className} center one-line"
-          type="password"
-          maxlength="${maxlength}"
-          value="${value}"
-          ${(style) ? `style=${style}` : "style=width:175px;"}
-        >
-      </td>
-    `;
+    <td class="center">
+      <input
+        class="${className} center one-line"
+        type="password"
+        maxlength="${maxlength}"
+        value="${value}"
+        ${(style) ? `style="${style}"` : `style="width:175px;"`}
+      >
+    </td>`;
   }
 
   // Show leading text for input
@@ -213,29 +241,16 @@ class Condos {
       `;
   }
 
-  /*
-  // Show label
-  showLabelNew(labelText) {
-    return `
-        <label
-          class="one-line">
-          ${labelText}
-        </label>
-      `;
-  }
-  */
-
   // Show button
   showButton(style, className, text) {
 
     return `
     <td 
       class="center"
-      style="background:#e0f0e0"
     >
       <button 
         class="${className} center one-line"
-        ${(style) ? `style=${style}` : 'style="width:175px;"'}
+        ${(style) ? `style="${style}"` : 'style="width:175px;"'}
       >
         ${text}
       </button>
@@ -358,7 +373,7 @@ class Condos {
     >
       <select 
         class="${className} center"
-        ${(style) ? `style=${style}` : "style=width:175px;"}
+        ${(style) ? `style="${style}"` : `style="width:175px;"`}
         ${(enableChanges) ? '' : 'disabled'}
       >`;
 
@@ -445,7 +460,7 @@ class Condos {
       <select
         class="${className} center"
         ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style=${style}` : 'style=width:175px;'}
+        ${(style) ? `style="${style}"` : `style="width:175px;"`}
       >`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
@@ -491,7 +506,7 @@ class Condos {
       <select 
         class="${className} center"
         ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style=${style}` : 'style=width:175px;'}>`;
+        ${(style) ? `style="${style}"` : `style="width:175px;"`}>`;
 
     choices.forEach((choice) => {
 
@@ -784,7 +799,7 @@ class Condos {
       html += `
         <td 
           class="no-border center"
-          ${(style) ? `style=${style}` : 'style=width:175px;'}
+          ${(style) ? `style="${style}"` : 'style="width:175px;"'}
         >
           ${text}
         </td>
@@ -827,7 +842,7 @@ class Condos {
     }
 
     // The end of the table
-    html += this.endTable();
+    //html += this.endTable();
     return html;
   }
 
@@ -1027,7 +1042,6 @@ class Condos {
     // empty row
     html += this.insertTableColumns('', 0, '');
 
-    //html += "</thead>";
     return html;
   }
 
@@ -1054,6 +1068,21 @@ class Condos {
       html += (style === '')
         ? `<td class="center no-border">${text}</td>`
         : `<td class="center no-border" style="${style}">${text}</td>`;
+    });
+
+    return html;
+  }
+
+  // insert menu at start of a row 
+  insertMenu(menuNumber, className, style, ...texts) {
+
+    let html = "<tr>";
+    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+    texts.forEach((text) => {
+
+      html += (style === '')
+        ? `<td class="center no-border ${className}">${text}</td>`
+        : `<td class="center no-border ${className}" style="${style}">${text}</td>`;
     });
 
     return html;
@@ -1232,7 +1261,7 @@ function convertDateToISOFormat(date) {
 }
 
 // Format date from yyyymmdd (Basic ISO 8601 format) -> dd.mm.yyyy (European date format)
-function formatToNorDate(date) {
+function formatNumberToNorDate(date) {
 
   date = String(date);
   const formatedDate = date.slice(6, 8) + '.' + date.slice(4, 6) + '.' + date.slice(0, 4);

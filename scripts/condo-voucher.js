@@ -182,14 +182,13 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     // date and amount
     menuNumber++;
     html += objVoucher.showTableHeaderMenu("width:175px;", menuNumber, 'Dato', 'Beløp', 'Konto');
-    html += "</tr>";
 
     menuNumber++;
     html += objBankAccountTransaction.insertTableColumns('', menuNumber);
 
     // date
     let date = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].date;
-    date = (date) ? formatToNorDate(date) : '';
+    date = (date) ? formatNumberToNorDate(date) : '';
     html += objBankAccountTransaction.inputTableColumn('date', '', date, 10, false);
 
     // amount
@@ -207,7 +206,6 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     // file name of the voucher
     menuNumber++;
     html += objVoucher.showTableHeaderMenu("width:175px;", menuNumber, 'Filnavn', '', '');
-    html += "</tr>";
 
     menuNumber++;
     html += objBankAccountTransaction.insertTableColumns('', menuNumber);

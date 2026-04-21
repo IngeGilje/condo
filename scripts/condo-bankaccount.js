@@ -247,8 +247,8 @@ function showResult(menuNumber, bankAccountId) {
   // opening balance date
   const openingBalanceDate = (rowNumberBankAccount === -1)
     ? ''
-    : formatToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate)
-  //const openingBalanceDate = formatToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
+    : formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate)
+  //const openingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
   html += objBankAccount.inputTableColumn('openingBalanceDate', 'width:175px;', openingBalanceDate, 10, enableChanges);
 
   // opening balance
@@ -272,10 +272,10 @@ function showResult(menuNumber, bankAccountId) {
   // closing balance date
   const closingBalanceDate = (rowNumberBankAccount === -1)
     ? ''
-    : formatToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
+    : formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
 
 
-  //const closingBalanceDate = formatToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
+  //const closingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
   html += objBankAccount.inputTableColumn('closingBalanceDate', 'width:175px;', closingBalanceDate, 10, enableChanges);
 
   // closing balance

@@ -284,6 +284,7 @@ function showAnnualAccounts(menuNumber) {
   const budgetYear = document.querySelector('.filterBudgetYear').value;
   menuNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', 'Årsresultat', '', '');
+
   menuNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;', menuNumber, '', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
 
@@ -382,6 +383,7 @@ function showIncomeNextYear(menuNumber) {
   const budgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
   menuNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', `Budsjetterte leieinntekter ${budgetYear}`, '', '');
+
   menuNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;', menuNumber, 'Leilighet', 'Kvadratmeter', 'Faste kostnader', 'Felleskostnad/måned', 'Felleskostnad/år');
 
@@ -483,6 +485,7 @@ function showBankDeposit(menuNumber) {
 
   menuNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, '', '', `Budsjett ${nextBudgetYear}`, '', '');
+  
   menuNumber++;
   html += objAnnualAccount.showTableHeaderMenu('width:175px;', menuNumber, '', '', 'Tekst', 'Dato', 'Budsjett');
   let accAmount = 0;
@@ -501,7 +504,7 @@ function showBankDeposit(menuNumber) {
   if (rowNumberBankAccount !== -1) {
 
     closingBalanceDate = (objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
-    closingBalanceDate = formatToNorDate(closingBalanceDate);
+    closingBalanceDate = formatNumberToNorDate(closingBalanceDate);
   }
   className = `closingBalanceDate`;
   html += objAnnualAccount.inputTableColumn(className, 'width:175px;', closingBalanceDate, 10, false);
@@ -567,7 +570,7 @@ function showBankDeposit(menuNumber) {
   // Next year
   closingBalanceDate = Number(convertDateToISOFormat(closingBalanceDate));
   let closingBalanceDateNextYear = closingBalanceDate + 10000;
-  closingBalanceDateNextYear = formatToNorDate(closingBalanceDateNextYear);
+  closingBalanceDateNextYear = formatNumberToNorDate(closingBalanceDateNextYear);
   className = `closingBalanceDateNextYear`;
   html += objBankAccountTransaction.inputTableColumn(className, 'width:175px;', closingBalanceDateNextYear, 10, false);
 

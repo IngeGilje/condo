@@ -294,7 +294,7 @@ function showRemoteHeatings(menuNumber) {
       // date
       let date = remoteHeating.date;
       className = `date${remoteHeating.remoteHeatingId}`;
-      date = formatToNorDate(date);
+      date = formatNumberToNorDate(date);
       html += objRemoteHeating.inputTableColumn(className, '', date, 10, enableChanges);
 
       // condoId

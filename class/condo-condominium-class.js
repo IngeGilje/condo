@@ -185,7 +185,7 @@ class Condominium extends Condos {
       <option value="0" 
         selected
       >
-        Ingen konti
+        Ingen sameier
       </option>`;
       selectedValue = true;
     }

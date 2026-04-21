@@ -358,7 +358,7 @@ function showSupplier(menuNumber, supplierId) {
   const accountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccount.showSelectedAccounts('accountId', '', accountId, 'Ingen konti er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId', '', accountId, 'Ingen mottaker er valgt', '', enableChanges);
 
   // bankAccount number
   const bankAccount = (rowNumberSupplier === -1)
@@ -448,7 +448,6 @@ function showSupplier(menuNumber, supplierId) {
   html += objSupplier.endTable();
   document.querySelector('.result').innerHTML = html;
   if (enableChanges) document.querySelector('.cancel').disabled = true;
-  //}
 }
 
 // Update a supplier row

@@ -221,8 +221,6 @@ function showCondo(menuNumber, condoId) {
   menuNumber++;
   html += objCondo.showTableHeaderMenu("width:175px;", menuNumber, 'Navn', '');
 
-  html += "</tr>";
-
   menuNumber++;
   html += objCondo.insertTableColumns('', menuNumber);
 
@@ -235,7 +233,6 @@ function showCondo(menuNumber, condoId) {
   // street, address2
   menuNumber++;
   html += objCondo.showTableHeaderMenu("width:175px;", menuNumber, 'Gate', 'Adresse 2');
-  html += "</tr>";
 
   // insert table columns in start of a row
   menuNumber++;
@@ -322,7 +319,8 @@ function showCondo(menuNumber, condoId) {
   // The end of the table
   html += objCondo.endTable();
   document.querySelector('.result').innerHTML = html;
-  //}
+
+  if (enableChanges) document.querySelector('.cancel').disabled = true;
   return menuNumber;
 }
 

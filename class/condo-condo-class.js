@@ -84,7 +84,7 @@ class Condo extends Condos {
       <option value="0" 
         selected
       >
-        Ingen konti
+        Ingen leiligheter
       </option>`;
       selectedValue = true;
     }

@@ -682,7 +682,7 @@ function importFileName(menuNumber) {
   html += `
     <td class="center no-border"></td>
     <td class="center" colspan="3">
-      <input class="nameImportFile center one-line" type="text" maxlength="255" value="${importFileName}" style=width:500px;>
+      <input class="nameImportFile center one-line" type="text" maxlength="255" value="${importFileName}" style="width:500px;">
     </td>
     <td></td><td></td><td></td><td></td>
   </tr>`;

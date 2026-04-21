@@ -136,7 +136,7 @@ class CommonCost extends Condos {
         <div>
           <label 
           >
-            Velg Konto
+            Velg felleskostnad
           </label>
           <select
             class="${className}"

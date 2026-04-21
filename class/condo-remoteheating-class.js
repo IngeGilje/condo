@@ -5,7 +5,7 @@ class RemoteHeating extends Condos {
   arrayRemoteHeating;
 
   // Show all selected remoteheatings
-  showSelectedRemoteHeatingsNew(className, style, remoteHeatingId, selectNone, selectAll) {
+  showSelectedRemoteHeatings(className, style, remoteHeatingId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -52,7 +52,7 @@ class RemoteHeating extends Condos {
           <option value="0" 
             selected
           >
-            Ingen konti
+            Ingen fjernvarme
           </option>
         `;
       selectedValue = true;
@@ -236,7 +236,7 @@ class RemoteHeating extends Condos {
   }
 
   // Show all selected remoteheatings
-  showSelectedRemoteHeatingsNew(className, style, remoteHeatingId, selectNone, selectAll) {
+  showSelectedRemoteHeatings(className, style, remoteHeatingId, selectNone, selectAll) {
 
     let selectedValue = false;
 
