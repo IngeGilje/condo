@@ -84,7 +84,9 @@ class BankAccount extends Condos {
 
       bankAccountId =
         Number(document.querySelector(`.${className}`).value);
-      bankAccountId = (bankAccountId === 0) ? this.arrayBankAccounts.at(-1).bankAccountId : bankAccountId;
+      bankAccountId = (bankAccountId === 0) 
+      ? this.arrayBankAccounts.at(-1).bankAccountId 
+      : bankAccountId;
     } else {
 
       // Get last id in last object in bankaccount array

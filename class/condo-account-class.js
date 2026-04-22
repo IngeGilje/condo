@@ -13,11 +13,16 @@ class Account extends Condos {
     if (isClassDefined(className)) {
 
       accountId = Number(document.querySelector(`.${className}`).value);
-      accountId = (accountId === 0) ? this.arrayAccounts.at(-1).accountId : accountId;
+      accountId = (accountId === 0)
+        ? this.arrayAccounts.at(-1).accountId
+        : accountId;
     } else {
 
       // Get last id in last object in account array
-      accountId = this.arrayAccounts.at(-1).accountId;
+      //accountId = this.arrayAccounts.at(-1).accountId;
+      const accountId = (this.arrayAccounts.length > 0)
+        ? this.arrayAccounts.at(-1).accountId
+        : 0;
     }
 
     return accountId;

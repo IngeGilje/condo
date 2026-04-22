@@ -21,7 +21,26 @@ class Condos {
   securityLevel = Number(sessionStorage.getItem("securityLevel"));
   userId = Number(sessionStorage.getItem("userId"));
 
-  // array of menu objects
+  // array of horizontal menu
+  arrayHorizontalMenu = [
+    {
+      applicationName: "condo-login.html",
+      className: "Menu1",
+      text: "Sameie"
+    },
+    {
+      applicationName: "condo-shownews.html",
+      className: "Menu3",
+      text: "Nyheter"
+    },
+    {
+      applicationName: "condo-showgarabage.html",
+      className: "Menu4",
+      text: "Søppel"
+    }
+  ];
+
+  // array of vertical menu
   arrayMenu = [
     {
       applicationName: "condo-login.html",
@@ -35,87 +54,87 @@ class Condos {
     },
     {
       applicationName: "condo-condominium.html",
-      className: "Menu3",
+      className: "Menu4",
       text: "Sameie"
     },
     {
       applicationName: "condo-user.html",
-      className: "Menu4",
+      className: "Menu5",
       text: "Bruker"
     },
     {
       applicationName: "condo-password.html",
-      className: "Menu5",
+      className: "Menu6",
       text: "Passord"
     },
     {
       applicationName: "condo-condo.html",
-      className: "Menu6",
+      className: "Menu7",
       text: "Leilighet"
     },
     {
       applicationName: "condo-bankaccount.html",
-      className: "Menu7",
+      className: "Menu8",
       text: "Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
-      className: "Menu8",
+      className: "Menu9",
       text: "Konto"
     },
     {
       applicationName: "condo-userbankaccount.html",
-      className: "Menu9",
+      className: "Menu10",
       text: "Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
-      className: "Menu10",
+      className: "Menu11",
       text: "Leverandør"
     },
     {
       applicationName: "condo-commoncost.html",
-      className: "Menu11",
+      className: "Menu12",
       text: "Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
-      className: "Menu12",
+      className: "Menu13",
       text: "Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
-      className: "Menu13",
+      className: "Menu14",
       text: "Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
-      className: "Menu14",
+      className: "Menu15",
       text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
-      className: "Menu15",
+      className: "Menu16",
       text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu16",
+      className: "Menu17",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu17",
+      className: "Menu18",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu18",
+      className: "Menu19",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu19",
+      className: "Menu20",
       text: "Årsregnskap"
     },
   ];
@@ -178,7 +197,7 @@ class Condos {
       <textarea 
         cols="50" 
         rows="6"
-        class="${className}"
+        class="${className} news-text"
         maxlength="${maxlength}"
         value=""
       >
@@ -1144,19 +1163,6 @@ class Condos {
     }
   }
 
-  // Show horizontal menu
-  showHorizontalMenu() {
-
-    let html = "<ul class='horizontalMenu'>";
-    this.arrayHorizontalMenu.forEach((horizontalMenu) => {
-
-      html += `<li><a href="#home">${horizontalMenu.text} </a></li>`;
-    });
-
-    html += "</ul>";
-    return html;
-  }
-
   // Check if class is defined
   isClassDefined(className) {
 
@@ -1175,7 +1181,9 @@ class Condos {
     // Check of menu exists
     if (this.arrayMenu.length >= menuNumber) {
 
-      const URL = (this.serverStatus === 1) ? 'http://ingegilje.no/' : 'http://localhost/';
+      const URL = (this.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
 
       // Check for valid menunumber
       if (menuNumber < 1) menuNumber = 1;
@@ -1229,6 +1237,30 @@ class Condos {
   removeMessage() {
 
     document.querySelector(".message").style.display = "none";
+  }
+
+  // Show horizontal menu
+  showHorizontalMenu() {
+
+    const URL = (this.serverStatus === 1)
+      ? 'http://ingegilje.no/'
+      : 'http://localhost/';
+
+    let html = `
+    <nav class="navbar">
+      <ul class="nav-links">`;
+
+    this.arrayHorizontalMenu.forEach((horizontalMenu) => {
+      html += (Number(horizontalMenu.className) === 1)
+        ? `<li><a href="${URL}/${horizontalMenu.applicationName}" class="active">${horizontalMenu.text}</a></li>`
+        : `<li><a href="${URL}/${horizontalMenu.applicationName}">${horizontalMenu.text}</a></li>`;
+    });
+
+    html += `
+      </ul>
+    </nav>`;
+
+    return html;
   }
 }
 

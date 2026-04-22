@@ -2588,7 +2588,7 @@ async function main() {
           const title = req.body.title;
           const image = req.body.image;
           const content = req.body.content;
-          const author = req.body.author;
+          const userId = req.body.userId;
 
           // Update row
           const SQLquery = `
@@ -2598,7 +2598,7 @@ async function main() {
               deleted = 'N',
               lastUpdate = '${lastUpdate}',
               date = ${date},
-              author = '${author}',
+              userId = ${userId},
               title = '${title}',
               content = '${content}',
               image = '${image}'
@@ -2624,7 +2624,7 @@ async function main() {
           const user = req.body.user;
 
           const date = req.body.date;
-          const author = req.body.author;
+          const userId = req.body.userId;
           const title = req.body.title;
           const content = req.body.content;
           const image = req.body.image;
@@ -2638,7 +2638,7 @@ async function main() {
               lastUpdate,
               date,
               title,
-              author,
+              userId,
               content,
               image
             ) VALUES(
@@ -2648,7 +2648,7 @@ async function main() {
               '${lastUpdate}',
               ${date},
               '${title}',
-              '${author}',
+              ${userId},
               '${content}',
               '${image}');
           `;

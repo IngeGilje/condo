@@ -17,7 +17,7 @@ async function main() {
     await objUser.loadUsersTable(condominiumId, resident, objLogIn.nineNine);
 
     // Show login
-    showResult();
+    showLogin();
 
     // Events
     events();
@@ -50,24 +50,8 @@ function resetValues() {
   sessionStorage.clear();
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objLogIn.startTable(tableWidth,'margin: 0 auto;');
-
-  // show main header
-  html += objLogIn.showTableHeader('width:250px;', 'LogIn');
-
-  // The end of the table
-  html += objLogIn.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
-// Show result
-function showResult() {
+// Show login
+function showLogin() {
 
   // start table
   let html = objLogIn.startTable('width:250px;margin: 0 auto;');
@@ -146,10 +130,10 @@ async function checkLogin() {
       window.sessionStorage.setItem("securityLevel", objUser.arrayUsers[rowNumberUser].securityLevel);
       window.sessionStorage.setItem("userId", objUser.arrayUsers[rowNumberUser].userId);
 
-      // Start bank account transactions
+      // Start news display
       const URL = (objUser.serverStatus === 1)
-        ? 'http://ingegilje.no/condo-bankaccounttransaction.html'
-        : 'http://localhost/condo-bankaccounttransaction.html';
+        ? 'http://ingegilje.no/condo-shownews.html'
+        : 'http://localhost/condo-shownews.html';
       window.location.href = URL;
       return true;
     }
