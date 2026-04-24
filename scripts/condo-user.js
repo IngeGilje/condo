@@ -30,6 +30,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objUser.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       if (enableChanges) {
 
         const resident = 'A';
@@ -52,7 +56,7 @@ async function main() {
       menuNumber = showFilter(menuNumber, objUser.condominiumId, objUser.userId);
 
       // Show result
-      menuNumber = showResult(menuNumber, objUser.userId);
+      menuNumber = showUser(menuNumber, objUser.userId);
 
       // Events
       events();
@@ -79,7 +83,7 @@ async function events() {
 
       let menuNumber = 0;
       menuNumber = showFilter(menuNumber, condominiumId, userId);
-      menuNumber = showResult(menuNumber, userId);
+      menuNumber = showUser(menuNumber, userId);
     };
   });
 
@@ -94,7 +98,7 @@ async function events() {
       await objUser.loadUsersTable(condominiumId, resident, objUser.nineNine);
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      showResult(3, userId);
+      showUser(3, userId);
     };
   });
 
@@ -126,7 +130,7 @@ async function events() {
       const condominiumId = Number(document.querySelector('.filterCondominium').value);
       menuNumber = 0;
       menuNumber = showFilter(menuNumber, condominiumId, objUser.userId);
-      menuNumber = showResult(menuNumber, objUser.userId);
+      menuNumber = showUser(menuNumber, objUser.userId);
     };
   });
 
@@ -153,7 +157,7 @@ async function events() {
       // Show filter
       menuNumber = 0;
       menuNumber = showFilter(menuNumber, condominiumId, userId);
-      showResult(menuNumber, userId);
+      showUser(menuNumber, userId);
     };
   });
 
@@ -268,7 +272,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 }
 
 // Show result
-function showResult(menuNumber, userId) {
+function showUser(menuNumber, userId) {
 
   // start table
   let html = objUser.startTable(tableWidth);
@@ -460,7 +464,7 @@ async function updateUserRow(userId) {
     // Show filter
     let menuNumber = 0;
     menuNumber = showFilter(menuNumber, condominiumId, userId);
-    menuNumber = showResult(menuNumber, userId);
+    menuNumber = showUser(menuNumber, userId);
     objUser.removeMessage();
 
     document.querySelector('.filterUserId').disabled = false;

@@ -31,6 +31,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objPassword.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const resident = 'A';
 
       // Verify whether the user has permission to change all passwords

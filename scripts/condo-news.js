@@ -28,6 +28,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objNews.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);

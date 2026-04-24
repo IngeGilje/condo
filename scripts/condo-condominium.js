@@ -29,8 +29,11 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      await objCondominium.loadCondominiumsTable();
+      // Show horizonal menu
+      let html = objCondominium.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
 
+      await objCondominium.loadCondominiumsTable();
       const resident = 'Y';
       await objUser.loadUsersTable(objCondominium.condominiumId, resident, objCondominium.nineNine);
       const fixedCost = 'A';
@@ -45,7 +48,7 @@ async function main() {
       menuNumber = showFilter(menuNumber, objCondominium.condominiumId);
 
       // Show result
-      menuNumber = showResult(objCondominium.condominiumId, menuNumber);
+      menuNumber = showCondominium(objCondominium.condominiumId, menuNumber);
 
       // Events
       events();
@@ -67,7 +70,7 @@ async function events() {
       const fixedCost = 'A';
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
-      menuNumber = showResult(condominiumId, 3);
+      menuNumber = showCondominium(condominiumId, 3);
     };
   });
 
@@ -95,7 +98,7 @@ async function events() {
       menuNumber = showFilter(menuNumber, 0);
 
       // Show result
-      menuNumber = showResult(objCondominium.condominiumId, menuNumber);
+      menuNumber = showCondominium(objCondominium.condominiumId, menuNumber);
     };
   });
 
@@ -124,7 +127,7 @@ async function events() {
       menuNumber = showFilter(menuNumber, condominiumId);
 
       // Show result
-      menuNumber = showResult(objCondominium.condominiumId, menuNumber);
+      menuNumber = showCondominium(objCondominium.condominiumId, menuNumber);
     };
   });
 
@@ -266,7 +269,7 @@ function showFilter(menuNumber, condominiumId) {
 }
 
 // Show result
-function showResult(condominiumId, menuNumber) {
+function showCondominium(condominiumId, menuNumber) {
 
   // start table
   let html = objCondominium.startTable(tableWidth);
@@ -507,7 +510,7 @@ async function updateCondominiumRow(condominiumId) {
     menuNumber = showFilter(menuNumber, condominiumId);
 
     // Show result
-    menuNumber = showResult(condominiumId, menuNumber);
+    menuNumber = showCondominium(condominiumId, menuNumber);
 
     document.querySelector('.filterCondominiumId').disabled = false;
     document.querySelector('.delete').disabled = false;

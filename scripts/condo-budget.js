@@ -28,6 +28,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objBudget.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objBudget.condominiumId, resident, objBudget.nineNine);
       const fixedCost = 'A';
@@ -145,7 +149,7 @@ async function deleteBudgetRow(budgetId, className) {
   if (budgetsRowNumber !== -1) {
 
     // delete budget row
-    objBudget.deleteBudgetsTable(budgetId, objBudget.user);
+    await objBudget.deleteBudgetsTable(budgetId, objBudget.user);
   }
 
   const year = Number(document.querySelector('.filterYear').value);

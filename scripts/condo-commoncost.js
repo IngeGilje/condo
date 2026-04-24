@@ -28,6 +28,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objCommonCost.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objCommonCost.condominiumId, resident, objCommonCost.nineNine);
       await objCondo.loadCondoTable(objCommonCost.condominiumId,objCommonCost.nineNine);
@@ -263,7 +267,7 @@ async function deleteAccountRow(commonCostId) {
   if (accountsRowNumber !== -1) {
 
     // delete commonCost row
-    objCommonCost.deleteAccountsTable(commonCostId, user);
+    await objCommonCost.deleteAccountsTable(commonCostId, objCommonCost.user);
   }
 
   await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
@@ -326,6 +330,6 @@ async function deleteCommonCostsRow(commonCostId) {
   if (rowNumberCommonCosts !== -1) {
 
     // delete commoncosts row
-    objCommonCost.deleteCommonCostsTable(commonCostId, objCommonCost.user);
+    await objCommonCost.deleteCommonCostsTable(commonCostId, objCommonCost.user);
   }
 }

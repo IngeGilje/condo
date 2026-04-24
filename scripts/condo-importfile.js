@@ -38,6 +38,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objImportFile.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       let transactionFile = true;
 
       const resident = 'A';

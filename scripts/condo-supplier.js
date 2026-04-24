@@ -561,6 +561,6 @@ async function deleteSupplierRow() {
   if (rowNumberSupplier !== -1) {
 
     // delete supplier row
-    objSupplier.deleteSuppliersTable(supplierId, objSupplier.user);
+    await objSupplier.deleteSuppliersTable(supplierId, objSupplier.user);
   }
 }

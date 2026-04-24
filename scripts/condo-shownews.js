@@ -19,7 +19,6 @@ async function main() {
   // Check if server is running
   if (await objUser.checkServer()) {
 
-    /*
     // Validate LogIn
     if ((objShowNews.condominiumId === 0) || (objShowNews.user === null)) {
 
@@ -29,27 +28,26 @@ async function main() {
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
-      */
 
-    // Load users and news tables
-    // Show horizonal menu
-    let html = objShowNews.showHorizontalMenu();
-    document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show horizonal menu
+      let html = objShowNews.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
 
-    const resident = 'Y';
-    await objUser.loadUsersTable(objShowNews.condominiumId, resident, objShowNews.nineNine);
-    await objNews.loadNewsTable(objShowNews.condominiumId, objShowNews.nineNine);
+      // Load users and news tables
+      const resident = 'Y';
+      await objUser.loadUsersTable(objShowNews.condominiumId, resident, objShowNews.nineNine);
+      await objNews.loadNewsTable(objShowNews.condominiumId, objShowNews.nineNine);
 
-    let newsId = 0;
-    if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1).newsId;
+      let newsId = 0;
+      if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1).newsId;
 
-    // Show news
-    let menuNumber = 0;
-    menuNumber = showNews(menuNumber);
+      // Show news
+      let menuNumber = 0;
+      menuNumber = showNews(menuNumber);
 
-    // Events
-    events();
-    //}
+      // Events
+      events();
+    }
   } else {
 
     objShowNews.showMessage(objShowNews, '', 'Server er ikke startet.');

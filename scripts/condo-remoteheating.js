@@ -31,6 +31,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objRemoteHeating.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeating.condominiumId, resident, objRemoteHeating.nineNine);
       await objCondo.loadCondoTable(objRemoteHeating.condominiumId,objRemoteHeating.nineNine);
@@ -376,7 +380,7 @@ async function deleteAccountRow(remoteHeatingId, className) {
   if (accountsRowNumber !== -1) {
 
     // delete remoteHeating row
-    objRemoteHeating.deleteAccountsTable(remoteHeatingId, user);
+    await objRemoteHeating.deleteAccountsTable(remoteHeatingId, objRemoteHeating.user);
   }
 
   await objRemoteHeating.loadRemoteHeatingTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine, objRemoteHeating.nineNine);
@@ -471,7 +475,7 @@ async function deleteRemoteHeatingRow(remoteHeatingId) {
   if (rowNumberRemoteHeating !== -1) {
 
     // delete remoteheatings row
-    objRemoteHeating.deleteRemoteHeatingTable(remoteHeatingId, objRemoteHeating.user);
+    await objRemoteHeating.deleteRemoteHeatingTable(remoteHeatingId, objRemoteHeating.user);
   }
 }
 

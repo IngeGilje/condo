@@ -2561,10 +2561,10 @@ async function main() {
           const condominiumId = req.body.condominiumId;
 
           let SQLquery = `
-              SELECT * FROM news
-              WHERE condominiumId = ${condominiumId}
-              AND deleted <> 'Y'
-              ORDER BY date DESC;`;
+          SELECT * FROM news
+          WHERE condominiumId = ${condominiumId}
+          AND deleted <> 'Y'
+          ORDER BY date DESC;`;
 
           const [rows] = await mySqlDB.query(SQLquery);
 
@@ -2687,6 +2687,154 @@ async function main() {
         } catch (err) {
 
           console.log("Database error in /news:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+
+  // Requests for emptying calendar table
+  app.post("/emptyingcalendar", async (req, res) => {
+
+    const action = req.body.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+
+          let SQLquery = `
+            SELECT * FROM emptyingcalendar
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY date DESC;`;
+
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+          console.log('SQLquery: ', SQLquery);
+        } catch (err) {
+
+          console.log("Database error in /emptyingcalendar:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+          const emptyingCalendarId = req.body.emptyingCalendarId;
+          const user = req.body.user;
+          const date = req.body.date;
+          const christmasTree = req.body.christmasTree;
+          const paper = req.body.paper;
+          const food = req.body.food;
+          const residualWaste = req.body.residualWaste;
+
+          // Update row
+          const SQLquery = `
+            UPDATE emptyingcalendar
+            SET
+              user = '${user}',
+              deleted = 'N',
+              lastUpdate = '${lastUpdate}',
+              date = ${date},
+              christmasTree = '${christmasTree}',
+              residualWaste = '${residualWaste}',
+              paper = '${paper}',
+              food = '${food}'
+            WHERE emptyingCalendarId = ${emptyingCalendarId};`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /emptyingcalendar:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+          const user = req.body.user;
+          const date = req.body.date;
+          const christmasTree = req.body.christmasTree;
+          const residualWaste = req.body.residualWaste;
+          const paper = req.body.paper;
+          const food = req.body.food;
+
+          // Insert new row
+          const SQLquery = `
+            INSERT INTO emptyingcalendar(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              date,
+              christmasTree,
+              residualWaste,
+              paper,
+              food
+
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${date},
+              '${christmasTree}',
+              '${residualWaste}',
+              '${paper}',
+              '${food}');
+          `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /emptyingcalendar:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const emptyingCalendarId = req.body.emptyingCalendarId;
+          const user = req.body.user;
+
+          // Delete table
+          const SQLquery = `
+            UPDATE emptyingcalendar
+            SET
+              deleted = 'Y',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}'
+            WHERE emptyingCalendarId = ${emptyingCalendarId};
+          `;
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /emptyingcalendar:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;

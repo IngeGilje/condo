@@ -32,6 +32,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objDue.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objDue.condominiumId, resident, objDue.nineNine);
       await objCondo.loadCondoTable(objDue.condominiumId,objDue.nineNine);
@@ -305,7 +309,7 @@ async function deleteDueRow(dueId, className) {
   if (rowNumberDue !== -1) {
 
     // delete dues row
-    objDue.deleteDuesTable(dueId, objDue.user);
+    await objDue.deleteDuesTable(dueId, objDue.user);
   }
 
   const condoId = Number(document.querySelector('.filterCondoId').value);

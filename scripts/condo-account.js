@@ -33,6 +33,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objAccount.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
       const fixedCost = 'A';
@@ -46,7 +50,7 @@ async function main() {
       menuNumber = showFilter(menuNumber);
 
       // Show account
-      showResult(menuNumber);
+      showAccounts(menuNumber);
 
       // Events
       events();
@@ -70,7 +74,7 @@ async function events() {
       await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show account
-      showResult(3);
+      showAccounts(3);
     };
   });
 
@@ -121,7 +125,7 @@ async function events() {
         await objAccount.loadAccountsTable(condominiumId, fixedCost);
 
         // Show account
-        showResult(3);
+        showAccounts(3);
       };
     };
   });
@@ -254,7 +258,7 @@ function insertEmptyTableRow(menuNumber) {
 }
 
 // Show accounts
-function showResult(menuNumber) {
+function showAccounts(menuNumber) {
 
   // start table
   let html = objAccount.startTable(tableWidth);
@@ -268,7 +272,6 @@ function showResult(menuNumber) {
     // Show menu
     menuNumber++;
     html += objAccount.insertTableColumns('', menuNumber);
-
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -337,7 +340,7 @@ async function deleteAccountRow(accountId, className) {
   if (accountsRowNumber !== -1) {
 
     // delete account row
-    objAccount.deleteAccountsTable(accountId, objAccount.user);
+    await objAccount.deleteAccountsTable(accountId, objAccount.user);
   }
 
   const fixedCost = 'A';
@@ -381,6 +384,6 @@ async function updateAccountsRow(accountId) {
     await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
  
     // Show account
-    showResult(3);
+    showAccounts(3);
   }
 }

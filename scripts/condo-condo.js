@@ -28,6 +28,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objCondo.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);
       await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);

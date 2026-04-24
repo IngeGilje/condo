@@ -44,7 +44,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 
       // Show result
       const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-      menuNumber = showResult(menuNumber, bankAccountId);
+      menuNumber = showBankAccounts(menuNumber, bankAccountId);
 
       // Events
       events();
@@ -72,7 +72,7 @@ async function events() {
       menuNumber = 0;
       menuNumber = showFilter(menuNumber, condominiumId);
       const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-      menuNumber = showResult(menuNumber, bankAccountId);
+      menuNumber = showBankAccounts(menuNumber, bankAccountId);
     };
   });
 
@@ -91,7 +91,7 @@ async function events() {
 
       menuNumber = 0;
       menuNumber = showFilter(menuNumber, condominiumId);
-      menuNumber = showResult(menuNumber, bankAccountId);
+      menuNumber = showBankAccounts(menuNumber, bankAccountId);
     };
   });
 
@@ -122,7 +122,7 @@ async function events() {
 
       // Show filter
       menuNumber = showFilter(menuNumber, condominiumId);
-      menuNumber = showResult(menuNumber, bankAccountId);
+      menuNumber = showBankAccounts(menuNumber, bankAccountId);
 
     };
   });
@@ -147,7 +147,7 @@ async function events() {
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       await objBankAccount.loadBankAccountsTable(condominiumId, bankAccountId);
       menuNumber = showFilter(menuNumber, condominiumId);
-      menuNumber = showResult(menuNumber, bankAccountId);
+      menuNumber = showBankAccounts(menuNumber, bankAccountId);
     };
   });
 
@@ -176,7 +176,7 @@ async function deleteBankAccount() {
       // Delete bank bankaccounts row
 
 
-      objBankAccount.deleteBankAccountsTable(bankAccountId, user);
+      await objBankAccount.deleteBankAccountsTable(bankAccountId, objBankAccount.user);
     }
   }
 }
@@ -203,7 +203,7 @@ function showHeader() {
 }
 
 // Show result
-function showResult(menuNumber, bankAccountId) {
+function showBankAccounts(menuNumber, bankAccountId) {
 
   // start table
   let html = objBankAccount.startTable(tableWidth);
@@ -401,7 +401,7 @@ async function updateBankAccountRow(bankAccountId) {
 
     objBankAccount.removeMessage();
     menuNumber = showFilter(menuNumber, condominiumId);
-    menuNumber = showResult(menuNumber, bankAccountId);
+    menuNumber = showBankAccounts(menuNumber, bankAccountId);
   }
 }
 

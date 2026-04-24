@@ -24,19 +24,19 @@ class Condos {
   // array of horizontal menu
   arrayHorizontalMenu = [
     {
-      applicationName: "condo-login.html",
+      applicationName: "condo-bankaccounttransaction.html",
       className: "Menu1",
-      text: "Sameie"
+      text: "Regnskap"
     },
     {
       applicationName: "condo-shownews.html",
-      className: "Menu3",
+      className: "Menu2",
       text: "Nyheter"
     },
     {
-      applicationName: "condo-showgarabage.html",
-      className: "Menu4",
-      text: "Søppel"
+      applicationName: "condo-showemptyingcalendar.html",
+      className: "Menu3",
+      text: "Tømmekalender"
     }
   ];
 
@@ -48,94 +48,99 @@ class Condos {
       text: "login"
     },
     {
-      applicationName: "condo-news.html",
-      className: "Menu2",
-      text: "Nyheter"
-    },
-    {
       applicationName: "condo-condominium.html",
-      className: "Menu4",
+      className: "Menu2",
       text: "Sameie"
     },
     {
       applicationName: "condo-user.html",
-      className: "Menu5",
+      className: "Menu3",
       text: "Bruker"
     },
     {
       applicationName: "condo-password.html",
-      className: "Menu6",
+      className: "Menu4",
       text: "Passord"
     },
     {
       applicationName: "condo-condo.html",
-      className: "Menu7",
+      className: "Menu5",
       text: "Leilighet"
     },
     {
       applicationName: "condo-bankaccount.html",
-      className: "Menu8",
+      className: "Menu6",
       text: "Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
-      className: "Menu9",
+      className: "Menu7",
       text: "Konto"
     },
     {
       applicationName: "condo-userbankaccount.html",
-      className: "Menu10",
+      className: "Menu8",
       text: "Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
-      className: "Menu11",
+      className: "Menu9",
       text: "Leverandør"
     },
     {
       applicationName: "condo-commoncost.html",
-      className: "Menu12",
+      className: "Menu10",
       text: "Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
-      className: "Menu13",
+      className: "Menu11",
       text: "Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
-      className: "Menu14",
+      className: "Menu12",
       text: "Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
-      className: "Menu15",
+      className: "Menu13",
       text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
-      className: "Menu16",
+      className: "Menu14",
       text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu17",
+      className: "Menu15",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu18",
+      className: "Menu16",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu19",
+      className: "Menu17",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu20",
+      className: "Menu18",
       text: "Årsregnskap"
+    },
+    {
+      applicationName: "condo-news.html",
+      className: "Menu19",
+      text: "Nyheter"
+    },
+    {
+      applicationName: "condo-emptyingcalendar.html",
+      className: "Menu20",
+      text: "Tømmekalender"
     },
   ];
 
@@ -1056,7 +1061,7 @@ class Condos {
     });
 
     const className = 'logOut';
-    html += this.showButton('width:100px;', className, 'Logg ut');
+    html += this.showButton(style, className, 'Logg ut');
 
     // empty row
     html += this.insertTableColumns('', 0, '');

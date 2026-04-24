@@ -116,6 +116,7 @@ async function checkLogin() {
 
   // validate password
   const password = document.querySelector('.password').value;
+
   // get userId
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
   if (rowNumberUser !== -1) {

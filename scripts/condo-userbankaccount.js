@@ -27,6 +27,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objUserBankAccount.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objUserBankAccount.condominiumId, resident, objUserBankAccount.nineNine);
       const fixedCost = 'A';
@@ -297,7 +301,7 @@ async function deleteUserBankAccountRow(userBankAccountId, className) {
   if (accountsRowNumber !== -1) {
 
     // delete user bank account row
-    objUserBankAccount.deleteUserBankAccountsTable(userBankAccountId, objUserBankAccount.user);
+    await objUserBankAccount.deleteUserBankAccountsTable(userBankAccountId, objUserBankAccount.user);
   }
 
   await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);

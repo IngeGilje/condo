@@ -35,6 +35,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show horizonal menu
+      let html = objVoucher.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objVoucher.condominiumId, fixedCost);
 
