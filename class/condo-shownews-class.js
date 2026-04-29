@@ -1,4 +1,4 @@
-
-class Shownews extends Condos {
+// Show news
+class ShowNews extends Condos {
 
 }

@@ -39,12 +39,6 @@ async function main() {
       let newsId = 0;
       if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1).newsId;
 
-      /*
-      // get newsId
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objNews.userId);
-      if (rowNumberUser !== -1) newsId = objUser.arrayUsers[rowNumberUser].newsId;
-      */
-
       // Show header
       let menuNumber = 0;
 
@@ -140,29 +134,6 @@ async function events() {
     };
   });
 }
-
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objNews.startTable(tableWidth);
-
-  // start table body
-  html += objNews.startTableBody();
-
-  // show main header
-  html += objNews.showTableHeaderLogOut('', '', 'Nyheter');
-  html += "</tr>";
-
-  // end table body
-  html += objNews.endTableBody();
-
-  // The end of the table
-  html += objNews.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
 
 // Show header
 function showHeader() {

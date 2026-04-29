@@ -111,7 +111,7 @@ class EmptyingCalendar extends Condos {
   }
 
   // get emtying calendar table
-  async loadEmptyingCalendarTable(condominiumId, emptyingCalendarId) {
+  async loadEmptyingCalendarTable(condominiumId, year,month) {
 
     // Get emptying calendar
     const URL = (this.serverStatus === 1)
@@ -127,7 +127,8 @@ class EmptyingCalendar extends Condos {
         body: JSON.stringify({
           action: 'select',
           condominiumId: condominiumId,
-          emptyingCalendarId: emptyingCalendarId
+          year: year,
+          month: month
         })
       });
       if (!response.ok) throw new Error("Network error (emptyingcalendar)");
@@ -138,7 +139,7 @@ class EmptyingCalendar extends Condos {
   }
 
   // update emptying calendar row in emptying calendar table
-  async updateEmptyingCalendarTable(emptyingCalendarId, user, date, userId, title, content, image) {
+  async updateEmptyingCalendarTable(emptyingCalendarId, user, condoId,date, residualWaste, paper, food, plastic, christmasTree) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/emptyingcalendar'
@@ -155,11 +156,13 @@ class EmptyingCalendar extends Condos {
           action: 'update',
           emptyingCalendarId: emptyingCalendarId,
           user: user,
+          condoId: condoId,
           date: date,
-          userId: userId,
-          title: title,
-          content: content,
-          image: image
+          residualWaste: residualWaste,
+          paper: paper,
+          food: food,
+          plastic: plastic,
+          christmasTree: christmasTree
         })
       });
       if (!response.ok) throw new Error("Network error (emptyingcalendar)");
@@ -170,7 +173,7 @@ class EmptyingCalendar extends Condos {
   }
 
   // insert emptying calendar row in emptying calendar table
-  async insertEmptyingCalendarTable(condominiumId, user, date, paper, residualWaste, food, christmasTree) {
+  async insertEmptyingCalendarTable(condominiumId, user,condoId, date, residualWaste,paper,  food, plastic, christmasTree) {
     const URL = (this.serverStatus === 1)
       ? '/api/emptyingcalendar'
       : 'http://localhost:3000/emptyingcalendar';
@@ -185,10 +188,13 @@ class EmptyingCalendar extends Condos {
           action: 'insert',
           condominiumId: condominiumId,
           user: user,
+          condoId: condoId,
           date: date,
-          paper: paper,
+          condoId: condoId,
           residualWaste: residualWaste,
+          paper: paper,
           food: food,
+          plastic: plastic,
           christmasTree: christmasTree
         })
       });
@@ -202,12 +208,12 @@ class EmptyingCalendar extends Condos {
   // delete emptying calendar row
   async deleteEmptyingCalendarTable(emptyingCalendarId, user) {
 
-    const URL = (this.serverStatus === 1) 
-    ? '/api/emptyingcalendar' 
-    : 'http://localhost:3000/emptyingcalendar';
+    const URL = (this.serverStatus === 1)
+      ? '/api/emptyingcalendar'
+      : 'http://localhost:3000/emptyingcalendar';
     try {
       // POST request
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

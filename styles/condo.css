@@ -20,6 +20,7 @@ table {
   overflow: hidden;
 }
 
+
 button,
 th,
 td {
@@ -184,12 +185,14 @@ input[readonly] {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+/*
 img {
   position: absolute;
   left: 0px;
   top: 0px;
   z-index: -1;
 }
+*/
 
 .input-error {
   background-color: #f8d7da;
@@ -220,6 +223,10 @@ iframe {
   width: 100%;
   height: auto;
   display: block;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
 }
 
 .news-content {
@@ -249,6 +256,7 @@ iframe {
   }
 }
 
+/* horizaontal menu */
 /* Navbar container */
 .navbar {
   display: flex;
@@ -261,7 +269,6 @@ iframe {
   top: 0;
 }
 
-/* horizaontal menu */  
 /* Menu list */
 .nav-links {
   list-style: none;

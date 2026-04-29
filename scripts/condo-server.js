@@ -2707,18 +2707,22 @@ async function main() {
         try {
 
           const condominiumId = req.body.condominiumId;
+           const year = req.body.year;
+           let month = req.body.month;
+           if (month < 10) month = '0' + String(month);
 
           let SQLquery = `
             SELECT * FROM emptyingcalendar
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'
-            ORDER BY date DESC;`;
+            AND date between ${year}${month}01 AND ${year}${month}31
+            ORDER BY date ASC;`;
 
+          console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
 
           // Send a JSON response to the client containing the data
           res.json(rows);
-          console.log('SQLquery: ', SQLquery);
         } catch (err) {
 
           console.log("Database error in /emptyingcalendar:", err.message);
@@ -2732,11 +2736,13 @@ async function main() {
         try {
           const emptyingCalendarId = req.body.emptyingCalendarId;
           const user = req.body.user;
+          const condoId = req.body.condoId;
           const date = req.body.date;
-          const christmasTree = req.body.christmasTree;
+          const residualWaste = req.body.residualWaste;
           const paper = req.body.paper;
           const food = req.body.food;
-          const residualWaste = req.body.residualWaste;
+          const plastic = req.body.plastic;
+          const christmasTree = req.body.christmasTree;
 
           // Update row
           const SQLquery = `
@@ -2745,11 +2751,13 @@ async function main() {
               user = '${user}',
               deleted = 'N',
               lastUpdate = '${lastUpdate}',
+              condoId = ${condoId},
               date = ${date},
-              christmasTree = '${christmasTree}',
               residualWaste = '${residualWaste}',
               paper = '${paper}',
-              food = '${food}'
+              food = '${food}',
+              plastic = '${plastic}',
+              christmasTree = '${christmasTree}'
             WHERE emptyingCalendarId = ${emptyingCalendarId};`;
 
           console.log('SQLquery: ', SQLquery);
@@ -2770,11 +2778,13 @@ async function main() {
 
           const condominiumId = req.body.condominiumId;
           const user = req.body.user;
+          const condoId = req.body.condoId;
           const date = req.body.date;
-          const christmasTree = req.body.christmasTree;
           const residualWaste = req.body.residualWaste;
           const paper = req.body.paper;
           const food = req.body.food;
+          const plastic = req.body.plastic;
+          const christmasTree = req.body.christmasTree;
 
           // Insert new row
           const SQLquery = `
@@ -2783,22 +2793,27 @@ async function main() {
               condominiumId,
               user,
               lastUpdate,
+              condoId,
               date,
-              christmasTree,
               residualWaste,
               paper,
-              food
+              food,
+              plastic,
+              christmasTree
 
             ) VALUES(
               'N',
               ${condominiumId},
               '${user}',
               '${lastUpdate}',
+              ${condoId},
               ${date},
-              '${christmasTree}',
               '${residualWaste}',
               '${paper}',
-              '${food}');
+              '${food}',
+              '${plastic}',
+              '${christmasTree}'
+            );
           `;
 
           console.log('SQLquery: ', SQLquery);

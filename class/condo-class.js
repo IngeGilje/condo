@@ -37,6 +37,11 @@ class Condos {
       applicationName: "condo-showemptyingcalendar.html",
       className: "Menu3",
       text: "Tømmekalender"
+    },
+    {
+      applicationName: "condo-news.html",
+      className: "Menu4",
+      text: "Administrasjon"
     }
   ];
 
@@ -141,6 +146,11 @@ class Condos {
       applicationName: "condo-emptyingcalendar.html",
       className: "Menu20",
       text: "Tømmekalender"
+    },
+    {
+      applicationName: "condo-showemptyingcalendar.html",
+      className: "Menu21",
+      text: "Vis tømmekalender"
     },
   ];
 
@@ -520,6 +530,39 @@ class Condos {
     return html;
   }
 
+  // Select months
+  showSelectedMonths(className, style, selectedMonth, enableChanges) {
+
+    selectedMonth = Number(selectedMonth);
+    let html = `
+    <td
+      class="center"
+    >
+      <select
+        class="${className} center"
+        ${(enableChanges) ? '' : 'disabled'}
+        ${(style) ? `style="${style}"` : `style="width:175px;"`}
+      >`;
+
+    for (let month = 1; month < 13; month++) {
+
+      html += `
+      <option 
+        value="${month}"
+        ${month === selectedMonth ? 'selected' : ''}
+      >
+        ${findNameOfMonth(month)}
+      </option>`;
+    };
+
+    html += `
+        </select >
+      </td>
+    `;
+
+    return html;
+  }
+
   // Select choices like Yes, No, Ignore
   showSelectedValues(className, style, enableChanges, selected, ...choices) {
 
@@ -634,178 +677,13 @@ class Condos {
   }
 
   // Show icon
-  showIcon(className) {
+  showIcon(className, iconName) {
 
     // Set the PNG file
     const inputElement = document.querySelector(`.${className}`);
     inputElement.style.backgroundRepeat = `no-repeat`;
 
-    const iconName = this.getIconName(`${className}`);
     inputElement.style.backgroundImage = `url('icons/${iconName}')`;
-  }
-
-  // get icon name from column name
-  getIconName(className) {
-
-    let imageName;
-    const posionOfText = className.lastIndexOf("-");
-    className = className.slice(posionOfText + 1);
-    switch (className) {
-      case "firstName":
-      case "lastName":
-      case "name": {
-
-        imageName =
-          "name.png";
-        break;
-      }
-      case "street": {
-        imageName =
-          "street.png";
-        break;
-      }
-      case "address2": {
-        imageName =
-          "address2.png";
-        break;
-      }
-      case "postalCode": {
-        imageName =
-          "postalcode.png";
-        break;
-      }
-      case "city": {
-        imageName =
-          "city.png";
-        break;
-      }
-      case "phone": {
-        imageName =
-          "phone.png";
-        break;
-      }
-      case "eMail":
-      case "email": {
-        imageName =
-          "email.png";
-        break;
-      }
-      case "organizationNumber": {
-        imageName =
-          "organizationnumber.png";
-        break;
-      }
-      case "fileName": {
-        imageName =
-          "filename.png";
-        break;
-      }
-      case "filterFromDate":
-      case "filterToDate":
-      case "fromDate":
-      case "toDate":
-      case "date": {
-        imageName =
-          "date.png";
-        break;
-      }
-      case "income": {
-        imageName =
-          "income.png";
-        break;
-      }
-      case "payment": {
-        imageName =
-          "payment.png";
-        break;
-      }
-      case "kilowattHour": {
-        imageName =
-          "kilowattHour.png";
-        break;
-      }
-      case "text": {
-        imageName =
-          "text.png";
-        break;
-      }
-      case "amount": {
-        imageName =
-          "amount.png";
-        break;
-      }
-      case "text": {
-        imageName =
-          "text.png";
-        break;
-      }
-      case "bankAccount": {
-        imageName =
-          "bankAccount.png";
-        break;
-      }
-      case "password": {
-        imageName =
-          "password.png";
-        break;
-      }
-      case "accountName":
-      case "accountId": {
-        imageName =
-          "accountName.png";
-        break;
-      }
-      case "closingBalance":
-      case "openingBalance": {
-        imageName =
-          "accountName.png";
-        break;
-      }
-      case "closingBalanceDate":
-      case "openingBalanceDate": {
-        imageName =
-          "date.png";
-        break;
-      }
-      case "importPath": {
-        imageName =
-          "filename.png";
-        break;
-      }
-      case "update":
-      case "save": {
-        imageName =
-          "save.png";
-        break;
-      }
-      case "insert": {
-        imageName =
-          "insert.png";
-        break;
-      }
-      case "cancel": {
-        imageName =
-          "cancel.png";
-        break;
-      }
-      case "delete": {
-        imageName =
-          "delete.png";
-        break;
-      }
-      case "startImport": {
-        imageName =
-          "not_started.png";
-        break;
-      }
-      default: {
-        imageName =
-          "error.png";
-        break;
-      }
-    }
-
-    return imageName;
   }
 
   getClassByPrefix(element, prefix) {
@@ -1319,44 +1197,20 @@ function isClassDefined(className) {
 function findNameOfMonth(month) {
 
   let nameOfMonth = '';
-  switch (Number(month)) {
-    case 1:
-      nameOfMonth = 'Januar';
-      break;
-    case 2:
-      nameOfMonth = 'Februar';
-      break;
-    case 3:
-      nameOfMonth = 'Mars';
-      break;
-    case 4:
-      nameOfMonth = 'April';
-      break;
-    case 5:
-      nameOfMonth = 'Mai';
-      break;
-    case 6:
-      nameOfMonth = 'Juni';
-      break;
-    case 7:
-      nameOfMonth = 'Juli';
-      break;
-    case 8:
-      nameOfMonth = 'August';
-      break;
-    case 9:
-      nameOfMonth = 'September';
-      break;
-    case 10:
-      nameOfMonth = 'Oktober';
-      break;
-    case 11:
-      nameOfMonth = 'November';
-      break;
-    case 12:
-      nameOfMonth = 'Desember';
-      break;
-  }
+
+  if (month === 1) nameOfMonth = 'Januar';
+  if (month === 2) nameOfMonth = 'Februar';
+  if (month === 3) nameOfMonth = 'Mars';
+  if (month === 4) nameOfMonth = 'April';
+  if (month === 5) nameOfMonth = 'Mai';
+  if (month === 6) nameOfMonth = 'Juni';
+  if (month === 7) nameOfMonth = 'Juli';
+  if (month === 8) nameOfMonth = 'August';
+  if (month === 9) nameOfMonth = 'September';
+  if (month === 10) nameOfMonth = 'Oktober';
+  if (month === 11) nameOfMonth = 'November';
+  if (month === 12) nameOfMonth = 'Desember';
+
   return nameOfMonth;
 }
 

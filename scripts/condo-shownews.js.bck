@@ -1,0 +1,221 @@
+// show news
+
+// Activate classes
+const today = new Date();
+const objUser = new User('user');
+const objNews = new News('news');
+const objShowNews = new ShowNews('shownews');
+
+const enableChanges = (objShowNews.securityLevel > 5);
+
+const tableWidth = 'width:1230px;';
+
+// Exit application if no activity for 1 hour
+exitIfNoActivity();
+
+// Call main when script loads
+main();
+async function main() {
+
+  // Check if server is running
+  if (await objUser.checkServer()) {
+
+    // Validate LogIn
+    if ((objShowNews.condominiumId === 0) || (objShowNews.user === null)) {
+
+      // LogIn is not valid
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
+      window.location.href = URL;
+    } else {
+
+      // Show horizonal menu
+      let html = objShowNews.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
+      // Show header
+      showHeader();
+
+      await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
+
+      // Show filter
+      let menuNumber = 0;
+      menuNumber = showFilter(menuNumber);
+
+      // Show emtyingcalendar
+      menuNumber = showEmptyingCalendar(menuNumber);
+
+      // events for emptyingcalendar
+      events();
+    }
+  } else {
+
+    objShowNews.showMessage(objShowNews, '', 'Server er ikke startet.');
+  }
+}
+
+// Events for emptyingcalendar
+async function events() {
+
+  // Filter
+  document.addEventListener('change', async (event) => {
+    if (event.target.classList.contains('filterYear')
+      || event.target.classList.contains('filterMonth')) {
+
+      const year = Number(document.querySelector('.filterYear').value);
+      const month = Number(document.querySelector('.filterMonth').value);
+      await objShowNews.loadEmptyingCalendarTable(objShowNews.condominiumId, year, month);
+
+      // Show emtyingcalendar
+      showEmptyingCalendar(3);
+    };
+  });
+
+  // Log out
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('logOut')) {
+
+      let url = (objShowNews.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      url = `${url}condo-login.html`;
+      window.location.href = url;
+    };
+  });
+}
+
+// Show header
+function showHeader() {
+
+  // Start table
+  let html = objShowNews.startTable(tableWidth);
+
+  // start table body
+  html += objShowNews.startTableBody();
+
+  // show main header
+  html += objShowNews.showTableHeaderLogOut('width:206px;', '1', '2', '3', '4Nyheter', '5', '6', '7', '8');
+  html += "</tr>";
+
+  // end table body
+  html += objShowNews.endTableBody();
+
+  // The end of the table
+  html += objShowNews.endTable();
+  document.querySelector('.header').innerHTML = html;
+}
+
+// Show filter
+function showFilter(menuNumber) {
+
+  // Start table
+  let html = objShowNews.startTable(tableWidth);
+
+  // start table body
+  html += objShowNews.startTableBody();
+
+  // Header filter
+  menuNumber++;
+  html += objShowNews.showTableHeaderMenu('width:150px;', menuNumber, '1', '2', '3År', '4Måned', '5', '6', '7', '8');
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objShowNews.insertTableColumns('', menuNumber, '2', '3');
+
+  // Selected news
+  newsId = 0;
+  if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1).newsId;
+  html += objNews.showSelectedNews('filterNews', "width:150px;", newsId, 'Vis alle nyheter', '', true);
+
+  html += "<td>6</td><td>7</td><td>8</td></tr>";
+
+  // insert table columns in start of a row
+  menuNumber++;
+  html += objShowNews.insertTableColumns("width:150px;", menuNumber, '2', '3', '4', '5', '6', '7', '8');
+
+  // end table body
+  html += objShowNews.endTableBody();
+
+  // The end of the table
+  html += objShowNews.endTable();
+  document.querySelector('.filter').innerHTML = html;
+
+  return menuNumber;
+}
+
+// Show emptyingCalendar
+function showEmptyingCalendar(menuNumber) {
+
+  // start table
+  let html = objShowNews.startTable(tableWidth);
+
+  // table header
+  menuNumber++;
+  html += objNews.showTableHeaderMenu('width:150px;background:#e0f0e0;', menuNumber, '2Ansvarlig', '3Dato', '4Restavfall', '5Papiravfall', '6Matavfall', '7Plastavfall', '7Juletre');
+
+  if (objNews.arrayNews.length > 0) {
+    objNews.arrayNews.forEach((emptyingCalendar) => {
+
+      // Show menu
+      menuNumber++;
+      html += objShowNews.insertTableColumns('', menuNumber);
+
+      // date
+      let date = emptyingCalendar.date;
+      date = formatNumberToNorDate(date);
+      className = `date${emptyingCalendar.emptyingCalendarId}`;
+      html += objShowNews.inputTableColumn(className, 'width:150px;', date, 10, false);
+
+      // residual waste  
+      className = `residualWaste${emptyingCalendar.emptyingCalendarId}`;
+      html += "<td class='center'>";
+      html += (emptyingCalendar.residualWaste === 'Y')
+        ? `<i class="bi bi-trash-fill" style="color: black; font-size: 29px;"></i>`
+        : ``;
+      html += "</td>";
+
+      // Paper waste
+      className = `paper${emptyingCalendar.emptyingCalendarId}`;
+      html += "<td class='center'>";
+      html += (emptyingCalendar.paper === 'Y')
+        ? `<i class="bi bi-newspaper" style="color: blue; font-size: 29px;"></i>`
+        : ``;
+      html += "</td>";
+
+      // food waste
+      className = `food${emptyingCalendar.emptyingCalendarId}`;
+      html += "<td class='center'>";
+      html += (emptyingCalendar.food === 'Y')
+        ? `<i class="bi bi-apple" style="color: green; font-size: 29px;"></i>`
+        : ``;
+      html += "</td>";
+
+      // plastic waste
+      className = `plastic${emptyingCalendar.emptyingCalendarId}`;
+      html += "<td class='center'>";
+      html += (emptyingCalendar.plastic === 'Y')
+        ? `<i class="bi bi-recycle"style="color: greenyellow; font-size: 29px;"></i>`
+        : ``;
+      html += "</td>";
+
+      // Christmas tree
+      className = `christmasTree${emptyingCalendar.emptyingCalendarId}`;
+      html += "<td class='center'>";
+      html += (emptyingCalendar.christmasTree === 'Y')
+        ? `<i class="bi bi-tree-fill" style="color: green; font-size: 29px;"></i>`
+        : ``;
+      html += "</td>";
+    });
+  }
+
+  // Show the rest of the menu
+  menuNumber++;
+  html += objShowNews.showRestMenu(menuNumber);
+
+  // The end of the table
+  html += objShowNews.endTable();
+  document.querySelector('.shownews').innerHTML = html;
+
+  return menuNumber;
+}

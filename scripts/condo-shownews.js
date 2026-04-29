@@ -4,7 +4,7 @@
 const today = new Date();
 const objUser = new User('user');
 const objNews = new News('news');
-const objShowNews = new Shownews('shownews');
+const objShowNews = new ShowNews('shownews');
 
 const enableChanges = (objShowNews.securityLevel > 5);
 const tableWidth = 'width:600px;';
@@ -110,7 +110,7 @@ function showNews(menuNumber) {
       </div>
     `;
 
-      document.querySelector('.news').innerHTML = html;
+      document.querySelector('.shownews').innerHTML = html;
     }
   }
   return menuNumber;
