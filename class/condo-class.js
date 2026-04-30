@@ -15,6 +15,13 @@ class Condos {
   nineNine = 999999998;
   minusNineNine = -999999998;
 
+  // account type 1 is account menu
+  // 2 is administration menu  
+  // 3 is horizontal menu
+  accountMenu = 1;
+  administrationMenu = 2;
+  horizontalMenu = 3;
+
   // User info
   condominiumId = Number(sessionStorage.getItem("condominiumId"));
   user = sessionStorage.getItem("user");
@@ -45,8 +52,8 @@ class Condos {
     }
   ];
 
-  // array of vertical menu
-  arrayMenu = [
+  // array of menu for account
+  arrayAccountMenu = [
     {
       applicationName: "condo-login.html",
       className: "Menu1",
@@ -136,22 +143,22 @@ class Condos {
       applicationName: "condo-annualaccount.html",
       className: "Menu18",
       text: "Årsregnskap"
-    },
+    }
+  ];
+
+  // array of menu for administration
+  arrayAdministrationMenu = [
     {
       applicationName: "condo-news.html",
-      className: "Menu19",
+      className: "Menu2",
       text: "Nyheter"
     },
+
     {
       applicationName: "condo-emptyingcalendar.html",
-      className: "Menu20",
+      className: "Menu1",
       text: "Tømmekalender"
-    },
-    {
-      applicationName: "condo-showemptyingcalendar.html",
-      className: "Menu21",
-      text: "Vis tømmekalender"
-    },
+    }
   ];
 
   // Validate application name
@@ -695,7 +702,7 @@ class Condos {
 
     let html = "<tr>";
 
-    html += this.verticalMenu(menuNumber);
+    html += this.showAccountMenu(menuNumber);
     texts.forEach((text) => {
 
       html += `
@@ -731,20 +738,19 @@ class Condos {
   }
 
   // Show the rest of the menu
-  showRestMenu(menuNumber) {
+  showRestMenu(menuNumber,menuType) {
 
     let html = "";
-    for (; this.arrayMenu.length >= menuNumber; menuNumber++) {
+    for (; this.arrayAccountMenu.length >= menuNumber; menuNumber++) {
 
       html += "<tr>";
 
       // Show menu
-      html += this.verticalMenu(menuNumber);
+      html += this.showAccountMenu(menuNumber);
       html += "</tr>"
     }
 
     // The end of the table
-    //html += this.endTable();
     return html;
   }
 
@@ -886,7 +892,7 @@ class Condos {
 
     let html = "<tr>";
 
-    html += this.verticalMenu(menuNumber);
+    html += this.showAccountMenu(menuNumber);
 
     texts.forEach((text) => {
 
@@ -964,7 +970,7 @@ class Condos {
   insertTableColumns(style, menuNumber, ...texts) {
 
     let html = "<tr>";
-    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+    if (menuNumber > 0) html += this.showAccountMenu(menuNumber);
     texts.forEach((text) => {
 
       html += (style === '')
@@ -979,7 +985,7 @@ class Condos {
   insertMenu(menuNumber, className, style, ...texts) {
 
     let html = "<tr>";
-    if (menuNumber > 0) html += this.verticalMenu(menuNumber);
+    if (menuNumber > 0) html += this.showAccountMenu(menuNumber);
     texts.forEach((text) => {
 
       html += (style === '')
@@ -1056,13 +1062,14 @@ class Condos {
       return false;
     }
   }
-
-  verticalMenu(menuNumber) {
+  
+  // Show vertical account menu
+  showAccountMenu(menuNumber) {
 
     let html = "";
 
     // Check of menu exists
-    if (this.arrayMenu.length >= menuNumber) {
+    if (this.arrayAccountMenu.length >= menuNumber) {
 
       const URL = (this.serverStatus === 1)
         ? 'http://ingegilje.no/'
@@ -1071,9 +1078,48 @@ class Condos {
       // Check for valid menunumber
       if (menuNumber < 1) menuNumber = 1;
 
-      const applicationName = this.arrayMenu[menuNumber - 1].applicationName;
-      const text = this.arrayMenu[menuNumber - 1].text;
-      const className = this.arrayMenu[menuNumber - 1].className;
+      const applicationName = this.arrayAccountMenu[menuNumber - 1].applicationName;
+      const text = this.arrayAccountMenu[menuNumber - 1].text;
+      const className = this.arrayAccountMenu[menuNumber - 1].className;
+
+      html += `
+        <td class="one-line menu"
+          style = "width:175px;">
+          <a href="${URL}${applicationName}">
+            ${text}
+          </a>
+        </td>`;
+    } else {
+
+      // Do not show menu
+      html += `
+        <td 
+          style = "width:175px;">
+          <a></a>
+        </td>`;
+    }
+
+    return html;
+  }
+
+  // Show vertical administration menu
+  showAdministrationMenu(menuNumber) {
+
+    let html = "";
+
+    // Check of menu exists
+    if (this.arrayAdministrationMenu.length >= menuNumber) {
+
+      const URL = (this.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+
+      // Check for valid menunumber
+      if (menuNumber < 1) menuNumber = 1;
+
+      const applicationName = this.arrayAdministrationMenu[menuNumber - 1].applicationName;
+      const text = this.arrayAdministrationMenu[menuNumber - 1].text;
+      const className = this.arrayAdministrationMenu[menuNumber - 1].className;
 
       html += `
         <td class="one-line menu"

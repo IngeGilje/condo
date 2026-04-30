@@ -220,7 +220,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // Show menu
   menuNumber++;
-  html += objBankAccount.verticalMenu(menuNumber);
+  html += objBankAccount.showAccountMenu(menuNumber);
 
   // name
   const name = (rowNumberBankAccount === -1)
@@ -317,7 +317,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objBankAccount.showRestMenu(menuNumber);
+  html += objBankAccount.showRestMenu(menuNumber, objBankAccount.accountMenu);
 
   // The end of the table
   html += objBankAccount.endTable();

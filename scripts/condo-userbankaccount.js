@@ -284,7 +284,7 @@ function showUserBankAccount(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objUserBankAccount.showRestMenu(menuNumber);
+  html += objUserBankAccount.showRestMenu(menuNumber, objUserBankAccount.accountMenu);
 
   // The end of the table
   html += objUserBankAccount.endTable();

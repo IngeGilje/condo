@@ -226,7 +226,7 @@ function showEmptyingCalendar(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objShowEmptyingCalendar.showRestMenu(menuNumber);
+  html += objShowEmptyingCalendar.showRestMenu(menuNumber, objShowEmptyingCalendar.accountMenu);
 
   // The end of the table
   html += objShowEmptyingCalendar.endTable();

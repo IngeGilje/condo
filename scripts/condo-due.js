@@ -254,7 +254,7 @@ function showDues(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objDue.showRestMenu(menuNumber);
+  html += objDue.showRestMenu(menuNumber, objDue.accountMenu);
 
   // The end of the table
   html += objDue.endTable();

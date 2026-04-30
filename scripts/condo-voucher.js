@@ -251,7 +251,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // Show the rest of the menu
     menuNumber++;
-    html += objBankAccountTransaction.showRestMenu(menuNumber);
+    html += objBankAccountTransaction.showRestMenu(menuNumber, objBankAccountTransaction.accountMenu);
 
     // The end of the table
     html += objBankAccountTransaction.endTable();

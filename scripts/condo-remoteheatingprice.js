@@ -239,7 +239,7 @@ function showRemoteHeating(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objRemoteHeatingPrice.showRestMenu(menuNumber);
+  html += objRemoteHeatingPrice.showRestMenu(menuNumber, objRemoteHeatingPrice.accountMenu);
 
   // The end of the table
   html += objRemoteHeatingPrice.endTable();

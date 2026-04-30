@@ -635,7 +635,7 @@ function showBankAccountTransactions(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objImportFile.showRestMenu(menuNumber);
+  html += objImportFile.showRestMenu(menuNumber,  objImportFile.accountMenu);
 
   // The end of the table
   html += objImportFile.endTable();
@@ -676,7 +676,7 @@ function importFileName(menuNumber) {
   html += objImportFile.startTableBody();
 
   menuNumber++;
-  html += objImportFile.verticalMenu(menuNumber);
+  html += objImportFile.showAccountMenu(menuNumber);
   let importFileName = "Ugyldig filnavn";
   const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominium.condominiumId);
   if (rowNumberCondominium !== -1) {
@@ -711,7 +711,7 @@ function importFileName(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objImportFile.showRestMenu(menuNumber);
+  html += objImportFile.showRestMenu(menuNumber,  objImportFile.accountMenu);
 
   // end table body
   html += objImportFile.endTableBody();

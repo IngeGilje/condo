@@ -421,7 +421,7 @@ async function showHowMuchToPay(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objOverview.showRestMenu(menuNumber);
+  html += objOverview.showRestMenu(menuNumber, objOverview.accountMenu);
 
   // The end of the table
   html += objOverview.endTable();

@@ -323,7 +323,7 @@ function showAccounts(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objAccount.showRestMenu(menuNumber);
+  html += objAccount.showRestMenu(menuNumber, objAccount.accountMenu);
 
   // The end of the table
   html += objAccount.endTable();

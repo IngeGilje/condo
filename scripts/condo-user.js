@@ -360,7 +360,7 @@ function showUser(menuNumber, userId) {
 
     // Show the rest of the menu
     menuNumber++;
-    html += objUser.showRestMenu(menuNumber);
+    html += objUser.showRestMenu(menuNumber, objUser.accountMenu);
 
     // The end of the table
     html += objUser.endTable();

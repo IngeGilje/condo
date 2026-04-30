@@ -306,7 +306,7 @@ function showNews(menuNumber, newsId) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objNews.showRestMenu(menuNumber);
+  html += objNews.showRestMenu(menuNumber, objNews.accountMenu);
 
   // The end of the table
   html += objNews.endTable();

@@ -417,7 +417,7 @@ function showCondominium(condominiumId, menuNumber) {
 
     // Show the rest of the menu
     menuNumber++;
-    html += objCondominium.showRestMenu(menuNumber);
+    html += objCondominium.showRestMenu(menuNumber, objCondominium.accountMenu);
 
     // The end of the table
     html += objCondominium.endTable();

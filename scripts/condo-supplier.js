@@ -352,7 +352,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // Show menu
   menuNumber++;
-  html += objSupplier.verticalMenu(menuNumber);
+  html += objSupplier.showAccountMenu(menuNumber);
 
   // accountId
   const accountId = (rowNumberSupplier === -1)
@@ -442,7 +442,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objSupplier.showRestMenu(menuNumber);
+  html += objSupplier.showRestMenu(menuNumber,  objSupplier.accountMenu);
 
   // The end of the table
   html += objSupplier.endTable();
