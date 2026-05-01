@@ -69,7 +69,7 @@ function showLogin() {
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0, '');
+  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu, '');
 
   html += "</tr>";
 
@@ -78,7 +78,7 @@ function showLogin() {
   html += objLogIn.showTableHeader("width:250px;", 'Passord');
 
   // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0);
+  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu);
 
   // password
   password = '';
@@ -87,19 +87,19 @@ function showLogin() {
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0, '');
+  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu, '');
 
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0);
+  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu);
 
   // Show buttons
   html += objLogIn.showButton('width:170px;', 'LogIn', 'LogIn');
   html += "</tr>";
 
   // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0, '');
+  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu, '');
 
   html += "</tr>";
 

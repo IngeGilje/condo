@@ -164,14 +164,14 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // Header filter
   menuNumber++;
-  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, 'Sameie', 'Bruker');
+  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, objUser.accountMenu, 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objUser.insertTableColumns('', menuNumber);
+  html += objPassword.insertTableColumns('', menuNumber,objPassword.accountMenu);
 
   // Show selected condominiums 
   html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '',enableChanges);
@@ -183,7 +183,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objUser.insertTableColumns('', menuNumber, '', '');
+  html += objPassword.insertTableColumns('', menuNumber,objPassword.accountMenu, '', '');
 
   // end table body
   html += objUser.endTableBody();
@@ -208,11 +208,11 @@ function showUser(menuNumber, userId) {
     // password, securityLevel,
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, 'Passord', 'Sikkerhetsnivå');
+    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, objUser.accountMenu, 'Passord', 'Sikkerhetsnivå');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objUser.insertTableColumns('', menuNumber);
+    html += objUser.insertTableColumns('', menuNumber,objPassword.accountMenu);
 
     // password
     html += objUser.inputTablePassword('password', '', '', 45);
@@ -224,7 +224,7 @@ function showUser(menuNumber, userId) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objUser.insertTableColumns('', menuNumber);
+    html += objUser.insertTableColumns('', menuNumber,objPassword.accountMenu);
 
     html += "</tr>";
 
@@ -232,7 +232,7 @@ function showUser(menuNumber, userId) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objUser.insertTableColumns('', menuNumber);
+    html += objUser.insertTableColumns('', menuNumber,objPassword.accountMenu);
 
     html += objUser.showButton('width:175px;', 'update', 'Oppdater');
     html += "</tr>";

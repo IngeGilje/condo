@@ -31,6 +31,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+      // Show horizonal menu
+      let html = objShowEmptyingCalendar.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 
       // Show horizonal menu
@@ -122,11 +126,11 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objShowEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, '', '', 'År', 'Måned', '', '', '', '');
+  html += objShowEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, objShowEmptyingCalendar.accountMenu, '', '', 'År', 'Måned', '', '', '', '');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objShowEmptyingCalendar.insertTableColumns('', menuNumber, '', '');
+  html += objShowEmptyingCalendar.insertTableColumns('', menuNumber, objShowEmptyingCalendar.accountMenu, '', '');
 
   // Selected year
   const year = String(today.getFullYear());
@@ -142,7 +146,7 @@ function showFilter(menuNumber) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objShowEmptyingCalendar.insertTableColumns("width:150px;", menuNumber, '', '', '', '', '', '', '');
+  html += objShowEmptyingCalendar.insertTableColumns("width:150px;", menuNumber, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
 
   // end table body
   html += objShowEmptyingCalendar.endTableBody();
@@ -162,14 +166,14 @@ function showEmptyingCalendar(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;background:#e0f0e0;', menuNumber, 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
+  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;background:#e0f0e0;', menuNumber, objEmptyingCalendar.accountMenu, 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
   if (objEmptyingCalendar.arrayEmptyingCalendar.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendar.forEach((emptyingCalendar) => {
 
       // Show menu
       menuNumber++;
-      html += objShowEmptyingCalendar.insertTableColumns('', menuNumber);
+      html += objShowEmptyingCalendar.insertTableColumns('', menuNumber, objShowEmptyingCalendar.accountMenu);
 
       // condoId
       let condoId = emptyingCalendar.condoId;

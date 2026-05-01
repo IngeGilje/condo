@@ -28,13 +28,13 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objCommonCost.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCommonCost.condominiumId, resident, objCommonCost.nineNine);
-      await objCondo.loadCondoTable(objCommonCost.condominiumId,objCommonCost.nineNine);
+      await objCondo.loadCondoTable(objCommonCost.condominiumId, objCommonCost.nineNine);
 
       // Show header
       let menuNumber = 0;
@@ -179,7 +179,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
 
   // insert table columns in start of a row
-  html += objCommonCost.insertTableColumns('', menuNumber);
+  html += objCommonCost.insertTableColumns('', menuNumber, objCommonCost.accountMenu);
 
   html += "<td class='center'>Ny felleskostnad</td>";
 
@@ -204,13 +204,13 @@ function showCommonCost(menuNumber) {
   let html = objCommonCost.startTable(tableWidth);
 
   menuNumber++;
-  html += objCommonCost.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  html += objCommonCost.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objCommonCost.accountMenu, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
   objCommonCost.arrayCommonCosts.forEach((commonCost) => {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCommonCost.insertTableColumns('', menuNumber);
+    html += objCommonCost.insertTableColumns('', menuNumber, objCommonCost.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";

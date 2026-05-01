@@ -30,6 +30,10 @@ async function main() {
       window.location.href = URL;
     } else {
 
+      // Show horizonal menu
+      let html = objEmptyingCalendar.showHorizontalMenu();
+      document.querySelector('.horizontalMenu').innerHTML = html;
+
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 
       // Show horizonal menu
@@ -182,14 +186,14 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, '2', '3', '4År', '5Måned', '6', '7', '8', '9');
+  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, objEmptyingCalendar.accountMenu, '2', '3', '4År', '5Måned', '6', '7', '8', '9');
 
   // start table body
   html += objEmptyingCalendar.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objEmptyingCalendar.insertTableColumns('', menuNumber, '2', '3');
+  html += objEmptyingCalendar.insertTableColumns('', menuNumber, objEmptyingCalendar.accountMenu, '', '');
 
   // Selected year
   const year = String(today.getFullYear());
@@ -205,7 +209,7 @@ function showFilter(menuNumber) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objEmptyingCalendar.insertTableColumns('', menuNumber, '2', '3', '4', '5', '6', '7', '8', '9');
+  html += objEmptyingCalendar.insertTableColumns('', menuNumber, objEmptyingCalendar.accountMenu, '2', '3', '4', '5', '6', '7', '8', '9');
 
   // end table body
   html += objEmptyingCalendar.endTableBody();
@@ -225,14 +229,14 @@ function showEmptyingCalendar(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;background:#e0f0e0;', menuNumber, '2Slett', '3Ansvarlig', '4Dato', '5Restavfall', '6Papiravfall', '7Matavfall', '8Plastavfall', '9Juletre');
+  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;background:#e0f0e0;', menuNumber, objEmptyingCalendar.accountMenu, '2Slett', '3Ansvarlig', '4Dato', '5Restavfall', '6Papiravfall', '7Matavfall', '8Plastavfall', '9Juletre');
 
   if (objEmptyingCalendar.arrayEmptyingCalendar.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendar.forEach((emptyingCalendar) => {
 
       // Show menu
       menuNumber++;
-      html += objEmptyingCalendar.insertTableColumns('', menuNumber);
+      html += objEmptyingCalendar.insertTableColumns('', menuNumber, objEmptyingCalendar.accountMenu);
 
       // Delete
       let selected = "Ugyldig verdi";
@@ -300,7 +304,7 @@ function showEmptyingCalendar(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objEmptyingCalendar.showRestMenu(menuNumber,  objEmptyingCalendar.accountMenu);
+  html += objEmptyingCalendar.showRestMenu(menuNumber, objEmptyingCalendar.accountMenu);
 
   // The end of the table
   html += objEmptyingCalendar.endTable();
@@ -316,7 +320,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // Show menu
   // insert table columns in start of a row
-  html += objEmptyingCalendar.insertTableColumns('', menuNumber);
+  html += objEmptyingCalendar.insertTableColumns('', menuNumber, objEmptyingCalendar.accountMenu);
 
   // delete
   html += "<td class='center'>2Ny tømming</td>";

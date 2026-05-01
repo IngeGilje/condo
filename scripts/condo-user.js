@@ -239,14 +239,14 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // Header filter
   menuNumber++;
-  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, 'Bruker', '');
+  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, objUser.accountMenu, 'Bruker', '');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objUser.insertTableColumns('', menuNumber);
+  html += objUser.insertTableColumns('', menuNumber,objUser.accountMenu);
 
   // Condominium
   if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', true)
@@ -258,7 +258,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objUser.insertTableColumns('', menuNumber, '', '');
+  html += objUser.insertTableColumns('', menuNumber,objUser.accountMenu, '', '');
   html += "</tr>";
 
   // end table body
@@ -284,11 +284,11 @@ function showUser(menuNumber, userId) {
     // email,condoId
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, 'email', 'Leilighet');
+    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, objUser.accountMenu, 'email', 'Leilighet');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objUser.insertTableColumns('', menuNumber);
+    html += objUser.insertTableColumns('', menuNumber,objUser.accountMenu);
 
     // email
     html += objUser.inputTableColumn('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
@@ -301,11 +301,11 @@ function showUser(menuNumber, userId) {
     // firstName, lastName
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, 'Fornavn', 'Etternavn');
+    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, objUser.accountMenu, 'Fornavn', 'Etternavn');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objUser.insertTableColumns('', menuNumber);
+    html += objUser.insertTableColumns('', menuNumber,objUser.accountMenu);
 
     // firstName
     html += objUser.inputTableColumn('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
@@ -318,11 +318,11 @@ function showUser(menuNumber, userId) {
     // phone, activ user
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, 'Telefonnummer', 'Beboer');
+    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, objUser.accountMenu, 'Telefonnummer', 'Beboer');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objUser.insertTableColumns('', menuNumber);
+    html += objUser.insertTableColumns('', menuNumber,objUser.accountMenu);
 
     // phone
     html += objUser.inputTableColumn('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
@@ -335,7 +335,7 @@ function showUser(menuNumber, userId) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objUser.insertTableColumns('', menuNumber, '', '');
+    html += objUser.insertTableColumns('', menuNumber,objUser.accountMenu, '', '');
     html += "</tr>";
 
     // Show buttons
@@ -343,7 +343,7 @@ function showUser(menuNumber, userId) {
 
       // insert table columns in start of a row
       menuNumber++;
-      html += objUser.insertTableColumns('', menuNumber);
+      html += objUser.insertTableColumns('', menuNumber,objUser.accountMenu);
 
       html += objUser.showButton('width:175px;', 'update', 'Oppdater');
       html += objUser.showButton('width:175px;', 'cancel', 'Angre');
@@ -351,7 +351,7 @@ function showUser(menuNumber, userId) {
 
       // insert table columns in start of a row
       menuNumber++;
-      html += objUser.insertTableColumns('', menuNumber);
+      html += objUser.insertTableColumns('', menuNumber,objUser.accountMenu);
 
       html += objUser.showButton('width:175px;', 'delete', 'Slett');
       html += objUser.showButton('width:175px;', 'insert', 'Ny');

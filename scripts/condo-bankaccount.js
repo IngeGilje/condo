@@ -210,7 +210,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // table header
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, 'Navn', 'Bankkontonummer');
+  html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, objBankAccount.accountMenu, 'Navn', 'Bankkontonummer');
 
   // Check if bankaccounts row exist
   const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
@@ -238,11 +238,11 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // Show menu
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, 'Dato', 'Inngående saldo');
+  html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, objBankAccount.accountMenu, 'Dato', 'Inngående saldo');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber);
+  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
 
   // opening balance date
   const openingBalanceDate = (rowNumberBankAccount === -1)
@@ -263,11 +263,11 @@ function showBankAccounts(menuNumber, bankAccountId) {
   // Show menu
   // Header for value
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, 'Dato', 'Utgående saldo');
+  html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, objBankAccount.accountMenu, 'Dato', 'Utgående saldo');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber);
+  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
 
   // closing balance date
   const closingBalanceDate = (rowNumberBankAccount === -1)
@@ -289,7 +289,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber);
+  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
 
   html += "</tr>";
 
@@ -298,7 +298,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objBankAccount.insertTableColumns('', menuNumber);
+    html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
 
     // Show buttons
     html += objBankAccount.showButton('width:175px;', 'update', 'Oppdater');
@@ -307,7 +307,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objBankAccount.insertTableColumns('', menuNumber);
+    html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
 
     // Show buttons
     html += objBankAccount.showButton('width:175px;', 'delete', 'Slett');
@@ -457,14 +457,14 @@ function showFilter(menuNumber, condominiumId) {
 
   // Header filter
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu('width:150px;', menuNumber, 'Velg Sameie', 'Bankkonto');
+  html += objBankAccount.showTableHeaderMenu('width:150px;', menuNumber, objBankAccount.accountMenu, 'Velg Sameie', 'Bankkonto');
 
   // start table body
   html += objBankAccount.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber);
+  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
 
   // Show selected condominiums 
   html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '',enableChanges);
@@ -480,7 +480,7 @@ function showFilter(menuNumber, condominiumId) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber, '', '');
+  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu, '', '');
 
   // end table body
   html += objBankAccount.endTableBody();

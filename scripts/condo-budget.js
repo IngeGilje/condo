@@ -28,7 +28,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objBudget.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
@@ -274,14 +274,14 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objBudget.showTableHeaderMenu('width:175px;', menuNumber, '', '', 'Konto', 'År', '');
+  html += objBudget.showTableHeaderMenu('width:175px;', menuNumber, objBudget.accountMenu, '', '', 'Konto', 'År', '');
 
   // start table body
   html += objBudget.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objBudget.insertTableColumns('', menuNumber, '', '');
+  html += objBudget.insertTableColumns('', menuNumber, objBudget.accountMenu, '', '');
 
   // Selected accounts
   html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
@@ -294,7 +294,7 @@ function showFilter(menuNumber) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objBudget.insertTableColumns('', menuNumber, '');
+  html += objBudget.insertTableColumns('', menuNumber, objBudget.accountMenu, '');
 
   // end table body
   html += objBudget.endTableBody();
@@ -314,7 +314,7 @@ function showBudgets(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objBudget.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+  html += objBudget.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objBudget.accountMenu, 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
 
   let sumAmount = 0;
 
@@ -322,7 +322,7 @@ function showBudgets(menuNumber) {
 
     // Show menu
     menuNumber++;
-    html += objBudget.insertTableColumns('', menuNumber,);
+    html += objBudget.insertTableColumns('', menuNumber, objBudget.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -367,7 +367,7 @@ function showBudgets(menuNumber) {
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
   menuNumber++;
-  html += objBudget.insertTableColumns('font-weight: 600;', menuNumber, '', 'Sum', sumAmount, '', '');
+  html += objBudget.insertTableColumns('font-weight: 600;', menuNumber, objBudget.accountMenu, '', 'Sum', sumAmount, '', '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -382,7 +382,7 @@ function showBudgets(menuNumber) {
 
 function insertEmptyTableRow(menuNumber) {
 
-  let html = objAccount.insertTableColumns('', menuNumber, 'Nytt budsjett');
+  let html = objAccount.insertTableColumns('', menuNumber, objBudget.accountMenu, 'Nytt budsjett');
 
   // accounts
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen konto er valgt', '', enableChanges);
@@ -397,7 +397,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // text
   const text = "";
-  html += objBudget.inputTableColumn('text0',    '',  text,        45, enableChanges);
+  html += objBudget.inputTableColumn('text0', '', text, 45, enableChanges);
 
   html += "</tr>";
   return html;

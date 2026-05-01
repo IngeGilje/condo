@@ -220,14 +220,14 @@ function showFilter(menuNumber, supplierId) {
 
   // Header filter
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu('width:175px;', menuNumber, 'Velg leverandør', '');
+  html += objSupplier.showTableHeaderMenu('width:175px;', menuNumber, objSupplier.accountMenu, 'Velg leverandør', '');
 
   // start table body
   html += objSupplier.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objSupplier.insertTableColumns('', menuNumber);
+  html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu);
 
   // supplier
   html += objSupplier.showSelectedSuppliers('filterSupplierId', 'width:175px;', supplierId, '', '', true)
@@ -252,7 +252,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // table header
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu('width:175px;', menuNumber, '', '');
+  html += objSupplier.showTableHeaderMenu('width:175px;', menuNumber, objSupplier.accountMenu, '', '');
 
   // Check if supplier row exist
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
@@ -260,11 +260,11 @@ function showSupplier(menuNumber, supplierId) {
 
   // Header for value including menu
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Navn');
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Navn');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objSupplier.insertTableColumns('', menuNumber);
+  html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu);
 
   // name
   const name = (rowNumberSupplier === -1)
@@ -278,11 +278,11 @@ function showSupplier(menuNumber, supplierId) {
   // street, address2
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Gate', 'Adresse 2');
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Gate', 'Adresse 2');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objSupplier.insertTableColumns('', menuNumber);
+  html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu);
 
   // street
   const street = (rowNumberSupplier === -1)
@@ -301,11 +301,11 @@ function showSupplier(menuNumber, supplierId) {
   // postalCode, city
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Postnummer', 'Poststed');
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Postnummer', 'Poststed');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objSupplier.insertTableColumns('', menuNumber);
+  html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu);
 
   // postalCode
   const postalCode = (rowNumberSupplier === -1)
@@ -325,11 +325,11 @@ function showSupplier(menuNumber, supplierId) {
   // email,phone
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'e-Mail', 'Telefonnummer');
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'e-Mail', 'Telefonnummer');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objSupplier.insertTableColumns('', menuNumber);
+  html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu);
 
   // email
   const email = (rowNumberSupplier === -1)
@@ -348,7 +348,7 @@ function showSupplier(menuNumber, supplierId) {
   // bankAccount, accountId
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Konto', 'Bankkontonummer');
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Konto', 'Bankkontonummer');
 
   // Show menu
   menuNumber++;
@@ -371,11 +371,11 @@ function showSupplier(menuNumber, supplierId) {
   // amountAccountId, amount
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Konto for beløp', 'Beløp');
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Konto for beløp', 'Beløp');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objSupplier.insertTableColumns('', menuNumber);
+  html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu);
 
   // amountAccountId
   const amountAccountId = (rowNumberSupplier === -1)
@@ -394,11 +394,11 @@ function showSupplier(menuNumber, supplierId) {
   // textAccountId, text
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, 'Konto for tekst', 'Tekst');
+  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Konto for tekst', 'Tekst');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objSupplier.insertTableColumns('', menuNumber);
+  html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu);
 
   // AccountId for text
   const textAccountId = (rowNumberSupplier === -1)
@@ -416,7 +416,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objSupplier.insertTableColumns('', menuNumber, '');
+  html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu, '');
 
   html += "</tr>";
 
@@ -425,7 +425,7 @@ function showSupplier(menuNumber, supplierId) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objSupplier.insertTableColumns('', menuNumber);
+    html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu);
 
     html += objSupplier.showButton('width:175px;', 'update', 'Oppdater');
     html += objSupplier.showButton('width:175px;', 'cancel', 'Angre');
@@ -433,7 +433,7 @@ function showSupplier(menuNumber, supplierId) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objSupplier.insertTableColumns('', menuNumber);
+    html += objSupplier.insertTableColumns('', menuNumber,objSupplier.accountMenu);
 
     html += objSupplier.showButton('width:175px;', 'delete', 'Slett');
     html += objSupplier.showButton('width:175px;', 'insert', 'Ny');

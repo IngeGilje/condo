@@ -33,7 +33,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objAccount.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
@@ -207,14 +207,14 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objAccount.showTableHeaderMenu('width:175px;', menuNumber, '', 'Kostnadstype', '');
+  html += objAccount.showTableHeaderMenu('width:175px;', menuNumber, objAccount.accountMenu, '', 'Kostnadstype', '');
 
   // start table body
   html += objAccount.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objAccount.insertTableColumns('', menuNumber, '');
+  html += objAccount.insertTableColumns('', menuNumber,objAccount.accountMenu, '');
 
   // fixed or not fixed cost
   html += objAccount.showSelectedValues('filterFixedCost', 'width:175px;', true, 'Alle', constFixedCost, constVariableCost, 'Alle');
@@ -223,7 +223,7 @@ function showFilter(menuNumber) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objAccount.insertTableColumns('', menuNumber, '');
+  html += objAccount.insertTableColumns('', menuNumber,objAccount.accountMenu, '');
 
   // end table body
   html += objAccount.endTableBody();
@@ -242,7 +242,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // Show menu
   // insert table columns in start of a row
-  html += objAccount.insertTableColumns('', menuNumber);
+  html += objAccount.insertTableColumns('', menuNumber,objAccount.accountMenu);
 
   // delete
   html += "<td class='center'>Ny konto</td>";
@@ -251,7 +251,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objAccount.showSelectedValues('fixedCost0', '', enableChanges, constFixedCost, constFixedCost, constVariableCost);
 
   // name
-  html += objAccount.inputTableColumn('name0', 'width:175px;', '', 45,enableChanges);
+  html += objAccount.inputTableColumn('name0', 'width:175px;', '', 45, enableChanges);
 
   html += "</tr>";
   return html;
@@ -265,13 +265,13 @@ function showAccounts(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'Kostnadstype', 'Tekst');
+  html += objAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objAccount.accountMenu, 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccount.arrayAccounts.forEach((account) => {
 
     // Show menu
     menuNumber++;
-    html += objAccount.insertTableColumns('', menuNumber);
+    html += objAccount.insertTableColumns('', menuNumber,objAccount.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -355,8 +355,8 @@ async function updateAccountsRow(accountId) {
   // name
   className = `name${accountId}`;
   const name = document.querySelector(`.${className}`).value;
-  const validName = objAccount.validateText(className,name,         3,        50, objAccount,    '', 'Ugyldig kontonavn');
- 
+  const validName = objAccount.validateText(className, name, 3, 50, objAccount, '', 'Ugyldig kontonavn');
+
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;
   if (fixedCost === 'Fast') fixedCost = 'Y';
@@ -382,7 +382,7 @@ async function updateAccountsRow(accountId) {
 
     fixedCost = 'A';
     await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
- 
+
     // Show account
     showAccounts(3);
   }

@@ -28,7 +28,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objNews.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
@@ -92,9 +92,9 @@ async function events() {
       let menuNumber = 0;
 
       // Show filter
-      const newsId = (objNews.arrayNews.length > 0) 
-      ? objNews.arrayNews.at(-1).newsId
-      : 0;
+      const newsId = (objNews.arrayNews.length > 0)
+        ? objNews.arrayNews.at(-1).newsId
+        : 0;
       menuNumber = showFilter(menuNumber, newsId);
       menuNumber = showNews(menuNumber, newsId);
     };
@@ -165,14 +165,14 @@ function showFilter(menuNumber, newsId) {
 
   // Header filter
   menuNumber++;
-  html += objNews.showTableHeaderMenu('width:175px;', menuNumber, 'Velg nyhet', '');
+  html += objNews.showTableHeaderMenu('width:175px;', menuNumber, objNews.administrationMenu, 'Velg nyhet', '');
 
   // start table body
   html += objNews.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objNews.insertTableColumns('', menuNumber);
+  html += objNews.insertTableColumns('', menuNumber, objNews.administrationMenu);
 
   // news
   html += objNews.showSelectedNews('filterNewsId', 'width:175px;', newsId, '', '', true)
@@ -197,7 +197,7 @@ function showNews(menuNumber, newsId) {
 
   // table header
   menuNumber++;
-  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, '', '');
+  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, objNews.administrationMenu, '', '');
 
   // Check if news row exist
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
@@ -206,12 +206,12 @@ function showNews(menuNumber, newsId) {
   html += "<tr>";
 
   menuNumber++;
-  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, 'Dato', 'Forfatter');
+  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, objNews.administrationMenu, 'Dato', 'Forfatter');
 
   // Date, userId
   // insert table columns in start of a row
   menuNumber++;
-  html += objNews.insertTableColumns('', menuNumber);
+  html += objNews.insertTableColumns('', menuNumber, objNews.administrationMenu);
 
   // date
   let date = (rowNumberNews === -1)
@@ -229,11 +229,11 @@ function showNews(menuNumber, newsId) {
 
   // title
   menuNumber++;
-  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, 'Tittel', '');
+  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, objNews.administrationMenu, 'Tittel', '');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objNews.insertTableColumns('', menuNumber);
+  html += objNews.insertTableColumns('', menuNumber, objNews.administrationMenu);
 
   const title = (rowNumberNews === -1)
     ? ''
@@ -243,15 +243,15 @@ function showNews(menuNumber, newsId) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objNews.insertTableColumns('', menuNumber);
+  html += objNews.insertTableColumns('', menuNumber, objNews.administrationMenu);
 
   // image
   menuNumber++;
-  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, 'Bilde', '');
+  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, objNews.administrationMenu, 'Bilde', '');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objNews.insertTableColumns('', menuNumber);
+  html += objNews.insertTableColumns('', menuNumber, objNews.administrationMenu);
 
   const image = (rowNumberNews === -1)
     ? ''
@@ -261,11 +261,11 @@ function showNews(menuNumber, newsId) {
 
   // content
   menuNumber++;
-  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, 'Innhold', '');
+  html += objNews.showTableHeaderMenu("width:175px;", menuNumber, objNews.administrationMenu, 'Innhold', '');
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objNews.insertTableColumns('', menuNumber);
+  html += objNews.insertTableColumns('', menuNumber, objNews.administrationMenu);
 
   const content = (rowNumberNews === -1)
     ? ''
@@ -274,7 +274,7 @@ function showNews(menuNumber, newsId) {
   html += "</tr>";
 
   menuNumber++;
-  html += objNews.insertMenu(menuNumber, '', '');
+  html += objNews.insertMenu(menuNumber, '', '',objNews.administrationMenu);
   html += "</tr>";
 
   // Buttons
@@ -284,12 +284,12 @@ function showNews(menuNumber, newsId) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objNews.insertTableColumns('', menuNumber);
+    html += objNews.insertTableColumns('', menuNumber, objNews.administrationMenu);
     html += "</tr>";
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objNews.insertTableColumns('', menuNumber);
+    html += objNews.insertTableColumns('', menuNumber, objNews.administrationMenu);
 
     html += objNews.showButton('width:175px;', 'update', 'Oppdater');
     html += objNews.showButton('width:175px;', 'cancel', 'Angre');
@@ -297,7 +297,7 @@ function showNews(menuNumber, newsId) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objNews.insertTableColumns('', menuNumber);
+    html += objNews.insertTableColumns('', menuNumber, objNews.administrationMenu);
 
     html += objNews.showButton('width:175px;', 'delete', 'Slett');
     html += objNews.showButton('width:175px;', 'insert', 'Ny');
@@ -306,7 +306,7 @@ function showNews(menuNumber, newsId) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objNews.showRestMenu(menuNumber, objNews.accountMenu);
+  html += objNews.showRestMenu(menuNumber, objNews.administrationMenu);
 
   // The end of the table
   html += objNews.endTable();
@@ -389,7 +389,7 @@ function resetValues() {
   document.querySelector('.title').value = '';
 
   //  content
-  document.querySelector('.content').value = '';  
+  document.querySelector('.content').value = '';
 
   //image  
   document.querySelector('.image').value = '';

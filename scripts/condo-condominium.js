@@ -240,14 +240,14 @@ function showFilter(menuNumber, condominiumId) {
 
   // Header filter
   menuNumber++;
-  html += objCondominium.showTableHeaderMenu('width:175px;', menuNumber, 'Velg sameie', '');
+  html += objCondominium.showTableHeaderMenu('width:175px;', menuNumber, objCondominium.accountMenu, 'Velg sameie', '');
 
   // start table body
   html += objCondominium.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objCondominium.insertTableColumns('', menuNumber);
+  html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
   // condominium
   html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '',enableChanges)
@@ -256,7 +256,7 @@ function showFilter(menuNumber, condominiumId) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objCondominium.insertTableColumns('', menuNumber, '', '');
+  html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu, '', '');
 
   // end table body
   html += objCondominium.endTableBody();
@@ -280,11 +280,11 @@ function showCondominium(condominiumId, menuNumber) {
 
     // Show menu
     menuNumber++;
-    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, 'Navn', '');
+    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, objCondominium.accountMenu, 'Navn', '');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCondominium.insertTableColumns('', menuNumber);
+    html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
     // name
     html += objCondominium.inputTableColumn('name', '', objCondominium.arrayCondominiums[rowNumberCondominium].name, 45, enableChanges);
@@ -293,11 +293,11 @@ function showCondominium(condominiumId, menuNumber) {
 
     // street, address2
     menuNumber++;
-    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, 'Gate', 'Adresse 2');
+    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, objCondominium.accountMenu, 'Gate', 'Adresse 2');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCondominium.insertTableColumns('', menuNumber);
+    html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
     // street
     html += objCondominium.inputTableColumn('street', '', objCondominium.arrayCondominiums[rowNumberCondominium].street, 45, enableChanges);
@@ -310,11 +310,11 @@ function showCondominium(condominiumId, menuNumber) {
     // postalCode, city
     html += "<tr>";
     menuNumber++;
-    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, 'Postnummer', 'Poststed');
+    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, objCondominium.accountMenu, 'Postnummer', 'Poststed');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCondominium.insertTableColumns('', menuNumber);
+    html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
     // postalCode
     html += objCondominium.inputTableColumn('postalCode', '', objCondominium.arrayCondominiums[rowNumberCondominium].postalCode, 4, enableChanges);
@@ -327,11 +327,11 @@ function showCondominium(condominiumId, menuNumber) {
     // email, phone
     html += "<tr>";
     menuNumber++;
-    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, 'eMail', 'Telefonnummer');
+    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, objCondominium.accountMenu, 'eMail', 'Telefonnummer');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCondominium.insertTableColumns('', menuNumber);
+    html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
     // eMail
     html += objCondominium.inputTableColumn('email', '', objCondominium.arrayCondominiums[rowNumberCondominium].email, 45, enableChanges);
@@ -344,11 +344,11 @@ function showCondominium(condominiumId, menuNumber) {
     // incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId
     html += "<tr>";
     menuNumber++;
-    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, 'Inntekstkonto fjernvarme', 'Utgiftskonto fjernvarme');
+    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, objCondominium.accountMenu, 'Inntekstkonto fjernvarme', 'Utgiftskonto fjernvarme');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCondominium.insertTableColumns('', menuNumber);
+    html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
     // incomeRemoteHeatingAccountId
     html += objAccount.showSelectedAccounts('incomeRemoteHeatingAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '', enableChanges);
@@ -361,11 +361,11 @@ function showCondominium(condominiumId, menuNumber) {
     // commonCostAccountId, organizationNumber
     html += "<tr>";
     menuNumber++;
-    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, 'Inntekstonto husleie', 'Organisasjonsnummer');
+    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, objCondominium.accountMenu, 'Inntekstonto husleie', 'Organisasjonsnummer');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCondominium.insertTableColumns('', menuNumber);
+    html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
     // commonCostAccountId
     html += objAccount.showSelectedAccounts('commonCostAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '', enableChanges);
@@ -378,11 +378,11 @@ function showCondominium(condominiumId, menuNumber) {
     // importPath
     html += "<tr>";
     menuNumber++;
-    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, 'Plassering av data');
+    html += objCondominium.showTableHeaderMenu("width:175px;", menuNumber, objCondominium.accountMenu, 'Plassering av data', '');
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCondominium.insertTableColumns('', menuNumber);
+    html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
     // importPath
     html += objCondominium.inputTableColumn('importPath', '', objCondominium.arrayCondominiums[rowNumberCondominium].importPath, 100, enableChanges);
@@ -391,7 +391,7 @@ function showCondominium(condominiumId, menuNumber) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCondominium.insertTableColumns('', menuNumber);
+    html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
     html += "</tr>";
 
@@ -400,7 +400,7 @@ function showCondominium(condominiumId, menuNumber) {
 
       // insert table columns in start of a row
       menuNumber++;
-      html += objCondominium.insertTableColumns('', menuNumber);
+      html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
       html += objCondominium.showButton('width:175px; background:#e0f0e0;', 'update', 'Oppdater');
       html += objCondominium.showButton('width:175px; background:#e0f0e0;', 'cancel', 'Angre');
@@ -408,7 +408,7 @@ function showCondominium(condominiumId, menuNumber) {
 
       // insert table columns in start of a row
       menuNumber++;
-      html += objCondominium.insertTableColumns('', menuNumber);
+      html += objCondominium.insertTableColumns('', menuNumber,objCondominium.accountMenu);
 
       html += objCondominium.showButton('width:175px;', 'delete', 'Slett');
       html += objCondominium.showButton('width:175px;', 'insert', 'Ny');

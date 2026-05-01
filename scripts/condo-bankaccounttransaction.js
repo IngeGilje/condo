@@ -246,14 +246,14 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // Header filter
   menuNumber++;
-  html += objBankAccountTransaction.showTableHeaderMenu('width:175px;', menuNumber, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp', '', '');
+  html += objBankAccountTransaction.showTableHeaderMenu('width:175px;', menuNumber, objBankAccountTransaction.accountMenu, '', '', 'Leilighet', 'Velg konto', 'Fra dato', 'Til dato', 'Beløp', '', '');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableColumns('', menuNumber, '', '');
+  html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu, '', '');
 
   // Show all selected condos
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', 'Vis alle', true);
@@ -276,7 +276,7 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableColumns('', menuNumber, '', '', '', '', '', '', '', '', '');
+  html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu, '', '', '', '', '', '', '', '', '');
 
   // end table body
   html += objBankAccountTransaction.endTableBody();
@@ -413,7 +413,7 @@ async function showBankAccountTransactions(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objCondo.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag');
+  html += objCondo.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objCondo.accountMenu, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag');
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -425,7 +425,7 @@ async function showBankAccountTransactions(menuNumber) {
 
     // Show menu
     menuNumber++;
-    html += objAccount.insertTableColumns('', menuNumber);
+    html += objAccount.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -518,7 +518,7 @@ async function showBankAccountTransactions(menuNumber) {
   sumPayment = formatOreToKroner(sumPayment);
 
   menuNumber++;
-  html += objBankAccountTransaction.insertTableColumns('font-weight: 600;', menuNumber, '', '', '', 'Sum', sumIncome, sumPayment, '', '', '');
+  html += objBankAccountTransaction.insertTableColumns('font-weight: 600;', menuNumber,objBankAccountTransaction.accountMenu, '', '', '', 'Sum', sumIncome, sumPayment, '', '', '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -556,7 +556,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
 
   // insert table columns in start of a row
-  html += objBankAccountTransaction.insertTableColumns('', menuNumber);
+  html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu);
 
   html += "<td class='center'>Ny transaksjon</td>";
 

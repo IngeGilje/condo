@@ -30,13 +30,13 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objRemoteHeatingPrice.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeatingPrice.condominiumId, resident, objRemoteHeatingPrice.nineNine);
-      await objCondo.loadCondoTable(objRemoteHeatingPrice.condominiumId,objRemoteHeatingPrice.nineNine);
+      await objCondo.loadCondoTable(objRemoteHeatingPrice.condominiumId, objRemoteHeatingPrice.nineNine);
 
       // Show header
       let menuNumber = 0;
@@ -176,7 +176,7 @@ function insertEmptyTableRow(menuNumber) {
   let date = '';
 
   // insert table columns in start of a row
-  html += objRemoteHeatingPrice.insertTableColumns('', menuNumber);
+  html += objRemoteHeatingPrice.insertTableColumns('', menuNumber, objRemoteHeatingPrice.accountMenu);
 
   html += "<td class='center'>Ny fjernvarmepris</td>";
 
@@ -198,13 +198,13 @@ function showRemoteHeating(menuNumber) {
   let html = objRemoteHeatingPrice.startTable(tableWidth);
 
   menuNumber++;
-  html += objRemoteHeatingPrice.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'År', `Pris kilowatTimer`);
+  html += objRemoteHeatingPrice.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objRemoteHeatingPrice.accountMenu, 'Slett', 'År', `Pris kilowatTimer`);
 
   objRemoteHeatingPrice.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objRemoteHeatingPrice.insertTableColumns('', menuNumber);
+    html += objRemoteHeatingPrice.insertTableColumns('', menuNumber, objRemoteHeatingPrice.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -286,7 +286,7 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   if (validYear && validKilowattHourPrice) {
 
     document.querySelector('.message').style.display = "none";
-  
+
     // Check if the remoteHeatingPrice id exist
     const rowNumberRemoteHeatingPrice = objRemoteHeatingPrice.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
     if (rowNumberRemoteHeatingPrice !== -1) {

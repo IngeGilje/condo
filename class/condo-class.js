@@ -57,92 +57,92 @@ class Condos {
     {
       applicationName: "condo-login.html",
       className: "Menu1",
-      text: "login"
+      text: "1login"
     },
     {
       applicationName: "condo-condominium.html",
       className: "Menu2",
-      text: "Sameie"
+      text: "2Sameie"
     },
     {
       applicationName: "condo-user.html",
       className: "Menu3",
-      text: "Bruker"
+      text: "3Bruker"
     },
     {
       applicationName: "condo-password.html",
       className: "Menu4",
-      text: "Passord"
+      text: "4Passord"
     },
     {
       applicationName: "condo-condo.html",
       className: "Menu5",
-      text: "Leilighet"
+      text: "5Leilighet"
     },
     {
       applicationName: "condo-bankaccount.html",
       className: "Menu6",
-      text: "Bankkonto sameie"
+      text: "6Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
       className: "Menu7",
-      text: "Konto"
+      text: "7Konto"
     },
     {
       applicationName: "condo-userbankaccount.html",
       className: "Menu8",
-      text: "Bankkonto for bruker"
+      text: "8Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
       className: "Menu9",
-      text: "Leverandør"
+      text: "9Leverandør"
     },
     {
       applicationName: "condo-commoncost.html",
       className: "Menu10",
-      text: "Felleskostnader"
+      text: "10Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
       className: "Menu11",
-      text: "Forfall"
+      text: "11Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
       className: "Menu12",
-      text: "Pris fjernvarme"
+      text: "12Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
       className: "Menu13",
-      text: "Fjernvarme"
+      text: "13Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
       className: "Menu14",
-      text: "Budsjett"
+      text: "14Budsjett"
     },
     {
       applicationName: "condo-overview.html",
       className: "Menu15",
-      text: "Betalingsoversikt"
+      text: "15Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
       className: "Menu16",
-      text: "Banktransaksjoner"
+      text: "16Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
       className: "Menu17",
-      text: "Importer transaksjoner"
+      text: "17Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
       className: "Menu18",
-      text: "Årsregnskap"
+      text: "18Årsregnskap"
     }
   ];
 
@@ -698,11 +698,12 @@ class Condos {
   }
 
   // Show table header including menu
-  showTableHeaderMenu(style, menuNumber, ...texts) {
+  showTableHeaderMenu(style, menuNumber, menuType, ...texts) {
 
     let html = "<tr>";
 
-    html += this.showAccountMenu(menuNumber);
+    if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+    if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
     texts.forEach((text) => {
 
       html += `
@@ -738,18 +739,36 @@ class Condos {
   }
 
   // Show the rest of the menu
-  showRestMenu(menuNumber,menuType) {
+  showRestMenu(menuNumber, menuType) {
 
     let html = "";
-    for (; this.arrayAccountMenu.length >= menuNumber; menuNumber++) {
+    if (menuType === this.accountMenu) {
+      menuNumber = (this.arrayAccountMenu.length >= menuNumber)
+        ? menuNumber
+        : 1;
+      for (; this.arrayAccountMenu.length >= menuNumber; menuNumber++) {
 
-      html += "<tr>";
+        html += "<tr>";
 
-      // Show menu
-      html += this.showAccountMenu(menuNumber);
-      html += "</tr>"
+        // Show menu
+        html += this.showAccountMenu(menuNumber);
+        html += "</tr>"
+      }
     }
 
+    if (menuType === this.administrationMenuMenu) {
+      menuNumber = (this.arrayAdministrationMenu.length >= menuNumber)
+        ? menuNumber
+        : 1;
+      for (; this.arrayAdministrationMenu.length >= menuNumber; menuNumber++) {
+
+        html += "<tr>";
+
+        // Show menu
+        html += this.showAdministrationMenu(menuNumber);
+        html += "</tr>"
+      }
+    }
     // The end of the table
     return html;
   }
@@ -966,11 +985,17 @@ class Condos {
   }
 
   // insert table columns in start of a row
-  // and show vertical menu
-  insertTableColumns(style, menuNumber, ...texts) {
+  // and show account menu or administration menu
+  insertTableColumns(style, menuNumber, menuType, ...texts) {
 
     let html = "<tr>";
-    if (menuNumber > 0) html += this.showAccountMenu(menuNumber);
+
+    // if menuNumber is invalid do not show menu
+    if (menuNumber > 0) {
+      if ((menuNumber > 0) && (menuType === this.accountMenu)) html += this.showAccountMenu(menuNumber);
+      if ((menuNumber > 0) && (menuType === this.administrationMenu)) html += this.showAdministrationMenu(menuNumber);
+    }
+
     texts.forEach((text) => {
 
       html += (style === '')
@@ -982,10 +1007,11 @@ class Condos {
   }
 
   // insert menu at start of a row 
-  insertMenu(menuNumber, className, style, ...texts) {
+  insertMenu(menuNumber, className, style, menuType, ...texts) {
 
     let html = "<tr>";
-    if (menuNumber > 0) html += this.showAccountMenu(menuNumber);
+    if ((menuNumber > 0)&& (menuType === this.accountMenu)) html += this.showAccountMenu(menuNumber);
+    if ((menuNumber > 0) && (menuType === this.administrationMenu)) html += this.showAdministrationMenu(menuNumber);
     texts.forEach((text) => {
 
       html += (style === '')
@@ -1062,7 +1088,7 @@ class Condos {
       return false;
     }
   }
-  
+
   // Show vertical account menu
   showAccountMenu(menuNumber) {
 

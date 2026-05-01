@@ -32,13 +32,13 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objDue.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objDue.condominiumId, resident, objDue.nineNine);
-      await objCondo.loadCondoTable(objDue.condominiumId,objDue.nineNine);
+      await objCondo.loadCondoTable(objDue.condominiumId, objDue.nineNine);
       await objCondominium.loadCondominiumsTable();
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objDue.condominiumId, fixedCost);
@@ -184,7 +184,7 @@ function showDues(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objCondo.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'kilowatt Timer', 'Tekst');
+  html += objCondo.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objDue.accountMenu, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'kilowatt Timer', 'Tekst');
 
   let sumAmount = 0;
   let sumKilowattHour = 0;
@@ -193,7 +193,7 @@ function showDues(menuNumber) {
 
     // insert table columns in start of a row
     menuNumber++;
-    html += objCondominium.insertTableColumns('', menuNumber)
+    html += objDue.insertTableColumns('', menuNumber, objDue.accountMenu)
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -250,7 +250,7 @@ function showDues(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
   menuNumber++;
-  html += objDue.insertTableColumns('font-weight: 600;', menuNumber, '', '', '', 'Sum', sumAmount, '');
+  html += objDue.insertTableColumns('font-weight: 600;', menuNumber, objDue.accountMenu, '', '', '', 'Sum', sumAmount, '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -269,7 +269,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = '';
 
   // insert table columns in start of a row
-  html += objCondominium.insertTableColumns('', menuNumber, 'Nytt forfall');
+  html += objCondominium.insertTableColumns('', menuNumber, objDue.accountMenu, 'Nytt forfall');
 
   // condoId
   // Check for valid condo Id
@@ -433,14 +433,14 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   // Header filter
   menuNumber++;
-  html += objDue.showTableHeaderMenu('width:175px;', menuNumber, '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '');
+  html += objDue.showTableHeaderMenu('width:175px;', menuNumber, objDue.accountMenu, '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '');
 
   // start table body
   html += objDue.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objDue.insertTableColumns('', menuNumber, '', '');
+  html += objDue.insertTableColumns('', menuNumber, objDue.accountMenu, '', '');
 
   // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -472,7 +472,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objDue.insertTableColumns('', menuNumber, '', '', '', '', '', '', '')
+  html += objDue.insertTableColumns('', menuNumber, objDue.accountMenu, '', '', '', '', '', '', '')
 
   // end table body
   html += objDue.endTableBody();

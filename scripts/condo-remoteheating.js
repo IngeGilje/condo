@@ -31,13 +31,13 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objRemoteHeating.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeating.condominiumId, resident, objRemoteHeating.nineNine);
-      await objCondo.loadCondoTable(objRemoteHeating.condominiumId,objRemoteHeating.nineNine);
+      await objCondo.loadCondoTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine);
       await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeating.condominiumId);
 
       // Show header
@@ -202,14 +202,14 @@ function showFilter(menuNumber, year) {
 
   // Header filter
   menuNumber++;
-  html += objRemoteHeating.showTableHeaderMenu('width:175px;', menuNumber, '', 'År', 'Pris per kiloWattimer', '', '', '');
+  html += objRemoteHeating.showTableHeaderMenu('width:175px;', menuNumber, objRemoteHeating.accountMenu, 'År', 'Pris per kiloWattimer', '', '', '');
 
   // start table body
   html += objRemoteHeating.startTableBody();
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objRemoteHeating.insertTableColumns('', menuNumber, '');
+  html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu, '');
 
   // Select year
   html += objRemoteHeating.selectInterval('filterYear', 'width:175px;', 2020, 2030, year, true);
@@ -223,7 +223,7 @@ function showFilter(menuNumber, year) {
 
   // insert table columns in start of a row
   menuNumber++;
-  html += objRemoteHeating.insertTableColumns('', menuNumber, '', '', '', '', '', '');
+  html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', '', '');
 
   // end table body
   html += objRemoteHeating.endTableBody();
@@ -242,7 +242,7 @@ function insertEmptyTableRow(menuNumber) {
   let date = "";
 
   // insert table columns in start of a row
-  html += objRemoteHeating.insertTableColumns('', menuNumber);
+  html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu);
 
   html += "<td class='center'>Ny fjernvarme</td>";
 
@@ -277,7 +277,7 @@ function showRemoteHeatings(menuNumber) {
   const currentYear = Number(document.querySelector(".filterYear").value);
   const lastYear = currentYear - 1;
   menuNumber++;
-  html += objRemoteHeating.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
+  html += objRemoteHeating.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objRemoteHeating.accountMenu, 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
 
   objRemoteHeating.arrayRemoteHeatings.forEach((remoteHeating) => {
 
@@ -285,7 +285,7 @@ function showRemoteHeatings(menuNumber) {
 
       // insert table columns in start of a row
       menuNumber++;
-      html += objRemoteHeating.insertTableColumns('', menuNumber);
+      html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu);
 
       // Delete
       let selected = "Ugyldig verdi";
@@ -357,7 +357,7 @@ function showRemoteHeatings(menuNumber) {
   // How much to pay for remote heating for all condos
   totalPriceYear = formatOreToKroner(totalPriceYear);
   menuNumber++;
-  html += objRemoteHeating.insertTableColumns('', menuNumber, '', '', '', '', 'Totalt', totalPriceYear);
+  html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', 'Totalt', totalPriceYear);
 
   html += "</tr>";
 
