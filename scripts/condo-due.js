@@ -191,9 +191,9 @@ function showDues(menuNumber) {
 
   objDue.arrayDues.forEach((due) => {
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objDue.insertTableColumns('', menuNumber, objDue.accountMenu)
+    html += objDue.insertTableRow('', menuNumber, objDue.accountMenu)
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -250,7 +250,7 @@ function showDues(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
   menuNumber++;
-  html += objDue.insertTableColumns('font-weight: 600;', menuNumber, objDue.accountMenu, '', '', '', 'Sum', sumAmount, '');
+  html += objDue.insertTableRow('font-weight: 600;', menuNumber, objDue.accountMenu, '', '', '', 'Sum', sumAmount, '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -268,8 +268,8 @@ function insertEmptyTableRow(menuNumber) {
 
   let html = '';
 
-  // insert table columns in start of a row
-  html += objCondominium.insertTableColumns('', menuNumber, objDue.accountMenu, 'Nytt forfall');
+  // insert a table row
+  html += objCondominium.insertTableRow('', menuNumber, objDue.accountMenu, 'Nytt forfall');
 
   // condoId
   // Check for valid condo Id
@@ -388,22 +388,6 @@ async function updateDuesRow(dueId) {
   }
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objDue.startTable(tableWidth);
-
-  // show main header
-  html += objDue.showTableHeader('width:175px;', 'Forfall');
-
-  // The end of the table
-  html += objDue.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -438,9 +422,9 @@ function showFilter(menuNumber, condominiumId, condoId) {
   // start table body
   html += objDue.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objDue.insertTableColumns('', menuNumber, objDue.accountMenu, '', '');
+  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '', '');
 
   // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -470,9 +454,9 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   html += "<td><td></tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objDue.insertTableColumns('', menuNumber, objDue.accountMenu, '', '', '', '', '', '', '')
+  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '', '', '', '', '', '', '')
 
   // end table body
   html += objDue.endTableBody();

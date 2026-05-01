@@ -251,9 +251,9 @@ function showFilter(menuNumber, condoId, accountId) {
   // start table body
   html += objBankAccountTransaction.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu, '', '');
+  html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '', '');
 
   // Show all selected condos
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', 'Vis alle', true);
@@ -274,9 +274,9 @@ function showFilter(menuNumber, condoId, accountId) {
 
   html += "<td></td><td></td></tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu, '', '', '', '', '', '', '', '', '');
+  html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '', '', '', '', '', '', '', '', '');
 
   // end table body
   html += objBankAccountTransaction.endTableBody();
@@ -425,7 +425,7 @@ async function showBankAccountTransactions(menuNumber) {
 
     // Show menu
     menuNumber++;
-    html += objAccount.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu);
+    html += objAccount.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -518,7 +518,7 @@ async function showBankAccountTransactions(menuNumber) {
   sumPayment = formatOreToKroner(sumPayment);
 
   menuNumber++;
-  html += objBankAccountTransaction.insertTableColumns('font-weight: 600;', menuNumber,objBankAccountTransaction.accountMenu, '', '', '', 'Sum', sumIncome, sumPayment, '', '', '');
+  html += objBankAccountTransaction.insertTableRow('font-weight: 600;', menuNumber,objBankAccountTransaction.accountMenu, '', '', '', 'Sum', sumIncome, sumPayment, '', '', '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -555,8 +555,8 @@ function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
-  // insert table columns in start of a row
-  html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu);
+  // insert a table row
+  html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
 
   html += "<td class='center'>Ny transaksjon</td>";
 

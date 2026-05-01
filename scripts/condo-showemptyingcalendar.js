@@ -37,10 +37,6 @@ async function main() {
 
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 
-      // Show horizonal menu
-      let html = objShowEmptyingCalendar.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
-
       // Show header
       let menuNumber = 0;
       showHeader();
@@ -128,9 +124,9 @@ function showFilter(menuNumber) {
   menuNumber++;
   html += objShowEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, objShowEmptyingCalendar.accountMenu, '', '', 'År', 'Måned', '', '', '', '');
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objShowEmptyingCalendar.insertTableColumns('', menuNumber, objShowEmptyingCalendar.accountMenu, '', '');
+  html += objShowEmptyingCalendar.insertTableRow('', menuNumber, objShowEmptyingCalendar.accountMenu, '', '');
 
   // Selected year
   const year = String(today.getFullYear());
@@ -144,9 +140,9 @@ function showFilter(menuNumber) {
 
   html += "<td></td><td></td><td></td></tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objShowEmptyingCalendar.insertTableColumns("width:150px;", menuNumber, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
+  html += objShowEmptyingCalendar.insertTableRow("width:150px;", menuNumber, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
 
   // end table body
   html += objShowEmptyingCalendar.endTableBody();
@@ -173,7 +169,7 @@ function showEmptyingCalendar(menuNumber) {
 
       // Show menu
       menuNumber++;
-      html += objShowEmptyingCalendar.insertTableColumns('', menuNumber, objShowEmptyingCalendar.accountMenu);
+      html += objShowEmptyingCalendar.insertTableRow('', menuNumber, objShowEmptyingCalendar.accountMenu);
 
       // condoId
       let condoId = emptyingCalendar.condoId;

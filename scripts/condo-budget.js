@@ -24,7 +24,9 @@ async function main() {
     if ((objBudget.condominiumId === 0) || (objBudget.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) 
+      ? 'http://ingegilje.no/condo-login.html' 
+      : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -229,22 +231,6 @@ function calculateSum() {
   document.querySelector('.sum2').value = sumAmount;
 };
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objBudget.startTable(tableWidth);
-
-  // show main header
-  html += objBudget.showTableHeader('width:175px;', 'Budsjett');
-
-  // The end of the table
-  html += objBudget.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -279,9 +265,9 @@ function showFilter(menuNumber) {
   // start table body
   html += objBudget.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBudget.insertTableColumns('', menuNumber, objBudget.accountMenu, '', '');
+  html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu, '', '');
 
   // Selected accounts
   html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
@@ -292,9 +278,9 @@ function showFilter(menuNumber) {
 
   html += "</tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBudget.insertTableColumns('', menuNumber, objBudget.accountMenu, '');
+  html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu, '');
 
   // end table body
   html += objBudget.endTableBody();
@@ -322,7 +308,7 @@ function showBudgets(menuNumber) {
 
     // Show menu
     menuNumber++;
-    html += objBudget.insertTableColumns('', menuNumber, objBudget.accountMenu);
+    html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -367,7 +353,7 @@ function showBudgets(menuNumber) {
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
   menuNumber++;
-  html += objBudget.insertTableColumns('font-weight: 600;', menuNumber, objBudget.accountMenu, '', 'Sum', sumAmount, '', '');
+  html += objBudget.insertTableRow('font-weight: 600;', menuNumber, objBudget.accountMenu, '', 'Sum', sumAmount, '', '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -382,7 +368,7 @@ function showBudgets(menuNumber) {
 
 function insertEmptyTableRow(menuNumber) {
 
-  let html = objAccount.insertTableColumns('', menuNumber, objBudget.accountMenu, 'Nytt budsjett');
+  let html = objAccount.insertTableRow('', menuNumber, objBudget.accountMenu, 'Nytt budsjett');
 
   // accounts
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen konto er valgt', '', enableChanges);

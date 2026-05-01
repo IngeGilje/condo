@@ -136,22 +136,6 @@ async function events() {
   });
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objCondo.startTable(tableWidth);
-
-  // show main header
-  html += objCondo.showTableHeader('width:175px;', 'Leilighet');
-
-  // The end of the table
-  html += objCondo.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -186,9 +170,9 @@ function showFilter(menuNumber, condoId) {
   // start table body
   html += objCondo.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objCondo.insertTableColumns('', menuNumber, objCondo.accountMenu);
+  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
   // condo
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', '', true)
@@ -226,7 +210,7 @@ function showCondo(menuNumber, condoId) {
   html += objCondo.showTableHeaderMenu("width:175px;", menuNumber, objCondo.accountMenu, 'Navn', '');
 
   menuNumber++;
-  html += objCondo.insertTableColumns('', menuNumber, objCondo.accountMenu);
+  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
   // name
   const name = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].name;
@@ -238,9 +222,9 @@ function showCondo(menuNumber, condoId) {
   menuNumber++;
   html += objCondo.showTableHeaderMenu("width:175px;", menuNumber, objCondo.accountMenu, 'Gate', 'Adresse 2');
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objCondo.insertTableColumns('', menuNumber, objCondo.accountMenu);
+  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
   // street
   const street = (rowNumberCondo === -1)
@@ -259,9 +243,9 @@ function showCondo(menuNumber, condoId) {
   menuNumber++;
   html += objCondo.showTableHeaderMenu("width:175px;", menuNumber, objCondo.accountMenu, 'Postnummer', 'Poststed');
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objCondo.insertTableColumns('', menuNumber, objCondo.accountMenu);
+  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
   // postalCode
   const postalCode = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].postalCode;
@@ -278,9 +262,9 @@ function showCondo(menuNumber, condoId) {
   menuNumber++;
   html += objCondo.showTableHeaderMenu("width:175px;", menuNumber, objCondo.accountMenu, 'Areal i m2', '');
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objCondo.insertTableColumns('', menuNumber, objCondo.accountMenu);
+  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
   // squareMeters
   const squareMeters = (rowNumberCondo === -1) ? '' : formatOreToKroner(objCondo.arrayCondo[rowNumberCondo].squareMeters);
@@ -290,26 +274,26 @@ function showCondo(menuNumber, condoId) {
 
   // Buttons
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objCondo.insertTableColumns('', menuNumber, objCondo.accountMenu);
+  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
   html += "</tr>";
 
   // Show buttons
   if (enableChanges) {
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objCondo.insertTableColumns('', menuNumber, objCondo.accountMenu);
+    html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
     html += objCondo.showButton('width:175px;', 'update', 'Oppdater');
     html += objCondo.showButton('width:175px;', 'cancel', 'Angre');
     html += "</tr>";
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objCondo.insertTableColumns('', menuNumber, objCondo.accountMenu);
+    html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
     html += objCondo.showButton('width:175px;', 'delete', 'Slett');
     html += objCondo.showButton('width:175px;', 'insert', 'Ny');

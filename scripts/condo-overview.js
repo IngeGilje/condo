@@ -28,7 +28,9 @@ async function main() {
     if ((objOverview.condominiumId === 0) || (objOverview.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) 
+      ? 'http://ingegilje.no/condo-login.html' 
+      : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -179,9 +181,9 @@ function showFilter(menuNumber, condoId) {
   // start table body
   html += objOverview.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objOverview.insertTableColumns('', menuNumber, objOverview.accountMenu, '');
+  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
 
   // Show all selected condos
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', '', true);
@@ -197,9 +199,9 @@ function showFilter(menuNumber, condoId) {
 
   html += "<td></td><td></td></tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objOverview.insertTableColumns('', menuNumber, objOverview.accountMenu, '');
+  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
 
   // end table body
   html += objOverview.endTableBody();
@@ -229,9 +231,9 @@ function showDues(menuNumber) {
 
   objDue.arrayDues.forEach((due) => {
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objDue.insertTableColumns('', menuNumber, objOverview.accountMenu);
+    html += objDue.insertTableRow('', menuNumber, objOverview.accountMenu);
 
     // condo
     className = `condo${due.dueId}`;
@@ -273,11 +275,11 @@ function showDues(menuNumber) {
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
   menuNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumDue, '', '');
+  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumDue, '', '');
   html += "</tr>"
 
   menuNumber++;
-  html += objOverview.insertTableColumns('', menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
+  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
   html += "</tr>"
 
   // The end of the table
@@ -304,9 +306,9 @@ function showBankAccountTransactions(menuNumber) {
 
   objBankAccountTransaction.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objOverview.insertTableColumns('', menuNumber, objOverview.accountMenu, '');
+    html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
@@ -347,11 +349,11 @@ function showBankAccountTransactions(menuNumber) {
   sumPayments = formatOreToKroner(sumPayments);
 
   menuNumber++;
-  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', '', 'Sum', sumIncomes, '');
+  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', '', 'Sum', sumIncomes, '');
   html += "</tr>"
 
   menuNumber++;
-  html += objOverview.insertTableColumns('', menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
+  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
 
   // The end of the table
   html += objDue.endTable();
@@ -417,7 +419,7 @@ async function showHowMuchToPay(menuNumber) {
 
   menuNumber++;
   openingBalance = formatOreToKroner(openingBalance);
-  html += objOverview.insertTableColumns('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumToPay, sumIncome, overPay);
+  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumToPay, sumIncome, overPay);
 
   // Show the rest of the menu
   menuNumber++;

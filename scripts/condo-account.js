@@ -159,25 +159,6 @@ function resetValues() {
   document.querySelector('.button--accounts-insert').disabled = true;
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objAccount.startTable(tableWidth);
-
-  // show main header
-  html += objAccount.showTableHeader('width:175px;', 'Konto');
-
-  // The end of the table header
-  html += objAccount.endTableHeader();
-
-  // The end of the table
-  html += objAccount.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -212,18 +193,18 @@ function showFilter(menuNumber) {
   // start table body
   html += objAccount.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objAccount.insertTableColumns('', menuNumber,objAccount.accountMenu, '');
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
 
   // fixed or not fixed cost
   html += objAccount.showSelectedValues('filterFixedCost', 'width:175px;', true, 'Alle', constFixedCost, constVariableCost, 'Alle');
 
   html += "</tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objAccount.insertTableColumns('', menuNumber,objAccount.accountMenu, '');
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
 
   // end table body
   html += objAccount.endTableBody();
@@ -241,8 +222,8 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
 
   // Show menu
-  // insert table columns in start of a row
-  html += objAccount.insertTableColumns('', menuNumber,objAccount.accountMenu);
+  // insert a table row
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu);
 
   // delete
   html += "<td class='center'>Ny konto</td>";
@@ -271,7 +252,7 @@ function showAccounts(menuNumber) {
 
     // Show menu
     menuNumber++;
-    html += objAccount.insertTableColumns('', menuNumber,objAccount.accountMenu);
+    html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";

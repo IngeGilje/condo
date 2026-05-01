@@ -17,9 +17,15 @@ exitIfNoActivity();
 if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 
   // LogIn is not valid
-  const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+  const URL = (objUser.serverStatus === 1)
+    ? 'http://ingegilje.no/condo-login.html'
+    : 'http://localhost/condo-login.html';
   window.location.href = URL;
 } else {
+
+  // Show horizonal menu
+  let html = objBankAccount.showHorizontalMenu();
+  document.querySelector('.horizontalMenu').innerHTML = html;
 
   // Call main when script loads
   main();
@@ -240,9 +246,9 @@ function showBankAccounts(menuNumber, bankAccountId) {
   menuNumber++;
   html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, objBankAccount.accountMenu, 'Dato', 'Inngående saldo');
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
+  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
 
   // opening balance date
   const openingBalanceDate = (rowNumberBankAccount === -1)
@@ -265,9 +271,9 @@ function showBankAccounts(menuNumber, bankAccountId) {
   menuNumber++;
   html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, objBankAccount.accountMenu, 'Dato', 'Utgående saldo');
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
+  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
 
   // closing balance date
   const closingBalanceDate = (rowNumberBankAccount === -1)
@@ -287,27 +293,27 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   html += "</tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
+  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
 
   html += "</tr>";
 
   // Show buttons
   if (enableChanges) {
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
+    html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
 
     // Show buttons
     html += objBankAccount.showButton('width:175px;', 'update', 'Oppdater');
     html += objBankAccount.showButton('width:175px;', 'cancel', 'Angre');
     html += "</tr>";
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
+    html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
 
     // Show buttons
     html += objBankAccount.showButton('width:175px;', 'delete', 'Slett');
@@ -462,12 +468,12 @@ function showFilter(menuNumber, condominiumId) {
   // start table body
   html += objBankAccount.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu);
+  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '',enableChanges);
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', enableChanges);
 
   // Show all bankaccounts for selected condominiums
   // Get last id in last object in bankaccounts array
@@ -478,9 +484,9 @@ function showFilter(menuNumber, condominiumId) {
 
   html += "</tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber,objBankAccount.accountMenu, '', '');
+  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu, '', '');
 
   // end table body
   html += objBankAccount.endTableBody();

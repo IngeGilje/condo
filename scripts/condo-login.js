@@ -38,6 +38,59 @@ async function events() {
   });
 }
 
+// Show login
+function showLogin() {
+
+  // start table
+  let html = objLogIn.startTable('width:250px;margin: 0 auto;');
+
+  // Header for value including menu
+  html += objLogIn.showTableHeader('', objLogIn.accountMenu, 'Email');
+
+  // insert a table row
+  html += objLogIn.insertTableRow('margin: 0 auto;', 0, objLogIn.accountMenu);
+
+  // email
+  const email = '';
+  html += objLogIn.inputTableColumn('email', '', email, 45, true);
+  html += "</tr>";
+
+  // insert a table row
+  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
+  html += "</tr>";
+
+  // password
+  html += objLogIn.showTableHeader("width:250px;", objLogIn.accountMenu, 'Passord');
+
+  // insert a table row
+  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
+
+  // password
+  password = '';
+  html += objLogIn.inputTableColumnPassword('password', '', password, 45, true);
+  html += "</tr>";
+
+  // insert a table row
+  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
+  html += "</tr>";
+
+  // insert a table row
+  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
+
+  // Show buttons
+  html += objLogIn.showButton('width:170px;', 'LogIn', 'LogIn');
+  html += "</tr>";
+
+  // insert a table row
+  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
+
+  html += "</tr>";
+
+  // The end of the table
+  html += objLogIn.endTable();
+  document.querySelector('.result').innerHTML = html;
+}
+
 // reset values
 function resetValues() {
 
@@ -48,64 +101,6 @@ function resetValues() {
   document.querySelector('.password').value = '';
 
   sessionStorage.clear();
-}
-
-// Show login
-function showLogin() {
-
-  // start table
-  let html = objLogIn.startTable('width:250px;margin: 0 auto;');
-
-  // Header for value including menu
-  html += objLogIn.showTableHeader('', 'Email');
-
-  // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('margin: 0 auto;', 0);
-
-  // email
-  const email = '';
-  html += objLogIn.inputTableColumn('email', '', email, 45, true);
-
-  html += "</tr>";
-
-  // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu, '');
-
-  html += "</tr>";
-
-  // password
-  html += "<tr>";
-  html += objLogIn.showTableHeader("width:250px;", 'Passord');
-
-  // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu);
-
-  // password
-  password = '';
-  html += objLogIn.inputTableColumnPassword('password', '', password, 45, true);
-
-  html += "</tr>";
-
-  // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu, '');
-
-  html += "</tr>";
-
-  // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu);
-
-  // Show buttons
-  html += objLogIn.showButton('width:170px;', 'LogIn', 'LogIn');
-  html += "</tr>";
-
-  // insert table columns in start of a row
-  html += objLogIn.insertTableColumns('', 0,objLogIn.accountMenu, '');
-
-  html += "</tr>";
-
-  // The end of the table
-  html += objLogIn.endTable();
-  document.querySelector('.result').innerHTML = html;
 }
 
 // check user and password

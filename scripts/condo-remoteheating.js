@@ -207,9 +207,9 @@ function showFilter(menuNumber, year) {
   // start table body
   html += objRemoteHeating.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu, '');
+  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '');
 
   // Select year
   html += objRemoteHeating.selectInterval('filterYear', 'width:175px;', 2020, 2030, year, true);
@@ -221,9 +221,9 @@ function showFilter(menuNumber, year) {
 
   html += "<td></td><td></td><td></td></tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', '', '');
+  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', '', '');
 
   // end table body
   html += objRemoteHeating.endTableBody();
@@ -241,8 +241,8 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
   let date = "";
 
-  // insert table columns in start of a row
-  html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu);
+  // insert a table row
+  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu);
 
   html += "<td class='center'>Ny fjernvarme</td>";
 
@@ -283,9 +283,9 @@ function showRemoteHeatings(menuNumber) {
 
     if (remoteHeating.year === currentYear) {
 
-      // insert table columns in start of a row
+      // insert a table row
       menuNumber++;
-      html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu);
+      html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu);
 
       // Delete
       let selected = "Ugyldig verdi";
@@ -357,7 +357,7 @@ function showRemoteHeatings(menuNumber) {
   // How much to pay for remote heating for all condos
   totalPriceYear = formatOreToKroner(totalPriceYear);
   menuNumber++;
-  html += objRemoteHeating.insertTableColumns('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', 'Totalt', totalPriceYear);
+  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', 'Totalt', totalPriceYear);
 
   html += "</tr>";
 

@@ -175,8 +175,8 @@ function insertEmptyTableRow(menuNumber) {
   let html = '';
   let date = '';
 
-  // insert table columns in start of a row
-  html += objRemoteHeatingPrice.insertTableColumns('', menuNumber, objRemoteHeatingPrice.accountMenu);
+  // insert a table row
+  html += objRemoteHeatingPrice.insertTableRow('', menuNumber, objRemoteHeatingPrice.accountMenu);
 
   html += "<td class='center'>Ny fjernvarmepris</td>";
 
@@ -202,9 +202,9 @@ function showRemoteHeating(menuNumber) {
 
   objRemoteHeatingPrice.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objRemoteHeatingPrice.insertTableColumns('', menuNumber, objRemoteHeatingPrice.accountMenu);
+    html += objRemoteHeatingPrice.insertTableRow('', menuNumber, objRemoteHeatingPrice.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";

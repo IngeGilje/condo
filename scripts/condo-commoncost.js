@@ -24,7 +24,9 @@ async function main() {
     if ((objCommonCost.condominiumId === 0) || (objCommonCost.user === null)) {
 
       // LogIn is not valid
-      const URL = (objCommonCost.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objCommonCost.serverStatus === 1) 
+      ? 'http://ingegilje.no/condo-login.html' 
+      : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -178,8 +180,8 @@ function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
-  // insert table columns in start of a row
-  html += objCommonCost.insertTableColumns('', menuNumber, objCommonCost.accountMenu);
+  // insert a table row
+  html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu);
 
   html += "<td class='center'>Ny felleskostnad</td>";
 
@@ -208,9 +210,9 @@ function showCommonCost(menuNumber) {
 
   objCommonCost.arrayCommonCosts.forEach((commonCost) => {
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objCommonCost.insertTableColumns('', menuNumber, objCommonCost.accountMenu);
+    html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";

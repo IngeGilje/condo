@@ -154,9 +154,9 @@ function showFilter(menuNumber, bankAccountTransactionId) {
   // start table body
   html += objBankAccountTransaction.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableColumns('width:175px;', menuNumber,objBankAccountTransaction.accountMenu, '');
+  html += objBankAccountTransaction.insertTableRow('width:175px;', menuNumber,objBankAccountTransaction.accountMenu, '');
 
   // show selected bank account transactions
   html += objBankAccountTransaction.showSelectedBankAccountTransactions('filterBankAccountTransactionId', 'width:175px;', bankAccountTransactionId, '')
@@ -188,7 +188,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     html += objVoucher.showTableHeaderMenu("width:175px;", menuNumber, objVoucher.accountMenu, 'Dato', 'Beløp', 'Konto');
 
     menuNumber++;
-    html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu);
+    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
 
     // date
     let date = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].date;
@@ -212,7 +212,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     html += objVoucher.showTableHeaderMenu("width:175px;", menuNumber, objVoucher.accountMenu, 'Filnavn', '', '');
 
     menuNumber++;
-    html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu);
+    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
 
     let voucherFileName = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].voucherFileName;
     voucherFileName = (voucherFileName) 
@@ -224,22 +224,22 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // Show button
     menuNumber++;
-    html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu, '', '', '');
+    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '', '', '');
     html += "</tr>";
 
     menuNumber++;
-    html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu);
+    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
 
     html += objBankAccountTransaction.showButton('width:175px;', 'bankAccountTransaction', 'Tilbake');
     html += "</tr>";
 
     menuNumber++;
-    html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu, '', '', '');
+    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '', '', '');
     html += "</tr>";
 
     // Show pdf file
     menuNumber++;
-    html += objBankAccountTransaction.insertTableColumns('', menuNumber,objBankAccountTransaction.accountMenu);
+    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
 
     html += `
       <td colspan="3" rowspan="13">

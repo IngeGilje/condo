@@ -37,7 +37,7 @@ async function main() {
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 
       // Show horizonal menu
-      let html = objEmptyingCalendar.showHorizontalMenu();
+      html = objEmptyingCalendar.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
       // Show header
@@ -167,7 +167,7 @@ function showHeader() {
   html += objEmptyingCalendar.startTableBody();
 
   // show main header
-  html += objEmptyingCalendar.showTableHeaderLogOut('width:206px;', '1', '2', '3', '4Avfallskalender', '5', '6', '7', '8');
+  html += objEmptyingCalendar.showTableHeaderLogOut('width:206px;', '', '', '', 'Avfallskalender', '', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -186,14 +186,14 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, objEmptyingCalendar.accountMenu, '2', '3', '4År', '5Måned', '6', '7', '8', '9');
+  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, objEmptyingCalendar.administrationMenu, '', '', 'År', 'Måned', '', '', '', '');
 
   // start table body
   html += objEmptyingCalendar.startTableBody();
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objEmptyingCalendar.insertTableColumns('', menuNumber, objEmptyingCalendar.accountMenu, '', '');
+  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '');
 
   // Selected year
   const year = String(today.getFullYear());
@@ -205,11 +205,11 @@ function showFilter(menuNumber) {
   let month = Number(date.split('.')[1]); // Extract the month part
   html += objEmptyingCalendar.showSelectedMonths('filterMonth', "width:150px;", month, true);
 
-  html += "<td>6</td><td>7</td><td>8</td><td>9</td></tr>";
+  html += "<td></td><td></td><td></td><td></td></tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objEmptyingCalendar.insertTableColumns('', menuNumber, objEmptyingCalendar.accountMenu, '2', '3', '4', '5', '6', '7', '8', '9');
+  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
 
   // end table body
   html += objEmptyingCalendar.endTableBody();
@@ -229,14 +229,14 @@ function showEmptyingCalendar(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;background:#e0f0e0;', menuNumber, objEmptyingCalendar.accountMenu, '2Slett', '3Ansvarlig', '4Dato', '5Restavfall', '6Papiravfall', '7Matavfall', '8Plastavfall', '9Juletre');
+  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;background:#e0f0e0;', menuNumber, objEmptyingCalendar.administrationMenu, 'Slett', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
   if (objEmptyingCalendar.arrayEmptyingCalendar.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendar.forEach((emptyingCalendar) => {
 
       // Show menu
       menuNumber++;
-      html += objEmptyingCalendar.insertTableColumns('', menuNumber, objEmptyingCalendar.accountMenu);
+      html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu);
 
       // Delete
       let selected = "Ugyldig verdi";
@@ -304,7 +304,7 @@ function showEmptyingCalendar(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objEmptyingCalendar.showRestMenu(menuNumber, objEmptyingCalendar.accountMenu);
+  html += objEmptyingCalendar.showRestMenu(menuNumber, objEmptyingCalendar.administrationMenu);
 
   // The end of the table
   html += objEmptyingCalendar.endTable();
@@ -319,8 +319,8 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
 
   // Show menu
-  // insert table columns in start of a row
-  html += objEmptyingCalendar.insertTableColumns('', menuNumber, objEmptyingCalendar.accountMenu);
+  // insert a table row
+  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu);
 
   // delete
   html += "<td class='center'>2Ny tømming</td>";

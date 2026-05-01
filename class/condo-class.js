@@ -707,13 +707,12 @@ class Condos {
     texts.forEach((text) => {
 
       html += `
-        <td 
-          class="no-border center"
-          ${(style) ? `style="${style}"` : 'style="width:175px;"'}
-        >
-          ${text}
-        </td>
-      `;
+      <td 
+        class="no-border center"
+        ${(style) ? `style="${style}"` : 'style="width:175px;"'}
+      >
+        ${text}
+      </td>`;
     });
 
     html += "</tr>";
@@ -743,30 +742,28 @@ class Condos {
 
     let html = "";
     if (menuType === this.accountMenu) {
-      menuNumber = (this.arrayAccountMenu.length >= menuNumber)
-        ? menuNumber
-        : 1;
-      for (; this.arrayAccountMenu.length >= menuNumber; menuNumber++) {
+      if (this.arrayAccountMenu.length >= menuNumber) {
+        for (; this.arrayAccountMenu.length >= menuNumber; menuNumber++) {
 
-        html += "<tr>";
+          html += "<tr>";
 
-        // Show menu
-        html += this.showAccountMenu(menuNumber);
-        html += "</tr>"
+          // Show menu
+          html += this.showAccountMenu(menuNumber);
+          html += "</tr>"
+        }
       }
     }
 
     if (menuType === this.administrationMenuMenu) {
-      menuNumber = (this.arrayAdministrationMenu.length >= menuNumber)
-        ? menuNumber
-        : 1;
-      for (; this.arrayAdministrationMenu.length >= menuNumber; menuNumber++) {
+      if (this.arrayAdministrationMenu.length >= menuNumber) {
+        for (; this.arrayAdministrationMenu.length >= menuNumber; menuNumber++) {
 
-        html += "<tr>";
+          html += "<tr>";
 
-        // Show menu
-        html += this.showAdministrationMenu(menuNumber);
-        html += "</tr>"
+          // Show menu
+          html += this.showAdministrationMenu(menuNumber);
+          html += "</tr>"
+        }
       }
     }
     // The end of the table
@@ -931,7 +928,7 @@ class Condos {
   }
 
   // Show main header table
-  showTableHeader(style, ...texts) {
+  showTableHeader(style, menuType, ...texts) {
 
     let html = `<tr>`;
 
@@ -944,9 +941,8 @@ class Condos {
     });
 
     // empty row
-    html += this.insertTableColumns('', 0, '');
-
-    //html += "</thead>";
+    html += this.insertTableRow('', 0, 0, '');
+    html += "</tr>";
     return html;
   }
 
@@ -967,7 +963,7 @@ class Condos {
     html += this.showButton(style, className, 'Logg ut');
 
     // empty row
-    html += this.insertTableColumns('', 0, '');
+    //html += this.insertTableRow('', 0, menuType, '');
 
     return html;
   }
@@ -984,16 +980,16 @@ class Condos {
     return "<tbody>";
   }
 
-  // insert table columns in start of a row
+  // insert a table row
   // and show account menu or administration menu
-  insertTableColumns(style, menuNumber, menuType, ...texts) {
+  insertTableRow(style, menuNumber, menuType, ...texts) {
 
     let html = "<tr>";
 
     // if menuNumber is invalid do not show menu
     if (menuNumber > 0) {
-      if ((menuNumber > 0) && (menuType === this.accountMenu)) html += this.showAccountMenu(menuNumber);
-      if ((menuNumber > 0) && (menuType === this.administrationMenu)) html += this.showAdministrationMenu(menuNumber);
+      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
     }
 
     texts.forEach((text) => {
@@ -1010,7 +1006,7 @@ class Condos {
   insertMenu(menuNumber, className, style, menuType, ...texts) {
 
     let html = "<tr>";
-    if ((menuNumber > 0)&& (menuType === this.accountMenu)) html += this.showAccountMenu(menuNumber);
+    if ((menuNumber > 0) && (menuType === this.accountMenu)) html += this.showAccountMenu(menuNumber);
     if ((menuNumber > 0) && (menuType === this.administrationMenu)) html += this.showAdministrationMenu(menuNumber);
     texts.forEach((text) => {
 
@@ -1181,7 +1177,7 @@ class Condos {
     let html = object.startTable(style);
 
     // show main header
-    html += object.showTableHeader('width:250px;', message);
+    html += object.showTableHeader('width:250px;', menuType, message);
 
     // The end of the table
     html += object.endTable();

@@ -34,7 +34,9 @@ async function main() {
     if ((objImportFile.condominiumId === 0) || (objImportFile.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1) 
+      ? 'http://ingegilje.no/condo-login.html' 
+      : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -491,22 +493,6 @@ function checkBankAccountTransaction(income, payment, date) {
   return bankAccountTransactionExist;
 }
 
-/*
-// Show header
-function showHeader() {
- 
-  // Start table
-  let html = objImportFile.startTable(tableWidth);
- 
-  // show main header
-  html += objImportFile.showTableHeader('width:175px;', 'Import av bankkontotransaksjoner');
- 
-  // The end of the table
-  html += objImportFile.endTable();
-  document.querySelector('.header').innerHTML = html;
-}
-*/
-
 // Show header
 function showHeader() {
 
@@ -539,7 +525,7 @@ function showFilter(menuNumber) {
   html += "</tr>";
 
   menuNumber++;
-  html += objImportFile.insertTableColumns('', menuNumber, objImportFile.accountMenu, '', '', '', '', '', '', '', '');
+  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '', '', '', '', '', '', '', '');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -566,9 +552,9 @@ function showBankAccountTransactions(menuNumber) {
 
   arrayTransactions.forEach((transaction) => {
 
-    // insert table columns in start of a row
+    // insert a table row
     menuNumber++;
-    html += objImportFile.insertTableColumns('', menuNumber, objImportFile.accountMenu);
+    html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu);
 
     // Date
     let className = `accountingDate${menuNumber}`;
@@ -622,13 +608,13 @@ function showBankAccountTransactions(menuNumber) {
 
   // Show sum row
   menuNumber++;
-  html += objImportFile.insertTableColumns('font-weight: 600;', menuNumber, objImportFile.accountMenu, '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
+  html += objImportFile.insertTableRow('font-weight: 600;', menuNumber, objImportFile.accountMenu, '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
 
   // Show update button
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objImportFile.insertTableColumns('', menuNumber, objImportFile.accountMenu, '');
+  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '');
 
   html += objImportFile.showButton('width:175px;', 'update', 'Oppdater');
   html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
@@ -691,22 +677,22 @@ function importFileName(menuNumber) {
     <td></td><td></td><td></td><td></td>
   </tr>`;
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber, objImportFile.accountMenu);
+  html += objBankAccount.insertTableRow('', menuNumber, objImportFile.accountMenu);
   html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objImportFile.insertTableColumns('', menuNumber, objImportFile.accountMenu, '', '');
+  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '', '');
 
   // Show buttons
   html += objBankAccount.showButton('width:175px;', 'importTransacionFile', 'Start import', 'Importer transaksjonsfil');
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
-  // insert table columns in start of a row
+  // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableColumns('', menuNumber, objImportFile.accountMenu);
+  html += objBankAccount.insertTableRow('', menuNumber, objImportFile.accountMenu);
   html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // Show the rest of the menu
