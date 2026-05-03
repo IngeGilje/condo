@@ -134,7 +134,7 @@ class Account extends Condos {
 
     let html = `
     <td
-      class="centerCell one-line center"
+      class="centerCell one-line left"
     >
       <select 
         class="${className} center"

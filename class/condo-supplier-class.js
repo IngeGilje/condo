@@ -4,84 +4,13 @@ class Supplier extends Condos {
   // supplier information
   arraySuppliers;
 
-  /*
-  // Show all suppliers
-  showSelectedSuppliers(classValue, supplierId) {
-
-    let html = `
-      <form 
-        id="supplier"
-        action="/submit"
-        method="POST"
-      >
-        <label class="label-${classValue}"
-          id="supplier"
-          for="supplier">
-            Velg leverandør
-        </label>
-        <select class="select-${classValue}" 
-          id="supplier"
-          name="supplier"
-        >
-    `;
-
-    let selectedOption = false;
-
-    // Check if supplier array is empty
-    if (this.arraySuppliers.length > 0) {
-      this.arraySuppliers.forEach((supplier) => {
-        if (supplier.supplierId >= 0) {
-          if (supplier.supplierId === supplierId) {
-
-            html += `
-            <option 
-              value="${supplier.supplierId}"
-              selected
-              >
-              ${supplier.supplierId} - ${supplier.name}
-            </option>
-          `;
-            selectedOption =
-              true;
-          } else {
-            html += `
-            <option 
-              value="${supplier.supplierId}">
-              ${supplier.supplierId} - ${supplier.name}
-            </option>
-          `;
-          }
-        }
-      });
-
-    } else {
-
-      html += `
-      <option value="0" 
-        selected
-      >
-        Ingen leverandører
-      </option>
-    `;
-      selectedOption =
-        true;
-    }
-
-    html += `
-      </select >
-    </form>`;
-
-    document.querySelector(`.div-${classValue}`).innerHTML = html;
-  }
-  */
-
   showSelectedSuppliers(className, style, supplierId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
     let html = `
     <td
-      class="centerCell one-line center"
+      class="centerCell one-line left"
     >
       <select 
         class="${className} center"

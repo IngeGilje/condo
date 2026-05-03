@@ -57,92 +57,92 @@ class Condos {
     {
       applicationName: "condo-login.html",
       className: "Menu1",
-      text: "1login"
+      text: "Login"
     },
     {
       applicationName: "condo-condominium.html",
       className: "Menu2",
-      text: "2Sameie"
+      text: "Sameie"
     },
     {
       applicationName: "condo-user.html",
       className: "Menu3",
-      text: "3Bruker"
+      text: "Bruker"
     },
     {
       applicationName: "condo-password.html",
       className: "Menu4",
-      text: "4Passord"
+      text: "Passord"
     },
     {
       applicationName: "condo-condo.html",
       className: "Menu5",
-      text: "5Leilighet"
+      text: "Leilighet"
     },
     {
       applicationName: "condo-bankaccount.html",
       className: "Menu6",
-      text: "6Bankkonto sameie"
+      text: "Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
       className: "Menu7",
-      text: "7Konto"
+      text: "Konto"
     },
     {
       applicationName: "condo-userbankaccount.html",
       className: "Menu8",
-      text: "8Bankkonto for bruker"
+      text: "Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
       className: "Menu9",
-      text: "9Leverandør"
+      text: "Leverandør"
     },
     {
       applicationName: "condo-commoncost.html",
       className: "Menu10",
-      text: "10Felleskostnader"
+      text: "Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
       className: "Menu11",
-      text: "11Forfall"
+      text: "Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
       className: "Menu12",
-      text: "12Pris fjernvarme"
+      text: "Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
       className: "Menu13",
-      text: "13Fjernvarme"
+      text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
       className: "Menu14",
-      text: "14Budsjett"
+      text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
       className: "Menu15",
-      text: "15Betalingsoversikt"
+      text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
       className: "Menu16",
-      text: "16Banktransaksjoner"
+      text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
       className: "Menu17",
-      text: "17Importer transaksjoner"
+      text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
       className: "Menu18",
-      text: "18Årsregnskap"
+      text: "Årsregnskap"
     }
   ];
 
@@ -193,7 +193,7 @@ class Condos {
 
     return `
     <td 
-      class="center" 
+      class="left" 
       colspan="${colspan}" 
       rowspan="${rowspan}"
     >
@@ -209,7 +209,7 @@ class Condos {
   }
 
   // Show textarea
-  texteraTableColumn(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+  textAreaTableColumn(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
     return `
     <td 
@@ -217,10 +217,11 @@ class Condos {
       rowspan="${rowspan}" 
     >
       <textarea 
+        wrap="soft"
         cols="50" 
         rows="6"
         class="${className} news-text"
-        maxlength="${maxlength}"
+        length="${maxlength}"
         value=""
       >
         ${value}
@@ -955,12 +956,22 @@ class Condos {
 
       if (text === '' && style === '') html += `<th class="no-border">${text}</th>`;
       if (text === '' && style !== '') html += `<th class="no-border" style="${style}">${text}</th>`;
-      if (text !== '' && style === '') html += `<th class="center no-border">${text}</th>`;
-      if (text !== '' && style !== '') html += `<th class="center no-border" style="${style}">${text}</th>`;
+      if (text !== '' && style === '') html += `<th class="no-border center">${text}</th>`;
+      if (text !== '' && style !== '') html += `<th class="no-border center" style="${style}">${text}</th>`;
     });
 
-    const className = 'logOut';
-    html += this.showButton(style, className, 'Logg ut');
+    //html += this.showButton(style, className, 'Logg ut');
+    html += `
+    <th 
+      class="right no-border"
+    >
+      <button 
+        class="logOut right one-line"
+        style="width:75px;"}
+      >
+        Logg ut
+      </button>
+    </th>`;
 
     // empty row
     //html += this.insertTableRow('', 0, menuType, '');
@@ -1006,8 +1017,11 @@ class Condos {
   insertMenu(menuNumber, className, style, menuType, ...texts) {
 
     let html = "<tr>";
-    if ((menuNumber > 0) && (menuType === this.accountMenu)) html += this.showAccountMenu(menuNumber);
-    if ((menuNumber > 0) && (menuType === this.administrationMenu)) html += this.showAdministrationMenu(menuNumber);
+    
+    if (menuNumber > 0) {
+      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    }
     texts.forEach((text) => {
 
       html += (style === '')

@@ -62,7 +62,7 @@ class News extends Condos {
       <select 
         class="${className} center"
         ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style=${style}` : 'style=width:175px;'}
+        ${(style) ? `style="${style}"` : 'style="width:175px;"'}
       >`;
 
     // Check if News array is empty

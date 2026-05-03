@@ -57,7 +57,7 @@ class Condo extends Condos {
 
     let html = `
     <td
-      class="centerCell one-line center"
+      class="one-line left"
     >
       <select 
         class="${className} center"

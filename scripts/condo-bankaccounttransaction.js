@@ -490,7 +490,6 @@ async function showBankAccountTransactions(menuNumber) {
       } else {
 
         // Show empty column if the file does not exist
-        //html += "<td style='width:100px;'></td>";
         className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
         html += objBankAccountTransaction.showButton('width:100px; background-color: #f89595;', className, 'Vis bilag');
       }
