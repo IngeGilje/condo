@@ -6,7 +6,7 @@ const objUser = new User('user');
 const objNews = new News('news');
 
 const enableChanges = (objNews.securityLevel > 5);
-const tableWidth = 'width:600px;';
+//const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -139,7 +139,8 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objNews.startTable(tableWidth);
+  //let html = objNews.startTable(tableWidth);
+  let html = objNews.initializeTable(175,350,75);
 
   // start table body
   html += objNews.startTableBody();
@@ -160,7 +161,8 @@ function showHeader() {
 function showFilter(menuNumber, newsId) {
 
   // Start table
-  let html = objNews.startTable(tableWidth);
+  //let html = objNews.startTable(tableWidth);
+  let html = objNews.startTable();
 
   // Header filter
   menuNumber++;
@@ -177,7 +179,7 @@ function showFilter(menuNumber, newsId) {
   html += objNews.showSelectedNews('filterNewsId', 'width:175px;', newsId, '', '', true)
   html += "<td>3</td></tr>";
 
-   // table header
+  // table header
   menuNumber++;
   html += objNews.showTableHeaderMenu("width:175px;", menuNumber, objNews.administrationMenu, '2', '3');
 
@@ -195,7 +197,8 @@ function showFilter(menuNumber, newsId) {
 function showNews(menuNumber, newsId) {
 
   // start table
-  let html = objNews.startTable(tableWidth);
+  //let html = objNews.startTable(tableWidth);
+  let html = objNews.startTable();
 
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
@@ -226,7 +229,7 @@ function showNews(menuNumber, newsId) {
   html += "</tr>";
 
   menuNumber++;
-  html += objNews.insertMenu(menuNumber, '', '',objNews.administrationMenu);
+  html += objNews.insertMenu(menuNumber, '', '', objNews.administrationMenu);
   html += "<td>2</td><td>3</td></tr>";
 
   // title
@@ -261,10 +264,10 @@ function showNews(menuNumber, newsId) {
   html += objNews.inputTableColumn('image', 'width:460px;', image, 255, enableChanges, 2);
   html += "</tr>";
 
-    // insert a table row
-    menuNumber++;
-    html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
-    html += "<td>2</td><td>3</td></tr>";
+  // insert a table row
+  menuNumber++;
+  html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
+  html += "<td>2</td><td>3</td></tr>";
 
   // content
   menuNumber++;
@@ -281,11 +284,11 @@ function showNews(menuNumber, newsId) {
   html += "</tr>";
 
   menuNumber++;
-  html += objNews.insertMenu(menuNumber, '', '',objNews.administrationMenu);
+  html += objNews.insertMenu(menuNumber, '', '', objNews.administrationMenu);
   html += "</tr>";
 
   menuNumber++;
-  html += objNews.insertMenu(menuNumber, '', '',objNews.administrationMenu);
+  html += objNews.insertMenu(menuNumber, '', '', objNews.administrationMenu);
   html += "</tr>";
 
   // Show buttons

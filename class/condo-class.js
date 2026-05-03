@@ -149,6 +149,11 @@ class Condos {
   // array of menu for administration
   arrayAdministrationMenu = [
     {
+      applicationName: "condo-login.html",
+      className: "Menu1",
+      text: "Login"
+    },
+    {
       applicationName: "condo-news.html",
       className: "Menu2",
       text: "Nyheter"
@@ -156,7 +161,7 @@ class Condos {
 
     {
       applicationName: "condo-emptyingcalendar.html",
-      className: "Menu1",
+      className: "Menu3",
       text: "Tømmekalender"
     }
   ];
@@ -925,10 +930,27 @@ class Condos {
   // Start of table
   startTable(style) {
 
-    return `<table style="${style}">`;
+    return `
+    <table 
+      ${(style) ? `style="${style}"` : ""}>`;
   }
 
-  // Show main header table
+  // Initializing of a table
+  initializeTable(...columnWidths) {
+
+    let html = '<table>';
+
+    html += '<colgroup>';
+
+    columnWidths.forEach((columnWidth) => {
+      html += `<col style="width: ${columnWidth}px;">`;
+    });
+
+    html += '</colgroup>';
+    return html;
+  }
+
+  // Show main header table not including menu
   showTableHeader(style, menuType, ...texts) {
 
     let html = `<tr>`;
@@ -937,8 +959,8 @@ class Condos {
 
       if (text === '' && style === '') html += `<th class="no-border">${text}</th>`;
       if (text === '' && style !== '') html += `<th class="no-border" style="${style}">${text}</th>`;
-      if (text !== '' && style === '') html += `<th class="center no-border">${text}</th>`;
-      if (text !== '' && style !== '') html += `<th class="center no-border" style="${style}">${text}</th>`;
+      if (text !== '' && style === '') html += `<th class="no-border center">${text}</th>`;
+      if (text !== '' && style !== '') html += `<th class="no-border center" style="${style}">${text}</th>`;
     });
 
     // empty row
@@ -1017,7 +1039,7 @@ class Condos {
   insertMenu(menuNumber, className, style, menuType, ...texts) {
 
     let html = "<tr>";
-    
+
     if (menuNumber > 0) {
       if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
       if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
@@ -1105,14 +1127,11 @@ class Condos {
     let html = "";
 
     // Check of menu exists
-    if (this.arrayAccountMenu.length >= menuNumber) {
+    if (this.arrayAccountMenu.length >= menuNumber && menuNumber > 0) {
 
       const URL = (this.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-
-      // Check for valid menunumber
-      if (menuNumber < 1) menuNumber = 1;
 
       const applicationName = this.arrayAccountMenu[menuNumber - 1].applicationName;
       const text = this.arrayAccountMenu[menuNumber - 1].text;
@@ -1144,26 +1163,23 @@ class Condos {
     let html = "";
 
     // Check of menu exists
-    if (this.arrayAdministrationMenu.length >= menuNumber) {
+    if (this.arrayAdministrationMenu.length >= menuNumber && menuNumber > 0) {
 
       const URL = (this.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-
-      // Check for valid menunumber
-      if (menuNumber < 1) menuNumber = 1;
 
       const applicationName = this.arrayAdministrationMenu[menuNumber - 1].applicationName;
       const text = this.arrayAdministrationMenu[menuNumber - 1].text;
       const className = this.arrayAdministrationMenu[menuNumber - 1].className;
 
       html += `
-        <td class="one-line menu"
-          style = "width:175px;">
-          <a href="${URL}${applicationName}">
-            ${text}
-          </a>
-        </td>`;
+      <td class="one-line menu"
+        style = "width:175px;">
+        <a href="${URL}${applicationName}">
+          ${text}
+        </a>
+      </td>`;
     } else {
 
       // Do not show menu
