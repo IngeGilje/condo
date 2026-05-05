@@ -55,93 +55,88 @@ class Condos {
   // array of menu for account
   arrayAccountMenu = [
     {
-      applicationName: "condo-login.html",
-      className: "Menu1",
-      text: "Login"
-    },
-    {
       applicationName: "condo-condominium.html",
-      className: "Menu2",
+      className: "Menu1",
       text: "Sameie"
     },
     {
       applicationName: "condo-user.html",
-      className: "Menu3",
+      className: "Menu2",
       text: "Bruker"
     },
     {
       applicationName: "condo-password.html",
-      className: "Menu4",
+      className: "Menu3",
       text: "Passord"
     },
     {
       applicationName: "condo-condo.html",
-      className: "Menu5",
+      className: "Menu4",
       text: "Leilighet"
     },
     {
       applicationName: "condo-bankaccount.html",
-      className: "Menu6",
+      className: "Menu5",
       text: "Bankkonto sameie"
     },
     {
       applicationName: "condo-account.html",
-      className: "Menu7",
+      className: "Menu6",
       text: "Konto"
     },
     {
       applicationName: "condo-userbankaccount.html",
-      className: "Menu8",
+      className: "Menu7",
       text: "Bankkonto for bruker"
     },
     {
       applicationName: "condo-supplier.html",
-      className: "Menu9",
+      className: "Menu8",
       text: "Leverandør"
     },
     {
       applicationName: "condo-commoncost.html",
-      className: "Menu10",
+      className: "Menu9",
       text: "Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
-      className: "Menu11",
+      className: "Menu10",
       text: "Forfall"
     },
     {
       applicationName: "condo-remoteheatingprice.html",
-      className: "Menu12",
+      className: "Menu11",
       text: "Pris fjernvarme"
     },
     {
       applicationName: "condo-remoteheating.html",
-      className: "Menu13",
+      className: "Menu12",
       text: "Fjernvarme"
     },
     {
       applicationName: "condo-budget.html",
-      className: "Menu14",
+      className: "Menu13",
       text: "Budsjett"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu15",
+      className: "Menu14",
       text: "Betalingsoversikt"
     },
     {
       applicationName: "condo-bankaccounttransaction.html",
-      className: "Menu16",
+      className: "Menu15",
       text: "Banktransaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
-      className: "Menu17",
+      className: "Menu16",
       text: "Importer transaksjoner"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu18",
+      className: "Menu17",
       text: "Årsregnskap"
     }
   ];
@@ -149,19 +144,13 @@ class Condos {
   // array of menu for administration
   arrayAdministrationMenu = [
     {
-      applicationName: "condo-login.html",
-      className: "Menu1",
-      text: "Login"
-    },
-    {
       applicationName: "condo-news.html",
-      className: "Menu2",
+      className: "Menu1",
       text: "Nyheter"
     },
-
     {
       applicationName: "condo-emptyingcalendar.html",
-      className: "Menu3",
+      className: "Menu2",
       text: "Tømmekalender"
     }
   ];
@@ -207,7 +196,26 @@ class Condos {
         type="text"
         maxlength="${maxlength}"
         value="${value}"
-        ${(style) ? `style="${style}"` : "style='width:175px;'"}
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    </td>`;
+  }
+
+    // Show input
+  inputTableColumnNew(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+
+    return `
+    <td 
+      class="left" 
+      colspan="${colspan}" 
+      rowspan="${rowspan}"
+    >
+      <input
+        class="${className} center one-line"
+        type="text"
+        maxlength="${maxlength}"
+        value="${value}"
         ${(enableChanges) ? '' : 'readonly'}
       >
     </td>`;
@@ -222,11 +230,9 @@ class Condos {
       rowspan="${rowspan}" 
     >
       <textarea 
-        wrap="soft"
-        cols="50" 
         rows="6"
         class="${className} news-text"
-        length="${maxlength}"
+        maxlength="${maxlength}"
         value=""
       >
         ${value}
@@ -298,6 +304,22 @@ class Condos {
       <button 
         class="${className} center one-line"
         ${(style) ? `style="${style}"` : 'style="width:175px;"'}
+      >
+        ${text}
+      </button>
+    </td>`;
+  }
+
+  // Show button
+  showButtonNew(className, text) {
+
+    return `
+    <td 
+      class="center"
+    >
+      <button 
+        class="${className} center one-line button"
+        style="width="50px"
       >
         ${text}
       </button>
@@ -496,6 +518,7 @@ class Condos {
     document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
+  /*
   // Select numbers
   showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
 
@@ -542,6 +565,47 @@ class Condos {
 
     return html;
   }
+  */
+
+  // Select numbers
+  showSelectedNumbersNew(className, fromNumber, toNumber, selectedNumber, enableChanges) {
+
+    selectedNumber = Number(selectedNumber);
+    let html = `
+    <td
+      class="center"
+    >
+      <select
+        class="${className} center"
+        ${(enableChanges) ? '' : 'disabled'}>`;
+
+    for (let number = fromNumber; number <= toNumber; number++) {
+      if (number === selectedNumber) {
+
+        html += `
+        <option 
+          value="${number}"
+          selected
+          >
+          ${number}
+        </option>`;
+      } else {
+
+        html += `
+          <option 
+            value="${number}"
+            >
+            ${number}
+          </option>`;
+      }
+    };
+
+    html += `
+      </select >
+    </td>`;
+
+    return html;
+  }
 
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {
@@ -555,6 +619,38 @@ class Condos {
         class="${className} center"
         ${(enableChanges) ? '' : 'disabled'}
         ${(style) ? `style="${style}"` : `style="width:175px;"`}
+      >`;
+
+    for (let month = 1; month < 13; month++) {
+
+      html += `
+      <option 
+        value="${month}"
+        ${month === selectedMonth ? 'selected' : ''}
+      >
+        ${findNameOfMonth(month)}
+      </option>`;
+    };
+
+    html += `
+        </select >
+      </td>
+    `;
+
+    return html;
+  }
+
+  // Select months
+  showSelectedMonthsNew(className, selectedMonth, enableChanges) {
+
+    selectedMonth = Number(selectedMonth);
+    let html = `
+    <td
+      class="centerCell one-line left"
+    >
+      <select 
+        class="${className} center news-text"
+        ${(enableChanges) ? '' : "disabled"}
       >`;
 
     for (let month = 1; month < 13; month++) {
@@ -716,6 +812,27 @@ class Condos {
       <td 
         class="no-border center"
         ${(style) ? `style="${style}"` : 'style="width:175px;"'}
+      >
+        ${text}
+      </td>`;
+    });
+
+    html += "</tr>";
+    return html;
+  }
+
+  // Show table header including menu
+  showTableHeaderMenuNew(menuNumber, menuType, ...texts) {
+
+    let html = "<tr>";
+
+    if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+    if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    texts.forEach((text) => {
+
+      html += `
+      <td 
+        class="no-border center"
       >
         ${text}
       </td>`;
@@ -938,7 +1055,14 @@ class Condos {
   // Initializing of a table
   initializeTable(...columnWidths) {
 
-    let html = '<table>';
+    let tableWith = 0;
+    columnWidths.forEach((columnWidth) => {
+      tableWith += columnWidth;
+    });
+
+    let html = `
+    <table 
+      style="table-layout: fixed; width: ${tableWith}px;">`;
 
     html += '<colgroup>';
 
@@ -982,7 +1106,6 @@ class Condos {
       if (text !== '' && style !== '') html += `<th class="no-border center" style="${style}">${text}</th>`;
     });
 
-    //html += this.showButton(style, className, 'Logg ut');
     html += `
     <th 
       class="right no-border"
@@ -994,9 +1117,6 @@ class Condos {
         Logg ut
       </button>
     </th>`;
-
-    // empty row
-    //html += this.insertTableRow('', 0, menuType, '');
 
     return html;
   }
@@ -1030,6 +1150,26 @@ class Condos {
       html += (style === '')
         ? `<td class="center no-border">${text}</td>`
         : `<td class="center no-border" style="${style}">${text}</td>`;
+    });
+
+    return html;
+  }
+
+  // insert a table row
+  // and show account menu or administration menu
+  insertTableRowNew(menuNumber, menuType, ...texts) {
+
+    let html = "<tr>";
+
+    // if menuNumber is invalid do not show menu
+    if (menuNumber > 0) {
+      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    }
+
+    texts.forEach((text) => {
+
+      html += `<td class="center no-border">${text}</td>`
     });
 
     return html;
@@ -1174,8 +1314,7 @@ class Condos {
       const className = this.arrayAdministrationMenu[menuNumber - 1].className;
 
       html += `
-      <td class="one-line menu"
-        style = "width:175px;">
+      <td class="one-line menu">
         <a href="${URL}${applicationName}">
           ${text}
         </a>
@@ -1183,11 +1322,7 @@ class Condos {
     } else {
 
       // Do not show menu
-      html += `
-        <td 
-          style = "width:175px;">
-          <a></a>
-        </td>`;
+      html += `<td></td>`;
     }
 
     return html;
@@ -1207,7 +1342,7 @@ class Condos {
     let html = object.startTable(style);
 
     // show main header
-    html += object.showTableHeader('width:250px;', menuType, message);
+    html += object.showTableHeader('width:250px;', this.accountMenu, message);
 
     // The end of the table
     html += object.endTable();

@@ -8,8 +8,6 @@ const objEmptyingCalendar = new EmptyingCalendar('emptyingcalendar');
 
 const enableChanges = (objEmptyingCalendar.securityLevel > 5);
 
-const tableWidth = 'width:1450px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -161,7 +159,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objEmptyingCalendar.startTable(tableWidth);
+  let html = objEmptyingCalendar.initializeTable(175, 100, 150, 175, 100, 100, 100, 100, 125);
 
   // start table body
   html += objEmptyingCalendar.startTableBody();
@@ -182,22 +180,25 @@ function showHeader() {
 function showFilter(menuNumber) {
 
   // Start table
-  let html = objEmptyingCalendar.startTable(tableWidth);
+  let html = objEmptyingCalendar.initializeTable(175, 100, 150, 175, 100, 100, 100, 100, 125);
 
   // Header filter
   menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, objEmptyingCalendar.administrationMenu, '', '', 'År', 'Måned', '', '', '', '');
+  //html += objEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, objEmptyingCalendar.administrationMenu, '', '', 'År', 'Måned', '', '', '', '');
+  html += objEmptyingCalendar.showTableHeaderMenuNew(menuNumber, objEmptyingCalendar.administrationMenu, '2', '3År', '4Måned', '5', '6', '7', '8', '9');
 
   // start table body
   html += objEmptyingCalendar.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '');
+  //html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '');
+  html += objEmptyingCalendar.insertTableRowNew(menuNumber, objEmptyingCalendar.administrationMenu, '', '');
 
   // Selected year
   const year = String(today.getFullYear());
-  html += objEmptyingCalendar.showSelectedNumbers('filterYear', "width:150px;", 2020, 2030, year, true);
+  //html += objEmptyingCalendar.showSelectedNumbers( 'filterYear', "width:150px;", 2020, 2030, year, true);
+  html += objEmptyingCalendar.showSelectedNumbersNew('filterYear', 2020, 2030, year, true)
 
   // Selected month
   // Get current date in  European date format (dd.mm.yyyy)
@@ -209,8 +210,8 @@ function showFilter(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
-
+  //html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
+  html += objEmptyingCalendar.insertTableRowNew(menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
   // end table body
   html += objEmptyingCalendar.endTableBody();
 
@@ -225,7 +226,7 @@ function showFilter(menuNumber) {
 function showEmptyingCalendar(menuNumber) {
 
   // start table
-  let html = objEmptyingCalendar.startTable(tableWidth);
+  let html = objEmptyingCalendar.initializeTable(175, 100, 150, 175, 100, 100, 100, 100, 125);
 
   // table header
   menuNumber++;
@@ -236,7 +237,8 @@ function showEmptyingCalendar(menuNumber) {
 
       // Show menu
       menuNumber++;
-      html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu);
+      //html += objEmptyingCalendar.insertTableRow('',   menuNumber, objEmptyingCalendar.administrationMenu);
+      html += objEmptyingCalendar.insertTableRowNew(menuNumber, objEmptyingCalendar.administrationMenu);
 
       // Delete
       let selected = "Ugyldig verdi";
@@ -320,7 +322,9 @@ function insertEmptyTableRow(menuNumber) {
 
   // Show menu
   // insert a table row
-  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu);
+  //html += objEmptyingCalendar.insertTableRow('',  menuNumber, objEmptyingCalendar.administrationMenu);
+  html += objEmptyingCalendar.insertTableRowNew(menuNumber, objEmptyingCalendar.administrationMenu);
+
 
   // delete
   html += "<td class='center'>2Ny tømming</td>";

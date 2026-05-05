@@ -51,7 +51,78 @@ class News extends Condos {
     }
   }
 
-  showSelectedNews(className, style, newsId, selectNone, selectAll, enableChanges) {
+  showSelectedNews(className, newsId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <td
+      class="centerCell one-line left"
+    >
+      <select 
+        class="${className} center news-text"
+        ${(enableChanges) ? '' : "disabled"}
+      >`;
+
+    // Check if News array is empty
+    if (this.arrayNews.length > 0) {
+      this.arrayNews.forEach((news) => {
+
+        html += `
+        <option 
+          value=${news.newsId}
+          ${(news.newsId === newsId) ? 'selected' : ''}
+        >
+          ${news.title.slice(0,15)}
+        </option>`;
+        if (news.newsId === newsId) selectedValue = true;
+      });
+    } else {
+
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen nyheter
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayNews.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayNews.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(selectedValue) ? selectNone : ''}
+        ${(newsId === 0) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </td>`;
+
+    return html;
+  }
+
+  /*
+ showSelectedNews(className, newsId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -62,7 +133,6 @@ class News extends Condos {
       <select 
         class="${className} center"
         ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style="${style}"` : 'style="width:175px;"'}
       >`;
 
     // Check if News array is empty
@@ -121,6 +191,7 @@ class News extends Condos {
 
     return html;
   }
+    */
 
   // get News
   async loadNewsTable(condominiumId, newsId) {

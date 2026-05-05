@@ -9,18 +9,16 @@ class User extends Condos {
 
     if (userId === undefined) userId = 0;
 
-    let html =
-      `
-        <label class="label-${classValue}"
-          id="user"
-          for="user">
-            Velg bruker
-        </label>
-        <select class="select-${classValue}" 
-          id="user"
-          name="user"
-        >
-      `;
+    let html = `
+    <label class="label-${classValue}"
+      id="user"
+      for="user">
+        Velg bruker
+    </label>
+    <select class="select-${classValue}" 
+      id="user"
+      name="user"
+    >`;
 
     // Select last user if userId is 0
     if (userId === 0) userId = this.arrayUsers.at(-1).userId;
@@ -285,7 +283,7 @@ class User extends Condos {
   }
 
   // Show all selected users
-  showSelectedUsers(className, style, userId, selectNone, selectAll, enableChanges) {
+  showSelectedUsersNewBck(className, userId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -295,19 +293,18 @@ class User extends Condos {
     >
       <select 
         class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style=${style}` : 'style="width:175px;"'}>`;
+        ${(enableChanges) ? '' : 'disabled'}>`;
 
     // Check if user array is empty
     if (this.arrayUsers.length > 0) {
       this.arrayUsers.forEach((user) => {
         html += `
-          <option 
-            value=${user.userId}
-            ${(user.userId === userId) ? 'selected' : ''}
-          >
-            ${user.firstName}
-          </option>`;
+        <option 
+          value=${user.userId}
+          ${(user.userId === userId) ? 'selected' : ''}
+        >
+          ${user.firstName}
+        </option>`;
         if (user.userId === userId) selectedValue = true;
       });
     } else {
@@ -337,29 +334,98 @@ class User extends Condos {
     // Select none
     if (selectNone && (this.arrayUsers.length > 1)) {
 
-      html +=
-        `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
+      html += `
+      <option 
+        value=0
+      >
+        ${selectNone}
+    </option>`;
 
-      html +=
-        `
-          <option 
-            value=0
-            ${(!selectedValue) ? 'selected' : ''}
-          >
-            ${selectNone}
-          </option>`;
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
       if (!selectedValue) selectedValue = true;
     }
 
     html += `
-        </select >
-      </td>`;
+      </select >
+    </td>`;
+
+    return html;
+  }
+
+  
+  // Show all selected users
+  showSelectedUsersNew(className, userId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <td
+      class="centerCell one-line left"
+    >
+      <select 
+        class="${className} center news-text"
+        ${(enableChanges) ? '' : "disabled"}
+      >`;
+
+    // Check if users array is empty
+    if (this.arrayUsers.length > 0) {
+      this.arrayUsers.forEach((user) => {
+
+        html += `
+        <option 
+          value=${user.userId}
+          ${(user.userId === userId) ? 'selected' : ''}
+        >
+          ${user.firstName.slice(0,15)}
+        </option>`;
+        if (user.userId === userId) selectedValue = true;
+      });
+    } else {
+
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen nyheter
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayUsers.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayUsers.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(selectedValue) ? selectNone : ''}
+        ${(userId === 0) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </td>`;
 
     return html;
   }
