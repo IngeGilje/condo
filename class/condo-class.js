@@ -901,7 +901,7 @@ class Condos {
   */
 
   // Show table header including menu
-  showTableHeaderMenuNew(menuNumber, menuType, ...texts) {
+  showTableHeaderMenuNew(menuNumber, menuType, color, ...texts) {
 
     let html = "<tr>";
 
@@ -912,6 +912,7 @@ class Condos {
       html += `
       <td 
         class="no-border center"
+        style = ${(color) ? `background:${color};` : ""}
       >
         ${text}
       </td>`;

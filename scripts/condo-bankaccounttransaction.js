@@ -248,7 +248,7 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // Header filter
   menuNumber++;
-  html += objBankAccountTransaction.showTableHeaderMenuNew(menuNumber, objBankAccountTransaction.accountMenu, '2', '3', '4Leilighet', '5Velg konto', '6Fra dato', '7Til dato', '8Beløp', '9');
+  html += objBankAccountTransaction.showTableHeaderMenuNew(menuNumber, objBankAccountTransaction.accountMenu, '', '2', '3', '4Leilighet', '5Velg konto', '6Fra dato', '7Til dato', '8Beløp', '9');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
@@ -317,7 +317,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   className = `.text${bankAccountTransactionId}`;
   const text = document.querySelector(className).value;
   className = `text${bankAccountTransactionId}`;
-  const validText = objBankAccountTransaction.validateText(className, text, 3, 255, objBankAccountTransaction, '', 'Ugyldig tekst');
+  const validText = objBankAccountTransaction.validateText(className, text, 3, 255, objBankAccountTransaction, color, '', 'Ugyldig tekst');
 
   // Check if the bankaccounttransactions row exist
   let income = 0;
@@ -415,7 +415,7 @@ async function showBankAccountTransactions(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objCondo.showTableHeaderMenuNew( menuNumber, objCondo.accountMenu, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag');
+  html += objCondo.showTableHeaderMenuNew( menuNumber, objCondo.accountMenu, '#e0f0e0', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag');
 
   let sumIncome = 0;
   let sumPayment = 0;

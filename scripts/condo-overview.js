@@ -176,7 +176,7 @@ function showFilter(menuNumber, condoId) {
 
   // Header filter
   menuNumber++;
-  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3Velg leilighet', '4Fra dato', '5Til dato', '6', '7');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '', '2', '3Velg leilighet', '4Fra dato', '5Til dato', '6', '7');
 
   // start table body
   html += objOverview.startTableBody();
@@ -225,11 +225,11 @@ function showDues(menuNumber) {
   // Header
   menuNumber++;
   //html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '', 'Forfall', '', '', '');
-  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3Forfall', '4', '5', '6','7');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '#e0f0e0', '2', '3Forfall', '4', '5', '6','7');
 
   menuNumber++;
   //html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
-  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2Leilighet', '3Forfallsdato', '4Konto', '5Beløp', '6Kilowattimer', '7Tekst');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '#e0f0e0', '2Leilighet', '3Forfallsdato', '4Konto', '5Beløp', '6Kilowattimer', '7Tekst');
 
   objDue.arrayDues.forEach((due) => {
 
@@ -299,11 +299,11 @@ function showBankAccountTransactions(menuNumber) {
   // Header
   menuNumber++;
   //html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '1', '2', '3Innbetalinger', '4', '5');
-  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3', '4Innbetalinger', '5', '6','7');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '#e0f0e0', '2', '3', '4Innbetalinger', '5', '6','7');
 
   menuNumber++;
   //html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
-  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu,'2', '3Leilighet', '4Betalingsdato', '5Konto', '6Betaling', '7Tekst');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '#e0f0e0','2', '3Leilighet', '4Betalingsdato', '5Konto', '6Betaling', '7Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -404,12 +404,12 @@ async function showHowMuchToPay(menuNumber) {
     : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '', '', 'Forfall', 'Betalt', 'Skyldig');
   */
    html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3', '4','5Til gode', '6', '7')
-    : objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3', '4','5Skyldig', '6', '7');
+    ? objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '#e0f0e0', '2', '3', '4','5Til gode', '6', '7')
+    : objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '#e0f0e0', '2', '3', '4','5Skyldig', '6', '7');
   menuNumber++;
   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenuNew(menuNumber, objOverview.accountMenu, '2', '3', '4', '5Forfall', '6Betalt', '7Til gode')
-    : objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3','4', '5Forfall', '6Betalt', '7Skyldig');
+    ? objOverview.showTableHeaderMenuNew(menuNumber, objOverview.accountMenu, '#e0f0e0', '2', '3', '4', '5Forfall', '6Betalt', '7Til gode')
+    : objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '#e0f0e0', '2', '3','4', '5Forfall', '6Betalt', '7Skyldig');
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);

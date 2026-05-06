@@ -165,7 +165,7 @@ function showFilter(menuNumber, newsId) {
 
   // Header filter
   menuNumber++;
-  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '2Velg nyhet', '3');
+  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '', '2Velg nyhet', '3');
 
   // start table body
   html += objNews.startTableBody();
@@ -180,7 +180,7 @@ function showFilter(menuNumber, newsId) {
 
   // table header
   menuNumber++;
-  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '2', '3');
+  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '', '2', '3');
 
   // end table body
   html += objNews.endTableBody();
@@ -203,7 +203,7 @@ function showNews(menuNumber, newsId) {
 
   // date
   menuNumber++;
-  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, 'Dato', 'Forfatter');
+  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '', 'Dato', 'Forfatter');
 
   // Date, userId
   // insert a table row
@@ -230,7 +230,7 @@ function showNews(menuNumber, newsId) {
 
   // title
   menuNumber++;
-  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '2Tittel', '3');
+  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '', '2Tittel', '3');
 
   // insert a table row
   menuNumber++;
@@ -248,7 +248,7 @@ function showNews(menuNumber, newsId) {
 
   // image
   menuNumber++;
-  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '2Bilde', '3');
+  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '', '2Bilde', '3');
 
   // insert a table row
   menuNumber++;
@@ -267,7 +267,7 @@ function showNews(menuNumber, newsId) {
 
   // content
   menuNumber++;
-  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '2Innhold', '3');
+  html += objNews.showTableHeaderMenuNew(menuNumber, objNews.administrationMenu, '', '2Innhold', '3');
 
   // insert a table row
   menuNumber++;

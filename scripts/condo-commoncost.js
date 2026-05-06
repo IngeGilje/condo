@@ -208,7 +208,7 @@ function showCommonCost(menuNumber) {
 
   menuNumber++;
   //html += objCommonCost.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objCommonCost.accountMenu, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
-  html += objCommonCost.showTableHeaderMenuNew(menuNumber, objCommonCost.accountMenu, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  html += objCommonCost.showTableHeaderMenuNew(menuNumber, objCommonCost.accountMenu, '#e0f0e0', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
   objCommonCost.arrayCommonCosts.forEach((commonCost) => {
 

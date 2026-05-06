@@ -225,7 +225,7 @@ function showFilter(menuNumber, budgetYear, fromDate, toDate) {
 
   // Header filter
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '','Fra dato', 'Til dato', 'Budsjettår', 'Pris per m2');
+  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '', '','Fra dato', 'Til dato', 'Budsjettår', 'Pris per m2');
 
   // start table body
   html += objAnnualAccount.startTableBody();
@@ -273,10 +273,10 @@ function showAnnualAccounts(menuNumber) {
   const budgetYear = document.querySelector('.filterBudgetYear').value;
   menuNumber++;
   //html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objAnnualAccount.accountMenu, '', '', 'Årsresultat', '', '');
-  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '', '', 'Årsresultat', '', '');
+  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0', '', '', 'Årsresultat', '', '');
 
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '','Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik', '');
+  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '', '','Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik', '');
 
   let totalAccountAmount = 0;
   let totalBudgetAmount = 0;
@@ -373,10 +373,10 @@ function showIncomeNextYear(menuNumber) {
   const budgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
   menuNumber++;
   //html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objAnnualAccount.accountMenu, '', '', `Budsjetterte leieinntekter ${budgetYear}`, '', '');
-  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '', '', `Bud. Leieinntekter ${budgetYear}`, '', '');
+  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0', '', '', `Bud. Leieinntekter ${budgetYear}`, '', '');
 
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
+  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '', '');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;
@@ -476,10 +476,10 @@ function showBankDeposit(menuNumber) {
 
   menuNumber++;
   //html += objAnnualAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objAnnualAccount.accountMenu, '', '', `Budsjett ${nextBudgetYear}`, '', '');
-  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '', '', `Budsjett ${nextBudgetYear}`, '', '');
+  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0', '', '', `Budsjett ${nextBudgetYear}`, '', '');
 
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '', '', 'Konto', 'Dato', 'Budsjett');
+  html += objAnnualAccount.showTableHeaderMenuNew(menuNumber, objAnnualAccount.accountMenu, '', '', '', 'Konto', 'Dato', 'Budsjett');
   let accAmount = 0;
 
   // insert a table row

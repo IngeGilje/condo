@@ -185,7 +185,7 @@ function showDues(menuNumber) {
   // table header
   menuNumber++;
   //html += objCondo.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objDue.accountMenu, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'kilowatt Timer', 'Tekst');
-  html += objCondo.showTableHeaderMenuNew( menuNumber, objDue.accountMenu, 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'kilowatt Timer', 'Tekst');
+  html += objCondo.showTableHeaderMenuNew( menuNumber, objDue.accountMenu, '#e0f0e0', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'kilowatt Timer', 'Tekst');
 
   let sumAmount = 0;
   let sumKilowattHour = 0;
@@ -418,7 +418,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   // Header filter
   menuNumber++;
-  html += objDue.showTableHeaderMenuNew(menuNumber, objDue.accountMenu, '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '');
+  html += objDue.showTableHeaderMenuNew(menuNumber, objDue.accountMenu, '', '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '');
 
   // start table body
   html += objDue.startTableBody();

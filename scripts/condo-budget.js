@@ -260,7 +260,7 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objBudget.showTableHeaderMenuNew(menuNumber, objBudget.accountMenu, '2',  '3Konto', '4År', '6','7');
+  html += objBudget.showTableHeaderMenuNew(menuNumber, objBudget.accountMenu, '', '2',  '3Konto', '4År', '6','7');
 
   // start table body
   html += objBudget.startTableBody();
@@ -301,7 +301,7 @@ function showBudgets(menuNumber) {
   // table header
   menuNumber++;
   //html += objBudget.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objBudget.accountMenu, 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
-  html += objBudget.showTableHeaderMenuNew(menuNumber, objBudget.accountMenu, '2Slett', '3Konto', '4Budsjett', '5År', '6Tekst');
+  html += objBudget.showTableHeaderMenuNew(menuNumber, objBudget.accountMenu, '#e0f0e0', '2Slett', '3Konto', '4Budsjett', '5År', '6Tekst');
 
   let sumAmount = 0;
 

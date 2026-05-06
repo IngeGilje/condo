@@ -237,7 +237,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // Header filter
   menuNumber++;
-  html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'Bruker', '');
+  html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, '', 'Bruker', '');
 
   // start table body
   html += objUser.startTableBody();
@@ -282,7 +282,7 @@ function showUser(menuNumber, userId) {
     // email,condoId
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'E-mail', 'Leilighet');
+    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, '', 'E-mail', 'Leilighet');
 
     // insert a table row
     menuNumber++;
@@ -299,7 +299,7 @@ function showUser(menuNumber, userId) {
     // firstName, lastName
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'Fornavn', 'Etternavn');
+    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, '', 'Fornavn', 'Etternavn');
 
     // insert a table row
     menuNumber++;
@@ -316,7 +316,7 @@ function showUser(menuNumber, userId) {
     // phone, activ user
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'Telefonnummer', 'Beboer');
+    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, '', 'Telefonnummer', 'Beboer');
 
     // insert a table row
     menuNumber++;

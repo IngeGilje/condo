@@ -231,7 +231,7 @@ function showUserBankAccount(menuNumber) {
   // table header
   menuNumber++;
   //html += objUserBankAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objUserBankAccount.accountMenu, 'Slett', 'Bruker', 'Konto', 'Bankkonto');
-  html += objUserBankAccount.showTableHeaderMenuNew( menuNumber, objUserBankAccount.accountMenu, 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += objUserBankAccount.showTableHeaderMenuNew( menuNumber, objUserBankAccount.accountMenu,'#e0f0e0', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   objUserBankAccount.arrayUserBankAccounts.forEach((userBankAccount) => {
 

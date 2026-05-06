@@ -202,7 +202,7 @@ function showFilter(menuNumber, year) {
 
   // Header filter
   menuNumber++;
-  html += objRemoteHeating.showTableHeaderMenuNew( menuNumber, objRemoteHeating.accountMenu,'1', '2År', '3Pris per kiloWattimer', '4', '5');
+  html += objRemoteHeating.showTableHeaderMenuNew( menuNumber, objRemoteHeating.accountMenu, '','1', '2År', '3Pris per kiloWattimer', '4', '5');
 
   // start table body
   html += objRemoteHeating.startTableBody();
@@ -279,7 +279,7 @@ function showRemoteHeatings(menuNumber) {
   const lastYear = currentYear - 1;
   menuNumber++;
   //html += objRemoteHeating.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objRemoteHeating.accountMenu, 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
-  html += objRemoteHeating.showTableHeaderMenuNew( menuNumber, objRemoteHeating.accountMenu, 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
+  html += objRemoteHeating.showTableHeaderMenuNew( menuNumber, objRemoteHeating.accountMenu, '#e0f0e0', 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
 
   objRemoteHeating.arrayRemoteHeatings.forEach((remoteHeating) => {
 
