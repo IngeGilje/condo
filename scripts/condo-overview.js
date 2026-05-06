@@ -151,13 +151,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objOverview.startTable(tableWidth);
+  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
 
   // start table body
   html += objOverview.startTableBody();
 
   // show main header
-  html += objOverview.showTableHeaderLogOut('width:175px;', '', '', '', '', 'Betalingsoversikt', '', '', '');
+  html += objOverview.showTableHeaderLogOutNew( '', '', '', '', 'Betalingsoversikt', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -172,11 +172,11 @@ function showHeader() {
 function showFilter(menuNumber, condoId) {
 
   // Start table
-  let html = objOverview.startTable(tableWidth);
+  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
 
   // Header filter
   menuNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;', menuNumber, objOverview.accountMenu, '', 'Velg leilighet', 'Fra dato', 'Til dato', '', '');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3Velg leilighet', '4Fra dato', '5Til dato', '6', '7');
 
   // start table body
   html += objOverview.startTableBody();
@@ -191,11 +191,11 @@ function showFilter(menuNumber, condoId) {
   // from date
   const year = String(today.getFullYear());
   let fromDate = "01.01." + year;
-  html += objOverview.inputTableColumn('filterFromDate', '', fromDate, 10, CSSViewTransitionRule);
+  html += objOverview.inputTableColumnNew('filterFromDate', '', fromDate, 10, CSSViewTransitionRule);
 
   // to date
   let toDate = getCurrentDate();
-  html += objOverview.inputTableColumn('filterToDate', '', toDate, 10, true);
+  html += objOverview.inputTableColumnNew('filterToDate', '', toDate, 10, true);
 
   html += "<td></td><td></td></tr>";
 
@@ -217,17 +217,19 @@ function showFilter(menuNumber, condoId) {
 function showDues(menuNumber) {
 
   // Start HTML table
-  let html = objOverview.startTable(tableWidth);
+  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
 
   let sumDue = 0;
   let sumKilowattHour = 0;
 
   // Header
   menuNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '', 'Forfall', '', '', '');
+  //html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '', 'Forfall', '', '', '');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3Forfall', '4', '5', '6','7');
 
   menuNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  //html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2Leilighet', '3Forfallsdato', '4Konto', '5Beløp', '6Kilowattimer', '7Tekst');
 
   objDue.arrayDues.forEach((due) => {
 
@@ -242,26 +244,26 @@ function showDues(menuNumber) {
     // date
     const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objOverview.inputTableColumn(className, '', date, 10, false);
+    html += objOverview.inputTableColumnNew(className, '', date, 10, false);
 
     // account
     className = `account${due.dueId}`;
-    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
+    html += objAccount.showSelectedAccountsNew(className, due.accountId, 'Velg konto', '', false);
 
     // amount
     const amount = formatOreToKroner(due.amount);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableColumn(className, '', amount, 11, false);
+    html += objOverview.inputTableColumnNew(className, '', amount, 11, false);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableColumn(className, '', kilowattHour, 10, false);
+    html += objOverview.inputTableColumnNew(className, '', kilowattHour, 10, false);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objOverview.inputTableColumn(className, '', text, 45, false);
+    html += objOverview.inputTableColumnNew(className, '', text, 45, false);
 
     html += "</tr>";
 
@@ -292,14 +294,16 @@ function showDues(menuNumber) {
 function showBankAccountTransactions(menuNumber) {
 
   // Start table
-  let html = objOverview.startTable(tableWidth);
+  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
 
   // Header
   menuNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '', '', 'Innbetalinger', '', '');
+  //html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '1', '2', '3Innbetalinger', '4', '5');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3', '4Innbetalinger', '5', '6','7');
 
   menuNumber++;
-  html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  //html += objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  html += objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu,'2', '3Leilighet', '4Betalingsdato', '5Konto', '6Betaling', '7Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -317,11 +321,11 @@ function showBankAccountTransactions(menuNumber) {
     // date
     const date = formatNumberToNorDate(bankAccountTransaction.date);
     className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumn(className, '', date, 10, false);
+    html += objBankAccountTransaction.inputTableColumnNew(className, '', date, 10, false);
 
     // account
     className = `account${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objAccount.showSelectedAccounts(className, '', Number(bankAccountTransaction.accountId), 'Velg konto', '', false);
+    html += objAccount.showSelectedAccountsNew(className, Number(bankAccountTransaction.accountId), 'Velg konto', '', false);
 
     // income - payment
     let income = bankAccountTransaction.income;
@@ -329,12 +333,12 @@ function showBankAccountTransactions(menuNumber) {
     income += payment;
     income = formatOreToKroner(income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumn(className, '', income, 10, false);
+    html += objBankAccountTransaction.inputTableColumnNew(className, '', income, 10, false);
 
     // Text
     const text = bankAccountTransaction.text;
     className = `text${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumn(className, '', text, 45, false);
+    html += objBankAccountTransaction.inputTableColumnNew(className, '', text, 45, false);
 
     html += "</tr>";
 
@@ -366,7 +370,7 @@ function showBankAccountTransactions(menuNumber) {
 async function showHowMuchToPay(menuNumber) {
 
   // Start table
-  let html = objOverview.startTable(tableWidth);
+  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -390,6 +394,7 @@ async function showHowMuchToPay(menuNumber) {
   sumIncome += sumPayment;
   let overPay = sumIncome - sumToPay;
   menuNumber++;
+  /*
   html += (overPay >= 0)
     ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '', '', 'Til gode', '', '')
     : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '', '', 'Skyldig', '', '');
@@ -397,6 +402,14 @@ async function showHowMuchToPay(menuNumber) {
   html += (overPay >= 0)
     ? objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '', '', 'Forfall', 'Betalt', 'Til gode')
     : objOverview.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objOverview.accountMenu, '', '', 'Forfall', 'Betalt', 'Skyldig');
+  */
+   html += (overPay >= 0)
+    ? objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3', '4','5Til gode', '6', '7')
+    : objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3', '4','5Skyldig', '6', '7');
+  menuNumber++;
+  html += (overPay >= 0)
+    ? objOverview.showTableHeaderMenuNew(menuNumber, objOverview.accountMenu, '2', '3', '4', '5Forfall', '6Betalt', '7Til gode')
+    : objOverview.showTableHeaderMenuNew( menuNumber, objOverview.accountMenu, '2', '3','4', '5Forfall', '6Betalt', '7Skyldig');
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);

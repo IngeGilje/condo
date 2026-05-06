@@ -139,15 +139,14 @@ async function events() {
 function showHeader() {
 
   // Start table
-  //let html = objNews.startTable(tableWidth);
+  //let html = objNews.initializeTable(175, 225, 125,175,175);
   let html = objNews.initializeTable(175, 225, 125);
 
   // start table body
   html += objNews.startTableBody();
 
   // show main header
-  //html += objNews.showTableHeaderLogOut('width:175px;', '1', '2Nyheter');
-  html += objNews.showTableHeaderLogOut('', '1', '2Nyheter');
+  html += objNews.showTableHeaderLogOutNew( '1', '2Nyheter');
   html += "</tr>";
 
   // end table body

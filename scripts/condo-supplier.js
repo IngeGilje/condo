@@ -199,13 +199,13 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objSupplier.startTable(tableWidth);
+  let html = objSupplier.initializeTable(175,175,175);
 
   // start table body
   html += objSupplier.startTableBody();
 
   // show main header
-  html += objSupplier.showTableHeaderLogOut('width:175px;', '', '', 'Leverandør', '');
+  html += objSupplier.showTableHeaderLogOutNew( '', 'Leverandør');
   html += "</tr>";
 
   // end table body
@@ -220,11 +220,11 @@ function showHeader() {
 function showFilter(menuNumber, supplierId) {
 
   // Start table
-  let html = objSupplier.startTable(tableWidth);
+  let html = objSupplier.initializeTable(175,175,175);
 
   // Header filter
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu('width:175px;', menuNumber, objSupplier.accountMenu, 'Velg leverandør', '');
+  html += objSupplier.showTableHeaderMenuNew( menuNumber, objSupplier.accountMenu, 'Velg leverandør', '');
 
   // start table body
   html += objSupplier.startTableBody();
@@ -252,11 +252,11 @@ function showFilter(menuNumber, supplierId) {
 function showSupplier(menuNumber, supplierId) {
 
   // start table
-  let html = objSupplier.startTable(tableWidth);
+  let html = objSupplier.initializeTable(175,175,175);
 
   // table header
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu('width:175px;', menuNumber, objSupplier.accountMenu, '', '');
+  html += objSupplier.showTableHeaderMenuNew( menuNumber, objSupplier.accountMenu, '', '');
 
   // Check if supplier row exist
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
@@ -264,7 +264,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // Header for value including menu
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Navn');
+  html += objSupplier.showTableHeaderMenuNew(menuNumber, objSupplier.accountMenu, 'Navn');
 
   // insert a table row
   menuNumber++;
@@ -275,14 +275,14 @@ function showSupplier(menuNumber, supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].name;
 
-  html += objSupplier.inputTableColumn('name', '', name, 45, enableChanges);
+  html += objSupplier.inputTableColumnNew('name', '', name, 45, enableChanges);
 
   html += "</tr>";
 
   // street, address2
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Gate', 'Adresse 2');
+  html += objSupplier.showTableHeaderMenuNew( menuNumber, objSupplier.accountMenu, 'Gate', 'Adresse 2');
 
   // insert a table row
   menuNumber++;
@@ -292,20 +292,20 @@ function showSupplier(menuNumber, supplierId) {
   const street = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += objSupplier.inputTableColumn('street', '', street, 45, enableChanges);
+  html += objSupplier.inputTableColumnNew('street', '', street, 45, enableChanges);
 
   // address2
   const address2 = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += objSupplier.inputTableColumn('address2', '', address2, 45, enableChanges);
+  html += objSupplier.inputTableColumnNew('address2', '', address2, 45, enableChanges);
 
   html += "</tr>";
 
   // postalCode, city
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Postnummer', 'Poststed');
+  html += objSupplier.showTableHeaderMenuNew( menuNumber, objSupplier.accountMenu, 'Postnummer', 'Poststed');
 
   // insert a table row
   menuNumber++;
@@ -316,20 +316,20 @@ function showSupplier(menuNumber, supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
 
-  html += objSupplier.inputTableColumn('postalCode', '', postalCode, 4, enableChanges);
+  html += objSupplier.inputTableColumnNew('postalCode', '', postalCode, 4, enableChanges);
 
   // city
   const city = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += objSupplier.inputTableColumn('city', '', city, 45, enableChanges);
+  html += objSupplier.inputTableColumnNew('city', '', city, 45, enableChanges);
 
   html += "</tr>";
 
   // email,phone
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'e-Mail', 'Telefonnummer');
+  html += objSupplier.showTableHeaderMenuNew( menuNumber, objSupplier.accountMenu, 'e-Mail', 'Telefonnummer');
 
   // insert a table row
   menuNumber++;
@@ -339,20 +339,20 @@ function showSupplier(menuNumber, supplierId) {
   const email = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += objSupplier.inputTableColumn('email', '', email, 50, enableChanges);
+  html += objSupplier.inputTableColumnNew('email', '', email, 50, enableChanges);
 
   // phone
   const phone = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += objSupplier.inputTableColumn('phone', '', phone, 8, enableChanges);
+  html += objSupplier.inputTableColumnNew('phone', '', phone, 8, enableChanges);
 
   html += "</tr>";
 
   // bankAccount, accountId
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Konto', 'Bankkontonummer');
+  html += objSupplier.showTableHeaderMenuNew( menuNumber, objSupplier.accountMenu, 'Konto', 'Bankkontonummer');
 
   // Show menu
   menuNumber++;
@@ -362,20 +362,20 @@ function showSupplier(menuNumber, supplierId) {
   const accountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccount.showSelectedAccounts('accountId', '', accountId, 'Ingen mottaker er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccountsNew('accountId', accountId, 'Ingen mottaker er valgt', '', enableChanges);
 
   // bankAccount number
   const bankAccount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += objSupplier.inputTableColumn('bankAccount', '', bankAccount, 11, enableChanges);
+  html += objSupplier.inputTableColumnNew('bankAccount', '', bankAccount, 11, enableChanges);
 
   html += "</tr>";
 
   // amountAccountId, amount
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Konto for beløp', 'Beløp');
+  html += objSupplier.showTableHeaderMenuNew( menuNumber, objSupplier.accountMenu, 'Konto for beløp', 'Beløp');
 
   // insert a table row
   menuNumber++;
@@ -385,20 +385,20 @@ function showSupplier(menuNumber, supplierId) {
   const amountAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccount.showSelectedAccounts('amountAccountId', '', amountAccountId, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccountsNew('amountAccountId', amountAccountId, 'Ingen konto er valgt', '', enableChanges);
 
   // amount
   const amount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].amount;
-  html += objSupplier.inputTableColumn('amount', '', amount, 11, enableChanges);
+  html += objSupplier.inputTableColumnNew('amount', '', amount, 11, enableChanges);
 
   html += "</tr>";
 
   // textAccountId, text
   html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu("width:175px;", menuNumber, objSupplier.accountMenu, 'Konto for tekst', 'Tekst');
+  html += objSupplier.showTableHeaderMenuNew( menuNumber, objSupplier.accountMenu, 'Konto for tekst', 'Tekst');
 
   // insert a table row
   menuNumber++;
@@ -408,13 +408,13 @@ function showSupplier(menuNumber, supplierId) {
   const textAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccount.showSelectedAccounts('textAccountId', '', textAccountId, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccountsNew('textAccountId', textAccountId, 'Ingen konto er valgt', '', enableChanges);
 
   // text for account id
   const text = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += objSupplier.inputTableColumn('text', '', text, 50, enableChanges);
+  html += objSupplier.inputTableColumnNew('text', '', text, 50, enableChanges);
 
   html += "</tr>";
 

@@ -9,8 +9,6 @@ const objPassword = new Password('password');
 
 const enableChanges = (objPassword.securityLevel > 5);
 
-const tableWidth = "width:600px;";
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -139,13 +137,13 @@ async function deleteCondo() {
 function showHeader() {
 
   // Start table
-  let html = objUser.startTable(tableWidth);
+  let html = objUser.initializeTable(175,175,175);
 
   // start table body
   html += objUser.startTableBody();
 
   // show main header
-  html += objUser.showTableHeaderLogOut('width:175px;', '', '', 'Passord', '');
+  html += objUser.showTableHeaderLogOutNew( '', 'Passord');
   html += "</tr>";
 
   // end table body
@@ -160,11 +158,11 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId, userId) {
 
   // Start table
-  let html = objUser.startTable(tableWidth);
+  let html = objUser.initializeTable(175,175,175);
 
   // Header filter
   menuNumber++;
-  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, objUser.accountMenu, 'Sameie', 'Bruker');
+  html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
@@ -174,10 +172,10 @@ function showFilter(menuNumber, condominiumId, userId) {
   html += objPassword.insertTableRowNew('', menuNumber,objPassword.accountMenu);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '',enableChanges);
+  html += objCondominium.showSelectedCondominiumsNew('filterCondominiumId',  condominiumId, '', '',enableChanges);
 
   // user
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', enableChanges)
+  html += objUser.showSelectedUsersNew('filterUserId',  userId, '', '', enableChanges)
 
   html += "</tr>";
 
@@ -199,7 +197,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 function showUser(menuNumber, userId) {
 
   // start table
-  let html = objUser.startTable(tableWidth);
+  let html = objUser.initializeTable(175,175,175);
 
   // Check if users row exist
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
@@ -208,7 +206,7 @@ function showUser(menuNumber, userId) {
     // password, securityLevel,
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, objUser.accountMenu, 'Passord', 'Sikkerhetsnivå');
+    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'Passord', 'Sikkerhetsnivå');
 
     // insert a table row
     menuNumber++;
@@ -218,7 +216,7 @@ function showUser(menuNumber, userId) {
     html += objUser.inputTablePassword('password', '', '', 45);
 
     // securityLevel
-    html += objUser.showSelectedNumbers('securityLevel', "width:175px;", 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
+    html += objUser.showSelectedNumbersNew('securityLevel',  1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
 
     html += "</tr>";
 

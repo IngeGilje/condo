@@ -165,7 +165,7 @@ function showHeader() {
   html += objEmptyingCalendar.startTableBody();
 
   // show main header
-  html += objEmptyingCalendar.showTableHeaderLogOut('width:206px;', '', '', '', 'Avfallskalender', '', '', '', '');
+  html += objEmptyingCalendar.showTableHeaderLogOutNew( '', '', '', 'Avfallskalender', '', '', '', '');
   html += "</tr>";
 
   // end table body

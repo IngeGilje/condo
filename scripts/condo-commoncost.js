@@ -24,9 +24,9 @@ async function main() {
     if ((objCommonCost.condominiumId === 0) || (objCommonCost.user === null)) {
 
       // LogIn is not valid
-      const URL = (objCommonCost.serverStatus === 1) 
-      ? 'http://ingegilje.no/condo-login.html' 
-      : 'http://localhost/condo-login.html';
+      const URL = (objCommonCost.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -158,13 +158,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objCommonCost.startTable(tableWidth);
+  let html = objCommonCost.initializeTable(175, 75, 175, 175, 175);
 
   // start table body
   html += objCommonCost.startTableBody();
 
   // show main header
-  html += objCommonCost.showTableHeaderLogOut('width:175px;', '', '', 'Felleskostnader', '', '');
+  html += objCommonCost.showTableHeaderLogOutNew('', '', 'Felleskostnader', '');
   html += "</tr>";
 
   // end table body
@@ -187,13 +187,14 @@ function insertEmptyTableRow(menuNumber) {
 
   // Select year
   const year = today.getFullYear();
-  html += objCommonCost.selectInterval('year0', 'width:175px;', 2020, 2030, year, enableChanges);
+  //html += objCommonCost.selectInterval('year0', 'width:175px;', 2020, 2030, year, enableChanges);
+  html += objCommonCost.showSelectedNumbersNew('year0', 2020, 2030, year,  true);
 
   // commonCostSquareMeter 
-  html += objCommonCost.inputTableColumn('commonCostSquareMeter0', '', '0,00', 10, enableChanges);
+  html += objCommonCost.inputTableColumnNew('commonCostSquareMeter0', '', '0,00', 10, enableChanges);
 
   // fixed cost per condo 
-  html += objCommonCost.inputTableColumn('fixedCostCondo0', '', '', 10, enableChanges);
+  html += objCommonCost.inputTableColumnNew('fixedCostCondo0', '', '', 10, enableChanges);
 
   html += "</tr>";
   return html;
@@ -203,10 +204,11 @@ function insertEmptyTableRow(menuNumber) {
 function showCommonCost(menuNumber) {
 
   // start table
-  let html = objCommonCost.startTable(tableWidth);
+  let html = objCommonCost.initializeTable(175, 75, 175, 175, 175);
 
   menuNumber++;
-  html += objCommonCost.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objCommonCost.accountMenu, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  //html += objCommonCost.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objCommonCost.accountMenu, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  html += objCommonCost.showTableHeaderMenuNew(menuNumber, objCommonCost.accountMenu, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
   objCommonCost.arrayCommonCosts.forEach((commonCost) => {
 
@@ -220,24 +222,25 @@ function showCommonCost(menuNumber) {
     if (commonCost.deleted === 'N') selected = "Nei";
 
     let className = `delete${commonCost.commonCostId}`;
-    html += objCommonCost.showSelectedValues(className, 'width:175px;', enableChanges, selected, 'Nei', 'Ja');
+    html += objCommonCost.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja');
 
     // Select year
     const year = commonCost.year;
     className = `year${commonCost.commonCostId}`;
-    html += objCommonCost.selectInterval(className, 'width:175px;', 2020, 2030, year, enableChanges);
+    //html += objCommonCost.selectInterval(className, 'width:175px;', 2020, 2030, year, enableChanges);
+    html += objCommonCost.showSelectedNumbersNew('year0', 2020, 2030, year,  true);
 
     // common cost per squaremeter
     let commonCostSquareMeter = commonCost.commonCostSquareMeter;
     className = `commonCostSquareMeter${commonCost.commonCostId}`;
     commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
-    html += objCommonCost.inputTableColumn(className, '', commonCostSquareMeter, 11, enableChanges);
+    html += objCommonCost.inputTableColumnNew(className, '', commonCostSquareMeter, 11, enableChanges);
 
     // fixed cost per condo
     let fixedCostCondo = commonCost.fixedCostCondo;
     className = `fixedCostCondo${commonCost.commonCostId}`;
     fixedCostCondo = formatOreToKroner(fixedCostCondo);
-    html += objCommonCost.inputTableColumn(className, '', fixedCostCondo, 10, enableChanges);
+    html += objCommonCost.inputTableColumnNew(className, '', fixedCostCondo, 10, enableChanges);
 
     html += "</tr>";
   });

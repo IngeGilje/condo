@@ -497,13 +497,13 @@ function checkBankAccountTransaction(income, payment, date) {
 function showHeader() {
 
   // Start table
-  let html = objImportFile.startTable(tableWidth);
+  let html = objImportFile.initializeTable(175, 175, 175, 175, 175,175,175,175,200);
 
   // start table body
   html += objImportFile.startTableBody();
 
   // show main header
-  html += objImportFile.showTableHeaderLogOut('width:175px;', '', '', '', '', 'Import av bankkontotransaksjoner', '', '', '');
+  html += objImportFile.showTableHeaderLogOutNew( '1', '2', '3', '4', '5Import av bankkontotransaksjoner', '6', '7', '8');
   html += "</tr>";
 
   // end table body
@@ -518,14 +518,14 @@ function showHeader() {
 function showFilter(menuNumber) {
 
   // Start table
-  let html = objImportFile.startTable(tableWidth);
+  let html = objImportFile.initializeTable(175, 175, 175, 175, 175,175,175,175,200);
 
   // start table body
   html += objImportFile.startTableBody();
   html += "</tr>";
 
   menuNumber++;
-  html += objImportFile.insertTableRowNew('', menuNumber, objImportFile.accountMenu, '', '', '', '', '', '', '', '');
+  html += objImportFile.insertTableRowNew('', menuNumber, objImportFile.accountMenu, '1', '2', '3', '4', '5', '6', '7', '8');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -541,11 +541,12 @@ function showFilter(menuNumber) {
 function showBankAccountTransactions(menuNumber) {
 
   // start table
-  let html = objImportFile.startTable(tableWidth);
+  let html = objImportFile.initializeTable(175, 175, 175, 175, 175,175,175,175,200);
 
   // table header
   menuNumber++;
-  html += objImportFile.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objImportFile.accountMenu, 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  //html += objImportFile.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objImportFile.accountMenu, 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += objImportFile.showTableHeaderMenuNew( menuNumber, objImportFile.accountMenu, '2Dato', '3Leilighet', '4Konto', '5Fra bankkonto', '6Til bankkonto', '7Inntekt', '8Utgift', '9Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -558,37 +559,37 @@ function showBankAccountTransactions(menuNumber) {
 
     // Date
     let className = `accountingDate${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.accountingDate, 10);
+    html += objImportFile.inputTableColumnNew(className, '', transaction.accountingDate, 10);
 
     // Condo name
     className = `condoName${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.condoName, 45);
+    html += objImportFile.inputTableColumnNew(className, '', transaction.condoName, 45);
 
     // Account name
     className = `accountName${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.accountName, 45);
+    html += objImportFile.inputTableColumnNew(className, '', transaction.accountName, 45);
 
     // fromBankAccountName
     className = `fromBankAccountName${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.fromBankAccountName, 45);
+    html += objImportFile.inputTableColumnNew(className, '', transaction.fromBankAccountName, 45);
 
     // toBankAccountName
     className = `toBankAccountName${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.toBankAccountName, 45);
+    html += objImportFile.inputTableColumnNew(className, '', transaction.toBankAccountName, 45);
 
     // Income
     const income = formatOreToKroner(transaction.income);
     className = `income${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', income, 10);
+    html += objImportFile.inputTableColumnNew(className, '', income, 10);
 
     // Payment
     const payment = formatOreToKroner(transaction.payment);
     className = `payment${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', payment, 10);
+    html += objImportFile.inputTableColumnNew(className, '', payment, 10);
 
     // Text
     className = `payment${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.text, 10);
+    html += objImportFile.inputTableColumnNew(className, '', transaction.text, 10);
 
     // Accomulate
 
@@ -608,16 +609,16 @@ function showBankAccountTransactions(menuNumber) {
 
   // Show sum row
   menuNumber++;
-  html += objImportFile.insertTableRowNew('font-weight: 600;', menuNumber, objImportFile.accountMenu, '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
+  html += objImportFile.insertTableRowNew('font-weight: 600;', menuNumber, objImportFile.accountMenu, '2', '3', '4', '5', '6Sum', sumIncomes, sumPayments, '9');
 
   // Show update button
 
   // insert a table row
   menuNumber++;
-  html += objImportFile.insertTableRowNew('', menuNumber, objImportFile.accountMenu, '');
+  html += objImportFile.insertTableRowNew('', menuNumber, objImportFile.accountMenu, '2');
 
-  html += objImportFile.showButton('width:175px;', 'update', 'Oppdater');
-  html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+  html += objImportFile.showButton('width:175px;', 'update', '3Oppdater');
+  html += "<td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>";
 
   // Show the rest of the menu
   menuNumber++;
@@ -652,11 +653,11 @@ async function updateBankAccountTransactions() {
 function importFileName(menuNumber) {
 
   // Start table
-  let html = objImportFile.startTable(tableWidth);
+  let html = objImportFile.initializeTable(175, 175, 175, 175, 175,175,175,175,200);
 
   // Header filter
   menuNumber++;
-  html += objImportFile.showTableHeaderMenu('width:175px;', menuNumber, objImportFile.accountMenu, '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
+  html += objImportFile.showTableHeaderMenuNew( menuNumber, objImportFile.accountMenu, '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();

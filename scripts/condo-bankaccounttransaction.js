@@ -434,7 +434,7 @@ async function showBankAccountTransactions(menuNumber) {
     if (bankAccountTransaction.deleted === 'Y') selected = "Ja";
     if (bankAccountTransaction.deleted === 'N') selected = "Nei";
     let className = `delete${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.showSelectedValues(className, 'width:75px;', enableChanges, selected, 'Nei', 'Ja')
+    html += objBankAccountTransaction.showSelectedValuesNew(className,  enableChanges, selected, 'Nei', 'Ja')
 
     // condos
     className = `condoId${bankAccountTransaction.bankAccountTransactionId}`;

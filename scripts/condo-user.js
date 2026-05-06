@@ -8,8 +8,6 @@ const objUser = new User('user');
 
 const enableChanges = (objUser.securityLevel > 5);
 
-const tableWidth = "width:600px;";
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -214,13 +212,13 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objUser.startTable(tableWidth);
+  let html = objUser.initializeTable(175,175,175);
 
   // start table body
   html += objUser.startTableBody();
 
   // show main header
-  html += objUser.showTableHeaderLogOut('width:175px;', '', '', 'Bruker', '');
+  html += objUser.showTableHeaderLogOutNew( '', 'Bruker');
   html += "</tr>";
 
   // end table body
@@ -235,11 +233,11 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId, userId) {
 
   // Start table
-  let html = objUser.startTable(tableWidth);
+  let html = objUser.initializeTable(175,175,175);
 
   // Header filter
   menuNumber++;
-  html += objUser.showTableHeaderMenu('width:175px;', menuNumber, objUser.accountMenu, 'Bruker', '');
+  html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'Bruker', '');
 
   // start table body
   html += objUser.startTableBody();
@@ -249,10 +247,10 @@ function showFilter(menuNumber, condominiumId, userId) {
   html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
   // Condominium
-  if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', true)
+  if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiumsNew('filterCondominiumId', condominiumId, '', '', true)
 
   // user
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', enableChanges)
+  html += objUser.showSelectedUsersNew('filterUserId',  userId, '', '', enableChanges)
 
   html += "<td></td></tr>";
 
@@ -275,7 +273,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 function showUser(menuNumber, userId) {
 
   // start table
-  let html = objUser.startTable(tableWidth);
+  let html = objUser.initializeTable(175,175,175);
 
   // Check if users row exist
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
@@ -284,14 +282,14 @@ function showUser(menuNumber, userId) {
     // email,condoId
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, objUser.accountMenu, 'email', 'Leilighet');
+    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'E-mail', 'Leilighet');
 
     // insert a table row
     menuNumber++;
     html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
     // email
-    html += objUser.inputTableColumn('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
+    html += objUser.inputTableColumnNew('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
 
     // condoId
     html += objCondo.showSelectedCondos('condoId', "width:175px;", objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
@@ -301,35 +299,35 @@ function showUser(menuNumber, userId) {
     // firstName, lastName
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, objUser.accountMenu, 'Fornavn', 'Etternavn');
+    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'Fornavn', 'Etternavn');
 
     // insert a table row
     menuNumber++;
     html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
     // firstName
-    html += objUser.inputTableColumn('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
+    html += objUser.inputTableColumnNew('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
 
     // lastName
-    html += objUser.inputTableColumn('lastName', '', objUser.arrayUsers[rowNumberUser].lastName, 45, enableChanges);
+    html += objUser.inputTableColumnNew('lastName', '', objUser.arrayUsers[rowNumberUser].lastName, 45, enableChanges);
 
     html += "</tr>";
 
     // phone, activ user
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu("width:175px;", menuNumber, objUser.accountMenu, 'Telefonnummer', 'Beboer');
+    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, 'Telefonnummer', 'Beboer');
 
     // insert a table row
     menuNumber++;
     html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
     // phone
-    html += objUser.inputTableColumn('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
+    html += objUser.inputTableColumnNew('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
 
     // Activ user
     resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
-    html += objUser.showSelectedValues('resident', '', enableChanges, resident, 'Ja', 'Nei')
+    html += objUser.showSelectedValuesNew('resident', enableChanges, resident, 'Ja', 'Nei')
 
     html += "</tr>";
 

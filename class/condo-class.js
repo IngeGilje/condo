@@ -184,7 +184,7 @@ class Condos {
 
   /*
   // Show input
-  inputTableColumn(className, style, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+  inputTableColumnNew(className, style, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
     return `
     <td 
@@ -378,6 +378,7 @@ class Condos {
     }
   }
 
+  /*
   // Select numbers
   selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
 
@@ -433,7 +434,45 @@ class Condos {
 
     document.querySelector(`.div-${className}`).innerHTML = html;
   }
+  */
 
+  /*
+  // Select interval number
+  //selectIntervalNew(className, fromNumber, toNumber, selectedNumber, enableChanges) {
+  showSelectedNumbersNew(className, fromNumber, toNumber, selectedNumber, enableChanges) {
+
+    let selectedOption = false;
+
+    let html = `
+    <td class="center"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style="${style}"` : `style="width:175px;"`}
+        ${(enableChanges) ? '' : 'disabled'}
+      >`;
+
+    for (let number = fromNumber; number <= toNumber; number++) {
+      if (number === selectedNumber) {
+
+        html += `
+        <option 
+          value="${number}"
+          selected>${number}</option>`;
+        selectedOption = true;
+      } else {
+
+        html += `<option value="${number}">${number}</option>`;
+      }
+    };
+
+    html += `</select ></td>`;
+
+    return html;
+  }
+  */
+
+  /*
   // Select interval number
   selectInterval(className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
 
@@ -466,6 +505,7 @@ class Condos {
 
     return html;
   }
+  */
 
   // Select numbers
   selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
@@ -676,6 +716,7 @@ class Condos {
     return html;
   }
 
+  /*
   // Select choices like Yes, No, Ignore
   showSelectedValues(className, style, enableChanges, selected, ...choices) {
 
@@ -706,6 +747,7 @@ class Condos {
 
     return html;
   }
+  */
 
   // Select choices like Yes, No, Ignore
   showSelectedValuesNew(className,enableChanges, selected, ...choices) {

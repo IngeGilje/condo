@@ -191,13 +191,13 @@ async function deleteBankAccount() {
 function showHeader() {
 
   // Start table
-  let html = objBankAccount.startTable(tableWidth);
+  let html = objBankAccount.initializeTable(175,175,175);
 
   // start table body
   html += objBankAccount.startTableBody();
 
   // show main header
-  html += objBankAccount.showTableHeaderLogOut('width:175px;', '', 'Bankkonto sameie', '');
+  html += objBankAccount.showTableHeaderLogOutNew( '', 'Bankkonto sameie');
   html += "</tr>";
 
   // end table body
@@ -212,11 +212,11 @@ function showHeader() {
 function showBankAccounts(menuNumber, bankAccountId) {
 
   // start table
-  let html = objBankAccount.startTable(tableWidth);
+  let html = objBankAccount.initializeTable(175,175,175);
 
   // table header
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, objBankAccount.accountMenu, 'Navn', 'Bankkontonummer');
+  html += objBankAccount.showTableHeaderMenuNew(menuNumber, objBankAccount.accountMenu, 'Navn', 'Bankkontonummer');
 
   // Check if bankaccounts row exist
   const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
@@ -232,19 +232,19 @@ function showBankAccounts(menuNumber, bankAccountId) {
   const name = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;
-  html += objBankAccount.inputTableColumn('name', 'width:175px;', name, 45, enableChanges);
+  html += objBankAccount.inputTableColumnNew('name', 'width:175px;', name, 45, enableChanges);
 
   // account number
   const bankAccount = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount;
 
-  html += objBankAccount.inputTableColumn('bankAccount', 'width:175px;', bankAccount, 11, enableChanges);
+  html += objBankAccount.inputTableColumnNew('bankAccount', 'width:175px;', bankAccount, 11, enableChanges);
   html += "</tr>";
 
   // Show menu
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, objBankAccount.accountMenu, 'Dato', 'Inngående saldo');
+  html += objBankAccount.showTableHeaderMenuNew( menuNumber, objBankAccount.accountMenu, 'Dato', 'Inngående saldo');
 
   // insert a table row
   menuNumber++;
@@ -255,21 +255,21 @@ function showBankAccounts(menuNumber, bankAccountId) {
     ? ''
     : formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate)
   //const openingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
-  html += objBankAccount.inputTableColumn('openingBalanceDate', 'width:175px;', openingBalanceDate, 10, enableChanges);
+  html += objBankAccount.inputTableColumnNew('openingBalanceDate', 'width:175px;', openingBalanceDate, 10, enableChanges);
 
   // opening balance
   const openingBalance = (rowNumberBankAccount === -1)
     ? ''
     : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance)
   //const openingBalance = formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance);
-  html += objBankAccount.inputTableColumn('openingBalance', 'width:175px;', openingBalance, 11, enableChanges);
+  html += objBankAccount.inputTableColumnNew('openingBalance', 'width:175px;', openingBalance, 11, enableChanges);
 
   html += "</tr>";
 
   // Show menu
   // Header for value
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu("width:175px;", menuNumber, objBankAccount.accountMenu, 'Dato', 'Utgående saldo');
+  html += objBankAccount.showTableHeaderMenuNew( menuNumber, objBankAccount.accountMenu, 'Dato', 'Utgående saldo');
 
   // insert a table row
   menuNumber++;
@@ -282,14 +282,14 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
 
   //const closingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
-  html += objBankAccount.inputTableColumn('closingBalanceDate', 'width:175px;', closingBalanceDate, 10, enableChanges);
+  html += objBankAccount.inputTableColumnNew('closingBalanceDate', 'width:175px;', closingBalanceDate, 10, enableChanges);
 
   // closing balance
   const closingBalance = (rowNumberBankAccount === -1)
     ? ''
     : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance)
   //const closingBalance = formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
-  html += objBankAccount.inputTableColumn('closingBalance', 'width:175px;', closingBalance, 11, enableChanges);
+  html += objBankAccount.inputTableColumnNew('closingBalance', 'width:175px;', closingBalance, 11, enableChanges);
 
   html += "</tr>";
 
@@ -459,11 +459,11 @@ function resetValues() {
 function showFilter(menuNumber, condominiumId) {
 
   // Start table
-  let html = objBankAccount.startTable(tableWidth);
+  let html = objBankAccount.initializeTable(175,175,175);
 
   // Header filter
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu('width:150px;', menuNumber, objBankAccount.accountMenu, 'Velg Sameie', 'Bankkonto');
+  html += objBankAccount.showTableHeaderMenuNew( menuNumber, objBankAccount.accountMenu, 'Velg Sameie', 'Bankkonto');
 
   // start table body
   html += objBankAccount.startTableBody();
@@ -473,7 +473,7 @@ function showFilter(menuNumber, condominiumId) {
   html += objBankAccount.insertTableRowNew('', menuNumber, objBankAccount.accountMenu);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', enableChanges);
+  html += objCondominium.showSelectedCondominiumsNew('filterCondominiumId',  condominiumId, '', '', enableChanges);
 
   // Show all bankaccounts for selected condominiums
   // Get last id in last object in bankaccounts array

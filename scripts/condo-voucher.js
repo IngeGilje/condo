@@ -124,13 +124,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objBankAccountTransaction.startTable(tableWidth);
+  let html = objBankAccountTransaction.initializeTable(175, 225, 125,175,175);
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
 
   // show main header
-  html += objBankAccountTransaction.showTableHeaderLogOut('width:175px;', '', '', 'Vis bilag', '');
+  html += objBankAccountTransaction.showTableHeaderLogOutNew( '', '', 'Vis bilag', '');
   html += "</tr>";
 
   // end table body
@@ -145,11 +145,11 @@ function showHeader() {
 function showFilter(menuNumber, bankAccountTransactionId) {
 
   // Start table
-  let html = objBankAccountTransaction.startTable(tableWidth);
+  let html = objBankAccountTransaction.initializeTable(175, 225, 125,175,175);
 
   // Header filter
   menuNumber++;
-  html += objBankAccountTransaction.showTableHeaderMenu('width:175px;', menuNumber, objBankAccountTransaction.accountMenu, '', 'Velg bankkontotransaksjon', '');
+  html += objBankAccountTransaction.showTableHeaderMenuNew( menuNumber, objBankAccountTransaction.accountMenu, '', 'Velg bankkontotransaksjon', '');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
@@ -177,7 +177,7 @@ function showFilter(menuNumber, bankAccountTransactionId) {
 function showVoucher(bankAccountTransactionId, menuNumber) {
 
   // start table
-  let html = objBankAccountTransaction.startTable(tableWidth);
+  let html = objBankAccountTransaction.initializeTable(175, 225, 125,175,175);
 
   // Check if bank account transaction row exist
   const rowNumberBankAccountTransaction = objBankAccountTransaction.arrayBankAccountTransactions.findIndex(bankAccountTransaction => bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId);
@@ -185,7 +185,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // date and amount
     menuNumber++;
-    html += objVoucher.showTableHeaderMenu("width:175px;", menuNumber, objVoucher.accountMenu, 'Dato', 'Beløp', 'Konto');
+    html += objVoucher.showTableHeaderMenuNew( menuNumber, objVoucher.accountMenu, 'Dato', 'Beløp', 'Konto');
 
     menuNumber++;
     html += objBankAccountTransaction.insertTableRowNew('', menuNumber,objBankAccountTransaction.accountMenu);
@@ -193,23 +193,23 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     // date
     let date = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].date;
     date = (date) ? formatNumberToNorDate(date) : '';
-    html += objBankAccountTransaction.inputTableColumn('date', '', date, 10, false);
+    html += objBankAccountTransaction.inputTableColumnNew('date', '', date, 10, false);
 
     // amount
     const income = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].income;
     const payment = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].payment;
     const amount = formatOreToKroner((income) ? income : payment);
-    html += objBankAccountTransaction.inputTableColumn('amount', '', amount, 11, false);
+    html += objBankAccountTransaction.inputTableColumnNew('amount', '', amount, 11, false);
 
     // account
     const accountId = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].accountId;
-    html += objAccount.showSelectedAccounts('accountId', 'width:175px;', accountId, '', '', false);
+    html += objAccount.showSelectedAccountsNew('accountId',  accountId, '', '', false);
 
     html += "</tr>";
 
     // file name of the voucher
     menuNumber++;
-    html += objVoucher.showTableHeaderMenu("width:175px;", menuNumber, objVoucher.accountMenu, 'Filnavn', '', '');
+    html += objVoucher.showTableHeaderMenuNew( menuNumber, objVoucher.accountMenu, 'Filnavn', '', '');
 
     menuNumber++;
     html += objBankAccountTransaction.insertTableRowNew('', menuNumber,objBankAccountTransaction.accountMenu);
@@ -218,7 +218,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     voucherFileName = (voucherFileName) 
     ? voucherFileName 
     : `${bankAccountTransactionId}.pdf`;
-    html += objBankAccountTransaction.inputTableColumn('voucherFileName', '', voucherFileName, 45, enableChanges);
+    html += objBankAccountTransaction.inputTableColumnNew('voucherFileName', '', voucherFileName, 45, enableChanges);
 
     html += "<td></td><td></td></tr>";
 
