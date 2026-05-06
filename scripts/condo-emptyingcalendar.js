@@ -165,7 +165,7 @@ function showHeader() {
   html += objEmptyingCalendar.startTableBody();
 
   // show main header
-  html += objEmptyingCalendar.showTableHeaderLogOutNew( '', '', '', 'Avfallskalender', '', '', '', '');
+  html += objEmptyingCalendar.showTableHeaderLogOut( '', '', '', 'Avfallskalender', '', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -184,35 +184,30 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  //html += objEmptyingCalendar.showTableHeaderMenu('width:150px;', menuNumber, objEmptyingCalendar.administrationMenu, '', '', 'År', 'Måned', '', '', '', '');
-  html += objEmptyingCalendar.showTableHeaderMenuNew(menuNumber, objEmptyingCalendar.administrationMenu, '', '2', '3År', '4Måned', '5', '6', '7', '8', '9');
+   html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '', '2', '3År', '4Måned', '5', '6', '7', '8', '9');
 
   // start table body
   html += objEmptyingCalendar.startTableBody();
 
   // insert a table row
   menuNumber++;
-  //html += objEmptyingCalendar.insertTableRowNew('', menuNumber, objEmptyingCalendar.administrationMenu, '', '');
-  html += objEmptyingCalendar.insertTableRowNew('', menuNumber, objEmptyingCalendar.administrationMenu, '2');
+   html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '2');
 
   // Selected year
   const year = String(today.getFullYear());
-  //html += objEmptyingCalendar.showSelectedNumbers( 'filterYear', "width:150px;", 2020, 2030, year, true);
-  html += objEmptyingCalendar.showSelectedNumbersNew('filterYear', 2020, 2030, year, true)
+  html += objEmptyingCalendar.showSelectedNumbers('filterYear', 2020, 2030, year, true)
 
   // Selected month
   // Get current date in  European date format (dd.mm.yyyy)
   const date = getCurrentDate();
   let month = Number(date.split('.')[1]); // Extract the month part
-  //html += objEmptyingCalendar.showSelectedMonths('filterMonth', "width:150px;", month, true);
-  html += objEmptyingCalendar.showSelectedMonthsNew('filterMonth', month, true);
+  html += objEmptyingCalendar.showSelectedMonths('filterMonth', month, true);
 
   html += "<td>5</td><td>6</td><td>7<td>8</td><td>9</td></tr>";
 
   // insert a table row
   menuNumber++;
-  //html += objEmptyingCalendar.insertTableRowNew('', menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
-  html += objEmptyingCalendar.insertTableRowNew('', menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
+  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
   // end table body
   html += objEmptyingCalendar.endTableBody();
 
@@ -231,16 +226,14 @@ function showEmptyingCalendar(menuNumber) {
 
   // table header
   menuNumber++;
-  //html += objEmptyingCalendar.showTableHeaderMenu('width:150px;background:#e0f0e0;', menuNumber, objEmptyingCalendar.administrationMenu, 'Slett', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
-  html += objEmptyingCalendar.showTableHeaderMenuNew(menuNumber, objEmptyingCalendar.administrationMenu, '#e0f0e0', 'Slett', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
+   html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '#e0f0e0', 'Slett', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
   if (objEmptyingCalendar.arrayEmptyingCalendar.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendar.forEach((emptyingCalendar) => {
 
       // Show menu
       menuNumber++;
-      //html += objEmptyingCalendar.insertTableRowNew('',   menuNumber, objEmptyingCalendar.administrationMenu);
-      html += objEmptyingCalendar.insertTableRowNew('', menuNumber, objEmptyingCalendar.administrationMenu);
+      html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu);
 
       // Delete
       let selected = "Ugyldig verdi";
@@ -258,7 +251,7 @@ function showEmptyingCalendar(menuNumber) {
       let date = emptyingCalendar.date;
       date = formatNumberToNorDate(date);
       className = `date${emptyingCalendar.emptyingCalendarId}`;
-      html += objEmptyingCalendar.inputTableColumnNew(className, 'left', date, 10, enableChanges);
+      html += objEmptyingCalendar.inputTableColumn(className, 'left', date, 10, enableChanges);
 
       // residual waste  
       selected = "Ugyldig verdi";
@@ -324,8 +317,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // Show menu
   // insert a table row
-  //html += objEmptyingCalendar.insertTableRowNew('',  menuNumber, objEmptyingCalendar.administrationMenu);
-  html += objEmptyingCalendar.insertTableRowNew('', menuNumber, objEmptyingCalendar.administrationMenu);
+   html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu);
 
 
   // delete
@@ -338,7 +330,7 @@ function insertEmptyTableRow(menuNumber) {
   // date
   let date = 'dd.mm.åååå';
   className = `date0`;
-  html += objEmptyingCalendar.inputTableColumnNew(className, 'left', date, 10, enableChanges);
+  html += objEmptyingCalendar.inputTableColumn(className, 'left', date, 10, enableChanges);
 
   // Paper waste
   let selected = "Nei";

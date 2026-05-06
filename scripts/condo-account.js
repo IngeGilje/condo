@@ -169,7 +169,7 @@ function showHeader() {
   html += objAccount.startTableBody();
 
   // show main header
-  html += objAccount.showTableHeaderLogOutNew( '', '', 'Konto');
+  html += objAccount.showTableHeaderLogOut( '', '', 'Konto');
   html += "</tr>";
 
   // end table body
@@ -188,14 +188,14 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objAccount.showTableHeaderMenuNew( menuNumber, objAccount.accountMenu, '','', 'Kostnadstype', '');
+  html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '','', 'Kostnadstype', '');
 
   // start table body
   html += objAccount.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objAccount.insertTableRowNew('', menuNumber,objAccount.accountMenu, '');
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
 
   // fixed or not fixed cost
   html += objAccount.showSelectedValuesNew('filterFixedCost',  true, 'Alle', constFixedCost, constVariableCost, 'Alle');
@@ -204,7 +204,7 @@ function showFilter(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objAccount.insertTableRowNew('', menuNumber,objAccount.accountMenu, '');
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
 
   // end table body
   html += objAccount.endTableBody();
@@ -223,7 +223,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // Show menu
   // insert a table row
-  html += objAccount.insertTableRowNew('', menuNumber,objAccount.accountMenu);
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu);
 
   // delete
   html += "<td class='center'>Ny konto</td>";
@@ -232,7 +232,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objAccount.showSelectedValuesNew('fixedCost0', enableChanges, constFixedCost, constFixedCost, constVariableCost);
 
   // name
-  html += objAccount.inputTableColumnNew('name0', '', '', 45, enableChanges);
+  html += objAccount.inputTableColumn('name0', '', '', 45, enableChanges);
 
   html += "</tr>";
   return html;
@@ -246,14 +246,13 @@ function showAccounts(menuNumber) {
 
   // table header
   menuNumber++;
-  //html += objAccount.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objAccount.accountMenu, 'Slett', 'Kostnadstype', 'Tekst');
-   html += objAccount.showTableHeaderMenuNew( menuNumber, objAccount.accountMenu, '#e0f0e0', 'Slett', 'Kostnadstype', 'Tekst');
+   html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '#e0f0e0', 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccount.arrayAccounts.forEach((account) => {
 
     // Show menu
     menuNumber++;
-    html += objAccount.insertTableRowNew('', menuNumber,objAccount.accountMenu);
+    html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -289,7 +288,7 @@ function showAccounts(menuNumber) {
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccount.inputTableColumnNew(className, '', name, 45, enableChanges);
+    html += objAccount.inputTableColumn(className, '', name, 45, enableChanges);
 
     html += "</tr>";
   });

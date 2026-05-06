@@ -143,7 +143,7 @@ function showHeader() {
   html += objUser.startTableBody();
 
   // show main header
-  html += objUser.showTableHeaderLogOutNew( '', 'Passord');
+  html += objUser.showTableHeaderLogOut( '', 'Passord');
   html += "</tr>";
 
   // end table body
@@ -162,14 +162,14 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // Header filter
   menuNumber++;
-  html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, '', 'Sameie', 'Bruker');
+  html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objPassword.insertTableRowNew('', menuNumber,objPassword.accountMenu);
+  html += objPassword.insertTableRow('', menuNumber,objPassword.accountMenu);
 
   // Show selected condominiums 
   html += objCondominium.showSelectedCondominiumsNew('filterCondominiumId',  condominiumId, '', '',enableChanges);
@@ -181,7 +181,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // insert a table row
   menuNumber++;
-  html += objPassword.insertTableRowNew('', menuNumber,objPassword.accountMenu, '', '');
+  html += objPassword.insertTableRow('', menuNumber,objPassword.accountMenu, '', '');
 
   // end table body
   html += objUser.endTableBody();
@@ -206,23 +206,23 @@ function showUser(menuNumber, userId) {
     // password, securityLevel,
     html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenuNew( menuNumber, objUser.accountMenu, '', 'Passord', 'Sikkerhetsnivå');
+    html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Passord', 'Sikkerhetsnivå');
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRowNew('', menuNumber,objPassword.accountMenu);
+    html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
 
     // password
     html += objUser.inputTablePassword('password', '', '', 45);
 
     // securityLevel
-    html += objUser.showSelectedNumbersNew('securityLevel',  1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
+    html += objUser.showSelectedNumbers('securityLevel',  1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
 
     html += "</tr>";
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRowNew('', menuNumber,objPassword.accountMenu);
+    html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
 
     html += "</tr>";
 
@@ -230,9 +230,9 @@ function showUser(menuNumber, userId) {
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRowNew('', menuNumber,objPassword.accountMenu);
+    html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
 
-    html += objUser.showButton('width:175px;', 'update', 'Oppdater');
+    html += objUser.showButton( 'update', 'Oppdater');
     html += "</tr>";
 
     // Show the rest of the menu

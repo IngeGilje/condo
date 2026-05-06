@@ -503,7 +503,7 @@ function showHeader() {
   html += objImportFile.startTableBody();
 
   // show main header
-  html += objImportFile.showTableHeaderLogOutNew( '1', '2', '3', '4', '5Import av bankkontotransaksjoner', '6', '7', '8');
+  html += objImportFile.showTableHeaderLogOut( '1', '2', '3', '4', '5Import av bankkontotransaksjoner', '6', '7', '8');
   html += "</tr>";
 
   // end table body
@@ -525,7 +525,7 @@ function showFilter(menuNumber) {
   html += "</tr>";
 
   menuNumber++;
-  html += objImportFile.insertTableRowNew('', menuNumber, objImportFile.accountMenu, '1', '2', '3', '4', '5', '6', '7', '8');
+  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '1', '2', '3', '4', '5', '6', '7', '8');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -545,8 +545,7 @@ function showBankAccountTransactions(menuNumber) {
 
   // table header
   menuNumber++;
-  //html += objImportFile.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objImportFile.accountMenu, 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
-  html += objImportFile.showTableHeaderMenuNew( menuNumber, objImportFile.accountMenu, '#e0f0e0', '2Dato', '3Leilighet', '4Konto', '5Fra bankkonto', '6Til bankkonto', '7Inntekt', '8Utgift', '9Tekst');
+  html += objImportFile.showTableHeaderMenu( menuNumber, objImportFile.accountMenu, '#e0f0e0', '2Dato', '3Leilighet', '4Konto', '5Fra bankkonto', '6Til bankkonto', '7Inntekt', '8Utgift', '9Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -555,41 +554,41 @@ function showBankAccountTransactions(menuNumber) {
 
     // insert a table row
     menuNumber++;
-    html += objImportFile.insertTableRowNew('', menuNumber, objImportFile.accountMenu);
+    html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu);
 
     // Date
     let className = `accountingDate${menuNumber}`;
-    html += objImportFile.inputTableColumnNew(className, '', transaction.accountingDate, 10);
+    html += objImportFile.inputTableColumn(className, '', transaction.accountingDate, 10);
 
     // Condo name
     className = `condoName${menuNumber}`;
-    html += objImportFile.inputTableColumnNew(className, '', transaction.condoName, 45);
+    html += objImportFile.inputTableColumn(className, '', transaction.condoName, 45);
 
     // Account name
     className = `accountName${menuNumber}`;
-    html += objImportFile.inputTableColumnNew(className, '', transaction.accountName, 45);
+    html += objImportFile.inputTableColumn(className, '', transaction.accountName, 45);
 
     // fromBankAccountName
     className = `fromBankAccountName${menuNumber}`;
-    html += objImportFile.inputTableColumnNew(className, '', transaction.fromBankAccountName, 45);
+    html += objImportFile.inputTableColumn(className, '', transaction.fromBankAccountName, 45);
 
     // toBankAccountName
     className = `toBankAccountName${menuNumber}`;
-    html += objImportFile.inputTableColumnNew(className, '', transaction.toBankAccountName, 45);
+    html += objImportFile.inputTableColumn(className, '', transaction.toBankAccountName, 45);
 
     // Income
     const income = formatOreToKroner(transaction.income);
     className = `income${menuNumber}`;
-    html += objImportFile.inputTableColumnNew(className, '', income, 10);
+    html += objImportFile.inputTableColumn(className, '', income, 10);
 
     // Payment
     const payment = formatOreToKroner(transaction.payment);
     className = `payment${menuNumber}`;
-    html += objImportFile.inputTableColumnNew(className, '', payment, 10);
+    html += objImportFile.inputTableColumn(className, '', payment, 10);
 
     // Text
     className = `payment${menuNumber}`;
-    html += objImportFile.inputTableColumnNew(className, '', transaction.text, 10);
+    html += objImportFile.inputTableColumn(className, '', transaction.text, 10);
 
     // Accomulate
 
@@ -609,15 +608,15 @@ function showBankAccountTransactions(menuNumber) {
 
   // Show sum row
   menuNumber++;
-  html += objImportFile.insertTableRowNew('font-weight: 600;', menuNumber, objImportFile.accountMenu, '2', '3', '4', '5', '6Sum', sumIncomes, sumPayments, '9');
+  html += objImportFile.insertTableRow('font-weight: 600;', menuNumber, objImportFile.accountMenu, '2', '3', '4', '5', '6Sum', sumIncomes, sumPayments, '9');
 
   // Show update button
 
   // insert a table row
   menuNumber++;
-  html += objImportFile.insertTableRowNew('', menuNumber, objImportFile.accountMenu, '2');
+  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '2');
 
-  html += objImportFile.showButton('width:175px;', 'update', '3Oppdater');
+  html += objImportFile.showButton( 'update', '3Oppdater');
   html += "<td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>";
 
   // Show the rest of the menu
@@ -657,7 +656,7 @@ function importFileName(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objImportFile.showTableHeaderMenuNew( menuNumber, objImportFile.accountMenu, '', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
+  html += objImportFile.showTableHeaderMenu( menuNumber, objImportFile.accountMenu, '', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();
@@ -680,20 +679,20 @@ function importFileName(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableRowNew('', menuNumber, objImportFile.accountMenu);
+  html += objBankAccount.insertTableRow('', menuNumber, objImportFile.accountMenu);
   html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row
   menuNumber++;
-  html += objImportFile.insertTableRowNew('', menuNumber, objImportFile.accountMenu, '', '');
+  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '', '');
 
   // Show buttons
-  html += objBankAccount.showButton('width:175px;', 'importTransacionFile', 'Start import', 'Importer transaksjonsfil');
+  html += objBankAccount.showButton( 'importTransacionFile', 'Start import', 'Importer transaksjonsfil');
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableRowNew('', menuNumber, objImportFile.accountMenu);
+  html += objBankAccount.insertTableRow('', menuNumber, objImportFile.accountMenu);
   html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // Show the rest of the menu

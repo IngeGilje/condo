@@ -164,7 +164,7 @@ function showHeader() {
   html += objCommonCost.startTableBody();
 
   // show main header
-  html += objCommonCost.showTableHeaderLogOutNew('', '', 'Felleskostnader', '');
+  html += objCommonCost.showTableHeaderLogOut('', '', 'Felleskostnader', '');
   html += "</tr>";
 
   // end table body
@@ -181,20 +181,19 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
 
   // insert a table row
-  html += objCommonCost.insertTableRowNew('', menuNumber, objCommonCost.accountMenu);
+  html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu);
 
   html += "<td class='center'>Ny felleskostnad</td>";
 
   // Select year
   const year = today.getFullYear();
-  //html += objCommonCost.selectInterval('year0', 'width:175px;', 2020, 2030, year, enableChanges);
-  html += objCommonCost.showSelectedNumbersNew('year0', 2020, 2030, year,  true);
+  html += objCommonCost.showSelectedNumbers('year0', 2020, 2030, year,  true);
 
   // commonCostSquareMeter 
-  html += objCommonCost.inputTableColumnNew('commonCostSquareMeter0', '', '0,00', 10, enableChanges);
+  html += objCommonCost.inputTableColumn('commonCostSquareMeter0', '', '0,00', 10, enableChanges);
 
   // fixed cost per condo 
-  html += objCommonCost.inputTableColumnNew('fixedCostCondo0', '', '', 10, enableChanges);
+  html += objCommonCost.inputTableColumn('fixedCostCondo0', '', '', 10, enableChanges);
 
   html += "</tr>";
   return html;
@@ -207,14 +206,13 @@ function showCommonCost(menuNumber) {
   let html = objCommonCost.initializeTable(175, 75, 175, 175, 175);
 
   menuNumber++;
-  //html += objCommonCost.showTableHeaderMenu('width:175px;background:#e0f0e0;', menuNumber, objCommonCost.accountMenu, 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
-  html += objCommonCost.showTableHeaderMenuNew(menuNumber, objCommonCost.accountMenu, '#e0f0e0', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+   html += objCommonCost.showTableHeaderMenu(menuNumber, objCommonCost.accountMenu, '#e0f0e0', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
 
   objCommonCost.arrayCommonCosts.forEach((commonCost) => {
 
     // insert a table row
     menuNumber++;
-    html += objCommonCost.insertTableRowNew('', menuNumber, objCommonCost.accountMenu);
+    html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -227,20 +225,19 @@ function showCommonCost(menuNumber) {
     // Select year
     const year = commonCost.year;
     className = `year${commonCost.commonCostId}`;
-    //html += objCommonCost.selectInterval(className, 'width:175px;', 2020, 2030, year, enableChanges);
-    html += objCommonCost.showSelectedNumbersNew('year0', 2020, 2030, year,  true);
+     html += objCommonCost.showSelectedNumbers('year0', 2020, 2030, year,  true);
 
     // common cost per squaremeter
     let commonCostSquareMeter = commonCost.commonCostSquareMeter;
     className = `commonCostSquareMeter${commonCost.commonCostId}`;
     commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
-    html += objCommonCost.inputTableColumnNew(className, '', commonCostSquareMeter, 11, enableChanges);
+    html += objCommonCost.inputTableColumn(className, '', commonCostSquareMeter, 11, enableChanges);
 
     // fixed cost per condo
     let fixedCostCondo = commonCost.fixedCostCondo;
     className = `fixedCostCondo${commonCost.commonCostId}`;
     fixedCostCondo = formatOreToKroner(fixedCostCondo);
-    html += objCommonCost.inputTableColumnNew(className, '', fixedCostCondo, 10, enableChanges);
+    html += objCommonCost.inputTableColumn(className, '', fixedCostCondo, 10, enableChanges);
 
     html += "</tr>";
   });

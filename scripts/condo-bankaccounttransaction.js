@@ -243,19 +243,18 @@ async function events() {
 function showFilter(menuNumber, condoId, accountId) {
 
   // Start table
-  //                                                    1    2    3    4    5    6    7    8    9
   let html = objBankAccountTransaction.initializeTable(175, 75, 175, 175, 175, 175, 175, 175, 175);
 
   // Header filter
   menuNumber++;
-  html += objBankAccountTransaction.showTableHeaderMenuNew(menuNumber, objBankAccountTransaction.accountMenu, '', '2', '3', '4Leilighet', '5Velg konto', '6Fra dato', '7Til dato', '8Beløp', '9');
+  html += objBankAccountTransaction.showTableHeaderMenu(menuNumber, objBankAccountTransaction.accountMenu, '', '2', '3', '4Leilighet', '5Velg konto', '6Fra dato', '7Til dato', '8Beløp', '9');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableRowNew('',menuNumber,objBankAccountTransaction.accountMenu, '', '');
+  html += objBankAccountTransaction.insertTableRow('',menuNumber,objBankAccountTransaction.accountMenu, '', '');
 
   // Show all selected condos
   html += objCondo.showSelectedCondosNew('filterCondoId', condoId, '', 'Vis alle', true);
@@ -265,20 +264,20 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
-  html += objBankAccountTransaction.inputTableColumnNew('filterFromDate', 'left',fromDate, 10, true);
+  html += objBankAccountTransaction.inputTableColumn('filterFromDate', 'left',fromDate, 10, true);
 
   // Current date
   let toDate = getCurrentDate();
-  html += objBankAccountTransaction.inputTableColumnNew('filterToDate', 'left', toDate, 10, true);
+  html += objBankAccountTransaction.inputTableColumn('filterToDate', 'left', toDate, 10, true);
 
   // Amount
-  html += objBankAccountTransaction.inputTableColumnNew('filterAmount', 'left', '', 10, true);
+  html += objBankAccountTransaction.inputTableColumn('filterAmount', 'left', '', 10, true);
 
   html += "<td>9</td></tr>";
 
   // insert a table row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableRowNew('',menuNumber,objBankAccountTransaction.accountMenu, '', '', '', '', '', '', '', '', '');
+  html += objBankAccountTransaction.insertTableRow('',menuNumber,objBankAccountTransaction.accountMenu, '', '', '', '', '', '', '', '', '');
 
   // end table body
   html += objBankAccountTransaction.endTableBody();
@@ -415,7 +414,7 @@ async function showBankAccountTransactions(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objCondo.showTableHeaderMenuNew( menuNumber, objCondo.accountMenu, '#e0f0e0', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag');
+  html += objCondo.showTableHeaderMenu( menuNumber, objCondo.accountMenu, '#e0f0e0', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag');
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -427,7 +426,7 @@ async function showBankAccountTransactions(menuNumber) {
 
     // Show menu
     menuNumber++;
-    html += objAccount.insertTableRowNew('',menuNumber,objBankAccountTransaction.accountMenu);
+    html += objAccount.insertTableRow('',menuNumber,objBankAccountTransaction.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -443,7 +442,7 @@ async function showBankAccountTransactions(menuNumber) {
     // Date
     const date = formatNumberToNorDate(bankAccountTransaction.date);
     className = `date${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumnNew(className, 'left',  date, 10, false);
+    html += objBankAccountTransaction.inputTableColumn(className, 'left',  date, 10, false);
 
     // accounts
     className = `accountId${bankAccountTransaction.bankAccountTransactionId}`;
@@ -456,26 +455,22 @@ async function showBankAccountTransactions(menuNumber) {
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumnNew(className, 'left', income, 10, false);
+    html += objBankAccountTransaction.inputTableColumn(className, 'left', income, 10, false);
 
     // payment
     const payment = formatOreToKroner(bankAccountTransaction.payment);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumnNew(className, 'left',  payment, 10, false);
+    html += objBankAccountTransaction.inputTableColumn(className, 'left',  payment, 10, false);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(bankAccountTransaction.kilowattHour);
     className = `kilowattHour${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumnNew(className, 'left', kilowattHour, 10, enableChanges);
+    html += objBankAccountTransaction.inputTableColumn(className, 'left', kilowattHour, 10, enableChanges);
 
     // text
     const text = bankAccountTransaction.text;
     className = `text${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.inputTableColumnNew(className, 'left', text, 45, enableChanges);
-
-    // Show voucher
-    //className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
-    //html += objBankAccountTransaction.showButton('width:100px;', className, 'Vis bilag');
+    html += objBankAccountTransaction.inputTableColumn(className, 'left', text, 45, enableChanges);
 
     // validate voucher filename
     const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objBankAccountTransaction.condominiumId);
@@ -488,12 +483,13 @@ async function showBankAccountTransactions(menuNumber) {
 
         // Show button if the file exist
         className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
-        html += objBankAccountTransaction.showButton('width:100px;', className, 'Vis bilag');
+        html += objBankAccountTransaction.showButton(className, 'Vis bilag');
       } else {
 
         // Show empty column if the file does not exist
         className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
-        html += objBankAccountTransaction.showButton('width:100px; background-color: #f89595;', className, 'Vis bilag');
+        //html += objBankAccountTransaction.showButton('width:100px; background-color: #f89595;', className, 'Vis bilag');
+        html += objBankAccountTransaction.showButton(className, 'Vis bilag');
       }
     } else {
 
@@ -519,7 +515,7 @@ async function showBankAccountTransactions(menuNumber) {
   sumPayment = formatOreToKroner(sumPayment);
 
   menuNumber++;
-  html += objBankAccountTransaction.insertTableRowNew('',menuNumber,objBankAccountTransaction.accountMenu, '', '', '', 'Sum', sumIncome, sumPayment, '', '', '');
+  html += objBankAccountTransaction.insertTableRow('',menuNumber,objBankAccountTransaction.accountMenu, '', '', '', 'Sum', sumIncome, sumPayment, '', '', '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -540,7 +536,7 @@ function showHeader() {
   html += objBankAccountTransaction.startTableBody();
 
   // show main header
-  html += objBankAccountTransaction.showTableHeaderLogOutNew( '1', '2', '3', '4', '5Bankkontotransaksjoner', '6', '7', '8');
+  html += objBankAccountTransaction.showTableHeaderLogOut( '1', '2', '3', '4', '5Bankkontotransaksjoner', '6', '7', '8');
   html += "</tr>";
 
   // end table body
@@ -557,7 +553,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
 
   // insert a table row
-  html += objBankAccountTransaction.insertTableRowNew('',menuNumber,objBankAccountTransaction.accountMenu);
+  html += objBankAccountTransaction.insertTableRow('',menuNumber,objBankAccountTransaction.accountMenu);
 
   html += "<td class='center'>Ny transaksjon</td>";
 
@@ -569,7 +565,7 @@ function insertEmptyTableRow(menuNumber) {
   // Date
   const date = '';
   className = `date0`;
-  html += objBankAccountTransaction.inputTableColumnNew(className, 'left',  date, 10, enableChanges);
+  html += objBankAccountTransaction.inputTableColumn(className, 'left',  date, 10, enableChanges);
 
   // account
   let accountId = Number(document.querySelector('.filterAccountId').value);
@@ -580,22 +576,22 @@ function insertEmptyTableRow(menuNumber) {
   // income
   const income = '0,00';
   className = 'income0';
-  html += objBankAccountTransaction.inputTableColumnNew(className, 'left',  income, 10, enableChanges);
+  html += objBankAccountTransaction.inputTableColumn(className, 'left',  income, 10, enableChanges);
 
   // payment
   const payment = '0,00'
   className = 'payment0';
-  html += objBankAccountTransaction.inputTableColumnNew(className, 'left',  payment, 10, enableChanges);
+  html += objBankAccountTransaction.inputTableColumn(className, 'left',  payment, 10, enableChanges);
 
   // kilowattHour
   const kilowattHour = '0,00';
   className = `kilowattHour0`;
-  html += objBankAccountTransaction.inputTableColumnNew(className, 'left',  kilowattHour, 10, enableChanges);
+  html += objBankAccountTransaction.inputTableColumn(className, 'left',  kilowattHour, 10, enableChanges);
 
   // text
   const text = '';
   className = `text0`;
-  html += objBankAccountTransaction.inputTableColumnNew(className,'left',  text, 45, enableChanges);
+  html += objBankAccountTransaction.inputTableColumn(className,'left',  text, 45, enableChanges);
 
   html += "</tr>";
   return html;
