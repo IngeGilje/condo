@@ -366,7 +366,7 @@ class User extends Condos {
 
     let html = `
     <td
-      class="centerCell one-line left"
+      class="one-line left"
     >
       <select 
         class="${className} center news-text"

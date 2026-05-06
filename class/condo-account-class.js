@@ -128,13 +128,14 @@ class Account extends Condos {
     return accountName;
   }
 
+  /*
   showSelectedAccounts(className, style, accountId, selectNone, selectAll, enableChanges = false) {
 
     let selectedValue = false;
 
     let html = `
     <td
-      class="centerCell one-line left"
+      class="one-line left"
     >
       <select 
         class="${className} center"
@@ -172,6 +173,78 @@ class Account extends Condos {
       <option 
         value=${this.nineNine}
         ${(selectedValue) ? '' : 'selected'}
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayAccounts.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(selectedValue) ? '' : selectNone}
+        ${(accountId === 0) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (accountId === 0) selectedValue = true;
+
+      html += `
+        </select >
+      </td>`;
+    }
+    return html;
+  }
+  */
+
+  // show selected accounts
+  showSelectedAccountsNew(className, accountId, selectNone, selectAll, enableChanges = false) {
+
+    let selectedValue = false;
+
+    let html = `
+    <td
+      class="one-line left"
+    >
+      <select 
+        class="${className} center"
+        ${(enableChanges) ? '' : 'disabled'}
+      >`;
+
+    // Check if accounts array is empty
+    if (this.arrayAccounts.length > 0) {
+      this.arrayAccounts.forEach((account) => {
+
+        html += `
+        <option 
+          value=${account.accountId}
+          ${(account.accountId === accountId) ? 'selected' : ''}
+        >
+          ${account.name}
+        </option>`;
+        if (account.accountId === accountId) selectedValue = true;
+      });
+    } else {
+
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen konti
+      </option>`;
+
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayAccounts.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        selected
       >
         ${selectAll}
       </option>`;

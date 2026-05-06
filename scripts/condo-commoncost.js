@@ -181,7 +181,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
 
   // insert a table row
-  html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu);
+  html += objCommonCost.insertTableRowNew('', menuNumber, objCommonCost.accountMenu);
 
   html += "<td class='center'>Ny felleskostnad</td>";
 
@@ -212,7 +212,7 @@ function showCommonCost(menuNumber) {
 
     // insert a table row
     menuNumber++;
-    html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu);
+    html += objCommonCost.insertTableRowNew('', menuNumber, objCommonCost.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";

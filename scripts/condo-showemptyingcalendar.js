@@ -126,7 +126,7 @@ function showFilter(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objShowEmptyingCalendar.insertTableRow('', menuNumber, objShowEmptyingCalendar.accountMenu, '', '');
+  html += objShowEmptyingCalendar.insertTableRowNew('', menuNumber, objShowEmptyingCalendar.accountMenu, '', '');
 
   // Selected year
   const year = String(today.getFullYear());
@@ -142,7 +142,7 @@ function showFilter(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objShowEmptyingCalendar.insertTableRow("width:150px;", menuNumber, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
+  html += objShowEmptyingCalendar.insertTableRowNew("width:150px;", menuNumber, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
 
   // end table body
   html += objShowEmptyingCalendar.endTableBody();
@@ -169,7 +169,7 @@ function showEmptyingCalendar(menuNumber) {
 
       // Show menu
       menuNumber++;
-      html += objShowEmptyingCalendar.insertTableRow('', menuNumber, objShowEmptyingCalendar.accountMenu);
+      html += objShowEmptyingCalendar.insertTableRowNew('', menuNumber, objShowEmptyingCalendar.accountMenu);
 
       // condoId
       let condoId = emptyingCalendar.condoId;

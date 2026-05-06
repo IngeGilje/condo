@@ -231,7 +231,7 @@ function showFilter(menuNumber, supplierId) {
 
   // insert a table row
   menuNumber++;
-  html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
+  html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu);
 
   // supplier
   html += objSupplier.showSelectedSuppliers('filterSupplierId', 'width:175px;', supplierId, '', '', true)
@@ -268,7 +268,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // insert a table row
   menuNumber++;
-  html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
+  html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu);
 
   // name
   const name = (rowNumberSupplier === -1)
@@ -286,7 +286,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // insert a table row
   menuNumber++;
-  html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
+  html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu);
 
   // street
   const street = (rowNumberSupplier === -1)
@@ -309,7 +309,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // insert a table row
   menuNumber++;
-  html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
+  html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu);
 
   // postalCode
   const postalCode = (rowNumberSupplier === -1)
@@ -333,7 +333,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // insert a table row
   menuNumber++;
-  html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
+  html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu);
 
   // email
   const email = (rowNumberSupplier === -1)
@@ -379,7 +379,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // insert a table row
   menuNumber++;
-  html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
+  html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu);
 
   // amountAccountId
   const amountAccountId = (rowNumberSupplier === -1)
@@ -402,7 +402,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // insert a table row
   menuNumber++;
-  html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
+  html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu);
 
   // AccountId for text
   const textAccountId = (rowNumberSupplier === -1)
@@ -420,7 +420,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // insert a table row
   menuNumber++;
-  html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu, '');
+  html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu, '');
 
   html += "</tr>";
 
@@ -429,7 +429,7 @@ function showSupplier(menuNumber, supplierId) {
 
     // insert a table row
     menuNumber++;
-    html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
+    html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu);
 
     html += objSupplier.showButton('width:175px;', 'update', 'Oppdater');
     html += objSupplier.showButton('width:175px;', 'cancel', 'Angre');
@@ -437,7 +437,7 @@ function showSupplier(menuNumber, supplierId) {
 
     // insert a table row
     menuNumber++;
-    html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
+    html += objSupplier.insertTableRowNew('', menuNumber, objSupplier.accountMenu);
 
     html += objSupplier.showButton('width:175px;', 'delete', 'Slett');
     html += objSupplier.showButton('width:175px;', 'insert', 'Ny');

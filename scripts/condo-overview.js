@@ -183,7 +183,7 @@ function showFilter(menuNumber, condoId) {
 
   // insert a table row
   menuNumber++;
-  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
+  html += objOverview.insertTableRowNew('', menuNumber, objOverview.accountMenu, '');
 
   // Show all selected condos
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', '', true);
@@ -201,7 +201,7 @@ function showFilter(menuNumber, condoId) {
 
   // insert a table row
   menuNumber++;
-  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
+  html += objOverview.insertTableRowNew('', menuNumber, objOverview.accountMenu, '');
 
   // end table body
   html += objOverview.endTableBody();
@@ -233,7 +233,7 @@ function showDues(menuNumber) {
 
     // insert a table row
     menuNumber++;
-    html += objDue.insertTableRow('', menuNumber, objOverview.accountMenu);
+    html += objDue.insertTableRowNew('', menuNumber, objOverview.accountMenu);
 
     // condo
     className = `condo${due.dueId}`;
@@ -275,11 +275,11 @@ function showDues(menuNumber) {
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
   menuNumber++;
-  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumDue, '', '');
+  html += objOverview.insertTableRowNew('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumDue, '', '');
   html += "</tr>"
 
   menuNumber++;
-  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
+  html += objOverview.insertTableRowNew('', menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
   html += "</tr>"
 
   // The end of the table
@@ -308,7 +308,7 @@ function showBankAccountTransactions(menuNumber) {
 
     // insert a table row
     menuNumber++;
-    html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
+    html += objOverview.insertTableRowNew('', menuNumber, objOverview.accountMenu, '');
 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
@@ -349,11 +349,11 @@ function showBankAccountTransactions(menuNumber) {
   sumPayments = formatOreToKroner(sumPayments);
 
   menuNumber++;
-  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', '', 'Sum', sumIncomes, '');
+  html += objOverview.insertTableRowNew('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', '', 'Sum', sumIncomes, '');
   html += "</tr>"
 
   menuNumber++;
-  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
+  html += objOverview.insertTableRowNew('', menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
 
   // The end of the table
   html += objDue.endTable();
@@ -419,7 +419,7 @@ async function showHowMuchToPay(menuNumber) {
 
   menuNumber++;
   openingBalance = formatOreToKroner(openingBalance);
-  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumToPay, sumIncome, overPay);
+  html += objOverview.insertTableRowNew('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumToPay, sumIncome, overPay);
 
   // Show the rest of the menu
   menuNumber++;

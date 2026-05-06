@@ -48,22 +48,22 @@ function showLogin() {
   html += objLogIn.showTableHeader('', objLogIn.accountMenu, 'Email');
 
   // insert a table row
-  html += objLogIn.insertTableRow('margin: 0 auto;', 0, objLogIn.accountMenu);
+  html += objLogIn.insertTableRowNew( 'margin: 0 auto;', 0, objLogIn.accountMenu);
 
   // email
   const email = '';
-  html += objLogIn.inputTableColumn('email', '', email, 45, true);
+  html += objLogIn.inputTableColumnNew('email', 'center', email, 45, true);
   html += "</tr>";
 
   // insert a table row
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
+  html += objLogIn.insertTableRowNew( '', 0, objLogIn.accountMenu, '');
   html += "</tr>";
 
   // password
   html += objLogIn.showTableHeader("width:250px;", objLogIn.accountMenu, 'Passord');
 
   // insert a table row
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
+  html += objLogIn.insertTableRowNew( '', 0, objLogIn.accountMenu);
 
   // password
   password = '';
@@ -71,18 +71,18 @@ function showLogin() {
   html += "</tr>";
 
   // insert a table row
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
+  html += objLogIn.insertTableRowNew( '', 0, objLogIn.accountMenu, '');
   html += "</tr>";
 
   // insert a table row
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
+  html += objLogIn.insertTableRowNew( '', 0, objLogIn.accountMenu);
 
   // Show buttons
   html += objLogIn.showButton('width:170px;', 'LogIn', 'LogIn');
   html += "</tr>";
 
   // insert a table row
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
+  html += objLogIn.insertTableRowNew( '', 0, objLogIn.accountMenu, '');
 
   html += "</tr>";
 

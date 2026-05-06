@@ -173,7 +173,7 @@ function showFilter(menuNumber, newsId) {
 
   // insert a table row
   menuNumber++;
-  html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+  html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
 
   // news
   html += objNews.showSelectedNews('filterNewsId', newsId, '', '', true);
@@ -209,14 +209,14 @@ function showNews(menuNumber, newsId) {
   // Date, userId
   // insert a table row
   menuNumber++;
-  html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+  html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
 
   // date
   let date = (rowNumberNews === -1)
     ? getCurrentDate()
     : objNews.arrayNews[rowNumberNews].date;
   date = formatNumberToNorDate(date);
-  html += objNews.inputTableColumnNew('date', date, 10, enableChanges);
+  html += objNews.inputTableColumnNew('date', 'left', date, 10, enableChanges);
 
   // userId
   const userId = (rowNumberNews === -1)
@@ -235,17 +235,17 @@ function showNews(menuNumber, newsId) {
 
   // insert a table row
   menuNumber++;
-  html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+  html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
 
   const title = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].title;
-  html += objNews.inputTableColumnNew('title', title, 255, enableChanges, 2);
+  html += objNews.inputTableColumnNew('title', 'left', title, 255, enableChanges, 2);
   html += "<td></td></tr>";
 
   // insert a table row
   menuNumber++;
-  html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+  html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
 
   // image
   menuNumber++;
@@ -253,17 +253,17 @@ function showNews(menuNumber, newsId) {
 
   // insert a table row
   menuNumber++;
-  html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+  html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
 
   const image = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].image;
-  html += objNews.inputTableColumnNew('image', image, 255, enableChanges, 2);
+  html += objNews.inputTableColumnNew('image', 'left', image, 255, enableChanges, 2);
   html += "<td></td></tr>";
 
   // insert a table row
   menuNumber++;
-  html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+  html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
   html += "<td>2</td><td>3</td></tr>";
 
   // content
@@ -272,7 +272,7 @@ function showNews(menuNumber, newsId) {
 
   // insert a table row
   menuNumber++;
-  html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+  html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
 
   const content = (rowNumberNews === -1)
     ? ''
@@ -293,12 +293,12 @@ function showNews(menuNumber, newsId) {
 
     // insert a table row
     menuNumber++;
-    html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+    html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
     html += "<td>2</td><td>3</td></tr>";
 
     // insert a table row
     menuNumber++;
-    html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+    html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
 
     html += objNews.showButtonNew('update', 'Oppdater');
     html += objNews.showButtonNew('cancel', 'Angre');
@@ -306,7 +306,7 @@ function showNews(menuNumber, newsId) {
 
     // insert a table row
     menuNumber++;
-    html += objNews.insertTableRowNew(menuNumber, objNews.administrationMenu);
+    html += objNews.insertTableRowNew('', menuNumber, objNews.administrationMenu);
 
      html += objNews.showButtonNew('delete', 'Slett');
     html += objNews.showButtonNew('insert', 'Ny');

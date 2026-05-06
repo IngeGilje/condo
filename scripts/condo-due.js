@@ -193,7 +193,7 @@ function showDues(menuNumber) {
 
     // insert a table row
     menuNumber++;
-    html += objDue.insertTableRow('', menuNumber, objDue.accountMenu)
+    html += objDue.insertTableRowNew('', menuNumber, objDue.accountMenu)
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -250,7 +250,7 @@ function showDues(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
   menuNumber++;
-  html += objDue.insertTableRow('font-weight: 600;', menuNumber, objDue.accountMenu, '', '', '', 'Sum', sumAmount, '');
+  html += objDue.insertTableRowNew('font-weight: 600;', menuNumber, objDue.accountMenu, '', '', '', 'Sum', sumAmount, '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -269,7 +269,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = '';
 
   // insert a table row
-  html += objCondominium.insertTableRow('', menuNumber, objDue.accountMenu, 'Nytt forfall');
+  html += objCondominium.insertTableRowNew('', menuNumber, objDue.accountMenu, 'Nytt forfall');
 
   // condoId
   // Check for valid condo Id
@@ -424,7 +424,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   // insert a table row
   menuNumber++;
-  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '', '');
+  html += objDue.insertTableRowNew('', menuNumber, objDue.accountMenu, '', '');
 
   // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -456,7 +456,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   // insert a table row
   menuNumber++;
-  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '', '', '', '', '', '', '')
+  html += objDue.insertTableRowNew('', menuNumber, objDue.accountMenu, '', '', '', '', '', '', '')
 
   // end table body
   html += objDue.endTableBody();

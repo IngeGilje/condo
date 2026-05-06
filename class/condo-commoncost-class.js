@@ -241,7 +241,7 @@ class CommonCost extends Condos {
 
     let html = `
     <td
-      class="centerCell one-line center"
+      class="one-line center"
     >
       <select 
         class="${className} center"

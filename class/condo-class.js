@@ -182,6 +182,7 @@ class Condos {
     `;
   }
 
+  /*
   // Show input
   inputTableColumn(className, style, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
@@ -201,13 +202,14 @@ class Condos {
       >
     </td>`;
   }
+  */
 
-    // Show input
-  inputTableColumnNew(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+  // Show input
+  inputTableColumnNew(className, direction = 'left', value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
     return `
     <td 
-      class="left" 
+      class="${direction}" 
       colspan="${colspan}" 
       rowspan="${rowspan}"
     >
@@ -571,13 +573,15 @@ class Condos {
   showSelectedNumbersNew(className, fromNumber, toNumber, selectedNumber, enableChanges) {
 
     selectedNumber = Number(selectedNumber);
+
     let html = `
     <td
-      class="center"
+      class="one-line left"
     >
-      <select
-        class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}>`;
+      <select 
+        class="${className} center news-text"
+        ${(enableChanges) ? '' : "disabled"}
+      >`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
@@ -646,7 +650,7 @@ class Condos {
     selectedMonth = Number(selectedMonth);
     let html = `
     <td
-      class="centerCell one-line left"
+      class="one-line left"
     >
       <select 
         class="${className} center news-text"
@@ -683,6 +687,37 @@ class Condos {
         class="${className} center"
         ${(enableChanges) ? '' : 'disabled'}
         ${(style) ? `style="${style}"` : `style="width:175px;"`}>`;
+
+    choices.forEach((choice) => {
+
+      html += `
+        <option 
+          value=${choice}
+          ${(choice === selected) ? 'selected' : ''}
+        >
+          ${choice}
+        </option>
+      `;
+    });
+
+    html += `
+      </select >
+    </td>`;
+
+    return html;
+  }
+
+  // Select choices like Yes, No, Ignore
+  showSelectedValuesNew(className,enableChanges, selected, ...choices) {
+
+    let html = `
+    <td
+      class="one-line left"
+    >
+      <select 
+        class="${className} center news-text"
+        ${(enableChanges) ? '' : "disabled"}
+      >`;
 
     choices.forEach((choice) => {
 
@@ -799,6 +834,7 @@ class Condos {
     return [...element.classList].find(cls => cls.startsWith(prefix));
   }
 
+  /*
   // Show table header including menu
   showTableHeaderMenu(style, menuNumber, menuType, ...texts) {
 
@@ -820,6 +856,7 @@ class Condos {
     html += "</tr>";
     return html;
   }
+  */
 
   // Show table header including menu
   showTableHeaderMenuNew(menuNumber, menuType, ...texts) {
@@ -1088,22 +1125,20 @@ class Condos {
     });
 
     // empty row
-    html += this.insertTableRow('', 0, 0, '');
+    html += this.insertTableRowNew('', 0, 0, '');
     html += "</tr>";
     return html;
   }
 
   // Show main header table
-  showTableHeaderLogOut(style, ...texts) {
+  showTableHeaderLogOutNew(...texts) {
 
     let html = `<tr>`;
 
     texts.forEach((text) => {
 
-      if (text === '' && style === '') html += `<th class="no-border">${text}</th>`;
-      if (text === '' && style !== '') html += `<th class="no-border" style="${style}">${text}</th>`;
-      if (text !== '' && style === '') html += `<th class="no-border center">${text}</th>`;
-      if (text !== '' && style !== '') html += `<th class="no-border center" style="${style}">${text}</th>`;
+      if (text === '') html += `<th class="no-border">${text}</th>`;
+      if (text !== '') html += `<th class="no-border center">${text}</th>`;
     });
 
     html += `
@@ -1112,7 +1147,6 @@ class Condos {
     >
       <button 
         class="logOut right one-line"
-        style="width:75px;"}
       >
         Logg ut
       </button>
@@ -1133,6 +1167,7 @@ class Condos {
     return "<tbody>";
   }
 
+  /*
   // insert a table row
   // and show account menu or administration menu
   insertTableRow(style, menuNumber, menuType, ...texts) {
@@ -1154,10 +1189,11 @@ class Condos {
 
     return html;
   }
+  */
 
   // insert a table row
   // and show account menu or administration menu
-  insertTableRowNew(menuNumber, menuType, ...texts) {
+  insertTableRowNew(style, menuNumber, menuType, ...texts) {
 
     let html = "<tr>";
 
@@ -1169,7 +1205,13 @@ class Condos {
 
     texts.forEach((text) => {
 
-      html += `<td class="center no-border">${text}</td>`
+      html += `
+      <td 
+        class="center no-border"
+        ${(style) ? style : ''}
+      >
+        ${text}
+      </td>`
     });
 
     return html;

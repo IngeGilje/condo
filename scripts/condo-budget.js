@@ -267,7 +267,7 @@ function showFilter(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu, '', '');
+  html += objBudget.insertTableRowNew('', menuNumber, objBudget.accountMenu, '', '');
 
   // Selected accounts
   html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
@@ -280,7 +280,7 @@ function showFilter(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu, '');
+  html += objBudget.insertTableRowNew('', menuNumber, objBudget.accountMenu, '');
 
   // end table body
   html += objBudget.endTableBody();
@@ -308,7 +308,7 @@ function showBudgets(menuNumber) {
 
     // Show menu
     menuNumber++;
-    html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu);
+    html += objBudget.insertTableRowNew('', menuNumber, objBudget.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -353,7 +353,7 @@ function showBudgets(menuNumber) {
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
   menuNumber++;
-  html += objBudget.insertTableRow('font-weight: 600;', menuNumber, objBudget.accountMenu, '', 'Sum', sumAmount, '', '');
+  html += objBudget.insertTableRowNew('font-weight: 600;', menuNumber, objBudget.accountMenu, '', 'Sum', sumAmount, '', '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -368,7 +368,7 @@ function showBudgets(menuNumber) {
 
 function insertEmptyTableRow(menuNumber) {
 
-  let html = objAccount.insertTableRow('', menuNumber, objBudget.accountMenu, 'Nytt budsjett');
+  let html = objAccount.insertTableRowNew('', menuNumber, objBudget.accountMenu, 'Nytt budsjett');
 
   // accounts
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Ingen konto er valgt', '', enableChanges);

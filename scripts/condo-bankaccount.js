@@ -248,7 +248,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
+  html += objBankAccount.insertTableRowNew('', menuNumber, objBankAccount.accountMenu);
 
   // opening balance date
   const openingBalanceDate = (rowNumberBankAccount === -1)
@@ -273,7 +273,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
+  html += objBankAccount.insertTableRowNew('', menuNumber, objBankAccount.accountMenu);
 
   // closing balance date
   const closingBalanceDate = (rowNumberBankAccount === -1)
@@ -295,7 +295,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
+  html += objBankAccount.insertTableRowNew('', menuNumber, objBankAccount.accountMenu);
 
   html += "</tr>";
 
@@ -304,7 +304,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
     // insert a table row
     menuNumber++;
-    html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
+    html += objBankAccount.insertTableRowNew('', menuNumber, objBankAccount.accountMenu);
 
     // Show buttons
     html += objBankAccount.showButton('width:175px;', 'update', 'Oppdater');
@@ -313,7 +313,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
     // insert a table row
     menuNumber++;
-    html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
+    html += objBankAccount.insertTableRowNew('', menuNumber, objBankAccount.accountMenu);
 
     // Show buttons
     html += objBankAccount.showButton('width:175px;', 'delete', 'Slett');
@@ -470,7 +470,7 @@ function showFilter(menuNumber, condominiumId) {
 
   // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
+  html += objBankAccount.insertTableRowNew('', menuNumber, objBankAccount.accountMenu);
 
   // Show selected condominiums 
   html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', enableChanges);
@@ -486,7 +486,7 @@ function showFilter(menuNumber, condominiumId) {
 
   // insert a table row
   menuNumber++;
-  html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu, '', '');
+  html += objBankAccount.insertTableRowNew('', menuNumber, objBankAccount.accountMenu, '', '');
 
   // end table body
   html += objBankAccount.endTableBody();

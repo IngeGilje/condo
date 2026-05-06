@@ -232,7 +232,7 @@ function showFilter(menuNumber, budgetYear, fromDate, toDate) {
 
   // insert a table row
   menuNumber++;
-  html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '');
+  html += objAnnualAccount.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, '');
 
   // show from date
   html += objAnnualAccount.inputTableColumn('filterFromDate', 'width:175px;', fromDate, 10, true);
@@ -250,7 +250,7 @@ function showFilter(menuNumber, budgetYear, fromDate, toDate) {
   html += "</tr>";
 
   menuNumber++;
-  html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
+  html += objAnnualAccount.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
 
   // end table body
   html += objAnnualAccount.endTableBody();
@@ -297,7 +297,7 @@ function showAnnualAccounts(menuNumber) {
 
       // Show menu
       menuNumber++;
-      html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '');
+      html += objAnnualAccount.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, '');
 
       // account name
       html += objAnnualAccount.inputTableColumn('name', 'width:175px;', account.name, 45, false);
@@ -346,13 +346,13 @@ function showAnnualAccounts(menuNumber) {
   totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
 
   menuNumber++;
-  html += objBankAccountTransaction.insertTableRow('font-weight: 600;', menuNumber, objAnnualAccount.accountMenu, '', 'Sum', totalAccountAmount, totalBudgetAmount, totalDeviation);
+  html += objBankAccountTransaction.insertTableRowNew('font-weight: 600;', menuNumber, objAnnualAccount.accountMenu, '', 'Sum', totalAccountAmount, totalBudgetAmount, totalDeviation);
 
   html += "</tr>";
 
   // empty table row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
+  html += objBankAccountTransaction.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
 
   // The end of the table
   html += objAnnualAccount.endTable();
@@ -399,7 +399,7 @@ function showIncomeNextYear(menuNumber) {
 
     // insert a table row
     menuNumber++;
-    html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu);
+    html += objAnnualAccount.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu);
 
     // condo name
     className = `name${condo.condoId}`;
@@ -446,13 +446,13 @@ function showIncomeNextYear(menuNumber) {
   totalCommonCostsCondoYear = formatOreToKroner(totalCommonCostsCondoYear);
 
   menuNumber++;
-  html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
+  html += objAnnualAccount.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
 
   html += "</tr>";
 
   // empty table row
   menuNumber++;
-  html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
+  html += objAnnualAccount.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
   html += "</tr>";
 
   // The end of the table
@@ -480,7 +480,7 @@ function showBankDeposit(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '', '');
+  html += objBankAccountTransaction.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, '', '');
 
   // Text
   className = `text`;
@@ -518,7 +518,7 @@ function showBankDeposit(menuNumber) {
 
       // insert a table row
       menuNumber++;
-      html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '', '');
+      html += objAnnualAccount.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, '', '');
 
       // Account Name
       let name = '';
@@ -550,7 +550,7 @@ function showBankDeposit(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '', '');
+  html += objAnnualAccount.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, '', '');
 
   className = `estimatedBankDeposit`;
   html += objAnnualAccount.inputTableColumn(className, 'width:175px;', 'Estimert bankinnskudd', 10, false);
@@ -569,7 +569,7 @@ function showBankDeposit(menuNumber) {
 
   // insert table columns in start of a 
   menuNumber++;
-  html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
+  html += objAnnualAccount.insertTableRowNew('', menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
 
   // Show the rest of the menu 
   menuNumber++;

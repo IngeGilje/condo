@@ -178,7 +178,7 @@ function showFilter(menuNumber, userId) {
 
   // insert a table row
   menuNumber++;
-  html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, '');
+  html += objUserBankAccount.insertTableRowNew('', menuNumber, objUserBankAccount.accountMenu, '');
 
   // Show all selected users
   html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', 'Alle', enableChanges);
@@ -189,7 +189,7 @@ function showFilter(menuNumber, userId) {
 
   // insert a table row
   menuNumber++;
-  html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, '', '', '', '');
+  html += objUserBankAccount.insertTableRowNew('', menuNumber, objUserBankAccount.accountMenu, '', '', '', '');
 
   // end table body
   html += objUserBankAccount.endTableBody();
@@ -207,7 +207,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
 
   // insert a table row
-  html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, 'Ny brukerkonto');
+  html += objUserBankAccount.insertTableRowNew('', menuNumber, objUserBankAccount.accountMenu, 'Ny brukerkonto');
 
   // user column
   html += objUser.showSelectedUsers('userId0', 'width:175px;', 0, 'Velg bruker', '', enableChanges);
@@ -236,7 +236,7 @@ function showUserBankAccount(menuNumber) {
 
     // insert a table row
     menuNumber++;
-    html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu);
+    html += objUserBankAccount.insertTableRowNew('', menuNumber, objUserBankAccount.accountMenu);
 
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;

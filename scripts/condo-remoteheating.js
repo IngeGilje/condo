@@ -209,7 +209,7 @@ function showFilter(menuNumber, year) {
 
   // insert a table row
   menuNumber++;
-  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '');
+  html += objRemoteHeating.insertTableRowNew('', menuNumber, objRemoteHeating.accountMenu, '');
 
   // Select year
   html += objRemoteHeating.selectInterval('filterYear', 'width:175px;', 2020, 2030, year, true);
@@ -223,7 +223,7 @@ function showFilter(menuNumber, year) {
 
   // insert a table row
   menuNumber++;
-  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', '', '');
+  html += objRemoteHeating.insertTableRowNew('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', '', '');
 
   // end table body
   html += objRemoteHeating.endTableBody();
@@ -242,7 +242,7 @@ function insertEmptyTableRow(menuNumber) {
   let date = "";
 
   // insert a table row
-  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu);
+  html += objRemoteHeating.insertTableRowNew('', menuNumber, objRemoteHeating.accountMenu);
 
   html += "<td class='center'>Ny fjernvarme</td>";
 
@@ -285,7 +285,7 @@ function showRemoteHeatings(menuNumber) {
 
       // insert a table row
       menuNumber++;
-      html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu);
+      html += objRemoteHeating.insertTableRowNew('', menuNumber, objRemoteHeating.accountMenu);
 
       // Delete
       let selected = "Ugyldig verdi";
@@ -357,7 +357,7 @@ function showRemoteHeatings(menuNumber) {
   // How much to pay for remote heating for all condos
   totalPriceYear = formatOreToKroner(totalPriceYear);
   menuNumber++;
-  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', 'Totalt', totalPriceYear);
+  html += objRemoteHeating.insertTableRowNew('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', 'Totalt', totalPriceYear);
 
   html += "</tr>";
 

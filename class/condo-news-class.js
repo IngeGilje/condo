@@ -51,13 +51,14 @@ class News extends Condos {
     }
   }
 
+  // Show selected news
   showSelectedNews(className, newsId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
     let html = `
     <td
-      class="centerCell one-line left"
+      class="one-line left"
     >
       <select 
         class="${className} center news-text"
@@ -128,7 +129,7 @@ class News extends Condos {
 
     let html = `
     <td
-      class="centerCell one-line center"
+      class="one-line center"
     >
       <select 
         class="${className} center"

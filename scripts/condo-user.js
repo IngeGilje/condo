@@ -246,7 +246,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // insert a table row
   menuNumber++;
-  html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+  html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
   // Condominium
   if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', true)
@@ -258,7 +258,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // insert a table row
   menuNumber++;
-  html += objUser.insertTableRow('', menuNumber,objUser.accountMenu, '', '');
+  html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu, '', '');
   html += "</tr>";
 
   // end table body
@@ -288,7 +288,7 @@ function showUser(menuNumber, userId) {
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+    html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
     // email
     html += objUser.inputTableColumn('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
@@ -305,7 +305,7 @@ function showUser(menuNumber, userId) {
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+    html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
     // firstName
     html += objUser.inputTableColumn('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
@@ -322,7 +322,7 @@ function showUser(menuNumber, userId) {
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+    html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
     // phone
     html += objUser.inputTableColumn('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
@@ -335,7 +335,7 @@ function showUser(menuNumber, userId) {
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objUser.accountMenu, '', '');
+    html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu, '', '');
     html += "</tr>";
 
     // Show buttons
@@ -343,7 +343,7 @@ function showUser(menuNumber, userId) {
 
       // insert a table row
       menuNumber++;
-      html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+      html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
       html += objUser.showButton('width:175px;', 'update', 'Oppdater');
       html += objUser.showButton('width:175px;', 'cancel', 'Angre');
@@ -351,7 +351,7 @@ function showUser(menuNumber, userId) {
 
       // insert a table row
       menuNumber++;
-      html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+      html += objUser.insertTableRowNew('', menuNumber,objUser.accountMenu);
 
       html += objUser.showButton('width:175px;', 'delete', 'Slett');
       html += objUser.showButton('width:175px;', 'insert', 'Ny');

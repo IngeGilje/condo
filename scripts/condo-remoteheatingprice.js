@@ -176,7 +176,7 @@ function insertEmptyTableRow(menuNumber) {
   let date = '';
 
   // insert a table row
-  html += objRemoteHeatingPrice.insertTableRow('', menuNumber, objRemoteHeatingPrice.accountMenu);
+  html += objRemoteHeatingPrice.insertTableRowNew('', menuNumber, objRemoteHeatingPrice.accountMenu);
 
   html += "<td class='center'>Ny fjernvarmepris</td>";
 
@@ -204,7 +204,7 @@ function showRemoteHeating(menuNumber) {
 
     // insert a table row
     menuNumber++;
-    html += objRemoteHeatingPrice.insertTableRow('', menuNumber, objRemoteHeatingPrice.accountMenu);
+    html += objRemoteHeatingPrice.insertTableRowNew('', menuNumber, objRemoteHeatingPrice.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";

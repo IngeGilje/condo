@@ -171,7 +171,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // insert a table row
   menuNumber++;
-  html += objPassword.insertTableRow('', menuNumber,objPassword.accountMenu);
+  html += objPassword.insertTableRowNew('', menuNumber,objPassword.accountMenu);
 
   // Show selected condominiums 
   html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '',enableChanges);
@@ -183,7 +183,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // insert a table row
   menuNumber++;
-  html += objPassword.insertTableRow('', menuNumber,objPassword.accountMenu, '', '');
+  html += objPassword.insertTableRowNew('', menuNumber,objPassword.accountMenu, '', '');
 
   // end table body
   html += objUser.endTableBody();
@@ -212,7 +212,7 @@ function showUser(menuNumber, userId) {
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
+    html += objUser.insertTableRowNew('', menuNumber,objPassword.accountMenu);
 
     // password
     html += objUser.inputTablePassword('password', '', '', 45);
@@ -224,7 +224,7 @@ function showUser(menuNumber, userId) {
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
+    html += objUser.insertTableRowNew('', menuNumber,objPassword.accountMenu);
 
     html += "</tr>";
 
@@ -232,7 +232,7 @@ function showUser(menuNumber, userId) {
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
+    html += objUser.insertTableRowNew('', menuNumber,objPassword.accountMenu);
 
     html += objUser.showButton('width:175px;', 'update', 'Oppdater');
     html += "</tr>";

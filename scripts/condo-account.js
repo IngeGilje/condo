@@ -195,7 +195,7 @@ function showFilter(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
+  html += objAccount.insertTableRowNew('', menuNumber,objAccount.accountMenu, '');
 
   // fixed or not fixed cost
   html += objAccount.showSelectedValues('filterFixedCost', 'width:175px;', true, 'Alle', constFixedCost, constVariableCost, 'Alle');
@@ -204,7 +204,7 @@ function showFilter(menuNumber) {
 
   // insert a table row
   menuNumber++;
-  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
+  html += objAccount.insertTableRowNew('', menuNumber,objAccount.accountMenu, '');
 
   // end table body
   html += objAccount.endTableBody();
@@ -223,7 +223,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // Show menu
   // insert a table row
-  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu);
+  html += objAccount.insertTableRowNew('', menuNumber,objAccount.accountMenu);
 
   // delete
   html += "<td class='center'>Ny konto</td>";
@@ -252,7 +252,7 @@ function showAccounts(menuNumber) {
 
     // Show menu
     menuNumber++;
-    html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu);
+    html += objAccount.insertTableRowNew('', menuNumber,objAccount.accountMenu);
 
     // Delete
     let selected = "Ugyldig verdi";

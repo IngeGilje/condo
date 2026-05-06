@@ -151,6 +151,7 @@ class Condominium extends Condos {
     }
   }
 
+  /*
   // Show all selected condominiums
   showSelectedCondominiums(className, style, condominiumId, selectNone, selectAll, enableChanges) {
 
@@ -164,6 +165,76 @@ class Condominium extends Condos {
         class="${className} center"
         ${(enableChanges) ? '' : 'disabled'}
         ${(style) ? `style=${style}` : 'style="width:175px;"'}
+      >`;
+
+    // Check if condominium array is empty
+    if (Number(this.arrayCondominiums.length) > 0) {
+      this.arrayCondominiums.forEach((condominium) => {
+
+        html += `
+        <option 
+          value=${condominium.condominiumId}
+          ${(condominium.condominiumId === condominiumId) ? 'selected' : ''}
+        >
+          ${condominium.name}
+        </option>`;
+        if (condominium.condominiumId === condominiumId) selectedValue = true;
+      });
+    } else {
+
+      html += `
+      <option value="0" 
+        selected
+      >
+        Ingen sameier
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayCondominiums.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectAll) ? '' : 'selected'}
+      >
+        ${selectAll}
+      </option>`;
+      selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayCondominiums.length > 1)) {
+      html += `
+      <option 
+        value=0
+        ${(selectedValue) ? '' : 'selected'}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </td>`;
+
+    return html;
+  }
+  */
+   // Show all selected condominiums
+  showSelectedCondominiumsNew(className, condominiumId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <td
+      class="one-line left"
+    >
+      <select 
+        class="${className} center news-text"
+        ${(enableChanges) ? '' : "disabled"}
       >`;
 
     // Check if condominium array is empty
