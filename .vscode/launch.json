@@ -8,8 +8,8 @@
       "type": "pwa-chrome",
       "request": "launch",
       "name": "Login",
-      "url": "http://localhost/condo-login.html",
-      //"url": "http://ingegilje.no",
+      //"url": "http://localhost/condo-login.html",
+      "url": "http://ingegilje.no",
       //"url": "http://localhost:3000",
       "webRoot": "c:/websites/condo",
       //"runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
