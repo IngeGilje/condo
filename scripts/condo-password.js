@@ -172,10 +172,10 @@ function showFilter(menuNumber, condominiumId, userId) {
   html += objPassword.insertTableRow('', menuNumber,objPassword.accountMenu);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiumsNew('filterCondominiumId',  condominiumId, '', '',enableChanges);
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId',  condominiumId, '', '',enableChanges);
 
   // user
-  html += objUser.showSelectedUsersNew('filterUserId',  userId, '', '', enableChanges)
+  html += objUser.showSelectedUsers('filterUserId',  userId, '', '', enableChanges)
 
   html += "</tr>";
 

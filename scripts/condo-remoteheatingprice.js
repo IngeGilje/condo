@@ -212,7 +212,7 @@ function showRemoteHeating(menuNumber) {
     if (remoteHeatingPrice.deleted === 'N') selected = "Nei";
 
     let className = `delete${remoteHeatingPrice.remoteHeatingPriceId}`;
-    html += objRemoteHeatingPrice.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+    html += objRemoteHeatingPrice.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
     // Select year
     const year = remoteHeatingPrice.year;

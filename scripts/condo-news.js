@@ -221,7 +221,7 @@ function showNews(menuNumber, newsId) {
   const userId = (rowNumberNews === -1)
     ? Number(objNews.userId)
     : Number(objNews.arrayNews[rowNumberNews].userId);
-  html += objUser.showSelectedUsersNew('userId', userId, 'Velg forfatter', '', enableChanges);
+  html += objUser.showSelectedUsers('userId', userId, 'Velg forfatter', '', enableChanges);
   html += "</tr>";
 
   menuNumber++;

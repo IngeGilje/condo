@@ -240,12 +240,12 @@ function showEmptyingCalendar(menuNumber) {
       if (emptyingCalendar.deleted === 'Y') selected = "Ja";
       if (emptyingCalendar.deleted === 'N') selected = "Nei";
       let className = `delete${emptyingCalendar.emptyingCalendarId}`;
-      html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+      html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
       // condoId
       let condoId = emptyingCalendar.condoId;
       className = `condoId${emptyingCalendar.emptyingCalendarId}`;
-      html += objCondo.showSelectedCondos(className, 'width:150px;', condoId, 'Velg leilighet', '', enableChanges);
+      html += objCondo.showSelectedCondos(className,  condoId, 'Velg leilighet', '', enableChanges);
 
       // date
       let date = emptyingCalendar.date;
@@ -258,35 +258,35 @@ function showEmptyingCalendar(menuNumber) {
       if (emptyingCalendar.residualWaste === 'Y') selected = "Ja";
       if (emptyingCalendar.residualWaste === 'N') selected = "Nei";
       className = `residualWaste${emptyingCalendar.emptyingCalendarId}`;
-      html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+      html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
       // Paper waste
       selected = "Ugyldig verdi";
       if (emptyingCalendar.paper === 'Y') selected = "Ja";
       if (emptyingCalendar.paper === 'N') selected = "Nei";
       className = `paper${emptyingCalendar.emptyingCalendarId}`;
-      html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+      html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
       // food waste
       selected = "Ugyldig verdi";
       if (emptyingCalendar.food === 'Y') selected = "Ja";
       if (emptyingCalendar.food === 'N') selected = "Nei";
       className = `food${emptyingCalendar.emptyingCalendarId}`;
-      html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+      html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
       // plastic waste
       selected = "Ugyldig verdi";
       if (emptyingCalendar.plastic === 'Y') selected = "Ja";
       if (emptyingCalendar.plastic === 'N') selected = "Nei";
       className = `plastic${emptyingCalendar.emptyingCalendarId}`;
-      html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja');
+      html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja');
 
       // Christmas tree
       selected = "Ugyldig verdi";
       if (emptyingCalendar.christmasTree === 'Y') selected = "Ja";
       if (emptyingCalendar.christmasTree === 'N') selected = "Nei";
       className = `christmasTree${emptyingCalendar.emptyingCalendarId}`;
-      html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+      html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
       html += "</tr>";
     });
   }
@@ -325,7 +325,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // condoId
   let className = `condoId0`;
-  html += objCondo.showSelectedCondos(className, 'width:150px;', 0, 'Velg leilighet', '', enableChanges);
+  html += objCondo.showSelectedCondos(className,  0, 'Velg leilighet', '', enableChanges);
 
   // date
   let date = 'dd.mm.åååå';
@@ -335,27 +335,27 @@ function insertEmptyTableRow(menuNumber) {
   // Paper waste
   let selected = "Nei";
   className = `paper0`;
-  html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+  html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
   // residual waste  
   selected = "Nei";
   className = `residualWaste0`;
-  html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+  html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
   // food waste
   selected = "Nei";
   className = `food0`;
-  html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+  html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
   // plastic waste
   selected = "Nei";
   className = `plastic0`;
-  html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+  html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
   // Christmas tree
   selected = "Nei";
   className = `christmasTree0`;
-  html += objEmptyingCalendar.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+  html += objEmptyingCalendar.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
   html += "</tr>";
   return html;

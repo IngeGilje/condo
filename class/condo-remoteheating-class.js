@@ -225,8 +225,9 @@ class RemoteHeating extends Condos {
     }
   }
 
+  /*
   // Select remoteHeating Id
-  selectRemoteHeatingIdNew(remoteHeatingId) {
+  selectRemoteHeatingId(remoteHeatingId) {
 
     // Check if remote heating id exist
     const rowNumberRemoteHeating = this.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);
@@ -234,6 +235,7 @@ class RemoteHeating extends Condos {
 
     return remoteHeatingId;
   }
+  */
 
   // Show all selected remoteheatings
   showSelectedRemoteHeatings(className, style, remoteHeatingId, selectNone, selectAll) {

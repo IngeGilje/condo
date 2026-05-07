@@ -282,6 +282,7 @@ class User extends Condos {
     return response.ok;
   }
 
+  /*
   // Show all selected users
   showSelectedUsersNewBck(className, userId, selectNone, selectAll, enableChanges) {
 
@@ -357,10 +358,11 @@ class User extends Condos {
 
     return html;
   }
+  */
 
   
   // Show all selected users
-  showSelectedUsersNew(className, userId, selectNone, selectAll, enableChanges) {
+  showSelectedUsers(className, userId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 

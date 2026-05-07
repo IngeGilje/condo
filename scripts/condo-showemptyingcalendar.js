@@ -174,7 +174,7 @@ function showEmptyingCalendar(menuNumber) {
       // condoId
       let condoId = emptyingCalendar.condoId;
       className = `condoId${emptyingCalendar.emptyingCalendarId}`;
-      html += objCondo.showSelectedCondos(className, 'width:150px;', condoId, 'Velg leilighet', '', false);
+      html += objCondo.showSelectedCondos(className,  condoId, 'Velg leilighet', '', false);
 
       // date
       let date = emptyingCalendar.date;

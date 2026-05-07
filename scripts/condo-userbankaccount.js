@@ -181,10 +181,10 @@ function showFilter(menuNumber, userId) {
   html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, '');
 
   // Show all selected users
-  html += objUser.showSelectedUsersNew('filterUserId', userId, '', 'Alle', enableChanges);
+  html += objUser.showSelectedUsers('filterUserId', userId, '', 'Alle', enableChanges);
 
   // Show all selected accounts
-  html += objAccount.showSelectedAccountsNew('filterAccountId', 0, '', 'Alle', true);
+  html += objAccount.showSelectedAccounts('filterAccountId', 0, '', 'Alle', true);
   html += "</tr>";
 
   // insert a table row
@@ -210,10 +210,10 @@ function insertEmptyTableRow(menuNumber) {
   html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, 'Ny brukerkonto');
 
   // user column
-  html += objUser.showSelectedUsersNew('userId0', 0, 'Velg bruker', '', enableChanges);
+  html += objUser.showSelectedUsers('userId0', 0, 'Velg bruker', '', enableChanges);
 
   // Account column
-  html += objAccount.showSelectedAccountsNew('accountId0',  0, 'Velg konto', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId0',  0, 'Velg konto', '', enableChanges);
 
   // bank account number
   html += objUserBankAccount.inputTableColumn('bankAccount0', '', '', 11, enableChanges);
@@ -241,17 +241,17 @@ function showUserBankAccount(menuNumber) {
     // Delete
     let className = `delete${userBankAccount.userBankAccountId}`;
     const selected = 'Nei';
-    html += objUserBankAccount.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja')
+    html += objUserBankAccount.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
 
     // user Id
     //const userId = userBankAccount.userId;
     className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUser.showSelectedUsersNew(className, userBankAccount.userId, 'Velg bruker', '', enableChanges);
+    html += objUser.showSelectedUsers(className, userBankAccount.userId, 'Velg bruker', '', enableChanges);
 
     // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccount.showSelectedAccountsNew(className,  accountId, 'Velg konto', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className,  accountId, 'Velg konto', '', enableChanges);
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;

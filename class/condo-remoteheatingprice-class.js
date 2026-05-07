@@ -224,8 +224,9 @@ class RemoteHeatingPrice extends Condos {
     }
   }
 
+  /*
   // Select remoteHeatingPrice Id
-  selectRemoteHeatingIdNew(remoteHeatingPriceId) {
+  selectRemoteHeatingId(remoteHeatingPriceId) {
 
     // Check if remote heating id exist
     const rowNumberRemoteHeating = this.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
@@ -233,6 +234,7 @@ class RemoteHeatingPrice extends Condos {
 
     return remoteHeatingPriceId;
   }
+  */
 
   // Show all selected remoteheatingprices
   showSelectedRemoteHeatings(className, style, remoteHeatingPriceId, selectNone, selectAll) {

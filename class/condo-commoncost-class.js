@@ -209,6 +209,7 @@ class CommonCost extends Condos {
     return html;
   }
 
+  /*
   // Select common cost Id
   selectCommonCostId(commonCostId, className) {
 
@@ -223,9 +224,11 @@ class CommonCost extends Condos {
       return false;
     }
   }
+  */
 
+  /*
   // Select commonCost Id
-  selectCommonCostIdNew(commonCostId) {
+  selectCommonCostId(commonCostId) {
 
     // Check if common cost id exist
     const rowNumberCommonCost = this.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
@@ -233,6 +236,7 @@ class CommonCost extends Condos {
 
     returncommonCostId;
   }
+  */
 
   // Show all selected commoncosts
   showSelectedCommonCosts(className, style, commonCostId, selectNone, selectAll) {

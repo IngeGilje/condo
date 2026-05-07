@@ -220,7 +220,7 @@ function showCommonCost(menuNumber) {
     if (commonCost.deleted === 'N') selected = "Nei";
 
     let className = `delete${commonCost.commonCostId}`;
-    html += objCommonCost.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja');
+    html += objCommonCost.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja');
 
     // Select year
     const year = commonCost.year;

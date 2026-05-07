@@ -257,10 +257,10 @@ function showFilter(menuNumber, condoId, accountId) {
   html += objBankAccountTransaction.insertTableRow('',menuNumber,objBankAccountTransaction.accountMenu, '', '');
 
   // Show all selected condos
-  html += objCondo.showSelectedCondosNew('filterCondoId', condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondos('filterCondoId', condoId, '', 'Vis alle', true);
 
   // Show all selected accounts
-  html += objAccount.showSelectedAccountsNew('filterAccountId', accountId, '', 'Vis alle', true);
+  html += objAccount.showSelectedAccounts('filterAccountId', accountId, '', 'Vis alle', true);
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
@@ -433,11 +433,11 @@ async function showBankAccountTransactions(menuNumber) {
     if (bankAccountTransaction.deleted === 'Y') selected = "Ja";
     if (bankAccountTransaction.deleted === 'N') selected = "Nei";
     let className = `delete${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.showSelectedValuesNew(className,  enableChanges, selected, 'Nei', 'Ja')
-
+    html += objBankAccountTransaction.showSelectedValues(className,  enableChanges, selected, 'Nei', 'Ja')
+    
     // condos
     className = `condoId${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondo.showSelectedCondosNew(className, bankAccountTransaction.condoId, 'Ingen leilighet', '', enableChanges);
+    html += objCondo.showSelectedCondos(className, bankAccountTransaction.condoId, 'Ingen leilighet', '', enableChanges);
 
     // Date
     const date = formatNumberToNorDate(bankAccountTransaction.date);
@@ -449,8 +449,8 @@ async function showBankAccountTransactions(menuNumber) {
 
     // Mark invalid account red
     html += (bankAccountTransaction.accountId === 0)
-      ? objAccount.showSelectedAccountsNew(className,  bankAccountTransaction.accountId, 'Velg konto', '', enableChanges)
-      : objAccount.showSelectedAccountsNew(className, bankAccountTransaction.accountId, 'Velg konto', '', enableChanges);
+      ? objAccount.showSelectedAccounts(className,  bankAccountTransaction.accountId, 'Velg konto', '', enableChanges)
+      : objAccount.showSelectedAccounts(className, bankAccountTransaction.accountId, 'Velg konto', '', enableChanges);
 
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
@@ -560,7 +560,7 @@ function insertEmptyTableRow(menuNumber) {
   // condo
   const condoId = Number(document.querySelector('.filterCondoId').value);
   className = `condoId0`;
-  html += objCondo.showSelectedCondosNew(className, condoId, 'Velg leilighet', '', enableChanges);
+  html += objCondo.showSelectedCondos(className, condoId, 'Velg leilighet', '', enableChanges);
 
   // Date
   const date = '';
@@ -571,7 +571,7 @@ function insertEmptyTableRow(menuNumber) {
   let accountId = Number(document.querySelector('.filterAccountId').value);
   if (accountId === objBankAccountTransaction.nineNine) accountId = 0;
   className = `accountId0`;
-  html += objAccount.showSelectedAccountsNew(className,  accountId, 'Velg konto', '', enableChanges);
+  html += objAccount.showSelectedAccounts(className,  accountId, 'Velg konto', '', enableChanges);
 
   // income
   const income = '0,00';

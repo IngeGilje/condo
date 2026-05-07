@@ -198,7 +198,7 @@ function showFilter(menuNumber) {
   html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
 
   // fixed or not fixed cost
-  html += objAccount.showSelectedValuesNew('filterFixedCost',  true, 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += objAccount.showSelectedValues('filterFixedCost',  true, 'Alle', constFixedCost, constVariableCost, 'Alle');
 
   html += "</tr>";
 
@@ -229,7 +229,7 @@ function insertEmptyTableRow(menuNumber) {
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
-  html += objAccount.showSelectedValuesNew('fixedCost0', enableChanges, constFixedCost, constFixedCost, constVariableCost);
+  html += objAccount.showSelectedValues('fixedCost0', enableChanges, constFixedCost, constFixedCost, constVariableCost);
 
   // name
   html += objAccount.inputTableColumn('name0', '', '', 45, enableChanges);
@@ -260,7 +260,7 @@ function showAccounts(menuNumber) {
     if (account.deleted === 'N') selected = "Nei";
 
     let className = `delete${account.accountId}`;
-    html += objAccount.showSelectedValuesNew(className,  enableChanges, selected, 'Nei', 'Ja')
+    html += objAccount.showSelectedValues(className,  enableChanges, selected, 'Nei', 'Ja')
 
     // fixed cost
     selected = "Ugyldig verdi";
@@ -283,7 +283,7 @@ function showAccounts(menuNumber) {
     }
 
     className = `fixedCost${account.accountId}`;
-    html += objAccount.showSelectedValuesNew(className, enableChanges, selected, constFixedCost, constVariableCost)
+    html += objAccount.showSelectedValues(className, enableChanges, selected, constFixedCost, constVariableCost)
 
     // name
     const name = account.name;

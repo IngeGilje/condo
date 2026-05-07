@@ -362,7 +362,7 @@ function showSupplier(menuNumber, supplierId) {
   const accountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccount.showSelectedAccountsNew('accountId', accountId, 'Ingen mottaker er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId', accountId, 'Ingen mottaker er valgt', '', enableChanges);
 
   // bankAccount number
   const bankAccount = (rowNumberSupplier === -1)
@@ -385,7 +385,7 @@ function showSupplier(menuNumber, supplierId) {
   const amountAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccount.showSelectedAccountsNew('amountAccountId', amountAccountId, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('amountAccountId', amountAccountId, 'Ingen konto er valgt', '', enableChanges);
 
   // amount
   const amount = (rowNumberSupplier === -1)
@@ -408,7 +408,7 @@ function showSupplier(menuNumber, supplierId) {
   const textAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccount.showSelectedAccountsNew('textAccountId', textAccountId, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('textAccountId', textAccountId, 'Ingen konto er valgt', '', enableChanges);
 
   // text for account id
   const text = (rowNumberSupplier === -1)

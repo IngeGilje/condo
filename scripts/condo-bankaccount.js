@@ -473,7 +473,7 @@ function showFilter(menuNumber, condominiumId) {
   html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiumsNew('filterCondominiumId', condominiumId, '', '', enableChanges);
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', condominiumId, '', '', enableChanges);
 
   // Show all bankaccounts for selected condominiums
   // Get last id in last object in bankaccounts array

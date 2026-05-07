@@ -610,7 +610,7 @@ class Condos {
   */
 
   // Select choices like Yes, No, Ignore
-  showSelectedValuesNew(className,enableChanges, selected, ...choices) {
+  showSelectedValues(className,enableChanges, selected, ...choices) {
 
     let html = `
     <td

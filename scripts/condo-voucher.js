@@ -203,7 +203,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // account
     const accountId = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].accountId;
-    html += objAccount.showSelectedAccountsNew('accountId',  accountId, '', '', false);
+    html += objAccount.showSelectedAccounts('accountId',  accountId, '', '', false);
 
     html += "</tr>";
 

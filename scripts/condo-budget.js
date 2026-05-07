@@ -270,7 +270,7 @@ function showFilter(menuNumber) {
   html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu, '2');
 
   // Selected accounts
-  html += objAccount.showSelectedAccountsNew('filterAccountId', 0, '', 'Alle', true);
+  html += objAccount.showSelectedAccounts('filterAccountId', 0, '', 'Alle', true);
 
   // Selected year
   const year = String(today.getFullYear());
@@ -316,11 +316,11 @@ function showBudgets(menuNumber) {
     if (budget.deleted === 'N') selected = "Nei";
 
     let className = `delete${budget.budgetId}`;
-    html += objBudget.showSelectedValuesNew(className, enableChanges, selected, 'Nei', 'Ja');
+    html += objBudget.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja');
 
     // accountId
     className = `accountId${budget.budgetId}`;
-    html += objAccount.showSelectedAccountsNew(className, budget.accountId, '', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className, budget.accountId, '', '', enableChanges);
 
     // due amount
     const amount = formatOreToKroner(budget.amount);
@@ -371,7 +371,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = objAccount.insertTableRow('', menuNumber, objBudget.accountMenu, 'Nytt budsjett');
 
   // accounts
-  html += objAccount.showSelectedAccountsNew('accountId0', 0, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId0', 0, 'Ingen konto er valgt', '', enableChanges);
 
   // budget amount
   const amount = "";

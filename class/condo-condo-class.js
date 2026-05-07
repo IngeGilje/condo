@@ -51,6 +51,7 @@ class Condo extends Condos {
     }
   }
 
+  /*
   showSelectedCondos(className, style, condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
@@ -121,9 +122,10 @@ class Condo extends Condos {
 
     return html;
   }
+  */
 
   
-  showSelectedCondosNew(className, condoId, selectNone, selectAll, enableChanges) {
+  showSelectedCondos(className, condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 

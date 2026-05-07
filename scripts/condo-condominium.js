@@ -248,7 +248,7 @@ function showFilter(menuNumber, condominiumId) {
   html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
   // condominium
-  html += objCondominium.showSelectedCondominiumsNew('filterCondominiumId', condominiumId, '', '', enableChanges)
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', condominiumId, '', '', enableChanges)
 
   html += "</tr>";
 
@@ -352,10 +352,10 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // incomeRemoteHeatingAccountId
-    html += objAccount.showSelectedAccountsNew('incomeRemoteHeatingAccountId', objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '', enableChanges);
+    html += objAccount.showSelectedAccounts('incomeRemoteHeatingAccountId', objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '', enableChanges);
 
     // paymentRemoteHeatingAccountId
-    html += objAccount.showSelectedAccountsNew('paymentRemoteHeatingAccountId', objCondominium.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, '', '', enableChanges);
+    html += objAccount.showSelectedAccounts('paymentRemoteHeatingAccountId', objCondominium.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, '', '', enableChanges);
 
     html += "</tr>";
 
@@ -369,7 +369,7 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // commonCostAccountId
-    html += objAccount.showSelectedAccountsNew('commonCostAccountId', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '', enableChanges);
+    html += objAccount.showSelectedAccounts('commonCostAccountId', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '', enableChanges);
 
     // organizationNumber
     html += objCondominium.inputTableColumn('organizationNumber', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].organizationNumber, 9, enableChanges);

@@ -224,7 +224,7 @@ class Condominium extends Condos {
   }
   */
    // Show all selected condominiums
-  showSelectedCondominiumsNew(className, condominiumId, selectNone, selectAll, enableChanges) {
+  showSelectedCondominiums(className, condominiumId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 

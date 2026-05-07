@@ -28,6 +28,7 @@ class Account extends Condos {
     return accountId;
   }
 
+  /*
   // Select account
   selectAccountId(accountId, className) {
 
@@ -42,9 +43,11 @@ class Account extends Condos {
       return false;
     }
   }
+  */
 
+  /*
   // Select account Id
-  selectAccountIdNew(accountId) {
+  selectAccountId(accountId) {
 
     // Check if account id exist
     const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
@@ -52,6 +55,7 @@ class Account extends Condos {
 
     return accountId;
   }
+  */
 
   // get account id from bank account and suppliers
   getAccountIdFromBankAccount(bankAccountNumber, payment, text) {
@@ -200,7 +204,7 @@ class Account extends Condos {
   */
 
   // show selected accounts
-  showSelectedAccountsNew(className, accountId, selectNone, selectAll, enableChanges = false) {
+  showSelectedAccounts(className, accountId, selectNone, selectAll, enableChanges = false) {
 
     let selectedValue = false;
 

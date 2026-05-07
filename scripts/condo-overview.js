@@ -186,7 +186,7 @@ function showFilter(menuNumber, condoId) {
   html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
 
   // Show all selected condos
-  html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', '', true);
+  html += objCondo.showSelectedCondos('filterCondoId',  condoId, '', '', true);
 
   // from date
   const year = String(today.getFullYear());
@@ -237,7 +237,7 @@ function showDues(menuNumber) {
 
     // condo
     className = `condo${due.dueId}`;
-    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Velg leilighet', '', false);
+    html += objCondo.showSelectedCondos(className, due.condoId, 'Velg leilighet', '', false);
 
     // date
     const date = formatNumberToNorDate(due.date);
@@ -246,7 +246,7 @@ function showDues(menuNumber) {
 
     // account
     className = `account${due.dueId}`;
-    html += objAccount.showSelectedAccountsNew(className, due.accountId, 'Velg konto', '', false);
+    html += objAccount.showSelectedAccounts(className, due.accountId, 'Velg konto', '', false);
 
     // amount
     const amount = formatOreToKroner(due.amount);
@@ -312,7 +312,7 @@ function showBankAccountTransactions(menuNumber) {
 
     // condos
     className = `condo${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objCondo.showSelectedCondos(className, '', Number(bankAccountTransaction.condoId), 'Velg leilighet', '', false);
+    html += objCondo.showSelectedCondos(className, Number(bankAccountTransaction.condoId), 'Velg leilighet', '', false);
 
     // date
     const date = formatNumberToNorDate(bankAccountTransaction.date);
@@ -321,7 +321,7 @@ function showBankAccountTransactions(menuNumber) {
 
     // account
     className = `account${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objAccount.showSelectedAccountsNew(className, Number(bankAccountTransaction.accountId), 'Velg konto', '', false);
+    html += objAccount.showSelectedAccounts(className, Number(bankAccountTransaction.accountId), 'Velg konto', '', false);
 
     // income - payment
     let income = bankAccountTransaction.income;
