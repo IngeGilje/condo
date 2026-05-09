@@ -138,14 +138,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  //let html = objNews.initializeTable(175, 225, 125,175,175);
-  let html = objNews.initializeTable(175, 225, 125);
+  let html = objNews.initializeTable(175, 175, 175,175);
 
   // start table body
   html += objNews.startTableBody();
 
   // show main header
-  html += objNews.showTableHeaderLogOut( '1', '2Nyheter');
+  html += objNews.showTableHeaderLogOut( '1', '2Nyheter','3');
   html += "</tr>";
 
   // end table body
@@ -160,7 +159,7 @@ function showHeader() {
 function showFilter(menuNumber, newsId) {
 
   // Start table
-  let html = objNews.initializeTable(175, 175, 175);
+  let html = objNews.initializeTable(175, 175, 175,175);
 
   // Header filter
   menuNumber++;
@@ -195,7 +194,7 @@ function showFilter(menuNumber, newsId) {
 function showNews(menuNumber, newsId) {
 
   // start table
-  let html = objNews.initializeTable(175, 175, 175);
+  let html = objNews.initializeTable(175, 175, 175,175);
 
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
@@ -266,7 +265,7 @@ function showNews(menuNumber, newsId) {
 
   // content
   menuNumber++;
-  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', '2Innhold', '3');
+  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', '2Innhold', '3','4');
 
   // insert a table row
   menuNumber++;
@@ -275,7 +274,7 @@ function showNews(menuNumber, newsId) {
   const content = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].content;
-  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 2, 3);
+  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 3, 4);
   html += "</tr>";
 
   menuNumber++;
@@ -292,7 +291,7 @@ function showNews(menuNumber, newsId) {
     // insert a table row
     menuNumber++;
     html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
-    html += "<td>2</td><td>3</td></tr>";
+    html += "<td>2</td><td>3</td><td>4</td></tr>";
 
     // insert a table row
     menuNumber++;
