@@ -11,8 +11,6 @@ const objOverview = new Overview('overview');
 
 const enableChanges = (objOverview.securityLevel > 5);
 
-const tableWidth = 'width:1250px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 

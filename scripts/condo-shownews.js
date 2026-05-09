@@ -7,7 +7,6 @@ const objNews = new News('news');
 const objShowNews = new ShowNews('shownews');
 
 const enableChanges = (objShowNews.securityLevel > 5);
-const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -93,11 +92,16 @@ function showNews(menuNumber) {
         ? `${objUser.arrayUsers[rowNumberUser].firstName} ${objUser.arrayUsers[rowNumberUser].lastName}`
         : 'Ukjent';
 
+      let src = (objShowNews.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      src = `${src}images/hinna-park.jpg`;
+
       let html = `
       <div class="news-container">
         <div class="news-card">
           <div class="news-image">
-            <img src="http://localhost/images/hinna-park.jpg" alt="News Image">
+            <img src="${src}" alt="News Image">
           </div>
           <div class="news-content">
             <h1 class="news-title">${news.title}</h1>
@@ -114,19 +118,4 @@ function showNews(menuNumber) {
     }
   }
   return menuNumber;
-}
-
-// Show horizonal menu
-function showHorizontalMenu(objShowNews) {
-
-  html = `
-  <nav class="navbar">
-    <ul class="nav-links">
-      <li><a href="#" class="active">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Portfolio</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-  </nav>`;
 }

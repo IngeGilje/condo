@@ -8,8 +8,6 @@ const objBudget = new Budget('budget');
 
 const enableChanges = (objBudget.securityLevel > 5);
 
-const tableWidth = 'width:1100px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -375,7 +373,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // budget amount
   const amount = "";
-  html += objBudget.inputTableColumn('amount0', '0,00', amount, 11, enableChanges);
+  html += objBudget.inputTableColumn('amount0', '', amount, 11, enableChanges);
 
   // Year
   const year = Number(document.querySelector('.filterYear').value);

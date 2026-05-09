@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -49,6 +49,11 @@ class Condos {
       applicationName: "condo-news.html",
       className: "Menu4",
       text: "Administrasjon"
+    },
+    {
+      applicationName: "condo-login.html",
+      className: "Menu5",
+      text: "logg ut"
     }
   ];
 
@@ -220,6 +225,7 @@ class Condos {
     </td>`;
   }
 
+  /*
   // Show password input
   inputTableColumnPassword(className, style, value, maxlength) {
 
@@ -234,9 +240,11 @@ class Condos {
       >
     </td>`;
   }
+  */
 
-  // Show password
-  inputTablePassword(className, style, value, maxlength) {
+  // Show password input
+  inputTableColumnPassword(className, value, maxlength) {
+
     return `
     <td class="center">
       <input
@@ -244,7 +252,19 @@ class Condos {
         type="password"
         maxlength="${maxlength}"
         value="${value}"
-        ${(style) ? `style="${style}"` : `style="width:175px;"`}
+      >
+    </td>`;
+  }
+
+  // Show password
+  inputTablePassword(className, value, maxlength) {
+    return `
+    <td class="center">
+      <input
+        class="${className} center one-line"
+        type="password"
+        maxlength="${maxlength}"
+        value="${value}"
       >
     </td>`;
   }
@@ -511,6 +531,7 @@ class Condos {
     return html;
   }
 
+  /*
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {
 
@@ -543,6 +564,7 @@ class Condos {
 
     return html;
   }
+  */
 
   // Select months
   showSelectedMonths(className, selectedMonth, enableChanges) {
@@ -610,7 +632,7 @@ class Condos {
   */
 
   // Select choices like Yes, No, Ignore
-  showSelectedValues(className,enableChanges, selected, ...choices) {
+  showSelectedValues(className, enableChanges, selected, ...choices) {
 
     let html = `
     <td
@@ -748,7 +770,7 @@ class Condos {
       html += `
       <td 
         class="no-border center"
-        style = ${(color) ? `background:${color};` : ""}
+        ${(color) ? `style="background:${color};"` :" "}
       >
         ${text}
       </td>`;
@@ -1063,7 +1085,7 @@ class Condos {
       html += `
       <td 
         class="center no-border"
-        ${(style) ? style : ''}
+        ${(style) ? `style="${style}"` : ''}
       >
         ${text}
       </td>`
@@ -1176,7 +1198,7 @@ class Condos {
 
       html += `
         <td class="one-line menu"
-          style = "width:175px;">
+        >
           <a href="${URL}${applicationName}">
             ${text}
           </a>
@@ -1185,9 +1207,7 @@ class Condos {
 
       // Do not show menu
       html += `
-        <td 
-          style = "width:175px;">
-          <a></a>
+        <td> 
         </td>`;
     }
 

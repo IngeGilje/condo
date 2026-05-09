@@ -17,7 +17,6 @@ const objSupplier = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
 const enableChanges = (objImportFile.securityLevel > 5);
-const tableWidth = 'width:1700px;';
 let menuNumber = 0;
 
 // Exit application if no activity for 1 hour

@@ -9,8 +9,6 @@ const objRemoteHeating = new RemoteHeating('remoteheating');
 
 const enableChanges = (objRemoteHeating.securityLevel > 5);
 
-const tableWidth = 'width:1250px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 

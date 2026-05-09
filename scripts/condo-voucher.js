@@ -8,7 +8,6 @@ const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransac
 const objVoucher = new Voucher('voucher');
 
 const enableChanges = (objVoucher.securityLevel > 5);
-const tableWidth = 'width:800px;';
 
 const params = new URLSearchParams(window.location.search);
 const paramCondoId = Number(params.get("condoId"));
@@ -156,10 +155,10 @@ function showFilter(menuNumber, bankAccountTransactionId) {
 
   // insert a table row
   menuNumber++;
-  html += objBankAccountTransaction.insertTableRow('width:175px;', menuNumber,objBankAccountTransaction.accountMenu, '');
+  html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '');
 
   // show selected bank account transactions
-  html += objBankAccountTransaction.showSelectedBankAccountTransactions('filterBankAccountTransactionId', 'width:175px;', bankAccountTransactionId, '')
+  html += objBankAccountTransaction.showSelectedBankAccountTransactions('filterBankAccountTransactionId', '', bankAccountTransactionId, '')
 
   html += "<td></td></tr>";
 

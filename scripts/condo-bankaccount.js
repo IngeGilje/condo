@@ -8,7 +8,6 @@ const objCondominium = new Condominium('condominium');
 const objBankAccount = new BankAccount('bankaccount');
 
 const enableChanges = (objBankAccount.securityLevel > 5);
-const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -232,14 +231,14 @@ function showBankAccounts(menuNumber, bankAccountId) {
   const name = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;
-  html += objBankAccount.inputTableColumn('name', 'width:175px;', name, 45, enableChanges);
+  html += objBankAccount.inputTableColumn('name', '', name, 45, enableChanges);
 
   // account number
   const bankAccount = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount;
 
-  html += objBankAccount.inputTableColumn('bankAccount', 'width:175px;', bankAccount, 11, enableChanges);
+  html += objBankAccount.inputTableColumn('bankAccount', '', bankAccount, 11, enableChanges);
   html += "</tr>";
 
   // Show menu
@@ -255,14 +254,14 @@ function showBankAccounts(menuNumber, bankAccountId) {
     ? ''
     : formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate)
   //const openingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
-  html += objBankAccount.inputTableColumn('openingBalanceDate', 'width:175px;', openingBalanceDate, 10, enableChanges);
+  html += objBankAccount.inputTableColumn('openingBalanceDate', '', openingBalanceDate, 10, enableChanges);
 
   // opening balance
   const openingBalance = (rowNumberBankAccount === -1)
     ? ''
     : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance)
   //const openingBalance = formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance);
-  html += objBankAccount.inputTableColumn('openingBalance', 'width:175px;', openingBalance, 11, enableChanges);
+  html += objBankAccount.inputTableColumn('openingBalance', '', openingBalance, 11, enableChanges);
 
   html += "</tr>";
 
@@ -282,14 +281,14 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
 
   //const closingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
-  html += objBankAccount.inputTableColumn('closingBalanceDate', 'width:175px;', closingBalanceDate, 10, enableChanges);
+  html += objBankAccount.inputTableColumn('closingBalanceDate', '', closingBalanceDate, 10, enableChanges);
 
   // closing balance
   const closingBalance = (rowNumberBankAccount === -1)
     ? ''
     : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance)
   //const closingBalance = formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
-  html += objBankAccount.inputTableColumn('closingBalance', 'width:175px;', closingBalance, 11, enableChanges);
+  html += objBankAccount.inputTableColumn('closingBalance', '', closingBalance, 11, enableChanges);
 
   html += "</tr>";
 
@@ -480,7 +479,7 @@ function showFilter(menuNumber, condominiumId) {
   const bankAccountId = (objBankAccount.arrayBankAccounts.lenght === 0)
     ? objBankAccount.arrayBankAccounts.at(-1).bankAccountId
     : 0;
-  html += objBankAccount.showSelectedBankAccounts('filterBankAccountId', 'width:175px;', bankAccountId, '', '');
+  html += objBankAccount.showSelectedBankAccounts('filterBankAccountId', bankAccountId, '', '');
 
   html += "</tr>";
 

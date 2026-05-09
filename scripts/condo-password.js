@@ -213,7 +213,7 @@ function showUser(menuNumber, userId) {
     html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
 
     // password
-    html += objUser.inputTablePassword('password', '', '', 45);
+    html += objUser.inputTablePassword('password', '', 45);
 
     // securityLevel
     html += objUser.showSelectedNumbers('securityLevel',  1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);

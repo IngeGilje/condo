@@ -14,8 +14,6 @@ const objAnnualAccount = new AnnualAccount('annualaccount');
 
 const enableChanges = (objAnnualAccount.securityLevel > 5);
 
-const tableWidth = 'width:1100px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -200,7 +198,7 @@ function getBudgetAmount(accountId, year) {
 function showHeader() {
 
   // Start table
-  let html = objAnnualAccount.initializeTable(175, 225, 125, 175, 175,175);
+  let html = objAnnualAccount.initializeTable(175, 175, 175, 175, 175,175);
 
   // start table body
   html += objAnnualAccount.startTableBody();
@@ -221,7 +219,7 @@ function showHeader() {
 function showFilter(menuNumber, budgetYear, fromDate, toDate) {
 
   // Start table
-  let html = objAnnualAccount.initializeTable(175, 225, 125, 175, 175,175);
+  let html = objAnnualAccount.initializeTable(175, 175, 175, 175, 175,175);
 
   // Header filter
   menuNumber++;
@@ -266,7 +264,7 @@ function showFilter(menuNumber, budgetYear, fromDate, toDate) {
 function showAnnualAccounts(menuNumber) {
 
   // start table
-  let html = objAnnualAccount.initializeTable(175, 225, 125, 175, 175,175);
+  let html = objAnnualAccount.initializeTable(175, 175, 175, 175, 175,175);
 
   // table header
   const budgetYear = document.querySelector('.filterBudgetYear').value;
@@ -365,7 +363,7 @@ function showAnnualAccounts(menuNumber) {
 function showIncomeNextYear(menuNumber) {
 
   // start table
-  let html = objAnnualAccount.initializeTable(175, 225, 125, 175, 175,175);
+  let html = objAnnualAccount.initializeTable(175, 175, 175, 175, 175,175);
 
   // table header
   const budgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
@@ -373,7 +371,7 @@ function showIncomeNextYear(menuNumber) {
   html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0', '', '', `Bud. Leieinntekter ${budgetYear}`, '', '');
 
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '', '');
+  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '','Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;
@@ -393,7 +391,7 @@ function showIncomeNextYear(menuNumber) {
     // 12 month and 7 condos
     //let fixedCost = String(Math.round(numFixedCost / 12 / 7) * (-1));
   }
-  html += "</tr>"
+  //html += "</tr>"
 
   objCondo.arrayCondo.forEach((condo) => {
 
@@ -412,7 +410,7 @@ function showIncomeNextYear(menuNumber) {
 
     // fixed cost per month per condo
     fixedCostCondoMonth = formatOreToKroner(fixedCostCondoMonth);
-    className = `fixedCostCondoMonth${condo.accountId}`;
+    className = `fixedCostCondoMonth${condo.condoId}`;
     html += objAnnualAccount.inputTableColumn(className, '', fixedCostCondoMonth, 10, false);
 
     // Common cost per month per condo
@@ -421,7 +419,7 @@ function showIncomeNextYear(menuNumber) {
     squareMeters = formatKronerToOre(squareMeters);
     let commonCostsMonth = (squareMeters * commonCostSquareMeter) / 100;
     commonCostsMonth = formatOreToKroner(commonCostsMonth);
-    className = `commonCostsMonth${condo.accountId}`;
+    className = `commonCostsMonth${condo.condoId}`;
     html += objAnnualAccount.inputTableColumn(className, '', commonCostsMonth, 11, false);
 
     // Common cost per year per condo
@@ -429,8 +427,10 @@ function showIncomeNextYear(menuNumber) {
     fixedCostCondoMonth = formatKronerToOre(fixedCostCondoMonth);
     let commonCostsCondoYear = (commonCostsMonth + fixedCostCondoMonth) * 12;
     commonCostsCondoYear = formatOreToKroner(commonCostsCondoYear);
-    className = `commonCostsCondoYear${condo.accountId}`;
+    className = `commonCostsCondoYear${condo.condoId}`;
     html += objAnnualAccount.inputTableColumn(className, '', commonCostsCondoYear, 10, false);
+
+    html += "</tr>";
 
     // Accomulate
     totalSquareMeters += Number(squareMeters);
@@ -447,7 +447,6 @@ function showIncomeNextYear(menuNumber) {
 
   menuNumber++;
   html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
-
   html += "</tr>";
 
   // empty table row
@@ -466,7 +465,7 @@ function showIncomeNextYear(menuNumber) {
 function showBankDeposit(menuNumber) {
 
   // start table
-  let html = objAnnualAccount.initializeTable(175, 225, 125, 175, 175,175);
+  let html = objAnnualAccount.initializeTable(175, 175, 175, 175, 175,175);
 
   // table header
   let nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;

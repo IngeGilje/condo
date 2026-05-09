@@ -4,6 +4,7 @@ class CommonCost extends Condos {
   // common cost information
   arrayCommonCost;
 
+  /*
   // Show all selected commoncosts
   showSelectedCommonCosts(className, style, commonCostId, selectNone, selectAll) {
 
@@ -106,6 +107,7 @@ class CommonCost extends Condos {
 
     return html;
   }
+  */
 
   // Get selected common cost id
   getSelectedCommonCostId(className) {
@@ -126,6 +128,7 @@ class CommonCost extends Condos {
     returncommonCostId;
   }
 
+  /*
   // Show all CommonCosts
   showSelectedCommonCostsHTML(className, commonCostId, selectAll) {
 
@@ -208,6 +211,7 @@ class CommonCost extends Condos {
 
     return html;
   }
+  */
 
   /*
   // Select common cost Id
@@ -238,8 +242,9 @@ class CommonCost extends Condos {
   }
   */
 
+  /*
   // Show all selected commoncosts
-  showSelectedCommonCosts(className, style, commonCostId, selectNone, selectAll) {
+  showSelectedCommonCosts(className, commonCostId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -249,7 +254,6 @@ class CommonCost extends Condos {
     >
       <select 
         class="${className} center"
-        ${(style) ? `style=${style}` : 'style="width:175px;"'}
       >`;
 
     // Check if CommonCosts array is empty
@@ -340,6 +344,7 @@ class CommonCost extends Condos {
 
     return html;
   }
+  */
 
   // get commoncosts
   async loadCommonCostsTable(condominiumId) {

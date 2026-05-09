@@ -6,7 +6,6 @@ const objUser = new User('user');
 const objCondo = new Condo('condo');
 
 const enableChanges = (objCondo.securityLevel > 5);
-const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();

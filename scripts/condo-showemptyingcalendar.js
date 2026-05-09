@@ -9,8 +9,6 @@ const objShowEmptyingCalendar = new ShowEmptyingCalendar('showemptyingcalendar')
 
 const enableChanges = (objEmptyingCalendar.securityLevel > 5);
 
-const tableWidth = 'width:1230px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -94,13 +92,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objShowEmptyingCalendar.initializeTable(175, 225, 125, 175, 175);
+  let html = objShowEmptyingCalendar.initializeTable(175, 125, 175, 175, 175, 175, 175, 175);
 
   // start table body
   html += objShowEmptyingCalendar.startTableBody();
 
   // show main header
-  html += objShowEmptyingCalendar.showTableHeaderLogOut('', '', '', 'Avfallskalender', '', '', '', '');
+  html += objShowEmptyingCalendar.showTableHeaderLogOut('1', '2', '3', '4Avfallskalender', '5', '6', '7');
   html += "</tr>";
 
   // end table body
@@ -115,7 +113,7 @@ function showHeader() {
 function showFilter(menuNumber) {
 
   // Start table
-  let html = objShowEmptyingCalendar.initializeTable(175, 225, 125, 175, 175);
+  let html = objShowEmptyingCalendar.initializeTable(175, 125, 175, 175, 175, 175, 175, 175);
 
   // start table body
   html += objShowEmptyingCalendar.startTableBody();
@@ -158,7 +156,7 @@ function showFilter(menuNumber) {
 function showEmptyingCalendar(menuNumber) {
 
   // start table
-  let html = objEmptyingCalendar.initializeTable(175, 225, 125, 175, 175);
+  let html = objEmptyingCalendar.initializeTable(175, 125, 175, 175, 175, 175, 175, 175);
 
   // table header
   menuNumber++;
@@ -174,13 +172,13 @@ function showEmptyingCalendar(menuNumber) {
       // condoId
       let condoId = emptyingCalendar.condoId;
       className = `condoId${emptyingCalendar.emptyingCalendarId}`;
-      html += objCondo.showSelectedCondos(className,  condoId, 'Velg leilighet', '', false);
+      html += objCondo.showSelectedCondos(className, condoId, 'Velg leilighet', '', false);
 
       // date
       let date = emptyingCalendar.date;
       date = formatNumberToNorDate(date);
       className = `date${emptyingCalendar.emptyingCalendarId}`;
-      html += objShowEmptyingCalendar.inputTableColumn(className, 'width:150px;', date, 10, false);
+      html += objShowEmptyingCalendar.inputTableColumn(className, '', date, 10, false);
 
       // residual waste  
       className = `residualWaste${emptyingCalendar.emptyingCalendarId}`;

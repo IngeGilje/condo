@@ -4,6 +4,7 @@ class RemoteHeatingPrice extends Condos {
   // remote heating information
   arrayRemoteHeatingPrices;
 
+  /*
   // Show all selected remoteheating prices
   showSelectedRemoteHeatings(className, style, remoteHeatingPriceId, selectNone, selectAll) {
 
@@ -106,6 +107,7 @@ class RemoteHeatingPrice extends Condos {
 
     return html;
   }
+  */
 
   // Get selected remote heating id
   getSelectedRemoteHeatingId(className) {
@@ -126,6 +128,7 @@ class RemoteHeatingPrice extends Condos {
     return remoteHeatingPriceId;
   }
 
+  /*
   // Show all RemoteHeatings
   showSelectedRemoteHeatingsHTML(className, remoteHeatingPriceId, selectAll) {
 
@@ -208,6 +211,7 @@ class RemoteHeatingPrice extends Condos {
 
     return html;
   }
+  */
 
   // Select remote heating Id
   selectRemoteHeatingId(remoteHeatingPriceId, className) {
@@ -236,8 +240,9 @@ class RemoteHeatingPrice extends Condos {
   }
   */
 
+  /*
   // Show all selected remoteheatingprices
-  showSelectedRemoteHeatings(className, style, remoteHeatingPriceId, selectNone, selectAll) {
+  showSelectedRemoteHeatings(className, remoteHeatingPriceId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -247,7 +252,6 @@ class RemoteHeatingPrice extends Condos {
     >
       <select 
         class="${className} center"
-        ${(style) ? `style=${style}` : 'style="width:175px;"'}
       >`;
 
     // Check if RemoteHeatings array is empty
@@ -338,6 +342,7 @@ class RemoteHeatingPrice extends Condos {
 
     return html;
   }
+  */
 
   // get remoteheatingprices
   async loadRemoteHeatingPricesTable(condominiumId) {

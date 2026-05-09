@@ -8,8 +8,6 @@ const objCommonCost = new CommonCost('commoncost');
 
 const enableChanges = (objCommonCost.securityLevel > 5);
 
-const tableWidth = 'width:950px';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 

@@ -39,6 +39,7 @@ class EmptyingCalendar extends Condos {
     }
   }
 
+  /*
   showSelectedEmptyingCalendar(className, style, emptyingCalendarId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
@@ -109,6 +110,7 @@ class EmptyingCalendar extends Condos {
 
     return html;
   }
+  */
 
   // get emtying calendar table
   async loadEmptyingCalendarTable(condominiumId, year,month) {

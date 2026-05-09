@@ -8,8 +8,6 @@ const objRemoteHeatingPrice = new RemoteHeatingPrice('remoteheatingprice');
 
 const enableChanges = (objRemoteHeatingPrice.securityLevel > 5);
 
-const tableWidth = 'width:750px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 

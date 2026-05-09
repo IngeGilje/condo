@@ -8,8 +8,6 @@ const objSupplier = new Supplier('supplier');
 
 const enableChanges = (objSupplier.securityLevel > 5);
 
-const tableWidth = 'width:600px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -234,7 +232,7 @@ function showFilter(menuNumber, supplierId) {
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
   // supplier
-  html += objSupplier.showSelectedSuppliers('filterSupplierId', 'width:175px;', supplierId, '', '', true)
+  html += objSupplier.showSelectedSuppliers('filterSupplierId', supplierId, '', '', true)
 
   html += "</tr>";
 

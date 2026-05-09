@@ -5,14 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-chrome",
+      "type": "chrome",
       "request": "launch",
       "name": "Login",
-      //"url": "http://localhost/condo-login.html",
-      "url": "http://ingegilje.no",
-      //"url": "http://localhost:3000",
+      "url": "http://localhost/condo-login.html",
+      //"url": "http://ingegilje.no",
       "webRoot": "c:/websites/condo",
-      //"runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+      "runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     },
     {
       "type": "chrome",

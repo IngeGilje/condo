@@ -11,8 +11,6 @@ const constFixedCost = 'Fast kostnad';
 
 const enableChanges = (objAccount.securityLevel > 5);
 
-const tableWidth = 'width:750px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 

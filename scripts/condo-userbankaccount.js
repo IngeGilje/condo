@@ -7,7 +7,6 @@ const objAccount = new Account('account');
 const objUserBankAccount = new UserBankAccount('userbankaccount');
 
 const enableChanges = (objUserBankAccount.securityLevel > 5);
-const tableWidth = 'width:950px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();

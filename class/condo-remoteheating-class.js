@@ -4,6 +4,7 @@ class RemoteHeating extends Condos {
   // remote heating information
   arrayRemoteHeating;
 
+  /*
   // Show all selected remoteheatings
   showSelectedRemoteHeatings(className, style, remoteHeatingId, selectNone, selectAll) {
 
@@ -107,6 +108,7 @@ class RemoteHeating extends Condos {
 
     return html;
   }
+  */
 
   // Get selected remote heating id
   getSelectedRemoteHeatingId(className) {
@@ -127,6 +129,7 @@ class RemoteHeating extends Condos {
     return remoteHeatingId;
   }
 
+  /*
   // Show all RemoteHeatings
   showSelectedRemoteHeatingsHTML(className, remoteHeatingId, selectAll) {
 
@@ -209,6 +212,7 @@ class RemoteHeating extends Condos {
 
     return html;
   }
+  */
 
   // Select remote heating Id
   selectRemoteHeatingId(remoteHeatingId, className) {
@@ -238,7 +242,7 @@ class RemoteHeating extends Condos {
   */
 
   // Show all selected remoteheatings
-  showSelectedRemoteHeatings(className, style, remoteHeatingId, selectNone, selectAll) {
+  showSelectedRemoteHeatings(className, remoteHeatingId, selectNone, selectAll) {
 
     let selectedValue = false;
 
@@ -248,7 +252,6 @@ class RemoteHeating extends Condos {
       >
         <select 
           class="${className} center"
-          ${(style) ? `style=${style}` : 'style="width:175px;"'}
       >`;
 
     // Check if RemoteHeatings array is empty

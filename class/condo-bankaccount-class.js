@@ -97,19 +97,17 @@ class BankAccount extends Condos {
   }
 
   // Show all selected bankaccounts
-  showSelectedBankAccounts(className, style, bankAccountId, selectNone, selectAll) {
+  showSelectedBankAccounts(className, bankAccountId, selectNone, selectAll) {
 
     let selectedValue = false;
 
-    let html =
-      `
-        <td
-          class="center one-line"
-        >
-          <select 
-            class="${className} center"
-            ${(style) ? `style=${style}` : 'style=width:175px;'}
-          >`;
+    let html = `
+    <td
+      class="center one-line"
+    >
+      <select 
+        class="${className} center"
+      >`;
 
     // Check if bankaccounts array is empty
     if (this.arrayBankAccounts.length > 0) {

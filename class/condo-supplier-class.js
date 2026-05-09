@@ -4,7 +4,7 @@ class Supplier extends Condos {
   // supplier information
   arraySuppliers;
 
-  showSelectedSuppliers(className, style, supplierId, selectNone, selectAll, enableChanges) {
+  showSelectedSuppliers(className,supplierId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -15,7 +15,6 @@ class Supplier extends Condos {
       <select 
         class="${className} center"
         ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style=${style}` : 'style=width:175px;'}
       >`;
 
     // Check if Suppliers array is empty

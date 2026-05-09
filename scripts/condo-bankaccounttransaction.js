@@ -18,8 +18,6 @@ const paramCondoId = Number(params.get("condoId"));
 const paramAccountId = Number(params.get("accountId"));
 const paramBankAccountTransactionId = Number(params.get("bankAccountTransactionId"));
 
-const tableWidth = 'width:1650px;';
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 

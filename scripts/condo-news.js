@@ -6,7 +6,6 @@ const objUser = new User('user');
 const objNews = new News('news');
 
 const enableChanges = (objNews.securityLevel > 5);
-//const tableWidth = 'width:600px;';
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
