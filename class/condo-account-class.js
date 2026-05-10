@@ -204,7 +204,7 @@ class Account extends Condos {
   */
 
   // show selected accounts
-  showSelectedAccounts(className, accountId, selectNone, selectAll, enableChanges = false) {
+  showSelectedAccounts(className, style, accountId, selectNone, selectAll, enableChanges = false) {
 
     let selectedValue = false;
 
@@ -214,6 +214,7 @@ class Account extends Condos {
     >
       <select 
         class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
         ${(enableChanges) ? '' : 'disabled'}
       >`;
 
@@ -266,11 +267,11 @@ class Account extends Condos {
         ${selectNone}
       </option>`;
       if (accountId === 0) selectedValue = true;
-
-      html += `
-        </select >
-      </td>`;
     }
+    html += `
+      </select >
+    </td>`;
+
     return html;
   }
 

@@ -462,7 +462,7 @@ function showFilter(menuNumber, condominiumId) {
 
   // Header filter
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '', 'Velg Sameie', 'Bankkonto');
+  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '', 'Sameie', 'Bankkonto');
 
   // start table body
   html += objBankAccount.startTableBody();
@@ -472,14 +472,14 @@ function showFilter(menuNumber, condominiumId) {
   html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', condominiumId, '', '', enableChanges);
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId','width:175px;', condominiumId, '', '', enableChanges);
 
   // Show all bankaccounts for selected condominiums
   // Get last id in last object in bankaccounts array
   const bankAccountId = (objBankAccount.arrayBankAccounts.lenght === 0)
     ? objBankAccount.arrayBankAccounts.at(-1).bankAccountId
     : 0;
-  html += objBankAccount.showSelectedBankAccounts('filterBankAccountId', bankAccountId, '', '');
+  html += objBankAccount.showSelectedBankAccounts('filterBankAccountId','width:175px;', bankAccountId, '', '', enableChanges);
 
   html += "</tr>";
 

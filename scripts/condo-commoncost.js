@@ -185,7 +185,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // Select year
   const year = today.getFullYear();
-  html += objCommonCost.showSelectedNumbers('year0', 2020, 2030, year,  true);
+  html += objCommonCost.showSelectedNumbers('year0','width:175px;', 2020, 2030, year,  true);
 
   // commonCostSquareMeter 
   html += objCommonCost.inputTableColumn('commonCostSquareMeter0', '', '0,00', 10, enableChanges);
@@ -218,12 +218,12 @@ function showCommonCost(menuNumber) {
     if (commonCost.deleted === 'N') selected = "Nei";
 
     let className = `delete${commonCost.commonCostId}`;
-    html += objCommonCost.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja');
+    html += objCommonCost.showSelectedValues(className,'width:175px;', enableChanges, selected, 'Nei', 'Ja');
 
     // Select year
     const year = commonCost.year;
     className = `year${commonCost.commonCostId}`;
-     html += objCommonCost.showSelectedNumbers('year0', 2020, 2030, year,  true);
+     html += objCommonCost.showSelectedNumbers('year0','width:175px;', 2020, 2030, year,  true);
 
     // common cost per squaremeter
     let commonCostSquareMeter = commonCost.commonCostSquareMeter;

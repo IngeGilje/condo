@@ -216,7 +216,7 @@ function showHeader() {
   let html = objCondominium.initializeTable(175, 175, 175);
 
   // show main header
-  html += objCondominium.showTableHeaderLogOut('1', '2Sameie');
+  html += objCondominium.showTableHeaderLogOut('', 'Sameie');
   html += "</tr>";
 
   // end table body
@@ -238,7 +238,7 @@ function showFilter(menuNumber, condominiumId) {
 
   // Header filter
   menuNumber++;
-  html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '', '2Velg sameie', '3');
+  html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '', 'Velg sameie', '');
 
   // start table body
   html += objCondominium.startTableBody();
@@ -248,7 +248,7 @@ function showFilter(menuNumber, condominiumId) {
   html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
   // condominium
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', condominiumId, '', '', enableChanges)
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId','width:175px;', condominiumId, '', '', enableChanges)
 
   html += "</tr>";
 
@@ -352,24 +352,24 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // incomeRemoteHeatingAccountId
-    html += objAccount.showSelectedAccounts('incomeRemoteHeatingAccountId', objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '', enableChanges);
+    html += objAccount.showSelectedAccounts('incomeRemoteHeatingAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, '', '', enableChanges);
 
     // paymentRemoteHeatingAccountId
-    html += objAccount.showSelectedAccounts('paymentRemoteHeatingAccountId', objCondominium.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, '', '', enableChanges);
+    html += objAccount.showSelectedAccounts('paymentRemoteHeatingAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, '', '', enableChanges);
 
     html += "</tr>";
 
     // commonCostAccountId, organizationNumber
     html += "<tr>";
     menuNumber++;
-    html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '', 'Inntekstonto husleie', 'Organisasjonsnummer');
+    html += objCondominium.showTableHeaderMenu(menuNumber, 'width:175px;', objCondominium.accountMenu, '', 'Inntekstonto husleie', 'Organisasjonsnummer');
 
     // insert a table row
     menuNumber++;
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // commonCostAccountId
-    html += objAccount.showSelectedAccounts('commonCostAccountId', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '', enableChanges);
+    html += objAccount.showSelectedAccounts('commonCostAccountId', 'width:175px;', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Ingen', '', enableChanges);
 
     // organizationNumber
     html += objCondominium.inputTableColumn('organizationNumber', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].organizationNumber, 9, enableChanges);

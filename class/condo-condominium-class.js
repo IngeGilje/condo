@@ -223,8 +223,8 @@ class Condominium extends Condos {
     return html;
   }
   */
-   // Show all selected condominiums
-  showSelectedCondominiums(className, condominiumId, selectNone, selectAll, enableChanges) {
+  // Show all selected condominiums
+  showSelectedCondominiums(className, style, condominiumId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -233,8 +233,9 @@ class Condominium extends Condos {
       class="one-line left"
     >
       <select 
-        class="${className} center news-text"
-        ${(enableChanges) ? '' : "disabled"}
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'disabled'}
       >`;
 
     // Check if condominium array is empty

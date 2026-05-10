@@ -52,7 +52,7 @@ class News extends Condos {
   }
 
   // Show selected news
-  showSelectedNews(className, newsId, selectNone, selectAll, enableChanges) {
+  showSelectedNews(className, style, newsId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -61,9 +61,11 @@ class News extends Condos {
       class="one-line left"
     >
       <select 
-        class="${className} center news-text"
-        ${(enableChanges) ? '' : "disabled"}
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'disabled'}
       >`;
+
 
     // Check if News array is empty
     if (this.arrayNews.length > 0) {

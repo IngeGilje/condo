@@ -200,7 +200,7 @@ function showFilter(menuNumber, year) {
 
   // Header filter
   menuNumber++;
-  html += objRemoteHeating.showTableHeaderMenu( menuNumber, objRemoteHeating.accountMenu, '','1', '2År', '3Pris per kiloWattimer', '4', '5');
+  html += objRemoteHeating.showTableHeaderMenu( menuNumber, objRemoteHeating.accountMenu, '','', 'År', 'Pris per kiloWattimer', '', '');
 
   // start table body
   html += objRemoteHeating.startTableBody();
@@ -210,7 +210,7 @@ function showFilter(menuNumber, year) {
   html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '');
 
   // Select year
-   html += objRemoteHeating.showSelectedNumbers('filterYear', 2020, 2030, year, true);
+   html += objRemoteHeating.showSelectedNumbers('filterYear','width:175px;', 2020, 2030, year, true);
 
   // Price/kilowattHour
   const priceKilowattHour = getPriceKilowattHour(year);
@@ -248,7 +248,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objRemoteHeating.inputTableColumn('date0', '', '', 10, enableChanges);
 
   // condoId
-  html += objCondo.showSelectedCondos('condoId0',  0, 'Ikke valgt', '', enableChanges);
+  html += objCondo.showSelectedCondos('condoId0','width:175px;',  0, 'Ikke valgt', '', enableChanges);
 
   // kilowattHour this year
   html += objRemoteHeating.inputTableColumn('kilowattHour0', '', '0,00', 10, enableChanges);
@@ -291,7 +291,7 @@ function showRemoteHeatings(menuNumber) {
       if (remoteHeating.deleted === 'N') selected = "Nei";
 
       let className = `delete${remoteHeating.remoteHeatingId}`;
-      html += objRemoteHeating.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
+      html += objRemoteHeating.showSelectedValues(className,'width:175px;', enableChanges, selected, 'Nei', 'Ja')
 
       // date
       let date = remoteHeating.date;
@@ -302,7 +302,7 @@ function showRemoteHeatings(menuNumber) {
       // condoId
       const condoId = remoteHeating.condoId;
       className = `condoId${remoteHeating.remoteHeatingId}`;
-      html += objCondo.showSelectedCondos(className,  condoId, '', '', enableChanges);
+      html += objCondo.showSelectedCondos(className,'width:175px;',  condoId, '', '', enableChanges);
 
       // kilowattHour current year
       let kilowattHour = remoteHeating.kilowattHour;

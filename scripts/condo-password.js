@@ -172,10 +172,10 @@ function showFilter(menuNumber, condominiumId, userId) {
   html += objPassword.insertTableRow('', menuNumber,objPassword.accountMenu);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId',  condominiumId, '', '',enableChanges);
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId','width:175px;',  condominiumId, '', '',enableChanges);
 
   // user
-  html += objUser.showSelectedUsers('filterUserId',  userId, '', '', enableChanges)
+  html += objUser.showSelectedUsers('filterUserId','width:175px;',  userId, '', '', enableChanges)
 
   html += "</tr>";
 
@@ -216,7 +216,7 @@ function showUser(menuNumber, userId) {
     html += objUser.inputTablePassword('password', '', 45);
 
     // securityLevel
-    html += objUser.showSelectedNumbers('securityLevel',  1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
+    html += objUser.showSelectedNumbers('securityLevel','width:175px;',  1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
 
     html += "</tr>";
 

@@ -125,7 +125,7 @@ class Condo extends Condos {
   */
 
   
-  showSelectedCondos(className, condoId, selectNone, selectAll, enableChanges) {
+  showSelectedCondos(className, style, condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -134,10 +134,11 @@ class Condo extends Condos {
       class="one-line left"
     >
       <select 
-        class="${className} center news-text"
-        ${(enableChanges) ? '' : "disabled"}
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'disabled'}
       >`;
-
+      
     // Check if condos array is empty
     if (this.arrayCondo.length > 0) {
       this.arrayCondo.forEach((condo) => {

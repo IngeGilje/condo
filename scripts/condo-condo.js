@@ -174,7 +174,7 @@ function showFilter(menuNumber, condoId) {
   html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
   // condo
-  html += objCondo.showSelectedCondos('filterCondoId', condoId, '', '', true)
+  html += objCondo.showSelectedCondos('filterCondoId','width:175px;', condoId, '', '', true)
 
   html += "</tr>";
 

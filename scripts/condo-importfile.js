@@ -502,7 +502,7 @@ function showHeader() {
   html += objImportFile.startTableBody();
 
   // show main header
-  html += objImportFile.showTableHeaderLogOut( '1', '2', '3', '4', '5Import av bankkontotransaksjoner', '6', '7', '8');
+  html += objImportFile.showTableHeaderLogOut( '', '', '', '', 'Import av bankkontotransaksjoner', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -524,7 +524,7 @@ function showFilter(menuNumber) {
   html += "</tr>";
 
   menuNumber++;
-  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '1', '2', '3', '4', '5', '6', '7', '8');
+  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '', '', '', '', '', '', '', '');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -544,7 +544,7 @@ function showBankAccountTransactions(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objImportFile.showTableHeaderMenu( menuNumber, objImportFile.accountMenu, '#e0f0e0', '2Dato', '3Leilighet', '4Konto', '5Fra bankkonto', '6Til bankkonto', '7Inntekt', '8Utgift', '9Tekst');
+  html += objImportFile.showTableHeaderMenu( menuNumber, objImportFile.accountMenu, '#e0f0e0', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -607,16 +607,16 @@ function showBankAccountTransactions(menuNumber) {
 
   // Show sum row
   menuNumber++;
-  html += objImportFile.insertTableRow('font-weight: 600;', menuNumber, objImportFile.accountMenu, '2', '3', '4', '5', '6Sum', sumIncomes, sumPayments, '9');
+  html += objImportFile.insertTableRow('font-weight: 600;', menuNumber, objImportFile.accountMenu, '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
 
   // Show update button
 
   // insert a table row
   menuNumber++;
-  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '2');
+  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '');
 
-  html += objImportFile.showButton( 'update', '3Oppdater');
-  html += "<td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>";
+  html += objImportFile.showButton( 'update', 'Oppdater');
+  html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // Show the rest of the menu
   menuNumber++;

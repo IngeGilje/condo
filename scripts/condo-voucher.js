@@ -158,7 +158,7 @@ function showFilter(menuNumber, bankAccountTransactionId) {
   html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '');
 
   // show selected bank account transactions
-  html += objBankAccountTransaction.showSelectedBankAccountTransactions('filterBankAccountTransactionId', '', bankAccountTransactionId, '')
+  html += objBankAccountTransaction.showSelectedBankAccountTransactions('filterBankAccountTransactionId','width:175px;', bankAccountTransactionId, '')
 
   html += "<td></td></tr>";
 
@@ -202,7 +202,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // account
     const accountId = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].accountId;
-    html += objAccount.showSelectedAccounts('accountId',  accountId, '', '', false);
+    html += objAccount.showSelectedAccounts('accountId', 'width:175px;',  accountId, '', '', false);
 
     html += "</tr>";
 

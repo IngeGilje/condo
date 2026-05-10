@@ -362,7 +362,7 @@ class User extends Condos {
 
   
   // Show all selected users
-  showSelectedUsers(className, userId, selectNone, selectAll, enableChanges) {
+  showSelectedUsers(className, style, userId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -371,8 +371,9 @@ class User extends Condos {
       class="one-line left"
     >
       <select 
-        class="${className} center news-text"
-        ${(enableChanges) ? '' : "disabled"}
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'disabled'}
       >`;
 
     // Check if users array is empty

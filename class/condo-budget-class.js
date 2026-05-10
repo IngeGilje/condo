@@ -23,6 +23,7 @@ class Budget extends Condos {
     return budgetId;
   }
 
+  /*
   // Show all selected budgets
   showSelectedBudgets(className, budgetId) {
 
@@ -101,6 +102,7 @@ class Budget extends Condos {
 
     document.querySelector(`.div-${className}`).innerHTML = html;
   }
+  */
 
   // Select budget
   selectBudgetId(budgetId, className) {

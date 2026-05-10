@@ -7,17 +7,19 @@ class BankAccountTransaction extends Condos {
   //arrayBankAccountMovements;  // alternative array used in this class only
 
   // Show all selected bank account transactions
-  showSelectedBankAccountTransactions(className, style, bankAccountTransactionId, selectNone, selectAll, disabled = false) {
+  showSelectedBankAccountTransactions(className, style, bankAccountTransactionId, selectNone, selectAll, enableChanges = false) {
 
     let selectedValue = false;
 
     let html = `
-      <td 
-        class="center one-line">
-          <select class="${className} center"
-            ${(disabled) ? 'disabled' : ''}
-            ${(style) ? `style="${style}"` : ''}
-          >`;
+    <td
+      class="one-line left"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'disabled'}
+      >`;
 
     // Check if bank account transaction array is empty
     if (this.arrayBankAccountTransactions.length > 0) {

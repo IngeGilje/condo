@@ -180,7 +180,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // Select year
   const year = today.getFullYear();
-    html += objRemoteHeatingPrice.showSelectedNumbers('year0', 2020, 2030, year,  true);
+    html += objRemoteHeatingPrice.showSelectedNumbers('year0','width:175px;', 2020, 2030, year,  true);
 
   // priceKilowattHour 
   html += objRemoteHeatingPrice.inputTableColumn('priceKilowattHour0', '', '0,00', 10, enableChanges);
@@ -210,12 +210,12 @@ function showRemoteHeating(menuNumber) {
     if (remoteHeatingPrice.deleted === 'N') selected = "Nei";
 
     let className = `delete${remoteHeatingPrice.remoteHeatingPriceId}`;
-    html += objRemoteHeatingPrice.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja')
+    html += objRemoteHeatingPrice.showSelectedValues(className,'width:175px;', enableChanges, selected, 'Nei', 'Ja')
 
     // Select year
     const year = remoteHeatingPrice.year;
     className = `year${remoteHeatingPrice.remoteHeatingPriceId}`;
-      html += objRemoteHeatingPrice.showSelectedNumbers(className, 2020, 2030, year,  true);
+      html += objRemoteHeatingPrice.showSelectedNumbers(className,'width:175px;', 2020, 2030, year,  true);
 
     // priceKilowattHour
     let priceKilowattHour = remoteHeatingPrice.priceKilowattHour;

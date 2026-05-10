@@ -161,7 +161,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objAccount.initializeTable(175,75,175,175);
+  let html = objAccount.initializeTable(175,175,175,175);
 
   // start table body
   html += objAccount.startTableBody();
@@ -182,27 +182,27 @@ function showHeader() {
 function showFilter(menuNumber) {
 
   // Start table
-  let html = objAccount.initializeTable(175,75,175,175);
+  let html = objAccount.initializeTable(175,175,175,175);
 
   // Header filter
   menuNumber++;
-  html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '','', 'Kostnadstype', '');
+  html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '','2', '3Kostnadstype', '4');
 
   // start table body
   html += objAccount.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '2');
 
   // fixed or not fixed cost
-  html += objAccount.showSelectedValues('filterFixedCost',  true, 'Alle', constFixedCost, constVariableCost, 'Alle');
-
-  html += "</tr>";
+  html += objAccount.showSelectedValues('filterFixedCost','width:175px;',  true, 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += "<td>4</td></tr>";
 
   // insert a table row
   menuNumber++;
-  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '2');
+  html += "<td>3</td><td>4</td></tr>";
 
   // end table body
   html += objAccount.endTableBody();
@@ -227,7 +227,7 @@ function insertEmptyTableRow(menuNumber) {
   html += "<td class='center'>Ny konto</td>";
 
   // Fixed cost
-  html += objAccount.showSelectedValues('fixedCost0', enableChanges, constFixedCost, constFixedCost, constVariableCost);
+  html += objAccount.showSelectedValues('fixedCost0','width:175px;', enableChanges, constFixedCost, constFixedCost, constVariableCost);
 
   // name
   html += objAccount.inputTableColumn('name0', '', '', 45, enableChanges);
@@ -240,11 +240,11 @@ function insertEmptyTableRow(menuNumber) {
 function showAccounts(menuNumber) {
 
   // start table
-  let html = objAccount.initializeTable(175,75,175,175);
+  let html = objAccount.initializeTable(175,175,175,175);
 
   // table header
   menuNumber++;
-   html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '#e0f0e0', 'Slett', 'Kostnadstype', 'Tekst');
+   html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '#e0f0e0', '2Slett', '3Kostnadstype', '4Tekst');
 
   objAccount.arrayAccounts.forEach((account) => {
 
@@ -258,7 +258,7 @@ function showAccounts(menuNumber) {
     if (account.deleted === 'N') selected = "Nei";
 
     let className = `delete${account.accountId}`;
-    html += objAccount.showSelectedValues(className,  enableChanges, selected, 'Nei', 'Ja')
+    html += objAccount.showSelectedValues(className,'width:175px;',  enableChanges, selected, 'Nei', 'Ja')
 
     // fixed cost
     selected = "Ugyldig verdi";
@@ -281,7 +281,7 @@ function showAccounts(menuNumber) {
     }
 
     className = `fixedCost${account.accountId}`;
-    html += objAccount.showSelectedValues(className, enableChanges, selected, constFixedCost, constVariableCost)
+    html += objAccount.showSelectedValues(className,'width:175px;', enableChanges, selected, constFixedCost, constVariableCost)
 
     // name
     const name = account.name;

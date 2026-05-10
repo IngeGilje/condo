@@ -490,17 +490,20 @@ class Condos {
   }
 
   // Select numbers
-  showSelectedNumbers(className, fromNumber, toNumber, selectedNumber, enableChanges) {
+  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
 
     selectedNumber = Number(selectedNumber);
+
+    let selectedValue = false;
 
     let html = `
     <td
       class="one-line left"
     >
       <select 
-        class="${className} center news-text"
-        ${(enableChanges) ? '' : "disabled"}
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'disabled'}
       >`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
@@ -567,18 +570,20 @@ class Condos {
   */
 
   // Select months
-  showSelectedMonths(className, selectedMonth, enableChanges) {
+  showSelectedMonths(className, style, selectedMonth, enableChanges) {
 
     selectedMonth = Number(selectedMonth);
+    let selectedValue = false;
+
     let html = `
     <td
       class="one-line left"
     >
       <select 
-        class="${className} center news-text"
-        ${(enableChanges) ? '' : "disabled"}
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'disabled'}
       >`;
-
     for (let month = 1; month < 13; month++) {
 
       html += `
@@ -632,27 +637,29 @@ class Condos {
   */
 
   // Select choices like Yes, No, Ignore
-  showSelectedValues(className, enableChanges, selected, ...choices) {
+  showSelectedValues(className, style, enableChanges, selected, ...choices) {
+
+    let selectedValue = false;
 
     let html = `
     <td
       class="one-line left"
     >
       <select 
-        class="${className} center news-text"
-        ${(enableChanges) ? '' : "disabled"}
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'disabled'}
       >`;
 
     choices.forEach((choice) => {
 
       html += `
-        <option 
-          value=${choice}
-          ${(choice === selected) ? 'selected' : ''}
-        >
-          ${choice}
-        </option>
-      `;
+      <option 
+        value="${choice}"
+        ${(choice === selected) ? 'selected' : ''}
+      >
+        ${choice}
+      </option>`;
     });
 
     html += `
@@ -995,7 +1002,7 @@ class Condos {
 
     let tableWith = 0;
     columnWidths.forEach((columnWidth) => {
-      tableWith += columnWidth;
+      tableWith += (columnWidth + 10);
     });
 
     let html = `

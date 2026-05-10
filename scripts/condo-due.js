@@ -180,11 +180,11 @@ async function events() {
 function showDues(menuNumber) {
 
   // start table
-  let html = objCondo.initializeTable(175, 75, 175,175,175,175,175,175);
+  let html = objCondo.initializeTable(175, 100, 175,175,175,175,175,175);
 
   // table header
   menuNumber++;
-  html += objCondo.showTableHeaderMenu( menuNumber, objDue.accountMenu, '#e0f0e0', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'kilowatt Timer', 'Tekst');
+  html += objCondo.showTableHeaderMenu( menuNumber, objDue.accountMenu, '#e0f0e0', '2Slett', '3Leilighet', '4Dato', '5Konto', '6Beløp', '7Kilowatt Timer', '8Tekst');
 
   let sumAmount = 0;
   let sumKilowattHour = 0;
@@ -201,11 +201,11 @@ function showDues(menuNumber) {
     if (due.deleted === 'N') selected = "Nei";
 
     let className = `delete${due.dueId}`;
-    html += objDue.showSelectedValues(className,  enableChanges, selected, 'Nei', 'Ja')
+    html += objDue.showSelectedValues(className,'width:100px;',  enableChanges, selected, 'Nei', 'Ja')
 
     // condos
     className = `condoId${due.dueId}`;
-    html += objCondo.showSelectedCondos(className,  due.condoId, 'ngen er valgt', '', enableChanges);
+    html += objCondo.showSelectedCondos(className,'width:175px;',  due.condoId, 'ngen er valgt', '', enableChanges);
 
     // Date
     const date = formatNumberToNorDate(due.date);
@@ -214,7 +214,7 @@ function showDues(menuNumber) {
 
     // accounts
     className = `accountId${due.dueId}`;
-    html += objAccount.showSelectedAccounts(className,  due.accountId, 'Velg konto', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className, 'width:175px;',  due.accountId, 'Velg konto', '', enableChanges);
 
     // due amount
     const amount = formatOreToKroner(due.amount);
@@ -250,7 +250,7 @@ function showDues(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
   menuNumber++;
-  html += objDue.insertTableRow('font-weight: 600;', menuNumber, objDue.accountMenu, '', '', '', 'Sum', sumAmount, '');
+  html += objDue.insertTableRow('font-weight: 600;', menuNumber, objDue.accountMenu, '2', '3', '4', '5Sum', sumAmount, '7','8');
 
   // Show the rest of the menu
   menuNumber++;
@@ -269,15 +269,15 @@ function insertEmptyTableRow(menuNumber) {
   let html = '';
 
   // insert a table row
-  html += objCondominium.insertTableRow('', menuNumber, objDue.accountMenu, 'Nytt forfall');
+  html += objCondominium.insertTableRow('', menuNumber, objDue.accountMenu, '2Nytt forfall');
 
   // condoId
   // Check for valid condo Id
   const condoId = Number(document.querySelector('.filterCondoId').value);
   const validCondoId = objCondo.validateNumber('filterCondoId', condoId, 1, objDue.nineNine, objDue, '', '', false);
   html += (validCondoId)
-    ? objCondo.showSelectedCondos("condoId0", condoId, 'Velg leilighet', '', enableChanges)
-    : objCondo.showSelectedCondos("condoId0", 0, 'Velg leilighet', '', enableChanges);
+    ? objCondo.showSelectedCondos("condoId0",'width:175px;', condoId, 'Velg leilighet', '', enableChanges)
+    : objCondo.showSelectedCondos("condoId0",'width:175px;', 0, 'Velg leilighet', '', enableChanges);
 
   // Date
   html += objDue.inputTableColumn("date0", '', '', 10, enableChanges);
@@ -285,8 +285,8 @@ function insertEmptyTableRow(menuNumber) {
   // accountId
   const accountId = Number(document.querySelector('.filterAccountId').value);
   html += (accountId !== objDue.nineNine)
-    ? objAccount.showSelectedAccounts("accountId0", accountId, 'Velg konto', '', enableChanges)
-    : objAccount.showSelectedAccounts("accountId0",  0, 'Velg konto', '', enableChanges);
+    ? objAccount.showSelectedAccounts("accountId0", 'width:175px;', accountId, 'Velg konto', '', enableChanges)
+    : objAccount.showSelectedAccounts("accountId0", 'width:175px;',  0, 'Velg konto', '', enableChanges);
 
   // due amount
   html += objDue.inputTableColumn('amount0', '', '0,00', 10, enableChanges);
@@ -392,13 +392,13 @@ async function updateDuesRow(dueId) {
 function showHeader() {
 
   // Start table
-  let html = objDue.initializeTable(175, 75, 175,175,175,175,175,175);
+  let html = objDue.initializeTable(175, 100, 175,175,175,175,175,175);
 
   // start table body
   html += objDue.startTableBody();
 
   // show main header
-  html += objDue.showTableHeaderLogOut( '', '', '', '', 'Forfall', '', '');
+  html += objDue.showTableHeaderLogOut( '1', '2', '3', '4', '5Forfall', '6', '7');
   html += "</tr>";
 
   // end table body
@@ -413,23 +413,23 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId, condoId) {
 
   // Start table
-  let html = objDue.initializeTable(175, 75, 175,175,175,175,175,175);
+  let html = objDue.initializeTable(175, 100, 175,175,175,175,175,175);
 
   // Header filter
   menuNumber++;
-  html += objDue.showTableHeaderMenu(menuNumber, objDue.accountMenu, '', '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '');
+  html += objDue.showTableHeaderMenu(menuNumber, objDue.accountMenu, '', '2', '3Leilighet', '4Konto', '5Fra dato', '6Til dato', '7','8');
 
   // start table body
   html += objDue.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '', '');
+  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '2', '3');
 
   // Show selected condos
-  html += objCondo.showSelectedCondos('filterCondoId', condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondos('filterCondoId','width:175px;', condoId, '', 'Vis alle', true);
 
-  html += objAccount.showSelectedAccounts('filterAccountId', objDue.nineNine, '', 'Vis alle', true);
+  html += objAccount.showSelectedAccounts('filterAccountId', 'width:175px;', objDue.nineNine, '', 'Vis alle', true);
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
@@ -443,11 +443,11 @@ function showFilter(menuNumber, condominiumId, condoId) {
   toDate = formatNumberToNorDate(toDate);
   html += objDue.inputTableColumn('filterToDate', '', toDate, 10, enableChanges);
 
-  html += "<td><td></tr>";
+  html += "</tr>";
 
   // insert a table row
   menuNumber++;
-  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '', '', '', '', '', '', '')
+  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '2', '3', '4', '5', '6', '7','8')
 
   // end table body
   html += objDue.endTableBody();

@@ -98,7 +98,7 @@ function showHeader() {
   html += objShowEmptyingCalendar.startTableBody();
 
   // show main header
-  html += objShowEmptyingCalendar.showTableHeaderLogOut('1', '2', '3', '4Avfallskalender', '5', '6', '7');
+  html += objShowEmptyingCalendar.showTableHeaderLogOut('', '', '', 'Avfallskalender', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -128,13 +128,13 @@ function showFilter(menuNumber) {
 
   // Selected year
   const year = String(today.getFullYear());
-  html += objShowEmptyingCalendar.showSelectedNumbers('filterYear', 2020, 2030, year, true);
+  html += objShowEmptyingCalendar.showSelectedNumbers('filterYear','width:175px;', 2020, 2030, year, true);
 
   // Selected month
   // Get current date in  European date format (dd.mm.yyyy)
   const date = getCurrentDate();
   let month = Number(date.split('.')[1]); // Extract the month part
-  html += objShowEmptyingCalendar.showSelectedMonths('filterMonth', month, true);
+  html += objShowEmptyingCalendar.showSelectedMonths('filterMonth','width:175px;', month, true);
 
   html += "<td></td><td></td><td></td></tr>";
 
@@ -172,7 +172,7 @@ function showEmptyingCalendar(menuNumber) {
       // condoId
       let condoId = emptyingCalendar.condoId;
       className = `condoId${emptyingCalendar.emptyingCalendarId}`;
-      html += objCondo.showSelectedCondos(className, condoId, 'Velg leilighet', '', false);
+      html += objCondo.showSelectedCondos(className,'width:175px;', condoId, 'Velg leilighet', '', false);
 
       // date
       let date = emptyingCalendar.date;

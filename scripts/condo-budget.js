@@ -258,21 +258,21 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objBudget.showTableHeaderMenu(menuNumber, objBudget.accountMenu, '', '2',  '3Konto', '4År', '6','7');
+  html += objBudget.showTableHeaderMenu(menuNumber, objBudget.accountMenu, '', '',  'Konto', 'År', '','');
 
   // start table body
   html += objBudget.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu, '2');
+  html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu, '');
 
   // Selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', 0, '', 'Alle', true);
+  html += objAccount.showSelectedAccounts('filterAccountId', 'width:175px;', 0, '', 'Alle', true);
 
   // Selected year
   const year = String(today.getFullYear());
-  html += objBudget.showSelectedNumbers('filterYear', 2020, 2030, year, true);
+  html += objBudget.showSelectedNumbers('filterYear','width:175px;', 2020, 2030, year, true);
 
   html += "</tr>";
 
@@ -298,7 +298,7 @@ function showBudgets(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objBudget.showTableHeaderMenu(menuNumber, objBudget.accountMenu, '#e0f0e0', '2Slett', '3Konto', '4Budsjett', '5År', '6Tekst');
+  html += objBudget.showTableHeaderMenu(menuNumber, objBudget.accountMenu, '#e0f0e0', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
 
   let sumAmount = 0;
 
@@ -314,11 +314,11 @@ function showBudgets(menuNumber) {
     if (budget.deleted === 'N') selected = "Nei";
 
     let className = `delete${budget.budgetId}`;
-    html += objBudget.showSelectedValues(className, enableChanges, selected, 'Nei', 'Ja');
+    html += objBudget.showSelectedValues(className,'width:175px;', enableChanges, selected, 'Nei', 'Ja');
 
     // accountId
     className = `accountId${budget.budgetId}`;
-    html += objAccount.showSelectedAccounts(className, budget.accountId, '', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className, 'width:175px;', budget.accountId, '', '', enableChanges);
 
     // due amount
     const amount = formatOreToKroner(budget.amount);
@@ -328,7 +328,7 @@ function showBudgets(menuNumber) {
     // Year
     const year = Number(budget.year);
     className = `year${budget.budgetId}`;
-    html += objBudget.showSelectedNumbers(className, 2020, 2030, year, enableChanges);
+    html += objBudget.showSelectedNumbers(className,'width:175px;', 2020, 2030, year, enableChanges);
 
     // text
     const text = (budget.text === null) ? '' : budget.text;
@@ -369,7 +369,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = objAccount.insertTableRow('', menuNumber, objBudget.accountMenu, 'Nytt budsjett');
 
   // accounts
-  html += objAccount.showSelectedAccounts('accountId0', 0, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId0', 'width:175px;', 0, 'Ingen konto er valgt', '', enableChanges);
 
   // budget amount
   const amount = "";
@@ -377,7 +377,7 @@ function insertEmptyTableRow(menuNumber) {
 
   // Year
   const year = Number(document.querySelector('.filterYear').value);
-  html += objBudget.showSelectedNumbers('year0', 2020, 2030, year, false);
+  html += objBudget.showSelectedNumbers('year0','width:175px;', 2020, 2030, year, false);
 
   // text
   const text = "";

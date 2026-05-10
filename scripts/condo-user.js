@@ -247,10 +247,10 @@ function showFilter(menuNumber, condominiumId, userId) {
   html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
 
   // Condominium
-  if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId', condominiumId, '', '', true)
+  if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId','width:175px;', condominiumId, '', '', true)
 
   // user
-  html += objUser.showSelectedUsers('filterUserId',  userId, '', '', enableChanges)
+  html += objUser.showSelectedUsers('filterUserId','width:175px;',  userId, '', '', enableChanges)
 
   html += "<td></td></tr>";
 
@@ -292,7 +292,7 @@ function showUser(menuNumber, userId) {
     html += objUser.inputTableColumn('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
 
     // condoId
-    html += objCondo.showSelectedCondos('condoId', objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
+    html += objCondo.showSelectedCondos('condoId','width:175px;', objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
 
     html += "</tr>";
 
@@ -327,7 +327,7 @@ function showUser(menuNumber, userId) {
 
     // Activ user
     resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
-    html += objUser.showSelectedValues('resident', enableChanges, resident, 'Ja', 'Nei')
+    html += objUser.showSelectedValues('resident','width:175px;', enableChanges, resident, 'Ja', 'Nei')
 
     html += "</tr>";
 

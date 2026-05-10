@@ -4,7 +4,7 @@ class Supplier extends Condos {
   // supplier information
   arraySuppliers;
 
-  showSelectedSuppliers(className,supplierId, selectNone, selectAll, enableChanges) {
+  showSelectedSuppliers(className,style,supplierId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -14,6 +14,7 @@ class Supplier extends Condos {
     >
       <select 
         class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
         ${(enableChanges) ? '' : 'disabled'}
       >`;
 

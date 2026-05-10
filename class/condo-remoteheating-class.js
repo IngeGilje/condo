@@ -242,16 +242,18 @@ class RemoteHeating extends Condos {
   */
 
   // Show all selected remoteheatings
-  showSelectedRemoteHeatings(className, remoteHeatingId, selectNone, selectAll) {
+  showSelectedRemoteHeatings(className, style, remoteHeatingId, selectNone, selectAll) {
 
     let selectedValue = false;
 
     let html = `
-      <td
-        class="one-line center"
-      >
-        <select 
-          class="${className} center"
+    <td
+      class="one-line left"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ''}
+        ${(enableChanges) ? '' : 'disabled'}
       >`;
 
     // Check if RemoteHeatings array is empty

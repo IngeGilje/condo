@@ -232,7 +232,7 @@ function showFilter(menuNumber, supplierId) {
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
   // supplier
-  html += objSupplier.showSelectedSuppliers('filterSupplierId', supplierId, '', '', true)
+  html += objSupplier.showSelectedSuppliers('filterSupplierId','width:175px;', supplierId, '', '', true)
 
   html += "</tr>";
 
@@ -360,7 +360,7 @@ function showSupplier(menuNumber, supplierId) {
   const accountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccount.showSelectedAccounts('accountId', accountId, 'Ingen mottaker er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId', 'width:175px;', accountId, 'Ingen mottaker er valgt', '', enableChanges);
 
   // bankAccount number
   const bankAccount = (rowNumberSupplier === -1)
@@ -383,7 +383,7 @@ function showSupplier(menuNumber, supplierId) {
   const amountAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccount.showSelectedAccounts('amountAccountId', amountAccountId, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('amountAccountId', 'width:175px;', amountAccountId, 'Ingen konto er valgt', '', enableChanges);
 
   // amount
   const amount = (rowNumberSupplier === -1)
@@ -406,7 +406,7 @@ function showSupplier(menuNumber, supplierId) {
   const textAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccount.showSelectedAccounts('textAccountId', textAccountId, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('textAccountId', 'width:175px;', textAccountId, 'Ingen konto er valgt', '', enableChanges);
 
   // text for account id
   const text = (rowNumberSupplier === -1)
