@@ -138,8 +138,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  //let html = objNews.initializeTable(175, 225, 125,175,175);
-  let html = objNews.initializeTable(175, 225, 125);
+  let html = objNews.initializeTable(175, 175, 175,175);
 
   // start table body
   html += objNews.startTableBody();
@@ -160,7 +159,7 @@ function showHeader() {
 function showFilter(menuNumber, newsId) {
 
   // Start table
-  let html = objNews.initializeTable(175, 175, 175);
+  let html = objNews.initializeTable(175, 175, 175,175);
 
   // Header filter
   menuNumber++;
@@ -195,7 +194,7 @@ function showFilter(menuNumber, newsId) {
 function showNews(menuNumber, newsId) {
 
   // start table
-  let html = objNews.initializeTable(175, 175, 175);
+  let html = objNews.initializeTable(175, 175, 175,175);
 
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
@@ -275,7 +274,7 @@ function showNews(menuNumber, newsId) {
   const content = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].content;
-  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 2, 3);
+  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 3, 4);
   html += "</tr>";
 
   menuNumber++;
