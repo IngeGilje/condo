@@ -420,7 +420,7 @@ async function showBankAccountTransactions(menuNumber) {
   //objBankAccountTransaction.arrayBankAccountTransactions.forEach(async (bankAccountTransaction) => {
   for (const bankAccountTransaction of objBankAccountTransaction.arrayBankAccountTransactions) {
 
-    html += '<tr>';
+    //html += '<tr>';
 
     // Show menu
     menuNumber++;

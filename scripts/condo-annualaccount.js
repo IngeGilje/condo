@@ -291,7 +291,7 @@ function showAnnualAccounts(menuNumber) {
 
     if (numBudgetAmount !== 0 || numAccountAmount !== 0) {
 
-      html += '<tr>';
+      //html += '<tr>';
 
       // Show menu
       menuNumber++;
@@ -346,7 +346,7 @@ function showAnnualAccounts(menuNumber) {
   menuNumber++;
   html += objBankAccountTransaction.insertTableRow('font-weight: 600;', menuNumber, objAnnualAccount.accountMenu, '', 'Sum', totalAccountAmount, totalBudgetAmount, totalDeviation);
 
-  html += "</tr>";
+  //html += "</tr>";
 
   // empty table row
   menuNumber++;
