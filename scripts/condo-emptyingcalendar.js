@@ -228,8 +228,8 @@ function showEmptyingCalendar(menuNumber) {
   menuNumber++;
    html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '#e0f0e0', 'Slett', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
-  if (objEmptyingCalendar.arrayEmptyingCalendar.length > 0) {
-    objEmptyingCalendar.arrayEmptyingCalendar.forEach((emptyingCalendar) => {
+  if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
+    objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingCalendar) => {
 
       // Show menu
       menuNumber++;
@@ -365,7 +365,7 @@ function insertEmptyTableRow(menuNumber) {
 async function deleteEmptyingCalendarRow(emptyingCalendarId, className) {
 
   // Check if emtyingcalendar row exist
-  rowNumberEmptyingCalendar = objEmptyingCalendar.arrayEmptyingCalendar.findIndex(emtyingCalendar => emtyingCalendar.emtyingCalendarId === emtyingCalendarId);
+  rowNumberEmptyingCalendar = objEmptyingCalendar.arrayEmptyingCalendars.findIndex(emtyingCalendar => emtyingCalendar.emtyingCalendarId === emtyingCalendarId);
   if (rowNumberEmptyingCalendar !== -1) {
 
     // delete emtyingcalendar row
@@ -429,7 +429,7 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
     document.querySelector('.message').style.display = "none";
 
     // Check if the emtyingcalendar id exist
-    rowNumberEmptyingCalendar = objEmptyingCalendar.arrayEmptyingCalendar.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);
+    rowNumberEmptyingCalendar = objEmptyingCalendar.arrayEmptyingCalendars.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);
     if (rowNumberEmptyingCalendar !== -1) {
 
       // update the emtyingcalendar row

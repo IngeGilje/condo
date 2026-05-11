@@ -424,7 +424,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   // insert a table row
   menuNumber++;
-  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '2', '3');
+  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '2');
 
   // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId','width:175px;', condoId, '', 'Vis alle', true);
@@ -443,7 +443,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
   toDate = formatNumberToNorDate(toDate);
   html += objDue.inputTableColumn('filterToDate', '', toDate, 10, enableChanges);
 
-  html += "</tr>";
+  html += "<td>7</td><td>8</td></tr>";
 
   // insert a table row
   menuNumber++;

@@ -35,24 +35,47 @@ class BankAccountTransaction extends Condos {
       });
     } else {
 
-      html += `<option value=0 selected>Ingen leilighet</option>`;
+      html += `
+      <option 
+        value=0 
+        selected
+      >
+        Ingen leilighet
+      </option>`;
       selectedValue = true;
     }
 
     // Select all
     if (selectAll && (this.arrayBankAccountTransactions.length > 0)) {
 
-      html += `<option value=${this.nineNine} selected>${selectAll}</option>`;
+      html += `
+      <option 
+        value=${this.nineNine}
+        selected
+      >
+        ${selectAll}
+      </option>`;
       selectedValue = true;
     }
 
     // Select none
     if (selectNone && (this.arrayBankAccountTransactions.length > 1)) {
       if (selectedValue) {
-        html += `<option value=0>${selectNone}</option>`;
+        html += `
+        <option
+          value=0
+        >
+          ${selectNone}
+        </option>`;
       } else {
 
-        html += `<option value=0 selected>${selectNone}</option>`;
+        html += `
+        <option
+          value=0
+          selected
+        >
+          ${selectNone}
+        </option>`;
         selectedValue = true;
       }
     }

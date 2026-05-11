@@ -2,7 +2,7 @@
 class EmptyingCalendar extends Condos {
 
   // Emptying Calendar
-  arrayEmptyingCalendar;
+  arrayEmptyingCalendars;
 
   // Find selected emptying calendar id
   getSelectedEmptyingCalendarId(className) {
@@ -13,11 +13,11 @@ class EmptyingCalendar extends Condos {
     if (isClassDefined(className)) {
 
       emptyingCalendarId = Number(document.querySelector(`.${className}`).value);
-      emptyingCalendarId = (emptyingCalendarId === 0) ? this.arrayEmptyingCalendar.at(-1).emptyingCalendarId : emptyingCalendarId;
+      emptyingCalendarId = (emptyingCalendarId === 0) ? this.arrayEmptyingCalendars.at(-1).emptyingCalendarId : emptyingCalendarId;
     } else {
 
       // Get last id in last object in emptying calendar array
-      emptyingCalendarId = this.arrayEmptyingCalendar.at(-1).emptyingCalendarId;
+      emptyingCalendarId = this.arrayEmptyingCalendars.at(-1).emptyingCalendarId;
     }
 
     return emptyingCalendarId;
@@ -27,7 +27,7 @@ class EmptyingCalendar extends Condos {
   selectEmptyingCalendarId(emptyingCalendarId, className) {
 
     // Check if emptying calendar id exist
-    const rowNumberEmptyingCalendar = this.arrayEmptyingCalendar.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);
+    const rowNumberEmptyingCalendar = this.arrayEmptyingCalendars.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);
     if (rowNumberEmptyingCalendar !== -1) {
 
       document.querySelector(`.select-${className}`).value =
@@ -38,79 +38,6 @@ class EmptyingCalendar extends Condos {
       return false;
     }
   }
-
-  /*
-  showSelectedEmptyingCalendar(className, style, emptyingCalendarId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <td
-      class="one-line center"
-    >
-      <select 
-        class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style=${style}` : 'style=width:175px;'}
-      >`;
-
-    // Check if emptying calendar array is empty
-    if (this.arrayEmptyingCalendar.length > 0) {
-      this.arrayEmptyingCalendar.forEach((emptyingCalendar) => {
-
-        html += `
-        <option 
-          value=${emptyingCalendar.emptyingCalendarId}
-          ${(emptyingCalendar.emptyingCalendarId === emptyingCalendarId) ? 'selected' : ''}
-        >
-          ${emptyingCalendar.title}
-        </option>`;
-        if (emptyingCalendar.emptyingCalendarId === emptyingCalendarId) selectedValue = true;
-      });
-    } else {
-
-      html += `
-      <option value="0" 
-        selected
-      >
-        Ingen nyheter
-      </option>`;
-      selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayEmptyingCalendar.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        ${selectAll}
-      </option>`;
-      selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayEmptyingCalendar.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(selectedValue) ? selectNone : ''}
-        ${(emptyingCalendarId === 0) ? 'selected' : ''}
-      >
-        ${selectNone}
-      </option>`;
-      selectedValue = true;
-    }
-
-    html += `
-      </select >
-    </td>`;
-
-    return html;
-  }
-  */
 
   // get emtying calendar table
   async loadEmptyingCalendarTable(condominiumId, year,month) {
@@ -134,7 +61,7 @@ class EmptyingCalendar extends Condos {
         })
       });
       if (!response.ok) throw new Error("Network error (emptyingcalendar)");
-      this.arrayEmptyingCalendar = await response.json();
+      this.arrayEmptyingCalendars = await response.json();
     } catch (error) {
       console.log("Error loading emptying calendar:", error);
     }
@@ -168,7 +95,7 @@ class EmptyingCalendar extends Condos {
         })
       });
       if (!response.ok) throw new Error("Network error (emptyingcalendar)");
-      this.arrayEmptyingCalendar = await response.json();
+      this.arrayEmptyingCalendars = await response.json();
     } catch (error) {
       console.log("Error updating emptying calendar:", error);
     }
@@ -201,7 +128,7 @@ class EmptyingCalendar extends Condos {
         })
       });
       if (!response.ok) throw new Error("Network error (emptyingcalendar)");
-      this.arrayEmptyingCalendar = await response.json();
+      this.arrayEmptyingCalendars = await response.json();
     } catch (error) {
       console.log("Error inserting emptying calendar:", error);
     }
@@ -227,7 +154,7 @@ class EmptyingCalendar extends Condos {
         })
       });
       if (!response.ok) throw new Error("Network error (emptyingcalendar)");
-      this.arrayEmptyingCalendar = await response.json();
+      this.arrayEmptyingCalendars = await response.json();
     } catch (error) {
       console.log("Error deleting emptying calendar:", error);
     }

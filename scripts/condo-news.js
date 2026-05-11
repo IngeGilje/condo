@@ -138,14 +138,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  //let html = objNews.initializeTable(175, 225, 125,175,175);
-  let html = objNews.initializeTable(175, 225, 125);
+  let html = objNews.initializeTable(175, 175, 175, 175);
 
   // start table body
   html += objNews.startTableBody();
 
   // show main header
-  html += objNews.showTableHeaderLogOut( '', 'Nyheter');
+  html += objNews.showTableHeaderLogOut('', '', 'Nyheter');
   html += "</tr>";
 
   // end table body
@@ -160,7 +159,7 @@ function showHeader() {
 function showFilter(menuNumber, newsId) {
 
   // Start table
-  let html = objNews.initializeTable(175, 175, 175);
+  let html = objNews.initializeTable(175, 175, 175, 175);
 
   // Header filter
   menuNumber++;
@@ -174,7 +173,7 @@ function showFilter(menuNumber, newsId) {
   html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
   // news
-  html += objNews.showSelectedNews('filterNewsId','width:175px;', newsId, '', '', true);
+  html += objNews.showSelectedNews('filterNewsId', 'width:175px;', newsId, '', '', true);
   html += "<td></td></tr>";
 
   // table header
@@ -195,7 +194,7 @@ function showFilter(menuNumber, newsId) {
 function showNews(menuNumber, newsId) {
 
   // start table
-  let html = objNews.initializeTable(175, 175, 175);
+  let html = objNews.initializeTable(175, 175, 175, 175);
 
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
@@ -220,7 +219,7 @@ function showNews(menuNumber, newsId) {
   const userId = (rowNumberNews === -1)
     ? Number(objNews.userId)
     : Number(objNews.arrayNews[rowNumberNews].userId);
-  html += objUser.showSelectedUsers('userId','width:175px;', userId, 'Velg forfatter', '', enableChanges);
+  html += objUser.showSelectedUsers('userId', 'width:175px;', userId, 'Velg forfatter', '', enableChanges);
   html += "</tr>";
 
   menuNumber++;
@@ -275,7 +274,7 @@ function showNews(menuNumber, newsId) {
   const content = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].content;
-  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 2, 3);
+  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 3, 3);
   html += "</tr>";
 
   menuNumber++;
@@ -306,7 +305,7 @@ function showNews(menuNumber, newsId) {
     menuNumber++;
     html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
-     html += objNews.showButton('delete', 'Slett');
+    html += objNews.showButton('delete', 'Slett');
     html += objNews.showButton('insert', 'Ny');
     html += "</tr>";
   }

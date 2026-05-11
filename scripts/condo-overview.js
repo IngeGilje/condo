@@ -149,13 +149,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
+  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
 
   // start table body
   html += objOverview.startTableBody();
 
   // show main header
-  html += objOverview.showTableHeaderLogOut( '', '', '', '', 'Betalingsoversikt', '', '', '');
+  html += objOverview.showTableHeaderLogOut( '1', '2', '3', '4', '5Betalingsoversikt', '6');
   html += "</tr>";
 
   // end table body
@@ -170,11 +170,11 @@ function showHeader() {
 function showFilter(menuNumber, condoId) {
 
   // Start table
-  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
+  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
 
   // Header filter
   menuNumber++;
-  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '', '', 'Velg leilighet', 'Fra dato', 'Til dato', '', '');
+  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '', '2', '3Leilighet', '4Fra dato', '5Til dato', '6', '7');
 
   // start table body
   html += objOverview.startTableBody();
@@ -215,17 +215,17 @@ function showFilter(menuNumber, condoId) {
 function showDues(menuNumber) {
 
   // Start HTML table
-  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
+  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
 
   let sumDue = 0;
   let sumKilowattHour = 0;
 
   // Header
   menuNumber++;
-   html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', '', 'Forfall', '', '', '','');
+   html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', '2Forfall', '3', '4', '5','6','7');
 
   menuNumber++;
-  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', '2Leilighet', '3Forfallsdato', '4Konto', '5Beløp', '6Kilowattimer', '7Tekst');
 
   objDue.arrayDues.forEach((due) => {
 
@@ -290,7 +290,7 @@ function showDues(menuNumber) {
 function showBankAccountTransactions(menuNumber) {
 
   // Start table
-  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
+  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
 
   // Header
   menuNumber++;
@@ -364,7 +364,7 @@ function showBankAccountTransactions(menuNumber) {
 async function showHowMuchToPay(menuNumber) {
 
   // Start table
-  let html = objOverview.initializeTable(175, 225, 125,175,175,175,200);
+  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
 
   let sumIncome = 0;
   let sumPayment = 0;

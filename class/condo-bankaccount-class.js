@@ -168,25 +168,21 @@ class BankAccount extends Condos {
     // Select none
     if (selectNone && (this.arrayBankAccounts.length > 1)) {
       if (selectedValue) {
-        html +=
-          `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
+        html += `
+        <option 
+          value=0
+        >
+          ${selectNone}
+        </option>`;
       } else {
 
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
+        html += `
+        <option 
+          value=0
+          selected
+        >
+          ${selectNone}
+        </option>`;
         selectedValue = true;
       }
     }

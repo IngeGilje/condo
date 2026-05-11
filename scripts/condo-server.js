@@ -2707,15 +2707,24 @@ async function main() {
         try {
 
           const condominiumId = req.body.condominiumId;
-           const year = req.body.year;
-           let month = req.body.month;
-           if (month < 10) month = '0' + String(month);
+
+           let fromYear = req.body.year;
+           let toYear = req.body.year;
+           if (fromYear === nineNine) fromYear = 0;
+          if (toYear === nineNine) toYear = 2100;
+
+           let fromMonth = req.body.month;
+           let toMonth = req.body.month;
+          if (fromMonth === nineNine) fromMonth = 1;
+          if (toMonth === nineNine) toMonth = 12;
+           if (fromMonth < 10) fromMonth = '0' + String(fromMonth);
+           if (toMonth < 10) toMonth = '0' + String(toMonth);
 
           let SQLquery = `
             SELECT * FROM emptyingcalendar
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'
-            AND date between ${year}${month}01 AND ${year}${month}31
+            AND date between ${fromYear}${fromMonth}01 AND ${toYear}${toMonth}31
             ORDER BY date ASC;`;
 
           console.log('SQLquery: ', SQLquery);

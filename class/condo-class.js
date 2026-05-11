@@ -294,24 +294,6 @@ class Condos {
       `;
   }
 
-  /*
-  // Show button
-  showButton(style, className, text) {
-
-    return `
-    <td 
-      class="center"
-    >
-      <button 
-        class="${className} center one-line"
-        ${(style) ? `style="${style}"` : 'style="width:175px;"'}
-      >
-        ${text}
-      </button>
-    </td>`;
-  }
-  */
-
   // Show button
   showButton(className, text) {
 
@@ -321,7 +303,6 @@ class Condos {
     >
       <button 
         class="${className} center one-line button"
-        style="width="50px"
       >
         ${text}
       </button>
@@ -770,14 +751,17 @@ class Condos {
 
     let html = "<tr>";
 
-    if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
-    if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    if (menuNumber > 0) {
+      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    }
+
     texts.forEach((text) => {
 
       html += `
       <td 
         class="no-border center"
-        ${(color) ? `style="background:${color};"` :" "}
+        ${(color) ? `style="background:${color};"` : " "}
       >
         ${text}
       </td>`;

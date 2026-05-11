@@ -65,15 +65,6 @@ input {
   border-color: #e0f0e0;
 }
 
-/*
-button:hover,
-select:hover,
-input:hover,
-.menu a:hover {
-  background: #e0f0e0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-*/
 button:hover,
 select:hover,
 input:hover,
@@ -130,20 +121,11 @@ select {
   font-weight: 600;
 }
 
-/*
-.button {
-  height: 35px;
-  background-color: #e0f0e0;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.underscore {
+  border-bottom: 1px solid black;
 }
-*/
 
 .button {
-  /* height: 35px; */
   background-color: #e0f0e0;
   border: none;
   border-radius: 8px;
@@ -168,6 +150,7 @@ input[readonly] {
   cursor: default;
 }
 
+/* menu */
 .menu {
   /* remove default td padding */
   padding: 0;
@@ -227,15 +210,6 @@ input[readonly] {
   background: #e0f0e0;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
-
-/*
-img {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: -1;
-}
-*/
 
 .input-error {
   background-color: #f8d7da;
