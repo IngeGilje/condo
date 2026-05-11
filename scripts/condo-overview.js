@@ -155,7 +155,7 @@ function showHeader() {
   html += objOverview.startTableBody();
 
   // show main header
-  html += objOverview.showTableHeaderLogOut( '1', '2', '3', '4', '5Betalingsoversikt', '6');
+  html += objOverview.showTableHeaderLogOut( '', '', '', '', 'Betalingsoversikt', '');
   html += "</tr>";
 
   // end table body
@@ -174,7 +174,7 @@ function showFilter(menuNumber, condoId) {
 
   // Header filter
   menuNumber++;
-  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '', '2', '3Leilighet', '4Fra dato', '5Til dato', '6', '7');
+  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '', '', 'Leilighet', 'Fra dato', 'Til dato', '', '');
 
   // start table body
   html += objOverview.startTableBody();
@@ -222,10 +222,10 @@ function showDues(menuNumber) {
 
   // Header
   menuNumber++;
-   html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', '2Forfall', '3', '4', '5','6','7');
+   html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', 'Forfall', '', '', '','','');
 
   menuNumber++;
-  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', '2Leilighet', '3Forfallsdato', '4Konto', '5Beløp', '6Kilowattimer', '7Tekst');
+  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDue.arrayDues.forEach((due) => {
 
@@ -417,11 +417,11 @@ async function showHowMuchToPay(menuNumber) {
 
   menuNumber++;
   openingBalance = formatOreToKroner(openingBalance);
-  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumToPay, sumIncome, overPay);
+  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '2', '3Sum', sumToPay, sumIncome, overPay);
 
   // Show the rest of the menu
   menuNumber++;
-  html += objOverview.showRestMenu(menuNumber, objOverview.accountMenu);
+  html += objOverview.showRestMenu(menuNumber, objOverview.accountMenu,'2','3','4','5','6','7');
 
   // The end of the table
   html += objOverview.endTable();

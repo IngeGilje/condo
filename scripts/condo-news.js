@@ -312,7 +312,7 @@ function showNews(menuNumber, newsId) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objNews.showRestMenu(menuNumber, objNews.administrationMenu);
+  html += objNews.showRestMenu(menuNumber, objNews.administrationMenu,'2','3','4');
 
   // The end of the table
   html += objNews.endTable();

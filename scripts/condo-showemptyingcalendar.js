@@ -97,7 +97,7 @@ function showHeader() {
   html += objShowEmptyingCalendar.startTableBody();
 
   // show main header
-  html += objShowEmptyingCalendar.showTableHeaderLogOut('1', '2', '3', '4Avfallskalender', '5', '6');
+  html += objShowEmptyingCalendar.showTableHeaderLogOut('', '', '', 'Avfallskalender', '', '');
   html += "</tr>";
 
   // end table body
@@ -118,10 +118,10 @@ function showFilter() {
   html += objShowEmptyingCalendar.startTableBody();
 
   // Header filter
-  html += objShowEmptyingCalendar.showTableHeaderMenu(0, objShowEmptyingCalendar.accountMenu, '', '1','2', '3', '4År', '5Måned',  '6', '7');
+  html += objShowEmptyingCalendar.showTableHeaderMenu(0, objShowEmptyingCalendar.accountMenu, '', '','', '', 'År', 'Måned',  '', '');
 
   // insert a table row
-  html += objShowEmptyingCalendar.insertTableRow('', 0, objShowEmptyingCalendar.accountMenu, '1', '2', '3');
+  html += objShowEmptyingCalendar.insertTableRow('', 0, objShowEmptyingCalendar.accountMenu, '', '', '');
 
   // Selected year
   const year = String(today.getFullYear());
@@ -133,7 +133,7 @@ function showFilter() {
   let month = Number(date.split('.')[1]); // Extract the month part
   html += objShowEmptyingCalendar.showSelectedMonths('filterMonth','width:175px;', month, true);
 
-  html += "<td>6</td><td>7</td></tr>";
+  html += "<td></td><td></td></tr>";
 
   // insert a table row
   html += objShowEmptyingCalendar.insertTableRow("width:150px;", 0, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
@@ -153,7 +153,7 @@ function showEmptyingCalendar() {
   let html = objEmptyingCalendar.initializeTable(175, 175, 175, 175, 175, 175, 175);
 
   // table header
-  html += objEmptyingCalendar.showTableHeaderMenu(0, objEmptyingCalendar.accountMenu, '#e0f0e0', '1Ansvarlig', '2Dato', '3Restavfall', '4Papiravfall', '5Matavfall', '6Plastavfall', '7Juletre');
+  html += objEmptyingCalendar.showTableHeaderMenu(0, objEmptyingCalendar.accountMenu, '#e0f0e0', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
   if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingCalendar) => {

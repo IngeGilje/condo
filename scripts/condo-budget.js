@@ -355,7 +355,7 @@ function showBudgets(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objBudget.showRestMenu(menuNumber, objBudget.accountMenu);
+  html += objBudget.showRestMenu(menuNumber, objBudget.accountMenu,'2','3','4','5','6');
 
   // The end of the table
   html += objBudget.endTable();

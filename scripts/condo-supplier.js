@@ -444,7 +444,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objSupplier.showRestMenu(menuNumber, objSupplier.accountMenu);
+  html += objSupplier.showRestMenu(menuNumber, objSupplier.accountMenu,'2','3');
 
   // The end of the table
   html += objSupplier.endTable();

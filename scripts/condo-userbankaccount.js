@@ -269,7 +269,7 @@ function showUserBankAccount(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objUserBankAccount.showRestMenu(menuNumber, objUserBankAccount.accountMenu);
+  html += objUserBankAccount.showRestMenu(menuNumber, objUserBankAccount.accountMenu,'2','3','4','5');
 
   // The end of the table
   html += objUserBankAccount.endTable();

@@ -358,7 +358,7 @@ function showUser(menuNumber, userId) {
 
     // Show the rest of the menu
     menuNumber++;
-    html += objUser.showRestMenu(menuNumber, objUser.accountMenu);
+    html += objUser.showRestMenu(menuNumber, objUser.accountMenu,'2','3');
 
     // The end of the table
     html += objUser.endTable();

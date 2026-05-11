@@ -322,7 +322,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objBankAccount.showRestMenu(menuNumber, objBankAccount.accountMenu);
+  html += objBankAccount.showRestMenu(menuNumber, objBankAccount.accountMenu,'2','3');
 
   // The end of the table
   html += objBankAccount.endTable();

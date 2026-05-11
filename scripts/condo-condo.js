@@ -164,7 +164,7 @@ function showFilter(menuNumber, condoId) {
 
   // Header filter
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'Velg leilighet', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '2Velg leilighet', '3');
 
   // start table body
   html += objCondo.startTableBody();
@@ -176,7 +176,7 @@ function showFilter(menuNumber, condoId) {
   // condo
   html += objCondo.showSelectedCondos('filterCondoId','width:175px;', condoId, '', '', true)
 
-  html += "</tr>";
+  html += "<td>3</td></tr>";
 
   // end table body
   html += objCondo.endTableBody();
@@ -196,17 +196,16 @@ function showCondo(menuNumber, condoId) {
 
   // table header
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '2', '3');
 
   // Check if condos row exist
   const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
-  //if (rowNumberCondo !== -1) {
 
   // name
-  html += "<tr>";
+  //html += "<tr>";
 
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'Navn', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '2leilighet', '3');
 
   menuNumber++;
   html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
@@ -214,12 +213,11 @@ function showCondo(menuNumber, condoId) {
   // name
   const name = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].name;
   html += objCondo.inputTableColumn('name', '', name, 45, enableChanges);
-
-  html += "</tr>";
+  html += "<td>3</td></tr>";
 
   // street, address2
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'Gate', 'Adresse 2');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '2Gate', '3Adresse 2');
 
   // insert a table row
   menuNumber++;
@@ -234,13 +232,11 @@ function showCondo(menuNumber, condoId) {
   // address2
   const address2 = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].address2;
   html += objCondo.inputTableColumn('address2', '', address2, 45, enableChanges);
-
   html += "</tr>";
 
   // postalCode, city
-  html += "<tr>";
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'Postnummer', 'Poststed');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '2Postnummer', '3Poststed');
 
   // insert a table row
   menuNumber++;
@@ -253,13 +249,12 @@ function showCondo(menuNumber, condoId) {
   // city
   const city = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].city;
   html += objCondo.inputTableColumn('city', '', city, 45, enableChanges);
-
   html += "</tr>";
 
   // squareMeters
-  html += "<tr>";
+  //html += "<tr>";
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'Areal i m2', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '2Areal i m2', '3');
 
   // insert a table row
   menuNumber++;
@@ -269,7 +264,7 @@ function showCondo(menuNumber, condoId) {
   const squareMeters = (rowNumberCondo === -1) ? '' : formatOreToKroner(objCondo.arrayCondo[rowNumberCondo].squareMeters);
   html += objCondo.inputTableColumn('squareMeters', '', squareMeters, 10, enableChanges);
 
-  html += "</tr>";
+  html += "<td>3</td></tr>";
 
   // Buttons
 
@@ -277,7 +272,7 @@ function showCondo(menuNumber, condoId) {
   menuNumber++;
   html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
-  html += "</tr>";
+  html += "<td>2</td><td>3</td></tr>";
 
   // Show buttons
   if (enableChanges) {
@@ -286,22 +281,22 @@ function showCondo(menuNumber, condoId) {
     menuNumber++;
     html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
-    html += objCondo.showButton( 'update', 'Oppdater');
-    html += objCondo.showButton( 'cancel', 'Angre');
+    html += objCondo.showButton( 'update', '2Oppdater');
+    html += objCondo.showButton( 'cancel', '3Angre');
     html += "</tr>";
 
     // insert a table row
     menuNumber++;
     html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
 
-    html += objCondo.showButton( 'delete', 'Slett');
-    html += objCondo.showButton( 'insert', 'Ny');
+    html += objCondo.showButton( 'delete', '2Slett');
+    html += objCondo.showButton( 'insert', '3Ny');
     html += "</tr>";
   }
 
   // Show the rest of the menu
   menuNumber++;
-  html += objCondo.showRestMenu(menuNumber, objCondo.accountMenu);
+  html += objCondo.showRestMenu(menuNumber, objCondo.accountMenu,'2','3');
 
   // The end of the table
   html += objCondo.endTable();

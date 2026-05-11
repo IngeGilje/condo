@@ -186,23 +186,23 @@ function showFilter(menuNumber) {
 
   // Header filter
   menuNumber++;
-  html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '','2', '3Kostnadstype', '4');
+  html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '','', 'Kostnadstype', '');
 
   // start table body
   html += objAccount.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '2');
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
 
   // fixed or not fixed cost
   html += objAccount.showSelectedValues('filterFixedCost','width:175px;',  true, 'Alle', constFixedCost, constVariableCost, 'Alle');
-  html += "<td>4</td></tr>";
+  html += "<td></td></tr>";
 
   // insert a table row
   menuNumber++;
-  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '2');
-  html += "<td>3</td><td>4</td></tr>";
+  html += objAccount.insertTableRow('', menuNumber,objAccount.accountMenu, '');
+  html += "<td></td><td></td></tr>";
 
   // end table body
   html += objAccount.endTableBody();
@@ -244,7 +244,7 @@ function showAccounts(menuNumber) {
 
   // table header
   menuNumber++;
-   html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '#e0f0e0', '2Slett', '3Kostnadstype', '4Tekst');
+   html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '#e0f0e0', 'Slett', 'Kostnadstype', 'Tekst');
 
   objAccount.arrayAccounts.forEach((account) => {
 
@@ -302,7 +302,7 @@ function showAccounts(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objAccount.showRestMenu(menuNumber, objAccount.accountMenu);
+  html += objAccount.showRestMenu(menuNumber, objAccount.accountMenu,'2','3','4');
 
   // The end of the table
   html += objAccount.endTable();

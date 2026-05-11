@@ -184,7 +184,7 @@ function showDues(menuNumber) {
 
   // table header
   menuNumber++;
-  html += objCondo.showTableHeaderMenu( menuNumber, objDue.accountMenu, '#e0f0e0', '2Slett', '3Leilighet', '4Dato', '5Konto', '6Beløp', '7Kilowatt Timer', '8Tekst');
+  html += objCondo.showTableHeaderMenu( menuNumber, objDue.accountMenu, '#e0f0e0', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Kilowatt Timer', 'Tekst');
 
   let sumAmount = 0;
   let sumKilowattHour = 0;
@@ -250,11 +250,11 @@ function showDues(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
   menuNumber++;
-  html += objDue.insertTableRow('font-weight: 600;', menuNumber, objDue.accountMenu, '2', '3', '4', '5Sum', sumAmount, '7','8');
+  html += objDue.insertTableRow('font-weight: 600;', menuNumber, objDue.accountMenu, '', '2', '3', '4Sum', sumAmount, '6','7','8');
 
   // Show the rest of the menu
   menuNumber++;
-  html += objDue.showRestMenu(menuNumber, objDue.accountMenu);
+  html += objDue.showRestMenu(menuNumber, objDue.accountMenu,'2','3','4','5','6','7','8');
 
   // The end of the table
   html += objDue.endTable();
@@ -269,7 +269,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = '';
 
   // insert a table row
-  html += objCondominium.insertTableRow('', menuNumber, objDue.accountMenu, '2Nytt forfall');
+  html += objCondominium.insertTableRow('', menuNumber, objDue.accountMenu, 'Nytt forfall');
 
   // condoId
   // Check for valid condo Id
@@ -398,7 +398,7 @@ function showHeader() {
   html += objDue.startTableBody();
 
   // show main header
-  html += objDue.showTableHeaderLogOut( '1', '2', '3', '4', '5Forfall', '6', '7');
+  html += objDue.showTableHeaderLogOut( '', '', '', '', 'Forfall', '', '');
   html += "</tr>";
 
   // end table body
@@ -417,14 +417,14 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   // Header filter
   menuNumber++;
-  html += objDue.showTableHeaderMenu(menuNumber, objDue.accountMenu, '', '2', '3Leilighet', '4Konto', '5Fra dato', '6Til dato', '7','8');
+  html += objDue.showTableHeaderMenu(menuNumber, objDue.accountMenu, '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '','');
 
   // start table body
   html += objDue.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '2');
+  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '');
 
   // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId','width:175px;', condoId, '', 'Vis alle', true);
@@ -443,11 +443,11 @@ function showFilter(menuNumber, condominiumId, condoId) {
   toDate = formatNumberToNorDate(toDate);
   html += objDue.inputTableColumn('filterToDate', '', toDate, 10, enableChanges);
 
-  html += "<td>7</td><td>8</td></tr>";
+  html += "<td></td><td></td></tr>";
 
   // insert a table row
   menuNumber++;
-  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '2', '3', '4', '5', '6', '7','8')
+  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '', '', '', '', '', '','')
 
   // end table body
   html += objDue.endTableBody();

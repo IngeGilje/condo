@@ -790,7 +790,7 @@ class Condos {
   }
 
   // Show the rest of the menu
-  showRestMenu(menuNumber, menuType) {
+  showRestMenu(menuNumber, menuType, ...texts) {
 
     let html = "";
     if (menuType === this.accountMenu) {
@@ -801,6 +801,12 @@ class Condos {
 
           // Show menu
           html += this.showAccountMenu(menuNumber);
+          texts.forEach((text) => {
+            html += `
+            <td>
+              ${text}
+            </td>`;
+          })
           html += "</tr>"
         }
       }

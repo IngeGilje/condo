@@ -568,11 +568,11 @@ function showBankDeposit(menuNumber) {
 
   // insert table columns in start of a 
   menuNumber++;
-  html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '', '', '', '', '');
+  html += objAnnualAccount.insertTableRow('', menuNumber, objAnnualAccount.accountMenu, '', '2', '3', '4', '5','6');
 
   // Show the rest of the menu 
   menuNumber++;
-  html += objBankAccountTransaction.showRestMenu(menuNumber, objBankAccountTransaction.accountMenu);
+  html += objBankAccountTransaction.showRestMenu(menuNumber, objBankAccountTransaction.accountMenu,'2','3','4','5','6')
 
   // The end of the table
   html += objAnnualAccount.endTable();
