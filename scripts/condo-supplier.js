@@ -278,7 +278,7 @@ function showSupplier(menuNumber, supplierId) {
   html += "</tr>";
 
   // street, address2
-  html += "<tr>";
+  //html += "<tr>";
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Gate', 'Adresse 2');
 
@@ -301,7 +301,7 @@ function showSupplier(menuNumber, supplierId) {
   html += "</tr>";
 
   // postalCode, city
-  html += "<tr>";
+  //html += "<tr>";
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Postnummer', 'Poststed');
 
@@ -325,7 +325,7 @@ function showSupplier(menuNumber, supplierId) {
   html += "</tr>";
 
   // email,phone
-  html += "<tr>";
+  //html += "<tr>";
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'E-mail', 'Telefonnummer');
 
@@ -348,7 +348,7 @@ function showSupplier(menuNumber, supplierId) {
   html += "</tr>";
 
   // bankAccount, accountId
-  html += "<tr>";
+  //html += "<tr>";
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Konto', 'Bankkontonummer');
 
@@ -371,7 +371,7 @@ function showSupplier(menuNumber, supplierId) {
   html += "</tr>";
 
   // amountAccountId, amount
-  html += "<tr>";
+  //html += "<tr>";
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Konto for beløp', 'Beløp');
 
@@ -394,7 +394,7 @@ function showSupplier(menuNumber, supplierId) {
   html += "</tr>";
 
   // textAccountId, text
-  html += "<tr>";
+  //html += "<tr>";
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Konto for tekst', 'Tekst');
 

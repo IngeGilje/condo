@@ -221,7 +221,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
   const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
 
   // Start row
-  html += "<tr>";
+  //html += "<tr>";
 
   // Show menu
   menuNumber++;

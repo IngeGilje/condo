@@ -204,7 +204,7 @@ function showUser(menuNumber, userId) {
   if (rowNumberUser !== -1) {
 
     // password, securityLevel,
-    html += "<tr>";
+    //html += "<tr>";
     menuNumber++;
     html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Passord', 'Sikkerhetsnivå');
 

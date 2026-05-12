@@ -310,7 +310,6 @@ function showCondominium(condominiumId, menuNumber) {
     html += "</tr>";
 
     // postalCode, city
-    //html += "<tr>";
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2Postnummer', '3Poststed');
 
@@ -327,7 +326,6 @@ function showCondominium(condominiumId, menuNumber) {
     html += "</tr>";
 
     // email, phone
-    //html += "<tr>";
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2eMail', '3Telefonnummer');
 
@@ -343,7 +341,6 @@ function showCondominium(condominiumId, menuNumber) {
     html += "</tr>";
 
     // incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId
-    //html += "<tr>";
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2Inntekstkonto fjernvarme', '3Utgiftskonto fjernvarme');
 
@@ -359,7 +356,6 @@ function showCondominium(condominiumId, menuNumber) {
     html += "</tr>";
 
     // commonCostAccountId, organizationNumber
-    //html += "<tr>";
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2Inntekstonto husleie', '3Organisasjonsnummer');
 
@@ -376,7 +372,6 @@ function showCondominium(condominiumId, menuNumber) {
     html += "</tr>";
 
     // importPath
-    //html += "<tr>";
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '', '2Plassering av data', '3');
 

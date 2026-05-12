@@ -280,7 +280,7 @@ function showUser(menuNumber, userId) {
   if (rowNumberUser !== -1) {
 
     // email,condoId
-    html += "<tr>";
+    //html += "<tr>";
     menuNumber++;
     html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'E-mail', 'Leilighet');
 
@@ -297,7 +297,7 @@ function showUser(menuNumber, userId) {
     html += "</tr>";
 
     // firstName, lastName
-    html += "<tr>";
+    //html += "<tr>";
     menuNumber++;
     html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Fornavn', 'Etternavn');
 
@@ -314,7 +314,7 @@ function showUser(menuNumber, userId) {
     html += "</tr>";
 
     // phone, activ user
-    html += "<tr>";
+    //html += "<tr>";
     menuNumber++;
     html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Telefonnummer', 'Beboer');
 
