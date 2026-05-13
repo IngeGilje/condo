@@ -29,7 +29,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objPassword.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
@@ -41,7 +41,7 @@ async function main() {
         ? await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine)
         : await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.userId);
       await objCondominium.loadCondominiumsTable(objPassword.condominiumId);
-      await objCondo.loadCondoTable(objPassword.condominiumId,objPassword.nineNine);
+      await objCondo.loadCondoTable(objPassword.condominiumId, objPassword.nineNine);
 
       // Show header
       showHeader();
@@ -137,13 +137,13 @@ async function deleteCondo() {
 function showHeader() {
 
   // Start table
-  let html = objUser.initializeTable(175,175,175);
+  let html = objUser.initializeTable(175, 175, 175);
 
   // start table body
   html += objUser.startTableBody();
 
   // show main header
-  html += objUser.showTableHeaderLogOut( '', 'Passord');
+  html += objUser.showTableHeaderLogOut('', 'Passord');
   html += "</tr>";
 
   // end table body
@@ -158,30 +158,30 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId, userId) {
 
   // Start table
-  let html = objUser.initializeTable(175,175,175);
+  let html = objUser.initializeTable(175, 175, 175);
 
   // Header filter
   menuNumber++;
-  html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Sameie', 'Bruker');
+  html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert a table row
   menuNumber++;
-  html += objPassword.insertTableRow('', menuNumber,objPassword.accountMenu);
+  html += objPassword.insertTableRow('', menuNumber, objPassword.accountMenu);
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId','width:175px;',  condominiumId, '', '',enableChanges);
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', enableChanges);
 
   // user
-  html += objUser.showSelectedUsers('filterUserId','width:175px;',  userId, '', '', enableChanges)
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', enableChanges)
 
   html += "</tr>";
 
   // insert a table row
   menuNumber++;
-  html += objPassword.insertTableRow('', menuNumber,objPassword.accountMenu, '', '');
+  html += objPassword.insertTableRow('', menuNumber, objPassword.accountMenu, '', '');
 
   // end table body
   html += objUser.endTableBody();
@@ -197,7 +197,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 function showUser(menuNumber, userId) {
 
   // start table
-  let html = objUser.initializeTable(175,175,175);
+  let html = objUser.initializeTable(175, 175, 175);
 
   // Check if users row exist
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
@@ -206,38 +206,37 @@ function showUser(menuNumber, userId) {
     // password, securityLevel,
     //html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Passord', 'Sikkerhetsnivå');
+    html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'Passord', 'Sikkerhetsnivå');
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
+    html += objUser.insertTableRow('', menuNumber, objPassword.accountMenu);
 
     // password
     html += objUser.inputTablePassword('password', '', 45);
 
     // securityLevel
-    html += objUser.showSelectedNumbers('securityLevel','width:175px;',  1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
+    html += objUser.showSelectedNumbers('securityLevel', 'width:175px;', 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
 
     html += "</tr>";
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
-
-    html += "</tr>";
+    html += objUser.insertTableRow('', menuNumber, objPassword.accountMenu);
+    html += "<td>2</td><td>3</td></tr>";
 
     // show buttons
 
     // insert a table row
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objPassword.accountMenu);
+    html += objUser.insertTableRow('', menuNumber, objPassword.accountMenu);
 
-    html += objUser.showButton( 'update', 'Oppdater');
-    html += "</tr>";
+    html += objUser.showButton('update', 'Oppdater');
+    html += "<td>3</td></tr>";
 
     // Show the rest of the menu
     menuNumber++;
-    html += objUser.showRestMenu(menuNumber, objUser.accountMenu,'2','3');
+    html += objUser.showRestMenu(menuNumber, objUser.accountMenu, '2', '3');
 
     // The end of the table
     html += objUser.endTable();

@@ -294,6 +294,7 @@ class Condos {
       `;
   }
 
+  /*
   // Show button
   showButton(className, text) {
 
@@ -307,6 +308,23 @@ class Condos {
         ${text}
       </button>
     </td>`;
+  }
+  */
+
+  // Show button
+  showButton(className, text) {
+
+    let html = `
+    <td class="one-line center"
+    >
+      <button 
+        class="${className} center button"
+      >
+        ${text}
+      </button>
+    </td>`;
+
+    return html;
   }
 
   // Valid text
@@ -988,7 +1006,7 @@ class Condos {
   }
 
   // Initializing of a table
-  initializeTable(...columnWidths) {
+  initializeTable( ...columnWidths) {
 
     let tableWith = 0;
     columnWidths.forEach((columnWidth) => {
@@ -997,7 +1015,8 @@ class Condos {
 
     let html = `
     <table 
-      style="table-layout: fixed; width: ${tableWith}px;">`;
+      style="table-layout: fixed; width: ${tableWith}px;"
+    >`;
 
     html += '<colgroup>';
 

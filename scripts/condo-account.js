@@ -246,8 +246,6 @@ function showAccounts(menuNumber) {
   // table header
   menuNumber++;
    html += objAccount.showTableHeaderMenu( menuNumber, objAccount.accountMenu, '#e0f0e0', '2Slett', '3Kostnadstype', '4Tekst');
-                                         //menuNumber,               menuType,       color, ...texts
-
 
   objAccount.arrayAccounts.forEach((account) => {
 
