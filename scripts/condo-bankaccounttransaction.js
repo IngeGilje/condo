@@ -13,6 +13,8 @@ const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransac
 
 const enableChanges = (objAccount.securityLevel > 5);
 
+const columnWidths = [175, 175, 175, 175, 175, 175, 175, 175, 175, 175];
+
 const params = new URLSearchParams(window.location.search);
 const paramCondoId = Number(params.get("condoId"));
 const paramAccountId = Number(params.get("accountId"));
@@ -241,16 +243,16 @@ async function events() {
 function showFilter(menuNumber, condoId, accountId) {
 
   // Start table
-  let html = objBankAccountTransaction.initializeTable(175, 175, 175, 175, 175, 175, 175, 175, 175, 175);
+  let html = objBankAccountTransaction.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
   html += objBankAccountTransaction.showTableHeaderMenu(menuNumber, objBankAccountTransaction.accountMenu, '', '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '', '');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu, '', '');
 
@@ -273,7 +275,7 @@ function showFilter(menuNumber, condoId, accountId) {
 
   html += "<td></td><td></td></tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu, '', '', '', '', '', '', '', '', '');
 
@@ -296,20 +298,23 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   className = `.accountId${bankAccountTransactionId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${bankAccountTransactionId}`;
-  const validAccountId = objBankAccountTransaction.validateNumber(className, accountId, 1, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig konto')
+  //const validAccountId = objBankAccountTransaction.validateNumber(className, accountId, 1, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig konto')
+  const validAccountId = objBankAccountTransaction.validateNumber(className, objBankAccountTransaction, columnwidths,    '', 'Ugyldig konto',               true, accountId,   1, objBankAccountTransaction.nineNine);
 
   // condoId
   className = `.condoId${bankAccountTransactionId}`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId${bankAccountTransactionId}`;
-  const validCondoId = objBankAccountTransaction.validateNumber(className, condoId, 0, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig leilighet')
+  const validCondoId = objBankAccountTransaction.validateNumber(className, objBankAccountTransaction, columnwidths,    '','Ugyldig leilighet',               true,condoId,   0, objBankAccountTransaction.nineNine);
+   //                                                           className,                    object, columnwidths, style,            message, showMessage = true, number, min,                                max
+
 
   // kilowattHour
   className = `.kilowattHour${bankAccountTransactionId}`;
   const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
   className = `kilowattHour${bankAccountTransactionId}`;
-  const validNumberKWHour = objBankAccountTransaction.validateNumber(className, kilowattHour, 0, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig kilowattime')
-
+  const validNumberKWHour = objBankAccountTransaction.validateNumber(className, objBankAccountTransaction, columnwidths,    '','Ugyldig kilowattime',               true, kilowattHour, 0, objBankAccountTransaction.nineNine);
+ 
   // text
   className = `.text${bankAccountTransactionId}`;
   const text = document.querySelector(className).value;
@@ -339,9 +344,9 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     date = Number(convertDateToISOFormat(date));
   }
 
-  const validIncome = objBankAccountTransaction.validateNumber('income0', income, objBankAccountTransaction.minusNineNine, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig beløp', true);
-  const validPayment = objBankAccountTransaction.validateNumber('payment0', payment, objBankAccountTransaction.minusNineNine, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig beløp', true);
-  const validDate = objBankAccountTransaction.validateNumber('date0', date, 20150101, 20991231, objBankAccountTransaction, '', 'Ugyldig dato', true);
+  const validIncome = objBankAccountTransaction.validateNumber('income0', objBankAccountTransaction, columnWidths,    '','Ugyldig beløp',               true,income, objBankAccountTransaction.minusNineNine, objBankAccountTransaction.nineNine, '',  true);
+  const validPayment = objBankAccountTransaction.validateNumber('payment0', objBankAccountTransaction, columnWidths,    '', 'Ugyldig beløp',               true,payment, objBankAccountTransaction.minusNineNine, objBankAccountTransaction.nineNine);
+  const validDate = objBankAccountTransaction.validateNumber('date0', objBankAccountTransaction, columnWidths,    '',  'Ugyldig dato',               true,  date, 20150101, 20991231);
 
   // Validate bankAccountTransactions columns
   if (validCondoId && validAccountId && validNumberKWHour && validText
@@ -408,9 +413,9 @@ async function deleteBankAccountTransactionRow(bankAccountTransactionId, classNa
 async function showBankAccountTransactions(menuNumber) {
 
   // Start table
-  let html = objBankAccountTransaction.initializeTable(175, 175, 175, 175, 175, 175, 175, 175, 175, 175);
+  let html = objBankAccountTransaction.initializeTable(columnWidths);
 
-  // table header
+  // Table header (<tr></tr>)
   menuNumber++;
   html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag');
 
@@ -528,7 +533,7 @@ async function showBankAccountTransactions(menuNumber) {
 function showHeader() {
 
   // Start table
-  let html = objBankAccountTransaction.initializeTable(175, 175, 175, 175, 175, 175, 175, 175, 175, 175);
+  let html = objBankAccountTransaction.initializeTable(columnWidths);
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
@@ -550,7 +555,7 @@ function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu);
 
   html += "<td class='center'>2Ny transaksjon</td>";

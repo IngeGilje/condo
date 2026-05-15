@@ -9,6 +9,8 @@ const objVoucher = new Voucher('voucher');
 
 const enableChanges = (objVoucher.securityLevel > 5);
 
+const columnWidths = [175, 225, 125,175,175];
+
 const params = new URLSearchParams(window.location.search);
 const paramCondoId = Number(params.get("condoId"));
 const paramAccountId = Number(params.get("accountId"));
@@ -123,7 +125,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objBankAccountTransaction.initializeTable(175, 225, 125,175,175);
+  let html = objBankAccountTransaction.initializeTable(columnWidths);
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
@@ -144,16 +146,16 @@ function showHeader() {
 function showFilter(menuNumber, bankAccountTransactionId) {
 
   // Start table
-  let html = objBankAccountTransaction.initializeTable(175, 225, 125,175,175);
+  let html = objBankAccountTransaction.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
   html += objBankAccountTransaction.showTableHeaderMenu( menuNumber, objBankAccountTransaction.accountMenu, '', 'Velg bankkontotransaksjon', '');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '');
 
@@ -176,7 +178,7 @@ function showFilter(menuNumber, bankAccountTransactionId) {
 function showVoucher(bankAccountTransactionId, menuNumber) {
 
   // start table
-  let html = objBankAccountTransaction.initializeTable(175, 225, 125,175,175);
+  let html = objBankAccountTransaction.initializeTable(columnWidths);
 
   // Check if bank account transaction row exist
   const rowNumberBankAccountTransaction = objBankAccountTransaction.arrayBankAccountTransactions.findIndex(bankAccountTransaction => bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId);
@@ -264,8 +266,8 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
   if (bankAccountTransactionId === '') bankAccountTransactionId = -1
-  const validbankAccountTransactionId = objBankAccountTransaction.validateNumber('bankAccountTransactionId', Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine, objBankAccountTransaction, '', 'Ugyldig bankkonto');
-
+  const validbankAccountTransactionId = objBankAccountTransaction.validateNumber('bankAccountTransactionId', objBankAccountTransaction, columnWidths,    '','Ugyldig bankkonto',true,Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine);
+ 
   // validate voucher filename
   const voucherFileName = document.querySelector('.voucherFileName').value;
 

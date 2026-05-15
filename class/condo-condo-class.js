@@ -50,7 +50,7 @@ class Condo extends Condos {
       return false;
     }
   }
-  
+
   showSelectedCondos(className, style, condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
@@ -64,7 +64,7 @@ class Condo extends Condos {
         ${(style) ? `style="${style}"` : ""}
         ${(enableChanges) ? '' : 'disabled'}
       >`;
-      
+
     // Check if condos array is empty
     if (this.arrayCondo.length > 0) {
       this.arrayCondo.forEach((condo) => {
@@ -126,9 +126,9 @@ class Condo extends Condos {
   async loadCondoTable(condominiumId, condoId) {
 
     // Get condos
-    const URL = (this.serverStatus === 1) 
-    ? '/api/condo' 
-    : 'http://localhost:3000/condo';
+    const URL = (this.serverStatus === 1)
+      ? '/api/condo'
+      : 'http://localhost:3000/condo';
     try {
       // POST request
       const response = await fetch(URL, {
@@ -139,7 +139,7 @@ class Condo extends Condos {
         body: JSON.stringify({
           action: 'select',
           condominiumId: condominiumId,
-          condoId : condoId
+          condoId: condoId
         })
       });
       if (!response.ok) throw new Error("Network error (condo)");

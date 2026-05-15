@@ -8,6 +8,8 @@ const objUser = new User('user');
 
 const enableChanges = (objUser.securityLevel > 5);
 
+const columnWidths = [175,175,175];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -212,7 +214,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objUser.initializeTable(175,175,175);
+  let html = objUser.initializeTable(columnWidths);
 
   // start table body
   html += objUser.startTableBody();
@@ -233,16 +235,16 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId, userId) {
 
   // Start table
-  let html = objUser.initializeTable(175,175,175);
+  let html = objUser.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
   html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', '2Bruker', '3');
 
   // start table body
   html += objUser.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
 
@@ -254,7 +256,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objUser.insertTableRow('', menuNumber,objUser.accountMenu, '', '');
   html += "</tr>";
@@ -273,7 +275,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 function showUser(menuNumber, userId) {
 
   // start table
-  let html = objUser.initializeTable(175,175,175);
+  let html = objUser.initializeTable(columnWidths);
 
   // Check if users row exist
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
@@ -284,7 +286,7 @@ function showUser(menuNumber, userId) {
     menuNumber++;
     html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'E-mail', 'Leilighet');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
 
@@ -301,7 +303,7 @@ function showUser(menuNumber, userId) {
     menuNumber++;
     html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Fornavn', 'Etternavn');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
 
@@ -318,7 +320,7 @@ function showUser(menuNumber, userId) {
     menuNumber++;
     html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Telefonnummer', 'Beboer');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
 
@@ -331,15 +333,15 @@ function showUser(menuNumber, userId) {
 
     html += "</tr>";
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objUser.insertTableRow('', menuNumber,objUser.accountMenu, '', '');
     html += "</tr>";
 
-    // Show buttons
+    // Show buttons (<tr></td>)
     if (enableChanges) {
 
-      // insert a table row
+      // insert a table row (<tr></td>)
       menuNumber++;
       html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
 
@@ -347,7 +349,7 @@ function showUser(menuNumber, userId) {
       html += objUser.showButton( 'cancel', 'Angre');
       html += "</tr>";
 
-      // insert a table row
+      // insert a table row (<tr></td>)
       menuNumber++;
       html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
 
@@ -375,7 +377,7 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1;
   userId = Number(userId);
-  const validUserId = objUser.validateNumber('userId', userId, -1, objUser.nineNine, objUser, '', 'Ugyldig bruker');
+  const validUserId = objUser.validateNumber('userId', objUser, columnWidths,    '','Ugyldig bruker',true,userId, -1, objUser.nineNine);
 
   // resident
   let resident = document.querySelector('.resident').value;
@@ -411,7 +413,7 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = objUser.validateNumber('condoId', condoId, 0, objUser.nineNine, objUser, '', 'Ugyldig leilighet');
+  const validCondoId = objUser.validateNumber('condoId', objUser, columnWidths,    '','Ugyldig leilighet',true,condoId, 0, objUser.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
@@ -425,13 +427,7 @@ async function updateUserRow(userId) {
   const phone = document.querySelector('.phone').value;
   const validPhone = objUser.validatePhone('phone', phone);
 
-  // validate condominium
-  //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-  //const validCondominiumId = objUser.validateNumber('condominium', condominiumId, 0, objUser.nineNine, objUser, '', 'Ugyldig sameie');
-
-  //if (validUserId && validEmail && validCondoId && validFirstName && validLastName
-  //&& validPhone && validCondominiumId) {
-  if (validUserId && validEmail && validCondoId && validFirstName && validLastName
+   if (validUserId && validEmail && validCondoId && validFirstName && validLastName
     && validPhone) {
 
     document.querySelector('.message').style.display = "none";

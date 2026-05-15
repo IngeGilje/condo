@@ -8,6 +8,8 @@ const objCommonCost = new CommonCost('commoncost');
 
 const enableChanges = (objCommonCost.securityLevel > 5);
 
+const columnWidths = [175, 175, 175, 175, 75];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -58,10 +60,8 @@ async function main() {
 async function events() {
 
   // Delete commoncosts row
-  document.addEventListener('change', async (event) => {
-
+  document.addEventListener('click', async (event) => {
     const arrayPrefixes = ['delete'];
-
     if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
 
       // Find the first matching class
@@ -69,19 +69,19 @@ async function events() {
         .map(prefix => objCommonCost.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      // delete
-      const classNameDelete = `.${className}`
-      const deleteCommonCostRowValue = document.querySelector(`${classNameDelete}`).value;
-      if (deleteCommonCostRowValue === "Ja") {
+      // Extract the number in the class name
+      let commonCostId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        commonCostId = Number(className.slice(prefix.length));
+      }
 
-        const commonCostId = Number(className.substring(6));
-        await deleteCommonCostsRow(commonCostId, className);
+      await deleteCommonCostsRow(commonCostId, className);
+      await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
 
-        await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
-
-        let menuNumber = 0;
-        menuNumber = showCommonCost(menuNumber);
-      };
+      let menuNumber = 0;
+      menuNumber = showCommonCost(menuNumber);
     };
   });
 
@@ -156,7 +156,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objCommonCost.initializeTable(175, 75, 175, 175, 175);
+  let html = objCommonCost.initializeTable(columnWidths);
 
   // start table body
   html += objCommonCost.startTableBody();
@@ -178,20 +178,22 @@ function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu);
 
-  html += "<td class='center'>Ny felleskostnad</td>";
+  //html += "<td class='center'>Ny felleskostnad</td>";
 
   // Select year
   const year = today.getFullYear();
-  html += objCommonCost.showSelectedNumbers('year0','width:175px;', 2020, 2030, year,  true);
+  html += objCommonCost.showSelectedNumbers('year0', 'width:175px;', 2020, 2030, year, true);
 
   // commonCostSquareMeter 
   html += objCommonCost.inputTableColumn('commonCostSquareMeter0', '', '0,00', 10, enableChanges);
 
   // fixed cost per condo 
   html += objCommonCost.inputTableColumn('fixedCostCondo0', '', '', 10, enableChanges);
+
+  html += "<td class='center'>Ny</td>";
 
   html += "</tr>";
   return html;
@@ -201,29 +203,21 @@ function insertEmptyTableRow(menuNumber) {
 function showCommonCost(menuNumber) {
 
   // start table
-  let html = objCommonCost.initializeTable(175, 75, 175, 175, 175);
+  let html = objCommonCost.initializeTable(columnWidths);
 
   menuNumber++;
-   html += objCommonCost.showTableHeaderMenu(menuNumber, objCommonCost.accountMenu, '#e0f0e0', 'Slett', 'År', `Felleskostnad m2`, `Fast felleskostnad`);
+  html += objCommonCost.showTableHeaderMenu(menuNumber, objCommonCost.accountMenu, '#e0f0e0', 'År', `Felleskostnad/m2`, `Fast felleskostnad`, 'Slett',);
 
   objCommonCost.arrayCommonCosts.forEach((commonCost) => {
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu);
-
-    // Delete
-    let selected = "Ugyldig verdi";
-    if (commonCost.deleted === 'Y') selected = "Ja";
-    if (commonCost.deleted === 'N') selected = "Nei";
-
-    let className = `delete${commonCost.commonCostId}`;
-    html += objCommonCost.showSelectedValues(className,'width:175px;', enableChanges, selected, 'Nei', 'Ja');
 
     // Select year
     const year = commonCost.year;
     className = `year${commonCost.commonCostId}`;
-     html += objCommonCost.showSelectedNumbers('year0','width:175px;', 2020, 2030, year,  true);
+    html += objCommonCost.showSelectedNumbers(className, 'width:175px;', 2020, 2030, year, true);
 
     // common cost per squaremeter
     let commonCostSquareMeter = commonCost.commonCostSquareMeter;
@@ -237,6 +231,13 @@ function showCommonCost(menuNumber) {
     fixedCostCondo = formatOreToKroner(fixedCostCondo);
     html += objCommonCost.inputTableColumn(className, '', fixedCostCondo, 10, enableChanges);
 
+    // Delete
+    selected = "";
+    if (commonCost.deleted === 'Y') selected = "";
+    if (commonCost.deleted === 'N') selected = "Slett";
+
+    className = `delete${commonCost.commonCostId}`;
+    html += objCommonCost.showButton(className, selected);
     html += "</tr>";
   });
 
@@ -250,7 +251,7 @@ function showCommonCost(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objCommonCost.showRestMenu(menuNumber, objCommonCost.accountMenu,'2','3','4','5');
+  html += objCommonCost.showRestMenu(menuNumber, objCommonCost.accountMenu, '2', '3', '4', '5');
 
   // The end of the table
   html += objCommonCost.endTable();
@@ -280,24 +281,24 @@ async function updateCommonCostsRow(commonCostId) {
 
   // year
   className = `.year${commonCostId}`;
-  let year = document.querySelector(className).value;
+  let year = Number(document.querySelector(className).value);
   className = `year${commonCostId}`;
-  const validYear = objCommonCost.validateNumber(className, year, 2020, 2030, objCommonCost, '', 'Ugyldig årstall');
+  const validYear = objCommonCost.validateNumber(className, objCommonCost, columnWidths, '', 'Ugyldig årstall', true, year, 2020, 2030);
 
   // commonCostSquareMeter
   className = `.commonCostSquareMeter${commonCostId}`;
   let commonCostSquareMeter = document.querySelector(className).value;
   commonCostSquareMeter = formatKronerToOre(commonCostSquareMeter);
   className = `commonCostSquareMeter${commonCostId}`;
-  const validcommonCostSquareMeter = objCommonCost.validateNumber(className, commonCostSquareMeter, 1, objCommonCost.nineNine, objCommonCost, '', 'Ugyldig m2 pris');
+  const validcommonCostSquareMeter = objCommonCost.validateNumber(className, objCommonCost, columnWidths,    '', 'Ugyldig m2 pris',               true,commonCostSquareMeter, 1, objCommonCost.nineNine);
 
   // fixedCostCondo
   className = `.fixedCostCondo${commonCostId}`;
   let fixedCostCondo = document.querySelector(className).value;
   fixedCostCondo = formatKronerToOre(fixedCostCondo);
   className = `fixedCostCondo${commonCostId}`;
-  const validfixedCostCondo = objCommonCost.validateNumber(className, fixedCostCondo, 1, objCommonCost.nineNine, objCommonCost, '', 'Ugyldig fast felleskostnad');
-
+  const validfixedCostCondo = objCommonCost.validateNumber(className, objCommonCost, columnWidths,    '', 'Ugyldig fast felleskostnad',               true,fixedCostCondo, 1, objCommonCost.nineNine, '');
+  
   // Validate commoncosts columns
   if (validYear && validcommonCostSquareMeter && validfixedCostCondo) {
 

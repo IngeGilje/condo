@@ -10,7 +10,7 @@ const objDue = new Due('due');
 
 const enableChanges = (objDue.securityLevel > 5);
 
-tableWidth = 'width:1450px;';
+const columnWidths = [175, 100, 175, 175, 175, 175, 175, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -180,18 +180,18 @@ async function events() {
 function showDues(menuNumber) {
 
   // start table
-  let html = objCondo.initializeTable(175, 100, 175,175,175,175,175,175);
+  let html = objCondo.initializeTable(columnWidths);
 
-  // table header
+  // Table header (<tr></tr>)
   menuNumber++;
-  html += objCondo.showTableHeaderMenu( menuNumber, objDue.accountMenu, '#e0f0e0', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Kilowatt Timer', 'Tekst');
+  html += objCondo.showTableHeaderMenu(menuNumber, objDue.accountMenu, '#e0f0e0', 'Slett', 'Leilighet', 'Dato', 'Konto', 'Beløp', 'Kilowatt Timer', 'Tekst');
 
   let sumAmount = 0;
   let sumKilowattHour = 0;
 
   objDue.arrayDues.forEach((due) => {
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objDue.insertTableRow('', menuNumber, objDue.accountMenu)
 
@@ -201,11 +201,11 @@ function showDues(menuNumber) {
     if (due.deleted === 'N') selected = "Nei";
 
     let className = `delete${due.dueId}`;
-    html += objDue.showSelectedValues(className,'width:100px;',  enableChanges, selected, 'Nei', 'Ja')
+    html += objDue.showSelectedValues(className, 'width:100px;', enableChanges, selected, 'Nei', 'Ja')
 
     // condos
     className = `condoId${due.dueId}`;
-    html += objCondo.showSelectedCondos(className,'width:175px;',  due.condoId, 'ngen er valgt', '', enableChanges);
+    html += objCondo.showSelectedCondos(className, 'width:175px;', due.condoId, 'ngen er valgt', '', enableChanges);
 
     // Date
     const date = formatNumberToNorDate(due.date);
@@ -214,7 +214,7 @@ function showDues(menuNumber) {
 
     // accounts
     className = `accountId${due.dueId}`;
-    html += objAccount.showSelectedAccounts(className, 'width:175px;',  due.accountId, 'Velg konto', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className, 'width:175px;', due.accountId, 'Velg konto', '', enableChanges);
 
     // due amount
     const amount = formatOreToKroner(due.amount);
@@ -250,11 +250,11 @@ function showDues(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
   menuNumber++;
-  html += objDue.insertTableRow('font-weight: 600;', menuNumber, objDue.accountMenu, '', '2', '3', '4Sum', sumAmount, '6','7','8');
+  html += objDue.insertTableRow('font-weight: 600;', menuNumber, objDue.accountMenu, '', '2', '3', '4Sum', sumAmount, '6', '7', '8');
 
   // Show the rest of the menu
   menuNumber++;
-  html += objDue.showRestMenu(menuNumber, objDue.accountMenu,'2','3','4','5','6','7','8');
+  html += objDue.showRestMenu(menuNumber, objDue.accountMenu, '2', '3', '4', '5', '6', '7', '8');
 
   // The end of the table
   html += objDue.endTable();
@@ -268,16 +268,17 @@ function insertEmptyTableRow(menuNumber) {
 
   let html = '';
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objCondominium.insertTableRow('', menuNumber, objDue.accountMenu, 'Nytt forfall');
 
   // condoId
   // Check for valid condo Id
   const condoId = Number(document.querySelector('.filterCondoId').value);
-  const validCondoId = objCondo.validateNumber('filterCondoId', condoId, 1, objDue.nineNine, objDue, '', '', false);
+  const validCondoId = objCondo.validateNumber('filterCondoId', objDue, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
+
   html += (validCondoId)
-    ? objCondo.showSelectedCondos("condoId0",'width:175px;', condoId, 'Velg leilighet', '', enableChanges)
-    : objCondo.showSelectedCondos("condoId0",'width:175px;', 0, 'Velg leilighet', '', enableChanges);
+    ? objCondo.showSelectedCondos("condoId0", 'width:175px;', condoId, 'Velg leilighet', '', enableChanges)
+    : objCondo.showSelectedCondos("condoId0", 'width:175px;', 0, 'Velg leilighet', '', enableChanges);
 
   // Date
   html += objDue.inputTableColumn("date0", '', '', 10, enableChanges);
@@ -286,7 +287,7 @@ function insertEmptyTableRow(menuNumber) {
   const accountId = Number(document.querySelector('.filterAccountId').value);
   html += (accountId !== objDue.nineNine)
     ? objAccount.showSelectedAccounts("accountId0", 'width:175px;', accountId, 'Velg konto', '', enableChanges)
-    : objAccount.showSelectedAccounts("accountId0", 'width:175px;',  0, 'Velg konto', '', enableChanges);
+    : objAccount.showSelectedAccounts("accountId0", 'width:175px;', 0, 'Velg konto', '', enableChanges);
 
   // due amount
   html += objDue.inputTableColumn('amount0', '', '0,00', 10, enableChanges);
@@ -331,27 +332,27 @@ async function updateDuesRow(dueId) {
   let className = `.condoId${dueId}`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId${dueId}`;
-  const validCondoId = objCondo.validateNumber(className, condoId, 1, objDue.nineNine, objDue, '', 'Ugyldig leilighet');
+  const validCondoId = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
 
   className = `.date${dueId}`;
   const date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
   className = `date${dueId}`;
-  const validDate = objCondo.validateNumber(className, date, 20150101, 20991231, objDue, '', 'Ugyldig dato');
+  const validDate = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig dato', true, date, 20150101, 20991231);
 
   className = `.accountId${dueId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${dueId}`;
-  const validAccountId = objCondo.validateNumber(className, accountId, 1, objDue.nineNine, objDue, '', 'Ugyldig konto');
+  const validAccountId = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objDue.nineNine);
 
   className = `.amount${dueId}`;
   const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
   className = `amount${dueId}`;
-  const validAmount = objCondo.validateNumber(className, amount, objDue.minusNineNine, objDue.nineNine, objDue, '', 'Ugyldig beløp');
+  const validAmount = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig beløp', true, amount, objDue.minusNineNine, objDue.nineNine);
 
   className = `.kilowattHour${dueId}`;
   const kilowattHour = Number(formatKronerToOre(document.querySelector(`${className}`).value));
   className = `kilowattHour${dueId}`;
-  const validKilowattHour = objCondo.validateNumber(className, kilowattHour, 0, objDue.nineNine, objDue, '', 'Ugyldig kilowattimer');
+  const validKilowattHour = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
 
   className = `.text${dueId}`;
   const text = document.querySelector(className).value;
@@ -392,13 +393,13 @@ async function updateDuesRow(dueId) {
 function showHeader() {
 
   // Start table
-  let html = objDue.initializeTable(175, 100, 175,175,175,175,175,175);
+  let html = objDue.initializeTable(columnWidths);
 
   // start table body
   html += objDue.startTableBody();
 
   // show main header
-  html += objDue.showTableHeaderLogOut( '', '', '', '', 'Forfall', '', '');
+  html += objDue.showTableHeaderLogOut('', '', '', '', 'Forfall', '', '');
   html += "</tr>";
 
   // end table body
@@ -413,21 +414,21 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId, condoId) {
 
   // Start table
-  let html = objDue.initializeTable(175, 100, 175,175,175,175,175,175);
+  let html = objDue.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
-  html += objDue.showTableHeaderMenu(menuNumber, objDue.accountMenu, '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '','');
+  html += objDue.showTableHeaderMenu(menuNumber, objDue.accountMenu, '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '', '');
 
   // start table body
   html += objDue.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '');
 
   // Show selected condos
-  html += objCondo.showSelectedCondos('filterCondoId','width:175px;', condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', 'Vis alle', true);
 
   html += objAccount.showSelectedAccounts('filterAccountId', 'width:175px;', objDue.nineNine, '', 'Vis alle', true);
 
@@ -445,9 +446,9 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   html += "<td></td><td></td></tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
-  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '', '', '', '', '', '','')
+  html += objDue.insertTableRow('', menuNumber, objDue.accountMenu, '', '', '', '', '', '', '')
 
   // end table body
   html += objDue.endTableBody();

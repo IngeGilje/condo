@@ -11,6 +11,8 @@ const objOverview = new Overview('overview');
 
 const enableChanges = (objOverview.securityLevel > 5);
 
+const columnWidths = [175, 175, 175,175,175,175,175];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -94,8 +96,8 @@ async function events() {
       // valitadate filter
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      const validCondoId = objOverview.validateNumber('filterCondoId', condoId, 1, objOverview.nineNine, objOverview, '', 'Ugyldig leilighet');
-
+      const validCondoId = objOverview.validateNumber('filterCondoId', objOverview, columnWidths,    '','Ugyldig leilighet',true,condoId, 1, objOverview.nineNine);
+   
       // from date
       let fromDate = document.querySelector('.filterFromDate').value;
       const validFromDate = objOverview.validateNorDate('filterFromDate', fromDate, objOverview, '', 'Ugyldig fra dato');
@@ -149,7 +151,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
+  let html = objOverview.initializeTable(columnWidths);
 
   // start table body
   html += objOverview.startTableBody();
@@ -170,16 +172,16 @@ function showHeader() {
 function showFilter(menuNumber, condoId) {
 
   // Start table
-  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
+  let html = objOverview.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
   html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '', '', 'Leilighet', 'Fra dato', 'Til dato', '', '');
 
   // start table body
   html += objOverview.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
 
@@ -197,7 +199,7 @@ function showFilter(menuNumber, condoId) {
 
   html += "<td></td><td></td></tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
 
@@ -215,7 +217,7 @@ function showFilter(menuNumber, condoId) {
 function showDues(menuNumber) {
 
   // Start HTML table
-  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
+  let html = objOverview.initializeTable(columnWidths);
 
   let sumDue = 0;
   let sumKilowattHour = 0;
@@ -229,7 +231,7 @@ function showDues(menuNumber) {
 
   objDue.arrayDues.forEach((due) => {
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objDue.insertTableRow('', menuNumber, objOverview.accountMenu);
 
@@ -290,7 +292,7 @@ function showDues(menuNumber) {
 function showBankAccountTransactions(menuNumber) {
 
   // Start table
-  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
+  let html = objOverview.initializeTable(columnWidths);
 
   // Header
   menuNumber++;
@@ -304,7 +306,7 @@ function showBankAccountTransactions(menuNumber) {
 
   objBankAccountTransaction.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
 
@@ -364,7 +366,7 @@ function showBankAccountTransactions(menuNumber) {
 async function showHowMuchToPay(menuNumber) {
 
   // Start table
-  let html = objOverview.initializeTable(175, 175, 175,175,175,175,175);
+  let html = objOverview.initializeTable(columnWidths);
 
   let sumIncome = 0;
   let sumPayment = 0;

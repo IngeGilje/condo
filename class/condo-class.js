@@ -800,9 +800,26 @@ class Condos {
 
     if ((fromValue > toValue) || (value < fromValue) || (value > toValue)) valid = false;
 
-    const inputElement = document.querySelector(`.${className}`);
+    const inputElement = document.querySelector('input-error');
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
     if (!valid) this.showMessage(object, style, message);
+
+    return valid;
+  }
+
+  // Validate values ('Yes','No','Ignore')
+  validateValues(className, object, columnwidths, style, message, showMessage = true, selectedValue, ...values) {
+
+    let valid = false;
+
+    values.forEach((value) => {
+
+      if (value === selectedValue) valid = true;
+    });
+
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement) inputElement.classList.toggle('input-error', !valid);
+    if (!valid && showMessage) this.showMessageNew(object, columnwidths, style, message);
 
     return valid;
   }
@@ -846,6 +863,7 @@ class Condos {
     return html;
   }
 
+  /*
   // Validate number
   validateNumber(className, number, min, max, object, style, message, showMessage = true) {
 
@@ -861,6 +879,34 @@ class Condos {
 
     return valid;
   }
+  */
+
+
+  // Validate number
+  validateNumber(className, object, columnwidths, style, message, showMessage = true, number, min, max) {
+
+    let valid = (Number(number) >= Number(min) && Number(number) <= Number(max));
+
+    /*
+    // Invalid number
+    if (this.isClassDefined(className)) {
+
+      const inputElement = document.querySelector(`.${className}`);
+      if (inputElement) inputElement.classList.toggle('input-error', !valid);
+      if ((valid === false) && showMessage) this.showMessage(object, style, message);
+    }
+    */
+
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement) inputElement.classList.toggle('input-error', !valid);
+    if (!valid && showMessage) this.showMessageNew(object, columnwidths, style, message);
+
+    return valid;
+
+
+    return valid;
+  }
+
 
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(className, date, object, style, message) {
@@ -1005,17 +1051,42 @@ class Condos {
       ${(style) ? `style="${style}"` : ""}>`;
   }
 
+  /*
   // Initializing of a table
-  initializeTable( ...columnWidths) {
+  initializeTable(...columnWidths) {
 
-    let tableWith = 0;
+    let tableWidth = 0;
     columnWidths.forEach((columnWidth) => {
-      tableWith += (columnWidth + 10);
+      tableWidth += (columnWidth + 10);
     });
 
     let html = `
     <table 
-      style="table-layout: fixed; width: ${tableWith}px;"
+      style="table-layout: fixed; width: ${tableWidth}px;"
+    >`;
+
+    html += '<colgroup>';
+
+    columnWidths.forEach((columnWidth) => {
+      html += `<col style="width: ${columnWidth}px;">`;
+    });
+
+    html += '</colgroup>';
+    return html;
+  }
+  */
+
+  // Initializing of a table
+  initializeTable(columnWidths) {
+
+    let tableWidth = 0;
+    columnWidths.forEach((columnWidth) => {
+      tableWidth += (columnWidth + 10);
+    });
+
+    let html = `
+    <table 
+      style="table-layout: fixed; width: ${tableWidth}px;"
     >`;
 
     html += '<colgroup>';
@@ -1084,7 +1155,7 @@ class Condos {
     return "<tbody>";
   }
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   // and show account menu or administration menu
   insertTableRow(style, menuNumber, menuType, ...texts) {
 
@@ -1196,7 +1267,7 @@ class Condos {
     }
   }
 
-  // Show vertical account menu
+  // Show vertical account menu (<td></td>)
   showAccountMenu(menuNumber) {
 
     let html = "";
@@ -1276,6 +1347,28 @@ class Condos {
 
     // show main header
     html += object.showTableHeader('width:250px;', this.accountMenu, message);
+
+    // The end of the table
+    html += object.endTable();
+    document.querySelector('.message').innerHTML = html;
+  }
+
+  // Show message
+  showMessageNew(object, columnwidths, style, message) {
+
+    let tableWidth = 0;
+    columnWidths.forEach((columnWidth) => {
+      tableWidth += (columnWidth + 10);
+    });
+
+    // Start table
+    style = (style) ? style : `width:${tableWidth}px;`;
+    let html = object.startTable(style);
+
+    // show main header
+    html += objAccount.showTableHeaderMenu(0, objAccount.accountMenu, '', '');
+
+    html += object.showTableHeader(`width:${tableWidth}px;`, this.accountMenu, message);
 
     // The end of the table
     html += object.endTable();

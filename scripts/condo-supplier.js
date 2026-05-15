@@ -8,6 +8,8 @@ const objSupplier = new Supplier('supplier');
 
 const enableChanges = (objSupplier.securityLevel > 5);
 
+const columnWidths = [175,175,175];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -197,7 +199,7 @@ function resetValues() {
 function showHeader() {
 
   // Start table
-  let html = objSupplier.initializeTable(175,175,175);
+  let html = objSupplier.initializeTable(columnWidths);
 
   // start table body
   html += objSupplier.startTableBody();
@@ -218,16 +220,16 @@ function showHeader() {
 function showFilter(menuNumber, supplierId) {
 
   // Start table
-  let html = objSupplier.initializeTable(175,175,175);
+  let html = objSupplier.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Velg leverandør', '');
 
   // start table body
   html += objSupplier.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
@@ -250,9 +252,9 @@ function showFilter(menuNumber, supplierId) {
 function showSupplier(menuNumber, supplierId) {
 
   // start table
-  let html = objSupplier.initializeTable(175,175,175);
+  let html = objSupplier.initializeTable(columnWidths);
 
-  // table header
+  // Table header (<tr></tr>)
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', '');
 
@@ -264,7 +266,7 @@ function showSupplier(menuNumber, supplierId) {
   menuNumber++;
   html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Navn');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
@@ -282,7 +284,7 @@ function showSupplier(menuNumber, supplierId) {
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Gate', 'Adresse 2');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
@@ -305,7 +307,7 @@ function showSupplier(menuNumber, supplierId) {
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Postnummer', 'Poststed');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
@@ -329,7 +331,7 @@ function showSupplier(menuNumber, supplierId) {
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'E-mail', 'Telefonnummer');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
@@ -375,7 +377,7 @@ function showSupplier(menuNumber, supplierId) {
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Konto for beløp', 'Beløp');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
@@ -398,7 +400,7 @@ function showSupplier(menuNumber, supplierId) {
   menuNumber++;
   html += objSupplier.showTableHeaderMenu( menuNumber, objSupplier.accountMenu, '', 'Konto for tekst', 'Tekst');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
@@ -416,16 +418,16 @@ function showSupplier(menuNumber, supplierId) {
 
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu, '');
 
   html += "</tr>";
 
-  // Show buttons
+  // Show buttons (<tr></td>)
   if (enableChanges) {
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
@@ -433,7 +435,7 @@ function showSupplier(menuNumber, supplierId) {
     html += objSupplier.showButton( 'cancel', 'Angre');
     html += "</tr>";
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objSupplier.insertTableRow('', menuNumber, objSupplier.accountMenu);
 
@@ -449,6 +451,7 @@ function showSupplier(menuNumber, supplierId) {
   // The end of the table
   html += objSupplier.endTable();
   document.querySelector('.result').innerHTML = html;
+  
   if (enableChanges) document.querySelector('.cancel').disabled = true;
 }
 
@@ -457,9 +460,8 @@ async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = objSupplier.validateNumber('supplierId', supplierId, -1, objSupplier.nineNine, objSupplier, '', 'Ugyldig leverandør');
+  const validSupplierId = objSupplier.validateNumber('supplierId', objSupplier, columnWidths,    '','Ugyldig leverandør',true,supplierId, -1, objSupplier.nineNine);
 
-  // validate name
   const name = document.querySelector('.name').value;
   const validName = objSupplier.validateText('name', name, 3, 45, objSupplier, '', 'Ugyldig navn');
 
@@ -473,7 +475,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = objSupplier.validateNumber('postalCode', Number(postalCode), 0, objSupplier.nineNine, objSupplier, '', 'Ugyldig poststed');
+  const validPostalCode = objSupplier.validateNumber('postalCode', objSupplier, columnWidths,    '', 'Ugyldig poststed',Number(postalCode), 0, objSupplier.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value.trim();
@@ -491,7 +493,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate accountId
   const accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = objSupplier.validateNumber('accountId', accountId, 1, objSupplier.nineNine, objSupplier, '', 'Ugyldig konto');
+  const validAccountId = objSupplier.validateNumber('accountId', objSupplier, columnWidths,    '','Ugyldig konto',true,accountId, 1, objSupplier.nineNine);
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
@@ -500,16 +502,17 @@ async function updateSuppliersRow(supplierId) {
 
   // validate amountAccountId
   const amountAccountId = Number(document.querySelector('.amountAccountId').value);
-  const validAmountAccountId = objSupplier.validateNumber('amountAccountId', amountAccountId, 0, objSupplier.nineNine, objSupplier, '', 'Ugyldig konto for beløp');
+  const validAmountAccountId = objSupplier.validateNumber('amountAccountId', objSupplier, columnWidths,    '','Ugyldig konto for beløp',true,amountAccountId, 0, objSupplier.nineNine);
 
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatKronerToOre(amount));
-  const validAmount = objSupplier.validateNumber('amount', amount, objSupplier.minusNineNine, objSupplier.nineNine, objSupplier, '', 'Ugyldig beløp');
+  const validAmount = objSupplier.validateNumber('amount', objSupplier, columnWidths,    '','Ugyldig beløp',true,amount, objSupplier.minusNineNine, objSupplier.nineNine);
+
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);
-  const validTextAccountId = objSupplier.validateNumber('textAccountId', textAccountId, 0, objSupplier.nineNine, objSupplier, '', 'Ugyldig konto for tekst');
+  const validTextAccountId = objSupplier.validateNumber('textAccountId', objSupplier, columnWidths,    '','Ugyldig konto for tekst',true,textAccountId, 0, objSupplier.nineNine);
 
   // validate text
   const text = document.querySelector('.text').value;

@@ -8,6 +8,8 @@ const objUserBankAccount = new UserBankAccount('userbankaccount');
 
 const enableChanges = (objUserBankAccount.securityLevel > 5);
 
+const columnWidths = [175,175,175,175,175];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -145,7 +147,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objUserBankAccount.initializeTable(175,175,175,175,175);
+  let html = objUserBankAccount.initializeTable(columnWidths);
 
   // start table body
   html += objUserBankAccount.startTableBody();
@@ -166,16 +168,16 @@ function showHeader() {
 function showFilter(menuNumber, userId) {
 
   // Start table
-  let html = objUserBankAccount.initializeTable(175,175,175,175,175);
+  let html = objUserBankAccount.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
   html += objUserBankAccount.showTableHeaderMenu( menuNumber, objUserBankAccount.accountMenu, ' Bruker', 'Konto', '');
 
   // start table body
   html += objUserBankAccount.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, '');
 
@@ -186,7 +188,7 @@ function showFilter(menuNumber, userId) {
   html += objAccount.showSelectedAccounts('filterAccountId', 'width:175px;', 0, '', 'Alle', true);
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, '', '', '', '');
 
@@ -205,7 +207,7 @@ function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, 'Ny brukerkonto');
 
   // user column
@@ -225,15 +227,15 @@ function insertEmptyTableRow(menuNumber) {
 function showUserBankAccount(menuNumber) {
 
   // start table
-  let html = objUserBankAccount.initializeTable(175,175,175,175,175);
+  let html = objUserBankAccount.initializeTable(columnWidths);
 
-  // table header
+  // Table header (<tr></tr>)
   menuNumber++;
   html += objUserBankAccount.showTableHeaderMenu( menuNumber, objUserBankAccount.accountMenu,'#e0f0e0', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
 
   objUserBankAccount.arrayUserBankAccounts.forEach((userBankAccount) => {
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu);
 
@@ -305,8 +307,8 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   // account Id
   className = `accountId${userBankAccountId}`;
   let accountId = Number(document.querySelector(`.${className}`).value);
-  const validAccountId = objUserBankAccount.validateNumber(className, accountId, 1, objUserBankAccount.nineNine, objUserBankAccount, '', 'Ugyldig konto');
-
+  const validAccountId = objUserBankAccount.validateNumber(className, objUserBankAccount, columnWidths,    '','Ugyldig konto',true,accountId, 1, objUserBankAccount.nineNine);
+ 
   // bank account
   className = `bankAccount${userBankAccountId}`;
   const bankAccount = document.querySelector(`.${className}`).value;

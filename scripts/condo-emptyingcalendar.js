@@ -8,6 +8,8 @@ const objEmptyingCalendar = new EmptyingCalendar('emptyingcalendar');
 
 const enableChanges = (objEmptyingCalendar.securityLevel > 5);
 
+const columnWidths = [175, 100, 150, 175, 100, 100, 100, 100, 125];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -159,7 +161,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objEmptyingCalendar.initializeTable(175, 100, 150, 175, 100, 100, 100, 100, 125);
+  let html = objEmptyingCalendar.initializeTable(columnWidths);
 
   // start table body
   html += objEmptyingCalendar.startTableBody();
@@ -180,16 +182,16 @@ function showHeader() {
 function showFilter(menuNumber) {
 
   // Start table
-  let html = objEmptyingCalendar.initializeTable(175, 100, 150, 175, 100, 100, 100, 100, 125);
+  let html = objEmptyingCalendar.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
    html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '', '', 'År', 'Måned', '', '', '', '', '');
 
   // start table body
   html += objEmptyingCalendar.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
    html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '');
 
@@ -205,7 +207,7 @@ function showFilter(menuNumber) {
 
   html += "<td></td><td></td><td><td></td><td></td></tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
   // end table body
@@ -222,9 +224,9 @@ function showFilter(menuNumber) {
 function showEmptyingCalendar(menuNumber) {
 
   // start table
-  let html = objEmptyingCalendar.initializeTable(175, 100, 150, 175, 100, 100, 100, 100, 125);
+  let html = objEmptyingCalendar.initializeTable(columnWidths);
 
-  // table header
+  // Table header (<tr></tr>)
   menuNumber++;
    html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '#e0f0e0', 'Slett', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
@@ -316,7 +318,7 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
 
   // Show menu
-  // insert a table row
+  // insert a table row (<tr></td>)
    html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu);
 
 
@@ -385,13 +387,13 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
   // condoId
   className = `condoId${emptyingCalendarId}`;
   condoId = Number(document.querySelector(`.${className}`).value);
-  const validCondoId = objCondo.validateNumber(className, condoId, 1, objCondo.nineNine, objCondo, '', 'Ugyldig leilighet');
+  const validCondoId = objEmptyingCalendar.validateNumber(className, objCondo, columnWidths,    '','Ugyldig leilighet',true,condoId, 1, objCondo.nineNine);
 
   // date
   className = `date${emptyingCalendarId}`;
   let date = document.querySelector(`.${className}`).value;
   date = formatNorDateToNumber(date);
-  const validDate = objEmptyingCalendar.validateNumber(className, date, 20100101, objEmptyingCalendar.nineNine, objEmptyingCalendar, '', 'Ugyldig dato');
+  const validDate = objEmptyingCalendar.validateNumber(className, objEmptyingCalendar, columnWidths,    '','Ugyldig dato',true,date, 20100101, objEmptyingCalendar.nineNine);
 
   className = `paper${emptyingCalendarId}`;
   let paper = document.querySelector(`.${className}`).value;

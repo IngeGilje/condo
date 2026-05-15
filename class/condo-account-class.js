@@ -290,7 +290,9 @@ class Account extends Condos {
   // delete account row
   async deleteAccountsTable(accountId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/accounts' 
+    : 'http://localhost:3000/accounts';
     try {
       // POST request
       //const response = await fetch(`${URL}:3000/accounts?action=delete&accountId=${accountId}&user=${user}`);

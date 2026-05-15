@@ -9,6 +9,8 @@ const objCondominium = new Condominium('condominium');
 
 const enableChanges = (objCondominium.securityLevel > 5);
 
+const columnWidths = [175, 175, 175];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -213,7 +215,7 @@ async function deleteCondominiumRow() {
 function showHeader() {
 
   // Start table
-  let html = objCondominium.initializeTable(175, 175, 175);
+  let html = objCondominium.initializeTable(columnWidths);
 
   // show main header
   html += objCondominium.showTableHeaderLogOut('', 'Sameie');
@@ -232,19 +234,19 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId) {
 
   // Start table
-  let html = objCondominium.initializeTable(175, 175, 175);
+  let html = objCondominium.initializeTable(columnWidths);
 
   // start table body
   html += objCondominium.startTableBody();
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
   html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '', '2Velg sameie', '3');
 
   // start table body
   html += objCondominium.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -253,7 +255,7 @@ function showFilter(menuNumber, condominiumId) {
 
   html += "<td>3</td></tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu, '', '');
 
@@ -271,7 +273,7 @@ function showFilter(menuNumber, condominiumId) {
 function showCondominium(condominiumId, menuNumber) {
 
   // Start table
-  let html = objCondominium.initializeTable(175, 175, 175);
+  let html = objCondominium.initializeTable(columnWidths);
 
   // start table body
   html += objCondominium.startTableBody();
@@ -284,7 +286,7 @@ function showCondominium(condominiumId, menuNumber) {
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2Navn', '3');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -297,7 +299,7 @@ function showCondominium(condominiumId, menuNumber) {
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2Gate', '3Adresse 2');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -313,7 +315,7 @@ function showCondominium(condominiumId, menuNumber) {
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2Postnummer', '3Poststed');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -329,7 +331,7 @@ function showCondominium(condominiumId, menuNumber) {
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2eMail', '3Telefonnummer');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -344,7 +346,7 @@ function showCondominium(condominiumId, menuNumber) {
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2Inntekstkonto fjernvarme', '3Utgiftskonto fjernvarme');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -359,7 +361,7 @@ function showCondominium(condominiumId, menuNumber) {
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu,    '', '2Inntekstonto husleie', '3Organisasjonsnummer');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -375,7 +377,7 @@ function showCondominium(condominiumId, menuNumber) {
     menuNumber++;
     html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '', '2Plassering av data', '3');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -383,15 +385,15 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.inputTableColumn('importPath', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].importPath, 100, enableChanges);
     html += "<td>3</td></tr>";
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
     html += "<td>2</td><td>3</td></tr>";
 
-    // Show buttons
+    // Show buttons (<tr></td>)
     if (enableChanges) {
 
-      // insert a table row
+      // insert a table row (<tr></td>)
       menuNumber++;
       html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -399,7 +401,7 @@ function showCondominium(condominiumId, menuNumber) {
       html += objCondominium.showButton('cancel', '3Angre');
       html += "</tr>";
 
-      // insert a table row
+      // insert a table row (<tr></td>)
       menuNumber++;
       html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
@@ -441,7 +443,7 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objCondominium.validateNumber('postalCode', Number(postalCode), 1, objCondominium.nineNine, objCondominium, '', 'Ugyldig postnummer');
+  const validPostalCode = objCondominium.validateNumber('postalCode', objCondominium, columnWidths,    '', 'Ugyldig postnummer', true,Number(postalCode), 1, objCondominium.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value;
@@ -457,16 +459,16 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate incomeRemoteHeatingAccountId
   const incomeRemoteHeatingAccountId = Number(document.querySelector('.incomeRemoteHeatingAccountId').value);
-  const validIncomeRemoteHeatingAccountId = objCondominium.validateNumber('incomeRemoteHeatingAccountId', incomeRemoteHeatingAccountId, 0, objCondominium.nineNine, objCondominium, '', 'Ugyldig inntektskonto for husleie');
+  const validIncomeRemoteHeatingAccountId = objCondominium.validateNumber('incomeRemoteHeatingAccountId', objCondominium, columnWidths,    '', 'Ugyldig inntektskonto for husleie', true,incomeRemoteHeatingAccountId, 0, objCondominium.nineNine);
 
   // validate paymentRemoteHeatingAccountId
   const paymentRemoteHeatingAccountId = Number(document.querySelector('.paymentRemoteHeatingAccountId').value);
-  const validPaymentRemoteHeatingAccountId = objCondominium.validateNumber('paymentRemoteHeatingAccountId', paymentRemoteHeatingAccountId, 0, objCondominium.nineNine, objCondominium, '', 'Ugyldig inntektskonto for fjernvarme');
+  const validPaymentRemoteHeatingAccountId = objCondominium.validateNumber('paymentRemoteHeatingAccountId', objCondominium, columnWidths,    '', 'Ugyldig inntektskonto for fjernvarme',true,paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
 
   // validate commonCostAccountId
   const commonCostAccountId = Number(document.querySelector('.commonCostAccountId').value);
-  const validCommonCostAccountId = objCondominium.validateNumber('commonCostAccountId', commonCostAccountId, 0, objCondominium.nineNine, objCondominium, '', 'Ugyldig konto');
-
+  const validCommonCostAccountId = objCondominium.validateNumber('commonCostAccountId', objCondominium, columnWidths,    '', 'Ugyldig konto',true,commonCostAccountId, 0, objCondominium.nineNine);
+ 
   // validate organizationNumber
   const organizationNumber = Number(document.querySelector('.organizationNumber').value);
   const validOrganizationNumber = objCondominium.validateOrganizationNumber('organizationNumber', organizationNumber);

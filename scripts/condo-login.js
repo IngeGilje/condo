@@ -47,7 +47,7 @@ function showLogin() {
   // Header for value including menu
   html += objLogIn.showTableHeader('', objLogIn.accountMenu, 'Email');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('margin: 0 auto;', 0, objLogIn.accountMenu);
 
   // email
@@ -55,14 +55,14 @@ function showLogin() {
   html += objLogIn.inputTableColumn('email', 'center', email, 45, true);
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
   html += "</tr>";
 
   // password
   html += objLogIn.showTableHeader("width:250px;", objLogIn.accountMenu, 'Passord');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
 
   // password
@@ -70,18 +70,18 @@ function showLogin() {
   html += objLogIn.inputTableColumnPassword('password', password, 45, true);
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
 
-  // Show buttons
+  // Show buttons (<tr></td>)
   html += objLogIn.showButton('LogIn', 'LogIn');
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
 
   html += "</tr>";

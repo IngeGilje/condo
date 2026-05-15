@@ -150,7 +150,7 @@ select {
   display: block;
   width: 100%;
   height: 100%;
-  max-width: 150px;
+  /*max-width: 150px; */
   /* space inside the link */
   padding: 12px;
   padding-left: 15px;
@@ -164,7 +164,7 @@ select {
   /* remove underscore */
   text-decoration: none;
   cursor: pointer;
-  margin-left: 10px;
+  /*margin-left: 10px; */
 
   select[disabled],
   input[readonly] {

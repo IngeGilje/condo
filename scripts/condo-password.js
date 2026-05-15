@@ -9,6 +9,8 @@ const objPassword = new Password('password');
 
 const enableChanges = (objPassword.securityLevel > 5);
 
+const columnWidths = [175, 175, 175];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -137,7 +139,7 @@ async function deleteCondo() {
 function showHeader() {
 
   // Start table
-  let html = objUser.initializeTable(175, 175, 175);
+  let html = objUser.initializeTable(columnWidths);
 
   // start table body
   html += objUser.startTableBody();
@@ -158,16 +160,16 @@ function showHeader() {
 function showFilter(menuNumber, condominiumId, userId) {
 
   // Start table
-  let html = objUser.initializeTable(175, 175, 175);
+  let html = objUser.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
   html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objPassword.insertTableRow('', menuNumber, objPassword.accountMenu);
 
@@ -179,7 +181,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objPassword.insertTableRow('', menuNumber, objPassword.accountMenu, '', '');
 
@@ -197,7 +199,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 function showUser(menuNumber, userId) {
 
   // start table
-  let html = objUser.initializeTable(175, 175, 175);
+  let html = objUser.initializeTable(columnWidths);
 
   // Check if users row exist
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
@@ -208,7 +210,7 @@ function showUser(menuNumber, userId) {
     menuNumber++;
     html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'Passord', 'Sikkerhetsnivå');
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objUser.insertTableRow('', menuNumber, objPassword.accountMenu);
 
@@ -220,23 +222,23 @@ function showUser(menuNumber, userId) {
 
     html += "</tr>";
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objUser.insertTableRow('', menuNumber, objPassword.accountMenu);
-    html += "<td>2</td><td>3</td></tr>";
+    html += "<td></td><td></td></tr>";
 
     // show buttons
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objUser.insertTableRow('', menuNumber, objPassword.accountMenu);
 
     html += objUser.showButton('update', 'Oppdater');
-    html += "<td>3</td></tr>";
+    html += "<td></td></tr>";
 
     // Show the rest of the menu
     menuNumber++;
-    html += objUser.showRestMenu(menuNumber, objUser.accountMenu, '2', '3');
+    html += objUser.showRestMenu(menuNumber, objUser.accountMenu, '', '');
 
     // The end of the table
     html += objUser.endTable();
@@ -252,11 +254,11 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = objUser.validateNumber('userId', userId, -1, objUser.nineNine);
+  const validUserId = objUser.validateNumber('userId',objUser, columnWidths,    '','Ugyldig bruker',true,userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = objUser.validateNumber('securityLevel', securityLevel, 1, 9, objUser, '', 'Ugyldig sikkerhetsnivå');
+  const validSecurityLevel = objUser.validateNumber('securityLevel', objUser,columnWidths,     '','Ugyldig sikkerhetsnivå',true,securityLevel, 1, 9);
 
   // validate password
   let password = document.querySelector('.password').value;

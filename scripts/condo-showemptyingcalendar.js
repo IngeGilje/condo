@@ -9,6 +9,8 @@ const objShowEmptyingCalendar = new ShowEmptyingCalendar('showemptyingcalendar')
 
 const enableChanges = (objEmptyingCalendar.securityLevel > 5);
 
+const columnWidths = [175, 175, 175, 175, 175, 175, 175];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -91,7 +93,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objShowEmptyingCalendar.initializeTable(175, 175, 175, 175, 175, 175, 175);
+  let html = objShowEmptyingCalendar.initializeTable(columnWidths);
 
   // start table body
   html += objShowEmptyingCalendar.startTableBody();
@@ -112,15 +114,15 @@ function showHeader() {
 function showFilter() {
 
   // Start table
-  let html = objShowEmptyingCalendar.initializeTable(175, 175, 175, 175, 175, 175, 175);
+  let html = objShowEmptyingCalendar.initializeTable(columnWidths);
 
   // start table body
   html += objShowEmptyingCalendar.startTableBody();
 
-  // Header filter
+  // Header filter (<tr></tr>)
   html += objShowEmptyingCalendar.showTableHeaderMenu(0, objShowEmptyingCalendar.accountMenu, '', '','', '', 'År', 'Måned',  '', '');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objShowEmptyingCalendar.insertTableRow('', 0, objShowEmptyingCalendar.accountMenu, '', '', '');
 
   // Selected year
@@ -135,7 +137,7 @@ function showFilter() {
 
   html += "<td></td><td></td></tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objShowEmptyingCalendar.insertTableRow("width:150px;", 0, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
 
   // end table body
@@ -150,9 +152,9 @@ function showFilter() {
 function showEmptyingCalendar() {
 
   // start table
-  let html = objEmptyingCalendar.initializeTable(175, 175, 175, 175, 175, 175, 175);
+  let html = objEmptyingCalendar.initializeTable(columnWidths);
 
-  // table header
+  // Table header (<tr></tr>)
   html += objEmptyingCalendar.showTableHeaderMenu(0, objEmptyingCalendar.accountMenu, '#e0f0e0', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
   if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
