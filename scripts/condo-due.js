@@ -274,7 +274,7 @@ function insertEmptyTableRow(menuNumber) {
   // condoId
   // Check for valid condo Id
   const condoId = Number(document.querySelector('.filterCondoId').value);
-  const validCondoId = objCondo.validateNumber('filterCondoId', objDue, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
+  const validCondoId = objCondo.validateInterval('filterCondoId', objDue, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
 
   html += (validCondoId)
     ? objCondo.showSelectedCondos("condoId0", 'width:175px;', condoId, 'Velg leilighet', '', enableChanges)
@@ -332,27 +332,27 @@ async function updateDuesRow(dueId) {
   let className = `.condoId${dueId}`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId${dueId}`;
-  const validCondoId = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
+  const validCondoId = objCondo.validateInterval(className, objDue, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
 
   className = `.date${dueId}`;
   const date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
   className = `date${dueId}`;
-  const validDate = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig dato', true, date, 20150101, 20991231);
+  const validDate = objCondo.validateInterval(className, objDue, columnWidths, '', 'Ugyldig dato', true, date, 20150101, 20991231);
 
   className = `.accountId${dueId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${dueId}`;
-  const validAccountId = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objDue.nineNine);
+  const validAccountId = objCondo.validateInterval(className, objDue, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objDue.nineNine);
 
   className = `.amount${dueId}`;
   const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
   className = `amount${dueId}`;
-  const validAmount = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig beløp', true, amount, objDue.minusNineNine, objDue.nineNine);
+  const validAmount = objCondo.validateInterval(className, objDue, columnWidths, '', 'Ugyldig beløp', true, amount, objDue.minusNineNine, objDue.nineNine);
 
   className = `.kilowattHour${dueId}`;
   const kilowattHour = Number(formatKronerToOre(document.querySelector(`${className}`).value));
   className = `kilowattHour${dueId}`;
-  const validKilowattHour = objCondo.validateNumber(className, objDue, columnWidths, '', 'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
+  const validKilowattHour = objCondo.validateInterval(className, objDue, columnWidths, '', 'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
 
   className = `.text${dueId}`;
   const text = document.querySelector(className).value;

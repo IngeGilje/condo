@@ -283,21 +283,21 @@ async function updateCommonCostsRow(commonCostId) {
   className = `.year${commonCostId}`;
   let year = Number(document.querySelector(className).value);
   className = `year${commonCostId}`;
-  const validYear = objCommonCost.validateNumber(className, objCommonCost, columnWidths, '', 'Ugyldig årstall', true, year, 2020, 2030);
+  const validYear = objCommonCost.validateInterval(className, objCommonCost, columnWidths, '', 'Ugyldig årstall', true, year, 2020, 2030);
 
   // commonCostSquareMeter
   className = `.commonCostSquareMeter${commonCostId}`;
   let commonCostSquareMeter = document.querySelector(className).value;
   commonCostSquareMeter = formatKronerToOre(commonCostSquareMeter);
   className = `commonCostSquareMeter${commonCostId}`;
-  const validcommonCostSquareMeter = objCommonCost.validateNumber(className, objCommonCost, columnWidths,    '', 'Ugyldig m2 pris',               true,commonCostSquareMeter, 1, objCommonCost.nineNine);
+  const validcommonCostSquareMeter = objCommonCost.validateInterval(className, objCommonCost, columnWidths,    '', 'Ugyldig m2 pris',               true,commonCostSquareMeter, 1, objCommonCost.nineNine);
 
   // fixedCostCondo
   className = `.fixedCostCondo${commonCostId}`;
   let fixedCostCondo = document.querySelector(className).value;
   fixedCostCondo = formatKronerToOre(fixedCostCondo);
   className = `fixedCostCondo${commonCostId}`;
-  const validfixedCostCondo = objCommonCost.validateNumber(className, objCommonCost, columnWidths,    '', 'Ugyldig fast felleskostnad',               true,fixedCostCondo, 1, objCommonCost.nineNine, '');
+  const validfixedCostCondo = objCommonCost.validateInterval(className, objCommonCost, columnWidths,    '', 'Ugyldig fast felleskostnad',               true,fixedCostCondo, 1, objCommonCost.nineNine, '');
   
   // Validate commoncosts columns
   if (validYear && validcommonCostSquareMeter && validfixedCostCondo) {

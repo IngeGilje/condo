@@ -321,7 +321,7 @@ async function updateAccountsRow(accountId) {
   // name
   className = `name${accountId}`;
   const name = document.querySelector(`.${className}`).value;
-  const validName = objAccount.validateText(className, name, 3, 50, objAccount, '', 'Ugyldig kontonavn');
+  const validName = objAccount.validateText(className, objAccount,columnwidths,    '','Ugyldig kontonavn', true, name, 3, 50);
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;

@@ -254,11 +254,11 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = objUser.validateNumber('userId',objUser, columnWidths,    '','Ugyldig bruker',true,userId, -1, objUser.nineNine);
+  const validUserId = objUser.validateInterval('userId',objUser, columnWidths,    '','Ugyldig bruker',true,userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = objUser.validateNumber('securityLevel', objUser,columnWidths,     '','Ugyldig sikkerhetsnivå',true,securityLevel, 1, 9);
+  const validSecurityLevel = objUser.validateInterval('securityLevel', objUser,columnWidths,     '','Ugyldig sikkerhetsnivå',true,securityLevel, 1, 9);
 
   // validate password
   let password = document.querySelector('.password').value;

@@ -330,24 +330,24 @@ async function updateCondoRow(newsId) {
 
   if (newsId === '') newsId = -1
   newsId = Number(newsId);
-  const validNewsId = objNews.validateNumber('newsId', objNews, columnWidths,    '','Ugyldig leilighet',true,newsId, -1, objNews.nineNine);
+  const validNewsId = objNews.validateInterval('newsId', objNews, columnWidths,    '','Ugyldig leilighet',true,newsId, -1, objNews.nineNine);
 
   // validate title
   const title = document.querySelector('.title').value;
-  const validTitle = objNews.validateText('title', title, 3, 45, objNews, '', 'Ugyldig tittel');
+  const validTitle = objNews.validateText('title',  objNews, columnwidths,    '', 'Ugyldig tittel', true,title, 3, 45);
 
   // validate date
   let date = document.querySelector('.date').value;
   date = Number(objNews.formatNorDateToNumber(date));
-  const validDate = objNews.validateNumber('date', objNews, columnWidths,    '','Ugyldig dato',true,date, 1, objNews.nineNine);
+  const validDate = objNews.validateInterval('date', objNews, columnWidths,    '','Ugyldig dato',true,date, 1, objNews.nineNine);
 
   // validate userId  
   const userId = document.querySelector('.userId').value;
-  const validUserId = objNews.validateNumber('userId', objNews, columnWidths,    '','Ugyldig forfatter',userId, 1, objNews.nineNine);
+  const validUserId = objNews.validateInterval('userId', objNews, columnWidths,    '','Ugyldig forfatter',userId, 1, objNews.nineNine);
 
   // validate image
   const image = document.querySelector('.image').value.trim();
-  const validImage = objNews.validateText('image', image, 0, 255, objNews, '', 'Ugyldig bilde');
+  const validImage = objNews.validateText('image', objNews, columnwidths,    '','Ugyldig bilde', true, image, 0, 255);
 
   // clean content
   let content = document.querySelector('.content').value.trim();

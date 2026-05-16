@@ -387,13 +387,13 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
   // condoId
   className = `condoId${emptyingCalendarId}`;
   condoId = Number(document.querySelector(`.${className}`).value);
-  const validCondoId = objEmptyingCalendar.validateNumber(className, objCondo, columnWidths,    '','Ugyldig leilighet',true,condoId, 1, objCondo.nineNine);
+  const validCondoId = objEmptyingCalendar.validateInterval(className, objCondo, columnWidths,    '','Ugyldig leilighet',true,condoId, 1, objCondo.nineNine);
 
   // date
   className = `date${emptyingCalendarId}`;
   let date = document.querySelector(`.${className}`).value;
   date = formatNorDateToNumber(date);
-  const validDate = objEmptyingCalendar.validateNumber(className, objEmptyingCalendar, columnWidths,    '','Ugyldig dato',true,date, 20100101, objEmptyingCalendar.nineNine);
+  const validDate = objEmptyingCalendar.validateInterval(className, objEmptyingCalendar, columnWidths,    '','Ugyldig dato',true,date, 20100101, objEmptyingCalendar.nineNine);
 
   className = `paper${emptyingCalendarId}`;
   let paper = document.querySelector(`.${className}`).value;

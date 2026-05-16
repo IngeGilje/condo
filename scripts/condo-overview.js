@@ -96,7 +96,7 @@ async function events() {
       // valitadate filter
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      const validCondoId = objOverview.validateNumber('filterCondoId', objOverview, columnWidths,    '','Ugyldig leilighet',true,condoId, 1, objOverview.nineNine);
+      const validCondoId = objOverview.validateInterval('filterCondoId', objOverview, columnWidths,    '','Ugyldig leilighet',true,condoId, 1, objOverview.nineNine);
    
       // from date
       let fromDate = document.querySelector('.filterFromDate').value;

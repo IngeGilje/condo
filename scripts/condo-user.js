@@ -377,7 +377,7 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1;
   userId = Number(userId);
-  const validUserId = objUser.validateNumber('userId', objUser, columnWidths,    '','Ugyldig bruker',true,userId, -1, objUser.nineNine);
+  const validUserId = objUser.validateInterval('userId', objUser, columnWidths,    '','Ugyldig bruker',true,userId, -1, objUser.nineNine);
 
   // resident
   let resident = document.querySelector('.resident').value;
@@ -413,15 +413,15 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = objUser.validateNumber('condoId', objUser, columnWidths,    '','Ugyldig leilighet',true,condoId, 0, objUser.nineNine);
+  const validCondoId = objUser.validateInterval('condoId', objUser, columnWidths,    '','Ugyldig leilighet',true,condoId, 0, objUser.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
-  const validFirstName = objUser.validateText('firstName', firstName, 3, 45, objUser, '', 'Ugyldig fornavn');
+  const validFirstName = objUser.validateText('firstName', objUser, columnwidths,    '', 'Ugyldig fornavn', true,firstName, 3, 45);
 
   // validate lastName
   const lastName = document.querySelector('.lastName').value;
-  const validLastName = objUser.validateText('lastName', lastName, 3, 45, objUser, '', 'Ugyldig etternavn');
+  const validLastName = objUser.validateText('lastName', objUser, columnwidths,    '', 'Ugyldig etternavn', true, lastName, 3, 45);
 
   // validate phone
   const phone = document.querySelector('.phone').value;

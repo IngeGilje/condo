@@ -460,26 +460,28 @@ async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = objSupplier.validateNumber('supplierId', objSupplier, columnWidths,    '','Ugyldig leverandør',true,supplierId, -1, objSupplier.nineNine);
+  const validSupplierId = objSupplier.validateInterval('supplierId', objSupplier, columnWidths,    '','Ugyldig leverandør',true,supplierId, -1, objSupplier.nineNine);
 
   const name = document.querySelector('.name').value;
-  const validName = objSupplier.validateText('name', name, 3, 45, objSupplier, '', 'Ugyldig navn');
+  const validName = objSupplier.validateText('name', objSupplier, columnwidths,    '', 'Ugyldig navn', true, name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = objSupplier.validateText('street', street, 0, 45, objSupplier, '', 'Ugyldig adresse');
-
+  const validStreet = objSupplier.validateText('street', objSupplier, columnwidths,    '','Ugyldig adresse', true,street, 0, 45);
+ 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = objSupplier.validateText('address2', address2, 0, 45, objSupplier, '', 'Ugyldig adresse');
+  const validAddress2 = objSupplier.validateText('address2', objSupplier, columnwidths,    '', 'Ugyldig adresse', true,address2, 0, 45);
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = objSupplier.validateNumber('postalCode', objSupplier, columnWidths,    '', 'Ugyldig poststed',Number(postalCode), 0, objSupplier.nineNine);
+  const validPostalCode = objSupplier.validateInterval('postalCode', objSupplier, columnWidths,    '', 'Ugyldig poststed',Number(postalCode), 0, objSupplier.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value.trim();
   const validCity = objSupplier.validateText('city', city, 0, 45, objSupplier, '', 'Ugyldig poststed');
+                                   //         className, object, columnwidths, style, message, true, text, minLenght, maxLength
+
 
   // validate email
   const email = document.querySelector('.email').value.trim();
@@ -493,7 +495,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate accountId
   const accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = objSupplier.validateNumber('accountId', objSupplier, columnWidths,    '','Ugyldig konto',true,accountId, 1, objSupplier.nineNine);
+  const validAccountId = objSupplier.validateInterval('accountId', objSupplier, columnWidths,    '','Ugyldig konto',true,accountId, 1, objSupplier.nineNine);
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
@@ -502,22 +504,22 @@ async function updateSuppliersRow(supplierId) {
 
   // validate amountAccountId
   const amountAccountId = Number(document.querySelector('.amountAccountId').value);
-  const validAmountAccountId = objSupplier.validateNumber('amountAccountId', objSupplier, columnWidths,    '','Ugyldig konto for beløp',true,amountAccountId, 0, objSupplier.nineNine);
+  const validAmountAccountId = objSupplier.validateInterval('amountAccountId', objSupplier, columnWidths,    '','Ugyldig konto for beløp',true,amountAccountId, 0, objSupplier.nineNine);
 
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatKronerToOre(amount));
-  const validAmount = objSupplier.validateNumber('amount', objSupplier, columnWidths,    '','Ugyldig beløp',true,amount, objSupplier.minusNineNine, objSupplier.nineNine);
+  const validAmount = objSupplier.validateInterval('amount', objSupplier, columnWidths,    '','Ugyldig beløp',true,amount, objSupplier.minusNineNine, objSupplier.nineNine);
 
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);
-  const validTextAccountId = objSupplier.validateNumber('textAccountId', objSupplier, columnWidths,    '','Ugyldig konto for tekst',true,textAccountId, 0, objSupplier.nineNine);
+  const validTextAccountId = objSupplier.validateInterval('textAccountId', objSupplier, columnWidths,    '','Ugyldig konto for tekst',true,textAccountId, 0, objSupplier.nineNine);
 
   // validate text
   const text = document.querySelector('.text').value;
-  const validText = objSupplier.validateText('text', text, 0, 45, objSupplier, '', 'Ugyldig tekst');
-
+  const validText = objSupplier.validateText('text', objSupplier, columnwidths,    '','Ugyldig tekst', true, text, 0, 45);
+ 
   if (validSupplierId && validName && validStreet && validAddress2
     && validPostalCode && validCity && validBankAccount && validAccountId
     && validAmountAccountId && validAmount && validTextAccountId

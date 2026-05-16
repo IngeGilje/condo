@@ -339,8 +339,8 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objBankAccount.validateText('name', name, 3, 45, objBankAccount, '', 'Ugyldig navn');
-
+  const validName = objBankAccount.validateText('name', objBankAccount, columnwidths,    '', 'Ugyldig navn',name, 3, 45);
+ 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
   const validBankAccount = objBankAccount.validateBankAccount('bankAccount', bankAccount, objBankAccount, '', 'Ugyldig bankkonto');
@@ -350,41 +350,39 @@ async function updateBankAccountRow(bankAccountId) {
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
   if (openingBalanceDate.length > 0) {
     openingBalanceDate = convertDateToISOFormat(openingBalanceDate);
-    //validOpeningBalanceDate = objBankAccount.validateNumber('openingBalanceDate', openingBalanceDate, 20150101, 20291231, objBankAccount, '', 'Ugyldig dato');
-    validOpeningBalanceDate = objBankAccount.validateNumber('openingBalanceDate',  objBankAccount, columnWidths,    '', 'Ugyldig dato',               true, openingBalanceDate, 20150101, 20291231);
-                                                           //          className,          object, columnwidths, style,        message, showMessage = true, number, min, max
+    //validOpeningBalanceDate = objBankAccount.validateInterval('openingBalanceDate', openingBalanceDate, 20150101, 20291231, objBankAccount, '', 'Ugyldig dato');
+    validOpeningBalanceDate = objBankAccount.validateInterval('openingBalanceDate', objBankAccount, columnWidths, '', 'Ugyldig dato', true, openingBalanceDate, 20150101, 20291231);
+    //          className,          object, columnwidths, style,        message, showMessage = true, number, min, max
   }
 
   // Opening balance
   let validOpeningBalance = true;
   let openingBalance = document.querySelector('.openingBalance').value;
   openingBalance = formatKronerToOre(openingBalance);
-  validOpeningBalance = objBankAccount.validateNumber('openingBalance', objBankAccount, columnwidths,    '','Ugyldig beløp',               true, openingBalance,  objBankAccount.minusNineNine, objBankAccount.nineNine,);
+  validOpeningBalance = objBankAccount.validateInterval('openingBalance', objBankAccount, columnwidths, '', 'Ugyldig beløp', true, openingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine,);
 
   // Closing balance date
   let validClosingBalanceDate = true;
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
   closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
-  //validClosingBalanceDate = objBankAccount.validateNumber('closingBalanceDate', closingBalanceDate, 20150101, 20291231, objBankAccount, '', 'Ugyldig dato')
-  validClosingBalanceDate = objBankAccount.validateNumber('closingBalanceDate', objBankAccount, columnwidths,    '','Ugyldig dato',               true,closingBalanceDate, 20150101, 20291231);
-                                                         //          className,         object, columnwidths, style,       message, showMessage = true, number, min, max
+  //validClosingBalanceDate = objBankAccount.validateInterval('closingBalanceDate', closingBalanceDate, 20150101, 20291231, objBankAccount, '', 'Ugyldig dato')
+  validClosingBalanceDate = objBankAccount.validateInterval('closingBalanceDate', objBankAccount, columnwidths, '', 'Ugyldig dato', true, closingBalanceDate, 20150101, 20291231);
+  //          className,         object, columnwidths, style,       message, showMessage = true, number, min, max
 
 
   // Closing balance
   let validClosingBalance = true;
   let closingBalance = document.querySelector('.closingBalance').value;
   closingBalance = formatKronerToOre(closingBalance);
-  //validClosingBalance = objBankAccount.validateNumber('closingBalance', closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine, objBankAccount, '', 'Ugyldig beløp');
-  validClosingBalance = objBankAccount.validateNumber('closingBalance', objBankAccount, columnwidths,    '','Ugyldig beløp',        true,closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
- //                                                          className,         object, columnwidths, style, message, showMessage = true,        number,                          min,                     max
+  //validClosingBalance = objBankAccount.validateInterval('closingBalance', closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine, objBankAccount, '', 'Ugyldig beløp');
+  validClosingBalance = objBankAccount.validateInterval('closingBalance', objBankAccount, columnwidths, '', 'Ugyldig beløp', true, closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
+  //                                                          className,         object, columnwidths, style, message, showMessage = true,        number,                          min,                     max
 
 
   // Validate date interval
   let validBalanceDates = true;
   if (validOpeningBalanceDate && validClosingBalanceDate) {
-    validBalanceDates = objBankAccount.validateInterval('openingBalance',
-      Number(openingBalanceDate), Number(openingBalanceDate), Number(openingBalanceDate),
-      objBankAccount, '', 'Ugyldig datointervall');
+    validBalanceDates = objBankAccount.validateInterval('openingBalance', objBankAccount, columnwidths, '', 'Ugyldig datointervall', true, Number(openingBalanceDate), Number(openingBalanceDate), Number(openingBalanceDate));
   }
 
   if (validBankAccount && validName && validBalanceDates && validOpeningBalanceDate && validOpeningBalance

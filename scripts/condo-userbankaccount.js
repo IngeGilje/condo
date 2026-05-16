@@ -302,12 +302,12 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   // User Id
   let className = `userId${userBankAccountId}`;
   let userId = Number(document.querySelector(`.${className}`).value);
-  const validUserId = objUserBankAccount.validateNumber(className, userId, 1, objUserBankAccount.nineNine, objUserBankAccount, '', 'Ugyldig bruker');
+  const validUserId = objUserBankAccount.validateInterval(className, userId, 1, objUserBankAccount.nineNine, objUserBankAccount, '', 'Ugyldig bruker');
 
   // account Id
   className = `accountId${userBankAccountId}`;
   let accountId = Number(document.querySelector(`.${className}`).value);
-  const validAccountId = objUserBankAccount.validateNumber(className, objUserBankAccount, columnWidths,    '','Ugyldig konto',true,accountId, 1, objUserBankAccount.nineNine);
+  const validAccountId = objUserBankAccount.validateInterval(className, objUserBankAccount, columnWidths,    '','Ugyldig konto',true,accountId, 1, objUserBankAccount.nineNine);
  
   // bank account
   className = `bankAccount${userBankAccountId}`;

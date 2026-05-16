@@ -266,7 +266,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
   if (bankAccountTransactionId === '') bankAccountTransactionId = -1
-  const validbankAccountTransactionId = objBankAccountTransaction.validateNumber('bankAccountTransactionId', objBankAccountTransaction, columnWidths,    '','Ugyldig bankkonto',true,Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine);
+  const validbankAccountTransactionId = objBankAccountTransaction.validateInterval('bankAccountTransactionId', objBankAccountTransaction, columnWidths,    '','Ugyldig bankkonto',true,Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine);
  
   // validate voucher filename
   const voucherFileName = document.querySelector('.voucherFileName').value;

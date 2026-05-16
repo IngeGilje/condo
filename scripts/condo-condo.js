@@ -313,31 +313,32 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = objCondo.validateNumber('condoId', objCondo, columnWidths, '', 'Ugyldig leilighet', true, condoId, -1, objCondo.nineNine);
+  const validCondoId = objCondo.validateInterval('condoId', objCondo, columnWidths, '', 'Ugyldig leilighet', true, condoId, -1, objCondo.nineNine);
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objCondo.validateText('name', name, 3, 45, objCondo, '', 'Ugyldig kontonavn');
-
+  const validName = objCondo.validateText('name', objCondo, columnwidths,    '', 'Ugyldig kontonavn', true, name, 3, 45);
+ 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = objCondo.validateText('street', street, 3, 45, objCondo, '', 'Ugyldig gatenavn');
+  const validStreet = objCondo.validateText('street', objCondo, columnwidths,   '',  'Ugyldig gatenavn', true, street, 3, 45);
+ 
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = objCondo.validateText('address2', address2, 0, 45, objCondo, '', 'Ugyldig adresse');
-
+  const validAddress2 = objCondo.validateText('address2', objCondo, columnwidths,    '', 'Ugyldig adresse', true, address2, 0, 45);
+ 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objCondo.validateNumber('postalCode', objCondo, columnWidths, '', 'Ugyldig postnummer', true, Number(postalCode), 1, objCondo.nineNine);
+  const validPostalCode = objCondo.validateInterval('postalCode', objCondo, columnWidths, '', 'Ugyldig postnummer', true, Number(postalCode), 1, objCondo.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = objCondo.validateText('city', city, 1, 45, objCondo, '', 'Ugyldig poststed');
+  const validCity = objCondo.validateText('city', objCondo, columnwidths,    '','Ugyldig poststed', true,city, 1, 45);
 
   // validate squaremeters
   const squareMeters = Number(formatKronerToOre(document.querySelector('.squareMeters').value));
-  const validSquareMeters = objCondo.validateNumber('squareMeters', objCondo, columnWidths, '', 'Ugyldig areal', true, squareMeters, 1, objCondo.nineNine);
+  const validSquareMeters = objCondo.validateInterval('squareMeters', objCondo, columnWidths, '', 'Ugyldig areal', true, squareMeters, 1, objCondo.nineNine);
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 

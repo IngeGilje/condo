@@ -431,24 +431,24 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objCondominium.validateText('name', name, 3, 45, objCondominium, '', 'Ugyldig navn');
-
+  const validName = objCondominium.validateText('name', objCondominium, columnwidths,    '', 'Ugyldig navn', true, name, 3, 45);
+ 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = objCondominium.validateText('street', street, 3, 45, objCondominium, '', 'Ugyldig addresse');
+  const validStreet = objCondominium.validateText('street', objCondominium, columnwidths,    '','Ugyldig addresse', true, street, 3, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = objCondominium.validateText('address2', address2, 0, 45, objCondominium, '', 'Ugyldig addresse');
+  const validAddress2 = objCondominium.validateText('address2', objCondominium, columnwidths,    '','Ugyldig addresse', true, address2, 0, 45);
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objCondominium.validateNumber('postalCode', objCondominium, columnWidths,    '', 'Ugyldig postnummer', true,Number(postalCode), 1, objCondominium.nineNine);
+  const validPostalCode = objCondominium.validateInterval('postalCode', objCondominium, columnWidths,    '', 'Ugyldig postnummer', true,Number(postalCode), 1, objCondominium.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = objCondominium.validateText('city', city, 1, 45, objCondominium, '', 'Ugyldig poststed');
-
+  const validCity = objCondominium.validateText('city', objCondominium, columnwidths,    '', 'Ugyldig poststed', true, city, 1, 45);
+ 
   // validate phone
   const phone = document.querySelector('.phone').value;
   const validPhone = objCondominium.validatePhone('phone', phone);
@@ -459,15 +459,15 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate incomeRemoteHeatingAccountId
   const incomeRemoteHeatingAccountId = Number(document.querySelector('.incomeRemoteHeatingAccountId').value);
-  const validIncomeRemoteHeatingAccountId = objCondominium.validateNumber('incomeRemoteHeatingAccountId', objCondominium, columnWidths,    '', 'Ugyldig inntektskonto for husleie', true,incomeRemoteHeatingAccountId, 0, objCondominium.nineNine);
+  const validIncomeRemoteHeatingAccountId = objCondominium.validateInterval('incomeRemoteHeatingAccountId', objCondominium, columnWidths,    '', 'Ugyldig inntektskonto for husleie', true,incomeRemoteHeatingAccountId, 0, objCondominium.nineNine);
 
   // validate paymentRemoteHeatingAccountId
   const paymentRemoteHeatingAccountId = Number(document.querySelector('.paymentRemoteHeatingAccountId').value);
-  const validPaymentRemoteHeatingAccountId = objCondominium.validateNumber('paymentRemoteHeatingAccountId', objCondominium, columnWidths,    '', 'Ugyldig inntektskonto for fjernvarme',true,paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
+  const validPaymentRemoteHeatingAccountId = objCondominium.validateInterval('paymentRemoteHeatingAccountId', objCondominium, columnWidths,    '', 'Ugyldig inntektskonto for fjernvarme',true,paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
 
   // validate commonCostAccountId
   const commonCostAccountId = Number(document.querySelector('.commonCostAccountId').value);
-  const validCommonCostAccountId = objCondominium.validateNumber('commonCostAccountId', objCondominium, columnWidths,    '', 'Ugyldig konto',true,commonCostAccountId, 0, objCondominium.nineNine);
+  const validCommonCostAccountId = objCondominium.validateInterval('commonCostAccountId', objCondominium, columnWidths,    '', 'Ugyldig konto',true,commonCostAccountId, 0, objCondominium.nineNine);
  
   // validate organizationNumber
   const organizationNumber = Number(document.querySelector('.organizationNumber').value);

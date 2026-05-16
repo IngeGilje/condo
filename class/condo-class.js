@@ -327,8 +327,32 @@ class Condos {
     return html;
   }
 
+  /*
   // Valid text
   validateText(className, text, minLenght, maxLength, object, style, message) {
+
+    let valid = true;
+
+    // Check for string
+    if (typeof text !== "string") valid = false;
+
+    // Check length
+    if (!(text.length >= minLenght) && (text.length <= maxLength)) valid = false;
+
+    // Check allowed characters (letters, numbers, spaces)
+    const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
+    if (!regex.test(text)) valid = false;
+
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement) inputElement.classList.toggle('input-error', !valid);
+    if (!valid) this.showMessage(object, style, message);
+
+    return valid;
+  }
+  */
+
+  // Valid text
+  validateText(className, object, columnwidths, style, message, showMessage = true, text, minLenght, maxLength) {
 
     let valid = true;
 
@@ -789,24 +813,6 @@ class Condos {
     return html;
   }
 
-  // Validate interval
-  validateInterval(className, value, fromValue, toValue, object, style, message) {
-
-    let valid = true;
-
-    value = Number(value);
-    fromValue = Number(fromValue);
-    toValue = Number(toValue);
-
-    if ((fromValue > toValue) || (value < fromValue) || (value > toValue)) valid = false;
-
-    const inputElement = document.querySelector('input-error');
-    if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessage(object, style, message);
-
-    return valid;
-  }
-
   // Validate values ('Yes','No','Ignore')
   validateValues(className, object, columnwidths, style, message, showMessage = true, selectedValue, ...values) {
 
@@ -883,7 +889,7 @@ class Condos {
 
 
   // Validate number
-  validateNumber(className, object, columnwidths, style, message, showMessage = true, number, min, max) {
+  validateInterval(className, object, columnwidths, style, message, showMessage = true, number, min, max) {
 
     let valid = (Number(number) >= Number(min) && Number(number) <= Number(max));
 
