@@ -327,9 +327,8 @@ class Condos {
     return html;
   }
 
-  /*
   // Valid text
-  validateText(className, text, minLenght, maxLength, object, style, message) {
+  validateText(className, columnWidths, style, message, showMessage = true, text, minLenght, maxLength) {
 
     let valid = true;
 
@@ -345,43 +344,20 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessage(object, style, message);
-
-    return valid;
-  }
-  */
-
-  // Valid text
-  validateText(className, object, columnwidths, style, message, showMessage = true, text, minLenght, maxLength) {
-
-    let valid = true;
-
-    // Check for string
-    if (typeof text !== "string") valid = false;
-
-    // Check length
-    if (!(text.length >= minLenght) && (text.length <= maxLength)) valid = false;
-
-    // Check allowed characters (letters, numbers, spaces)
-    const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
-    if (!regex.test(text)) valid = false;
-
-    const inputElement = document.querySelector(`.${className}`);
-    if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessage(object, style, message);
+    if (!valid  && showMessage) this.showMessageNew(columnWidths, style, message)
 
     return valid;
   }
 
   // validate bank account
-  validateBankAccount(className, bankAccount, object, style, message) {
+  validateBankAccount(className, columnWidths, showMessage, bankAccount, style, message) {
 
     const bankAccountPattern = /^\d{11}$/;
     const valid = bankAccountPattern.test(bankAccount);
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessage(object, style, message);
+    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
 
     return valid;
   }
@@ -814,7 +790,7 @@ class Condos {
   }
 
   // Validate values ('Yes','No','Ignore')
-  validateValues(className, object, columnwidths, style, message, showMessage = true, selectedValue, ...values) {
+  validateValues(className, columnWidths, style, message, showMessage = true, selectedValue, ...values) {
 
     let valid = false;
 
@@ -825,7 +801,7 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid && showMessage) this.showMessageNew(object, columnwidths, style, message);
+    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
 
     return valid;
   }
@@ -869,43 +845,14 @@ class Condos {
     return html;
   }
 
-  /*
   // Validate number
-  validateNumber(className, number, min, max, object, style, message, showMessage = true) {
+  validateInterval(className, columnWidths, style, message, showMessage = true, number, min, max) {
 
     let valid = (Number(number) >= Number(min) && Number(number) <= Number(max));
-
-    // Invalid number
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) inputElement.classList.toggle('input-error', !valid);
-      if ((valid === false) && showMessage) this.showMessage(object, style, message);
-    }
-
-    return valid;
-  }
-  */
-
-
-  // Validate number
-  validateInterval(className, object, columnwidths, style, message, showMessage = true, number, min, max) {
-
-    let valid = (Number(number) >= Number(min) && Number(number) <= Number(max));
-
-    /*
-    // Invalid number
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) inputElement.classList.toggle('input-error', !valid);
-      if ((valid === false) && showMessage) this.showMessage(object, style, message);
-    }
-    */
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid && showMessage) this.showMessageNew(object, columnwidths, style, message);
+    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
 
     return valid;
 
@@ -915,7 +862,7 @@ class Condos {
 
 
   // validate the norwegian date format dd.mm.yyyy
-  validateNorDate(className, date, object, style, message) {
+  validateNorDate(className, date, style, message) {
 
     let valid = true;
 
@@ -955,7 +902,7 @@ class Condos {
       }
     }
 
-    if ((!valid) && (message.lenght > 0)) this.showMessage(object, style, message);
+    if ((!valid) && (message.lenght > 0)) this.showMessageNew(columnWidths, style, message);
     return valid;
   }
 
@@ -980,7 +927,7 @@ class Condos {
   }
 
   // Validate E-mail
-  validateEmail(className, eMail, object, style, message) {
+  validateEmail(className, eMail, style, message) {
 
     // Validate eMail
     const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -988,7 +935,7 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessage(object, style, message);
+    if (!valid) this.showMessageNew(columnWidths, style, message);
 
     return valid;
   }
@@ -1345,22 +1292,7 @@ class Condos {
   }
 
   // Show message
-  showMessage(object, style, message) {
-
-    // Start table
-    style = (style) ? style : 'width:600px;';
-    let html = object.startTable(style);
-
-    // show main header
-    html += object.showTableHeader('width:250px;', this.accountMenu, message);
-
-    // The end of the table
-    html += object.endTable();
-    document.querySelector('.message').innerHTML = html;
-  }
-
-  // Show message
-  showMessageNew(object, columnwidths, style, message) {
+  showMessageNew(columnWidths, style, message) {
 
     let tableWidth = 0;
     columnWidths.forEach((columnWidth) => {
@@ -1369,15 +1301,15 @@ class Condos {
 
     // Start table
     style = (style) ? style : `width:${tableWidth}px;`;
-    let html = object.startTable(style);
+    let html = this.startTable(style);
 
     // show main header
-    html += objAccount.showTableHeaderMenu(0, objAccount.accountMenu, '', '');
+    html += this.showTableHeaderMenu(0, 0, '', '');
 
-    html += object.showTableHeader(`width:${tableWidth}px;`, this.accountMenu, message);
+    html += this.showTableHeader(`width:${tableWidth}px;`, 0, message);
 
     // The end of the table
-    html += object.endTable();
+    html += this.endTable();
     document.querySelector('.message').innerHTML = html;
   }
 

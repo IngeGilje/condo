@@ -1520,8 +1520,8 @@ async function main() {
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
-            res.json(rows);
             console.log('SQLquery :', SQLquery);
+            res.json(rows);
           } catch (err) {
 
             console.log("Database error in /userbankaccounts:", err.message);
@@ -1541,18 +1541,17 @@ async function main() {
             const userBankAccountId = req.body.userBankAccountId;
 
             // Update user bank account table
-            const SQLquery =
-              `
-                UPDATE userBankAccounts
-          SET
-          user = '${user}',
-            lastUpdate = '${lastUpdate}',
-            userId = ${userId},
-          accountId = ${accountId},
-          bankAccount = '${bankAccount}'
-                WHERE userBankAccountId = ${userBankAccountId};
-          `;
+            const SQLquery = `
+            UPDATE userBankAccounts
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              userId = ${userId},
+              accountId = ${accountId},
+              bankAccount = '${bankAccount}'
+            WHERE userBankAccountId = ${userBankAccountId};`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -1570,36 +1569,32 @@ async function main() {
 
             const condominiumId = req.body.condominiumId;
             const user = req.body.user;
-
             const userId = req.body.userId;
             const accountId = req.body.accountId;
             const bankAccount = req.body.bankAccount;
 
             // Insert new row
             // Insert new record
-            const SQLquery =
-              `
-                INSERT INTO userBankAccounts(
-            deleted,
-            condominiumId,
-            user,
-            lastUpdate,
-            userId,
-            accountId,
-            name,
-            bankAccount
-          ) VALUES(
-            'N',
-            ${condominiumId},
-            '${user}',
-            '${lastUpdate}',
-            ${userId},
-            ${accountId},
-            '',
-            '${bankAccount}'
-          );
-          `;
+            const SQLquery = `
+            INSERT INTO userBankAccounts(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              userId,
+              accountId,
+              bankAccount
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${userId},
+              ${accountId},
+              '${bankAccount}'
+            );`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -1620,16 +1615,16 @@ async function main() {
             const userBankAccountId = req.body.userBankAccountId;
 
             // Delete table
-            const SQLquery =
-              `
-                UPDATE userbankaccounts
-          SET
-          deleted = 'Y',
-            lastUpdate = '${lastUpdate}',
-            user = '${user}'
-                  WHERE userBankAccountId = ${userBankAccountId};
+            const SQLquery = `
+            UPDATE userbankaccounts
+            SET
+              deleted = 'Y',
+              lastUpdate = '${lastUpdate}',
+              user = '${user}'
+            WHERE userBankAccountId = ${userBankAccountId};
           `;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);

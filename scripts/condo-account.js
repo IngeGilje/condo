@@ -58,8 +58,8 @@ async function main() {
     }
   } else {
 
-    objAccount.showMessage(objAccount, '', 'Server er ikke startet.');
-  }
+    objAccount.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+   }
 }
 
 // Events for accounts
@@ -321,15 +321,15 @@ async function updateAccountsRow(accountId) {
   // name
   className = `name${accountId}`;
   const name = document.querySelector(`.${className}`).value;
-  const validName = objAccount.validateText(className, objAccount,columnwidths,    '','Ugyldig kontonavn', true, name, 3, 50);
+  const validName = objAccount.validateText(className,columnWidths,    '','Ugyldig kontonavn', true, name, 3, 50);
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;
   className = `fixedCost${accountId}`;
   if (fixedCost === constFixedCost) fixedCost = 'Y';
   if (fixedCost === constVariableCost) fixedCost = 'N';
-  const validFixedCost = objAccount.validateValues(className, objAccount, columnWidths,true, '', 'Ugyldig kostnadstype', fixedCost, 'Y', 'N')
-
+  const validFixedCost = objAccount.validateValues(className, columnWidths,    '','Ugyldig kostnadstype',               true, fixedCost, 'Y', 'N');
+ 
   // Validate accounts columns
   if (validName && validFixedCost) {
 

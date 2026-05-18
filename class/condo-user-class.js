@@ -362,7 +362,8 @@ class User extends Condos {
     if (rowNumberUser !== -1) {
 
       // email exist
-      object.showMessage(object, style, message)
+      object.showMessageNew(columnWidths, style, message);
+   
       return false;
     } else {
 

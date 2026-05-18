@@ -58,7 +58,7 @@ async function main() {
     }
   } else {
 
-    showBudgets.showMessage(showBudgets, '', 'Server er ikke startet.');
+    showBudgets.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 
@@ -169,14 +169,14 @@ async function updateBudgetsRow(budgetId) {
   className = `.accountId${budgetId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${budgetId}`;
-  const validAccountId = objBudget.validateInterval(className, objBudget, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
+  const validAccountId = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
 
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
   amount = Number(formatKronerToOre(amount));
   className = `amount${budgetId}`;
-  let validAmount = objBudget.validateInterval(className, objBudget, columnWidths, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
+  let validAmount = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
 
   if (amount === 0) validAmount = false;
 
@@ -184,14 +184,14 @@ async function updateBudgetsRow(budgetId) {
   className = `.year${budgetId}`;
   let year = Number(document.querySelector(`${className}`).value);
   className = `year${budgetId}`;
-  const validYear = objBudget.validateInterval(className, objBudget, columnWidths, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
+  const validYear = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
 
   // text
   className = `.text${budgetId}`;
   let text = document.querySelector(className).value;
   className = `text${budgetId}`;
-  let validText = objBudget.validateText(className, objBudget, columnwidths,    '','Ugyldig tekst', true, text, 0, 45);
- 
+  let validText = objBudget.validateText(className, columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
+
   // Validate budgets columns
   if (validAccountId && validAmount && validAmount && validYear && validText) {
 

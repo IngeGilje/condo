@@ -62,7 +62,7 @@ async function main() {
     }
   } else {
 
-    objPassword.showMessage(objPassword, '', 'Server er ikke startet.');
+    objPassword.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 
@@ -254,11 +254,11 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = objUser.validateInterval('userId',objUser, columnWidths,    '','Ugyldig bruker',true,userId, -1, objUser.nineNine);
+  const validUserId = objUser.validateInterval('userId', columnWidths, '', 'Ugyldig bruker', true, userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = objUser.validateInterval('securityLevel', objUser,columnWidths,     '','Ugyldig sikkerhetsnivå',true,securityLevel, 1, 9);
+  const validSecurityLevel = objUser.validateInterval('securityLevel', columnWidths, '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
 
   // validate password
   let password = document.querySelector('.password').value;
@@ -301,7 +301,7 @@ async function updateUserRow(userId) {
     document.querySelector('.filterUserId').disabled = false;
   } else {
 
-    objPassword.showMessage(objPassword, '', 'Ugyldig passord.');
+    objPassword.showMessageNew(columnWidths, '', 'Ugyldig passord.');
   }
 }
 

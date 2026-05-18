@@ -55,7 +55,7 @@ async function main() {
     }
   } else {
 
-    objShowEmptyingCalendar.showMessage(objEmptyingCalendar, '', 'Server er ikke startet.');
+    objShowEmptyingCalendar.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 

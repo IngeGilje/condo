@@ -93,7 +93,7 @@ async function main() {
     }
   } else {
 
-    objBudget.showMessage(objBudget, '', 'Server er ikke startet.');
+    objBudget.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 

@@ -9,7 +9,7 @@ const objVoucher = new Voucher('voucher');
 
 const enableChanges = (objVoucher.securityLevel > 5);
 
-const columnWidths = [175, 225, 125,175,175];
+const columnWidths = [175, 225, 125, 175, 175];
 
 const params = new URLSearchParams(window.location.search);
 const paramCondoId = Number(params.get("condoId"));
@@ -36,7 +36,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objVoucher.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
@@ -65,7 +65,7 @@ async function main() {
     }
   } else {
 
-    objVoucher.showMessage(objVoucher, '', 'Server er ikke startet.');
+    objVoucher.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 
@@ -131,7 +131,7 @@ function showHeader() {
   html += objBankAccountTransaction.startTableBody();
 
   // show main header
-  html += objBankAccountTransaction.showTableHeaderLogOut( '', '', 'Vis bilag', '');
+  html += objBankAccountTransaction.showTableHeaderLogOut('', '', 'Vis bilag', '');
   html += "</tr>";
 
   // end table body
@@ -150,17 +150,17 @@ function showFilter(menuNumber, bankAccountTransactionId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objBankAccountTransaction.showTableHeaderMenu( menuNumber, objBankAccountTransaction.accountMenu, '', 'Velg bankkontotransaksjon', '');
+  html += objBankAccountTransaction.showTableHeaderMenu(menuNumber, objBankAccountTransaction.accountMenu, '', 'Velg bankkontotransaksjon', '');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '');
+  html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu, '');
 
   // show selected bank account transactions
-  html += objBankAccountTransaction.showSelectedBankAccountTransactions('filterBankAccountTransactionId','width:175px;', bankAccountTransactionId, '')
+  html += objBankAccountTransaction.showSelectedBankAccountTransactions('filterBankAccountTransactionId', 'width:175px;', bankAccountTransactionId, '')
 
   html += "<td></td></tr>";
 
@@ -186,10 +186,10 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // date and amount
     menuNumber++;
-    html += objVoucher.showTableHeaderMenu( menuNumber, objVoucher.accountMenu, 'Dato', 'Beløp', 'Konto');
+    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, 'Dato', 'Beløp', 'Konto');
 
     menuNumber++;
-    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
+    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu);
 
     // date
     let date = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].date;
@@ -204,43 +204,43 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // account
     const accountId = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].accountId;
-    html += objAccount.showSelectedAccounts('accountId', 'width:175px;',  accountId, '', '', false);
+    html += objAccount.showSelectedAccounts('accountId', 'width:175px;', accountId, '', '', false);
 
     html += "</tr>";
 
     // file name of the voucher
     menuNumber++;
-    html += objVoucher.showTableHeaderMenu( menuNumber, objVoucher.accountMenu, 'Filnavn', '', '');
+    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, 'Filnavn', '', '');
 
     menuNumber++;
-    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
+    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu);
 
     let voucherFileName = objBankAccountTransaction.arrayBankAccountTransactions[rowNumberBankAccountTransaction].voucherFileName;
-    voucherFileName = (voucherFileName) 
-    ? voucherFileName 
-    : `${bankAccountTransactionId}.pdf`;
+    voucherFileName = (voucherFileName)
+      ? voucherFileName
+      : `${bankAccountTransactionId}.pdf`;
     html += objBankAccountTransaction.inputTableColumn('voucherFileName', '', voucherFileName, 45, enableChanges);
 
     html += "<td></td><td></td></tr>";
 
     // Show button
     menuNumber++;
-    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '', '', '');
+    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu, '', '', '');
     html += "</tr>";
 
     menuNumber++;
-    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
+    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu);
 
-    html += objBankAccountTransaction.showButton( 'bankAccountTransaction', 'Tilbake');
+    html += objBankAccountTransaction.showButton('bankAccountTransaction', 'Tilbake');
     html += "</tr>";
 
     menuNumber++;
-    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu, '', '', '');
+    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu, '', '', '');
     html += "</tr>";
 
     // Show pdf file
     menuNumber++;
-    html += objBankAccountTransaction.insertTableRow('', menuNumber,objBankAccountTransaction.accountMenu);
+    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu);
 
     html += `
       <td colspan="3" rowspan="13">
@@ -252,7 +252,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // Show the rest of the menu
     menuNumber++;
-    html += objBankAccountTransaction.showRestMenu(menuNumber, objBankAccountTransaction.accountMenu,'2','3','4','5');
+    html += objBankAccountTransaction.showRestMenu(menuNumber, objBankAccountTransaction.accountMenu, '2', '3', '4', '5');
 
     // The end of the table
     html += objBankAccountTransaction.endTable();
@@ -266,8 +266,8 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
   if (bankAccountTransactionId === '') bankAccountTransactionId = -1
-  const validbankAccountTransactionId = objBankAccountTransaction.validateInterval('bankAccountTransactionId', objBankAccountTransaction, columnWidths,    '','Ugyldig bankkonto',true,Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine);
- 
+  const validbankAccountTransactionId = objBankAccountTransaction.validateInterval('bankAccountTransactionId', columnWidths, '', 'Ugyldig bankkonto', true, Number(bankAccountTransactionId), -1, objBankAccountTransaction.nineNine);
+
   // validate voucher filename
   const voucherFileName = document.querySelector('.voucherFileName').value;
 
@@ -276,7 +276,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   if (await objVoucher.checkIfFileExist(voucherFileName)) {
     validVoucherFileName = true;
   } else {
-    objVoucher.showMessage(objVoucher, '', 'Ugyldig filnavn på bilag.');
+    objVoucher.showMessageNew(columnWidths, '', 'Ugyldig filnavn på bilag.');
   }
 
   if (validVoucherFileName && validbankAccountTransactionId) {
@@ -294,18 +294,8 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
         await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, 0, 0, objVoucher.nineNine);
       } else {
 
-        objVoucher.showMessage(objVoucher, '', 'Bilag er ikke oppdatert.');
+        objVoucher.showMessageNew(columnWidths, '', 'Bilag er ikke oppdatert.');
       }
-
-      /*
-      // Show filter
-      orderBy = 'bankAccountTransactionId DESC, date DESC, income DESC';
-      let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = convertDateToISOFormat(fromDate);
-      let toDate = document.querySelector('.filterToDate').value;
-      toDate = convertDateToISOFormat(toDate);
-      menuNumber = showFilter(menuNumber, bankAccountTransactionId);
-      */
 
       showVoucher(bankAccountTransactionId, 2);
     }

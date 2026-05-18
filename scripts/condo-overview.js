@@ -82,7 +82,7 @@ async function main() {
     }
   } else {
 
-    objOverview.showMessage(objOverview, '', 'Server er ikke startet.');
+    objOverview.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 
@@ -96,7 +96,7 @@ async function events() {
       // valitadate filter
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      const validCondoId = objOverview.validateInterval('filterCondoId', objOverview, columnWidths,    '','Ugyldig leilighet',true,condoId, 1, objOverview.nineNine);
+      const validCondoId = objOverview.validateInterval('filterCondoId', columnWidths,    '','Ugyldig leilighet',true,condoId, 1, objOverview.nineNine);
    
       // from date
       let fromDate = document.querySelector('.filterFromDate').value;

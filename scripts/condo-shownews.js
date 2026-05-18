@@ -49,7 +49,7 @@ async function main() {
     }
   } else {
 
-    objShowNews.showMessage(objShowNews, '', 'Server er ikke startet.');
+    objShowNews.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 

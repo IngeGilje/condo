@@ -8,7 +8,7 @@ const objUser = new User('user');
 
 const enableChanges = (objUser.securityLevel > 5);
 
-const columnWidths = [175,175,175];
+const columnWidths = [175, 175, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -30,7 +30,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show horizonal menu
+      // Show horizonal menu
       let html = objUser.showHorizontalMenu();
       document.querySelector('.horizontalMenu').innerHTML = html;
 
@@ -63,7 +63,7 @@ async function main() {
     }
   } else {
 
-    objUser.showMessage(objUser, '', 'condo-server.js er ikke startet.');
+    objUser.showMessageNew(columnWidths, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -202,7 +202,7 @@ function resetValues() {
 
 
   document.querySelector('.filterUserId').disabled = true;
-  
+
   if (enableChanges) {
     document.querySelector('.delete').disabled = true;
     document.querySelector('.insert').disabled = true;
@@ -220,7 +220,7 @@ function showHeader() {
   html += objUser.startTableBody();
 
   // show main header
-  html += objUser.showTableHeaderLogOut( '', 'Bruker');
+  html += objUser.showTableHeaderLogOut('', 'Bruker');
   html += "</tr>";
 
   // end table body
@@ -239,26 +239,26 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', '2Bruker', '3');
+  html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', '2Bruker', '3');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+  html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
   // Condominium
-  if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId','width:175px;', condominiumId, '', '', true)
+  if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', true)
 
   // user
-  html += objUser.showSelectedUsers('filterUserId','width:175px;',  userId, '', '', enableChanges)
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', enableChanges)
 
   html += "</tr>";
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objUser.insertTableRow('', menuNumber,objUser.accountMenu, '', '');
+  html += objUser.insertTableRow('', menuNumber, objUser.accountMenu, '', '');
   html += "</tr>";
 
   // end table body
@@ -284,28 +284,28 @@ function showUser(menuNumber, userId) {
     // email,condoId
     //html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'E-mail', 'Leilighet');
+    html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'E-mail', 'Leilighet');
 
     // insert a table row (<tr></td>)
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+    html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
     // email
     html += objUser.inputTableColumn('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
 
     // condoId
-    html += objCondo.showSelectedCondos('condoId','width:175px;', objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
+    html += objCondo.showSelectedCondos('condoId', 'width:175px;', objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
 
     html += "</tr>";
 
     // firstName, lastName
     //html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Fornavn', 'Etternavn');
+    html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'Fornavn', 'Etternavn');
 
     // insert a table row (<tr></td>)
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+    html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
     // firstName
     html += objUser.inputTableColumn('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
@@ -318,24 +318,24 @@ function showUser(menuNumber, userId) {
     // phone, activ user
     //html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu( menuNumber, objUser.accountMenu, '', 'Telefonnummer', 'Beboer');
+    html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'Telefonnummer', 'Beboer');
 
     // insert a table row (<tr></td>)
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+    html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
     // phone
     html += objUser.inputTableColumn('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
 
     // Activ user
     resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
-    html += objUser.showSelectedValues('resident','width:175px;', enableChanges, resident, 'Ja', 'Nei')
+    html += objUser.showSelectedValues('resident', 'width:175px;', enableChanges, resident, 'Ja', 'Nei')
 
     html += "</tr>";
 
     // insert a table row (<tr></td>)
     menuNumber++;
-    html += objUser.insertTableRow('', menuNumber,objUser.accountMenu, '', '');
+    html += objUser.insertTableRow('', menuNumber, objUser.accountMenu, '', '');
     html += "</tr>";
 
     // Show buttons (<tr></td>)
@@ -343,24 +343,24 @@ function showUser(menuNumber, userId) {
 
       // insert a table row (<tr></td>)
       menuNumber++;
-      html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+      html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
-      html += objUser.showButton( 'update', 'Oppdater');
-      html += objUser.showButton( 'cancel', 'Angre');
+      html += objUser.showButton('update', 'Oppdater');
+      html += objUser.showButton('cancel', 'Angre');
       html += "</tr>";
 
       // insert a table row (<tr></td>)
       menuNumber++;
-      html += objUser.insertTableRow('', menuNumber,objUser.accountMenu);
+      html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
-      html += objUser.showButton( 'delete', 'Slett');
-      html += objUser.showButton( 'insert', 'Ny');
+      html += objUser.showButton('delete', 'Slett');
+      html += objUser.showButton('insert', 'Ny');
       html += "</tr>";
     }
 
     // Show the rest of the menu
     menuNumber++;
-    html += objUser.showRestMenu(menuNumber, objUser.accountMenu,'2','3');
+    html += objUser.showRestMenu(menuNumber, objUser.accountMenu, '2', '3');
 
     // The end of the table
     html += objUser.endTable();
@@ -377,11 +377,13 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1;
   userId = Number(userId);
-  const validUserId = objUser.validateInterval('userId', objUser, columnWidths,    '','Ugyldig bruker',true,userId, -1, objUser.nineNine);
+  const validUserId = objUser.validateInterval('userId', columnWidths, '', 'Ugyldig bruker', true, userId, -1, objUser.nineNine);
 
   // resident
   let resident = document.querySelector('.resident').value;
-  resident = (resident === 'Ja') ? 'Y' : 'N';
+   if (resident === 'Ja') resident = 'Y';
+   if (resident === 'Nei') resident = 'N';
+  const validResident = objUser.validateValues('resident', columnWidths,    '',  'Ugyldig beboertype',               true,   resident, 'Y', 'N')
 
   // email
   const email = document.querySelector('.email').value;
@@ -408,26 +410,26 @@ async function updateUserRow(userId) {
     }
   } else {
 
-    objUser.showMessage(objUser, '', 'Ugyldig email.');
+    objUser.showMessageNew(columnWidths, '', 'Ugyldig email.');
   }
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = objUser.validateInterval('condoId', objUser, columnWidths,    '','Ugyldig leilighet',true,condoId, 0, objUser.nineNine);
+  const validCondoId = objUser.validateInterval('condoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 0, objUser.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
-  const validFirstName = objUser.validateText('firstName', objUser, columnwidths,    '', 'Ugyldig fornavn', true,firstName, 3, 45);
+  const validFirstName = objUser.validateText('firstName', columnWidths, '', 'Ugyldig fornavn', true, firstName, 3, 45);
 
   // validate lastName
   const lastName = document.querySelector('.lastName').value;
-  const validLastName = objUser.validateText('lastName', objUser, columnwidths,    '', 'Ugyldig etternavn', true, lastName, 3, 45);
+  const validLastName = objUser.validateText('lastName', columnWidths, '', 'Ugyldig etternavn', true, lastName, 3, 45);
 
   // validate phone
   const phone = document.querySelector('.phone').value;
   const validPhone = objUser.validatePhone('phone', phone);
 
-   if (validUserId && validEmail && validCondoId && validFirstName && validLastName
+  if (validUserId && validEmail && validCondoId && validFirstName && validLastName
     && validPhone) {
 
     document.querySelector('.message').style.display = "none";

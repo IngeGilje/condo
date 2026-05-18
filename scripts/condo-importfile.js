@@ -80,7 +80,7 @@ async function main() {
     }
   } else {
 
-    objImportFile.showMessage(objImportFile, tableWidth, 'Server er ikke startet.');
+    objImportFile.showMessageNew(columnWidths, tableWidth, 'Server er ikke startet.');
   }
 }
 
@@ -140,7 +140,7 @@ async function events() {
         }
       } else {
 
-        objImportFile.showMessage(objImportFile, tableWidth, 'Ugyldig navn på transaksjonsfil');
+        objImportFile.showMessageNew(columnWidths, tableWidth, 'Ugyldig navn på transaksjonsfil');
       }
     }
   });
