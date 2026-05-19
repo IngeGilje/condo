@@ -3,6 +3,8 @@
 const objUser = new User('user');
 const objLogIn = new Login('login');
 
+const columnWidths = [175];
+
 sessionStorage.clear();
 
 // Call main when script loads
