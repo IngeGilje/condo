@@ -100,7 +100,7 @@ class RemoteHeating extends Condos {
     }
 
     html +=
-    `
+      `
         </select >
       </td>
     `;
@@ -200,7 +200,9 @@ class RemoteHeating extends Condos {
   // delete a remoteheatings row
   async deleteRemoteHeatingTable(remoteHeatingId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/remoteheatings' : 'http://localhost:3000/remoteheatings';
+    const URL = (this.serverStatus === 1)
+      ? '/api/remoteheatings'
+      : 'http://localhost:3000/remoteheatings';
     try {
 
       // Fetch for sending a message to server(request)

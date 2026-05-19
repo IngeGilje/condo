@@ -78,13 +78,16 @@ async function events() {
 // Show news
 function showNews(menuNumber) {
 
+  let html = `
+  <div class="news-container">
+    <div class="news-card">`;
+
   if (objNews.arrayNews.length > 0) {
 
     for (const news of objNews.arrayNews) {
 
       let date = news.date;
       date = formatNumberToNorDate(date);
-      const text = news.text;
 
       // user name
       const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === news.userId);
@@ -97,25 +100,24 @@ function showNews(menuNumber) {
         : 'http://localhost/';
       src = `${src}images/hinna-park.jpg`;
 
-      let html = `
-      <div class="news-container">
-        <div class="news-card">
-          <div class="news-image">
-            <img src="${src}" alt="News Image">
-          </div>
-          <div class="news-content">
-            <h1 class="news-title">${news.title}</h1>
-            <div class="news-meta">${date} • av ${userName}</div>
-            <p class="news-text">
-              ${news.content}
-            </p>
-          </div>
-        </div>
+      html += `
+      <div class="news-image">
+        <img src="${src}" alt="News Image">
       </div>
-    `;
+      <div class="news-content">
+        <h1 class="news-title">${news.title}</h1>
+        <div class="news-meta">${date} • av ${userName}</div>
+        <p class="news-text">
+          ${news.content}
+        </p>
+      </div>`;
 
-      document.querySelector('.shownews').innerHTML = html;
     }
+    html += `
+          </div>
+      </div>`;
+
+    document.querySelector('.shownews').innerHTML = html;
   }
   return menuNumber;
 }

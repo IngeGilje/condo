@@ -294,23 +294,6 @@ class Condos {
       `;
   }
 
-  /*
-  // Show button
-  showButton(className, text) {
-
-    return `
-    <td 
-      class="center"
-    >
-      <button 
-        class="${className} center one-line button"
-      >
-        ${text}
-      </button>
-    </td>`;
-  }
-  */
-
   // Show button
   showButton(className, text) {
 
@@ -853,9 +836,6 @@ class Condos {
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
     if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
-
-    return valid;
-
 
     return valid;
   }

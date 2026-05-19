@@ -419,11 +419,11 @@ async function showHowMuchToPay(menuNumber) {
 
   menuNumber++;
   openingBalance = formatOreToKroner(openingBalance);
-  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '2', '3Sum', sumToPay, sumIncome, overPay);
+  html += objOverview.insertTableRow('font-weight: 600;', menuNumber, objOverview.accountMenu, '', '', 'Sum', sumToPay, sumIncome, overPay);
 
   // Show the rest of the menu
   menuNumber++;
-  html += objOverview.showRestMenu(menuNumber, objOverview.accountMenu,'2','3','4','5','6','7');
+  html += objOverview.showRestMenu(menuNumber, objOverview.accountMenu,'','','','','','');
 
   // The end of the table
   html += objOverview.endTable();

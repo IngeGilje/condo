@@ -8,7 +8,7 @@ const objUserBankAccount = new UserBankAccount('userbankaccount');
 
 const enableChanges = (objUserBankAccount.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175, 175];
+const columnWidths = [175, 175, 175, 175, 75];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -51,7 +51,6 @@ async function main() {
       accountId = Number(document.querySelector('.filterAccountId').value);
       await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
-      //await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.userId, objUserBankAccount.nineNine);
       menuNumber = showUserBankAccount(menuNumber);
 
       // Events
@@ -129,9 +128,6 @@ async function events() {
       const classNameDelete = `${className}`
       deleteUserBankAccountRow(userBankAccountId, className);
 
-      //const userId = Number(document.querySelector('.filterUserId').value);
-      //await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
-
       userId = Number(document.querySelector('.filterUserId').value);
       accountId = Number(document.querySelector('.filterAccountId').value);
       await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
@@ -182,7 +178,7 @@ function showFilter(menuNumber, userId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '', '2', '3Bruker', '4Konto', '5');
+  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '', '', 'Bruker', 'Konto', '');
 
   // start table body
   html += objUserBankAccount.startTableBody();
@@ -280,7 +276,7 @@ function showUserBankAccount(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objUserBankAccount.showRestMenu(menuNumber, objUserBankAccount.accountMenu, '2', '3', '4', '5');
+  html += objUserBankAccount.showRestMenu(menuNumber, objUserBankAccount.accountMenu, '', '', '', '');
 
   // The end of the table
   html += objUserBankAccount.endTable();
@@ -303,8 +299,6 @@ async function deleteUserBankAccountRow(userBankAccountId, className) {
   userId = Number(document.querySelector('.filterUserId').value);
   accountId = Number(document.querySelector('.filterAccountId').value);
   await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
-
-  //await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 }
 
 // Update userbankaccounts row

@@ -8,7 +8,7 @@ const objBudget = new Budget('budget');
 
 const enableChanges = (objBudget.securityLevel > 5);
 
-const columnWidths = [175, 100, 175, 175, 100, 200];
+const columnWidths = [175, 175, 175, 175, 175, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -107,18 +107,23 @@ async function events() {
   });
 
   // Delete budgets row
-  document.addEventListener('change', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
+  document.addEventListener('click', async (event) => {
 
-      const arrayPrefixes = ['delete'];
+    const arrayPrefixes = ['delete'];
+    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
 
       // Find the first matching class
       const className = arrayPrefixes
         .map(prefix => objBudget.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      //const className = objBudget.getDeleteClass(event.target);
-      const budgetId = Number(className.substring(6));
+      // Extract the number in the class name
+      let budgetId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        budgetId = Number(className.slice(prefix.length));
+      }
 
       deleteBudgetRow(budgetId, className);
 
@@ -177,8 +182,6 @@ async function updateBudgetsRow(budgetId) {
   amount = Number(formatKronerToOre(amount));
   className = `amount${budgetId}`;
   let validAmount = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
-
-  if (amount === 0) validAmount = false;
 
   // year
   className = `.year${budgetId}`;
@@ -301,7 +304,7 @@ function showBudgets(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objBudget.showTableHeaderMenu(menuNumber, objBudget.accountMenu, '#e0f0e0', 'Slett', 'Konto', 'Budsjett', 'År', 'Tekst');
+  html += objBudget.showTableHeaderMenu(menuNumber, objBudget.accountMenu, '#e0f0e0', 'Konto', 'Budsjett', 'År', 'Tekst', 'Slett',);
 
   let sumAmount = 0;
 
@@ -311,16 +314,8 @@ function showBudgets(menuNumber) {
     menuNumber++;
     html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu);
 
-    // Delete
-    let selected = "Ugyldig verdi";
-    if (budget.deleted === 'Y') selected = "Ja";
-    if (budget.deleted === 'N') selected = "Nei";
-
-    let className = `delete${budget.budgetId}`;
-    html += objBudget.showSelectedValues(className, 'width:175px;', enableChanges, selected, 'Nei', 'Ja');
-
     // accountId
-    className = `accountId${budget.budgetId}`;
+    let className = `accountId${budget.budgetId}`;
     html += objAccount.showSelectedAccounts(className, 'width:175px;', budget.accountId, '', '', enableChanges);
 
     // due amount
@@ -338,6 +333,9 @@ function showBudgets(menuNumber) {
     className = `text${budget.budgetId}`;
     html += objBudget.inputTableColumn(className, '', text, 45, enableChanges);
 
+    // Delete
+    className = `delete${budget.budgetId}`;
+    html += objBudget.showButton(className, 'Slett');
     html += "</tr>";
 
     // accumulate
@@ -354,11 +352,11 @@ function showBudgets(menuNumber) {
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
   menuNumber++;
-  html += objBudget.insertTableRow('font-weight: 600;', menuNumber, objBudget.accountMenu, '', 'Sum', sumAmount, '', '');
+  html += objBudget.insertTableRow('font-weight: 600;', menuNumber, objBudget.accountMenu, 'Sum', sumAmount, '', '','');
 
   // Show the rest of the menu
   menuNumber++;
-  html += objBudget.showRestMenu(menuNumber, objBudget.accountMenu, '2', '3', '4', '5', '6');
+  html += objBudget.showRestMenu(menuNumber, objBudget.accountMenu, '', '', '', '', '');
 
   // The end of the table
   html += objBudget.endTable();
@@ -369,23 +367,24 @@ function showBudgets(menuNumber) {
 
 function insertEmptyTableRow(menuNumber) {
 
-  let html = objAccount.insertTableRow('', menuNumber, objBudget.accountMenu, 'Nytt budsjett');
+      // Show menu
+    menuNumber++;
+    html = objBudget.insertTableRow('', menuNumber, objBudget.accountMenu);
 
   // accounts
-  html += objAccount.showSelectedAccounts('accountId0', 'width:175px;', 0, 'Ingen konto er valgt', '', enableChanges);
+  html  += objAccount.showSelectedAccounts('accountId0', 'width:175px;', 0, 'Velg konto', '', enableChanges);
 
-  // budget amount
   const amount = "";
   html += objBudget.inputTableColumn('amount0', '', amount, 11, enableChanges);
 
   // Year
   const year = Number(document.querySelector('.filterYear').value);
-  html += objBudget.showSelectedNumbers('year0', 'width:175px;', 2020, 2030, year, false);
-
+  html += objBudget.showSelectedNumbers('year0', 'width:175px;',       2020,     2030, year, enableChanges);
+ 
   // text
   const text = "";
   html += objBudget.inputTableColumn('text0', '', text, 45, enableChanges);
 
-  html += "</tr>";
+  html += "<td>Nytt budsjett</td></tr>";
   return html;
 }

@@ -180,6 +180,9 @@ function resetValues() {
   // amount accountId Id
   document.querySelector('.amountAccountId').value = 0;
 
+  // text accountId Id
+  document.querySelector('.textAccountId').value = 0;
+
   // amount
   document.querySelector('.amount').value = '';
 
@@ -362,7 +365,7 @@ function showSupplier(menuNumber, supplierId) {
   const accountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccount.showSelectedAccounts('accountId', 'width:175px;', accountId, 'Ingen mottaker er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId', 'width:175px;', accountId, 'Velg konto', '', enableChanges);
 
   // bankAccount number
   const bankAccount = (rowNumberSupplier === -1)
@@ -373,7 +376,6 @@ function showSupplier(menuNumber, supplierId) {
   html += "</tr>";
 
   // amountAccountId, amount
-  //html += "<tr>";
   menuNumber++;
   html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Konto for beløp', 'Beløp');
 
@@ -385,7 +387,7 @@ function showSupplier(menuNumber, supplierId) {
   const amountAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccount.showSelectedAccounts('amountAccountId', 'width:175px;', amountAccountId, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('amountAccountId', 'width:175px;', amountAccountId, 'Velg konto', '', enableChanges);
 
   // amount
   const amount = (rowNumberSupplier === -1)
@@ -396,7 +398,6 @@ function showSupplier(menuNumber, supplierId) {
   html += "</tr>";
 
   // textAccountId, text
-  //html += "<tr>";
   menuNumber++;
   html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Konto for tekst', 'Tekst');
 
@@ -408,7 +409,7 @@ function showSupplier(menuNumber, supplierId) {
   const textAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccount.showSelectedAccounts('textAccountId', 'width:175px;', textAccountId, 'Ingen konto er valgt', '', enableChanges);
+  html += objAccount.showSelectedAccounts('textAccountId', 'width:175px;', textAccountId, 'Velg konto',        '', enableChanges);
 
   // text for account id
   const text = (rowNumberSupplier === -1)
@@ -446,7 +447,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objSupplier.showRestMenu(menuNumber, objSupplier.accountMenu, '2', '3');
+  html += objSupplier.showRestMenu(menuNumber, objSupplier.accountMenu, '', '');
 
   // The end of the table
   html += objSupplier.endTable();
@@ -475,8 +476,8 @@ async function updateSuppliersRow(supplierId) {
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = objSupplier.validateInterval('postalCode', columnWidths, '', 'Ugyldig poststed', Number(postalCode), 0, objSupplier.nineNine);
-
+  const validPostalCode = objSupplier.validateInterval('postalCode', columnWidths,    '', 'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
+                  
   // validate city
   const city = document.querySelector('.city').value.trim();
   const validCity = objSupplier.validateText('city', columnWidths, '', 'Ugyldig poststed', true, city, 0, 45, '',);

@@ -251,7 +251,7 @@ function showCommonCost(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objCommonCost.showRestMenu(menuNumber, objCommonCost.accountMenu, '2', '3', '4', '5');
+  html += objCommonCost.showRestMenu(menuNumber, objCommonCost.accountMenu, '', '', '', '');
 
   // The end of the table
   html += objCommonCost.endTable();

@@ -210,7 +210,6 @@ async function main() {
     });
 
     // Requests for accounts
-    //app.get("/accounts", async (req, res) => {
     app.post("/accounts", async (req, res) => {
 
       const action = req.body.action;
@@ -225,12 +224,10 @@ async function main() {
 
           try {
 
-            let SQLquery =
-              `
-                SELECT * FROM accounts
-                WHERE condominiumId = ${condominiumId}
-                  AND deleted <> 'Y'
-              `;
+            let SQLquery = `
+            SELECT * FROM accounts
+            WHERE condominiumId = ${condominiumId}
+              AND deleted <> 'Y'`;
             if (fixedCost === 'Y' || fixedCost === 'N') SQLquery += ` AND fixedCost = '${fixedCost}'`;
             console.log('SQLquery :', SQLquery);
 
@@ -1515,12 +1512,11 @@ async function main() {
               AND deleted <> 'Y'`;
             if (userId !== nineNine) SQLquery += ` AND userId = ${userId} `;
             if (accountId !== nineNine) SQLquery += ` AND accountId = ${accountId} `;
-            SQLquery += ` ORDER BY name; `;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
-            console.log('SQLquery :', SQLquery);
             res.json(rows);
           } catch (err) {
 
@@ -1904,10 +1900,8 @@ async function main() {
 
             } else {
 
-              SQLquery +=
-                `
-                  ORDER BY date DESC, income DESC;
-          `;
+              SQLquery += `
+              ORDER BY date DESC, income DESC;`;
             }
 
             console.log('SQLquery: ', SQLquery);
@@ -1982,34 +1976,31 @@ async function main() {
             const text = req.body.text;
 
             // Insert new bank account transactions row
-            const SQLquery =
-              `
-                INSERT INTO bankaccounttransactions(
-            deleted,
-            condominiumId,
-            user,
-            lastUpdate,
-            condoId,
-            accountId,
-            income,
-            payment,
-            kilowattHour,
-            date,
-            text
-          ) VALUES(
-            'N',
-            ${condominiumId},
-            '${user}',
-            '${lastUpdate}',
-            ${condoId},
-            ${accountId},
-            ${income},
-            ${payment},
-            ${kilowattHour},
-            ${date},
-            '${text}'
-          );
-          `;
+            const SQLquery = `
+            INSERT INTO bankaccounttransactions(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              condoId,
+              accountId,
+              income,
+              payment,
+              kilowattHour,
+              date,
+              text
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${condoId},
+              ${accountId},
+              ${income},
+              ${payment},
+              ${kilowattHour},
+              ${date},
+              '${text}');`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -2042,6 +2033,7 @@ async function main() {
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+            console.log('rows: ', rows);
 
             // Send a JSON response to the client containing the data
             res.json(rows);

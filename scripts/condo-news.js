@@ -38,7 +38,7 @@ async function main() {
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
       let newsId = 0;
-      if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1).newsId;
+      if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews[0].newsId;
 
       // Show header
       let menuNumber = 0;
@@ -94,7 +94,7 @@ async function events() {
 
       // Show filter
       const newsId = (objNews.arrayNews.length > 0)
-        ? objNews.arrayNews.at(-1).newsId
+        ? objNews.arrayNews[0].newsId
         : 0;
       menuNumber = showFilter(menuNumber, newsId);
       menuNumber = showNews(menuNumber, newsId);
@@ -117,7 +117,7 @@ async function events() {
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
       let newsId = Number(document.querySelector('.filterNewsId').value);
-      if (newsId === 0) newsId = objNews.arrayNews.at(-1).newsId;
+      if (newsId === 0) newsId = objNews.arrayNews[0].newsId;
 
       showNews(2, newsId);
     };
@@ -314,7 +314,7 @@ function showNews(menuNumber, newsId) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objNews.showRestMenu(menuNumber, objNews.administrationMenu, '2', '3', '4');
+  html += objNews.showRestMenu(menuNumber, objNews.administrationMenu, '', '', '');
 
   // The end of the table
   html += objNews.endTable();
@@ -342,8 +342,8 @@ async function updateCondoRow(newsId) {
   const validDate = objNews.validateInterval('date', columnWidths, '', 'Ugyldig dato', true, date, 1, objNews.nineNine);
 
   // validate userId  
-  const userId = document.querySelector('.userId').value;
-  const validUserId = objNews.validateInterval('userId', columnWidths, '', 'Ugyldig forfatter', userId, 1, objNews.nineNine);
+  const userId = Number(document.querySelector('.userId').value);
+  const validUserId = objNews.validateInterval('userId', columnWidths,    '', 'Ugyldig forfatter',              true,userId, 1, objNews.nineNine);
 
   // validate image
   const image = document.querySelector('.image').value.trim();
@@ -369,7 +369,7 @@ async function updateCondoRow(newsId) {
       // Insert the news row in news table
       await objNews.insertNewsTable(objNews.condominiumId, objNews.user, date, userId, title, content, image);
       await objNews.loadNewsTable(objNews.condominiumId, newsId);
-      newsId = objNews.arrayNews.at(-1).newsId;
+      // newsId = objNews.arrayNews.at(-1).newsId;
       document.querySelector('.filterNewsId').value = newsId;
     }
 

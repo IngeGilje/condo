@@ -622,7 +622,7 @@ function showBankAccountTransactions(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu,'2','3','4','5','6','7','8','9');
+  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu,'','','','','','','','');
 
   // The end of the table
   html += objImportFile.endTable();
@@ -694,11 +694,11 @@ function importFileName(menuNumber) {
   // insert a table row (<tr></td>)
   menuNumber++;
   html += objBankAccount.insertTableRow('', menuNumber, objImportFile.accountMenu);
-  html += "<td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>";
+  html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // Show the rest of the menu
   menuNumber++;
-  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu,'2','3','4','5','6','7','8','9');
+  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu,'','','','','','','','');
 
   // end table body
   html += objImportFile.endTableBody();

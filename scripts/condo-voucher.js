@@ -9,7 +9,7 @@ const objVoucher = new Voucher('voucher');
 
 const enableChanges = (objVoucher.securityLevel > 5);
 
-const columnWidths = [175, 225, 125, 175, 175];
+const columnWidths = [175, 175, 175, 200, 100];
 
 const params = new URLSearchParams(window.location.search);
 const paramCondoId = Number(params.get("condoId"));
@@ -150,7 +150,7 @@ function showFilter(menuNumber, bankAccountTransactionId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objBankAccountTransaction.showTableHeaderMenu(menuNumber, objBankAccountTransaction.accountMenu, '', 'Velg bankkontotransaksjon', '');
+  html += objBankAccountTransaction.showTableHeaderMenu(menuNumber, objBankAccountTransaction.accountMenu, '', '', '', '', '');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
@@ -162,7 +162,7 @@ function showFilter(menuNumber, bankAccountTransactionId) {
   // show selected bank account transactions
   html += objBankAccountTransaction.showSelectedBankAccountTransactions('filterBankAccountTransactionId', 'width:175px;', bankAccountTransactionId, '')
 
-  html += "<td></td></tr>";
+  html += "<td></td><td></td></tr>";
 
   // end table body
   html += objBankAccountTransaction.endTableBody();
@@ -186,7 +186,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // date and amount
     menuNumber++;
-    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, 'Dato', 'Beløp', 'Konto');
+    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, '', 'Dato', 'Beløp', 'Konto', '');
 
     menuNumber++;
     html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu);
@@ -221,21 +221,21 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
       : `${bankAccountTransactionId}.pdf`;
     html += objBankAccountTransaction.inputTableColumn('voucherFileName', '', voucherFileName, 45, enableChanges);
 
-    html += "<td></td><td></td></tr>";
+    html += "<td></td><td></td><td></td></tr>";
 
     // Show button
     menuNumber++;
-    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu, '', '', '');
+    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu, '', '', '', '');
     html += "</tr>";
 
     menuNumber++;
     html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu);
 
     html += objBankAccountTransaction.showButton('bankAccountTransaction', 'Tilbake');
-    html += "</tr>";
+    html += "<td></td><td></td><td></td></tr>";
 
     menuNumber++;
-    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu, '', '', '');
+    html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu, '', '', '', '');
     html += "</tr>";
 
     // Show pdf file
@@ -243,7 +243,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
     html += objBankAccountTransaction.insertTableRow('', menuNumber, objBankAccountTransaction.accountMenu);
 
     html += `
-      <td colspan="3" rowspan="13">
+      <td colspan="4" rowspan="13" class="left">
         <iframe
          src="/data/${voucherFileName}">
         </iframe>
@@ -252,7 +252,7 @@ function showVoucher(bankAccountTransactionId, menuNumber) {
 
     // Show the rest of the menu
     menuNumber++;
-    html += objBankAccountTransaction.showRestMenu(menuNumber, objBankAccountTransaction.accountMenu, '2', '3', '4', '5');
+    html += objBankAccountTransaction.showRestMenu(menuNumber, objBankAccountTransaction.accountMenu);
 
     // The end of the table
     html += objBankAccountTransaction.endTable();

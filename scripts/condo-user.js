@@ -239,7 +239,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', '2Bruker', '3');
+  html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'Bruker', '');
 
   // start table body
   html += objUser.startTableBody();
@@ -360,7 +360,7 @@ function showUser(menuNumber, userId) {
 
     // Show the rest of the menu
     menuNumber++;
-    html += objUser.showRestMenu(menuNumber, objUser.accountMenu, '2', '3');
+    html += objUser.showRestMenu(menuNumber, objUser.accountMenu, '', '');
 
     // The end of the table
     html += objUser.endTable();
