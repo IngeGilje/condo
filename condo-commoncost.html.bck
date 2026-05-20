@@ -16,7 +16,7 @@
   <!-- table container for all tables -->
   <div class="tableContainer">
 
-    <!-- show horizontal menu -->
+    <!-- show header -->
     <div class="horizontalMenu"></div>
 
     <!-- show header -->
@@ -25,35 +25,23 @@
     <!-- show filter -->
     <div class="filter"></div>
 
-    <!-- show common cost per year -->
-    <div class="showcommoncostyear"></div>
+    <!-- show result -->
+    <div class="result"></div>
 
-    <!-- show remote heating -->
-    <div class="remoteHeating"></div>
-
-    <!-- show income next year -->
-    <div class="incomeNextYear"></div>
-
-    <!-- show bank deposit -->
-    <div class="bankDeposit"></div>
+    <!-- show common cost per condo -->
+    <div class="commonCostCondo"></div>
 
     <!-- show message -->
     <div class="message"></div>
-
   </div>
 
   <script src="class/condo-class.js"></script>
   <script src="class/condo-user-class.js"></script>
   <script src="class/condo-condominium-class.js"></script>
-  <script src="class/condo-budget-class.js"></script>
-  <script src="class/condo-account-class.js"></script>
-  <script src="class/condo-bankaccounttransaction-class.js"></script>
-  <script src="class/condo-annualaccount-class.js"></script>
   <script src="class/condo-condo-class.js"></script>
+  <script src="class/condo-remoteheating-class.js"></script>
   <script src="class/condo-commoncost-class.js"></script>
-  <script src="class/condo-bankaccount-class.js"></script>
-  <script src="class/condo-commoncostcondo-class.js"></script>
-  <script src="scripts/condo-commoncostcondo.js"></script>
+  <script src="scripts/condo-commoncost.js"></script>
 </body>
 
 </html>
