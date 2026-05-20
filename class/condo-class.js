@@ -100,7 +100,7 @@ class Condos {
       text: "Leverandør"
     },
     {
-      applicationName: "condo-commoncost.html",
+      applicationName: "condo-commoncostcondo.html",
       className: "Menu9",
       text: "Felleskostnader"
     },

@@ -181,7 +181,7 @@ function insertEmptyTableRow(menuNumber) {
 
   //html += "<td class='center'>Ny fjernvarmepris</td>";
 
-  // Select year
+  // Select year (<td></td>)
   const year = today.getFullYear();
   html += objRemoteHeatingPrice.showSelectedNumbers('year0', 'width:175px;', 2020, 2030, year, true);
 
@@ -207,7 +207,7 @@ function showRemoteHeating(menuNumber) {
     menuNumber++;
     html += objRemoteHeatingPrice.insertTableRow('', menuNumber, objRemoteHeatingPrice.accountMenu);
 
-    // Select year
+    // Select year (<td></td>)
     const year = remoteHeatingPrice.year;
     let className = `year${remoteHeatingPrice.remoteHeatingPriceId}`;
     html += objRemoteHeatingPrice.showSelectedNumbers(className, 'width:175px;', 2020, 2030, year, true);

@@ -276,7 +276,7 @@ function showFilter(menuNumber) {
   // Selected accounts
   html += objAccount.showSelectedAccounts('filterAccountId', 'width:175px;', 0, '', 'Alle', true);
 
-  // Selected year
+  // Selected year (<td></td>)
   const year = String(today.getFullYear());
   html += objBudget.showSelectedNumbers('filterYear', 'width:175px;', 2020, 2030, year, true);
 
@@ -323,7 +323,7 @@ function showBudgets(menuNumber) {
     className = `amount${budget.budgetId}`;
     html += objBudget.inputTableColumn(className, '', amount, 11, enableChanges);
 
-    // Year
+    // Year (<td></td>)
     const year = Number(budget.year);
     className = `year${budget.budgetId}`;
     html += objBudget.showSelectedNumbers(className, 'width:175px;', 2020, 2030, year, enableChanges);
@@ -377,7 +377,7 @@ function insertEmptyTableRow(menuNumber) {
   const amount = "";
   html += objBudget.inputTableColumn('amount0', '', amount, 11, enableChanges);
 
-  // Year
+  // Year (<td></td>)
   const year = Number(document.querySelector('.filterYear').value);
   html += objBudget.showSelectedNumbers('year0', 'width:175px;',       2020,     2030, year, enableChanges);
  

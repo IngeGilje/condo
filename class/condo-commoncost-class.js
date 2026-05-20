@@ -80,7 +80,9 @@ class CommonCost extends Condos {
   // update a commoncosts row
   async updateCommonCostsTable(user, commonCostId, year, commonCostSquareMeter, fixedCostCondo) {
 
-    const URL = (this.serverStatus === 1) ? '/api/commoncosts' : 'http://localhost:3000/commoncosts';
+    const URL = (this.serverStatus === 1)
+      ? '/api/commoncosts'
+      : 'http://localhost:3000/commoncosts';
     try {
 
       // POST request
@@ -109,11 +111,12 @@ class CommonCost extends Condos {
   // insert commoncosts row
   async insertCommonCostsTable(condominiumId, user, year, commonCostSquareMeter, fixedCostCondo) {
 
-    const URL = (this.serverStatus === 1) ? '/api/commoncosts' : 'http://localhost:3000/commoncosts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/commoncosts' 
+    : 'http://localhost:3000/commoncosts';
     try {
 
-      //const response = await fetch(`${URL}:3000/commoncosts?action=insert&condominiumId=${condominiumId}&user=${user}&year=${year}&commonCostSquareMeter=${commonCostSquareMeter}&fixedCostCondo=${fixedCostCondo}`);
-      const response = await fetch(URL, {
+       const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -137,7 +140,9 @@ class CommonCost extends Condos {
   // delete a commoncosts row
   async deleteCommonCostsTable(commonCostId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/commoncosts' : 'http://localhost:3000/commoncosts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/commoncosts' 
+    : 'http://localhost:3000/commoncosts';
     try {
 
       // Fetch for sending a message to server(request)

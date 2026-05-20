@@ -167,7 +167,7 @@ function showHeader() {
   html += objEmptyingCalendar.startTableBody();
 
   // show main header
-  html += objEmptyingCalendar.showTableHeaderLogOut('1', '2', '3', '4Avfallskalender', '5', '6', '7', '8');
+  html += objEmptyingCalendar.showTableHeaderLogOut('', '', '', 'Avfallskalender', '', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -186,16 +186,16 @@ function showFilter(menuNumber) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '', '2', '3År', '4Måned', '5', '6', '7', '8', '9');
+  html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '', '', 'År', 'Måned', '', '', '', '', '');
 
   // start table body
   html += objEmptyingCalendar.startTableBody();
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '2');
+  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '');
 
-  // Selected year
+  // Selected year(<td></td>)
   const year = String(today.getFullYear());
   html += objEmptyingCalendar.showSelectedNumbers('filterYear', 'width:175px;', 2020, 2030, year, true)
 
@@ -209,7 +209,7 @@ function showFilter(menuNumber) {
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '2', '3', '4', '5', '6', '7', '8', '9');
+  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
   // end table body
   html += objEmptyingCalendar.endTableBody();
 
@@ -228,7 +228,7 @@ function showEmptyingCalendar(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '#e0f0e0',  '2Ansvarlig', '3Dato', '4Restavfall', '5Papiravfall', '6Matavfall', '7Plastavfall', '8Juletre','9Slett',);
+  html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '#e0f0e0',  'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre','Slett',);
 
   if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingCalendar) => {

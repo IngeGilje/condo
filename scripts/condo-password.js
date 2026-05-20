@@ -217,7 +217,7 @@ function showUser(menuNumber, userId) {
     // password
     html += objUser.inputTablePassword('password', '', 45);
 
-    // securityLevel
+    // securityLevel (<td></td>)
     html += objUser.showSelectedNumbers('securityLevel', 'width:175px;', 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
 
     html += "</tr>";

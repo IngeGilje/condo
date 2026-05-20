@@ -241,7 +241,7 @@ function showFilter(menuNumber, budgetYear, fromDate, toDate) {
   // show to date
   html += objAnnualAccount.inputTableColumn('filterToDate', '', toDate, 10, true);
 
-  // Budget year
+  // Budget year (<td></td>)
   html += objAnnualAccount.showSelectedNumbers('filterBudgetYear','width:175px;', 2020, 2030, budgetYear, true);
 
   // price per square meter per month

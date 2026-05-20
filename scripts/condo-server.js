@@ -612,14 +612,9 @@ async function main() {
 
             console.log('Number of rows :', rows.length);
             if (rows.length === 1) isValid = true;
-            console.log('valid 1:', isValid);
-            //if (password === rows[0].password && isValid) isValid = true;
-            if (isValid) {
+             if (isValid) {
 
-              console.log('Password :', password);
-              console.log('Password :', rows[0].password);
-              console.log('Valid 2:', bcrypt.compare('12345', rows[0].password));
-              isValid = await bcrypt.compare(password, rows[0].password);
+               isValid = await bcrypt.compare(password, rows[0].password);
               console.log('valid 3:', isValid);
               rows[0].password = (isValid) ? 'OK' : 'Not OK';
 

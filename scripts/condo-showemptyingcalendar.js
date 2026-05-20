@@ -125,7 +125,7 @@ function showFilter() {
   // insert a table row (<tr></td>)
   html += objShowEmptyingCalendar.insertTableRow('', 0, objShowEmptyingCalendar.accountMenu, '', '', '');
 
-  // Selected year
+  // Selected year (<td></td>)
   const year = String(today.getFullYear());
   html += objShowEmptyingCalendar.showSelectedNumbers('filterYear','width:175px;', 2020, 2030, year, true);
 

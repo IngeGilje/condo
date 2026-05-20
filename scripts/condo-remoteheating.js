@@ -215,7 +215,7 @@ function showFilter(menuNumber, year) {
   menuNumber++;
   html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '');
 
-  // Select year
+  // Select year (<td></td>)
   html += objRemoteHeating.showSelectedNumbers('filterYear', 'width:175px;', 2020, 2030, year, true);
 
   // Price/kilowattHour

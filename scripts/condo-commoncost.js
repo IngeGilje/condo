@@ -1,6 +1,7 @@
 // maintenance of commoncosts
 
 // Activate classes
+debugger;
 const today = new Date();
 const objUser = new User('user');
 const objCondo = new Condo('condo');
@@ -8,7 +9,7 @@ const objCommonCost = new CommonCost('commoncost');
 
 const enableChanges = (objCommonCost.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175, 75];
+const columnWidths = [175, 175, 175, 175, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -183,7 +184,7 @@ function insertEmptyTableRow(menuNumber) {
 
   //html += "<td class='center'>Ny felleskostnad</td>";
 
-  // Select year
+  // Select year (<td></td>)
   const year = today.getFullYear();
   html += objCommonCost.showSelectedNumbers('year0', 'width:175px;', 2020, 2030, year, true);
 
@@ -214,7 +215,7 @@ function showCommonCost(menuNumber) {
     menuNumber++;
     html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu);
 
-    // Select year
+    // Select year (<td></td>)
     const year = commonCost.year;
     className = `year${commonCost.commonCostId}`;
     html += objCommonCost.showSelectedNumbers(className, 'width:175px;', 2020, 2030, year, true);
@@ -286,6 +287,7 @@ async function updateCommonCostsRow(commonCostId) {
   const validYear = objCommonCost.validateInterval(className, columnWidths, '', 'Ugyldig årstall', true, year, 2020, 2030);
 
   // commonCostSquareMeter
+  debugger;
   className = `.commonCostSquareMeter${commonCostId}`;
   let commonCostSquareMeter = document.querySelector(className).value;
   commonCostSquareMeter = formatKronerToOre(commonCostSquareMeter);
