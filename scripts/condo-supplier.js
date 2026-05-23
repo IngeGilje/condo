@@ -279,7 +279,6 @@ function showSupplier(menuNumber, supplierId) {
     : objSupplier.arraySuppliers[rowNumberSupplier].name;
 
   html += objSupplier.inputTableColumn('name', '', name, 45, enableChanges);
-
   html += "</tr>";
 
   // street, address2

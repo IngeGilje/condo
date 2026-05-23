@@ -28,35 +28,6 @@ class Account extends Condos {
     return accountId;
   }
 
-  /*
-  // Select account
-  selectAccountId(accountId, className) {
-
-    // Check if account id exist
-    const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (rowNumberAccount !== -1) {
-
-      document.querySelector(`.select-${className}`).value = this.arrayAccounts[rowNumberAccount].accountId;
-      return true;
-    } else {
-
-      return false;
-    }
-  }
-  */
-
-  /*
-  // Select account Id
-  selectAccountId(accountId) {
-
-    // Check if account id exist
-    const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (rowNumberAccount !== -1) accountId = this.arrayAccounts[rowNumberAccount].accountId;
-
-    return accountId;
-  }
-  */
-
   // get account id from bank account and suppliers
   getAccountIdFromBankAccount(bankAccountNumber, payment, text) {
 

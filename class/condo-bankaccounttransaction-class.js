@@ -4,9 +4,7 @@ class BankAccountTransaction extends Condos {
   arrayBankAccountTransactions = Array;;
   #arrayBankAccountTransactions = Array;
 
-  //arrayBankAccountMovements;  // alternative array used in this class only
-
-  // Show all selected bank account transactions
+   // Show all selected bank account transactions
   showSelectedBankAccountTransactions(className, style, bankAccountTransactionId, selectNone, selectAll, enableChanges = false) {
 
     let selectedValue = false;
@@ -30,7 +28,16 @@ class BankAccountTransaction extends Condos {
           selectedValue = true;
         } else {
 
-          html += `<option value=${bankAccountTransaction.bankAccountTransactionId}>${bankAccountTransaction.bankAccountTransactionId}</option>`;
+          let date = (bankAccountTransaction.date)
+            ? formatNumberToNorDate(bankAccountTransaction.date)
+            : '';
+         let amount = '';
+         if (bankAccountTransaction.income !== 0) amount = formatOreToKroner(bankAccountTransaction.income);
+         if (bankAccountTransaction.payment !== 0) amount = formatOreToKroner(bankAccountTransaction.payment);
+          html += `
+          <option value=${bankAccountTransaction.bankAccountTransactionId}>
+            ${date} NOK ${amount}
+          </option>`;
         }
       });
     } else {

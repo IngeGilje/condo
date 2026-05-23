@@ -1,7 +1,6 @@
-// Search for amount movements
+// Show common costs for condos
 
 // Activate objects
-debugger;
 const today = new Date();
 const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
@@ -71,11 +70,6 @@ async function main() {
       // Get row number for payment Remote Heating Account Id
       const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCommonCost.condominiumId);
       if (rowNumberCondominium !== -1) {
-
-        // Show annual accounts
-        //const orderBy = 'condoId ASC, date DESC, income ASC';
-        //await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objCommonCost.condominiumId, deleted, objCommonCost.nineNine, objCommonCost.nineNine, 0, fromDate, toDate);
-        //menuNumber = showAnnualAccounts(menuNumber);
 
         // Show common cost per year
         menuNumber = showCommonCostYear(menuNumber);
@@ -230,7 +224,7 @@ function showFilter(menuNumber, year) {
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu, '','');
+  html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu, '', '');
 
   // Year (<td></td>)
   html += objCommonCost.showSelectedNumbers('filterYear', 'width:175px;', 2020, 2030, year, true);
@@ -352,7 +346,7 @@ function showCommonCostCondo(menuNumber) {
     if (rowNumberCommonCost !== -1) commonCostSquareMeter = objCommonCost.arrayCommonCosts[rowNumberCommonCost].commonCostSquareMeter;
     squareMeters = formatKronerToOre(squareMeters);
     fixedCostCondoMonth = formatKronerToOre(fixedCostCondoMonth);
-    let commonCostsMonth = (((squareMeters * commonCostSquareMeter)/100) + (fixedCostCondoMonth));
+    let commonCostsMonth = (((squareMeters * commonCostSquareMeter) / 100) + (fixedCostCondoMonth));
     className = `commonCostsMonth${commonCostId}`;
     commonCostsMonth = formatOreToKroner(commonCostsMonth);
     html += objCommonCost.inputTableColumn(className, '', commonCostsMonth, 11, enableChanges);
@@ -390,7 +384,7 @@ function showCommonCostCondo(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objAccount.showRestMenu(menuNumber, objAccount.accountMenu,  '', '', '', '', '');
+  html += objAccount.showRestMenu(menuNumber, objAccount.accountMenu, '', '', '', '', '');
 
   // The end of the table
   html += objCommonCost.endTable();
@@ -483,9 +477,9 @@ async function updateCommonCostsRow(commonCostId) {
 
     await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
 
-          let menuNumber = 0;
-      menuNumber = showCommonCostYear(menuNumber);
+    let menuNumber = 0;
+    menuNumber = showCommonCostYear(menuNumber);
 
-      menuNumber = showCommonCostCondo(menuNumber);
+    menuNumber = showCommonCostCondo(menuNumber);
   }
 }

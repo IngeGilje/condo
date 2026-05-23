@@ -1,4 +1,4 @@
-// Search for amount movements
+// Show annual account for condominium
 
 // Activate objects
 const today = new Date();

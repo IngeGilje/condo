@@ -165,6 +165,7 @@ async function events() {
       showDues(3);
     };
   });
+  
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {

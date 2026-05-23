@@ -227,10 +227,6 @@ function showBankAccounts(menuNumber, bankAccountId) {
   menuNumber++;
   html += objBankAccount.insertTableRow('', menuNumber, objBankAccount.accountMenu);
 
-  // Show menu (<td></td>)
-  //menuNumber++;
-  //html += objBankAccount.showAccountMenu(menuNumber);
-
   const name = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;

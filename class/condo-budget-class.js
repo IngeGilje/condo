@@ -23,96 +23,14 @@ class Budget extends Condos {
     return budgetId;
   }
 
-  /*
-  // Show all selected budgets
-  showSelectedBudgets(className, budgetId) {
-
-    let html = `
-      <form 
-        id="budgets"
-        action="/submit" 
-        method="POST"
-      >
-        <label 
-          class="label-${className}"
-          for="budgets"
-          id="budgets"
-        >
-            Velg budsjett
-        </label>
-        <select 
-          class="select-${className}" 
-        >
-    `;
-
-    let menuNumber = 0;
-
-    let selectedOption = false;
-
-    // Check if budget array is empty
-    if (this.arrayBudgets.length > 0) {
-      this.arrayBudgets.forEach((budget) => {
-
-        menuNumber++;
-
-        const accountName = objAccount.getAccountName(budget.accountId);
-
-        if (budget.budgetId === budgetId) {
-
-          html +=
-            `
-              <option 
-                value="${budget.budgetId}"
-                selected
-              >
-                ${menuNumber} - ${accountName}
-              </option>
-            `;
-          selectedOption =
-            true;
-        } else {
-
-          html +=
-            `
-              <option 
-                value="${budget.budgetId}">
-                ${menuNumber} - ${accountName}
-              </option>
-            `;
-        }
-      });
-    } else {
-
-      html +=
-        `
-          <option value="0" 
-            selected
-          >
-            Ingen budsjett
-          </option>
-        `;
-      selectedOption =
-        true;
-    }
-
-    html += `
-      </select >
-    </form>
-  `;
-
-    document.querySelector(`.div-${className}`).innerHTML = html;
-  }
-  */
-
   // Select budget
   selectBudgetId(budgetId, className) {
 
     // Check if budget id exist
-    const objBudgetNumber = arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
+    const objBudgetNumber = this.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
     if (objBudgetNumber !== -1) {
 
-      document.querySelector(`.select-${className}`).value =
-        budgetId;
+      document.querySelector(`.select-${className}`).value = budgetId;
       return true;
     } else {
 
@@ -123,11 +41,12 @@ class Budget extends Condos {
   // get budgets
   async loadBudgetsTable(condominiumId, year, accountId) {
 
-    const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
+    const URL = (this.serverStatus === 1)
+      ? '/api/budgets'
+      : 'http://localhost:3000/budgets';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/budgets?action=select&condominiumId=${condominiumId}&year=${year}&accountId=${accountId}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -150,11 +69,12 @@ class Budget extends Condos {
   // update budget row in budgets table
   async updateBudgetsTable(budgetId, user, accountId, amount, year, text) {
 
-    const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
+    const URL = (this.serverStatus === 1)
+      ? '/api/budgets'
+      : 'http://localhost:3000/budgets';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/budgets?action=update&budgetId=${budgetId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -180,11 +100,12 @@ class Budget extends Condos {
   // insert budget row in budgets table
   async insertBudgetsTable(condominiumId, user, accountId, amount, year, text) {
 
-    const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
+    const URL = (this.serverStatus === 1)
+      ? '/api/budgets'
+      : 'http://localhost:3000/budgets';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/budgets?action=insert&condominiumId=${condominiumId}&user=${user}&accountId=${accountId}&amount=${amount}&year=${year}&text=${text}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -209,11 +130,12 @@ class Budget extends Condos {
   // delete budget row
   async deleteBudgetsTable(budgetId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/budgets' : 'http://localhost:3000/budgets';
+    const URL = (this.serverStatus === 1)
+      ? '/api/budgets'
+      : 'http://localhost:3000/budgets';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/budgets?action=delete&budgetId=${budgetId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {

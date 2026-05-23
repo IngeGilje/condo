@@ -143,6 +143,16 @@ class Condos {
       applicationName: "condo-annualaccount.html",
       className: "Menu17",
       text: "Årsregnskap"
+    },
+    {
+      applicationName: "condo-transaction.html",
+      className: "Menu18",
+      text: "Konto bevegelser"
+    },
+    {
+      applicationName: "condo-project.html",
+      className: "Menu19",
+      text: "Prosjekter"
     }
   ];
 
@@ -327,7 +337,7 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid  && showMessage) this.showMessageNew(columnWidths, style, message)
+    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message)
 
     return valid;
   }

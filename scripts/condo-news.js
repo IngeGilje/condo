@@ -276,7 +276,7 @@ function showNews(menuNumber, newsId) {
   const content = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].content;
-  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 3, 3);
+  html += objNews.textAreaTableColumn('content', content, 5120, enableChanges, 3, 3);
   html += "</tr>";
 
   menuNumber++;

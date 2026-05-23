@@ -51,7 +51,7 @@ async function main() {
       menuNumber = showFilter(menuNumber);
 
       // Show account
-      showAccounts(menuNumber);
+      menuNumber = showAccounts(menuNumber);
 
       // Events
       events();
