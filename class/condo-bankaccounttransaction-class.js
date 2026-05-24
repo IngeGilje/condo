@@ -36,7 +36,7 @@ class BankAccountTransaction extends Condos {
          if (bankAccountTransaction.payment !== 0) amount = formatOreToKroner(bankAccountTransaction.payment);
           html += `
           <option value=${bankAccountTransaction.bankAccountTransactionId}>
-            ${date} NOK ${amount}
+            ${bankAccountTransaction.bankAccountTransactionId}
           </option>`;
         }
       });

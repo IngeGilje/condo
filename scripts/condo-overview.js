@@ -185,7 +185,7 @@ function showFilter(menuNumber, condoId) {
   menuNumber++;
   html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
 
-  // Show all selected condos
+  // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId','width:175px;',  condoId, '', '', true);
 
   // from date
