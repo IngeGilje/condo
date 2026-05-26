@@ -3,45 +3,80 @@
 
 <head>
 
-  <title>Test</title>
+  <title>Felleskostnader</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/condo.css">
+
+</head>
+
+<style>
+  .cell {
+    position: relative;
+    height: 20px;
+  }
+
+  .label {
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    background: white;
+    padding: 0 4px;
+  }
+</style>
 </head>
 
 <body>
 
-
-  <table class="table">
+  <table style="width:250px;margin: 0 auto;">
     <tr>
-      <th class="one-line left">Bank konto transaksjon</th>
+      <th class="no-border center">Email</th>
+    <tr>
+      <td class="center no-border">
+      </td>
     </tr>
     <tr>
-    <td class="one-line left">
-      <select class="filterBankAccountTransactionId center" style="width:175px;">
-        <option value=1686>
-          32.12.2026 1686
-        </option>
-        <option value=1689>
-          15.05.2026 1689
-        </option>
-        <option value=1688>
-          15.05.2026 1688
-        </option>
-        <option value=876>
-          07.01.2020 876
-        </option>
-        <option value=877>
-          06.01.2020 877
-        </option>
-      </select>
-    </td>
+      <td class="center" colspan="1" rowspan="1">
+        <span class="label">AAAAAAAAAAAAA</span>
+        <input class="email center one-line" type="text" maxlength="45" value="">
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+    </tr>
+    <tr>
+      <th class="no-border center" style="width:250px;">Passord</th>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+    </tr>
+    <tr>
+      <td class="center">
+        <input class="password center one-line" type="password" maxlength="45" value="">
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line center">
+        <button class="LogIn center button">
+          LogIn
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
     </tr>
   </table>
-
-
-
 </body>
 
 </html>

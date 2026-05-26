@@ -223,7 +223,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
 
   // Bank account number
-  html += objUserBankAccount.inputTableColumn('bankAccount0', '', '', 11, enableChanges);
+  html += objUserBankAccount.inputTableCell('bankAccount0', '', '', 11, enableChanges);
 
   html += "<td>Ny brukerkonto</td></tr>";
   return html;
@@ -257,7 +257,7 @@ function showUserBankAccount(menuNumber) {
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccount.inputTableColumn(className, '', userBankAccount.bankAccount, 11, enableChanges);
+    html += objUserBankAccount.inputTableCell(className, '', userBankAccount.bankAccount, 11, enableChanges);
 
     // Delete
     className = `delete${userBankAccount.userBankAccountId}`;

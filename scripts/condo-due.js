@@ -205,7 +205,7 @@ function showDues(menuNumber) {
     // Date
     const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objDue.inputTableColumn(className, '', date, 10, enableChanges);
+    html += objDue.inputTableCell(className, '', date, 10, enableChanges);
 
     // accounts
     className = `accountId${due.dueId}`;
@@ -214,17 +214,17 @@ function showDues(menuNumber) {
     // due amount
     const amount = formatOreToKroner(due.amount);
     className = `amount${due.dueId}`;
-    html += objDue.inputTableColumn(className, '', amount, 11, enableChanges);
+    html += objDue.inputTableCell(className, '', amount, 11, enableChanges);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);
     className = `kilowattHour${due.dueId}`;
-    html += objDue.inputTableColumn(className, '', kilowattHour, 10, enableChanges);
+    html += objDue.inputTableCell(className, '', kilowattHour, 10, enableChanges);
 
     // text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objDue.inputTableColumn(className, '', text, 45, enableChanges);
+    html += objDue.inputTableCell(className, '', text, 45, enableChanges);
 
     // Delete
     let selected = "Ugyldig verdi";
@@ -283,7 +283,7 @@ function insertEmptyTableRow(menuNumber) {
     : objCondo.showSelectedCondos("condoId0", 'width:175px;', 0, 'Velg leilighet', '', enableChanges);
 
   // Date
-  html += objDue.inputTableColumn("date0", '', '', 10, enableChanges);
+  html += objDue.inputTableCell("date0", '', '', 10, enableChanges);
 
   // accountId
   const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -292,13 +292,13 @@ function insertEmptyTableRow(menuNumber) {
     : objAccount.showSelectedAccounts("accountId0", 'width:175px;', 0, 'Velg konto', '', enableChanges);
 
   // due amount
-  html += objDue.inputTableColumn('amount0', '', '0,00', 10, enableChanges);
+  html += objDue.inputTableCell('amount0', '', '0,00', 10, enableChanges);
 
   // kilowatt hour
-  html += objDue.inputTableColumn('kilowattHour0', '', '0,00', 10, enableChanges);
+  html += objDue.inputTableCell('kilowattHour0', '', '0,00', 10, enableChanges);
 
   // text
-  html += objDue.inputTableColumn('text0', '', '', 45, enableChanges);
+  html += objDue.inputTableCell('text0', '', '', 45, enableChanges);
 
   html += "<td>Nytt forfall</td></tr>";
   return html;
@@ -436,7 +436,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
-  html += objDue.inputTableColumn('filterFromDate', '', fromDate, 10, enableChanges);
+  html += objDue.inputTableCell('filterFromDate', '', fromDate, 10, enableChanges);
 
   // Current date
   let toDate = getCurrentDate();
@@ -444,7 +444,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
   // Next year
   toDate = Number(convertDateToISOFormat(toDate)) + 10000;
   toDate = formatNumberToNorDate(toDate);
-  html += objDue.inputTableColumn('filterToDate', '', toDate, 10, enableChanges);
+  html += objDue.inputTableCell('filterToDate', '', toDate, 10, enableChanges);
 
   html += "<td></td><td></td></tr>";
 

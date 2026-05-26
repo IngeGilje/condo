@@ -215,7 +215,7 @@ function showNews(menuNumber, newsId) {
     ? getCurrentDate()
     : objNews.arrayNews[rowNumberNews].date;
   date = formatNumberToNorDate(date);
-  html += objNews.inputTableColumn('date', 'left', date, 10, enableChanges);
+  html += objNews.inputTableCell('date', 'left', date, 10, enableChanges);
 
   // userId
   const userId = (rowNumberNews === -1)
@@ -239,7 +239,7 @@ function showNews(menuNumber, newsId) {
   const title = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].title;
-  html += objNews.inputTableColumn('title', 'left', title, 255, enableChanges, 2);
+  html += objNews.inputTableCell('title', 'left', title, 255, enableChanges, 2);
   html += "<td></td></tr>";
 
   // insert a table row (<tr></td>)
@@ -257,7 +257,7 @@ function showNews(menuNumber, newsId) {
   const image = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].image;
-  html += objNews.inputTableColumn('image', 'left', image, 255, enableChanges, 2);
+  html += objNews.inputTableCell('image', 'left', image, 255, enableChanges, 2);
   html += "<td></td></tr>";
 
   // insert a table row (<tr></td>)

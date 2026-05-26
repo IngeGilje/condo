@@ -162,17 +162,17 @@ async function main() {
 
         const lastUpdate = today.toISOString();
         const user = req.body.user;
-        const bankAccountTransactionId = req.body.bankAccountTransactionId;
+        const transactionId = req.body.transactionId;
         const voucherFileName = req.body.voucherFileName;
 
-        // Update a row in bank account transactions table
+        // Update a row in transactions table
         const SQLquery = `
-        UPDATE bankaccounttransactions
+        UPDATE transactions
         SET
           user = '${user}',
           lastUpdate = '${lastUpdate}',
           voucherFileName = '${voucherFileName}'
-        WHERE bankAccountTransactionId = ${bankAccountTransactionId};`;
+        WHERE transactionId = ${transactionId};`;
 
         console.log('SQLquery :', SQLquery);
         const [rows] = await mySqlDB.query(SQLquery);
@@ -1824,8 +1824,8 @@ async function main() {
       }
     });
 
-    // Requests for bank account transactions
-    app.post("/bankaccounttransactions", async (req, res) => {
+    // Requests for transactions
+    app.post("/transactions", async (req, res) => {
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -1846,7 +1846,7 @@ async function main() {
           try {
 
             let SQLquery = `
-            SELECT * FROM bankaccounttransactions
+            SELECT * FROM transactions
             WHERE condominiumId = ${condominiumId}`;
             if (deleted === 'Y') {
               SQLquery += `
@@ -1889,7 +1889,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccounttransactions:", err.message);
+            console.log("Database error in /transactions:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1908,11 +1908,11 @@ async function main() {
             const kilowattHour = req.body.kilowattHour;
             const date = req.body.date;
             const text = req.body.text;
-            const bankAccountTransactionId = req.body.bankAccountTransactionId;
+            const transactionId = req.body.transactionId;
 
-            // Update bank account transactions table
+            // Update transactions table
             const SQLquery = `
-            UPDATE bankaccounttransactions
+            UPDATE transactions
             SET
               deleted = 'N',
               user = '${user}',
@@ -1925,7 +1925,7 @@ async function main() {
               kilowattHour = ${kilowattHour},
               date = ${date},
               text = '${text}'
-            WHERE bankAccountTransactionId = ${bankAccountTransactionId};`;
+            WHERE transactionId = ${transactionId};`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1934,7 +1934,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccounttransactions:", err.message);
+            console.log("Database error in /transactions:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1956,9 +1956,9 @@ async function main() {
             const date = req.body.date;
             const text = req.body.text;
 
-            // Insert new bank account transactions row
+            // Insert new transactions row
             const SQLquery = `
-            INSERT INTO bankaccounttransactions(
+            INSERT INTO transactions(
               deleted,
               condominiumId,
               user,
@@ -1991,7 +1991,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccounttransactions:", err.message);
+            console.log("Database error in /transactions:", err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -2003,16 +2003,16 @@ async function main() {
           try {
 
             const user = req.body.user;
-            const bankAccountTransactionId = req.body.bankAccountTransactionId;
+            const transactionId = req.body.transactionId;
 
             // Delete table
             const SQLquery = `
-            UPDATE bankaccounttransactions
+            UPDATE transactions
             SET
               deleted = 'Y',
               lastUpdate = '${lastUpdate}',
               user = '${user}'
-            WHERE bankAccountTransactionId = ${bankAccountTransactionId}; `;
+            WHERE transactionId = ${transactionId}; `;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -2022,7 +2022,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccounttransactions:", err.message);
+            console.log("Database error in /transactions:", err.message);
             res.status(500).json({ error: err.message });
           }
 

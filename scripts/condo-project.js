@@ -252,7 +252,7 @@ function showProject(menuNumber) {
     // name
     let name = project.name;
     let className = `name${project.projectId}`;
-    html += objProject.inputTableColumn(className, '', name, 45, enableChanges);
+    html += objProject.inputTableCell(className, '', name, 45, enableChanges);
 
     // account Id
     let accountId = project.accountId;
@@ -262,7 +262,7 @@ function showProject(menuNumber) {
     // amount
     let amount = project.amount;
     className = `amount${project.projectId}`;
-    html += objProject.inputTableColumn(className, '', amount, 11, enableChanges);
+    html += objProject.inputTableCell(className, '', amount, 11, enableChanges);
 
     // Delete
     className = `delete${project.projectId}`;
@@ -323,12 +323,12 @@ function showProjectCondo(menuNumber) {
 
     // condo name
     let className = `name${condo.condoId}`;
-    html += objProject.inputTableColumn(className, '', condo.name, 45, false);
+    html += objProject.inputTableCell(className, '', condo.name, 45, false);
 
     // Square meters
     let squareMeters = formatOreToKroner(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;
-    html += objProject.inputTableColumn(className, '', squareMeters, 11, false);
+    html += objProject.inputTableCell(className, '', squareMeters, 11, false);
 
     // how much to pay for each condo: condoareal/ total areal * project total cost
     squareMeters = formatKronerToOre(squareMeters);
@@ -337,7 +337,7 @@ function showProjectCondo(menuNumber) {
 
     toPay = formatOreToKroner(toPay);
     className = `toPay${condo.condoId}`;
-    html += objProject.inputTableColumn(className, '', toPay, 10, false);
+    html += objProject.inputTableCell(className, '', toPay, 10, false);
     html += "</tr>";
 
     // Accomulate
@@ -439,7 +439,7 @@ function insertEmptyTableRow(menuNumber) {
   // name
   let name = "";
   let className = `name0`;
-  html += objProject.inputTableColumn(className, '', name, 45, enableChanges);
+  html += objProject.inputTableCell(className, '', name, 45, enableChanges);
 
   // account Id
   let accountId = 0;
@@ -449,7 +449,7 @@ function insertEmptyTableRow(menuNumber) {
   // amount
   let amount = 0;
   className = `amount0`;
-  html += objProject.inputTableColumn(className, '', amount, 11, enableChanges);
+  html += objProject.inputTableCell(className, '', amount, 11, enableChanges);
 
   // Insert new account
   html += "<td>5Nytt prosjekt</td></tr>";

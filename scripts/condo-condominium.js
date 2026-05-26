@@ -291,7 +291,7 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // name
-    html += objCondominium.inputTableColumn('name', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].name, 45, enableChanges);
+    html += objCondominium.inputTableCell('name', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].name, 45, enableChanges);
 
     html += "<td></td></tr>";
 
@@ -304,10 +304,10 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // street
-    html += objCondominium.inputTableColumn('street', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].street, 45, enableChanges);
+    html += objCondominium.inputTableCell('street', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].street, 45, enableChanges);
 
     // address2
-    html += objCondominium.inputTableColumn('address2', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].address2, 45, enableChanges);
+    html += objCondominium.inputTableCell('address2', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].address2, 45, enableChanges);
 
     html += "</tr>";
 
@@ -320,10 +320,10 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // postalCode
-    html += objCondominium.inputTableColumn('postalCode', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].postalCode, 4, enableChanges);
+    html += objCondominium.inputTableCell('postalCode', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].postalCode, 4, enableChanges);
 
     // city
-    html += objCondominium.inputTableColumn('city', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].city, 45, enableChanges);
+    html += objCondominium.inputTableCell('city', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].city, 45, enableChanges);
 
     html += "</tr>";
 
@@ -336,10 +336,10 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // eMail
-    html += objCondominium.inputTableColumn('email', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].email, 45, enableChanges);
+    html += objCondominium.inputTableCell('email', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].email, 45, enableChanges);
 
     // phone
-    html += objCondominium.inputTableColumn('phone', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].phone, 8, enableChanges);
+    html += objCondominium.inputTableCell('phone', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].phone, 8, enableChanges);
     html += "</tr>";
 
     // incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId
@@ -369,7 +369,7 @@ function showCondominium(condominiumId, menuNumber) {
     html += objAccount.showSelectedAccounts('commonCostAccountId', '', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Velg konto', '', enableChanges);
 
     // organizationNumber
-    html += objCondominium.inputTableColumn('organizationNumber', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].organizationNumber, 9, enableChanges);
+    html += objCondominium.inputTableCell('organizationNumber', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].organizationNumber, 9, enableChanges);
 
     html += "</tr>";
 
@@ -382,7 +382,7 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // importPath
-    html += objCondominium.inputTableColumn('importPath', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].importPath, 100, enableChanges);
+    html += objCondominium.inputTableCell('importPath', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].importPath, 100, enableChanges);
     html += "<td></td></tr>";
 
     // insert a table row (<tr></td>)

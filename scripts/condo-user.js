@@ -291,7 +291,7 @@ function showUser(menuNumber, userId) {
     html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
     // email
-    html += objUser.inputTableColumn('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
+    html += objUser.inputTableCell('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
 
     // condoId
     html += objCondo.showSelectedCondos('condoId', 'width:175px;', objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
@@ -308,10 +308,10 @@ function showUser(menuNumber, userId) {
     html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
     // firstName
-    html += objUser.inputTableColumn('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
+    html += objUser.inputTableCell('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
 
     // lastName
-    html += objUser.inputTableColumn('lastName', '', objUser.arrayUsers[rowNumberUser].lastName, 45, enableChanges);
+    html += objUser.inputTableCell('lastName', '', objUser.arrayUsers[rowNumberUser].lastName, 45, enableChanges);
 
     html += "</tr>";
 
@@ -325,7 +325,7 @@ function showUser(menuNumber, userId) {
     html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
     // phone
-    html += objUser.inputTableColumn('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
+    html += objUser.inputTableCell('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
 
     // Activ user
     resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';

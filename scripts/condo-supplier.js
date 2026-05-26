@@ -278,7 +278,7 @@ function showSupplier(menuNumber, supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].name;
 
-  html += objSupplier.inputTableColumn('name', '', name, 45, enableChanges);
+  html += objSupplier.inputTableCell('name', '', name, 45, enableChanges);
   html += "</tr>";
 
   // street, address2
@@ -294,13 +294,13 @@ function showSupplier(menuNumber, supplierId) {
   const street = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += objSupplier.inputTableColumn('street', '', street, 45, enableChanges);
+  html += objSupplier.inputTableCell('street', '', street, 45, enableChanges);
 
   // address2
   const address2 = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += objSupplier.inputTableColumn('address2', '', address2, 45, enableChanges);
+  html += objSupplier.inputTableCell('address2', '', address2, 45, enableChanges);
 
   html += "</tr>";
 
@@ -318,13 +318,13 @@ function showSupplier(menuNumber, supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
 
-  html += objSupplier.inputTableColumn('postalCode', '', postalCode, 4, enableChanges);
+  html += objSupplier.inputTableCell('postalCode', '', postalCode, 4, enableChanges);
 
   // city
   const city = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += objSupplier.inputTableColumn('city', '', city, 45, enableChanges);
+  html += objSupplier.inputTableCell('city', '', city, 45, enableChanges);
 
   html += "</tr>";
 
@@ -341,13 +341,13 @@ function showSupplier(menuNumber, supplierId) {
   const email = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += objSupplier.inputTableColumn('email', '', email, 50, enableChanges);
+  html += objSupplier.inputTableCell('email', '', email, 50, enableChanges);
 
   // phone
   const phone = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += objSupplier.inputTableColumn('phone', '', phone, 8, enableChanges);
+  html += objSupplier.inputTableCell('phone', '', phone, 8, enableChanges);
 
   html += "</tr>";
 
@@ -370,7 +370,7 @@ function showSupplier(menuNumber, supplierId) {
   const bankAccount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += objSupplier.inputTableColumn('bankAccount', '', bankAccount, 11, enableChanges);
+  html += objSupplier.inputTableCell('bankAccount', '', bankAccount, 11, enableChanges);
 
   html += "</tr>";
 
@@ -392,7 +392,7 @@ function showSupplier(menuNumber, supplierId) {
   const amount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].amount;
-  html += objSupplier.inputTableColumn('amount', '', amount, 11, enableChanges);
+  html += objSupplier.inputTableCell('amount', '', amount, 11, enableChanges);
 
   html += "</tr>";
 
@@ -414,7 +414,7 @@ function showSupplier(menuNumber, supplierId) {
   const text = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += objSupplier.inputTableColumn('text', '', text, 50, enableChanges);
+  html += objSupplier.inputTableCell('text', '', text, 50, enableChanges);
 
   html += "</tr>";
 

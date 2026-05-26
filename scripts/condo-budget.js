@@ -296,7 +296,7 @@ function showFilter(menuNumber) {
   return menuNumber;
 }
 
-// Show bankaccounttransactions
+// Show transactions
 function showBudgets(menuNumber) {
 
   // start table
@@ -321,7 +321,7 @@ function showBudgets(menuNumber) {
     // due amount
     const amount = formatOreToKroner(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += objBudget.inputTableColumn(className, '', amount, 11, enableChanges);
+    html += objBudget.inputTableCell(className, '', amount, 11, enableChanges);
 
     // Year (<td></td>)
     const year = Number(budget.year);
@@ -331,7 +331,7 @@ function showBudgets(menuNumber) {
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += objBudget.inputTableColumn(className, '', text, 45, enableChanges);
+    html += objBudget.inputTableCell(className, '', text, 45, enableChanges);
 
     // Delete
     className = `delete${budget.budgetId}`;
@@ -375,7 +375,7 @@ function insertEmptyTableRow(menuNumber) {
   html  += objAccount.showSelectedAccounts('accountId0', 'width:175px;', 0, 'Velg konto', '', enableChanges);
 
   const amount = "";
-  html += objBudget.inputTableColumn('amount0', '', amount, 11, enableChanges);
+  html += objBudget.inputTableCell('amount0', '', amount, 11, enableChanges);
 
   // Year (<td></td>)
   const year = Number(document.querySelector('.filterYear').value);
@@ -383,7 +383,7 @@ function insertEmptyTableRow(menuNumber) {
  
   // text
   const text = "";
-  html += objBudget.inputTableColumn('text0', '', text, 45, enableChanges);
+  html += objBudget.inputTableCell('text0', '', text, 45, enableChanges);
 
   html += "<td>Nytt budsjett</td></tr>";
   return html;

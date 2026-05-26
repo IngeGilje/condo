@@ -7,7 +7,7 @@ const objCondominium = new Condominium('condominium');
 const objBudget = new Budget('budget');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
-const objBankAccountTransaction = new BankAccountTransaction('bankAccountTransaction');
+const objTransaction = new Transaction('bankTransaction');
 const objCondo = new Condo('condo');
 const objCommonCost = new CommonCost('commoncost');
 
@@ -265,14 +265,14 @@ function showCommonCostYear(menuNumber) {
   if (rowNumberCommonCost !== -1) commonCostSquareMeter = objCommonCost.arrayCommonCosts[rowNumberCommonCost].commonCostSquareMeter;
   let className = `commonCostSquareMeter${commonCostId}`;
   commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
-  html += objCommonCost.inputTableColumn(className, '', commonCostSquareMeter, 11, enableChanges);
+  html += objCommonCost.inputTableCell(className, '', commonCostSquareMeter, 11, enableChanges);
 
   // fixed cost per condo
   let fixedCostCondo = "";
   if (rowNumberCommonCost !== -1) fixedCostCondo = objCommonCost.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo;
   className = `fixedCostCondo${commonCostId}`;
   fixedCostCondo = formatOreToKroner(fixedCostCondo);
-  html += objCommonCost.inputTableColumn(className, '', fixedCostCondo, 10, enableChanges);
+  html += objCommonCost.inputTableCell(className, '', fixedCostCondo, 10, enableChanges);
 
   // Delete
   className = `delete${commonCostId}`;
@@ -329,17 +329,17 @@ function showCommonCostCondo(menuNumber) {
 
     // condo name
     let className = `name${condo.condoId}`;
-    html += objCommonCost.inputTableColumn(className, '', condo.name, 45, false);
+    html += objCommonCost.inputTableCell(className, '', condo.name, 45, false);
 
     // Square meters
     let squareMeters = formatOreToKroner(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;
-    html += objCommonCost.inputTableColumn(className, '', squareMeters, 11, false);
+    html += objCommonCost.inputTableCell(className, '', squareMeters, 11, false);
 
     // fixed cost per month per condo
     fixedCostCondoMonth = formatOreToKroner(fixedCostCondoMonth);
     className = `fixedCostCondoMonth${condo.condoId}`;
-    html += objCommonCost.inputTableColumn(className, '', fixedCostCondoMonth, 10, false);
+    html += objCommonCost.inputTableCell(className, '', fixedCostCondoMonth, 10, false);
 
     // Common cost per month per condo
     let commonCostSquareMeter = 0;
@@ -349,14 +349,14 @@ function showCommonCostCondo(menuNumber) {
     let commonCostsMonth = (((squareMeters * commonCostSquareMeter) / 100) + (fixedCostCondoMonth));
     className = `commonCostsMonth${commonCostId}`;
     commonCostsMonth = formatOreToKroner(commonCostsMonth);
-    html += objCommonCost.inputTableColumn(className, '', commonCostsMonth, 11, enableChanges);
+    html += objCommonCost.inputTableCell(className, '', commonCostsMonth, 11, enableChanges);
 
     // Common cost per year per condo
     commonCostsMonth = formatKronerToOre(commonCostsMonth);
     let commonCostsCondoYear = commonCostsMonth * 12;
     commonCostsCondoYear = formatOreToKroner(commonCostsCondoYear);
     className = `commonCostsCondoYear${condo.condoId}`;
-    html += objCommonCost.inputTableColumn(className, '', commonCostsCondoYear, 10, false);
+    html += objCommonCost.inputTableCell(className, '', commonCostsCondoYear, 10, false);
 
     html += "</tr>";
 

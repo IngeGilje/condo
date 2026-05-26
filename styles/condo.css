@@ -16,10 +16,11 @@ div.tableContainer {
 table {
   border-collapse: collapse;
   background-color: #f9f9f9;
-  border-radius: 10px;
+  border-radius: 20px;
   overflow: hidden;
   width: 100%;
   font-family: system-ui, sans-serif;
+  border: 1px solid black;
 }
 
 button,
@@ -358,4 +359,17 @@ iframe {
 
 .nav-links a:hover::after {
   width: 100%;
+}
+
+.cell {
+  position: relative;
+  height: 100px;
+}
+
+.label {
+  position: absolute;
+  top: -8px;
+  left: 10px;
+  background: white;
+  padding: 0 4px;
 }

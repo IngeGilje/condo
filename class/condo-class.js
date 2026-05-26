@@ -31,7 +31,7 @@ class Condos {
   // array of horizontal menu
   arrayHorizontalMenu = [
     {
-      applicationName: "condo-bankaccounttransaction.html",
+      applicationName: "condo-showtransaction.html",
       className: "Menu1",
       text: "Regnskap"
     },
@@ -130,9 +130,9 @@ class Condos {
       text: "Betalingsoversikt"
     },
     {
-      applicationName: "condo-bankaccounttransaction.html",
+      applicationName: "condo-showtransaction.html",
       className: "Menu15",
-      text: "Banktransaksjoner"
+      text: "Vis transaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
@@ -147,7 +147,7 @@ class Condos {
     {
       applicationName: "condo-transaction.html",
       className: "Menu18",
-      text: "Konto bevegelser"
+      text: "Transaksjoner"
     },
     {
       applicationName: "condo-project.html",
@@ -198,7 +198,7 @@ class Condos {
   }
 
   // Show input
-  inputTableColumn(className, direction = 'left', value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+  inputTableCell(className, direction = 'left', value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
     return `
     <td 
@@ -206,6 +206,7 @@ class Condos {
       colspan="${colspan}" 
       rowspan="${rowspan}"
     >
+    <span class="label"></span>
       <input
         class="${className} center one-line"
         type="text"
@@ -235,25 +236,8 @@ class Condos {
     </td>`;
   }
 
-  /*
   // Show password input
-  inputTableColumnPassword(className, style, value, maxlength) {
-
-    return `
-    <td class="center">
-      <input
-        class="${className} center one-line"
-        type="password"
-        maxlength="${maxlength}"
-        value="${value}"
-        ${(style) ? `style="${style}"` : "style='width:175px;'"}
-      >
-    </td>`;
-  }
-  */
-
-  // Show password input
-  inputTableColumnPassword(className, value, maxlength) {
+  inputTableCellPassword(className, value, maxlength) {
 
     return `
     <td class="center">
@@ -279,6 +263,7 @@ class Condos {
     </td>`;
   }
 
+  /*
   // Show leading text for input
   showLeadingTextInput(className, labelText, maxlength, placeholder) {
 
@@ -293,6 +278,7 @@ class Condos {
       `;
     document.querySelector(`.div-${className}`).innerHTML = html;
   }
+  */
 
   // Show label
   showLabel(className, labelText) {
@@ -994,31 +980,6 @@ class Condos {
       ${(style) ? `style="${style}"` : ""}>`;
   }
 
-  /*
-  // Initializing of a table
-  initializeTable(...columnWidths) {
-
-    let tableWidth = 0;
-    columnWidths.forEach((columnWidth) => {
-      tableWidth += (columnWidth + 10);
-    });
-
-    let html = `
-    <table 
-      style="table-layout: fixed; width: ${tableWidth}px;"
-    >`;
-
-    html += '<colgroup>';
-
-    columnWidths.forEach((columnWidth) => {
-      html += `<col style="width: ${columnWidth}px;">`;
-    });
-
-    html += '</colgroup>';
-    return html;
-  }
-  */
-
   // Initializing of a table
   initializeTable(columnWidths) {
 
@@ -1029,7 +990,9 @@ class Condos {
 
     let html = `
     <table 
-      style="table-layout: fixed; width: ${tableWidth}px;"
+      style="table-layout: fixed;
+      width: ${tableWidth}px;";
+      border="1";
     >`;
 
     html += '<colgroup>';

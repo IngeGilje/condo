@@ -9,7 +9,7 @@ const objUser = new User('user');
 const objUserBankAccount = new UserBankAccount('userbankaccount');
 const objCondominium = new Condominium('condominium');
 const objCondo = new Condo('condo');
-const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransaction');
+const objTransaction = new Transaction('transaction');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 const objDue = new Due('due');
@@ -18,7 +18,7 @@ const objImportFile = new ImportFile('importfile');
 
 const enableChanges = (objImportFile.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175, 175,175,175,175,200];
+const columnWidths = [175, 175, 175, 175, 175, 175, 175, 175, 200];
 
 let menuNumber = 0;
 
@@ -36,9 +36,9 @@ async function main() {
     if ((objImportFile.condominiumId === 0) || (objImportFile.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1) 
-      ? 'http://ingegilje.no/condo-login.html' 
-      : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -49,24 +49,24 @@ async function main() {
       let transactionFile = true;
 
       const resident = 'A';
-      await objUser.loadUsersTable(objBankAccountTransaction.condominiumId, resident, objImportFile.nineNine);
+      await objUser.loadUsersTable(objTransaction.condominiumId, resident, objImportFile.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objBankAccountTransaction.condominiumId, fixedCost);
-      await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine);
-      await objUserBankAccount.loadUserBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
-      await objCondo.loadCondoTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine);
-      await objSupplier.loadSuppliersTable(objBankAccountTransaction.condominiumId);
+      await objAccount.loadAccountsTable(objTransaction.condominiumId, fixedCost);
+      await objBankAccount.loadBankAccountsTable(objTransaction.condominiumId, objImportFile.nineNine);
+      await objUserBankAccount.loadUserBankAccountsTable(objTransaction.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
+      await objCondo.loadCondoTable(objTransaction.condominiumId, objTransaction.nineNine);
+      await objSupplier.loadSuppliersTable(objTransaction.condominiumId);
 
       const deleted = 'A';
       const accountId = objImportFile.nineNine;
       const condoId = objImportFile.nineNine;
       let fromDate = 0;
       let toDate = objImportFile.nineNine;
-      await objDue.loadDuesTable(objBankAccountTransaction.condominiumId, accountId, condoId, fromDate, toDate);
+      await objDue.loadDuesTable(objTransaction.condominiumId, accountId, condoId, fromDate, toDate);
 
       amount = 0;
       const orderBy = 'condoId ASC, date DESC, income ASC';
-      await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
       await objCondominium.loadCondominiumsTable();
 
       // Show header
@@ -87,20 +87,20 @@ async function main() {
 // Make transactions events
 async function events() {
 
-  // Update bank account transactions
+  // Update transactions
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      // update Bank Account Transactions based on csv file
-      await updateBankAccountTransactions();
+      // update transactions based on csv file
+      await updateTransactions();
 
       // Update opening balance and closing balance
       await updateOpeningClosingBalance();
 
-      // Start bank account transactions
+      // Start transactions
       const URL = (objUser.serverStatus === 1)
-        ? 'http://ingegilje.no/condo-bankaccounttransaction.html'
-        : 'http://localhost/condo-bankaccounttransaction.html';
+        ? 'http://ingegilje.no/condo-transaction.html'
+        : 'http://localhost/condo-transaction.html';
       window.location.href = URL;
     };
   });
@@ -135,8 +135,8 @@ async function events() {
           // create array from imported csv-file
           createTransactionsArray(objImportFile.strCSVTransaction);
 
-          // Show bank account transactions
-          menuNumber = showBankAccountTransactions(0);
+          // Show transactions
+          menuNumber = showTransactions(0);
         }
       } else {
 
@@ -146,7 +146,7 @@ async function events() {
   });
 };
 
-// Create array for Bank account transactions from imported csv file
+// Create array for Transactions from imported csv file
 function createTransactionsArray() {
 
   let transactionsId = 0;
@@ -222,13 +222,13 @@ function createTransactionsArray() {
 
       date = convertDateToISOFormat(accountingDate);
 
-      // Do not import Bank account transactions twice
-      if (!checkBankAccountTransaction(Number(income), Number(payment), Number(date))) {
+      // Do not import Transactions twice
+      if (!checkTransaction(Number(income), Number(payment), Number(date))) {
 
         // From bank account
         transactionsId++;
 
-        const objBankAccountTransaction = {
+        const objTransaction = {
           transactionsId: transactionsId,
           accountingDate: accountingDate,
           condoId: condoId,
@@ -244,7 +244,7 @@ function createTransactionsArray() {
           text: text
         };
 
-        arrayTransactions.push(objBankAccountTransaction);
+        arrayTransactions.push(objTransaction);
       }
     }
   });
@@ -372,7 +372,7 @@ async function updateOpeningClosingBalance() {
             const closingBalance = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
             const closingBalanceDate = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
             await objBankAccount.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine);
+            await objBankAccount.loadBankAccountsTable(objTransaction.condominiumId, objImportFile.nineNine);
           }
         }
       }
@@ -393,7 +393,7 @@ async function updateOpeningClosingBalance() {
             const openingBalance = objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance;
             const openingBalanceDate = objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate;
             await objBankAccount.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objImportFile.nineNine);
+            await objBankAccount.loadBankAccountsTable(objTransaction.condominiumId, objImportFile.nineNine);
           };
         };
       };
@@ -462,8 +462,9 @@ function getClosingBalanceDate() {
 }
 */
 
-// reset Bank account transactions
-function resetBankAccountTransactions() {
+/*
+// reset Transactions
+function resetTransactions() {
 
   // Show columns
   //document.querySelector(".div-importfile-columnLineNumber").innerHTML = '';
@@ -476,23 +477,24 @@ function resetBankAccountTransactions() {
   document.querySelector(".div-importfile-columnPayment").innerHTML = '';
   document.querySelector(".div-importfile-columnText").innerHTML = '';
 }
+*/
 
-// Check if Bank account transactions exists
-function checkBankAccountTransaction(income, payment, date) {
+// Check if Transactions exists
+function checkTransaction(income, payment, date) {
 
-  let bankAccountTransactionExist = false;
+  let bankTransactionExist = false;
 
-  objBankAccountTransaction.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
+  objTransaction.arrayTransactions.forEach((bankTransaction) => {
 
-    if (bankAccountTransaction.bankAccountTransactionId === 1300) {
-      console.log('bankAccountTransactionId: ', bankAccountTransaction.bankAccountTransactionId);
+    if (bankTransaction.transactionId === 1300) {
+      console.log('transactionId: ', bankTransaction.transactionId);
     }
-    if (bankAccountTransaction.income === income && bankAccountTransaction.payment === payment && bankAccountTransaction.date === date) {
+    if (bankTransaction.income === income && bankTransaction.payment === payment && bankTransaction.date === date) {
 
-      bankAccountTransactionExist = true;
+      bankTransactionExist = true;
     }
   });
-  return bankAccountTransactionExist;
+  return bankTransactionExist;
 }
 
 // Show header
@@ -505,7 +507,7 @@ function showHeader() {
   html += objImportFile.startTableBody();
 
   // show main header
-  html += objImportFile.showTableHeaderLogOut( '', '', '', '', 'Import av bankkontotransaksjoner', '', '', '');
+  html += objImportFile.showTableHeaderLogOut('', '', '', '', 'Import av bankkontotransaksjoner', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -539,14 +541,14 @@ function showFilter(menuNumber) {
   return menuNumber;
 }
 
-// Show csv file for bank account transactions
-function showBankAccountTransactions(menuNumber) {
+// Show csv file for transactions
+function showTransactions(menuNumber) {
 
   // start table
   let html = objImportFile.initializeTable(columnWidths);
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objImportFile.showTableHeaderMenu( menuNumber, objImportFile.accountMenu, '#e0f0e0', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += objImportFile.showTableHeaderMenu(menuNumber, objImportFile.accountMenu, '#e0f0e0', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -559,37 +561,37 @@ function showBankAccountTransactions(menuNumber) {
 
     // Date
     let className = `accountingDate${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.accountingDate, 10);
+    html += objImportFile.inputTableCell(className, '', transaction.accountingDate, 10);
 
     // Condo name
     className = `condoName${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.condoName, 45);
+    html += objImportFile.inputTableCell(className, '', transaction.condoName, 45);
 
     // Account name
     className = `accountName${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.accountName, 45);
+    html += objImportFile.inputTableCell(className, '', transaction.accountName, 45);
 
     // fromBankAccountName
     className = `fromBankAccountName${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.fromBankAccountName, 45);
+    html += objImportFile.inputTableCell(className, '', transaction.fromBankAccountName, 45);
 
     // toBankAccountName
     className = `toBankAccountName${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.toBankAccountName, 45);
+    html += objImportFile.inputTableCell(className, '', transaction.toBankAccountName, 45);
 
     // Income
     const income = formatOreToKroner(transaction.income);
     className = `income${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', income, 10);
+    html += objImportFile.inputTableCell(className, '', income, 10);
 
     // Payment
     const payment = formatOreToKroner(transaction.payment);
     className = `payment${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', payment, 10);
+    html += objImportFile.inputTableCell(className, '', payment, 10);
 
     // Text
     className = `payment${menuNumber}`;
-    html += objImportFile.inputTableColumn(className, '', transaction.text, 10);
+    html += objImportFile.inputTableCell(className, '', transaction.text, 10);
 
     // Accomulate
 
@@ -617,35 +619,36 @@ function showBankAccountTransactions(menuNumber) {
   menuNumber++;
   html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '');
 
-  html += objImportFile.showButton( 'update', 'Oppdater');
+  html += objImportFile.showButton('update', 'Oppdater');
   html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // Show the rest of the menu
   menuNumber++;
-  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu,'','','','','','','','');
+  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu, '', '', '', '', '', '', '', '');
 
   // The end of the table
   html += objImportFile.endTable();
   document.querySelector('.result').innerHTML = html;
 }
 
-// Update bank account transactions table
-async function updateBankAccountTransactions() {
+// Update transactions table
+async function updateTransactions() {
 
   arrayTransactions.forEach(async (transaction) => {
 
-    const bankAccountTransactionId = 0;  // not in use
+    const transactionId = 0;  // not in use
 
     const condoId = Number(transaction.condoId);
     const accountId = Number(transaction.accountId);
+    const projectId = 0;
     const income = Number(transaction.income);
     const payment = Number(transaction.payment);
     const kilowattHour = 0;
     const date = convertDateToISOFormat(transaction.accountingDate);
     const text = transaction.text;
 
-    // insert bank account transactions row
-    await objBankAccountTransaction.insertBankAccountTransactionsTable(bankAccountTransactionId, objBankAccountTransaction.condominiumId, objBankAccountTransaction.user, condoId, accountId, income, payment, kilowattHour, date, text, 'Y')
+    // insert transactions row
+    await objTransaction.insertTransactionsTable(transactionId, objTransaction.condominiumId, objTransaction.user, condoId, accountId, projectId, income, payment, kilowattHour, date, text, 'Y')
   });
 }
 
@@ -657,7 +660,7 @@ function importFileName(menuNumber) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objImportFile.showTableHeaderMenu( menuNumber, objImportFile.accountMenu, '', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
+  html += objImportFile.showTableHeaderMenu(menuNumber, objImportFile.accountMenu, '', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();
@@ -688,7 +691,7 @@ function importFileName(menuNumber) {
   html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '', '');
 
   // Show buttons (<tr></td>)
-  html += objBankAccount.showButton( 'importTransacionFile', 'Start import', 'Importer transaksjonsfil');
+  html += objBankAccount.showButton('importTransacionFile', 'Start import', 'Importer transaksjonsfil');
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
@@ -698,7 +701,7 @@ function importFileName(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu,'','','','','','','','');
+  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu, '', '', '', '', '', '', '', '');
 
   // end table body
   html += objImportFile.endTableBody();

@@ -241,7 +241,7 @@ function showAccounts(menuNumber) {
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccount.inputTableColumn(className, '', name, 45, enableChanges);
+    html += objAccount.inputTableCell(className, '', name, 45, enableChanges);
 
     // Delete
     selected = "";
@@ -290,7 +290,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objAccount.showSelectedValues('fixedCost0', 'width:175px;', enableChanges, 'Velg kostnadstype', constFixedCost, constVariableCost, 'Velg kostnadstype');
 
   // name
-  html += objAccount.inputTableColumn('name0', '', '', 45, enableChanges);
+  html += objAccount.inputTableCell('name0', '', '', 45, enableChanges);
 
   // Insert new account
   html += "<td>Ny konto</td></tr>";

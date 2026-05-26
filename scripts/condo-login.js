@@ -54,7 +54,7 @@ function showLogin() {
 
   // email
   const email = '';
-  html += objLogIn.inputTableColumn('email', 'center', email, 45, true);
+  html += objLogIn.inputTableCell('email', 'center', email, 45, true);
   html += "</tr>";
 
   // insert a table row (<tr></td>)
@@ -69,7 +69,7 @@ function showLogin() {
 
   // password
   password = '';
-  html += objLogIn.inputTableColumnPassword('password', password, 45, true);
+  html += objLogIn.inputTableCellPassword('password', password, 45, true);
   html += "</tr>";
 
   // insert a table row (<tr></td>)

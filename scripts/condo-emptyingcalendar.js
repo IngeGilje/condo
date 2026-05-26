@@ -246,7 +246,7 @@ function showEmptyingCalendar(menuNumber) {
       let date = emptyingCalendar.date;
       date = formatNumberToNorDate(date);
       className = `date${emptyingCalendar.emptyingCalendarId}`;
-      html += objEmptyingCalendar.inputTableColumn(className, 'left', date, 10, enableChanges);
+      html += objEmptyingCalendar.inputTableCell(className, 'left', date, 10, enableChanges);
 
       // residual waste  
       selected = "Ugyldig verdi";
@@ -326,7 +326,7 @@ function insertEmptyTableRow(menuNumber) {
   // date
   let date = 'dd.mm.åååå';
   className = `date0`;
-  html += objEmptyingCalendar.inputTableColumn(className, 'left', date, 10, enableChanges);
+  html += objEmptyingCalendar.inputTableCell(className, 'left', date, 10, enableChanges);
 
   // Paper waste
   let selected = "Nei";

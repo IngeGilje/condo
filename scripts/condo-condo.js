@@ -214,7 +214,7 @@ function showCondo(menuNumber, condoId) {
 
   // name
   const name = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].name;
-  html += objCondo.inputTableColumn('name', '', name, 45, enableChanges);
+  html += objCondo.inputTableCell('name', '', name, 45, enableChanges);
   html += "<td></td></tr>";
 
   // street, address2
@@ -229,11 +229,11 @@ function showCondo(menuNumber, condoId) {
   const street = (rowNumberCondo === -1)
     ? ''
     : objCondo.arrayCondo[rowNumberCondo].street;
-  html += objCondo.inputTableColumn('street', '', street, 45, enableChanges);
+  html += objCondo.inputTableCell('street', '', street, 45, enableChanges);
 
   // address2
   const address2 = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].address2;
-  html += objCondo.inputTableColumn('address2', '', address2, 45, enableChanges);
+  html += objCondo.inputTableCell('address2', '', address2, 45, enableChanges);
   html += "</tr>";
 
   // postalCode, city
@@ -246,11 +246,11 @@ function showCondo(menuNumber, condoId) {
 
   // postalCode
   const postalCode = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].postalCode;
-  html += objCondo.inputTableColumn('postalCode', '', postalCode, 4, enableChanges);
+  html += objCondo.inputTableCell('postalCode', '', postalCode, 4, enableChanges);
 
   // city
   const city = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].city;
-  html += objCondo.inputTableColumn('city', '', city, 45, enableChanges);
+  html += objCondo.inputTableCell('city', '', city, 45, enableChanges);
   html += "</tr>";
 
   // squareMeters
@@ -264,7 +264,7 @@ function showCondo(menuNumber, condoId) {
 
   // squareMeters
   const squareMeters = (rowNumberCondo === -1) ? '' : formatOreToKroner(objCondo.arrayCondo[rowNumberCondo].squareMeters);
-  html += objCondo.inputTableColumn('squareMeters', '', squareMeters, 10, enableChanges);
+  html += objCondo.inputTableCell('squareMeters', '', squareMeters, 10, enableChanges);
 
   html += "<td></td></tr>";
 
