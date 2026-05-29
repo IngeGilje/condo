@@ -337,7 +337,7 @@ async function updateDuesRow(dueId) {
   const validCondoId = objCondo.validateInterval(className, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
 
   className = `.date${dueId}`;
-  const date = Number(convertDateToISOFormat(document.querySelector(`${className}`).value));
+  const date = Number(formatNorDateToNumber(document.querySelector(`${className}`).value));
   className = `date${dueId}`;
   const validDate = objCondo.validateInterval(className, columnWidths, '', 'Ugyldig dato', true, date, 20150101, 20991231);
 
@@ -442,7 +442,7 @@ function showFilter(menuNumber, condominiumId, condoId) {
   let toDate = getCurrentDate();
 
   // Next year
-  toDate = Number(convertDateToISOFormat(toDate)) + 10000;
+  toDate = Number(formatNorDateToNumber(toDate)) + 10000;
   toDate = formatNumberToNorDate(toDate);
   html += objDue.inputTableCell('filterToDate', '', toDate, 10, enableChanges);
 

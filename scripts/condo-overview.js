@@ -61,9 +61,9 @@ async function main() {
       const accountId = objOverview.nineNine;
       const deleted = 'N';
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = convertDateToISOFormat(fromDate);
+      fromDate = formatNorDateToNumber(fromDate);
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = convertDateToISOFormat(toDate);
+      toDate = formatNorDateToNumber(toDate);
       await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
       const orderBy = 'condoId ASC, date DESC, income ASC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
@@ -112,9 +112,9 @@ async function events() {
         const accountId = objOverview.nineNine;
         const deleted = 'N';
         let fromDate = document.querySelector('.filterFromDate').value;
-        fromDate = convertDateToISOFormat(fromDate);
+        fromDate = formatNorDateToNumber(fromDate);
         let toDate = document.querySelector('.filterToDate').value;
-        toDate = convertDateToISOFormat(toDate);
+        toDate = formatNorDateToNumber(toDate);
         await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
         const orderBy = 'condoId ASC, date DESC, income ASC';
         await objTransaction.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
@@ -363,7 +363,7 @@ function showTransactions(menuNumber) {
 }
 
 // show how much to pay
-async function showHowMuchToPay(menuNumber) {
+function showHowMuchToPay(menuNumber) {
 
   // Start table
   let html = objOverview.initializeTable(columnWidths);

@@ -80,9 +80,9 @@ async function main() {
       condoId = Number(document.querySelector('.filterCondoId').value);
       accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(convertDateToISOFormat(fromDate));
+      fromDate = Number(formatNorDateToNumber(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(convertDateToISOFormat(toDate));
+      toDate = Number(formatNorDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
@@ -116,10 +116,10 @@ async function events() {
       accountId = Number(document.querySelector('.filterAccountId').value);
 
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(convertDateToISOFormat(fromDate));
+      fromDate = Number(formatNorDateToNumber(fromDate));
 
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(convertDateToISOFormat(toDate));
+      toDate = Number(formatNorDateToNumber(toDate));
 
       let amount = document.querySelector('.filterAmount').value;
       amount = formatKronerToOre(amount);
@@ -130,78 +130,6 @@ async function events() {
       showTransactions(3);
     };
   });
-
-  /*
-  // update a transactions row
-  document.addEventListener('change', async (event) => {
-
-    const arrayPrefixes = ['condoId', 'accountId',  'text', 'date',
-      'income', 'payment'];
-
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[3]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[4]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[5]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[6]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objTransaction.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let transactionId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        transactionId = Number(className.slice(prefix.length));
-      }
-
-      // Update a transactions row
-      updateTransactionRow(transactionId);
-    };
-  });
-  */
-
-  /*
-  // Delete a transactions row
-  document.addEventListener('click', async (event) => {
-
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objTransaction.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let transactionId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        transactionId = Number(className.slice(prefix.length));
-      }
-
-      await deleteTransactionRow(transactionId, className);
-
-      const amount = 0;
-      const deleted = 'N';
-      condoId = Number(document.querySelector('.filterCondoId').value);
-      accountId = Number(document.querySelector('.filterAccountId').value);
-      let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(convertDateToISOFormat(fromDate));
-      let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(convertDateToISOFormat(toDate));
-      const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
-
-      showTransactions(3);
-    };
-  });
-  */
 
   // Show bank voucher
   document.addEventListener('click', async (event) => {
@@ -261,7 +189,7 @@ async function events() {
       const accountId = Number(document.querySelector(className).value);
       className = `.date${transactionId}`;
       let date = document.querySelector(className).value;
-      date = convertDateToISOFormat(date);
+      date = formatNorDateToNumber(date);
       className = `.amount${transactionId}`;
       let amount = document.querySelector(className).value;
       amount = formatKronerToOre(amount);
@@ -358,7 +286,7 @@ function showFilter(menuNumber, condoId, accountId) {
 }
 
 // Show transactions
-async function showTransactions(menuNumber) {
+function showTransactions(menuNumber) {
 
   // Start table
   let html = objTransaction.initializeTable(columnWidths);
@@ -370,8 +298,6 @@ async function showTransactions(menuNumber) {
 
   //objTransaction.arrayTransactions.forEach(async (bankTransaction) => {
   for (const bankTransaction of objTransaction.arrayTransactions) {
-
-    //html += '<tr>';
 
     // Show menu
     menuNumber++;
@@ -394,18 +320,6 @@ async function showTransactions(menuNumber) {
     className = `accountId${bankTransaction.transactionId}`;
 
     objAccount.showSelectedAccounts(className, 'width:175px;', bankTransaction.accountId, 'Velg konto', '', false);
-
-    /*
-    // income
-    const income = formatOreToKroner(bankTransaction.income);
-    className = `income${bankTransaction.transactionId}`;
-    html += objTransaction.inputTableCell(className, 'left', income, 10, false);
-  
-    // payment
-    const payment = formatOreToKroner(bankTransaction.payment);
-    className = `payment${bankTransaction.transactionId}`;
-    html += objTransaction.inputTableCell(className, 'left', payment, 10, false);
-    */
 
     // amount
     let amount = bankTransaction.income + bankTransaction.payment;
@@ -484,10 +398,10 @@ async function deleteTransactionRow(transactionId, className) {
   accountId = Number(document.querySelector('.filterAccountId').value);
 
   let fromDate = document.querySelector('.filterFromDate').value;
-  fromDate = Number(convertDateToISOFormat(fromDate));
+  fromDate = Number(formatNorDateToNumber(fromDate));
 
   let toDate = document.querySelector('.filterToDate').value;
-  toDate = Number(convertDateToISOFormat(toDate));
+  toDate = Number(formatNorDateToNumber(toDate));
 
   const orderBy = 'date DESC, income DESC';
   await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);

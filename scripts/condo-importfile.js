@@ -220,7 +220,7 @@ function createTransactionsArray() {
       // To bank account
       toBankAccountName = objImportFile.getBankAccountName(toBankAccount);
 
-      date = convertDateToISOFormat(accountingDate);
+      date = formatNorDateToNumber(accountingDate);
 
       // Do not import Transactions twice
       if (!checkTransaction(Number(income), Number(payment), Number(date))) {
@@ -315,7 +315,7 @@ async function updateOpeningClosingBalance() {
       openingBalanceDate = openingBalanceDate[0];
 
       // dd.mm.yyyy -> yyyymmdd
-      openingBalanceDate = convertDateToISOFormat(openingBalanceDate);
+      openingBalanceDate = formatNorDateToNumber(openingBalanceDate);
 
       // Opening balance
 
@@ -340,7 +340,7 @@ async function updateOpeningClosingBalance() {
       closingBalanceDate = closingBalanceDate[0];
 
       // dd.mm.yyyy -> yyyymmdd
-      closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
+      closingBalanceDate = formatNorDateToNumber(closingBalanceDate);
 
       // Closing balanse
       //balance = (balance.includes('Ingen data tilgjengelig')) ? '"0"' : balance;
@@ -644,11 +644,11 @@ async function updateTransactions() {
     const income = Number(transaction.income);
     const payment = Number(transaction.payment);
     const kilowattHour = 0;
-    const date = convertDateToISOFormat(transaction.accountingDate);
+    const date = formatNorDateToNumber(transaction.accountingDate);
     const text = transaction.text;
 
     // insert transactions row
-    await objTransaction.insertTransactionsTable(transactionId, objTransaction.condominiumId, objTransaction.user, condoId, accountId, projectId, income, payment, kilowattHour, date, text, 'Y')
+    await objTransaction.insertTransactionsTable(objTransaction.condominiumId, objTransaction.user, condoId, accountId, projectId, income, payment, kilowattHour, date, text, 'Y')
   });
 }
 

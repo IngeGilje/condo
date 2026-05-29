@@ -716,13 +716,8 @@ class Condos {
 
         if (userId >= 0) {
 
-          const rowNumberUser =
-            objUser.arrayUsers.findIndex(user => user.userId === userId);
-          if (rowNumberUser !== -1) {
-
-            condoId =
-              Number(objUser.arrayUsers[rowNumberUser].condoId);
-          }
+          const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+          if (rowNumberUser !== -1) condoId = Number(objUser.arrayUsers[rowNumberUser].condoId);
         }
       }
     }
@@ -1312,7 +1307,7 @@ function removeComma(amount) {
 }
 
 // Format date dd.mm.yyyy (European date format) to yyyymmdd ("Basic ISO 8601 format)
-function convertDateToISOFormat(date) {
+function formatNorDateToNumber(date) {
   if (date.includes('.')) {
     const dateParts = date.split(".");
     date = `${dateParts[2]}${dateParts[1]}${dateParts[0]}`;

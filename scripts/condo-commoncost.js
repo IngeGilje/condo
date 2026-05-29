@@ -61,10 +61,10 @@ async function main() {
       //const deleted = "N";
 
       //fromDate = document.querySelector('.filterFromDate').value;
-      //fromDate = Number(convertDateToISOFormat(fromDate));
+      //fromDate = Number(formatNorDateToNumber(fromDate));
 
       //toDate = document.querySelector('.filterToDate').value;
-      //toDate = Number(convertDateToISOFormat(toDate));
+      //toDate = Number(formatNorDateToNumber(toDate));
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id

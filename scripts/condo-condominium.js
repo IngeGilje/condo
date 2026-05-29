@@ -193,7 +193,6 @@ function resetValues() {
     document.querySelector('.insert').disabled = true;
     document.querySelector('.cancel').disabled = false;
   }
-
 }
 
 // Delete condominium row
@@ -490,7 +489,6 @@ async function updateCondominiumRow(condominiumId) {
       // update the condominiums row
       await objCondominium.updateCondominiumsTable(objCondominium.user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
       await objCondominium.loadCondominiumsTable();
-      //condominiumId = Number(document.querySelector('.filterCondominiumId').value = condominiumId);
     } else {
 
       // Insert the bankaccount row in condominiums table

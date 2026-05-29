@@ -96,29 +96,6 @@ class Transaction extends Condos {
     return html;
   }
 
-  // Find selected Bank Account Movement Id
-  getTransactionId(className) {
-
-    let transactionId = 0;
-
-    // Check if class exist
-    if (isClassDefined(className)) {
-
-      transactionId = Number(document.querySelector(`.${className}`).value);
-      if (this.arrayTransactions.length > 0) {
-        transactionId = (transactionId === 0) ? this.arrayTransactions[0].transactionId : transactionId;
-      }
-    } else {
-
-      // Get first id in bank Account Movement array
-      if (this.arrayTransactions.length > 0) {
-        transactionId = this.arrayTransactions[0].transactionId;
-      }
-    }
-
-    return transactionId;
-  }
-
   // get transactions
   async loadTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate, alternativeArray = false) {
 
@@ -155,6 +132,34 @@ class Transaction extends Condos {
       console.log("Error loading Transactions:", error);
     }
   }
+
+  // get last row in transactions table
+  async loadLastRowTransactionsTable(condominiumId) {
+
+    const URL = (this.serverStatus === 1)
+      ? '/api/transactions'
+      : 'http://localhost:3000/transactions';
+
+    try {
+
+      // POST request
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'selectLastRow',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (Transactions)");
+      this.arrayTransactions = await response.json();
+    } catch (error) {
+      console.log("Error loading Transactions:", error);
+    }
+  }
+
 
   // update Transactions row
   async updateTransactionsTable(transactionId, condominiumId, user, condoId, accountId, projectId, income, payment, kilowattHour, date, text) {
@@ -218,7 +223,7 @@ class Transaction extends Condos {
   }
 
   // insert Transactions row
-  async insertTransactionsTable(transactionId, condominiumId, user, condoId, accountId, projectId, income, payment, kilowattHour, date, text, imported = 'Y') {
+  async insertTransactionsTable(condominiumId, user, condoId, accountId, projectId, income, payment, kilowattHour, date, text, imported = 'Y') {
 
     const URL = (this.serverStatus === 1)
       ? '/api/transactions'
@@ -233,7 +238,6 @@ class Transaction extends Condos {
         },
         body: JSON.stringify({
           action: 'insert',
-          transactionId: transactionId,
           condominiumId: condominiumId,
           user: user,
           condoId: condoId,

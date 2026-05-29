@@ -64,10 +64,10 @@ async function main() {
       const deleted = "N";
 
       fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(convertDateToISOFormat(fromDate));
+      fromDate = Number(formatNorDateToNumber(fromDate));
 
       toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(convertDateToISOFormat(toDate));
+      toDate = Number(formatNorDateToNumber(toDate));
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
@@ -113,10 +113,10 @@ async function events() {
       const deleted = "N";
 
       fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(convertDateToISOFormat(fromDate));
+      fromDate = Number(formatNorDateToNumber(fromDate));
 
       toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(convertDateToISOFormat(toDate));
+      toDate = Number(formatNorDateToNumber(toDate));
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
@@ -161,10 +161,10 @@ function getTotalMovementsBankAccount(accountId) {
   let accountAmount = 0;
 
   let fromDate = document.querySelector('.filterFromDate').value;
-  fromDate = Number(convertDateToISOFormat(fromDate));
+  fromDate = Number(formatNorDateToNumber(fromDate));
 
   let toDate = document.querySelector('.filterToDate').value;
-  toDate = Number(convertDateToISOFormat(toDate));
+  toDate = Number(formatNorDateToNumber(toDate));
 
   objTransaction.arrayTransactions.forEach((bankTransaction) => {
 
@@ -557,7 +557,7 @@ function showBankDeposit(menuNumber) {
   html += objAnnualAccount.inputTableCell(className, '', 'Estimert bankinnskudd', 10, false);
 
   // Next year
-  closingBalanceDate = Number(convertDateToISOFormat(closingBalanceDate));
+  closingBalanceDate = Number(formatNorDateToNumber(closingBalanceDate));
   let closingBalanceDateNextYear = closingBalanceDate + 10000;
   closingBalanceDateNextYear = formatNumberToNorDate(closingBalanceDateNextYear);
   className = `closingBalanceDateNextYear`;

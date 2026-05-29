@@ -345,7 +345,7 @@ async function updateBankAccountRow(bankAccountId) {
   let validOpeningBalanceDate = true;
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
   if (openingBalanceDate.length > 0) {
-    openingBalanceDate = convertDateToISOFormat(openingBalanceDate);
+    openingBalanceDate = formatNorDateToNumber(openingBalanceDate);
     validOpeningBalanceDate = objBankAccount.validateInterval('openingBalanceDate', columnWidths, '', 'Ugyldig dato', true, openingBalanceDate, 0, 20291231);
   }
 
@@ -358,7 +358,7 @@ async function updateBankAccountRow(bankAccountId) {
   // Closing balance date
   let validClosingBalanceDate = true;
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
-  closingBalanceDate = convertDateToISOFormat(closingBalanceDate);
+  closingBalanceDate = formatNorDateToNumber(closingBalanceDate);
   validClosingBalanceDate = objBankAccount.validateInterval('closingBalanceDate', columnWidths, '', 'Ugyldig dato', true, closingBalanceDate, 0, 20291231);
 
 

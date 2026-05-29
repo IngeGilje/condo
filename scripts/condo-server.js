@@ -1895,6 +1895,31 @@ async function main() {
           break;
         }
 
+        case 'selectLastRow': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM transactions
+            WHERE condominiumId = ${condominiumId}
+            AND deleted = 'N'
+            ORDER BY transactionId DESC
+            LIMIT 1;`;
+            
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /transactions:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
         case 'update': {
 
           try {
@@ -2016,7 +2041,6 @@ async function main() {
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
-            console.log('rows: ', rows);
 
             // Send a JSON response to the client containing the data
             res.json(rows);

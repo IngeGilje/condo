@@ -134,13 +134,13 @@ class Account extends Condos {
     } else {
 
       html += `
-      <option value="0" 
-        selected
+      <option
+        value="0" 
+        ${(!selectedValue) ? 'selected' : ''}
       >
         Ingen konti
       </option>`;
-
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select all
@@ -149,7 +149,7 @@ class Account extends Condos {
       html += `
       <option 
         value=${this.nineNine}
-        selected
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectAll}
       </option>`;
@@ -161,11 +161,11 @@ class Account extends Condos {
       html += `
       <option 
         value=0
-        ${(accountId === 0) ? 'selected' : ''}
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectNone}
       </option>`;
-      if (accountId === 0) selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
     html += `
       </select >
