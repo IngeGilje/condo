@@ -100,7 +100,7 @@ class Condo extends Condos {
       >
         ${selectAll}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select none
@@ -108,11 +108,11 @@ class Condo extends Condos {
       html += `
       <option 
         value=0
-        ${(condoId === 0) ? 'selected' : ''}
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectNone}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     html += `

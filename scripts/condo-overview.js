@@ -66,7 +66,7 @@ async function main() {
       toDate = formatNorDateToNumber(toDate);
       await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
       const orderBy = 'condoId ASC, date DESC, income ASC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
 
       // Show dues
       menuNumber = showDues(menuNumber);
@@ -117,7 +117,7 @@ async function events() {
         toDate = formatNorDateToNumber(toDate);
         await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
         const orderBy = 'condoId ASC, date DESC, income ASC';
-        await objTransaction.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, 0, fromDate, toDate);
+        await objTransaction.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine,objOverview.nineNine, 0, fromDate, toDate);
 
         // Show result
 

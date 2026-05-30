@@ -14,7 +14,7 @@ const objShowTransaction = new ShowTransaction('showtransaction');
 
 const enableChanges = (objAccount.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175, 175, 100, 100];
+const columnWidths = [175, 175, 175, 175, 175, 175];
 
 const params = new URLSearchParams(window.location.search);
 const paramCondoId = Number(params.get("condoId"));
@@ -84,7 +84,7 @@ async function main() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = Number(formatNorDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
       // Show result of filter
       menuNumber = showTransactions(menuNumber);
@@ -125,7 +125,7 @@ async function events() {
       amount = formatKronerToOre(amount);
 
       const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, objTransaction, accountId, amount, fromDate, toDate);
 
       showTransactions(3);
     };
@@ -160,45 +160,6 @@ async function events() {
     };
   });
 
-  // Edit transaction
-  document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('edit'))) {
-
-      const arrayPrefixes = ['edit'];
-
-      // Find the first matching class
-      let className = arrayPrefixes
-        .map(prefix => objTransaction.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let transactionId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        transactionId = Number(className.slice(prefix.length));
-      }
-
-      let URL = (objTransaction.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-
-      className = `.condoId${transactionId}`;
-      const condoId = Number(document.querySelector(className).value);
-      className = `.accountId${transactionId}`;
-      const accountId = Number(document.querySelector(className).value);
-      className = `.date${transactionId}`;
-      let date = document.querySelector(className).value;
-      date = formatNorDateToNumber(date);
-      className = `.amount${transactionId}`;
-      let amount = document.querySelector(className).value;
-      amount = formatKronerToOre(amount);
-
-      URL = `${URL}condo-transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&date=${date}&amount=${amount}`;
-      window.location.href = URL;
-    };
-  });
-
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -216,20 +177,20 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objTransaction.initializeTable(columnWidths);
+  let html = objShowTransaction.initializeTable(columnWidths);
 
   // start table body
-  html += objTransaction.startTableBody();
+  html += objShowTransaction.startTableBody();
 
   // show main header
-  html += objTransaction.showTableHeaderLogOut('1', '2', '3', '4Bankkontotransaksjoner', '5', '6');
+  html += objShowTransaction.showTableHeaderLogOut('1', '2', '3', '4Transaksjoner', '5');
   html += "</tr>";
 
   // end table body
-  html += objTransaction.endTableBody();
+  html += objShowTransaction.endTableBody();
 
   // The end of the table
-  html += objTransaction.endTable();
+  html += objShowTransaction.endTable();
   document.querySelector('.header').innerHTML = html;
 }
 
@@ -237,14 +198,14 @@ function showHeader() {
 function showFilter(menuNumber, condoId, accountId) {
 
   // Start table
-  let html = objTransaction.initializeTable(columnWidths);
+  let html = objShowTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', '2Leilighet', '3Konto', '4Fra dato', '5Til dato', '6Beløp', '7');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', '2Leilighet', '3Konto', '4Fra dato', '5Til dato', '6Beløp');
 
   // start table body
-  html += objTransaction.startTableBody();
+  html += objShowTransaction.startTableBody();
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -269,17 +230,17 @@ function showFilter(menuNumber, condoId, accountId) {
   // Amount
   html += objTransaction.inputTableCell('filterAmount', 'left', '', 10, true);
 
-  html += "<td>7</td></tr>";
+  html += "</tr>";
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '2', '3', '4', '5', '6', '7');
+  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '2', '3', '4', '5', '6');
 
   // end table body
-  html += objTransaction.endTableBody();
+  html += objShowTransaction.endTableBody();
 
   // The end of the table
-  html += objTransaction.endTable();
+  html += objShowTransaction.endTable();
   document.querySelector('.filter').innerHTML = html;
 
   return menuNumber;
@@ -289,32 +250,31 @@ function showFilter(menuNumber, condoId, accountId) {
 function showTransactions(menuNumber) {
 
   // Start table
-  let html = objTransaction.initializeTable(columnWidths);
+  let html = objShowTransaction.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', '2Leilighet', '3Konto', '4Dato', '5Beløp', '6', '7');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', '2Dato', '3Konto', '4Leilighet', '5Beløp', '');
   let sumAmount = 0;
 
-  //objTransaction.arrayTransactions.forEach(async (bankTransaction) => {
   for (const bankTransaction of objTransaction.arrayTransactions) {
 
     // Show menu
     menuNumber++;
     html += objAccount.insertTableRow('', menuNumber, objTransaction.accountMenu);
 
-    // condos
-    let className = `condoId${bankTransaction.transactionId}`;
-    html += objCondo.showSelectedCondos(className, 'width:175px;', bankTransaction.condoId, 'Ingen leilighet', '', false);
+    // Date
+    const date = formatNumberToNorDate(bankTransaction.date);
+    let className = `date${bankTransaction.transactionId}`;
+    html += objTransaction.inputTableCell(className, 'left', date, 10, false);
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
     html += objAccount.showSelectedAccounts(className, 'width:175px;', bankTransaction.accountId, 'Velg konto', '', false);
 
-    // Date
-    const date = formatNumberToNorDate(bankTransaction.date);
-    className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.inputTableCell(className, 'left', date, 10, false);
+    // condos
+    className = `condoId${bankTransaction.transactionId}`;
+    html += objCondo.showSelectedCondos(className, 'width:175px;', bankTransaction.condoId, '-', '', false);
 
     // accounts
     className = `accountId${bankTransaction.transactionId}`;
@@ -327,38 +287,9 @@ function showTransactions(menuNumber) {
     className = `amount${bankTransaction.transactionId}`;
     html += objTransaction.inputTableCell(className, 'left', amount, 10, false);
 
-    // validate voucher filename
-    const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objTransaction.condominiumId);
-    if (rowNumberCondominium !== -1) {
-      const path = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
-      const voucherFileName = `${path}${bankTransaction.transactionId}.pdf`;
-
-      /*
-      // Check if the file exist
-      if (await objTransaction.checkIfFileExist(voucherFileName)) {
-
-        // Show button if the file exist
-        className = `voucher${bankTransaction.transactionId}`;
-        html += objTransaction.showButton(className, 'Vis bilag');
-      } else {
-
-        // Show empty column if the file does not exist
-        className = `voucher${bankTransaction.transactionId}`;
-        html += objTransaction.showButton(className, 'Vis bilag');
-      }
-      */
-      // Show button for voucher
-      className = `voucher${bankTransaction.transactionId}`;
-      html += objTransaction.showButton(className, 'Vis bilag');
-
-      // Show button for editing transaction
-      className = `edit${bankTransaction.transactionId}`;
-      html += objTransaction.showButton(className, 'Endre');
-
-    } else {
-
-      html += "<td></td>";
-    }
+    // Show button for voucher
+    className = `voucher${bankTransaction.transactionId}`;
+    html += objShowTransaction.showButton(className, 'Vis bilag');
 
     html += "</tr>";
 
@@ -370,40 +301,13 @@ function showTransactions(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
 
   menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '2', '3', '4Sum', sumAmount, '6', '7');
+  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '2', '3', '4Sum', sumAmount, '6');
 
   // Show the rest of the menu
   menuNumber++;
-  html += objTransaction.showRestMenu(menuNumber, objTransaction.accountMenu, '2', '3', '4', '5', '6', '7');
+  html += objTransaction.showRestMenu(menuNumber, objTransaction.accountMenu, '2', '3', '4', '5', '6');
 
   // The end of the table
-  html += objTransaction.endTable();
+  html += objShowTransaction.endTable();
   document.querySelector('.result').innerHTML = html;
 }
-
-/*
-// Delete transactions row
-async function deleteTransactionRow(transactionId, className) {
-
-  // Check if transactions row exist
-  const transactionsRowNumber = objTransaction.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
-  if (transactionsRowNumber !== -1) {
-
-    // delete transaction row
-    await objTransaction.deleteTransactionsTable(transactionId, objTransaction.user);
-  }
-  const amount = 0;
-  const deleted = 'N';
-  condoId = Number(document.querySelector('.filterCondoId').value);
-  accountId = Number(document.querySelector('.filterAccountId').value);
-
-  let fromDate = document.querySelector('.filterFromDate').value;
-  fromDate = Number(formatNorDateToNumber(fromDate));
-
-  let toDate = document.querySelector('.filterToDate').value;
-  toDate = Number(formatNorDateToNumber(toDate));
-
-  const orderBy = 'date DESC, income DESC';
-  await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
-}
-*/

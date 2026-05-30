@@ -49,11 +49,11 @@ class Transaction extends Condos {
       html += `
       <option 
         value=0 
-        selected
+        ${(!selectedValue) ? 'selected' : ''}
       >
         Ingen leilighet
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select all
@@ -62,11 +62,11 @@ class Transaction extends Condos {
       html += `
       <option 
         value=${this.nineNine}
-        selected
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectAll}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select none
@@ -75,19 +75,21 @@ class Transaction extends Condos {
         html += `
         <option
           value=0
+          ${(!selectedValue) ? 'selected' : ''}
         >
           ${selectNone}
         </option>`;
+        if (!selectedValue) selectedValue = true;
       } else {
 
         html += `
         <option
           value=0
-          selected
+          ${(!selectedValue) ? 'selected' : ''}
         >
           ${selectNone}
         </option>`;
-        selectedValue = true;
+        if (!selectedValue) selectedValue = true;
       }
     }
 
@@ -97,7 +99,7 @@ class Transaction extends Condos {
   }
 
   // get transactions
-  async loadTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, amount, fromDate, toDate, alternativeArray = false) {
+  async loadTransactionsTable(orderBy, condominiumId, deleted, condoId, accountId, projectId, amount, fromDate, toDate, alternativeArray = false) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/transactions'
@@ -118,6 +120,7 @@ class Transaction extends Condos {
           deleted: deleted,
           condoId: condoId,
           accountId: accountId,
+          projectId: projectId,
           amount: amount,
           fromDate: fromDate,
           toDate: toDate
@@ -292,7 +295,7 @@ class Transaction extends Condos {
     let openingBalance = 0;
 
     const orderBy = 'date ASC';
-    await this.loadTransactionsTable(orderBy, condominiumId, 'N', condoId, this.nineNine, 0, 20200101, toDate, true);
+    await this.loadTransactionsTable(orderBy, condominiumId, 'N', condoId, this.nineNine, this.nineNine, 0, 20200101, toDate, true);
     objTransaction.#arrayTransactions.forEach((bankAccountMovement) => {
 
       openingBalance += bankAccountMovement.income;

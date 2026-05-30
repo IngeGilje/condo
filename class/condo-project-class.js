@@ -50,7 +50,7 @@ class Project extends Condos {
       html += `
       <option 
         value=${this.nineNine}
-        selected
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectAll}
       </option>`;
@@ -62,11 +62,11 @@ class Project extends Condos {
       html += `
       <option 
         value=0
-        ${(projectId === 0) ? 'selected' : ''}
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectNone}
       </option>`;
-      if (projectId === 0) selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
     html += `
       </select >

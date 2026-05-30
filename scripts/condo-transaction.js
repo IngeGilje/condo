@@ -16,14 +16,6 @@ const enableChanges = (objAccount.securityLevel > 5);
 
 const columnWidths = [175, 175, 175, 175, 175, 175, 100];
 
-const params = new URLSearchParams(window.location.search);
-let condoId = Number(params.get("condoId"));
-let accountId = Number(params.get("accountId"));
-let fromDate = Number(params.get("date"));
-let toDate = Number(params.get("date"));
-let amount = Number(params.get("amount"));
-let transactionId = Number(params.get("transactionId"));
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -64,7 +56,7 @@ async function main() {
       showHeader();
 
       const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, 0, 20190101, 20991231);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine,objTransaction.nineNine, 0, 20190101, 20991231);
 
       // Show filter
       const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objTransaction.userId);
@@ -72,8 +64,8 @@ async function main() {
 
       const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(transaction => transaction.condoId === condoId);
       if (rowNumberTransaction !== -1) {
-        
-                transactionId = Number(objTransaction.arrayTransactions[rowNumberTransaction].transactionId);
+
+        transactionId = Number(objTransaction.arrayTransactions[rowNumberTransaction].transactionId);
         accountId = Number(objTransaction.arrayTransactions[rowNumberTransaction].accountId);
         fromDate = Number(objTransaction.arrayTransactions[rowNumberTransaction].date);
         toDate = Number(objTransaction.arrayTransactions[rowNumberTransaction].date);
@@ -87,7 +79,7 @@ async function main() {
       menuNumber = 0;
       menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
 
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId, amount, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId,objTransaction.nineNine, amount, fromDate, toDate);
 
       // Show account movements
       menuNumber = showTransactions(menuNumber, transactionId);
@@ -133,12 +125,13 @@ async function events() {
       amount = formatKronerToOre(amount);
 
       const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId,objTransaction.nineNine, amount, fromDate, toDate);
 
       // Select the 1. transaction
       let transactionId = 0;
-      if (objTransaction.arrayTransactions.lenght > 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
-      
+      if (objTransaction.arrayTransactions.length > 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
+      if (objTransaction.arrayTransactions.length === 0) document.querySelector('.filter').innerHTML = "";
+
       let menuNumber = 0;
       menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
       menuNumber = showTransactions(menuNumber, transactionId);
@@ -149,6 +142,14 @@ async function events() {
   // Insert a condominiums row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('insert')) {
+
+      resetValues();
+    };
+  });
+
+  // cancel
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancel')) {
 
       resetValues();
     };
@@ -166,8 +167,9 @@ async function events() {
   // Delete a transactions row
   document.addEventListener('click', async (event) => {
 
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
+    if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
+
+      const arrayPrefixes = ['delete'];
 
       await deleteTransactionRow();
 
@@ -180,22 +182,12 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = Number(formatNorDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId,objTransaction.nineNine, amount, fromDate, toDate);
 
-      showTransaction(menuNumber, transactionId);
-    };
-  });
-
-  // Back
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('back')) {
-
-      let URL = (objTransaction.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      const transactionId = document.querySelector('.transactionId').value;
-      URL = `${URL}condo-showtransaction.html?transactionId=${transactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}`;
-      window.location.href = URL;
+      let menuNumber = 3;
+      //menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
+      menuNumber = showTransactions(menuNumber, transactionId);
+      menuNumber = showTransaction(menuNumber, transactionId);
     };
   });
 
@@ -213,6 +205,32 @@ async function events() {
       URL = `${URL}condo-voucher.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}`;
       window.location.href = URL;
     };
+  });
+
+  // Edit transaction
+  document.addEventListener('click', async (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('edit'))) {
+
+      const arrayPrefixes = ['edit'];
+
+      // Find the first matching class
+      let className = arrayPrefixes
+        .map(prefix => objTransaction.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
+      // Extract the number in the class name
+      let transactionId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        transactionId = Number(className.slice(prefix.length));
+      }
+
+      let menuNumber = 3;
+      //menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
+      menuNumber = showTransactions(menuNumber, transactionId);
+      menuNumber = showTransaction(menuNumber, transactionId);
+    }
   });
 
   // Log out
@@ -238,7 +256,7 @@ function showHeader() {
   html += objTransaction.startTableBody();
 
   // show main header
-  html += objTransaction.showTableHeaderLogOut('', '2', '3Kontobevegelser', '4','5','6');
+  html += objTransaction.showTableHeaderLogOut('', '2', '3Kontobevegelser', '4', '5', '6');
   html += "</tr>";
 
   // end table body
@@ -328,7 +346,7 @@ function showTransaction(menuNumber, transactionId) {
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '2Bilagsnummer','3Dato', '4Leilighet', '5', '6', '7');
+  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '2Bilagsnummer', '3Dato', '4Leilighet', '5', '6', '7');
   html += "</tr>";
 
   // insert a table row (<tr></td>)
@@ -337,7 +355,7 @@ function showTransaction(menuNumber, transactionId) {
 
   // Transaction Id
   let className = `transactionId`;
-  html += objTransaction.inputTableCell(className, 'left', transactionId, 10, enableChanges);
+  html += objTransaction.inputTableCell(className, 'left', transactionId, 10, false);
 
   // Date
   let date = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
@@ -460,10 +478,7 @@ function showTransaction(menuNumber, transactionId) {
       html += "<td>2</td>";
     }
 
-    // Show back button
-    className = `back`;
-    html += objTransaction.showButton(className, 'Tilbake');
-    html += "<td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr>";
+    html += "<td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr>";
   }
 
   // Show the rest of the menu
@@ -481,7 +496,7 @@ function showTransaction(menuNumber, transactionId) {
 async function deleteTransactionRow() {
 
   // Check if transactions row exist
-  const transactionId = Number(document.querySelector('.transactionId').value);
+  let transactionId = Number(document.querySelector('.transactionId').value);
   const transactionsRowNumber = objTransaction.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
   if (transactionsRowNumber !== -1) {
 
@@ -494,20 +509,13 @@ async function deleteTransactionRow() {
 
   const rowNumberTransaction = objTransaction.arrayTransactions.at(-1).transactionId;
 
-  document.querySelector('filterTransactionId').value = transactionId;
+  //condoId = objTransaction.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
+  //document.querySelector('.condoId').value = condoId;
 
-  condoId = objTransaction.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
-  document.querySelector('filterCondoId').value = condoId;
+  //accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
+  //document.querySelector('.accountId').value = accountId;
 
-  accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
-  document.querySelector('filterAccountId').value = accountId;
-
-  // amount
-  let amount = objTransaction.arrayTransactions[rowNumberTransaction]?.income ?? 0;
-  if (amount === 0) {
-    amount = objTransaction.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
-  }
-
+  /*
   document.querySelector('filterAmount').value = formatOreToKroner(amount);
 
   // from date and to date
@@ -515,7 +523,8 @@ async function deleteTransactionRow() {
   document.querySelector('filterFromDate').value = formatNumberToNorDate(fromDate);
   let toDate = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
   document.querySelector('filterToDate').value = formatNumberToNorDate(toDate);
-
+  */
+  transactionId = objTransaction.arrayTransactions[rowNumberTransaction]?.transactionId ?? 0;
   condoId = objTransaction.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
   accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
   income = objTransaction.arrayTransactions[rowNumberTransaction]?.income ?? 0;
@@ -523,8 +532,15 @@ async function deleteTransactionRow() {
   let fromdate = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
   let todate = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
 
+  // amount
+  let amount = objTransaction.arrayTransactions[rowNumberTransaction]?.income ?? 0;
+  if (amount === 0) {
+    amount = objTransaction.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
+  }
+
   let menuNumber = 0;
   menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
+
   menuNumber = showTransactions(menuNumber, transactionId);
   menuNumber = showTransaction(menuNumber, transactionId);
 }
@@ -608,31 +624,13 @@ async function updateTransactionRow(transactionId) {
       : income;
 
     const orderBy = 'date DESC, income DESC';
-    await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId, amount, fromDate, toDate);
+    await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId,objTransaction.nineNine, amount, fromDate, toDate);
 
-    /*
-  // from date and to date
-  let fromDate = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
-  document.querySelector('.filterFromDate').value = formatNumberToNorDate(fromDate);
-  let toDate = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
-  document.querySelector('.filterToDate').value = formatNumberToNorDate(toDate);
- 
-  condoId = objTransaction.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
-  accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
-  let amount = (objTransaction.arrayTransactions[rowNumberTransaction].income === 0)
-    ? objTransaction.arrayTransactions[rowNumberTransaction].payment
-    : objTransaction.arrayTransactions[rowNumberTransaction].income;
-  let fromdate = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
-  let todate = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
- 
-  const orderBy = 'date DESC, income DESC';
-  await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId, amount, fromDate, toDate);
- 
-  income = objTransaction.arrayTransactions[rowNumberTransaction].payment
-  payment = objTransaction.arrayTransactions[rowNumberTransaction].income;
-  */
     let menuNumber = 0;
-    menuNumber = showFilter(menuNumber, condoId, accountId, fromDate,toDate, amount);
+    menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
+
+    transactionId = 0;
+    if (objTransaction.arrayTransactions.length > 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
     menuNumber = showTransactions(menuNumber, transactionId);
     menuNumber = showTransaction(menuNumber, transactionId);
 
@@ -688,7 +686,7 @@ function resetValues() {
 
     document.querySelector('.delete').disabled = true;
     document.querySelector('.insert').disabled = true;
-    document.querySelector('.voucher').disabled = true;
+    document.querySelector('.cancel').disabled = false;
   }
 }
 
@@ -712,7 +710,7 @@ function showTransactions(menuNumber, transactionId) {
 
     // condos
     let className = `condoId${bankTransaction.transactionId}`;
-    html += objCondo.showSelectedCondos(className, 'width:175px;', bankTransaction.condoId, 'Ingen leilighet', '', false);
+    html += objCondo.showSelectedCondos(className, 'width:175px;', bankTransaction.condoId, '-', '', false);
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
@@ -741,7 +739,7 @@ function showTransactions(menuNumber, transactionId) {
       const path = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
       const voucherFileName = `${path}${bankTransaction.transactionId}.pdf`;
     } else {
-
+ 
       html += "<td>5</td><td>6</td<td>7</td";
     }
     */
@@ -757,7 +755,7 @@ function showTransactions(menuNumber, transactionId) {
     html += "</tr>";
   };
 
-    // Table header (<tr></tr>)
+  // Table header (<tr></tr>)
   menuNumber++;
   html += objTransaction.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '2', '3', '4', '5', '6', '7');
 

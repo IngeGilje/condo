@@ -52,7 +52,7 @@ async function main() {
       let fromDate = 20000101;
       let toDate = 20991231;
       const orderBy = 'transactionId DESC, date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, 0, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine,objTransaction.nineNine, 0, fromDate, toDate);
 
       menuNumber = showFilter(menuNumber);
 
@@ -77,7 +77,7 @@ async function events() {
     if (event.target.classList.contains('filterTransactionId')) {
 
       const orderBy = 'transactionId DESC, date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, 0, 0, objVoucher.nineNine);
+      await objTransaction.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, objVoucher.nineNine);
 
       const transactionId = Number(document.querySelector('.filterTransactionId').value);
 
@@ -291,7 +291,7 @@ async function updateTransactionRow(transactionId) {
       if (await objTransaction.updateVoucherFileName(user, transactionId, voucherFileName)) {
 
         const orderBy = 'transactionId DESC, date DESC, income DESC';
-        await objTransaction.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, 0, 0, objVoucher.nineNine);
+        await objTransaction.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, objVoucher.nineNine);
       } else {
 
         objVoucher.showMessageNew(columnWidths, '', 'Bilag er ikke oppdatert.');

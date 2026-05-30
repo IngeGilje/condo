@@ -66,7 +66,7 @@ async function main() {
 
       amount = 0;
       const orderBy = 'condoId ASC, date DESC, income ASC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
       await objCondominium.loadCondominiumsTable();
 
       // Show header
@@ -99,8 +99,8 @@ async function events() {
 
       // Start transactions
       const URL = (objUser.serverStatus === 1)
-        ? 'http://ingegilje.no/condo-transaction.html'
-        : 'http://localhost/condo-transaction.html';
+        ? 'http://ingegilje.no/condo-showtransaction.html'
+        : 'http://localhost/condo-showtransaction.html';
       window.location.href = URL;
     };
   });
