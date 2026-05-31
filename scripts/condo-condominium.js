@@ -48,7 +48,7 @@ async function main() {
       menuNumber = showFilter(menuNumber, objCondominium.condominiumId);
 
       // Show condominium
-      menuNumber = showCondominium(objCondominium.condominiumId, menuNumber);
+      menuNumber = editCondominium(objCondominium.condominiumId, menuNumber);
 
       // Events
       events();
@@ -70,7 +70,7 @@ async function events() {
       const fixedCost = 'A';
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
-      menuNumber = showCondominium(condominiumId, 3);
+      menuNumber = editCondominium(condominiumId, 3);
     };
   });
 
@@ -98,7 +98,7 @@ async function events() {
       menuNumber = showFilter(menuNumber, 0);
 
       // Show condominium
-      menuNumber = showCondominium(objCondominium.condominiumId, menuNumber);
+      menuNumber = editCondominium(objCondominium.condominiumId, menuNumber);
     };
   });
 
@@ -127,7 +127,7 @@ async function events() {
       menuNumber = showFilter(menuNumber, condominiumId);
 
       // Show condominium
-      menuNumber = showCondominium(objCondominium.condominiumId, menuNumber);
+      menuNumber = editCondominium(objCondominium.condominiumId, menuNumber);
     };
   });
 
@@ -226,7 +226,7 @@ function showHeader() {
 
   // The end of the table
   html += objCondominium.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -263,13 +263,13 @@ function showFilter(menuNumber, condominiumId) {
 
   // The end of the table
   html += objCondominium.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
 
 // Show condominium
-function showCondominium(condominiumId, menuNumber) {
+function editCondominium(condominiumId, menuNumber) {
 
   // Start table
   let html = objCondominium.initializeTable(columnWidths);
@@ -290,7 +290,7 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // name
-    html += objCondominium.inputTableCell('name', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].name, 45, enableChanges);
+    html += objCondominium.editTableCell('name', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].name, 45, enableChanges);
 
     html += "<td></td></tr>";
 
@@ -303,10 +303,10 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // street
-    html += objCondominium.inputTableCell('street', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].street, 45, enableChanges);
+    html += objCondominium.editTableCell('street', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].street, 45, enableChanges);
 
     // address2
-    html += objCondominium.inputTableCell('address2', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].address2, 45, enableChanges);
+    html += objCondominium.editTableCell('address2', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].address2, 45, enableChanges);
 
     html += "</tr>";
 
@@ -319,10 +319,10 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // postalCode
-    html += objCondominium.inputTableCell('postalCode', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].postalCode, 4, enableChanges);
+    html += objCondominium.editTableCell('postalCode', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].postalCode, 4, enableChanges);
 
     // city
-    html += objCondominium.inputTableCell('city', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].city, 45, enableChanges);
+    html += objCondominium.editTableCell('city', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].city, 45, enableChanges);
 
     html += "</tr>";
 
@@ -335,10 +335,10 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // eMail
-    html += objCondominium.inputTableCell('email', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].email, 45, enableChanges);
+    html += objCondominium.editTableCell('email', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].email, 45, enableChanges);
 
     // phone
-    html += objCondominium.inputTableCell('phone', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].phone, 8, enableChanges);
+    html += objCondominium.editTableCell('phone', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].phone, 8, enableChanges);
     html += "</tr>";
 
     // incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId
@@ -368,7 +368,7 @@ function showCondominium(condominiumId, menuNumber) {
     html += objAccount.showSelectedAccounts('commonCostAccountId', '', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Velg konto', '', enableChanges);
 
     // organizationNumber
-    html += objCondominium.inputTableCell('organizationNumber', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].organizationNumber, 9, enableChanges);
+    html += objCondominium.editTableCell('organizationNumber', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].organizationNumber, 9, enableChanges);
 
     html += "</tr>";
 
@@ -381,7 +381,7 @@ function showCondominium(condominiumId, menuNumber) {
     html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
 
     // importPath
-    html += objCondominium.inputTableCell('importPath', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].importPath, 100, enableChanges);
+    html += objCondominium.editTableCell('importPath', 'left', objCondominium.arrayCondominiums[rowNumberCondominium].importPath, 100, enableChanges);
     html += "<td></td></tr>";
 
     // insert a table row (<tr></td>)
@@ -415,7 +415,7 @@ function showCondominium(condominiumId, menuNumber) {
 
     // The end of the table
     html += objCondominium.endTable();
-    document.querySelector('.condominium').innerHTML = html;
+    document.querySelector('.editCondominium').innerHTML = html;
     if (enableChanges) document.querySelector('.cancel').disabled = true;
 
     return menuNumber;
@@ -503,7 +503,7 @@ async function updateCondominiumRow(condominiumId) {
     menuNumber = showFilter(menuNumber, condominiumId);
 
     // Show condominium
-    menuNumber = showCondominium(condominiumId, menuNumber);
+    menuNumber = editCondominium(condominiumId, menuNumber);
 
     document.querySelector('.filterCondominiumId').disabled = false;
     document.querySelector('.delete').disabled = false;

@@ -139,7 +139,7 @@ function showHeader() {
 
   // The end of the table
   html += objTransaction.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -169,7 +169,7 @@ function showFilter(menuNumber, transactionId) {
 
   // The end of the table
   html += objTransaction.endTable();
-  document.querySelector('.filter2').innerHTML = html;
+  document.querySelector('.editFilter2').innerHTML = html;
 
   return menuNumber;
 }
@@ -194,13 +194,13 @@ function showVoucher(transactionId, menuNumber) {
     // date
     let date = objTransaction.arrayTransactions[rowNumberTransaction].date;
     date = (date) ? formatNumberToNorDate(date) : '';
-    html += objTransaction.inputTableCell('date', '', date, 10, false);
+    html += objTransaction.editTableCell('date', '', date, 10, false);
 
     // amount
     const income = objTransaction.arrayTransactions[rowNumberTransaction].income;
     const payment = objTransaction.arrayTransactions[rowNumberTransaction].payment;
     const amount = formatOreToKroner((income) ? income : payment);
-    html += objTransaction.inputTableCell('amount', '', amount, 11, false);
+    html += objTransaction.editTableCell('amount', '', amount, 11, false);
 
     // account
     const accountId = objTransaction.arrayTransactions[rowNumberTransaction].accountId;
@@ -219,7 +219,7 @@ function showVoucher(transactionId, menuNumber) {
     voucherFileName = (voucherFileName)
       ? voucherFileName
       : `${transactionId}.pdf`;
-    html += objTransaction.inputTableCell('voucherFileName', '', voucherFileName, 45, enableChanges);
+    html += objTransaction.editTableCell('voucherFileName', '', voucherFileName, 45, enableChanges);
 
     html += "<td></td><td></td><td></td></tr>";
 

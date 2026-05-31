@@ -206,7 +206,7 @@ function showHeader() {
 
   // The end of the table
   html += objCommonCost.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -238,7 +238,7 @@ function showFilter(menuNumber, year) {
 
   // The end of the table
   html += objCommonCost.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -265,14 +265,14 @@ function showCommonCostYear(menuNumber) {
   if (rowNumberCommonCost !== -1) commonCostSquareMeter = objCommonCost.arrayCommonCosts[rowNumberCommonCost].commonCostSquareMeter;
   let className = `commonCostSquareMeter${commonCostId}`;
   commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
-  html += objCommonCost.inputTableCell(className, '', commonCostSquareMeter, 11, enableChanges);
+  html += objCommonCost.editTableCell(className, '', commonCostSquareMeter, 11, enableChanges);
 
   // fixed cost per condo
   let fixedCostCondo = "";
   if (rowNumberCommonCost !== -1) fixedCostCondo = objCommonCost.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo;
   className = `fixedCostCondo${commonCostId}`;
   fixedCostCondo = formatOreToKroner(fixedCostCondo);
-  html += objCommonCost.inputTableCell(className, '', fixedCostCondo, 10, enableChanges);
+  html += objCommonCost.editTableCell(className, '', fixedCostCondo, 10, enableChanges);
 
   // Delete
   className = `delete${commonCostId}`;
@@ -329,17 +329,17 @@ function showCommonCostCondo(menuNumber) {
 
     // condo name
     let className = `name${condo.condoId}`;
-    html += objCommonCost.inputTableCell(className, '', condo.name, 45, false);
+    html += objCommonCost.editTableCell(className, '', condo.name, 45, false);
 
     // Square meters
     let squareMeters = formatOreToKroner(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;
-    html += objCommonCost.inputTableCell(className, '', squareMeters, 11, false);
+    html += objCommonCost.editTableCell(className, '', squareMeters, 11, false);
 
     // fixed cost per month per condo
     fixedCostCondoMonth = formatOreToKroner(fixedCostCondoMonth);
     className = `fixedCostCondoMonth${condo.condoId}`;
-    html += objCommonCost.inputTableCell(className, '', fixedCostCondoMonth, 10, false);
+    html += objCommonCost.editTableCell(className, '', fixedCostCondoMonth, 10, false);
 
     // Common cost per month per condo
     let commonCostSquareMeter = 0;
@@ -349,14 +349,14 @@ function showCommonCostCondo(menuNumber) {
     let commonCostsMonth = (((squareMeters * commonCostSquareMeter) / 100) + (fixedCostCondoMonth));
     className = `commonCostsMonth${commonCostId}`;
     commonCostsMonth = formatOreToKroner(commonCostsMonth);
-    html += objCommonCost.inputTableCell(className, '', commonCostsMonth, 11, enableChanges);
+    html += objCommonCost.editTableCell(className, '', commonCostsMonth, 11, enableChanges);
 
     // Common cost per year per condo
     commonCostsMonth = formatKronerToOre(commonCostsMonth);
     let commonCostsCondoYear = commonCostsMonth * 12;
     commonCostsCondoYear = formatOreToKroner(commonCostsCondoYear);
     className = `commonCostsCondoYear${condo.condoId}`;
-    html += objCommonCost.inputTableCell(className, '', commonCostsCondoYear, 10, false);
+    html += objCommonCost.editTableCell(className, '', commonCostsCondoYear, 10, false);
 
     html += "</tr>";
 

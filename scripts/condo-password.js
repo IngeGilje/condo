@@ -153,7 +153,7 @@ function showHeader() {
 
   // The end of the table
   html += objUser.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -190,7 +190,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // The end of the table
   html += objUser.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }

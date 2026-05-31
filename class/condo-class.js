@@ -198,7 +198,7 @@ class Condos {
   }
 
   // Show input
-  inputTableCell(className, direction = 'left', value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+  editTableCell(className, direction = 'left', value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
     return `
     <td 
@@ -262,23 +262,6 @@ class Condos {
       >
     </td>`;
   }
-
-  /*
-  // Show leading text for input
-  showLeadingTextInput(className, labelText, maxlength, placeholder) {
-
-    let html = this.showLeadingTextLabel(className, labelText);
-    html +=
-      `
-        <input type="text" 
-          class="input-${className}"
-          maxlength="${maxlength}"
-          placeholder="${placeholder}"
-        >
-      `;
-    document.querySelector(`.div-${className}`).innerHTML = html;
-  }
-  */
 
   // Show label
   showLabel(className, labelText) {
@@ -355,64 +338,6 @@ class Condos {
       return false;
     }
   }
-
-  /*
-  // Select numbers
-  selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
-
-    selectedNumber = Number(selectedNumber);
-    let html =
-      `
-      <form 
-        id="selectedNumber"
-        action="/submit" method="POST"
-      >
-        <label 
-          class="label-${className}"
-          for="selectedNumber">
-            ${labelText}
-        </label>
-        <select 
-          class="select-${className}" 
-          id="selectedNumber"
-          name="selectedNumber"
-        >
-    `;
-
-    let selectedOption = false;
-
-    for (let number = fromNumber; number <= toNumber; number++) {
-      if (number === selectedNumber) {
-
-        html += `
-        <option 
-          value="${number}"
-          selected
-          >
-          ${number}
-        </option>
-      `;
-        selectedOption =
-          true;
-      } else {
-        html += `
-        <option 
-          value="${number}"
-          >
-          ${number}
-        </option>
-      `;
-      }
-    };
-
-    html += `
-      </select >
-    </form>
-  `;
-
-    document.querySelector(`.div-${className}`).innerHTML = html;
-  }
-  */
 
   // Select numbers
   selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
@@ -511,41 +436,6 @@ class Condos {
 
     return html;
   }
-
-  /*
-  // Select months
-  showSelectedMonths(className, style, selectedMonth, enableChanges) {
-
-    selectedMonth = Number(selectedMonth);
-    let html = `
-    <td
-      class="center"
-    >
-      <select
-        class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style="${style}"` : `style="width:175px;"`}
-      >`;
-
-    for (let month = 1; month < 13; month++) {
-
-      html += `
-      <option 
-        value="${month}"
-        ${month === selectedMonth ? 'selected' : ''}
-      >
-        ${findNameOfMonth(month)}
-      </option>`;
-    };
-
-    html += `
-        </select >
-      </td>
-    `;
-
-    return html;
-  }
-  */
 
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {

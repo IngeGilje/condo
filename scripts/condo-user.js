@@ -228,7 +228,7 @@ function showHeader() {
 
   // The end of the table
   html += objUser.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -266,7 +266,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // The end of the table
   html += objUser.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -291,7 +291,7 @@ function showUser(menuNumber, userId) {
     html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
     // email
-    html += objUser.inputTableCell('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
+    html += objUser.editTableCell('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
 
     // condoId
     html += objCondo.showSelectedCondos('condoId', 'width:175px;', objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
@@ -308,10 +308,10 @@ function showUser(menuNumber, userId) {
     html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
     // firstName
-    html += objUser.inputTableCell('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
+    html += objUser.editTableCell('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
 
     // lastName
-    html += objUser.inputTableCell('lastName', '', objUser.arrayUsers[rowNumberUser].lastName, 45, enableChanges);
+    html += objUser.editTableCell('lastName', '', objUser.arrayUsers[rowNumberUser].lastName, 45, enableChanges);
 
     html += "</tr>";
 
@@ -325,7 +325,7 @@ function showUser(menuNumber, userId) {
     html += objUser.insertTableRow('', menuNumber, objUser.accountMenu);
 
     // phone
-    html += objUser.inputTableCell('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
+    html += objUser.editTableCell('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
 
     // Activ user
     resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';

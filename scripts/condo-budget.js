@@ -253,7 +253,7 @@ function showHeader() {
 
   // The end of the table
   html += objBudget.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -291,7 +291,7 @@ function showFilter(menuNumber) {
 
   // The end of the table
   html += objBudget.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -321,7 +321,7 @@ function showBudgets(menuNumber) {
     // due amount
     const amount = formatOreToKroner(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += objBudget.inputTableCell(className, '', amount, 11, enableChanges);
+    html += objBudget.editTableCell(className, '', amount, 11, enableChanges);
 
     // Year (<td></td>)
     const year = Number(budget.year);
@@ -331,7 +331,7 @@ function showBudgets(menuNumber) {
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += objBudget.inputTableCell(className, '', text, 45, enableChanges);
+    html += objBudget.editTableCell(className, '', text, 45, enableChanges);
 
     // Delete
     className = `delete${budget.budgetId}`;
@@ -375,7 +375,7 @@ function insertEmptyTableRow(menuNumber) {
   html  += objAccount.showSelectedAccounts('accountId0', 'width:175px;', 0, 'Velg konto', '', enableChanges);
 
   const amount = "";
-  html += objBudget.inputTableCell('amount0', '', amount, 11, enableChanges);
+  html += objBudget.editTableCell('amount0', '', amount, 11, enableChanges);
 
   // Year (<td></td>)
   const year = Number(document.querySelector('.filterYear').value);
@@ -383,7 +383,7 @@ function insertEmptyTableRow(menuNumber) {
  
   // text
   const text = "";
-  html += objBudget.inputTableCell('text0', '', text, 45, enableChanges);
+  html += objBudget.editTableCell('text0', '', text, 45, enableChanges);
 
   html += "<td>Nytt budsjett</td></tr>";
   return html;

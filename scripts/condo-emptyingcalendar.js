@@ -175,7 +175,7 @@ function showHeader() {
 
   // The end of the table
   html += objEmptyingCalendar.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -205,7 +205,7 @@ function showFilter(menuNumber) {
   let month = Number(date.split('.')[1]); // Extract the month part
   html += objEmptyingCalendar.showSelectedMonths('filterMonth', 'width:175px;', month, true);
 
-  html += "<td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>";
+  html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -215,7 +215,7 @@ function showFilter(menuNumber) {
 
   // The end of the table
   html += objEmptyingCalendar.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -246,7 +246,7 @@ function showEmptyingCalendar(menuNumber) {
       let date = emptyingCalendar.date;
       date = formatNumberToNorDate(date);
       className = `date${emptyingCalendar.emptyingCalendarId}`;
-      html += objEmptyingCalendar.inputTableCell(className, 'left', date, 10, enableChanges);
+      html += objEmptyingCalendar.editTableCell(className, 'left', date, 10, enableChanges);
 
       // residual waste  
       selected = "Ugyldig verdi";
@@ -326,7 +326,7 @@ function insertEmptyTableRow(menuNumber) {
   // date
   let date = 'dd.mm.åååå';
   className = `date0`;
-  html += objEmptyingCalendar.inputTableCell(className, 'left', date, 10, enableChanges);
+  html += objEmptyingCalendar.editTableCell(className, 'left', date, 10, enableChanges);
 
   // Paper waste
   let selected = "Nei";

@@ -216,7 +216,7 @@ function showHeader() {
 
   // The end of the table
   html += objSupplier.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -246,7 +246,7 @@ function showFilter(menuNumber, supplierId) {
 
   // The end of the table
   html += objSupplier.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -278,7 +278,7 @@ function showSupplier(menuNumber, supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].name;
 
-  html += objSupplier.inputTableCell('name', '', name, 45, enableChanges);
+  html += objSupplier.editTableCell('name', '', name, 45, enableChanges);
   html += "</tr>";
 
   // street, address2
@@ -294,13 +294,13 @@ function showSupplier(menuNumber, supplierId) {
   const street = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += objSupplier.inputTableCell('street', '', street, 45, enableChanges);
+  html += objSupplier.editTableCell('street', '', street, 45, enableChanges);
 
   // address2
   const address2 = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += objSupplier.inputTableCell('address2', '', address2, 45, enableChanges);
+  html += objSupplier.editTableCell('address2', '', address2, 45, enableChanges);
 
   html += "</tr>";
 
@@ -318,13 +318,13 @@ function showSupplier(menuNumber, supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
 
-  html += objSupplier.inputTableCell('postalCode', '', postalCode, 4, enableChanges);
+  html += objSupplier.editTableCell('postalCode', '', postalCode, 4, enableChanges);
 
   // city
   const city = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += objSupplier.inputTableCell('city', '', city, 45, enableChanges);
+  html += objSupplier.editTableCell('city', '', city, 45, enableChanges);
 
   html += "</tr>";
 
@@ -341,13 +341,13 @@ function showSupplier(menuNumber, supplierId) {
   const email = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += objSupplier.inputTableCell('email', '', email, 50, enableChanges);
+  html += objSupplier.editTableCell('email', '', email, 50, enableChanges);
 
   // phone
   const phone = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += objSupplier.inputTableCell('phone', '', phone, 8, enableChanges);
+  html += objSupplier.editTableCell('phone', '', phone, 8, enableChanges);
 
   html += "</tr>";
 
@@ -370,7 +370,7 @@ function showSupplier(menuNumber, supplierId) {
   const bankAccount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += objSupplier.inputTableCell('bankAccount', '', bankAccount, 11, enableChanges);
+  html += objSupplier.editTableCell('bankAccount', '', bankAccount, 11, enableChanges);
 
   html += "</tr>";
 
@@ -392,7 +392,7 @@ function showSupplier(menuNumber, supplierId) {
   const amount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].amount;
-  html += objSupplier.inputTableCell('amount', '', amount, 11, enableChanges);
+  html += objSupplier.editTableCell('amount', '', amount, 11, enableChanges);
 
   html += "</tr>";
 
@@ -414,7 +414,7 @@ function showSupplier(menuNumber, supplierId) {
   const text = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += objSupplier.inputTableCell('text', '', text, 50, enableChanges);
+  html += objSupplier.editTableCell('text', '', text, 50, enableChanges);
 
   html += "</tr>";
 

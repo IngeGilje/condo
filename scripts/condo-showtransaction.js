@@ -183,7 +183,7 @@ function showHeader() {
   html += objShowTransaction.startTableBody();
 
   // show main header
-  html += objShowTransaction.showTableHeaderLogOut('1', '2', '3', '4Transaksjoner', '5');
+  html += objShowTransaction.showTableHeaderLogOut('', '', '', 'Transaksjoner', '');
   html += "</tr>";
 
   // end table body
@@ -191,7 +191,7 @@ function showHeader() {
 
   // The end of the table
   html += objShowTransaction.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -202,7 +202,7 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', '2Leilighet', '3Konto', '4Fra dato', '5Til dato', '6Beløp');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp');
 
   // start table body
   html += objShowTransaction.startTableBody();
@@ -221,27 +221,27 @@ function showFilter(menuNumber, condoId, accountId) {
   let month = today.getMonth() + 1;
   month = (month < 10) ? `0${month}` : `${month}`;
   const fromDate = '01.' + month + '.' + String(today.getFullYear());
-  html += objTransaction.inputTableCell('filterFromDate', 'left', fromDate, 10, true);
+  html += objTransaction.editTableCell('filterFromDate', 'left', fromDate, 10, true);
 
   // Current date
   let toDate = getCurrentDate();
-  html += objTransaction.inputTableCell('filterToDate', 'left', toDate, 10, true);
+  html += objTransaction.editTableCell('filterToDate', 'left', toDate, 10, true);
 
   // Amount
-  html += objTransaction.inputTableCell('filterAmount', 'left', '', 10, true);
+  html += objTransaction.editTableCell('filterAmount', 'left', '', 10, true);
 
   html += "</tr>";
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '2', '3', '4', '5', '6');
+  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '', '', '', '', '');
 
   // end table body
   html += objShowTransaction.endTableBody();
 
   // The end of the table
   html += objShowTransaction.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -254,7 +254,7 @@ function showTransactions(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', '2Dato', '3Konto', '4Leilighet', '5Beløp', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransaction.arrayTransactions) {
@@ -266,7 +266,7 @@ function showTransactions(menuNumber) {
     // Date
     const date = formatNumberToNorDate(bankTransaction.date);
     let className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.inputTableCell(className, 'left', date, 10, false);
+    html += objTransaction.editTableCell(className, 'left', date, 10, false);
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
@@ -285,7 +285,7 @@ function showTransactions(menuNumber) {
     let amount = bankTransaction.income + bankTransaction.payment;
     amount = formatOreToKroner(amount);
     className = `amount${bankTransaction.transactionId}`;
-    html += objTransaction.inputTableCell(className, 'left', amount, 10, false);
+    html += objTransaction.editTableCell(className, 'left', amount, 10, false);
 
     // Show button for voucher
     className = `voucher${bankTransaction.transactionId}`;
@@ -301,11 +301,11 @@ function showTransactions(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
 
   menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '2', '3', '4Sum', sumAmount, '6');
+  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '', '', 'Sum', sumAmount, '');
 
   // Show the rest of the menu
   menuNumber++;
-  html += objTransaction.showRestMenu(menuNumber, objTransaction.accountMenu, '2', '3', '4', '5', '6');
+  html += objTransaction.showRestMenu(menuNumber, objTransaction.accountMenu, '', '', '', '', '');
 
   // The end of the table
   html += objShowTransaction.endTable();

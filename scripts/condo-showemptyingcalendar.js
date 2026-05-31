@@ -107,7 +107,7 @@ function showHeader() {
 
   // The end of the table
   html += objShowEmptyingCalendar.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -145,7 +145,7 @@ function showFilter() {
 
   // The end of the table
   html += objShowEmptyingCalendar.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 }
 
 // Show emptyingCalendar
@@ -172,7 +172,7 @@ function showEmptyingCalendar() {
       let date = emptyingCalendar.date;
       date = formatNumberToNorDate(date);
       className = `date${emptyingCalendar.emptyingCalendarId}`;
-      html += objShowEmptyingCalendar.inputTableCell(className, '', date, 10, false);
+      html += objShowEmptyingCalendar.editTableCell(className, '', date, 10, false);
 
       // residual waste  
       className = `residualWaste${emptyingCalendar.emptyingCalendarId}`;

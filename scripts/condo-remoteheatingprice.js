@@ -167,7 +167,7 @@ function showHeader() {
 
   // The end of the table
   html += objRemoteHeatingPrice.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Insert empty table row
@@ -186,7 +186,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objRemoteHeatingPrice.showSelectedNumbers('year0', 'width:175px;', 2020, 2030, year, true);
 
   // priceKilowattHour 
-  html += objRemoteHeatingPrice.inputTableCell('priceKilowattHour0', '', '0,00', 10, enableChanges);
+  html += objRemoteHeatingPrice.editTableCell('priceKilowattHour0', '', '0,00', 10, enableChanges);
 
   html += "<td>Ny fjernvarmepris</td></tr>";
   return html;
@@ -216,7 +216,7 @@ function showRemoteHeating(menuNumber) {
     let priceKilowattHour = remoteHeatingPrice.priceKilowattHour;
     className = `priceKilowattHour${remoteHeatingPrice.remoteHeatingPriceId}`;
     priceKilowattHour = formatOreToKroner(priceKilowattHour);
-    html += objRemoteHeatingPrice.inputTableCell(className, '', priceKilowattHour, 10, enableChanges);
+    html += objRemoteHeatingPrice.editTableCell(className, '', priceKilowattHour, 10, enableChanges);
 
     // Delete
     let selected = "Ugyldig verdi";

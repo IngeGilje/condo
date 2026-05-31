@@ -167,7 +167,7 @@ function showHeader() {
 
   // The end of the table
   html += objUserBankAccount.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -203,7 +203,7 @@ function showFilter(menuNumber, userId) {
 
   // The end of the table
   html += objUserBankAccount.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -223,7 +223,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
 
   // Bank account number
-  html += objUserBankAccount.inputTableCell('bankAccount0', '', '', 11, enableChanges);
+  html += objUserBankAccount.editTableCell('bankAccount0', '', '', 11, enableChanges);
 
   html += "<td>Ny brukerkonto</td></tr>";
   return html;
@@ -257,7 +257,7 @@ function showUserBankAccount(menuNumber) {
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccount.inputTableCell(className, '', userBankAccount.bankAccount, 11, enableChanges);
+    html += objUserBankAccount.editTableCell(className, '', userBankAccount.bankAccount, 11, enableChanges);
 
     // Delete
     className = `delete${userBankAccount.userBankAccountId}`;

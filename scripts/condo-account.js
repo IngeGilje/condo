@@ -51,7 +51,7 @@ async function main() {
       menuNumber = showFilter(menuNumber);
 
       // Show account
-      menuNumber = showAccounts(menuNumber);
+      menuNumber = editAccounts(menuNumber);
 
       // Events
       events();
@@ -75,7 +75,7 @@ async function events() {
       await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show account
-      showAccounts(3);
+      editAccounts(3);
     };
   });
 
@@ -128,7 +128,7 @@ async function events() {
       await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show account
-      showAccounts(3);
+      editAccounts(3);
     };
   });
 
@@ -175,7 +175,7 @@ function showHeader() {
 
   // The end of the table
   html += objAccount.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -209,13 +209,13 @@ function showFilter(menuNumber) {
 
   // The end of the table
   html += objAccount.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
 
 // Show accounts
-function showAccounts(menuNumber) {
+function editAccounts(menuNumber) {
 
   // start table
   let html = objAccount.initializeTable(columnWidths);
@@ -241,7 +241,7 @@ function showAccounts(menuNumber) {
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccount.inputTableCell(className, '', name, 45, enableChanges);
+    html += objAccount.editTableCell(className, '', name, 45, enableChanges);
 
     // Delete
     selected = "";
@@ -269,7 +269,7 @@ function showAccounts(menuNumber) {
 
   // The end of the table
   html += objAccount.endTable();
-  document.querySelector('.result').innerHTML = html;
+  document.querySelector('.editAccounts').innerHTML = html;
 
   return menuNumber;
 }
@@ -290,7 +290,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objAccount.showSelectedValues('fixedCost0', 'width:175px;', enableChanges, 'Velg kostnadstype', constFixedCost, constVariableCost, 'Velg kostnadstype');
 
   // name
-  html += objAccount.inputTableCell('name0', '', '', 45, enableChanges);
+  html += objAccount.editTableCell('name0', '', '', 45, enableChanges);
 
   // Insert new account
   html += "<td>Ny konto</td></tr>";
@@ -352,6 +352,6 @@ async function updateAccountsRow(accountId) {
     await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
     // Show account
-    showAccounts(3);
+    editAccounts(3);
   }
 }

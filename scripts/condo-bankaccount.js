@@ -206,7 +206,7 @@ function showHeader() {
 
   // The end of the table
   html += objBankAccount.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show result
@@ -230,14 +230,14 @@ function showBankAccounts(menuNumber, bankAccountId) {
   const name = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;
-  html += objBankAccount.inputTableCell('name', '', name, 45, enableChanges);
+  html += objBankAccount.editTableCell('name', '', name, 45, enableChanges);
 
   // account number
   const bankAccount = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount;
 
-  html += objBankAccount.inputTableCell('bankAccount', '', bankAccount, 11, enableChanges);
+  html += objBankAccount.editTableCell('bankAccount', '', bankAccount, 11, enableChanges);
   html += "</tr>";
 
   // Show menu
@@ -253,14 +253,14 @@ function showBankAccounts(menuNumber, bankAccountId) {
     ? ''
     : formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate)
   //const openingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
-  html += objBankAccount.inputTableCell('openingBalanceDate', '', openingBalanceDate, 10, enableChanges);
+  html += objBankAccount.editTableCell('openingBalanceDate', '', openingBalanceDate, 10, enableChanges);
 
   // opening balance
   const openingBalance = (rowNumberBankAccount === -1)
     ? ''
     : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance)
   //const openingBalance = formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance);
-  html += objBankAccount.inputTableCell('openingBalance', '', openingBalance, 11, enableChanges);
+  html += objBankAccount.editTableCell('openingBalance', '', openingBalance, 11, enableChanges);
   html += "</tr>";
 
   // Show menu
@@ -278,14 +278,14 @@ function showBankAccounts(menuNumber, bankAccountId) {
     : formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
 
   //const closingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
-  html += objBankAccount.inputTableCell('closingBalanceDate', '', closingBalanceDate, 10, enableChanges);
+  html += objBankAccount.editTableCell('closingBalanceDate', '', closingBalanceDate, 10, enableChanges);
 
   // closing balance
   const closingBalance = (rowNumberBankAccount === -1)
     ? ''
     : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance)
   //const closingBalance = formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
-  html += objBankAccount.inputTableCell('closingBalance', '', closingBalance, 11, enableChanges);
+  html += objBankAccount.editTableCell('closingBalance', '', closingBalance, 11, enableChanges);
   html += "</tr>";
 
   // insert a table row (<tr></td>)
@@ -487,7 +487,7 @@ function showFilter(menuNumber, condominiumId) {
 
   // The end of the table
   html += objBankAccount.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }

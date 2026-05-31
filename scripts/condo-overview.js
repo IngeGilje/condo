@@ -91,7 +91,7 @@ async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('filter'))) {
+    if ([...event.target.classList].some(cls => cls.startsWith('editFilter'))) {
 
       // valitadate filter
       // condo
@@ -165,7 +165,7 @@ function showHeader() {
 
   // The end of the table
   html += objOverview.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -191,11 +191,11 @@ function showFilter(menuNumber, condoId) {
   // from date
   const year = String(today.getFullYear());
   let fromDate = "01.01." + year;
-  html += objOverview.inputTableCell('filterFromDate', '', fromDate, 10, CSSViewTransitionRule);
+  html += objOverview.editTableCell('filterFromDate', '', fromDate, 10, CSSViewTransitionRule);
 
   // to date
   let toDate = getCurrentDate();
-  html += objOverview.inputTableCell('filterToDate', '', toDate, 10, true);
+  html += objOverview.editTableCell('filterToDate', '', toDate, 10, true);
 
   html += "<td></td><td></td></tr>";
 
@@ -208,7 +208,7 @@ function showFilter(menuNumber, condoId) {
 
   // The end of the table
   html += objOverview.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -242,7 +242,7 @@ function showDues(menuNumber) {
     // date
     const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objOverview.inputTableCell(className, '', date, 10, false);
+    html += objOverview.editTableCell(className, '', date, 10, false);
 
     // account
     className = `account${due.dueId}`;
@@ -251,17 +251,17 @@ function showDues(menuNumber) {
     // amount
     const amount = formatOreToKroner(due.amount);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableCell(className, '', amount, 11, false);
+    html += objOverview.editTableCell(className, '', amount, 11, false);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);
     className = `income${due.dueId}`;
-    html += objOverview.inputTableCell(className, '', kilowattHour, 10, false);
+    html += objOverview.editTableCell(className, '', kilowattHour, 10, false);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objOverview.inputTableCell(className, '', text, 45, false);
+    html += objOverview.editTableCell(className, '', text, 45, false);
 
     html += "</tr>";
 
@@ -317,7 +317,7 @@ function showTransactions(menuNumber) {
     // date
     const date = formatNumberToNorDate(bankTransaction.date);
     className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.inputTableCell(className, '', date, 10, false);
+    html += objTransaction.editTableCell(className, '', date, 10, false);
 
     // account
     className = `account${bankTransaction.transactionId}`;
@@ -329,12 +329,12 @@ function showTransactions(menuNumber) {
     income += payment;
     income = formatOreToKroner(income);
     className = `income${bankTransaction.transactionId}`;
-    html += objTransaction.inputTableCell(className, '', income, 10, false);
+    html += objTransaction.editTableCell(className, '', income, 10, false);
 
     // Text
     const text = bankTransaction.text;
     className = `text${bankTransaction.transactionId}`;
-    html += objTransaction.inputTableCell(className, '', text, 45, false);
+    html += objTransaction.editTableCell(className, '', text, 45, false);
 
     html += "</tr>";
 
