@@ -131,7 +131,9 @@ async function main() {
       try {
 
         const userId = req.body.userId;
+        console.log('userId :', userId);
         const password = req.body.password;
+        console.log('password :', password);
 
         // get password
         const SQLquery = `
@@ -142,7 +144,8 @@ async function main() {
 
         console.log('SQLquery :', SQLquery);
         const [rows] = await mySqlDB.query(SQLquery);
-        if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
+        //if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
+        if (rows.length === 1 && (rows[0].password === password)) {
 
           res.status(200).send('OK');
         } else {
@@ -162,17 +165,17 @@ async function main() {
 
         const lastUpdate = today.toISOString();
         const user = req.body.user;
-        const bankAccountTransactionId = req.body.bankAccountTransactionId;
+        const transactionId = req.body.transactionId;
         const voucherFileName = req.body.voucherFileName;
 
-        // Update a row in bank account transactions table
+        // Update a row in transactions table
         const SQLquery = `
-        UPDATE bankaccounttransactions
+        UPDATE transactions
         SET
           user = '${user}',
           lastUpdate = '${lastUpdate}',
           voucherFileName = '${voucherFileName}'
-        WHERE bankAccountTransactionId = ${bankAccountTransactionId};`;
+        WHERE transactionId = ${transactionId};`;
 
         console.log('SQLquery :', SQLquery);
         const [rows] = await mySqlDB.query(SQLquery);
@@ -204,13 +207,12 @@ async function main() {
         res.sendStatus(200);
       } catch (err) {
 
-        console.log('access error:', err.message);
+        // console.log('access error:', err.message);
         res.sendStatus(404);
       }
     });
 
     // Requests for accounts
-    //app.get("/accounts", async (req, res) => {
     app.post("/accounts", async (req, res) => {
 
       const action = req.body.action;
@@ -225,12 +227,10 @@ async function main() {
 
           try {
 
-            let SQLquery =
-              `
-                SELECT * FROM accounts
-                WHERE condominiumId = ${condominiumId}
-                  AND deleted <> 'Y'
-              `;
+            let SQLquery = `
+            SELECT * FROM accounts
+            WHERE condominiumId = ${condominiumId}
+              AND deleted <> 'Y'`;
             if (fixedCost === 'Y' || fixedCost === 'N') SQLquery += ` AND fixedCost = '${fixedCost}'`;
             console.log('SQLquery :', SQLquery);
 
@@ -418,7 +418,7 @@ async function main() {
             const user = req.body.user;
             const condominiumId = req.body.condominiumId;
             const email = req.body.email;
-            const condoId = req.body.condoId;
+            const condoId = Number(req.body.condoId);
             const firstName = req.body.firstName;
             const lastName = req.body.lastName;
             const phone = req.body.phone;
@@ -466,7 +466,7 @@ async function main() {
 
               // Hash the password
               const saltRounds = 10;
-              password = await bcrypt.hash(password, saltRounds);
+              //password = await bcrypt.hash(password, saltRounds);
 
               SQLquery = `
               UPDATE users
@@ -510,7 +510,7 @@ async function main() {
             const user = req.body.user;
 
             const email = req.body.email;
-            const condoId = req.body.condoId;
+            const condoId = Number(req.body.condoId);
             const firstName = req.body.firstName;
             const lastName = req.body.lastName;
             const phone = req.body.phone;
@@ -595,7 +595,6 @@ async function main() {
         // validate user
         case 'validateUser': {
 
-          console.log('validateUser');
           try {
 
             let isValid = false;
@@ -612,16 +611,9 @@ async function main() {
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
-
-            console.log('Number of rows :', rows.length);
             if (rows.length === 1) isValid = true;
-            console.log('valid 1:', isValid);
-            //if (password === rows[0].password && isValid) isValid = true;
             if (isValid) {
 
-              console.log('Password :', password);
-              console.log('Password :', rows[0].password);
-              console.log('Valid 2:', bcrypt.compare('12345', rows[0].password));
               isValid = await bcrypt.compare(password, rows[0].password);
               console.log('valid 3:', isValid);
               rows[0].password = (isValid) ? 'OK' : 'Not OK';
@@ -1219,7 +1211,7 @@ async function main() {
 
             const dueId = req.body.dueId;
             const user = req.body.user;
-            const condoId = req.body.condoId;
+            const condoId = Number(req.body.condoId);
             const accountId = req.body.accountId;
             const amount = req.body.amount;
             const date = req.body.date;
@@ -1257,7 +1249,7 @@ async function main() {
 
             const condominiumId = req.body.condominiumId;
             const user = req.body.user;
-            const condoId = req.body.condoId;
+            const condoId = Number(req.body.condoId);
             const accountId = req.body.accountId;
             const amount = req.body.amount;
             const date = req.body.date;
@@ -1373,7 +1365,7 @@ async function main() {
 
           try {
 
-            const condoId = req.body.condoId;
+            const condoId = Number(req.body.condoId);
             console.log('condoId: ', condoId);
             const user = req.body.user;
             const name = req.body.name;
@@ -1466,7 +1458,7 @@ async function main() {
 
             const user = req.body.user;
 
-            const condoId = req.body.condoId;
+            const condoId = Number(req.body.condoId);
             console.log('condoId: ', condoId);
 
             // Delete table
@@ -1515,13 +1507,12 @@ async function main() {
               AND deleted <> 'Y'`;
             if (userId !== nineNine) SQLquery += ` AND userId = ${userId} `;
             if (accountId !== nineNine) SQLquery += ` AND accountId = ${accountId} `;
-            SQLquery += ` ORDER BY name; `;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
             res.json(rows);
-            console.log('SQLquery :', SQLquery);
           } catch (err) {
 
             console.log("Database error in /userbankaccounts:", err.message);
@@ -1541,18 +1532,17 @@ async function main() {
             const userBankAccountId = req.body.userBankAccountId;
 
             // Update user bank account table
-            const SQLquery =
-              `
-                UPDATE userBankAccounts
-          SET
-          user = '${user}',
-            lastUpdate = '${lastUpdate}',
-            userId = ${userId},
-          accountId = ${accountId},
-          bankAccount = '${bankAccount}'
-                WHERE userBankAccountId = ${userBankAccountId};
-          `;
+            const SQLquery = `
+            UPDATE userBankAccounts
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              userId = ${userId},
+              accountId = ${accountId},
+              bankAccount = '${bankAccount}'
+            WHERE userBankAccountId = ${userBankAccountId};`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -1570,36 +1560,32 @@ async function main() {
 
             const condominiumId = req.body.condominiumId;
             const user = req.body.user;
-
             const userId = req.body.userId;
             const accountId = req.body.accountId;
             const bankAccount = req.body.bankAccount;
 
             // Insert new row
             // Insert new record
-            const SQLquery =
-              `
-                INSERT INTO userBankAccounts(
-            deleted,
-            condominiumId,
-            user,
-            lastUpdate,
-            userId,
-            accountId,
-            name,
-            bankAccount
-          ) VALUES(
-            'N',
-            ${condominiumId},
-            '${user}',
-            '${lastUpdate}',
-            ${userId},
-            ${accountId},
-            '',
-            '${bankAccount}'
-          );
-          `;
+            const SQLquery = `
+            INSERT INTO userBankAccounts(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              userId,
+              accountId,
+              bankAccount
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${userId},
+              ${accountId},
+              '${bankAccount}'
+            );`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -1620,16 +1606,16 @@ async function main() {
             const userBankAccountId = req.body.userBankAccountId;
 
             // Delete table
-            const SQLquery =
-              `
-                UPDATE userbankaccounts
-          SET
-          deleted = 'Y',
-            lastUpdate = '${lastUpdate}',
-            user = '${user}'
-                  WHERE userBankAccountId = ${userBankAccountId};
+            const SQLquery = `
+            UPDATE userbankaccounts
+            SET
+              deleted = 'Y',
+              lastUpdate = '${lastUpdate}',
+              user = '${user}'
+            WHERE userBankAccountId = ${userBankAccountId};
           `;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
             // Send a JSON response to the client containing the data
             res.json(rows);
@@ -1838,8 +1824,8 @@ async function main() {
       }
     });
 
-    // Requests for bank account transactions
-    app.post("/bankaccounttransactions", async (req, res) => {
+    // Requests for transactions
+    app.post("/transactions", async (req, res) => {
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -1853,67 +1839,23 @@ async function main() {
           const deleted = req.body.deleted;
           const condoId = Number(req.body.condoId);
           const accountId = Number(req.body.accountId);
+          const projectId = Number(req.body.projectId);
           const amount = Number(req.body.amount);
           const fromDate = Number(req.body.fromDate);
           const toDate = Number(req.body.toDate);
 
           try {
 
-            let SQLquery =
-              `
-          SELECT * FROM bankaccounttransactions
-                WHERE condominiumId = ${condominiumId}
-          `;
-            if (deleted === 'Y') {
-              SQLquery +=
-                `
-                  AND deleted = 'Y'
-            `;
-            }
-            if (deleted === 'N') {
-              SQLquery +=
-                `
-                  AND deleted = 'N'
-            `;
-            }
-
-            SQLquery +=
-              `
-                AND date BETWEEN ${fromDate} AND ${toDate}
-          `;
-            if (condoId !== nineNine) {
-              SQLquery +=
-                `
-                  AND condoId = ${condoId}
-          `;
-            }
-            if (accountId !== nineNine) {
-              SQLquery +=
-                `
-                  AND accountId = ${accountId}
-          `;
-            }
-            if (amount !== 0) {
-              SQLquery +=
-                `
-          AND(income = ${amount} OR payment = ${amount})
-            `;
-            }
-
-            if (orderBy) {
-
-              SQLquery +=
-                `
-                ORDER BY ${orderBy};
-          `;
-
-            } else {
-
-              SQLquery +=
-                `
-                  ORDER BY date DESC, income DESC;
-          `;
-            }
+            let SQLquery = `SELECT * FROM transactions WHERE condominiumId = ${condominiumId}`;
+            if (deleted === 'Y') SQLquery += ` AND deleted = 'Y'`;
+            if (deleted === 'N') SQLquery += ` AND deleted = 'N'`;
+            SQLquery += ` AND date BETWEEN ${fromDate} AND ${toDate}`;
+            if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
+            if (accountId !== nineNine) SQLquery += ` AND accountId = ${accountId}`;
+            if (projectId !== nineNine) SQLquery += ` AND projectId = ${projectId}`;
+            if (amount !== 0) SQLquery += ` AND(income = ${amount} OR payment = ${amount})`;
+            if (orderBy) SQLquery += ` ORDER BY ${orderBy};`;
+            if (!orderBy) SQLquery += ` ORDER BY date DESC, income DESC;`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1921,7 +1863,32 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccounttransactions:", err.message);
+            console.log("Database error in /transactions:", err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'selectLastRow': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM transactions
+            WHERE condominiumId = ${condominiumId}
+            AND deleted = 'N'
+            ORDER BY transactionId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log("Database error in /transactions:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1932,31 +1899,32 @@ async function main() {
           try {
 
             const user = req.body.user;
-
-            const condoId = req.body.condoId;
+            const condoId = Number(req.body.condoId);
             const accountId = req.body.accountId;
+            const projectId = Number(req.body.projectId);
             const income = req.body.income;
             const payment = req.body.payment;
             const kilowattHour = req.body.kilowattHour;
             const date = req.body.date;
             const text = req.body.text;
-            const bankAccountTransactionId = req.body.bankAccountTransactionId;
+            const transactionId = req.body.transactionId;
 
-            // Update bank account transactions table
+            // Update transactions table
             const SQLquery = `
-            UPDATE bankaccounttransactions
+            UPDATE transactions
             SET
               deleted = 'N',
               user = '${user}',
               lastUpdate = '${lastUpdate}',
               condoId = ${condoId},
               accountId = ${accountId},
+              projectId = ${projectId},
               income = ${income},
               payment = ${payment},
               kilowattHour = ${kilowattHour},
               date = ${date},
               text = '${text}'
-            WHERE bankAccountTransactionId = ${bankAccountTransactionId};`;
+            WHERE transactionId = ${transactionId};`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1965,7 +1933,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccounttransactions:", err.message);
+            console.log("Database error in /transactions:", err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1978,43 +1946,43 @@ async function main() {
             const condominiumId = req.body.condominiumId;
             const user = req.body.user;
 
-            const condoId = req.body.condoId;
-            const accountId = req.body.accountId;
+            const condoId = Number(req.body.condoId);
+            const accountId = Number(req.body.accountId);
+            const projectId = Number(req.body.projectId);
             const income = req.body.income;
             const payment = req.body.payment;
             const kilowattHour = req.body.kilowattHour;
             const date = req.body.date;
             const text = req.body.text;
 
-            // Insert new bank account transactions row
-            const SQLquery =
-              `
-                INSERT INTO bankaccounttransactions(
-            deleted,
-            condominiumId,
-            user,
-            lastUpdate,
-            condoId,
-            accountId,
-            income,
-            payment,
-            kilowattHour,
-            date,
-            text
-          ) VALUES(
-            'N',
-            ${condominiumId},
-            '${user}',
-            '${lastUpdate}',
-            ${condoId},
-            ${accountId},
-            ${income},
-            ${payment},
-            ${kilowattHour},
-            ${date},
-            '${text}'
-          );
-          `;
+            // Insert new transactions row
+            const SQLquery = `
+            INSERT INTO transactions(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              condoId,
+              accountId,
+              projectId,
+              income,
+              payment,
+              kilowattHour,
+              date,
+              text
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${condoId},
+              ${accountId},
+              ${projectId},
+              ${income},
+              ${payment},
+              ${kilowattHour},
+              ${date},
+              '${text}');`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -2022,7 +1990,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccounttransactions:", err.message);
+            console.log("Database error in /transactions:", err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -2034,16 +2002,16 @@ async function main() {
           try {
 
             const user = req.body.user;
-            const bankAccountTransactionId = req.body.bankAccountTransactionId;
+            const transactionId = req.body.transactionId;
 
             // Delete table
             const SQLquery = `
-            UPDATE bankaccounttransactions
+            UPDATE transactions
             SET
               deleted = 'Y',
               lastUpdate = '${lastUpdate}',
               user = '${user}'
-            WHERE bankAccountTransactionId = ${bankAccountTransactionId}; `;
+            WHERE transactionId = ${transactionId}; `;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -2052,7 +2020,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccounttransactions:", err.message);
+            console.log("Database error in /transactions:", err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -2072,40 +2040,6 @@ async function main() {
       } catch (err) {
 
         res.status(500).json({ error: err.message });
-      }
-    });
-
-    // Requests for menu
-    //app.get("/menu", async (req, res) => {
-    app.post("/menu", async (req, res) => {
-
-      const action = req.body.action;
-      const lastUpdate = today.toISOString();
-
-      switch (action) {
-
-        case 'select': {
-          const condominiumId = Number(req.body.condominiumId);
-
-          try {
-
-            const SQLquery =
-              `
-          SELECT * FROM menu
-                  WHERE deleted <> 'Y'
-                ORDER BY menuId;
-          `;
-            const [rows] = await mySqlDB.query(SQLquery);
-            // Send a JSON response to the client containing the data
-            res.json(rows);
-            console.log('SQLquery: ', SQLquery);
-          } catch (err) {
-
-            console.log("Database error in /menu:", err.message);
-            res.status(500).json({ error: err.message });
-          }
-          break;
-        }
       }
     });
 
@@ -2160,7 +2094,7 @@ async function main() {
 
           const remoteHeatingId = req.body.remoteHeatingId;
           const user = req.body.user;
-          const condoId = req.body.condoId;
+          const condoId = Number(req.body.condoId);
           const year = req.body.year;
           const date = req.body.date;
           const kilowattHour = req.body.kilowattHour;
@@ -2199,7 +2133,7 @@ async function main() {
 
           const user = req.body.user;
           const condominiumId = req.body.condominiumId;
-          const condoId = req.body.condoId;
+          const condoId = Number(req.body.condoId);
           const year = req.body.year;
           const date = req.body.date;
           const kilowattHour = req.body.kilowattHour;
@@ -2707,15 +2641,24 @@ async function main() {
         try {
 
           const condominiumId = req.body.condominiumId;
-           const year = req.body.year;
-           let month = req.body.month;
-           if (month < 10) month = '0' + String(month);
+
+          let fromYear = req.body.year;
+          let toYear = req.body.year;
+          if (fromYear === nineNine) fromYear = 0;
+          if (toYear === nineNine) toYear = 2100;
+
+          let fromMonth = req.body.month;
+          let toMonth = req.body.month;
+          if (fromMonth === nineNine) fromMonth = 1;
+          if (toMonth === nineNine) toMonth = 12;
+          if (fromMonth < 10) fromMonth = '0' + String(fromMonth);
+          if (toMonth < 10) toMonth = '0' + String(toMonth);
 
           let SQLquery = `
             SELECT * FROM emptyingcalendar
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'
-            AND date between ${year}${month}01 AND ${year}${month}31
+            AND date between ${fromYear}${fromMonth}01 AND ${toYear}${toMonth}31
             ORDER BY date ASC;`;
 
           console.log('SQLquery: ', SQLquery);
@@ -2736,7 +2679,7 @@ async function main() {
         try {
           const emptyingCalendarId = req.body.emptyingCalendarId;
           const user = req.body.user;
-          const condoId = req.body.condoId;
+          const condoId = Number(req.body.condoId);
           const date = req.body.date;
           const residualWaste = req.body.residualWaste;
           const paper = req.body.paper;
@@ -2778,7 +2721,7 @@ async function main() {
 
           const condominiumId = req.body.condominiumId;
           const user = req.body.user;
-          const condoId = req.body.condoId;
+          const condoId = Number(req.body.condoId);
           const date = req.body.date;
           const residualWaste = req.body.residualWaste;
           const paper = req.body.paper;
@@ -2850,6 +2793,145 @@ async function main() {
         } catch (err) {
 
           console.log("Database error in /emptyingcalendar:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+
+  // Requests for projects table
+  app.post("/projects", async (req, res) => {
+
+    const action = req.body.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+
+          let SQLquery = `
+            SELECT * FROM projects
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY name ASC;`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /projects:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+          const projectId = req.body.projectId;
+          const user = req.body.user;
+          const accountId = Number(req.body.accountId);
+          const name = req.body.name;
+          const amount = req.body.amount;
+
+          // Update row
+          const SQLquery = `
+            UPDATE projects
+            SET
+              user = '${user}',
+              deleted = 'N',
+              lastUpdate = '${lastUpdate}',
+              name = '${name}',
+              accountId = ${accountId},
+              amount = '${amount}'
+            WHERE projectId = ${projectId};`;
+
+          // Send a JSON response to the client containing the data
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /emptyingcalendar:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const projectId = req.body.projectId;
+          const user = req.body.user;
+          const condominiumId = req.body.condominiumId;
+          const accountId = Number(req.body.accountId);
+          const name = req.body.name;
+          const amount = req.body.amount;
+
+          // Insert new row
+          const SQLquery = `
+            INSERT INTO projects(
+            deleted,
+            condominiumId,
+            user,
+            lastUpdate,
+            name,
+            accountId,
+            amount
+          ) VALUES(
+            'N',
+            ${condominiumId},
+            '${user}',
+            '${lastUpdate}',
+            '${name}',
+            ${accountId},
+            '${amount}');`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /projects:", err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const projectId = req.body.projectId;
+          const user = req.body.user;
+
+          // Delete table
+          const SQLquery = `
+            UPDATE projects
+            SET
+              deleted = 'Y',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}'
+            WHERE projectId = ${projectId};`;
+
+          const [rows] = await mySqlDB.query(SQLquery);
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log("Database error in /projects:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;

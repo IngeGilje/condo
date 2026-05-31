@@ -16,10 +16,11 @@ div.tableContainer {
 table {
   border-collapse: collapse;
   background-color: #f9f9f9;
-  border-radius: 10px;
+  border-radius: 20px;
   overflow: hidden;
   width: 100%;
   font-family: system-ui, sans-serif;
+  border: 1px solid black;
 }
 
 button,
@@ -32,13 +33,6 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/*
-th {
-  background: #e0f0e0;
-  text-align: center;
-}
-*/
 
 th {
   background: #e0f0e0;
@@ -65,22 +59,12 @@ input {
   border-color: #e0f0e0;
 }
 
-/*
 button:hover,
 select:hover,
 input:hover,
 .menu a:hover {
   background: #e0f0e0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-*/
-button:hover,
-select:hover,
-input:hover,
-.menu a:hover {
-  background: #e0f0e0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-
   transform: translateY(-1px);
 }
 
@@ -130,20 +114,12 @@ select {
   font-weight: 600;
 }
 
+.underscore {
+  border-bottom: 1px solid black;
+}
+
 /*
 .button {
-  height: 35px;
-  background-color: #e0f0e0;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-*/
-
-.button {
-  /* height: 35px; */
   background-color: #e0f0e0;
   border: none;
   border-radius: 8px;
@@ -158,16 +134,61 @@ select {
   display: block;
   width: 100%;
   height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+}
+*/
+
+
+.button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /*max-width: 150px; */
+  /* space inside the link */
+  padding: 12px;
+  padding-left: 15px;
+  /* include padding in size */
+  box-sizing: border-box;
+  transition: background 0.2s, box-shadow 0.2s;
+
+  border: 2px solid #e0f0e0;
+  border-radius: 10px;
+  border-style: outset;
+  /* remove underscore */
+  text-decoration: none;
+  cursor: pointer;
+  /*margin-left: 10px; */
+
+  select[disabled],
+  input[readonly] {
+    background-color: #f2f2f2;
+    color: #555;
+    border: 1px solid #ccc;
+    cursor: default;
+  }
 }
 
-select[disabled],
-input[readonly] {
-  background-color: #f2f2f2;
-  color: #555;
-  border: 1px solid #ccc;
-  cursor: default;
+.button::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: #38bdf8;
+  transition: width 0.3s ease;
 }
 
+
+/* menu */
 .menu {
   /* remove default td padding */
   padding: 0;
@@ -227,15 +248,6 @@ input[readonly] {
   background: #e0f0e0;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
-
-/*
-img {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: -1;
-}
-*/
 
 .input-error {
   background-color: #f8d7da;
@@ -345,15 +357,19 @@ iframe {
   transition: width 0.3s ease;
 }
 
-.nav-links a:hover {
-  color: #38bdf8;
-}
-
 .nav-links a:hover::after {
   width: 100%;
 }
 
-/* Active link */
-.nav-links a.active {
-  color: #38bdf8;
+.cell {
+  position: relative;
+  height: 100px;
+}
+
+.label {
+  position: absolute;
+  top: -8px;
+  left: 10px;
+  background: white;
+  padding: 0 4px;
 }

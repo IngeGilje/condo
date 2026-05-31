@@ -101,7 +101,7 @@ class News extends Condos {
       >
         ${selectAll}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select none
@@ -109,12 +109,11 @@ class News extends Condos {
       html += `
       <option 
         value=0
-        ${(selectedValue) ? selectNone : ''}
-        ${(newsId === 0) ? 'selected' : ''}
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectNone}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     html += `
@@ -123,78 +122,6 @@ class News extends Condos {
 
     return html;
   }
-
-  /*
- showSelectedNews(className, newsId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <td
-      class="one-line center"
-    >
-      <select 
-        class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}
-      >`;
-
-    // Check if News array is empty
-    if (this.arrayNews.length > 0) {
-      this.arrayNews.forEach((news) => {
-
-        html += `
-        <option 
-          value=${news.newsId}
-          ${(news.newsId === newsId) ? 'selected' : ''}
-        >
-          ${news.title}
-        </option>`;
-        if (news.newsId === newsId) selectedValue = true;
-      });
-    } else {
-
-      html += `
-      <option value="0" 
-        selected
-      >
-        Ingen nyheter
-      </option>`;
-      selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayNews.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        ${selectAll}
-      </option>`;
-      selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayNews.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(selectedValue) ? selectNone : ''}
-        ${(newsId === 0) ? 'selected' : ''}
-      >
-        ${selectNone}
-      </option>`;
-      selectedValue = true;
-    }
-
-    html += `
-      </select >
-    </td>`;
-
-    return html;
-  }
-    */
 
   // get News
   async loadNewsTable(condominiumId, newsId) {

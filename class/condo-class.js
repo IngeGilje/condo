@@ -31,7 +31,7 @@ class Condos {
   // array of horizontal menu
   arrayHorizontalMenu = [
     {
-      applicationName: "condo-bankaccounttransaction.html",
+      applicationName: "condo-showtransaction.html",
       className: "Menu1",
       text: "Regnskap"
     },
@@ -130,9 +130,9 @@ class Condos {
       text: "Betalingsoversikt"
     },
     {
-      applicationName: "condo-bankaccounttransaction.html",
+      applicationName: "condo-showtransaction.html",
       className: "Menu15",
-      text: "Banktransaksjoner"
+      text: "Vis transaksjoner"
     },
     {
       applicationName: "condo-importfile.html",
@@ -143,6 +143,16 @@ class Condos {
       applicationName: "condo-annualaccount.html",
       className: "Menu17",
       text: "Årsregnskap"
+    },
+    {
+      applicationName: "condo-transaction.html",
+      className: "Menu18",
+      text: "Transaksjoner"
+    },
+    {
+      applicationName: "condo-project.html",
+      className: "Menu19",
+      text: "Prosjekter"
     }
   ];
 
@@ -188,7 +198,7 @@ class Condos {
   }
 
   // Show input
-  inputTableColumn(className, direction = 'left', value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+  editTableCell(className, direction = 'left', value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
     return `
     <td 
@@ -196,6 +206,7 @@ class Condos {
       colspan="${colspan}" 
       rowspan="${rowspan}"
     >
+    <span class="label"></span>
       <input
         class="${className} center one-line"
         type="text"
@@ -225,25 +236,8 @@ class Condos {
     </td>`;
   }
 
-  /*
   // Show password input
-  inputTableColumnPassword(className, style, value, maxlength) {
-
-    return `
-    <td class="center">
-      <input
-        class="${className} center one-line"
-        type="password"
-        maxlength="${maxlength}"
-        value="${value}"
-        ${(style) ? `style="${style}"` : "style='width:175px;'"}
-      >
-    </td>`;
-  }
-  */
-
-  // Show password input
-  inputTableColumnPassword(className, value, maxlength) {
+  inputTableCellPassword(className, value, maxlength) {
 
     return `
     <td class="center">
@@ -269,21 +263,6 @@ class Condos {
     </td>`;
   }
 
-  // Show leading text for input
-  showLeadingTextInput(className, labelText, maxlength, placeholder) {
-
-    let html = this.showLeadingTextLabel(className, labelText);
-    html +=
-      `
-        <input type="text" 
-          class="input-${className}"
-          maxlength="${maxlength}"
-          placeholder="${placeholder}"
-        >
-      `;
-    document.querySelector(`.div-${className}`).innerHTML = html;
-  }
-
   // Show label
   showLabel(className, labelText) {
     return `
@@ -294,42 +273,24 @@ class Condos {
       `;
   }
 
-  /*
-  // Show button
-  showButton(style, className, text) {
-
-    return `
-    <td 
-      class="center"
-    >
-      <button 
-        class="${className} center one-line"
-        ${(style) ? `style="${style}"` : 'style="width:175px;"'}
-      >
-        ${text}
-      </button>
-    </td>`;
-  }
-  */
-
   // Show button
   showButton(className, text) {
 
-    return `
-    <td 
-      class="center"
+    let html = `
+    <td class="one-line center"
     >
       <button 
-        class="${className} center one-line button"
-        style="width="50px"
+        class="${className} center button"
       >
         ${text}
       </button>
     </td>`;
+
+    return html;
   }
 
   // Valid text
-  validateText(className, text, minLenght, maxLength, object, style, message) {
+  validateText(className, columnWidths, style, message, showMessage = true, text, minLenght, maxLength) {
 
     let valid = true;
 
@@ -345,20 +306,20 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessage(object, style, message);
+    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message)
 
     return valid;
   }
 
   // validate bank account
-  validateBankAccount(className, bankAccount, object, style, message) {
+  validateBankAccount(className, columnWidths, showMessage, bankAccount, style, message) {
 
     const bankAccountPattern = /^\d{11}$/;
     const valid = bankAccountPattern.test(bankAccount);
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessage(object, style, message);
+    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
 
     return valid;
   }
@@ -377,64 +338,6 @@ class Condos {
       return false;
     }
   }
-
-  /*
-  // Select numbers
-  selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
-
-    selectedNumber = Number(selectedNumber);
-    let html =
-      `
-      <form 
-        id="selectedNumber"
-        action="/submit" method="POST"
-      >
-        <label 
-          class="label-${className}"
-          for="selectedNumber">
-            ${labelText}
-        </label>
-        <select 
-          class="select-${className}" 
-          id="selectedNumber"
-          name="selectedNumber"
-        >
-    `;
-
-    let selectedOption = false;
-
-    for (let number = fromNumber; number <= toNumber; number++) {
-      if (number === selectedNumber) {
-
-        html += `
-        <option 
-          value="${number}"
-          selected
-          >
-          ${number}
-        </option>
-      `;
-        selectedOption =
-          true;
-      } else {
-        html += `
-        <option 
-          value="${number}"
-          >
-          ${number}
-        </option>
-      `;
-      }
-    };
-
-    html += `
-      </select >
-    </form>
-  `;
-
-    document.querySelector(`.div-${className}`).innerHTML = html;
-  }
-  */
 
   // Select numbers
   selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
@@ -533,41 +436,6 @@ class Condos {
 
     return html;
   }
-
-  /*
-  // Select months
-  showSelectedMonths(className, style, selectedMonth, enableChanges) {
-
-    selectedMonth = Number(selectedMonth);
-    let html = `
-    <td
-      class="center"
-    >
-      <select
-        class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style="${style}"` : `style="width:175px;"`}
-      >`;
-
-    for (let month = 1; month < 13; month++) {
-
-      html += `
-      <option 
-        value="${month}"
-        ${month === selectedMonth ? 'selected' : ''}
-      >
-        ${findNameOfMonth(month)}
-      </option>`;
-    };
-
-    html += `
-        </select >
-      </td>
-    `;
-
-    return html;
-  }
-  */
 
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {
@@ -738,13 +606,8 @@ class Condos {
 
         if (userId >= 0) {
 
-          const rowNumberUser =
-            objUser.arrayUsers.findIndex(user => user.userId === userId);
-          if (rowNumberUser !== -1) {
-
-            condoId =
-              Number(objUser.arrayUsers[rowNumberUser].condoId);
-          }
+          const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+          if (rowNumberUser !== -1) condoId = Number(objUser.arrayUsers[rowNumberUser].condoId);
         }
       }
     }
@@ -770,14 +633,17 @@ class Condos {
 
     let html = "<tr>";
 
-    if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
-    if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    if (menuNumber > 0) {
+      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    }
+
     texts.forEach((text) => {
 
       html += `
       <td 
         class="no-border center"
-        ${(color) ? `style="background:${color};"` :" "}
+        ${(color) ? `style="background:${color};"` : " "}
       >
         ${text}
       </td>`;
@@ -787,26 +653,25 @@ class Condos {
     return html;
   }
 
-  // Validate interval
-  validateInterval(className, value, fromValue, toValue, object, style, message) {
+  // Validate values ('Yes','No','Ignore')
+  validateValues(className, columnWidths, style, message, showMessage = true, selectedValue, ...values) {
 
-    let valid = true;
+    let valid = false;
 
-    value = Number(value);
-    fromValue = Number(fromValue);
-    toValue = Number(toValue);
+    values.forEach((value) => {
 
-    if ((fromValue > toValue) || (value < fromValue) || (value > toValue)) valid = false;
+      if (value === selectedValue) valid = true;
+    });
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessage(object, style, message);
+    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
 
     return valid;
   }
 
   // Show the rest of the menu
-  showRestMenu(menuNumber, menuType) {
+  showRestMenu(menuNumber, menuType, ...texts) {
 
     let html = "";
     if (menuType === this.accountMenu) {
@@ -817,6 +682,12 @@ class Condos {
 
           // Show menu
           html += this.showAccountMenu(menuNumber);
+          texts.forEach((text) => {
+            html += `
+            <td>
+              ${text}
+            </td>`;
+          })
           html += "</tr>"
         }
       }
@@ -839,23 +710,20 @@ class Condos {
   }
 
   // Validate number
-  validateNumber(className, number, min, max, object, style, message, showMessage = true) {
+  validateInterval(className, columnWidths, style, message, showMessage = true, number, min, max) {
 
     let valid = (Number(number) >= Number(min) && Number(number) <= Number(max));
 
-    // Invalid number
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) inputElement.classList.toggle('input-error', !valid);
-      if ((valid === false) && showMessage) this.showMessage(object, style, message);
-    }
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement) inputElement.classList.toggle('input-error', !valid);
+    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
 
     return valid;
   }
 
+
   // validate the norwegian date format dd.mm.yyyy
-  validateNorDate(className, date, object, style, message) {
+  validateNorDate(className, date, style, message) {
 
     let valid = true;
 
@@ -895,7 +763,7 @@ class Condos {
       }
     }
 
-    if ((!valid) && (message.lenght > 0)) this.showMessage(object, style, message);
+    if ((!valid) && (message.lenght > 0)) this.showMessageNew(columnWidths, style, message);
     return valid;
   }
 
@@ -920,7 +788,7 @@ class Condos {
   }
 
   // Validate E-mail
-  validateEmail(className, eMail, object, style, message) {
+  validateEmail(className, eMail, style, message) {
 
     // Validate eMail
     const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -928,7 +796,7 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessage(object, style, message);
+    if (!valid) this.showMessageNew(columnWidths, style, message);
 
     return valid;
   }
@@ -998,16 +866,19 @@ class Condos {
   }
 
   // Initializing of a table
-  initializeTable(...columnWidths) {
+  initializeTable(columnWidths) {
 
-    let tableWith = 0;
+    let tableWidth = 0;
     columnWidths.forEach((columnWidth) => {
-      tableWith += (columnWidth + 10);
+      tableWidth += (columnWidth + 10);
     });
 
     let html = `
     <table 
-      style="table-layout: fixed; width: ${tableWith}px;">`;
+      style="table-layout: fixed;
+      width: ${tableWidth}px;";
+      border="1";
+    >`;
 
     html += '<colgroup>';
 
@@ -1075,7 +946,7 @@ class Condos {
     return "<tbody>";
   }
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   // and show account menu or administration menu
   insertTableRow(style, menuNumber, menuType, ...texts) {
 
@@ -1187,7 +1058,7 @@ class Condos {
     }
   }
 
-  // Show vertical account menu
+  // Show vertical account menu (<td></td>)
   showAccountMenu(menuNumber) {
 
     let html = "";
@@ -1259,17 +1130,24 @@ class Condos {
   }
 
   // Show message
-  showMessage(object, style, message) {
+  showMessageNew(columnWidths, style, message) {
+
+    let tableWidth = 0;
+    columnWidths.forEach((columnWidth) => {
+      tableWidth += (columnWidth + 10);
+    });
 
     // Start table
-    style = (style) ? style : 'width:600px;';
-    let html = object.startTable(style);
+    style = (style) ? style : `width:${tableWidth}px;`;
+    let html = this.startTable(style);
 
     // show main header
-    html += object.showTableHeader('width:250px;', this.accountMenu, message);
+    html += this.showTableHeaderMenu(0, 0, '', '');
+
+    html += this.showTableHeader(`width:${tableWidth}px;`, 0, message);
 
     // The end of the table
-    html += object.endTable();
+    html += this.endTable();
     document.querySelector('.message').innerHTML = html;
   }
 
@@ -1319,7 +1197,7 @@ function removeComma(amount) {
 }
 
 // Format date dd.mm.yyyy (European date format) to yyyymmdd ("Basic ISO 8601 format)
-function convertDateToISOFormat(date) {
+function formatNorDateToNumber(date) {
   if (date.includes('.')) {
     const dateParts = date.split(".");
     date = `${dateParts[2]}${dateParts[1]}${dateParts[0]}`;

@@ -28,35 +28,6 @@ class Account extends Condos {
     return accountId;
   }
 
-  /*
-  // Select account
-  selectAccountId(accountId, className) {
-
-    // Check if account id exist
-    const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (rowNumberAccount !== -1) {
-
-      document.querySelector(`.select-${className}`).value = this.arrayAccounts[rowNumberAccount].accountId;
-      return true;
-    } else {
-
-      return false;
-    }
-  }
-  */
-
-  /*
-  // Select account Id
-  selectAccountId(accountId) {
-
-    // Check if account id exist
-    const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (rowNumberAccount !== -1) accountId = this.arrayAccounts[rowNumberAccount].accountId;
-
-    return accountId;
-  }
-  */
-
   // get account id from bank account and suppliers
   getAccountIdFromBankAccount(bankAccountNumber, payment, text) {
 
@@ -132,77 +103,6 @@ class Account extends Condos {
     return accountName;
   }
 
-  /*
-  showSelectedAccounts(className, style, accountId, selectNone, selectAll, enableChanges = false) {
-
-    let selectedValue = false;
-
-    let html = `
-    <td
-      class="one-line left"
-    >
-      <select 
-        class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style=${style}` : 'style=width:175px;'}>`;
-
-    // Check if accounts array is empty
-    if (this.arrayAccounts.length > 0) {
-      this.arrayAccounts.forEach((account) => {
-
-        html += `
-        <option 
-          value=${account.accountId}
-          ${(account.accountId === accountId) ? 'selected' : ''}
-        >
-          ${account.name}
-        </option>`;
-        if (account.accountId === accountId) selectedValue = true;
-      });
-    } else {
-
-      html += `
-      <option value="0" 
-        selected
-      >
-        Ingen konti
-      </option>`;
-      selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayAccounts.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'}
-      >
-        ${selectAll}
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayAccounts.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(selectedValue) ? '' : selectNone}
-        ${(accountId === 0) ? 'selected' : ''}
-      >
-        ${selectNone}
-      </option>`;
-      if (accountId === 0) selectedValue = true;
-
-      html += `
-        </select >
-      </td>`;
-    }
-    return html;
-  }
-  */
-
   // show selected accounts
   showSelectedAccounts(className, style, accountId, selectNone, selectAll, enableChanges = false) {
 
@@ -234,13 +134,13 @@ class Account extends Condos {
     } else {
 
       html += `
-      <option value="0" 
-        selected
+      <option
+        value="0" 
+        ${(!selectedValue) ? 'selected' : ''}
       >
         Ingen konti
       </option>`;
-
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select all
@@ -249,7 +149,7 @@ class Account extends Condos {
       html += `
       <option 
         value=${this.nineNine}
-        selected
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectAll}
       </option>`;
@@ -261,12 +161,11 @@ class Account extends Condos {
       html += `
       <option 
         value=0
-        ${(selectedValue) ? '' : selectNone}
-        ${(accountId === 0) ? 'selected' : ''}
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectNone}
       </option>`;
-      if (accountId === 0) selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
     html += `
       </select >
@@ -362,7 +261,9 @@ class Account extends Condos {
   // delete account row
   async deleteAccountsTable(accountId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/accounts' 
+    : 'http://localhost:3000/accounts';
     try {
       // POST request
       //const response = await fetch(`${URL}:3000/accounts?action=delete&accountId=${accountId}&user=${user}`);

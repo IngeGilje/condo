@@ -51,80 +51,6 @@ class Condo extends Condos {
     }
   }
 
-  /*
-  showSelectedCondos(className, style, condoId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <td
-      class="one-line left"
-    >
-      <select 
-        class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style=${style}` : 'style=width:175px;'}
-      >`;
-
-    // Check if condos array is empty
-    if (this.arrayCondo.length > 0) {
-      this.arrayCondo.forEach((condo) => {
-
-        html += `
-        <option 
-          value=${condo.condoId}
-          ${(condo.condoId === condoId) ? 'selected' : ''}
-        >
-          ${condo.name}
-        </option>`;
-        if (condo.condoId === condoId) selectedValue = true;
-      });
-    } else {
-
-      html += `
-      <option value="0" 
-        selected
-      >
-        Ingen leiligheter
-      </option>`;
-      selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayCondo.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        ${selectAll}
-      </option>`;
-      selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayCondo.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(selectedValue) ? selectNone : ''}
-        ${(condoId === 0) ? 'selected' : ''}
-      >
-        ${selectNone}
-      </option>`;
-      selectedValue = true;
-    }
-
-    html += `
-      </select >
-    </td>`;
-
-    return html;
-  }
-  */
-
-  
   showSelectedCondos(className, style, condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
@@ -138,7 +64,7 @@ class Condo extends Condos {
         ${(style) ? `style="${style}"` : ""}
         ${(enableChanges) ? '' : 'disabled'}
       >`;
-      
+
     // Check if condos array is empty
     if (this.arrayCondo.length > 0) {
       this.arrayCondo.forEach((condo) => {
@@ -155,7 +81,8 @@ class Condo extends Condos {
     } else {
 
       html += `
-      <option value="0" 
+      <option 
+        value="0" 
         selected
       >
         Ingen leiligheter
@@ -173,7 +100,7 @@ class Condo extends Condos {
       >
         ${selectAll}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select none
@@ -181,12 +108,11 @@ class Condo extends Condos {
       html += `
       <option 
         value=0
-        ${(selectedValue) ? selectNone : ''}
-        ${(condoId === 0) ? 'selected' : ''}
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectNone}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     html += `
@@ -200,9 +126,9 @@ class Condo extends Condos {
   async loadCondoTable(condominiumId, condoId) {
 
     // Get condos
-    const URL = (this.serverStatus === 1) 
-    ? '/api/condo' 
-    : 'http://localhost:3000/condo';
+    const URL = (this.serverStatus === 1)
+      ? '/api/condo'
+      : 'http://localhost:3000/condo';
     try {
       // POST request
       const response = await fetch(URL, {
@@ -213,7 +139,7 @@ class Condo extends Condos {
         body: JSON.stringify({
           action: 'select',
           condominiumId: condominiumId,
-          condoId : condoId
+          condoId: condoId
         })
       });
       if (!response.ok) throw new Error("Network error (condo)");

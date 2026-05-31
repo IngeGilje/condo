@@ -267,7 +267,9 @@ class User extends Condos {
   // validate User
   async validateUser(userId, password) {
 
-    const URL = (this.serverStatus === 1) ? '/api/login' : 'http://localhost:3000/login';
+    const URL = (this.serverStatus === 1)
+      ? '/api/login'
+      : 'http://localhost:3000/login';
     const response = await fetch(URL, {
       method: "POST",
       headers: {
@@ -282,85 +284,6 @@ class User extends Condos {
     return response.ok;
   }
 
-  /*
-  // Show all selected users
-  showSelectedUsersNewBck(className, userId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <td
-      class="one-line left"
-    >
-      <select 
-        class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}>`;
-
-    // Check if user array is empty
-    if (this.arrayUsers.length > 0) {
-      this.arrayUsers.forEach((user) => {
-        html += `
-        <option 
-          value=${user.userId}
-          ${(user.userId === userId) ? 'selected' : ''}
-        >
-          ${user.firstName}
-        </option>`;
-        if (user.userId === userId) selectedValue = true;
-      });
-    } else {
-
-      html += `
-      <option value="0" 
-        selected
-      >
-        Ingen leilighet
-      </option>`;
-      selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayUsers.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(!selectedValue) ? 'select' : ''}
-      >
-        ${selectAll}
-      </option>`;
-      selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayUsers.length > 1)) {
-
-      html += `
-      <option 
-        value=0
-      >
-        ${selectNone}
-    </option>`;
-
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        ${selectNone}
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    html += `
-      </select >
-    </td>`;
-
-    return html;
-  }
-  */
-
-  
   // Show all selected users
   showSelectedUsers(className, style, userId, selectNone, selectAll, enableChanges) {
 
@@ -385,7 +308,7 @@ class User extends Condos {
           value=${user.userId}
           ${(user.userId === userId) ? 'selected' : ''}
         >
-          ${user.firstName.slice(0,15)}
+          ${user.firstName.slice(0, 15)}
         </option>`;
         if (user.userId === userId) selectedValue = true;
       });
@@ -410,7 +333,7 @@ class User extends Condos {
       >
         ${selectAll}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select none
@@ -418,12 +341,11 @@ class User extends Condos {
       html += `
       <option 
         value=0
-        ${(selectedValue) ? selectNone : ''}
-        ${(userId === 0) ? 'selected' : ''}
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectNone}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     html += `
@@ -441,7 +363,8 @@ class User extends Condos {
     if (rowNumberUser !== -1) {
 
       // email exist
-      object.showMessage(object, style, message)
+      object.showMessageNew(columnWidths, style, message);
+
       return false;
     } else {
 

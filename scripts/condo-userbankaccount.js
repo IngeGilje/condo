@@ -8,6 +8,8 @@ const objUserBankAccount = new UserBankAccount('userbankaccount');
 
 const enableChanges = (objUserBankAccount.securityLevel > 5);
 
+const columnWidths = [175, 175, 175, 175, 75];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -36,7 +38,6 @@ async function main() {
       await objUser.loadUsersTable(objUserBankAccount.condominiumId, resident, objUserBankAccount.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objUserBankAccount.condominiumId, fixedCost);
-      //await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 
       // Show header
       let menuNumber = 0;
@@ -46,7 +47,10 @@ async function main() {
       menuNumber = showFilter(menuNumber, objUserBankAccount.userId);
 
       // Show accounts
-      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.userId, objUserBankAccount.nineNine);
+      userId = Number(document.querySelector('.filterUserId').value);
+      accountId = Number(document.querySelector('.filterAccountId').value);
+      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
+
       menuNumber = showUserBankAccount(menuNumber);
 
       // Events
@@ -54,7 +58,7 @@ async function main() {
     }
   } else {
 
-    objUserBankAccount.showMessage(objUserBankAccount, '', 'Server er ikke startet.');
+    objUserBankAccount.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 
@@ -78,11 +82,11 @@ async function events() {
   // update a user bank accounts row
   document.addEventListener('change', async (event) => {
 
+    const arrayPrefixes = ['userId', 'accountId', 'bankAccount'];
+
     if ([...event.target.classList].some(cls => cls.startsWith('userId'))
       || [...event.target.classList].some(cls => cls.startsWith('accountId'))
       || [...event.target.classList].some(cls => cls.startsWith('bankAccount'))) {
-
-      const arrayPrefixes = ['userId', 'accountId', 'bankAccount'];
 
       // Find the first matching class
       const className = arrayPrefixes
@@ -103,31 +107,35 @@ async function events() {
   });
 
   // Delete accounts row
-  document.addEventListener('change', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
+  document.addEventListener('click', async (event) => {
 
-      const arrayPrefixes = ['delete'];
+    const arrayPrefixes = ['delete'];
+    if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
       // Find the first matching class
       const className = arrayPrefixes
         .map(prefix => objUserBankAccount.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      //const className = objAccount.getDeleteClass(event.target);
-      const classNameDelete = `.${className}`
-      const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
-      if (deleteAccountRowValue === "Ja") {
+      // Extract the number in the class name
+      let userBankAccountId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        userBankAccountId = Number(className.slice(prefix.length));
+      }
 
-        const accountId = Number(className.substring(6));
-        deleteUserBankAccountRow(accountId, className);
+      const classNameDelete = `${className}`
+      deleteUserBankAccountRow(userBankAccountId, className);
 
-        const userId = Number(document.querySelector('.filterUserId').value);
-        await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+      userId = Number(document.querySelector('.filterUserId').value);
+      accountId = Number(document.querySelector('.filterAccountId').value);
+      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
-        showUserBankAccount(3);
-      };
+      showUserBankAccount(3);
     };
   });
+
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -145,13 +153,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objUserBankAccount.initializeTable(175,175,175,175,175);
+  let html = objUserBankAccount.initializeTable(columnWidths);
 
   // start table body
   html += objUserBankAccount.startTableBody();
 
   // show main header
-  html += objUserBankAccount.showTableHeaderLogOut('', '', '', 'Bankkonto for bruker', '');
+  html += objUserBankAccount.showTableHeaderLogOut('', '', 'Bankkonto', '');
   html += "</tr>";
 
   // end table body
@@ -159,34 +167,34 @@ function showHeader() {
 
   // The end of the table
   html += objUserBankAccount.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
 function showFilter(menuNumber, userId) {
 
   // Start table
-  let html = objUserBankAccount.initializeTable(175,175,175,175,175);
+  let html = objUserBankAccount.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
-  html += objUserBankAccount.showTableHeaderMenu( menuNumber, objUserBankAccount.accountMenu, ' Bruker', 'Konto', '');
+  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '', '', 'Bruker', 'Konto', '');
 
   // start table body
   html += objUserBankAccount.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, '');
 
   // Show all selected users
-  html += objUser.showSelectedUsers('filterUserId','width:175px;', userId, '', 'Alle', enableChanges);
+  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', 'Alle', enableChanges);
 
   // Show all selected accounts
   html += objAccount.showSelectedAccounts('filterAccountId', 'width:175px;', 0, '', 'Alle', true);
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, '', '', '', '');
 
@@ -195,7 +203,7 @@ function showFilter(menuNumber, userId) {
 
   // The end of the table
   html += objUserBankAccount.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -205,19 +213,19 @@ function insertEmptyTableRow(menuNumber) {
 
   let html = "";
 
-  // insert a table row
-  html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, 'Ny brukerkonto');
+  // Insert a table row (<tr></td>)
+  html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu);
 
   // user column
-  html += objUser.showSelectedUsers('userId0','width:175px;', 0, 'Velg bruker', '', enableChanges);
+  html += objUser.showSelectedUsers('userId0', 'width:175px', 0, 'Velg bruker', '', enableChanges);
 
   // Account column
-  html += objAccount.showSelectedAccounts('accountId0', 'width:175px;',  0, 'Velg konto', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
 
-  // bank account number
-  html += objUserBankAccount.inputTableColumn('bankAccount0', '', '', 11, enableChanges);
+  // Bank account number
+  html += objUserBankAccount.editTableCell('bankAccount0', '', '', 11, enableChanges);
 
-  html += "</tr>";
+  html += "<td>Ny brukerkonto</td></tr>";
   return html;
 }
 
@@ -225,36 +233,35 @@ function insertEmptyTableRow(menuNumber) {
 function showUserBankAccount(menuNumber) {
 
   // start table
-  let html = objUserBankAccount.initializeTable(175,175,175,175,175);
+  let html = objUserBankAccount.initializeTable(columnWidths);
 
-  // table header
+  // Table header (<tr></tr>)
   menuNumber++;
-  html += objUserBankAccount.showTableHeaderMenu( menuNumber, objUserBankAccount.accountMenu,'#e0f0e0', 'Slett', 'Bruker', 'Konto', 'Bankkonto');
+  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '#e0f0e0', 'Bruker', 'Konto', 'Bankkonto', 'Slett');
 
   objUserBankAccount.arrayUserBankAccounts.forEach((userBankAccount) => {
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu);
 
-    // Delete
-    let className = `delete${userBankAccount.userBankAccountId}`;
-    const selected = 'Nei';
-    html += objUserBankAccount.showSelectedValues(className,'width:175px;', enableChanges, selected, 'Nei', 'Ja')
-
     // user Id
     //const userId = userBankAccount.userId;
-    className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUser.showSelectedUsers(className,'width:175px;', userBankAccount.userId, 'Velg bruker', '', enableChanges);
+    let className = `userId${userBankAccount.userBankAccountId}`;
+    html += objUser.showSelectedUsers(className, 'width:175px;', userBankAccount.userId, 'Velg bruker', '', enableChanges);
 
     // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccount.showSelectedAccounts(className, 'width:175px;',  accountId, 'Velg konto', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className, 'width:175px;', accountId, 'Velg konto', '', enableChanges);
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccount.inputTableColumn(className, '', userBankAccount.bankAccount, 11, enableChanges);
+    html += objUserBankAccount.editTableCell(className, '', userBankAccount.bankAccount, 11, enableChanges);
+
+    // Delete
+    className = `delete${userBankAccount.userBankAccountId}`;
+    html += objUserBankAccount.showButton(className, 'Slett');
 
     html += "</tr>";
   });
@@ -269,7 +276,7 @@ function showUserBankAccount(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objUserBankAccount.showRestMenu(menuNumber, objUserBankAccount.accountMenu);
+  html += objUserBankAccount.showRestMenu(menuNumber, objUserBankAccount.accountMenu, '', '', '', '');
 
   // The end of the table
   html += objUserBankAccount.endTable();
@@ -289,7 +296,9 @@ async function deleteUserBankAccountRow(userBankAccountId, className) {
     await objUserBankAccount.deleteUserBankAccountsTable(userBankAccountId, objUserBankAccount.user);
   }
 
-  await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+  userId = Number(document.querySelector('.filterUserId').value);
+  accountId = Number(document.querySelector('.filterAccountId').value);
+  await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 }
 
 // Update userbankaccounts row
@@ -300,17 +309,17 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   // User Id
   let className = `userId${userBankAccountId}`;
   let userId = Number(document.querySelector(`.${className}`).value);
-  const validUserId = objUserBankAccount.validateNumber(className, userId, 1, objUserBankAccount.nineNine, objUserBankAccount, '', 'Ugyldig bruker');
+  const validUserId = objUserBankAccount.validateInterval(className, columnWidths, '', 'Ugyldig bruker', true, userId, 1, objUserBankAccount.nineNine, objUserBankAccount);
 
   // account Id
   className = `accountId${userBankAccountId}`;
   let accountId = Number(document.querySelector(`.${className}`).value);
-  const validAccountId = objUserBankAccount.validateNumber(className, accountId, 1, objUserBankAccount.nineNine, objUserBankAccount, '', 'Ugyldig konto');
+  const validAccountId = objUserBankAccount.validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccount.nineNine);
 
   // bank account
   className = `bankAccount${userBankAccountId}`;
   const bankAccount = document.querySelector(`.${className}`).value;
-  const validBankAccount = objUserBankAccount.validateBankAccount(className, bankAccount, objUserBankAccount, '', 'Ugyldig bankkonto');
+  const validBankAccount = objUserBankAccount.validateBankAccount(className, columnWidths, true, bankAccount, '', 'Ugyldig bankkonto');
 
   if (validUserId && validAccountId && validBankAccount) {
 

@@ -72,24 +72,23 @@ class ImportFile extends Condos {
       if (selectedOption) {
 
         htmlImportFile += `
-            <option 
-              value=${this.nineNine}
-            >
-              ${alternativeSelect}
-            </option>`;
+        <option 
+          value=${this.nineNine}
+          ${(!selectedValue) ? 'selected' : ''}
+        >
+          ${alternativeSelect}
+        </option>`;
+        if (!selectedValue) selectedValue = true;
       } else {
 
-        htmlImportFile +=
-          `
-            <option 
-              value=${this.nineNine}
-              selected
-            >
-              ${alternativeSelect}
-            </option>
-          `;
-        selectedOption =
-          true;
+        htmlImportFile += `
+        <option 
+          value=${this.nineNine}
+          ${(!selectedValue) ? 'selected' : ''}
+        >
+          ${alternativeSelect}
+        </option>`;
+        if (!selectedValue) selectedValue = true;
       }
     }
 
@@ -126,7 +125,7 @@ class ImportFile extends Condos {
       this.strCSVTransaction = result.content;
       return true;
     } catch (error) {
-      objImportFile.showMessage(objImportFile, '', 'Ugyldig navn på transaksjonsfil.');
+      objImportFile.showMessageNew(columnWidths,    '', 'Ugyldig navn på transaksjonsfil.');
       return false;
     }
   }

@@ -9,6 +9,8 @@ const objRemoteHeating = new RemoteHeating('remoteheating');
 
 const enableChanges = (objRemoteHeating.securityLevel > 5);
 
+const columnWidths = [175, 175, 175, 175, 175, 175, 100];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -56,7 +58,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeating.showMessage(objRemoteHeating, '', 'Server er ikke startet.');
+    objRemoteHeating.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 
@@ -78,10 +80,9 @@ async function events() {
   });
 
   // Delete remoteheatings row
-  document.addEventListener('change', async (event) => {
+  document.addEventListener('click', async (event) => {
 
     const arrayPrefixes = ['delete'];
-
     if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
 
       // Find the first matching class
@@ -89,19 +90,21 @@ async function events() {
         .map(prefix => objRemoteHeating.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
-      const classNameDelete = `.${className}`
-      const deleteRemoteHeatingRowValue = document.querySelector(`${classNameDelete}`).value;
-      if (deleteRemoteHeatingRowValue === "Ja") {
+      // Extract remoteHeatingId in the class name
+      let remoteHeatingId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        remoteHeatingId = Number(className.slice(prefix.length));
+      }
 
-        const remoteHeatingId = Number(className.substring(6));
-        await deleteRemoteHeatingRow(remoteHeatingId);
+      await objRemoteHeating.deleteRemoteHeatingTable(remoteHeatingId, objRemoteHeating.user);
+      await objRemoteHeating.loadRemoteHeatingTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine, objRemoteHeating.nineNine);
 
-        await objRemoteHeating.loadRemoteHeatingTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine, objRemoteHeating.nineNine);
-
-        let menuNumber = 0;
-        menuNumber = showRemoteHeatings(menuNumber);
-      };
+      let menuNumber = 0;
+      menuNumber = showRemoteHeatings(menuNumber);
     };
+
   });
 
   // update a remoteheatings row
@@ -132,6 +135,7 @@ async function events() {
     };
   });
 
+  /*
   // Delete suppliers row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
@@ -158,6 +162,8 @@ async function events() {
       };
     };
   });
+  */
+
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -175,13 +181,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objRemoteHeating.initializeTable(175, 100, 125,175,175);
+  let html = objRemoteHeating.initializeTable(columnWidths);
 
   // start table body
   html += objRemoteHeating.startTableBody();
 
   // show main header
-  html += objRemoteHeating.showTableHeaderLogOut( '', '', '', '', 'Fjernvarme', '', '');
+  html += objRemoteHeating.showTableHeaderLogOut('', '', '', '', 'Fjernvarme', '', '');
   html += "</tr>";
 
   // end table body
@@ -189,37 +195,37 @@ function showHeader() {
 
   // The end of the table
   html += objRemoteHeating.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
 function showFilter(menuNumber, year) {
 
   // Start table
-  let html = objRemoteHeating.initializeTable(175, 100, 125,175,175);
+  let html = objRemoteHeating.initializeTable(columnWidths);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
-  html += objRemoteHeating.showTableHeaderMenu( menuNumber, objRemoteHeating.accountMenu, '','', 'År', 'Pris per kiloWattimer', '', '');
+  html += objRemoteHeating.showTableHeaderMenu(menuNumber, objRemoteHeating.accountMenu, '', '', 'År', 'Pris per kiloWattimer', '', '');
 
   // start table body
   html += objRemoteHeating.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '');
 
-  // Select year
-   html += objRemoteHeating.showSelectedNumbers('filterYear','width:175px;', 2020, 2030, year, true);
+  // Select year (<td></td>)
+  html += objRemoteHeating.showSelectedNumbers('filterYear', 'width:175px;', 2020, 2030, year, true);
 
   // Price/kilowattHour
   const priceKilowattHour = getPriceKilowattHour(year);
   className = `filterPrice`;
-  html += objRemoteHeating.inputTableColumn(className, '', priceKilowattHour, 10, false);
+  html += objRemoteHeating.editTableCell(className, '', priceKilowattHour, 10, false);
 
   html += "<td></td><td></td><td></td></tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', '', '');
 
@@ -228,7 +234,7 @@ function showFilter(menuNumber, year) {
 
   // The end of the table
   html += objRemoteHeating.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -239,27 +245,24 @@ function insertEmptyTableRow(menuNumber) {
   let html = "";
   let date = "";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu);
 
-  html += "<td class='center'>Ny fjernvarme</td>";
-
   // Date
-  html += objRemoteHeating.inputTableColumn('date0', '', '', 10, enableChanges);
+  html += objRemoteHeating.editTableCell('date0', '', '', 10, enableChanges);
 
   // condoId
-  html += objCondo.showSelectedCondos('condoId0','width:175px;',  0, 'Ikke valgt', '', enableChanges);
+  html += objCondo.showSelectedCondos('condoId0', 'width:175px;', 0, 'Velg leilighet', '', enableChanges);
 
   // kilowattHour this year
-  html += objRemoteHeating.inputTableColumn('kilowattHour0', '', '0,00', 10, enableChanges);
+  html += objRemoteHeating.editTableCell('kilowattHour0', '', '0,00', 10, enableChanges);
 
   // kilowattHour last year
-  html += objRemoteHeating.inputTableColumn('kilowattHourLastYear0', '', '0,00', 10, false);
+  html += objRemoteHeating.editTableCell('kilowattHourLastYear0', '', '0,00', 10, false);
 
   // price for remote heating for one year
-  html += objRemoteHeating.inputTableColumn('priceYear0', '', '0,00', 10, enableChanges);
-
-  html += "</tr>";
+  html += objRemoteHeating.editTableCell('priceYear0', '', '0,00', 10, enableChanges);
+  html += "<td class='center'>Ny fjernvarme</td></tr>";
   return html;
 }
 
@@ -269,52 +272,44 @@ function showRemoteHeatings(menuNumber) {
   let totalPriceYear = 0;
 
   // start table
-  let html = objRemoteHeating.initializeTable(175, 100, 125,175,175);
+  let html = objRemoteHeating.initializeTable(columnWidths);
 
-  // table header
+  // Table header (<tr></tr>)
   const currentYear = Number(document.querySelector(".filterYear").value);
   const lastYear = currentYear - 1;
   menuNumber++;
-   html += objRemoteHeating.showTableHeaderMenu( menuNumber, objRemoteHeating.accountMenu, '#e0f0e0', 'Slett', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp');
+  html += objRemoteHeating.showTableHeaderMenu(menuNumber, objRemoteHeating.accountMenu, '#e0f0e0', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp', 'Slett');
 
   objRemoteHeating.arrayRemoteHeatings.forEach((remoteHeating) => {
 
     if (remoteHeating.year === currentYear) {
 
-      // insert a table row
+      // insert a table row (<tr></td>)
       menuNumber++;
       html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu);
 
-      // Delete
-      let selected = "Ugyldig verdi";
-      if (remoteHeating.deleted === 'Y') selected = "Ja";
-      if (remoteHeating.deleted === 'N') selected = "Nei";
-
-      let className = `delete${remoteHeating.remoteHeatingId}`;
-      html += objRemoteHeating.showSelectedValues(className,'width:175px;', enableChanges, selected, 'Nei', 'Ja')
-
       // date
       let date = remoteHeating.date;
-      className = `date${remoteHeating.remoteHeatingId}`;
+      let className = `date${remoteHeating.remoteHeatingId}`;
       date = formatNumberToNorDate(date);
-      html += objRemoteHeating.inputTableColumn(className, '', date, 10, enableChanges);
+      html += objRemoteHeating.editTableCell(className, '', date, 10, enableChanges);
 
       // condoId
       const condoId = remoteHeating.condoId;
       className = `condoId${remoteHeating.remoteHeatingId}`;
-      html += objCondo.showSelectedCondos(className,'width:175px;',  condoId, '', '', enableChanges);
+      html += objCondo.showSelectedCondos(className, 'width:175px;', condoId, '', '', enableChanges);
 
       // kilowattHour current year
       let kilowattHour = remoteHeating.kilowattHour;
       className = `kilowattHour${remoteHeating.remoteHeatingId}`;
       kilowattHour = formatOreToKroner(kilowattHour);
-      html += objRemoteHeating.inputTableColumn(className, '', kilowattHour, 10, enableChanges);
+      html += objRemoteHeating.editTableCell(className, '', kilowattHour, 10, enableChanges);
 
       // kilowattHour last year
       let kilowattHourLastYear = getKilowattHourLastYear(remoteHeating.condoId);
       className = `kilowattHourLastYear${remoteHeating.remoteHeatingId}`;
       kilowattHourLastYear = formatOreToKroner(kilowattHourLastYear);
-      html += objRemoteHeating.inputTableColumn(className, '', kilowattHourLastYear, 10, false);
+      html += objRemoteHeating.editTableCell(className, '', kilowattHourLastYear, 10, false);
 
       // price for used elcticity/remote heating for one year
       let priceYear = Number(remoteHeating.priceYear);
@@ -333,8 +328,15 @@ function showRemoteHeatings(menuNumber) {
         priceYear = formatOreToKroner(remoteHeating.priceYear);
       }
       className = `priceYear${remoteHeating.remoteHeatingId}`;
-      html += objRemoteHeating.inputTableColumn(className, '', priceYear, 10, enableChanges);
+      html += objRemoteHeating.editTableCell(className, '', priceYear, 10, enableChanges);
 
+                 // Delete
+      let selected = "Ugyldig verdi";
+      if (remoteHeating.deleted === 'Y') selected = "Ja";
+      if (remoteHeating.deleted === 'N') selected = "Nei";
+
+      className = `delete${remoteHeating.remoteHeatingId}`;
+      html += objRemoteHeating.showButton(className, 'Slett');
       html += "</tr>";
 
       // accumulate
@@ -355,13 +357,13 @@ function showRemoteHeatings(menuNumber) {
   // How much to pay for remote heating for all condos
   totalPriceYear = formatOreToKroner(totalPriceYear);
   menuNumber++;
-  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '', '', '', '', 'Totalt', totalPriceYear);
+  html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '', '', '', 'Totalt', totalPriceYear, '',);
 
   html += "</tr>";
 
   // Show the rest of the menu
   menuNumber++;
-  html += objRemoteHeating.showRestMenu(menuNumber, objRemoteHeating.accountMenu);
+  html += objRemoteHeating.showRestMenu(menuNumber, objRemoteHeating.accountMenu, '', '', '', '', '', '', '', '');
 
   // The end of the table
   html += objRemoteHeating.endTable();
@@ -393,7 +395,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   className = ".filterYear";
   const year = Number(document.querySelector(className).value);
   className = "filterYear";
-  const validYear = objRemoteHeating.validateNumber(className, year, 2020, 2030, objRemoteHeating, '', 'Ugyldig pris per kilowattime');
+  const validYear = objRemoteHeating.validateInterval(className, columnWidths, '', 'Ugyldig pris per kilowattime', true, year, 2020, 2030);
 
   // date
   className = `.date${remoteHeatingId}`;
@@ -401,27 +403,27 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   if (date === '') date = '01.01.2000';
   date = objRemoteHeating.formatNorDateToNumber(date);
   className = `date${remoteHeatingId}`;
-  const validDate = objRemoteHeating.validateNumber(className, Number(date), 20150101, 20291231, objRemoteHeating, '', 'Ugyldig dato');
+  const validDate = objRemoteHeating.validateInterval(className, columnWidths, '', 'Ugyldig dato', true, Number(date), 20150101, 20291231);
 
   // condoId
   className = `.condoId${remoteHeatingId}`;
   const condoId = Number(document.querySelector(className).value);
   className = `condoId${remoteHeatingId}`;
-  const validCondoId = objRemoteHeating.validateNumber(className, condoId, 1, objRemoteHeating.nineNine, objRemoteHeating, '', 'Ugyldig leilighet');
+  const validCondoId = objRemoteHeating.validateInterval(className, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objRemoteHeating.nineNine);
 
   // kilowattHour
   className = `.kilowattHour${remoteHeatingId}`;
   let kilowattHour = document.querySelector(className).value;
   kilowattHour = formatKronerToOre(kilowattHour);
   className = `kilowattHour${remoteHeatingId}`;
-  const validkilowattHour = objRemoteHeating.validateNumber(className, kilowattHour, 1, objRemoteHeating.nineNine, objRemoteHeating, '', 'Ugyldig kilwatttime');
-
+  const validkilowattHour = objRemoteHeating.validateInterval(className, columnWidths,    '', 'Ugyldig kilowatttime', true, kilowattHour, 1, objRemoteHeating.nineNine);
+ 
   // Price for one year
   className = `.priceYear${remoteHeatingId}`;
   let priceYear = document.querySelector(className).value;
   priceYear = formatKronerToOre(priceYear);
   className = `priceYear${remoteHeatingId}`;
-  const validPriceYear = objRemoteHeating.validateNumber(className, priceYear, 0, objRemoteHeating.nineNine, objRemoteHeating, '', 'Ugyldig beløp');
+  const validPriceYear = objRemoteHeating.validateInterval(className, columnWidths, '', 'Ugyldig beløp', true, priceYear, 0, objRemoteHeating.nineNine);
 
   // Validate remoteheatings columns
   if (validYear && validDate && validCondoId && validkilowattHour && validPriceYear) {

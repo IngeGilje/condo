@@ -48,23 +48,23 @@ class Supplier extends Condos {
       html += `
       <option 
         value=${this.nineNine}
-        selected
+        ${(!selectedValue) ? 'selected' : ''}
       >
         ${selectAll}
       </option>`;
-      selectedValue = true;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select none
     if (selectNone && (this.arraySuppliers.length > 1)) {
       html += `
-        <option 
-          value=0
-          ${(selectedValue) ? selectNone : ''}
-        >
-          ${selectNone}
-        </option>`;
-      selectedValue = true;
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
     }
 
     html += `

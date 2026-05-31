@@ -7,6 +7,8 @@ const objNews = new News('news');
 
 const enableChanges = (objNews.securityLevel > 5);
 
+const columnWidths = [175, 175, 175, 175];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -36,7 +38,7 @@ async function main() {
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
       let newsId = 0;
-      if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1).newsId;
+      if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews[0].newsId;
 
       // Show header
       let menuNumber = 0;
@@ -54,7 +56,7 @@ async function main() {
     }
   } else {
 
-    objNews.showMessage(objNews, '', 'Server er ikke startet.');
+    objNews.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 
@@ -92,7 +94,7 @@ async function events() {
 
       // Show filter
       const newsId = (objNews.arrayNews.length > 0)
-        ? objNews.arrayNews.at(-1).newsId
+        ? objNews.arrayNews[0].newsId
         : 0;
       menuNumber = showFilter(menuNumber, newsId);
       menuNumber = showNews(menuNumber, newsId);
@@ -115,7 +117,7 @@ async function events() {
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
       let newsId = Number(document.querySelector('.filterNewsId').value);
-      if (newsId === 0) newsId = objNews.arrayNews.at(-1).newsId;
+      if (newsId === 0) newsId = objNews.arrayNews[0].newsId;
 
       showNews(2, newsId);
     };
@@ -138,13 +140,14 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objNews.initializeTable(175, 175, 175,175);
+  //let html = objNews.initializeTable(175, 225, 125,175,175);
+  let html = objNews.initializeTable(175, 225, 125);
 
   // start table body
   html += objNews.startTableBody();
 
   // show main header
-  html += objNews.showTableHeaderLogOut( '', 'Nyheter');
+  html += objNews.showTableHeaderLogOut('', '', 'Nyheter');
   html += "</tr>";
 
   // end table body
@@ -152,31 +155,31 @@ function showHeader() {
 
   // The end of the table
   html += objNews.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
 function showFilter(menuNumber, newsId) {
 
   // Start table
-  let html = objNews.initializeTable(175, 175, 175,175);
+  let html = objNews.initializeTable(175, 175, 175);
 
-  // Header filter
+  // Header filter (<tr></tr>)
   menuNumber++;
   html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Velg nyhet', '');
 
   // start table body
   html += objNews.startTableBody();
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
   // news
-  html += objNews.showSelectedNews('filterNewsId','width:175px;', newsId, '', '', true);
+  html += objNews.showSelectedNews('filterNewsId', 'width:175px;', newsId, '', '', true);
   html += "<td></td></tr>";
 
-  // table header
+  // Table header (<tr></tr>)
   menuNumber++;
   html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', '', '');
 
@@ -185,7 +188,7 @@ function showFilter(menuNumber, newsId) {
 
   // The end of the table
   html += objNews.endTable();
-  document.querySelector('.filter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   return menuNumber;
 }
@@ -194,7 +197,7 @@ function showFilter(menuNumber, newsId) {
 function showNews(menuNumber, newsId) {
 
   // start table
-  let html = objNews.initializeTable(175, 175, 175,175);
+  let html = objNews.initializeTable(175, 175, 175);
 
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
@@ -204,7 +207,7 @@ function showNews(menuNumber, newsId) {
   html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Dato', 'Forfatter');
 
   // Date, userId
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
@@ -213,13 +216,13 @@ function showNews(menuNumber, newsId) {
     ? getCurrentDate()
     : objNews.arrayNews[rowNumberNews].date;
   date = formatNumberToNorDate(date);
-  html += objNews.inputTableColumn('date', 'left', date, 10, enableChanges);
+  html += objNews.editTableCell('date', 'left', date, 10, enableChanges);
 
   // userId
   const userId = (rowNumberNews === -1)
     ? Number(objNews.userId)
     : Number(objNews.arrayNews[rowNumberNews].userId);
-  html += objUser.showSelectedUsers('userId','width:175px;', userId, 'Velg forfatter', '', enableChanges);
+  html += objUser.showSelectedUsers('userId', 'width:175px;', userId, 'Velg forfatter', '', enableChanges);
   html += "</tr>";
 
   menuNumber++;
@@ -230,17 +233,17 @@ function showNews(menuNumber, newsId) {
   menuNumber++;
   html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Tittel', '');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
   const title = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].title;
-  html += objNews.inputTableColumn('title', 'left', title, 255, enableChanges, 2);
+  html += objNews.editTableCell('title', 'left', title, 255, enableChanges, 2);
   html += "<td></td></tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
@@ -248,17 +251,17 @@ function showNews(menuNumber, newsId) {
   menuNumber++;
   html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Bilde', '');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
   const image = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].image;
-  html += objNews.inputTableColumn('image', 'left', image, 255, enableChanges, 2);
+  html += objNews.editTableCell('image', 'left', image, 255, enableChanges, 2);
   html += "<td></td></tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
   html += "<td></td><td></td></tr>";
@@ -267,14 +270,14 @@ function showNews(menuNumber, newsId) {
   menuNumber++;
   html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Innhold', '');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   menuNumber++;
   html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
   const content = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].content;
-  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 3, 4);
+  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 2, 3);
   html += "</tr>";
 
   menuNumber++;
@@ -285,15 +288,15 @@ function showNews(menuNumber, newsId) {
   html += objNews.insertMenu(menuNumber, '', '', objNews.administrationMenu);
   html += "</tr>";
 
-  // Show buttons
+  // Show buttons (<tr></td>)
   if (enableChanges) {
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
     html += "<td></td><td></td></tr>";
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
@@ -301,18 +304,18 @@ function showNews(menuNumber, newsId) {
     html += objNews.showButton('cancel', 'Angre');
     html += "</tr>";
 
-    // insert a table row
+    // insert a table row (<tr></td>)
     menuNumber++;
     html += objNews.insertTableRow('', menuNumber, objNews.administrationMenu);
 
-     html += objNews.showButton('delete', 'Slett');
+    html += objNews.showButton('delete', 'Slett');
     html += objNews.showButton('insert', 'Ny');
     html += "</tr>";
   }
 
   // Show the rest of the menu
   menuNumber++;
-  html += objNews.showRestMenu(menuNumber, objNews.administrationMenu);
+  html += objNews.showRestMenu(menuNumber, objNews.administrationMenu, '', '', '');
 
   // The end of the table
   html += objNews.endTable();
@@ -328,24 +331,24 @@ async function updateCondoRow(newsId) {
 
   if (newsId === '') newsId = -1
   newsId = Number(newsId);
-  const validNewsId = objNews.validateNumber('newsId', newsId, -1, objNews.nineNine, objNews, '', 'Ugyldig leilighet');
+  const validNewsId = objNews.validateInterval('newsId', columnWidths, '', 'Ugyldig leilighet', true, newsId, -1, objNews.nineNine);
 
   // validate title
   const title = document.querySelector('.title').value;
-  const validTitle = objNews.validateText('title', title, 3, 45, objNews, '', 'Ugyldig tittel');
+  const validTitle = objNews.validateText('title', columnWidths, '', 'Ugyldig tittel', true, title, 3, 45);
 
   // validate date
   let date = document.querySelector('.date').value;
   date = Number(objNews.formatNorDateToNumber(date));
-  const validDate = objNews.validateNumber('date', date, 1, objNews.nineNine, objNews, '', 'Ugyldig dato');
+  const validDate = objNews.validateInterval('date', columnWidths, '', 'Ugyldig dato', true, date, 1, objNews.nineNine);
 
   // validate userId  
-  const userId = document.querySelector('.userId').value;
-  const validUserId = objNews.validateNumber('userId', userId, 1, objNews.nineNine, objNews, '', 'Ugyldig forfatter');
+  const userId = Number(document.querySelector('.userId').value);
+  const validUserId = objNews.validateInterval('userId', columnWidths,    '', 'Ugyldig forfatter',              true,userId, 1, objNews.nineNine);
 
   // validate image
   const image = document.querySelector('.image').value.trim();
-  const validImage = objNews.validateText('image', image, 0, 255, objNews, '', 'Ugyldig bilde');
+  const validImage = objNews.validateText('image', columnWidths, '', 'Ugyldig bilde', true, image, 0, 255);
 
   // clean content
   let content = document.querySelector('.content').value.trim();
@@ -367,7 +370,7 @@ async function updateCondoRow(newsId) {
       // Insert the news row in news table
       await objNews.insertNewsTable(objNews.condominiumId, objNews.user, date, userId, title, content, image);
       await objNews.loadNewsTable(objNews.condominiumId, newsId);
-      newsId = objNews.arrayNews.at(-1).newsId;
+      // newsId = objNews.arrayNews.at(-1).newsId;
       document.querySelector('.filterNewsId').value = newsId;
     }
 

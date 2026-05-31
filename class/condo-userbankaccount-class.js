@@ -4,102 +4,16 @@ class UserBankAccount extends Condos {
   // user bank account information
   arrayUserBankAccounts;
 
-  // Show all user bank accounts
-  showAllSelectedUserBankAccounts(className, userBankAccountId) {
-
-    let html =
-      `
-        <form 
-          id="userBankAccountId"
-          action="/submit"
-          method="POST"
-        >
-          <label class="label-${className}"
-            id="userBankAccountId"
-            for="userBankAccountId">
-              Velg bankkonto for bruker
-          </label>
-          <select class="select-${className}" 
-            id="userBankAccountId"
-            name="userBankAccountId"
-          >
-      `;
-
-    // Check if user bank account array is empty
-    if (this.arrayUserBankAccounts.length > 0) {
-      this.arrayUserBankAccounts.forEach((userBankAccount) => {
-        if (userBankAccount.userBankAccountId >= 0) {
-          if (userBankAccount.userBankAccountId === userBankAccountId) {
-
-            html +=
-              `
-                <option 
-                  value="${userBankAccount.userBankAccountId}"
-                  selected
-                  >
-                    ${userBankAccount.userBankAccountId} - ${userBankAccount.name}
-                </option>
-          `;
-          } else {
-            html += `
-            <option 
-              value="${userBankAccount.userBankAccountId}"
-            >
-              ${userBankAccount.userBankAccountId} - ${userBankAccount.name}
-            </option>
-          `;
-          }
-        }
-      });
-
-    } else {
-
-      html +=
-        `
-          <option 
-            value="0" 
-            selected
-          >
-            Ingen bruker bankkonto
-          </option>
-        `;
-    }
-
-    html +=
-      `
-          </select >
-        </form>
-      `;
-
-    document.querySelector(`.div-${className}`).innerHTML = html;
-  }
-
-  // Find selected user bank account id
-  getSelectedUserBankAccountId(className) {
-
-    let userBankAccountId = 0;
-
-    // Check if HTML class exist
-    if (isClassDefined(className)) {
-
-      userBankAccountId = Number(document.querySelector(`.${className}`).value);
-      userBankAccountId = (userBankAccountId === 0) ? this.arrayUserBankAccounts.at(-1).userBankAccountId : userBankAccountId;
-    } else {
-
-      // Get last id in last object in user bank account array
-      userBankAccountId = this.arrayUserBankAccounts.at(-1).userBankAccountId;
-    }
-    return userBankAccountId;
-  }
-
   // get user bank accounts
   async loadUserBankAccountsTable(condominiumId, userId, accountId) {
 
-    const URL = (this.serverStatus === 1) ? '/api/userbankaccounts' : 'http://localhost:3000/userbankaccounts';
+    const URL = (this.serverStatus === 1)
+      ? '/api/userbankaccounts'
+      : 'http://localhost:3000/userbankaccounts';
     try {
 
       // POST request
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -121,7 +35,9 @@ class UserBankAccount extends Condos {
   // update user bank account row
   async updateUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount) {
 
-    const URL = (this.serverStatus === 1) ? '/api/userbankaccounts' : 'http://localhost:3000/userbankaccounts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/userbankaccounts' 
+    : 'http://localhost:3000/userbankaccounts';
     try {
 
       //const response = await fetch(`${URL}:3000/userbankaccounts?action=update&userBankAccountId=${userBankAccountId}&condominiumId=${condominiumId}&user=${user}&userId=${userId}&accountId=${accountId}&bankAccount=${bankAccount}`);
@@ -178,10 +94,11 @@ class UserBankAccount extends Condos {
   // delete user bank account row
   async deleteUserBankAccountsTable(userBankAccountId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/userbankaccounts' : 'http://localhost:3000/userbankaccounts';
+    const URL = (this.serverStatus === 1)
+      ? '/api/userbankaccounts'
+      : 'http://localhost:3000/userbankaccounts';
     try {
 
-      //const response = await fetch(`${URL}:3000/userbankaccounts?action=delete&userBankAccountId=${userBankAccountId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {

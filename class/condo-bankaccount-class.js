@@ -153,41 +153,37 @@ class BankAccount extends Condos {
     // Select all
     if (selectAll && (this.arrayBankAccounts.length > 0)) {
 
-      html +=
-        `
-          <option 
-            value=${this.nineNine}
-            selected
-          >
-            ${selectAll}
-          </option>
-        `;
-      selectedValue = true;
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
     }
 
     // Select none
     if (selectNone && (this.arrayBankAccounts.length > 1)) {
       if (selectedValue) {
-        html +=
-          `
-          <option 
-            value=0
-          >
-            ${selectNone}
-          </option>
-        `;
+        html += `
+        <option 
+          value=0
+          ${(!selectedValue) ? 'selected' : ''}
+        >
+          ${selectNone}
+        </option>`;
+        if (!selectedValue) selectedValue = true;
       } else {
 
-        html +=
-          `
-            <option 
-              value=0
-              selected
-            >
-              ${selectNone}
-            </option>
-          `;
-        selectedValue = true;
+        html += `
+        <option 
+          value=0
+          ${(!selectedValue) ? 'selected' : ''}
+        >
+          ${selectNone}
+        </option>`;
+        if (!selectedValue) selectedValue = true;
       }
     }
 

@@ -3,6 +3,8 @@
 const objUser = new User('user');
 const objLogIn = new Login('login');
 
+const columnWidths = [175];
+
 sessionStorage.clear();
 
 // Call main when script loads
@@ -23,7 +25,7 @@ async function main() {
     events();
   } else {
 
-    objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Server er ikke startet.');
+    objUser.showMessageNew(columnWidths, 'width:250px;margin: 0 auto;', 'Server er ikke startet.');
   }
 }
 
@@ -47,41 +49,41 @@ function showLogin() {
   // Header for value including menu
   html += objLogIn.showTableHeader('', objLogIn.accountMenu, 'Email');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('margin: 0 auto;', 0, objLogIn.accountMenu);
 
   // email
   const email = '';
-  html += objLogIn.inputTableColumn('email', 'center', email, 45, true);
+  html += objLogIn.editTableCell('email', 'center', email, 45, true);
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
   html += "</tr>";
 
   // password
   html += objLogIn.showTableHeader("width:250px;", objLogIn.accountMenu, 'Passord');
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
 
   // password
   password = '';
-  html += objLogIn.inputTableColumnPassword('password', password, 45, true);
+  html += objLogIn.inputTableCellPassword('password', password, 45, true);
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
 
-  // Show buttons
+  // Show buttons (<tr></td>)
   html += objLogIn.showButton('LogIn', 'LogIn');
   html += "</tr>";
 
-  // insert a table row
+  // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
 
   html += "</tr>";
@@ -136,7 +138,7 @@ async function checkLogin() {
   }
 
   // password/ user is not OK
-  objUser.showMessage(objLogIn, 'width:250px;margin: 0 auto;', 'Ugyldig email/passord');
+  objUser.showMessageNew(columnWidths, 'width:250px;margin: 0 auto;', 'Ugyldig email/passord');
 
   resetValues();
   return false;

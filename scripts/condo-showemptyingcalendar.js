@@ -9,6 +9,8 @@ const objShowEmptyingCalendar = new ShowEmptyingCalendar('showemptyingcalendar')
 
 const enableChanges = (objEmptyingCalendar.securityLevel > 5);
 
+const columnWidths = [175, 175, 175, 175, 175, 175, 175];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -36,25 +38,24 @@ async function main() {
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 
       // Show header
-      let menuNumber = 0;
       showHeader();
 
       // Show filter
-      menuNumber = showFilter(menuNumber);
+      showFilter();
 
       const year = Number(document.querySelector('.filterYear').value);
       const month = Number(document.querySelector('.filterMonth').value);
       await objEmptyingCalendar.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, year, month);
 
       // Show emtyingcalendar
-      menuNumber = showEmptyingCalendar(menuNumber);
+      showEmptyingCalendar();
 
       // events for emptyingcalendar
       events();
     }
   } else {
 
-    objShowEmptyingCalendar.showMessage(objEmptyingCalendar, '', 'Server er ikke startet.');
+    objShowEmptyingCalendar.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
 
@@ -92,13 +93,13 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objShowEmptyingCalendar.initializeTable(175, 125, 175, 175, 175, 175, 175, 175);
+  let html = objShowEmptyingCalendar.initializeTable(columnWidths);
 
   // start table body
   html += objShowEmptyingCalendar.startTableBody();
 
   // show main header
-  html += objShowEmptyingCalendar.showTableHeaderLogOut('', '', '', 'Avfallskalender', '', '', '');
+  html += objShowEmptyingCalendar.showTableHeaderLogOut('', '', '', 'Avfallskalender', '', '');
   html += "</tr>";
 
   // end table body
@@ -106,27 +107,25 @@ function showHeader() {
 
   // The end of the table
   html += objShowEmptyingCalendar.endTable();
-  document.querySelector('.header').innerHTML = html;
+  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
-function showFilter(menuNumber) {
+function showFilter() {
 
   // Start table
-  let html = objShowEmptyingCalendar.initializeTable(175, 125, 175, 175, 175, 175, 175, 175);
+  let html = objShowEmptyingCalendar.initializeTable(columnWidths);
 
   // start table body
   html += objShowEmptyingCalendar.startTableBody();
 
-  // Header filter
-  menuNumber++;
-  html += objShowEmptyingCalendar.showTableHeaderMenu(menuNumber, objShowEmptyingCalendar.accountMenu, '', '', '', 'År', 'Måned', '', '', '', '');
+  // Header filter (<tr></tr>)
+  html += objShowEmptyingCalendar.showTableHeaderMenu(0, objShowEmptyingCalendar.accountMenu, '', '','', '', 'År', 'Måned',  '', '');
 
-  // insert a table row
-  menuNumber++;
-  html += objShowEmptyingCalendar.insertTableRow('', menuNumber, objShowEmptyingCalendar.accountMenu, '', '');
+  // insert a table row (<tr></td>)
+  html += objShowEmptyingCalendar.insertTableRow('', 0, objShowEmptyingCalendar.accountMenu, '', '', '');
 
-  // Selected year
+  // Selected year (<td></td>)
   const year = String(today.getFullYear());
   html += objShowEmptyingCalendar.showSelectedNumbers('filterYear','width:175px;', 2020, 2030, year, true);
 
@@ -136,38 +135,33 @@ function showFilter(menuNumber) {
   let month = Number(date.split('.')[1]); // Extract the month part
   html += objShowEmptyingCalendar.showSelectedMonths('filterMonth','width:175px;', month, true);
 
-  html += "<td></td><td></td><td></td></tr>";
+  html += "<td></td><td></td></tr>";
 
-  // insert a table row
-  menuNumber++;
-  html += objShowEmptyingCalendar.insertTableRow("width:150px;", menuNumber, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
+  // insert a table row (<tr></td>)
+  html += objShowEmptyingCalendar.insertTableRow("width:150px;", 0, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
 
   // end table body
   html += objShowEmptyingCalendar.endTableBody();
 
   // The end of the table
   html += objShowEmptyingCalendar.endTable();
-  document.querySelector('.filter').innerHTML = html;
-
-  return menuNumber;
+  document.querySelector('.editFilter').innerHTML = html;
 }
 
 // Show emptyingCalendar
-function showEmptyingCalendar(menuNumber) {
+function showEmptyingCalendar() {
 
   // start table
-  let html = objEmptyingCalendar.initializeTable(175, 125, 175, 175, 175, 175, 175, 175);
+  let html = objEmptyingCalendar.initializeTable(columnWidths);
 
-  // table header
-  menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.accountMenu, '#e0f0e0', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
+  // Table header (<tr></tr>)
+  html += objEmptyingCalendar.showTableHeaderMenu(0, objEmptyingCalendar.accountMenu, '#e0f0e0', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
-  if (objEmptyingCalendar.arrayEmptyingCalendar.length > 0) {
-    objEmptyingCalendar.arrayEmptyingCalendar.forEach((emptyingCalendar) => {
+  if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
+    objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingCalendar) => {
 
       // Show menu
-      menuNumber++;
-      html += objShowEmptyingCalendar.insertTableRow('', menuNumber, objShowEmptyingCalendar.accountMenu);
+      html += objShowEmptyingCalendar.insertTableRow('', 0, objShowEmptyingCalendar.accountMenu);
 
       // condoId
       let condoId = emptyingCalendar.condoId;
@@ -178,11 +172,11 @@ function showEmptyingCalendar(menuNumber) {
       let date = emptyingCalendar.date;
       date = formatNumberToNorDate(date);
       className = `date${emptyingCalendar.emptyingCalendarId}`;
-      html += objShowEmptyingCalendar.inputTableColumn(className, '', date, 10, false);
+      html += objShowEmptyingCalendar.editTableCell(className, '', date, 10, false);
 
       // residual waste  
       className = `residualWaste${emptyingCalendar.emptyingCalendarId}`;
-      html += "<td class='center'>";
+      html += '<td class="center underscore">';
       html += (emptyingCalendar.residualWaste === 'Y')
         ? `<i class="bi bi-trash-fill" style="color: black; font-size: 29px;"></i>`
         : ``;
@@ -190,7 +184,7 @@ function showEmptyingCalendar(menuNumber) {
 
       // Paper waste
       className = `paper${emptyingCalendar.emptyingCalendarId}`;
-      html += "<td class='center'>";
+      html += "<td class='center underscore'>";
       html += (emptyingCalendar.paper === 'Y')
         ? `<i class="bi bi-newspaper" style="color: blue; font-size: 29px;"></i>`
         : ``;
@@ -198,7 +192,7 @@ function showEmptyingCalendar(menuNumber) {
 
       // food waste
       className = `food${emptyingCalendar.emptyingCalendarId}`;
-      html += "<td class='center'>";
+      html += "<td class='center underscore'>";
       html += (emptyingCalendar.food === 'Y')
         ? `<i class="bi bi-apple" style="color: green; font-size: 29px;"></i>`
         : ``;
@@ -206,7 +200,7 @@ function showEmptyingCalendar(menuNumber) {
 
       // plastic waste
       className = `plastic${emptyingCalendar.emptyingCalendarId}`;
-      html += "<td class='center'>";
+      html += "<td class='center underscore'>";
       html += (emptyingCalendar.plastic === 'Y')
         ? `<i class="bi bi-recycle"style="color: greenyellow; font-size: 29px;"></i>`
         : ``;
@@ -214,7 +208,7 @@ function showEmptyingCalendar(menuNumber) {
 
       // Christmas tree
       className = `christmasTree${emptyingCalendar.emptyingCalendarId}`;
-      html += "<td class='center'>";
+      html += "<td class='center underscore'>";
       html += (emptyingCalendar.christmasTree === 'Y')
         ? `<i class="bi bi-tree-fill" style="color: green; font-size: 29px;"></i>`
         : ``;
@@ -222,13 +216,7 @@ function showEmptyingCalendar(menuNumber) {
     });
   }
 
-  // Show the rest of the menu
-  menuNumber++;
-  html += objShowEmptyingCalendar.showRestMenu(menuNumber, objShowEmptyingCalendar.accountMenu);
-
   // The end of the table
   html += objShowEmptyingCalendar.endTable();
   document.querySelector('.showemptyingcalendar').innerHTML = html;
-
-  return menuNumber;
 }

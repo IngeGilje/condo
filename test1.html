@@ -3,182 +3,79 @@
 
 <head>
 
-  <title>Nyheter</title>
+  <title>Felleskostnader</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/condo.css">
+
+</head>
+
+<style>
+  .cell {
+    position: relative;
+    height: 20px;
+  }
+
+  .label {
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    background: white;
+    padding: 0 4px;
+  }
+</style>
 </head>
 
 <body>
 
-
-  <table style="table-layout: fixed; width: 1405px;">
-    <colgroup>
-      <col style="width: 175px;">
-      <col style="width: 100px;">
-      <col style="width: 175px;">
-      <col style="width: 175px;">
-      <col style="width: 175px;">
-      <col style="width: 175px;">
-      <col style="width: 175px;">
-      <col style="width: 175px;">
-    </colgroup>
+  <table style="width:250px;margin: 0 auto;">
     <tr>
-      <td class="one-line menu">
-        <a href="http://localhost/condo-condominium.html">
-          Sameie
-        </a>
-      </td>
-      <td class="no-border center">
-        2
-      </td>
-      <td class="no-border center">
-        3Leilighet
-      </td>
-      <td class="no-border center">
-        4Konto
-      </td>
-      <td class="no-border center">
-        5Fra dato
-      </td>
-      <td class="no-border center">
-        6Til dato
-      </td>
-      <td class="no-border center">
-        7
-      </td>
-      <td class="no-border center">
-        8
+      <th class="no-border center">Email</th>
+    <tr>
+      <td class="center no-border">
       </td>
     </tr>
-    <tbody>
-      <tr>
-        <td class="one-line menu">
-          <a href="http://localhost/condo-user.html">
-            Bruker
-          </a>
-        </td>
-        <td class="center no-border">
-          2
-        </td>
-        <td class="center no-border">
-          3
-        </td>
-        <td class="one-line left">
-          <select class="filterCondoId center" style="width:175px;">
-            <option value=3>
-              95A
-            </option>
-            <option value=4 selected>
-              95B
-            </option>
-            <option value=5>
-              97A
-            </option>
-            <option value=6>
-              97B
-            </option>
-            <option value=7>
-              97C
-            </option>
-            <option value=8>
-              99A
-            </option>
-            <option value=9>
-              99B
-            </option>
-            <option value=999999998>
-              Vis alle
-            </option>
-          </select>
-        </td>
-        <td class="one-line left">
-          <select class="filterAccountId center" style="width:175px;">
-            <option value=13>
-              1,2,3,4... transaksjoner
-            </option>
-            <option value=67>
-              Diverse
-            </option>
-            <option value=6>
-              Forsikring
-            </option>
-            <option value=10>
-              Gebyr - FAKT.TJ
-            </option>
-            <option value=56>
-              Inntekst drift
-            </option>
-            <option value=69>
-              Inntekst Rygg og Myrland
-            </option>
-            <option value=4>
-              Inntekt fjernvarme
-            </option>
-            <option value=2>
-              Inntekter husleie
-            </option>
-            <option value=5>
-              Nettleie Lyse
-            </option>
-            <option value=52>
-              Omkostninger BedriftsNett
-            </option>
-            <option value=8>
-              TV og bredbånd
-            </option>
-            <option value=9>
-              Ugift drift
-            </option>
-            <option value=3>
-              Utgift fjernvarme
-            </option>
-            <option value=70>
-              Utguft Rygg og Myraland
-            </option>
-            <option value=22>
-              Velforening
-            </option>
-            <option value=999999998 selected>
-              Vis alle
-            </option>
-          </select>
-        </td>
-        <td class="" colspan="1" rowspan="1">
-          <input class="filterFromDate center one-line" type="text" maxlength="10" value="01.01.2026">
-        </td>
-        <td class="" colspan="1" rowspan="1">
-          <input class="filterToDate center one-line" type="text" maxlength="10" value="10.05.2027">
-        </td>
-      </tr>
-      <tr>
-        <td class="one-line menu">
-          <a href="http://localhost/condo-password.html">
-            Passord
-          </a>
-        </td>
-        <td class="center no-border">
-          2
-        </td>
-        <td class="center no-border">
-          3
-        </td>
-        <td class="center no-border">
-          4
-        </td>
-        <td class="center no-border">
-          5
-        </td>
-        <td class="center no-border">
-          6
-        </td>
-        <td class="center no-border">
-          7
-        </td>
-        <td class="center no-border">
-          8
-        </td>
-    </tbody>
+    <tr>
+      <td class="center" colspan="1" rowspan="1">
+        <span class="label">AAAAAAAAAAAAA</span>
+        <input class="email center one-line" type="text" maxlength="45" value="">
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+    </tr>
+    <tr>
+      <th class="no-border center" style="width:250px;">Passord</th>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+    </tr>
+    <tr>
+      <td class="center">
+        <input class="password center one-line" type="password" maxlength="45" value="">
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+    </tr>
+    <tr>
+      <td class="one-line center">
+        <button class="LogIn center button">
+          LogIn
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+    </tr>
   </table>
 </body>
 
