@@ -267,7 +267,9 @@ class User extends Condos {
   // validate User
   async validateUser(userId, password) {
 
-    const URL = (this.serverStatus === 1) ? '/api/login' : 'http://localhost:3000/login';
+    const URL = (this.serverStatus === 1)
+      ? '/api/login'
+      : 'http://localhost:3000/login';
     const response = await fetch(URL, {
       method: "POST",
       headers: {

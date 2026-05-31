@@ -131,7 +131,9 @@ async function main() {
       try {
 
         const userId = req.body.userId;
+        console.log('userId :', userId);
         const password = req.body.password;
+        console.log('password :', password);
 
         // get password
         const SQLquery = `
@@ -142,7 +144,8 @@ async function main() {
 
         console.log('SQLquery :', SQLquery);
         const [rows] = await mySqlDB.query(SQLquery);
-        if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
+        //if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
+        if (rows.length === 1 && (rows[0].password === password)) {
 
           res.status(200).send('OK');
         } else {
@@ -463,7 +466,7 @@ async function main() {
 
               // Hash the password
               const saltRounds = 10;
-              password = await bcrypt.hash(password, saltRounds);
+              //password = await bcrypt.hash(password, saltRounds);
 
               SQLquery = `
               UPDATE users
@@ -592,7 +595,6 @@ async function main() {
         // validate user
         case 'validateUser': {
 
-          console.log('validateUser');
           try {
 
             let isValid = false;
@@ -609,8 +611,6 @@ async function main() {
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
-
-            console.log('Number of rows :', rows.length);
             if (rows.length === 1) isValid = true;
             if (isValid) {
 
