@@ -272,6 +272,7 @@ function showRemoteHeatings(menuNumber) {
   let totalPriceYear = 0;
 
   // start table
+  
   let html = objRemoteHeating.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
