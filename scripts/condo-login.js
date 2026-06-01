@@ -54,7 +54,7 @@ function showLogin() {
 
   // email
   const email = '';
-  html += objLogIn.editTableCell('email', 'center', email, 45, true);
+  html += objLogIn.editTableCellCenter('email', email, 45, true);
   html += "</tr>";
 
   // insert a table row (<tr></td>)

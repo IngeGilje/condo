@@ -253,13 +253,13 @@ function editProjects(menuNumber) {
     // name
     let name = project.name;
     let className = `name${project.projectId}`;
-    html += objProject.editTableCell(className, '', name, 45, enableChanges);
+    html += objProject.editTableCell(className,  name, 45, enableChanges);
 
     // amount
     let amount = project.amount;
     amount = formatOreToKroner(amount);
     className = `amount${project.projectId}`;
-    html += objProject.editTableCell(className, '', amount, 11, enableChanges);
+    html += objProject.editTableCell(className,  amount, 11, enableChanges);
 
     // Delete
     className = `delete${project.projectId}`;
@@ -352,12 +352,12 @@ function insertEmptyTableRow(menuNumber) {
   // name
   let name = "";
   let className = `name0`;
-  html += objProject.editTableCell(className, '', name, 45, enableChanges);
+  html += objProject.editTableCell(className,  name, 45, enableChanges);
 
   // amount
   let amount = 0;
   className = `amount0`;
-  html += objProject.editTableCell(className, '', amount, 11, enableChanges);
+  html += objProject.editTableCell(className,  amount, 11, enableChanges);
 
   // Insert new account
   html += "<td>Nytt prosjekt</td></tr>";
@@ -385,7 +385,7 @@ function showTransactions(menuNumber) {
     // Date
     const date = formatNumberToNorDate(bankTransaction.date);
     let className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, 'left', date, 10, false);
+    html += objTransaction.editTableCell(className,  date, 10, false);
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
@@ -405,7 +405,7 @@ function showTransactions(menuNumber) {
     let amount = bankTransaction.income + bankTransaction.payment;
     amount = formatOreToKroner(amount);
     className = `amount${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, 'left', amount, 10, false);
+    html += objTransaction.editTableCell(className,  amount, 10, false);
 
     // Show button for voucher
     className = `voucher${bankTransaction.transactionId}`;

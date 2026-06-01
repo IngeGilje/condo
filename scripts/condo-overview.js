@@ -242,7 +242,7 @@ function showDues(menuNumber) {
     // date
     const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objOverview.editTableCell(className, '', date, 10, false);
+    html += objOverview.editTableCell(className,  date, 10, false);
 
     // account
     className = `account${due.dueId}`;
@@ -251,17 +251,17 @@ function showDues(menuNumber) {
     // amount
     const amount = formatOreToKroner(due.amount);
     className = `income${due.dueId}`;
-    html += objOverview.editTableCell(className, '', amount, 11, false);
+    html += objOverview.editTableCell(className,  amount, 11, false);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);
     className = `income${due.dueId}`;
-    html += objOverview.editTableCell(className, '', kilowattHour, 10, false);
+    html += objOverview.editTableCell(className,  kilowattHour, 10, false);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objOverview.editTableCell(className, '', text, 45, false);
+    html += objOverview.editTableCell(className,  text, 45, false);
 
     html += "</tr>";
 
@@ -317,7 +317,7 @@ function showTransactions(menuNumber) {
     // date
     const date = formatNumberToNorDate(bankTransaction.date);
     className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, '', date, 10, false);
+    html += objTransaction.editTableCell(className,  date, 10, false);
 
     // account
     className = `account${bankTransaction.transactionId}`;
@@ -329,12 +329,12 @@ function showTransactions(menuNumber) {
     income += payment;
     income = formatOreToKroner(income);
     className = `income${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, '', income, 10, false);
+    html += objTransaction.editTableCell(className,  income, 10, false);
 
     // Text
     const text = bankTransaction.text;
     className = `text${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, '', text, 45, false);
+    html += objTransaction.editTableCell(className,  text, 45, false);
 
     html += "</tr>";
 

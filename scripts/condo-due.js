@@ -205,7 +205,7 @@ function showDues(menuNumber) {
     // Date
     const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objDue.editTableCell(className, '', date, 10, enableChanges);
+    html += objDue.editTableCell(className,  date, 10, enableChanges);
 
     // accounts
     className = `accountId${due.dueId}`;
@@ -214,17 +214,17 @@ function showDues(menuNumber) {
     // due amount
     const amount = formatOreToKroner(due.amount);
     className = `amount${due.dueId}`;
-    html += objDue.editTableCell(className, '', amount, 11, enableChanges);
+    html += objDue.editTableCell(className,  amount, 11, enableChanges);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);
     className = `kilowattHour${due.dueId}`;
-    html += objDue.editTableCell(className, '', kilowattHour, 10, enableChanges);
+    html += objDue.editTableCell(className,  kilowattHour, 10, enableChanges);
 
     // text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objDue.editTableCell(className, '', text, 45, enableChanges);
+    html += objDue.editTableCell(className,  text, 45, enableChanges);
 
     // Delete
     let selected = "Ugyldig verdi";

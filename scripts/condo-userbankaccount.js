@@ -257,7 +257,7 @@ function showUserBankAccount(menuNumber) {
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccount.editTableCell(className, '', userBankAccount.bankAccount, 11, enableChanges);
+    html += objUserBankAccount.editTableCell(className,  userBankAccount.bankAccount, 11, enableChanges);
 
     // Delete
     className = `delete${userBankAccount.userBankAccountId}`;

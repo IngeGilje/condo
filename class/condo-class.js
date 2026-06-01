@@ -198,15 +198,33 @@ class Condos {
   }
 
   // Show input
-  editTableCell(className, direction = 'left', value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+  editTableCell(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
     return `
     <td 
-      class="${direction}" 
+      class="left" 
       colspan="${colspan}" 
       rowspan="${rowspan}"
     >
-    <span class="label"></span>
+      <input
+        class="${className} center one-line"
+        type="text"
+        maxlength="${maxlength}"
+        value="${value}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    </td>`;
+  }
+
+  // Show input
+  editTableCellCenter(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+
+    return `
+    <td 
+      class="center" 
+      colspan="${colspan}" 
+      rowspan="${rowspan}"
+    >
       <input
         class="${className} center one-line"
         type="text"
@@ -628,7 +646,7 @@ class Condos {
     return [...element.classList].find(cls => cls.startsWith(prefix));
   }
 
-  // Show table header including menu
+  // Show table header including menu (<tr></tr>)
   showTableHeaderMenu(menuNumber, menuType, color, ...texts) {
 
     let html = "<tr>";
@@ -642,8 +660,8 @@ class Condos {
 
       html += `
       <td 
-        class="no-border center"
-        ${(color) ? `style="background:${color};"` : " "}
+        style="vertical-align:bottom;font-size:14px;color:#333;${(color) ? `background-color:${color};` : " "}"
+        class="no-border left bold one-line"
       >
         ${text}
       </td>`;

@@ -561,37 +561,37 @@ function showTransactions(menuNumber) {
 
     // Date
     let className = `accountingDate${menuNumber}`;
-    html += objImportFile.editTableCell(className, '', transaction.accountingDate, 10);
+    html += objImportFile.editTableCell(className,  transaction.accountingDate, 10);
 
     // Condo name
     className = `condoName${menuNumber}`;
-    html += objImportFile.editTableCell(className, '', transaction.condoName, 45);
+    html += objImportFile.editTableCell(className,  transaction.condoName, 45);
 
     // Account name
     className = `accountName${menuNumber}`;
-    html += objImportFile.editTableCell(className, '', transaction.accountName, 45);
+    html += objImportFile.editTableCell(className,  transaction.accountName, 45);
 
     // fromBankAccountName
     className = `fromBankAccountName${menuNumber}`;
-    html += objImportFile.editTableCell(className, '', transaction.fromBankAccountName, 45);
+    html += objImportFile.editTableCell(className,  transaction.fromBankAccountName, 45);
 
     // toBankAccountName
     className = `toBankAccountName${menuNumber}`;
-    html += objImportFile.editTableCell(className, '', transaction.toBankAccountName, 45);
+    html += objImportFile.editTableCell(className,  transaction.toBankAccountName, 45);
 
     // Income
     const income = formatOreToKroner(transaction.income);
     className = `income${menuNumber}`;
-    html += objImportFile.editTableCell(className, '', income, 10);
+    html += objImportFile.editTableCell(className,  income, 10);
 
     // Payment
     const payment = formatOreToKroner(transaction.payment);
     className = `payment${menuNumber}`;
-    html += objImportFile.editTableCell(className, '', payment, 10);
+    html += objImportFile.editTableCell(className,  payment, 10);
 
     // Text
     className = `payment${menuNumber}`;
-    html += objImportFile.editTableCell(className, '', transaction.text, 10);
+    html += objImportFile.editTableCell(className,  transaction.text, 10);
 
     // Accomulate
 

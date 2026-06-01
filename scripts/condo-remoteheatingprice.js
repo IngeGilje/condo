@@ -216,7 +216,7 @@ function showRemoteHeating(menuNumber) {
     let priceKilowattHour = remoteHeatingPrice.priceKilowattHour;
     className = `priceKilowattHour${remoteHeatingPrice.remoteHeatingPriceId}`;
     priceKilowattHour = formatOreToKroner(priceKilowattHour);
-    html += objRemoteHeatingPrice.editTableCell(className, '', priceKilowattHour, 10, enableChanges);
+    html += objRemoteHeatingPrice.editTableCell(className,  priceKilowattHour, 10, enableChanges);
 
     // Delete
     let selected = "Ugyldig verdi";

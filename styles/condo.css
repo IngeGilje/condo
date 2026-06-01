@@ -14,6 +14,7 @@ div.tableContainer {
 }
 
 table {
+  border: "1";
   border-collapse: collapse;
   background-color: #f9f9f9;
   border-radius: 20px;
@@ -359,17 +360,4 @@ iframe {
 
 .nav-links a:hover::after {
   width: 100%;
-}
-
-.cell {
-  position: relative;
-  height: 100px;
-}
-
-.label {
-  position: absolute;
-  top: -8px;
-  left: 10px;
-  background: white;
-  padding: 0 4px;
 }

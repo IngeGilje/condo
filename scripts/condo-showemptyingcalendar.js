@@ -172,7 +172,7 @@ function showEmptyingCalendar() {
       let date = emptyingCalendar.date;
       date = formatNumberToNorDate(date);
       className = `date${emptyingCalendar.emptyingCalendarId}`;
-      html += objShowEmptyingCalendar.editTableCell(className, '', date, 10, false);
+      html += objShowEmptyingCalendar.editTableCell(className,  date, 10, false);
 
       // residual waste  
       className = `residualWaste${emptyingCalendar.emptyingCalendarId}`;

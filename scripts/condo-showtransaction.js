@@ -221,14 +221,14 @@ function showFilter(menuNumber, condoId, accountId) {
   let month = today.getMonth() + 1;
   month = (month < 10) ? `0${month}` : `${month}`;
   const fromDate = '01.' + month + '.' + String(today.getFullYear());
-  html += objTransaction.editTableCell('filterFromDate', 'left', fromDate, 10, true);
+  html += objTransaction.editTableCell('filterFromDate', fromDate, 10, true);
 
   // Current date
   let toDate = getCurrentDate();
-  html += objTransaction.editTableCell('filterToDate', 'left', toDate, 10, true);
+  html += objTransaction.editTableCell('filterToDate', toDate, 10, true);
 
   // Amount
-  html += objTransaction.editTableCell('filterAmount', 'left', '', 10, true);
+  html += objTransaction.editTableCell('filterAmount', '', 10, true);
 
   html += "</tr>";
 
@@ -266,7 +266,7 @@ function showTransactions(menuNumber) {
     // Date
     const date = formatNumberToNorDate(bankTransaction.date);
     let className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, 'left', date, 10, false);
+    html += objTransaction.editTableCell(className, date, 10, false);
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
@@ -285,7 +285,7 @@ function showTransactions(menuNumber) {
     let amount = bankTransaction.income + bankTransaction.payment;
     amount = formatOreToKroner(amount);
     className = `amount${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, 'left', amount, 10, false);
+    html += objTransaction.editTableCell(className, amount, 10, false);
 
     // Show button for voucher
     className = `voucher${bankTransaction.transactionId}`;

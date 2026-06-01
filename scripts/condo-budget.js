@@ -245,7 +245,7 @@ function showHeader() {
   html += objBudget.startTableBody();
 
   // show main header
-  html += objBudget.showTableHeaderLogOut('', '', '', 'Budsjett', '', '');
+  html += objBudget.showTableHeaderLogOut('', '', '', 'Budsjett', '');
   html += "</tr>";
 
   // end table body
@@ -304,7 +304,7 @@ function showBudgets(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objBudget.showTableHeaderMenu(menuNumber, objBudget.accountMenu, '#e0f0e0', 'Konto', 'Budsjett', 'År', 'Tekst', 'Slett',);
+  html += objBudget.showTableHeaderMenu(menuNumber, objBudget.accountMenu, '#e0f0e0', 'År', 'Konto', 'Budsjett', 'Tekst', 'Slett',);
 
   let sumAmount = 0;
 
@@ -314,24 +314,24 @@ function showBudgets(menuNumber) {
     menuNumber++;
     html += objBudget.insertTableRow('', menuNumber, objBudget.accountMenu);
 
+    // Year (<td></td>)
+    const year = Number(budget.year);
+    let className = `year${budget.budgetId}`;
+    html += objBudget.showSelectedNumbers(className, 'width:175px;', 2020, 2030, year, enableChanges);
+
     // accountId
-    let className = `accountId${budget.budgetId}`;
+    className = `accountId${budget.budgetId}`;
     html += objAccount.showSelectedAccounts(className, 'width:175px;', budget.accountId, '', '', enableChanges);
 
     // due amount
     const amount = formatOreToKroner(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += objBudget.editTableCell(className, '', amount, 11, enableChanges);
-
-    // Year (<td></td>)
-    const year = Number(budget.year);
-    className = `year${budget.budgetId}`;
-    html += objBudget.showSelectedNumbers(className, 'width:175px;', 2020, 2030, year, enableChanges);
+    html += objBudget.editTableCell(className, amount, 11, enableChanges);
 
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += objBudget.editTableCell(className, '', text, 45, enableChanges);
+    html += objBudget.editTableCell(className,  text, 45, enableChanges);
 
     // Delete
     className = `delete${budget.budgetId}`;
@@ -352,7 +352,7 @@ function showBudgets(menuNumber) {
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
   menuNumber++;
-  html += objBudget.insertTableRow('font-weight: 600;', menuNumber, objBudget.accountMenu, 'Sum', sumAmount, '', '','');
+  html += objBudget.insertTableRow('font-weight: 600;', menuNumber, objBudget.accountMenu, 'Sum', sumAmount, '', '', '');
 
   // Show the rest of the menu
   menuNumber++;
@@ -367,23 +367,23 @@ function showBudgets(menuNumber) {
 
 function insertEmptyTableRow(menuNumber) {
 
-      // Show menu
-    menuNumber++;
-    html = objBudget.insertTableRow('', menuNumber, objBudget.accountMenu);
+  // Show menu
+  menuNumber++;
+  html = objBudget.insertTableRow('', menuNumber, objBudget.accountMenu);
 
   // accounts
-  html  += objAccount.showSelectedAccounts('accountId0', 'width:175px;', 0, 'Velg konto', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId0', 'width:175px;', 0, 'Velg konto', '', enableChanges);
 
   const amount = "";
-  html += objBudget.editTableCell('amount0', '', amount, 11, enableChanges);
+  html += objBudget.editTableCell('amount0', amount, 11, enableChanges);
 
   // Year (<td></td>)
   const year = Number(document.querySelector('.filterYear').value);
-  html += objBudget.showSelectedNumbers('year0', 'width:175px;',       2020,     2030, year, enableChanges);
- 
+  html += objBudget.showSelectedNumbers('year0', 'width:175px;', 2020, 2030, year, enableChanges);
+
   // text
   const text = "";
-  html += objBudget.editTableCell('text0', '', text, 45, enableChanges);
+  html += objBudget.editTableCell('text0',  text, 45, enableChanges);
 
   html += "<td>Nytt budsjett</td></tr>";
   return html;

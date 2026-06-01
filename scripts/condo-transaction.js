@@ -292,17 +292,17 @@ function showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount) {
 
   // show from date
   fromDate = formatNumberToNorDate(fromDate);
-  html += objTransaction.editTableCell('filterFromDate', 'left', fromDate, 10, true);
+  html += objTransaction.editTableCell('filterFromDate',  fromDate, 10, true);
 
   // Show to date
   toDate = formatNumberToNorDate(toDate);
-  html += objTransaction.editTableCell('filterToDate', 'left', toDate, 10, true);
+  html += objTransaction.editTableCell('filterToDate',  toDate, 10, true);
 
   // Amount
   amount = (amount)
     ? formatOreToKroner(amount)
     : '';
-  html += objTransaction.editTableCell('filterAmount', 'left', amount, 10, true);
+  html += objTransaction.editTableCell('filterAmount',  amount, 10, true);
 
   html += "<td></td></tr>";
 
@@ -343,7 +343,7 @@ function showTransaction(menuNumber, transactionId) {
 
   // Transaction Id
   let className = `transactionId`;
-  html += objTransaction.editTableCell(className, 'left', transactionId, 10, false);
+  html += objTransaction.editTableCell(className,  transactionId, 10, false);
 
   // Date
   let date = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
@@ -351,7 +351,7 @@ function showTransaction(menuNumber, transactionId) {
     ? formatNumberToNorDate(date)
     : '';
   className = `date`;
-  html += objTransaction.editTableCell(className, 'left', date, 10, enableChanges);
+  html += objTransaction.editTableCell(className,  date, 10, enableChanges);
 
   // condos
   const condoId = objTransaction.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
@@ -391,13 +391,13 @@ function showTransaction(menuNumber, transactionId) {
   let income = objTransaction.arrayTransactions[rowNumberTransaction]?.income ?? '';
   income = formatOreToKroner(income);
   className = `income`;
-  html += objTransaction.editTableCell(className, 'left', income, 10, enableChanges);
+  html += objTransaction.editTableCell(className,  income, 10, enableChanges);
 
   // payment
   let payment = objTransaction.arrayTransactions[rowNumberTransaction]?.payment ?? '';
   payment = formatOreToKroner(payment);
   className = `payment`;
-  html += objTransaction.editTableCell(className, 'left', payment, 10, enableChanges);
+  html += objTransaction.editTableCell(className,  payment, 10, enableChanges);
   html += "<td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
@@ -413,7 +413,7 @@ function showTransaction(menuNumber, transactionId) {
   // let kilowattHour = objTransaction.arrayTransactions[rowNumberTransaction].kilowattHour;
   kilowattHour = formatOreToKroner(kilowattHour);
   className = `kilowattHour`;
-  html += objTransaction.editTableCell(className, 'left', kilowattHour, 10, enableChanges);
+  html += objTransaction.editTableCell(className,  kilowattHour, 10, enableChanges);
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   menuNumber++;
@@ -426,7 +426,7 @@ function showTransaction(menuNumber, transactionId) {
 
   const text = objTransaction.arrayTransactions[rowNumberTransaction]?.text ?? '';
   className = `text`;
-  html += objTransaction.editTableCell(className, 'left', text, 45, enableChanges);
+  html += objTransaction.editTableCell(className,  text, 45, enableChanges);
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   menuNumber++;
@@ -707,7 +707,7 @@ function showTransactions(menuNumber, transactionId) {
     // Date
     const date = formatNumberToNorDate(bankTransaction.date);
     className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, 'left', date, 10, false);
+    html += objTransaction.editTableCell(className,  date, 10, false);
 
     // accounts
     className = `accountId${bankTransaction.transactionId}`;
@@ -718,7 +718,7 @@ function showTransactions(menuNumber, transactionId) {
     let amount = bankTransaction.income + bankTransaction.payment;
     amount = formatOreToKroner(amount);
     className = `amount${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, 'left', amount, 10, false);
+    html += objTransaction.editTableCell(className,  amount, 10, false);
 
     // Show button for voucher
     className = `voucher${bankTransaction.transactionId}`;
