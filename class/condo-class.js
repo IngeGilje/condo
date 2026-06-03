@@ -216,7 +216,7 @@ class Condos {
     </td>`;
   }
 
-  // Show input
+  // Show input (<td></td>) with center text
   editTableCellCenter(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
     return `
@@ -415,17 +415,14 @@ class Condos {
 
     selectedNumber = Number(selectedNumber);
 
-    let selectedValue = false;
-
     let html = `
     <td
-      class="one-line left"
+      class="one-line center"
     >
       <select 
         class="${className} center"
         ${(style) ? `style="${style}"` : ""}
-        ${(enableChanges) ? '' : 'disabled'}
-      >`;
+        ${(enableChanges) ? '' : 'disabled'}>`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
       if (number === selectedNumber) {
@@ -435,7 +432,7 @@ class Condos {
           value="${number}"
           selected
           >
-          ${number}
+          ${number.toString().trim()}
         </option>`;
       } else {
 
@@ -443,7 +440,7 @@ class Condos {
           <option 
             value="${number}"
             >
-            ${number}
+            ${number.toString().trim()}
           </option>`;
       }
     };
@@ -477,7 +474,7 @@ class Condos {
         value="${month}"
         ${month === selectedMonth ? 'selected' : ''}
       >
-        ${findNameOfMonth(month)}
+        ${findNameOfMonth(month).trim()}
       </option>`;
     };
 
@@ -647,7 +644,7 @@ class Condos {
   }
 
   // Show table header including menu (<tr></tr>)
-  showTableHeaderMenu(menuNumber, menuType, color, ...texts) {
+  showTableHeaderMenu(menuNumber, menuType, color, direction = "center", ...texts) {
 
     let html = "<tr>";
 
@@ -661,7 +658,7 @@ class Condos {
       html += `
       <td 
         style="vertical-align:bottom;font-size:14px;color:#333;${(color) ? `background-color:${color};` : " "}"
-        class="no-border left bold one-line"
+        class="no-border ${direction} bold one-line"
       >
         ${text}
       </td>`;
@@ -1160,7 +1157,7 @@ class Condos {
     let html = this.startTable(style);
 
     // show main header
-    html += this.showTableHeaderMenu(0, 0, '', '');
+    html += this.showTableHeaderMenu(0, 0, '', 'center','');
 
     html += this.showTableHeader(`width:${tableWidth}px;`, 0, message);
 

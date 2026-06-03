@@ -140,8 +140,7 @@ async function events() {
 function showHeader() {
 
   // Start table
-  //let html = objNews.initializeTable(175, 225, 125,175,175);
-  let html = objNews.initializeTable(175, 225, 125);
+  let html = objNews.initializeTable(columnWidths);
 
   // start table body
   html += objNews.startTableBody();
@@ -162,11 +161,11 @@ function showHeader() {
 function showFilter(menuNumber, newsId) {
 
   // Start table
-  let html = objNews.initializeTable(175, 175, 175);
+  let html = objNews.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Velg nyhet', '');
+  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '','center', 'Velg nyhet', '');
 
   // start table body
   html += objNews.startTableBody();
@@ -181,7 +180,7 @@ function showFilter(menuNumber, newsId) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', '', '');
+  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'center','', '');
 
   // end table body
   html += objNews.endTableBody();
@@ -197,14 +196,14 @@ function showFilter(menuNumber, newsId) {
 function showNews(menuNumber, newsId) {
 
   // start table
-  let html = objNews.initializeTable(175, 175, 175);
+  let html = objNews.initializeTable(columnWidths);
 
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
 
   // date
   menuNumber++;
-  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Dato', 'Forfatter');
+  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '','center', 'Dato', 'Forfatter');
 
   // Date, userId
   // insert a table row (<tr></td>)
@@ -231,7 +230,7 @@ function showNews(menuNumber, newsId) {
 
   // title
   menuNumber++;
-  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Tittel', '');
+  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '','center', 'Tittel', '');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -249,7 +248,7 @@ function showNews(menuNumber, newsId) {
 
   // image
   menuNumber++;
-  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Bilde', '');
+  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '','center', 'Bilde', '');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -268,7 +267,7 @@ function showNews(menuNumber, newsId) {
 
   // content
   menuNumber++;
-  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '', 'Innhold', '');
+  html += objNews.showTableHeaderMenu(menuNumber, objNews.administrationMenu, '','center', 'Innhold', '');
 
   // insert a table row (<tr></td>)
   menuNumber++;

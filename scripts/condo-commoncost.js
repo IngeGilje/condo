@@ -14,7 +14,7 @@ const objCommonCost = new CommonCost('commoncost');
 const enableChanges = (objCommonCost.securityLevel > 5);
 
 // column widths
-const columnWidths = [175, 175, 175, 175, 175, 175];
+const columnWidths = [175, 100, 175, 175, 175, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -217,7 +217,7 @@ function showFilter(menuNumber, year) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objCommonCost.showTableHeaderMenu(menuNumber, objCommonCost.accountMenu, '', '', '', 'År', '', '');
+  html += objCommonCost.showTableHeaderMenu(menuNumber, objCommonCost.accountMenu, '','center', '', '', 'År', '', '');
 
   // start table body
   html += objCommonCost.startTableBody();
@@ -254,7 +254,7 @@ function showCommonCostYear(menuNumber) {
   let html = objCommonCost.initializeTable(columnWidths);
 
   menuNumber++;
-  html += objCommonCost.showTableHeaderMenu(menuNumber, objCommonCost.accountMenu, '#e0f0e0', '', '', 'Felleskostnad/m2', 'Fast felleskostnad', '');
+  html += objCommonCost.showTableHeaderMenu(menuNumber, objCommonCost.accountMenu, '#e0f0e0', 'center', '','', 'Felleskostnad/m2', 'Fast felleskostnad', '');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -302,7 +302,7 @@ function showCommonCostCondo(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objCommonCost.showTableHeaderMenu(menuNumber, objCommonCost.accountMenu, '#e0f0e0', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
+  html += objCommonCost.showTableHeaderMenu(menuNumber, objCommonCost.accountMenu, '#e0f0e0', 'center', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;
@@ -329,8 +329,8 @@ function showCommonCostCondo(menuNumber) {
 
     // condo name
     let className = `name${condo.condoId}`;
-    html += objCommonCost.editTableCell(className, condo.name, 45, false);
-
+    html += objCommonCost.editTableCellCenter(className, condo.name, 45, false);
+ 
     // Square meters
     let squareMeters = formatOreToKroner(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;

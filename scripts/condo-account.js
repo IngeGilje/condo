@@ -186,7 +186,7 @@ function showFilter(menuNumber) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objAccount.showTableHeaderMenu(menuNumber, objAccount.accountMenu, '', '', 'Kostnadstype', '');
+  html += objAccount.showTableHeaderMenu(menuNumber, objAccount.accountMenu, '', 'center','', 'Kostnadstype', '');
 
   // start table body
   html += objAccount.startTableBody();
@@ -222,7 +222,7 @@ function editAccounts(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objAccount.showTableHeaderMenu(menuNumber, objAccount.accountMenu, '#e0f0e0', 'Kostnadstype', 'Tekst', 'Slett',);
+  html += objAccount.showTableHeaderMenu(menuNumber, objAccount.accountMenu, '#e0f0e0', 'center', 'Kostnadstype', 'Tekst', 'Slett',);
 
   objAccount.arrayAccounts.forEach((account) => {
 

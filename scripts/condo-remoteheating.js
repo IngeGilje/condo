@@ -9,7 +9,7 @@ const objRemoteHeating = new RemoteHeating('remoteheating');
 
 const enableChanges = (objRemoteHeating.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175, 175, 175, 100];
+const columnWidths = [175, 175, 100, 175, 175, 175, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -206,7 +206,7 @@ function showFilter(menuNumber, year) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objRemoteHeating.showTableHeaderMenu(menuNumber, objRemoteHeating.accountMenu,    '', '', 'År', 'Pris kiloWattimer', '', '','');
+  html += objRemoteHeating.showTableHeaderMenu(menuNumber, objRemoteHeating.accountMenu, 'center',   '', '', 'År', 'Pris kiloWattimer', '', '','');
  
   // start table body
   html += objRemoteHeating.startTableBody();
@@ -216,7 +216,7 @@ function showFilter(menuNumber, year) {
   html += objRemoteHeating.insertTableRow('', menuNumber, objRemoteHeating.accountMenu, '');
 
   // Select year (<td></td>)
-  html += objRemoteHeating.showSelectedNumbers('filterYear', 'width:175px;', 2020, 2030, year, true);
+  html += objRemoteHeating.showSelectedNumbers('filterYear', '', 2020, 2030, year, true);
 
   // Price/kilowattHour
   const priceKilowattHour = getPriceKilowattHour(year);
@@ -252,7 +252,7 @@ function insertEmptyTableRow(menuNumber) {
   html += objRemoteHeating.editTableCell('date0', '', '', 10, enableChanges);
 
   // condoId
-  html += objCondo.showSelectedCondos('condoId0', 'width:175px;', 0, 'Velg leilighet', '', enableChanges);
+  html += objCondo.showSelectedCondos('condoId0', '', 0, 'Velg leilighet', '', enableChanges);
 
   // kilowattHour this year
   html += objRemoteHeating.editTableCell('kilowattHour0', '', '0,00', 10, enableChanges);
@@ -279,7 +279,7 @@ function showRemoteHeatings(menuNumber) {
   const currentYear = Number(document.querySelector(".filterYear").value);
   const lastYear = currentYear - 1;
   menuNumber++;
-  html += objRemoteHeating.showTableHeaderMenu(menuNumber, objRemoteHeating.accountMenu, '#e0f0e0', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp', '');
+  html += objRemoteHeating.showTableHeaderMenu(menuNumber, objRemoteHeating.accountMenu, '#e0f0e0', 'center', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp', '');
 
   objRemoteHeating.arrayRemoteHeatings.forEach((remoteHeating) => {
 
@@ -298,7 +298,7 @@ function showRemoteHeatings(menuNumber) {
       // condoId
       const condoId = remoteHeating.condoId;
       className = `condoId${remoteHeating.remoteHeatingId}`;
-      html += objCondo.showSelectedCondos(className, 'width:175px;', condoId, '', '', enableChanges);
+      html += objCondo.showSelectedCondos(className, '', condoId, '', '', enableChanges);
 
       // kilowattHour current year
       let kilowattHour = remoteHeating.kilowattHour;

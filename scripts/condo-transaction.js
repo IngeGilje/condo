@@ -278,7 +278,7 @@ function showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '','center', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -330,7 +330,7 @@ function showTransaction(menuNumber, transactionId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '#e0f0e0', '', '', '', '', '', '');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '#e0f0e0', 'center', '', '', '', '', '');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -686,7 +686,7 @@ function showTransactions(menuNumber, transactionId) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'Leilighet', 'Konto', 'Dato', 'Beløp', '', '');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'center','Leilighet', 'Konto', 'Dato', 'Beløp', '', '');
 
   let sumAmount = 0;
 
@@ -733,7 +733,7 @@ function showTransactions(menuNumber, transactionId) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '', '', '', '', '', '');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'center', '', '', '', '', '');
 
   // The end of the table
   html += objTransaction.endTable();

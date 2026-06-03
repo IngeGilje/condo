@@ -178,7 +178,7 @@ function showFilter(menuNumber, userId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '', '', 'Bruker', 'Konto', '');
+  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '','center', '', 'Bruker', 'Konto', '');
 
   // start table body
   html += objUserBankAccount.startTableBody();
@@ -237,7 +237,7 @@ function showUserBankAccount(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '#e0f0e0', 'Bruker', 'Konto', 'Bankkonto', 'Slett');
+  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '#e0f0e0','center', 'Bruker', 'Konto', 'Bankkonto', '');
 
   objUserBankAccount.arrayUserBankAccounts.forEach((userBankAccount) => {
 

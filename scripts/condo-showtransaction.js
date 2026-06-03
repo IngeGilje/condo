@@ -112,6 +112,7 @@ async function events() {
 
       // Show transactions after change of filter
       const deleted = 'N';
+
       condoId = Number(document.querySelector('.filterCondoId').value);
       accountId = Number(document.querySelector('.filterAccountId').value);
 
@@ -125,8 +126,8 @@ async function events() {
       amount = formatKronerToOre(amount);
 
       const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, objTransaction, accountId, amount, fromDate, toDate);
-
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
+  
       showTransactions(3);
     };
   });
@@ -202,7 +203,7 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', 'center','Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp');
 
   // start table body
   html += objShowTransaction.startTableBody();
@@ -254,7 +255,7 @@ function showTransactions(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransaction.arrayTransactions) {
@@ -270,7 +271,7 @@ function showTransactions(menuNumber) {
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
-    html += objAccount.showSelectedAccounts(className, 'width:175px;', bankTransaction.accountId, 'Velg konto', '', false);
+    html += objAccount.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
     // condos
     className = `condoId${bankTransaction.transactionId}`;

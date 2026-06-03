@@ -164,7 +164,7 @@ function showFilter(menuNumber, condominiumId, userId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'Sameie', 'Bruker');
+  html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '','centrum', 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
@@ -208,7 +208,7 @@ function showUser(menuNumber, userId) {
     // password, securityLevel,
     //html += "<tr>";
     menuNumber++;
-    html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '', 'Passord', 'Sikkerhetsnivå');
+    html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '','centrum', 'Passord', 'Sikkerhetsnivå');
 
     // insert a table row (<tr></td>)
     menuNumber++;

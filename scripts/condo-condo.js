@@ -166,7 +166,7 @@ function showFilter(menuNumber, condoId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'Velg leilighet', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '','', 'Velg leilighet', '');
 
   // start table body
   html += objCondo.startTableBody();
@@ -198,16 +198,15 @@ function showCondo(menuNumber, condoId) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '','', '', '');
 
   // Check if condos row exist
   const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
 
   // name
-  //html += "<tr>";
 
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'leilighet', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '','', '', '');
 
   menuNumber++;
   html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
@@ -219,7 +218,7 @@ function showCondo(menuNumber, condoId) {
 
   // street, address2
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'Gate', 'Adresse 2');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '','', 'Gate', 'Adresse 2');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -238,7 +237,7 @@ function showCondo(menuNumber, condoId) {
 
   // postalCode, city
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'Postnummer', 'Poststed');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '','', 'Postnummer', 'Poststed');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -256,7 +255,7 @@ function showCondo(menuNumber, condoId) {
   // squareMeters
   //html += "<tr>";
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'Areal i m2', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'left','Areal i m2', '');
 
   // insert a table row (<tr></td>)
   menuNumber++;

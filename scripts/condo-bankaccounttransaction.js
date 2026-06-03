@@ -247,7 +247,7 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objBankAccountTransaction.showTableHeaderMenu(menuNumber, objBankAccountTransaction.accountMenu, '', '', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '', '');
+  html += objBankAccountTransaction.showTableHeaderMenu(menuNumber, objBankAccountTransaction.accountMenu, '', 'center','', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '', '');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
@@ -414,7 +414,7 @@ async function showBankAccountTransactions(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag', 'Slett');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0','center', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag', 'Slett');
 
   let sumIncome = 0;
   let sumPayment = 0;

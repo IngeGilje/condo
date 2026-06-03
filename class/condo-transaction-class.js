@@ -288,7 +288,7 @@ class Transaction extends Condos {
       console.log("Error deleting Transactions:", error);
     }
   }
-
+  
   // get Transactions from start (20200101) to toDate
   async getTransactions(condominiumId, condoId, toDate) {
 

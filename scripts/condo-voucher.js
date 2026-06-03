@@ -150,7 +150,7 @@ function showFilter(menuNumber, transactionId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', '', '', '', '');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '','center', '', '', '', '');
 
   // start table body
   html += objTransaction.startTableBody();
@@ -186,7 +186,7 @@ function showVoucher(transactionId, menuNumber) {
 
     // date and amount
     menuNumber++;
-    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, '', 'Dato', 'Beløp', 'Konto', '');
+    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, '','center', 'Dato', 'Beløp', 'Konto', '');
 
     menuNumber++;
     html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
@@ -210,7 +210,7 @@ function showVoucher(transactionId, menuNumber) {
 
     // file name of the voucher
     menuNumber++;
-    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, 'Filnavn', '', '');
+    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, 'Filnavn', 'center', '');
 
     menuNumber++;
     html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);

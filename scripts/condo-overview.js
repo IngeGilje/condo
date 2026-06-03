@@ -11,7 +11,7 @@ const objOverview = new Overview('overview');
 
 const enableChanges = (objOverview.securityLevel > 5);
 
-const columnWidths = [175, 175, 175,175,175,175,175];
+const columnWidths = [175, 175, 100, 175, 175, 175, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -28,9 +28,9 @@ async function main() {
     if ((objOverview.condominiumId === 0) || (objOverview.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1) 
-      ? 'http://ingegilje.no/condo-login.html' 
-      : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -55,7 +55,7 @@ async function main() {
       if (rowNumberUser !== -1) {
         condoId = objUser.arrayUsers[rowNumberUser].condoId;
       }
-      menuNumber = showFilter(menuNumber, condoId);
+      menuNumber = editFilter(menuNumber, condoId);
 
       condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = objOverview.nineNine;
@@ -91,13 +91,15 @@ async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('editFilter'))) {
+    if (event.target.classList.contains('filterCondoId')
+      || event.target.classList.contains('filterFromDate')
+      || event.target.classList.contains('filterToDate')) {
 
       // valitadate filter
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      const validCondoId = objOverview.validateInterval('filterCondoId', columnWidths,    '','Ugyldig leilighet',true,condoId, 1, objOverview.nineNine);
-   
+      const validCondoId = objOverview.validateInterval('filterCondoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objOverview.nineNine);
+
       // from date
       let fromDate = document.querySelector('.filterFromDate').value;
       const validFromDate = objOverview.validateNorDate('filterFromDate', fromDate, objOverview, '', 'Ugyldig fra dato');
@@ -117,7 +119,7 @@ async function events() {
         toDate = formatNorDateToNumber(toDate);
         await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
         const orderBy = 'condoId ASC, date DESC, income ASC';
-        await objTransaction.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine,objOverview.nineNine, 0, fromDate, toDate);
+        await objTransaction.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
 
         // Show result
 
@@ -157,7 +159,7 @@ function showHeader() {
   html += objOverview.startTableBody();
 
   // show main header
-  html += objOverview.showTableHeaderLogOut( '', '', '', '', 'Betalingsoversikt', '');
+  html += objOverview.showTableHeaderLogOut('', '', '', 'Betalingsoversikt', '', '');
   html += "</tr>";
 
   // end table body
@@ -169,14 +171,14 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber, condoId) {
+function editFilter(menuNumber, condoId) {
 
   // Start table
   let html = objOverview.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '', '', 'Leilighet', 'Fra dato', 'Til dato', '', '');
+  html += objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '', 'center', '', 'Leilighet', 'Fra dato', 'Til dato', '', '');
 
   // start table body
   html += objOverview.startTableBody();
@@ -186,22 +188,23 @@ function showFilter(menuNumber, condoId) {
   html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
 
   // Show selected condos
-  html += objCondo.showSelectedCondos('filterCondoId','width:175px;',  condoId, '', '', true);
+  html += objCondo.showSelectedCondos('filterCondoId', '', condoId, 'Velg leilighet', '', true);
 
   // from date
   const year = String(today.getFullYear());
   let fromDate = "01.01." + year;
-  html += objOverview.editTableCell('filterFromDate', '', fromDate, 10, CSSViewTransitionRule);
+  html += objOverview.editTableCell('filterFromDate', fromDate, 10, true);
 
   // to date
   let toDate = getCurrentDate();
-  html += objOverview.editTableCell('filterToDate', '', toDate, 10, true);
+  html += objOverview.editTableCell('filterToDate', toDate, 10, true);
 
   html += "<td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '');
+  html += objOverview.insertTableRow('', menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
+  html += "</tr>";
 
   // end table body
   html += objOverview.endTableBody();
@@ -224,10 +227,10 @@ function showDues(menuNumber) {
 
   // Header
   menuNumber++;
-   html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', 'Forfall', '', '', '','','');
+  html += objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '#e0f0e0', 'center', '', '', 'Forfall', '', '', '');
 
   menuNumber++;
-  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  html += objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '#e0f0e0', 'center', 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDue.arrayDues.forEach((due) => {
 
@@ -235,33 +238,33 @@ function showDues(menuNumber) {
     menuNumber++;
     html += objDue.insertTableRow('', menuNumber, objOverview.accountMenu);
 
-    // condo
-    className = `condo${due.dueId}`;
-    html += objCondo.showSelectedCondos(className,'width:175px;', due.condoId, 'Velg leilighet', '', false);
-
     // date
     const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objOverview.editTableCell(className,  date, 10, false);
+    html += objOverview.editTableCell(className, date, 10, false);
+
+    // condo
+    className = `condo${due.dueId}`;
+    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Velg leilighet', '', false);
 
     // account
     className = `account${due.dueId}`;
-    html += objAccount.showSelectedAccounts(className, 'width:175px;', due.accountId, 'Velg konto', '', false);
+    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
 
     // amount
     const amount = formatOreToKroner(due.amount);
     className = `income${due.dueId}`;
-    html += objOverview.editTableCell(className,  amount, 11, false);
+    html += objOverview.editTableCell(className, amount, 11, false);
 
     // kilowattHour
     const kilowattHour = formatOreToKroner(due.kilowattHour);
     className = `income${due.dueId}`;
-    html += objOverview.editTableCell(className,  kilowattHour, 10, false);
+    html += objOverview.editTableCell(className, kilowattHour, 10, false);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objOverview.editTableCell(className,  text, 45, false);
+    html += objOverview.editTableCell(className, text, 45, false);
 
     html += "</tr>";
 
@@ -296,10 +299,10 @@ function showTransactions(menuNumber) {
 
   // Header
   menuNumber++;
-  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', '', '', 'Innbetalinger', '', '','');
+  html += objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '#e0f0e0', 'center', '', '', 'Innbetalinger', '', '', '');
 
   menuNumber++;
-  html += objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0','', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  html += objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '#e0f0e0', 'center', '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -312,16 +315,16 @@ function showTransactions(menuNumber) {
 
     // condos
     className = `condo${bankTransaction.transactionId}`;
-    html += objCondo.showSelectedCondos(className,'width:175px;', Number(bankTransaction.condoId), 'Velg leilighet', '', false);
+    html += objCondo.showSelectedCondos(className, '', Number(bankTransaction.condoId), 'Velg leilighet', '', false);
 
     // date
     const date = formatNumberToNorDate(bankTransaction.date);
     className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className,  date, 10, false);
+    html += objTransaction.editTableCell(className, date, 10, false);
 
     // account
     className = `account${bankTransaction.transactionId}`;
-    html += objAccount.showSelectedAccounts(className, 'width:175px;', Number(bankTransaction.accountId), 'Velg konto', '', false);
+    html += objAccount.showSelectedAccounts(className, '', Number(bankTransaction.accountId), 'Velg konto', '', false);
 
     // income - payment
     let income = bankTransaction.income;
@@ -329,13 +332,12 @@ function showTransactions(menuNumber) {
     income += payment;
     income = formatOreToKroner(income);
     className = `income${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className,  income, 10, false);
+    html += objTransaction.editTableCell(className, income, 10, false);
 
     // Text
     const text = bankTransaction.text;
     className = `text${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className,  text, 45, false);
-
+    html += objTransaction.editTableCell(className, text, 45, false);
     html += "</tr>";
 
     // accumulate
@@ -390,13 +392,13 @@ function showHowMuchToPay(menuNumber) {
   sumIncome += sumPayment;
   let overPay = sumIncome - sumToPay;
   menuNumber++;
-   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', '', '', '','Til gode', '', '')
-    : objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', '', '', '','Skyldig', '', '');
+  html += (overPay >= 0)
+    ? objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '#e0f0e0', 'center', '', '', 'Til gode', '', '', '')
+    : objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '#e0f0e0', 'center', '', '', 'Skyldig', '', '', '');
   menuNumber++;
   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '#e0f0e0', '', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : objOverview.showTableHeaderMenu( menuNumber, objOverview.accountMenu, '#e0f0e0', '', '','', 'Forfall', 'Betalt', 'Skyldig');
+    ? objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '#e0f0e0', 'center', '', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : objOverview.showTableHeaderMenu(menuNumber, objOverview.accountMenu, '#e0f0e0', 'center', '', '', '', 'Forfall', 'Betalt', 'Skyldig')
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
@@ -414,8 +416,8 @@ function showHowMuchToPay(menuNumber) {
   if (rowNumberUser !== -1) {
     condoId = objUser.arrayUsers[rowNumberUser].condoId;
   }
-  let openingBalance = await objTransaction.getTransactions(objOverview.condominiumId, condoId, toDate);
-  openingBalance += await objDue.getDues(objOverview.condominiumId, condoId, toDate);
+  let openingBalance = objTransaction.getTransactions(objOverview.condominiumId, condoId, toDate);
+  openingBalance += objDue.getDues(objOverview.condominiumId, condoId, toDate);
 
   menuNumber++;
   openingBalance = formatOreToKroner(openingBalance);
@@ -423,7 +425,7 @@ function showHowMuchToPay(menuNumber) {
 
   // Show the rest of the menu
   menuNumber++;
-  html += objOverview.showRestMenu(menuNumber, objOverview.accountMenu,'','','','','','');
+  html += objOverview.showRestMenu(menuNumber, objOverview.accountMenu, '', '', '', '', '', '');
 
   // The end of the table
   html += objOverview.endTable();

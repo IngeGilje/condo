@@ -217,7 +217,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '', 'Navn', 'Bankkontonummer');
+  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '','center', 'Navn', 'Bankkontonummer');
 
   // Check if bankaccounts row exist
   const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
@@ -242,7 +242,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
 
   // Show menu
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '', 'Dato', 'Inngående saldo');
+  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '', 'center', 'Dato', 'Inngående saldo');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -266,7 +266,7 @@ function showBankAccounts(menuNumber, bankAccountId) {
   // Show menu
   // Header for value 
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '', 'Dato', 'Utgående saldo');
+  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '', 'center','Dato', 'Utgående saldo');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -457,7 +457,7 @@ function showFilter(menuNumber, condominiumId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '', 'Sameie', 'Bankkonto');
+  html += objBankAccount.showTableHeaderMenu(menuNumber, objBankAccount.accountMenu, '','center', 'Sameie', 'Bankkonto');
 
   // start table body
   html += objBankAccount.startTableBody();

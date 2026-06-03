@@ -227,7 +227,7 @@ function showFilter(menuNumber, supplierId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Velg leverandør', '');
+  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'center','Velg leverandør', '');
 
   // start table body
   html += objSupplier.startTableBody();
@@ -259,7 +259,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', '');
+  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'center', 'Navn');
 
   // Check if supplier row exist
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
@@ -267,7 +267,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // Header for value including menu
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Navn');
+  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'center', 'Navn');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -284,7 +284,7 @@ function showSupplier(menuNumber, supplierId) {
   // street, address2
   //html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Gate', 'Adresse 2');
+  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'center', 'Gate', 'Adresse 2');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -307,7 +307,7 @@ function showSupplier(menuNumber, supplierId) {
   // postalCode, city
   //html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Postnummer', 'Poststed');
+  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'center', 'Postnummer', 'Poststed');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -331,7 +331,7 @@ function showSupplier(menuNumber, supplierId) {
   // email,phone
   //html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'E-mail', 'Telefonnummer');
+  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'center', 'E-mail', 'Telefonnummer');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -354,7 +354,7 @@ function showSupplier(menuNumber, supplierId) {
   // bankAccount, accountId
   //html += "<tr>";
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Konto', 'Bankkontonummer');
+  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'center', 'Konto', 'Bankkontonummer');
 
   // Show menu
   menuNumber++;
@@ -376,7 +376,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // amountAccountId, amount
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Konto for beløp', 'Beløp');
+  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'center', 'Konto for beløp', 'Beløp');
 
   // insert a table row (<tr></td>)
   menuNumber++;
@@ -398,7 +398,7 @@ function showSupplier(menuNumber, supplierId) {
 
   // textAccountId, text
   menuNumber++;
-  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'Konto for tekst', 'Tekst');
+  html += objSupplier.showTableHeaderMenu(menuNumber, objSupplier.accountMenu, '', 'center', 'Konto for tekst', 'Tekst');
 
   // insert a table row (<tr></td>)
   menuNumber++;

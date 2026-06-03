@@ -57,7 +57,7 @@ class Condo extends Condos {
 
     let html = `
     <td
-      class="one-line left"
+      class="one-line center"
     >
       <select 
         class="${className} center"
@@ -74,12 +74,13 @@ class Condo extends Condos {
           value=${condo.condoId}
           ${(condo.condoId === condoId) ? 'selected' : ''}
         >
-          ${condo.name}
+          ${condo.name.trim()}
         </option>`;
         if (condo.condoId === condoId) selectedValue = true;
       });
     } else {
 
+      // No condos
       html += `
       <option 
         value="0" 

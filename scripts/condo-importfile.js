@@ -548,7 +548,7 @@ function showTransactions(menuNumber) {
   let html = objImportFile.initializeTable(columnWidths);
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objImportFile.showTableHeaderMenu(menuNumber, objImportFile.accountMenu, '#e0f0e0', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += objImportFile.showTableHeaderMenu(menuNumber, objImportFile.accountMenu, '#e0f0e0','center', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -660,7 +660,7 @@ function importFileName(menuNumber) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objImportFile.showTableHeaderMenu(menuNumber, objImportFile.accountMenu, '', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
+  html += objImportFile.showTableHeaderMenu(menuNumber, objImportFile.accountMenu, '', 'center','', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();

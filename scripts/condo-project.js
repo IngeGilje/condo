@@ -209,7 +209,7 @@ function showFilter(menuNumber, projectId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objProject.showTableHeaderMenu(menuNumber, objProject.accountMenu, '', '', '', 'Prosjekt', '', '');
+  html += objProject.showTableHeaderMenu(menuNumber, objProject.accountMenu, '','center', '', '', 'Prosjekt', '', '');
 
   // start table body
   html += objProject.startTableBody();
@@ -242,7 +242,7 @@ function editProjects(menuNumber) {
   let html = objProject.initializeTable(columnWidths);
 
   menuNumber++;
-  html += objProject.showTableHeaderMenu(menuNumber, objProject.accountMenu, '#e0f0e0', '', '', 'Navn', 'Beløp', '');
+  html += objProject.showTableHeaderMenu(menuNumber, objProject.accountMenu, '#e0f0e0', 'center','', '', 'Navn', 'Beløp', '');
 
   objProject.arrayProjects.forEach((project) => {
 
@@ -373,7 +373,7 @@ function showTransactions(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0','center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransaction.arrayTransactions) {

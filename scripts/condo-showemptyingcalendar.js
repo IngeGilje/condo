@@ -9,7 +9,7 @@ const objShowEmptyingCalendar = new ShowEmptyingCalendar('showemptyingcalendar')
 
 const enableChanges = (objEmptyingCalendar.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175, 175, 175, 175];
+const columnWidths = [100, 175, 175, 175, 175, 175, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -120,20 +120,21 @@ function showFilter() {
   html += objShowEmptyingCalendar.startTableBody();
 
   // Header filter (<tr></tr>)
-  html += objShowEmptyingCalendar.showTableHeaderMenu(0, objShowEmptyingCalendar.accountMenu, '', '','', '', 'År', 'Måned',  '', '');
+  html += objShowEmptyingCalendar.showTableHeaderMenu(0, objShowEmptyingCalendar.accountMenu,    '',             'left','', '','', 'År', 'Måned',  '', '');
+  //                                         menuNumber,                            menuType, color, direction = "left", ...texts
 
   // insert a table row (<tr></td>)
   html += objShowEmptyingCalendar.insertTableRow('', 0, objShowEmptyingCalendar.accountMenu, '', '', '');
 
   // Selected year (<td></td>)
   const year = String(today.getFullYear());
-  html += objShowEmptyingCalendar.showSelectedNumbers('filterYear','width:175px;', 2020, 2030, year, true);
+  html += objShowEmptyingCalendar.showSelectedNumbers('filterYear','', 2020, 2030, year, true);
 
   // Selected month
   // Get current date in  European date format (dd.mm.yyyy)
   const date = getCurrentDate();
   let month = Number(date.split('.')[1]); // Extract the month part
-  html += objShowEmptyingCalendar.showSelectedMonths('filterMonth','width:175px;', month, true);
+  html += objShowEmptyingCalendar.showSelectedMonths('filterMonth','', month, true);
 
   html += "<td></td><td></td></tr>";
 
@@ -155,7 +156,9 @@ function showEmptyingCalendar() {
   let html = objEmptyingCalendar.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objEmptyingCalendar.showTableHeaderMenu(0, objEmptyingCalendar.accountMenu, '#e0f0e0', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
+  html += objEmptyingCalendar.showTableHeaderMenu(0, objEmptyingCalendar.accountMenu, '#e0f0e0',           'center', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
+   //                                    menuNumber,                        menuType,       color, direction = "left", ...texts
+
 
   if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingCalendar) => {
@@ -166,7 +169,7 @@ function showEmptyingCalendar() {
       // condoId
       let condoId = emptyingCalendar.condoId;
       className = `condoId${emptyingCalendar.emptyingCalendarId}`;
-      html += objCondo.showSelectedCondos(className,'width:175px;', condoId, 'Velg leilighet', '', false);
+      html += objCondo.showSelectedCondos(className,'', condoId, 'Velg leilighet', '', false);
 
       // date
       let date = emptyingCalendar.date;

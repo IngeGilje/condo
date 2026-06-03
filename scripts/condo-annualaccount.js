@@ -76,7 +76,7 @@ async function main() {
 
         // Show annual accounts
         const orderBy = 'condoId ASC, date DESC, income ASC';
-        await objTransaction.loadTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
+        await objTransaction.loadTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, objAnnualAccount.nineNine,      0, fromDate, toDate);
         menuNumber = showAnnualAccounts(menuNumber);
 
         // Show income for next year
@@ -226,7 +226,7 @@ function showFilter(menuNumber, budgetYear, fromDate, toDate) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '', '', 'Fra dato', 'Til dato', 'Budsjettår', 'Pris per m2');
+  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '', 'center','', 'Fra dato', 'Til dato', 'Budsjettår', 'Pris per m2');
 
   // start table body
   html += objAnnualAccount.startTableBody();
@@ -271,10 +271,10 @@ function showAnnualAccounts(menuNumber) {
   // Table header (<tr></tr>)
   const budgetYear = document.querySelector('.filterBudgetYear').value;
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0', '', '', 'Årsresultat', '', '');
+  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0','center', '', '', 'Årsresultat', '', '');
 
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '', '', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik', '');
+  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '', 'center','', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik', '');
 
   let totalAccountAmount = 0;
   let totalBudgetAmount = 0;
@@ -370,10 +370,10 @@ function showIncomeNextYear(menuNumber) {
   // Table header (<tr></tr>)
   const budgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0', '', '', `Bud. Leieinntekter ${budgetYear}`, '', '');
+  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0', 'center','', '', `Bud. Leieinntekter ${budgetYear}`, '', '');
 
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
+  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '', 'center', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;
@@ -473,10 +473,10 @@ function showBankDeposit(menuNumber) {
   let nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
 
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0', '', '', `Budsjett ${nextBudgetYear}`, '', '');
+  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '#e0f0e0', 'center','', '', `Budsjett ${nextBudgetYear}`, '', '');
 
   menuNumber++;
-  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '', '', '', 'Konto', 'Dato', 'Budsjett');
+  html += objAnnualAccount.showTableHeaderMenu(menuNumber, objAnnualAccount.accountMenu, '', 'center','', 'Konto', 'Dato', 'Budsjett');
   let accAmount = 0;
 
   // insert a table row (<tr></td>)

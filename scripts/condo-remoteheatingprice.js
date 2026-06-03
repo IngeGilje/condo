@@ -199,7 +199,7 @@ function showRemoteHeating(menuNumber) {
   let html = objRemoteHeatingPrice.initializeTable(columnWidths);
 
   menuNumber++;
-  html += objRemoteHeatingPrice.showTableHeaderMenu(menuNumber, objRemoteHeatingPrice.accountMenu, '', 'År', `Pris kilowatTimer`, 'Slett');
+  html += objRemoteHeatingPrice.showTableHeaderMenu(menuNumber, objRemoteHeatingPrice.accountMenu, '','center', 'År', `Pris kilowatTimer`, 'Slett');
 
   objRemoteHeatingPrice.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
 
