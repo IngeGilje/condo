@@ -24,6 +24,7 @@ table {
   border: 1px solid black;
 }
 
+/*
 button,
 th,
 td {
@@ -33,6 +34,19 @@ td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+*/
+
+button,
+th,
+td {
+  border: 1px solid #ccc;
+  text-align: center;
+  height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 8px;
 }
 
 th {
@@ -307,12 +321,13 @@ iframe {
   width: 100%;
   box-sizing: border-box;
 }
-
+/*
 @media (max-width: 600px) {
   .news-title {
     font-size: 1.4rem;
   }
 }
+*/
 
 /* horizaontal menu */
 /* Navbar container */

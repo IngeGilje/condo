@@ -53,7 +53,7 @@ class Condos {
     {
       applicationName: "condo-login.html",
       className: "Menu5",
-      text: "logg ut"
+      text: "Logg ut"
     }
   ];
 
@@ -888,13 +888,12 @@ class Condos {
       tableWidth += (columnWidth + 10);
     });
 
+    //style="table-layout: fixed; width: 1110px; border:1;">
     let html = `
     <table 
       style="table-layout: fixed;
-      width: ${tableWidth}px;";
-      border="1";
-    >`;
-
+      width: ${tableWidth}px;
+      border: 1px;">`;
     html += '<colgroup>';
 
     columnWidths.forEach((columnWidth) => {
@@ -1157,7 +1156,7 @@ class Condos {
     let html = this.startTable(style);
 
     // show main header
-    html += this.showTableHeaderMenu(0, 0, '', 'center','');
+    html += this.showTableHeaderMenu(0, 0, '', 'center', '');
 
     html += this.showTableHeader(`width:${tableWidth}px;`, 0, message);
 
@@ -1195,6 +1194,47 @@ class Condos {
 
     return html;
   }
+
+  /*
+  // Show horizontal menu
+  showHorizontalMenuNew() {
+
+    const URL = (this.serverStatus === 1)
+      ? 'http://ingegilje.no/'
+      : 'http://localhost/';
+
+    let html = `
+    <header>
+      <button id="menuButton" class="menu-button">
+        <span>&#9776;</span>
+        <span>Meny</span>
+      </button>
+    </header>`;
+
+    html += `<nav id="sideMenu" class="side-menu">`;
+
+    this.arrayHorizontalMenu.forEach((horizontalMenu) => {
+      html += (Number(horizontalMenu.className) === 1)
+        ? `<li>
+            <a href="${URL}/${horizontalMenu.applicationName}" class="active">
+              ${horizontalMenu.text}
+            </a>
+          </li>`
+        : `<li>
+            <a href="${URL}/${horizontalMenu.applicationName}">
+              ${horizontalMenu.text}
+            </a>
+          </li>`;
+    });
+
+    html += `
+    </nav>
+    <div id="overlay" class="overlay">
+    </div>`;
+
+    return html;
+  }
+  */
 }
 
 // Check if string includes only digits
@@ -1215,7 +1255,7 @@ function removeComma(amount) {
 function formatNorDateToNumber(date) {
   if (date.includes('.')) {
     const dateParts = date.split(".");
-    date = `${dateParts[2]}${dateParts[1]}${dateParts[0]}`;
+    date = `${ dateParts[2] }${ dateParts[1] }${ dateParts[0] } `;
     date = (isNumeric(date))
       ? date
       : 0;
@@ -1236,9 +1276,9 @@ function formatNumberToNorDate(date) {
 // Check if class is defined
 function isClassDefined(className) {
 
-  const element = document.querySelector(`.${className}`);      // Select the element
+  const element = document.querySelector(`.${ className } `);      // Select the element
   if (element !== null) {
-    return (element.classList.contains(`${className}`)) ? true : false;
+    return (element.classList.contains(`${ className } `)) ? true : false;
   } else {
     return false;
   }
@@ -1272,23 +1312,23 @@ function checkPhone(phone, className, labelText) {
   if (!(phonePattern.test(phone))) {
 
     // Invalid phone number
-    if (this.isClassDefined(`label-${className}`)) {
+    if (this.isClassDefined(`label - ${ className } `)) {
 
-      document.querySelector(`.label-${className}`).outerHTML =
-        `<div class="label-${className}-red">
-            * Ugyldig ${labelText}
-          </div>`;
+      document.querySelector(`.label - ${ className } `).outerHTML =
+        `< div class="label-${className}-red" >
+            * Ugyldig ${ labelText }
+          </div > `;
     }
     return false;
   } else {
 
     // Valid valid phone number
-    if (this.isClassDefined(`label-${className}-red`)) {
+    if (this.isClassDefined(`label - ${ className } -red`)) {
 
-      document.querySelector(`.label-${className}-red`).outerHTML =
-        `<div class="label-${className} label-${className}">
-            * ${labelText}
-          </div>`;
+      document.querySelector(`.label - ${ className } -red`).outerHTML =
+        `< div class="label-${className} label-${className}" >
+            * ${ labelText }
+          </div > `;
     }
     return true;
   }
@@ -1309,7 +1349,7 @@ function getCurrentDate() {
     ? day = '0' + String(day)
     : String(day)
 
-  return `${day}.${month}.${year}`;  // Output in dd.mm.yyyy format
+  return `${ day }.${ month }.${ year }`;  // Output in dd.mm.yyyy format
 }
 
 // Format number (12345) to norwegian amount (1 2345,00)

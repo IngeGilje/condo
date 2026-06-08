@@ -52,7 +52,7 @@ async function main() {
       let fromDate = 20000101;
       let toDate = 20991231;
       const orderBy = 'transactionId DESC, date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine,objTransaction.nineNine, 0, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, fromDate, toDate);
 
       menuNumber = showFilter(menuNumber);
 
@@ -143,14 +143,14 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber, transactionId) {
+function showFilter(menuNumber) {
 
   // Start table
   let html = objTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '','center', '', '', '', '');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', 'center', '', 'Bilagsnummer', '', '');
 
   // start table body
   html += objTransaction.startTableBody();
@@ -160,7 +160,7 @@ function showFilter(menuNumber, transactionId) {
   html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '');
 
   // show selected transactions
-  html += objTransaction.showSelectedTransactions('filterTransactionId', 'width:175px;', transactionId, '')
+  html += objTransaction.showSelectedTransactions('filterTransactionId', '', paramTransactionId, '', '', false);
 
   html += "<td></td><td></td></tr>";
 
@@ -186,7 +186,7 @@ function showVoucher(transactionId, menuNumber) {
 
     // date and amount
     menuNumber++;
-    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, '','center', 'Dato', 'Beløp', 'Konto', '');
+    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, '', 'center', 'Dato', 'Beløp', 'Konto', '');
 
     menuNumber++;
     html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
@@ -194,13 +194,13 @@ function showVoucher(transactionId, menuNumber) {
     // date
     let date = objTransaction.arrayTransactions[rowNumberTransaction].date;
     date = (date) ? formatNumberToNorDate(date) : '';
-    html += objTransaction.editTableCell('date', '', date, 10, false);
+    html += objTransaction.editTableCell('date', date, 10, false);
 
     // amount
     const income = objTransaction.arrayTransactions[rowNumberTransaction].income;
     const payment = objTransaction.arrayTransactions[rowNumberTransaction].payment;
     const amount = formatOreToKroner((income) ? income : payment);
-    html += objTransaction.editTableCell('amount', '', amount, 11, false);
+    html += objTransaction.editTableCell('amount', amount, 11, false);
 
     // account
     const accountId = objTransaction.arrayTransactions[rowNumberTransaction].accountId;
@@ -210,7 +210,7 @@ function showVoucher(transactionId, menuNumber) {
 
     // file name of the voucher
     menuNumber++;
-    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, 'Filnavn', 'center', '');
+    html += objVoucher.showTableHeaderMenu(menuNumber, objVoucher.accountMenu, '', 'center', 'Filnavn', '', '', '');
 
     menuNumber++;
     html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
@@ -219,7 +219,7 @@ function showVoucher(transactionId, menuNumber) {
     voucherFileName = (voucherFileName)
       ? voucherFileName
       : `${transactionId}.pdf`;
-    html += objTransaction.editTableCell('voucherFileName', '', voucherFileName, 45, enableChanges);
+    html += objTransaction.editTableCell('voucherFileName', voucherFileName, 45, enableChanges);
 
     html += "<td></td><td></td><td></td></tr>";
 

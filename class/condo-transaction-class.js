@@ -8,6 +8,7 @@ class Transaction extends Condos {
   arrayTransactions = Array;;
   #arrayTransactions = Array;
 
+  /*
   // Show all selected transactions
   showSelectedTransactions(className, style, transactionId, selectNone, selectAll, enableChanges = false) {
 
@@ -94,6 +95,77 @@ class Transaction extends Condos {
     }
 
     html += `</select></td>`;
+
+    return html;
+  }
+    */
+   // show selected transactions
+  showSelectedTransactions(className, style, transactionId, selectNone, selectAll, enableChanges = false) {
+
+    let selectedValue = false;
+
+    let html = `
+    <td
+      class="one-line center"
+    >
+      <select 
+        class="${className} center"
+        ${(style) ? `style="${style}"` : ""}
+        ${(enableChanges) ? '' : 'disabled'}
+      >`;
+
+    // Check if transactions array is empty
+    if (this.arrayTransactions.length > 0) {
+      this.arrayTransactions.forEach((transaction) => {
+
+        html += `
+        <option 
+          value=${transaction.transactionId}
+          ${(transaction.transactionId === transactionId) ? 'selected' : ''}
+        >
+          ${transaction.transactionId}
+        </option>`;
+        if (transaction.transactionId === transactionId) selectedValue = true;
+      });
+    } else {
+
+      html += `
+      <option
+        value="0" 
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        Ingen konti
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayTransactions.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayTransactions.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+    html += `
+      </select >
+    </td>`;
 
     return html;
   }

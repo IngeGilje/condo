@@ -127,7 +127,7 @@ async function events() {
 
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
-  
+
       showTransactions(3);
     };
   });
@@ -203,7 +203,7 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', 'center','Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', 'center', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp');
 
   // start table body
   html += objShowTransaction.startTableBody();
@@ -213,23 +213,22 @@ function showFilter(menuNumber, condoId, accountId) {
   html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
 
   // Show selected condos
-  html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
 
   // Show all selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', 'width:175px;', accountId, '', 'Vis alle', true);
+  html += objAccount.showSelectedAccounts('filterAccountId', '', accountId, '', 'Vis alle', true);
 
   // show from date
-  let month = today.getMonth() + 1;
+  let month = today.getMonth();
   month = (month < 10) ? `0${month}` : `${month}`;
   const fromDate = '01.' + month + '.' + String(today.getFullYear());
-  html += objTransaction.editTableCell('filterFromDate', fromDate, 10, true);
+  html += objTransaction.editTableCellCenter('filterFromDate', fromDate, 10, true);
 
-  // Current date
   let toDate = getCurrentDate();
-  html += objTransaction.editTableCell('filterToDate', toDate, 10, true);
+  html += objTransaction.editTableCellCenter('filterToDate', toDate, 10, true);
 
   // Amount
-  html += objTransaction.editTableCell('filterAmount', '', 10, true);
+  html += objTransaction.editTableCellCenter('filterAmount', '', 10, true);
 
   html += "</tr>";
 
@@ -275,12 +274,12 @@ function showTransactions(menuNumber) {
 
     // condos
     className = `condoId${bankTransaction.transactionId}`;
-    html += objCondo.showSelectedCondos(className, 'width:175px;', bankTransaction.condoId, '-', '', false);
+    html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
 
     // accounts
     className = `accountId${bankTransaction.transactionId}`;
 
-    objAccount.showSelectedAccounts(className, 'width:175px;', bankTransaction.accountId, 'Velg konto', '', false);
+    objAccount.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
     // amount
     let amount = bankTransaction.income + bankTransaction.payment;

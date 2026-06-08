@@ -227,7 +227,7 @@ function showFilter(menuNumber, year) {
   html += objCommonCost.insertTableRow('', menuNumber, objCommonCost.accountMenu, '', '');
 
   // Year (<td></td>)
-  html += objCommonCost.showSelectedNumbers('filterYear', 'width:175px;', 2020, 2030, year, true);
+  html += objCommonCost.showSelectedNumbers('filterYear', '', 2020, 2030, year, true);
   html += "<td></td><td></td></tr>";
 
   menuNumber++;

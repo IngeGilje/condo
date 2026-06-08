@@ -463,10 +463,10 @@ function showTransaction(menuNumber, transactionId) {
       const voucherFileName = `${path}.pdf`;
     } else {
 
-      html += "<td>2</td>";
+      html += "<td></td>";
     }
 
-    html += "<td>2</td><td>3</td><td></td><td></td><td></td><td></td></tr>";
+    html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
   }
 
   // Show the rest of the menu
