@@ -31,9 +31,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objRemoteHeating.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objRemoteHeating.ShowHorizontalMenu(objRemoteHeating.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeating.condominiumId, resident, objRemoteHeating.nineNine);

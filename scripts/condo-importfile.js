@@ -42,9 +42,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objImportFile.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objImportFile.ShowHorizontalMenu(objImportFile.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
 
       let transactionFile = true;
 

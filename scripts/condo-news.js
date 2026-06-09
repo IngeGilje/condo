@@ -29,9 +29,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objNews.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objNews.ShowHorizontalMenu(objNews.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);

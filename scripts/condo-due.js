@@ -32,9 +32,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objDue.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objDue.ShowHorizontalMenu(objDue.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objDue.condominiumId, resident, objDue.nineNine);

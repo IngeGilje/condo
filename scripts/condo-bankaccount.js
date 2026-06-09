@@ -24,9 +24,9 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
   window.location.href = URL;
 } else {
 
-  // Show horizonal menu
-  let html = objBankAccount.showHorizontalMenu();
-  document.querySelector('.horizontalMenu').innerHTML = html;
+  // Show main menu
+  let html = objBankAccount.ShowHorizontalMenu(objBankAccount.arrayMainMenu);
+  document.querySelector('.mainMenu').innerHTML = html;
 
   // Call main when script loads
   main();

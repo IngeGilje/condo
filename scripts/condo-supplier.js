@@ -23,9 +23,9 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
   window.location.href = URL;
 } else {
 
-  // Show horizonal menu
-  let html = objSupplier.showHorizontalMenu();
-  document.querySelector('.horizontalMenu').innerHTML = html;
+  // Show main menu
+  let html = objSupplier.ShowHorizontalMenu(objSupplier.arrayMainMenu);
+  document.querySelector('.mainMenu').innerHTML = html;
 
   // Call main when script loads
   main();

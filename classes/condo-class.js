@@ -18,9 +18,6 @@ class Condos {
   // account type 1 is account menu
   // 2 is administration menu  
   // 3 is horizontal menu
-  accountMenu = 1;
-  administrationMenu = 2;
-  horizontalMenu = 3;
 
   // User info
   condominiumId = Number(sessionStorage.getItem("condominiumId"));
@@ -28,8 +25,8 @@ class Condos {
   securityLevel = Number(sessionStorage.getItem("securityLevel"));
   userId = Number(sessionStorage.getItem("userId"));
 
-  // array of horizontal menu
-  arrayHorizontalMenu = [
+  // array of horizontal main menu
+  arrayMainMenu = [
     {
       applicationName: "condo-showtransaction.html",
       className: "Menu1",
@@ -648,10 +645,12 @@ class Condos {
 
     let html = "<tr>";
 
+    /*
     if (menuNumber > 0) {
       if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
       if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
     }
+    */
 
     texts.forEach((text) => {
 
@@ -685,6 +684,7 @@ class Condos {
     return valid;
   }
 
+  /*
   // Show the rest of the menu
   showRestMenu(menuNumber, menuType, ...texts) {
 
@@ -723,6 +723,11 @@ class Condos {
     // The end of the table
     return html;
   }
+
+    // The end of the table
+    return html;
+  }
+  */
 
   // Validate number
   validateInterval(className, columnWidths, style, message, showMessage = true, number, min, max) {
@@ -918,7 +923,7 @@ class Condos {
     });
 
     // empty row
-    html += this.insertTableRow('', 0, 0, '');
+    html += this.insertTableRow('',  0, '');
     html += "</tr>";
     return html;
   }
@@ -961,16 +966,17 @@ class Condos {
   }
 
   // insert a table row (<tr></td>)
-  // and show account menu or administration menu
-  insertTableRow(style, menuNumber, menuType, ...texts) {
+  insertTableRow(style,  menuType, ...texts) {
 
     let html = "<tr>";
 
+    /*
     // if menuNumber is invalid do not show menu
     if (menuNumber > 0) {
       if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
       if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
     }
+    */
 
     texts.forEach((text) => {
 
@@ -991,10 +997,12 @@ class Condos {
 
     let html = "<tr>";
 
+    /*
     if (menuNumber > 0) {
       if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
       if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
     }
+    */
     texts.forEach((text) => {
 
       html += (style === '')
@@ -1089,21 +1097,51 @@ class Condos {
       const className = this.arrayAccountMenu[menuNumber - 1].className;
 
       html += `
-        <td class="one-line menu"
-        >
-          <a href="${URL}${applicationName}">
-            ${text}
-          </a>
-        </td>`;
+      <td class="one-line menu"
+      >
+        <a href="${URL}${applicationName}">
+          ${text}
+        </a>
+      </td>`;
     } else {
 
       // Do not show menu
-      html += `
-        <td> 
-        </td>`;
+      html += `<td></td>`;
     }
 
     return html;
+  }
+
+  // Show account menu (<td></td>)
+  showAccountMenuNew() {
+
+    const URL = (this.serverStatus === 1)
+      ? 'http://ingegilje.no/'
+      : 'http://localhost/';
+
+    let html = "<div class='leftMenuNew'>";
+    // Check of menu exist
+    if (this.arrayAccountMenu.length >= 0) {
+
+      //const applicationName = this.arrayAccountMenu[menuNumber - 1].applicationName;
+      //const text = this.arrayAccountMenu[menuNumber - 1].text;
+      //const className = this.arrayAccountMenu[menuNumber - 1].className;
+
+      this.arrayAccountMenu.forEach((accountMenu) => {
+        //html += `
+        //<td class="one-line menu leftMenuNew "
+        //>
+        html += `
+        <button class="menuButtonNew one-line menu leftMenuNew">
+          <a href="${URL}${accountMenu.applicationName}">
+            ${accountMenu.text}
+          </a>
+        </button>`;
+      });
+
+      html += "</div>";
+      return html;
+    }
   }
 
   // Show vertical administration menu
@@ -1172,7 +1210,7 @@ class Condos {
   }
 
   // Show horizontal menu
-  showHorizontalMenu() {
+  ShowHorizontalMenu(arrayMenu) {
 
     const URL = (this.serverStatus === 1)
       ? 'http://ingegilje.no/'
@@ -1182,10 +1220,10 @@ class Condos {
     <nav class="navbar">
       <ul class="nav-links">`;
 
-    this.arrayHorizontalMenu.forEach((horizontalMenu) => {
-      html += (Number(horizontalMenu.className) === 1)
-        ? `<li><a href="${URL}/${horizontalMenu.applicationName}" class="active">${horizontalMenu.text}</a></li>`
-        : `<li><a href="${URL}/${horizontalMenu.applicationName}">${horizontalMenu.text}</a></li>`;
+    arrayMenu.forEach((array) => {
+      html += (Number(array.className) === 1)
+        ? `<li><a href="${URL}/${array.applicationName}" class="active">${array.text}</a></li>`
+        : `<li><a href="${URL}/${array.applicationName}">${array.text}</a></li>`;
     });
 
     html += `
@@ -1194,47 +1232,6 @@ class Condos {
 
     return html;
   }
-
-  /*
-  // Show horizontal menu
-  showHorizontalMenuNew() {
-
-    const URL = (this.serverStatus === 1)
-      ? 'http://ingegilje.no/'
-      : 'http://localhost/';
-
-    let html = `
-    <header>
-      <button id="menuButton" class="menu-button">
-        <span>&#9776;</span>
-        <span>Meny</span>
-      </button>
-    </header>`;
-
-    html += `<nav id="sideMenu" class="side-menu">`;
-
-    this.arrayHorizontalMenu.forEach((horizontalMenu) => {
-      html += (Number(horizontalMenu.className) === 1)
-        ? `<li>
-            <a href="${URL}/${horizontalMenu.applicationName}" class="active">
-              ${horizontalMenu.text}
-            </a>
-          </li>`
-        : `<li>
-            <a href="${URL}/${horizontalMenu.applicationName}">
-              ${horizontalMenu.text}
-            </a>
-          </li>`;
-    });
-
-    html += `
-    </nav>
-    <div id="overlay" class="overlay">
-    </div>`;
-
-    return html;
-  }
-  */
 }
 
 // Check if string includes only digits
@@ -1255,7 +1252,7 @@ function removeComma(amount) {
 function formatNorDateToNumber(date) {
   if (date.includes('.')) {
     const dateParts = date.split(".");
-    date = `${ dateParts[2] }${ dateParts[1] }${ dateParts[0] } `;
+    date = `${dateParts[2]}${dateParts[1]}${dateParts[0]} `;
     date = (isNumeric(date))
       ? date
       : 0;
@@ -1276,9 +1273,9 @@ function formatNumberToNorDate(date) {
 // Check if class is defined
 function isClassDefined(className) {
 
-  const element = document.querySelector(`.${ className } `);      // Select the element
+  const element = document.querySelector(`.${className} `);      // Select the element
   if (element !== null) {
-    return (element.classList.contains(`${ className } `)) ? true : false;
+    return (element.classList.contains(`${className} `)) ? true : false;
   } else {
     return false;
   }
@@ -1312,22 +1309,22 @@ function checkPhone(phone, className, labelText) {
   if (!(phonePattern.test(phone))) {
 
     // Invalid phone number
-    if (this.isClassDefined(`label - ${ className } `)) {
+    if (this.isClassDefined(`label - ${className} `)) {
 
-      document.querySelector(`.label - ${ className } `).outerHTML =
+      document.querySelector(`.label - ${className} `).outerHTML =
         `< div class="label-${className}-red" >
-            * Ugyldig ${ labelText }
+            * Ugyldig ${labelText}
           </div > `;
     }
     return false;
   } else {
 
     // Valid valid phone number
-    if (this.isClassDefined(`label - ${ className } -red`)) {
+    if (this.isClassDefined(`label - ${className} -red`)) {
 
-      document.querySelector(`.label - ${ className } -red`).outerHTML =
+      document.querySelector(`.label - ${className} -red`).outerHTML =
         `< div class="label-${className} label-${className}" >
-            * ${ labelText }
+            * ${labelText}
           </div > `;
     }
     return true;
@@ -1349,7 +1346,7 @@ function getCurrentDate() {
     ? day = '0' + String(day)
     : String(day)
 
-  return `${ day }.${ month }.${ year }`;  // Output in dd.mm.yyyy format
+  return `${day}.${month}.${year}`;  // Output in dd.mm.yyyy format
 }
 
 // Format number (12345) to norwegian amount (1 2345,00)

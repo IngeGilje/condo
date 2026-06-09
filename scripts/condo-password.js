@@ -31,9 +31,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objPassword.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objPassword.ShowHorizontalMenu(objPassword.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
 
       const resident = 'A';
 

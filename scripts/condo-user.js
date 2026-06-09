@@ -30,9 +30,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objUser.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objUser.ShowHorizontalMenu(objUser.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
 
       if (enableChanges) {
 

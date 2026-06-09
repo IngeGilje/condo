@@ -30,15 +30,15 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objEmptyingCalendar.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objEmptyingCalendar.ShowHorizontalMenu(objEmptyingCalendar.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
 
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 
-      // Show horizonal menu
-      html = objEmptyingCalendar.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      html = objEmptyingCalendar.ShowHorizontalMenu(objEmptyingCalendar.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
 
       // Show header
       let menuNumber = 0;

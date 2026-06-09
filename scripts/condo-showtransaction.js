@@ -14,7 +14,7 @@ const objShowTransaction = new ShowTransaction('showtransaction');
 
 const enableChanges = (objAccount.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175, 175, 175];
+const columnWidths = [175, 175, 175, 175, 175];
 
 const params = new URLSearchParams(window.location.search);
 const paramCondoId = Number(params.get("condoId"));
@@ -41,9 +41,13 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objTransaction.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objTransaction.ShowHorizontalMenu(objTransaction.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
+
+      // Show account menu
+      html = objTransaction.ShowHorizontalMenu(objTransaction.arrayAccountMenu);
+      document.querySelector('.accountMenu').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
@@ -184,7 +188,7 @@ function showHeader() {
   html += objShowTransaction.startTableBody();
 
   // show main header
-  html += objShowTransaction.showTableHeaderLogOut('', '', '', 'Transaksjoner', '');
+  html += objShowTransaction.showTableHeaderLogOut('1', '2', '3Transaksjoner', '4');
   html += "</tr>";
 
   // end table body
@@ -203,7 +207,7 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // Header filter (<tr></tr>)
   menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', 'center', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp');
+  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '', 'center', '1Leilighet', '2Konto', '3Fra dato', '4Til dato', '5Beløp');
 
   // start table body
   html += objShowTransaction.startTableBody();
@@ -234,7 +238,7 @@ function showFilter(menuNumber, condoId, accountId) {
 
   // insert a table row (<tr></td>)
   menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '', '', '', '', '');
+  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '1','2', '3', '4', '5');
 
   // end table body
   html += objShowTransaction.endTableBody();
@@ -254,7 +258,7 @@ function showTransactions(menuNumber) {
 
   // Table header (<tr></tr>)
   menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'center', '1Dato', '2Konto', '3Leilighet', '4Beløp', '5');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransaction.arrayTransactions) {
@@ -301,11 +305,11 @@ function showTransactions(menuNumber) {
   sumAmount = formatOreToKroner(sumAmount);
 
   menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '', '', 'Sum', sumAmount, '');
+  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '1', '2', '3Sum', sumAmount, '5');
 
   // Show the rest of the menu
-  menuNumber++;
-  html += objTransaction.showRestMenu(menuNumber, objTransaction.accountMenu, '', '', '', '', '');
+  //menuNumber++;
+  //html += objTransaction.showRestMenu(menuNumber, objTransaction.accountMenu, '1', '2', '3', '4', '5');
 
   // The end of the table
   html += objShowTransaction.endTable();

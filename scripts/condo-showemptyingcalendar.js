@@ -31,9 +31,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objShowEmptyingCalendar.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objShowEmptyingCalendar.ShowHorizontalMenu(objShowEmptyingCalendar.arrayMainMenu);
+      document.querySelector('.mainMenu').innerHTML = html;
 
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 

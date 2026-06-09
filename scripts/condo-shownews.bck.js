@@ -28,8 +28,8 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show main menu
-      let html = objShowNews.ShowHorizontalMenu(objShowNews.arrayMainMenu);
+      // Show horizonal menu
+      let html = objShowNews.showHorizontalMenu(objShowNews.arrayMainMenu);
       document.querySelector('.mainMenu').innerHTML = html;
 
       // Load users and news tables
