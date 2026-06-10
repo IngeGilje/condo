@@ -483,39 +483,6 @@ class Condos {
     return html;
   }
 
-  /*
-  // Select choices like Yes, No, Ignore
-  showSelectedValues(className, style, enableChanges, selected, ...choices) {
-
-    let html = `
-    <td
-      class="center"
-    >
-      <select 
-        class="${className} center"
-        ${(enableChanges) ? '' : 'disabled'}
-        ${(style) ? `style="${style}"` : `style="width:175px;"`}>`;
-
-    choices.forEach((choice) => {
-
-      html += `
-        <option 
-          value=${choice}
-          ${(choice === selected) ? 'selected' : ''}
-        >
-          ${choice}
-        </option>
-      `;
-    });
-
-    html += `
-      </select >
-    </td>`;
-
-    return html;
-  }
-  */
-
   // Select choices like Yes, No, Ignore
   showSelectedValues(className, style, enableChanges, selected, ...choices) {
 
@@ -641,16 +608,9 @@ class Condos {
   }
 
   // Show table header including menu (<tr></tr>)
-  showTableHeaderMenu(menuNumber, menuType, color, direction = "center", ...texts) {
+  showTableHeaderMenu(color, direction = "center", ...texts) {
 
     let html = "<tr>";
-
-    /*
-    if (menuNumber > 0) {
-      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
-      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
-    }
-    */
 
     texts.forEach((text) => {
 
@@ -683,51 +643,6 @@ class Condos {
 
     return valid;
   }
-
-  /*
-  // Show the rest of the menu
-  showRestMenu(menuNumber, menuType, ...texts) {
-
-    let html = "";
-    if (menuType === this.accountMenu) {
-      if (this.arrayAccountMenu.length >= menuNumber) {
-        for (; this.arrayAccountMenu.length >= menuNumber; menuNumber++) {
-
-          html += "<tr>";
-
-          // Show menu
-          html += this.showAccountMenu(menuNumber);
-          texts.forEach((text) => {
-            html += `
-            <td>
-              ${text}
-            </td>`;
-          })
-          html += "</tr>"
-        }
-      }
-    }
-
-    if (menuType === this.administrationMenuMenu) {
-      if (this.arrayAdministrationMenu.length >= menuNumber) {
-        for (; this.arrayAdministrationMenu.length >= menuNumber; menuNumber++) {
-
-          html += "<tr>";
-
-          // Show menu
-          html += this.showAdministrationMenu(menuNumber);
-          html += "</tr>"
-        }
-      }
-    }
-    // The end of the table
-    return html;
-  }
-
-    // The end of the table
-    return html;
-  }
-  */
 
   // Validate number
   validateInterval(className, columnWidths, style, message, showMessage = true, number, min, max) {
@@ -859,24 +774,6 @@ class Condos {
     return valid;
   }
 
-  // Show blank header row
-  showBlankHeaderRow(style, menuNumber, ...texts) {
-
-    let html = "<tr>";
-
-    html += this.showAccountMenu(menuNumber);
-
-    texts.forEach((text) => {
-
-      if (text === '') html += `<td class="no-border center" style="${style}">${text}</td>`;
-      if (text !== '' && style !== '') html += `<td class="no-border center bold" style="${style}">${text}</td>`;
-      if (text !== '' && style === '') html += `<td class="no-border center bold">${text}</td>`;
-    });
-
-    html += "</tr>";
-    return html;
-  }
-
   // Start of table
   startTable(style) {
 
@@ -910,7 +807,7 @@ class Condos {
   }
 
   // Show main header table not including menu
-  showTableHeader(style, menuType, ...texts) {
+  showTableHeader(style, ...texts) {
 
     let html = `<tr>`;
 
@@ -923,7 +820,7 @@ class Condos {
     });
 
     // empty row
-    html += this.insertTableRow('',  0, '');
+    html += this.insertTableRow('', '');
     html += "</tr>";
     return html;
   }
@@ -966,17 +863,9 @@ class Condos {
   }
 
   // insert a table row (<tr></td>)
-  insertTableRow(style,  menuType, ...texts) {
+  insertTableRow(style,  ...texts) {
 
     let html = "<tr>";
-
-    /*
-    // if menuNumber is invalid do not show menu
-    if (menuNumber > 0) {
-      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
-      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
-    }
-    */
 
     texts.forEach((text) => {
 
@@ -993,17 +882,11 @@ class Condos {
   }
 
   // insert menu at start of a row 
-  insertMenu(menuNumber, className, style, menuType, ...texts) {
+  insertMenu(className, style, menuType, ...texts) {
 
     let html = "<tr>";
 
-    /*
-    if (menuNumber > 0) {
-      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
-      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
-    }
-    */
-    texts.forEach((text) => {
+      texts.forEach((text) => {
 
       html += (style === '')
         ? `<td class="center no-border ${className}">${text}</td>`
@@ -1080,38 +963,6 @@ class Condos {
     }
   }
 
-  // Show vertical account menu (<td></td>)
-  showAccountMenu(menuNumber) {
-
-    let html = "";
-
-    // Check of menu exists
-    if (this.arrayAccountMenu.length >= menuNumber && menuNumber > 0) {
-
-      const URL = (this.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-
-      const applicationName = this.arrayAccountMenu[menuNumber - 1].applicationName;
-      const text = this.arrayAccountMenu[menuNumber - 1].text;
-      const className = this.arrayAccountMenu[menuNumber - 1].className;
-
-      html += `
-      <td class="one-line menu"
-      >
-        <a href="${URL}${applicationName}">
-          ${text}
-        </a>
-      </td>`;
-    } else {
-
-      // Do not show menu
-      html += `<td></td>`;
-    }
-
-    return html;
-  }
-
   // Show account menu (<td></td>)
   showAccountMenuNew() {
 
@@ -1122,10 +973,6 @@ class Condos {
     let html = "<div class='leftMenuNew'>";
     // Check of menu exist
     if (this.arrayAccountMenu.length >= 0) {
-
-      //const applicationName = this.arrayAccountMenu[menuNumber - 1].applicationName;
-      //const text = this.arrayAccountMenu[menuNumber - 1].text;
-      //const className = this.arrayAccountMenu[menuNumber - 1].className;
 
       this.arrayAccountMenu.forEach((accountMenu) => {
         //html += `
@@ -1142,37 +989,6 @@ class Condos {
       html += "</div>";
       return html;
     }
-  }
-
-  // Show vertical administration menu
-  showAdministrationMenu(menuNumber) {
-
-    let html = "";
-
-    // Check of menu exists
-    if (this.arrayAdministrationMenu.length >= menuNumber && menuNumber > 0) {
-
-      const URL = (this.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-
-      const applicationName = this.arrayAdministrationMenu[menuNumber - 1].applicationName;
-      const text = this.arrayAdministrationMenu[menuNumber - 1].text;
-      const className = this.arrayAdministrationMenu[menuNumber - 1].className;
-
-      html += `
-      <td class="one-line menu">
-        <a href="${URL}${applicationName}">
-          ${text}
-        </a>
-      </td>`;
-    } else {
-
-      // Do not show menu
-      html += `<td></td>`;
-    }
-
-    return html;
   }
 
   // Format norwegian date (11.05.1983) to number (19830511)
@@ -1194,9 +1010,9 @@ class Condos {
     let html = this.startTable(style);
 
     // show main header
-    html += this.showTableHeaderMenu(0, 0, '', 'center', '');
-
-    html += this.showTableHeader(`width:${tableWidth}px;`, 0, message);
+    html += this.showTableHeaderMenu( '', 'center', '');
+ 
+    html += this.showTableHeader(`width:${tableWidth}px;`, message);
 
     // The end of the table
     html += this.endTable();
@@ -1217,7 +1033,7 @@ class Condos {
       : 'http://localhost/';
 
     let html = `
-    <nav class="navbar">
+    <nav class="navbar horizontalMenu">
       <ul class="nav-links">`;
 
     arrayMenu.forEach((array) => {

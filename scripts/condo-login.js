@@ -1,4 +1,5 @@
 // Login
+
 // Activate classes
 const objUser = new User('user');
 const objLogIn = new Login('login');
@@ -47,10 +48,10 @@ function showLogin() {
   let html = objLogIn.startTable('width:250px;margin: 0 auto;');
 
   // Header for value including menu
-  html += objLogIn.showTableHeader('', objLogIn.accountMenu, 'Email');
+  html += objLogIn.showTableHeader('', 'Email');
 
   // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('margin: 0 auto;', 0, objLogIn.accountMenu);
+  html += objLogIn.insertTableRow('margin: 0 auto;');
 
   // email
   const email = '';
@@ -58,14 +59,14 @@ function showLogin() {
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
+  html += objLogIn.insertTableRow('', '');
   html += "</tr>";
 
   // password
-  html += objLogIn.showTableHeader("width:250px;", objLogIn.accountMenu, 'Passord');
+  html += objLogIn.showTableHeader("width:250px;",  'Passord');
 
   // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
+  html += objLogIn.insertTableRow('');
 
   // password
   password = '';
@@ -73,18 +74,18 @@ function showLogin() {
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
+  html += objLogIn.insertTableRow('', '');
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu);
+  html += objLogIn.insertTableRow('');
 
   // Show buttons (<tr></td>)
   html += objLogIn.showButton('LogIn', 'LogIn');
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('', 0, objLogIn.accountMenu, '');
+  html += objLogIn.insertTableRow('',  '');
 
   html += "</tr>";
 

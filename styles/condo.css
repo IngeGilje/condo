@@ -221,7 +221,7 @@ select {
 }
 
 /* horizontal menu */
-.mainMenu {
+.horizontalMenu {
   display: flex;
   list-style: none;
   gap: 10px;
@@ -229,7 +229,7 @@ select {
   margin: 0;
 }
 
-.mainMenu li a {
+.horizontalMenu li a {
   display: block;
   max-width: 150px;
   padding: 12px 15px;
@@ -246,7 +246,7 @@ select {
   transition: background 0.2s, box-shadow 0.2s;
 }
 
-.mainMenu li a:hover {
+.horizontalMenu li a:hover {
   background: #e0f0e0;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }

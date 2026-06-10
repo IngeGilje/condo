@@ -45,15 +45,15 @@ async function main() {
       if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
 
       // Show header
-      let menuNumber = 0;
+      
 
       showHeader();
 
       // Show filter
-      menuNumber = showFilter(menuNumber, condoId);
+      showFilter( condoId);
 
       // Show result
-      menuNumber = editCondo(menuNumber, condoId);
+      editCondo( condoId);
 
       // Events
       events();
@@ -103,12 +103,12 @@ async function events() {
 
       await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
 
-      let menuNumber = 0;
+      
 
       // Show filter
       const condoId = objCondo.arrayCondo.at(-1).condoId;
-      menuNumber = showFilter(menuNumber, condoId);
-      menuNumber = editCondo(menuNumber, condoId);
+      showFilter( condoId);
+      editCondo( condoId);
     };
   });
 
@@ -168,21 +168,21 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber, condoId) {
+function showFilter( condoId) {
 
   // Start table
   let html = objCondo.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '', 'Velg leilighet', '');
+  
+  html += objCondo.showTableHeaderMenu( '', '', 'Velg leilighet', '');
 
   // start table body
   html += objCondo.startTableBody();
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
+  
+  html += objCondo.insertTableRow('');
 
   // condo
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', '', true)
@@ -196,11 +196,11 @@ function showFilter(menuNumber, condoId) {
   html += objCondo.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Maintain condo information
-function editCondo(menuNumber, condoId) {
+function editCondo( condoId) {
 
   // start table
   let html = objCondo.initializeTable(columnWidths);
@@ -208,27 +208,27 @@ function editCondo(menuNumber, condoId) {
   // Check if condos row exist
   const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
 
-  menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '', '', '');
+  
+  html += objCondo.showTableHeaderMenu( '', '', '', '');
 
   // name
-  menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '', 'Leilighet', '');
+  
+  html += objCondo.showTableHeaderMenu('', '', 'Leilighet', '');
 
-  menuNumber++;
-  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
+  
+  html += objCondo.insertTableRow('');
 
   const name = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].name;
   html += objCondo.editTableCell('name', name, 45, enableChanges);
   html += "<td></td></tr>";
 
   // street, address2
-  menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '', 'Gate', 'Adresse 2');
+  
+  html += objCondo.showTableHeaderMenu('', '', 'Gate', 'Adresse 2');
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
+  
+  html += objCondo.insertTableRow('');
 
   // street
   const street = (rowNumberCondo === -1)
@@ -242,12 +242,12 @@ function editCondo(menuNumber, condoId) {
   html += "</tr>";
 
   // postalCode, city
-  menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '', 'Postnummer', 'Poststed');
+  
+  html += objCondo.showTableHeaderMenu('', '', 'Postnummer', 'Poststed');
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
+  
+  html += objCondo.insertTableRow('');
 
   // postalCode
   const postalCode = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].postalCode;
@@ -260,12 +260,12 @@ function editCondo(menuNumber, condoId) {
 
   // squareMeters
   //html += "<tr>";
-  menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', '', 'Areal i m2', '');
+  
+  html += objCondo.showTableHeaderMenu('', '', 'Areal i m2', '');
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
+  
+  html += objCondo.insertTableRow('');
 
   // squareMeters
   const squareMeters = (rowNumberCondo === -1) ? '' : formatOreToKroner(objCondo.arrayCondo[rowNumberCondo].squareMeters);
@@ -276,8 +276,8 @@ function editCondo(menuNumber, condoId) {
   // Buttons
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
+  
+  html += objCondo.insertTableRow('');
 
   html += "<td></td><td></td></tr>";
 
@@ -285,32 +285,28 @@ function editCondo(menuNumber, condoId) {
   if (enableChanges) {
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
+    
+    html += objCondo.insertTableRow('');
 
     html += objCondo.showButton('update', 'Oppdater');
     html += objCondo.showButton('cancel', 'Angre');
     html += "</tr>";
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondo.insertTableRow('', menuNumber, objCondo.accountMenu);
+    
+    html += objCondo.insertTableRow('');
 
     html += objCondo.showButton('delete', 'Slett');
     html += objCondo.showButton('insert', 'Ny');
     html += "</tr>";
   }
 
-  // Show the rest of the menu
-  menuNumber++;
-  html += objCondo.showRestMenu(menuNumber, objCondo.accountMenu, '', '');
-
   // The end of the table
   html += objCondo.endTable();
   document.querySelector('.editCondo').innerHTML = html;
 
   if (enableChanges) document.querySelector('.cancel').disabled = true;
-  return menuNumber;
+  
 }
 
 // Update a condo row
@@ -365,9 +361,9 @@ async function updateCondoRow(condoId) {
       document.querySelector('.filterCondoId').value = condoId;
     }
 
-    menuNumber = 0;
-    menuNumber = showFilter(menuNumber, condoId);
-    menuNumber = editCondo(menuNumber, condoId);
+    
+    showFilter( condoId);
+    editCondo( condoId);
 
     objCondo.removeMessage();
     document.querySelector('.filterCondoId').disabled = false;

@@ -52,7 +52,7 @@ async function main() {
       await objProject.loadProjectsTable(objTransaction.condominiumId);
 
       // Show header
-      let menuNumber = 0;
+      
       showHeader();
 
       const orderBy = 'date DESC, income DESC';
@@ -76,16 +76,16 @@ async function main() {
       }
 
       // Show filter
-      menuNumber = 0;
-      menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
+      
+      showFilter( condoId, accountId, fromDate, toDate, amount);
 
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId,objTransaction.nineNine, amount, fromDate, toDate);
 
       // Show account movements
-      menuNumber = showTransactions(menuNumber, transactionId);
+      showTransactions( transactionId);
 
       // Show account movement
-      menuNumber = showTransaction(menuNumber, transactionId);
+      showTransaction( transactionId);
 
       // Events
       events();
@@ -132,10 +132,10 @@ async function events() {
       if (objTransaction.arrayTransactions.length > 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
       if (objTransaction.arrayTransactions.length === 0) document.querySelector('.filter').innerHTML = "";
 
-      let menuNumber = 0;
-      menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
-      menuNumber = showTransactions(menuNumber, transactionId);
-      menuNumber = showTransaction(menuNumber, transactionId);
+      
+      showFilter( condoId, accountId, fromDate, toDate, amount);
+      showTransactions( transactionId);
+      showTransaction( transactionId);
     };
   });
 
@@ -184,10 +184,8 @@ async function events() {
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId,objTransaction.nineNine, amount, fromDate, toDate);
 
-      let menuNumber = 3;
-      //menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
-      menuNumber = showTransactions(menuNumber, transactionId);
-      menuNumber = showTransaction(menuNumber, transactionId);
+      showTransactions( transactionId);
+      showTransaction( transactionId);
     };
   });
 
@@ -226,10 +224,9 @@ async function events() {
         transactionId = Number(className.slice(prefix.length));
       }
 
-      let menuNumber = 3;
-      //menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
-      menuNumber = showTransactions(menuNumber, transactionId);
-      menuNumber = showTransaction(menuNumber, transactionId);
+      //showFilter( condoId, accountId, fromDate, toDate, amount);
+      showTransactions( transactionId);
+      showTransaction( transactionId);
     }
   });
 
@@ -268,7 +265,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount) {
+function showFilter( condoId, accountId, fromDate, toDate, amount) {
 
   // Start table
   let html = objTransaction.initializeTable(columnWidths);
@@ -277,12 +274,12 @@ function showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount) {
   html += objTransaction.startTableBody();
 
   // Header filter (<tr></tr>)
-  menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '','center', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '');
+  
+  html += objTransaction.showTableHeaderMenu( '','center', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '');
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
+  
+  html += objTransaction.insertTableRow('');
 
   // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', 'Alle leiligheter', true);
@@ -307,8 +304,8 @@ function showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount) {
   html += "<td></td></tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '', '', '', '', '', '');
+  
+  html += objTransaction.insertTableRow('', '', '', '', '', '', '');
 
   // end table body
   html += objTransaction.endTableBody();
@@ -317,11 +314,11 @@ function showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount) {
   html += objTransaction.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Show transaction
-function showTransaction(menuNumber, transactionId) {
+function showTransaction( transactionId) {
 
   const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(bankTransaction => bankTransaction.transactionId === transactionId);
 
@@ -329,17 +326,17 @@ function showTransaction(menuNumber, transactionId) {
   let html = objTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objTransaction.accountMenu, '#e0f0e0', 'center', '', '', '', '', '');
+  
+  html += objTransaction.showTableHeaderMenu( '#e0f0e0', 'center', '', '', '', '', '');
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, 'Bilagsnummer', 'Dato', 'Leilighet', '', '', '');
+  
+  html += objTransaction.insertTableRow('', 'Bilagsnummer', 'Dato', 'Leilighet', '', '', '');
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
+  
+  html += objTransaction.insertTableRow('');
 
   // Transaction Id
   let className = `transactionId`;
@@ -360,13 +357,13 @@ function showTransaction(menuNumber, transactionId) {
   html += "<td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, 'Konto', 'Prosjekt', '', '', '', '');
+  
+  html += objTransaction.insertTableRow('', 'Konto', 'Prosjekt', '', '', '', '');
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
+  
+  html += objTransaction.insertTableRow('');
 
   // account Id
   const accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
@@ -380,13 +377,13 @@ function showTransaction(menuNumber, transactionId) {
   html += "<td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, 'Inntekt', 'Utgift', '', '', '', '');
+  
+  html += objTransaction.insertTableRow('', 'Inntekt', 'Utgift', '', '', '', '');
   html += "</tr>";
 
   // income
-  menuNumber++;
-  html += objAccount.insertTableRow('', menuNumber, objTransaction.accountMenu);
+  
+  html += objAccount.insertTableRow('');
 
   let income = objTransaction.arrayTransactions[rowNumberTransaction]?.income ?? '';
   income = formatOreToKroner(income);
@@ -401,13 +398,13 @@ function showTransaction(menuNumber, transactionId) {
   html += "<td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, 'Kilowattimer', '', '', '', '', '');
+  
+  html += objTransaction.insertTableRow('', 'Kilowattimer', '', '', '', '', '');
   html += "</tr>";
 
   // kilowattHour
-  menuNumber++;
-  html += objAccount.insertTableRow('', menuNumber, objTransaction.accountMenu);
+  
+  html += objAccount.insertTableRow('');
 
   let kilowattHour = objTransaction.arrayTransactions[rowNumberTransaction]?.kilowattHour ?? 0;
   // let kilowattHour = objTransaction.arrayTransactions[rowNumberTransaction].kilowattHour;
@@ -416,45 +413,46 @@ function showTransaction(menuNumber, transactionId) {
   html += objTransaction.editTableCell(className,  kilowattHour, 10, enableChanges);
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, 'Tekst', '', '', '', '', '');
+  // insert a table row (<tr></td>)
+  
+  html += objTransaction.insertTableRow('', 'Tekst', '', '', '', '', '');
   html += "</tr>";
 
   // text
-  menuNumber++;
-  html += objAccount.insertTableRow('', menuNumber, objTransaction.accountMenu);
+  
+  html += objAccount.insertTableRow('');
 
   const text = objTransaction.arrayTransactions[rowNumberTransaction]?.text ?? '';
   className = `text`;
   html += objTransaction.editTableCell(className,  text, 45, enableChanges);
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '', '', '', '', '', '');
+  
+  html += objTransaction.insertTableRow('', '', '', '', '', '', '');
   html += "</tr>";
 
   // Show buttons (<tr></td>)
   if (enableChanges) {
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
+    
+    html += objTransaction.insertTableRow('');
 
     html += objTransaction.showButton('update', 'Oppdater');
     html += objTransaction.showButton('cancel', 'Angre');
     html += "<td></td><td></td><td></td><td></td></tr>";
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
+    
+    html += objTransaction.insertTableRow('');
 
     html += objTransaction.showButton('delete', 'Slett');
     html += objTransaction.showButton('insert', 'Ny');
     html += "<td></td><td></td><td></td><td></td></tr>";
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu);
+    
+    html += objTransaction.insertTableRow('');
 
     const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objTransaction.condominiumId);
     if (rowNumberCondominium !== -1) {
@@ -469,15 +467,11 @@ function showTransaction(menuNumber, transactionId) {
     html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
   }
 
-  // Show the rest of the menu
-  menuNumber++;
-  html += objTransaction.showRestMenu(menuNumber, objTransaction.accountMenu, '', '', '', '', '', '');
-
   // The end of the table
   html += objTransaction.endTable();
   document.querySelector('.transaction').innerHTML = html;
   if (enableChanges) document.querySelector('.cancel').disabled = true;
-  return menuNumber;
+  
 }
 
 // Delete transactions row
@@ -526,11 +520,11 @@ async function deleteTransactionRow() {
     amount = objTransaction.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
   }
 
-  let menuNumber = 0;
-  menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
+  
+  showFilter( condoId, accountId, fromDate, toDate, amount);
 
-  menuNumber = showTransactions(menuNumber, transactionId);
-  menuNumber = showTransaction(menuNumber, transactionId);
+  showTransactions( transactionId);
+  showTransaction( transactionId);
 }
 
 // update transactions row
@@ -614,13 +608,13 @@ async function updateTransactionRow(transactionId) {
     const orderBy = 'date DESC, income DESC';
     await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId,objTransaction.nineNine, amount, fromDate, toDate);
 
-    let menuNumber = 0;
-    menuNumber = showFilter(menuNumber, condoId, accountId, fromDate, toDate, amount);
+    
+    showFilter( condoId, accountId, fromDate, toDate, amount);
 
     transactionId = 0;
     if (objTransaction.arrayTransactions.length > 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
-    menuNumber = showTransactions(menuNumber, transactionId);
-    menuNumber = showTransaction(menuNumber, transactionId);
+    showTransactions( transactionId);
+    showTransaction( transactionId);
 
     document.querySelector('.filterCondoId').disabled = false;
     document.querySelector('.filterAccountId').disabled = false;
@@ -679,22 +673,22 @@ function resetValues() {
 }
 
 // Show transactions
-function showTransactions(menuNumber, transactionId) {
+function showTransactions( transactionId) {
 
   // Start table
   let html = objTransaction.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0', 'center','Leilighet', 'Konto', 'Dato', 'Beløp', '', '');
+  
+  html += objTransaction.showTableHeaderMenu('#e0f0e0', 'center','Leilighet', 'Konto', 'Dato', 'Beløp', '', '');
 
   let sumAmount = 0;
 
   for (const bankTransaction of objTransaction.arrayTransactions) {
 
     // Show menu
-    menuNumber++;
-    html += objAccount.insertTableRow('', menuNumber, objTransaction.accountMenu);
+    
+    html += objAccount.insertTableRow('');
 
     // condos
     let className = `condoId${bankTransaction.transactionId}`;
@@ -732,12 +726,12 @@ function showTransactions(menuNumber, transactionId) {
   };
 
   // Table header (<tr></tr>)
-  menuNumber++;
-  html += objTransaction.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '', 'center', '', '', '', '', '');
+  
+  html += objTransaction.showTableHeaderMenu( '', 'center', '', '', '', '', '');
 
   // The end of the table
   html += objTransaction.endTable();
   document.querySelector('.transactions').innerHTML = html;
 
-  return menuNumber;
+  
 }

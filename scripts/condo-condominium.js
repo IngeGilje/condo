@@ -41,14 +41,14 @@ async function main() {
       await objBankAccount.loadBankAccountsTable(objCondominium.condominiumId, objCondominium.nineNine);
 
       // Show header
-      let menuNumber = 0;
+      
       showHeader();
 
       // Show filter
-      menuNumber = showFilter(menuNumber, objCondominium.condominiumId);
+      showFilter( objCondominium.condominiumId);
 
       // Show condominium
-      menuNumber = editCondominium(objCondominium.condominiumId, menuNumber);
+      editCondominium(objCondominium.condominiumId);
 
       // Events
       events();
@@ -70,7 +70,7 @@ async function events() {
       const fixedCost = 'A';
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       await objAccount.loadAccountsTable(condominiumId, fixedCost);
-      menuNumber = editCondominium(condominiumId, 3);
+      editCondominium(condominiumId, 3);
     };
   });
 
@@ -92,13 +92,13 @@ async function events() {
 
       await objCondominium.loadCondominiumsTable();
 
-      let menuNumber = 0;
+      
 
       // Show filter
-      menuNumber = showFilter(menuNumber, 0);
+      showFilter( 0);
 
       // Show condominium
-      menuNumber = editCondominium(objCondominium.condominiumId, menuNumber);
+      editCondominium(objCondominium.condominiumId);
     };
   });
 
@@ -121,13 +121,13 @@ async function events() {
       if (condominiumId === 0) condominiumId = objCondominium.arrayCondominiums.at(-1).condominiumId;
 
       await objCondominium.loadCondominiumsTable();
-      let menuNumber = 0;
+      
 
       // Show filter
-      menuNumber = showFilter(menuNumber, condominiumId);
+      showFilter( condominiumId);
 
       // Show condominium
-      menuNumber = editCondominium(objCondominium.condominiumId, menuNumber);
+      editCondominium(objCondominium.condominiumId);
     };
   });
 
@@ -230,7 +230,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber, condominiumId) {
+function showFilter( condominiumId) {
 
   // Start table
   let html = objCondominium.initializeTable(columnWidths);
@@ -239,15 +239,15 @@ function showFilter(menuNumber, condominiumId) {
   html += objCondominium.startTableBody();
 
   // Header filter (<tr></tr>)
-  menuNumber++;
-  html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '','centrum', 'Velg sameie', '');
+  
+  html += objCondominium.showTableHeaderMenu('', 'centrum', 'Velg sameie', '');
 
   // start table body
   html += objCondominium.startTableBody();
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+  
+  html += objCondominium.insertTableRow('');
 
   // condominium
   html += objCondominium.showSelectedCondominiums('filterCondominiumId', '', condominiumId, '', '', enableChanges)
@@ -255,8 +255,8 @@ function showFilter(menuNumber, condominiumId) {
   html += "<td></td></tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu, '', '');
+  
+  html += objCondominium.insertTableRow('', '', '');
 
   // end table body
   html += objCondominium.endTableBody();
@@ -265,11 +265,11 @@ function showFilter(menuNumber, condominiumId) {
   html += objCondominium.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Show condominium
-function editCondominium(condominiumId, menuNumber) {
+function editCondominium(condominiumId) {
 
   // Start table
   let html = objCondominium.initializeTable(columnWidths);
@@ -282,12 +282,12 @@ function editCondominium(condominiumId, menuNumber) {
   if (rowNumberCondominium !== -1) {
 
     // Show menu
-    menuNumber++;
-    html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '','centrum', 'Navn', '');
+    
+    html += objCondominium.showTableHeaderMenu('', 'centrum', 'Navn', '');
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+    
+    html += objCondominium.insertTableRow('');
 
     // name
     html += objCondominium.editTableCell('name', objCondominium.arrayCondominiums[rowNumberCondominium].name, 45, enableChanges);
@@ -295,12 +295,12 @@ function editCondominium(condominiumId, menuNumber) {
     html += "<td></td></tr>";
 
     // street, address2
-    menuNumber++;
-    html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '','centrum', 'Gate', 'Adresse 2');
+    
+    html += objCondominium.showTableHeaderMenu('', 'centrum', 'Gate', 'Adresse 2');
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+    
+    html += objCondominium.insertTableRow('');
 
     // street
     html += objCondominium.editTableCell('street', objCondominium.arrayCondominiums[rowNumberCondominium].street, 45, enableChanges);
@@ -311,12 +311,12 @@ function editCondominium(condominiumId, menuNumber) {
     html += "</tr>";
 
     // postalCode, city
-    menuNumber++;
-    html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '','centrum', 'Postnummer', 'Poststed');
+    
+    html += objCondominium.showTableHeaderMenu('', 'centrum', 'Postnummer', 'Poststed');
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+    
+    html += objCondominium.insertTableRow('');
 
     // postalCode
     html += objCondominium.editTableCell('postalCode', objCondominium.arrayCondominiums[rowNumberCondominium].postalCode, 4, enableChanges);
@@ -327,12 +327,12 @@ function editCondominium(condominiumId, menuNumber) {
     html += "</tr>";
 
     // email, phone
-    menuNumber++;
-    html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '','centrum', 'eMail', 'Telefonnummer');
+    
+    html += objCondominium.showTableHeaderMenu('', 'centrum', 'eMail', 'Telefonnummer');
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+    
+    html += objCondominium.insertTableRow('');
 
     // eMail
     html += objCondominium.editTableCell('email', objCondominium.arrayCondominiums[rowNumberCondominium].email, 45, enableChanges);
@@ -342,27 +342,27 @@ function editCondominium(condominiumId, menuNumber) {
     html += "</tr>";
 
     // incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId
-    menuNumber++;
-    html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '','centrum', 'Inntekstkonto fjernvarme', 'Utgiftskonto fjernvarme');
+    
+    html += objCondominium.showTableHeaderMenu('', 'centrum', 'Inntekstkonto fjernvarme', 'Utgiftskonto fjernvarme');
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+    
+    html += objCondominium.insertTableRow('', objCondominium.accountMenu);
 
     // incomeRemoteHeatingAccountId
-    html += objAccount.showSelectedAccounts('incomeRemoteHeatingAccountId',            '', objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
- 
+    html += objAccount.showSelectedAccounts('incomeRemoteHeatingAccountId', '', objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
+
     // paymentRemoteHeatingAccountId
     html += objAccount.showSelectedAccounts('paymentRemoteHeatingAccountId', '', objCondominium.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
     html += "</tr>";
 
     // commonCostAccountId, organizationNumber
-    menuNumber++;
-    html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '','centrum', 'Inntekstonto husleie', 'Organisasjonsnummer');
+    
+    html += objCondominium.showTableHeaderMenu('', 'centrum', 'Inntekstonto husleie', 'Organisasjonsnummer');
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+    
+    html += objCondominium.insertTableRow('', objCondominium.accountMenu);
 
     // commonCostAccountId
     html += objAccount.showSelectedAccounts('commonCostAccountId', '', objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId, 'Velg konto', '', enableChanges);
@@ -373,52 +373,48 @@ function editCondominium(condominiumId, menuNumber) {
     html += "</tr>";
 
     // importPath
-    menuNumber++;
-    html += objCondominium.showTableHeaderMenu(menuNumber, objCondominium.accountMenu, '','centrum', 'Plassering av data', '');
+    
+    html += objCondominium.showTableHeaderMenu('', 'centrum', 'Plassering av data', '');
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+    
+    html += objCondominium.insertTableRow('', objCondominium.accountMenu);
 
     // importPath
     html += objCondominium.editTableCell('importPath', objCondominium.arrayCondominiums[rowNumberCondominium].importPath, 100, enableChanges);
     html += "<td></td></tr>";
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+    
+    html += objCondominium.insertTableRow('', objCondominium.accountMenu);
     html += "<td></td><td></td></tr>";
 
     // Show buttons (<tr></td>)
     if (enableChanges) {
 
       // insert a table row (<tr></td>)
-      menuNumber++;
-      html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+      
+      html += objCondominium.insertTableRow('', objCondominium.accountMenu);
 
       html += objCondominium.showButton('update', 'Oppdater');
       html += objCondominium.showButton('cancel', 'Angre');
       html += "</tr>";
 
       // insert a table row (<tr></td>)
-      menuNumber++;
-      html += objCondominium.insertTableRow('', menuNumber, objCondominium.accountMenu);
+      
+      html += objCondominium.insertTableRow('', objCondominium.accountMenu);
 
       html += objCondominium.showButton('delete', 'Slett');
       html += objCondominium.showButton('insert', 'Ny');
       html += "</tr>";
     }
 
-    // Show the rest of the menu
-    menuNumber++;
-    html += objCondominium.showRestMenu(menuNumber, objCondominium.accountMenu, '', '');
-
     // The end of the table
     html += objCondominium.endTable();
     document.querySelector('.editCondominium').innerHTML = html;
     if (enableChanges) document.querySelector('.cancel').disabled = true;
 
-    return menuNumber;
+    
   }
 }
 
@@ -497,13 +493,13 @@ async function updateCondominiumRow(condominiumId) {
       condominiumId = Number(objCondominium.arrayCondominiums.at(-1).condominiumId);
     }
 
-    let menuNumber = 0;
+    
 
     // Show filter
-    menuNumber = showFilter(menuNumber, condominiumId);
+    showFilter( condominiumId);
 
     // Show condominium
-    menuNumber = editCondominium(condominiumId, menuNumber);
+    editCondominium(condominiumId);
 
     document.querySelector('.filterCondominiumId').disabled = false;
     document.querySelector('.delete').disabled = false;

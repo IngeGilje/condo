@@ -12,36 +12,429 @@
 
 <body>
 
-  <!-- table container for all tables -->
-  <div class="tableContainer">
-
+  <table style="table-layout: fixed;
+      width: 740px;
+      border: 1px;">
+    <colgroup>
+      <col style="width: 175px;">
+      <col style="width: 175px;">
+      <col style="width: 175px;">
+      <col style="width: 175px;">
+    </colgroup>
     <tr>
-      <td class="one-line menu">
-        <a href="http://localhost/condo-condominium.html">
-          Sameie
-        </a>
+      <td style="vertical-align:bottom;font-size:14px;color:#333;background-color:#e0f0e0;"
+        class="no-border center bold one-line">
+        1Kostnadstype
       </td>
-      <td class="one-line menu">
-        <a href="http://localhost/condo-news.html">
-          Nyheter
-        </a>
+      <td style="vertical-align:bottom;font-size:14px;color:#333;background-color:#e0f0e0;"
+        class="no-border center bold one-line">
+        2Tekst
       </td>
-      <td style="vertical-align:bottom;font-size:14px;color:#333; " class="no-border center bold one-line">
-        Leilighet
+      <td style="vertical-align:bottom;font-size:14px;color:#333;background-color:#e0f0e0;"
+        class="no-border center bold one-line">
+        3Slett
       </td>
-      <td style="vertical-align:bottom;font-size:14px;color:#333; " class="no-border center bold one-line">
-        Konto
-      </td>
-      <td style="vertical-align:bottom;font-size:14px;color:#333; " class="no-border center bold one-line">
-        Fra dato
-      </td>
-      <td style="vertical-align:bottom;font-size:14px;color:#333; " class="no-border center bold one-line">
-        Til dato
-      </td>
-      <td style="vertical-align:bottom;font-size:14px;color:#333; " class="no-border center bold one-line">
-        Beløp
+      <td style="vertical-align:bottom;font-size:14px;color:#333;background-color:#e0f0e0;"
+        class="no-border center bold one-line">
       </td>
     </tr>
+    <tr>
+      <td 
+        class="center no-border"
+      >
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost13 center">
+          <option 
+            value="Fast kostnad"
+            selected
+           >
+            Fast kostnad
+          </option>
+          <option 
+            value="Variabel kostnad"
+          >
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name13 center one-line" type="text" maxlength="45" value="1,2,3,4... transaksjoner">
+      </td>
+      <td class="one-line center">
+        <button class="delete13 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost67 center">
+          <option value="Fast" 
+            selected
+          >
+            Fast kostnad
+          </option>
+          <option value="Variabel">
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name67 center one-line" type="text" maxlength="45" value="Diverse">
+      </td>
+      <td class="one-line center">
+        <button class="delete67 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost6 center">
+          <option value="Fast kostnad">
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad" selected>
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name6 center one-line" type="text" maxlength="45" value="Forsikring">
+      </td>
+      <td class="one-line center">
+        <button class="delete6 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost10 center">
+          <option value="Fast kostnad" selected>
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad">
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name10 center one-line" type="text" maxlength="45" value="Gebyr - FAKT.TJ">
+      </td>
+      <td class="one-line center">
+        <button class="delete10 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost56 center">
+          <option value="Fast kostnad">
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad" selected>
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name56 center one-line" type="text" maxlength="45" value="Inntekt drift">
+      </td>
+      <td class="one-line center">
+        <button class="delete56 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost4 center">
+          <option value="Fast kostnad">
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad" selected>
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name4 center one-line" type="text" maxlength="45" value="Inntekt fjernvarme ">
+      </td>
+      <td class="one-line center">
+        <button class="delete4 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost69 center">
+          <option value="Fast kostnad">
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad" selected>
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name69 center one-line" type="text" maxlength="45" value="Inntekt Rygg og Myrland">
+      </td>
+      <td class="one-line center">
+        <button class="delete69 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost2 center">
+          <option value="Fast kostnad">
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad" selected>
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name2 center one-line" type="text" maxlength="45" value="Inntekter husleie">
+      </td>
+      <td class="one-line center">
+        <button class="delete2 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost5 center">
+          <option value="Fast kostnad" selected>
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad">
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name5 center one-line" type="text" maxlength="45" value="Nettleie Lyse">
+      </td>
+      <td class="one-line center">
+        <button class="delete5 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost52 center">
+          <option value="Fast kostnad" selected>
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad">
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name52 center one-line" type="text" maxlength="45" value="Omkostninger BedriftsNett">
+      </td>
+      <td class="one-line center">
+        <button class="delete52 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost73 center">
+          <option value="Fast kostnad" selected>
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad">
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name73 center one-line" type="text" maxlength="45" value="Slettes">
+      </td>
+      <td class="one-line center">
+        <button class="delete73 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost8 center">
+          <option value="Fast kostnad" selected>
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad">
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name8 center one-line" type="text" maxlength="45" value="TV og bredbånd">
+      </td>
+      <td class="one-line center">
+        <button class="delete8 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost9 center">
+          <option value="Fast kostnad">
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad" selected>
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name9 center one-line" type="text" maxlength="45" value="Ugift drift">
+      </td>
+      <td class="one-line center">
+        <button class="delete9 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost3 center">
+          <option value="Fast kostnad">
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad" selected>
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name3 center one-line" type="text" maxlength="45" value="Utgift fjernvarme">
+      </td>
+      <td class="one-line center">
+        <button class="delete3 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost70 center">
+          <option value="Fast kostnad">
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad" selected>
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name70 center one-line" type="text" maxlength="45" value="Utguft Rygg og Myraland">
+      </td>
+      <td class="one-line center">
+        <button class="delete70 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost22 center">
+          <option value="Fast kostnad" selected>
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad">
+            Variabel kostnad
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name22 center one-line" type="text" maxlength="45" value="Velforening">
+      </td>
+      <td class="one-line center">
+        <button class="delete22 center button">
+          Slett
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td class="center no-border">
+
+      </td>
+      <td class="one-line left">
+        <select class="fixedCost0 center" style="width:175px;">
+          <option value="Fast kostnad">
+            Fast kostnad
+          </option>
+          <option value="Variabel kostnad">
+            Variabel kostnad
+          </option>
+          <option value="Velg kostnadstype" selected>
+            Velg kostnadstype
+          </option>
+        </select>
+      </td>
+      <td class="left" colspan="1" rowspan="1">
+        <input class="name0 center one-line" type="text" maxlength="45" value="">
+      </td>
+      <td>Ny konto</td>
+    </tr>
+  </table>
 </body>
 
 </html>

@@ -41,18 +41,18 @@ async function main() {
       document.querySelector('.mainMenu').innerHTML = html;
 
       // Show header
-      let menuNumber = 0;
+      
       showHeader();
 
       // Show filter
-      menuNumber = showFilter(menuNumber);
+      showFilter;
 
       const year = Number(document.querySelector('.filterYear').value);
       const month = Number(document.querySelector('.filterMonth').value);
       await objEmptyingCalendar.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, year, month);
 
       // Show emtyingcalendar
-      menuNumber = showEmptyingCalendar(menuNumber);
+      showEmptyingCalendar();
 
       // Events
       events();
@@ -179,21 +179,21 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber) {
+function showFilter() {
 
   // Start table
   let html = objEmptyingCalendar.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '', 'center','', 'År', 'Måned', '', '', '', '', '');
+  
+  html += objEmptyingCalendar.showTableHeaderMenu( '', 'center','', 'År', 'Måned', '', '', '', '', '');
 
   // start table body
   html += objEmptyingCalendar.startTableBody();
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '');
+  
+  html += objEmptyingCalendar.insertTableRow('', objEmptyingCalendar.administrationMenu, '');
 
   // Selected year(<td></td>)
   const year = String(today.getFullYear());
@@ -208,8 +208,8 @@ function showFilter(menuNumber) {
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
+  
+  html += objEmptyingCalendar.insertTableRow('', objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
   // end table body
   html += objEmptyingCalendar.endTableBody();
 
@@ -217,25 +217,25 @@ function showFilter(menuNumber) {
   html += objEmptyingCalendar.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Show emptyingCalendar
-function showEmptyingCalendar(menuNumber) {
+function showEmptyingCalendar() {
 
   // start table
   let html = objEmptyingCalendar.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  menuNumber++;
-  html += objEmptyingCalendar.showTableHeaderMenu(menuNumber, objEmptyingCalendar.administrationMenu, '#e0f0e0',  'center','Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre','Slett',);
+  
+  html += objEmptyingCalendar.showTableHeaderMenu( '#e0f0e0',  'center','Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre','Slett',);
 
   if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingCalendar) => {
 
       // Show menu
-      menuNumber++;
-      html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu);
+      
+      html += objEmptyingCalendar.insertTableRow('', objEmptyingCalendar.administrationMenu);
 
       // condoId
       let condoId = emptyingCalendar.condoId;
@@ -294,29 +294,25 @@ function showEmptyingCalendar(menuNumber) {
   if (enableChanges) {
 
     // Insert empty table row for insertion
-    menuNumber++;
-    html += insertEmptyTableRow(menuNumber);
+    
+    html += insertEmptyTableRow();
   };
-
-  // Show the rest of the menu
-  menuNumber++;
-  html += objEmptyingCalendar.showRestMenu(menuNumber, objEmptyingCalendar.administrationMenu, '', '', '', '', '', '', '', '');
 
   // The end of the table
   html += objEmptyingCalendar.endTable();
   document.querySelector('.emptyingcalendar').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Insert empty table row
-function insertEmptyTableRow(menuNumber) {
+function insertEmptyTableRow() {
 
   let html = "";
 
   // Show menu
   // insert a table row (<tr></td>)
-  html += objEmptyingCalendar.insertTableRow('', menuNumber, objEmptyingCalendar.administrationMenu);
+  html += objEmptyingCalendar.insertTableRow('', objEmptyingCalendar.administrationMenu);
 
 
   // condoId

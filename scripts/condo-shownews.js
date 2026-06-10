@@ -41,8 +41,8 @@ async function main() {
       if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1).newsId;
 
       // Show news
-      let menuNumber = 0;
-      menuNumber = showNews(menuNumber);
+      
+      showNews();
 
       // Events
       events();
@@ -76,7 +76,7 @@ async function events() {
 }
 
 // Show news
-function showNews(menuNumber) {
+function showNews() {
 
   let html = `
   <div class="news-container">
@@ -119,5 +119,5 @@ function showNews(menuNumber) {
 
     document.querySelector('.shownews').innerHTML = html;
   }
-  return menuNumber;
+  
 }

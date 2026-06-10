@@ -48,14 +48,14 @@ async function main() {
       await objProject.loadProjectsTable(objProject.condominiumId);
 
       // Show header
-      let menuNumber = 0;
+      
       showHeader();
 
       // Show filter
       projectId = (objProject.arrayProjects.length === 0)
         ? 0
         : objProject.arrayProjects.at(-1).projectId;
-      menuNumber = showFilter(menuNumber, projectId);
+      showFilter( projectId);
 
       // Show project
       // Get row number for condominium
@@ -67,10 +67,10 @@ async function main() {
         await objTransaction.loadTransactionsTable(orderBy, objProject.condominiumId, 'N', objProject.nineNine, objProject.nineNine, projectId, 0, 2019010, 20991231);
 
         // Show project per year
-        menuNumber = editProjects(menuNumber, projectId);
+        editProjects( projectId);
 
         // Show transactions this project
-        menuNumber = showTransactions(menuNumber);
+        showTransactions();
 
         // Events
         events();
@@ -105,10 +105,8 @@ async function events() {
         projectId = Number(className.slice(prefix.length));
       }
 
-      let menuNumber = 3;
-
       // Show project per year
-      menuNumber = editProjects(menuNumber);
+      editProjects();
     };
   });
 
@@ -159,11 +157,11 @@ async function events() {
       await deleteProjectsRow(projectId, className);
       await objProject.loadProjectsTable(objProject.condominiumId);
 
-      let menuNumber = 0;
-      menuNumber = editProjects(menuNumber);
+      
+      editProjects();
 
-      menuNumber++;
-      //menuNumber = showProjectCondo(menuNumber);
+      
+      //showProjectCondo();
     };
   });
 
@@ -202,28 +200,28 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber, projectId) {
+function showFilter( projectId) {
 
   // Start table
   let html = objProject.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  menuNumber++;
-  html += objProject.showTableHeaderMenu(menuNumber, objProject.accountMenu, '','center', '', '', 'Prosjekt', '', '');
+  
+  html += objProject.showTableHeaderMenu( '','center', '', '', 'Prosjekt', '', '');
 
   // start table body
   html += objProject.startTableBody();
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objProject.insertTableRow('', menuNumber, objProject.accountMenu, '');
+  
+  html += objProject.insertTableRow('', '');
 
   // Project (<td></td>)
   html += objProject.showSelectedProjects('filterProjectId', 'width:175px;', projectId, 'Velg prosjekt', '', enableChanges);
   html += "<td></td><td></td><td></td></tr>";
 
-  menuNumber++;
-  html += objProject.insertTableRow('', menuNumber, objProject.accountMenu, '', '', '', '', '');
+  
+  html += objProject.insertTableRow('', '1', '2', '3', '4', '5');
 
   // end table body
   html += objProject.endTableBody();
@@ -232,23 +230,23 @@ function showFilter(menuNumber, projectId) {
   html += objProject.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Edit projects per condo
-function editProjects(menuNumber) {
+function editProjects() {
 
   // start table
   let html = objProject.initializeTable(columnWidths);
 
-  menuNumber++;
-  html += objProject.showTableHeaderMenu(menuNumber, objProject.accountMenu, '#e0f0e0', 'center','', '', 'Navn', 'Beløp', '');
+  
+  html += objProject.showTableHeaderMenu('#e0f0e0', 'center','', '', 'Navn', 'Beløp', '');
 
   objProject.arrayProjects.forEach((project) => {
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objProject.insertTableRow('', menuNumber, objProject.accountMenu, '', '');
+    
+    html += objProject.insertTableRow('', '1', '2');
 
     // name
     let name = project.name;
@@ -270,18 +268,18 @@ function editProjects(menuNumber) {
   if (enableChanges) {
 
     // Insert empty table row for insertion
-    menuNumber++;
-    html += insertEmptyTableRow(menuNumber);
+    
+    html += insertEmptyTableRow();
   };
 
-  menuNumber++;
-  html += objProject.insertTableRow('', menuNumber, objProject.accountMenu, '', '', '', '', '');
+  
+  html += objProject.insertTableRow('', '1', '2', '3', '4', '5');
 
   // The end of the table
   html += objProject.endTable();
   document.querySelector('.editProjects').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Delete a projects row
@@ -335,19 +333,19 @@ async function updateProjectsRow(projectId) {
 
     await objProject.loadProjectsTable(objProject.condominiumId);
 
-    let menuNumber = 0;
-    menuNumber = editProjects(menuNumber);
+    
+    editProjects();
   }
 }
 
 // Insert empty table row
-function insertEmptyTableRow(menuNumber) {
+function insertEmptyTableRow() {
 
   let html = "";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objProject.insertTableRow('', menuNumber, objProject.accountMenu, '', '');
+  
+  html += objProject.insertTableRow('', '', '');
 
   // name
   let name = "";
@@ -366,21 +364,21 @@ function insertEmptyTableRow(menuNumber) {
 }
 
 // Show transactions
-function showTransactions(menuNumber) {
+function showTransactions() {
 
   // Start table
   let html = objProject.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  menuNumber++;
-  html += objCondo.showTableHeaderMenu(menuNumber, objCondo.accountMenu, '#e0f0e0','center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+  
+  html += objCondo.showTableHeaderMenu( '#e0f0e0','center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransaction.arrayTransactions) {
 
     // Show menu
-    menuNumber++;
-    html += objAccount.insertTableRow('', menuNumber, objTransaction.accountMenu);
+    
+    html += objAccount.insertTableRow('');
 
     // Date
     const date = formatNumberToNorDate(bankTransaction.date);
@@ -420,12 +418,8 @@ function showTransactions(menuNumber) {
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
 
-  menuNumber++;
-  html += objTransaction.insertTableRow('', menuNumber, objTransaction.accountMenu, '', '', 'Sum', sumAmount, '');
-
-  // Show the rest of the menu
-  menuNumber++;
-  html += objTransaction.showRestMenu(menuNumber, objTransaction.accountMenu, '', '', '', '', '');
+  
+  html += objTransaction.insertTableRow('', '', '', 'Sum', sumAmount, '');
 
   // The end of the table
   html += objProject.endTable();

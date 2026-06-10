@@ -51,11 +51,11 @@ async function main() {
       //const userId = objUser.arrayUsers.at(-1).userId;
 
       // Show filter
-      let menuNumber = 0;
-      menuNumber = showFilter(menuNumber, objPassword.condominiumId, objPassword.userId);
+      
+      showFilter( objPassword.condominiumId, objPassword.userId);
 
       // Show result
-      menuNumber = showUser(menuNumber, objPassword.userId);
+      showUser( objPassword.userId);
 
       // Events
       events();
@@ -75,9 +75,9 @@ async function events() {
 
       const userId = Number(document.querySelector('.filterUserId').value);
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      menuNumber = 0;
-      menuNumber = showFilter(menuNumber, condominiumId, userId);
-      menuNumber = showUser(menuNumber, userId);
+      
+      showFilter( condominiumId, userId);
+      showUser( userId);
     };
   });
 
@@ -90,9 +90,9 @@ async function events() {
       await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      menuNumber = 0;
-      menuNumber = showFilter(menuNumber, condominiumId, userId);
-      menuNumber = showUser(menuNumber, userId);
+      
+      showFilter( condominiumId, userId);
+      showUser( userId);
     };
   });
 
@@ -157,21 +157,21 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber, condominiumId, userId) {
+function showFilter( condominiumId, userId) {
 
   // Start table
   let html = objUser.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  menuNumber++;
-  html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '','centrum', 'Sameie', 'Bruker');
+  
+  html += objUser.showTableHeaderMenu( '','centrum', 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objPassword.insertTableRow('', menuNumber, objPassword.accountMenu);
+  
+  html += objPassword.insertTableRow('');
 
   // Show selected condominiums 
   html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', enableChanges);
@@ -182,8 +182,8 @@ function showFilter(menuNumber, condominiumId, userId) {
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objPassword.insertTableRow('', menuNumber, objPassword.accountMenu, '', '');
+  
+  html += objPassword.insertTableRow('', '', '');
 
   // end table body
   html += objUser.endTableBody();
@@ -192,11 +192,11 @@ function showFilter(menuNumber, condominiumId, userId) {
   html += objUser.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Show user
-function showUser(menuNumber, userId) {
+function showUser( userId) {
 
   // start table
   let html = objUser.initializeTable(columnWidths);
@@ -207,12 +207,12 @@ function showUser(menuNumber, userId) {
 
     // password, securityLevel,
     //html += "<tr>";
-    menuNumber++;
-    html += objUser.showTableHeaderMenu(menuNumber, objUser.accountMenu, '','centrum', 'Passord', 'Sikkerhetsnivå');
+    
+    html += objUser.showTableHeaderMenu('','centrum', 'Passord', 'Sikkerhetsnivå');
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objUser.insertTableRow('', menuNumber, objPassword.accountMenu);
+    
+    html += objUser.insertTableRow('');
 
     // password
     html += objUser.inputTablePassword('password', '', 45);
@@ -223,28 +223,24 @@ function showUser(menuNumber, userId) {
     html += "</tr>";
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objUser.insertTableRow('', menuNumber, objPassword.accountMenu);
+    
+    html += objUser.insertTableRow('');
     html += "<td></td><td></td></tr>";
 
     // show buttons
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objUser.insertTableRow('', menuNumber, objPassword.accountMenu);
+    
+    html += objUser.insertTableRow('');
 
     html += objUser.showButton('update', 'Oppdater');
     html += "<td></td></tr>";
-
-    // Show the rest of the menu
-    menuNumber++;
-    html += objUser.showRestMenu(menuNumber, objUser.accountMenu, '', '');
 
     // The end of the table
     html += objUser.endTable();
     document.querySelector('.result').innerHTML = html;
 
-    return menuNumber;
+    
   }
 }
 
@@ -293,10 +289,10 @@ async function updateUserRow(userId) {
     }
 
     // Show filter
-    let menuNumber = 0;
+    
     const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-    menuNumber = showFilter(menuNumber, condominiumId, userId);
-    menuNumber = showUser(menuNumber, userId);
+    showFilter( condominiumId, userId);
+    showUser( userId);
 
     document.querySelector('.filterUserId').disabled = false;
   } else {

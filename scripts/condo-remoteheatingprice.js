@@ -39,13 +39,13 @@ async function main() {
       await objCondo.loadCondoTable(objRemoteHeatingPrice.condominiumId, objRemoteHeatingPrice.nineNine);
 
       // Show header
-      let menuNumber = 0;
+      
       showHeader();
 
       await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId);
 
       // Show remoteHeatingPrice
-      menuNumber = showRemoteHeating(menuNumber);
+      showRemoteHeating();
 
       // Events
       events();
@@ -82,8 +82,8 @@ async function events() {
       await deleteRemoteHeatingPriceRow(remoteHeatingPriceId, className);
       await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId);
 
-      let menuNumber = 0;
-      menuNumber = showRemoteHeating(menuNumber);
+      
+      showRemoteHeating();
     };
   });
 
@@ -131,8 +131,8 @@ async function events() {
 
         await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId);
 
-        let menuNumber = 0;
-        menuNumber = showRemoteHeating(menuNumber);
+        
+        showRemoteHeating();
       };
     };
   });
@@ -171,13 +171,13 @@ function showHeader() {
 }
 
 // Insert empty table row
-function insertEmptyTableRow(menuNumber) {
+function insertEmptyTableRow() {
 
   let html = '';
   let date = '';
 
   // insert a table row (<tr></td>)
-  html += objRemoteHeatingPrice.insertTableRow('', menuNumber, objRemoteHeatingPrice.accountMenu);
+  html += objRemoteHeatingPrice.insertTableRow('');
 
   //html += "<td class='center'>Ny fjernvarmepris</td>";
 
@@ -193,19 +193,19 @@ function insertEmptyTableRow(menuNumber) {
 }
 
 // Show remoteheatingprices
-function showRemoteHeating(menuNumber) {
+function showRemoteHeating() {
 
   // start table
   let html = objRemoteHeatingPrice.initializeTable(columnWidths);
 
-  menuNumber++;
-  html += objRemoteHeatingPrice.showTableHeaderMenu(menuNumber, objRemoteHeatingPrice.accountMenu, '','center', 'År', `Pris kilowatTimer`, 'Slett');
+  
+  html += objRemoteHeatingPrice.showTableHeaderMenu( '','center', 'År', `Pris kilowatTimer`, 'Slett');
 
   objRemoteHeatingPrice.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objRemoteHeatingPrice.insertTableRow('', menuNumber, objRemoteHeatingPrice.accountMenu);
+    
+    html += objRemoteHeatingPrice.insertTableRow('');
 
     // Select year (<td></td>)
     const year = remoteHeatingPrice.year;
@@ -234,19 +234,15 @@ function showRemoteHeating(menuNumber) {
   // Insert empty table row for insertion
   if (enableChanges) {
 
-    menuNumber++;
-    html += insertEmptyTableRow(menuNumber);
+    
+    html += insertEmptyTableRow();
   }
-
-  // Show the rest of the menu
-  menuNumber++;
-  html += objRemoteHeatingPrice.showRestMenu(menuNumber, objRemoteHeatingPrice.accountMenu, '', '', '');
 
   // The end of the table
   html += objRemoteHeatingPrice.endTable();
   document.querySelector('.result').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Delete one remoteHeatingPrice row
@@ -302,8 +298,8 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
 
     await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId);
 
-    let menuNumber = 0;
-    menuNumber = showRemoteHeating(menuNumber);
+    
+    showRemoteHeating();
   }
 }
 

@@ -20,7 +20,7 @@ const enableChanges = (objImportFile.securityLevel > 5);
 
 const columnWidths = [175, 175, 175, 175, 175, 175, 175, 175, 200];
 
-let menuNumber = 0;
+
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -73,7 +73,7 @@ async function main() {
       showHeader();
 
       // Name of importfile
-      menuNumber = importFileName(menuNumber);
+      importFileName();
 
       // Events
       events();
@@ -136,7 +136,7 @@ async function events() {
           createTransactionsArray(objImportFile.strCSVTransaction);
 
           // Show transactions
-          menuNumber = showTransactions(0);
+          showTransactions(0);
         }
       } else {
 
@@ -519,7 +519,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber) {
+function showFilter() {
 
   // Start table
   let html = objImportFile.initializeTable(columnWidths);
@@ -528,8 +528,8 @@ function showFilter(menuNumber) {
   html += objImportFile.startTableBody();
   html += "</tr>";
 
-  menuNumber++;
-  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '', '', '', '', '', '', '', '');
+  
+  html += objImportFile.insertTableRow('', objImportFile.accountMenu, '', '', '', '', '', '', '', '');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -538,17 +538,17 @@ function showFilter(menuNumber) {
   html += objImportFile.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  return menuNumber;
+  
 }
 
 // Show csv file for transactions
-function showTransactions(menuNumber) {
+function showTransactions() {
 
   // start table
   let html = objImportFile.initializeTable(columnWidths);
   // Table header (<tr></tr>)
-  menuNumber++;
-  html += objImportFile.showTableHeaderMenu(menuNumber, objImportFile.accountMenu, '#e0f0e0','center', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  
+  html += objImportFile.showTableHeaderMenu( '#e0f0e0','center', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -556,8 +556,8 @@ function showTransactions(menuNumber) {
   arrayTransactions.forEach((transaction) => {
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu);
+    
+    html += objImportFile.insertTableRow('', objImportFile.accountMenu);
 
     // Date
     let className = `accountingDate${menuNumber}`;
@@ -610,21 +610,17 @@ function showTransactions(menuNumber) {
   sumPayments = formatOreToKroner(sumPayments);
 
   // Show sum row
-  menuNumber++;
-  html += objImportFile.insertTableRow('font-weight: 600;', menuNumber, objImportFile.accountMenu, '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
+  
+  html += objImportFile.insertTableRow('font-weight: 600;', objImportFile.accountMenu, '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
 
   // Show update button
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '');
+  
+  html += objImportFile.insertTableRow('', objImportFile.accountMenu, '');
 
   html += objImportFile.showButton('update', 'Oppdater');
   html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
-
-  // Show the rest of the menu
-  menuNumber++;
-  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu, '', '', '', '', '', '', '', '');
 
   // The end of the table
   html += objImportFile.endTable();
@@ -653,20 +649,20 @@ async function updateTransactions() {
 }
 
 // Import fileName
-function importFileName(menuNumber) {
+function importFileName() {
 
   // Start table
   let html = objImportFile.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  menuNumber++;
-  html += objImportFile.showTableHeaderMenu(menuNumber, objImportFile.accountMenu, '', 'center','', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
+  
+  html += objImportFile.showTableHeaderMenu( '', 'center','', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();
 
-  menuNumber++;
-  html += objImportFile.showAccountMenu(menuNumber);
+  
+  html += objImportFile.ShowHorizontalMenu(objImportFile.arrayAccountMenu)
   let importFileName = "Ugyldig filnavn";
   const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominium.condominiumId);
   if (rowNumberCondominium !== -1) {
@@ -682,26 +678,22 @@ function importFileName(menuNumber) {
   </tr>`;
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objBankAccount.insertTableRow('', menuNumber, objImportFile.accountMenu);
+  
+  html += objBankAccount.insertTableRow('', objImportFile.accountMenu);
   html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objImportFile.insertTableRow('', menuNumber, objImportFile.accountMenu, '', '');
+  
+  html += objImportFile.insertTableRow('', objImportFile.accountMenu, '', '');
 
   // Show buttons (<tr></td>)
   html += objBankAccount.showButton('importTransacionFile', 'Start import', 'Importer transaksjonsfil');
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objBankAccount.insertTableRow('', menuNumber, objImportFile.accountMenu);
+  
+  html += objBankAccount.insertTableRow('', objImportFile.accountMenu);
   html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
-
-  // Show the rest of the menu
-  menuNumber++;
-  html += objImportFile.showRestMenu(menuNumber, objImportFile.accountMenu, '', '', '', '', '', '', '', '');
 
   // end table body
   html += objImportFile.endTableBody();
@@ -710,5 +702,5 @@ function importFileName(menuNumber) {
   html += objImportFile.endTable();
   document.querySelector('.importFileName').innerHTML = html;
 
-  return menuNumber;
+  
 }

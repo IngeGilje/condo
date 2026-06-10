@@ -8,7 +8,7 @@ const objUserBankAccount = new UserBankAccount('userbankaccount');
 
 const enableChanges = (objUserBankAccount.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175, 75];
+const columnWidths = [175, 175, 175, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -40,18 +40,18 @@ async function main() {
       await objAccount.loadAccountsTable(objUserBankAccount.condominiumId, fixedCost);
 
       // Show header
-      let menuNumber = 0;
+
       showHeader();
 
-      // Show filter
-      menuNumber = showFilter(menuNumber, objUserBankAccount.userId);
+      // Edit filter
+      editFilter(objUserBankAccount.userId);
 
       // Show accounts
       userId = Number(document.querySelector('.filterUserId').value);
       accountId = Number(document.querySelector('.filterAccountId').value);
       await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
-      menuNumber = showUserBankAccount(menuNumber);
+      showUserBankAccount();
 
       // Events
       events();
@@ -159,7 +159,7 @@ function showHeader() {
   html += objUserBankAccount.startTableBody();
 
   // show main header
-  html += objUserBankAccount.showTableHeaderLogOut('', '', 'Bankkonto', '');
+  html += objUserBankAccount.showTableHeaderLogOut('', '', 'Bankkonto');
   html += "</tr>";
 
   // end table body
@@ -171,21 +171,21 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(menuNumber, userId) {
+function editFilter(userId) {
 
   // Start table
   let html = objUserBankAccount.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  menuNumber++;
-  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '','center', '', 'Bruker', 'Konto', '');
+
+  html += objUserBankAccount.showTableHeaderMenu('', 'center', '', 'Bruker', 'Konto', '');
 
   // start table body
   html += objUserBankAccount.startTableBody();
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, '');
+
+  html += objUserBankAccount.insertTableRow('', '');
 
   // Show all selected users
   html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', 'Alle', enableChanges);
@@ -195,8 +195,8 @@ function showFilter(menuNumber, userId) {
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  menuNumber++;
-  html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu, '', '', '', '');
+
+  html += objUserBankAccount.insertTableRow('', '', '', '', '');
 
   // end table body
   html += objUserBankAccount.endTableBody();
@@ -205,19 +205,19 @@ function showFilter(menuNumber, userId) {
   html += objUserBankAccount.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  return menuNumber;
+
 }
 
 // Insert empty table row
-function insertEmptyTableRow(menuNumber) {
+function insertEmptyTableRow() {
 
   let html = "";
 
   // Insert a table row (<tr></td>)
-  html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu);
+  html += objUserBankAccount.insertTableRow('');
 
   // user column
-  html += objUser.showSelectedUsers('userId0', 'width:175px', 0, 'Velg bruker', '', enableChanges);
+  html += objUser.showSelectedUsers('userId0', 'width:175px;', 0, 'Velg bruker', '', enableChanges);
 
   // Account column
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
@@ -230,20 +230,20 @@ function insertEmptyTableRow(menuNumber) {
 }
 
 // Show user bank accounts
-function showUserBankAccount(menuNumber) {
+function showUserBankAccount() {
 
   // start table
   let html = objUserBankAccount.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  menuNumber++;
-  html += objUserBankAccount.showTableHeaderMenu(menuNumber, objUserBankAccount.accountMenu, '#e0f0e0','center', 'Bruker', 'Konto', 'Bankkonto', '');
+
+  html += objUserBankAccount.showTableHeaderMenu('#e0f0e0', 'center', 'Bruker', 'Konto', 'Bankkonto', '');
 
   objUserBankAccount.arrayUserBankAccounts.forEach((userBankAccount) => {
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objUserBankAccount.insertTableRow('', menuNumber, objUserBankAccount.accountMenu);
+
+    html += objUserBankAccount.insertTableRow('');
 
     // user Id
     //const userId = userBankAccount.userId;
@@ -257,7 +257,7 @@ function showUserBankAccount(menuNumber) {
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += objUserBankAccount.editTableCell(className,  userBankAccount.bankAccount, 11, enableChanges);
+    html += objUserBankAccount.editTableCell(className, userBankAccount.bankAccount, 11, enableChanges);
 
     // Delete
     className = `delete${userBankAccount.userBankAccountId}`;
@@ -270,19 +270,15 @@ function showUserBankAccount(menuNumber) {
   if (enableChanges) {
 
     // Insert empty table row for insertion
-    menuNumber++;
-    html += insertEmptyTableRow(menuNumber);
-  }
 
-  // Show the rest of the menu
-  menuNumber++;
-  html += objUserBankAccount.showRestMenu(menuNumber, objUserBankAccount.accountMenu, '', '', '', '');
+    html += insertEmptyTableRow();
+  }
 
   // The end of the table
   html += objUserBankAccount.endTable();
   document.querySelector('.result').innerHTML = html;
 
-  return menuNumber;
+
 }
 
 // Delete one account row
@@ -342,6 +338,6 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     accountId = Number(document.querySelector('.filterAccountId').value);
     await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
-    menuNumber = showUserBankAccount(3);
+    showUserBankAccount(3);
   }
 }

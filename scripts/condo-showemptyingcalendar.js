@@ -121,10 +121,9 @@ function showFilter() {
 
   // Header filter (<tr></tr>)
   html += objShowEmptyingCalendar.showTableHeaderMenu(0, objShowEmptyingCalendar.accountMenu,    '',             'left','', '','', 'År', 'Måned',  '', '');
-  //                                         menuNumber,                            menuType, color, direction = "left", ...texts
-
+ 
   // insert a table row (<tr></td>)
-  html += objShowEmptyingCalendar.insertTableRow('', 0, objShowEmptyingCalendar.accountMenu, '', '', '');
+  html += objShowEmptyingCalendar.insertTableRow('', '1', '2', '3');
 
   // Selected year (<td></td>)
   const year = String(today.getFullYear());
@@ -139,7 +138,7 @@ function showFilter() {
   html += "<td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-  html += objShowEmptyingCalendar.insertTableRow("width:150px;", 0, objShowEmptyingCalendar.accountMenu, '', '', '', '', '', '', '');
+  html += objShowEmptyingCalendar.insertTableRow('',  '1', '2', '3', '4', '5', '6', '7');
 
   // end table body
   html += objShowEmptyingCalendar.endTableBody();
@@ -157,14 +156,12 @@ function showEmptyingCalendar() {
 
   // Table header (<tr></tr>)
   html += objEmptyingCalendar.showTableHeaderMenu(0, objEmptyingCalendar.accountMenu, '#e0f0e0',           'center', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
-   //                                    menuNumber,                        menuType,       color, direction = "left", ...texts
-
 
   if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingCalendar) => {
 
       // Show menu
-      html += objShowEmptyingCalendar.insertTableRow('', 0, objShowEmptyingCalendar.accountMenu);
+      html += objShowEmptyingCalendar.insertTableRow('');
 
       // condoId
       let condoId = emptyingCalendar.condoId;
