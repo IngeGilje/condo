@@ -37,8 +37,8 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objVoucher.ShowHorizontalMenu(objVoucher.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objVoucher.showHorizontalMenu(objVoucher.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
 
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objVoucher.condominiumId, fixedCost);
@@ -204,7 +204,7 @@ function showVoucher(transactionId) {
 
     // account
     const accountId = objTransaction.arrayTransactions[rowNumberTransaction].accountId;
-    html += objAccount.showSelectedAccounts('accountId', 'width:175px;', accountId, '', '', false);
+    html += objAccount.showSelectedAccounts('accountId', '', accountId, '', '', false);
 
     html += "</tr>";
 

@@ -1,5 +1,5 @@
 // maintenance of accounts
-debugger;
+
 // Activate classes
 const today = new Date();
 const objUser = new User('user');
@@ -12,7 +12,7 @@ const constFixedCost = 'Fast kostnad';
 const enableChanges = (objAccount.securityLevel > 5);
 
 // column widths
-const columnWidths = [175, 175, 175];
+const columnWidths = [175, 175, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -35,8 +35,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objAccount.ShowHorizontalMenu(objAccount.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objAccount.showHorizontalMenu(objAccount.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show condominium menu
+      html = objAccount.showHorizontalMenu(objAccount.arrayMenuCondominium);
+      document.querySelector('.menuCondominium').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
@@ -186,7 +190,7 @@ function showFilter() {
 
   // Header filter (<tr></tr>)
 
-  html += objAccount.showTableHeaderMenu('', 'center', '1', '2Kostnadstype', '3');
+  html += objAccount.showTableHeaderMenu('', 'center', '', 'Kostnadstype', '');
 
   // start table body
   html += objAccount.startTableBody();
@@ -196,7 +200,7 @@ function showFilter() {
   html += objAccount.insertTableRow('', '');
 
   // fixed or not fixed cost
-  html += objAccount.showSelectedValues('filterFixedCost', 'width:175px;', true, 'Alle', constFixedCost, constVariableCost, 'Alle');
+  html += objAccount.showSelectedValues('filterFixedCost', '', true, 'Alle', constFixedCost, constVariableCost, 'Alle');
   html += "<td></td></tr>";
 
   // insert a table row (<tr></td>)

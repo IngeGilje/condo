@@ -35,8 +35,8 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objProject.ShowHorizontalMenu(objProject.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objProject.showHorizontalMenu(objProject.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objProject.condominiumId, resident, objProject.nineNine);
@@ -217,11 +217,11 @@ function showFilter( projectId) {
   html += objProject.insertTableRow('', '');
 
   // Project (<td></td>)
-  html += objProject.showSelectedProjects('filterProjectId', 'width:175px;', projectId, 'Velg prosjekt', '', enableChanges);
+  html += objProject.showSelectedProjects('filterProjectId', '', projectId, 'Velg prosjekt', '', enableChanges);
   html += "<td></td><td></td><td></td></tr>";
 
   
-  html += objProject.insertTableRow('', '1', '2', '3', '4', '5');
+  html += objProject.insertTableRow('', '', '', '', '', '');
 
   // end table body
   html += objProject.endTableBody();
@@ -246,7 +246,7 @@ function editProjects() {
 
     // insert a table row (<tr></td>)
     
-    html += objProject.insertTableRow('', '1', '2');
+    html += objProject.insertTableRow('', '', '');
 
     // name
     let name = project.name;
@@ -273,7 +273,7 @@ function editProjects() {
   };
 
   
-  html += objProject.insertTableRow('', '1', '2', '3', '4', '5');
+  html += objProject.insertTableRow('', '', '', '', '', '');
 
   // The end of the table
   html += objProject.endTable();
@@ -387,16 +387,16 @@ function showTransactions() {
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
-    html += objAccount.showSelectedAccounts(className, 'width:175px;', bankTransaction.accountId, 'Velg konto', '', false);
+    html += objAccount.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
     // condos
     className = `condoId${bankTransaction.transactionId}`;
-    html += objCondo.showSelectedCondos(className, 'width:175px;', bankTransaction.condoId, '-', '', false);
+    html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
 
     /*
     // accounts
     className = `accountId${bankTransaction.transactionId}`;
-    objAccount.showSelectedAccounts(className, 'width:175px;', bankTransaction.accountId, 'Velg konto', '', false);
+    objAccount.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
     */
 
     // amount

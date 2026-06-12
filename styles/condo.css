@@ -59,6 +59,7 @@ input {
   cursor: pointer;
   border-radius: 5px;
   border-color: #e0f0e0;
+  width: 100%;
 }
 
 button:hover,
@@ -120,40 +121,10 @@ select {
   border-bottom: 1px solid black;
 }
 
-/*
-.button {
-  background-color: #e0f0e0;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-
-  padding: 8px 14px;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  margin-right: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-
-  display: block;
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px 30px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-}
-*/
-
-
 .button {
   display: block;
   width: 100%;
   height: 100%;
-  /*max-width: 150px; */
   /* space inside the link */
   padding: 12px;
   padding-left: 15px;
@@ -231,7 +202,6 @@ select {
 
 .horizontalMenu li a {
   display: block;
-  max-width: 150px;
   padding: 12px 15px;
   color: black;
   box-sizing: border-box;
@@ -321,7 +291,7 @@ iframe {
 /* Navbar container */
 .navbar {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   padding: 15px 30px;
   background: rgba(255, 255, 255, 0.05);

@@ -74,7 +74,7 @@ class Condo extends Condos {
           value=${condo.condoId}
           ${(condo.condoId === condoId) ? 'selected' : ''}
         >
-          ${condo.name.trim()}
+          &nbsp;&nbsp;${condo.name.trim()}&nbsp;&nbsp;
         </option>`;
         if (condo.condoId === condoId) selectedValue = true;
       });
@@ -86,7 +86,7 @@ class Condo extends Condos {
         value="0" 
         selected
       >
-        Ingen leiligheter
+        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
       </option>`;
       selectedValue = true;
     }
@@ -99,7 +99,7 @@ class Condo extends Condos {
         value=${this.nineNine}
         ${(selectedValue) ? '' : 'selected'} 
       >
-        ${selectAll}
+        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -111,7 +111,7 @@ class Condo extends Condos {
         value=0
         ${(!selectedValue) ? 'selected' : ''}
       >
-        ${selectNone}
+        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

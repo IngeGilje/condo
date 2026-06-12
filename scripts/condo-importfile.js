@@ -43,8 +43,8 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objImportFile.ShowHorizontalMenu(objImportFile.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
 
       let transactionFile = true;
 
@@ -662,7 +662,7 @@ function importFileName() {
   html += objImportFile.startTableBody();
 
   
-  html += objImportFile.ShowHorizontalMenu(objImportFile.arrayAccountMenu)
+  html += objImportFile.showHorizontalMenu(objImportFile.arrayAccountMenu)
   let importFileName = "Ugyldig filnavn";
   const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominium.condominiumId);
   if (rowNumberCondominium !== -1) {

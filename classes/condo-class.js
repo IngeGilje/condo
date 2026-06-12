@@ -26,144 +26,207 @@ class Condos {
   userId = Number(sessionStorage.getItem("userId"));
 
   // array of horizontal main menu
-  arrayMainMenu = [
-    {
-      applicationName: "condo-showtransaction.html",
-      className: "Menu1",
-      text: "Regnskap"
-    },
+  arrayMenuMain = [
     {
       applicationName: "condo-shownews.html",
-      className: "Menu2",
+      className: "Menu1",
       text: "Nyheter"
     },
     {
       applicationName: "condo-showemptyingcalendar.html",
-      className: "Menu3",
+      className: "Menu2",
       text: "Tømmekalender"
     },
     {
-      applicationName: "condo-news.html",
+      applicationName: "condo-condominium.html",
+      className: "Menu3",
+      text: "Sameie"
+    },
+    {
+      applicationName: "condo-user.html",
       className: "Menu4",
-      text: "Administrasjon"
+      text: "Bruker"
+    },
+    {
+      applicationName: "condo-showtransaction.html",
+      className: "Menu5",
+      text: "Regnskap"
+    },
+    {
+      applicationName: "condo-due.html",
+      className: "Menu6",
+      text: "Forfall"
     },
     {
       applicationName: "condo-login.html",
-      className: "Menu5",
+      className: "Menu10",
       text: "Logg ut"
     }
   ];
 
-  // array of menu for account
-  arrayAccountMenu = [
+  // array of horizontal news menu
+  arrayMenuNews = [
+    {
+      applicationName: "condo-shownews.html",
+      className: "Menu1",
+      text: "Vis Nyheter"
+    },
+    {
+      applicationName: "condo-news.html",
+      className: "Menu2",
+      text: "Nyheter"
+    },
+  ];
+
+  // array of horizontal emptying calendar menu
+  arrayMenuEmptyingCalendar = [
+    {
+      applicationName: "condo-showemptyingcalendar.html",
+      className: "Menu1",
+      text: "Vis Tømmekalender"
+    },
+    {
+      applicationName: "condo-emptyingcalendar.html",
+      className: "Menu2",
+      text: "Tømmekalender"
+    },
+  ];
+
+  // menu array for condominium
+  arrayMenuCondominium = [
     {
       applicationName: "condo-condominium.html",
       className: "Menu1",
       text: "Sameie"
     },
     {
-      applicationName: "condo-user.html",
+      applicationName: "condo-bankaccount.html",
       className: "Menu2",
+      text: "Bankkonto Sameie"
+    },
+    {
+      applicationName: "condo-account.html",
+      className: "Menu3",
+      text: "Konto"
+    }
+  ];
+
+  // menu array for user
+  arrayMenuUser = [
+    {
+      applicationName: "condo-user.html",
+      className: "Menu1",
       text: "Bruker"
     },
     {
       applicationName: "condo-password.html",
-      className: "Menu3",
+      className: "Menu2",
       text: "Passord"
     },
     {
       applicationName: "condo-condo.html",
-      className: "Menu4",
+      className: "Menu3",
       text: "Leilighet"
     },
     {
-      applicationName: "condo-bankaccount.html",
-      className: "Menu5",
-      text: "Bankkonto sameie"
-    },
-    {
-      applicationName: "condo-account.html",
-      className: "Menu6",
-      text: "Konto"
-    },
-    {
       applicationName: "condo-userbankaccount.html",
-      className: "Menu7",
-      text: "Bankkonto for bruker"
+      className: "Menu4",
+      text: "Bankkonto"
+    }
+  ];
+
+  // menu array for account
+  arrayMenuAccount = [
+    {
+      applicationName: "condo-showtransaction.html",
+      className: "Menu1",
+      text: "Vis Transaksjoner"
+    },
+    {
+      applicationName: "condo-transaction.html",
+      className: "Menu2",
+      text: "Transaksjoner"
+    },
+        {
+      applicationName: "condo-remoteheating.html",
+      className: "Menu4",
+      text: "Fjernvarme"
+    },
+    {
+      applicationName: "condo-priceremoteheating.html",
+      className: "Menu5",
+      text: "Pris Fjernvarme"
+    },
+    {
+      applicationName: "condo-annualaccount.html",
+      className: "Menu3",
+      text: "Årsregnskap"
+    },
+  ];
+
+  // menu array for due
+  arrayMenuDue = [
+        {
+      applicationName: "condo-due.html",
+      className: "Menu4",
+      text: "Forfall"
     },
     {
       applicationName: "condo-supplier.html",
-      className: "Menu8",
+      className: "Menu1",
       text: "Leverandør"
     },
     {
       applicationName: "condo-commoncost.html",
-      className: "Menu9",
-      text: "Felleskostnader"
-    },
-    {
-      applicationName: "condo-due.html",
-      className: "Menu10",
-      text: "Forfall"
-    },
-    {
-      applicationName: "condo-remoteheatingprice.html",
-      className: "Menu11",
-      text: "Pris fjernvarme"
-    },
-    {
-      applicationName: "condo-remoteheating.html",
-      className: "Menu12",
-      text: "Fjernvarme"
-    },
-    {
-      applicationName: "condo-budget.html",
-      className: "Menu13",
-      text: "Budsjett"
+      className: "Menu2",
+      text: "Felleskostnad"
     },
     {
       applicationName: "condo-overview.html",
-      className: "Menu14",
+      className: "Menu3",
       text: "Betalingsoversikt"
-    },
-    {
-      applicationName: "condo-showtransaction.html",
-      className: "Menu15",
-      text: "Vis transaksjoner"
-    },
-    {
-      applicationName: "condo-importfile.html",
-      className: "Menu16",
-      text: "Importer transaksjoner"
-    },
-    {
-      applicationName: "condo-annualaccount.html",
-      className: "Menu17",
-      text: "Årsregnskap"
-    },
-    {
-      applicationName: "condo-transaction.html",
-      className: "Menu18",
-      text: "Transaksjoner"
-    },
-    {
-      applicationName: "condo-project.html",
-      className: "Menu19",
-      text: "Prosjekter"
     }
   ];
 
-  // array of menu for administration
-  arrayAdministrationMenu = [
+  // menu array for annual report
+  arrayMenuAnnualReport = [
     {
-      applicationName: "condo-news.html",
+      applicationName: "condo-budget.html",
       className: "Menu1",
-      text: "Nyheter"
+      text: "Budsjett"
     },
     {
-      applicationName: "condo-emptyingcalendar.html",
+      applicationName: "condo-annualreport.html",
       className: "Menu2",
-      text: "Tømmekalender"
+      text: "Årsrapport"
+    }
+  ];
+
+  // menu array for bank account transactions
+  arrayMenuTransaction = [
+    {
+      applicationName: "condo-showtransaction.html",
+      className: "Menu1",
+      text: "Vis transaksjoner"
+    },
+    {
+      applicationName: "condo-importtransaction.html",
+      className: "Menu2",
+      text: "Importer transaksjoner"
+    },
+    {
+      applicationName: "condo-transaction.html",
+      className: "Menu3",
+      text: "Transaksjoner"
+    }
+  ];
+
+  // menu array for projects
+  arrayMenuProject = [
+    {
+      applicationName: "condo-project.html",
+      className: "Menu1",
+      text: "Vis transaksjoner"
     }
   ];
 
@@ -199,7 +262,7 @@ class Condos {
 
     return `
     <td 
-      class="left" 
+      class="center one-line" 
       colspan="${colspan}" 
       rowspan="${rowspan}"
     >
@@ -207,7 +270,7 @@ class Condos {
         class="${className} center one-line"
         type="text"
         maxlength="${maxlength}"
-        value="${value}"
+        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
         ${(enableChanges) ? '' : 'readonly'}
       >
     </td>`;
@@ -244,7 +307,6 @@ class Condos {
         rows="6"
         class="${className} news-text"
         maxlength="${maxlength}"
-        value=""
       >
         ${value}
       </textarea>
@@ -422,32 +484,22 @@ class Condos {
         ${(enableChanges) ? '' : 'disabled'}>`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
-      if (number === selectedNumber) {
 
-        html += `
-        <option 
-          value="${number}"
-          selected
-          >
-          ${number.toString().trim()}
-        </option>`;
-      } else {
-
-        html += `
-          <option 
-            value="${number}"
-            >
-            ${number.toString().trim()}
-          </option>`;
-      }
-    };
-
+      html += `
+      <option 
+        value="${number}"
+        ${(number === selectedNumber) ? 'selected' : ''}
+        >
+          &nbsp;&nbsp;${number.toString().trim()}&nbsp;&nbsp;
+      </option>`;
+    }
     html += `
       </select >
     </td>`;
 
     return html;
-  }
+  };
+
 
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {
@@ -490,7 +542,7 @@ class Condos {
 
     let html = `
     <td
-      class="one-line left"
+      class="one-line center"
     >
       <select 
         class="${className} center"
@@ -505,7 +557,7 @@ class Condos {
         value="${choice}"
         ${(choice === selected) ? 'selected' : ''}
       >
-        ${choice}
+        &nbsp;&nbsp;${choice}&nbsp;&nbsp;
       </option>`;
     });
 
@@ -863,7 +915,7 @@ class Condos {
   }
 
   // insert a table row (<tr></td>)
-  insertTableRow(style,  ...texts) {
+  insertTableRow(style, ...texts) {
 
     let html = "<tr>";
 
@@ -881,12 +933,13 @@ class Condos {
     return html;
   }
 
+  /*
   // insert menu at start of a row 
   insertMenu(className, style, menuType, ...texts) {
 
     let html = "<tr>";
 
-      texts.forEach((text) => {
+    texts.forEach((text) => {
 
       html += (style === '')
         ? `<td class="center no-border ${className}">${text}</td>`
@@ -895,6 +948,7 @@ class Condos {
 
     return html;
   }
+  */
 
   // end body table
   endTableBody() {
@@ -963,34 +1017,6 @@ class Condos {
     }
   }
 
-  // Show account menu (<td></td>)
-  showAccountMenuNew() {
-
-    const URL = (this.serverStatus === 1)
-      ? 'http://ingegilje.no/'
-      : 'http://localhost/';
-
-    let html = "<div class='leftMenuNew'>";
-    // Check of menu exist
-    if (this.arrayAccountMenu.length >= 0) {
-
-      this.arrayAccountMenu.forEach((accountMenu) => {
-        //html += `
-        //<td class="one-line menu leftMenuNew "
-        //>
-        html += `
-        <button class="menuButtonNew one-line menu leftMenuNew">
-          <a href="${URL}${accountMenu.applicationName}">
-            ${accountMenu.text}
-          </a>
-        </button>`;
-      });
-
-      html += "</div>";
-      return html;
-    }
-  }
-
   // Format norwegian date (11.05.1983) to number (19830511)
   formatNorDateToNumber(norDate) {
 
@@ -1010,8 +1036,8 @@ class Condos {
     let html = this.startTable(style);
 
     // show main header
-    html += this.showTableHeaderMenu( '', 'center', '');
- 
+    html += this.showTableHeaderMenu('', 'center', '');
+
     html += this.showTableHeader(`width:${tableWidth}px;`, message);
 
     // The end of the table
@@ -1026,7 +1052,7 @@ class Condos {
   }
 
   // Show horizontal menu
-  ShowHorizontalMenu(arrayMenu) {
+  showHorizontalMenu(arrayMenu) {
 
     const URL = (this.serverStatus === 1)
       ? 'http://ingegilje.no/'

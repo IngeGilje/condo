@@ -8,7 +8,7 @@ const objUser = new User('user');
 
 const enableChanges = (objUser.securityLevel > 5);
 
-const columnWidths = [175, 175, 175];
+const columnWidths = [175, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -31,8 +31,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objUser.ShowHorizontalMenu(objUser.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objUser.showHorizontalMenu(objUser.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show user menu
+      html = objUser.showHorizontalMenu(objUser.arrayMenuUser);
+      document.querySelector('.menuUser').innerHTML = html;
 
       if (enableChanges) {
 
@@ -52,11 +56,10 @@ async function main() {
       showHeader();
 
       // Show filter
-      
-      showFilter( objUser.condominiumId, objUser.userId);
+      editFilter(objUser.condominiumId, objUser.userId);
 
       // Show result
-      showUser( objUser.userId);
+      showUser(objUser.userId);
 
       // Events
       events();
@@ -81,9 +84,9 @@ async function events() {
       //const userId = Number(document.querySelector('.filterUserId').value);
       const userId = objUser.arrayUsers.at(-1).userId;
 
-      
-      showFilter( condominiumId, userId);
-      showUser( userId);
+
+      editFilter(condominiumId, userId);
+      showUser(userId);
     };
   });
 
@@ -128,9 +131,9 @@ async function events() {
 
       // Show filter
       const condominiumId = Number(document.querySelector('.filterCondominium').value);
-      
-      showFilter( condominiumId, objUser.userId);
-      showUser( objUser.userId);
+
+      editFilter(condominiumId, objUser.userId);
+      showUser(objUser.userId);
     };
   });
 
@@ -155,9 +158,9 @@ async function events() {
       if (userId === 0) userId = objUser.arrayUsers.at(-1).userId;
 
       // Show filter
-      
-      showFilter( condominiumId, userId);
-      showUser( userId);
+
+      editFilter(condominiumId, userId);
+      showUser(userId);
     };
   });
 
@@ -220,7 +223,7 @@ function showHeader() {
   html += objUser.startTableBody();
 
   // show main header
-  html += objUser.showTableHeaderLogOut('', 'Bruker');
+  html += objUser.showTableHeaderLogOut('Bruker');
   html += "</tr>";
 
   // end table body
@@ -232,32 +235,32 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter( condominiumId, userId) {
+function editFilter(condominiumId, userId) {
 
   // Start table
   let html = objUser.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  
+
   html += objUser.showTableHeaderMenu('', 'centrum', 'Bruker', '');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert a table row (<tr></td>)
-  
+
   html += objUser.insertTableRow('');
 
   // Condominium
-  if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', true)
+  if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId', '', condominiumId, '', '', true)
 
   // user
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', enableChanges)
+  html += objUser.showSelectedUsers('filterUserId', '', userId, '', '', enableChanges)
 
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  
+
   html += objUser.insertTableRow('', '', '');
   html += "</tr>";
 
@@ -268,11 +271,11 @@ function showFilter( condominiumId, userId) {
   html += objUser.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  
+
 }
 
 // Show result
-function showUser( userId) {
+function showUser(userId) {
 
   // start table
   let html = objUser.initializeTable(columnWidths);
@@ -283,28 +286,28 @@ function showUser( userId) {
 
     // email,condoId
     //html += "<tr>";
-    
+
     html += objUser.showTableHeaderMenu('', 'centrum', 'E-mail', 'Leilighet');
 
     // insert a table row (<tr></td>)
-    
+
     html += objUser.insertTableRow('');
 
     // email
     html += objUser.editTableCell('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
 
     // condoId
-    html += objCondo.showSelectedCondos('condoId', 'width:175px;', objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
+    html += objCondo.showSelectedCondos('condoId', '', objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
 
     html += "</tr>";
 
     // firstName, lastName
     //html += "<tr>";
-    
+
     html += objUser.showTableHeaderMenu('', 'centrum', 'Fornavn', 'Etternavn');
 
     // insert a table row (<tr></td>)
-    
+
     html += objUser.insertTableRow('');
 
     // firstName
@@ -317,11 +320,11 @@ function showUser( userId) {
 
     // phone, activ user
     //html += "<tr>";
-    
+
     html += objUser.showTableHeaderMenu('', 'centrum', 'Telefonnummer', 'Beboer');
 
     // insert a table row (<tr></td>)
-    
+
     html += objUser.insertTableRow('');
 
     // phone
@@ -329,12 +332,12 @@ function showUser( userId) {
 
     // Activ user
     resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
-    html += objUser.showSelectedValues('resident', 'width:175px;', enableChanges, resident, 'Ja', 'Nei')
+    html += objUser.showSelectedValues('resident', '', enableChanges, resident, 'Ja', 'Nei')
 
     html += "</tr>";
 
     // insert a table row (<tr></td>)
-    
+
     html += objUser.insertTableRow('', '', '');
     html += "</tr>";
 
@@ -342,7 +345,7 @@ function showUser( userId) {
     if (enableChanges) {
 
       // insert a table row (<tr></td>)
-      
+
       html += objUser.insertTableRow('');
 
       html += objUser.showButton('update', 'Oppdater');
@@ -350,7 +353,7 @@ function showUser( userId) {
       html += "</tr>";
 
       // insert a table row (<tr></td>)
-      
+
       html += objUser.insertTableRow('');
 
       html += objUser.showButton('delete', 'Slett');
@@ -363,7 +366,7 @@ function showUser( userId) {
     document.querySelector('.result').innerHTML = html;
     if (enableChanges) document.querySelector('.cancel').disabled = true;
 
-    
+
   }
 }
 
@@ -454,9 +457,9 @@ async function updateUserRow(userId) {
     }
 
     // Show filter
-    
-    showFilter( condominiumId, userId);
-    showUser( userId);
+
+    editFilter(condominiumId, userId);
+    showUser(userId);
     objUser.removeMessage();
 
     document.querySelector('.filterUserId').disabled = false;

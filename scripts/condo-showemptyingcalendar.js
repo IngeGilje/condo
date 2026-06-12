@@ -9,7 +9,7 @@ const objShowEmptyingCalendar = new ShowEmptyingCalendar('showemptyingcalendar')
 
 const enableChanges = (objEmptyingCalendar.securityLevel > 5);
 
-const columnWidths = [100, 175, 175, 175, 175, 175, 175];
+const columnWidths = [100, 100, 100, 100, 100, 100, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -32,8 +32,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objShowEmptyingCalendar.ShowHorizontalMenu(objShowEmptyingCalendar.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objShowEmptyingCalendar.showHorizontalMenu(objShowEmptyingCalendar.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show menu for empty calendar 
+      html = objEmptyingCalendar.showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
+      document.querySelector('.menuEmptyingCalendar').innerHTML = html;
 
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 
@@ -99,7 +103,7 @@ function showHeader() {
   html += objShowEmptyingCalendar.startTableBody();
 
   // show main header
-  html += objShowEmptyingCalendar.showTableHeaderLogOut('', '', '', 'Avfallskalender', '', '');
+  html += objShowEmptyingCalendar.showTableHeaderLogOut('', '', '', 'Avfall', '', '');
   html += "</tr>";
 
   // end table body
@@ -120,25 +124,25 @@ function showFilter() {
   html += objShowEmptyingCalendar.startTableBody();
 
   // Header filter (<tr></tr>)
-  html += objShowEmptyingCalendar.showTableHeaderMenu(0, objShowEmptyingCalendar.accountMenu,    '',             'left','', '','', 'År', 'Måned',  '', '');
- 
+  html += objShowEmptyingCalendar.showTableHeaderMenu('', '', '', '', '', 'År', 'Måned', '', '');
+
   // insert a table row (<tr></td>)
-  html += objShowEmptyingCalendar.insertTableRow('', '1', '2', '3');
+  html += objShowEmptyingCalendar.insertTableRow('', '', '', '');
 
   // Selected year (<td></td>)
   const year = String(today.getFullYear());
-  html += objShowEmptyingCalendar.showSelectedNumbers('filterYear','', 2020, 2030, year, true);
+  html += objShowEmptyingCalendar.showSelectedNumbers('filterYear', '', 2020, 2030, year, true);
 
   // Selected month
   // Get current date in  European date format (dd.mm.yyyy)
   const date = getCurrentDate();
   let month = Number(date.split('.')[1]); // Extract the month part
-  html += objShowEmptyingCalendar.showSelectedMonths('filterMonth','', month, true);
+  html += objShowEmptyingCalendar.showSelectedMonths('filterMonth', '', month, true);
 
   html += "<td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-  html += objShowEmptyingCalendar.insertTableRow('',  '1', '2', '3', '4', '5', '6', '7');
+  html += objShowEmptyingCalendar.insertTableRow('', '', '', '', '', '', '', '');
 
   // end table body
   html += objShowEmptyingCalendar.endTableBody();
@@ -155,7 +159,7 @@ function showEmptyingCalendar() {
   let html = objEmptyingCalendar.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objEmptyingCalendar.showTableHeaderMenu(0, objEmptyingCalendar.accountMenu, '#e0f0e0',           'center', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
+  html += objEmptyingCalendar.showTableHeaderMenu('#e0f0e0', 'center', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
   if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
     objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingCalendar) => {
@@ -166,13 +170,13 @@ function showEmptyingCalendar() {
       // condoId
       let condoId = emptyingCalendar.condoId;
       className = `condoId${emptyingCalendar.emptyingCalendarId}`;
-      html += objCondo.showSelectedCondos(className,'', condoId, 'Velg leilighet', '', false);
+      html += objCondo.showSelectedCondos(className, '', condoId, 'Velg leilighet', '', false);
 
       // date
       let date = emptyingCalendar.date;
       date = formatNumberToNorDate(date);
       className = `date${emptyingCalendar.emptyingCalendarId}`;
-      html += objShowEmptyingCalendar.editTableCell(className,  date, 10, false);
+      html += objShowEmptyingCalendar.editTableCell(className, date, 10, false);
 
       // residual waste  
       className = `residualWaste${emptyingCalendar.emptyingCalendarId}`;

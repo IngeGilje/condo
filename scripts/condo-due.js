@@ -10,7 +10,7 @@ const objDue = new Due('due');
 
 const enableChanges = (objDue.securityLevel > 5);
 
-const columnWidths = [175, 175, 100, 175, 175, 175, 175, 90];
+const columnWidths = [175, 100, 175, 175, 175, 175, 90];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -33,8 +33,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objDue.ShowHorizontalMenu(objDue.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objDue.showHorizontalMenu(objDue.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show due menu
+      html = objDue.showHorizontalMenu(objDue.arrayMenuDue);
+      document.querySelector('.menuDue').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objDue.condominiumId, resident, objDue.nineNine);
@@ -193,8 +197,7 @@ function editDues() {
   objDue.arrayDues.forEach((due) => {
 
     // insert a table row (<tr></td>)
-
-    html += objDue.insertTableRow('', objDue.accountMenu)
+    html += objDue.insertTableRow('')
 
     // Date
     const date = formatNumberToNorDate(due.date);
@@ -250,7 +253,7 @@ function editDues() {
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
-  html += objDue.insertTableRow('font-weight: 600;', objDue.accountMenu, '', '', 'Sum', sumAmount, '', '', '');
+  html += objDue.insertTableRow('font-weight: 600;',  '', '','Sum', sumAmount, '', '', '');
 
   // The end of the table
   html += objDue.endTable();
@@ -265,7 +268,7 @@ function insertEmptyTableRow() {
   let html = '';
 
   // insert a table row (<tr></td>)
-  html += objCondominium.insertTableRow('', objDue.accountMenu);
+  html += objCondominium.insertTableRow('');
 
   // Date
   html += objDue.editTableCell("date0", '', '', 10, enableChanges);
@@ -395,7 +398,7 @@ function showHeader() {
   html += objDue.startTableBody();
 
   // show main header
-  html += objDue.showTableHeaderLogOut('', '', '', '', '', '', '');
+  html += objDue.showTableHeaderLogOut('', '', '', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -414,18 +417,18 @@ function editFilter(condominiumId, condoId) {
 
   // Header filter (<tr></tr>)
 
-  html += objDue.showTableHeaderMenu('', 'center', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '', '');
+  html += objDue.showTableHeaderMenu('', 'center', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '','');
 
   // start table body
   html += objDue.startTableBody();
 
   // insert a table row (<tr></td>)
-
-  html += objDue.insertTableRow('', objDue.accountMenu, '');
+  html += objDue.insertTableRow('','');
 
   // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
 
+  // Show selected accounts
   html += objAccount.showSelectedAccounts('filterAccountId', '', objDue.nineNine, '', 'Vis alle', true);
 
   // show from date
@@ -443,8 +446,7 @@ function editFilter(condominiumId, condoId) {
   html += "<td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-
-  html += objDue.insertTableRow('', objDue.accountMenu, '', '', '', '', '', '', '');
+  html += objDue.insertTableRow('',  '', '', '', '', '', '','');
 
   // end table body
   html += objDue.endTableBody();

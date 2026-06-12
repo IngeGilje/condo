@@ -41,13 +41,13 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show account menu
-      let html = objTransaction.ShowHorizontalMenu(objTransaction.arrayAccountMenu);
-      document.querySelector('.accountMenu').innerHTML = html;
-
       // Show main menu
-      html = objTransaction.ShowHorizontalMenu(objTransaction.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      html = objShowTransaction.showHorizontalMenu(objShowTransaction.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show account menu
+      html = objShowTransaction.showHorizontalMenu(objShowTransaction.arrayMenuAccount);
+      document.querySelector('.menuAccount').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
@@ -187,7 +187,7 @@ function showHeader() {
   html += objShowTransaction.startTableBody();
 
   // show main header
-  html += objShowTransaction.showTableHeaderLogOut('1', '2', '3Transaksjoner', '4');
+  html += objShowTransaction.showTableHeaderLogOut('', '', 'Transaksjoner', '');
   html += "</tr>";
 
   // end table body
@@ -205,7 +205,7 @@ function showFilter(condoId, accountId) {
   let html = objShowTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  html += objTransaction.showTableHeaderMenu('', 'center', '1Leilighet', '2Konto', '3Fra dato', '4Til dato', '5Beløp');
+  html += objTransaction.showTableHeaderMenu('', 'center', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp');
 
   // start table body
   html += objShowTransaction.startTableBody();
@@ -234,7 +234,7 @@ function showFilter(condoId, accountId) {
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('', '1', '2', '3', '4', '5');
+  html += objTransaction.insertTableRow('', '', '', '', '', '');
 
   // end table body
   html += objShowTransaction.endTableBody();
@@ -251,7 +251,7 @@ function showTransactions() {
   let html = objShowTransaction.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', '1Dato', '2Konto', '3Leilighet', '4Beløp', '5');
+  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransaction.arrayTransactions) {
@@ -295,7 +295,7 @@ function showTransactions() {
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
 
-  html += objTransaction.insertTableRow('', '1', '2', '3Sum', sumAmount, '5');
+  html += objTransaction.insertTableRow('', '', '', 'Sum', sumAmount, '');
 
   // The end of the table
   html += objShowTransaction.endTable();

@@ -31,8 +31,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objUserBankAccount.ShowHorizontalMenu(objUserBankAccount.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objUserBankAccount.showHorizontalMenu(objUserBankAccount.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show user menu
+      html = objUserBankAccount.showHorizontalMenu(objUserBankAccount.arrayMenuUser);
+      document.querySelector('.menuUser').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objUserBankAccount.condominiumId, resident, objUserBankAccount.nineNine);
@@ -40,7 +44,6 @@ async function main() {
       await objAccount.loadAccountsTable(objUserBankAccount.condominiumId, fixedCost);
 
       // Show header
-
       showHeader();
 
       // Edit filter
@@ -188,10 +191,10 @@ function editFilter(userId) {
   html += objUserBankAccount.insertTableRow('', '');
 
   // Show all selected users
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', 'Alle', enableChanges);
+  html += objUser.showSelectedUsers('filterUserId', '', userId, '', 'Alle', enableChanges);
 
   // Show all selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', 'width:175px;', 0, '', 'Alle', true);
+  html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
   html += "</tr>";
 
   // insert a table row (<tr></td>)
@@ -217,7 +220,7 @@ function insertEmptyTableRow() {
   html += objUserBankAccount.insertTableRow('');
 
   // user column
-  html += objUser.showSelectedUsers('userId0', 'width:175px;', 0, 'Velg bruker', '', enableChanges);
+  html += objUser.showSelectedUsers('userId0', '', 0, 'Velg bruker', '', enableChanges);
 
   // Account column
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
@@ -248,12 +251,12 @@ function showUserBankAccount() {
     // user Id
     //const userId = userBankAccount.userId;
     let className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUser.showSelectedUsers(className, 'width:175px;', userBankAccount.userId, 'Velg bruker', '', enableChanges);
+    html += objUser.showSelectedUsers(className, '', userBankAccount.userId, 'Velg bruker', '', enableChanges);
 
     // account Id
     const accountId = userBankAccount.accountId;
     className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccount.showSelectedAccounts(className, 'width:175px;', accountId, 'Velg konto', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className, '', accountId, 'Velg konto', '', enableChanges);
 
     // bank account number
     className = `bankAccount${userBankAccount.userBankAccountId}`;

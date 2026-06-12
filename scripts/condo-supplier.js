@@ -8,7 +8,7 @@ const objSupplier = new Supplier('supplier');
 
 const enableChanges = (objSupplier.securityLevel > 5);
 
-const columnWidths = [175, 175, 175];
+const columnWidths = [175, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -24,8 +24,12 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
 } else {
 
   // Show main menu
-  let html = objSupplier.ShowHorizontalMenu(objSupplier.arrayMainMenu);
-  document.querySelector('.mainMenu').innerHTML = html;
+  let html = objSupplier.showHorizontalMenu(objSupplier.arrayMenuMain);
+  document.querySelector('.menuMain').innerHTML = html;
+
+  // Show due menu
+  html = objSupplier.showHorizontalMenu(objSupplier.arrayMenuDue);
+  document.querySelector('.menuDue').innerHTML = html;
 
   // Call main when script loads
   main();
@@ -47,11 +51,11 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       showHeader();
 
       // Show filter
-      
-      showFilter( supplierId);
+
+      editFilter(supplierId);
 
       // Show supplier
-      showSupplier( supplierId);
+      editSupplier(supplierId);
 
       // Events
       events();
@@ -74,7 +78,7 @@ async function events() {
 
       const supplierId = Number(document.querySelector('.filterSupplierId').value);
 
-      showSupplier(2, supplierId);
+      editSupplier(2, supplierId);
     };
   });
 
@@ -101,9 +105,9 @@ async function events() {
         ? objSupplier.arraySuppliers.at(-1).supplierId
         : 0;
       // Show filter
-      
-      showFilter( supplierId);
-      showSupplier( supplierId);
+
+      editFilter(supplierId);
+      editSupplier(supplierId);
     };
   });
 
@@ -126,9 +130,9 @@ async function events() {
       if (supplierId === 0) supplierId = objSupplier.arraySuppliers.at(-1).supplierId;
 
       // Show filter
-      
-      showFilter( supplierId);
-      showSupplier( supplierId);
+
+      editFilter(supplierId);
+      editSupplier(supplierId);
     };
   });
 
@@ -208,7 +212,7 @@ function showHeader() {
   html += objSupplier.startTableBody();
 
   // show main header
-  html += objSupplier.showTableHeaderLogOut('', 'Leverandør');
+  html += objSupplier.showTableHeaderLogOut('Leverandør');
   html += "</tr>";
 
   // end table body
@@ -220,26 +224,23 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter( supplierId) {
+function editFilter(supplierId) {
 
   // Start table
   let html = objSupplier.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  
-  html += objSupplier.showTableHeaderMenu( '', 'center','Velg leverandør', '');
+  html += objSupplier.showTableHeaderMenu('', 'center', 'Velg leverandør', '');
 
   // start table body
   html += objSupplier.startTableBody();
 
   // insert a table row (<tr></td>)
-  
   html += objSupplier.insertTableRow('');
 
   // supplier
-  html += objSupplier.showSelectedSuppliers('filterSupplierId', 'width:175px;', supplierId, '', '', true)
-
-  html += "</tr>";
+  html += objSupplier.showSelectedSuppliers('filterSupplierId', '', supplierId, '', '', true)
+  html += "<td></td></tr>";
 
   // end table body
   html += objSupplier.endTableBody();
@@ -247,30 +248,21 @@ function showFilter( supplierId) {
   // The end of the table
   html += objSupplier.endTable();
   document.querySelector('.editFilter').innerHTML = html;
-
-  
 }
 
-// Show result
-function showSupplier( supplierId) {
+// Show supplier
+function editSupplier(supplierId) {
 
   // start table
   let html = objSupplier.initializeTable(columnWidths);
 
-  // Table header (<tr></tr>)
-  
-  html += objSupplier.showTableHeaderMenu( '', 'center', 'Navn');
-
   // Check if supplier row exist
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-  //if (rowNumberSupplier !== -1) {
 
-  // Header for value including menu
-  
-  html += objSupplier.showTableHeaderMenu( '', 'center', 'Navn');
+  // Header for value
+  html += objSupplier.showTableHeaderMenu('', 'center', 'Navn', '');
 
   // insert a table row (<tr></td>)
-  
   html += objSupplier.insertTableRow('');
 
   // name
@@ -278,39 +270,32 @@ function showSupplier( supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].name;
 
-  html += objSupplier.editTableCell('name', '', name, 45, enableChanges);
-  html += "</tr>";
+  html += objSupplier.editTableCell('name', name, 45, enableChanges, 1);
+  html += "<td></td></tr>";
 
   // street, address2
-  //html += "<tr>";
-  
-  html += objSupplier.showTableHeaderMenu( '', 'center', 'Gate', 'Adresse 2');
+  html += objSupplier.showTableHeaderMenu('', 'center', 'Gate', 'Adresse 2');
 
   // insert a table row (<tr></td>)
-  
   html += objSupplier.insertTableRow('');
 
   // street
   const street = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += objSupplier.editTableCell('street', '', street, 45, enableChanges);
+  html += objSupplier.editTableCell('street', street, 45, enableChanges);
 
   // address2
   const address2 = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += objSupplier.editTableCell('address2', '', address2, 45, enableChanges);
-
+  html += objSupplier.editTableCell('address2', address2, 45, enableChanges);
   html += "</tr>";
 
   // postalCode, city
-  //html += "<tr>";
-  
-  html += objSupplier.showTableHeaderMenu( '', 'center', 'Postnummer', 'Poststed');
+  html += objSupplier.showTableHeaderMenu('', 'center', 'Postnummer', 'Poststed');
 
   // insert a table row (<tr></td>)
-  
   html += objSupplier.insertTableRow('');
 
   // postalCode
@@ -318,117 +303,100 @@ function showSupplier( supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
 
-  html += objSupplier.editTableCell('postalCode', '', postalCode, 4, enableChanges);
+  html += objSupplier.editTableCell('postalCode', postalCode, 4, enableChanges);
 
   // city
   const city = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += objSupplier.editTableCell('city', '', city, 45, enableChanges);
-
+  html += objSupplier.editTableCell('city', city, 45, enableChanges);
   html += "</tr>";
 
   // email,phone
-  //html += "<tr>";
-  
-  html += objSupplier.showTableHeaderMenu( '', 'center', 'E-mail', 'Telefonnummer');
+  html += objSupplier.showTableHeaderMenu('', 'center', 'E-mail', 'Telefonnummer');
 
   // insert a table row (<tr></td>)
-  
   html += objSupplier.insertTableRow('');
 
   // email
   const email = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += objSupplier.editTableCell('email', '', email, 50, enableChanges);
+  html += objSupplier.editTableCell('email', email, 45, enableChanges);
 
   // phone
   const phone = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += objSupplier.editTableCell('phone', '', phone, 8, enableChanges);
-
+  html += objSupplier.editTableCell('phone', phone, 8, enableChanges);
   html += "</tr>";
 
   // bankAccount, accountId
-  //html += "<tr>";
-  
-  html += objSupplier.showTableHeaderMenu( '', 'center', 'Konto', 'Bankkontonummer');
+  html += objSupplier.showTableHeaderMenu('', 'center', 'Konto', 'Bankkontonummer');
 
-  // Show menu
-  
-  html += objSupplier.showHorizontalMenu(objSupplier.arrayAccountMenu);
+  // insert a table row (<tr></td>)
+  html += objSupplier.insertTableRow('');
 
   // accountId
   const accountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccount.showSelectedAccounts('accountId', 'width:175px;', accountId, 'Velg konto', '', enableChanges);
+  html += objAccount.showSelectedAccounts('accountId', '', accountId, 'Velg konto', '', enableChanges);
 
   // bankAccount number
   const bankAccount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += objSupplier.editTableCell('bankAccount', '', bankAccount, 11, enableChanges);
-
+  html += objSupplier.editTableCell('bankAccount', bankAccount, 11, enableChanges);
   html += "</tr>";
 
   // amountAccountId, amount
-  
-  html += objSupplier.showTableHeaderMenu( '', 'center', 'Konto for beløp', 'Beløp');
+  html += objSupplier.showTableHeaderMenu('', 'center', 'Konto for beløp', 'Beløp');
 
   // insert a table row (<tr></td>)
-  
+
   html += objSupplier.insertTableRow('');
 
   // amountAccountId
   const amountAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccount.showSelectedAccounts('amountAccountId', 'width:175px;', amountAccountId, 'Velg konto', '', enableChanges);
+  html += objAccount.showSelectedAccounts('amountAccountId', '', amountAccountId, 'Velg konto', '', enableChanges);
 
   // amount
   const amount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].amount;
-  html += objSupplier.editTableCell('amount', '', amount, 11, enableChanges);
-
+  html += objSupplier.editTableCell('amount', amount, 11, enableChanges);
   html += "</tr>";
 
   // textAccountId, text
-  
-  html += objSupplier.showTableHeaderMenu( '', 'center', 'Konto for tekst', 'Tekst');
+  html += objSupplier.showTableHeaderMenu('', 'center', 'Konto for tekst', 'Tekst');
 
   // insert a table row (<tr></td>)
-  
   html += objSupplier.insertTableRow('');
 
   // AccountId for text
   const textAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccount.showSelectedAccounts('textAccountId', 'width:175px;', textAccountId, 'Velg konto',        '', enableChanges);
+  html += objAccount.showSelectedAccounts('textAccountId', '', textAccountId, 'Velg konto', '', enableChanges);
 
   // text for account id
   const text = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += objSupplier.editTableCell('text', '', text, 50, enableChanges);
-
+  html += objSupplier.editTableCell('text', text, 50, enableChanges);
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  
-  html += objSupplier.insertTableRow('', '');
-
+  html += objSupplier.insertTableRow('', '', '');
   html += "</tr>";
 
   // Show buttons (<tr></td>)
   if (enableChanges) {
 
     // insert a table row (<tr></td>)
-    
     html += objSupplier.insertTableRow('');
 
     html += objSupplier.showButton('update', 'Oppdater');
@@ -436,7 +404,6 @@ function showSupplier( supplierId) {
     html += "</tr>";
 
     // insert a table row (<tr></td>)
-    
     html += objSupplier.insertTableRow('');
 
     html += objSupplier.showButton('delete', 'Slett');
@@ -446,7 +413,7 @@ function showSupplier( supplierId) {
 
   // The end of the table
   html += objSupplier.endTable();
-  document.querySelector('.result').innerHTML = html;
+  document.querySelector('.editSupplier').innerHTML = html;
 
   if (enableChanges) document.querySelector('.cancel').disabled = true;
 }
@@ -471,8 +438,8 @@ async function updateSuppliersRow(supplierId) {
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = objSupplier.validateInterval('postalCode', columnWidths,    '', 'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
-                  
+  const validPostalCode = objSupplier.validateInterval('postalCode', columnWidths, '', 'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
+
   // validate city
   const city = document.querySelector('.city').value.trim();
   const validCity = objSupplier.validateText('city', columnWidths, '', 'Ugyldig poststed', true, city, 0, 45, '',);
@@ -493,8 +460,8 @@ async function updateSuppliersRow(supplierId) {
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
-  let validBankAccount = objSupplier.validateBankAccount('bankAccount', columnWidths, true, bankAccount,'', 'Ugyldig bankkontonummer');
- 
+  let validBankAccount = objSupplier.validateBankAccount('bankAccount', columnWidths, true, bankAccount, '', 'Ugyldig bankkontonummer');
+
   if (bankAccount === '') validBankAccount = true;
 
   // validate amountAccountId
@@ -539,9 +506,9 @@ async function updateSuppliersRow(supplierId) {
     }
 
     // Show filter
-    
-    showFilter( supplierId);
-    showSupplier( supplierId);
+
+    editFilter(supplierId);
+    editSupplier(supplierId);
 
     if (enableChanges) {
       document.querySelector('.filterSupplierId').disabled = false;

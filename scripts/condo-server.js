@@ -2209,9 +2209,9 @@ async function main() {
     }
   });
 
-  // Requests for remoteheatingprices table
-  //app.get("/remoteheatingprices", async (req, res) => {
-  app.post("/remoteheatingprices", async (req, res) => {
+  // Requests for priceremoteheatings table
+  //app.get("/priceremoteheatings", async (req, res) => {
+  app.post("/priceremoteheatings", async (req, res) => {
 
     const action = req.body.action;
     const lastUpdate = today.toISOString();
@@ -2224,7 +2224,7 @@ async function main() {
 
           const condominiumId = req.body.condominiumId;
 
-          let SQLquery = `SELECT * FROM remoteheatingprices WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
+          let SQLquery = `SELECT * FROM priceremoteheatings WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
           SQLquery += ` ORDER BY year; `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2233,7 +2233,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatingprices:", err.message);
+          console.log("Database error in /priceremoteheatings:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2243,7 +2243,7 @@ async function main() {
 
         try {
 
-          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
+          const priceRemoteHeatingsId = req.body.priceRemoteHeatingsId;
           const user = req.body.user;
           const year = req.body.year;
           const priceKilowattHour = req.body.priceKilowattHour;
@@ -2251,13 +2251,13 @@ async function main() {
           // Update row
           const SQLquery =
             `
-              UPDATE remoteheatingprices
+              UPDATE priceremoteheatings
           SET
           user = '${user}',
             lastUpdate = '${lastUpdate}',
             year = ${year},
           priceKilowattHour = ${priceKilowattHour}
-              WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+              WHERE priceRemoteHeatingsId = ${priceRemoteHeatingsId};
           `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2266,7 +2266,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatingprices:", err.message);
+          console.log("Database error in /priceremoteheatings:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2284,7 +2284,7 @@ async function main() {
           // Insert new row
           const SQLquery =
             `
-              INSERT INTO remoteheatingprices(
+              INSERT INTO priceremoteheatings(
             deleted,
             condominiumId,
             user,
@@ -2307,7 +2307,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatingprices:", err.message);
+          console.log("Database error in /priceremoteheatings:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2317,18 +2317,18 @@ async function main() {
 
         try {
 
-          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
+          const priceRemoteHeatingsId = req.body.priceRemoteHeatingsId;
           const user = req.body.user;
 
           // Delete table
           const SQLquery =
             `
-              UPDATE remoteheatingprices
+              UPDATE priceremoteheatings
           SET
           deleted = 'Y',
             user = '${user}',
             lastUpdate = '${lastUpdate}'
-              WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+              WHERE priceRemoteHeatingsId = ${priceRemoteHeatingsId};
           `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2337,7 +2337,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatingprices:", err.message);
+          console.log("Database error in /priceremoteheatings:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;

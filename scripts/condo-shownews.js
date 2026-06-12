@@ -29,8 +29,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objShowNews.ShowHorizontalMenu(objShowNews.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objShowNews.showHorizontalMenu(objShowNews.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show news menu
+      html = objShowNews.showHorizontalMenu(objShowNews.arrayMenuNews);
+      document.querySelector('.menuNews').innerHTML = html;
 
       // Load users and news tables
       const resident = 'Y';
@@ -41,7 +45,7 @@ async function main() {
       if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1).newsId;
 
       // Show news
-      
+
       showNews();
 
       // Events
@@ -119,5 +123,5 @@ function showNews() {
 
     document.querySelector('.shownews').innerHTML = html;
   }
-  
+
 }

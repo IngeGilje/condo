@@ -1,4 +1,3 @@
-
 class EmptyingCalendar extends Condos {
 
   // Emptying Calendar

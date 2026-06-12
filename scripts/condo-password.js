@@ -9,7 +9,7 @@ const objPassword = new Password('password');
 
 const enableChanges = (objPassword.securityLevel > 5);
 
-const columnWidths = [175, 175, 175];
+const columnWidths = [175, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -32,8 +32,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objPassword.ShowHorizontalMenu(objPassword.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objPassword.showHorizontalMenu(objPassword.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show user menu
+      html = objPassword.showHorizontalMenu(objPassword.arrayMenuUser);
+      document.querySelector('.menuUser').innerHTML = html;
 
       const resident = 'A';
 
@@ -48,14 +52,11 @@ async function main() {
       // Show header
       showHeader();
 
-      //const userId = objUser.arrayUsers.at(-1).userId;
-
       // Show filter
-      
-      showFilter( objPassword.condominiumId, objPassword.userId);
+      showFilter(objPassword.condominiumId, objPassword.userId);
 
       // Show result
-      showUser( objPassword.userId);
+      showUser(objPassword.userId);
 
       // Events
       events();
@@ -75,9 +76,9 @@ async function events() {
 
       const userId = Number(document.querySelector('.filterUserId').value);
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      
-      showFilter( condominiumId, userId);
-      showUser( userId);
+
+      showFilter(condominiumId, userId);
+      showUser(userId);
     };
   });
 
@@ -90,9 +91,9 @@ async function events() {
       await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      
-      showFilter( condominiumId, userId);
-      showUser( userId);
+
+      showFilter(condominiumId, userId);
+      showUser(userId);
     };
   });
 
@@ -145,7 +146,7 @@ function showHeader() {
   html += objUser.startTableBody();
 
   // show main header
-  html += objUser.showTableHeaderLogOut('', 'Passord');
+  html += objUser.showTableHeaderLogOut('Passord');
   html += "</tr>";
 
   // end table body
@@ -157,32 +158,32 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter( condominiumId, userId) {
+function showFilter(condominiumId, userId) {
 
   // Start table
   let html = objUser.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  
-  html += objUser.showTableHeaderMenu( '','centrum', 'Sameie', 'Bruker');
+
+  html += objUser.showTableHeaderMenu('', 'centrum', 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert a table row (<tr></td>)
-  
+
   html += objPassword.insertTableRow('');
 
   // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', 'width:175px;', condominiumId, '', '', enableChanges);
+  html += objCondominium.showSelectedCondominiums('filterCondominiumId', '', condominiumId, '', '', enableChanges);
 
   // user
-  html += objUser.showSelectedUsers('filterUserId', 'width:175px;', userId, '', '', enableChanges)
+  html += objUser.showSelectedUsers('filterUserId', '', userId, '', '', enableChanges)
 
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-  
+
   html += objPassword.insertTableRow('', '', '');
 
   // end table body
@@ -192,11 +193,11 @@ function showFilter( condominiumId, userId) {
   html += objUser.endTable();
   document.querySelector('.editFilter').innerHTML = html;
 
-  
+
 }
 
 // Show user
-function showUser( userId) {
+function showUser(userId) {
 
   // start table
   let html = objUser.initializeTable(columnWidths);
@@ -207,30 +208,30 @@ function showUser( userId) {
 
     // password, securityLevel,
     //html += "<tr>";
-    
-    html += objUser.showTableHeaderMenu('','centrum', 'Passord', 'Sikkerhetsnivå');
+
+    html += objUser.showTableHeaderMenu('', 'centrum', 'Passord', 'Sikkerhetsnivå');
 
     // insert a table row (<tr></td>)
-    
+
     html += objUser.insertTableRow('');
 
     // password
     html += objUser.inputTablePassword('password', '', 45);
 
     // securityLevel (<td></td>)
-    html += objUser.showSelectedNumbers('securityLevel', 'width:175px;', 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
+    html += objUser.showSelectedNumbers('securityLevel', '', 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
 
     html += "</tr>";
 
     // insert a table row (<tr></td>)
-    
+
     html += objUser.insertTableRow('');
     html += "<td></td><td></td></tr>";
 
     // show buttons
 
     // insert a table row (<tr></td>)
-    
+
     html += objUser.insertTableRow('');
 
     html += objUser.showButton('update', 'Oppdater');
@@ -240,7 +241,7 @@ function showUser( userId) {
     html += objUser.endTable();
     document.querySelector('.result').innerHTML = html;
 
-    
+
   }
 }
 
@@ -289,10 +290,10 @@ async function updateUserRow(userId) {
     }
 
     // Show filter
-    
+
     const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-    showFilter( condominiumId, userId);
-    showUser( userId);
+    showFilter(condominiumId, userId);
+    showUser(userId);
 
     document.querySelector('.filterUserId').disabled = false;
   } else {

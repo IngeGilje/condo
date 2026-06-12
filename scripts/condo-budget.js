@@ -31,8 +31,8 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objBudget.ShowHorizontalMenu(objBudget.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objBudget.showHorizontalMenu(objBudget.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objBudget.condominiumId, resident, objBudget.nineNine);
@@ -274,7 +274,7 @@ function showFilter {
   html += objBudget.insertTableRow('', '');
 
   // Selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', 'width:175px;', 0, '', 'Alle', true);
+  html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
 
   // Selected year (<td></td>)
   const year = String(today.getFullYear());
@@ -321,7 +321,7 @@ function showBudgets() {
 
     // accountId
     className = `accountId${budget.budgetId}`;
-    html += objAccount.showSelectedAccounts(className, 'width:175px;', budget.accountId, '', '', enableChanges);
+    html += objAccount.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
 
     // due amount
     const amount = formatOreToKroner(budget.amount);

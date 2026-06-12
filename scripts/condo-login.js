@@ -47,7 +47,7 @@ function showLogin() {
   // start table
   let html = objLogIn.startTable('width:250px;margin: 0 auto;');
 
-  // Header for value including menu
+  // Header for value
   html += objLogIn.showTableHeader('', 'Email');
 
   // insert a table row (<tr></td>)

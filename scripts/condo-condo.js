@@ -7,7 +7,7 @@ const objCondo = new Condo('condo');
 
 const enableChanges = (objCondo.securityLevel > 5);
 
-const columnWidths = [175, 175, 175]
+const columnWidths = [175, 175]
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -30,8 +30,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objCondo.ShowHorizontalMenu(objCondo.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objCondo.showHorizontalMenu(objCondo.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+            // Show user menu
+      html = objCondo.showHorizontalMenu(objCondo.arrayMenuUser);
+      document.querySelector('.menuUser').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);
@@ -156,7 +160,7 @@ function showHeader() {
   html += objCondo.startTableBody();
 
   // show main header
-  html += objCondo.showTableHeaderLogOut('', 'Leilighet');
+  html += objCondo.showTableHeaderLogOut('Leilighet');
   html += "</tr>";
 
   // end table body
@@ -185,7 +189,7 @@ function showFilter( condoId) {
   html += objCondo.insertTableRow('');
 
   // condo
-  html += objCondo.showSelectedCondos('filterCondoId', 'width:175px;', condoId, '', '', true)
+  html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', '', true)
 
   html += "<td></td></tr>";
 

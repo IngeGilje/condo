@@ -7,7 +7,7 @@ const objNews = new News('news');
 
 const enableChanges = (objNews.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175];
+const columnWidths = [175, 175, 125];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -30,8 +30,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objNews.ShowHorizontalMenu(objNews.arrayMainMenu);
-      document.querySelector('.mainMenu').innerHTML = html;
+      let html = objNews.showHorizontalMenu(objNews.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show news menu
+      html = objNews.showHorizontalMenu(objNews.arrayMenuNews);
+      document.querySelector('.menuNews').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);
@@ -41,15 +45,13 @@ async function main() {
       if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews[0].newsId;
 
       // Show header
-      
-
       showHeader();
 
       // Show filter
-      showFilter( newsId);
+      editFilter(newsId);
 
       // Show news
-      showNews( newsId);
+      editNews(newsId);
 
       // Events
       events();
@@ -68,7 +70,7 @@ async function events() {
     if (event.target.classList.contains('filterNewsId')) {
 
       const newsId = Number(document.querySelector('.filterNewsId').value);
-      showNews(2, newsId);
+      editNews(newsId);
     };
   });
 
@@ -90,14 +92,14 @@ async function events() {
 
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
-      
+
 
       // Show filter
       const newsId = (objNews.arrayNews.length > 0)
         ? objNews.arrayNews[0].newsId
         : 0;
-      showFilter( newsId);
-      showNews( newsId);
+      editFilter(newsId);
+      editNews(newsId);
     };
   });
 
@@ -119,7 +121,7 @@ async function events() {
       let newsId = Number(document.querySelector('.filterNewsId').value);
       if (newsId === 0) newsId = objNews.arrayNews[0].newsId;
 
-      showNews(2, newsId);
+      editNews(2, newsId);
     };
   });
 
@@ -146,7 +148,7 @@ function showHeader() {
   html += objNews.startTableBody();
 
   // show main header
-  html += objNews.showTableHeaderLogOut('', '', 'Nyheter');
+  html += objNews.showTableHeaderLogOut('', 'Nyheter');
   html += "</tr>";
 
   // end table body
@@ -158,29 +160,26 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter( newsId) {
+function editFilter(newsId) {
 
   // Start table
   let html = objNews.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  
-  html += objNews.showTableHeaderMenu('', 'center', 'Velg nyhet', '');
+  html += objNews.showTableHeaderMenu('', 'center', 'Velg nyhet', '', '');
 
   // start table body
   html += objNews.startTableBody();
 
   // insert a table row (<tr></td>)
-  
-  html += objNews.insertTableRow('',  objNews.administrationMenu);
+  html += objNews.insertTableRow('');
 
   // news
-  html += objNews.showSelectedNews('filterNewsId', 'width:175px;', newsId, '', '', true);
-  html += "<td></td></tr>";
+  html += objNews.showSelectedNews('filterNewsId', '', newsId, '', '', true);
+  html += "<td></td><td></td></tr>";
 
   // Table header (<tr></tr>)
-  
-  html += objNews.showTableHeaderMenu('', 'center', '', '');
+  html += objNews.showTableHeaderMenu('', 'center', '', '','');
 
   // end table body
   html += objNews.endTableBody();
@@ -188,12 +187,10 @@ function showFilter( newsId) {
   // The end of the table
   html += objNews.endTable();
   document.querySelector('.editFilter').innerHTML = html;
-
-  
 }
 
 // Show news
-function showNews( newsId) {
+function editNews(newsId) {
 
   // start table
   let html = objNews.initializeTable(columnWidths);
@@ -202,13 +199,11 @@ function showNews( newsId) {
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
 
   // date
-  
-  html += objNews.showTableHeaderMenu('', 'center', 'Dato', 'Forfatter');
+  html += objNews.showTableHeaderMenu('', 'center', 'Dato', 'Forfatter', '');
 
   // Date, userId
   // insert a table row (<tr></td>)
-  
-  html += objNews.insertTableRow('',  objNews.administrationMenu);
+  html += objNews.insertTableRow('');
 
   // date
   let date = (rowNumberNews === -1)
@@ -221,95 +216,71 @@ function showNews( newsId) {
   const userId = (rowNumberNews === -1)
     ? Number(objNews.userId)
     : Number(objNews.arrayNews[rowNumberNews].userId);
-  html += objUser.showSelectedUsers('userId', 'width:175px;', userId, 'Velg forfatter', '', enableChanges);
-  html += "</tr>";
-
-  
-  html += objNews.insertMenu('', '', objNews.administrationMenu);
-  html += "<td></td><td></td></tr>";
+  html += objUser.showSelectedUsers('userId', '', userId, 'Velg forfatter', '', enableChanges);
+  html += "<td></td></tr>";
 
   // title
-  
-  html += objNews.showTableHeaderMenu('', 'center', 'Tittel', '');
+  html += objNews.showTableHeaderMenu('', 'center', '', 'Tittel', '');
 
   // insert a table row (<tr></td>)
-  
-  html += objNews.insertTableRow('',  objNews.administrationMenu);
+  html += objNews.insertTableRow('');
 
   const title = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].title;
-  html += objNews.editTableCell('title', title, 255, enableChanges, 2);
-  html += "<td></td></tr>";
-
-  // insert a table row (<tr></td>)
-  
-  html += objNews.insertTableRow('',  objNews.administrationMenu);
+  html += objNews.editTableCell('title', title, 255, enableChanges, 3);
+  html += "</tr>";
 
   // image
-  
-  html += objNews.showTableHeaderMenu('', 'center', 'Bilde', '');
+  html += objNews.showTableHeaderMenu('', 'center', '', 'Bilde', '');
 
   // insert a table row (<tr></td>)
-  
-  html += objNews.insertTableRow('',  objNews.administrationMenu);
+  html += objNews.insertTableRow('');
 
   const image = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].image;
-  html += objNews.editTableCell('image', image, 255, enableChanges, 2);
-  html += "<td></td></tr>";
-
-  // insert a table row (<tr></td>)
-  
-  html += objNews.insertTableRow('',  objNews.administrationMenu);
-  html += "<td></td><td></td></tr>";
+  html += objNews.editTableCell('image', image, 255, enableChanges, 3);
+  html += "</tr>";
 
   // content
-  
-  html += objNews.showTableHeaderMenu('', 'center', 'Innhold', '');
+  html += objNews.showTableHeaderMenu('', 'center', '', 'Innhold', '');
 
   // insert a table row (<tr></td>)
-  
-  html += objNews.insertTableRow('',  objNews.administrationMenu);
+  html += objNews.insertTableRow('');
 
   const content = (rowNumberNews === -1)
     ? ''
     : objNews.arrayNews[rowNumberNews].content;
-  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 2, 3);
+  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 3, 3);
   html += "</tr>";
 
-  
-  html += objNews.insertMenu('', '', objNews.administrationMenu);
-  html += "</tr>";
+  // insert a table row 
+  html += "<tr><td></td><td></td><td></td></tr>";
 
-  
-  html += objNews.insertMenu('', '', objNews.administrationMenu);
-  html += "</tr>";
+  // insert a table row 
+  html += "<tr><td></td><td></td><td></td></tr>";
+
+  // insert a table row (<tr></td>)
+  html += objNews.insertTableRow('');
+  html += "<td></td><td></td></tr>";
 
   // Show buttons (<tr></td>)
   if (enableChanges) {
 
     // insert a table row (<tr></td>)
-    
-    html += objNews.insertTableRow('',  objNews.administrationMenu);
-    html += "<td></td><td></td></tr>";
-
-    // insert a table row (<tr></td>)
-    
-    html += objNews.insertTableRow('',  objNews.administrationMenu);
+    html += objNews.insertTableRow('');
 
     html += objNews.showButton('update', 'Oppdater');
     html += objNews.showButton('cancel', 'Angre');
-    html += "</tr>";
+    html += "<td>3</td></tr>";
 
     // insert a table row (<tr></td>)
-    
-    html += objNews.insertTableRow('',  objNews.administrationMenu);
+    html += objNews.insertTableRow('');
 
     html += objNews.showButton('delete', 'Slett');
     html += objNews.showButton('insert', 'Ny');
-    html += "</tr>";
+    html += "<td>3</td></tr>";
   }
 
   // The end of the table
@@ -317,8 +288,6 @@ function showNews( newsId) {
   document.querySelector('.news').innerHTML = html;
 
   if (enableChanges) document.querySelector('.cancel').disabled = true;
-
-  
 }
 
 // Update a news row
@@ -369,9 +338,9 @@ async function updateCondoRow(newsId) {
       document.querySelector('.filterNewsId').value = newsId;
     }
 
-    
-    showFilter( newsId);
-    showNews( newsId);
+
+    editFilter(newsId);
+    editNews(newsId);
 
     objNews.removeMessage();
     document.querySelector('.filterNewsId').disabled = false;
