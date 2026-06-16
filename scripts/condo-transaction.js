@@ -42,7 +42,7 @@ async function main() {
 
       // Show account menu
       html = objTransaction.showHorizontalMenu(objTransaction.arrayMenuAccount);
-      document.querySelector('.menuAccount').innerHTML = html;
+      document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
@@ -100,10 +100,10 @@ async function main() {
   }
 }
 
-// Make Transactions events
+// Events
 async function events() {
 
-  // Show transactions after change of filter
+  // Filter
   document.addEventListener('change', async (event) => {
 
     if ([...event.target.classList].some(cls => cls.startsWith('filterCondoId'))

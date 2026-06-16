@@ -111,7 +111,6 @@ class User extends Condos {
       });
       if (!response.ok) throw new Error("Network error (users)");
       this.arrayUsers = await response.json();
-
     } catch (error) {
       console.log("Error loading users:", error);
     }

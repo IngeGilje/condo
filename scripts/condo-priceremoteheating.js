@@ -36,7 +36,7 @@ async function main() {
 
       // Show account menu
       html = objPriceRemoteHeating.showHorizontalMenu(objPriceRemoteHeating.arrayMenuAccount);
-      document.querySelector('.menuAccount').innerHTML = html;
+      document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objPriceRemoteHeating.condominiumId, resident, objPriceRemoteHeating.nineNine);

@@ -144,18 +144,23 @@ class Condos {
     },
     {
       applicationName: "condo-remoteheating.html",
-      className: "Menu4",
+      className: "Menu3",
       text: "Fjernvarme"
     },
     {
       applicationName: "condo-priceremoteheating.html",
-      className: "Menu5",
+      className: "Menu4",
       text: "Pris Fjernvarme"
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu3",
+      className: "Menu5",
       text: "Årsregnskap"
+    },
+    {
+      applicationName: "condo-importfile.html",
+      className: "Menu6",
+      text: "Hent transaksjoner"
     },
   ];
 

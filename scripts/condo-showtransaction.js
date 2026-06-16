@@ -47,7 +47,7 @@ async function main() {
 
       // Show account menu
       html = objShowTransaction.showHorizontalMenu(objShowTransaction.arrayMenuAccount);
-      document.querySelector('.menuAccount').innerHTML = html;
+      document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
