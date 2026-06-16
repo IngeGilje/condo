@@ -213,8 +213,8 @@ class Condos {
       applicationName: "condo-transaction.html",
       className: "Menu3",
       text: "Transaksjoner"
-    }
-  ];
+    },
+   ];
 
   // menu array for projects
   arrayMenuProject = [
