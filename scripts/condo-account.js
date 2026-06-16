@@ -213,7 +213,7 @@ function showFilter() {
 
   // The end of the table
   html += objAccount.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
 
 
 }

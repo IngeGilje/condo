@@ -220,7 +220,7 @@ function createTransactionsArray() {
       // To bank account
       toBankAccountName = objImportFile.getBankAccountName(toBankAccount);
 
-      date = formatNorDateToNumber(accountingDate);
+      date = objImportFile.formatDateToNumber(accountingDate);
 
       // Do not import Transactions twice
       if (!checkTransaction(Number(income), Number(payment), Number(date))) {
@@ -315,7 +315,7 @@ async function updateOpeningClosingBalance() {
       openingBalanceDate = openingBalanceDate[0];
 
       // dd.mm.yyyy -> yyyymmdd
-      openingBalanceDate = formatNorDateToNumber(openingBalanceDate);
+      openingBalanceDate = objImportFile.formatDateToNumber(openingBalanceDate);
 
       // Opening balance
 
@@ -340,7 +340,7 @@ async function updateOpeningClosingBalance() {
       closingBalanceDate = closingBalanceDate[0];
 
       // dd.mm.yyyy -> yyyymmdd
-      closingBalanceDate = formatNorDateToNumber(closingBalanceDate);
+      closingBalanceDate = objImportFile.formatDateToNumber(closingBalanceDate);
 
       // Closing balanse
       //balance = (balance.includes('Ingen data tilgjengelig')) ? '"0"' : balance;
@@ -536,7 +536,7 @@ function showFilter() {
 
   // The end of the table
   html += objImportFile.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
 
   
 }
@@ -640,7 +640,7 @@ async function updateTransactions() {
     const income = Number(transaction.income);
     const payment = Number(transaction.payment);
     const kilowattHour = 0;
-    const date = formatNorDateToNumber(transaction.accountingDate);
+    const date = objImportFile.formatDateToNumber(transaction.accountingDate);
     const text = transaction.text;
 
     // insert transactions row

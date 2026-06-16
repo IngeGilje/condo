@@ -123,6 +123,83 @@ class News extends Condos {
     return html;
   }
 
+  // Show news
+  showSelectedNewsNew(label, className, style, newsId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <div class="field status" style="width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    // Check if news array is empty
+    if (this.arrayNews.length > 0) {
+      this.arrayNews.forEach((news) => {
+
+        html += `
+        <option 
+          value=${news.newsId}
+          ${(news.newsId === newsId) ? 'selected' : ''}
+        >
+          &nbsp;&nbsp;${news.title.trim()}&nbsp;&nbsp;
+        </option>`;
+
+        if (news.newsId === newsId) selectedValue = true;
+      });
+    } else {
+
+      // No news
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayNews.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayNews.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+      <label>
+        ${label}
+      </label>
+    </div>`;
+
+    return html;
+  }
+  
   // get News
   async loadNewsTable(condominiumId, newsId) {
 

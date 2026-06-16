@@ -7,82 +7,107 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link rel="stylesheet" href="styles/condo.css"> -->
-
-  <style>
-    .mobile-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .mobile-table th,
-    .mobile-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-    }
-
-    .mobile-table th {
-      background-color: #f2f2f2;
-      text-align: left;
-    }
-
-    @media screen and (max-width: 600px) {
-      .mobile-table thead {
-        display: none;
-      }
-
-      .mobile-table tr {
-        display: block;
-        margin-bottom: 10px;
-      }
-
-      .mobile-table td {
-        display: block;
-        text-align: right;
-        position: relative;
-        padding-left: 50%;
-      }
-
-      .mobile-table td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        top: 0;
-        padding-left: 10px;
-        font-weight: bold;
-        text-align: left;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles/condo.css">
 </head>
 
 <body>
 
-  <table class="mobile-table">
-    <thead>
-      <tr>
-        <th>Navn</th>
-        <th>Alder</th>
-        <th>By</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td data-label="Navn">Ola Nordmann</td>
-        <td data-label="Alder">30</td>
-        <td data-label="By">Oslo</td>
-      </tr>
-      <tr>
-        <td data-label="Navn">Kari Nordmann</td>
-        <td data-label="Alder">28</td>
-        <td data-label="By">Bergen</td>
-      </tr>
-      <tr>
-        <td data-label="Navn">Per Hansen</td>
-        <td data-label="Alder">35</td>
-        <td data-label="By">Trondheim</td>
-      </tr>
-    </tbody>
+  <div class="row">
+    <div class="field status" style="width:175px">
+      <label>
+        Leilighet
+      </label>
+      <select class="filterCondoId center one-line">
+        <option value=3>
+          &nbsp;&nbsp;95A&nbsp;&nbsp;
+        </option>
+        <option value=4 selected>
+          &nbsp;&nbsp;95B&nbsp;&nbsp;
+        </option>
+        <option value=5>
+          &nbsp;&nbsp;97A&nbsp;&nbsp;
+        </option>
+        <option value=6>
+          &nbsp;&nbsp;97B&nbsp;&nbsp;
+        </option>
+        <option value=7>
+          &nbsp;&nbsp;97C&nbsp;&nbsp;
+        </option>
+        <option value=8>
+          &nbsp;&nbsp;99A&nbsp;&nbsp;
+        </option>
+        <option value=9>
+          &nbsp;&nbsp;99B&nbsp;&nbsp;
+        </option>
+        <option value=999999998>
+          &nbsp;&nbsp;Vis alle&nbsp;&nbsp;
+        </option>
+      </select>
+      <label>
+        Leilighet
+      </label>
+    </div>
+    <div class="field status" style="width:175px">
+      <label>
+        Konto
+      </label>
+      <select class="filterAccountId center one-line">
+        <option value=13>
+          &nbsp;&nbsp;1,2,3,4... transaksjoner&nbsp;&nbsp;
+        </option>
+        <option value=67>
+          &nbsp;&nbsp;Diverse&nbsp;&nbsp;
+        </option>
+        <option value=6>
+          &nbsp;&nbsp;Forsikring&nbsp;&nbsp;
+        </option>
+        <option value=10>
+          &nbsp;&nbsp;Gebyr - FAKT.TJ&nbsp;&nbsp;
+        </option>
+        <option value=56>
+          &nbsp;&nbsp;Inntekt drift&nbsp;&nbsp;
+        </option>
+        <option value=4>
+          &nbsp;&nbsp;Inntekt fjernvarme&nbsp;&nbsp;
+        </option>
+        <option value=69>
+          &nbsp;&nbsp;Inntekt Rygg og Myrland&nbsp;&nbsp;
+        </option>
+        <option value=2>
+          &nbsp;&nbsp;Inntekter husleie&nbsp;&nbsp;
+        </option>
+        <option value=5>
+          &nbsp;&nbsp;Nettleie Lyse&nbsp;&nbsp;
+        </option>
+        <option value=52>
+          &nbsp;&nbsp;Omkostninger BedriftsNett&nbsp;&nbsp;
+        </option>
+        <option value=73>
+          &nbsp;&nbsp;Slettes&nbsp;&nbsp;
+        </option>
+        <option value=8>
+          &nbsp;&nbsp;TV og bredbånd&nbsp;&nbsp;
+        </option>
+        <option value=9>
+          &nbsp;&nbsp;Ugift drift&nbsp;&nbsp;
+        </option>
+        <option value=3>
+          &nbsp;&nbsp;Utgift fjernvarme&nbsp;&nbsp;
+        </option>
+        <option value=70>
+          &nbsp;&nbsp;Utguft Rygg og Myraland&nbsp;&nbsp;
+        </option>
+        <option value=22>
+          &nbsp;&nbsp;Velforening&nbsp;&nbsp;
+        </option>
+        <option value=999999998 selected>
+          &nbsp;&nbsp;Vis alle&nbsp;&nbsp;
+        </option>
+      </select>
+      <label>
+        Konto
+      </label>
+    </div>
 </body>
 
 </html>

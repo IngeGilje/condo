@@ -50,17 +50,12 @@ class Condos {
     {
       applicationName: "condo-showtransaction.html",
       className: "Menu5",
-      text: "Regnskap"
+      text: "Transaksjoner"
     },
     {
       applicationName: "condo-due.html",
       className: "Menu6",
       text: "Forfall"
-    },
-    {
-      applicationName: "condo-login.html",
-      className: "Menu10",
-      text: "Logg ut"
     }
   ];
 
@@ -102,7 +97,7 @@ class Condos {
     {
       applicationName: "condo-bankaccount.html",
       className: "Menu2",
-      text: "Bankkonto Sameie"
+      text: "Bankkonto"
     },
     {
       applicationName: "condo-account.html",
@@ -147,7 +142,7 @@ class Condos {
       className: "Menu2",
       text: "Transaksjoner"
     },
-        {
+    {
       applicationName: "condo-remoteheating.html",
       className: "Menu4",
       text: "Fjernvarme"
@@ -166,7 +161,7 @@ class Condos {
 
   // menu array for due
   arrayMenuDue = [
-        {
+    {
       applicationName: "condo-due.html",
       className: "Menu4",
       text: "Forfall"
@@ -274,6 +269,96 @@ class Condos {
         ${(enableChanges) ? '' : 'readonly'}
       >
     </td>`;
+  }
+
+  // start input row (<div>)
+  startRow() {
+    return `
+    <p>&nbsp;</p>
+    <div 
+      class="row"
+    >
+    `;
+  }
+
+  // Show Date
+  editDate(label, className, value, enableChanges) {
+
+    let html = `
+    <div class="field date" style="margin-left:25px; width:175px;">
+      <label>
+        ${label}
+      </label>
+      <input 
+        type="date" 
+        class="${className} center one-line"
+        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    </div>`;
+    return html;
+  }
+
+  // Show amount
+  editAmount(label, className, value, enableChanges) {
+
+    let html = `
+    <div class="field date" style="margin-left:25px; width:175px;">
+      <label>
+        ${label}
+      </label>
+      <input 
+        type="text"
+        inputmode="decimal" 
+        autocomplete="off"
+        class="${className} center one-line"
+        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+      <label>${label}</label>
+    </div>`;
+    return html;
+  }
+
+   // Show selected numbers (from number - to number)
+  showSelectedNumbersNew(label, className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <div class="field status" style="max-width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    // show interval of numbers
+    for (let number = fromNumber; number <= toNumber; number++) {
+
+      html += `
+        <option 
+          value=${number}
+          ${(number === selectedNumber) ? 'selected' : ''}
+        >
+          &nbsp;&nbsp;${number}&nbsp;&nbsp;
+        </option>`;
+
+      if (number === selectedNumber) selectedValue = true;
+    };
+
+    html += `
+      </select >
+    </div>`;
+
+    return html;
+  }
+
+  // end input row (</div>)
+  endRow() {
+    return "</div><p>&nbsp;</p>";
   }
 
   // Show input (<td></td>) with center text
@@ -500,7 +585,6 @@ class Condos {
     return html;
   };
 
-
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {
 
@@ -531,6 +615,39 @@ class Condos {
         </select >
       </td>
     `;
+
+    return html;
+  }
+
+  // Show selected numbers (from number - to number)
+  showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <div class="field status" style="max-width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    for (let month = 1; month < 13; month++) {
+
+      html += `
+      <option 
+        value="${month}"
+        ${month === selectedMonth ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${findNameOfMonth(month).trim()}&nbsp;&nbsp;
+      </option>`;
+    };
+
+    html += `
+      </select >
+    </div>`;
 
     return html;
   }
@@ -750,6 +867,52 @@ class Condos {
       }
     }
 
+    if ((!valid) && (message.lenght > 0)) this.showMessageNew(columnWidths, style, message);
+    return valid;
+  }
+
+  // validate the iso date format yyyy-mm-dd
+  validateIsoDate(className, date, style, message) {
+
+    let valid = true;
+
+    // Check for valid date String
+    if (date === '' || typeof date === 'undefined') valid = false;
+    if (valid) {
+
+      // Regular expression for valuating the yyyy-mm-dd format
+      const regex = /^(\d{4})\-(\d{2})\-(\d{2})$/
+      const match = date.match(regex);
+
+      if (!match) valid = false;
+
+      if (valid) {
+
+        // Extract day, month, and year
+        const [year, month, day] = date.split('-');
+        //const day = parseInt(match[1], 10);
+        //const month = parseInt(match[2], 10);
+        //const year = parseInt(match[3], 10);
+
+        // Check if month is between 1 and 12
+        if (day < 1 || day > 31) valid = false;
+        if (month < 1 || month > 12) valid = false;
+        if (year < 1900 || year > 2099) valid = false;
+      }
+    }
+
+    // remove/ add 'message' 
+    if (this.isClassDefined(className)) {
+
+      const inputElement = document.querySelector(`.${className}`);
+      if (inputElement) {
+
+        // remove/ add 'message' class
+        inputElement.classList.toggle('message', !valid);
+      }
+    }
+
+    // Show error message?
     if ((!valid) && (message.lenght > 0)) this.showMessageNew(columnWidths, style, message);
     return valid;
   }
@@ -1017,10 +1180,19 @@ class Condos {
     }
   }
 
-  // Format norwegian date (11.05.1983) to number (19830511)
-  formatNorDateToNumber(norDate) {
+  // Format date (11.05.1983/1983-05-11) to number (19830511)
+  formatDateToNumber(date) {
 
-    return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
+    if (date.includes('.')) {
+      const [day, month, year] = date.split('.');
+      return Number(`${year}${month}${day}`);
+    }
+
+    if (date.includes('-')) {
+      return Number(date.replaceAll('-', ''));
+    }
+
+    return 0; // invalid format
   }
 
   // Show message
@@ -1074,6 +1246,35 @@ class Condos {
 
     return html;
   }
+
+  // Format amount (1 234 567,89)
+  formatAmount(amount) {
+
+    //let value = amount.value.replace(/\D/g, '');
+    amount = String(amount);
+    if (!amount) {
+      return ' ';
+    }
+
+    while (amount.length < 3) {
+      value = '0' + value;
+    }
+
+    // decimal
+    const decimals = amount.slice(-2);
+
+    // Integer
+    let integerPart = amount.slice(0, -2);
+
+    integerPart = integerPart.replace(/^0+/, '') || '0';
+
+    integerPart = integerPart.replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      ' '
+    );
+
+    return `${integerPart},${decimals}`;
+  }
 }
 
 // Check if string includes only digits
@@ -1090,8 +1291,9 @@ function removeComma(amount) {
   return (amount === '000') ? '00' : amount;
 }
 
+/*
 // Format date dd.mm.yyyy (European date format) to yyyymmdd ("Basic ISO 8601 format)
-function formatNorDateToNumber(date) {
+function formatDateToNumber(date) {
   if (date.includes('.')) {
     const dateParts = date.split(".");
     date = `${dateParts[2]}${dateParts[1]}${dateParts[0]} `;
@@ -1103,6 +1305,7 @@ function formatNorDateToNumber(date) {
   }
   return date;
 }
+*/
 
 // Format date from yyyymmdd (Basic ISO 8601 format) -> dd.mm.yyyy (European date format)
 function formatNumberToNorDate(date) {
@@ -1110,6 +1313,13 @@ function formatNumberToNorDate(date) {
   date = String(date);
   const formatedDate = date.slice(6, 8) + '.' + date.slice(4, 6) + '.' + date.slice(0, 4);
   return (formatedDate.includes('..')) ? '' : formatedDate;
+}
+
+// Format date from yyyymmdd -> yyyy-mm-dd (Iso format)
+function formatNumberToIsoDate(date) {
+
+  date = String(date);
+  return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6,)}`;
 }
 
 // Check if class is defined
@@ -1191,6 +1401,24 @@ function getCurrentDate() {
   return `${day}.${month}.${year}`;  // Output in dd.mm.yyyy format
 }
 
+// Get current date in Iso date format (yyyy-mm-dd)
+function getCurrentIsoDate() {
+
+  const today = new Date();
+  const year = String(today.getFullYear());
+  let month = today.getMonth() + 1;
+  let day = today.getDate();
+  month = (month < 10)
+    ? '0' + String(month)
+    : String(month)
+
+  day = (day < 10)
+    ? day = '0' + String(day)
+    : String(day)
+
+  return `${year}-${month}-${day}`;  // Output in dd.mm.yyyy format
+}
+
 // Format number (12345) to norwegian amount (1 2345,00)
 function formatToNorAmount(amount) {
 
@@ -1212,6 +1440,8 @@ function formatOreToKroner(amount) {
 // Format norwegian kroner (12 345,67) to ore/number (1234567)
 function formatKronerToOre(amount) {
 
+  amount = String(amount);
+  amount.replaceAll(' ', '');
   let kroner = '';
   let ore = '';
 
@@ -1289,22 +1519,49 @@ function formatAmountToOre(amount) {
   }
 
   // Check for valid amount in orer
-  amount =
-    (amount === '000') ? '0' : amount;
-  amount =
-    (isNumeric(amount)) ? amount : '0';
-  amount =
-    Number(amount);
+  amount = (amount === '000')
+    ? '0'
+    : amount;
+  amount = (isNumeric(amount))
+    ? amount
+    : '0';
+  amount = Number(amount);
   //return String(amount);
   return Number(amount);
 }
 
+// Format amount
+function formatAmount() {
+  let value = amountInput.value.replace(/\D/g, '');
+
+  if (!value) {
+    amountInput.value = '';
+    return;
+  }
+
+  while (value.length < 3) {
+    value = '0' + value;
+  }
+
+  const decimals = value.slice(-2);
+  let integerPart = value.slice(0, -2);
+
+  integerPart = integerPart.replace(/^0+/, '') || '0';
+
+  integerPart = integerPart.replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    ' '
+  );
+
+  amountInput.value = `${integerPart},${decimals}`;
+}
+/*
 // Format norwegian date (11.05.1983) to number (19830511)
-function formatNorDateToNumber(norDate) {
+function formatDateToNumber(norDate) {
 
   return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
-
 }
+*/
 
 // Generate password
 function generatePassword(passwordLenght, includeLowercase, includeUppercase, includeNumbers, includeSymbols) {

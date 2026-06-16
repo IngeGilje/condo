@@ -1,108 +1,62 @@
-<!DOCTYPE html>
-<html lang="nb-NO">
+<div class="row">
 
-<head>
+  <p></p>
+  <div class="field status">
+    <label>Status</label>
+    <select>
+      <option>Active</option>
+      <option>Inactive</option>
+    </select>
+  </div>
 
-  <title>Test</title>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--<link rel="stylesheet" href="styles/condo.css"> -->
+  <div class="field date">
+    <label>Fra Dato</label>
+    <input type="date">
+  </div>
 
-</head>
+  <div class="field date">
+    <label>Til Dato</label>
+    <input type="date">
+  </div>
 
-<body>
-  <!DOCTYPE html>
-  <html lang="nb-NO">
+</div>
 
-  <head>
+<style>
+  .row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern News Page</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #f4f6f9;
-        color: #333;
-      }
+  .field {
+    position: relative;
+  }
 
-      .container {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 20px;
-      }
+  .field label {
+    position: absolute;
+    top: -8px;
+    left: 14px;
+    padding: 0 6px;
+    background: white;
+    color: #2563eb;
+    font-size: 13px;
+    z-index: 1;
+  }
 
-      .news-card {
-        background: #fff;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease;
-      }
+  .field select,
+  .field input {
+    height: 56px;
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    padding: 0 16px;
+    font-size: 16px;
+  }
 
-      .news-card:hover {
-        transform: translateY(-5px);
-      }
+  .status {
+    width: 500px;
+  }
 
-      .news-image img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
-
-      .news-content {
-        padding: 20px;
-      }
-
-      .news-title {
-        font-size: 1.8rem;
-        margin-bottom: 10px;
-      }
-
-      .news-meta {
-        font-size: 0.9rem;
-        color: #888;
-        margin-bottom: 15px;
-      }
-
-      .news-text {
-        line-height: 1.6;
-        font-size: 1rem;
-      }
-
-      @media (max-width: 600px) {
-        .news-title {
-          font-size: 1.4rem;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-
-    <div class="container">
-      <div class="news-card">
-        <div class="news-image">
-          <img src="http://localhost/images/hinna-park.jpg" alt="News Image">
-        </div>
-        <div class="news-content">
-          <h1 class="news-title">Breaking News: Modern Web Design Trends</h1>
-          <div class="news-meta">April 17, 2026 • By News Author</div>
-          <p class="news-text">
-            Modern web design continues to evolve with a focus on simplicity, speed, and user experience.
-            Designers are embracing minimal layouts, soft shadows, and responsive design to create visually
-            appealing and functional websites. Combining strong typography with high-quality images allows
-            content to stand out while maintaining clarity and engagement.
-          </p>
-        </div>
-      </div>
-    </div>
-
-  </body>
-
-  </html>
-</body>
-
-</html>
+  .date {
+    width: 210px;
+  }
+</style>

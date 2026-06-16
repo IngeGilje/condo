@@ -291,7 +291,7 @@ function showFilter {
 
   // The end of the table
   html += objBudget.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
 
   
 }

@@ -47,7 +47,7 @@ async function main() {
       showHeader();
 
       // Edit filter
-      editFilter(objUserBankAccount.userId);
+      showFilter(objUserBankAccount.userId);
 
       // Show accounts
       userId = Number(document.querySelector('.filterUserId').value);
@@ -64,7 +64,6 @@ async function main() {
     objUserBankAccount.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
-
 
 // Events for user bank accounts
 async function events() {
@@ -174,8 +173,9 @@ function showHeader() {
 }
 
 // Show filter
-function editFilter(userId) {
+function showFilter(userId) {
 
+  /*
   // Start table
   let html = objUserBankAccount.initializeTable(columnWidths);
 
@@ -187,7 +187,6 @@ function editFilter(userId) {
   html += objUserBankAccount.startTableBody();
 
   // insert a table row (<tr></td>)
-
   html += objUserBankAccount.insertTableRow('', '');
 
   // Show all selected users
@@ -206,9 +205,21 @@ function editFilter(userId) {
 
   // The end of the table
   html += objUserBankAccount.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
+  */
 
+  // show filter
+  html = objUserBankAccount.startRow();
 
+  // Show user
+  html += objUser.showSelectedUsersNew('Leilighet', 'filterUserId', '', userId, '', 'Vis alle', true);
+
+  // Show accounts
+  html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objUserBankAccount.nineNine, '', 'Vis alle', true);
+
+   html += objUserBankAccount.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Insert empty table row

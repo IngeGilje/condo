@@ -53,7 +53,7 @@ async function main() {
       showHeader();
 
       // Show filter
-      showFilter(objPassword.condominiumId, objPassword.userId);
+      showFilter(objPassword.userId);
 
       // Show result
       showUser(objPassword.userId);
@@ -75,9 +75,9 @@ async function events() {
     if (event.target.classList.contains('filterUserId')) {
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
 
-      showFilter(condominiumId, userId);
+      showFilter(userId);
       showUser(userId);
     };
   });
@@ -87,12 +87,12 @@ async function events() {
     if (event.target.classList.contains('filterCondominiumId')) {
 
       const resident = "A";
-      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
+      //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
 
       const userId = Number(document.querySelector('.filterUserId').value);
 
-      showFilter(condominiumId, userId);
+      showFilter(userId);
       showUser(userId);
     };
   });
@@ -158,20 +158,19 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(condominiumId, userId) {
+function showFilter(userId) {
 
+  /*
   // Start table
   let html = objUser.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-
   html += objUser.showTableHeaderMenu('', 'centrum', 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert a table row (<tr></td>)
-
   html += objPassword.insertTableRow('');
 
   // Show selected condominiums 
@@ -179,11 +178,9 @@ function showFilter(condominiumId, userId) {
 
   // user
   html += objUser.showSelectedUsers('filterUserId', '', userId, '', '', enableChanges)
-
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-
   html += objPassword.insertTableRow('', '', '');
 
   // end table body
@@ -191,9 +188,21 @@ function showFilter(condominiumId, userId) {
 
   // The end of the table
   html += objUser.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
+  */
 
+  // show filter
+  html = objPassword.startRow();
 
+  // Show condominiums
+  //html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
+
+  // Show users
+  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
+
+  html += objPassword.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show user
@@ -280,19 +289,20 @@ async function updateUserRow(userId) {
       // Verify whether the user has permission to change all passwords
       // or only personal password
       const resident = 'A';
-      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+
       /*
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+
       (enableChanges)
         ? await objUser.loadUsersTable(condominiumId, resident, objPassword.userId)
         : await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
       */
-      if (enableChanges) await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
+      if (enableChanges) await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
     }
 
     // Show filter
-
-    const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-    showFilter(condominiumId, userId);
+    //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+    showFilter(userId);
     showUser(userId);
 
     document.querySelector('.filterUserId').disabled = false;

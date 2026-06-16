@@ -83,13 +83,13 @@ async function main() {
       condoId = Number(document.querySelector('.filterCondoId').value);
       accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(formatNorDateToNumber(fromDate));
+      fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(formatNorDateToNumber(toDate));
+      toDate = Number(objShowTransaction.formatDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
-      // Show result of filter
+      // Show transactions
       showTransactions();
 
       // Events
@@ -120,18 +120,19 @@ async function events() {
       accountId = Number(document.querySelector('.filterAccountId').value);
 
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(formatNorDateToNumber(fromDate));
+      fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
 
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(formatNorDateToNumber(toDate));
+      toDate = Number(objShowTransaction.formatDateToNumber(toDate));
 
       let amount = document.querySelector('.filterAmount').value;
       amount = formatKronerToOre(amount);
+      document.querySelector('.filterAmount').value = formatOreToKroner(amount);
 
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
-      showTransactions(3);
+      showTransactions();
     };
   });
 
@@ -201,6 +202,7 @@ function showHeader() {
 // Show filter
 function showFilter(condoId, accountId) {
 
+  /*
   // Start table
   let html = objShowTransaction.initializeTable(columnWidths);
 
@@ -241,7 +243,36 @@ function showFilter(condoId, accountId) {
 
   // The end of the table
   html += objShowTransaction.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
+  */
+
+  // show filter
+  html = objShowTransaction.startRow();
+
+  // Show condos
+  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
+
+  // Show accounts
+  html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objShowTransaction.nineNine, '', 'Vis alle', true);
+
+  // From date
+  let month = today.getMonth();
+  month = (month < 10) ? `0${month}` : `${month}`;
+  const fromDate = `${String(today.getFullYear())}-${month}-01`;
+  html += objShowTransaction.editDate('Fra Dato', 'filterFromDate', fromDate, true)
+
+  // To date
+  // Current date
+  let toDate = getCurrentIsoDate();
+  html += objShowTransaction.editDate('Til Dato', 'filterToDate', toDate, true)
+
+  // Amount
+  const amount = objShowTransaction.formatAmount('');
+  html += objShowTransaction.editAmount('Beløp', 'filterAmount', amount, true);
+
+  html += objShowTransaction.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show transactions

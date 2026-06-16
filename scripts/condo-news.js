@@ -48,7 +48,7 @@ async function main() {
       showHeader();
 
       // Show filter
-      editFilter(newsId);
+      showFilter(newsId);
 
       // Show news
       editNews(newsId);
@@ -98,7 +98,7 @@ async function events() {
       const newsId = (objNews.arrayNews.length > 0)
         ? objNews.arrayNews[0].newsId
         : 0;
-      editFilter(newsId);
+      showFilter(newsId);
       editNews(newsId);
     };
   });
@@ -160,8 +160,9 @@ function showHeader() {
 }
 
 // Show filter
-function editFilter(newsId) {
+function showFilter(newsId) {
 
+  /*
   // Start table
   let html = objNews.initializeTable(columnWidths);
 
@@ -186,7 +187,18 @@ function editFilter(newsId) {
 
   // The end of the table
   html += objNews.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
+  */
+
+  // show filter
+  html = objNews.startRow();
+
+    // Show news
+  html += objNews.showSelectedNewsNew('Nyhet', 'filterNewsId', '', newsId, '', '', true);
+
+   html += objNews.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show news
@@ -303,7 +315,7 @@ async function updateCondoRow(newsId) {
 
   // validate date
   let date = document.querySelector('.date').value;
-  date = Number(objNews.formatNorDateToNumber(date));
+  date = Number(objNews.formatDateToNumber(date));
   const validDate = objNews.validateInterval('date', columnWidths, '', 'Ugyldig dato', true, date, 1, objNews.nineNine);
 
   // validate userId  
@@ -339,7 +351,7 @@ async function updateCondoRow(newsId) {
     }
 
 
-    editFilter(newsId);
+    showFilter(newsId);
     editNews(newsId);
 
     objNews.removeMessage();

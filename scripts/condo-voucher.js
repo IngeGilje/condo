@@ -169,7 +169,7 @@ function showFilter() {
 
   // The end of the table
   html += objTransaction.endTable();
-  document.querySelector('.editFilter2').innerHTML = html;
+  document.querySelector('.showFilter2').innerHTML = html;
 
   
 }
