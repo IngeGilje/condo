@@ -56,7 +56,7 @@ async function main() {
       showHeader();
 
       // Show filter
-      showFilter(objUser.userId);
+      editFilter(objUser.condominiumId, objUser.userId);
 
       // Show result
       showUser(objUser.userId);
@@ -73,12 +73,35 @@ async function main() {
 // Events for users
 async function events() {
 
+  // Filter condomium Id
+  document.addEventListener('change', async (event) => {
+    if (event.target.classList.contains('filterCondominiumId')) {
+
+      const resident = 'A';
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value)
+      await objUser.loadUsersTable(condominiumId, resident, objUser.nineNine);
+
+      //const userId = Number(document.querySelector('.filterUserId').value);
+      const userId = objUser.arrayUsers.at(-1).userId;
+
+
+      editFilter(condominiumId, userId);
+      showUser(userId);
+    };
+  });
+
   // Filter user
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterUserId')) {
 
+      const resident = 'A';
+      const condominiumId = (enableChanges)
+        ? Number(document.querySelector('.filterCondominiumId').value)
+        : objUser.condominiumId;
+      await objUser.loadUsersTable(condominiumId, resident, objUser.nineNine);
+
       const userId = Number(document.querySelector('.filterUserId').value);
-      showUser(userId);
+      showUser(3, userId);
     };
   });
 
@@ -107,8 +130,10 @@ async function events() {
       const userId = objUser.arrayUsers.at(-1).userId;
 
       // Show filter
-       showFilter(userId);
-      showUser(userId);
+      const condominiumId = Number(document.querySelector('.filterCondominium').value);
+
+      editFilter(condominiumId, objUser.userId);
+      showUser(objUser.userId);
     };
   });
 
@@ -133,7 +158,8 @@ async function events() {
       if (userId === 0) userId = objUser.arrayUsers.at(-1).userId;
 
       // Show filter
-      showFilter(userId);
+
+      editFilter(condominiumId, userId);
       showUser(userId);
     };
   });
@@ -209,19 +235,20 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(userId) {
+function editFilter(condominiumId, userId) {
 
-  /*
   // Start table
   let html = objUser.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
+
   html += objUser.showTableHeaderMenu('', 'centrum', 'Bruker', '');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert a table row (<tr></td>)
+
   html += objUser.insertTableRow('');
 
   // Condominium
@@ -242,18 +269,9 @@ function showFilter(userId) {
 
   // The end of the table
   html += objUser.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+  document.querySelector('.editFilter').innerHTML = html;
 
-  // show filter
-  html = objUser.startRow();
 
-  // Show users
-  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
-
-   html += objUser.endRow();
-
-  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show result
@@ -267,29 +285,36 @@ function showUser(userId) {
   if (rowNumberUser !== -1) {
 
     // email,condoId
-    html += objUser.showTableHeaderMenu('', 'center', 'E-mail', 'Leilighet');
+    //html += "<tr>";
+
+    html += objUser.showTableHeaderMenu('', 'centrum', 'E-mail', 'Leilighet');
 
     // insert a table row (<tr></td>)
+
     html += objUser.insertTableRow('');
 
     // email
-    html += objUser.editTableCell('email', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
+    html += objUser.editTableCell('email', '', objUser.arrayUsers[rowNumberUser].email, 45, enableChanges);
 
     // condoId
     html += objCondo.showSelectedCondos('condoId', '', objUser.arrayUsers[rowNumberUser].condoId, '', '', enableChanges);
+
     html += "</tr>";
 
     // firstName, lastName
+    //html += "<tr>";
+
     html += objUser.showTableHeaderMenu('', 'centrum', 'Fornavn', 'Etternavn');
 
     // insert a table row (<tr></td>)
+
     html += objUser.insertTableRow('');
 
     // firstName
-    html += objUser.editTableCell('firstName', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
-  
+    html += objUser.editTableCell('firstName', '', objUser.arrayUsers[rowNumberUser].firstName, 45, enableChanges);
+
     // lastName
-    html += objUser.editTableCell('lastName', objUser.arrayUsers[rowNumberUser].lastName, 45, enableChanges);
+    html += objUser.editTableCell('lastName', '', objUser.arrayUsers[rowNumberUser].lastName, 45, enableChanges);
 
     html += "</tr>";
 
@@ -303,7 +328,7 @@ function showUser(userId) {
     html += objUser.insertTableRow('');
 
     // phone
-    html += objUser.editTableCell('phone', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
+    html += objUser.editTableCell('phone', '', objUser.arrayUsers[rowNumberUser].phone, 15, enableChanges);
 
     // Activ user
     resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
@@ -432,7 +457,8 @@ async function updateUserRow(userId) {
     }
 
     // Show filter
-    showFilter(userId);
+
+    editFilter(condominiumId, userId);
     showUser(userId);
     objUser.removeMessage();
 

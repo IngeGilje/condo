@@ -228,7 +228,7 @@ function showFilter( projectId) {
 
   // The end of the table
   html += objProject.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
   
 }

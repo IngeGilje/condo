@@ -47,7 +47,7 @@ async function main() {
 
       // Show account menu
       html = objShowTransaction.showHorizontalMenu(objShowTransaction.arrayMenuAccount);
-      document.querySelector('.menuTransaction').innerHTML = html;
+      document.querySelector('.menuAccount').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
@@ -83,13 +83,13 @@ async function main() {
       condoId = Number(document.querySelector('.filterCondoId').value);
       accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
+      fromDate = Number(formatNorDateToNumber(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objShowTransaction.formatDateToNumber(toDate));
+      toDate = Number(formatNorDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
-      // Show transactions
+      // Show result of filter
       showTransactions();
 
       // Events
@@ -120,19 +120,18 @@ async function events() {
       accountId = Number(document.querySelector('.filterAccountId').value);
 
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
+      fromDate = Number(formatNorDateToNumber(fromDate));
 
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objShowTransaction.formatDateToNumber(toDate));
+      toDate = Number(formatNorDateToNumber(toDate));
 
       let amount = document.querySelector('.filterAmount').value;
       amount = formatKronerToOre(amount);
-      document.querySelector('.filterAmount').value = formatOreToKroner(amount);
 
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
-      showTransactions();
+      showTransactions(3);
     };
   });
 
@@ -202,7 +201,6 @@ function showHeader() {
 // Show filter
 function showFilter(condoId, accountId) {
 
-  /*
   // Start table
   let html = objShowTransaction.initializeTable(columnWidths);
 
@@ -243,36 +241,7 @@ function showFilter(condoId, accountId) {
 
   // The end of the table
   html += objShowTransaction.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
-
-  // show filter
-  html = objShowTransaction.startRow();
-
-  // Show condos
-  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
-
-  // Show accounts
-  html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objShowTransaction.nineNine, '', 'Vis alle', true);
-
-  // From date
-  let month = today.getMonth();
-  month = (month < 10) ? `0${month}` : `${month}`;
-  const fromDate = `${String(today.getFullYear())}-${month}-01`;
-  html += objShowTransaction.editDate('Fra Dato', 'filterFromDate', fromDate, true)
-
-  // To date
-  // Current date
-  let toDate = getCurrentIsoDate();
-  html += objShowTransaction.editDate('Til Dato', 'filterToDate', toDate, true)
-
-  // Amount
-  const amount = objShowTransaction.formatAmount('');
-  html += objShowTransaction.editAmount('Beløp', 'filterAmount', amount, true);
-
-  html += objShowTransaction.endRow();
-
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 }
 
 // Show transactions

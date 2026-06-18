@@ -36,7 +36,7 @@ async function main() {
 
       // Show account menu
       html = objPriceRemoteHeating.showHorizontalMenu(objPriceRemoteHeating.arrayMenuAccount);
-      document.querySelector('.menuTransaction').innerHTML = html;
+      document.querySelector('.menuAccount').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objPriceRemoteHeating.condominiumId, resident, objPriceRemoteHeating.nineNine);
@@ -200,7 +200,7 @@ function showRemoteHeating() {
   // start table
   let html = objPriceRemoteHeating.initializeTable(columnWidths);
 
-  html += objPriceRemoteHeating.showTableHeaderMenu('', 'center', 'År', `Pris KilowatTimer`, 'Slett');
+  html += objPriceRemoteHeating.showTableHeaderMenu('', 'center', 'År', `Pris kilowatTimer`, 'Slett');
 
   objPriceRemoteHeating.arrayPriceRemoteHeatings.forEach((remotePriceHeating) => {
 

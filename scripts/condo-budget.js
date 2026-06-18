@@ -43,7 +43,7 @@ async function main() {
       showHeader();
 
       // Show filter
-
+      
       showFilter;
 
       const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -257,18 +257,20 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter() {
+function showFilter {
 
   // Start table
   let html = objBudget.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
+  
   html += objBudget.showTableHeaderMenu('', 'center', '', 'Konto', 'År', '', '');
 
   // start table body
   html += objBudget.startTableBody();
 
   // insert a table row (<tr></td>)
+  
   html += objBudget.insertTableRow('', '');
 
   // Selected accounts
@@ -281,7 +283,7 @@ function showFilter() {
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-
+  
   html += objBudget.insertTableRow('', '');
 
   // end table body
@@ -289,7 +291,9 @@ function showFilter() {
 
   // The end of the table
   html += objBudget.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
+
+  
 }
 
 // Show transactions
@@ -299,6 +303,7 @@ function showBudgets() {
   let html = objBudget.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
+  
   html += objBudget.showTableHeaderMenu('#e0f0e0', 'center', 'År', 'Konto', 'Budsjett', 'Tekst', '');
 
   let sumAmount = 0;
@@ -306,6 +311,7 @@ function showBudgets() {
   objBudget.arrayBudgets.forEach((budget) => {
 
     // Show menu
+    
     html += objBudget.insertTableRow('', '');
 
     // Year (<td></td>)
@@ -339,22 +345,26 @@ function showBudgets() {
   // Insert empty table row for insertion
   if (enableChanges) {
 
+    
     html += insertEmptyTableRow();
   }
 
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
-
+  
   html += objBudget.insertTableRow('font-weight: 600;', '', 'Sum', sumAmount, '', '');
 
   // The end of the table
   html += objBudget.endTable();
   document.querySelector('.result').innerHTML = html;
+
+  
 }
 
 function insertEmptyTableRow() {
 
   // Show menu
+  
   html = objBudget.insertTableRow('', '');
 
   // Year (<td></td>)

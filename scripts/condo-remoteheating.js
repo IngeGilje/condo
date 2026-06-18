@@ -37,7 +37,7 @@ async function main() {
 
       // Show account menu
       html = objRemoteHeating.showHorizontalMenu(objRemoteHeating.arrayMenuAccount);
-      document.querySelector('.menuTransaction').innerHTML = html;
+      document.querySelector('.menuAccount').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeating.condominiumId, resident, objRemoteHeating.nineNine);
@@ -205,18 +205,18 @@ function showHeader() {
 // Show filter
 function showFilter(year) {
 
-  /*
   // Start table
   let html = objRemoteHeating.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
 
-  html += objRemoteHeating.showTableHeaderMenu('center','', '', '', 'År', 'Pris KilowatTimer', '', '');
+  html += objRemoteHeating.showTableHeaderMenu('center','', '', '', 'År', 'Pris kiloWattimer', '', '');
 
   // start table body
   html += objRemoteHeating.startTableBody();
 
   // insert a table row (<tr></td>)
+
   html += objRemoteHeating.insertTableRow('', '','');
 
   // Select year (<td></td>)
@@ -238,23 +238,8 @@ function showFilter(year) {
 
   // The end of the table
   html += objRemoteHeating.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 
-  */
-   // show filter
-  html = objRemoteHeating.startRow();
-
-   // Show years
-  html += objRemoteHeating.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
-
-   // Price/kilowattHour
-  const priceKilowattHour = getPriceKilowattHour(year);
-  className = `filterPrice`;
-  html += objRemoteHeating.editAmount('Pris KilowatTimer', 'filterPrice', priceKilowattHour, true);
-
-   html += objRemoteHeating.endRow();
-
-  document.querySelector('.showFilter').innerHTML = html;
 
 }
 
@@ -291,6 +276,7 @@ function showRemoteHeatings() {
   let totalPriceYear = 0;
 
   // start table
+
   let html = objRemoteHeating.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
@@ -415,7 +401,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   className = `.date${remoteHeatingId}`;
   let date = document.querySelector(className).value;
   if (date === '') date = '01.01.2000';
-  date = objRemoteHeating.formatDateToNumber(date);
+  date = objRemoteHeating.formatNorDateToNumber(date);
   className = `date${remoteHeatingId}`;
   const validDate = objRemoteHeating.validateInterval(className, columnWidths, '', 'Ugyldig dato', true, Number(date), 20150101, 20291231);
 
