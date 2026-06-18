@@ -106,7 +106,6 @@ async function events() {
     };
   });
 
-
   // update a bankaccounts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {

@@ -1,19 +1,19 @@
 // class for remote heating price
-class PriceRemoteHeating extends Condos {
+class RemoteHeatingPrice extends Condos {
 
   // remote heating information
-  arrayPriceRemoteHeatings;
+  arrayRemoteHeatingprices;
 
-  // get priceremoteheatings
-  async loadPriceRemoteHeatingTable(condominiumId) {
+  // get remoteheatingprices
+  async loadRemoteHeatingPricesTable(condominiumId) {
 
     const URL = (this.serverStatus === 1)
-      ? '/api/priceremoteheatings'
-      : 'http://localhost:3000/priceremoteheatings';
+      ? '/api/remoteheatingprices'
+      : 'http://localhost:3000/remoteheatingprices';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/priceremoteheatings?action=select&condominiumId=${condominiumId}`);
+      //const response = await fetch(`${URL}:3000/remoteheatingprices?action=select&condominiumId=${condominiumId}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -24,17 +24,17 @@ class PriceRemoteHeating extends Condos {
           condominiumId: condominiumId
         })
       });
-      if (!response.ok) throw new Error("Network error (priceremoteheatings)");
-      this.arrayPriceRemoteHeatings = await response.json();
+      if (!response.ok) throw new Error("Network error (remoteheatingprices)");
+      this.arrayRemoteHeatingprices = await response.json();
     } catch (error) {
-      console.log("Error loading priceremoteheatings:", error);
+      console.log("Error loading remoteheatingprices:", error);
     }
   }
 
-  // update a priceremoteheatings row
-  async updatePriceRemoteHeatingTable(user, priceRemoteHeatingsId, year, priceKilowattHour) {
+  // update a remoteheatingprices row
+  async updateRemoteHeatingPricesTable(user, remoteHeatingpricesId, year, priceKilowattHour) {
 
-    const URL = (this.serverStatus === 1) ? '/api/priceremoteheatings' : 'http://localhost:3000/priceremoteheatings';
+    const URL = (this.serverStatus === 1) ? '/api/remoteheatingprices' : 'http://localhost:3000/remoteheatingprices';
     try {
 
       const response = await fetch(URL, {
@@ -45,25 +45,25 @@ class PriceRemoteHeating extends Condos {
         body: JSON.stringify({
           action: 'update',
           user: user,
-          priceRemoteHeatingsId: priceRemoteHeatingsId,
+          remoteHeatingpricesId: remoteHeatingpricesId,
           year: year,
           priceKilowattHour: priceKilowattHour
         })
       });
-      if (!response.ok) throw new Error("Network error (priceremoteheatings)");
-      this.arrayPriceRemoteHeatings = await response.json();
+      if (!response.ok) throw new Error("Network error (remoteheatingprices)");
+      this.arrayRemoteHeatingprices = await response.json();
     } catch (error) {
-      console.log("Error updating priceremoteheatings:", error);
+      console.log("Error updating remoteheatingprices:", error);
     }
   }
 
-  // insert priceremoteheatings row
-  async insertPriceRemoteHeatingTable(condominiumId, user, year, priceKilowattHour) {
+  // insert remoteheatingprices row
+  async insertRemoteHeatingPricesTable(condominiumId, user, year, priceKilowattHour) {
 
-    const URL = (this.serverStatus === 1) ? '/api/priceremoteheatings' : 'http://localhost:3000/priceremoteheatings';
+    const URL = (this.serverStatus === 1) ? '/api/remoteheatingprices' : 'http://localhost:3000/remoteheatingprices';
     try {
 
-      //const response = await fetch(`${URL}:3000/priceremoteheatings?action=insert&condominiumId=${condominiumId}&user=${user}&year=${year}&priceKilowattHour=${priceKilowattHour}`);
+      //const response = await fetch(`${URL}:3000/remoteheatingprices?action=insert&condominiumId=${condominiumId}&user=${user}&year=${year}&priceKilowattHour=${priceKilowattHour}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -77,22 +77,22 @@ class PriceRemoteHeating extends Condos {
           priceKilowattHour: priceKilowattHour
         })
       });
-      if (!response.ok) throw new Error("Network error (priceremoteheatings)");
-      this.arrayPriceRemoteHeatings = await response.json();
+      if (!response.ok) throw new Error("Network error (remoteheatingprices)");
+      this.arrayRemoteHeatingprices = await response.json();
     } catch (error) {
-      console.log("Error insert priceremoteheatings:", error);
+      console.log("Error insert remoteheatingprices:", error);
     }
   }
 
-  // delete a priceremoteheatings row
-  async deletePriceRemoteHeatingTable(priceRemoteHeatingsId, user) {
+  // delete a remoteheatingprices row
+  async deleteRemoteHeatingPricesTable(remoteHeatingpricesId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/priceremoteheatings' : 'http://localhost:3000/priceremoteheatings';
+    const URL = (this.serverStatus === 1) ? '/api/remoteheatingprices' : 'http://localhost:3000/remoteheatingprices';
     try {
 
       // Fetch for sending a message to server(request)
       // response is a message in .json format send from server(response)
-      //const response = await fetch(`${URL}:3000/priceremoteheatings?action=delete&priceRemoteHeatingsId=${priceRemoteHeatingsId}&user=${user}`);
+      //const response = await fetch(`${URL}:3000/remoteheatingprices?action=delete&remoteHeatingpricesId=${remoteHeatingpricesId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -100,14 +100,14 @@ class PriceRemoteHeating extends Condos {
         },
         body: JSON.stringify({
           action: 'delete',
-          priceRemoteHeatingsId: priceRemoteHeatingsId,
+          remoteHeatingpricesId: remoteHeatingpricesId,
           user: user
         })
       });
-      if (!response.ok) throw new Error("Network error (priceremoteheatings)");
-      this.arrayPriceRemoteHeatings = await response.json();
+      if (!response.ok) throw new Error("Network error (remoteheatingprices)");
+      this.arrayRemoteHeatingprices = await response.json();
     } catch (error) {
-      console.log("Error delete priceremoteheatings:", error);
+      console.log("Error delete remoteheatingprices:", error);
     }
   }
 }

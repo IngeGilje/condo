@@ -45,8 +45,8 @@ async function main() {
       html = objShowTransaction.showHorizontalMenu(objShowTransaction.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
-      // Show account menu
-      html = objShowTransaction.showHorizontalMenu(objShowTransaction.arrayMenuAccount);
+      // Show transaction menu
+      html = objShowTransaction.showHorizontalMenu(objShowTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
@@ -120,10 +120,12 @@ async function events() {
       accountId = Number(document.querySelector('.filterAccountId').value);
 
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
+      //fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
+      fromDate = objShowTransaction.formatISODateToNumber(fromDate);
 
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objShowTransaction.formatDateToNumber(toDate));
+      //toDate = Number(objShowTransaction.formatDateToNumber(toDate));
+      toDate = objShowTransaction.formatISODateToNumber(toDate);
 
       let amount = document.querySelector('.filterAmount').value;
       amount = formatKronerToOre(amount);
@@ -263,7 +265,7 @@ function showFilter(condoId, accountId) {
 
   // To date
   // Current date
-  let toDate = getCurrentIsoDate();
+  let toDate = getCurrentISODate();
   html += objShowTransaction.editDate('Til Dato', 'filterToDate', toDate, true)
 
   // Amount
@@ -304,7 +306,6 @@ function showTransactions() {
 
     // accounts
     className = `accountId${bankTransaction.transactionId}`;
-
     objAccount.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
     // amount
@@ -316,7 +317,6 @@ function showTransactions() {
     // Show button for voucher
     className = `voucher${bankTransaction.transactionId}`;
     html += objShowTransaction.showButton(className, 'Vis bilag');
-
     html += "</tr>";
 
     // accumulate

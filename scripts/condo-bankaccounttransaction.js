@@ -114,10 +114,12 @@ async function events() {
       accountId = Number(document.querySelector('.filterAccountId').value);
 
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(convertDateToISOFormat(fromDate));
+      //fromDate = Number(convertDateToISOFormat(fromDate));
+      fromDate = objBankAccountTransaction.formatISODateToNumber(fromDate);
 
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(convertDateToISOFormat(toDate));
+      //toDate = Number(convertDateToISOFormat(toDate));
+      toDate = objBankAccountTransaction.formatISODateToNumber(toDate);
 
       let amount = document.querySelector('.filterAmount').value;
       amount = formatKronerToOre(amount);
@@ -490,7 +492,6 @@ async function showBankAccountTransactions() {
 
     // Delete
     className = `delete${bankAccountTransaction.bankAccountTransactionId}`;
-    //html += objBankAccountTransaction.showSelectedValues(className, '', enableChanges, selected, 'Nei', 'Ja')
     html += objBankAccountTransaction.showButton(className, 'Slett');
 
     html += "</tr>";

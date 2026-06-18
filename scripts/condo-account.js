@@ -48,11 +48,10 @@ async function main() {
       await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show header
-
       showHeader();
 
       // Show filter
-      showFilter;
+      showFilter();
 
       // Show account
       editAccounts();
@@ -74,8 +73,8 @@ async function events() {
     if (event.target.classList.contains('filterFixedCost')) {
 
       let fixedCost = document.querySelector('.filterFixedCost').value;
-      if (fixedCost === 'Fast') fixedCost = 'Y';
-      if (fixedCost === 'Variabel') fixedCost = 'N';
+      if (fixedCost === constFixedCost) fixedCost = 'Y';
+      if (fixedCost === constVariableCost) fixedCost = 'N';
       await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show account
@@ -185,18 +184,17 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
+  /*
   // Start table
   let html = objAccount.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-
   html += objAccount.showTableHeaderMenu('', 'center', '', 'Kostnadstype', '');
 
   // start table body
   html += objAccount.startTableBody();
 
   // insert a table row (<tr></td>)
-
   html += objAccount.insertTableRow('', '');
 
   // fixed or not fixed cost
@@ -204,7 +202,6 @@ function showFilter() {
   html += "<td></td></tr>";
 
   // insert a table row (<tr></td>)
-
   html += objAccount.insertTableRow('', '');
   html += "<td></td><td></td></tr>";
 
@@ -214,8 +211,17 @@ function showFilter() {
   // The end of the table
   html += objAccount.endTable();
   document.querySelector('.showFilter').innerHTML = html;
+  */
 
+  // show filter
+  html = objAccount.startRow();
 
+  // Show types of account
+  html += objAccount.showSelectedValuesNew('Kostnadstype', 'filterFixedCost', '', true, 'Alle', constFixedCost, constVariableCost, 'Alle')
+
+  html += objAccount.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show accounts
