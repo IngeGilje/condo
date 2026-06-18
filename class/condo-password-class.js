@@ -1,4 +1,0 @@
-
-class Password extends Condos {
-
-}

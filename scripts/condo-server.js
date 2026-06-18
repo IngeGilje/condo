@@ -3,7 +3,7 @@
 
 // const serverStatus = 1;  // http://ingegilje.no on web server
 // const serverStatus = 2;  // http://localhost on development PC
-const serverStatus = 1;     // http://ingegilje.no on web server
+const serverStatus = 2;     
 
 console.log('serverStatus: ', serverStatus);
 import express from "express";

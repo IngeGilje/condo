@@ -1,7 +1,0 @@
-class AccountMovement extends Condos {
-
-  constructor(className) {
-    super(className);
-  }
-}
-
