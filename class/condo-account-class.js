@@ -177,7 +177,9 @@ class Account extends Condos {
   // get accounts from accounts table
   async loadAccountsTable(condominiumId, fixedCost) {
 
-    const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/accounts' 
+    : 'http://localhost:3000/accounts';
     try {
 
       // POST request

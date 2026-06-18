@@ -3,8 +3,9 @@
 
 // const serverStatus = 1;  // http://ingegilje.no on web server
 // const serverStatus = 2;  // http://localhost on development PC
-const serverStatus = 2;     // http://localhost on development PC
+const serverStatus = 1;     // http://ingegilje.no on web server
 
+console.log('serverStatus: ', serverStatus);
 import express from "express";
 import session from "express-session";
 import cors from "cors";
@@ -37,8 +38,8 @@ app.use(session({
     sameSite: "lax"     // or "none" if cross-site
   }
 }));
-
 app.post('/health', (req, res) => {
+  console.log('Serverstatus: ', serverStatus);
   res.status(200).send('OK');
 });
 
@@ -58,7 +59,6 @@ app.post("/profile", (req, res) => {
 });
 
 // Get current user info
-//app.get("/me", async (req, res) => {
 app.post("/me", async (req, res) => {
 
   console.log('req.session', req.session);
@@ -2045,7 +2045,8 @@ async function main() {
 
     // Start the server
     app.listen(3000, () => {
-      console.log("🚀 Server running at http://localhost:3000");
+      if (serverStatus === 1) console.log("🚀 Server running at http://ingegilje.no");
+      if (serverStatus === 2) console.log("🚀 Server running at http://localhost:3000");
     });
 
   } catch (err) {

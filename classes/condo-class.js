@@ -166,7 +166,7 @@ class Condos {
 
   // menu array for due
   arrayMenuDue = [
-        {
+    {
       applicationName: "condo-due.html",
       className: "Menu4",
       text: "Forfall"
@@ -1060,7 +1060,9 @@ class Condos {
   // check if server is started
   async checkServer() {
 
-    const URL = (this.serverStatus === 1) ? '/api/health' : 'http://localhost:3000/health';
+    const URL = (this.serverStatus === 1)
+      ? '/api/health'
+      : 'http://localhost:3000/health';
     try {
 
       const response = await fetch(URL, {

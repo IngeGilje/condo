@@ -199,7 +199,9 @@ class BankAccount extends Condos {
   // Show bank accounts with alternative select options
   async loadBankAccountsTable(condominiumId, bankAccountId) {
 
-    const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/bankaccounts' 
+    : 'http://localhost:3000/bankaccounts';
     try {
       // POST request
       //const response = await fetch(`${URL}:3000/bankaccounts?action=select&condominiumId=${condominiumId}&bankAccountId=${bankAccountId}`);
@@ -224,7 +226,9 @@ class BankAccount extends Condos {
   // update bank accounts row
   async updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate) {
 
-    const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/bankaccounts' 
+    : 'http://localhost:3000/bankaccounts';
     try {
       // POST request
       //const response = await fetch(`${URL}:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}`);
@@ -255,7 +259,9 @@ class BankAccount extends Condos {
   // insert bank accounts row
   async insertBankAccountsTable(condominiumId, user, bankAccount, name, openingBalanceDate, openingBalance, closingBalanceDate, closingBalance) {
 
-    const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/bankaccounts' 
+    : 'http://localhost:3000/bankaccounts';
     try {
       // POST request
       //const response = await fetch(`${URL}:3000/bankaccounts?action=insert&condominiumId=${condominiumId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}&closingBalanceDate=${closingBalanceDate}`);
@@ -287,7 +293,9 @@ class BankAccount extends Condos {
   // delete bankaccounts row
   async deleteBankAccountsTable(bankAccountId, user) {
 
-    const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/bankaccounts' 
+    : 'http://localhost:3000/bankaccounts';
     try {
       // POST request
       //const response = await fetch(`${URL}:3000/bankaccounts?action=delete&bankAccountId=${bankAccountId}&user=${user}`);
