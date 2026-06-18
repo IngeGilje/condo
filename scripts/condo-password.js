@@ -53,7 +53,7 @@ async function main() {
       showHeader();
 
       // Show filter
-      showFilter(objPassword.userId);
+      showFilter(objPassword.condominiumId, objPassword.userId);
 
       // Show result
       showUser(objPassword.userId);
@@ -75,9 +75,9 @@ async function events() {
     if (event.target.classList.contains('filterUserId')) {
 
       const userId = Number(document.querySelector('.filterUserId').value);
-      //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
 
-      showFilter(userId);
+      showFilter(condominiumId, userId);
       showUser(userId);
     };
   });
@@ -87,12 +87,12 @@ async function events() {
     if (event.target.classList.contains('filterCondominiumId')) {
 
       const resident = "A";
-      //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
 
       const userId = Number(document.querySelector('.filterUserId').value);
 
-      showFilter(userId);
+      showFilter(condominiumId, userId);
       showUser(userId);
     };
   });
@@ -158,19 +158,20 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(userId) {
+function showFilter(condominiumId, userId) {
 
-  /*
   // Start table
   let html = objUser.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
+
   html += objUser.showTableHeaderMenu('', 'centrum', 'Sameie', 'Bruker');
 
   // start table body
   html += objUser.startTableBody();
 
   // insert a table row (<tr></td>)
+
   html += objPassword.insertTableRow('');
 
   // Show selected condominiums 
@@ -178,9 +179,11 @@ function showFilter(userId) {
 
   // user
   html += objUser.showSelectedUsers('filterUserId', '', userId, '', '', enableChanges)
+
   html += "</tr>";
 
   // insert a table row (<tr></td>)
+
   html += objPassword.insertTableRow('', '', '');
 
   // end table body
@@ -188,21 +191,9 @@ function showFilter(userId) {
 
   // The end of the table
   html += objUser.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+  document.querySelector('.editFilter').innerHTML = html;
 
-  // show filter
-  html = objPassword.startRow();
 
-  // Show condominiums
-  //html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
-
-  // Show users
-  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
-
-  html += objPassword.endRow();
-
-  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show user
@@ -289,20 +280,19 @@ async function updateUserRow(userId) {
       // Verify whether the user has permission to change all passwords
       // or only personal password
       const resident = 'A';
-
-      /*
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-
+      /*
       (enableChanges)
         ? await objUser.loadUsersTable(condominiumId, resident, objPassword.userId)
         : await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
       */
-      if (enableChanges) await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
+      if (enableChanges) await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
     }
 
     // Show filter
-    //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-    showFilter(userId);
+
+    const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+    showFilter(condominiumId, userId);
     showUser(userId);
 
     document.querySelector('.filterUserId').disabled = false;

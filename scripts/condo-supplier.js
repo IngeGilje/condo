@@ -52,7 +52,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
 
       // Show filter
 
-      showFilter(supplierId);
+      editFilter(supplierId);
 
       // Show supplier
       editSupplier(supplierId);
@@ -106,7 +106,7 @@ async function events() {
         : 0;
       // Show filter
 
-      showFilter(supplierId);
+      editFilter(supplierId);
       editSupplier(supplierId);
     };
   });
@@ -131,7 +131,7 @@ async function events() {
 
       // Show filter
 
-      showFilter(supplierId);
+      editFilter(supplierId);
       editSupplier(supplierId);
     };
   });
@@ -224,7 +224,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter(supplierId) {
+function editFilter(supplierId) {
 
   // Start table
   let html = objSupplier.initializeTable(columnWidths);
@@ -247,7 +247,7 @@ function showFilter(supplierId) {
 
   // The end of the table
   html += objSupplier.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
 }
 
 // Show supplier
@@ -507,7 +507,7 @@ async function updateSuppliersRow(supplierId) {
 
     // Show filter
 
-    showFilter(supplierId);
+    editFilter(supplierId);
     editSupplier(supplierId);
 
     if (enableChanges) {

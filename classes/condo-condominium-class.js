@@ -96,7 +96,8 @@ class Condominium extends Condos {
     try {
 
       // POST request
-         const response = await fetch(URL, {
+      //const response = await fetch(`${URL}:3000/condominiums?action=insert&user=${user}&name=${name}&street=${street}&address2=${address2}&postalCode=${postalCode}&city=${city}&phone=${phone}&email=${email}&incomeRemoteHeatingAccountId=${incomeRemoteHeatingAccountId}&paymentRemoteHeatingAccountId=${paymentRemoteHeatingAccountId}&commonCostAccountId=${commonCostAccountId}&organizationNumber=${organizationNumber}&importPath=${importPath}`);
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -217,83 +218,6 @@ class Condominium extends Condos {
     html += `
       </select >
     </td>`;
-
-    return html;
-  }
-
-  // Show condominiums
-  showSelectedCondominiumsNew(label, className, style, condominiumId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div class="field status" style="width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    // Check if condominiums array is empty
-    if (this.arrayCondominiums.length > 0) {
-      this.arrayCondominiums.forEach((condominium) => {
-
-        html += `
-        <option 
-          value=${condominium.condominiumId}
-          ${(condominium.condominiumId === condominiumId) ? 'selected' : ''}
-        >
-          &nbsp;&nbsp;${condominium.name.trim()}&nbsp;&nbsp;
-        </option>`;
-
-        if (condominium.condominiumId === condominiumId) selectedValue = true;
-      });
-    } else {
-
-      // No condominiums
-      html += `
-      <option 
-        value="0" 
-         ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;Ingen sameier&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayCondominiums.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayCondominiums.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    html += `
-      </select >
-      <label>
-        ${label}
-      </label>
-    </div>`;
 
     return html;
   }

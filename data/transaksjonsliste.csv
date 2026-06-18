@@ -1,25 +1,4 @@
 Dato;Type;Antall;Konto;Inn;Ut;Valuta;Beskrivelse;Fra konto;Til konto;Fra;Til
-15.06.2026;Overførsel;;32062337272;2189,00;;NOK;"leil 301 Oskar Fausk 97C";36264007849;32062337272;Oskar Fausk;Sameiet sin konto
-15.06.2026;Belastet konto etter avtale;;32062337272;3269,00;;NOK;"97A";32013972337;32062337272;Kristine Sømme;
-15.06.2026;Mobilgiro m/meld. forf. i dag;;32062337272;3800,00;;NOK;"Delbetaling 1/10";32016859566;32062337272;Fabiana Gaspar Franco;Sameiet Laberget
-15.06.2026;Overførsel;;32062337272;27379,00;;NOK;"betaling utvendig vedlikehold rate1";12016029341;32062337272;Birgit Ruth M A Schober;Sameie Hinna Park B3-08
-15.06.2026;Overførsel;;32062337272;16089,00;;NOK;"For huset";12064075576;32062337272;Ladan Pazoki;Inge Gilje
-15.06.2026;Belastet konto etter avtale;;32062337272;3269,00;;NOK;"Sameie 99a";32705753007;32062337272;Åse Myklebust Stapnes;
-15.06.2026;Overførsel;;32062337272;4619,00;;NOK;"fast månedsrate fra Jan 2026";12016029341;32062337272;Birgit Ruth M A Schober;Sameie Hinna Park B3-08
-15.06.2026;Mobilgiro m/meld. forf. i dag;;32062337272;18911,00;;NOK;"Utvendig vedligehold 97a";32013972337;32062337272;Kristine Sømme;Sameie Hinna Park
-15.06.2026;Mobilgiro m/meld. til forfall;;32062337272;27097,00;;NOK;"Utvendig vedlikehold";32014148174;32062337272;Inge Svein Gilje;Hinna Park B3 sameie
-12.06.2026;Mobilgiro m/meld. forf. i dag;;32062337272;3359,00;;NOK;"Månedsbetaling 95A";32016934118;32062337272;Fabiana Gaspar Franco;Sameiet Laberget
-11.06.2026;Pris;;32062337272;;100,25;NOK;"Omkostninger BedriftsNett";32062337272;32019999008;;
-11.06.2026;Betaling med KID;;32062337272;;53028,00;NOK;"84608536862";32062337272;60030674564;Sameie Hinna Park B3-08;IF SKADEFORSIKRING NUF
-10.06.2026;Giro;;32062337272;12137,00;;NOK;"Skifte av kledning og maling";36264007849;32062337272;Oskar Fausk;Sameiet sin konto
-10.06.2026;Overførsel;;32062337272;2819,00;;NOK;"Fellesutgifter";05390874660;32062337272;Ladan Pazoki;inge gilje
-09.06.2026;Betaling med melding;;32062337272;;30771,00;NOK;"Faktura 106461";32062337272;96881163796;Sameie Hinna Park B3-08;Takst-Gruppen AS
-08.06.2026;Mobilgiro m/meld. forf. i dag;;32062337272;37822,00;;NOK;"Utv vedlikehold 99a, juni og juli beløp";32701025074;32062337272;Åse Myklebust Stapnes;Sameie Hinna Park
-08.06.2026;Betaling med KID;0;32062337272;;693,00;NOK;"20011129161120670913";32062337272;32073195801;Sameie Hinna Park B3-08;Lyse Marked AS
-08.06.2026;Betaling med KID;0;32062337272;;6357,91;NOK;"0005061262852";32062337272;32074560368;Sameie Hinna Park B3-08;Lyse Marked AS
-08.06.2026;Betaling med melding;0;32062337272;;1032,00;NOK;"Led lysrør";32062337272;36263989826;Sameie Hinna Park B3-08;Oskar Fausk
-04.06.2026;Betaling med KID;;32062337272;;544,73;NOK;"800537080710331";32062337272;32073969815;Sameie Hinna Park B3-08;LYSE AS
-31.05.2026;Gebyr;;32062337272;;7,50;NOK;"FAKT.TJ MOTTATT FAKT NETTBANK 3 TRANS(ER) TYPE 438 437";32062337272;;;
 15.05.2026;Belastet konto etter avtale;;32062337272;3269,00;;NOK;"Sameie 99a";32705753007;32062337272;Åse Myklebust Stapnes;
 15.05.2026;Overførsel;;32062337272;4619,00;;NOK;"fast månedsrate fra Jan 2026";12016029341;32062337272;Birgit Ruth M A Schober;Sameie Hinna Park B3-08
 15.05.2026;Betaling med KID;;32062337272;;693,00;NOK;"20011129161119321486";32062337272;32073195801;Sameie Hinna Park B3-08;Lyse Marked AS
@@ -31,3 +10,15 @@ Dato;Type;Antall;Konto;Inn;Ut;Valuta;Beskrivelse;Fra konto;Til konto;Fra;Til
 11.05.2026;Betaling med KID;;32062337272;;7998,77;NOK;"0005061233770";32062337272;32074560368;Sameie Hinna Park B3-08;Lyse Marked AS
 05.05.2026;Pris;;32062337272;;105,75;NOK;"Omkostninger BedriftsNett";32062337272;32019999008;;
 04.05.2026;Betaling med KID;;32062337272;;560,24;NOK;"800537080710323";32062337272;32073969815;Sameie Hinna Park B3-08;LYSE AS
+30.04.2026;Gebyr;;32062337272;;7,50;NOK;"FAKT.TJ MOTTATT FAKT NETTBANK 3 TRANS(ER) TYPE 438 437";32062337272;;;
+15.04.2026;Belastet konto etter avtale;;32062337272;4574,00;;NOK;"Laberget 95B";32061703445;32062337272;Inge Svein Gilje;
+15.04.2026;Overførsel;;32062337272;4619,00;;NOK;"fast månedsrate fra Jan 2026";12016029341;32062337272;Birgit Ruth M A Schober;Sameie Hinna Park B3-08
+15.04.2026;Belastet konto etter avtale;;32062337272;3269,00;;NOK;"Sameie 99a";32705753007;32062337272;Åse Myklebust Stapnes;
+15.04.2026;Belastet konto etter avtale;;32062337272;3269,00;;NOK;"97A";32013972337;32062337272;Kristine Sømme;
+13.04.2026;Overførsel;;32062337272;2189,00;;NOK;"leil 301 Oskar Fausk 97C";36264007849;32062337272;Oskar Fausk;Sameiet sin konto
+10.04.2026;Overførsel;;32062337272;2819,00;;NOK;"Fellesutgifter";05390874660;32062337272;Ladan Pazoki;inge gilje
+10.04.2026;Overførsel;;32062337272;10646,00;;NOK;".";05390874660;32062337272;Ladan Pazoki;Inge Gilje
+10.04.2026;Mobilgiro m/meld. forf. i dag;;32062337272;3359,00;;NOK;"Månedsbetaling 95A";32016934118;32062337272;Fabiana Gaspar Franco;Sameiet Laberget
+07.04.2026;Pris;;32062337272;;103,75;NOK;"Omkostninger BedriftsNett";32062337272;32019999008;;
+07.04.2026;Sumpost;3;32062337272;;10284,27;NOK;"3 transaksjoner";32062337272;;;
+01.04.2026;Betaling med melding;;32062337272;;1400,00;NOK;"Faktura 10134";32062337272;32072587064;Sameie Hinna Park B3-08;Hinna Park Velforening
