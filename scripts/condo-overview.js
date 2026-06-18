@@ -104,36 +104,27 @@ async function events() {
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const validCondoId = objOverview.validateInterval('filterCondoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objOverview.nineNine);
 
-      // from date
+      const accountId = objOverview.nineNine;
+      const deleted = 'N';
+
       let fromDate = document.querySelector('.filterFromDate').value;
-      const validFromDate = objOverview.validateIsoDate('filterFromDate', fromDate, objOverview, '', 'Ugyldig fra dato');
+      fromDate = objBankAccountTransaction.formatISODateToNumber(fromDate);
 
-      // to date
       let toDate = document.querySelector('.filterToDate').value;
-      const validToDate = objOverview.validateIsoDate('filterToDate', toDate, objOverview, '', 'Ugyldig til dato');
+      toDate = objBankAccountTransaction.formatISODateToNumber(toDate);
 
-      if (validFromDate && validToDate && validCondoId) {
+      await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
+      const orderBy = 'condoId ASC, date DESC, income ASC';
+      await objTransaction.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
 
-        const condoId = Number(document.querySelector('.filterCondoId').value);
-        const accountId = objOverview.nineNine;
-        const deleted = 'N';
-        let fromDate = document.querySelector('.filterFromDate').value;
-        fromDate = objOverview.formatDateToNumber(fromDate);
-        let toDate = document.querySelector('.filterToDate').value;
-        toDate = objOverview.formatDateToNumber(toDate);
-        await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
-        const orderBy = 'condoId ASC, date DESC, income ASC';
-        await objTransaction.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
+      // Show dues
+      showDues();
 
-        // Show dues
-        showDues();
+      // Transactions
+      showTransactions();
 
-        // Transactions
-        showTransactions();
-
-        // show how much to pay
-        showHowMuchToPay();
-      }
+      // show how much to pay
+      showHowMuchToPay();
     };
   });
 
@@ -226,7 +217,7 @@ function showFilter(condoId) {
 
   // To date
   // Current date
-  let toDate = getCurrentIsoDate();
+  let toDate = getCurrentISODate();
   html += objDue.editDate('Til Dato', 'filterToDate', toDate, true)
 
   html += objOverview.endRow();

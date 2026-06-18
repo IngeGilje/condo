@@ -8,7 +8,7 @@ const objRemoteHeatingPrice = new RemoteHeatingPrice('remoteheatingprice');
 
 const enableChanges = (objRemoteHeatingPrice.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 100];
+const columnWidths = [175, 175, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -30,22 +30,25 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show horizonal menu
-      let html = objRemoteHeatingPrice.showHorizontalMenu();
-      document.querySelector('.horizontalMenu').innerHTML = html;
+      // Show main menu
+      let html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuMain);
+      document.querySelector('.menuMain').innerHTML = html;
+
+      // Show remote heating menu
+      html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuRemoteHeating);
+      document.querySelector('.menuRemoteHeating').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeatingPrice.condominiumId, resident, objRemoteHeatingPrice.nineNine);
       await objCondo.loadCondoTable(objRemoteHeatingPrice.condominiumId, objRemoteHeatingPrice.nineNine);
 
       // Show header
-      let menuNumber = 0;
       showHeader();
 
       await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId);
 
       // Show remoteHeatingPrice
-      menuNumber = showRemoteHeating(menuNumber);
+      showRemoteHeating();
 
       // Events
       events();
@@ -82,8 +85,7 @@ async function events() {
       await deleteRemoteHeatingPriceRow(remoteHeatingPriceId, className);
       await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId);
 
-      let menuNumber = 0;
-      menuNumber = showRemoteHeating(menuNumber);
+      showRemoteHeating();
     };
   });
 
@@ -131,8 +133,7 @@ async function events() {
 
         await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId);
 
-        let menuNumber = 0;
-        menuNumber = showRemoteHeating(menuNumber);
+        showRemoteHeating();
       };
     };
   });
@@ -159,7 +160,7 @@ function showHeader() {
   html += objRemoteHeatingPrice.startTableBody();
 
   // show main header
-  html += objRemoteHeatingPrice.showTableHeaderLogOut('', '', 'Fjernvarme priser');
+  html += objRemoteHeatingPrice.showTableHeaderLogOut('', 'Fjernvarme priser');
   html += "</tr>";
 
   // end table body
@@ -171,15 +172,13 @@ function showHeader() {
 }
 
 // Insert empty table row
-function insertEmptyTableRow(menuNumber) {
+function insertEmptyTableRow() {
 
   let html = '';
   let date = '';
 
   // insert a table row (<tr></td>)
-  html += objRemoteHeatingPrice.insertTableRow('', menuNumber, objRemoteHeatingPrice.accountMenu);
-
-  //html += "<td class='center'>Ny fjernvarmepris</td>";
+  html += objRemoteHeatingPrice.insertTableRow('');
 
   // Select year (<td></td>)
   const year = today.getFullYear();
@@ -193,19 +192,17 @@ function insertEmptyTableRow(menuNumber) {
 }
 
 // Show remoteheatingprices
-function showRemoteHeating(menuNumber) {
+function showRemoteHeating() {
 
   // start table
   let html = objRemoteHeatingPrice.initializeTable(columnWidths);
 
-  menuNumber++;
-  html += objRemoteHeatingPrice.showTableHeaderMenu(menuNumber, objRemoteHeatingPrice.accountMenu, '','center', 'År', `Pris kilowatTimer`, 'Slett');
+  html += objRemoteHeatingPrice.showTableHeaderMenu( '','center', 'År', `Pris kilowatTimer`, 'Slett');
 
   objRemoteHeatingPrice.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
 
     // insert a table row (<tr></td>)
-    menuNumber++;
-    html += objRemoteHeatingPrice.insertTableRow('', menuNumber, objRemoteHeatingPrice.accountMenu);
+    html += objRemoteHeatingPrice.insertTableRow('');
 
     // Select year (<td></td>)
     const year = remoteHeatingPrice.year;
@@ -234,19 +231,12 @@ function showRemoteHeating(menuNumber) {
   // Insert empty table row for insertion
   if (enableChanges) {
 
-    menuNumber++;
-    html += insertEmptyTableRow(menuNumber);
+    html += insertEmptyTableRow();
   }
-
-  // Show the rest of the menu
-  menuNumber++;
-  html += objRemoteHeatingPrice.showRestMenu(menuNumber, objRemoteHeatingPrice.accountMenu, '', '', '');
 
   // The end of the table
   html += objRemoteHeatingPrice.endTable();
   document.querySelector('.result').innerHTML = html;
-
-  return menuNumber;
 }
 
 // Delete one remoteHeatingPrice row
@@ -302,8 +292,7 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
 
     await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId);
 
-    let menuNumber = 0;
-    menuNumber = showRemoteHeating(menuNumber);
+    showRemoteHeating();
   }
 }
 

@@ -90,10 +90,11 @@ async function events() {
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
+      
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objDue.formatDateToNumber(fromDate));
+      fromDate = objDue.formatISODateToNumber(fromDate);
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objDue.formatDateToNumber(toDate));
+       toDate = objDue.formatISODateToNumber(toDate);
 
       await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
@@ -190,7 +191,7 @@ function showHeader() {
   html += objDue.startTableBody();
 
   // show main header
-  html += objDue.showTableHeaderLogOut('', '1', '2', '3Forfall', '4', '5');
+  html += objDue.showTableHeaderLogOut('', '', '', 'Forfall', '', '');
   html += "</tr>";
 
   // end table body
@@ -219,7 +220,7 @@ function showFilter(condominiumId, condoId) {
 
    // To date
   // Current date
-  let toDate = getCurrentIsoDate();
+  let toDate = getCurrentISODate();
   html += objDue.editDate('Til Dato', 'filterToDate', toDate, true)
 
    html += objDue.endRow();

@@ -4,7 +4,7 @@
 const today = new Date();
 const objUser = new User('user');
 const objCondo = new Condo('condo');
-const objPriceRemoteHeating = new PriceRemoteHeating('priceremoteheating');
+const objRemoteHeatingPrice = new RemoteHeatingPrice('remoteheatingprice');
 const objRemoteHeating = new RemoteHeating('remoteheating');
 
 const enableChanges = (objRemoteHeating.securityLevel > 5);
@@ -31,21 +31,20 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show main menu
+     // Show main menu
       let html = objRemoteHeating.showHorizontalMenu(objRemoteHeating.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
-      // Show account menu
-      html = objRemoteHeating.showHorizontalMenu(objRemoteHeating.arrayMenuAccount);
-      document.querySelector('.menuTransaction').innerHTML = html;
+      // Show remote heating menu
+      html = objRemoteHeating.showHorizontalMenu(objRemoteHeating.arrayMenuRemoteHeating);
+      document.querySelector('.menuRemoteHeating').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeating.condominiumId, resident, objRemoteHeating.nineNine);
       await objCondo.loadCondoTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine);
-      await objPriceRemoteHeating.loadPriceRemoteHeatingTable(objRemoteHeating.condominiumId);
+      await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeating.condominiumId);
 
       // Show header
-
       showHeader();
 
       // Show filter
@@ -497,9 +496,9 @@ function getPriceKilowattHour(year) {
 
   year = Number(year);
   let priceKilowattHour = 0;
-  objPriceRemoteHeating.arrayPriceRemoteHeatings.forEach((priceRemoteHeating) => {
+  objRemoteHeatingPrice.arrayRemoteHeatingPrices.forEach((RremoteHeatingPrice) => {
 
-    if (priceRemoteHeating.year === year) priceKilowattHour = Number(priceRemoteHeating.priceKilowattHour);
+    if (RremoteHeatingPrice.year === year) priceKilowattHour = Number(RremoteHeatingPrice.priceKilowattHour);
   });
 
   priceKilowattHour = formatOreToKroner(priceKilowattHour);

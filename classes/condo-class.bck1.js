@@ -18,6 +18,9 @@ class Condos {
   // account type 1 is account menu
   // 2 is administration menu  
   // 3 is horizontal menu
+  accountMenu = 1;
+  administrationMenu = 2;
+  horizontalMenu = 3;
 
   // User info
   condominiumId = Number(sessionStorage.getItem("condominiumId"));
@@ -26,184 +29,144 @@ class Condos {
   userId = Number(sessionStorage.getItem("userId"));
 
   // array of horizontal main menu
-  arrayMenuMain = [
+  arrayMainMenu = [
+    {
+      applicationName: "condo-showtransaction.html",
+      className: "Menu1",
+      text: "Regnskap"
+    },
     {
       applicationName: "condo-shownews.html",
-      className: "Menu1",
+      className: "Menu2",
       text: "Nyheter"
     },
     {
       applicationName: "condo-showemptyingcalendar.html",
-      className: "Menu2",
+      className: "Menu3",
       text: "Tømmekalender"
     },
     {
+      applicationName: "condo-news.html",
+      className: "Menu4",
+      text: "Administrasjon"
+    },
+    {
+      applicationName: "condo-login.html",
+      className: "Menu5",
+      text: "Logg ut"
+    }
+  ];
+
+  // array of menu for account
+  arrayAccountMenu = [
+    {
       applicationName: "condo-condominium.html",
-      className: "Menu3",
+      className: "Menu1",
       text: "Sameie"
     },
     {
       applicationName: "condo-user.html",
-      className: "Menu4",
+      className: "Menu2",
       text: "Bruker"
     },
     {
-      applicationName: "condo-showtransaction.html",
+      applicationName: "condo-password.html",
+      className: "Menu3",
+      text: "Passord"
+    },
+    {
+      applicationName: "condo-condo.html",
+      className: "Menu4",
+      text: "Leilighet"
+    },
+    {
+      applicationName: "condo-bankaccount.html",
       className: "Menu5",
-      text: "Transaksjoner"
+      text: "Bankkonto sameie"
+    },
+    {
+      applicationName: "condo-account.html",
+      className: "Menu6",
+      text: "Konto"
+    },
+    {
+      applicationName: "condo-userbankaccount.html",
+      className: "Menu7",
+      text: "Bankkonto for bruker"
+    },
+    {
+      applicationName: "condo-supplier.html",
+      className: "Menu8",
+      text: "Leverandør"
+    },
+    {
+      applicationName: "condo-commoncost.html",
+      className: "Menu9",
+      text: "Felleskostnader"
     },
     {
       applicationName: "condo-due.html",
-      className: "Menu6",
+      className: "Menu10",
       text: "Forfall"
     },
     {
+      applicationName: "condo-remoteheatingprice.html",
+      className: "Menu11",
+      text: "Pris fjernvarme"
+    },
+    {
       applicationName: "condo-remoteheating.html",
-      className: "Menu7",
+      className: "Menu12",
       text: "Fjernvarme"
+    },
+    {
+      applicationName: "condo-budget.html",
+      className: "Menu13",
+      text: "Budsjett"
+    },
+    {
+      applicationName: "condo-overview.html",
+      className: "Menu14",
+      text: "Betalingsoversikt"
+    },
+    {
+      applicationName: "condo-showtransaction.html",
+      className: "Menu15",
+      text: "Vis transaksjoner"
+    },
+    {
+      applicationName: "condo-importfile.html",
+      className: "Menu16",
+      text: "Importer transaksjoner"
+    },
+    {
+      applicationName: "condo-annualaccount.html",
+      className: "Menu17",
+      text: "Årsregnskap"
+    },
+    {
+      applicationName: "condo-transaction.html",
+      className: "Menu18",
+      text: "Transaksjoner"
+    },
+    {
+      applicationName: "condo-project.html",
+      className: "Menu19",
+      text: "Prosjekter"
     }
   ];
 
-  // array of horizontal news menu
-  arrayMenuNews = [
-    {
-      applicationName: "condo-shownews.html",
-      className: "Menu1",
-      text: "Vis Nyheter"
-    },
+  // array of menu for administration
+  arrayAdministrationMenu = [
     {
       applicationName: "condo-news.html",
-      className: "Menu2",
-      text: "Nyheter"
-    },
-  ];
-
-  // array of horizontal emptying calendar menu
-  arrayMenuEmptyingCalendar = [
-    {
-      applicationName: "condo-showemptyingcalendar.html",
       className: "Menu1",
-      text: "Vis Tømmekalender"
+      text: "Nyheter"
     },
     {
       applicationName: "condo-emptyingcalendar.html",
       className: "Menu2",
       text: "Tømmekalender"
-    },
-  ];
-
-  // menu array for condominium
-  arrayMenuCondominium = [
-    {
-      applicationName: "condo-condominium.html",
-      className: "Menu1",
-      text: "Sameie"
-    },
-    {
-      applicationName: "condo-bankaccount.html",
-      className: "Menu2",
-      text: "Bankkonto"
-    },
-    {
-      applicationName: "condo-account.html",
-      className: "Menu3",
-      text: "Konto"
-    }
-  ];
-
-  // menu array for user
-  arrayMenuUser = [
-    {
-      applicationName: "condo-user.html",
-      className: "Menu1",
-      text: "Bruker"
-    },
-    {
-      applicationName: "condo-password.html",
-      className: "Menu2",
-      text: "Passord"
-    },
-    {
-      applicationName: "condo-condo.html",
-      className: "Menu3",
-      text: "Leilighet"
-    },
-    {
-      applicationName: "condo-userbankaccount.html",
-      className: "Menu4",
-      text: "Bankkonto"
-    }
-  ];
-
-  // menu array for transactions
-  arrayMenuTransaction = [
-    {
-      applicationName: "condo-showtransaction.html",
-      className: "Menu1",
-      text: "Vis Transaksjoner"
-    },
-    {
-      applicationName: "condo-transaction.html",
-      className: "Menu2",
-      text: "Transaksjoner"
-    },
-    {
-      applicationName: "condo-project.html",
-      className: "Menu3",
-      text: "Prosjekt"
-    },
-    {
-      applicationName: "condo-budget.html",
-      className: "Menu4",
-      text: "Budsjett"
-    },
-    {
-      applicationName: "condo-annualaccount.html",
-      className: "Menu5",
-      text: "Årsregnskap"
-    },
-    {
-      applicationName: "condo-importfile.html",
-      className: "Menu6",
-      text: "Hent transaksjoner"
-    },
-  ];
-
-  // menu array for due
-  arrayMenuDue = [
-    {
-      applicationName: "condo-due.html",
-      className: "Menu4",
-      text: "Forfall"
-    },
-    {
-      applicationName: "condo-supplier.html",
-      className: "Menu1",
-      text: "Leverandør"
-    },
-    {
-      applicationName: "condo-commoncost.html",
-      className: "Menu2",
-      text: "Felleskostnad"
-    },
-    {
-      applicationName: "condo-overview.html",
-      className: "Menu3",
-      text: "Betalingsoversikt"
-    }
-  ];
-
-  // menu array for remote heating
-  arrayMenuRemoteHeating = [
-    {
-      applicationName: "condo-remoteheating.html",
-      className: "Menu1",
-      text: "Fjernvarme"
-    },
-    {
-      applicationName: "condo-remoteheatingprice.html",
-      className: "Menu2",
-      text: "Pris Fjernvarme"
     }
   ];
 
@@ -239,7 +202,7 @@ class Condos {
 
     return `
     <td 
-      class="center one-line" 
+      class="left" 
       colspan="${colspan}" 
       rowspan="${rowspan}"
     >
@@ -247,100 +210,10 @@ class Condos {
         class="${className} center one-line"
         type="text"
         maxlength="${maxlength}"
-        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
+        value="${value}"
         ${(enableChanges) ? '' : 'readonly'}
       >
     </td>`;
-  }
-
-  // start input row (<div>)
-  startRow() {
-    return `
-    <p>&nbsp;</p>
-    <div 
-      class="row"
-    >
-    `;
-  }
-
-  // Show Date
-  editDate(label, className, value, enableChanges) {
-
-    let html = `
-    <div class="field date" style="margin-left:25px; width:175px;">
-      <label>
-        ${label}
-      </label>
-      <input 
-        type="date" 
-        class="${className} center one-line"
-        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-    </div>`;
-    return html;
-  }
-
-  // Show amount
-  editAmount(label, className, value, enableChanges) {
-
-    let html = `
-    <div class="field date" style="margin-left:25px; width:175px;">
-      <label>
-        ${label}
-      </label>
-      <input 
-        type="text"
-        inputmode="decimal" 
-        autocomplete="off"
-        class="${className} center one-line"
-        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-      <label>${label}</label>
-    </div>`;
-    return html;
-  }
-
-  // Show selected numbers (from number - to number)
-  showSelectedNumbersNew(label, className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div class="field status" style="max-width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    // show interval of numbers
-    for (let number = fromNumber; number <= toNumber; number++) {
-
-      html += `
-        <option 
-          value=${number}
-          ${(number === selectedNumber) ? 'selected' : ''}
-        >
-          &nbsp;&nbsp;${number}&nbsp;&nbsp;
-        </option>`;
-
-      if (number === selectedNumber) selectedValue = true;
-    };
-
-    html += `
-      </select >
-    </div>`;
-
-    return html;
-  }
-
-  // end input row (</div>)
-  endRow() {
-    return "</div><p>&nbsp;</p>";
   }
 
   // Show input (<td></td>) with center text
@@ -374,6 +247,7 @@ class Condos {
         rows="6"
         class="${className} news-text"
         maxlength="${maxlength}"
+        value=""
       >
         ${value}
       </textarea>
@@ -551,21 +425,32 @@ class Condos {
         ${(enableChanges) ? '' : 'disabled'}>`;
 
     for (let number = fromNumber; number <= toNumber; number++) {
+      if (number === selectedNumber) {
 
-      html += `
-      <option 
-        value="${number}"
-        ${(number === selectedNumber) ? 'selected' : ''}
-        >
-          &nbsp;&nbsp;${number.toString().trim()}&nbsp;&nbsp;
-      </option>`;
-    }
+        html += `
+        <option 
+          value="${number}"
+          selected
+          >
+          ${number.toString().trim()}
+        </option>`;
+      } else {
+
+        html += `
+          <option 
+            value="${number}"
+            >
+            ${number.toString().trim()}
+          </option>`;
+      }
+    };
+
     html += `
       </select >
     </td>`;
 
     return html;
-  };
+  }
 
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {
@@ -601,38 +486,38 @@ class Condos {
     return html;
   }
 
-  // Show selected numbers (from number - to number)
-  showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
-
-    let selectedValue = false;
+  /*
+  // Select choices like Yes, No, Ignore
+  showSelectedValues(className, style, enableChanges, selected, ...choices) {
 
     let html = `
-    <div class="field status" style="max-width:175px">
-      <label>
-        ${label}
-      </label>
+    <td
+      class="center"
+    >
       <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
+        class="${className} center"
+        ${(enableChanges) ? '' : 'disabled'}
+        ${(style) ? `style="${style}"` : `style="width:175px;"`}>`;
 
-    for (let month = 1; month < 13; month++) {
+    choices.forEach((choice) => {
 
       html += `
-      <option 
-        value="${month}"
-        ${month === selectedMonth ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${findNameOfMonth(month).trim()}&nbsp;&nbsp;
-      </option>`;
-    };
+        <option 
+          value=${choice}
+          ${(choice === selected) ? 'selected' : ''}
+        >
+          ${choice}
+        </option>
+      `;
+    });
 
     html += `
       </select >
-    </div>`;
+    </td>`;
 
     return html;
   }
+  */
 
   // Select choices like Yes, No, Ignore
   showSelectedValues(className, style, enableChanges, selected, ...choices) {
@@ -641,7 +526,7 @@ class Condos {
 
     let html = `
     <td
-      class="one-line center"
+      class="one-line left"
     >
       <select 
         class="${className} center"
@@ -656,47 +541,13 @@ class Condos {
         value="${choice}"
         ${(choice === selected) ? 'selected' : ''}
       >
-        &nbsp;&nbsp;${choice}&nbsp;&nbsp;
+        ${choice}
       </option>`;
     });
 
     html += `
       </select >
     </td>`;
-
-    return html;
-  }
-
-  // Show selected values 
-  showSelectedValuesNew(label, className, style, enableChanges, selectedValue, ...values) {
-
-    let selected = false;
-
-    let html = `
-    <div class="field status" style="max-width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    values.forEach((value) => {
-
-      html += `
-      <option 
-        value="${value}"
-        ${value === selectedValue ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${value}&nbsp;&nbsp;
-      </option>`;
-      if (value === selectedValue) selected = true;
-    });
-
-    html += `
-      </select >
-    </div>`;
 
     return html;
   }
@@ -793,9 +644,14 @@ class Condos {
   }
 
   // Show table header including menu (<tr></tr>)
-  showTableHeaderMenu(color, direction = "center", ...texts) {
+  showTableHeaderMenu(menuNumber, menuType, color, direction = "center", ...texts) {
 
     let html = "<tr>";
+
+    if (menuNumber > 0) {
+      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    }
 
     texts.forEach((text) => {
 
@@ -827,6 +683,45 @@ class Condos {
     if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
 
     return valid;
+  }
+
+  // Show the rest of the menu
+  showRestMenu(menuNumber, menuType, ...texts) {
+
+    let html = "";
+    if (menuType === this.accountMenu) {
+      if (this.arrayAccountMenu.length >= menuNumber) {
+        for (; this.arrayAccountMenu.length >= menuNumber; menuNumber++) {
+
+          html += "<tr>";
+
+          // Show menu
+          html += this.showAccountMenu(menuNumber);
+          texts.forEach((text) => {
+            html += `
+            <td>
+              ${text}
+            </td>`;
+          })
+          html += "</tr>"
+        }
+      }
+    }
+
+    if (menuType === this.administrationMenuMenu) {
+      if (this.arrayAdministrationMenu.length >= menuNumber) {
+        for (; this.arrayAdministrationMenu.length >= menuNumber; menuNumber++) {
+
+          html += "<tr>";
+
+          // Show menu
+          html += this.showAdministrationMenu(menuNumber);
+          html += "</tr>"
+        }
+      }
+    }
+    // The end of the table
+    return html;
   }
 
   // Validate number
@@ -883,52 +778,6 @@ class Condos {
       }
     }
 
-    if ((!valid) && (message.lenght > 0)) this.showMessageNew(columnWidths, style, message);
-    return valid;
-  }
-
-  // validate the iso date format yyyy-mm-dd
-  validateIsoDate(className, date, style, message) {
-
-    let valid = true;
-
-    // Check for valid date String
-    if (date === '' || typeof date === 'undefined') valid = false;
-    if (valid) {
-
-      // Regular expression for valuating the yyyy-mm-dd format
-      const regex = /^(\d{4})\-(\d{2})\-(\d{2})$/
-      const match = date.match(regex);
-
-      if (!match) valid = false;
-
-      if (valid) {
-
-        // Extract day, month, and year
-        const [year, month, day] = date.split('-');
-        //const day = parseInt(match[1], 10);
-        //const month = parseInt(match[2], 10);
-        //const year = parseInt(match[3], 10);
-
-        // Check if month is between 1 and 12
-        if (day < 1 || day > 31) valid = false;
-        if (month < 1 || month > 12) valid = false;
-        if (year < 1900 || year > 2099) valid = false;
-      }
-    }
-
-    // remove/ add 'message' 
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        // remove/ add 'message' class
-        inputElement.classList.toggle('message', !valid);
-      }
-    }
-
-    // Show error message?
     if ((!valid) && (message.lenght > 0)) this.showMessageNew(columnWidths, style, message);
     return valid;
   }
@@ -1005,6 +854,24 @@ class Condos {
     return valid;
   }
 
+  // Show blank header row
+  showBlankHeaderRow(style, menuNumber, ...texts) {
+
+    let html = "<tr>";
+
+    html += this.showAccountMenu(menuNumber);
+
+    texts.forEach((text) => {
+
+      if (text === '') html += `<td class="no-border center" style="${style}">${text}</td>`;
+      if (text !== '' && style !== '') html += `<td class="no-border center bold" style="${style}">${text}</td>`;
+      if (text !== '' && style === '') html += `<td class="no-border center bold">${text}</td>`;
+    });
+
+    html += "</tr>";
+    return html;
+  }
+
   // Start of table
   startTable(style) {
 
@@ -1038,7 +905,7 @@ class Condos {
   }
 
   // Show main header table not including menu
-  showTableHeader(style, ...texts) {
+  showTableHeader(style, menuType, ...texts) {
 
     let html = `<tr>`;
 
@@ -1051,7 +918,7 @@ class Condos {
     });
 
     // empty row
-    html += this.insertTableRow('', '');
+    html += this.insertTableRow('', 0, 0, '');
     html += "</tr>";
     return html;
   }
@@ -1094,9 +961,16 @@ class Condos {
   }
 
   // insert a table row (<tr></td>)
-  insertTableRow(style, ...texts) {
+  // and show account menu or administration menu
+  insertTableRow(style, menuNumber, menuType, ...texts) {
 
     let html = "<tr>";
+
+    // if menuNumber is invalid do not show menu
+    if (menuNumber > 0) {
+      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    }
 
     texts.forEach((text) => {
 
@@ -1112,12 +986,15 @@ class Condos {
     return html;
   }
 
-  /*
   // insert menu at start of a row 
-  insertMenu(className, style, menuType, ...texts) {
+  insertMenu(menuNumber, className, style, menuType, ...texts) {
 
     let html = "<tr>";
 
+    if (menuNumber > 0) {
+      if (menuType === this.accountMenu) html += this.showAccountMenu(menuNumber);
+      if (menuType === this.administrationMenu) html += this.showAdministrationMenu(menuNumber);
+    }
     texts.forEach((text) => {
 
       html += (style === '')
@@ -1127,7 +1004,6 @@ class Condos {
 
     return html;
   }
-  */
 
   // end body table
   endTableBody() {
@@ -1196,29 +1072,105 @@ class Condos {
     }
   }
 
-  // Format date (11.05.1983/1983-05-11) to number (19830511)
-  formatDateToNumber(date) {
+  // Show vertical account menu (<td></td>)
+  showAccountMenu(menuNumber) {
 
-    if (date) {
-      if ((date.includes('.')) || date.includes('-')) {
-        if (date.includes('.')) {
-          const [day, month, year] = date.split('.');
-          return Number(`${year}${month}${day}`);
-        }
+    let html = "";
 
-        if (date.includes('-')) {
-          return Number(date.replaceAll('-', ''));
-        }
-      } else {
+    // Check of menu exists
+    if (this.arrayAccountMenu.length >= menuNumber && menuNumber > 0) {
 
-        // invalid date format
-        return Number('0');
-      }
+      const URL = (this.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+
+      const applicationName = this.arrayAccountMenu[menuNumber - 1].applicationName;
+      const text = this.arrayAccountMenu[menuNumber - 1].text;
+      const className = this.arrayAccountMenu[menuNumber - 1].className;
+
+      html += `
+      <td class="one-line menu"
+      >
+        <a href="${URL}${applicationName}">
+          ${text}
+        </a>
+      </td>`;
     } else {
 
-      // invalid date format
-      return Number('0');
+      // Do not show menu
+      html += `<td></td>`;
     }
+
+    return html;
+  }
+
+  // Show account menu (<td></td>)
+  showAccountMenuNew() {
+
+    const URL = (this.serverStatus === 1)
+      ? 'http://ingegilje.no/'
+      : 'http://localhost/';
+
+    let html = "<div class='leftMenuNew'>";
+    // Check of menu exist
+    if (this.arrayAccountMenu.length >= 0) {
+
+      //const applicationName = this.arrayAccountMenu[menuNumber - 1].applicationName;
+      //const text = this.arrayAccountMenu[menuNumber - 1].text;
+      //const className = this.arrayAccountMenu[menuNumber - 1].className;
+
+      this.arrayAccountMenu.forEach((accountMenu) => {
+        //html += `
+        //<td class="one-line menu leftMenuNew "
+        //>
+        html += `
+        <button class="menuButtonNew one-line menu leftMenuNew">
+          <a href="${URL}${accountMenu.applicationName}">
+            ${accountMenu.text}
+          </a>
+        </button>`;
+      });
+
+      html += "</div>";
+      return html;
+    }
+  }
+
+  // Show vertical administration menu
+  showAdministrationMenu(menuNumber) {
+
+    let html = "";
+
+    // Check of menu exists
+    if (this.arrayAdministrationMenu.length >= menuNumber && menuNumber > 0) {
+
+      const URL = (this.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+
+      const applicationName = this.arrayAdministrationMenu[menuNumber - 1].applicationName;
+      const text = this.arrayAdministrationMenu[menuNumber - 1].text;
+      const className = this.arrayAdministrationMenu[menuNumber - 1].className;
+
+      html += `
+      <td class="one-line menu">
+        <a href="${URL}${applicationName}">
+          ${text}
+        </a>
+      </td>`;
+    } else {
+
+      // Do not show menu
+      html += `<td></td>`;
+    }
+
+    return html;
+  }
+
+  // Format norwegian date (11.05.1983) to number (19830511)
+  formatNorDateToNumber(norDate) {
+
+    return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
   }
 
   // Show message
@@ -1234,9 +1186,9 @@ class Condos {
     let html = this.startTable(style);
 
     // show main header
-    html += this.showTableHeaderMenu('', 'center', '');
+    html += this.showTableHeaderMenu(0, 0, '', 'center', '');
 
-    html += this.showTableHeader(`width:${tableWidth}px;`, message);
+    html += this.showTableHeader(`width:${tableWidth}px;`, 0, message);
 
     // The end of the table
     html += this.endTable();
@@ -1257,7 +1209,7 @@ class Condos {
       : 'http://localhost/';
 
     let html = `
-    <nav class="navbar horizontalMenu">
+    <nav class="navbar">
       <ul class="nav-links">`;
 
     arrayMenu.forEach((array) => {
@@ -1271,49 +1223,6 @@ class Condos {
     </nav>`;
 
     return html;
-  }
-
-  // Format amount (1 234 567,89)
-  formatAmount(amount) {
-
-    //let value = amount.value.replace(/\D/g, '');
-    amount = String(amount);
-    if (!amount) {
-      return ' ';
-    }
-
-    while (amount.length < 3) {
-      value = '0' + value;
-    }
-
-    // decimal
-    const decimals = amount.slice(-2);
-
-    // Integer
-    let integerPart = amount.slice(0, -2);
-
-    integerPart = integerPart.replace(/^0+/, '') || '0';
-
-    integerPart = integerPart.replace(
-      /\B(?=(\d{3})+(?!\d))/g,
-      ' '
-    );
-
-    return `${integerPart},${decimals}`;
-  }
-
-  // Format date from yyyy-mm-dd (Iso format) -> yyyymmdd
-  formatISODateToNumber(date) {
-
-    const [year, month, day] = date.split('-');
-    return Number(`${year}${month}${day}`);
-  }
-
-  // Format date from yyyymmdd -> yyyy-mm-dd (Iso format)
-  formatNumberToISODate(date) {
-
-    date = String(date);
-    return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6,)}`;
   }
 }
 
@@ -1329,6 +1238,20 @@ function removeComma(amount) {
   amount = String(amount).replace(/\./g, "");
   amount = amount.replace(/\,/g, "");
   return (amount === '000') ? '00' : amount;
+}
+
+// Format date dd.mm.yyyy (European date format) to yyyymmdd ("Basic ISO 8601 format)
+function formatNorDateToNumber(date) {
+  if (date.includes('.')) {
+    const dateParts = date.split(".");
+    date = `${dateParts[2]}${dateParts[1]}${dateParts[0]} `;
+    date = (isNumeric(date))
+      ? date
+      : 0;
+  } else {
+    date = '';
+  }
+  return date;
 }
 
 // Format date from yyyymmdd (Basic ISO 8601 format) -> dd.mm.yyyy (European date format)
@@ -1418,24 +1341,6 @@ function getCurrentDate() {
   return `${day}.${month}.${year}`;  // Output in dd.mm.yyyy format
 }
 
-// Get current date in Iso date format (yyyy-mm-dd)
-function getCurrentISODate() {
-
-  const today = new Date();
-  const year = String(today.getFullYear());
-  let month = today.getMonth() + 1;
-  let day = today.getDate();
-  month = (month < 10)
-    ? '0' + String(month)
-    : String(month)
-
-  day = (day < 10)
-    ? day = '0' + String(day)
-    : String(day)
-
-  return `${year}-${month}-${day}`;  // Output in dd.mm.yyyy format
-}
-
 // Format number (12345) to norwegian amount (1 2345,00)
 function formatToNorAmount(amount) {
 
@@ -1457,8 +1362,6 @@ function formatOreToKroner(amount) {
 // Format norwegian kroner (12 345,67) to ore/number (1234567)
 function formatKronerToOre(amount) {
 
-  amount = String(amount);
-  amount.replaceAll(' ', '');
   let kroner = '';
   let ore = '';
 
@@ -1536,49 +1439,22 @@ function formatAmountToOre(amount) {
   }
 
   // Check for valid amount in orer
-  amount = (amount === '000')
-    ? '0'
-    : amount;
-  amount = (isNumeric(amount))
-    ? amount
-    : '0';
-  amount = Number(amount);
+  amount =
+    (amount === '000') ? '0' : amount;
+  amount =
+    (isNumeric(amount)) ? amount : '0';
+  amount =
+    Number(amount);
   //return String(amount);
   return Number(amount);
 }
 
-// Format amount
-function formatAmount() {
-  let value = amountInput.value.replace(/\D/g, '');
-
-  if (!value) {
-    amountInput.value = '';
-    return;
-  }
-
-  while (value.length < 3) {
-    value = '0' + value;
-  }
-
-  const decimals = value.slice(-2);
-  let integerPart = value.slice(0, -2);
-
-  integerPart = integerPart.replace(/^0+/, '') || '0';
-
-  integerPart = integerPart.replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    ' '
-  );
-
-  amountInput.value = `${integerPart},${decimals}`;
-}
-/*
 // Format norwegian date (11.05.1983) to number (19830511)
-function formatDateToNumber(norDate) {
+function formatNorDateToNumber(norDate) {
 
   return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
+
 }
-*/
 
 // Generate password
 function generatePassword(passwordLenght, includeLowercase, includeUppercase, includeNumbers, includeSymbols) {
