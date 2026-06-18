@@ -75,6 +75,83 @@ class Project extends Condos {
     return html;
   }
 
+  // Show projects
+  showSelectedProjectsNew(label, className, style, projectId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <div class="field status" style="width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    // Check if projects array is empty
+    if (this.arrayProjects.length > 0) {
+      this.arrayProjects.forEach((account) => {
+
+        html += `
+        <option 
+          value=${account.projectId}
+          ${(account.projectId === projectId) ? 'selected' : ''}
+        >
+          &nbsp;&nbsp;${account.name.trim()}&nbsp;&nbsp;
+        </option>`;
+
+        if (account.projectId === projectId) selectedValue = true;
+      });
+    } else {
+
+      // No projects
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayProjects.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayProjects.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+      <label>
+        ${label}
+      </label>
+    </div>`;
+
+    return html;
+  }
+
   // Find selected project id
   getSelectedProjectId(className) {
 

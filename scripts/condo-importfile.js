@@ -47,7 +47,7 @@ async function main() {
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show account menu
-      html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuAccount);
+      html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       let transactionFile = true;
@@ -511,7 +511,7 @@ function showHeader() {
   html += objImportFile.startTableBody();
 
   // show main header
-  html += objImportFile.showTableHeaderLogOut('1', '2', '3', '4Import av bankkontotransaksjoner', '5', '6', '7');
+  html += objImportFile.showTableHeaderLogOut('', '', '', 'Import av bankkontotransaksjoner', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -549,7 +549,7 @@ function showTransactions() {
   let html = objImportFile.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objImportFile.showTableHeaderMenu('#e0f0e0', 'center', '1Dato', '2Leilighet', '3Konto', '4Fra bankkonto', '5Til bankkonto', '6Inntekt', '7Utgift', '8Tekst');
+  html += objImportFile.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -614,13 +614,13 @@ function showTransactions() {
   sumPayments = formatOreToKroner(sumPayments);
 
   // Show sum row
-  html += objImportFile.insertTableRow('font-weight: 600;', '1', '2', '3', '4', '5Sum', sumIncomes, sumPayments, '8');
+  html += objImportFile.insertTableRow('font-weight: 600;', '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
 
   // Show update button
-  html += objImportFile.insertTableRow('', '1');
+  html += objImportFile.insertTableRow('', '');
 
   html += objImportFile.showButton('update', 'Oppdater');
-  html += "<td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>";
+  html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // The end of the table
   html += objImportFile.endTable();
@@ -655,7 +655,7 @@ function importFileName() {
   let html = objImportFile.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  html += objImportFile.showTableHeaderMenu('', 'center', '1', '2Navn på transaksjonsfil fra bank', '3', '4', '5', '6', '7', '8');
+  html += objImportFile.showTableHeaderMenu('', 'center', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();
@@ -667,26 +667,26 @@ function importFileName() {
     importFileName = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
   }
   html += `
-    <td class="center no-border">1</td>
+    <td class="center no-border"></td>
     <td class="center" colspan="3">
       <input class="nameImportFile center one-line" type="text" maxlength="255" value="${importFileName}" style="width:500px;">
     </td>
-    <td>5</td><td>6</td><td>7</td><td>8</td></tr>`;
+    <td></td><td></td><td></td><td></td></tr>`;
 
   // insert a table row (<tr></td>)
   html += objBankAccount.insertTableRow('');
-  html += "<td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>";
+  html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
-  html += objImportFile.insertTableRow('', '1', '2');
+  html += objImportFile.insertTableRow('', '', '');
 
   // Show buttons (<tr></td>)
   html += objBankAccount.showButton('importTransacionFile', 'Start import', 'Importer transaksjonsfil');
-  html += "<td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>";
+  html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
   html += objBankAccount.insertTableRow('');
-  html += "<td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>";
+  html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // end table body
   html += objImportFile.endTableBody();

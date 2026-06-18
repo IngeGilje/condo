@@ -56,6 +56,11 @@ class Condos {
       applicationName: "condo-due.html",
       className: "Menu6",
       text: "Forfall"
+    },
+    {
+      applicationName: "condo-remoteheating.html",
+      className: "Menu7",
+      text: "Fjernvarme"
     }
   ];
 
@@ -130,8 +135,8 @@ class Condos {
     }
   ];
 
-  // menu array for account
-  arrayMenuAccount = [
+  // menu array for transactions
+  arrayMenuTransaction = [
     {
       applicationName: "condo-showtransaction.html",
       className: "Menu1",
@@ -143,14 +148,14 @@ class Condos {
       text: "Transaksjoner"
     },
     {
-      applicationName: "condo-remoteheating.html",
+      applicationName: "condo-project.html",
       className: "Menu3",
-      text: "Fjernvarme"
+      text: "Prosjekt"
     },
     {
-      applicationName: "condo-priceremoteheating.html",
+      applicationName: "condo-budget.html",
       className: "Menu4",
-      text: "Pris Fjernvarme"
+      text: "Budsjett"
     },
     {
       applicationName: "condo-annualaccount.html",
@@ -188,45 +193,17 @@ class Condos {
     }
   ];
 
-  // menu array for annual report
-  arrayMenuAnnualReport = [
+  // menu array for remote heating
+  arrayMenuRemoteHeating = [
     {
-      applicationName: "condo-budget.html",
+      applicationName: "condo-remoteheating.html",
       className: "Menu1",
-      text: "Budsjett"
+      text: "Fjernvarme"
     },
     {
-      applicationName: "condo-annualreport.html",
+      applicationName: "condo-remoteheatingprice.html",
       className: "Menu2",
-      text: "Årsrapport"
-    }
-  ];
-
-  // menu array for bank account transactions
-  arrayMenuTransaction = [
-    {
-      applicationName: "condo-showtransaction.html",
-      className: "Menu1",
-      text: "Vis transaksjoner"
-    },
-    {
-      applicationName: "condo-importtransaction.html",
-      className: "Menu2",
-      text: "Importer transaksjoner"
-    },
-    {
-      applicationName: "condo-transaction.html",
-      className: "Menu3",
-      text: "Transaksjoner"
-    },
-   ];
-
-  // menu array for projects
-  arrayMenuProject = [
-    {
-      applicationName: "condo-project.html",
-      className: "Menu1",
-      text: "Vis transaksjoner"
+      text: "Pris Fjernvarme"
     }
   ];
 
@@ -325,7 +302,7 @@ class Condos {
     return html;
   }
 
-   // Show selected numbers (from number - to number)
+  // Show selected numbers (from number - to number)
   showSelectedNumbersNew(label, className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
 
     let selectedValue = false;
@@ -686,6 +663,40 @@ class Condos {
     html += `
       </select >
     </td>`;
+
+    return html;
+  }
+
+  // Show selected values 
+  showSelectedValuesNew(label, className, style, enableChanges, selectedValue, ...values) {
+
+    let selected = false;
+
+    let html = `
+    <div class="field status" style="max-width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    values.forEach((value) => {
+
+      html += `
+      <option 
+        value="${value}"
+        ${value === selectedValue ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${value}&nbsp;&nbsp;
+      </option>`;
+      if (value === selectedValue) selected = true;
+    });
+
+    html += `
+      </select >
+    </div>`;
 
     return html;
   }
@@ -1188,16 +1199,26 @@ class Condos {
   // Format date (11.05.1983/1983-05-11) to number (19830511)
   formatDateToNumber(date) {
 
-    if (date.includes('.')) {
-      const [day, month, year] = date.split('.');
-      return Number(`${year}${month}${day}`);
-    }
+    if (date) {
+      if ((date.includes('.')) || date.includes('-')) {
+        if (date.includes('.')) {
+          const [day, month, year] = date.split('.');
+          return Number(`${year}${month}${day}`);
+        }
 
-    if (date.includes('-')) {
-      return Number(date.replaceAll('-', ''));
-    }
+        if (date.includes('-')) {
+          return Number(date.replaceAll('-', ''));
+        }
+      } else {
 
-    return 0; // invalid format
+        // invalid date format
+        return Number('0');
+      }
+    } else {
+
+      // invalid date format
+      return Number('0');
+    }
   }
 
   // Show message
@@ -1280,6 +1301,20 @@ class Condos {
 
     return `${integerPart},${decimals}`;
   }
+
+  // Format date from yyyy-mm-dd (Iso format) -> yyyymmdd
+  formatISODateToNumber(date) {
+
+    const [year, month, day] = date.split('-');
+    return Number(`${year}${month}${day}`);
+  }
+
+  // Format date from yyyymmdd -> yyyy-mm-dd (Iso format)
+  formatNumberToISODate(date) {
+
+    date = String(date);
+    return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6,)}`;
+  }
 }
 
 // Check if string includes only digits
@@ -1296,35 +1331,12 @@ function removeComma(amount) {
   return (amount === '000') ? '00' : amount;
 }
 
-/*
-// Format date dd.mm.yyyy (European date format) to yyyymmdd ("Basic ISO 8601 format)
-function formatDateToNumber(date) {
-  if (date.includes('.')) {
-    const dateParts = date.split(".");
-    date = `${dateParts[2]}${dateParts[1]}${dateParts[0]} `;
-    date = (isNumeric(date))
-      ? date
-      : 0;
-  } else {
-    date = '';
-  }
-  return date;
-}
-*/
-
 // Format date from yyyymmdd (Basic ISO 8601 format) -> dd.mm.yyyy (European date format)
 function formatNumberToNorDate(date) {
 
   date = String(date);
   const formatedDate = date.slice(6, 8) + '.' + date.slice(4, 6) + '.' + date.slice(0, 4);
   return (formatedDate.includes('..')) ? '' : formatedDate;
-}
-
-// Format date from yyyymmdd -> yyyy-mm-dd (Iso format)
-function formatNumberToIsoDate(date) {
-
-  date = String(date);
-  return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6,)}`;
 }
 
 // Check if class is defined
@@ -1407,7 +1419,7 @@ function getCurrentDate() {
 }
 
 // Get current date in Iso date format (yyyy-mm-dd)
-function getCurrentIsoDate() {
+function getCurrentISODate() {
 
   const today = new Date();
   const year = String(today.getFullYear());

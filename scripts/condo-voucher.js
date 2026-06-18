@@ -54,7 +54,7 @@ async function main() {
       const orderBy = 'transactionId DESC, date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, fromDate, toDate);
 
-      showFilter;
+      showFilter();
 
       // Show result
       //if (transactionId === 0) transactionId = objTransaction.arrayTransactions[0].transactionId;

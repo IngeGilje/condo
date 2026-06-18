@@ -40,8 +40,8 @@ async function main() {
       let html = objTransaction.showHorizontalMenu(objTransaction.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
-      // Show account menu
-      html = objTransaction.showHorizontalMenu(objTransaction.arrayMenuAccount);
+      // Show transaction menu
+      html = objTransaction.showHorizontalMenu(objTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
@@ -56,7 +56,6 @@ async function main() {
       await objProject.loadProjectsTable(objTransaction.condominiumId);
 
       // Show header
-
       showHeader();
 
       const orderBy = 'date DESC, income DESC';
@@ -72,23 +71,23 @@ async function main() {
         transactionId = Number(objTransaction.arrayTransactions[rowNumberTransaction].transactionId);
         accountId = Number(objTransaction.arrayTransactions[rowNumberTransaction].accountId);
         fromDate = Number(objTransaction.arrayTransactions[rowNumberTransaction].date);
-        toDate = Number(objTransaction.arrayTransactions[rowNumberTransaction].date);
+        toDate = getCurrentISODate();
+        toDate = Number(objTransaction.formatISODateToNumber(toDate));
         income = Number(objTransaction.arrayTransactions[rowNumberTransaction].income);
-        amount = (income === 0)
-          ? Number(objTransaction.arrayTransactions[rowNumberTransaction].payment)
-          : Number(objTransaction.arrayTransactions[rowNumberTransaction].income);
+        //amount = (income === 0)
+        //  ? Number(objTransaction.arrayTransactions[rowNumberTransaction].payment)
+        //  : Number(objTransaction.arrayTransactions[rowNumberTransaction].income);
       }
 
       // Show filter
+      showFilter(condoId, accountId, fromDate, toDate, 0);
 
-      showFilter(condoId, accountId, fromDate, toDate, amount);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId, objTransaction.nineNine, 0, fromDate, toDate);
 
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
-
-      // Show account movements
+      // Show bank account transactions
       showTransactions(transactionId);
 
-      // Show account movement
+      // Show bank account transaction
       showTransaction(transactionId);
 
       // Events
@@ -118,19 +117,21 @@ async function events() {
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objTransaction.formatDateToNumber(fromDate));
+      //fromDate = Number(objTransaction.formatISODateToNumber(fromDate));
+      fromDate = objTransaction.formatISODateToNumber(fromDate);
+
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objTransaction.formatDateToNumber(toDate));
+      //toDate = Number(objTransaction.formatISODateToNumber(toDate));
+      toDate = objTransaction.formatISODateToNumber(toDate);
 
       const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
+      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, 0, fromDate, toDate);
 
       // Select the 1. transaction
       let transactionId = 0;
       if (objTransaction.arrayTransactions.length > 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
-      if (objTransaction.arrayTransactions.length === 0) document.querySelector('.filter').innerHTML = "";
+      if (objTransaction.arrayTransactions.length === 0) transactionId = 0;
 
-      showFilter(condoId, accountId, fromDate, toDate, amount);
       showTransactions(transactionId);
       showTransaction(transactionId);
     };
@@ -221,7 +222,6 @@ async function events() {
         transactionId = Number(className.slice(prefix.length));
       }
 
-      //showFilter( condoId, accountId, fromDate, toDate, amount);
       showTransactions(transactionId);
       showTransaction(transactionId);
     }
@@ -274,14 +274,17 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objTransaction.nineNine, '', 'Vis alle', true);
 
   // From date
-  //let fromDate = `${String(today.getFullYear())}-01-01`;
-  fromDate = formatNumberToIsoDate(fromDate);
-  html += objTransaction.editDate('Fra Dato', 'filterFromDate', fromDate, true)
+  fromDate = objTransaction.formatNumberToISODate(fromDate);
+  html += objTransaction.editDate('Fra Dato', 'filterFromDate', fromDate, true);
 
   // To date
   // Current date
-  toDate = formatNumberToIsoDate(toDate);
-  html += objTransaction.editDate('Til Dato', 'filterToDate', toDate, true)
+  toDate = objTransaction.formatNumberToISODate(toDate);
+  html += objTransaction.editDate('Til Dato', 'filterToDate', toDate, true);
+
+  // Amount
+  amount = formatOreToKroner(amount);
+  html += objTransaction.editAmount('Beløp', 'filterAmount', amount, true);
 
   html += objTransaction.endRow();
 
@@ -297,7 +300,6 @@ function showTransaction(transactionId) {
   let html = objTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-
   html += objTransaction.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', '', '', '');
 
   // insert a table row (<tr></td>)
@@ -312,11 +314,11 @@ function showTransaction(transactionId) {
   html += objTransaction.editTableCell(className, transactionId, 10, false);
 
   // Date
-  let date = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? 0;
+  let date = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? '';
   date = (date)
     ? formatNumberToNorDate(date)
     : '';
-  className = `date`;
+  className = `transactionDate`;
   html += objTransaction.editTableCell(className, date, 10, enableChanges);
 
   // condos
@@ -326,7 +328,6 @@ function showTransaction(transactionId) {
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-
   html += objTransaction.insertTableRow('', 'Konto', 'Prosjekt', '', '', '', '');
   html += "</tr>";
 
@@ -470,18 +471,16 @@ async function updateTransactionRow(transactionId) {
   const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(bankTransaction => bankTransaction.transactionId === transactionId);
 
   // date
-  className = `.date`;
-  const date = Number(objTransaction.formatDateToNumber(document.querySelector(`${className}`).value));
-  className = `date`;
+  className = '.transactionDate';
+  let date = document.querySelector(className).value;
+  date = objTransaction.formatDateToNumber(date);
+  className = `transactionDate`;
   const validDate = objTransaction.validateInterval(className, columnWidths, '', 'Ugyldig dato', true, date, 20150101, 20991231);
 
-  const fromDate = date;
-  const toDate = date;
-
   // accountId
-  className = `.accountId`;
+  className = '.accountId';
   let accountId = Number(document.querySelector(className).value);
-  className = `accountId`;
+  className = 'accountId';
   const validAccountId = objTransaction.validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objTransaction.nineNine);
 
   // condoId
@@ -537,15 +536,35 @@ async function updateTransactionRow(transactionId) {
       await objTransaction.insertTransactionsTable(objTransaction.condominiumId, objTransaction.user, condoId, accountId, projectId, income, payment, kilowattHour, date, text, 'N');
     }
 
+    // accountId
+    className = '.filterAccountId';
+    accountId = Number(document.querySelector(className).value);
+
+    // condoId
+    className = '.filterCondoId';
+    ondoId = Number(document.querySelector(className).value);
+
+    // from date
+    className = '.filterFromDate';
+    let fromDate = document.querySelector(className).value;
+    fromDate = objTransaction.formatISODateToNumber(fromDate);
+
+    // to date
+    className = '.filterToDate';
+    let toDate = document.querySelector(className).value;
+    toDate = objTransaction.formatISODateToNumber(toDate);
+
     let amount = (income === 0)
       ? payment
       : income;
+    fromDate = document.querySelector('.filterFromDate').value;
+    fromDate = objTransaction.formatISODateToNumber(fromDate);
+    toDate = document.querySelector('.filterToDate').value;
+    toDate = objTransaction.formatISODateToNumber(toDate);
+
 
     const orderBy = 'date DESC, income DESC';
-    await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
-
-
-    showFilter(condoId, accountId, fromDate, toDate, amount);
+    await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId, objTransaction.nineNine, 0, fromDate, toDate);
 
     transactionId = 0;
     if (objTransaction.arrayTransactions.length > 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
@@ -615,7 +634,6 @@ function showTransactions(transactionId) {
   let html = objTransaction.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-
   html += objTransaction.showTableHeaderMenu('#e0f0e0', 'center', 'Leilighet', 'Konto', 'Dato', 'Beløp', '', '');
 
   let sumAmount = 0;
@@ -623,7 +641,6 @@ function showTransactions(transactionId) {
   for (const bankTransaction of objTransaction.arrayTransactions) {
 
     // Show menu
-
     html += objAccount.insertTableRow('');
 
     // condos
@@ -641,7 +658,6 @@ function showTransactions(transactionId) {
 
     // accounts
     className = `accountId${bankTransaction.transactionId}`;
-
     objAccount.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
     // amount
@@ -662,12 +678,9 @@ function showTransactions(transactionId) {
   };
 
   // Table header (<tr></tr>)
-
   html += objTransaction.showTableHeaderMenu('', 'center', '', '', '', '', '');
 
   // The end of the table
   html += objTransaction.endTable();
   document.querySelector('.transactions').innerHTML = html;
-
-
 }

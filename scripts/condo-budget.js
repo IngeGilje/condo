@@ -8,7 +8,7 @@ const objBudget = new Budget('budget');
 
 const enableChanges = (objBudget.securityLevel > 5);
 
-const columnWidths = [175, 75, 175, 175, 175, 100];
+const columnWidths = [ 100, 175, 175, 175, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -34,6 +34,10 @@ async function main() {
       let html = objBudget.showHorizontalMenu(objBudget.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
+     // Show transaction menu
+      html = objBudget.showHorizontalMenu(objBudget.arrayMenuTransaction);
+      document.querySelector('.menuTransaction').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objBudget.condominiumId, resident, objBudget.nineNine);
       const fixedCost = 'A';
@@ -43,8 +47,7 @@ async function main() {
       showHeader();
 
       // Show filter
-
-      showFilter;
+      showFilter();
 
       const accountId = Number(document.querySelector('.filterAccountId').value);
       const year = Number(document.querySelector('.filterYear').value);
@@ -61,7 +64,6 @@ async function main() {
     showBudgets.showMessageNew(columnWidths, '', 'Server er ikke startet.');
   }
 }
-
 
 // Make budget events
 async function events() {
@@ -245,7 +247,7 @@ function showHeader() {
   html += objBudget.startTableBody();
 
   // show main header
-  html += objBudget.showTableHeaderLogOut('', '', '', 'Budsjett', '');
+  html += objBudget.showTableHeaderLogOut('', '',  'Budsjett', '');
   html += "</tr>";
 
   // end table body
@@ -259,6 +261,7 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
+  /*
   // Start table
   let html = objBudget.initializeTable(columnWidths);
 
@@ -281,7 +284,6 @@ function showFilter() {
   html += "</tr>";
 
   // insert a table row (<tr></td>)
-
   html += objBudget.insertTableRow('', '');
 
   // end table body
@@ -289,6 +291,21 @@ function showFilter() {
 
   // The end of the table
   html += objBudget.endTable();
+  document.querySelector('.showFilter').innerHTML = html;
+  */
+
+  // show filter
+  html = objBudget.startRow();
+
+  // Show accounts
+  html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objBudget.nineNine, '', 'Vis alle', true);
+
+  // Show years
+  const year = today.getFullYear();
+  html += objAccount.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
+
+  html += objBudget.endRow();
+
   document.querySelector('.showFilter').innerHTML = html;
 }
 
@@ -306,7 +323,7 @@ function showBudgets() {
   objBudget.arrayBudgets.forEach((budget) => {
 
     // Show menu
-    html += objBudget.insertTableRow('', '');
+    html += objBudget.insertTableRow('');
 
     // Year (<td></td>)
     const year = Number(budget.year);
@@ -355,7 +372,7 @@ function showBudgets() {
 function insertEmptyTableRow() {
 
   // Show menu
-  html = objBudget.insertTableRow('', '');
+  html = objBudget.insertTableRow('');
 
   // Year (<td></td>)
   const year = Number(document.querySelector('.filterYear').value);

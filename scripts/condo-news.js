@@ -285,14 +285,14 @@ function editNews(newsId) {
 
     html += objNews.showButton('update', 'Oppdater');
     html += objNews.showButton('cancel', 'Angre');
-    html += "<td>3</td></tr>";
+    html += "<td></td></tr>";
 
     // insert a table row (<tr></td>)
     html += objNews.insertTableRow('');
 
     html += objNews.showButton('delete', 'Slett');
     html += objNews.showButton('insert', 'Ny');
-    html += "<td>3</td></tr>";
+    html += "<td></td></tr>";
   }
 
   // The end of the table

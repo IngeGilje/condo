@@ -8,7 +8,7 @@ const objEmptyingCalendar = new EmptyingCalendar('emptyingcalendar');
 
 const enableChanges = (objEmptyingCalendar.securityLevel > 5);
 
-const columnWidths = [100, 100, 100, 100, 100, 100, 100, 100];
+const columnWidths = [175, 100, 100, 100, 100, 100, 100, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();

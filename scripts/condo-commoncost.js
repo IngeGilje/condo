@@ -192,7 +192,7 @@ function showHeader() {
   html += objCommonCost.startTableBody();
 
   // show main header
-  html += objCommonCost.showTableHeaderLogOut('', '1', '2Felleskostnader', '3');
+  html += objCommonCost.showTableHeaderLogOut('', '', 'Felleskostnader', '');
   html += "</tr>";
 
   // end table body

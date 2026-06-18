@@ -12,7 +12,7 @@ const objProject = new Project('project');
 const enableChanges = (objProject.securityLevel > 5);
 
 // column widths
-const columnWidths = [175, 175, 175, 175, 175, 100];
+const columnWidths = [175, 175, 175, 175, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -38,6 +38,10 @@ async function main() {
       let html = objProject.showHorizontalMenu(objProject.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
+      // Show project menu
+      html = objProject.showHorizontalMenu(objProject.arrayMenuTransaction);
+      document.querySelector('.menuTransaction').innerHTML = html;
+
       const resident = 'Y';
       await objUser.loadUsersTable(objProject.condominiumId, resident, objProject.nineNine);
       await objCondominium.loadCondominiumsTable();
@@ -48,14 +52,13 @@ async function main() {
       await objProject.loadProjectsTable(objProject.condominiumId);
 
       // Show header
-      
       showHeader();
 
       // Show filter
       projectId = (objProject.arrayProjects.length === 0)
         ? 0
         : objProject.arrayProjects.at(-1).projectId;
-      showFilter( projectId);
+      showFilter(projectId);
 
       // Show project
       // Get row number for condominium
@@ -63,11 +66,11 @@ async function main() {
       if (rowNumberCondominium !== -1) {
 
         const projectId = Number(document.querySelector('.filterProjectId').value);
-        const orderBy = 'condoId ASC, date DESC, income ASC';
+        const orderBy = 'date DESC, income ASC';
         await objTransaction.loadTransactionsTable(orderBy, objProject.condominiumId, 'N', objProject.nineNine, objProject.nineNine, projectId, 0, 2019010, 20991231);
 
         // Show project per year
-        editProjects( projectId);
+        showProjects(projectId);
 
         // Show transactions this project
         showTransactions();
@@ -106,7 +109,7 @@ async function events() {
       }
 
       // Show project per year
-      editProjects();
+      showProjects();
     };
   });
 
@@ -157,10 +160,10 @@ async function events() {
       await deleteProjectsRow(projectId, className);
       await objProject.loadProjectsTable(objProject.condominiumId);
 
-      
-      editProjects();
 
-      
+      showProjects();
+
+
       //showProjectCondo();
     };
   });
@@ -188,7 +191,7 @@ function showHeader() {
   html += objProject.startTableBody();
 
   // show main header
-  html += objProject.showTableHeaderLogOut('', '', 'Prosjekt', '', '');
+  html += objProject.showTableHeaderLogOut('', '', 'Prosjekt', '');
   html += "</tr>";
 
   // end table body
@@ -200,27 +203,25 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter( projectId) {
+function showFilter(projectId) {
 
+  /*
   // Start table
   let html = objProject.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  
-  html += objProject.showTableHeaderMenu( '','center', '', '', 'Prosjekt', '', '');
+  html += objProject.showTableHeaderMenu('', 'center', '', '', 'Prosjekt', '', '');
 
   // start table body
   html += objProject.startTableBody();
 
   // insert a table row (<tr></td>)
-  
   html += objProject.insertTableRow('', '');
 
   // Project (<td></td>)
   html += objProject.showSelectedProjects('filterProjectId', '', projectId, 'Velg prosjekt', '', enableChanges);
   html += "<td></td><td></td><td></td></tr>";
 
-  
   html += objProject.insertTableRow('', '', '', '', '', '');
 
   // end table body
@@ -229,35 +230,42 @@ function showFilter( projectId) {
   // The end of the table
   html += objProject.endTable();
   document.querySelector('.showFilter').innerHTML = html;
+  */
 
-  
+  // show filter
+  html = objTransaction.startRow();
+
+  // Show projects
+  html += objProject.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', 'Vis alle', true);
+
+  html += objTransaction.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Edit projects per condo
-function editProjects() {
+function showProjects() {
 
   // start table
   let html = objProject.initializeTable(columnWidths);
 
-  
-  html += objProject.showTableHeaderMenu('#e0f0e0', 'center','', '', 'Navn', 'Beløp', '');
+  html += objProject.showTableHeaderMenu('#e0f0e0', 'center', '', '', 'Navn', 'Beløp', '');
 
   objProject.arrayProjects.forEach((project) => {
 
     // insert a table row (<tr></td>)
-    
     html += objProject.insertTableRow('', '', '');
 
     // name
     let name = project.name;
     let className = `name${project.projectId}`;
-    html += objProject.editTableCell(className,  name, 45, enableChanges);
+    html += objProject.editTableCell(className, name, 45, enableChanges);
 
     // amount
     let amount = project.amount;
     amount = formatOreToKroner(amount);
     className = `amount${project.projectId}`;
-    html += objProject.editTableCell(className,  amount, 11, enableChanges);
+    html += objProject.editTableCell(className, amount, 11, enableChanges);
 
     // Delete
     className = `delete${project.projectId}`;
@@ -268,18 +276,14 @@ function editProjects() {
   if (enableChanges) {
 
     // Insert empty table row for insertion
-    
     html += insertEmptyTableRow();
   };
 
-  
   html += objProject.insertTableRow('', '', '', '', '', '');
 
   // The end of the table
   html += objProject.endTable();
-  document.querySelector('.editProjects').innerHTML = html;
-
-  
+  document.querySelector('.showProjects').innerHTML = html;
 }
 
 // Delete a projects row
@@ -333,8 +337,8 @@ async function updateProjectsRow(projectId) {
 
     await objProject.loadProjectsTable(objProject.condominiumId);
 
-    
-    editProjects();
+
+    showProjects();
   }
 }
 
@@ -344,18 +348,18 @@ function insertEmptyTableRow() {
   let html = "";
 
   // insert a table row (<tr></td>)
-  
+
   html += objProject.insertTableRow('', '', '');
 
   // name
   let name = "";
   let className = `name0`;
-  html += objProject.editTableCell(className,  name, 45, enableChanges);
+  html += objProject.editTableCell(className, name, 45, enableChanges);
 
   // amount
   let amount = 0;
   className = `amount0`;
-  html += objProject.editTableCell(className,  amount, 11, enableChanges);
+  html += objProject.editTableCell(className, amount, 11, enableChanges);
 
   // Insert new account
   html += "<td>Nytt prosjekt</td></tr>";
@@ -370,20 +374,20 @@ function showTransactions() {
   let html = objProject.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  
-  html += objCondo.showTableHeaderMenu( '#e0f0e0','center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+
+  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransaction.arrayTransactions) {
 
     // Show menu
-    
+
     html += objAccount.insertTableRow('');
 
     // Date
     const date = formatNumberToNorDate(bankTransaction.date);
     let className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className,  date, 10, false);
+    html += objTransaction.editTableCell(className, date, 10, false);
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
@@ -403,7 +407,7 @@ function showTransactions() {
     let amount = bankTransaction.income + bankTransaction.payment;
     amount = formatOreToKroner(amount);
     className = `amount${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className,  amount, 10, false);
+    html += objTransaction.editTableCell(className, amount, 10, false);
 
     // Show button for voucher
     className = `voucher${bankTransaction.transactionId}`;
@@ -418,7 +422,7 @@ function showTransactions() {
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
 
-  
+
   html += objTransaction.insertTableRow('', '', '', 'Sum', sumAmount, '');
 
   // The end of the table

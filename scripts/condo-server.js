@@ -2054,7 +2054,6 @@ async function main() {
   }
 
   // Requests for remoteheatings table
-  //app.get("/remoteheatings", async (req, res) => {
   app.post("/remoteheatings", async (req, res) => {
 
     const action = req.body.action;
@@ -2209,9 +2208,8 @@ async function main() {
     }
   });
 
-  // Requests for priceremoteheatings table
-  //app.get("/priceremoteheatings", async (req, res) => {
-  app.post("/priceremoteheatings", async (req, res) => {
+  // Requests for remoteheatingprices table
+  app.post("/remoteheatingprices", async (req, res) => {
 
     const action = req.body.action;
     const lastUpdate = today.toISOString();
@@ -2224,7 +2222,7 @@ async function main() {
 
           const condominiumId = req.body.condominiumId;
 
-          let SQLquery = `SELECT * FROM priceremoteheatings WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
+          let SQLquery = `SELECT * FROM remoteheatingprices WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
           SQLquery += ` ORDER BY year; `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2233,7 +2231,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /priceremoteheatings:", err.message);
+          console.log("Database error in /remoteheatingprices:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2243,7 +2241,7 @@ async function main() {
 
         try {
 
-          const priceRemoteHeatingsId = req.body.priceRemoteHeatingsId;
+          const remoteHeatingpricesId = req.body.remoteHeatingpricesId;
           const user = req.body.user;
           const year = req.body.year;
           const priceKilowattHour = req.body.priceKilowattHour;
@@ -2251,13 +2249,13 @@ async function main() {
           // Update row
           const SQLquery =
             `
-              UPDATE priceremoteheatings
+              UPDATE remoteheatingprices
           SET
           user = '${user}',
             lastUpdate = '${lastUpdate}',
             year = ${year},
           priceKilowattHour = ${priceKilowattHour}
-              WHERE priceRemoteHeatingsId = ${priceRemoteHeatingsId};
+              WHERE remoteHeatingpricesId = ${remoteHeatingpricesId};
           `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2266,7 +2264,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /priceremoteheatings:", err.message);
+          console.log("Database error in /remoteheatingprices:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2282,9 +2280,8 @@ async function main() {
           const priceKilowattHour = req.body.priceKilowattHour;
 
           // Insert new row
-          const SQLquery =
-            `
-              INSERT INTO priceremoteheatings(
+          const SQLquery = `
+          INSERT INTO remoteheatingprices(
             deleted,
             condominiumId,
             user,
@@ -2298,8 +2295,7 @@ async function main() {
             '${lastUpdate}',
             ${year},
             ${priceKilowattHour}
-          );
-          `;
+          );`;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -2307,7 +2303,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /priceremoteheatings:", err.message);
+          console.log("Database error in /remoteheatingprices:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2317,19 +2313,17 @@ async function main() {
 
         try {
 
-          const priceRemoteHeatingsId = req.body.priceRemoteHeatingsId;
+          const remoteHeatingpricesId = req.body.remoteHeatingpricesId;
           const user = req.body.user;
 
           // Delete table
-          const SQLquery =
-            `
-              UPDATE priceremoteheatings
+          const SQLquery = `
+          UPDATE remoteheatingprices
           SET
-          deleted = 'Y',
+            deleted = 'Y',
             user = '${user}',
             lastUpdate = '${lastUpdate}'
-              WHERE priceRemoteHeatingsId = ${priceRemoteHeatingsId};
-          `;
+          WHERE remoteHeatingpricesId = ${remoteHeatingpricesId};`;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -2337,7 +2331,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /priceremoteheatings:", err.message);
+          console.log("Database error in /remoteheatingprices:", err.message);
           res.status(500).json({ error: err.message });
         }
         break;
