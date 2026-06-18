@@ -41,8 +41,8 @@ async function main() {
       let html = objAnnualAccount.showHorizontalMenu(objAnnualAccount.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
-      // Show account menu
-      html = objAnnualAccount.showHorizontalMenu(objAnnualAccount.arrayMenuAccount);
+      // Show transaction menu
+      html = objAnnualAccount.showHorizontalMenu(objAnnualAccount.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
@@ -62,7 +62,7 @@ async function main() {
       // Show filter
       const budgetYear = today.getFullYear();
       let fromDate = `${budgetYear}-01-01`;
-      let toDate = getCurrentIsoDate();
+      let toDate = getCurrentISODate();
       showFilter(budgetYear, fromDate, toDate);
 
       const deleted = "N";
@@ -111,15 +111,15 @@ async function events() {
       || [...event.target.classList].some(cls => cls.startsWith('filterBudgetYear'))
       || [...event.target.classList].some(cls => cls.startsWith('filterPriceSquareMeter'))) {
 
-
-
       const deleted = "N";
 
       fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objAnnualAccount.formatDateToNumber(fromDate));
+      //fromDate = Number(objAnnualAccount.formatDateToNumber(fromDate));
+      fromDate = objAnnualAccount.formatISODateToNumber(fromDate);
 
       toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objAnnualAccount.formatDateToNumber(toDate));
+      //toDate = Number(objAnnualAccount.formatDateToNumber(toDate));
+      toDate = objAnnualAccount.formatISODateToNumber(toDate);
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
