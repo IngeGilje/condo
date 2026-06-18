@@ -230,15 +230,6 @@ function showFilter(projectId) {
   // The end of the table
   html += objProject.endTable();
   document.querySelector('.showFilter').innerHTML = html;
-  */
-
-  // show filter
-  html = objTransaction.startRow();
-
-  // Show projects
-  html += objProject.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', 'Vis alle', true);
-
-  html += objTransaction.endRow();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

@@ -211,17 +211,8 @@ function showFilter() {
   // The end of the table
   html += objAccount.endTable();
   document.querySelector('.showFilter').innerHTML = html;
-  */
 
-  // show filter
-  html = objAccount.startRow();
 
-  // Show types of account
-  html += objAccount.showSelectedValuesNew('Kostnadstype', 'filterFixedCost', '', true, 'Alle', constFixedCost, constVariableCost, 'Alle')
-
-  html += objAccount.endRow();
-
-  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show accounts

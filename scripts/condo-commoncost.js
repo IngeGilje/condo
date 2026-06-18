@@ -62,6 +62,14 @@ async function main() {
       const year = today.getFullYear();
       showFilter(year);
 
+      //const deleted = "N";
+
+      //fromDate = document.querySelector('.filterFromDate').value;
+      //fromDate = Number(formatNorDateToNumber(fromDate));
+
+      //toDate = document.querySelector('.filterToDate').value;
+      //toDate = Number(formatNorDateToNumber(toDate));
+
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
       const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCommonCost.condominiumId);
@@ -192,7 +200,11 @@ function showHeader() {
   html += objCommonCost.startTableBody();
 
   // show main header
+<<<<<<< HEAD
   html += objCommonCost.showTableHeaderLogOut('', '', 'Felleskostnader', '');
+=======
+  html += objCommonCost.showTableHeaderLogOut( '', '', 'Felleskostnader', '');
+>>>>>>> c8311e42e4d7591cb8a79d9c65341b07010faad2
   html += "</tr>";
 
   // end table body
@@ -206,15 +218,34 @@ function showHeader() {
 // Show filter
 function showFilter(year) {
 
-  // show filter
-  html = objCommonCost.startRow();
+  // Start table
+  let html = objCommonCost.initializeTable(columnWidths);
 
-  // Show years
-  html += objCommonCost.showSelectedNumbersNew('År', 'filterYear', 'align:center;', 2020, 2030, year, true);
+  // Header filter (<tr></tr>)
 
-  html += objCommonCost.endRow();
+  html += objCommonCost.showTableHeaderMenu('', 'center', '', '', 'År', '', '');
 
-  document.querySelector('.showFilter').innerHTML = html;
+  // start table body
+  html += objCommonCost.startTableBody();
+
+  // insert a table row (<tr></td>)
+
+  html += objCommonCost.insertTableRow('','', '');
+
+  // Year (<td></td>)
+  html += objCommonCost.showSelectedNumbers('filterYear', '', 2020, 2030, year, true);
+  html += "<td></td><td></td></tr>";
+
+  html += objCommonCost.insertTableRow('', '', '', '', '', '');
+
+  // end table body
+  html += objCommonCost.endTableBody();
+
+  // The end of the table
+  html += objCommonCost.endTable();
+  document.querySelector('.editFilter').innerHTML = html;
+
+
 }
 
 // Show commoncosts per year
@@ -231,6 +262,7 @@ function showCommonCostYear() {
   html += objCommonCost.showTableHeaderMenu('#e0f0e0', 'center', '', '', 'Felleskostnad/m2', 'Fast felleskostnad', '');
 
   // insert a table row (<tr></td>)
+
   html += objCommonCost.insertTableRow('', '', '');
 
   // common cost per squaremeter
@@ -342,12 +374,15 @@ function showCommonCostCondo() {
   totalCommonCostsCondoMonth = formatOreToKroner(totalCommonCostsCondoMonth);
   totalCommonCostsCondoYear = formatOreToKroner(totalCommonCostsCondoYear);
 
+
   html += objCommonCost.insertTableRow('', 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
   html += "</tr>";
 
   // The end of the table
   html += objCommonCost.endTable();
   document.querySelector('.incomeNextYear').innerHTML = html;
+
+
 }
 
 // get price per squaremeter
