@@ -34,21 +34,65 @@ async function main() {
       let html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
+<<<<<<< HEAD
+      // Show account menu
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
+      html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuAccount);
+      document.querySelector('.menuTransaction').innerHTML = html;
+========
+      html = objPriceRemoteHeating.showHorizontalMenu(objPriceRemoteHeating.arrayMenuAccount);
+      document.querySelector('.menuAccount').innerHTML = html;
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js
+=======
+<<<<<<<< HEAD:scripts/condo-remoteheatingprice.js
+      // Show remote heating menu
+      html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuRemoteHeating);
+      document.querySelector('.menuRemoteHeating').innerHTML = html;
+========
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
       // Show account menu
       html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuAccount);
       document.querySelector('.menuTransaction').innerHTML = html;
+========
+      // Show remote heating menu
+      html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuRemoteHeating);
+      document.querySelector('.menuRemoteHeating').innerHTML = html;
+>>>>>>>> 0fbffe9823030d4fcc8005a8b8c327c78139c438:scripts/condo-remoteheatingprice.js
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js.bck
+>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeatingPrice.condominiumId, resident, objRemoteHeatingPrice.nineNine);
       await objCondo.loadCondoTable(objRemoteHeatingPrice.condominiumId, objRemoteHeatingPrice.nineNine);
 
       // Show header
+<<<<<<< HEAD
 
+=======
+<<<<<<<< HEAD:scripts/condo-remoteheatingprice.js
+========
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
+
+========
+>>>>>>>> 0fbffe9823030d4fcc8005a8b8c327c78139c438:scripts/condo-remoteheatingprice.js
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js.bck
+>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97
       showHeader();
 
       await objRemoteHeatingPrice.loadPriceRemoteHeatingTable(objRemoteHeatingPrice.condominiumId);
 
+<<<<<<< HEAD
       // Show remotePriceHeating
+=======
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
+      // Show remotePriceHeating
+========
+      // Show remoteHeatingPrice
+<<<<<<<< HEAD:scripts/condo-remoteheatingprice.js
+========
+>>>>>>>> 0fbffe9823030d4fcc8005a8b8c327c78139c438:scripts/condo-remoteheatingprice.js
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js.bck
+>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97
       showRemoteHeating();
 
       // Events
@@ -86,7 +130,17 @@ async function events() {
       await deletePriceRemoteHeatingRow(priceRemoteHeatingsId, className);
       await objRemoteHeatingPrice.loadPriceRemoteHeatingTable(objRemoteHeatingPrice.condominiumId);
 
+<<<<<<< HEAD
 
+=======
+<<<<<<<< HEAD:scripts/condo-remoteheatingprice.js
+========
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
+
+========
+>>>>>>>> 0fbffe9823030d4fcc8005a8b8c327c78139c438:scripts/condo-remoteheatingprice.js
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js.bck
+>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97
       showRemoteHeating();
     };
   });
@@ -135,7 +189,17 @@ async function events() {
 
         await objRemoteHeatingPrice.loadPriceRemoteHeatingTable(objRemoteHeatingPrice.condominiumId);
 
+<<<<<<< HEAD
 
+=======
+<<<<<<<< HEAD:scripts/condo-remoteheatingprice.js
+========
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
+
+========
+>>>>>>>> 0fbffe9823030d4fcc8005a8b8c327c78139c438:scripts/condo-remoteheatingprice.js
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js.bck
+>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97
         showRemoteHeating();
       };
     };
@@ -200,7 +264,23 @@ function showRemoteHeating() {
   // start table
   let html = objRemoteHeatingPrice.initializeTable(columnWidths);
 
+<<<<<<< HEAD
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
   html += objRemoteHeatingPrice.showTableHeaderMenu('', 'center', 'År', `Pris KilowatTimer`, 'Slett');
+========
+  html += objPriceRemoteHeating.showTableHeaderMenu('', 'center', 'År', `Pris kilowatTimer`, 'Slett');
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js
+=======
+<<<<<<<< HEAD:scripts/condo-remoteheatingprice.js
+  html += objRemoteHeatingPrice.showTableHeaderMenu( '','center', 'År', `Pris kilowatTimer`, 'Slett');
+========
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
+  html += objRemoteHeatingPrice.showTableHeaderMenu('', 'center', 'År', `Pris KilowatTimer`, 'Slett');
+========
+  html += objRemoteHeatingPrice.showTableHeaderMenu( '','center', 'År', `Pris kilowatTimer`, 'Slett');
+>>>>>>>> 0fbffe9823030d4fcc8005a8b8c327c78139c438:scripts/condo-remoteheatingprice.js
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js.bck
+>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97
 
   objRemoteHeatingPrice.arrayPriceRemoteHeatings.forEach((remotePriceHeating) => {
 
@@ -234,6 +314,19 @@ function showRemoteHeating() {
   // Insert empty table row for insertion
   if (enableChanges) {
 
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:scripts/condo-remoteheatingprice.js
+    html += insertEmptyTableRow();
+  }
+
+  // The end of the table
+  html += objRemoteHeatingPrice.endTable();
+  document.querySelector('.result').innerHTML = html;
+}
+========
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
+>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97
 
     html += insertEmptyTableRow();
   }
@@ -242,7 +335,20 @@ function showRemoteHeating() {
   html += objRemoteHeatingPrice.endTable();
   document.querySelector('.result').innerHTML = html;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js.bck
+
+========
+    html += insertEmptyTableRow();
+  }
+
+  // The end of the table
+  html += objRemoteHeatingPrice.endTable();
+  document.querySelector('.result').innerHTML = html;
+>>>>>>>> 0fbffe9823030d4fcc8005a8b8c327c78139c438:scripts/condo-remoteheatingprice.js
+>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97
 }
 
 // Delete one remotePriceHeating row
@@ -298,7 +404,17 @@ async function updatePriceRemoteHeatingsRow(priceRemoteHeatingsId) {
 
     await objRemoteHeatingPrice.loadPriceRemoteHeatingTable(objRemoteHeatingPrice.condominiumId);
 
+<<<<<<< HEAD
 
+=======
+<<<<<<<< HEAD:scripts/condo-remoteheatingprice.js
+========
+<<<<<<<< HEAD:scripts/condo-priceremoteheating.js.bck
+
+========
+>>>>>>>> 0fbffe9823030d4fcc8005a8b8c327c78139c438:scripts/condo-remoteheatingprice.js
+>>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97:scripts/condo-priceremoteheating.js.bck
+>>>>>>> 550a58a3c235791c7571e5a0814a236bf2fcff97
     showRemoteHeating();
   }
 }

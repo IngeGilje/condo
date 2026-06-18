@@ -18,7 +18,7 @@ const objImportFile = new ImportFile('importfile');
 
 const enableChanges = (objImportFile.securityLevel > 5);
 
-const columnWidths = [175, 175, 175, 175, 175, 175, 175, 200];
+const columnWidths = [175, 175, 175, 175, 175, 175, 175, 175, 200];
 
 
 
@@ -43,13 +43,16 @@ async function main() {
     } else {
 
       // Show main menu
-      html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuMain);
+      let html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
+<<<<<<< HEAD
       // Show account menu
       html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
+=======
+>>>>>>> c8311e42e4d7591cb8a79d9c65341b07010faad2
       let transactionFile = true;
 
       const resident = 'A';
@@ -84,7 +87,7 @@ async function main() {
     }
   } else {
 
-    objImportFile.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    objImportFile.showMessageNew(columnWidths, tableWidth, 'Server er ikke startet.');
   }
 }
 
@@ -144,7 +147,7 @@ async function events() {
         }
       } else {
 
-        objImportFile.showMessageNew(columnWidths, '', 'Ugyldig navn på transaksjonsfil');
+        objImportFile.showMessageNew(columnWidths, tableWidth, 'Ugyldig navn på transaksjonsfil');
       }
     }
   });
@@ -224,7 +227,7 @@ function createTransactionsArray() {
       // To bank account
       toBankAccountName = objImportFile.getBankAccountName(toBankAccount);
 
-      date = objImportFile.formatDateToNumber(accountingDate);
+      date = formatNorDateToNumber(accountingDate);
 
       // Do not import Transactions twice
       if (!checkTransaction(Number(income), Number(payment), Number(date))) {
@@ -319,7 +322,7 @@ async function updateOpeningClosingBalance() {
       openingBalanceDate = openingBalanceDate[0];
 
       // dd.mm.yyyy -> yyyymmdd
-      openingBalanceDate = objImportFile.formatDateToNumber(openingBalanceDate);
+      openingBalanceDate = formatNorDateToNumber(openingBalanceDate);
 
       // Opening balance
 
@@ -344,7 +347,7 @@ async function updateOpeningClosingBalance() {
       closingBalanceDate = closingBalanceDate[0];
 
       // dd.mm.yyyy -> yyyymmdd
-      closingBalanceDate = objImportFile.formatDateToNumber(closingBalanceDate);
+      closingBalanceDate = formatNorDateToNumber(closingBalanceDate);
 
       // Closing balanse
       //balance = (balance.includes('Ingen data tilgjengelig')) ? '"0"' : balance;
@@ -532,6 +535,7 @@ function showFilter() {
   html += objImportFile.startTableBody();
   html += "</tr>";
 
+  
   html += objImportFile.insertTableRow('', objImportFile.accountMenu, '', '', '', '', '', '', '', '');
 
   // end table body
@@ -539,7 +543,9 @@ function showFilter() {
 
   // The end of the table
   html += objImportFile.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector('.editFilter').innerHTML = html;
+
+  
 }
 
 // Show csv file for transactions
@@ -547,55 +553,51 @@ function showTransactions() {
 
   // start table
   let html = objImportFile.initializeTable(columnWidths);
-
   // Table header (<tr></tr>)
   html += objImportFile.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
 
-  rowNumber = 0;
-
   arrayTransactions.forEach((transaction) => {
 
-    rowNumber++;
-    
     // insert a table row (<tr></td>)
-    html += objImportFile.insertTableRow('');
+    
+    html += objImportFile.insertTableRow('', objImportFile.accountMenu);
 
     // Date
-    let className = `accountingDate${rowNumber}`;
-    html += objImportFile.editTableCell(className, transaction.accountingDate, 10);
+    let className = `accountingDate${menuNumber}`;
+    html += objImportFile.editTableCell(className,  transaction.accountingDate, 10);
 
     // Condo name
-    className = `condoName${rowNumber}`;
-    html += objImportFile.editTableCell(className, transaction.condoName, 45);
+    className = `condoName${menuNumber}`;
+    html += objImportFile.editTableCell(className,  transaction.condoName, 45);
 
     // Account name
-    className = `accountName${rowNumber}`;
-    html += objImportFile.editTableCell(className, transaction.accountName, 45);
+    className = `accountName${menuNumber}`;
+    html += objImportFile.editTableCell(className,  transaction.accountName, 45);
 
     // fromBankAccountName
-    className = `fromBankAccountName${rowNumber}`;
-    html += objImportFile.editTableCell(className, transaction.fromBankAccountName, 45);
+    className = `fromBankAccountName${menuNumber}`;
+    html += objImportFile.editTableCell(className,  transaction.fromBankAccountName, 45);
 
     // toBankAccountName
-    className = `toBankAccountName${rowNumber}`;
-    html += objImportFile.editTableCell(className, transaction.toBankAccountName, 45);
+    className = `toBankAccountName${menuNumber}`;
+    html += objImportFile.editTableCell(className,  transaction.toBankAccountName, 45);
 
     // Income
     const income = formatOreToKroner(transaction.income);
-    className = `income${rowNumber}`;
-    html += objImportFile.editTableCell(className, income, 10);
+    className = `income${menuNumber}`;
+    html += objImportFile.editTableCell(className,  income, 10);
 
     // Payment
     const payment = formatOreToKroner(transaction.payment);
-    className = `payment${rowNumber}`;
-    html += objImportFile.editTableCell(className, payment, 10);
+    className = `payment${menuNumber}`;
+    html += objImportFile.editTableCell(className,  payment, 10);
 
     // Text
-    className = `payment${rowNumber}`;
-    html += objImportFile.editTableCell(className, transaction.text, 10);
+    className = `payment${menuNumber}`;
+    html += objImportFile.editTableCell(className,  transaction.text, 10);
 
     // Accomulate
 
@@ -640,7 +642,7 @@ async function updateTransactions() {
     const income = Number(transaction.income);
     const payment = Number(transaction.payment);
     const kilowattHour = 0;
-    const date = objImportFile.formatDateToNumber(transaction.accountingDate);
+    const date = formatNorDateToNumber(transaction.accountingDate);
     const text = transaction.text;
 
     // insert transactions row
@@ -660,6 +662,8 @@ function importFileName() {
   // start table body
   html += objImportFile.startTableBody();
 
+  
+  html += objImportFile.showHorizontalMenu(objImportFile.arrayAccountMenu)
   let importFileName = "Ugyldig filnavn";
   const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominium.condominiumId);
   if (rowNumberCondominium !== -1) {
@@ -685,6 +689,7 @@ function importFileName() {
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
+<<<<<<< HEAD
   html += objBankAccount.insertTableRow('');
   html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
@@ -695,5 +700,5 @@ function importFileName() {
   html += objImportFile.endTable();
   document.querySelector('.importFileName').innerHTML = html;
 
-
+  
 }
