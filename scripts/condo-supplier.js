@@ -226,6 +226,7 @@ function showHeader() {
 // Show filter
 function showFilter(supplierId) {
 
+  /*
   // Start table
   let html = objSupplier.initializeTable(columnWidths);
 
@@ -247,6 +248,16 @@ function showFilter(supplierId) {
 
   // The end of the table
   html += objSupplier.endTable();
+  document.querySelector('.showFilter').innerHTML = html;
+  */
+ // show filter
+  html = objSupplier.startRow();
+
+  // Show suppliers
+  html += objSupplier.showSelectedSuppliersNew('Leverandør', 'filterSupplierId',    '', supplierId, '', '', true);
+
+   html += objSupplier.endRow();
+
   document.querySelector('.showFilter').innerHTML = html;
 }
 

@@ -4,7 +4,7 @@ class Supplier extends Condos {
   // supplier information
   arraySuppliers;
 
-  showSelectedSuppliers(className,style,supplierId, selectNone, selectAll, enableChanges) {
+  showSelectedSuppliers(className, style, supplierId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -74,6 +74,83 @@ class Supplier extends Condos {
     return html;
   }
 
+  // Show selected suppliers
+  showSelectedSuppliersNew(label, className, style, supplierId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <div class="field status" style="width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    // Check if suppliers array is empty
+    if (this.arraySuppliers.length > 0) {
+      this.arraySuppliers.forEach((supplier) => {
+
+        html += `
+        <option 
+          value=${supplier.supplierId}
+          ${(supplier.supplierId === supplierId) ? 'selected' : ''}
+        >
+          &nbsp;&nbsp;${supplier.name.trim()}&nbsp;&nbsp;
+        </option>`;
+
+        if (supplier.supplierId === supplierId) selectedValue = true;
+      });
+    } else {
+
+      // No suppliers
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arraySupplier.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arraySupplier.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+      <label>
+        ${label}
+      </label>
+    </div>`;
+
+    return html;
+  }
+
   // Find selected supplier id
   getSelectedSupplierId(classValue) {
 
@@ -97,10 +174,11 @@ class Supplier extends Condos {
   // get suppliers
   async loadSuppliersTable(condominiumId) {
 
-    const URL = (this.serverStatus === 1) ? '/api/suppliers' : 'http://localhost:3000/suppliers';
+    const URL = (this.serverStatus === 1)
+      ? '/api/suppliers'
+      : 'http://localhost:3000/suppliers';
     try {
 
-      //const response = await fetch(`${URL}:3000/suppliers?action=select&condominiumId=${condominiumId}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -167,7 +245,9 @@ class Supplier extends Condos {
   // insert supplier row
   async insertSuppliersTable(condominiumId, user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId) {
 
-    const URL = (this.serverStatus === 1) ? '/api/suppliers' : 'http://localhost:3000/suppliers';
+    const URL = (this.serverStatus === 1)
+      ? '/api/suppliers'
+      : 'http://localhost:3000/suppliers';
     try {
 
       const response = await fetch(URL, {
