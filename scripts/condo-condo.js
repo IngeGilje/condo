@@ -33,7 +33,7 @@ async function main() {
       let html = objCondo.showHorizontalMenu(objCondo.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
-            // Show user menu
+      // Show user menu
       html = objCondo.showHorizontalMenu(objCondo.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
 
@@ -49,15 +49,15 @@ async function main() {
       if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
 
       // Show header
-      
+
 
       showHeader();
 
       // Show filter
-      showFilter( condoId);
+      showFilter(condoId);
 
       // Show result
-      editCondo( condoId);
+      showCondo(condoId);
 
       // Events
       events();
@@ -85,7 +85,7 @@ async function events() {
     if (event.target.classList.contains('filterCondoId')) {
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      editCondo(2, condoId);
+      showCondo(condoId);
     };
   });
 
@@ -107,12 +107,12 @@ async function events() {
 
       await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
 
-      
+
 
       // Show filter
       const condoId = objCondo.arrayCondo.at(-1).condoId;
-      showFilter( condoId);
-      editCondo( condoId);
+      showFilter(condoId);
+      showCondo(condoId);
     };
   });
 
@@ -134,7 +134,7 @@ async function events() {
       let condoId = Number(document.querySelector('.filterCondoId').value);
       if (condoId === 0) condoId = objCondo.arrayCondo.at(-1).condoId;
 
-      editCondo(2, condoId);
+      showCondo(condoId);
     };
   });
   // Log out
@@ -172,20 +172,21 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter( condoId) {
+function showFilter(condoId) {
 
+  /*
   // Start table
   let html = objCondo.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  
-  html += objCondo.showTableHeaderMenu( '', '', 'Velg leilighet', '');
+
+  html += objCondo.showTableHeaderMenu('', '', 'Velg leilighet', '');
 
   // start table body
   html += objCondo.startTableBody();
 
   // insert a table row (<tr></td>)
-  
+
   html += objCondo.insertTableRow('');
 
   // condo
@@ -198,13 +199,22 @@ function showFilter( condoId) {
 
   // The end of the table
   html += objCondo.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
+  */
 
-  
+  // show filter
+  html = objCondo.startRow();
+
+  // Show condos
+  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', '', true);
+
+   html += objCondo.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Maintain condo information
-function editCondo( condoId) {
+function showCondo(condoId) {
 
   // start table
   let html = objCondo.initializeTable(columnWidths);
@@ -212,14 +222,10 @@ function editCondo( condoId) {
   // Check if condos row exist
   const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
 
-  
-  html += objCondo.showTableHeaderMenu( '', '', '', '');
-
   // name
-  
   html += objCondo.showTableHeaderMenu('', '', 'Leilighet', '');
 
-  
+
   html += objCondo.insertTableRow('');
 
   const name = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].name;
@@ -227,11 +233,11 @@ function editCondo( condoId) {
   html += "<td></td></tr>";
 
   // street, address2
-  
+
   html += objCondo.showTableHeaderMenu('', '', 'Gate', 'Adresse 2');
 
   // insert a table row (<tr></td>)
-  
+
   html += objCondo.insertTableRow('');
 
   // street
@@ -246,11 +252,11 @@ function editCondo( condoId) {
   html += "</tr>";
 
   // postalCode, city
-  
+
   html += objCondo.showTableHeaderMenu('', '', 'Postnummer', 'Poststed');
 
   // insert a table row (<tr></td>)
-  
+
   html += objCondo.insertTableRow('');
 
   // postalCode
@@ -263,12 +269,9 @@ function editCondo( condoId) {
   html += "</tr>";
 
   // squareMeters
-  //html += "<tr>";
-  
   html += objCondo.showTableHeaderMenu('', '', 'Areal i m2', '');
 
   // insert a table row (<tr></td>)
-  
   html += objCondo.insertTableRow('');
 
   // squareMeters
@@ -280,7 +283,6 @@ function editCondo( condoId) {
   // Buttons
 
   // insert a table row (<tr></td>)
-  
   html += objCondo.insertTableRow('');
 
   html += "<td></td><td></td></tr>";
@@ -289,7 +291,7 @@ function editCondo( condoId) {
   if (enableChanges) {
 
     // insert a table row (<tr></td>)
-    
+
     html += objCondo.insertTableRow('');
 
     html += objCondo.showButton('update', 'Oppdater');
@@ -297,7 +299,7 @@ function editCondo( condoId) {
     html += "</tr>";
 
     // insert a table row (<tr></td>)
-    
+
     html += objCondo.insertTableRow('');
 
     html += objCondo.showButton('delete', 'Slett');
@@ -307,10 +309,10 @@ function editCondo( condoId) {
 
   // The end of the table
   html += objCondo.endTable();
-  document.querySelector('.editCondo').innerHTML = html;
+  document.querySelector('.showCondo').innerHTML = html;
 
   if (enableChanges) document.querySelector('.cancel').disabled = true;
-  
+
 }
 
 // Update a condo row
@@ -365,9 +367,9 @@ async function updateCondoRow(condoId) {
       document.querySelector('.filterCondoId').value = condoId;
     }
 
-    
-    showFilter( condoId);
-    editCondo( condoId);
+
+    showFilter(condoId);
+    showCondo(condoId);
 
     objCondo.removeMessage();
     document.querySelector('.filterCondoId').disabled = false;

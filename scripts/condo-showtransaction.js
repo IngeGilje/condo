@@ -83,13 +83,13 @@ async function main() {
       condoId = Number(document.querySelector('.filterCondoId').value);
       accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(formatNorDateToNumber(fromDate));
+      fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(formatNorDateToNumber(toDate));
+      toDate = Number(objShowTransaction.formatDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
-      // Show result of filter
+      // Show transactions
       showTransactions();
 
       // Events
@@ -129,11 +129,12 @@ async function events() {
 
       let amount = document.querySelector('.filterAmount').value;
       amount = formatKronerToOre(amount);
+      document.querySelector('.filterAmount').value = formatOreToKroner(amount);
 
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
-      showTransactions(3);
+      showTransactions();
     };
   });
 

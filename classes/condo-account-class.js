@@ -174,6 +174,83 @@ class Account extends Condos {
     return html;
   }
 
+  // Show accounts
+  showSelectedAccountsNew(label, className, style, accountId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <div class="field status" style="width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    // Check if accounts array is empty
+    if (this.arrayAccounts.length > 0) {
+      this.arrayAccounts.forEach((account) => {
+
+        html += `
+        <option 
+          value=${account.accountId}
+          ${(account.accountId === accountId) ? 'selected' : ''}
+        >
+          &nbsp;&nbsp;${account.name.trim()}&nbsp;&nbsp;
+        </option>`;
+
+        if (account.accountId === accountId) selectedValue = true;
+      });
+    } else {
+
+      // No accounts
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayAccounts.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayAccounts.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+      <label>
+        ${label}
+      </label>
+    </div>`;
+
+    return html;
+  }
+
   // get accounts from accounts table
   async loadAccountsTable(condominiumId, fixedCost) {
 
@@ -181,7 +258,6 @@ class Account extends Condos {
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/accounts?action=select&condominiumId=${condominiumId}&fixedCost=${fixedCost}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -236,7 +312,6 @@ class Account extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
     try {
       // POST request
-      //const response = await fetch(`${URL}:3000/accounts?action=insert&condominiumId=${condominiumId}&user=${user}&accountName=${accountName}&fixedCost=${fixedCost}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {

@@ -11,7 +11,7 @@ const objOverview = new Overview('overview');
 
 const enableChanges = (objOverview.securityLevel > 5);
 
-const columnWidths = [ 150, 100, 150, 175, 150, 175];
+const columnWidths = [150, 100, 150, 175, 150, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -38,7 +38,7 @@ async function main() {
       let html = objOverview.showHorizontalMenu(objOverview.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
-           // Show due menu
+      // Show due menu
       html = objOverview.showHorizontalMenu(objOverview.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
 
@@ -49,7 +49,6 @@ async function main() {
       await objAccount.loadAccountsTable(objOverview.condominiumId, fixedCost);
 
       // Show header
-      
       showHeader();
 
       // Show filter
@@ -59,15 +58,15 @@ async function main() {
       if (rowNumberUser !== -1) {
         condoId = objUser.arrayUsers[rowNumberUser].condoId;
       }
-      editFilter( condoId);
+      showFilter(condoId);
 
       condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = objOverview.nineNine;
       const deleted = 'N';
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = formatNorDateToNumber(fromDate);
+      fromDate = objOverview.formatDateToNumber(fromDate);
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = formatNorDateToNumber(toDate);
+      toDate = objOverview.formatDateToNumber(toDate);
       await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
       const orderBy = 'condoId ASC, date DESC, income ASC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
@@ -96,6 +95,7 @@ async function events() {
   // Filter
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterCondoId')
+      || event.target.classList.contains('filterAccountId')
       || event.target.classList.contains('filterFromDate')
       || event.target.classList.contains('filterToDate')) {
 
@@ -151,7 +151,7 @@ function showHeader() {
   html += objOverview.startTableBody();
 
   // show main header
-  html += objOverview.showTableHeaderLogOut('', '','', 'Betalingsoversikt', '');
+  html += objOverview.showTableHeaderLogOut('', '', '', 'Betalingsoversikt', '');
   html += "</tr>";
 
   // end table body
@@ -163,14 +163,14 @@ function showHeader() {
 }
 
 // Show filter
-function editFilter( condoId) {
+function showFilter(condoId) {
 
+  /*
   // Start table
   let html = objOverview.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  
-  html += objOverview.showTableHeaderMenu( '', 'center', '', 'Leilighet', 'Fra dato', 'Til dato', '','');
+  html += objOverview.showTableHeaderMenu('', 'center', '', 'Leilighet', 'Fra dato', 'Til dato', '', '');
 
   // start table body
   html += objOverview.startTableBody();
@@ -194,7 +194,7 @@ function editFilter( condoId) {
 
   // insert a table row (<tr></td>)
 
-  html += objOverview.insertTableRow('', '', '', '', '', '','');
+  html += objOverview.insertTableRow('', '', '', '', '', '', '');
   html += "</tr>";
 
   // end table body
@@ -235,14 +235,13 @@ function showDues() {
   let sumKilowattHour = 0;
 
   // Header
-  
-  html += objOverview.showTableHeaderMenu( '#e0f0e0', 'center', '', '', '', 'Forfall', '', '');
-  html += objOverview.showTableHeaderMenu( '#e0f0e0', 'center', 'Leilighet', 'Forfallsdato', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+
+  html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Forfall', '', '');
+  html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDue.arrayDues.forEach((due) => {
 
     // insert a table row (<tr></td>)
-    
     html += objDue.insertTableRow('');
 
     // date
@@ -272,7 +271,6 @@ function showDues() {
     const text = due.text;
     className = `text${due.dueId}`;
     html += objOverview.editTableCell(className, text, 45, false);
-
     html += "</tr>";
 
     // accumulate
@@ -284,18 +282,15 @@ function showDues() {
   sumDue = formatOreToKroner(sumDue);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
-  
   html += objOverview.insertTableRow('font-weight: 600;', '', '', 'Sum', sumDue, '', '');
   html += "</tr>"
 
-  
   html += objOverview.insertTableRow('', '', '', '', '', '', '');
   html += "</tr>"
 
   // The end of the table
   html += objAccount.endTable();
   document.querySelector('.dues').innerHTML = html;
-  
 }
 
 // Transactions
@@ -305,9 +300,9 @@ function showTransactions() {
   let html = objOverview.initializeTable(columnWidths);
 
   // Header
-  
-  html += objOverview.showTableHeaderMenu( '#e0f0e0', 'center', '', '', '', 'Innbetalinger', '', '');  
-  html += objOverview.showTableHeaderMenu( '#e0f0e0', 'center', '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+
+  html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Innbetalinger', '', '');
+  html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -354,8 +349,8 @@ function showTransactions() {
   sumIncomes = formatOreToKroner(sumIncomes);
   sumPayments = formatOreToKroner(sumPayments);
 
-  
-  html += objOverview.insertTableRow('font-weight: 600;',  '', '', '', 'Sum', sumIncomes, '');
+
+  html += objOverview.insertTableRow('font-weight: 600;', '', '', '', 'Sum', sumIncomes, '');
   html += "</tr>"
 
   html += objOverview.insertTableRow('', '', '', '', '', '', '');
@@ -392,14 +387,14 @@ function showHowMuchToPay() {
   // show main header
   sumIncome += sumPayment;
   let overPay = sumIncome - sumToPay;
-  
+
   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenu( '#e0f0e0', 'center', '', '', '', 'Til gode', '', '')
-    : objOverview.showTableHeaderMenu( '#e0f0e0', 'center', '', '', '', 'Skyldig', '', '');
-  
+    ? objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Til gode', '', '')
+    : objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Skyldig', '', '');
+
   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenu( '#e0f0e0', 'center', '', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : objOverview.showTableHeaderMenu( '#e0f0e0', 'center', '', '', '', 'Forfall', 'Betalt', 'Skyldig')
+    ? objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Forfall', 'Betalt', 'Skyldig')
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
@@ -409,7 +404,7 @@ function showHowMuchToPay() {
 
   // Show sum
   let toDate = document.querySelector('.filterToDate').value;
-  toDate = formatNorDateToNumber(toDate);
+  toDate = objOverview.formatDateToNumber(toDate);
 
   // get current condo id
   let condoId = 0;
@@ -420,13 +415,13 @@ function showHowMuchToPay() {
   let openingBalance = objTransaction.getTransactions(objOverview.condominiumId, condoId, toDate);
   openingBalance += objDue.getDues(objOverview.condominiumId, condoId, toDate);
 
-  
+
   openingBalance = formatOreToKroner(openingBalance);
-  html += objOverview.insertTableRow('font-weight: 600;',  '', '', 'Sum', sumToPay, sumIncome, overPay);
+  html += objOverview.insertTableRow('font-weight: 600;', '', '', 'Sum', sumToPay, sumIncome, overPay);
 
   // The end of the table
   html += objOverview.endTable();
   document.querySelector('.howMuchToPay').innerHTML = html;
 
-  
+
 }

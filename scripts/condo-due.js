@@ -56,14 +56,13 @@ async function main() {
       if (rowNumberUser !== -1) {
         condoId = objUser.arrayUsers[rowNumberUser].condoId;
       }
-      editFilter(objDue.condominiumId, condoId);
+      showFilter(objDue.condominiumId, condoId);
 
-      //const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objDue.formatNorDateToNumber(fromDate));
+      fromDate = Number(objDue.formatDateToNumber(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objDue.formatNorDateToNumber(toDate));
+      toDate = Number(objDue.formatDateToNumber(toDate));
 
       await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
@@ -99,7 +98,7 @@ async function events() {
 
       await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
-      editDues(3);
+      editDues();
     };
   });
 
@@ -159,13 +158,13 @@ async function events() {
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objDue.formatNorDateToNumber(fromDate));
+      fromDate = Number(objDue.formatDateToNumber(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objDue.formatNorDateToNumber(toDate));
+      toDate = Number(objDue.formatDateToNumber(toDate));
 
       await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
-      editDues(3);
+      editDues();
     };
   });
 
@@ -236,7 +235,6 @@ function editDues() {
   let html = objCondo.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-
   html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Kilowatt Timer', 'Tekst', '');
 
   let sumAmount = 0;
@@ -293,7 +291,6 @@ function editDues() {
   if (enableChanges) {
 
     // Insert empty table row for insertion
-
     html += insertEmptyTableRow();
   }
 
@@ -301,13 +298,11 @@ function editDues() {
   sumAmount = formatOreToKroner(sumAmount);
   sumKilowattHour = formatOreToKroner(sumKilowattHour);
 
-  html += objDue.insertTableRow('font-weight: 600;',  '', '','Sum', sumAmount, '', '', '');
+  html += objDue.insertTableRow('font-weight: 600;', '', '', 'Sum', sumAmount, '', '', '');
 
   // The end of the table
   html += objDue.endTable();
   document.querySelector('.result').innerHTML = html;
-
-
 }
 
 // Insert empty table row
@@ -349,27 +344,6 @@ function insertEmptyTableRow() {
   return html;
 }
 
-// Delete dues row
-async function deleteDueRow(dueId, className) {
-
-  // Check if dues row exist
-  rowNumberDue = objDue.arrayDues.findIndex(due => due.dueId === dueId);
-  if (rowNumberDue !== -1) {
-
-    // delete dues row
-    await objDue.deleteDuesTable(dueId, objDue.user);
-  }
-
-  const condoId = Number(document.querySelector('.filterCondoId').value);
-  const accountId = Number(document.querySelector('.filterAccountId').value);
-  let fromDate = document.querySelector('.filterFromDate').value;
-  fromDate = Number(objDue.formatNorDateToNumber(fromDate));
-  let toDate = document.querySelector('.filterToDate').value;
-  toDate = Number(objDue.formatNorDateToNumber(toDate));
-
-  await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
-}
-
 // Update a dues row
 async function updateDuesRow(dueId) {
 
@@ -382,7 +356,7 @@ async function updateDuesRow(dueId) {
   const validCondoId = objCondo.validateInterval(className, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
 
   className = `.date${dueId}`;
-  const date = Number(formatNorDateToNumber(document.querySelector(`${className}`).value));
+  const date = Number(objDue.formatDateToNumber(document.querySelector(`${className}`).value));
   className = `date${dueId}`;
   const validDate = objCondo.validateInterval(className, columnWidths, '', 'Ugyldig dato', true, date, 20150101, 20991231);
 
@@ -426,82 +400,33 @@ async function updateDuesRow(dueId) {
     condoId = Number(document.querySelector('.filterCondoId').value);
     accountId = Number(document.querySelector('.filterAccountId').value);
     let fromDate = document.querySelector('.filterFromDate').value;
-    fromDate = Number(objDue.formatNorDateToNumber(fromDate));
+    fromDate = Number(objDue.formatDateToNumber(fromDate));
     let toDate = document.querySelector('.filterToDate').value;
-    toDate = Number(objDue.formatNorDateToNumber(toDate));
+    toDate = Number(objDue.formatDateToNumber(toDate));
 
     await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
-    editDues(3);
+    editDues();
   }
 }
 
-// Show header
-function showHeader() {
+// Delete dues row
+async function deleteDueRow(dueId, className) {
 
-  // Start table
-  let html = objDue.initializeTable(columnWidths);
+  // Check if dues row exist
+  rowNumberDue = objDue.arrayDues.findIndex(due => due.dueId === dueId);
+  if (rowNumberDue !== -1) {
 
-  // start table body
-  html += objDue.startTableBody();
+    // delete dues row
+    await objDue.deleteDuesTable(dueId, objDue.user);
+  }
 
-  // show main header
-  html += objDue.showTableHeaderLogOut('', '', '', '', '', '');
-  html += "</tr>";
+  const condoId = Number(document.querySelector('.filterCondoId').value);
+  const accountId = Number(document.querySelector('.filterAccountId').value);
+  let fromDate = document.querySelector('.filterFromDate').value;
+  fromDate = Number(objDue.formatDateToNumber(fromDate));
+  let toDate = document.querySelector('.filterToDate').value;
+  toDate = Number(objDue.formatDateToNumber(toDate));
 
-  // end table body
-  html += objDue.endTableBody();
-
-  // The end of the table
-  html += objDue.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-
-// Show filter
-function editFilter(condominiumId, condoId) {
-
-  // Start table
-  let html = objDue.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-
-  html += objDue.showTableHeaderMenu('', 'center', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', '','');
-
-  // start table body
-  html += objDue.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objDue.insertTableRow('','');
-
-  // Show selected condos
-  html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
-
-  // Show selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', '', objDue.nineNine, '', 'Vis alle', true);
-
-  // show from date
-  const fromDate = '01.01.' + String(today.getFullYear());
-  html += objDue.editTableCell('filterFromDate', fromDate, 10, enableChanges);
-
-  // Current date
-  let toDate = getCurrentDate();
-
-  // Next year
-  toDate = Number(formatNorDateToNumber(toDate)) + 10000;
-  toDate = formatNumberToNorDate(toDate);
-  html += objDue.editTableCell('filterToDate', toDate, 10, enableChanges);
-
-  html += "<td></td><td></td></tr>";
-
-  // insert a table row (<tr></td>)
-  html += objDue.insertTableRow('',  '', '', '', '', '', '','');
-
-  // end table body
-  html += objDue.endTableBody();
-
-  // The end of the table
-  html += objDue.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
-
-
+  await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 }
