@@ -49,7 +49,7 @@ async function main() {
       showHeader();
 
       // Show filter
-      editFilter(objCondominium.condominiumId);
+      showFilter(objCondominium.condominiumId);
 
       // Show condominium
       editCondominium(objCondominium.condominiumId);
@@ -96,10 +96,8 @@ async function events() {
 
       await objCondominium.loadCondominiumsTable();
 
-
-
       // Show filter
-      editFilter(0);
+      showFilter(0);
 
       // Show condominium
       editCondominium(objCondominium.condominiumId);
@@ -126,9 +124,8 @@ async function events() {
 
       await objCondominium.loadCondominiumsTable();
 
-
       // Show filter
-      editFilter(condominiumId);
+      showFilter(condominiumId);
 
       // Show condominium
       editCondominium(objCondominium.condominiumId);
@@ -234,8 +231,9 @@ function showHeader() {
 }
 
 // Show filter
-function editFilter(condominiumId) {
+function showFilter(condominiumId) {
 
+  /*
   // Start table
   let html = objCondominium.initializeTable(columnWidths);
 
@@ -258,7 +256,6 @@ function editFilter(condominiumId) {
   html += "<td></td></tr>";
 
   // insert a table row (<tr></td>)
-
   html += objCondominium.insertTableRow('', '', '');
 
   // end table body
@@ -266,9 +263,18 @@ function editFilter(condominiumId) {
 
   // The end of the table
   html += objCondominium.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
+  */
 
+  // show filter
+  html = objCondominium.startRow();
 
+  // Show condominiums
+  html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
+
+  html += objCondominium.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show condominium
@@ -487,10 +493,8 @@ async function updateCondominiumRow(condominiumId) {
       condominiumId = Number(objCondominium.arrayCondominiums.at(-1).condominiumId);
     }
 
-
-
     // Show filter
-    editFilter(condominiumId);
+    showFilter(condominiumId);
 
     // Show condominium
     editCondominium(condominiumId);

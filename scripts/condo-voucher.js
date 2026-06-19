@@ -44,7 +44,7 @@ async function main() {
       await objAccount.loadAccountsTable(objVoucher.condominiumId, fixedCost);
 
       // Show header
-      
+
 
       showHeader();
 
@@ -114,8 +114,9 @@ async function events() {
       let URL = (objTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      const transactionId = document.querySelector('.filterTransactionId').value;
-      URL = `${URL}condo-showtransaction.html?transactionId=${transactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}`;
+      const voucherName = document.querySelector('.voucherFileName').value;
+      const [transactionId, extension] = voucherName.split('.');
+      URL = `${URL}condo-showtransaction.html?transactionId=${Number(transactionId)}&condoId=${paramCondoId}&accountId=${paramAccountId}`;
       window.location.href = URL;
     };
   });
@@ -149,14 +150,14 @@ function showFilter() {
   let html = objTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  
-  html += objTransaction.showTableHeaderMenu( '', 'center', '', 'Bilagsnummer', '', '');
+
+  html += objTransaction.showTableHeaderMenu('', 'center', '', 'Bilagsnummer', '', '');
 
   // start table body
   html += objTransaction.startTableBody();
 
   // insert a table row (<tr></td>)
-  
+
   html += objTransaction.insertTableRow('', '');
 
   // show selected transactions
@@ -169,9 +170,9 @@ function showFilter() {
 
   // The end of the table
   html += objTransaction.endTable();
-  document.querySelector('.editFilter2').innerHTML = html;
+  document.querySelector('.showFilter2').innerHTML = html;
 
-  
+
 }
 
 // Show result
@@ -185,10 +186,10 @@ function showVoucher(transactionId) {
   if (rowNumberTransaction !== -1) {
 
     // date and amount
-    
-    html += objVoucher.showTableHeaderMenu( '', 'center', 'Dato', 'Beløp', 'Konto', '');
 
-    
+    html += objVoucher.showTableHeaderMenu('', 'center', 'Dato', 'Beløp', 'Konto', '');
+
+
     html += objTransaction.insertTableRow('');
 
     // date
@@ -209,10 +210,10 @@ function showVoucher(transactionId) {
     html += "</tr>";
 
     // file name of the voucher
-    
-    html += objVoucher.showTableHeaderMenu( '', 'center', 'Filnavn', '', '', '');
 
-    
+    html += objVoucher.showTableHeaderMenu('', 'center', 'Filnavn', '', '', '');
+
+
     html += objTransaction.insertTableRow('');
 
     let voucherFileName = objTransaction.arrayTransactions[rowNumberTransaction].voucherFileName;
@@ -224,22 +225,22 @@ function showVoucher(transactionId) {
     html += "<td></td><td></td><td></td></tr>";
 
     // Show button
-    
+
     html += objTransaction.insertTableRow('', '', '', '', '');
     html += "</tr>";
 
-    
+
     html += objTransaction.insertTableRow('');
 
     html += objTransaction.showButton('back', 'Tilbake');
     html += "<td></td><td></td><td></td></tr>";
 
-    
+
     html += objTransaction.insertTableRow('', '', '', '', '');
     html += "</tr>";
 
     // Show pdf file
-    
+
     html += objTransaction.insertTableRow('');
 
     html += `
@@ -254,7 +255,7 @@ function showVoucher(transactionId) {
     html += objTransaction.endTable();
     document.querySelector('.result').innerHTML = html;
 
-    
+
   }
 }
 

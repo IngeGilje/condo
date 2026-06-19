@@ -8,7 +8,7 @@ class Condos {
 
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
-  serverStatus = 1;
+  serverStatus = 2;
 
   inactivityTimeout = false;
 
@@ -50,7 +50,7 @@ class Condos {
     {
       applicationName: "condo-showtransaction.html",
       className: "Menu5",
-      text: "Regnskap"
+      text: "Transaksjoner"
     },
     {
       applicationName: "condo-due.html",
@@ -102,7 +102,7 @@ class Condos {
     {
       applicationName: "condo-bankaccount.html",
       className: "Menu2",
-      text: "Bankkonto Sameie"
+      text: "Bankkonto"
     },
     {
       applicationName: "condo-account.html",
@@ -159,8 +159,13 @@ class Condos {
     },
     {
       applicationName: "condo-annualaccount.html",
-      className: "Menu3",
+      className: "Menu5",
       text: "Årsregnskap"
+    },
+    {
+      applicationName: "condo-importfile.html",
+      className: "Menu6",
+      text: "Hent transaksjoner"
     },
   ];
 
@@ -562,7 +567,6 @@ class Condos {
     return html;
   };
 
-
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {
 
@@ -593,6 +597,39 @@ class Condos {
         </select >
       </td>
     `;
+
+    return html;
+  }
+
+  // Show selected numbers (from number - to number)
+  showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <div class="field status" style="max-width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    for (let month = 1; month < 13; month++) {
+
+      html += `
+      <option 
+        value="${month}"
+        ${month === selectedMonth ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${findNameOfMonth(month).trim()}&nbsp;&nbsp;
+      </option>`;
+    };
+
+    html += `
+      </select >
+    </div>`;
 
     return html;
   }
@@ -850,6 +887,52 @@ class Condos {
     return valid;
   }
 
+  // validate the iso date format yyyy-mm-dd
+  validateIsoDate(className, date, style, message) {
+
+    let valid = true;
+
+    // Check for valid date String
+    if (date === '' || typeof date === 'undefined') valid = false;
+    if (valid) {
+
+      // Regular expression for valuating the yyyy-mm-dd format
+      const regex = /^(\d{4})\-(\d{2})\-(\d{2})$/
+      const match = date.match(regex);
+
+      if (!match) valid = false;
+
+      if (valid) {
+
+        // Extract day, month, and year
+        const [year, month, day] = date.split('-');
+        //const day = parseInt(match[1], 10);
+        //const month = parseInt(match[2], 10);
+        //const year = parseInt(match[3], 10);
+
+        // Check if month is between 1 and 12
+        if (day < 1 || day > 31) valid = false;
+        if (month < 1 || month > 12) valid = false;
+        if (year < 1900 || year > 2099) valid = false;
+      }
+    }
+
+    // remove/ add 'message' 
+    if (this.isClassDefined(className)) {
+
+      const inputElement = document.querySelector(`.${className}`);
+      if (inputElement) {
+
+        // remove/ add 'message' class
+        inputElement.classList.toggle('message', !valid);
+      }
+    }
+
+    // Show error message?
+    if ((!valid) && (message.lenght > 0)) this.showMessageNew(columnWidths, style, message);
+    return valid;
+  }
+
   // Validate phone number 
   validatePhone(className, phone) {
 
@@ -1060,9 +1143,7 @@ class Condos {
   // check if server is started
   async checkServer() {
 
-    const URL = (this.serverStatus === 1)
-      ? '/api/health'
-      : 'http://localhost:3000/health';
+    const URL = (this.serverStatus === 1) ? '/api/health' : 'http://localhost:3000/health';
     try {
 
       const response = await fetch(URL, {
@@ -1376,6 +1457,8 @@ function formatOreToKroner(amount) {
 // Format norwegian kroner (12 345,67) to ore/number (1234567)
 function formatKronerToOre(amount) {
 
+  amount = String(amount);
+  amount.replaceAll(' ', '');
   let kroner = '';
   let ore = '';
 
@@ -1453,22 +1536,49 @@ function formatAmountToOre(amount) {
   }
 
   // Check for valid amount in orer
-  amount =
-    (amount === '000') ? '0' : amount;
-  amount =
-    (isNumeric(amount)) ? amount : '0';
-  amount =
-    Number(amount);
+  amount = (amount === '000')
+    ? '0'
+    : amount;
+  amount = (isNumeric(amount))
+    ? amount
+    : '0';
+  amount = Number(amount);
   //return String(amount);
   return Number(amount);
 }
 
+// Format amount
+function formatAmount() {
+  let value = amountInput.value.replace(/\D/g, '');
+
+  if (!value) {
+    amountInput.value = '';
+    return;
+  }
+
+  while (value.length < 3) {
+    value = '0' + value;
+  }
+
+  const decimals = value.slice(-2);
+  let integerPart = value.slice(0, -2);
+
+  integerPart = integerPart.replace(/^0+/, '') || '0';
+
+  integerPart = integerPart.replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    ' '
+  );
+
+  amountInput.value = `${integerPart},${decimals}`;
+}
+/*
 // Format norwegian date (11.05.1983) to number (19830511)
-function formatNorDateToNumber(norDate) {
+function formatDateToNumber(norDate) {
 
   return norDate.substring(6,) + norDate.substring(3, 5) + norDate.substring(0, 2);
-
 }
+*/
 
 // Generate password
 function generatePassword(passwordLenght, includeLowercase, includeUppercase, includeNumbers, includeSymbols) {
