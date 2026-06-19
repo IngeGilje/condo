@@ -117,6 +117,7 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
+  /*
   // Start table
   let html = objShowEmptyingCalendar.initializeTable(columnWidths);
 
@@ -149,7 +150,24 @@ function showFilter() {
 
   // The end of the table
   html += objShowEmptyingCalendar.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
+
+  */
+  // show filter
+  html = objShowEmptyingCalendar.startRow();
+
+  // Show years
+  const year = String(today.getFullYear());
+  html += objShowEmptyingCalendar.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, Number(year), true);
+
+  // Show selected months
+  const date = getCurrentDate();
+  let month = Number(date.split('.')[1]); // Extract the month part
+  html += objShowEmptyingCalendar.showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
+
+  html += objShowEmptyingCalendar.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show emptyingCalendar

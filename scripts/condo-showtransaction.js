@@ -203,6 +203,7 @@ function showHeader() {
 // Show filter
 function showFilter(condoId, accountId) {
 
+  /*
   // Start table
   let html = objShowTransaction.initializeTable(columnWidths);
 
@@ -243,7 +244,6 @@ function showFilter(condoId, accountId) {
 
   // The end of the table
   html += objShowTransaction.endTable();
-<<<<<<< HEAD
   document.querySelector('.showFilter').innerHTML = html;
   */
 
@@ -274,9 +274,6 @@ function showFilter(condoId, accountId) {
   html += objShowTransaction.endRow();
 
   document.querySelector('.showFilter').innerHTML = html;
-=======
-  document.querySelector('.editFilter').innerHTML = html;
->>>>>>> c8311e42e4d7591cb8a79d9c65341b07010faad2
 }
 
 // Show transactions

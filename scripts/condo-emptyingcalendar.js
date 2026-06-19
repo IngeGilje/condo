@@ -49,7 +49,7 @@ async function main() {
       showHeader();
 
       // Show filter
-      editFilter();
+      showFilter();
 
       const year = Number(document.querySelector('.filterYear').value);
       const month = Number(document.querySelector('.filterMonth').value);
@@ -183,8 +183,9 @@ function showHeader() {
 }
 
 // Show filter
-function editFilter() {
+function showFilter() {
 
+  /*
   // Start table
   let html = objEmptyingCalendar.initializeTable(columnWidths);
 
@@ -216,7 +217,24 @@ function editFilter() {
 
   // The end of the table
   html += objEmptyingCalendar.endTable();
-  document.querySelector('.editFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html;
+  */
+
+  // show filter
+  html = objEmptyingCalendar.startRow();
+
+  // Show years
+  const year = String(today.getFullYear());
+  html += objEmptyingCalendar.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, Number(year), true);
+
+  // Show selected months
+  const date = getCurrentDate();
+  let month = Number(date.split('.')[1]); // Extract the month part
+  html += objEmptyingCalendar.showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
+
+  html += objEmptyingCalendar.endRow();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show emptyingCalendar
@@ -380,7 +398,7 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
   // date
   className = `date${emptyingCalendarId}`;
   let date = document.querySelector(`.${className}`).value;
-  date = formatNorDateToNumber(date);
+  date = objEmptyingCalendar.formatDateToNumber(date);
   const validDate = objEmptyingCalendar.validateInterval(className, columnWidths, '', 'Ugyldig dato', true, date, 20100101, objEmptyingCalendar.nineNine);
 
   className = `paper${emptyingCalendarId}`;

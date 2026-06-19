@@ -1,5 +1,4 @@
 // Login
-debugger;
 // Activate classes
 const objUser = new User('user');
 const objLogIn = new Login('login');
