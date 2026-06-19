@@ -1,4 +1,0 @@
-
-class Overview extends Condos {
-
-}

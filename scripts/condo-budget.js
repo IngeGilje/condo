@@ -259,7 +259,7 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter {
+function showFilter() {
 
   /*
   // Start table
