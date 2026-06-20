@@ -3,7 +3,7 @@
 
 // const serverStatus = 1;  // http://ingegilje.no on web server
 // const serverStatus = 2;  // http://localhost on development PC
-const serverStatus = 1;
+const serverStatus = 2;     // http://localhost on development PC
 
 import express from "express";
 import session from "express-session";
@@ -39,15 +39,7 @@ app.use(session({
 }));
 
 app.post('/health', (req, res) => {
-  if (serverStatus === 1) console.log("🚀 Server /health 1 running at /api/health");
-  if (serverStatus === 2) console.log("🚀 Server /health 1 running at http://localhost:3000");
   res.status(200).send('OK');
-});
-
-app.post('/api/health', (req, res) => {
-  if (serverStatus === 1) console.log("🚀 Server /api/health 2 running at /api/health");
-  if (serverStatus === 2) console.log("🚀 Server /api/health 2 running at http://localhost:3000");
-  res.json({ ok: true });
 });
 
 // Get information from the session
@@ -65,13 +57,8 @@ app.post("/profile", (req, res) => {
   }
 });
 
-// Start the server
-app.listen(3000, () => {
-  if (serverStatus === 1) console.log("🚀 Server running at /api/health");
-  if (serverStatus === 2) console.log("🚀 Server running at http://localhost:3000");
-});
-
 // Get current user info
+//app.get("/me", async (req, res) => {
 app.post("/me", async (req, res) => {
 
   console.log('req.session', req.session);
@@ -173,6 +160,7 @@ async function main() {
 
     app.post("/updateVoucherFileName", async (req, res) => {
 
+      console.log('updateVoucherFileName');
       try {
 
         const lastUpdate = today.toISOString();
@@ -268,6 +256,7 @@ async function main() {
             const accountId = req.body.accountId;
             const user = req.body.user;
             const fixedCost = req.body.fixedCost;
+
             const accountName = req.body.accountName;
 
             const SQLquery = `
@@ -341,13 +330,15 @@ async function main() {
             const accountId = req.body.accountId;
 
             // Delete table
-            const SQLquery = `
-            UPDATE accounts
-              SET 
-                deleted = 'Y',
-                lastUpdate = '${lastUpdate}',
-                user = '${user}'
-              WHERE accountId = ${accountId};`;
+            const SQLquery =
+              `
+                UPDATE accounts
+                  SET 
+                    deleted = 'Y',
+                    lastUpdate = '${lastUpdate}',
+                    user = '${user}'
+                  WHERE accountId = ${accountId};
+              `;
 
             const [rows] = await mySqlDB.query(SQLquery);
 
@@ -364,13 +355,8 @@ async function main() {
     });
 
     // Requests for users tabel
-    let routePath = "";
-    if (serverStatus === 1) routePath = "/api/users"; 
-    if (serverStatus === 2) routePath = "/users"; 
-    //app.post("/api/users", async (req, res) => {
-    app.post(routePath, async (req, res) => {
+    app.post("/users", async (req, res) => {
 
-      console.log('api/users');
       const action = req.body.action;
       const lastUpdate = today.toISOString();
 
@@ -2055,6 +2041,11 @@ async function main() {
 
         res.status(500).json({ error: err.message });
       }
+    });
+
+    // Start the server
+    app.listen(3000, () => {
+      console.log("🚀 Server running at http://localhost:3000");
     });
 
   } catch (err) {
