@@ -160,39 +160,11 @@ function showHeader() {
 // Show filter
 function showFilter(userId) {
 
-  /*
-  // Start table
-  let html = objUser.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objUser.showTableHeaderMenu('', 'centrum', 'Sameie', 'Bruker');
-
-  // start table body
-  html += objUser.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objPassword.insertTableRow('');
-
-  // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', '', condominiumId, '', '', enableChanges);
-
-  // user
-  html += objUser.showSelectedUsers('filterUserId', '', userId, '', '', enableChanges)
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objPassword.insertTableRow('', '', '');
-
-  // end table body
-  html += objUser.endTableBody();
-
-  // The end of the table
-  html += objUser.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objPassword.startFilterFrame();
 
   // show filter
-  html = objPassword.startRow();
+  html += objPassword.startRow();
 
   // Show condominiums
   //html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
@@ -201,6 +173,9 @@ function showFilter(userId) {
   html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
 
   html += objPassword.endRow();
+
+  // End filter frame
+  html += objPassword.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

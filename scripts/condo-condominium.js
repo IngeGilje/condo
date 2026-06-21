@@ -233,46 +233,19 @@ function showHeader() {
 // Show filter
 function showFilter(condominiumId) {
 
-  /*
-  // Start table
-  let html = objCondominium.initializeTable(columnWidths);
-
-  // start table body
-  html += objCondominium.startTableBody();
-
-  // Header filter (<tr></tr>)
-  html += objCondominium.showTableHeaderMenu('', 'centrum', 'Velg sameie', '');
-
-  // start table body
-  html += objCondominium.startTableBody();
-
-  // insert a table row (<tr></td>)
-
-  html += objCondominium.insertTableRow('');
-
-  // condominium
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', '', condominiumId, '', '', enableChanges)
-
-  html += "<td></td></tr>";
-
-  // insert a table row (<tr></td>)
-  html += objCondominium.insertTableRow('', '', '');
-
-  // end table body
-  html += objCondominium.endTableBody();
-
-  // The end of the table
-  html += objCondominium.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objCondominium.startFilterFrame();
 
   // show filter
-  html = objCondominium.startRow();
+  html += objCondominium.startRow();
 
   // Show condominiums
   html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
 
   html += objCondominium.endRow();
+
+  // End filter frame
+  html += objCondominium.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

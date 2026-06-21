@@ -55,7 +55,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       showFilter(supplierId);
 
       // Show supplier
-      showSupplier(supplierId);
+      editSupplier(supplierId);
 
       // Events
       events();
@@ -78,7 +78,7 @@ async function events() {
 
       const supplierId = Number(document.querySelector('.filterSupplierId').value);
 
-      showSupplier(2, supplierId);
+      editSupplier(2, supplierId);
     };
   });
 
@@ -107,7 +107,7 @@ async function events() {
       // Show filter
 
       showFilter(supplierId);
-      showSupplier(supplierId);
+      editSupplier(supplierId);
     };
   });
 
@@ -132,7 +132,7 @@ async function events() {
       // Show filter
 
       showFilter(supplierId);
-      showSupplier(supplierId);
+      editSupplier(supplierId);
     };
   });
 
@@ -226,156 +226,25 @@ function showHeader() {
 // Show filter
 function showFilter(supplierId) {
 
-  // Start filter frame
+    // Start filter frame
   let html = objSupplier.startFilterFrame();
 
+ // show filter
   html += objSupplier.startRow();
 
   // Show suppliers
-  html += objSupplier.showSelectedSuppliersNew('Leverandør', 'filterSupplierId', '', supplierId, '', '', true);
+  html += objSupplier.showSelectedSuppliersNew('Leverandør', 'filterSupplierId',    '', supplierId, '', '', true);
 
-  html += objSupplier.endRow();
-
-  // End filter frame
-  html += objSupplier.endFilterFrame();
+   html += objSupplier.endRow();
 
   document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show supplier
-function showSupplier(supplierId) {
+function editSupplier(supplierId) {
 
-  // row Number Supplier
-  const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-
-  // name
-  let html = objSupplier.startRow();
-
-  const name = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].name.trim();
-  html += objSupplier.editTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
-  html += objSupplier.endRow();
-
-  // street,address2
-  html += objSupplier.startRow();
-
-  // street
-  const street = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += objSupplier.editTextNew('Gatenavn', 'street', street, enableChanges);
-
-  // address2
-  const address2 = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += objSupplier.editTextNew('Adresse2', 'address2', address2, enableChanges);
-  html += objSupplier.endRow();
-
-  // postalCode, city
-  html += objSupplier.startRow();
-
-  let postalCode = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
-  if (postalCode === '0') postalCode = "";
-  html += objSupplier.editTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
-
-  // city
-  const city = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += objSupplier.editTextNew('Poststed', 'city', city, enableChanges);
-  html += objSupplier.endRow();
-
-  // email,phone
-  html += objSupplier.startRow();
-
-  // email
-  let email = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += objSupplier.editTextNew('E-mail', 'email', email, enableChanges);
-
-  // phone
-  const phone = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += objSupplier.editTextNew('Telefonnummer', 'phone', phone, enableChanges);
-  html += objSupplier.endRow();
-
-  //  accountId, bankAccount
-  html += objSupplier.startRow();
-
-  // accountId
-  const accountId = (rowNumberSupplier === -1)
-    ? 0
-    : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccount.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', enableChanges);
-
-  // bank Account number
-  const bankAccount = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += objSupplier.editTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges);
-  html += objSupplier.endRow();
-
-  // amountAccountId, amount
-  html += objSupplier.startRow();
-
-  // amountAccountId
-  const amountAccountId = (rowNumberSupplier === -1)
-    ? 0
-    : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccount.showSelectedAccountsNew('Konto for beløp', 'amountAccountId', '', amountAccountId, 'Velg konto', '', enableChanges);
-
-  // amount
-  let amount = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].amount;
-  if (amount === '0') amount = "";
-  html += objSupplier.editTextNew('Beløp', 'amount', amount, enableChanges);
-  html += objSupplier.endRow();
-
-  // textAccountId, text
-  html += objSupplier.startRow();
-
-  // AccountId for text
-  const textAccountId = (rowNumberSupplier === -1)
-    ? 0
-    : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccount.showSelectedAccountsNew('Konto for tekst', 'textAccountId', '', textAccountId, 'Velg konto', '', enableChanges);
-
-  // text for account id
-  const text = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += objSupplier.editTextNew('Tekst', 'text', text, enableChanges);
-  html += objSupplier.endRow();
-
-  // Buttons
-  if (enableChanges) {
-
-    html += objSupplier.startRow();
-    html += objSupplier.showButtonNew('update', 'Oppdater');
-    html += objSupplier.showButtonNew('cancel', 'Angre');
-    html += objSupplier.endRow();
-
-    html += objSupplier.startRow();
-    html += objSupplier.showButtonNew('delete', 'Slett');
-    html += objSupplier.showButtonNew('insert', 'Ny');
-    html += objSupplier.endRow();
-  }
-
-  document.querySelector('.showSupplier').innerHTML = html;
-
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
-
-  /*
   // start table
-
-  html = objSupplier.initializeTable(columnWidths);
+  let html = objSupplier.initializeTable(columnWidths);
 
   // Check if supplier row exist
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
@@ -387,7 +256,7 @@ function showSupplier(supplierId) {
   html += objSupplier.insertTableRow('');
 
   // name
-  name = (rowNumberSupplier === -1)
+  const name = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].name;
 
@@ -475,6 +344,7 @@ function showSupplier(supplierId) {
   html += objSupplier.showTableHeaderMenu('', 'center', 'Konto for beløp', 'Beløp');
 
   // insert a table row (<tr></td>)
+
   html += objSupplier.insertTableRow('');
 
   // amountAccountId
@@ -534,9 +404,8 @@ function showSupplier(supplierId) {
   // The end of the table
   html += objSupplier.endTable();
   document.querySelector('.showSupplier').innerHTML = html;
-  */
 
-
+  if (enableChanges) document.querySelector('.cancel').disabled = true;
 }
 
 // Update a supplier row
@@ -629,7 +498,7 @@ async function updateSuppliersRow(supplierId) {
     // Show filter
 
     showFilter(supplierId);
-    showSupplier(supplierId);
+    editSupplier(supplierId);
 
     if (enableChanges) {
       document.querySelector('.filterSupplierId').disabled = false;

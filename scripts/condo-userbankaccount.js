@@ -175,41 +175,11 @@ function showHeader() {
 // Show filter
 function showFilter(userId) {
 
-  /*
-  // Start table
-  let html = objUserBankAccount.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-
-  html += objUserBankAccount.showTableHeaderMenu('', 'center', '', 'Bruker', 'Konto', '');
-
-  // start table body
-  html += objUserBankAccount.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objUserBankAccount.insertTableRow('', '');
-
-  // Show all selected users
-  html += objUser.showSelectedUsers('filterUserId', '', userId, '', 'Alle', enableChanges);
-
-  // Show all selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-
-  html += objUserBankAccount.insertTableRow('', '', '', '', '');
-
-  // end table body
-  html += objUserBankAccount.endTableBody();
-
-  // The end of the table
-  html += objUserBankAccount.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objUserBankAccount.startFilterFrame();
 
   // show filter
-  html = objUserBankAccount.startRow();
+  html += objUserBankAccount.startRow();
 
   // Show user
   html += objUser.showSelectedUsersNew('Leilighet', 'filterUserId', '', userId, '', 'Vis alle', true);
@@ -218,6 +188,9 @@ function showFilter(userId) {
   html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objUserBankAccount.nineNine, '', 'Vis alle', true);
 
    html += objUserBankAccount.endRow();
+
+   // End filter frame
+  html += objUserBankAccount.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

@@ -117,44 +117,11 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
-  /*
-  // Start table
-  let html = objShowEmptyingCalendar.initializeTable(columnWidths);
+    // Start filter frame
+  let html = objShowEmptyingCalendar.startFilterFrame();
 
-  // start table body
-  html += objShowEmptyingCalendar.startTableBody();
-
-  // Header filter (<tr></tr>)
-  html += objShowEmptyingCalendar.showTableHeaderMenu('', '', '', '', '', 'År', 'Måned', '', '');
-
-  // insert a table row (<tr></td>)
-  html += objShowEmptyingCalendar.insertTableRow('', '', '', '');
-
-  // Selected year (<td></td>)
-  const year = String(today.getFullYear());
-  html += objShowEmptyingCalendar.showSelectedNumbers('filterYear', '', 2020, 2030, year, true);
-
-  // Selected month
-  // Get current date in  European date format (dd.mm.yyyy)
-  const date = getCurrentDate();
-  let month = Number(date.split('.')[1]); // Extract the month part
-  html += objShowEmptyingCalendar.showSelectedMonths('filterMonth', '', month, true);
-
-  html += "<td></td><td></td></tr>";
-
-  // insert a table row (<tr></td>)
-  html += objShowEmptyingCalendar.insertTableRow('', '', '', '', '', '', '', '');
-
-  // end table body
-  html += objShowEmptyingCalendar.endTableBody();
-
-  // The end of the table
-  html += objShowEmptyingCalendar.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-
-  */
   // show filter
-  html = objShowEmptyingCalendar.startRow();
+  html += objShowEmptyingCalendar.startRow();
 
   // Show years
   const year = String(today.getFullYear());
@@ -166,6 +133,9 @@ function showFilter() {
   html += objShowEmptyingCalendar.showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
 
   html += objShowEmptyingCalendar.endRow();
+
+  // End filter frame
+  html += objShowEmptyingCalendar.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

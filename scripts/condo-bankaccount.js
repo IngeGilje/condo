@@ -439,43 +439,11 @@ function resetValues() {
 // Show filter
 function showFilter() {
 
-  /*
-  // Start table
-  let html = objBankAccount.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objBankAccount.showTableHeaderMenu('', 'center', 'Sameie', 'Bankkonto');
-
-  // start table body
-  html += objBankAccount.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objBankAccount.insertTableRow('');
-
-  // Show selected condominiums 
-  html += objCondominium.showSelectedCondominiums('filterCondominiumId', '', condominiumId, '', '', enableChanges);
-
-  // Show all bankaccounts for selected condominiums
-  // Get last id in last object in bankaccounts array
-  const bankAccountId = (objBankAccount.arrayBankAccounts.lenght === 0)
-    ? objBankAccount.arrayBankAccounts.at(-1).bankAccountId
-    : 0;
-  html += objBankAccount.showSelectedBankAccounts('filterBankAccountId', '', bankAccountId, '', '', enableChanges);
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objBankAccount.insertTableRow('', '', '');
-
-  // end table body
-  html += objBankAccount.endTableBody();
-
-  // The end of the table
-  html += objBankAccount.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+   // Start filter frame
+  let html = objBankAccount.startFilterFrame();
 
   // show filter
-  html = objBankAccount.startRow();
+  html += objBankAccount.startRow();
 
   // Show condominiums
   //html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
@@ -488,6 +456,9 @@ function showFilter() {
   html += objBankAccount.showSelectedBankAccountsNew('Bankkonto', 'filterBankAccountId', '', bankAccountId, '', '', true);
 
   html += objBankAccount.endRow();
+
+  // End filter frame
+  html += objBankAccount.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

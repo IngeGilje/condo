@@ -264,8 +264,11 @@ function showHeader() {
 // Show filter
 function showFilter(condoId, accountId, fromDate, toDate, amount) {
 
+    // Start filter frame
+  let html = objTransaction.startFilterFrame();
+
   // show filter
-  html = objTransaction.startRow();
+  html += objTransaction.startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -287,6 +290,9 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   html += objTransaction.editAmount('Beløp', 'filterAmount', amount, true);
 
   html += objTransaction.endRow();
+
+  // End filter frame
+  html += objTransaction.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

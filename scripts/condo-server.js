@@ -3,7 +3,7 @@
 
 // const serverStatus = 1;  // http://ingegilje.no on web server
 // const serverStatus = 2;  // http://localhost on development PC
-const serverStatus = 1;
+const serverStatus = 2;
 
 import express from "express";
 import session from "express-session";
@@ -38,20 +38,21 @@ app.use(session({
   }
 }));
 
-app.post('/health', (req, res) => {
-  if (serverStatus === 1) console.log("🚀 Server /health 1 running at /api/health");
-  if (serverStatus === 2) console.log("🚀 Server /health 1 running at http://localhost:3000");
+// Check if server (this server) is running
+//app.post('/health', (req, res) => {
+let routePath = "";
+if (serverStatus === 1) routePath = "/api/health";
+if (serverStatus === 2) routePath = "/health";
+app.post(routePath, async (req, res) => {
   res.status(200).send('OK');
 });
 
-app.post('/api/health', (req, res) => {
-  if (serverStatus === 1) console.log("🚀 Server /api/health 2 running at /api/health");
-  if (serverStatus === 2) console.log("🚀 Server /api/health 2 running at http://localhost:3000");
-  res.json({ ok: true });
-});
-
 // Get information from the session
-app.post("/profile", (req, res) => {
+//app.post("/profile", (req, res) => {
+routePath = "";
+if (serverStatus === 1) routePath = "/api/profile";
+if (serverStatus === 2) routePath = "/profile";
+app.post(routePath, async (req, res) => {
 
   if (req.session.username) {
     res.json({
@@ -72,7 +73,11 @@ app.listen(3000, () => {
 });
 
 // Get current user info
-app.post("/me", async (req, res) => {
+//app.post("/me", async (req, res) => {
+routePath = "";
+if (serverStatus === 1) routePath = "/api/me";
+if (serverStatus === 2) routePath = "/me";
+app.post(routePath, async (req, res) => {
 
   console.log('req.session', req.session);
   if (req.session.user) {
@@ -85,7 +90,12 @@ app.post("/me", async (req, res) => {
 });
 
 // Destroy / clear session
-app.post("/logout", (req, res) => {
+//app.post("/logout", (req, res) => {
+routePath = "";
+if (serverStatus === 1) routePath = "/api/logout";
+if (serverStatus === 2) routePath = "/logout";
+app.post(routePath, async (req, res) => {
+
   req.session.destroy(() => {
     res.send("Session destroyed");
   });
@@ -139,7 +149,11 @@ async function main() {
     console.log("✅ Connected to MySQL");
 
     // validate user
-    app.post("/login", async (req, res) => {
+    //app.post("/login", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/login";
+    if (serverStatus === 2) routePath = "/login";
+    app.post(routePath, async (req, res) => {
 
       try {
 
@@ -171,7 +185,12 @@ async function main() {
       };
     });
 
-    app.post("/updateVoucherFileName", async (req, res) => {
+    // Updte voucher file name
+    //app.post("/updateVoucherFileName", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/updateVoucherFileName";
+    if (serverStatus === 2) routePath = "/updateVoucherFileName";
+    app.post(routePath, async (req, res) => {
 
       try {
 
@@ -196,13 +215,17 @@ async function main() {
         res.json(rows);
       } catch (err) {
 
-        console.log("Database error in /updateVoucherFileName:", err.message);
+        console.log(`Database error in ${routePath}:`, err.message);
         res.status(500).json({ error: err.message });
       }
     });
 
     // Check if file exist
-    app.post("/checkIfFileExist", async (req, res) => {
+    //app.post("/checkIfFileExist", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/checkIfFileExist";
+    if (serverStatus === 2) routePath = "/checkIfFileExist";
+    app.post(routePath, async (req, res) => {
 
       let fileName;
       if (path.isAbsolute(req.body.fileName)) {
@@ -225,7 +248,11 @@ async function main() {
     });
 
     // Requests for accounts
-    app.post("/accounts", async (req, res) => {
+    //app.post("/accounts", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/accounts";
+    if (serverStatus === 2) routePath = "/accounts";
+    app.post(routePath, async (req, res) => {
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -255,7 +282,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /accounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -284,7 +311,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /accounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -326,7 +353,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /accounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -355,7 +382,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /accounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -364,13 +391,13 @@ async function main() {
     });
 
     // Requests for users tabel
-    let routePath = "";
-    if (serverStatus === 1) routePath = "/api/users"; 
-    if (serverStatus === 2) routePath = "/users"; 
     //app.post("/api/users", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/users";
+    if (serverStatus === 2) routePath = "/users";
     app.post(routePath, async (req, res) => {
 
-      console.log('api/users');
+      console.log(routePath);
       const action = req.body.action;
       const lastUpdate = today.toISOString();
 
@@ -398,7 +425,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /users:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -417,7 +444,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /users:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -459,7 +486,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /users:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -509,7 +536,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /users:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -570,7 +597,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /users:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -600,7 +627,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /users:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -645,7 +672,11 @@ async function main() {
     });
 
     // Requests for bank accounts
-    app.post("/bankaccounts", async (req, res) => {
+    //app.post("/bankaccounts", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/bankaccounts";
+    if (serverStatus === 2) routePath = "/bankaccounts";
+    app.post(routePath, async (req, res) => {
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -677,7 +708,7 @@ async function main() {
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /bankaccounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -716,7 +747,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /bankaccounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -770,7 +801,7 @@ async function main() {
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /bankaccounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -802,7 +833,7 @@ async function main() {
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /bankaccounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -811,8 +842,11 @@ async function main() {
     });
 
     // Requests for condominiums table
-    app.post("/condominiums", async (req, res) => {
-
+    //app.post("/condominiums", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/condominiums";
+    if (serverStatus === 2) routePath = "/condominiums";
+    app.post(routePath, async (req, res) => {
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -835,7 +869,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /condominiums:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -888,7 +922,7 @@ async function main() {
             console.log('SQLquery :', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /condominiums:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -957,7 +991,7 @@ async function main() {
             console.log('SQLquery :', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /condominiums:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -988,7 +1022,7 @@ async function main() {
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /condominiums:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -997,7 +1031,11 @@ async function main() {
     });
 
     // Requests for budgets table
-    app.post("/budgets", async (req, res) => {
+    //app.post("/budgets", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/budgets";
+    if (serverStatus === 2) routePath = "/budgets";
+    app.post(routePath, async (req, res) => {
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -1039,7 +1077,7 @@ async function main() {
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /budgets:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1075,7 +1113,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /budgets:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1121,7 +1159,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /budgets:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1149,7 +1187,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /budgets:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1158,7 +1196,12 @@ async function main() {
     });
 
     // Requests for dues table
-    app.post("/dues", async (req, res) => {
+    //app.post("/dues", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/dues";
+    if (serverStatus === 2) routePath = "/dues";
+    app.post(routePath, async (req, res) => {
+
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -1213,7 +1256,7 @@ async function main() {
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /dues:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1251,7 +1294,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /dues:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1301,7 +1344,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /dues:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1330,7 +1373,7 @@ async function main() {
             console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /dues:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1339,7 +1382,11 @@ async function main() {
     });
 
     // Requests for condo
-    app.post("/condo", async (req, res) => {
+    //app.post("/condo", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/condo";
+    if (serverStatus === 2) routePath = "/condo";
+    app.post(routePath, async (req, res) => {
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -1369,7 +1416,7 @@ async function main() {
 
           } catch (err) {
 
-            console.log("Database error in /condo:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1410,7 +1457,7 @@ async function main() {
             console.log('SQLquery:', SQLquery);
           } catch (err) {
 
-            console.log("Database error in /condo:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1459,7 +1506,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /condo:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1490,7 +1537,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /condo:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -1500,7 +1547,11 @@ async function main() {
     });
 
     // Requests for user bank account
-    app.post("/userbankaccounts", async (req, res) => {
+    //app.post("/userbankaccounts", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/userbankaccounts";
+    if (serverStatus === 2) routePath = "/userbankaccounts";
+    app.post(routePath, async (req, res) => {
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -1529,7 +1580,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /userbankaccounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1562,7 +1613,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /userbankaccounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1605,7 +1656,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /userbankaccounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -1635,7 +1686,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /userbankaccounts:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -1645,7 +1696,11 @@ async function main() {
     });
 
     // Requests for supplier
-    app.post("/suppliers", async (req, res) => {
+    //app.post("/suppliers", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/suppliers";
+    if (serverStatus === 2) routePath = "/suppliers";
+    app.post(routePath, async (req, res) => {
 
 
       const action = req.body.action;
@@ -1672,7 +1727,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /suppliers:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1726,7 +1781,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /suppliers:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1799,7 +1854,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /suppliers:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -1829,7 +1884,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /supplier:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -1839,7 +1894,11 @@ async function main() {
     });
 
     // Requests for transactions
-    app.post("/transactions", async (req, res) => {
+    //app.post("/transactions", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/transactions";
+    if (serverStatus === 2) routePath = "/transactions";
+    app.post(routePath, async (req, res) => {
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -1877,7 +1936,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /transactions:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1902,7 +1961,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /transactions:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -1947,7 +2006,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /transactions:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
           break;
@@ -2004,7 +2063,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /transactions:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -2034,7 +2093,7 @@ async function main() {
             res.json(rows);
           } catch (err) {
 
-            console.log("Database error in /transactions:", err.message);
+            console.log(`Database error in ${routePath}:`, err.message);
             res.status(500).json({ error: err.message });
           }
 
@@ -2043,7 +2102,12 @@ async function main() {
       }
     });
 
-    app.post("/importFile", async (req, res) => {
+    // bank account transaction csv file
+    //app.post("/importFile", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/importFile";
+    if (serverStatus === 2) routePath = "/importFile";
+    app.post(routePath, async (req, res) => {
 
       try {
 
@@ -2063,7 +2127,11 @@ async function main() {
   }
 
   // Requests for remoteheatings table
-  app.post("/remoteheatings", async (req, res) => {
+  //app.post("/remoteheatings", async (req, res) => {
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/remoteheatings";
+  if (serverStatus === 2) routePath = "/remoteheatings";
+  app.post(routePath, async (req, res) => {
 
     const action = req.body.action;
     const lastUpdate = today.toISOString();
@@ -2090,7 +2158,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatings:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2129,7 +2197,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatings:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2179,7 +2247,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatings:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2209,7 +2277,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatings:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2218,7 +2286,11 @@ async function main() {
   });
 
   // Requests for remoteheatingprices table
-  app.post("/remoteheatingprices", async (req, res) => {
+  //app.post("/remoteheatingprices", async (req, res) => {
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/remoteheatingprices";
+  if (serverStatus === 2) routePath = "/remoteheatingprices";
+  app.post(routePath, async (req, res) => {
 
     const action = req.body.action;
     const lastUpdate = today.toISOString();
@@ -2240,7 +2312,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatingprices:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2273,7 +2345,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatingprices:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2312,7 +2384,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatingprices:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2340,7 +2412,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /remoteheatingprices:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2349,7 +2421,12 @@ async function main() {
   });
 
   // Requests for commoncosts table
-  app.post("/commoncosts", async (req, res) => {
+  //app.post("/commoncosts", async (req, res) => {
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/commoncosts";
+  if (serverStatus === 2) routePath = "/commoncosts";
+  app.post(routePath, async (req, res) => {
+
 
     const action = req.body.action;
     const lastUpdate = today.toISOString();
@@ -2371,7 +2448,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /commoncosts:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2406,7 +2483,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /commoncosts:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2447,7 +2524,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /commoncosts:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2475,7 +2552,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /commoncosts:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2484,7 +2561,11 @@ async function main() {
   });
 
   // Requests for news table
-  app.post("/news", async (req, res) => {
+  //app.post("/news", async (req, res) => {
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/news";
+  if (serverStatus === 2) routePath = "/news";
+  app.post(routePath, async (req, res) => {
 
     const action = req.body.action;
     const lastUpdate = today.toISOString();
@@ -2510,7 +2591,7 @@ async function main() {
           console.log('SQLquery: ', SQLquery);
         } catch (err) {
 
-          console.log("Database error in /news:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2547,7 +2628,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /news:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2596,7 +2677,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /news:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2623,7 +2704,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /news:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2632,7 +2713,11 @@ async function main() {
   });
 
   // Requests for emptying calendar table
-  app.post("/emptyingcalendar", async (req, res) => {
+  //app.post("/emptyingcalendar", async (req, res) => {
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/emptyingcalendar";
+  if (serverStatus === 2) routePath = "/emptyingcalendar";
+  app.post(routePath, async (req, res) => {
 
     const action = req.body.action;
     const lastUpdate = today.toISOString();
@@ -2671,7 +2756,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /emptyingcalendar:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2712,7 +2797,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /emptyingcalendar:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2768,7 +2853,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /emptyingcalendar:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2795,7 +2880,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /emptyingcalendar:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2804,7 +2889,11 @@ async function main() {
   });
 
   // Requests for projects table
-  app.post("/projects", async (req, res) => {
+  //app.post("/projects", async (req, res) => {
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/projects";
+  if (serverStatus === 2) routePath = "/projects";
+  app.post(routePath, async (req, res) => {
 
     const action = req.body.action;
     const lastUpdate = today.toISOString();
@@ -2830,7 +2919,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /projects:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2865,7 +2954,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /emptyingcalendar:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2907,7 +2996,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /projects:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -2934,7 +3023,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log("Database error in /projects:", err.message);
+          console.log(`Database error in ${routePath}:`, err.message);
           res.status(500).json({ error: err.message });
         }
         break;

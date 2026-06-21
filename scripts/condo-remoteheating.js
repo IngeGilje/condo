@@ -204,44 +204,11 @@ function showHeader() {
 // Show filter
 function showFilter(year) {
 
-  /*
-  // Start table
-  let html = objRemoteHeating.initializeTable(columnWidths);
+    // Start filter frame
+  let html = objRemoteHeating.startFilterFrame();
 
-  // Header filter (<tr></tr>)
-
-  html += objRemoteHeating.showTableHeaderMenu('center','', '', '', 'År', 'Pris KilowatTimer', '', '');
-
-  // start table body
-  html += objRemoteHeating.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objRemoteHeating.insertTableRow('', '','');
-
-  // Select year (<td></td>)
-  html += objRemoteHeating.showSelectedNumbers('filterYear', '', 2020, 2030, year, true);
-
-  // Price/kilowattHour
-  const priceKilowattHour = getPriceKilowattHour(year);
-  className = `filterPrice`;
-  html += objRemoteHeating.editTableCell(className, priceKilowattHour, 10, false);
-
-  html += "<td></td><td></td></tr>";
-
-  // insert a table row (<tr></td>)
-
-  html += objRemoteHeating.insertTableRow('', '', '', '', '', '', '');
-
-  // end table body
-  html += objRemoteHeating.endTableBody();
-
-  // The end of the table
-  html += objRemoteHeating.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-
-  */
    // show filter
-  html = objRemoteHeating.startRow();
+  html += objRemoteHeating.startRow();
 
    // Show years
   html += objRemoteHeating.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
@@ -252,6 +219,9 @@ function showFilter(year) {
   html += objRemoteHeating.editAmount('Pris KilowatTimer', 'filterPrice', priceKilowattHour, true);
 
    html += objRemoteHeating.endRow();
+
+   // End filter frame
+  html += objRemoteHeating.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 

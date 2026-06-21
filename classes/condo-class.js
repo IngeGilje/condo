@@ -253,14 +253,16 @@ class Condos {
     </td>`;
   }
 
+  // Start filter frame
+  startFilterFrame() {
+
+    return `
+    <div class="filter-frame">`;
+  }
+
   // start input row (<div>)
   startRow() {
-    return `
-    <p>&nbsp;</p>
-    <div 
-      class="row"
-    >
-    `;
+    return `<p>&nbsp;</p><div class="row">`;
   }
 
   // Show Date
@@ -302,6 +304,28 @@ class Condos {
     return html;
   }
 
+  // Show text
+  editTextNew(label, className, value, enableChanges, placeholder = "") {
+
+    let html = `
+    <div class="field text" style="margin-left:25px; width:250px;">
+      <label>
+        ${label}
+      </label>
+      <input 
+        type="text"
+        autocomplete="off"
+        class="${className} one-line"
+        value="${(value ?? '').trim()}"
+        placeholder="${placeholder}"
+        ${(enableChanges ? '' : 'readonly')}
+      >
+      <label>${label}</label>
+    </div>`;
+
+    return html;
+  }
+
   // Show selected numbers (from number - to number)
   showSelectedNumbersNew(label, className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
 
@@ -338,8 +362,80 @@ class Condos {
     return html;
   }
 
-  // end input row (</div>)
+  // Show selected numbers (from number - to number)
+  showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <div class="field status" style="max-width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    for (let month = 1; month < 13; month++) {
+
+      html += `
+      <option 
+        value="${month}"
+        ${month === selectedMonth ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${findNameOfMonth(month).trim()}&nbsp;&nbsp;
+      </option>`;
+    };
+
+    html += `
+      </select >
+    </div>`;
+
+    return html;
+  }
+
+  // Show selected values 
+  showSelectedValuesNew(label, className, style, enableChanges, selectedValue, ...values) {
+
+    let selected = false;
+
+    let html = `
+    <div class="field status" style="max-width:175px">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+    values.forEach((value) => {
+
+      html += `
+      <option 
+        value="${(value ?? '').trim()}"
+        ${value === selectedValue ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${value}&nbsp;&nbsp;
+      </option>`;
+      if (value === selectedValue) selected = true;
+    });
+
+    html += `
+      </select >
+    </div>`;
+
+    return html;
+  }
+
+  // end  row (</div>)
   endRow() {
+    return "</div><p>&nbsp;</p>";
+  }
+
+  // end filter frame (</div>)
+  endFilterFrame() {
     return "</div><p>&nbsp;</p>";
   }
 
@@ -356,7 +452,7 @@ class Condos {
         class="${className} center one-line"
         type="text"
         maxlength="${maxlength}"
-        value="${value}"
+        value="${(value ?? '').trim()}"
         ${(enableChanges) ? '' : 'readonly'}
       >
     </td>`;
@@ -389,7 +485,7 @@ class Condos {
         class="${className} center one-line"
         type="password"
         maxlength="${maxlength}"
-        value="${value}"
+        value="${(value ?? '').trim()}"
       >
     </td>`;
   }
@@ -402,7 +498,7 @@ class Condos {
         class="${className} center one-line"
         type="password"
         maxlength="${maxlength}"
-        value="${value}"
+        value="${(value ?? '').trim()}"
       >
     </td>`;
   }
@@ -433,7 +529,16 @@ class Condos {
     return html;
   }
 
-  // Valid text
+  // Show button
+  showButtonNew(className, text) {
+
+    return `
+    <button class="${className} filter-btn primary">
+      ${text}
+    </button>`;
+  }
+
+  // Validate text
   validateText(className, columnWidths, style, message, showMessage = true, text, minLenght, maxLength) {
 
     let valid = true;
@@ -601,39 +706,6 @@ class Condos {
     return html;
   }
 
-  // Show selected numbers (from number - to number)
-  showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div class="field status" style="max-width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    for (let month = 1; month < 13; month++) {
-
-      html += `
-      <option 
-        value="${month}"
-        ${month === selectedMonth ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${findNameOfMonth(month).trim()}&nbsp;&nbsp;
-      </option>`;
-    };
-
-    html += `
-      </select >
-    </div>`;
-
-    return html;
-  }
-
   // Select choices like Yes, No, Ignore
   showSelectedValues(className, style, enableChanges, selected, ...choices) {
 
@@ -653,7 +725,7 @@ class Condos {
 
       html += `
       <option 
-        value="${choice}"
+        value="${(selected ?? '').trim()}"
         ${(choice === selected) ? 'selected' : ''}
       >
         &nbsp;&nbsp;${choice}&nbsp;&nbsp;
@@ -663,40 +735,6 @@ class Condos {
     html += `
       </select >
     </td>`;
-
-    return html;
-  }
-
-  // Show selected values 
-  showSelectedValuesNew(label, className, style, enableChanges, selectedValue, ...values) {
-
-    let selected = false;
-
-    let html = `
-    <div class="field status" style="max-width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    values.forEach((value) => {
-
-      html += `
-      <option 
-        value="${value}"
-        ${value === selectedValue ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${value}&nbsp;&nbsp;
-      </option>`;
-      if (value === selectedValue) selected = true;
-    });
-
-    html += `
-      </select >
-    </div>`;
 
     return html;
   }

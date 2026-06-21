@@ -146,8 +146,11 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
+    // Start filter frame
+  let html = objTransaction.startFilterFrame();
+
   // Start table
-  let html = objTransaction.initializeTable(columnWidths);
+  html += objTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
 

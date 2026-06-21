@@ -165,48 +165,11 @@ function showHeader() {
 // Show filter
 function showFilter(condoId) {
 
-  /*
-  // Start table
-  let html = objOverview.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objOverview.showTableHeaderMenu('', 'center', '', 'Leilighet', 'Fra dato', 'Til dato', '', '');
-
-  // start table body
-  html += objOverview.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objOverview.insertTableRow('', '');
-
-  // Show selected condos
-  html += objCondo.showSelectedCondos('filterCondoId', '', condoId, 'Velg leilighet', '', true);
-
-  // from date
-  const year = String(today.getFullYear());
-  let fromDate = "01.01." + year;
-  html += objOverview.editTableCell('filterFromDate', fromDate, 10, true);
-
-  // to date
-  let toDate = getCurrentDate();
-  html += objOverview.editTableCell('filterToDate', toDate, 10, true);
-
-  html += "<td></td><td></td></tr>";
-
-  // insert a table row (<tr></td>)
-
-  html += objOverview.insertTableRow('', '', '', '', '', '', '');
-  html += "</tr>";
-
-  // end table body
-  html += objOverview.endTableBody();
-
-  // The end of the table
-  html += objOverview.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+   // Start filter frame
+  let html = objOverview.startFilterFrame();
 
   // show filter
-  html = objOverview.startRow();
+  html += objOverview.startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -221,6 +184,9 @@ function showFilter(condoId) {
   html += objDue.editDate('Til Dato', 'filterToDate', toDate, true)
 
   html += objOverview.endRow();
+
+  // End filter frame
+  html += objOverview.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

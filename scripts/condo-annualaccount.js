@@ -224,45 +224,11 @@ function showHeader() {
 // Show filter
 function showFilter(budgetYear, fromDate, toDate) {
 
-  /*
-  // Start table
-  let html = objAnnualAccount.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objAnnualAccount.showTableHeaderMenu('', 'center', '', 'Fra dato', 'Til dato', 'Budsjettår', 'Pris per m2');
-
-  // start table body
-  html += objAnnualAccount.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objAnnualAccount.insertTableRow('', '');
-
-  // show from date
-  html += objAnnualAccount.editTableCell('filterFromDate', fromDate, 10, true);
-
-  // show to date
-  html += objAnnualAccount.editTableCell('filterToDate', toDate, 10, true);
-
-  // Budget year (<td></td>)
-  html += objAnnualAccount.showSelectedNumbers('filterBudgetYear', '', 2020, 2030, budgetYear, true);
-
-  // price per square meter per month
-  const commonCostSquareMeter = getpriceSquaremeter(budgetYear);
-  html += objAnnualAccount.editTableCell('filterCommonCostSquareMeter', commonCostSquareMeter, 11, true);
-  html += "</tr>";
-
-  html += objAnnualAccount.insertTableRow('', '', '', '', '', '');
-
-  // end table body
-  html += objAnnualAccount.endTableBody();
-
-  // The end of the table
-  html += objAnnualAccount.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objAnnualAccount.startFilterFrame();
 
   // show filter
-  html = objAnnualAccount.startRow();
+  html += objAnnualAccount.startRow();
 
   // Show year
   html += objAnnualAccount.showSelectedNumbersNew('År', 'filterBudgetYear', '', 2020, 2030, budgetYear, true);
@@ -279,6 +245,9 @@ function showFilter(budgetYear, fromDate, toDate) {
   html += objAnnualAccount.editAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
 
    html += objAnnualAccount.endRow();
+
+   // End filter frame
+  html += objAnnualAccount.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

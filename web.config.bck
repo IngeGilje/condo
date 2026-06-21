@@ -1,0 +1,14 @@
+<configuration>
+  <system.webServer>
+    <rewrite>
+      <rules>
+
+        <rule name="NodeAPI" stopProcessing="true">
+          <match url="^api/(.*)" />
+          <action type="Rewrite" url="http://localhost:3000/api/{R:1}" />
+        </rule>
+
+      </rules>
+    </rewrite>
+  </system.webServer>
+</configuration>

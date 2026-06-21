@@ -261,41 +261,11 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
-  /*
-  // Start table
-  let html = objBudget.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objBudget.showTableHeaderMenu('', 'center', '', 'Konto', 'År', '', '');
-
-  // start table body
-  html += objBudget.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objBudget.insertTableRow('', '');
-
-  // Selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', '', 0, '', 'Alle', true);
-
-  // Selected year (<td></td>)
-  const year = String(today.getFullYear());
-  html += objBudget.showSelectedNumbers('filterYear', '', 2020, 2030, year, true);
-
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objBudget.insertTableRow('', '');
-
-  // end table body
-  html += objBudget.endTableBody();
-
-  // The end of the table
-  html += objBudget.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objBudget.startFilterFrame();
 
   // show filter
-  html = objBudget.startRow();
+  html += objBudget.startRow();
 
   // Show accounts
   html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objBudget.nineNine, '', 'Vis alle', true);
@@ -305,6 +275,9 @@ function showFilter() {
   html += objAccount.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
 
   html += objBudget.endRow();
+
+  // End filter frame
+  html += objBudget.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

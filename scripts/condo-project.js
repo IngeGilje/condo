@@ -205,40 +205,19 @@ function showHeader() {
 // Show filter
 function showFilter(projectId) {
 
-  /*
-  // Start table
-  let html = objProject.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objProject.showTableHeaderMenu('', 'center', '', '', 'Prosjekt', '', '');
-
-  // start table body
-  html += objProject.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objProject.insertTableRow('', '');
-
-  // Project (<td></td>)
-  html += objProject.showSelectedProjects('filterProjectId', '', projectId, 'Velg prosjekt', '', enableChanges);
-  html += "<td></td><td></td><td></td></tr>";
-
-  html += objProject.insertTableRow('', '', '', '', '', '');
-
-  // end table body
-  html += objProject.endTableBody();
-
-  // The end of the table
-  html += objProject.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objTransaction.startFilterFrame();
 
   // show filter
-  html = objTransaction.startRow();
+  html += objTransaction.startRow();
 
   // Show projects
   html += objProject.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', 'Vis alle', true);
 
   html += objTransaction.endRow();
+
+  // End filter frame
+  html += objTransaction.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

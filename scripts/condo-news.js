@@ -92,8 +92,6 @@ async function events() {
 
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
-
-
       // Show filter
       const newsId = (objNews.arrayNews.length > 0)
         ? objNews.arrayNews[0].newsId
@@ -162,41 +160,19 @@ function showHeader() {
 // Show filter
 function showFilter(newsId) {
 
-  /*
-  // Start table
-  let html = objNews.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objNews.showTableHeaderMenu('', 'center', 'Velg nyhet', '', '');
-
-  // start table body
-  html += objNews.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objNews.insertTableRow('');
-
-  // news
-  html += objNews.showSelectedNews('filterNewsId', '', newsId, '', '', true);
-  html += "<td></td><td></td></tr>";
-
-  // Table header (<tr></tr>)
-  html += objNews.showTableHeaderMenu('', 'center', '', '','');
-
-  // end table body
-  html += objNews.endTableBody();
-
-  // The end of the table
-  html += objNews.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objNews.startFilterFrame();
 
   // show filter
-  html = objNews.startRow();
+  html += objNews.startRow();
 
     // Show news
   html += objNews.showSelectedNewsNew('Nyhet', 'filterNewsId', '', newsId, '', '', true);
 
    html += objNews.endRow();
+
+   // End filter frame
+  html += objNews.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

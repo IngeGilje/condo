@@ -204,52 +204,11 @@ function showHeader() {
 // Show filter
 function showFilter(condoId, accountId) {
 
-  /*
-  // Start table
-  let html = objShowTransaction.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objTransaction.showTableHeaderMenu('', 'center', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp');
-
-  // start table body
-  html += objShowTransaction.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('');
-
-  // Show selected condos
-  html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
-
-  // Show all selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', '', accountId, '', 'Vis alle', true);
-
-  // show from date
-  let month = today.getMonth();
-  month = (month < 10) ? `0${month}` : `${month}`;
-  const fromDate = '01.' + month + '.' + String(today.getFullYear());
-  html += objTransaction.editTableCellCenter('filterFromDate', fromDate, 10, true);
-
-  let toDate = getCurrentDate();
-  html += objTransaction.editTableCellCenter('filterToDate', toDate, 10, true);
-
-  // Amount
-  html += objTransaction.editTableCellCenter('filterAmount', '', 10, true);
-
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('', '', '', '', '', '');
-
-  // end table body
-  html += objShowTransaction.endTableBody();
-
-  // The end of the table
-  html += objShowTransaction.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objShowTransaction.startFilterFrame();
 
   // show filter
-  html = objShowTransaction.startRow();
+  html += objShowTransaction.startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -273,6 +232,9 @@ function showFilter(condoId, accountId) {
   html += objShowTransaction.editAmount('Beløp', 'filterAmount', amount, true);
 
   html += objShowTransaction.endRow();
+
+  // End filter frame
+  html += objShowTransaction.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

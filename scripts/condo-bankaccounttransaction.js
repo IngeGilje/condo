@@ -244,8 +244,11 @@ async function events() {
 // Show filter
 function showFilter( condoId, accountId) {
 
+    // Start filter frame
+  let html = objBankAccountTransaction.startFilterFrame();
+
   // Start table
-  let html = objBankAccountTransaction.initializeTable(columnWidths);
+  html += objBankAccountTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
   

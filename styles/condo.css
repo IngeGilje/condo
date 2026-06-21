@@ -450,3 +450,90 @@ means: The field contains some text.*/
     flex-direction: column;
   }
 }
+
+/* Filter frame */
+.filter-frame {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  padding: 22px 25px;
+  margin: 20px;
+
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 18px;
+
+  /* look more modern */
+  backdrop-filter: blur(8px);
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.04),
+    0 1px 3px rgba(0,0,0,0.03);
+
+  position: relative;
+}
+
+.filter-frame::before {
+  content: "Filter";
+  position: absolute;
+  top: -12px;
+  left: 20px;
+
+  padding: 0 10px;
+  background: white;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #4c6fff;
+}
+
+/* Button */
+.filter-btn {
+  height: 46px;
+  min-width: 120px;
+  padding: 0 22px;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+
+  background: white;
+  color: #4c6fff;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.04),
+    0 1px 3px rgba(0,0,0,0.03);
+}
+
+/* Hover effect */
+filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px rgba(76,111,255,0.15),
+    0 2px 6px rgba(0,0,0,0.06);
+
+  border-color: #4c6fff;
+}
+
+/* Active (pressed) */
+.filter-btn:active {
+  transform: translateY(0);
+}
+
+/* the button stands out more */
+.filter-btn.primary {
+  background: #4c6fff;
+  color: white;
+  border-color: #4c6fff;
+}
+
+.filter-btn.primary:hover {
+  box-shadow:
+    0 8px 20px rgba(76,111,255,0.25);
+}

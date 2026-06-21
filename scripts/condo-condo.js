@@ -174,41 +174,19 @@ function showHeader() {
 // Show filter
 function showFilter(condoId) {
 
-  /*
-  // Start table
-  let html = objCondo.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-
-  html += objCondo.showTableHeaderMenu('', '', 'Velg leilighet', '');
-
-  // start table body
-  html += objCondo.startTableBody();
-
-  // insert a table row (<tr></td>)
-
-  html += objCondo.insertTableRow('');
-
-  // condo
-  html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', '', true)
-
-  html += "<td></td></tr>";
-
-  // end table body
-  html += objCondo.endTableBody();
-
-  // The end of the table
-  html += objCondo.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objCondo.startFilterFrame();
 
   // show filter
-  html = objCondo.startRow();
+  html += objCondo.startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', '', true);
 
    html += objCondo.endRow();
+
+   // End filter frame
+  html += objCondo.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

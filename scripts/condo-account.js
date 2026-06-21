@@ -184,42 +184,19 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
-  /*
-  // Start table
-  let html = objAccount.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objAccount.showTableHeaderMenu('', 'center', '', 'Kostnadstype', '');
-
-  // start table body
-  html += objAccount.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objAccount.insertTableRow('', '');
-
-  // fixed or not fixed cost
-  html += objAccount.showSelectedValues('filterFixedCost', '', true, 'Alle', constFixedCost, constVariableCost, 'Alle');
-  html += "<td></td></tr>";
-
-  // insert a table row (<tr></td>)
-  html += objAccount.insertTableRow('', '');
-  html += "<td></td><td></td></tr>";
-
-  // end table body
-  html += objAccount.endTableBody();
-
-  // The end of the table
-  html += objAccount.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+   // Start filter frame
+  let html = objAccount.startFilterFrame();
 
   // show filter
-  html = objAccount.startRow();
+  html += objAccount.startRow();
 
   // Show types of account
   html += objAccount.showSelectedValuesNew('Kostnadstype', 'filterFixedCost', '', true, 'Alle', constFixedCost, constVariableCost, 'Alle')
 
   html += objAccount.endRow();
+
+   // End filter frame
+  html += objAccount.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

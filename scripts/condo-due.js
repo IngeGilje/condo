@@ -205,8 +205,11 @@ function showHeader() {
 // Show filter
 function showFilter(condominiumId, condoId) {
 
+    // Start filter frame
+  let html = objDue.startFilterFrame();
+
   // show filter
-  html = objDue.startRow();
+  html += objDue.startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -224,6 +227,9 @@ function showFilter(condominiumId, condoId) {
   html += objDue.editDate('Til Dato', 'filterToDate', toDate, true)
 
    html += objDue.endRow();
+
+   // End filter frame
+  html += objDue.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

@@ -211,47 +211,19 @@ function showHeader() {
 // Show filter
 function showFilter(userId) {
 
-  /*
-  // Start table
-  let html = objUser.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objUser.showTableHeaderMenu('', 'centrum', 'Bruker', '');
-
-  // start table body
-  html += objUser.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objUser.insertTableRow('');
-
-  // Condominium
-  if (objUser.securityLevel >= 9) html += objCondominium.showSelectedCondominiums('filterCondominiumId', '', condominiumId, '', '', true)
-
-  // user
-  html += objUser.showSelectedUsers('filterUserId', '', userId, '', '', enableChanges)
-
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-
-  html += objUser.insertTableRow('', '', '');
-  html += "</tr>";
-
-  // end table body
-  html += objUser.endTableBody();
-
-  // The end of the table
-  html += objUser.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
-  */
+    // Start filter frame
+  let html = objUser.startFilterFrame();
 
   // show filter
-  html = objUser.startRow();
+  html += objUser.startRow();
 
   // Show users
   html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
 
    html += objUser.endRow();
+
+   // End filter frame
+  html += objUser.endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
 }
