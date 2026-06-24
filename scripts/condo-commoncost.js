@@ -206,19 +206,19 @@ function showHeader() {
 // Show filter
 function showFilter(year) {
 
-    // Start filter frame
-  let html = objCommonCost.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objCommonCost.startRow();
+  html += startRow();
 
   // Show years
   html += objCommonCost.showSelectedNumbersNew('År', 'filterYear', 'align:center;', 2020, 2030, year, true);
 
-  html += objCommonCost.endRow();
+  html += "</div>";
 
   // End filter frame
-  html += objCommonCost.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

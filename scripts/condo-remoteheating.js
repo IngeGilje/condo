@@ -204,11 +204,11 @@ function showHeader() {
 // Show filter
 function showFilter(year) {
 
-    // Start filter frame
-  let html = objRemoteHeating.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
    // show filter
-  html += objRemoteHeating.startRow();
+  html += startRow();
 
    // Show years
   html += objRemoteHeating.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
@@ -217,11 +217,10 @@ function showFilter(year) {
   const priceKilowattHour = getPriceKilowattHour(year);
   className = `filterPrice`;
   html += objRemoteHeating.editAmount('Pris KilowatTimer', 'filterPrice', priceKilowattHour, true);
+   html += "</div>";
 
-   html += objRemoteHeating.endRow();
-
-   // End filter frame
-  html += objRemoteHeating.endFilterFrame();
+  // End filter frame
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 

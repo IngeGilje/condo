@@ -72,7 +72,7 @@ async function main() {
         accountId = Number(objTransaction.arrayTransactions[rowNumberTransaction].accountId);
         fromDate = Number(objTransaction.arrayTransactions[rowNumberTransaction].date);
         toDate = getCurrentISODate();
-        toDate = Number(objTransaction.formatISODateToNumber(toDate));
+        toDate = Number(formatISODateToNumber(toDate));
         income = Number(objTransaction.arrayTransactions[rowNumberTransaction].income);
         //amount = (income === 0)
         //  ? Number(objTransaction.arrayTransactions[rowNumberTransaction].payment)
@@ -117,12 +117,10 @@ async function events() {
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      //fromDate = Number(objTransaction.formatISODateToNumber(fromDate));
-      fromDate = objTransaction.formatISODateToNumber(fromDate);
+      fromDate = formatISODateToNumber(fromDate);
 
       let toDate = document.querySelector('.filterToDate').value;
-      //toDate = Number(objTransaction.formatISODateToNumber(toDate));
-      toDate = objTransaction.formatISODateToNumber(toDate);
+      toDate = formatISODateToNumber(toDate);
 
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, 0, fromDate, toDate);
@@ -264,11 +262,11 @@ function showHeader() {
 // Show filter
 function showFilter(condoId, accountId, fromDate, toDate, amount) {
 
-    // Start filter frame
-  let html = objTransaction.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objTransaction.startRow();
+  html += startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -277,22 +275,22 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objTransaction.nineNine, '', 'Vis alle', true);
 
   // From date
-  fromDate = objTransaction.formatNumberToISODate(fromDate);
-  html += objTransaction.editDate('Fra Dato', 'filterFromDate', fromDate, true);
+  fromDate = formatNumberToISODate(fromDate);
+  html += editDate('Fra Dato', 'filterFromDate', fromDate, true);
 
   // To date
   // Current date
-  toDate = objTransaction.formatNumberToISODate(toDate);
-  html += objTransaction.editDate('Til Dato', 'filterToDate', toDate, true);
+  toDate = formatNumberToISODate(toDate);
+  html += editDate('Til Dato', 'filterToDate', toDate, true);
 
   // Amount
   amount = formatOreToKroner(amount);
   html += objTransaction.editAmount('Beløp', 'filterAmount', amount, true);
 
-  html += objTransaction.endRow();
+  html += "</div>";
 
   // End filter frame
-  html += objTransaction.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
@@ -553,20 +551,20 @@ async function updateTransactionRow(transactionId) {
     // from date
     className = '.filterFromDate';
     let fromDate = document.querySelector(className).value;
-    fromDate = objTransaction.formatISODateToNumber(fromDate);
+    fromDate = formatISODateToNumber(fromDate);
 
     // to date
     className = '.filterToDate';
     let toDate = document.querySelector(className).value;
-    toDate = objTransaction.formatISODateToNumber(toDate);
+    toDate = formatISODateToNumber(toDate);
 
     let amount = (income === 0)
       ? payment
       : income;
     fromDate = document.querySelector('.filterFromDate').value;
-    fromDate = objTransaction.formatISODateToNumber(fromDate);
+    fromDate = formatISODateToNumber(fromDate);
     toDate = document.querySelector('.filterToDate').value;
-    toDate = objTransaction.formatISODateToNumber(toDate);
+    toDate = formatISODateToNumber(toDate);
 
 
     const orderBy = 'date DESC, income DESC';

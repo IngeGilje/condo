@@ -205,19 +205,19 @@ function showHeader() {
 // Show filter
 function showFilter(projectId) {
 
-    // Start filter frame
-  let html = objTransaction.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objTransaction.startRow();
+  html += startRow();
 
   // Show projects
   html += objProject.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', 'Vis alle', true);
 
-  html += objTransaction.endRow();
-
+  html += "</div>";
+  
   // End filter frame
-  html += objTransaction.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

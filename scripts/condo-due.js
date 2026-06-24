@@ -92,9 +92,9 @@ async function events() {
       const accountId = Number(document.querySelector('.filterAccountId').value);
       
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = objDue.formatISODateToNumber(fromDate);
+      fromDate = formatISODateToNumber(fromDate);
       let toDate = document.querySelector('.filterToDate').value;
-       toDate = objDue.formatISODateToNumber(toDate);
+       toDate = formatISODateToNumber(toDate);
 
       await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
 
@@ -205,11 +205,11 @@ function showHeader() {
 // Show filter
 function showFilter(condominiumId, condoId) {
 
-    // Start filter frame
-  let html = objDue.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objDue.startRow();
+  html += startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -219,17 +219,17 @@ function showFilter(condominiumId, condoId) {
 
   // From date
   let fromDate = `${String(today.getFullYear())}-01-01`;
-  html += objDue.editDate('Fra Dato', 'filterFromDate', fromDate, true)
+  html += editDate('Fra Dato', 'filterFromDate', fromDate, true)
 
    // To date
   // Current date
   let toDate = getCurrentISODate();
-  html += objDue.editDate('Til Dato', 'filterToDate', toDate, true)
+  html += editDate('Til Dato', 'filterToDate', toDate, true)
 
-   html += objDue.endRow();
+   "</div>";
 
    // End filter frame
-  html += objDue.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

@@ -44,7 +44,6 @@ async function events() {
 // Show login
 function showLogin() {
 
-  /*
   // start table
   let html = objLogIn.startTable('width:250px;margin: 0 auto;');
 
@@ -93,27 +92,6 @@ function showLogin() {
   // The end of the table
   html += objLogIn.endTable();
   document.querySelector('.result').innerHTML = html;
-  */
-
-  document.querySelector('.showLogIn').innerHTML = `
-  <h2>Logg inn</h2>
-  <div class="field">
-    <input type="text" class="one-line center" autocomplete="off">
-    <label>Brukernavn</label>
-  </div>
-
-  <p>&nbsp</p>
-
-  <div class="field">
-    <input type="password" class="one-line center">
-    <label>Passord</label>
-  </div>
-
-   <p>&nbsp</p>
-
-  <button class="login-btn LogIn">
-    Logg inn
-  </button>`;
 }
 
 // reset values
@@ -132,41 +110,33 @@ function resetValues() {
 async function checkLogin() {
 
   // validate email
-  //const email = document.querySelector('.email').value;
+  const email = document.querySelector('.email').value;
 
   // validate password
-  //const password = document.querySelector('.password').value;
+  const password = document.querySelector('.password').value;
 
   // get userId
-  //const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
-  //if (rowNumberUser !== -1) {
+  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
+  if (rowNumberUser !== -1) {
 
-  // Check user and password 
-  //userId = objUser.arrayUsers[rowNumberUser].userId;
-  password = "12345";
-  userId = 2;
-  if (await objUser.validateUser(userId, password)) {
+    // Check user and password 
+    userId = objUser.arrayUsers[rowNumberUser].userId;
+    if (await objUser.validateUser(userId, password)) {
 
-    // The sessionStorage object stores data for only one session
-    /*
-    window.sessionStorage.setItem("condominiumId", objUser.arrayUsers[rowNumberUser].condominiumId);
-    window.sessionStorage.setItem("user", objUser.arrayUsers[rowNumberUser].email);
-    window.sessionStorage.setItem("securityLevel", objUser.arrayUsers[rowNumberUser].securityLevel);
-    window.sessionStorage.setItem("userId", objUser.arrayUsers[rowNumberUser].userId);
-    */
-    window.sessionStorage.setItem("condominiumId", 2);
-    window.sessionStorage.setItem("user", "inge.gilje@gmail.com");
-    window.sessionStorage.setItem("securityLevel", 9);
-    window.sessionStorage.setItem("userId", 2);
+      // The sessionStorage object stores data for only one session
+      window.sessionStorage.setItem("condominiumId", objUser.arrayUsers[rowNumberUser].condominiumId);
+      window.sessionStorage.setItem("user", objUser.arrayUsers[rowNumberUser].email);
+      window.sessionStorage.setItem("securityLevel", objUser.arrayUsers[rowNumberUser].securityLevel);
+      window.sessionStorage.setItem("userId", objUser.arrayUsers[rowNumberUser].userId);
 
-    // Start news display
-    const URL = (objUser.serverStatus === 1)
-      ? 'http://ingegilje.no/condo-shownews.html'
-      : 'http://localhost/condo-shownews.html';
-    window.location.href = URL;
-    return true;
+      // Start news display
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-shownews.html'
+        : 'http://localhost/condo-shownews.html';
+      window.location.href = URL;
+      return true;
+    }
   }
-  //}
 
   // password/ user is not OK
   objUser.showMessageNew(columnWidths, 'width:250px;margin: 0 auto;', 'Ugyldig email/passord');

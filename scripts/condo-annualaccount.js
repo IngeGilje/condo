@@ -115,11 +115,11 @@ async function events() {
 
       fromDate = document.querySelector('.filterFromDate').value;
       //fromDate = Number(objAnnualAccount.formatDateToNumber(fromDate));
-      fromDate = objAnnualAccount.formatISODateToNumber(fromDate);
+      fromDate = formatISODateToNumber(fromDate);
 
       toDate = document.querySelector('.filterToDate').value;
       //toDate = Number(objAnnualAccount.formatDateToNumber(toDate));
-      toDate = objAnnualAccount.formatISODateToNumber(toDate);
+      toDate = formatISODateToNumber(toDate);
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
@@ -224,30 +224,30 @@ function showHeader() {
 // Show filter
 function showFilter(budgetYear, fromDate, toDate) {
 
-    // Start filter frame
-  let html = objAnnualAccount.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objAnnualAccount.startRow();
+  html += startRow();
 
   // Show year
   html += objAnnualAccount.showSelectedNumbersNew('År', 'filterBudgetYear', '', 2020, 2030, budgetYear, true);
 
   // From date
-  html += objAnnualAccount.editDate('Fra Dato', 'filterFromDate', fromDate, true)
+  html += editDate('Fra Dato', 'filterFromDate', fromDate, true)
 
    // To date
   // Current date
-  html += objAnnualAccount.editDate('Til Dato', 'filterToDate', toDate, true)
+  html += editDate('Til Dato', 'filterToDate', toDate, true)
 
  // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(budgetYear);
   html += objAnnualAccount.editAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
 
-   html += objAnnualAccount.endRow();
+   html += "</div>";
 
    // End filter frame
-  html += objAnnualAccount.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

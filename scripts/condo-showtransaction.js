@@ -121,11 +121,11 @@ async function events() {
 
       let fromDate = document.querySelector('.filterFromDate').value;
       //fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
-      fromDate = objShowTransaction.formatISODateToNumber(fromDate);
+      fromDate = formatISODateToNumber(fromDate);
 
       let toDate = document.querySelector('.filterToDate').value;
       //toDate = Number(objShowTransaction.formatDateToNumber(toDate));
-      toDate = objShowTransaction.formatISODateToNumber(toDate);
+      toDate = formatISODateToNumber(toDate);
 
       let amount = document.querySelector('.filterAmount').value;
       amount = formatKronerToOre(amount);
@@ -204,11 +204,11 @@ function showHeader() {
 // Show filter
 function showFilter(condoId, accountId) {
 
-    // Start filter frame
-  let html = objShowTransaction.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objShowTransaction.startRow();
+  html += startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -220,22 +220,21 @@ function showFilter(condoId, accountId) {
   let month = today.getMonth();
   month = (month < 10) ? `0${month}` : `${month}`;
   const fromDate = `${String(today.getFullYear())}-${month}-01`;
-  html += objShowTransaction.editDate('Fra Dato', 'filterFromDate', fromDate, true)
+  html += editDate('Fra Dato', 'filterFromDate', fromDate, true)
 
   // To date
   // Current date
   let toDate = getCurrentISODate();
-  html += objShowTransaction.editDate('Til Dato', 'filterToDate', toDate, true)
+  html += editDate('Til Dato', 'filterToDate', toDate, true)
 
   // Amount
   const amount = objShowTransaction.formatAmount('');
   html += objShowTransaction.editAmount('Beløp', 'filterAmount', amount, true);
 
-  html += objShowTransaction.endRow();
+  html += "</div>";
 
   // End filter frame
-  html += objShowTransaction.endFilterFrame();
-
+  html += "</div>";
   document.querySelector('.showFilter').innerHTML = html;
 }
 

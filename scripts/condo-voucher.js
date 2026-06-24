@@ -146,8 +146,8 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
-    // Start filter frame
-  let html = objTransaction.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // Start table
   html += objTransaction.initializeTable(columnWidths);

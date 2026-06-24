@@ -160,19 +160,19 @@ function showHeader() {
 // Show filter
 function showFilter(newsId) {
 
-    // Start filter frame
-  let html = objNews.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objNews.startRow();
+  html += startRow();
 
     // Show news
   html += objNews.showSelectedNewsNew('Nyhet', 'filterNewsId', '', newsId, '', '', true);
 
-   html += objNews.endRow();
+   html += "</div>";
 
    // End filter frame
-  html += objNews.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

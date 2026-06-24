@@ -160,11 +160,11 @@ function showHeader() {
 // Show filter
 function showFilter(userId) {
 
-    // Start filter frame
-  let html = objPassword.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objPassword.startRow();
+  html += startRow();
 
   // Show condominiums
   //html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
@@ -172,10 +172,10 @@ function showFilter(userId) {
   // Show users
   html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
 
-  html += objPassword.endRow();
+  "</div>";
 
   // End filter frame
-  html += objPassword.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

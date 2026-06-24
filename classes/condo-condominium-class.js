@@ -96,7 +96,7 @@ class Condominium extends Condos {
     try {
 
       // POST request
-         const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -227,14 +227,14 @@ class Condominium extends Condos {
     let selectedValue = false;
 
     let html = `
-    <div class="field status" style="width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
+    <div class="field" style="width:250px;margin-left: 35px;">
+    <label>
+      ${label}
+    </label>
+    <select 
+      class="${className} center one-line"
+      ${(enableChanges) ? '' : 'readonly'}
+    >`;
 
     // Check if condominiums array is empty
     if (this.arrayCondominiums.length > 0) {
@@ -258,7 +258,7 @@ class Condominium extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen sameier&nbsp;&nbsp;
+        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

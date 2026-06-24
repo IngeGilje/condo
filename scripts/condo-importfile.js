@@ -525,8 +525,8 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
-    // Start filter frame
-  let html = objImportFile.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // Start table
   html += objImportFile.initializeTable(columnWidths);

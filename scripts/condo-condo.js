@@ -174,19 +174,19 @@ function showHeader() {
 // Show filter
 function showFilter(condoId) {
 
-    // Start filter frame
-  let html = objCondo.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objCondo.startRow();
+  html += startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', '', true);
 
-   html += objCondo.endRow();
+   html += "</div>";
 
    // End filter frame
-  html += objCondo.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

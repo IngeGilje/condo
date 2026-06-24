@@ -261,11 +261,11 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
-    // Start filter frame
-  let html = objBudget.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objBudget.startRow();
+  html += startRow();
 
   // Show accounts
   html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objBudget.nineNine, '', 'Vis alle', true);
@@ -274,10 +274,10 @@ function showFilter() {
   const year = today.getFullYear();
   html += objAccount.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
 
-  html += objBudget.endRow();
+  html += "</div>";
 
   // End filter frame
-  html += objBudget.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

@@ -23,20 +23,20 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
   window.location.href = URL;
 } else {
 
-  // Show main menu
-  let html = objSupplier.showHorizontalMenu(objSupplier.arrayMenuMain);
-  document.querySelector('.menuMain').innerHTML = html;
-
-  // Show due menu
-  html = objSupplier.showHorizontalMenu(objSupplier.arrayMenuDue);
-  document.querySelector('.menuDue').innerHTML = html;
-
   // Call main when script loads
   main();
   async function main() {
 
     // Check if server is running
     if (await objUser.checkServer()) {
+
+      // Show main menu
+      let html = objAccount.showHorizontalMenu(objAccount.arrayMenuMain);
+      document.querySelector('.showMainMenu').innerHTML = html;
+
+      // Show due menu
+      html = objAccount.showHorizontalMenu(objAccount.arrayMenuCondominium);
+      document.querySelector('.showDueMenu').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objSupplier.condominiumId, resident, objSupplier.nineNine);
@@ -48,10 +48,9 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       const supplierId = objSupplier.getSelectedSupplierId('select-supplierId');
 
       // Show header
-      showHeader();
+      //showHeader();
 
       // Show filter
-
       showFilter(supplierId);
 
       // Show supplier
@@ -73,12 +72,11 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterSupplierId')) {
 
-      //const condominiumId = Number(condominiumId);
       await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
 
       const supplierId = Number(document.querySelector('.filterSupplierId').value);
 
-      showSupplier(2, supplierId);
+      showSupplier(supplierId);
     };
   });
 
@@ -226,20 +224,25 @@ function showHeader() {
 // Show filter
 function showFilter(supplierId) {
 
-  // Start filter frame
-  let html = objSupplier.startFilterFrame();
+  // Start frame
+  let html = startFrame();
 
-  html += objSupplier.startRow();
+  html += startRow();
+
+  html += emptyRow();
 
   // Show suppliers
   html += objSupplier.showSelectedSuppliersNew('Leverandør', 'filterSupplierId', '', supplierId, '', '', true);
 
-  html += objSupplier.endRow();
+  html += "</div>";
 
   // End filter frame
-  html += objSupplier.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show supplier
@@ -248,65 +251,65 @@ function showSupplier(supplierId) {
   // row Number Supplier
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 
-  // name
-  let html = objSupplier.startRow();
+  let html = emptyRow();
+  html += startRow();
 
+  // name
   const name = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].name.trim();
-  html += objSupplier.editTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
-  html += objSupplier.endRow();
-
+  html += editTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
+  html += "</div>";
   // street,address2
-  html += objSupplier.startRow();
+  html += startRow();
 
   // street
   const street = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += objSupplier.editTextNew('Gatenavn', 'street', street, enableChanges);
+  html += editTextNew('Gatenavn', 'street', street, enableChanges);
 
   // address2
   const address2 = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += objSupplier.editTextNew('Adresse2', 'address2', address2, enableChanges);
-  html += objSupplier.endRow();
+  html += editTextNew('Adresse2', 'address2', address2, enableChanges);
+  html += "</div>";
 
   // postalCode, city
-  html += objSupplier.startRow();
+  html += startRow();
 
   let postalCode = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
   if (postalCode === '0') postalCode = "";
-  html += objSupplier.editTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
+  html += editTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
 
   // city
   const city = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += objSupplier.editTextNew('Poststed', 'city', city, enableChanges);
-  html += objSupplier.endRow();
+  html += editTextNew('Poststed', 'city', city, enableChanges);
+  html += "</div>";
 
   // email,phone
-  html += objSupplier.startRow();
+  html += startRow();
 
   // email
   let email = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += objSupplier.editTextNew('E-mail', 'email', email, enableChanges);
+  html += editTextNew('E-mail', 'email', email, enableChanges);
 
   // phone
   const phone = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += objSupplier.editTextNew('Telefonnummer', 'phone', phone, enableChanges);
-  html += objSupplier.endRow();
+  html += editTextNew('Telefonnummer', 'phone', phone, enableChanges);
+  html += "</div>";
 
   //  accountId, bankAccount
-  html += objSupplier.startRow();
+  html += startRow();
 
   // accountId
   const accountId = (rowNumberSupplier === -1)
@@ -318,11 +321,11 @@ function showSupplier(supplierId) {
   const bankAccount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += objSupplier.editTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges);
-  html += objSupplier.endRow();
+  html += editTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges);
+  html += "</div>";
 
   // amountAccountId, amount
-  html += objSupplier.startRow();
+  html += startRow();
 
   // amountAccountId
   const amountAccountId = (rowNumberSupplier === -1)
@@ -335,11 +338,11 @@ function showSupplier(supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].amount;
   if (amount === '0') amount = "";
-  html += objSupplier.editTextNew('Beløp', 'amount', amount, enableChanges);
-  html += objSupplier.endRow();
+  html += editTextNew('Beløp', 'amount', amount, enableChanges);
+  html += "</div>";
 
   // textAccountId, text
-  html += objSupplier.startRow();
+  html += startRow();
 
   // AccountId for text
   const textAccountId = (rowNumberSupplier === -1)
@@ -351,21 +354,21 @@ function showSupplier(supplierId) {
   const text = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += objSupplier.editTextNew('Tekst', 'text', text, enableChanges);
-  html += objSupplier.endRow();
+  html += editTextNew('Tekst', 'accountText', text, enableChanges);
+  html += "</div>";
 
   // Buttons
   if (enableChanges) {
 
-    html += objSupplier.startRow();
+    html += startRow();
     html += objSupplier.showButtonNew('update', 'Oppdater');
     html += objSupplier.showButtonNew('cancel', 'Angre');
-    html += objSupplier.endRow();
+    html += "</div>";
 
-    html += objSupplier.startRow();
+    html += startRow();
     html += objSupplier.showButtonNew('delete', 'Slett');
     html += objSupplier.showButtonNew('insert', 'Ny');
-    html += objSupplier.endRow();
+    html += "</div>";
   }
 
   document.querySelector('.showSupplier').innerHTML = html;
@@ -600,8 +603,8 @@ async function updateSuppliersRow(supplierId) {
   const validTextAccountId = objSupplier.validateInterval('textAccountId', columnWidths, '', 'Ugyldig konto for tekst', true, textAccountId, 0, objSupplier.nineNine);
 
   // validate text
-  const text = document.querySelector('.text').value;
-  const validText = objSupplier.validateText('text', columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
+  const text = document.querySelector('.accountText').value;
+  const validText = objSupplier.validateText('accountText', columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
 
   if (validSupplierId && validName && validStreet && validAddress2
     && validPostalCode && validCity && validBankAccount && validAccountId
@@ -623,7 +626,6 @@ async function updateSuppliersRow(supplierId) {
       await objSupplier.insertSuppliersTable(objSupplier.condominiumId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
       await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
       supplierId = objSupplier.arraySuppliers.at(-1).supplierId;
-      //document.querySelector('.filterSupplierId').value = supplierId;
     }
 
     // Show filter
@@ -653,4 +655,35 @@ async function deleteSupplierRow() {
     // delete supplier row
     await objSupplier.deleteSuppliersTable(supplierId, objSupplier.user);
   }
+}
+
+// Show menu
+function showMenu() {
+
+  // Show main menu
+  let html = startFrame();
+
+  html += startRow();
+
+  html += objSupplier.showHorizontalMenu(objSupplier.arrayMenuMain);
+
+  html += "</div>";
+  html += "</div>";
+
+  // Show due menu
+  html += startFrame();
+
+  html += startRow();
+
+  html += objSupplier.showHorizontalMenu(objSupplier.arrayMenuDue);
+
+  html += "</div>";
+
+  // end filter frame
+  html += "</div>";
+
+  document.querySelector('.showDueMenu').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Forfalls Meny");
 }

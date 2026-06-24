@@ -15,10 +15,6 @@ class Condos {
   nineNine = 999999998;
   minusNineNine = -999999998;
 
-  // account type 1 is account menu
-  // 2 is administration menu  
-  // 3 is horizontal menu
-
   // User info
   condominiumId = Number(sessionStorage.getItem("condominiumId"));
   user = sessionStorage.getItem("user");
@@ -253,39 +249,22 @@ class Condos {
     </td>`;
   }
 
-  // Start filter frame
-  startFilterFrame() {
-
-    return `
-    <div class="filter-frame">`;
-  }
-
+  /*
   // start input row (<div>)
   startRow() {
     return `<p>&nbsp;</p><div class="row">`;
   }
+  */
 
-  // Show Date
-  editDate(label, className, value, enableChanges) {
-
-    let html = `
-    <div class="field date" style="margin-left:25px; width:175px;">
-      <label>
-        ${label}
-      </label>
-      <input 
-        type="date" 
-        class="${className} center one-line"
-        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-    </div>`;
-    return html;
+  // start input row (<div>)
+  startRow() {
+    return `<div class="row">`;
   }
 
   // Show amount
   editAmount(label, className, value, enableChanges) {
 
+    /*
     let html = `
     <div class="field date" style="margin-left:25px; width:175px;">
       <label>
@@ -301,29 +280,39 @@ class Condos {
       >
       <label>${label}</label>
     </div>`;
-    return html;
-  }
-
-  // Show text
-  editTextNew(label, className, value, enableChanges, placeholder = "") {
-
-    let html = `
-    <div class="field text" style="margin-left:25px; width:250px;">
+    */
+    return `
+    <div class="field date" style="width:175px;">
       <label>
         ${label}
       </label>
       <input 
         type="text"
+        inputmode="decimal" 
         autocomplete="off"
-        class="${className} one-line"
+        class="${className} center one-line"
+        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+      <label>${label}</label>
+    </div>`;
+  }
+
+  // Show text
+  editTextNew(label, className, value, enableChanges, placeholder = "") {
+
+    return `
+    <div class="field" style="width:250px;margin-left: 35px;margin-bottom: 25px;">
+      <input 
+        type="text"
+        autocomplete="off"
+        class="${className} one-line center"
         value="${(value ?? '').trim()}"
         placeholder="${placeholder}"
         ${(enableChanges ? '' : 'readonly')}
       >
-      <label>${label}</label>
+      <label>${label.trim()}</label>
     </div>`;
-
-    return html;
   }
 
   // Show selected numbers (from number - to number)
@@ -429,16 +418,6 @@ class Condos {
     return html;
   }
 
-  // end  row (</div>)
-  endRow() {
-    return "</div><p>&nbsp;</p>";
-  }
-
-  // end filter frame (</div>)
-  endFilterFrame() {
-    return "</div><p>&nbsp;</p>";
-  }
-
   // Show input (<td></td>) with center text
   editTableCellCenter(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
@@ -533,7 +512,7 @@ class Condos {
   showButtonNew(className, text) {
 
     return `
-    <button class="${className} filter-btn primary">
+    <button class="${className} filter-btn primary" style="width:175px;margin-left: 75px;">
       ${text}
     </button>`;
   }
@@ -879,7 +858,6 @@ class Condos {
     return valid;
   }
 
-
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(className, date, style, message) {
 
@@ -1048,7 +1026,7 @@ class Condos {
 
     return `
     <table 
-      ${(style) ? `style="${style}"` : ""}>`;
+      ${(style) ? `style="${style};"` : ""}>`;
   }
 
   // Initializing of a table
@@ -1059,10 +1037,9 @@ class Condos {
       tableWidth += (columnWidth + 10);
     });
 
-    //style="table-layout: fixed; width: 1110px; border:1;">
     let html = `
     <table 
-      style="table-layout: fixed;
+      style="table-layout: fixed;"
       width: ${tableWidth}px;
       border: 1px;">`;
     html += '<colgroup>';
@@ -1083,9 +1060,9 @@ class Condos {
     texts.forEach((text) => {
 
       if (text === '' && style === '') html += `<th class="no-border">${text}</th>`;
-      if (text === '' && style !== '') html += `<th class="no-border" style="${style}">${text}</th>`;
+      if (text === '' && style !== '') html += `<th class="no-border" style="${style};">${text}</th>`;
       if (text !== '' && style === '') html += `<th class="no-border center">${text}</th>`;
-      if (text !== '' && style !== '') html += `<th class="no-border center" style="${style}">${text}</th>`;
+      if (text !== '' && style !== '') html += `<th class="no-border center" style="${style};">${text}</th>`;
     });
 
     // empty row
@@ -1141,7 +1118,7 @@ class Condos {
       html += `
       <td 
         class="center no-border"
-        ${(style) ? `style="${style}"` : ''}
+        ${(style) ? `style="${style};"` : ''}
       >
         ${text}
       </td>`
@@ -1181,7 +1158,9 @@ class Condos {
   // check if server is started
   async checkServer() {
 
-    const URL = (this.serverStatus === 1) ? '/api/health' : 'http://localhost:3000/health';
+    const URL = (this.serverStatus === 1)
+      ? '/api/health'
+      : 'http://localhost:3000/health';
     try {
 
       const response = await fetch(URL, {
@@ -1299,9 +1278,13 @@ class Condos {
       <ul class="nav-links">`;
 
     arrayMenu.forEach((array) => {
-      html += (Number(array.className) === 1)
-        ? `<li><a href="${URL}/${array.applicationName}" class="active">${array.text}</a></li>`
-        : `<li><a href="${URL}/${array.applicationName}">${array.text}</a></li>`;
+      html += `
+      <li>
+        <a href="${URL}/${array.applicationName}"
+        >
+          ${array.text.trim()}
+        </a>
+      </li>`;
     });
 
     html += `
@@ -1339,21 +1322,85 @@ class Condos {
 
     return `${integerPart},${decimals}`;
   }
-
-  // Format date from yyyy-mm-dd (Iso format) -> yyyymmdd
-  formatISODateToNumber(date) {
-
-    const [year, month, day] = date.split('-');
-    return Number(`${year}${month}${day}`);
-  }
-
-  // Format date from yyyymmdd -> yyyy-mm-dd (Iso format)
-  formatNumberToISODate(date) {
-
-    date = String(date);
-    return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6,)}`;
-  }
 }
+
+// Format date from yyyy-mm-dd (Iso format) -> yyyymmdd
+function formatISODateToNumber(date) {
+
+  const [year, month, day] = date.split('-');
+  return Number(`${year}${month}${day}`);
+}
+
+// Format date from yyyymmdd -> yyyy-mm-dd (Iso format)
+function formatNumberToISODate(date) {
+
+  date = String(date);
+  return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6,)}`;
+}
+
+// Show Date
+function editDate(label, className, value, enableChanges) {
+
+  return `
+    <div class="field date" style="width:175px;">
+      <label>
+        ${label}
+      </label>
+      <input 
+        type="date" 
+        class="${className} center one-line"
+        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    </div>`;
+}
+
+// Start frame
+function startFrame() {
+
+  return `
+    <div class="filter-frame">`;
+}
+
+// start input row (<div>)
+function startRow() {
+  return `<div class="row">`;
+}
+
+// empty row
+function emptyRow() {
+
+  return `
+    <p>&nbsp;</p>`;
+}
+
+// Change frame title
+function setFrameTitle(text) {
+
+  document
+    .querySelector(".filter-frame")
+    .style.setProperty("--title", `"${text}"`);
+}
+
+// Show text
+function editTextNew(label, className, value, enableChanges, placeholder = "") {
+
+  return `
+  <div 
+    class="field" 
+    style="width:250px;margin-left: 35px;margin-bottom: 25px;">
+    <input 
+      type="text"
+      autocomplete="off"
+      class="${className} one-line"
+      value="${(value ?? '').trim()}"
+      placeholder="${placeholder}"
+      ${(enableChanges ? '' : 'readonly')}
+    >
+    <label>${label.trim()}</label>
+  </div>`;
+}
+
 
 // Check if string includes only digits
 function isNumeric(string) {
@@ -1521,68 +1568,6 @@ function formatKronerToOre(amount) {
   }
 
   return Number(kroner + ore);
-}
-
-// Format amount to euro format
-function formatAmountToEuroFormat(amount) {
-  amount = formatAmountToOre(amount);
-  amount = formatOreToKroner(amount);
-  return amount;
-}
-
-// Format norwegian amount (12345,67) to a integer (1234567)
-function formatAmountToOre(amount) {
-
-  // Remove comma and convert to a number
-  amount.trim();
-
-  // Remove leading zeroes
-  amount = amount.replace(/^0+/, "");
-  amount = amount.replace(/\s+/g, "");
-
-  amount = String(amount);
-  let kroner = '0';
-  let orer = '00';
-
-  if (!amount.includes(',') && !amount.includes('.')) {
-    kroner = amount;
-  }
-  if (amount.includes(',')) {
-    [kroner, orer] = amount.split(',');
-  }
-  if (amount.includes('.')) {
-    [kroner, orer] = amount.split('.');
-  }
-
-  switch (Number(orer.length)) {
-    case 2:
-      amount =
-        kroner + orer;
-      break;
-    case 1:
-      amount =
-        kroner + orer + '0';
-      break;
-    case 0:
-      amount =
-        kroner + '00;'
-      break;
-    default:
-      amount =
-        kroner + orer.slice(0, 2);
-      break;
-  }
-
-  // Check for valid amount in orer
-  amount = (amount === '000')
-    ? '0'
-    : amount;
-  amount = (isNumeric(amount))
-    ? amount
-    : '0';
-  amount = Number(amount);
-  //return String(amount);
-  return Number(amount);
 }
 
 // Format amount

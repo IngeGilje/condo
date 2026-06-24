@@ -226,16 +226,16 @@ function showHeader() {
 // Show filter
 function showFilter(supplierId) {
 
-    // Start filter frame
-  let html = objSupplier.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
  // show filter
-  html += objSupplier.startRow();
+  html += startRow();
 
   // Show suppliers
   html += objSupplier.showSelectedSuppliersNew('Leverandør', 'filterSupplierId',    '', supplierId, '', '', true);
 
-   html += objSupplier.endRow();
+   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

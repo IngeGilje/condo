@@ -175,11 +175,11 @@ function showHeader() {
 // Show filter
 function showFilter(userId) {
 
-    // Start filter frame
-  let html = objUserBankAccount.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objUserBankAccount.startRow();
+  html += startRow();
 
   // Show user
   html += objUser.showSelectedUsersNew('Leilighet', 'filterUserId', '', userId, '', 'Vis alle', true);
@@ -187,10 +187,10 @@ function showFilter(userId) {
   // Show accounts
   html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objUserBankAccount.nineNine, '', 'Vis alle', true);
 
-   html += objUserBankAccount.endRow();
+   html += "</div>";
 
-   // End filter frame
-  html += objUserBankAccount.endFilterFrame();
+  // End filter frame
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

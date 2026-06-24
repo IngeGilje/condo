@@ -184,19 +184,19 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
-   // Start filter frame
-  let html = objAccount.startFilterFrame();
+   // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objAccount.startRow();
+  html += startRow();
 
   // Show types of account
   html += objAccount.showSelectedValuesNew('Kostnadstype', 'filterFixedCost', '', true, 'Alle', constFixedCost, constVariableCost, 'Alle')
 
-  html += objAccount.endRow();
+  html += "</div>";
 
    // End filter frame
-  html += objAccount.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

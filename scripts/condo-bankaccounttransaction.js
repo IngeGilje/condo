@@ -115,11 +115,11 @@ async function events() {
 
       let fromDate = document.querySelector('.filterFromDate').value;
       //fromDate = Number(convertDateToISOFormat(fromDate));
-      fromDate = objBankAccountTransaction.formatISODateToNumber(fromDate);
+      fromDate = formatISODateToNumber(fromDate);
 
       let toDate = document.querySelector('.filterToDate').value;
       //toDate = Number(convertDateToISOFormat(toDate));
-      toDate = objBankAccountTransaction.formatISODateToNumber(toDate);
+      toDate = formatISODateToNumber(toDate);
 
       let amount = document.querySelector('.filterAmount').value;
       amount = formatKronerToOre(amount);
@@ -244,8 +244,8 @@ async function events() {
 // Show filter
 function showFilter( condoId, accountId) {
 
-    // Start filter frame
-  let html = objBankAccountTransaction.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // Start table
   html += objBankAccountTransaction.initializeTable(columnWidths);

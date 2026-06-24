@@ -3,111 +3,63 @@
 
 <head>
 
-  <title>Prosjekt</title>
+  <title>Meny test</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/condo.css">
+
 </head>
 
 <body>
 
+
+  <p>&nbsp;</p>
   <div class="row">
-    <div class="field status" style="width:175px">
-      <label>
-        Leilighet
-      </label>
-      <select class="filterCondoId center one-line">
-        <option value=3>
-          &nbsp;&nbsp;95A&nbsp;&nbsp;
-        </option>
-        <option value=4 selected>
-          &nbsp;&nbsp;95B&nbsp;&nbsp;
-        </option>
-        <option value=5>
-          &nbsp;&nbsp;97A&nbsp;&nbsp;
-        </option>
-        <option value=6>
-          &nbsp;&nbsp;97B&nbsp;&nbsp;
-        </option>
-        <option value=7>
-          &nbsp;&nbsp;97C&nbsp;&nbsp;
-        </option>
-        <option value=8>
-          &nbsp;&nbsp;99A&nbsp;&nbsp;
-        </option>
-        <option value=9>
-          &nbsp;&nbsp;99B&nbsp;&nbsp;
-        </option>
-        <option value=999999998>
-          &nbsp;&nbsp;Vis alle&nbsp;&nbsp;
-        </option>
-      </select>
-      <label>
-        Leilighet
-      </label>
+    <div class="field" style="width:250px;margin-left: 35px;margin-bottom: 25px;">
+      <input type="text" autocomplete="off" class="name one-line" value="Driftskonto" placeholder="Bankkonto navn">
+      <label>Navn</label>
     </div>
-    <div class="field status" style="width:175px">
-      <label>
-        Konto
-      </label>
-      <select class="filterAccountId center one-line">
-        <option value=13>
-          &nbsp;&nbsp;1,2,3,4... transaksjoner&nbsp;&nbsp;
-        </option>
-        <option value=67>
-          &nbsp;&nbsp;Diverse&nbsp;&nbsp;
-        </option>
-        <option value=6>
-          &nbsp;&nbsp;Forsikring&nbsp;&nbsp;
-        </option>
-        <option value=10>
-          &nbsp;&nbsp;Gebyr - FAKT.TJ&nbsp;&nbsp;
-        </option>
-        <option value=56>
-          &nbsp;&nbsp;Inntekt drift&nbsp;&nbsp;
-        </option>
-        <option value=4>
-          &nbsp;&nbsp;Inntekt fjernvarme&nbsp;&nbsp;
-        </option>
-        <option value=69>
-          &nbsp;&nbsp;Inntekt Rygg og Myrland&nbsp;&nbsp;
-        </option>
-        <option value=2>
-          &nbsp;&nbsp;Inntekter husleie&nbsp;&nbsp;
-        </option>
-        <option value=5>
-          &nbsp;&nbsp;Nettleie Lyse&nbsp;&nbsp;
-        </option>
-        <option value=52>
-          &nbsp;&nbsp;Omkostninger BedriftsNett&nbsp;&nbsp;
-        </option>
-        <option value=73>
-          &nbsp;&nbsp;Slettes&nbsp;&nbsp;
-        </option>
-        <option value=8>
-          &nbsp;&nbsp;TV og bredbånd&nbsp;&nbsp;
-        </option>
-        <option value=9>
-          &nbsp;&nbsp;Ugift drift&nbsp;&nbsp;
-        </option>
-        <option value=3>
-          &nbsp;&nbsp;Utgift fjernvarme&nbsp;&nbsp;
-        </option>
-        <option value=70>
-          &nbsp;&nbsp;Utguft Rygg og Myraland&nbsp;&nbsp;
-        </option>
-        <option value=22>
-          &nbsp;&nbsp;Velforening&nbsp;&nbsp;
-        </option>
-        <option value=999999998 selected>
-          &nbsp;&nbsp;Vis alle&nbsp;&nbsp;
-        </option>
-      </select>
-      <label>
-        Konto
-      </label>
-    </div>
+  </div>
+  <div class="field" style="width:250px;margin-left: 35px;margin-bottom: 25px;">
+    <input type="text" autocomplete="off" class="bankAccount one-line" value="32062337272" placeholder="Bankkonto navn">
+    <label>Bankkontonummer</label>
+  </div>
+  <div class="field" style="width:250px;margin-left: 35px;margin-bottom: 25px;">
+    <input type="text" autocomplete="off" class="openingBalanceDate one-line" value="20200101"
+      placeholder="Dato inngående saldo">
+    <label>Dato</label>
+  </div>
+  <div class="field" style="width:250px;margin-left: 35px;margin-bottom: 25px;">
+    <input type="text" autocomplete="off" class="openingBalance one-line" value="15188416"
+      placeholder="Inngående saldo">
+    <label>Inngående saldo</label>
+  </div>
+  <div class="field" style="width:250px;margin-left: 35px;margin-bottom: 25px;">
+    <input type="text" autocomplete="off" class="closingBalanceDate one-line" value="20260414"
+      placeholder="Dato inngående saldo">
+    <label>Dato</label>
+  </div>
+  <div class="field" style="width:250px;margin-left: 35px;margin-bottom: 25px;">
+    <input type="text" autocomplete="off" class="closingBalance one-line" value="38876093" placeholder="Utgående saldo">
+    <label>Utgående saldo</label>
+  </div>
+  <div class="row">
+    <button class="update filter-btn primary" style="width:175px;margin-left: 75px;">
+      Oppdater
+    </button>
+    <button class="cancel filter-btn primary" style="width:175px;margin-left: 75px;">
+      Angre
+    </button>
+  </div>
+  <div class="row">
+    <button class="delete filter-btn primary" style="width:175px;margin-left: 75px;">
+      Slett
+    </button>
+    <button class="insert filter-btn primary" style="width:175px;margin-left: 75px;">
+      Ny
+    </button>
+  </div>
 </body>
 
 </html>

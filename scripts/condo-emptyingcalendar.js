@@ -185,11 +185,11 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
-    // Start filter frame
-  let html = objEmptyingCalendar.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objEmptyingCalendar.startRow();
+  html += startRow();
 
   // Show years
   const year = String(today.getFullYear());
@@ -200,10 +200,10 @@ function showFilter() {
   let month = Number(date.split('.')[1]); // Extract the month part
   html += objEmptyingCalendar.showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
 
-  html += objEmptyingCalendar.endRow();
+  html += "</div>";
 
   // End filter frame
-  html += objEmptyingCalendar.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

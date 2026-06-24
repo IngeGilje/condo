@@ -108,10 +108,10 @@ async function events() {
       const deleted = 'N';
 
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = objBankAccountTransaction.formatISODateToNumber(fromDate);
+      fromDate = formatISODateToNumber(fromDate);
 
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = objBankAccountTransaction.formatISODateToNumber(toDate);
+      toDate = formatISODateToNumber(toDate);
 
       await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
       const orderBy = 'condoId ASC, date DESC, income ASC';
@@ -165,28 +165,28 @@ function showHeader() {
 // Show filter
 function showFilter(condoId) {
 
-   // Start filter frame
-  let html = objOverview.startFilterFrame();
+   // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objOverview.startRow();
+  html += startRow();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
 
   // From date
   let fromDate = `${String(today.getFullYear())}-01-01`;
-  html += objDue.editDate('Fra Dato', 'filterFromDate', fromDate, true)
+  html += editDate('Fra Dato', 'filterFromDate', fromDate, true)
 
   // To date
   // Current date
   let toDate = getCurrentISODate();
-  html += objDue.editDate('Til Dato', 'filterToDate', toDate, true)
+  html += editDate('Til Dato', 'filterToDate', toDate, true)
 
-  html += objOverview.endRow();
+  html += "</div>";
 
   // End filter frame
-  html += objOverview.endFilterFrame();
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }

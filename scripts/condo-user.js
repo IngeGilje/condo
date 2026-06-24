@@ -211,19 +211,19 @@ function showHeader() {
 // Show filter
 function showFilter(userId) {
 
-    // Start filter frame
-  let html = objUser.startFilterFrame();
+    // Start frame
+  let html = startFrame();
 
   // show filter
-  html += objUser.startRow();
+  html += startRow();
 
   // Show users
   html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
 
-   html += objUser.endRow();
+   html += "</div>";
 
-   // End filter frame
-  html += objUser.endFilterFrame();
+  // End filter frame
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
