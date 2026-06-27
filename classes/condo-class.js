@@ -298,59 +298,6 @@ class Condos {
     </div>`;
   }
 
-  // Show text
-  editTextNew(label, className, value, enableChanges, placeholder = "") {
-
-    return `
-    <div class="field" style="width:250px;margin-left: 35px;margin-bottom: 25px;">
-      <input 
-        type="text"
-        autocomplete="off"
-        class="${className} one-line center"
-        value="${(value ?? '').trim()}"
-        placeholder="${placeholder}"
-        ${(enableChanges ? '' : 'readonly')}
-      >
-      <label>${label.trim()}</label>
-    </div>`;
-  }
-
-  // Show selected numbers (from number - to number)
-  showSelectedNumbersNew(label, className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div class="field status" style="max-width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    // show interval of numbers
-    for (let number = fromNumber; number <= toNumber; number++) {
-
-      html += `
-        <option 
-          value=${number}
-          ${(number === selectedNumber) ? 'selected' : ''}
-        >
-          &nbsp;&nbsp;${number}&nbsp;&nbsp;
-        </option>`;
-
-      if (number === selectedNumber) selectedValue = true;
-    };
-
-    html += `
-      </select >
-    </div>`;
-
-    return html;
-  }
-
   // Show selected numbers (from number - to number)
   showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
 
@@ -376,40 +323,6 @@ class Condos {
         &nbsp;&nbsp;${findNameOfMonth(month).trim()}&nbsp;&nbsp;
       </option>`;
     };
-
-    html += `
-      </select >
-    </div>`;
-
-    return html;
-  }
-
-  // Show selected values 
-  showSelectedValuesNew(label, className, style, enableChanges, selectedValue, ...values) {
-
-    let selected = false;
-
-    let html = `
-    <div class="field status" style="max-width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    values.forEach((value) => {
-
-      html += `
-      <option 
-        value="${(value ?? '').trim()}"
-        ${value === selectedValue ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${value}&nbsp;&nbsp;
-      </option>`;
-      if (value === selectedValue) selected = true;
-    });
 
     html += `
       </select >
@@ -508,15 +421,6 @@ class Condos {
     return html;
   }
 
-  // Show button
-  showButtonNew(className, text) {
-
-    return `
-    <button class="${className} filter-btn primary" style="width:175px;margin-left: 75px;">
-      ${text}
-    </button>`;
-  }
-
   // Validate text
   validateText(className, columnWidths, style, message, showMessage = true, text, minLenght, maxLength) {
 
@@ -534,7 +438,7 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message)
+    if (!valid && showMessage) showMessageNew(style, message)
 
     return valid;
   }
@@ -547,7 +451,7 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
+    if (!valid && showMessage) showMessageNew(style, message);
 
     return valid;
   }
@@ -841,7 +745,7 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
+    if (!valid && showMessage) showMessageNew(message);
 
     return valid;
   }
@@ -853,7 +757,7 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid && showMessage) this.showMessageNew(columnWidths, style, message);
+    if (!valid && showMessage) showMessageNew(message);
 
     return valid;
   }
@@ -899,7 +803,7 @@ class Condos {
       }
     }
 
-    if ((!valid) && (message.lenght > 0)) this.showMessageNew(columnWidths, style, message);
+    if ((!valid) && (message.lenght > 0)) showMessageNew(message);
     return valid;
   }
 
@@ -945,7 +849,7 @@ class Condos {
     }
 
     // Show error message?
-    if ((!valid) && (message.lenght > 0)) this.showMessageNew(columnWidths, style, message);
+    if ((!valid) && (message.lenght > 0)) showMessageNew(message);
     return valid;
   }
 
@@ -978,7 +882,7 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid) this.showMessageNew(columnWidths, style, message);
+    if (!valid) showMessageNew(message);
 
     return valid;
   }
@@ -1238,6 +1142,7 @@ class Condos {
     }
   }
 
+  /*
   // Show message
   showMessageNew(columnWidths, style, message) {
 
@@ -1257,13 +1162,14 @@ class Condos {
 
     // The end of the table
     html += this.endTable();
-    document.querySelector('.message').innerHTML = html;
+    document.querySelector('.showMessage').innerHTML = html;
   }
+  */
 
   // Remove message
   removeMessage() {
 
-    document.querySelector(".message").style.display = "none";
+    document.querySelector(".showMessage").style.display = "none";
   }
 
   // Show horizontal menu
@@ -1324,6 +1230,86 @@ class Condos {
   }
 }
 
+// Show message
+function showMessageNew(message) {
+
+  // Start frame
+  let html = startFrame();
+
+  // show filter
+  html += startRow();
+
+  // Show types of account
+  html += `<p>${message}</p>`;
+
+  // End row
+  html += "</div>";
+
+  // End filter frame
+  html += "</div>";
+
+  document.querySelector('.showMessage').innerHTML = html;
+}
+
+
+// Show selected numbers (from number - to number)
+function showSelectedNumbersNew(label, className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
+
+  let selectedValue = false;
+
+  let html = `
+       <div class="field date" style="width:250px;margin-left:35px;margin-bottom:25px;">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+  // show interval of numbers
+  for (let number = fromNumber; number <= toNumber; number++) {
+
+    html += `
+        <option 
+          value=${number}
+          ${(number === selectedNumber) ? 'selected' : ''}
+        >
+          &nbsp;&nbsp;${number}&nbsp;&nbsp;
+        </option>`;
+
+    if (number === selectedNumber) selectedValue = true;
+  };
+
+  html += `
+      </select >
+    </div>`;
+
+  return html;
+}
+
+// Validate text
+function validateTextNew(className, style, message, showMessage = true, text, minLenght, maxLength) {
+
+  let valid = true;
+
+  // Check for string
+  if (typeof text !== "string") valid = false;
+
+  // Check length
+  if (!(text.length >= minLenght) && (text.length <= maxLength)) valid = false;
+
+  // Check allowed characters (letters, numbers, spaces)
+  const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
+  if (!regex.test(text)) valid = false;
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) inputElement.classList.toggle('input-error', !valid);
+  if (!valid && showMessage) showMessageNew(message)
+
+  return valid;
+}
+
 // Format date from yyyy-mm-dd (Iso format) -> yyyymmdd
 function formatISODateToNumber(date) {
 
@@ -1342,7 +1328,7 @@ function formatNumberToISODate(date) {
 function editDate(label, className, value, enableChanges) {
 
   return `
-    <div class="field date" style="width:175px;">
+    <div class="field date" style="width:250px;margin-left:35px;margin-bottom:25px;">
       <label>
         ${label}
       </label>
@@ -1382,9 +1368,21 @@ function setFrameTitle(text) {
     .style.setProperty("--title", `"${text}"`);
 }
 
-// Show text
-function editTextNew(label, className, value, enableChanges, placeholder = "") {
+// Show button
+function showButtonNew(className, text) {
 
+  return `
+  <button class="${className} filter-btn primary" style="width:250px;margin-left: 35px;">
+    ${text}
+  </button>`;
+}
+
+// Show text
+function showTextNew(label, className, value, enableChanges, placeholder = "") {
+
+  value = (typeof value === 'string') 
+  ? value.trim() 
+  : value;
   return `
   <div 
     class="field" 
@@ -1392,8 +1390,8 @@ function editTextNew(label, className, value, enableChanges, placeholder = "") {
     <input 
       type="text"
       autocomplete="off"
-      class="${className} one-line"
-      value="${(value ?? '').trim()}"
+      class="${className} center one-line"
+      value="${value}"
       placeholder="${placeholder}"
       ${(enableChanges ? '' : 'readonly')}
     >
@@ -1401,6 +1399,39 @@ function editTextNew(label, className, value, enableChanges, placeholder = "") {
   </div>`;
 }
 
+// Show selected values 
+function showSelectedValuesNew(label, className, style, enableChanges, selectedValue, ...values) {
+
+  let selected = false;
+
+  let html = `
+    <div class="field" style="width:250px;margin-left:35px;margin-bottom:25px;">
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >`;
+
+  values.forEach((value) => {
+
+    html += `
+      <option 
+        value="${(value ?? '').trim()}"
+        ${value === selectedValue ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${value}&nbsp;&nbsp;
+      </option>`;
+    if (value === selectedValue) selected = true;
+  });
+
+  html += `
+      </select >
+    </div>`;
+
+  return html;
+}
 
 // Check if string includes only digits
 function isNumeric(string) {

@@ -79,7 +79,7 @@ async function main() {
     }
   } else {
 
-    objBudget.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 
@@ -213,7 +213,7 @@ function showFilter(year) {
   html += startRow();
 
   // Show years
-  html += objCommonCost.showSelectedNumbersNew('År', 'filterYear', 'align:center;', 2020, 2030, year, true);
+  html += showSelectedNumbersNew('År', 'filterYear', 'align:center;', 2020, 2030, year, true);
 
   html += "</div>";
 
@@ -424,7 +424,7 @@ async function updateCommonCostsRow(commonCostId) {
   // Validate commoncosts columns
   if (validYear && validcommonCostSquareMeter && validfixedCostCondo) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the commonCost id exist
     const rowNumberCommonCosts = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);

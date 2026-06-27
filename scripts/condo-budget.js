@@ -61,7 +61,7 @@ async function main() {
     }
   } else {
 
-    showBudgets.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 
@@ -200,7 +200,7 @@ async function updateBudgetsRow(budgetId) {
   // Validate budgets columns
   if (validAccountId && validAmount && validAmount && validYear && validText) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the budgets row exist
     budgetsRowNumber = objBudget.arrayBudgets.findIndex(budgets => budgets.budgetId === budgetId);
@@ -272,8 +272,8 @@ function showFilter() {
 
   // Show years
   const year = today.getFullYear();
-  html += objAccount.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
-
+  html += showSelectedNumbersNew('År', 'filterYear',    '', 2020, 2030, year, true);
+ 
   html += "</div>";
 
   // End filter frame

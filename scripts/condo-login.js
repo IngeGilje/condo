@@ -26,7 +26,7 @@ async function main() {
     events();
   } else {
 
-    objUser.showMessageNew(columnWidths, 'width:250px;margin: 0 auto;', 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -169,7 +169,7 @@ async function checkLogin() {
   //}
 
   // password/ user is not OK
-  objUser.showMessageNew(columnWidths, 'width:250px;margin: 0 auto;', 'Ugyldig email/passord');
+  showMessageNew(columnWidths, 'width:250px;margin: 0 auto;', 'Ugyldig email/passord');
 
   resetValues();
   return false;

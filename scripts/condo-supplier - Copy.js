@@ -61,7 +61,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       events();
     } else {
 
-      objSupplier.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+      showMessageNew( 'Server er ikke startet.');
     }
   }
 }
@@ -477,7 +477,7 @@ async function updateSuppliersRow(supplierId) {
     && validAmountAccountId && validAmount && validTextAccountId
     && validEmail && validText) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the supplierId exist
     const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);

@@ -84,7 +84,7 @@ async function main() {
     }
   } else {
 
-    objImportFile.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 
@@ -134,7 +134,7 @@ async function events() {
         if (await objImportFile.loadTextFile(importFileName)) {
 
           document.querySelector('.importFileName').style.display = "none";
-          document.querySelector('.message').style.display = "none";
+          document.querySelector('.showMessage').style.display = "none";
 
           // create array from imported csv-file
           createTransactionsArray(objImportFile.strCSVTransaction);
@@ -144,7 +144,7 @@ async function events() {
         }
       } else {
 
-        objImportFile.showMessageNew(columnWidths, '', 'Ugyldig navn på transaksjonsfil');
+        showMessageNew( 'Ugyldig navn på transaksjonsfil');
       }
     }
   });

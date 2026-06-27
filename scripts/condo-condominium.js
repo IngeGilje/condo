@@ -58,7 +58,7 @@ async function main() {
     }
   } else {
 
-    objCondominium.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -265,7 +265,7 @@ function showCondominium(condominiumId) {
   const name = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].name.trim();
-  html += editTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
+  html += showTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
   html += "</div>";
 
   // street, address2
@@ -275,13 +275,13 @@ function showCondominium(condominiumId) {
   const street = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].street;
-  html += editTextNew('Gatenavn', 'street', street, enableChanges);
+  html += showTextNew('Gatenavn', 'street', street, enableChanges);
 
   // address2
   const address2 = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].address2;
-  html += editTextNew('Adresse2', 'address2', address2, enableChanges);
+  html += showTextNew('Adresse2', 'address2', address2, enableChanges);
   html += "</div>";
 
   // postalCode, city
@@ -291,13 +291,13 @@ function showCondominium(condominiumId) {
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].postalCode;
   if (postalCode === '0') postalCode = "";
-  html += editTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
+  html += showTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
 
   // city
   const city = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].city;
-  html += editTextNew('Poststed', 'city', city, enableChanges);
+  html += showTextNew('Poststed', 'city', city, enableChanges);
   html += "</div>";
 
   // phone, email
@@ -307,13 +307,13 @@ function showCondominium(condominiumId) {
   const phone = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].phone;
-  html += editTextNew('Telefonnummer', 'phone', phone, enableChanges);
+  html += showTextNew('Telefonnummer', 'phone', phone, enableChanges);
 
   // email
   let email = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].email;
-  html += editTextNew('E-mail', 'email', email, enableChanges);
+  html += showTextNew('E-mail', 'email', email, enableChanges);
   html += "</div>";
 
   // income Remote Heating AccountId, bankAccount, commonCostAccountId
@@ -343,7 +343,7 @@ function showCondominium(condominiumId) {
   const organizationNumber = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].organizationNumber;
-  html += editTextNew('Organisasjonsnummer', 'organizationNumber', organizationNumber, enableChanges);
+  html += showTextNew('Organisasjonsnummer', 'organizationNumber', organizationNumber, enableChanges);
   html += "</div>";
 
    // import Path
@@ -352,20 +352,20 @@ function showCondominium(condominiumId) {
   const importPath = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
-  html += editTextNew('Plassering av data', 'importPath', importPath, enableChanges);
+  html += showTextNew('Plassering av data', 'importPath', importPath, enableChanges);
   html += "</div>";
 
   // Buttons
   if (enableChanges) {
 
     html += startRow();
-    html += objCondominium.showButtonNew('update', 'Oppdater');
-    html += objCondominium.showButtonNew('cancel', 'Angre');
+    html += showButtonNew('update', 'Oppdater');
+    html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
     html += startRow();
-    html += objCondominium.showButtonNew('delete', 'Slett');
-    html += objCondominium.showButtonNew('insert', 'Ny');
+    html += showButtonNew('delete', 'Slett');
+    html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
 
@@ -432,7 +432,7 @@ async function updateCondominiumRow(condominiumId) {
     && validIncomeRemoteHeatingAccountId && validPaymentRemoteHeatingAccountId
     && validCommonCostAccountId && validOrganizationNumber && validimportPath) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the condominiumId exist
     const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);

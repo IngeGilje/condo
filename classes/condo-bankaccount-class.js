@@ -202,7 +202,7 @@ class BankAccount extends Condos {
     let selectedValue = false;
 
     let html = `
-    <div class="field status" style="width:175px">
+    <div class="field" style="width:250px;margin-left:35px;margin-bottom:25px;">
       <label>
         ${label}
       </label>

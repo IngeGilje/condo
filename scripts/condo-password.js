@@ -50,7 +50,7 @@ async function main() {
       await objCondo.loadCondoTable(objPassword.condominiumId, objPassword.nineNine);
 
       // Show header
-      showHeader();
+      //showHeader();
 
       // Show filter
       showFilter(objPassword.userId);
@@ -63,7 +63,7 @@ async function main() {
     }
   } else {
 
-    objPassword.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 
@@ -160,14 +160,11 @@ function showHeader() {
 // Show filter
 function showFilter(userId) {
 
-    // Start frame
+  // Start frame
   let html = startFrame();
 
   // show filter
   html += startRow();
-
-  // Show condominiums
-  //html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
 
   // Show users
   html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
@@ -183,51 +180,90 @@ function showFilter(userId) {
 // Show user
 function showUser(userId) {
 
-  // start table
-  let html = objUser.initializeTable(columnWidths);
-
-  // Check if users row exist
+  // row number user
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
-  if (rowNumberUser !== -1) {
 
-    // password, securityLevel,
-    //html += "<tr>";
+  let html = emptyRow();
 
-    html += objUser.showTableHeaderMenu('', 'centrum', 'Passord', 'Sikkerhetsnivå');
+  // Password, securitylevel
+  html += startRow();
 
-    // insert a table row (<tr></td>)
+  // password
+  const password = (rowNumberUser === -1)
+    ? ''
+    : objUser.arrayUsers[rowNumberUser].password.trim();
+  html += showTextNew('Passord', 'password', password, enableChanges, "Passord");
+  html += "</div>";
 
-    html += objUser.insertTableRow('');
+  // security level
+  const securityLevel = (rowNumberUser === -1)
+    ? ''
+    : objUser.arrayUsers[rowNumberUser].securityLevel;
+  html += showSelectedNumbersNew('Sikkerhetsnivå', 'securityLevel', '', 1, 9, 1, enableChanges)
+  html += "</div>";
 
-    // password
-    html += objUser.inputTablePassword('password', '', 45);
+   // Buttons
+  if (enableChanges) {
 
-    // securityLevel (<td></td>)
-    html += objUser.showSelectedNumbers('securityLevel', '', 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
+    html += startRow();
+    html += showButtonNew('update', 'Oppdater');
+    html += showButtonNew('cancel', 'Angre');
+    html += "</div>";
 
-    html += "</tr>";
-
-    // insert a table row (<tr></td>)
-
-    html += objUser.insertTableRow('');
-    html += "<td></td><td></td></tr>";
-
-    // show buttons
-
-    // insert a table row (<tr></td>)
-
-    html += objUser.insertTableRow('');
-
-    html += objUser.showButton('update', 'Oppdater');
-    html += "<td></td></tr>";
-
-    // The end of the table
-    html += objUser.endTable();
-    document.querySelector('.result').innerHTML = html;
-
-
+    html += startRow();
+    html += showButtonNew('delete', 'Slett');
+    html += showButtonNew('insert', 'Ny');
+    html += "</div>";
   }
+  document.querySelector('.result').innerHTML = html;
 }
+
+/*
+// start table
+let html = objUser.initializeTable(columnWidths);
+
+// Check if users row exist
+const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+if (rowNumberUser !== -1) {
+
+  // password, securityLevel,
+  //html += "<tr>";
+
+  html += objUser.showTableHeaderMenu('', 'centrum', 'Passord', 'Sikkerhetsnivå');
+
+  // insert a table row (<tr></td>)
+
+  html += objUser.insertTableRow('');
+
+  // password
+  html += objUser.inputTablePassword('password', '', 45);
+
+  // securityLevel (<td></td>)
+  html += objUser.showSelectedNumbers('securityLevel', '', 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
+
+  html += "</tr>";
+
+  // insert a table row (<tr></td>)
+
+  html += objUser.insertTableRow('');
+  html += "<td></td><td></td></tr>";
+
+  // show buttons
+
+  // insert a table row (<tr></td>)
+
+  html += objUser.insertTableRow('');
+
+  html += objUser.showButton('update', 'Oppdater');
+  html += "<td></td></tr>";
+
+  // The end of the table
+  html += objUser.endTable();
+  document.querySelector('.result').innerHTML = html;
+
+
+}
+*/
 
 // Update a users row
 async function updateUserRow(userId) {
@@ -252,7 +288,7 @@ async function updateUserRow(userId) {
 
   if (validUserId && validSecurityLevel && validPassword) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the userId exist
     const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
@@ -267,7 +303,7 @@ async function updateUserRow(userId) {
 
       /*
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-
+ 
       (enableChanges)
         ? await objUser.loadUsersTable(condominiumId, resident, objPassword.userId)
         : await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
@@ -283,7 +319,7 @@ async function updateUserRow(userId) {
     document.querySelector('.filterUserId').disabled = false;
   } else {
 
-    objPassword.showMessageNew(columnWidths, '', 'Ugyldig passord.');
+    showMessageNew( 'Ugyldig passord.');
   }
 }
 

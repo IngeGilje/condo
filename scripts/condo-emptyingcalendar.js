@@ -63,7 +63,7 @@ async function main() {
     }
   } else {
 
-    objEmptyingCalendar.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 
@@ -193,7 +193,7 @@ function showFilter() {
 
   // Show years
   const year = String(today.getFullYear());
-  html += objEmptyingCalendar.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, Number(year), true);
+  html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, Number(year), true);
 
   // Show selected months
   const date = getCurrentDate();
@@ -405,7 +405,7 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
     && ((plastic === 'Y') || (plastic === 'N'))
     && ((christmasTree === 'N') || (christmasTree === 'Y'))) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the emtyingcalendar id exist
     rowNumberEmptyingCalendar = objEmptyingCalendar.arrayEmptyingCalendars.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);

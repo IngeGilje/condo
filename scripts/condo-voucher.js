@@ -65,7 +65,7 @@ async function main() {
     }
   } else {
 
-    objVoucher.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 
@@ -276,12 +276,12 @@ async function updateTransactionRow(transactionId) {
   if (await objVoucher.checkIfFileExist(voucherFileName)) {
     validVoucherFileName = true;
   } else {
-    objVoucher.showMessageNew(columnWidths, '', 'Ugyldig filnavn på bilag.');
+    showMessageNew( 'Ugyldig filnavn på bilag.');
   }
 
   if (validVoucherFileName && validTransactionId) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the transactionId exist
     const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(condo => condo.transactionId === transactionId);
@@ -294,7 +294,7 @@ async function updateTransactionRow(transactionId) {
         await objTransaction.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, objVoucher.nineNine);
       } else {
 
-        objVoucher.showMessageNew(columnWidths, '', 'Bilag er ikke oppdatert.');
+        showMessageNew( 'Bilag er ikke oppdatert.');
       }
 
       showVoucher(transactionId, 2);

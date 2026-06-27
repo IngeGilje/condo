@@ -74,7 +74,7 @@ async function main() {
     }
   } else {
 
-    objDue.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 
@@ -388,7 +388,7 @@ async function updateDuesRow(dueId) {
   // Validate dues columns
   if (validAccountId && validCondoId && validAmount && validDate && validKilowattHour && validText) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the dues row exist
     rowNumberDue = objDue.arrayDues.findIndex(dues => dues.dueId === dueId);

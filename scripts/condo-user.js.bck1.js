@@ -53,7 +53,7 @@ async function main() {
       }
 
       // Show header
-      //showHeader();
+      showHeader();
 
       // Show filter
       showFilter(objUser.userId);
@@ -66,7 +66,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew( 'condo-server.js er ikke startet.');
+    objUser.showMessageNew(columnWidths, '', 'condo-server.js er ikke startet.');
   }
 }
 
@@ -241,7 +241,7 @@ function showUser(userId) {
   const email = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].email.trim();
-  html += showTextNew('E-mail', 'email', email, enableChanges, "E-mail");
+  html += editTextNew('E-mail', 'email', email, enableChanges, "E-mail");
   html += "</div>";
 
   // condoId
@@ -259,13 +259,13 @@ function showUser(userId) {
   const firstName = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].firstName.trim();
-  html += showTextNew('Fornavn', 'firstName', firstName, enableChanges, "Fornavn");
+  html += editTextNew('Fornavn', 'firstName', firstName, enableChanges, "Fornavn");
 
   // last Name
   const lastName = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].lastName.trim();
-  html += showTextNew('Etternavn', 'lastName', lastName, enableChanges, "Etternavn");
+  html += editTextNew('Etternavn', 'lastName', lastName, enableChanges, "Etternavn");
   html += "</div>";
 
   // phone, activ user
@@ -275,14 +275,14 @@ function showUser(userId) {
   const phone = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].phone.trim();
-  html += showTextNew('Telefonnummer', 'phone', phone, enableChanges, "Telefonnummer");
+  html += editTextNew('Telefonnummer', 'phone', phone, enableChanges, "Telefonnummer");
 
   // Activ user?
   let resident = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].resident.trim();
   resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
-  html += showSelectedValuesNew('Beboer', 'resident', '', enableChanges, resident, 'Nei', 'Ja');
+  html += showSelectedValuesNew('Beboer', 'resident', '', enableChanges, resident, 'Nei', 'Ja')
   html += "</div>"
 
   // Buttons
@@ -342,7 +342,7 @@ async function updateUserRow(userId) {
     }
   } else {
 
-    showMessageNew( 'Ugyldig email.');
+    objUser.showMessageNew(columnWidths, '', 'Ugyldig email.');
   }
 
   // condoId
@@ -364,7 +364,7 @@ async function updateUserRow(userId) {
   if (validUserId && validEmail && validCondoId && validFirstName && validLastName
     && validPhone) {
 
-    document.querySelector('.showMessage').style.display = "none";
+    document.querySelector('.message').style.display = "none";
 
     const userId = Number(document.querySelector('.filterUserId').value);
 

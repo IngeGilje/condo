@@ -92,7 +92,7 @@ async function main() {
     }
   } else {
 
-    objBankAccountTransaction.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -354,7 +354,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   if (validCondoId && validAccountId && validNumberKWHour && validText
     && validIncome && validPayment && validDate) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the bankaccounttransactions row exist
     if (bankAccountTransactionRowNumber !== -1) {

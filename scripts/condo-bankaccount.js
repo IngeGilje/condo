@@ -60,7 +60,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
       events();
     } else {
 
-      objBankAccount.objBankAccount.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+      showMessageNew('Server er ikke startet.');
     }
   }
 }
@@ -198,7 +198,7 @@ function showBankAccounts(bankAccountId) {
   const name = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name.trim();
-  html += editTextNew('Navn', 'name', name, enableChanges, "Bankkonto navn");
+  html += showTextNew('Navn', 'name', name, enableChanges, "Bankkonto navn");
   html += "</div>";
 
   // bank account number
@@ -206,18 +206,8 @@ function showBankAccounts(bankAccountId) {
   const bankAccount = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount.trim();
-  html += editTextNew('Bankkontonummer', 'bankAccount', bankAccount, enableChanges, "Bankkonto navn");
+  html += showTextNew('Bankkontonummer', 'bankAccount', bankAccount, enableChanges, "Bankkonto navn");
   html += "</div>";
-
-  /*
-  // account number
-  const bankAccount = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount;
-
-  html += objBankAccount.editTableCell('bankAccount', bankAccount, 11, enableChanges);
-  html += "</tr>";
-  */
 
   // opening balance date
   html += startRow();
@@ -227,34 +217,16 @@ function showBankAccounts(bankAccountId) {
 
   // Format date from yyyy-mm-dd (Iso format) -> yyyymmdd
   openingBalanceDate = formatNumberToISODate(openingBalanceDate);
-  html += editDate('Dato', 'openingBalanceDate', openingBalanceDate, enableChanges)
-  /*
-  // opening balance date
-  const openingBalanceDate = (rowNumberBankAccount === -1)
-    ? ''
-    : formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate)
-  //const openingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
-  html += objBankAccount.editTableCell('openingBalanceDate', openingBalanceDate, 10, enableChanges);
-  */
+  html += editDate('Dato', 'openingBalanceDate', openingBalanceDate, enableChanges);
 
   // opening balance
   let openingBalance = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance.trim();
   openingBalance = formatOreToKroner(openingBalance);
-  html += editTextNew('Inngående saldo', 'openingBalance', openingBalance, enableChanges, "Inngående saldo");
+  html += showTextNew('Inngående saldo', 'openingBalance', openingBalance, enableChanges, "Inngående saldo");
 
   html += "</div>";
-
-  /*
-  // opening balance
-  const openingBalance = (rowNumberBankAccount === -1)
-    ? ''
-    : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance)
-  //const openingBalance = formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance);
-  html += objBankAccount.editTableCell('openingBalance', openingBalance, 11, enableChanges);
-  html += "</tr>";
-  */
 
   // closing balance date
   html += startRow();
@@ -265,29 +237,14 @@ function showBankAccounts(bankAccountId) {
   // Format date from yyyy-mm-dd (Iso format) -> yyyymmdd
   closingBalanceDate = formatNumberToISODate(closingBalanceDate);
   html += editDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges)
-  /*
-  // Header for value 
-  html += objBankAccount.showTableHeaderMenu('', 'center', 'Dato', 'Utgående saldo');
-
-  // insert a table row (<tr></td>)
-  html += objBankAccount.insertTableRow('');
-
-  // closing balance date
-  const closingBalanceDate = (rowNumberBankAccount === -1)
-    ? ''
-    : formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
-
-  //const closingBalanceDate = formatNumberToNorDate(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
-  html += objBankAccount.editTableCell('closingBalanceDate', closingBalanceDate, 10, enableChanges);
-  */
-
+ 
   // closing balance
   let closingBalance = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance.trim();
   closingBalance = formatOreToKroner(closingBalance);
 
-  html += editTextNew('Utgående saldo', 'closingBalance', closingBalance, enableChanges, "Utgående saldo");
+  html += showTextNew('Utgående saldo', 'closingBalance', closingBalance, enableChanges, "Utgående saldo");
   html += "</div>";
   /*
   // closing balance
@@ -306,13 +263,13 @@ function showBankAccounts(bankAccountId) {
   if (enableChanges) {
 
     html += startRow();
-    html += objCondominium.showButtonNew('update', 'Oppdater');
-    html += objCondominium.showButtonNew('cancel', 'Angre');
+    html += showButtonNew('update', 'Oppdater');
+    html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
     html += startRow();
-    html += objCondominium.showButtonNew('delete', 'Slett');
-    html += objCondominium.showButtonNew('insert', 'Ny');
+    html += showButtonNew('delete', 'Slett');
+    html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
 
@@ -399,7 +356,7 @@ async function updateBankAccountRow(bankAccountId) {
   if (validBankAccount && validName && validBalanceDates && validOpeningBalanceDate && validOpeningBalance
     && validClosingBalanceDate && validOpeningBalance) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the account id exist
     const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);

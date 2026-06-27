@@ -81,7 +81,7 @@ async function main() {
     }
   } else {
 
-    objBudget.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 
@@ -298,7 +298,7 @@ async function updateProjectsRow(projectId) {
   // Validate projects columns
   if (validName && validAmount) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the project id exist
     const rowNumberProjects = objProject.arrayProjects.findIndex(project => project.projectId === projectId);

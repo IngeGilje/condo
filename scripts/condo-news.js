@@ -58,7 +58,7 @@ async function main() {
     }
   } else {
 
-    objNews.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 
@@ -308,7 +308,7 @@ async function updateCondoRow(newsId) {
 
   if (validNewsId && validTitle && validDate && validUserId && validImage) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the newsId exist
     const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);

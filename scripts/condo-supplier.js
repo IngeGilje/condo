@@ -60,7 +60,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       events();
     } else {
 
-      objSupplier.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+      showMessageNew( 'Server er ikke startet.');
     }
   }
 }
@@ -258,7 +258,7 @@ function showSupplier(supplierId) {
   const name = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].name.trim();
-  html += editTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
+  html += showTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
   html += "</div>";
   // street,address2
   html += startRow();
@@ -267,13 +267,13 @@ function showSupplier(supplierId) {
   const street = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += editTextNew('Gatenavn', 'street', street, enableChanges);
+  html += showTextNew('Gatenavn', 'street', street, enableChanges);
 
   // address2
   const address2 = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += editTextNew('Adresse2', 'address2', address2, enableChanges);
+  html += showTextNew('Adresse2', 'address2', address2, enableChanges);
   html += "</div>";
 
   // postalCode, city
@@ -283,13 +283,13 @@ function showSupplier(supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
   if (postalCode === '0') postalCode = "";
-  html += editTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
+  html += showTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
 
   // city
   const city = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += editTextNew('Poststed', 'city', city, enableChanges);
+  html += showTextNew('Poststed', 'city', city, enableChanges);
   html += "</div>";
 
   // email,phone
@@ -299,13 +299,13 @@ function showSupplier(supplierId) {
   let email = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += editTextNew('E-mail', 'email', email, enableChanges);
+  html += showTextNew('E-mail', 'email', email, enableChanges);
 
   // phone
   const phone = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += editTextNew('Telefonnummer', 'phone', phone, enableChanges);
+  html += showTextNew('Telefonnummer', 'phone', phone, enableChanges);
   html += "</div>";
 
   //  accountId, bankAccount
@@ -321,7 +321,7 @@ function showSupplier(supplierId) {
   const bankAccount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += editTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges);
+  html += showTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges);
   html += "</div>";
 
   // amountAccountId, amount
@@ -338,7 +338,7 @@ function showSupplier(supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].amount;
   if (amount === '0') amount = "";
-  html += editTextNew('Beløp', 'amount', amount, enableChanges);
+  html += showTextNew('Beløp', 'amount', amount, enableChanges);
   html += "</div>";
 
   // textAccountId, text
@@ -354,20 +354,20 @@ function showSupplier(supplierId) {
   const text = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += editTextNew('Tekst', 'accountText', text, enableChanges);
+  html += showTextNew('Tekst', 'accountText', text, enableChanges);
   html += "</div>";
 
   // Buttons
   if (enableChanges) {
 
     html += startRow();
-    html += objSupplier.showButtonNew('update', 'Oppdater');
-    html += objSupplier.showButtonNew('cancel', 'Angre');
+    html += showButtonNew('update', 'Oppdater');
+    html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
     html += startRow();
-    html += objSupplier.showButtonNew('delete', 'Slett');
-    html += objSupplier.showButtonNew('insert', 'Ny');
+    html += showButtonNew('delete', 'Slett');
+    html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
 
@@ -611,7 +611,7 @@ async function updateSuppliersRow(supplierId) {
     && validAmountAccountId && validAmount && validTextAccountId
     && validEmail && validText) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the supplierId exist
     const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);

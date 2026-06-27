@@ -96,7 +96,7 @@ async function main() {
     }
   } else {
 
-    objBudget.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -231,7 +231,7 @@ function showFilter(budgetYear, fromDate, toDate) {
   html += startRow();
 
   // Show year
-  html += objAnnualAccount.showSelectedNumbersNew('År', 'filterBudgetYear', '', 2020, 2030, budgetYear, true);
+  html += showSelectedNumbersNew('År', 'filterBudgetYear', '', 2020, 2030, budgetYear, true);
 
   // From date
   html += editDate('Fra Dato', 'filterFromDate', fromDate, true)

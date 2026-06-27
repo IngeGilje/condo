@@ -31,7 +31,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-     // Show main menu
+      // Show main menu
       let html = objRemoteHeating.showHorizontalMenu(objRemoteHeating.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
@@ -45,7 +45,7 @@ async function main() {
       await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeating.condominiumId);
 
       // Show header
-      showHeader();
+      //showHeader();
 
       // Show filter
       const year = today.getFullYear();
@@ -61,7 +61,7 @@ async function main() {
     }
   } else {
 
-    objRemoteHeating.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -71,8 +71,6 @@ async function events() {
   // Filter
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterYear')) {
-
-
 
       const year = Number(document.querySelector(".filterYear").value);
       showFilter(year);
@@ -104,10 +102,8 @@ async function events() {
       await objRemoteHeating.deleteRemoteHeatingTable(remoteHeatingId, objRemoteHeating.user);
       await objRemoteHeating.loadRemoteHeatingTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine, objRemoteHeating.nineNine);
 
-
       showRemoteHeatings();
     };
-
   });
 
   // update a remoteheatings row
@@ -160,7 +156,6 @@ async function events() {
 
         await objRemoteHeating.loadRemoteHeatingTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine, objRemoteHeating.nineNine);
 
-        
         showRemoteHeatings();
       };
     };
@@ -204,58 +199,31 @@ function showHeader() {
 // Show filter
 function showFilter(year) {
 
-    // Start frame
+  // Start frame
   let html = startFrame();
 
-   // show filter
+  // show filter
   html += startRow();
 
-   // Show years
-  html += objRemoteHeating.showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
+  // Show years
+  html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
 
-   // Price/kilowattHour
+  // Price/kilowattHour
   const priceKilowattHour = getPriceKilowattHour(year);
   className = `filterPrice`;
   html += objRemoteHeating.editAmount('Pris KilowatTimer', 'filterPrice', priceKilowattHour, true);
-   html += "</div>";
+  html += "</div>";
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
-
-}
-
-// Insert empty table row
-function insertEmptyTableRow() {
-
-  let html = "";
-  let date = "";
-
-  // insert a table row (<tr></td>)
-  html += objRemoteHeating.insertTableRow('');
-
-  // Date
-  html += objRemoteHeating.editTableCell('date0', '', '', 10, enableChanges);
-
-  // condoId
-  html += objCondo.showSelectedCondos('condoId0', '', 0, 'Velg leilighet', '', enableChanges);
-
-  // kilowattHour this year
-  html += objRemoteHeating.editTableCell('kilowattHour0', '', '0,00', 10, enableChanges);
-
-  // kilowattHour last year
-  html += objRemoteHeating.editTableCell('kilowattHourLastYear0', '', '0,00', 10, false);
-
-  // price for remote heating for one year
-  html += objRemoteHeating.editTableCell('priceYear0', '', '0,00', 10, enableChanges);
-  html += "<td class='center'>Ny fjernvarme</td></tr>";
-  return html;
 }
 
 // Show remoteheatings
 function showRemoteHeatings() {
 
+  /*
   let totalPriceYear = 0;
 
   // start table
@@ -350,8 +318,154 @@ function showRemoteHeatings() {
   // The end of the table
   html += objRemoteHeating.endTable();
   document.querySelector('.result').innerHTML = html;
+  */
+  // row number remoteheating
 
+  const currentYear = Number(document.querySelector(".filterYear").value);
+  const lastYear = currentYear - 1;
 
+  // Empty row
+  let html = emptyRow();
+
+  objRemoteHeating.arrayRemoteHeatings.forEach((remoteHeating) => {
+    if (remoteHeating.year === currentYear) {
+
+      html += startRow();
+
+      // date
+      let date = (remoteHeating.date)
+        ? remoteHeating.date
+        : 0;
+      date = formatNumberToISODate(date);
+      let className = `date${remoteHeating.remoteHeatingId}`;
+      html += editDate('Dato', className, date, enableChanges)
+
+      // condo Id
+      let condoId = (remoteHeating.condoId)
+        ? remoteHeating.condoId
+        : 0;
+      className = `condoId${remoteHeating.remoteHeatingId}`;
+      html += objCondo.showSelectedCondosNew('Leilighet', className, '', condoId, '', '', enableChanges);
+
+      // kilowattHour current year
+      let kilowattHour = (remoteHeating.kilowattHour)
+        ? remoteHeating.kilowattHour
+        : 0;
+      kilowattHour = formatOreToKroner(kilowattHour);
+      className = `kilowattHour${remoteHeating.remoteHeatingId}`;
+      html += showTextNew(`K.timer ${currentYear}`, className, kilowattHour, enableChanges, 'Kontonavn');
+
+      // kilowattHour last year
+      let kilowattHourLastYear = (getKilowattHourLastYear(remoteHeating.condoId))
+        ? getKilowattHourLastYear(remoteHeating.condoId)
+        : 0;
+      kilowattHourLastYear = formatOreToKroner(kilowattHourLastYear);
+      className = `kilowattHourLastYear${remoteHeating.remoteHeatingId}`;
+      html += showTextNew(`K.timer ${lastYear}`, className, kilowattHourLastYear, enableChanges, `K.timer ${lastYear}`);
+
+      // price for used elcticity/remote heating for one year
+      let priceYear = Number(remoteHeating.priceYear);
+      if (priceYear === 0) {
+
+        // calculate price for used elcticity/remote heating for one year
+        let price = document.querySelector('.filterPrice').value;
+        price = formatKronerToOre(price);
+        kilowattHour = formatKronerToOre(kilowattHour);
+        kilowattHourLastYear = formatKronerToOre(kilowattHourLastYear);
+        priceYear = Number(price) * (Number(kilowattHour) - Number(kilowattHourLastYear));
+        priceYear = (priceYear / 100);
+        priceYear = formatOreToKroner(priceYear);
+      } else {
+
+        priceYear = formatOreToKroner(remoteHeating.priceYear);
+      }
+      className = `priceYear${remoteHeating.remoteHeatingId}`;
+      html += showTextNew('Beløp', className, priceYear, enableChanges, 'Beløp');
+
+      // Button
+      if (enableChanges) {
+
+        html += showButtonNew('delete', 'Slett');
+      }
+
+      html += "</div>";
+    }
+  });
+
+  // Make one last table row for insertion in table 
+  if (enableChanges) {
+
+    // Insert empty row for insertion
+    html += insertEmptyRow();
+  };
+  document.querySelector('.showRemoteHeatings').innerHTML = html;
+}
+
+// Insert empty row
+function insertEmptyRow() {
+
+  /*
+  let html = "";
+  let date = "";
+
+  // insert a table row (<tr></td>)
+  html += objRemoteHeating.insertTableRow('');
+
+  // Date
+  html += objRemoteHeating.editTableCell('date0', '', '', 10, enableChanges);
+
+  // condoId
+  html += objCondo.showSelectedCondos('condoId0', '', 0, 'Velg leilighet', '', enableChanges);
+
+  // kilowattHour this year
+  html += objRemoteHeating.editTableCell('kilowattHour0', '', '0,00', 10, enableChanges);
+
+  // kilowattHour last year
+  html += objRemoteHeating.editTableCell('kilowattHourLastYear0', '', '0,00', 10, false);
+
+  // price for remote heating for one year
+  html += objRemoteHeating.editTableCell('priceYear0', '', '0,00', 10, enableChanges);
+  html += "<td class='center'>Ny fjernvarme</td></tr>";
+  return html;
+*/
+  // start new row
+  let html = startRow();
+  // Date
+  const currentYear = Number(document.querySelector(".filterYear").value);
+  const lastYear = currentYear - 1;
+
+  let className = `date0`;
+  html += editDate('Dato', className, "", enableChanges)
+
+  // condo Id
+  className = `condoId0`;
+  html += objCondo.showSelectedCondosNew('Leilighet', className, '', 0, 'Velg leilighet', '', enableChanges);
+
+  // kilowattHour current year
+  className = `kilowattHour0`;
+  html += showTextNew(`K.timer ${currentYear}`, className, "", enableChanges, `K.timer ${currentYear}`);
+
+  // kilowattHour last year
+  className = `kilowattHourLastYear0`;
+   html += showTextNew(`K.timer ${lastYear}`, className, "", enableChanges, `K.timer ${lastYear}`);
+
+  /*
+  // calculate price for used elcticity/remote heating for one year
+  let price = document.querySelector('.filterPrice').value;
+  price = formatKronerToOre(price);
+  kilowattHour = formatKronerToOre(kilowattHour);
+  kilowattHourLastYear = formatKronerToOre(kilowattHourLastYear);
+  priceYear = Number(price) * (Number(kilowattHour) - Number(kilowattHourLastYear));
+  priceYear = (priceYear / 100);
+  priceYear = formatOreToKroner(priceYear);
+  */
+
+  className = `priceYear0`;
+  html += showTextNew('Beløp', className, "", enableChanges, 'Beløp');
+
+  // end row
+  html += showButtonNew('update', '');
+  return html;
 }
 
 // Delete one remoteHeating row
@@ -410,7 +524,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   // Validate remoteheatings columns
   if (validYear && validDate && validCondoId && validkilowattHour && validPriceYear) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the remoteHeating id exist
     rowNumberRemoteHeating = objRemoteHeating.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);
@@ -425,7 +539,6 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
     }
 
     await objRemoteHeating.loadRemoteHeatingTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine, objRemoteHeating.nineNine);
-
 
     showRemoteHeatings();
   }

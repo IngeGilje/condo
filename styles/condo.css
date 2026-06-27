@@ -280,13 +280,12 @@ iframe {
   box-sizing: border-box;
 }
 
-/*
+
 @media (max-width: 600px) {
   .news-title {
     font-size: 1.4rem;
   }
 }
-*/
 
 /* horizaontal menu */
 /* Navbar container */
@@ -381,6 +380,8 @@ iframe {
   align-items: flex-start;
 }
 
+.field button,
+.field input,
 .field select {
   height: 56px;
   border: 1px solid #cbd5e1;
@@ -630,7 +631,6 @@ body {
   z-index: 1;
 }
 */
-
 
 /* Floating label */
 .field label {

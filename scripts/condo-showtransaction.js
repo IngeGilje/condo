@@ -97,7 +97,7 @@ async function main() {
     }
   } else {
 
-    objTransaction.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew( 'Server er ikke startet.');
   }
 }
 

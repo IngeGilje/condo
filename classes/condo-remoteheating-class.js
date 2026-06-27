@@ -2,7 +2,7 @@
 class RemoteHeating extends Condos {
 
   // remote heating information
-  arrayRemoteHeating;
+  arrayRemoteHeatings;
 
   // Show all selected remoteheatings
   showSelectedRemoteHeatings(className, style, remoteHeatingId, selectNone, selectAll) {
@@ -74,7 +74,7 @@ class RemoteHeating extends Condos {
     // Select none
     if (selectNone && (this.arrayRemoteHeatings.length > 1)) {
       if (selectedValue) {
-      html += `
+        html += `
         <option 
           value=0
           ${(!selectedValue) ? 'selected' : ''}
@@ -107,11 +107,12 @@ class RemoteHeating extends Condos {
   // get remoteheatings from remoteheatings table
   async loadRemoteHeatingTable(condominiumId, year, condoId) {
 
-    const URL = (this.serverStatus === 1) ? '/api/remoteheatings' : 'http://localhost:3000/remoteheatings';
+    const URL = (this.serverStatus === 1)
+      ? '/api/remoteheatings'
+      : 'http://localhost:3000/remoteheatings';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/remoteheatings?action=select&condominiumId=${condominiumId}&year=${year}&condoId=${condoId}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
