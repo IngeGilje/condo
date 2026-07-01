@@ -5,7 +5,7 @@ const today = new Date();
 const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
 const objBudgets = new Budgets('budgets');
-const objAccount = new Account('account');
+const objAccounts = new Accounts('accounts');
 const objBankAccount = new BankAccount('bankaccount');
 const objTransaction = new Transaction('bankTransaction');
 const objCondo = new Condo('condo');
@@ -270,7 +270,7 @@ function showAnnualAccounts() {
   let totalAccountAmount = 0;
   let totalBudgetAmount = 0;
 
-  objAccount.arrayAccounts.forEach((account) => {
+  objAccounts.arrayAccounts.forEach((account) => {
 
     // Budget Amount for fiscal
     const budgetYear = Number(document.querySelector('.filterBudgetYear').value);
@@ -496,10 +496,10 @@ function showBankDeposit() {
 
       // Account Name
       let name = '';
-      const rowNumberAccount = objAccount.arrayAccounts.findIndex(account => account.accountId === budget.accountId);
+      const rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === budget.accountId);
       if (rowNumberAccount !== -1) {
 
-        name = objAccount.arrayAccounts[rowNumberAccount].name;
+        name = objAccounts.arrayAccounts[rowNumberAccount].name;
       }
       className = `name${budget.budgetId}`
       html += objAnnualAccount.editTableCell(className, name, 10, false);

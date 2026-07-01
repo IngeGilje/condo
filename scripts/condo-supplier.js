@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
-const objAccount = new Account('account');
+const objAccounts = new Accounts('accounts');
 const objSupplier = new Supplier('supplier');
 
 const enableChanges = (objSupplier.securityLevel > 5);

@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
-const objAccount = new Account('account');
+const objAccounts = new Accounts('accounts');
 const objBudgets = new Budgets('budgets');
 
 const enableChanges = (objBudgets.securityLevel > 5);
@@ -88,7 +88,6 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('edit'))) {
 
-      debugger;
       const arrayPrefixes = ['edit'];
 
       // Find the first matching class
@@ -97,18 +96,18 @@ async function events() {
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
-      let projectId = 0;
+      let budgetId = 0;
       let prefix = "";
       if (className) {
         prefix = arrayPrefixes.find(p => className.startsWith(p));
-        projectId = Number(className.slice(prefix.length));
+        budgetId = Number(className.slice(prefix.length));
       }
 
       const year = Number(document.querySelector('.filterYear').value);
       let URL = (objBudgets.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-budget.html?projectId=${projectId}&year=${year}`;
+      URL = `${URL}condo-budget.html?budgetId=${budgetId}&year=${year}`;
       window.location.href = URL;
     };
   });

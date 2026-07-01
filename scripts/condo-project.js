@@ -4,19 +4,15 @@
 const today = new Date();
 const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
-const objAccount = new Account('account');
+const objAccounts = new Accounts('accounts');
 const objCondo = new Condo('condo');
 const objTransaction = new Transaction('transaction');
 const objProject = new Project('project');
 
 const enableChanges = (objProject.securityLevel > 5);
 
-// column widths
-//const columnWidths = [175, 175, 175, 175, 100];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
-
 
 // Call main when script loads
 main();
@@ -326,17 +322,10 @@ function showProject(projectId) {
   // row number project
   const rowNumberProject = objProject.arrayProjects.findIndex(project => project.projectId === projectId);
 
+  // name
   let html = emptyRow();
 
-  // name
-  /*
-  html += startRow();
-  const name = (rowNumberProject === -1)
-    ? ''
-    : objProject.arrayProjects[rowNumberProject].name.trim();
-  */
   const name = objProject.arrayProjects[rowNumberProject]?.name.trim() ?? '';
-
   html += showTextNew('Navn', 'name', name, enableChanges, "Navn");
   html += "</div>";
 
@@ -344,11 +333,6 @@ function showProject(projectId) {
   html += startRow();
 
   // amount
-  /*
-  let amount = (rowNumberProject === -1)
-    ? ''
-    : objProject.arrayProjects[rowNumberProject].amount;
-  */
   let amount = objProject.arrayProjects[rowNumberProject]?.amount ?? '';
   amount = formatOreToKroner(amount);
   html += showTextNew('Beløp', 'amount', amount, enableChanges, "Beløp");

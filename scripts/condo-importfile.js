@@ -10,7 +10,7 @@ const objUserBankAccount = new UserBankAccount('userbankaccount');
 const objCondominium = new Condominium('condominium');
 const objCondo = new Condo('condo');
 const objTransaction = new Transaction('transaction');
-const objAccount = new Account('account');
+const objAccounts = new Accounts('accounts');
 const objBankAccount = new BankAccount('bankaccount');
 const objDue = new Due('due');
 const objSupplier = new Supplier('supplier');
@@ -199,22 +199,22 @@ function createTransactionsArray() {
       if (text.includes('FAKT.TJ')) {
 
         // Check if any of account includes text 'FAKT.TJ'
-        const rowNumberAccount = objAccount.arrayAccounts.findIndex(account => account.name.includes('FAKT.TJ'));
+        const rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.name.includes('FAKT.TJ'));
         if (rowNumberAccount !== -1) {
 
-          accountId = objAccount.arrayAccounts[rowNumberAccount].accountId;
-          accountName = objAccount.arrayAccounts[rowNumberAccount].name;
+          accountId = objAccounts.arrayAccounts[rowNumberAccount].accountId;
+          accountName = objAccounts.arrayAccounts[rowNumberAccount].name;
         }
       }
 
       // Account Name
       if (text.includes('transaksjoner')) {
 
-        const rowNumberAccount = objAccount.arrayAccounts.findIndex(account => account.name.includes('transaksjoner'));
+        const rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.name.includes('transaksjoner'));
         if (rowNumberAccount !== -1) {
 
-          accountId = objAccount.arrayAccounts[rowNumberAccount].accountId;
-          accountName = objAccount.arrayAccounts[rowNumberAccount].name;
+          accountId = objAccounts.arrayAccounts[rowNumberAccount].accountId;
+          accountName = objAccounts.arrayAccounts[rowNumberAccount].name;
         }
       }
 

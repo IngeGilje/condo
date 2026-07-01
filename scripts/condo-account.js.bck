@@ -3,7 +3,6 @@
 // Activate classes
 const today = new Date();
 const objUser = new User('user');
-const objAccounts = new Accounts('accounts');
 const objAccount = new Account('account');
 
 // Fixed values
@@ -46,10 +45,10 @@ async function main() {
       const resident = 'Y';
       await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show header
-      showHeader();
+      //showHeader();
 
       // Show filter
       showFilter();
@@ -62,7 +61,7 @@ async function main() {
     }
   } else {
 
-    objAccount.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -76,7 +75,7 @@ async function events() {
       let fixedCost = document.querySelector('.filterFixedCost').value;
       if (fixedCost === constFixedCost) fixedCost = 'Y';
       if (fixedCost === constVariableCost) fixedCost = 'N';
-      await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show account
       showAccounts();
@@ -129,7 +128,7 @@ async function events() {
       deleteAccountRow(accountId, className);
 
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
       // Show account
       showAccounts();
@@ -185,7 +184,7 @@ function showHeader() {
 // Show filter
 function showFilter() {
 
-   // Start frame
+  // Start frame
   let html = startFrame();
 
   // show filter
@@ -196,7 +195,7 @@ function showFilter() {
 
   html += "</div>";
 
-   // End filter frame
+  // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -205,16 +204,12 @@ function showFilter() {
 // Show accounts
 function showAccounts() {
 
-  // start table
-  let html = objAccount.initializeTable(columnWidths);
+  // Empty row
+  let html = emptyRow();
 
-  // Table header (<tr></tr>)
-  html += objAccount.showTableHeaderMenu('#e0f0e0', 'center', 'Kostnadstype', 'Tekst', '');
+  objAccount.arrayAccounts.forEach((account) => {
 
-  objAccounts.arrayAccounts.forEach((account) => {
-
-    // Show menu
-    html += objAccount.insertTableRow('');
+    html += startRow();
 
     // fixed cost
     let selected = "Ugyldig verdi";
@@ -222,51 +217,48 @@ function showAccounts() {
     if (account.fixedCost === 'N') selected = constVariableCost;
 
     let className = `fixedCost${account.accountId}`;
-    html += objAccount.showSelectedValues(className, '', enableChanges, selected, constFixedCost, constVariableCost);
+    html += showSelectedValuesNew('Kostnadstype', className, '', enableChanges, selected, constFixedCost, constVariableCost)
 
     // name
-    const name = account.name;
-    className = `name${account.accountId}`;
-    html += objAccount.editTableCell(className, name, 45, enableChanges);
+    className = `text${account.accountId}`;
+    html += showTextNew('Kontonavn', className, account.name, enableChanges, 'Kontonavn');
 
-    // Edit
-    className = `edit${account.accountId}`;
-    html += objAccount.showButton(className, 'Endre');
-    html += "</tr>";
+    // Buttons
+    if (enableChanges) {
+
+      className = `delete${account.accountId}`;
+      html += showButtonNew(className, 'Slett');
+    }
+
+    html += "</div>";
   });
 
   // Make one last table row for insertion in table 
-
   if (enableChanges) {
 
     // Insert empty table row for insertion
-
     html += insertEmptyTableRow();
   };
 
-  // The end of the table
-  html += objAccount.endTable();
   document.querySelector('.showAccounts').innerHTML = html;
 }
 
 // Insert empty table row
 function insertEmptyTableRow() {
 
-  let html = "";
+  let html = startRow();
 
-  // Show menu
-  // insert a table row (<tr></td>)
-  html += objAccount.insertTableRow('');
-
-  // Fixed cost
-  html += objAccount.showSelectedValues('fixedCost0', '', enableChanges, 'Velg kostnadstype', constFixedCost, constVariableCost, 'Velg kostnadstype');
+  // fixed cost
+  let className = 'fixedCost0';
+  html += showSelectedValuesNew('Kostnadstype', className, '', enableChanges, 'Velg kostnadstype', '', constVariableCost, 'Velg kostnadstype')
 
   // name
-  html += objAccount.editTableCell('name0', '', 45, enableChanges);
+  className = 'text0';
+  html += showTextNew('Kontonavn', className, '', enableChanges, 'Kontonavn');
 
-  // Insert new account
-  html += "<td>Ny konto</td></tr>";
+  html += "<label>Ny konto</label>";
 
+  html += "</div>";
   return html;
 }
 
@@ -274,7 +266,7 @@ function insertEmptyTableRow() {
 async function deleteAccountRow(accountId, className) {
 
   // Check if account row exist
-  accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+  accountsRowNumber = objAccount.arrayAccounts.findIndex(account => account.accountId === accountId);
   if (accountsRowNumber !== -1) {
 
     // delete account row
@@ -282,7 +274,7 @@ async function deleteAccountRow(accountId, className) {
   }
 
   const fixedCost = 'A';
-  await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+  await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 }
 
 // Update a accounts table row
@@ -293,7 +285,7 @@ async function updateAccountsRow(accountId) {
   // name
   className = `name${accountId}`;
   const name = document.querySelector(`.${className}`).value;
-  const validName = objAccount.validateText(className, columnWidths, '', 'Ugyldig kontonavn', true, name, 3, 50);
+  const validName = validateTextNew(className, columnWidths, '', 'Ugyldig kontonavn', true, name, 3, 50);
 
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;
@@ -305,10 +297,10 @@ async function updateAccountsRow(accountId) {
   // Validate accounts columns
   if (validName && validFixedCost) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the account id exist
-    rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+    rowNumberAccount = objAccount.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (rowNumberAccount !== -1) {
 
       // update the accounts row
@@ -321,7 +313,7 @@ async function updateAccountsRow(accountId) {
     }
 
     fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+    await objAccount.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
     // Show account
     showAccounts();

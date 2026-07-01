@@ -4,7 +4,7 @@
 const today = new Date();
 const objUser = new User('user');
 const objCondo = new Condo('condo');
-const objAccount = new Account('account');
+const objAccounts = new Accounts('accounts');
 const objCondominium = new Condominium('condominium');
 const objDue = new Due('due');
 

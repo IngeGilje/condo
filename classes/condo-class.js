@@ -101,7 +101,7 @@ class Condos {
       text: "Bankkonto"
     },
     {
-      applicationName: "condo-account.html",
+      applicationName: "condo-accounts.html",
       className: "Menu3",
       text: "Konto"
     }

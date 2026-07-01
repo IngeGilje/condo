@@ -56,12 +56,13 @@ class Budgets extends Condos {
     if (this.arrayBudgets.length > 0) {
       this.arrayBudgets.forEach((budget) => {
 
+        const accountName = (budget.accountId) ? objAccount.getAccountName(budget.accountId) : text;
         html += `
         <option 
           value=${budget.budgetId}
           ${(budget.budgetId === budgetId) ? 'selected' : ''}
         >
-          &nbsp;&nbsp;${budget.year}-${budget.accountId}&nbsp;&nbsp;
+          &nbsp;&nbsp;${budget.year}&nbsp;-&nbsp${accountName}&nbsp;&nbsp;
         </option>`;
 
         if (budget.budgetId === budgetId) selectedValue = true;

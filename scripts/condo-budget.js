@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
-const objAccount = new Account('account');
+const objAccounts = new Accounts('accounts');
 const objBudgets = new Budgets('budgets');
 const objBudget = new Budget('budget');
 
@@ -53,9 +53,8 @@ async function main() {
       showHeader();
 
       // Show filter
-      showFilter();
-
       await objBudgets.loadBudgetsTable(objBudget.condominiumId, paramYear, objBudgets.nineNine);
+      showFilter(paramBudgetId);
 
       // Show result of filter
       showBudget(paramBudgetId);
@@ -89,10 +88,10 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
 
-      let URL = (objTransaction.serverStatus === 1)
+      let URL = (objBudget.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-pojects.html?budgetId=${paramBudgetId}&year=${paramYear}`;
+      URL = `${URL}condo-budgets.html?budgetId=${paramBudgetId}&year=${paramYear}`;
       window.location.href = URL;
     };
   });
@@ -275,16 +274,16 @@ function showHeader() {
 }
 
 // Show filter
-function showFilter() {
+function showFilter(budgetId) {
 
-  // Start frame
+   // Start frame
   let html = startFrame();
 
   // show filter
   html += startRow();
 
   // Show budgets
-  html += objBudgets.showSelectedBudgetsNew('Prosjekt', 'filterProjectId',    '', paramBudgetId, '', '', true);
+  html += objBudgets.showSelectedBudgetsNew('Budsjett', 'filterProjectId',    '', budgetId, '', '', true);
   html += "</div>";
 
   // End filter frame
