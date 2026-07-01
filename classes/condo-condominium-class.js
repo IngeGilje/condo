@@ -258,7 +258,7 @@ class Condominium extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+        &nbsp;&nbsp;Ingen sameier&nbsp;&nbsp;
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

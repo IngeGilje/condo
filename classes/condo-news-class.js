@@ -160,7 +160,7 @@ class News extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+        &nbsp;&nbsp;Ingen nyheter&nbsp;&nbsp;
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

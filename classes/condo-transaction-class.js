@@ -52,7 +52,7 @@ class Transaction extends Condos {
         value=0 
         ${(!selectedValue) ? 'selected' : ''}
       >
-        Ingen leilighet
+        Ingen prosjekter
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

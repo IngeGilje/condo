@@ -200,9 +200,12 @@ function showCondo(condoId) {
 
   // condo
   html += startRow();
+  /*
   const name = (rowNumberCondo === -1)
     ? ''
     : objCondo.arrayCondo[rowNumberCondo].name.trim();
+  */
+  const name = objCondo.arrayCondo[rowNumberCondo]?.name ?? '';
   html += showTextNew('Leilighet', 'name', name, enableChanges, "Leilighet");
   html += "</div>";
 
@@ -210,15 +213,21 @@ function showCondo(condoId) {
   html += startRow();
 
   // street
+  /*
   const street = (rowNumberCondo === -1)
     ? ''
     : objCondo.arrayCondo[rowNumberCondo].street.trim();
+  */
+  const street = objCondo.arrayCondo[rowNumberCondo]?.street ?? '';
   html += showTextNew('Gate', 'street', street, enableChanges, "Gate");
 
   // address 2
+  /*
   const address2 = (rowNumberCondo === -1)
     ? ''
     : objCondo.arrayCondo[rowNumberCondo].address2.trim();
+    */
+  const address2 = objCondo.arrayCondo[rowNumberCondo]?.address2 ?? '';
   html += showTextNew('Addresse 2', 'address2', address2, enableChanges, "");
   html += "</div>";
 
@@ -232,17 +241,23 @@ function showCondo(condoId) {
   html += showTextNew('PostNummer', 'postalCode', postalCode, enableChanges, "Postnummer");
 
   // City
+  /*
   const city = (rowNumberCondo === -1)
     ? ''
     : objCondo.arrayCondo[rowNumberCondo].city.trim();
+  */
+  const city = objCondo.arrayCondo[rowNumberCondo]?.city ?? '';
   html += showTextNew('Poststed', 'city', city, enableChanges, "Poststed");
   html += "</div>";
 
   // squareMeters
   html += startRow();
+  /*
   let squareMeters = (rowNumberCondo === -1)
     ? ''
     : objCondo.arrayCondo[rowNumberCondo].squareMeters;
+  */
+  const squareMeters = objCondo.arrayCondo[rowNumberCondo]?.squareMeters ?? '';
   squareMeters = formatOreToKroner(squareMeters);
   html += showTextNew('Areal i m2', 'squareMeters', squareMeters, enableChanges, "Leilighet");
   html += "</div>";
@@ -264,106 +279,6 @@ function showCondo(condoId) {
   document.querySelector('.showCondo').innerHTML = html;
   if (enableChanges) document.querySelector('.cancel').disabled = true;
 }
-
-/*
-// start table
-let html = objCondo.initializeTable(columnWidths);
-
-// Check if condos row exist
-const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
-
-// name
-html += objCondo.showTableHeaderMenu('', '', 'Leilighet', '');
-
-html += objCondo.insertTableRow('');
-
-const name = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].name;
-html += objCondo.editTableCell('name', name, 45, enableChanges);
-html += "<td></td></tr>";
-
-// street, address2
-
-html += objCondo.showTableHeaderMenu('', '', 'Gate', 'Adresse 2');
-
-// insert a table row (<tr></td>)
-
-html += objCondo.insertTableRow('');
-
-// street
-const street = (rowNumberCondo === -1)
-  ? ''
-  : objCondo.arrayCondo[rowNumberCondo].street;
-html += objCondo.editTableCell('street', street, 45, enableChanges);
-
-// address2
-const address2 = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].address2;
-html += objCondo.editTableCell('address2', address2, 45, enableChanges);
-html += "</tr>";
-
-// postalCode, city
-
-html += objCondo.showTableHeaderMenu('', '', 'Postnummer', 'Poststed');
-
-// insert a table row (<tr></td>)
-
-html += objCondo.insertTableRow('');
-
-// postalCode
-const postalCode = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].postalCode;
-html += objCondo.editTableCell('postalCode', postalCode, 4, enableChanges);
-
-// city
-const city = (rowNumberCondo === -1) ? '' : objCondo.arrayCondo[rowNumberCondo].city;
-html += objCondo.editTableCell('city', city, 45, enableChanges);
-html += "</tr>";
-
-// squareMeters
-html += objCondo.showTableHeaderMenu('', '', 'Areal i m2', '');
-
-// insert a table row (<tr></td>)
-html += objCondo.insertTableRow('');
-
-// squareMeters
-const squareMeters = (rowNumberCondo === -1) ? '' : formatOreToKroner(objCondo.arrayCondo[rowNumberCondo].squareMeters);
-html += objCondo.editTableCell('squareMeters', squareMeters, 10, enableChanges);
-
-html += "<td></td></tr>";
-
-// Buttons
-
-// insert a table row (<tr></td>)
-html += objCondo.insertTableRow('');
-
-html += "<td></td><td></td></tr>";
-
-// Show buttons (<tr></td>)
-if (enableChanges) {
-
-  // insert a table row (<tr></td>)
-
-  html += objCondo.insertTableRow('');
-
-  html += objCondo.showButton('update', 'Oppdater');
-  html += objCondo.showButton('cancel', 'Angre');
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-
-  html += objCondo.insertTableRow('');
-
-  html += objCondo.showButton('delete', 'Slett');
-  html += objCondo.showButton('insert', 'Ny');
-  html += "</tr>";
-}
-
-// The end of the table
-html += objCondo.endTable();
-document.querySelector('.showCondo').innerHTML = html;
-
-if (enableChanges) document.querySelector('.cancel').disabled = true;
-}
-*/
-
 
 // Update a condo row
 async function updateCondoRow(condoId) {

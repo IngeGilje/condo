@@ -20,8 +20,6 @@ const enableChanges = (objImportFile.securityLevel > 5);
 
 const columnWidths = [175, 175, 175, 175, 175, 175, 175, 200];
 
-
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -74,7 +72,7 @@ async function main() {
       await objCondominium.loadCondominiumsTable();
 
       // Show header
-      showHeader();
+      //showHeader();
 
       // Name of importfile
       importFileName();
@@ -84,7 +82,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew( 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -103,8 +101,8 @@ async function events() {
 
       // Start transactions
       const URL = (objUser.serverStatus === 1)
-        ? 'http://ingegilje.no/condo-showtransaction.html'
-        : 'http://localhost/condo-showtransaction.html';
+        ? 'http://ingegilje.no/condo-transactions.html'
+        : 'http://localhost/condo-transactions.html';
       window.location.href = URL;
     };
   });
@@ -144,7 +142,7 @@ async function events() {
         }
       } else {
 
-        showMessageNew( 'Ugyldig navn på transaksjonsfil');
+        showMessageNew('Ugyldig navn på transaksjonsfil');
       }
     }
   });
@@ -160,11 +158,14 @@ function createTransactionsArray() {
 
     //  [accountingDate, Rentedato, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
     //    row.split(';');
-    [accountingDate, Type, Antall, Konto, income, payment, Valuta, text, fromBankAccount, toBankAccount, toAccount] =
+    //[accountingDate, Type, Antall, Konto, income, payment, Valuta, text, fromBankAccount, toBankAccount, toAccount] =
+    //  row.split(';');
+    // Dato;Fra;Antall;Til;Beskrivelse;Inn;Ut;Valuta
+    [accountingDate, fromBankAccount, Antall, toBankAccount, text, income, payment, Valuta] =
       row.split(';');
-
     // Check for valid date
     // validate the dd.mm.yyyy (Norwegian date format)
+
     if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '', '')) {
 
       // text
@@ -172,6 +173,7 @@ function createTransactionsArray() {
       text = text.replace(/^"|"$/g, '');
 
       // Condo id
+      fromBankAccount = fromBankAccount.slice(0, 11);
       const condoId = objImportFile.getCondoId(fromBankAccount);
 
       // Condo name
@@ -222,6 +224,7 @@ function createTransactionsArray() {
       fromBankAccountName = objImportFile.getBankAccountName(fromBankAccount);
 
       // To bank account
+      toBankAccount = toBankAccount.slice(0, 11);
       toBankAccountName = objImportFile.getBankAccountName(toBankAccount);
 
       date = objImportFile.formatDateToNumber(accountingDate);
@@ -501,6 +504,7 @@ function checkTransaction(income, payment, date) {
   return bankTransactionExist;
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -521,11 +525,12 @@ function showHeader() {
   html += objImportFile.endTable();
   document.querySelector('.showHeader').innerHTML = html;
 }
+*/
 
 // Show filter
 function showFilter() {
 
-    // Start frame
+  // Start frame
   let html = startFrame();
 
   // Start table
@@ -562,7 +567,7 @@ function showTransactions() {
   arrayTransactions.forEach((transaction) => {
 
     rowNumber++;
-    
+
     // insert a table row (<tr></td>)
     html += objImportFile.insertTableRow('');
 
@@ -697,6 +702,4 @@ function importFileName() {
   // The end of the table
   html += objImportFile.endTable();
   document.querySelector('.importFileName').innerHTML = html;
-
-
 }

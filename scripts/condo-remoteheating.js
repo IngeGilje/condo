@@ -336,6 +336,7 @@ function showRemoteHeatings() {
       let date = (remoteHeating.date)
         ? remoteHeating.date
         : 0;
+      // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
       date = formatNumberToISODate(date);
       let className = `date${remoteHeating.remoteHeatingId}`;
       html += editDate('Dato', className, date, enableChanges)

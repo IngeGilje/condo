@@ -5,15 +5,14 @@ const today = new Date();
 const objUser = new User('user');
 const objAccount = new Account('account');
 const objBudgets = new Budgets('budgets');
-const objBudget = new Budget('budget');
 
-const enableChanges = (objBudget.securityLevel > 5);
+const enableChanges = (objBudgets.securityLevel > 5);
 
 const columnWidths = [100, 175, 175, 175, 100];
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
-const paramBudgetId = Number(queryParameters.get("budgetId"));
+const paramProjectId = Number(queryParameters.get("projectId"));
 const paramYear = Number(queryParameters.get("year"));
 
 // Exit application if no activity for 1 hour
@@ -27,7 +26,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objBudget.condominiumId === 0) || (objBudget.user === null)) {
+    if ((objBudgets.condominiumId === 0) || (objBudgets.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -37,28 +36,30 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objBudget.showHorizontalMenu(objBudget.arrayMenuMain);
+      let html = objBudgets.showHorizontalMenu(objBudgets.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objBudget.showHorizontalMenu(objBudget.arrayMenuTransaction);
+      html = objBudgets.showHorizontalMenu(objBudgets.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objBudget.condominiumId, resident, objBudget.nineNine);
+      await objUser.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objBudget.condominiumId, fixedCost);
+      await objAccount.loadAccountsTable(objBudgets.condominiumId, fixedCost);
 
       // Show header
-      showHeader();
+      //showHeader();
 
       // Show filter
       showFilter();
 
-      await objBudgets.loadBudgetsTable(objBudget.condominiumId, paramYear, objBudgets.nineNine);
+      //const accountId = Number(document.querySelector('.filterAccountId').value);
+      const year = Number(document.querySelector('.filterYear').value);
+      await objBudgets.loadBudgetsTable(objBudgets.condominiumId, year, objBudgets.nineNine);
 
-      // Show result of filter
-      showBudget(paramBudgetId);
+      // Show budgets
+      showBudgets();
 
       // Events
       events();
@@ -74,169 +75,194 @@ async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('filterYear')
-      || event.target.classList.contains('filterAccountId')) {
+    if (event.target.classList.contains('filterYear')) {
 
       const year = Number(document.querySelector('.filterYear').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-      await objBudgets.loadBudgetsTable(objBudget.condominiumId, year, accountId);
+      await objBudgets.loadBudgetsTable(objBudgets.condominiumId, year, objBudgets.nineNine);
 
-      showBudgets(3);
+      showBudgets();
     };
   });
 
-  // return to budgets
+  // change budget
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    if ([...event.target.classList].some(cls => cls.startsWith('edit'))) {
 
-      let URL = (objTransaction.serverStatus === 1)
+      debugger;
+      const arrayPrefixes = ['edit'];
+
+      // Find the first matching class
+      const className = arrayPrefixes
+        .map(prefix => objBudgets.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
+      // Extract the number in the class name
+      let projectId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        projectId = Number(className.slice(prefix.length));
+      }
+
+      const year = Number(document.querySelector('.filterYear').value);
+      let URL = (objBudgets.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-pojects.html?budgetId=${paramBudgetId}&year=${paramYear}`;
+      URL = `${URL}condo-budget.html?projectId=${projectId}&year=${year}`;
       window.location.href = URL;
     };
   });
-
-  // update a accounts row
-  document.addEventListener('change', async (event) => {
-
-    const arrayPrefixes = ['accountId', 'amount', 'text'];
-
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objBudget.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let budgetId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        budgetId = Number(className.slice(prefix.length));
-      }
-
-      // Update amount
-      await updateBudgetsRow(budgetId);
-    };
-  });
-
-  // Delete budgets row
-  document.addEventListener('click', async (event) => {
-
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objBudget.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let budgetId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        budgetId = Number(className.slice(prefix.length));
-      }
-
-      deleteBudgetRow(budgetId, className);
-
-      const year = Number(document.querySelector('.filterYear').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-      await objBudgets.loadBudgetsTable(objBudget.condominiumId, year, accountId);
-
-      showBudgets(3);
-    };
-  });
-
-  // Log out
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('logOut')) {
-
-      let url = (objBudget.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
-    };
-  });
 }
 
+/*
+// update a accounts row
+document.addEventListener('change', async (event) => {
+
+  const arrayPrefixes = ['accountId', 'amount', 'text'];
+
+  if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
+    || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
+    || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))) {
+
+    // Find the first matching class
+    const className = arrayPrefixes
+      .map(prefix => objBudgets.getClassByPrefix(event.target, prefix))
+      .find(Boolean); // find the first non-null/undefined one
+
+    // Extract the number in the class name
+    let budgetId = 0;
+    let prefix = "";
+    if (className) {
+      prefix = arrayPrefixes.find(p => className.startsWith(p));
+      budgetId = Number(className.slice(prefix.length));
+    }
+
+    // Update amount
+    await updateBudgetsRow(budgetId);
+  };
+});
+*/
+
+/*
+// Delete budgets row
+document.addEventListener('click', async (event) => {
+
+  const arrayPrefixes = ['delete'];
+  if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
+
+    // Find the first matching class
+    const className = arrayPrefixes
+      .map(prefix => objBudgets.getClassByPrefix(event.target, prefix))
+      .find(Boolean); // find the first non-null/undefined one
+
+    // Extract the number in the class name
+    let budgetId = 0;
+    let prefix = "";
+    if (className) {
+      prefix = arrayPrefixes.find(p => className.startsWith(p));
+      budgetId = Number(className.slice(prefix.length));
+    }
+
+    deleteBudgetRow(budgetId, className);
+
+    const year = Number(document.querySelector('.filterYear').value);
+    const accountId = Number(document.querySelector('.filterAccountId').value);
+    await objBudgets.loadBudgetsTable(objBudgets.condominiumId, year, accountId);
+
+    showBudgets();
+  };
+});
+*/
+
+/*
+// Log out
+document.addEventListener('click', async (event) => {
+  if (event.target.classList.contains('logOut')) {
+
+    let url = (objBudgets.serverStatus === 1)
+      ? 'http://ingegilje.no/'
+      : 'http://localhost/';
+    url = `${url}condo-login.html`;
+    window.location.href = url;
+  };
+});
+*/
+
+/*
 // Delete budgets row
 async function deleteBudgetRow(budgetId, className) {
-
+ 
   // Check if budget row exist
   budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
   if (budgetsRowNumber !== -1) {
-
+ 
     // delete budget row
-    await objBudgets.deleteBudgetsTable(budgetId, objBudget.user);
+    await objBudgets.deleteBudgetsTable(budgetId, objBudgets.user);
   }
-
+ 
   const year = Number(document.querySelector('.filterYear').value);
-  await objBudgets.loadBudgetsTable(objBudget.condominiumId, year, objBudget.nineNine);
+  await objBudgets.loadBudgetsTable(objBudgets.condominiumId, year, objBudgets.nineNine);
 }
+*/
 
+/*
 // Update a budgets row
 async function updateBudgetsRow(budgetId) {
-
+ 
   budgetId = Number(budgetId);
-
+ 
   // Get budgets row values
-
+ 
   // accountId
   className = `.accountId${budgetId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${budgetId}`;
-  const validAccountId = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
-
+  const validAccountId = objBudgets.validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objBudgets.nineNine);
+ 
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
   amount = Number(formatKronerToOre(amount));
   className = `amount${budgetId}`;
-  let validAmount = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
-
+  let validAmount = objBudgets.validateInterval(className, columnWidths, '', 'Ugyldig budsjett', true, amount, objBudgets.minusNineNine, objBudgets.nineNine);
+ 
   // year
   className = `.year${budgetId}`;
   let year = Number(document.querySelector(`${className}`).value);
   className = `year${budgetId}`;
-  const validYear = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
-
+  const validYear = objBudgets.validateInterval(className, columnWidths, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
+ 
   // text
   className = `.text${budgetId}`;
   let text = document.querySelector(className).value;
   className = `text${budgetId}`;
-  let validText = objBudget.validateText(className, columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
-
+  let validText = objBudgets.validateText(className, columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
+ 
   // Validate budgets columns
   if (validAccountId && validAmount && validAmount && validYear && validText) {
-
+ 
     document.querySelector('.showMessage').style.display = "none";
-
+ 
     // Check if the budgets row exist
     budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budgets => budgets.budgetId === budgetId);
     if (budgetsRowNumber !== -1) {
-
+ 
       // update the budgets row
-      await objBudgets.updateBudgetsTable(budgetId, objBudget.user, accountId, amount, year, text);
-
+      await objBudgets.updateBudgetsTable(budgetId, objBudgets.user, accountId, amount, year, text);
+ 
     } else {
-
+ 
       // Insert the budget row in budgets table
-      await objBudget.insertBudgetsTable(objBudget.condominiumId, objBudget.user, accountId, amount, year, text);
+      await objBudgets.insertBudgetsTable(objBudgets.condominiumId, objBudgets.user, accountId, amount, year, text);
     }
-
+ 
     accountId = Number(document.querySelector('.filterAccountId').value);
     year = Number(document.querySelector('.filterYear').value);
-    await objBudgets.loadBudgetsTable(objBudget.condominiumId, year, accountId);
-    showBudgets(3);
+    await objBudgets.loadBudgetsTable(objBudgets.condominiumId, year, accountId);
+    showBudgets();
   }
 }
+*/
 
 // Calculate sum budget
 function calculateSum() {
@@ -253,26 +279,28 @@ function calculateSum() {
   document.querySelector('.sum2').value = sumAmount;
 };
 
+/*
 // Show header
 function showHeader() {
-
+ 
   // Start table
-  let html = objBudget.initializeTable(columnWidths);
-
+  let html = objBudgets.initializeTable(columnWidths);
+ 
   // start table body
-  html += objBudget.startTableBody();
-
+  html += objBudgets.startTableBody();
+ 
   // show main header
-  html += objBudget.showTableHeaderLogOut('', '', 'Budsjett', '');
+  html += objBudgets.showTableHeaderLogOut('', '', 'Budsjett', '');
   html += "</tr>";
-
+ 
   // end table body
-  html += objBudget.endTableBody();
-
+  html += objBudgets.endTableBody();
+ 
   // The end of the table
-  html += objBudget.endTable();
+  html += objBudgets.endTable();
   document.querySelector('.showHeader').innerHTML = html;
 }
+*/
 
 // Show filter
 function showFilter() {
@@ -283,8 +311,10 @@ function showFilter() {
   // show filter
   html += startRow();
 
-  // Show budgets
-  html += objBudgets.showSelectedBudgetsNew('Prosjekt', 'filterProjectId',    '', paramBudgetId, '', '', true);
+  // Show years
+  const year = today.getFullYear();
+  html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
+
   html += "</div>";
 
   // End filter frame
@@ -293,114 +323,80 @@ function showFilter() {
   document.querySelector('.showFilter').innerHTML = html;
 }
 
-/*
-// Show transactions
+// Show budgets
 function showBudgets() {
- 
+
   // start table
-  let html = objBudget.initializeTable(columnWidths);
- 
+  let html = objBudgets.initializeTable(columnWidths);
+
   // Table header (<tr></tr>)
-  html += objBudget.showTableHeaderMenu('#e0f0e0', 'center', 'År', 'Konto', 'Budsjett', 'Tekst', '');
- 
+  html += objBudgets.showTableHeaderMenu('#e0f0e0', 'center', 'År', 'Konto', 'Budsjett', 'Tekst', '');
+
   let sumAmount = 0;
- 
+
   objBudgets.arrayBudgets.forEach((budget) => {
- 
+
     // Show menu
-    html += objBudget.insertTableRow('');
- 
+    html += objBudgets.insertTableRow('');
+
     // Year (<td></td>)
     const year = Number(budget.year);
     let className = `year${budget.budgetId}`;
-    html += objBudget.showSelectedNumbers(className, '', 2020, 2030, year, enableChanges);
- 
+    html += objBudgets.showSelectedNumbers(className, '', 2020, 2030, year, enableChanges);
+
     // accountId
     className = `accountId${budget.budgetId}`;
     html += objAccount.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
- 
+
     // due amount
     const amount = formatOreToKroner(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += objBudget.editTableCell(className, amount, 11, enableChanges);
- 
+    html += objBudgets.editTableCell(className, amount, 11, enableChanges);
+
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += objBudget.editTableCell(className, text, 45, enableChanges);
- 
-    // Delete
-    className = `delete${budget.budgetId}`;
-    html += objBudget.showButton(className, 'Slett');
+    html += objBudgets.editTableCell(className, text, 45, enableChanges);
+
+    // Edit budget
+    className = `edit${budget.budgetId}`;
+    html += objBudgets.showButton(className, 'Endre');
     html += "</tr>";
- 
+
     // accumulate
     sumAmount += Number(budget.amount);
   });
- 
-  // Insert empty table row for insertion
-  if (enableChanges) {
- 
-    html += insertEmptyTableRow();
-  }
- 
+
   // Show table sum row
   sumAmount = formatOreToKroner(sumAmount);
- 
-  html += objBudget.insertTableRow('font-weight: 600;', '', 'Sum', sumAmount, '', '');
- 
-  // The end of the table
-  html += objBudget.endTable();
-  document.querySelector('.result').innerHTML = html;
-}
-*/
 
+  html += objBudgets.insertTableRow('font-weight: 600;', '', 'Sum', sumAmount, '', '');
+
+  // The end of the table
+  html += objBudgets.endTable();
+  document.querySelector('.showBudgets').innerHTML = html;
+}
+
+/*
 // Show budget
 function showBudget(budgetId) {
 
-  // row number budget
-  const rowNumberBudget = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-
-  let html = emptyRow();
-
-  // Year
-  /*
-  const year = (rowNumberBudget === -1)
-    ? ''
-    : objBudgets.arrayBudgets[rowNumberBudget].year;
-  */
   const year = objBudgets.arrayBudgets[rowNumberBudget]?.year ?? '';
   html += showSelectedNumbersNew('År', 'year', '', 2020, 2030, year, true);
 
   // Show accounts
-  /*
-  const accountId = (rowNumberBudget === -1)
-    ? ''
-    : objBudgets.arrayBudgets[rowNumberBudget].accountId;
-  */
   const accountId = objBudgets.arrayBudgets[rowNumberBudget]?.accountId ?? 0;
   html += objAccount.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
 
   // amount
-  /*
-  let amount = (rowNumberBudget === -1)
-    ? ''
-    : objBudgets.arrayBudgets[rowNumberBudget].amount;
-  */
   let amount = objBudgets.arrayBudgets[rowNumberBudget]?.amount ?? '0';
   amount = formatOreToKroner(amount);
   html += showTextNew('Beløp', 'amount', amount, enableChanges, "Beløp");
 
   // text
-  /*
-  const text = (rowNumberBudget === -1)
-    ? ''
-    : objBudgets.arrayBudgets[rowNumberBudget].text.trim();
-  */
   const text = objBudgets.arrayBudgets[rowNumberBudget]?.text ?? '';
   html += showTextNew('Tekst', 'text', text, enableChanges, "Tekst");
   html += "</div>";
-
 
   // Buttons
   if (enableChanges) {
@@ -422,26 +418,27 @@ function showBudget(budgetId) {
   document.querySelector('.showBudget').innerHTML = html;
   if (enableChanges) document.querySelector('.cancel').disabled = true;
 }
+*/
 
 /*
 function insertEmptyTableRow() {
 
   // Show menu
-  html = objBudget.insertTableRow('');
+  html = objBudgets.insertTableRow('');
 
   // Year (<td></td>)
   const year = Number(document.querySelector('.filterYear').value);
-  html += objBudget.showSelectedNumbers('year0', '', 2020, 2030, year, enableChanges);
+  html += objBudgets.showSelectedNumbers('year0', '', 2020, 2030, year, enableChanges);
 
   // accounts
   html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
 
   const amount = "";
-  html += objBudget.editTableCell('amount0', amount, 11, enableChanges);
+  html += objBudgets.editTableCell('amount0', amount, 11, enableChanges);
 
   // text
   const text = "";
-  html += objBudget.editTableCell('text0', text, 45, enableChanges);
+  html += objBudgets.editTableCell('text0', text, 45, enableChanges);
 
   html += "<td>Nytt budsjett</td></tr>";
   return html;

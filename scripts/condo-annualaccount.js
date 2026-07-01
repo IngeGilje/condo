@@ -4,7 +4,7 @@
 const today = new Date();
 const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
-const objBudget = new Budget('budget');
+const objBudgets = new Budgets('budgets');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 const objTransaction = new Transaction('bankTransaction');
@@ -50,14 +50,13 @@ async function main() {
       await objCondominium.loadCondominiumsTable();
       await objCondo.loadCondoTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
       await objCommonCost.loadCommonCostsTable(objAnnualAccount.condominiumId);
-      await objBudget.loadBudgetsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
+      await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
       await objBankAccount.loadBankAccountsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objAnnualAccount.condominiumId, fixedCost);
 
       // Show header
-
-      showHeader();
+      //showHeader();
 
       // Show filter
       const budgetYear = today.getFullYear();
@@ -87,7 +86,7 @@ async function main() {
 
         // Show bank deposit for next year
         const nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-        await objBudget.loadBudgetsTable(objAnnualAccount.condominiumId, nextBudgetYear, objAnnualAccount.nineNine);
+        await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, nextBudgetYear, objAnnualAccount.nineNine);
         showBankDeposit();
 
         // Events
@@ -129,7 +128,7 @@ async function events() {
         // Show annual accounts
         // Show bank deposit for next year
         const year = Number(document.querySelector('.filterBudgetYear').value);
-        await objBudget.loadBudgetsTable(objAnnualAccount.condominiumId, year, objAnnualAccount.nineNine);
+        await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, year, objAnnualAccount.nineNine);
 
         const orderBy = 'condoId ASC, date DESC, income ASC';
         await objTransaction.loadTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
@@ -140,7 +139,7 @@ async function events() {
 
         // Show bank deposit for next year
         const nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
-        await objBudget.loadBudgetsTable(objAnnualAccount.condominiumId, nextBudgetYear, objAnnualAccount.nineNine);
+        await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, nextBudgetYear, objAnnualAccount.nineNine);
         showBankDeposit();
       }
     };
@@ -189,7 +188,7 @@ function getBudgetAmount(accountId, year) {
   let amount = 0;
 
   // Budget Amount
-  objBudget.arrayBudgets.forEach(budget => {
+  objBudgets.arrayBudgets.forEach(budget => {
     if (budget.accountId === accountId
       && Number(budget.year) === year) {
 
@@ -200,6 +199,7 @@ function getBudgetAmount(accountId, year) {
   return formatOreToKroner(amount);
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -220,6 +220,7 @@ function showHeader() {
   html += objAnnualAccount.endTable();
   document.querySelector('.showHeader').innerHTML = html;
 }
+*/
 
 // Show filter
 function showFilter(budgetYear, fromDate, toDate) {
@@ -487,7 +488,7 @@ function showBankDeposit() {
   accAmount += Number(formatKronerToOre(bankDepositAmount));
 
   // budget
-  objBudget.arrayBudgets.forEach((budget) => {
+  objBudgets.arrayBudgets.forEach((budget) => {
     if (Number(budget.amount) !== 0) {
 
       // insert a table row (<tr></td>)

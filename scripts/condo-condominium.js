@@ -262,9 +262,12 @@ function showCondominium(condominiumId) {
   html += startRow();
 
   // name
+  /*
   const name = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].name.trim();
+  */
+  let name = objCondominium.arrayCondominiums[rowNumberCondominium]?.name.trim() ?? '';
   html += showTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
   html += "</div>";
 
@@ -278,9 +281,12 @@ function showCondominium(condominiumId) {
   html += showTextNew('Gatenavn', 'street', street, enableChanges);
 
   // address2
+  /*
   const address2 = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].address2;
+  */
+  const address2 = objCondominium.arrayCondominiums[rowNumberCondominium]?.address2.trim() ?? '';
   html += showTextNew('Adresse2', 'address2', address2, enableChanges);
   html += "</div>";
 
@@ -294,9 +300,13 @@ function showCondominium(condominiumId) {
   html += showTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
 
   // city
+  /*
   const city = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].city;
+  */
+  const city = objCondominium.arrayCondominiums[rowNumberCondominium]?.city.trim() ?? '';
+
   html += showTextNew('Poststed', 'city', city, enableChanges);
   html += "</div>";
 
@@ -304,15 +314,21 @@ function showCondominium(condominiumId) {
   html += startRow();
 
   // phone
+  /*
   const phone = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].phone;
+  */
+  const phone = objCondominium.arrayCondominiums[rowNumberCondominium]?.phone.trim() ?? '';
   html += showTextNew('Telefonnummer', 'phone', phone, enableChanges);
 
   // email
+  /*
   let email = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].email;
+  */
+  const email = objCondominium.arrayCondominiums[rowNumberCondominium]?.email.trim() ?? '';
   html += showTextNew('E-mail', 'email', email, enableChanges);
   html += "</div>";
 
@@ -320,15 +336,21 @@ function showCondominium(condominiumId) {
   html += startRow();
 
   // income Remote Heating AccountId
+  /*
   const incomeRemoteHeatingAccountId = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].incomeRemoteHeatingAccountId;
+  */
+  const incomeRemoteHeatingAccountId = objCondominium.arrayCondominiums[rowNumberCondominium]?.incomeRemoteHeatingAccountId ?? 0;
   html += objAccount.showSelectedAccountsNew('Inntekstkonto fjernvarme', 'incomeRemoteHeatingAccountId', '', incomeRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
 
   // payment Remote Heating AccountId
+  /*
   const paymentRemoteHeatingAccountId = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].paymentRemoteHeatingAccountId;
+    */
+  const paymentRemoteHeatingAccountId = objCondominium.arrayCondominiums[rowNumberCondominium]?.paymentRemoteHeatingAccountId ?? 0;
   html += objAccount.showSelectedAccountsNew('Ugiftskonto fjernvarme', 'paymentRemoteHeatingAccountId', '', paymentRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
 
   // common Cost AccountId
@@ -340,18 +362,23 @@ function showCondominium(condominiumId) {
 
   // organizationNumber
   html += startRow();
+  /*
   const organizationNumber = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].organizationNumber;
+  */
+  const organizationNumber = objCondominium.arrayCondominiums[rowNumberCondominium]?.organizationNumber ?? '';
   html += showTextNew('Organisasjonsnummer', 'organizationNumber', organizationNumber, enableChanges);
   html += "</div>";
 
-   // import Path
+  // import Path
   html += startRow();
-
+  /*
   const importPath = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
+  */
+  const importPath = objCondominium.arrayCondominiums[rowNumberCondominium]?.importPath.trim() ?? '';
   html += showTextNew('Plassering av data', 'importPath', importPath, enableChanges);
   html += "</div>";
 

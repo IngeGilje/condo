@@ -1,24 +1,33 @@
-Dato;Type;Antall;Konto;Inn;Ut;Valuta;Beskrivelse;Fra konto;Til konto;Fra;Til
-15.05.2026;Belastet konto etter avtale;;32062337272;3269,00;;NOK;"Sameie 99a";32705753007;32062337272;Åse Myklebust Stapnes;
-15.05.2026;Overførsel;;32062337272;4619,00;;NOK;"fast månedsrate fra Jan 2026";12016029341;32062337272;Birgit Ruth M A Schober;Sameie Hinna Park B3-08
-15.05.2026;Betaling med KID;;32062337272;;693,00;NOK;"20011129161119321486";32062337272;32073195801;Sameie Hinna Park B3-08;Lyse Marked AS
-15.05.2026;Belastet konto etter avtale;;32062337272;3269,00;;NOK;"97A";32013972337;32062337272;Kristine Sømme;
-13.05.2026;Mobilgiro m/meld. forf. i dag;;32062337272;4574,00;;NOK;"Laberget 95B";32061703445;32062337272;Inge Svein Gilje;Hinna Park B3 sameie
-13.05.2026;Overførsel;;32062337272;2189,00;;NOK;"leil 301 Oskar Fausk 97C";36264007849;32062337272;Oskar Fausk;Sameiet sin konto
-12.05.2026;Mobilgiro m/meld. forf. i dag;;32062337272;3359,00;;NOK;"Månedsbetaling 95A";32016934118;32062337272;Fabiana Gaspar Franco;Sameiet Laberget
-11.05.2026;Overførsel;;32062337272;2819,00;;NOK;"Fellesutgifter";05390874660;32062337272;Ladan Pazoki;inge gilje
-11.05.2026;Betaling med KID;;32062337272;;7998,77;NOK;"0005061233770";32062337272;32074560368;Sameie Hinna Park B3-08;Lyse Marked AS
-05.05.2026;Pris;;32062337272;;105,75;NOK;"Omkostninger BedriftsNett";32062337272;32019999008;;
-04.05.2026;Betaling med KID;;32062337272;;560,24;NOK;"800537080710323";32062337272;32073969815;Sameie Hinna Park B3-08;LYSE AS
-30.04.2026;Gebyr;;32062337272;;7,50;NOK;"FAKT.TJ MOTTATT FAKT NETTBANK 3 TRANS(ER) TYPE 438 437";32062337272;;;
-15.04.2026;Belastet konto etter avtale;;32062337272;4574,00;;NOK;"Laberget 95B";32061703445;32062337272;Inge Svein Gilje;
-15.04.2026;Overførsel;;32062337272;4619,00;;NOK;"fast månedsrate fra Jan 2026";12016029341;32062337272;Birgit Ruth M A Schober;Sameie Hinna Park B3-08
-15.04.2026;Belastet konto etter avtale;;32062337272;3269,00;;NOK;"Sameie 99a";32705753007;32062337272;Åse Myklebust Stapnes;
-15.04.2026;Belastet konto etter avtale;;32062337272;3269,00;;NOK;"97A";32013972337;32062337272;Kristine Sømme;
-13.04.2026;Overførsel;;32062337272;2189,00;;NOK;"leil 301 Oskar Fausk 97C";36264007849;32062337272;Oskar Fausk;Sameiet sin konto
-10.04.2026;Overførsel;;32062337272;2819,00;;NOK;"Fellesutgifter";05390874660;32062337272;Ladan Pazoki;inge gilje
-10.04.2026;Overførsel;;32062337272;10646,00;;NOK;".";05390874660;32062337272;Ladan Pazoki;Inge Gilje
-10.04.2026;Mobilgiro m/meld. forf. i dag;;32062337272;3359,00;;NOK;"Månedsbetaling 95A";32016934118;32062337272;Fabiana Gaspar Franco;Sameiet Laberget
-07.04.2026;Pris;;32062337272;;103,75;NOK;"Omkostninger BedriftsNett";32062337272;32019999008;;
-07.04.2026;Sumpost;3;32062337272;;10284,27;NOK;"3 transaksjoner";32062337272;;;
-01.04.2026;Betaling med melding;;32062337272;;1400,00;NOK;"Faktura 10134";32062337272;32072587064;Sameie Hinna Park B3-08;Hinna Park Velforening
+Dato;Fra;Antall;Til;Beskrivelse;Inn;Ut;Valuta
+24.06.2026;36264007849 Oskar Fausk;;32062337272 Sameiet sin konto;"Maling og utbedringer betaling 2 av 2";12137,00;;NOK
+18.06.2026;32061703445 Inge Svein Gilje;;32062337272 Hinna Park B3 sameie;"Laberget 95B";4574,00;;NOK
+15.06.2026;36264007849 Oskar Fausk;;32062337272 Sameiet sin konto;"leil 301 Oskar Fausk 97C";2189,00;;NOK
+15.06.2026;32013972337 Kristine Sømme;;32062337272;"97A";3269,00;;NOK
+15.06.2026;32016859566 Fabiana Gaspar Franco;;32062337272 Sameiet Laberget;"Delbetaling 1/10";3800,00;;NOK
+15.06.2026;12016029341 Birgit Ruth M A Schober;;32062337272 Sameie Hinna Park B3-08;"betaling utvendig vedlikehold rate1";27379,00;;NOK
+15.06.2026;12064075576 Ladan Pazoki;;32062337272 Inge Gilje;"For huset";16089,00;;NOK
+15.06.2026;32705753007 Åse Myklebust Stapnes;;32062337272;"Sameie 99a";3269,00;;NOK
+15.06.2026;12016029341 Birgit Ruth M A Schober;;32062337272 Sameie Hinna Park B3-08;"fast månedsrate fra Jan 2026";4619,00;;NOK
+15.06.2026;32013972337 Kristine Sømme;;32062337272 Sameie Hinna Park;"Utvendig vedligehold 97a";18911,00;;NOK
+15.06.2026;32014148174 Inge Svein Gilje;;32062337272 Hinna Park B3 sameie;"Utvendig vedlikehold";27097,00;;NOK
+12.06.2026;32016934118 Fabiana Gaspar Franco;;32062337272 Sameiet Laberget;"Månedsbetaling 95A";3359,00;;NOK
+11.06.2026;32062337272;;32019999008;"Omkostninger BedriftsNett";;100,25;NOK
+11.06.2026;32062337272 Sameie Hinna Park B3-08;;60030674564 IF SKADEFORSIKRING NUF;"84608536862";;53028,00;NOK
+10.06.2026;36264007849 Oskar Fausk;;32062337272 Sameiet sin konto;"Skifte av kledning og maling";12137,00;;NOK
+10.06.2026;05390874660 Ladan Pazoki;;32062337272 inge gilje;"Fellesutgifter";2819,00;;NOK
+09.06.2026;32062337272 Sameie Hinna Park B3-08;;96881163796 Takst-Gruppen AS;"Faktura 106461";;30771,00;NOK
+08.06.2026;32701025074 Åse Myklebust Stapnes;;32062337272 Sameie Hinna Park;"Utv vedlikehold 99a, juni og juli beløp";37822,00;;NOK
+08.06.2026;32062337272;3;;"3 transaksjoner";;8082,91;NOK
+04.06.2026;32062337272 Sameie Hinna Park B3-08;;32073969815 LYSE AS;"800537080710331";;544,73;NOK
+31.05.2026;32062337272;;;"FAKT.TJ MOTTATT FAKT NETTBANK 3 TRANS(ER) TYPE 438 437";;7,50;NOK
+15.05.2026;32705753007 Åse Myklebust Stapnes;;32062337272;"Sameie 99a";3269,00;;NOK
+15.05.2026;12016029341 Birgit Ruth M A Schober;;32062337272 Sameie Hinna Park B3-08;"fast månedsrate fra Jan 2026";4619,00;;NOK
+15.05.2026;32062337272 Sameie Hinna Park B3-08;;32073195801 Lyse Marked AS;"20011129161119321486";;693,00;NOK
+15.05.2026;32013972337 Kristine Sømme;;32062337272;"97A";3269,00;;NOK
+13.05.2026;32061703445 Inge Svein Gilje;;32062337272 Hinna Park B3 sameie;"Laberget 95B";4574,00;;NOK
+13.05.2026;36264007849 Oskar Fausk;;32062337272 Sameiet sin konto;"leil 301 Oskar Fausk 97C";2189,00;;NOK
+12.05.2026;32016934118 Fabiana Gaspar Franco;;32062337272 Sameiet Laberget;"Månedsbetaling 95A";3359,00;;NOK
+11.05.2026;05390874660 Ladan Pazoki;;32062337272 inge gilje;"Fellesutgifter";2819,00;;NOK
+11.05.2026;32062337272 Sameie Hinna Park B3-08;;32074560368 Lyse Marked AS;"0005061233770";;7998,77;NOK
+05.05.2026;32062337272;;32019999008;"Omkostninger BedriftsNett";;105,75;NOK
+04.05.2026;32062337272 Sameie Hinna Park B3-08;;32073969815 LYSE AS;"800537080710323";;560,24;NOK

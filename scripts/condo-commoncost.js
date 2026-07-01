@@ -4,7 +4,7 @@
 const today = new Date();
 const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
-const objBudget = new Budget('budget');
+const objBudgets = new Budgets('budgets');
 const objAccount = new Account('account');
 const objBankAccount = new BankAccount('bankaccount');
 const objTransaction = new Transaction('bankTransaction');
@@ -49,7 +49,7 @@ async function main() {
       await objCondominium.loadCondominiumsTable();
       await objCondo.loadCondoTable(objCommonCost.condominiumId, objCommonCost.nineNine);
       await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
-      await objBudget.loadBudgetsTable(objCommonCost.condominiumId, objCommonCost.nineNine, objCommonCost.nineNine);
+      await objBudgets.loadBudgetsTable(objCommonCost.condominiumId, objCommonCost.nineNine, objCommonCost.nineNine);
       await objBankAccount.loadBankAccountsTable(objCommonCost.condominiumId, objCommonCost.nineNine);
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objCommonCost.condominiumId, fixedCost);

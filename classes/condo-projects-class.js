@@ -1,5 +1,4 @@
-
-class Project extends Condos {
+class Projects extends Condos {
 
   // Project information
   arrayProjects = [];
@@ -113,7 +112,7 @@ class Project extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen prosjekter&nbsp;&nbsp;
+        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

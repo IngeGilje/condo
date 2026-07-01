@@ -44,7 +44,7 @@ class Condos {
       text: "Bruker"
     },
     {
-      applicationName: "condo-showtransaction.html",
+      applicationName: "condo-transactions.html",
       className: "Menu5",
       text: "Transaksjoner"
     },
@@ -134,22 +134,23 @@ class Condos {
   // menu array for transactions
   arrayMenuTransaction = [
     {
-      applicationName: "condo-showtransaction.html",
+      applicationName: "condo-transactions.html",
       className: "Menu1",
-      text: "Vis Transaksjoner"
-    },
-    {
-      applicationName: "condo-transaction.html",
-      className: "Menu2",
       text: "Transaksjoner"
     },
+    {
+      applicationName: "condo-projects.html",
+      className: "Menu2",
+      text: "Prosjektoversikt"
+    },
+
     {
       applicationName: "condo-project.html",
       className: "Menu3",
       text: "Prosjekt"
     },
     {
-      applicationName: "condo-budget.html",
+      applicationName: "condo-budgets.html",
       className: "Menu4",
       text: "Budsjett"
     },
@@ -1288,6 +1289,19 @@ function showSelectedNumbersNew(label, className, style, fromNumber, toNumber, s
   return html;
 }
 
+// Validate number
+function validateInterval(className, style, message, showMessage = true, value, minValue, maxValue) {
+
+  number = Number(value);
+  let valid = (Number(value) >= Number(minValue) && Number(value) <= Number(maxValue));
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) inputElement.classList.toggle('input-error', !valid);
+  if (!valid && showMessage) showMessageNew(message);
+
+  return valid;
+}
+
 // Validate text
 function validateTextNew(className, style, message, showMessage = true, text, minLenght, maxLength) {
 
@@ -1306,6 +1320,18 @@ function validateTextNew(className, style, message, showMessage = true, text, mi
   const inputElement = document.querySelector(`.${className}`);
   if (inputElement) inputElement.classList.toggle('input-error', !valid);
   if (!valid && showMessage) showMessageNew(message)
+
+  return valid;
+}
+
+// Validate number
+function validateNumberNew(className, style, message, showMessage = true, number, minValue, maxValue) {
+
+  let valid = (Number(number) >= Number(minValue) && Number(number) <= Number(maxValue));
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) inputElement.classList.toggle('input-error', !valid);
+  if (!valid && showMessage) showMessageNew(message);
 
   return valid;
 }
@@ -1380,9 +1406,9 @@ function showButtonNew(className, text) {
 // Show text
 function showTextNew(label, className, value, enableChanges, placeholder = "") {
 
-  value = (typeof value === 'string') 
-  ? value.trim() 
-  : value;
+  value = (typeof value === 'string')
+    ? value.trim()
+    : value;
   return `
   <div 
     class="field" 

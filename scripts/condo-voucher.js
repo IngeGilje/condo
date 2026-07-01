@@ -11,10 +11,13 @@ const enableChanges = (objVoucher.securityLevel > 5);
 
 const columnWidths = [175, 175, 175, 200, 100];
 
-const params = new URLSearchParams(window.location.search);
-const paramCondoId = Number(params.get("condoId"));
-const paramAccountId = Number(params.get("accountId"));
-const paramTransactionId = Number(params.get("transactionId"));
+const queryParameters = new URLSearchParams(window.location.search);
+const paramTransactionId = Number(queryParameters.get("transactionId"));
+const paramCondoId = Number(queryParameters.get("condoId"));
+const paramAccountId = Number(queryParameters.get("accountId"));
+const paramFromDate = Number(queryParameters.get("fromDate"));
+const paramToDate = Number(queryParameters.get("toDate"));
+const paramAmount = Number(queryParameters.get("amount"));
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -40,13 +43,15 @@ async function main() {
       let html = objVoucher.showHorizontalMenu(objVoucher.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
+      // Show transaction menu
+      html = objVoucher.showHorizontalMenu(objTransaction.arrayMenuTransaction);
+      document.querySelector('.menuTransaction').innerHTML = html;
+
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objVoucher.condominiumId, fixedCost);
 
       // Show header
-
-
-      showHeader();
+      //showHeader();
 
       // Show filter
       let fromDate = 20000101;
@@ -54,7 +59,7 @@ async function main() {
       const orderBy = 'transactionId DESC, date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, fromDate, toDate);
 
-      showFilter();
+      //showFilter();
 
       // Show result
       //if (transactionId === 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
@@ -65,7 +70,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew( 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -81,7 +86,7 @@ async function events() {
 
       const transactionId = Number(document.querySelector('.filterTransactionId').value);
 
-      showVoucher(transactionId, 2);
+      showVoucher(transactionId);
     };
   });
 
@@ -107,21 +112,20 @@ async function events() {
     };
   });
 
-  // Back
+  // return to bank account transactions
   document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('back')) {
+    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
 
       let URL = (objTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      const voucherName = document.querySelector('.voucherFileName').value;
-      const [transactionId, extension] = voucherName.split('.');
-      URL = `${URL}condo-showtransaction.html?transactionId=${Number(transactionId)}&condoId=${paramCondoId}&accountId=${paramAccountId}`;
+      URL = `${URL}condo-transactions.html?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}`;
       window.location.href = URL;
     };
   });
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -142,7 +146,9 @@ function showHeader() {
   html += objTransaction.endTable();
   document.querySelector('.showHeader').innerHTML = html;
 }
+*/
 
+/*
 // Show filter
 function showFilter() {
 
@@ -153,14 +159,12 @@ function showFilter() {
   html += objTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-
   html += objTransaction.showTableHeaderMenu('', 'center', '', 'Bilagsnummer', '', '');
 
   // start table body
   html += objTransaction.startTableBody();
 
   // insert a table row (<tr></td>)
-
   html += objTransaction.insertTableRow('', '');
 
   // show selected transactions
@@ -174,11 +178,11 @@ function showFilter() {
   // The end of the table
   html += objTransaction.endTable();
   document.querySelector('.showFilter2').innerHTML = html;
-
-
 }
+*/
 
-// Show result
+/*
+// Show Voucher
 function showVoucher(transactionId) {
 
   // start table
@@ -189,9 +193,7 @@ function showVoucher(transactionId) {
   if (rowNumberTransaction !== -1) {
 
     // date and amount
-
     html += objVoucher.showTableHeaderMenu('', 'center', 'Dato', 'Beløp', 'Konto', '');
-
 
     html += objTransaction.insertTableRow('');
 
@@ -209,13 +211,10 @@ function showVoucher(transactionId) {
     // account
     const accountId = objTransaction.arrayTransactions[rowNumberTransaction].accountId;
     html += objAccount.showSelectedAccounts('accountId', '', accountId, '', '', false);
-
     html += "</tr>";
 
     // file name of the voucher
-
     html += objVoucher.showTableHeaderMenu('', 'center', 'Filnavn', '', '', '');
-
 
     html += objTransaction.insertTableRow('');
 
@@ -232,12 +231,10 @@ function showVoucher(transactionId) {
     html += objTransaction.insertTableRow('', '', '', '', '');
     html += "</tr>";
 
-
     html += objTransaction.insertTableRow('');
 
     html += objTransaction.showButton('back', 'Tilbake');
     html += "<td></td><td></td><td></td></tr>";
-
 
     html += objTransaction.insertTableRow('', '', '', '', '');
     html += "</tr>";
@@ -256,11 +253,10 @@ function showVoucher(transactionId) {
 
     // The end of the table
     html += objTransaction.endTable();
-    document.querySelector('.result').innerHTML = html;
-
-
+    document.querySelector('.showVoucher').innerHTML = html;
   }
 }
+*/
 
 // Update a transaction row
 async function updateTransactionRow(transactionId) {
@@ -276,7 +272,7 @@ async function updateTransactionRow(transactionId) {
   if (await objVoucher.checkIfFileExist(voucherFileName)) {
     validVoucherFileName = true;
   } else {
-    showMessageNew( 'Ugyldig filnavn på bilag.');
+    showMessageNew('Ugyldig filnavn på bilag.');
   }
 
   if (validVoucherFileName && validTransactionId) {
@@ -294,10 +290,70 @@ async function updateTransactionRow(transactionId) {
         await objTransaction.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, objVoucher.nineNine);
       } else {
 
-        showMessageNew( 'Bilag er ikke oppdatert.');
+        showMessageNew('Bilag er ikke oppdatert.');
       }
 
       showVoucher(transactionId, 2);
     }
   }
+}
+
+// Show voucher
+function showVoucher(transactionId) {
+
+  // row number voucher
+  const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
+
+  let html = emptyRow();
+
+  // date
+  html += startRow();
+
+  // transaction Id
+  html += showTextNew('Bilagsnummer', 'transactionId', transactionId, false, "Bilagsnummer");
+  html += "</div>";
+
+  // Date
+  html += startRow();
+
+  let date = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? '';
+  date = formatNumberToISODate(date);
+  html += editDate('Dato', 'date', date, false)
+
+  // Amount
+  const income = objTransaction.arrayTransactions[rowNumberTransaction].income;
+  const payment = objTransaction.arrayTransactions[rowNumberTransaction].payment;
+  const amount = formatOreToKroner((income) ? income : payment);
+  html += showTextNew('Beløp', 'amount', amount, false, "Beløp");
+  html += "</div>";
+
+  // Account
+  html += startRow();
+
+  const accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? '';
+  // get account name
+  const accountName = objAccount.getAccountName(accountId);
+  html += showTextNew('Konto', 'accountName', accountName, false, "Konto");
+
+  // File name
+  let voucherFileName = objTransaction.arrayTransactions[rowNumberTransaction]?.voucherFileName ?? '';
+  voucherFileName = (voucherFileName)
+    ? ''
+    : `${transactionId}.pdf`;
+  html += showTextNew('Filnavn', 'voucherFileName', voucherFileName, false, "Filnavn");
+  html += "</div>";
+
+    html += startRow();
+  className = `back`;
+  html += showButtonNew(className, 'Tilbake');
+  html += "</div>";
+
+  html += startRow();
+  html += `
+  <iframe
+    src="/data/${voucherFileName}"
+  >`;
+  html += "</div>";
+
+  document.querySelector('.showVoucher').innerHTML = html;
 }

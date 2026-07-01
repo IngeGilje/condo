@@ -392,7 +392,7 @@ class User extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+        &nbsp;&nbsp;Ingen brukere&nbsp;&nbsp;
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -470,7 +470,7 @@ class User extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+        &nbsp;&nbsp;Ingen brukere&nbsp;&nbsp;
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

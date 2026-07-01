@@ -233,7 +233,7 @@ class BankAccount extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+        &nbsp;&nbsp;Ingen bankkontoer&nbsp;&nbsp;
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

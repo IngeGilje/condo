@@ -4,8 +4,6 @@ class BankAccountTransaction extends Condos {
   arrayBankAccountTransactions = Array;;
   #arrayBankAccountTransactions = Array;
 
-  //arrayBankAccountMovements;  // alternative array used in this class only
-
   // Show all selected bank account transactions
   showSelectedBankAccountTransactions(className, style, bankAccountTransactionId, selectNone, selectAll, enableChanges = false) {
 
@@ -40,7 +38,7 @@ class BankAccountTransaction extends Condos {
         value=0 
         selected
       >
-        Ingen leilighet
+        Ingen transaksjoner
       </option>`;
       selectedValue = true;
     }
