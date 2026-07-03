@@ -284,11 +284,11 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = objCondo.validateInterval('condoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, -1, objCondo.nineNine);
+  const validCondoId = validateInterval('condoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, -1, objCondo.nineNine);
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objCondo.validateText('name', columnWidths, '', 'Ugyldig kontonavn', true, name, 3, 45);
+  const validName = validateText('name', columnWidths, '', 'Ugyldig kontonavn', true, name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
@@ -300,15 +300,15 @@ async function updateCondoRow(condoId) {
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = objCondo.validateInterval('postalCode', columnWidths, '', 'Ugyldig postnummer', true, Number(postalCode), 1, objCondo.nineNine);
+  const validPostalCode = validateInterval('postalCode', columnWidths, '', 'Ugyldig postnummer', true, Number(postalCode), 1, objCondo.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = objCondo.validateText('city', columnWidths, '', 'Ugyldig poststed', true, city, 1, 45);
+  const validCity = validateText('city', columnWidths, '', 'Ugyldig poststed', true, city, 1, 45);
 
   // validate squaremeters
   const squareMeters = Number(formatKronerToOre(document.querySelector('.squareMeters').value));
-  const validSquareMeters = objCondo.validateInterval('squareMeters', columnWidths, '', 'Ugyldig areal', true, squareMeters, 1, objCondo.nineNine);
+  const validSquareMeters = validateInterval('squareMeters', columnWidths, '', 'Ugyldig areal', true, squareMeters, 1, objCondo.nineNine);
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 

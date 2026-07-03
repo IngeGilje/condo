@@ -204,65 +204,6 @@ async function deleteBudgetRow(budgetId, className) {
 }
 */
 
-/*
-// Update a budgets row
-async function updateBudgetsRow(budgetId) {
- 
-  budgetId = Number(budgetId);
- 
-  // Get budgets row values
- 
-  // accountId
-  className = `.accountId${budgetId}`;
-  let accountId = Number(document.querySelector(className).value);
-  className = `accountId${budgetId}`;
-  const validAccountId = objBudgets.validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objBudgets.nineNine);
- 
-  // amount
-  className = `.amount${budgetId}`;
-  let amount = document.querySelector(className).value;
-  amount = Number(formatKronerToOre(amount));
-  className = `amount${budgetId}`;
-  let validAmount = objBudgets.validateInterval(className, columnWidths, '', 'Ugyldig budsjett', true, amount, objBudgets.minusNineNine, objBudgets.nineNine);
- 
-  // year
-  className = `.year${budgetId}`;
-  let year = Number(document.querySelector(`${className}`).value);
-  className = `year${budgetId}`;
-  const validYear = objBudgets.validateInterval(className, columnWidths, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
- 
-  // text
-  className = `.text${budgetId}`;
-  let text = document.querySelector(className).value;
-  className = `text${budgetId}`;
-  let validText = objBudgets.validateText(className, columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
- 
-  // Validate budgets columns
-  if (validAccountId && validAmount && validAmount && validYear && validText) {
- 
-    document.querySelector('.showMessage').style.display = "none";
- 
-    // Check if the budgets row exist
-    budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budgets => budgets.budgetId === budgetId);
-    if (budgetsRowNumber !== -1) {
- 
-      // update the budgets row
-      await objBudgets.updateBudgetsTable(budgetId, objBudgets.user, accountId, amount, year, text);
- 
-    } else {
- 
-      // Insert the budget row in budgets table
-      await objBudgets.insertBudgetsTable(objBudgets.condominiumId, objBudgets.user, accountId, amount, year, text);
-    }
- 
-    accountId = Number(document.querySelector('.filterAccountId').value);
-    year = Number(document.querySelector('.filterYear').value);
-    await objBudgets.loadBudgetsTable(objBudgets.condominiumId, year, accountId);
-    showBudgets();
-  }
-}
-*/
-
 // Calculate sum budget
 function calculateSum() {
 

@@ -746,6 +746,7 @@ class Condos {
     return valid;
   }
 
+  /*
   // Validate number
   validateInterval(className, columnWidths, style, message, showMessage = true, number, min, max) {
 
@@ -757,6 +758,7 @@ class Condos {
 
     return valid;
   }
+  */
 
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(className, date, style, message) {

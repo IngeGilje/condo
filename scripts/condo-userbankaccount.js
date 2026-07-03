@@ -75,61 +75,42 @@ async function events() {
   });
 
   // update a user bank accounts row
-  document.addEventListener('change', async (event) => {
-
-    const arrayPrefixes = ['userId', 'accountId', 'bankAccount'];
-
-    if ([...event.target.classList].some(cls => cls.startsWith('userId'))
-      || [...event.target.classList].some(cls => cls.startsWith('accountId'))
-      || [...event.target.classList].some(cls => cls.startsWith('bankAccount'))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objUserBankAccount.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let userBankAccountId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        userBankAccountId = Number(className.slice(prefix.length));
-      }
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('update')) {
 
       // Update user bank account
+      const userBankAccountId = Number(document.querySelector('.filterUserBankAccountId').value);
       updateUserBankAccountsRow(userBankAccountId);
+    };
+  });
+
+  // create new user bank accounts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('insert')) {
+
+      // Create new user bank account
+      debugger;
+      resetValues();
     };
   });
 
   // Delete accounts row
   document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
 
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objUserBankAccount.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let userBankAccountId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        userBankAccountId = Number(className.slice(prefix.length));
-      }
       // Delete user bank account
+      let userBankAccountId = Number(document.querySelector('.filterUserBankAccountId').value);
       await deleteUserBankAccountRow(userBankAccountId);
 
-      userId = Number(document.querySelector('.filterUserId').value);
-      accountId = Number(document.querySelector('.filterAccountId').value);
-      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
+      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 
+      userBankAccountId = objUserBankAccount.arrayUserBankAccounts[0]?.userBankAccountId ?? 0;
+      showFilter(userBankAccountId);
       showUserBankAccount(userBankAccountId);
     };
   });
 
+  /*
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -141,6 +122,7 @@ async function events() {
       window.location.href = url;
     };
   });
+  */
 }
 
 // Show header
@@ -325,10 +307,10 @@ html += objUserBankAccount.endTable();
 document.querySelector('.result').innerHTML = html;
 }
 */
+/*
 // Insert empty table row
 function insertEmptyTableRow() {
 
-  /*
   let html = "";
 
   // Insert a table row (<tr></td>)
@@ -345,7 +327,7 @@ function insertEmptyTableRow() {
 
   html += "<td>Ny brukerkonto</td></tr>";
   return html;
-  */
+
   // Empty row
   // Empty line
   let html = emptyLine();
@@ -377,8 +359,9 @@ function insertEmptyTableRow() {
   html += "</div>";
   return html;
 }
+*/
 
-// Delete one account row
+// Delete userbankaccounts  row
 async function deleteUserBankAccountRow(userBankAccountId) {
 
   // Check if account row exist
@@ -389,7 +372,7 @@ async function deleteUserBankAccountRow(userBankAccountId) {
     await objUserBankAccount.deleteUserBankAccountsTable(userBankAccountId, objUserBankAccount.user);
   }
 
-  await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
+  await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 }
 
 // Update userbankaccounts row
@@ -398,17 +381,17 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   userBankAccountId = Number(userBankAccountId);
 
   // User Id
-  let className = `userId${userBankAccountId}`;
+  let className = 'userId';
   let userId = Number(document.querySelector(`.${className}`).value);
-  const validUserId = objUserBankAccount.validateInterval(className, columnWidths, '', 'Ugyldig bruker', true, userId, 1, objUserBankAccount.nineNine, objUserBankAccount);
+  const validUserId = validateInterval(className, '', 'Ugyldig bruker', true, userId, 1, objUserBankAccount.nineNine, objUserBankAccount);
 
   // account Id
-  className = `accountId${userBankAccountId}`;
+  className = 'accountId';
   let accountId = Number(document.querySelector(`.${className}`).value);
-  const validAccountId = objUserBankAccount.validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccount.nineNine);
+  const validAccountId = validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccount.nineNine);
 
   // bank account
-  className = `bankAccount${userBankAccountId}`;
+  className = 'bankAccount';
   const bankAccount = document.querySelector(`.${className}`).value;
   const validBankAccount = objUserBankAccount.validateBankAccount(className, columnWidths, true, bankAccount, '', 'Ugyldig bankkonto');
 
@@ -429,10 +412,39 @@ async function updateUserBankAccountsRow(userBankAccountId) {
       await objUserBankAccount.insertUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
     }
 
+    if (enableChanges) {
+      document.querySelector('.delete').disabled = false;
+      document.querySelector('.insert').disabled = false;
+      document.querySelector('.filterUserBankAccountId').disabled = false;
+      document.querySelector('.cancel').disabled = true;
+    }
     userId = Number(document.querySelector('.filterUserId').value);
     accountId = Number(document.querySelector('.filterAccountId').value);
     await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
     showUserBankAccount(userBankAccountId);
+  }
+}
+
+function resetValues() {
+
+  // User Id
+  document.querySelector('.filterUserBankAccountId').value = '';
+
+  // User Id
+  document.querySelector('.userId').value = '';
+
+  // account Id
+  document.querySelector('.accountId').value = '';
+
+  // bank account
+  document.querySelector('.bankAccount').value = '';
+
+  objUserBankAccount.removeMessage();
+  if (enableChanges) {
+    document.querySelector('.delete').disabled = true;
+    document.querySelector('.insert').disabled = true;
+    document.querySelector('.filterUserBankAccountId').disabled = true;
+    document.querySelector('.cancel').disabled = false;
   }
 }

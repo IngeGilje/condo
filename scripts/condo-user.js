@@ -90,7 +90,7 @@ async function events() {
       await objUser.loadAllUsersTable();
 
       const userId = document.querySelector('.filterUserId').value;
-      updateUserRow(userId);
+      await updateUserRow(userId);
     };
   });
 
@@ -310,7 +310,7 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1;
   userId = Number(userId);
-  const validUserId = objUser.validateInterval('userId', columnWidths, '', 'Ugyldig bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateInterval('userId', columnWidths, '', 'Ugyldig bruker', true, userId, -1, objUser.nineNine);
 
   // resident
   let resident = document.querySelector('.resident').value;
@@ -348,7 +348,7 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = objUser.validateInterval('condoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 0, objUser.nineNine);
+  const validCondoId = validateInterval('condoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 0, objUser.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;

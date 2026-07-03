@@ -262,7 +262,7 @@ function showVoucher(transactionId) {
 async function updateTransactionRow(transactionId) {
 
   if (transactionId === '') transactionId = -1
-  const validTransactionId = objTransaction.validateInterval('transactionId', columnWidths, '', 'Ugyldig bankkonto', true, Number(transactionId), -1, objTransaction.nineNine);
+  const validTransactionId = validateInterval('transactionId', columnWidths, '', 'Ugyldig bankkonto', true, Number(transactionId), -1, objTransaction.nineNine);
 
   // validate voucher filename
   const voucherFileName = document.querySelector('.voucherFileName').value;

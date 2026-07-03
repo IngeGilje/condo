@@ -303,19 +303,19 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   className = `.accountId${bankAccountTransactionId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${bankAccountTransactionId}`;
-  const validAccountId = objBankAccountTransaction.validateInterval(className, columnWidths,    '', 'Ugyldig konto',               true, accountId, 1, objBankAccountTransaction.nineNine);
+  const validAccountId = validateInterval(className, columnWidths,    '', 'Ugyldig konto',               true, accountId, 1, objBankAccountTransaction.nineNine);
  
   // condoId
   className = `.condoId${bankAccountTransactionId}`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId${bankAccountTransactionId}`;
-  const validCondoId = objBankAccountTransaction.validateInterval(className, columnWidths, '', 'Ugyldig leilighet', true, condoId, 0, objBankAccountTransaction.nineNine);
+  const validCondoId = validateInterval(className, columnWidths, '', 'Ugyldig leilighet', true, condoId, 0, objBankAccountTransaction.nineNine);
 
   // kilowattHour
   className = `.kilowattHour${bankAccountTransactionId}`;
   const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
   className = `kilowattHour${bankAccountTransactionId}`;
-  const validNumberKWHour = objBankAccountTransaction.validateInterval(className, columnWidths, '', 'Ugyldig kilowattime', true, kilowattHour, 0, objBankAccountTransaction.nineNine);
+  const validNumberKWHour = validateInterval(className, columnWidths, '', 'Ugyldig kilowattime', true, kilowattHour, 0, objBankAccountTransaction.nineNine);
 
   // text
   className = `.text${bankAccountTransactionId}`;
@@ -346,9 +346,9 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     date = Number(convertDateToISOFormat(date));
   }
 
-  const validIncome = objBankAccountTransaction.validateInterval('income0', columnWidths, '', 'Ugyldig beløp', true, income, objBankAccountTransaction.minusNineNine, objBankAccountTransaction.nineNine, '', true);
-  const validPayment = objBankAccountTransaction.validateInterval('payment0', columnWidths, '', 'Ugyldig beløp', true, payment, objBankAccountTransaction.minusNineNine, objBankAccountTransaction.nineNine);
-  const validDate = objBankAccountTransaction.validateInterval('date0', columnWidths, '', 'Ugyldig dato', true, date, 20150101, 20991231);
+  const validIncome = validateInterval('income0', columnWidths, '', 'Ugyldig beløp', true, income, objBankAccountTransaction.minusNineNine, objBankAccountTransaction.nineNine, '', true);
+  const validPayment = validateInterval('payment0', columnWidths, '', 'Ugyldig beløp', true, payment, objBankAccountTransaction.minusNineNine, objBankAccountTransaction.nineNine);
+  const validDate = validateInterval('date0', columnWidths, '', 'Ugyldig dato', true, date, 20150101, 20991231);
 
   // Validate bankAccountTransactions columns
   if (validCondoId && validAccountId && validNumberKWHour && validText

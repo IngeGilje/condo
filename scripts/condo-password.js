@@ -102,7 +102,7 @@ async function events() {
     if (event.target.classList.contains('update')) {
 
       const userId = document.querySelector('.filterUserId').value;
-      updateUserRow(userId);
+      await updateUserRow(userId);
     };
   });
 
@@ -130,9 +130,7 @@ async function deleteCondo() {
   if (rowNumberCondo !== -1) {
 
     // delete condo row
-
-
-    objCondo.deleteCondoTable(userId, user);
+    await objCondo.deleteCondoTable(userId, user);
   }
 }
 
@@ -272,11 +270,11 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = objUser.validateInterval('userId', columnWidths, '', 'Ugyldig bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateInterval('userId', columnWidths, '', 'Ugyldig bruker', true, userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = objUser.validateInterval('securityLevel', columnWidths, '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
+  const validSecurityLevel = validateInterval('securityLevel', columnWidths, '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
 
   // validate password
   let password = document.querySelector('.password').value;
@@ -335,8 +333,6 @@ async function deleteUserRow() {
   if (rowNumberUser !== -1) {
 
     // delete a user row
-
-
     await objUser.deleteUsersTable(userId, user);
   }
 }

@@ -191,20 +191,20 @@ async function updateBudgetsRow(budgetId) {
   className = `.accountId${budgetId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${budgetId}`;
-  const validAccountId = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
+  const validAccountId = validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
 
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
   amount = Number(formatKronerToOre(amount));
   className = `amount${budgetId}`;
-  let validAmount = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
+  let validAmount = validateInterval(className, columnWidths, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
 
   // year
   className = `.year${budgetId}`;
   let year = Number(document.querySelector(`${className}`).value);
   className = `year${budgetId}`;
-  const validYear = objBudget.validateInterval(className, columnWidths, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
+  const validYear = validateInterval(className, columnWidths, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
 
   // text
   className = `.text${budgetId}`;

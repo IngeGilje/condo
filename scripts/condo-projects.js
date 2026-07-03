@@ -354,51 +354,6 @@ async function deleteProjectsRow(projectId) {
 }
 */
 /*
-// Update a projects table row
-async function updateProjectsRow(projectId) {
-
-  projectId = Number(projectId);
-
-  // name
-  let className = `.name${projectId}`;
-  let name = document.querySelector(className).value;
-  className = `name${projectId}`;
-  const validName = objProjects.validateText(className, columnWidths, '', 'Ugyldig navn', true, name, 2, 100);
-
-  // amount
-  className = `.amount${projectId}`;
-  let amount = document.querySelector(className).value;
-  amount = formatKronerToOre(amount);
-  className = `amount${projectId}`;
-  const validAmount = objProjects.validateInterval(className, columnWidths, '', 'Ugyldig beløp', true, amount, objProjects.minusNineNine, objProjects.nineNine, '');
-
-  // Validate projects columns
-  if (validName && validAmount) {
-
-    document.querySelector('.showMessage').style.display = "none";
-
-    // Check if the project id exist
-    const rowNumberProjects = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
-    if (rowNumberProjects !== -1) {
-
-      // update a projects row
-      const accountId = 0;
-      await objProjects.updateProjectsTable(projectId, objProjects.user, name, accountId, amount);
-    } else {
-
-      // Insert a projects row
-      const accountId = 0;
-      await objProjects.insertProjectsTable(objProjects.condominiumId, objProjects.user, name, accountId, amount);
-    }
-
-    await objProjects.loadProjectsTable(objProjects.condominiumId);
-
-    //showProjects();
-  }
-}
-*/
-
-/*
 // Insert empty table row
 function insertEmptyTableRow() {
 
