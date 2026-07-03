@@ -12,7 +12,7 @@ const objUserBankAccount = new UserBankAccount('userbankaccount');
 const objTransaction = new Transaction('transaction');
 const objShowTransaction = new ShowTransaction('showtransaction');
 
-const enableChanges = (objAccount.securityLevel > 5);
+const enableChanges = (objShowTransaction.securityLevel > 5);
 
 const columnWidths = [175, 175, 175, 175, 100, 100];
 
@@ -46,17 +46,17 @@ async function main() {
     } else {
 
       // Show main menu
-      html = objShowTransaction.showHorizontalMenu(objShowTransaction.arrayMenuMain);
+      html = showHorizontalMenu(objShowTransaction.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objShowTransaction.showHorizontalMenu(objShowTransaction.arrayMenuTransaction);
+      html = showHorizontalMenu(objShowTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objTransaction.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objTransaction.condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine);
       await objUserBankAccount.loadUserBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine, objTransaction.nineNine);
       await objCondo.loadCondoTable(objTransaction.condominiumId, objTransaction.nineNine);
@@ -283,7 +283,7 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
 
   // Show accounts
-  html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', 'Vis alle', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', 'Vis alle', true);
 
   // Bank Account Transaction date
   fromDate = formatNumberToISODate(fromDate);
@@ -317,7 +317,7 @@ function showTransactions() {
 
   for (const bankTransaction of objTransaction.arrayTransactions) {
 
-    html += objAccount.insertTableRow('');
+    html += objTransaction.insertTableRow('');
 
     // Date
     const date = formatNumberToNorDate(bankTransaction.date);
@@ -326,7 +326,7 @@ function showTransactions() {
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
-    html += objAccount.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+    html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
     // condos
     className = `condoId${bankTransaction.transactionId}`;
@@ -334,7 +334,7 @@ function showTransactions() {
 
     // accounts
     className = `accountId${bankTransaction.transactionId}`;
-    objAccount.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+    objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
     // amount
     let amount = bankTransaction.income + bankTransaction.payment;

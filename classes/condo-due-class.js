@@ -16,11 +16,13 @@ class Due extends Condos {
 
       dueId =
         Number(document.querySelector(`.${className}`).value);
-      dueId = (dueId === 0) ? this.arrayDues.at(-1).dueId : dueId;
+      dueId = (dueId === 0) ? this.arrayDues.at(-1)?.dueId ?? 0 : dueId;
     } else {
 
       // Get last id in last object in monthly payment array
-      dueId = this.arrayDues.at(-1).dueId;
+      dueId = (this.arrayDues.length > 0)
+        ? this.arrayDues.at(-1)?.dueId ?? 0
+        : 0;
     }
 
     return dueId;

@@ -31,17 +31,17 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objEmptyingCalendar.showHorizontalMenu(objEmptyingCalendar.arrayMenuMain);
+      let html = showHorizontalMenu(objEmptyingCalendar.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
      // Show menu for empty calendar 
-      html = objEmptyingCalendar.showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
+      html = showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
 
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 
       // Show main menu
-      html = objEmptyingCalendar.showHorizontalMenu(objEmptyingCalendar.arrayMenuMain);
+      html = showHorizontalMenu(objEmptyingCalendar.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show header

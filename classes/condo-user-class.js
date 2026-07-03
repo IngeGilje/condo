@@ -21,8 +21,7 @@ class User extends Condos {
     >`;
 
     // Select last user if userId is 0
-    if (userId === 0) userId = this.arrayUsers.at(-1).userId;
-
+    if (userId === 0) userId = this.arrayUsers.at(-1)?.userId ?? 0;
     // Check if user array is empty
     if (this.arrayUsers.length > 0) {
       this.arrayUsers.forEach((user) => {
@@ -79,11 +78,15 @@ class User extends Condos {
     if (isClassDefined(classValue)) {
 
       userId = Number(document.querySelector(`.${classValue}`).value);
-      userId = (userId === 0) ? this.arrayUsers.at(-1).userId : userId;
+      userId = (userId === 0)
+        ? this.arrayUsers.at(-1)?.userId ?? 0
+        : userId;
     } else {
 
       // Get last id in last object in user array
-      userId = this.arrayUsers.at(-1).userId;
+      userId = (this.arrayUsers.length > 0)
+        ? this.arrayUsers.at(-1)?.userId ?? 0
+        : 0;
     }
     return userId;
   }
@@ -526,5 +529,17 @@ class User extends Condos {
       // email does not exist for any user
       return true;
     }
+  }
+
+  // Get user name
+  getUserNameById(userId) {
+
+    userId = Number(userId);
+    let userName = '';
+    const rowNumberUser = this.arrayUsers.findIndex(user => user.userId === userId);
+    userName = (rowNumberUser !== -1)
+      ? this.arrayUsers[rowNumberUser].firstName
+      : 'Ugyldig bruker';
+    return userName;
   }
 }

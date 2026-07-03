@@ -160,12 +160,12 @@ class Supplier extends Condos {
     if (isClassDefined(classValue)) {
 
       supplierId = Number(document.querySelector(`.${classValue}`).value);
-      supplierId = (supplierId === 0) ? this.arraySuppliers.at(-1).supplierId : supplierId;
+      supplierId = (supplierId === 0) ? this.arraySuppliers.at(-1)?.supplierId ?? 0 : supplierId;
     } else {
 
       // Get last supplier Id
       (this.arraySuppliers.length > 0)
-        ? supplierId = this.arraySuppliers.at(-1).supplierId
+        ? supplierId = this.arraySuppliers.at(-1)?.supplierId ?? 0
         : 0;
     }
     return supplierId;

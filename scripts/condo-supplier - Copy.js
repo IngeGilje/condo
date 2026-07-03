@@ -24,11 +24,11 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
 } else {
 
   // Show main menu
-  let html = objSupplier.showHorizontalMenu(objSupplier.arrayMenuMain);
+  let html = showHorizontalMenu(objSupplier.arrayMenuMain);
   document.querySelector('.menuMain').innerHTML = html;
 
   // Show due menu
-  html = objSupplier.showHorizontalMenu(objSupplier.arrayMenuDue);
+  html = showHorizontalMenu(objSupplier.arrayMenuDue);
   document.querySelector('.menuDue').innerHTML = html;
 
   // Call main when script loads
@@ -41,7 +41,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       const resident = 'Y';
       await objUser.loadUsersTable(objSupplier.condominiumId, resident, objSupplier.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objSupplier.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objSupplier.condominiumId, fixedCost);
       await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
 
       // Find selected supplier id
@@ -102,7 +102,7 @@ async function events() {
 
       // Show filter
       const supplierId = (objSupplier.arraySuppliers.length > 0)
-        ? objSupplier.arraySuppliers.at(-1).supplierId
+        ? objSupplier.arraySuppliers.at(-1)?.supplierId
         : 0;
       // Show filter
 
@@ -127,7 +127,7 @@ async function events() {
       await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
 
       let supplierId = Number(document.querySelector('.filterSupplierId').value);
-      if (supplierId === 0) supplierId = objSupplier.arraySuppliers.at(-1).supplierId;
+      if (supplierId === 0) supplierId = objSupplier.arraySuppliers.at(-1)?.supplierId ?? 0;
 
       // Show filter
 
@@ -331,7 +331,7 @@ function editSupplier(supplierId) {
   const accountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccount.showSelectedAccounts('accountId', '', accountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccounts('accountId', '', accountId, 'Velg konto', '', enableChanges);
 
   // bankAccount number
   const bankAccount = (rowNumberSupplier === -1)
@@ -351,7 +351,7 @@ function editSupplier(supplierId) {
   const amountAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccount.showSelectedAccounts('amountAccountId', '', amountAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccounts('amountAccountId', '', amountAccountId, 'Velg konto', '', enableChanges);
 
   // amount
   const amount = (rowNumberSupplier === -1)
@@ -370,7 +370,7 @@ function editSupplier(supplierId) {
   const textAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccount.showSelectedAccounts('textAccountId', '', textAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccounts('textAccountId', '', textAccountId, 'Velg konto', '', enableChanges);
 
   // text for account id
   const text = (rowNumberSupplier === -1)
@@ -491,7 +491,7 @@ async function updateSuppliersRow(supplierId) {
       // Insert the supplier row in supplier table
       await objSupplier.insertSuppliersTable(objSupplier.condominiumId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
       await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
-      supplierId = objSupplier.arraySuppliers.at(-1).supplierId;
+      supplierId = objSupplier.arraySuppliers.at(-1)?.supplierId;
       //document.querySelector('.filterSupplierId').value = supplierId;
     }
 

@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objNews.showHorizontalMenu(objNews.arrayMenuMain);
+      let html = showHorizontalMenu(objNews.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show news menu
-      html = objNews.showHorizontalMenu(objNews.arrayMenuNews);
+      html = showHorizontalMenu(objNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
 
       const resident = 'Y';
@@ -88,7 +88,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      deleteCondoRow();
+      awaitdeleteCondoRow();
 
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
@@ -322,7 +322,6 @@ async function updateCondoRow(newsId) {
       // Insert the news row in news table
       await objNews.insertNewsTable(objNews.condominiumId, objNews.user, date, userId, title, content, image);
       await objNews.loadNewsTable(objNews.condominiumId, newsId);
-      // newsId = objNews.arrayNews.at(-1).newsId;
       document.querySelector('.filterNewsId').value = newsId;
     }
 

@@ -253,14 +253,9 @@ class Condos {
   /*
   // start input row (<div>)
   startRow() {
-    return `<p>&nbsp;</p><div class="row">`;
-  }
-  */
-
-  // start input row (<div>)
-  startRow() {
     return `<div class="row">`;
   }
+  */
 
   // Show amount
   editAmount(label, className, value, enableChanges) {
@@ -1173,34 +1168,6 @@ class Condos {
     document.querySelector(".showMessage").style.display = "none";
   }
 
-  // Show horizontal menu
-  showHorizontalMenu(arrayMenu) {
-
-    const URL = (this.serverStatus === 1)
-      ? 'http://ingegilje.no/'
-      : 'http://localhost/';
-
-    let html = `
-    <nav class="navbar horizontalMenu">
-      <ul class="nav-links">`;
-
-    arrayMenu.forEach((array) => {
-      html += `
-      <li>
-        <a href="${URL}/${array.applicationName}"
-        >
-          ${array.text.trim()}
-        </a>
-      </li>`;
-    });
-
-    html += `
-      </ul>
-    </nav>`;
-
-    return html;
-  }
-
   // Format amount (1 234 567,89)
   formatAmount(amount) {
 
@@ -1211,7 +1178,7 @@ class Condos {
     }
 
     while (amount.length < 3) {
-      value = '0' + value;
+      amount = '0' + amount;
     }
 
     // decimal
@@ -1229,6 +1196,34 @@ class Condos {
 
     return `${integerPart},${decimals}`;
   }
+}
+
+// Show horizontal menu
+function showHorizontalMenu(arrayMenu) {
+
+  const URL = (this.serverStatus === 1)
+    ? 'http://ingegilje.no/'
+    : 'http://localhost/';
+
+  let html = `
+    <nav class="navbar horizontalMenu">
+      <ul class="nav-links">`;
+
+  arrayMenu.forEach((array) => {
+    html += `
+      <li>
+        <a href="${URL}/${array.applicationName}"
+        >
+          ${array.text.trim()}
+        </a>
+      </li>`;
+  });
+
+  html += `
+      </ul>
+    </nav>`;
+
+  return html;
 }
 
 // Show message
@@ -1303,19 +1298,19 @@ function validateInterval(className, style, message, showMessage = true, value, 
 }
 
 // Validate text
-function validateTextNew(className, style, message, showMessage = true, text, minLenght, maxLength) {
+function validateTextNew(className, style, message, showMessage = true, value, minLenght, maxLength) {
 
   let valid = true;
 
   // Check for string
-  if (typeof text !== "string") valid = false;
+  if (typeof value !== "string") valid = false;
 
   // Check length
-  if (!(text.length >= minLenght) && (text.length <= maxLength)) valid = false;
+  if (!(value.length >= minLenght) && (value.length <= maxLength)) valid = false;
 
   // Check allowed characters (letters, numbers, spaces)
   const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
-  if (!regex.test(text)) valid = false;
+  if (!regex.test(value)) valid = false;
 
   const inputElement = document.querySelector(`.${className}`);
   if (inputElement) inputElement.classList.toggle('input-error', !valid);
@@ -1374,16 +1369,15 @@ function startFrame() {
     <div class="filter-frame">`;
 }
 
-// start input row (<div>)
+// start line (<div>)
 function startRow() {
   return `<div class="row">`;
 }
 
-// empty row
-function emptyRow() {
+// empty line
+function emptyLine() {
 
-  return `
-    <p>&nbsp;</p>`;
+  return `<p>&nbsp;</p>`;
 }
 
 // Change frame title

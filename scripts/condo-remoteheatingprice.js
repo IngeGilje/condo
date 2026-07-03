@@ -31,11 +31,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuMain);
+      let html = showHorizontalMenu(objRemoteHeatingPrice.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show remote heating menu
-      html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuRemoteHeating);
+      html = showHorizontalMenu(objRemoteHeatingPrice.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
 
       const resident = 'Y';
@@ -221,7 +221,8 @@ function showRemoteHeatingPrices() {
   */
 
   // Empty row
-  let html = emptyRow();
+  // Empty line
+let html = emptyLine();
 
   objRemoteHeatingPrice.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
 

@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objCondominium.showHorizontalMenu(objCondominium.arrayMenuMain);
+      let html = showHorizontalMenu(objCondominium.arrayMenuMain);
       document.querySelector('.showMenuMain').innerHTML = html;
 
       // Show condominium menu
-      html = objCondominium.showHorizontalMenu(objCondominium.arrayMenuCondominium);
+      html = showHorizontalMenu(objCondominium.arrayMenuCondominium);
       document.querySelector('.showMenuCondominium').innerHTML = html;
 
       await objCondominium.loadCondominiumsTable();
@@ -91,7 +91,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      deleteCondominiumRow();
+      await deleteCondominiumRow();
 
       await objCondominium.loadCondominiumsTable();
 
@@ -119,7 +119,7 @@ async function events() {
       await objCondominium.loadCondominiumsTable();
 
       let condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      if (condominiumId === 0) condominiumId = objCondominium.arrayCondominiums.at(-1).condominiumId;
+      if (condominiumId === 0) condominiumId = objCondominium.arrayCondominiums.at(-1)?.condominiumId ?? 0;
 
       await objCondominium.loadCondominiumsTable();
 
@@ -258,7 +258,8 @@ function showCondominium(condominiumId) {
   // row number condominium
   const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
 
-  let html = emptyRow();
+  // Empty line
+  let html = emptyLine();
   html += startRow();
 
   // name
@@ -473,7 +474,7 @@ async function updateCondominiumRow(condominiumId) {
       // Insert the bankaccount row in condominiums table
       await objCondominium.insertCondominiumsTable(objCondominium.user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
       await objCondominium.loadCondominiumsTable();
-      condominiumId = Number(objCondominium.arrayCondominiums.at(-1).condominiumId);
+      condominiumId = Number(objCondominium.arrayCondominiums.at(-1)?.condominiumId ?? 0);
     }
 
     // Show filter

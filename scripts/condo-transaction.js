@@ -12,7 +12,7 @@ const objUserBankAccount = new UserBankAccount('userbankaccount');
 const objProject = new Project('project');
 const objTransaction = new Transaction('transaction');
 
-const enableChanges = (objAccount.securityLevel > 5);
+const enableChanges = (objTransaction.securityLevel > 5);
 
 const columnWidths = [175, 175, 175, 175, 175, 100];
 
@@ -45,17 +45,17 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objTransaction.showHorizontalMenu(objTransaction.arrayMenuMain);
+      let html = showHorizontalMenu(objTransaction.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objTransaction.showHorizontalMenu(objTransaction.arrayMenuTransaction);
+      html = showHorizontalMenu(objTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objTransaction.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objTransaction.condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine);
       await objUserBankAccount.loadUserBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine, objTransaction.nineNine);
       await objCondo.loadCondoTable(objTransaction.condominiumId, objTransaction.nineNine);
@@ -295,7 +295,7 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
 
   // Show accounts
-  html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objTransaction.nineNine, '', 'Vis alle', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', objTransaction.nineNine, '', 'Vis alle', true);
 
   // From date
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
@@ -503,7 +503,7 @@ async function deleteTransactionRow() {
     await objTransaction.loadLastRowTransactionsTable(objTransaction.condominiumId);
   }
 
-  const rowNumberTransaction = objTransaction.arrayTransactions.at(-1).transactionId;
+  const rowNumberTransaction = objTransaction.arrayTransactions.at(-1)?.transactionId ?? 0;
 
   transactionId = objTransaction.arrayTransactions[rowNumberTransaction]?.transactionId ?? 0;
   condoId = objTransaction.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
@@ -531,7 +531,8 @@ function showTransaction(transactionId) {
   // row number bank account transaction
   const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
 
-  let html = emptyRow();
+  // Empty line
+  let html = emptyLine();
 
   // Transaction Id
   html += startRow();
@@ -574,13 +575,13 @@ function showTransaction(transactionId) {
     ? ''
     : objTransaction.arrayTransactions[rowNumberTransaction].accountId;
 
-  html += objAccount.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', enableChanges);
 
   /*
     // account Id
   const accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
   className = `accountId`;
-  html += objAccount.showSelectedAccounts(className, '', accountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccounts(className, '', accountId, 'Velg konto', '', enableChanges);
   */
 
   // projects
@@ -723,7 +724,7 @@ function showTransaction(transactionId) {
   // account Id
   const accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
   className = `accountId`;
-  html += objAccount.showSelectedAccounts(className, '', accountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccounts(className, '', accountId, 'Velg konto', '', enableChanges);
 
   // project Id
   const projectId = objTransaction.arrayTransactions[rowNumberTransaction]?.projectId ?? 0;

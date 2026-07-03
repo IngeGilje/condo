@@ -35,11 +35,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objProjects.showHorizontalMenu(objProjects.arrayMenuMain);
+      let html = showHorizontalMenu(objProjects.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show project menu
-      html = objProjects.showHorizontalMenu(objProjects.arrayMenuTransaction);
+      html = showHorizontalMenu(objProjects.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
@@ -48,7 +48,7 @@ async function main() {
       await objCondo.loadCondoTable(objProjects.condominiumId, objProjects.nineNine);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objProjects.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objProjects.condominiumId, fixedCost);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
 
       // Show header
@@ -57,7 +57,7 @@ async function main() {
       // Show filter
       projectId = (objProjects.arrayProjects.length === 0)
         ? 0
-        : objProjects.arrayProjects.at(-1).projectId;
+        : objProjects.arrayProjects.at(-1)?.projectId ?? 0;
       showFilter(projectId);
 
       // Show project
@@ -439,7 +439,7 @@ function showProjectTransactions(projectId) {
     if (bankTransaction.projectId === projectId) {
 
       // Insert Table Row
-      html += objAccount.insertTableRow('');
+      html += objProjects.insertTableRow('');
 
       // Date
       const date = formatNumberToNorDate(bankTransaction.date);
@@ -448,7 +448,7 @@ function showProjectTransactions(projectId) {
 
       // account
       className = `accountId${bankTransaction.transactionId}`;
-      html += objAccount.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+      html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
       // condos
       className = `condoId${bankTransaction.transactionId}`;

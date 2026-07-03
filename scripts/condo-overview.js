@@ -35,18 +35,18 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objOverview.showHorizontalMenu(objOverview.arrayMenuMain);
+      let html = showHorizontalMenu(objOverview.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = objOverview.showHorizontalMenu(objOverview.arrayMenuDue);
+      html = showHorizontalMenu(objOverview.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objOverview.condominiumId, resident, objOverview.nineNine);
       await objCondo.loadCondoTable(objOverview.condominiumId, objOverview.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objOverview.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objOverview.condominiumId, fixedCost);
 
       // Show header
       showHeader();
@@ -221,7 +221,7 @@ function showDues() {
 
     // account
     className = `account${due.dueId}`;
-    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
+    html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
 
     // amount
     const amount = formatOreToKroner(due.amount);
@@ -289,7 +289,7 @@ function showTransactions() {
 
     // account
     className = `account${bankTransaction.transactionId}`;
-    html += objAccount.showSelectedAccounts(className, '', Number(bankTransaction.accountId), 'Velg konto', '', false);
+    html += objAccounts.showSelectedAccounts(className, '', Number(bankTransaction.accountId), 'Velg konto', '', false);
 
     // income - payment
     let income = bankTransaction.income;

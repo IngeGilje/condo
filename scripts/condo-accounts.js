@@ -14,6 +14,11 @@ const enableChanges = (objAccounts.securityLevel > 5);
 // column widths
 const columnWidths = [175, 175, 100];
 
+// query parameters
+const queryParameters = new URLSearchParams(window.location.search);
+const paramAccountId = Number(queryParameters.get("accountId"));
+let paramFixedCost = queryParameters.get("fixedCost");
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -35,23 +40,23 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objAccounts.showHorizontalMenu(objAccounts.arrayMenuMain);
+      let html = showHorizontalMenu(objAccounts.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show condominium menu
-      html = objAccounts.showHorizontalMenu(objAccounts.arrayMenuCondominium);
+      html = showHorizontalMenu(objAccounts.arrayMenuCondominium);
       document.querySelector('.menuCondominium').innerHTML = html;
 
-      const resident = 'Y';
+      let resident = 'Y';
       await objUser.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
+      if (paramFixedCost !== 'Y' && paramFixedCost !== 'N') paramFixedCost = 'A';
+      await objAccounts.loadAccountsTable(objAccounts.condominiumId, paramFixedCost);
 
       // Show header
       //showHeader();
 
       // Show filter
-      showFilter();
+      showFilter(paramFixedCost);
 
       // Show account
       showAccounts();
@@ -101,10 +106,15 @@ async function events() {
         accountId = Number(className.slice(prefix.length));
       }
 
+      let fixedCost = document.querySelector('.filterFixedCost').value;
+      if (fixedCost === constVariableCost) fixedCost = 'N';
+      if (fixedCost === constFixedCost) fixedCost = 'Y';
+      if (fixedCost !== 'Y' && fixedCost !== 'N') fixedCost = 'A';
+
       let URL = (objAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-account.html?accountId=${accountId}`;
+      URL = `${URL}condo-account.html?accountId=${accountId}&fixedCost=${fixedCost}`;
       window.location.href = URL;
     };
   });
@@ -155,7 +165,7 @@ async function events() {
         accountId = Number(className.slice(prefix.length));
       }
 
-      deleteAccountRow(accountId, className);
+      await deleteAccountRow(accountId, className);
 
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
@@ -217,20 +227,22 @@ function showHeader() {
 */
 
 // Show filter
-function showFilter() {
+function showFilter(fixedCost) {
 
-   // Start frame
+  // Start frame
   let html = startFrame();
 
   // show filter
   html += startRow();
 
   // Show types of account
-  html += showSelectedValuesNew('Kostnadstype', 'filterFixedCost', '', true, 'Alle', constFixedCost, constVariableCost, 'Alle')
-
+  if (fixedCost === 'Y') fixedCost = constFixedCost;
+  if (fixedCost === 'N') fixedCost = constVariableCost;
+  if (fixedCost === 'A') fixedCost = 'Alle';
+  html += showSelectedValuesNew('Kostnadstype', 'filterFixedCost',    '',          true, fixedCost, constFixedCost, constVariableCost, 'Alle')
   html += "</div>";
 
-   // End filter frame
+  // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -272,17 +284,12 @@ function showAccounts() {
 
   // Make one last table row for insertion in table 
 
-  if (enableChanges) {
-
-    // Insert empty table row for insertion
-    html += insertEmptyTableRow();
-  };
-
   // The end of the table
   html += objAccounts.endTable();
   document.querySelector('.showAccounts').innerHTML = html;
 }
 
+/*
 // Insert empty table row
 function insertEmptyTableRow() {
 
@@ -303,6 +310,7 @@ function insertEmptyTableRow() {
 
   return html;
 }
+*/
 
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
@@ -319,6 +327,7 @@ async function deleteAccountRow(accountId, className) {
   await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 }
 
+/*
 // Update a accounts table row
 async function updateAccountsRow(accountId) {
 
@@ -361,3 +370,4 @@ async function updateAccountsRow(accountId) {
     showAccounts();
   }
 }
+*/

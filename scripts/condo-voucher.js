@@ -40,15 +40,15 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objVoucher.showHorizontalMenu(objVoucher.arrayMenuMain);
+      let html = showHorizontalMenu(objVoucher.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objVoucher.showHorizontalMenu(objTransaction.arrayMenuTransaction);
+      html = showHorizontalMenu(objTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objVoucher.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objVoucher.condominiumId, fixedCost);
 
       // Show header
       //showHeader();
@@ -210,7 +210,7 @@ function showVoucher(transactionId) {
 
     // account
     const accountId = objTransaction.arrayTransactions[rowNumberTransaction].accountId;
-    html += objAccount.showSelectedAccounts('accountId', '', accountId, '', '', false);
+    html += objAccounts.showSelectedAccounts('accountId', '', accountId, '', '', false);
     html += "</tr>";
 
     // file name of the voucher
@@ -304,7 +304,8 @@ function showVoucher(transactionId) {
   // row number voucher
   const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
 
-  let html = emptyRow();
+  // Empty line
+let html = emptyLine();
 
   // date
   html += startRow();
@@ -332,7 +333,7 @@ function showVoucher(transactionId) {
 
   const accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? '';
   // get account name
-  const accountName = objAccount.getAccountName(accountId);
+  const accountName = objAccount.getAccountNameById(accountId);
   html += showTextNew('Konto', 'accountName', accountName, false, "Konto");
 
   // File name

@@ -1572,6 +1572,7 @@ async function main() {
               AND deleted <> 'Y'`;
             if (userId !== nineNine) SQLquery += ` AND userId = ${userId} `;
             if (accountId !== nineNine) SQLquery += ` AND accountId = ${accountId} `;
+            SQLquery += ' ORDER BY userId;';
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);

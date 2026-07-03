@@ -13,11 +13,15 @@ class CommonCost extends Condos {
     if (isClassDefined(className)) {
 
       commonCostId = Number(document.querySelector(`.${className}`).value);
-      commonCostId = (commonCostId === 0) ? this.arrayCommonCosts.at(-1).commonCostId : commonCostId;
+      commonCostId = (commonCostId === 0)
+        ? this.arrayCommonCosts.at(-1)?.commonCostId ?? 0
+        : commonCostId;
     } else {
 
       // Get last id in last object in commonCost array
-      commonCostId = this.arrayCommonCosts.at(-1).commonCostId;
+      commonCostId = (this.arrayCommonCosts.length > 0)
+        ? this.arrayCommonCosts.at(-1)?.commonCostId ?? 0
+        : 0;
     }
 
     returncommonCostId;

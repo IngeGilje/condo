@@ -12,11 +12,11 @@ class EmptyingCalendar extends Condos {
     if (isClassDefined(className)) {
 
       emptyingCalendarId = Number(document.querySelector(`.${className}`).value);
-      emptyingCalendarId = (emptyingCalendarId === 0) ? this.arrayEmptyingCalendars.at(-1).emptyingCalendarId : emptyingCalendarId;
+      emptyingCalendarId = (emptyingCalendarId === 0) ? this.arrayEmptyingCalendars.at(-1)?.emptyingCalendarId ?? 0 : emptyingCalendarId;
     } else {
 
       // Get last id in last object in emptying calendar array
-      emptyingCalendarId = this.arrayEmptyingCalendars.at(-1).emptyingCalendarId;
+      emptyingCalendarId = this.arrayEmptyingCalendars.at(-1)?.emptyingCalendarId ?? 0;
     }
 
     return emptyingCalendarId;

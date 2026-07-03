@@ -2,7 +2,87 @@
 class UserBankAccount extends Condos {
 
   // user bank account information
-  arrayUserBankAccounts;
+  arrayUserBankAccounts = [];
+
+  // Show selected user bank accounts
+  showSelectedUserBankAccountsNew(label, className, style, userBankAccountId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <div class="field" style="width:250px;margin-left:35px;margin-bottom:25px;">
+    <label>
+      ${label}
+    </label>
+    <select 
+      class="${className} center one-line"
+      ${(enableChanges) ? '' : 'readonly'}
+    >`;
+
+    // Check if user bank accounts array is empty
+    if (this.arrayUserBankAccounts.length > 0) {
+      this.arrayUserBankAccounts.forEach((userBankAccount) => {
+
+        const userName = objUser.getUserNameById(userBankAccount.userId);
+        const accountName = objAccounts.getAccountNameById(userBankAccount.accountId);
+        html += `
+        <option 
+          class="left"
+          value=${userBankAccount.userBankAccountId}
+          ${(userBankAccount.userBankAccountId === userBankAccountId) ? 'selected' : ''}
+        >
+          &nbsp;&nbsp;${userName.trim()} - ${accountName.trim()}&nbsp;&nbsp;
+        </option>`;
+
+        if (userBankAccount.userBankAccountId === userBankAccountId) selectedValue = true;
+      });
+    } else {
+
+      // No user bank accounts
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;Ingen brukerkontoer&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayUserBankAccounts.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayUserBankAccounts.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+      <label>
+        ${label}
+      </label>
+    </div>`;
+
+    return html;
+  }
 
   // get user bank accounts
   async loadUserBankAccountsTable(condominiumId, userId, accountId) {

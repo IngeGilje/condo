@@ -13,11 +13,15 @@ class News extends Condos {
     if (isClassDefined(className)) {
 
       newsId = Number(document.querySelector(`.${className}`).value);
-      newsId = (newsId === 0) ? this.arrayNews.at(-1).newsId : newsId;
+      newsId = (newsId === 0) 
+      ? this.arrayNews.at(-1)?.newsId ?? 0 
+      : newsId;
     } else {
 
       // Get last id in last object in news array
-      newsId = this.arrayNews.at(-1).newsId;
+      newsId = (this.arrayNews.length > 0)
+        ? this.arrayNews.at(-1)?.newsId ?? 0
+        : 0;
     }
 
     return newsId;

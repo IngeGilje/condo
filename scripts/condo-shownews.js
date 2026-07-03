@@ -29,11 +29,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objShowNews.showHorizontalMenu(objShowNews.arrayMenuMain);
+      let html = showHorizontalMenu(objShowNews.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show news menu
-      html = objShowNews.showHorizontalMenu(objShowNews.arrayMenuNews);
+      html = showHorizontalMenu(objShowNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
 
       // Load users and news tables
@@ -42,7 +42,7 @@ async function main() {
       await objNews.loadNewsTable(objShowNews.condominiumId, objShowNews.nineNine);
 
       let newsId = 0;
-      if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1).newsId;
+      if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;
 
       // Show news
 

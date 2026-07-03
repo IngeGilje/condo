@@ -32,11 +32,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objProject.showHorizontalMenu(objProject.arrayMenuMain);
+      let html = showHorizontalMenu(objProject.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show project menu
-      html = objProject.showHorizontalMenu(objProject.arrayMenuTransaction);
+      html = showHorizontalMenu(objProject.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
@@ -45,7 +45,7 @@ async function main() {
       await objCondo.loadCondoTable(objProject.condominiumId, objProject.nineNine);
       await objProject.loadProjectsTable(objProject.condominiumId);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objProject.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objProject.condominiumId, fixedCost);
       await objProject.loadProjectsTable(objProject.condominiumId);
 
       // Show header
@@ -54,7 +54,7 @@ async function main() {
       // Show filter
       projectId = (objProject.arrayProjects.length === 0)
         ? 0
-        : objProject.arrayProjects.at(-1).projectId;
+        : objProject.arrayProjects.at(-1)?.projectId ?? 0;
       showFilter(projectId);
 
       // Show project
@@ -92,6 +92,18 @@ async function events() {
 
       // Show project
       showProject(projectId);
+    };
+  });
+
+  // return to projects
+  document.addEventListener('click', async (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+
+      let URL = (objBudget.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      URL = `${URL}condo-projects.html?accountId=${paramAccountId}&fixedCost=${paramFixedCost}`;
+      window.location.href = URL;
     };
   });
 
@@ -323,7 +335,8 @@ function showProject(projectId) {
   const rowNumberProject = objProject.arrayProjects.findIndex(project => project.projectId === projectId);
 
   // name
-  let html = emptyRow();
+  // Empty line
+let html = emptyLine();
 
   const name = objProject.arrayProjects[rowNumberProject]?.name.trim() ?? '';
   html += showTextNew('Navn', 'name', name, enableChanges, "Navn");

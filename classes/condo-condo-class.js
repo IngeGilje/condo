@@ -13,11 +13,15 @@ class Condo extends Condos {
     if (isClassDefined(className)) {
 
       condoId = Number(document.querySelector(`.${className}`).value);
-      condoId = (condoId === 0) ? this.arrayCondo.at(-1).condoId : condoId;
+      condoId = (condoId === 0) 
+      ? this.arrayCondo.at(-1)?.condoId ?? 0 
+      : condoId;
     } else {
 
       // Get last id in last object in condo array
-      condoId = this.arrayCondo.at(-1).condoId;
+      condoId = (this.arrayCondo.length > 0)
+        ? this.arrayCondo.at(-1)?.condoId ?? 0
+        : 0;
     }
 
     return condoId;

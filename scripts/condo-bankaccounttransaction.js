@@ -42,13 +42,13 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objBankAccountTransaction.showHorizontalMenu(objBankAccountTransaction.arrayMenuMain);
+      let html = showHorizontalMenu(objBankAccountTransaction.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objBankAccountTransaction.condominiumId, resident, objBankAccountTransaction.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objBankAccountTransaction.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objBankAccountTransaction.condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine);
       await objUserBankAccount.loadUserBankAccountsTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine, objBankAccountTransaction.nineNine);
       await objCondo.loadCondoTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine);
@@ -265,7 +265,7 @@ function showFilter( condoId, accountId) {
   html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
 
   // Show all selected accounts
-  html += objAccount.showSelectedAccounts('filterAccountId', '', accountId, '', 'Vis alle', true);
+  html += objAccounts.showSelectedAccounts('filterAccountId', '', accountId, '', 'Vis alle', true);
 
   // show from date
   const fromDate = '01.01.' + String(today.getFullYear());
@@ -447,8 +447,8 @@ async function showBankAccountTransactions() {
 
     // Mark invalid account red
     html += (bankAccountTransaction.accountId === 0)
-      ? objAccount.showSelectedAccounts(className, '', bankAccountTransaction.accountId, 'Velg konto', '', enableChanges)
-      : objAccount.showSelectedAccounts(className, '', bankAccountTransaction.accountId, 'Velg konto', '', enableChanges);
+      ? objAccounts.showSelectedAccounts(className, '', bankAccountTransaction.accountId, 'Velg konto', '', enableChanges)
+      : objAccounts.showSelectedAccounts(className, '', bankAccountTransaction.accountId, 'Velg konto', '', enableChanges);
 
     // income
     const income = formatOreToKroner(bankAccountTransaction.income);
@@ -565,7 +565,7 @@ function insertEmptyTableRow() {
   //let accountId = Number(document.querySelector('.filterAccountId').value);
   //if (accountId === objBankAccountTransaction.nineNine) accountId = 0;
   className = `accountId0`;
-  html += objAccount.showSelectedAccounts(className, '', 0, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccounts(className, '', 0, 'Velg konto', '', enableChanges);
 
   // income
   const income = '0,00';

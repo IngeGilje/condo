@@ -32,11 +32,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objPassword.showHorizontalMenu(objPassword.arrayMenuMain);
+      let html = showHorizontalMenu(objPassword.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = objPassword.showHorizontalMenu(objPassword.arrayMenuUser);
+      html = showHorizontalMenu(objPassword.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
 
       const resident = 'A';
@@ -63,7 +63,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew( 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -183,7 +183,8 @@ function showUser(userId) {
   // row number user
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
 
-  let html = emptyRow();
+  // Empty line
+  let html = emptyLine();
 
   // Password, securitylevel
   html += startRow();
@@ -202,7 +203,7 @@ function showUser(userId) {
   html += showSelectedNumbersNew('Sikkerhetsnivå', 'securityLevel', '', 1, 9, 1, enableChanges)
   html += "</div>";
 
-   // Buttons
+  // Buttons
   if (enableChanges) {
 
     html += startRow();
@@ -319,7 +320,7 @@ async function updateUserRow(userId) {
     document.querySelector('.filterUserId').disabled = false;
   } else {
 
-    showMessageNew( 'Ugyldig passord.');
+    showMessageNew('Ugyldig passord.');
   }
 }
 

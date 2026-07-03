@@ -36,17 +36,17 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objBudgets.showHorizontalMenu(objBudgets.arrayMenuMain);
+      let html = showHorizontalMenu(objBudgets.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objBudgets.showHorizontalMenu(objBudgets.arrayMenuTransaction);
+      html = showHorizontalMenu(objBudgets.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objBudgets.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objBudgets.condominiumId, fixedCost);
 
       // Show header
       //showHeader();
@@ -162,7 +162,7 @@ document.addEventListener('click', async (event) => {
       budgetId = Number(className.slice(prefix.length));
     }
 
-    deleteBudgetRow(budgetId, className);
+    await deleteBudgetRow(budgetId, className);
 
     const year = Number(document.querySelector('.filterYear').value);
     const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -345,7 +345,7 @@ function showBudgets() {
 
     // accountId
     className = `accountId${budget.budgetId}`;
-    html += objAccount.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
+    html += objAccounts.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
 
     // due amount
     const amount = formatOreToKroner(budget.amount);
@@ -385,7 +385,7 @@ function showBudget(budgetId) {
 
   // Show accounts
   const accountId = objBudgets.arrayBudgets[rowNumberBudget]?.accountId ?? 0;
-  html += objAccount.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
 
   // amount
   let amount = objBudgets.arrayBudgets[rowNumberBudget]?.amount ?? '0';
@@ -430,7 +430,7 @@ function insertEmptyTableRow() {
   html += objBudgets.showSelectedNumbers('year0', '', 2020, 2030, year, enableChanges);
 
   // accounts
-  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
 
   const amount = "";
   html += objBudgets.editTableCell('amount0', amount, 11, enableChanges);

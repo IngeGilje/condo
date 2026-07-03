@@ -82,22 +82,23 @@ class BankAccount extends Condos {
     // Check if HTML class exist
     if (isClassDefined(className)) {
 
-      bankAccountId =
-        Number(document.querySelector(`.${className}`).value);
-      bankAccountId = (bankAccountId === 0) 
-      ? this.arrayBankAccounts.at(-1).bankAccountId 
-      : bankAccountId;
+      bankAccountId = Number(document.querySelector(`.${className}`).value);
+      bankAccountId = (bankAccountId === 0)
+        ? this.arrayBankAccounts.at(-1)?.bankAccountId ?? 0
+        : bankAccountId;
     } else {
 
       // Get last id in last object in bankaccount array
-      bankAccountId = (this.arrayBankAccounts.length > 0) ? this.arrayBankAccounts.at(-1).bankAccountId : 0;
+      bankAccountId = (this.arrayBankAccounts.length > 0)
+        ? this.arrayBankAccounts.at(-1)?.bankAccountId ?? 0
+        : 0;
     }
 
     return bankAccountId;
   }
 
   // Show all selected bankaccounts
-  showSelectedBankAccounts(className, style, bankAccountId, selectNone, selectAll,enableChanges = false) {
+  showSelectedBankAccounts(className, style, bankAccountId, selectNone, selectAll, enableChanges = false) {
 
     let selectedValue = false;
 

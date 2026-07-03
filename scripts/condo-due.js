@@ -33,11 +33,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objDue.showHorizontalMenu(objDue.arrayMenuMain);
+      let html = showHorizontalMenu(objDue.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = objDue.showHorizontalMenu(objDue.arrayMenuDue);
+      html = showHorizontalMenu(objDue.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
 
       const resident = 'Y';
@@ -45,7 +45,7 @@ async function main() {
       await objCondo.loadCondoTable(objDue.condominiumId, objDue.nineNine);
       await objCondominium.loadCondominiumsTable();
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objDue.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objDue.condominiumId, fixedCost);
 
       // Show header
       showHeader();
@@ -153,7 +153,7 @@ async function events() {
 
       const classNameDelete = `.${className}`
       const deleteDueRowValue = document.querySelector(`${classNameDelete}`).value;
-      deleteDueRow(dueId, className);
+      await deleteDueRow(dueId, className);
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -215,7 +215,7 @@ function showFilter(condominiumId, condoId) {
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
 
   // Show accounts
-  html += objAccount.showSelectedAccountsNew('Konto', 'filterAccountId', '', objDue.nineNine, '', 'Vis alle', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', objDue.nineNine, '', 'Vis alle', true);
 
   // From date
   let fromDate = `${String(today.getFullYear())}-01-01`;
@@ -262,7 +262,7 @@ function editDues() {
 
     // accounts
     className = `accountId${due.dueId}`;
-    html += objAccount.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', enableChanges);
+    html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', enableChanges);
 
     // due amount
     const amount = formatOreToKroner(due.amount);
@@ -334,8 +334,8 @@ function insertEmptyTableRow() {
   // accountId
   const accountId = Number(document.querySelector('.filterAccountId').value);
   html += (accountId !== objDue.nineNine)
-    ? objAccount.showSelectedAccounts("accountId0", '', accountId, 'Velg konto', '', enableChanges)
-    : objAccount.showSelectedAccounts("accountId0", '', 0, 'Velg konto', '', enableChanges);
+    ? objAccounts.showSelectedAccounts("accountId0", '', accountId, 'Velg konto', '', enableChanges)
+    : objAccounts.showSelectedAccounts("accountId0", '', 0, 'Velg konto', '', enableChanges);
 
   // due amount
   html += objDue.editTableCell('amount0', '', '0,00', 10, enableChanges);

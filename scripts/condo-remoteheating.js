@@ -32,11 +32,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objRemoteHeating.showHorizontalMenu(objRemoteHeating.arrayMenuMain);
+      let html = showHorizontalMenu(objRemoteHeating.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show remote heating menu
-      html = objRemoteHeating.showHorizontalMenu(objRemoteHeating.arrayMenuRemoteHeating);
+      html = showHorizontalMenu(objRemoteHeating.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
 
       const resident = 'Y';
@@ -152,7 +152,7 @@ async function events() {
       if (deleteAccountRowValue === "Ja") {
 
         const remoteHeatingId = Number(className.substring(6));
-        deleteAccountRow(remoteHeatingId, className);
+        awaitdeleteAccountRow(remoteHeatingId, className);
 
         await objRemoteHeating.loadRemoteHeatingTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine, objRemoteHeating.nineNine);
 
@@ -325,7 +325,8 @@ function showRemoteHeatings() {
   const lastYear = currentYear - 1;
 
   // Empty row
-  let html = emptyRow();
+  // Empty line
+let html = emptyLine();
 
   objRemoteHeating.arrayRemoteHeatings.forEach((remoteHeating) => {
     if (remoteHeating.year === currentYear) {

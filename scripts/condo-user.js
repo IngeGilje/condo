@@ -31,11 +31,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objUser.showHorizontalMenu(objUser.arrayMenuMain);
+      let html = showHorizontalMenu(objUser.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = objUser.showHorizontalMenu(objUser.arrayMenuUser);
+      html = showHorizontalMenu(objUser.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
 
       if (enableChanges) {
@@ -98,13 +98,13 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      deleteUserRow();
+      await deleteUserRow();
 
       const resident = 'A';
       await objUser.loadUsersTable(condominiumId, resident, objUser.nineNine);
 
       // Show filter
-      const userId = objUser.arrayUsers.at(-1).userId;
+      const userId = objUser.arrayUsers.at(-1)?.userId ?? 0;
 
       // Show filter
       showFilter(userId);
@@ -130,7 +130,7 @@ async function events() {
       await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
 
       const userId = objUser.userId;
-      if (userId === 0) userId = objUser.arrayUsers.at(-1).userId;
+      if (userId === 0) userId = objUser.arrayUsers.at(-1)?.userId ?? 0;
 
       // Show filter
       showFilter(userId);
@@ -234,7 +234,8 @@ function showUser(userId) {
   // row number user
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
 
-  let html = emptyRow();
+  // Empty line
+let html = emptyLine();
 
   // email
   html += startRow();
@@ -385,7 +386,7 @@ async function updateUserRow(userId) {
       await objUser.insertUsersTable(resident, objUser.condominiumId, objUser.user, email, condoId, firstName, lastName, phone, securityLevel, password);
       resident = 'A';
       await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
-      userId = objUser.arrayUsers.at(-1).userId;
+      userId = objUser.arrayUsers.at(-1)?.userId ?? 0;
       document.querySelector('.filterUserId').value = userId;
     }
 

@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objCondo.showHorizontalMenu(objCondo.arrayMenuMain);
+      let html = showHorizontalMenu(objCondo.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = objCondo.showHorizontalMenu(objCondo.arrayMenuUser);
+      html = showHorizontalMenu(objCondo.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
 
       const resident = 'Y';
@@ -42,7 +42,7 @@ async function main() {
       await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
 
       let condoId = 0;
-      if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo.at(-1).condoId;
+      if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo.at(-1)?.condoId;
 
       // get condoId
       const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objCondo.userId);
@@ -101,14 +101,12 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      deleteCondoRow();
+      awaitdeleteCondoRow();
 
       await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
 
-
-
       // Show filter
-      const condoId = objCondo.arrayCondo.at(-1).condoId;
+      const condoId = objCondo.arrayCondo.at(-1)?.condoId ?? 0;
       showFilter(condoId);
       showCondo(condoId);
     };
@@ -130,7 +128,7 @@ async function events() {
       await objCondo.loadCondoTable(condominiumId, objCondo.nineNine);
 
       let condoId = Number(document.querySelector('.filterCondoId').value);
-      if (condoId === 0) condoId = objCondo.arrayCondo.at(-1).condoId;
+      if (condoId === 0) condoId = objCondo.arrayCondo.at(-1)?.condoId ?? 0;
 
       showCondo(condoId);
     };
@@ -196,7 +194,8 @@ function showCondo(condoId) {
   const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
 
   // condo
-  let html = emptyRow();
+  // Empty line
+  let html = emptyLine();
 
   // condo
   html += startRow();
@@ -257,7 +256,7 @@ function showCondo(condoId) {
     ? ''
     : objCondo.arrayCondo[rowNumberCondo].squareMeters;
   */
-  const squareMeters = objCondo.arrayCondo[rowNumberCondo]?.squareMeters ?? '';
+  let squareMeters = objCondo.arrayCondo[rowNumberCondo]?.squareMeters ?? '';
   squareMeters = formatOreToKroner(squareMeters);
   html += showTextNew('Areal i m2', 'squareMeters', squareMeters, enableChanges, "Leilighet");
   html += "</div>";
@@ -327,7 +326,7 @@ async function updateCondoRow(condoId) {
       // Insert the condo row in condo table
       await objCondo.insertCondoTable(objCondo.condominiumId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
       await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
-      condoId = objCondo.arrayCondo.at(-1).condoId;
+      condoId = objCondo.arrayCondo.at(-1)?.condoId;
       document.querySelector('.filterCondoId').value = condoId;
     }
 

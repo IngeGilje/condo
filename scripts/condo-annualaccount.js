@@ -38,11 +38,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objAnnualAccount.showHorizontalMenu(objAnnualAccount.arrayMenuMain);
+      let html = showHorizontalMenu(objAnnualAccount.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objAnnualAccount.showHorizontalMenu(objAnnualAccount.arrayMenuTransaction);
+      html = showHorizontalMenu(objAnnualAccount.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
@@ -53,7 +53,7 @@ async function main() {
       await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
       await objBankAccount.loadBankAccountsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objAnnualAccount.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objAnnualAccount.condominiumId, fixedCost);
 
       // Show header
       //showHeader();

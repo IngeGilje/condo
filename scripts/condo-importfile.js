@@ -41,11 +41,11 @@ async function main() {
     } else {
 
       // Show main menu
-      html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuMain);
+      html = showHorizontalMenu(objImportFile.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show account menu
-      html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuTransaction);
+      html = showHorizontalMenu(objImportFile.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       let transactionFile = true;
@@ -53,7 +53,7 @@ async function main() {
       const resident = 'A';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objImportFile.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objTransaction.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objTransaction.condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(objTransaction.condominiumId, objImportFile.nineNine);
       await objUserBankAccount.loadUserBankAccountsTable(objTransaction.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
       await objCondo.loadCondoTable(objTransaction.condominiumId, objTransaction.nineNine);
@@ -218,7 +218,7 @@ function createTransactionsArray() {
         }
       }
 
-      accountName = (accountId) ? objAccount.getAccountName(accountId) : text;
+      accountName = (accountId) ? objAccount.getAccountNameById(accountId) : text;
 
       // From bank account
       fromBankAccountName = objImportFile.getBankAccountName(fromBankAccount);

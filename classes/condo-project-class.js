@@ -239,11 +239,15 @@ class Project extends Condos {
     if (isClassDefined(className)) {
 
       projectId = Number(document.querySelector(`.${className}`).value);
-      projectId = (projectId === 0) ? this.arrayProjects.at(-1).projectId : projectId;
+      projectId = (projectId === 0) 
+      ? this.arrayProjects.at(-1)?.projectId ?? 0 
+      : projectId;
     } else {
 
       // Get last id in last object in project array
-      projectId = (this.arrayProjects.length > 0) ? this.arrayProjects.at(-1).projectId : 0;
+      projectId = (this.arrayProjects.length > 0) 
+      ? this.arrayProjects.at(-1)?.projectId ?? 0 
+      : 0;
     }
 
     return projectId;

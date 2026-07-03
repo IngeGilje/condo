@@ -32,11 +32,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objShowEmptyingCalendar.showHorizontalMenu(objShowEmptyingCalendar.arrayMenuMain);
+      let html = showHorizontalMenu(objShowEmptyingCalendar.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show menu for empty calendar 
-      html = objEmptyingCalendar.showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
+      html = showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
 
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);

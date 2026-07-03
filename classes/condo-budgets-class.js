@@ -12,11 +12,16 @@ class Budgets extends Condos {
     if (isClassDefined(className)) {
 
       budgetId = Number(document.querySelector(`.${className}`).value);
-      budgetId = (budgetId === 0) ? this.arrayBudgets.at(-1).budgetId : budgetId;
+      budgetId = (budgetId === 0)
+        ? this.arrayBudgets.at(-1)?.budgetId
+        ?? 0
+        : budgetId;
     } else {
 
       // Get last id in last object in budget array
-      budgetId = (this.arrayBudgets.length > 0) ? this.arrayBudgets.at(-1).budgetId : 0;
+      budgetId = (this.arrayBudgets.length > 0)
+        ? this.arrayBudgets.at(-1)?.budgetId ?? 0
+        : 0;
     }
 
     return budgetId;
@@ -56,7 +61,7 @@ class Budgets extends Condos {
     if (this.arrayBudgets.length > 0) {
       this.arrayBudgets.forEach((budget) => {
 
-        const accountName = (budget.accountId) ? objAccount.getAccountName(budget.accountId) : text;
+        const accountName = (budget.accountId) ? objAccounts.getAccountNameById(budget.accountId) : text;
         html += `
         <option 
           value=${budget.budgetId}

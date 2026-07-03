@@ -37,20 +37,20 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objBudget.showHorizontalMenu(objBudget.arrayMenuMain);
+      let html = showHorizontalMenu(objBudget.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objBudget.showHorizontalMenu(objBudget.arrayMenuTransaction);
+      html = showHorizontalMenu(objBudget.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objBudget.condominiumId, resident, objBudget.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objBudget.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objBudget.condominiumId, fixedCost);
 
       // Show header
-      showHeader();
+      //showHeader();
 
       // Show filter
       await objBudgets.loadBudgetsTable(objBudget.condominiumId, paramYear, objBudgets.nineNine);
@@ -142,7 +142,7 @@ async function events() {
         budgetId = Number(className.slice(prefix.length));
       }
 
-      deleteBudgetRow(budgetId, className);
+      awaitdeleteBudgetRow(budgetId, className);
 
       const year = Number(document.querySelector('.filterYear').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
@@ -252,6 +252,7 @@ function calculateSum() {
   document.querySelector('.sum2').value = sumAmount;
 };
 
+/*
 // Show header
 function showHeader() {
 
@@ -272,18 +273,19 @@ function showHeader() {
   html += objBudget.endTable();
   document.querySelector('.showHeader').innerHTML = html;
 }
+*/
 
 // Show filter
 function showFilter(budgetId) {
 
-   // Start frame
+  // Start frame
   let html = startFrame();
 
   // show filter
   html += startRow();
 
   // Show budgets
-  html += objBudgets.showSelectedBudgetsNew('Budsjett', 'filterProjectId',    '', budgetId, '', '', true);
+  html += objBudgets.showSelectedBudgetsNew('Budsjett', 'filterProjectId', '', budgetId, '', '', true);
   html += "</div>";
 
   // End filter frame
@@ -316,7 +318,7 @@ function showBudgets() {
  
     // accountId
     className = `accountId${budget.budgetId}`;
-    html += objAccount.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
+    html += objAccounts.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
  
     // due amount
     const amount = formatOreToKroner(budget.amount);
@@ -360,7 +362,8 @@ function showBudget(budgetId) {
   // row number budget
   const rowNumberBudget = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
 
-  let html = emptyRow();
+  // Empty line
+  let html = emptyLine();
 
   // Year
   /*
@@ -378,7 +381,7 @@ function showBudget(budgetId) {
     : objBudgets.arrayBudgets[rowNumberBudget].accountId;
   */
   const accountId = objBudgets.arrayBudgets[rowNumberBudget]?.accountId ?? 0;
-  html += objAccount.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
 
   // amount
   /*
@@ -433,7 +436,7 @@ function insertEmptyTableRow() {
   html += objBudget.showSelectedNumbers('year0', '', 2020, 2030, year, enableChanges);
 
   // accounts
-  html += objAccount.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
 
   const amount = "";
   html += objBudget.editTableCell('amount0', amount, 11, enableChanges);

@@ -14,11 +14,13 @@ class Condominium extends Condos {
     if (isClassDefined(className)) {
 
       condominiumId = Number(document.querySelector(`.${className}`).value);
-      condominiumId = (condominiumId === 0) ? this.arrayCondominiums.at(-1).condominiumId : condominiumId;
+      condominiumId = (condominiumId === 0) 
+      ? this.arrayCondominiums.at(-1)?.condominiumId ?? 0 
+      : condominiumId;
     } else {
 
       // Get last id in last object in condominium array
-      condominiumId = this.arrayCondominiums.at(-1).condominiumId;
+      condominiumId = this.arrayCondominiums.at(-1)?.condominiumId ?? 0;
     }
 
     return condominiumId;

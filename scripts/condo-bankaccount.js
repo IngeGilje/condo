@@ -3,7 +3,7 @@
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
-//const objAccounts = new Accounts('accounts');
+//const objAccount = new Account('account');
 const objCondominium = new Condominium('condominium');
 const objBankAccount = new BankAccount('bankaccount');
 
@@ -25,11 +25,11 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 } else {
 
   // Show main menu
-  let html = objBankAccount.showHorizontalMenu(objBankAccount.arrayMenuMain);
+  let html = showHorizontalMenu(objBankAccount.arrayMenuMain);
   document.querySelector('.menuMain').innerHTML = html;
 
   // Show condominium menu
-  html = objBankAccount.showHorizontalMenu(objBankAccount.arrayMenuCondominium);
+  html = showHorizontalMenu(objBankAccount.arrayMenuCondominium);
   document.querySelector('.menuCondominium').innerHTML = html;
 
   // Call main when script loads
@@ -42,7 +42,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
       const resident = 'Y';
       await objUser.loadUsersTable(objBankAccount.condominiumId, resident, objBankAccount.nineNine);
       const fixedCost = 'A';
-      //await objAccount.loadAccountsTable(objBankAccount.condominiumId, fixedCost);
+      //await objAccounts.loadAccountsTable(objBankAccount.condominiumId, fixedCost);
       await objCondominium.loadCondominiumsTable();
       await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, objBankAccount.nineNine);
 
@@ -95,11 +95,13 @@ async function events() {
 
       //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       let bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-      deleteBankAccountRow(bankAccountId);
+      await deleteBankAccountRow(bankAccountId);
       await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, objBankAccount.nineNine);
-      bankAccountId = (objBankAccount.arrayBankAccounts.length === 0)
+      const bankAccountId = (objBankAccount.arrayBankAccounts.length === 0)
         ? 0
-        : objBankAccount.arrayBankAccounts.at(-1).bankAccountId;
+        : objBankAccount.arrayBankAccounts.at(-1)?.bankAccountId ?? 0
+      //const bankAccountId = (objBankAccount.arrayBankAccounts.length === 0)
+      //  ? 0 ;
 
       //showHeader();
 
@@ -126,7 +128,7 @@ async function events() {
       //showHeader();
 
       // Show filter
-      const bankAccountId = objCondominium.arrayCondominiums.at(-1).condominiumId;
+      const bankAccountId = objCondominium.arrayCondominiums.at(-1)?.condominiumId ?? 0;
       //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, bankAccountId);
       showFilter();
@@ -196,8 +198,8 @@ function showFilter() {
 
   // Show bankaccounts
   // Get last id in last object in bankaccounts array
-  const bankAccountId = (objBankAccount.arrayBankAccounts.lenght !== 0)
-    ? objBankAccount.arrayBankAccounts.at(-1).bankAccountId
+  const bankAccountId = (objBankAccount.arrayBankAccounts.length !== 0)
+    ? objBankAccount.arrayBankAccounts.at(-1)?.bankAccountId ?? 0
     : 0;
   html += objBankAccount.showSelectedBankAccountsNew('Bankkonto', 'filterBankAccountId', '', bankAccountId, '', '', true);
 
@@ -215,7 +217,8 @@ function showBankAccount(bankAccountId) {
   // row number bank account
   const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
 
-  let html = emptyRow();
+  // Empty line
+  let html = emptyLine();
 
   // name
   html += startRow();
@@ -261,7 +264,7 @@ function showBankAccount(bankAccountId) {
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   closingBalanceDate = formatNumberToISODate(closingBalanceDate);
   html += editDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges)
- 
+
   // closing balance
   let closingBalance = (rowNumberBankAccount === -1)
     ? ''
@@ -395,7 +398,7 @@ async function updateBankAccountRow(bankAccountId) {
       // Insert the bankaccount row in bankaccounts table
       await objBankAccount.insertBankAccountsTable(objBankAccount.condominiumId, objBankAccount.user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
       await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, objBankAccount.nineNine);
-      bankAccountId = objBankAccount.arrayBankAccounts.at(-1).bankAccountId;
+      bankAccountId = objBankAccount.arrayBankAccounts.at(-1)?.bankAccountId ?? 0;
     }
 
     //showHeader();
@@ -456,7 +459,8 @@ function showBankAccount(bankAccountId) {
   // row number bank account
   const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
 
-  let html = emptyRow();
+  // Empty line
+  let html = emptyLine();
 
   // name
   html += startRow();
@@ -501,7 +505,7 @@ function showBankAccount(bankAccountId) {
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   closingBalanceDate = formatNumberToISODate(closingBalanceDate);
   html += editDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges)
- 
+
   // closing balance
   let closingBalance = (rowNumberBankAccount === -1)
     ? ''
@@ -510,7 +514,7 @@ function showBankAccount(bankAccountId) {
 
   html += showTextNew('Utgående saldo', 'closingBalance', closingBalance, enableChanges, "Utgående saldo");
   html += "</div>";
-  
+
   // Buttons
   if (enableChanges) {
 

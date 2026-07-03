@@ -14,14 +14,13 @@ class Accounts extends Condos {
 
       accountId = Number(document.querySelector(`.${className}`).value);
       accountId = (accountId === 0)
-        ? this.arrayAccounts.at(-1).accountId
+        ? this.arrayAccounts.at(-1)?.accountId ?? 0
         : accountId;
     } else {
 
       // Get last id in last object in account array
-      //accountId = this.arrayAccounts.at(-1).accountId;
       const accountId = (this.arrayAccounts.length > 0)
-        ? this.arrayAccounts.at(-1).accountId
+        ? this.arrayAccounts.at(-1)?.accountId ?? 0
         : 0;
     }
 
@@ -77,7 +76,7 @@ class Accounts extends Condos {
 
   /*
   // get account name
-  getAccountName(accountId) {
+  getAccountNameById(accountId) {
 
     let accountName = "-";
 
@@ -93,7 +92,7 @@ class Accounts extends Condos {
   */
 
   // Get account name
-  getAccountName(accountId) {
+  getAccountNameById(accountId) {
 
     accountId = Number(accountId);
     let accountName = '';

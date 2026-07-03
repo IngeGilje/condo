@@ -37,11 +37,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objCommonCost.showHorizontalMenu(objCommonCost.arrayMenuMain);
+      let html = showHorizontalMenu(objCommonCost.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = objCommonCost.showHorizontalMenu(objCommonCost.arrayMenuDue);
+      html = showHorizontalMenu(objCommonCost.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
 
       const resident = 'Y';
@@ -52,7 +52,7 @@ async function main() {
       await objBudgets.loadBudgetsTable(objCommonCost.condominiumId, objCommonCost.nineNine, objCommonCost.nineNine);
       await objBankAccount.loadBankAccountsTable(objCommonCost.condominiumId, objCommonCost.nineNine);
       const fixedCost = 'A';
-      await objAccount.loadAccountsTable(objCommonCost.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objCommonCost.condominiumId, fixedCost);
 
       // Show header
 
