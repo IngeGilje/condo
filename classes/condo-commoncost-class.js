@@ -81,6 +81,30 @@ class CommonCost extends Condos {
     }
   }
 
+  // Get the highest ID in the table
+  async getHighestCommonCostId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/commoncosts'
+      : 'http://localhost:3000/commoncosts';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestCommonCostId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (commoncosts)");
+      this.arrayCommonCosts = await response.json();
+    } catch (error) {
+      console.log("Error selecting commoncosts:", error);
+    }
+  }
+
   // update a commoncosts row
   async updateCommonCostsTable(user, commonCostId, year, commonCostSquareMeter, fixedCostCondo) {
 

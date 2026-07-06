@@ -62,6 +62,30 @@ class Due extends Condos {
     }
   }
 
+  // Get the highest ID in the table
+  async getHighestDueId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/dues'
+      : 'http://localhost:3000/dues';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestDueId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (dues)");
+      this.arrayDues = await response.json();
+    } catch (error) {
+      console.log("Error selecting dues:", error);
+    }
+  }
+
   // update due row in dues table
   async updateDuesTable(dueId, user, condoId, accountId, amount, date, kilowattHour, text) {
 

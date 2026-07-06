@@ -119,6 +119,30 @@ class User extends Condos {
     }
   }
 
+  // Get the highest ID in the table
+  async getHighestUserId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/accounts'
+      : 'http://localhost:3000/users';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestAccountId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (users)");
+      this.arrayAccounts = await response.json();
+    } catch (error) {
+      console.log("Error selecting users:", error);
+    }
+  }
+
   // get all users even they are deleted
   async loadAllUsersTable() {
 

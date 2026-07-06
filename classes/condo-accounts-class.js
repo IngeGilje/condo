@@ -74,23 +74,6 @@ class Accounts extends Condos {
     return accountId;
   }
 
-  /*
-  // get account name
-  getAccountNameById(accountId) {
-
-    let accountName = "-";
-
-    // Account name from account table
-    const rowNumberAccount = this.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (rowNumberAccount !== -1) {
-
-      accountName = objAccounts.arrayAccounts[rowNumberAccount].name;
-    }
-
-    return accountName;
-  }
-  */
-
   // Get account name
   getAccountNameById(accountId) {
 
@@ -255,7 +238,9 @@ class Accounts extends Condos {
   // get accounts from accounts table
   async loadAccountsTable(condominiumId, fixedCost) {
 
-    const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
+    const URL = (this.serverStatus === 1) 
+    ? '/api/accounts' 
+    : 'http://localhost:3000/accounts';
     try {
 
       // POST request
@@ -278,7 +263,31 @@ class Accounts extends Condos {
     }
   }
 
-  // update account row
+  // Get the highest ID in the table
+  async getHighestAccountId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/accounts'
+      : 'http://localhost:3000/accounts';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestAccountId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (accounts)");
+      this.arrayAccounts = await response.json();
+    } catch (error) {
+      console.log("Error selecting accounts:", error);
+    }
+  }
+
+    // update account row
   async updateAccountsTable(user, accountId, fixedCost, accountName) {
 
     const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
@@ -360,6 +369,4 @@ class Accounts extends Condos {
       console.log("Error delete accounts:", error);
     }
   }
-
-
 }

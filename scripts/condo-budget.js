@@ -191,20 +191,20 @@ async function updateBudgetsRow(budgetId) {
   className = `.accountId${budgetId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${budgetId}`;
-  const validAccountId = validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
+  const validAccountId = validateInterval(className, '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
 
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
   amount = Number(formatKronerToOre(amount));
   className = `amount${budgetId}`;
-  let validAmount = validateInterval(className, columnWidths, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
+  let validAmount = validateInterval(className, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
 
   // year
   className = `.year${budgetId}`;
   let year = Number(document.querySelector(`${className}`).value);
   className = `year${budgetId}`;
-  const validYear = validateInterval(className, columnWidths, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
+  const validYear = validateInterval(className, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
 
   // text
   className = `.text${budgetId}`;
@@ -233,7 +233,22 @@ async function updateBudgetsRow(budgetId) {
     accountId = Number(document.querySelector('.filterAccountId').value);
     year = Number(document.querySelector('.filterYear').value);
     await objBudgets.loadBudgetsTable(objBudget.condominiumId, year, accountId);
-    showBudgets(3);
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterBudgetId', false, 'white');
+    }
+
+    // show filter
+    showFilter(budgetId);
+
+    // Show budget
+    showBudget(budgetId);
   }
 }
 
@@ -252,29 +267,6 @@ function calculateSum() {
   document.querySelector('.sum2').value = sumAmount;
 };
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objBudget.initializeTable(columnWidths);
-
-  // start table body
-  html += objBudget.startTableBody();
-
-  // show main header
-  html += objBudget.showTableHeaderLogOut('', '', 'Budsjett', '');
-  html += "</tr>";
-
-  // end table body
-  html += objBudget.endTableBody();
-
-  // The end of the table
-  html += objBudget.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter(budgetId) {
 
@@ -282,79 +274,17 @@ function showFilter(budgetId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show budgets
   html += objBudgets.showSelectedBudgetsNew('Budsjett', 'filterProjectId', '', budgetId, '', '', true);
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
-
-/*
-// Show transactions
-function showBudgets() {
- 
-  // start table
-  let html = objBudget.initializeTable(columnWidths);
- 
-  // Table header (<tr></tr>)
-  html += objBudget.showTableHeaderMenu('#e0f0e0', 'center', 'År', 'Konto', 'Budsjett', 'Tekst', '');
- 
-  let sumAmount = 0;
- 
-  objBudgets.arrayBudgets.forEach((budget) => {
- 
-    // Show menu
-    html += objBudget.insertTableRow('');
- 
-    // Year (<td></td>)
-    const year = Number(budget.year);
-    let className = `year${budget.budgetId}`;
-    html += objBudget.showSelectedNumbers(className, '', 2020, 2030, year, enableChanges);
- 
-    // accountId
-    className = `accountId${budget.budgetId}`;
-    html += objAccounts.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
- 
-    // due amount
-    const amount = formatOreToKroner(budget.amount);
-    className = `amount${budget.budgetId}`;
-    html += objBudget.editTableCell(className, amount, 11, enableChanges);
- 
-    // text
-    const text = (budget.text === null) ? '' : budget.text;
-    className = `text${budget.budgetId}`;
-    html += objBudget.editTableCell(className, text, 45, enableChanges);
- 
-    // Delete
-    className = `delete${budget.budgetId}`;
-    html += objBudget.showButton(className, 'Slett');
-    html += "</tr>";
- 
-    // accumulate
-    sumAmount += Number(budget.amount);
-  });
- 
-  // Insert empty table row for insertion
-  if (enableChanges) {
- 
-    html += insertEmptyTableRow();
-  }
- 
-  // Show table sum row
-  sumAmount = formatOreToKroner(sumAmount);
- 
-  html += objBudget.insertTableRow('font-weight: 600;', '', 'Sum', sumAmount, '', '');
- 
-  // The end of the table
-  html += objBudget.endTable();
-  document.querySelector('.result').innerHTML = html;
-}
-*/
 
 // Show budget
 function showBudget(budgetId) {
@@ -403,26 +333,34 @@ function showBudget(budgetId) {
   html += showTextNew('Tekst', 'text', text, enableChanges, "Tekst");
   html += "</div>";
 
-
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
-  html += startRow();
+  html += startLine();
   html += showButtonNew('back', 'Tilbake');
   html += "</div>";
 
   document.querySelector('.showBudget').innerHTML = html;
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
+
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+        disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterBudgetId', false, 'white');
+  }
 }
 
 /*

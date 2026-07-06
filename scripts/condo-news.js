@@ -44,21 +44,18 @@ async function main() {
       let newsId = 0;
       if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews[0].newsId;
 
-      // Show header
-      showHeader();
-
       // Show filter
       showFilter(newsId);
 
       // Show news
-      editNews(newsId);
+      showNews(newsId);
 
       // Events
       events();
     }
   } else {
 
-    showMessageNew( 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -70,7 +67,7 @@ async function events() {
     if (event.target.classList.contains('filterNewsId')) {
 
       const newsId = Number(document.querySelector('.filterNewsId').value);
-      editNews(newsId);
+      showNews(newsId);
     };
   });
 
@@ -80,7 +77,7 @@ async function events() {
 
       // Update a news row
       const newsId = document.querySelector('.filterNewsId').value;
-      updateCondoRow(newsId);
+      updateNewsRow(newsId);
     };
   });
 
@@ -88,23 +85,27 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      awaitdeleteCondoRow();
+      let newsId = Number(document.querySelector('.filterNewsId').value);
+      await deleteNewsRow(newsId);
 
+      // Show last row in news tabel
+      await objNews.getHighestNewsId(objNews.condominiumId);
+      newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
       // Show filter
-      const newsId = (objNews.arrayNews.length > 0)
-        ? objNews.arrayNews[0].newsId
-        : 0;
       showFilter(newsId);
-      editNews(newsId);
+
+      // Show news
+      showNews(newsId);
     };
   });
 
-  // Insert a news row
+  // insert a new news row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('insert')) {
 
+      // Insert new news row
       resetValues();
     };
   });
@@ -119,7 +120,11 @@ async function events() {
       let newsId = Number(document.querySelector('.filterNewsId').value);
       if (newsId === 0) newsId = objNews.arrayNews[0].newsId;
 
-      editNews(2, newsId);
+      // Show filter
+      showFilter(newsId);
+
+      // show news
+      showNews(newsId);
     };
   });
 
@@ -136,177 +141,112 @@ async function events() {
   });
 }
 
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objNews.initializeTable(columnWidths);
-
-  // start table body
-  html += objNews.startTableBody();
-
-  // show main header
-  html += objNews.showTableHeaderLogOut('', 'Nyheter');
-  html += "</tr>";
-
-  // end table body
-  html += objNews.endTableBody();
-
-  // The end of the table
-  html += objNews.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-
 // Show filter
 function showFilter(newsId) {
 
-    // Start frame
+  // Start frame
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
-    // Show news
+  // Show news
   html += objNews.showSelectedNewsNew('Nyhet', 'filterNewsId', '', newsId, '', '', true);
 
-   html += "</div>";
+  //html += "</div>";
 
-   // End filter frame
+  // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show news
-function editNews(newsId) {
-
-  // start table
-  let html = objNews.initializeTable(columnWidths);
+function showNews(newsId) {
 
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
 
-  // date
-  html += objNews.showTableHeaderMenu('', 'center', 'Dato', 'Forfatter', '');
+  // Empty line
+  let html = emptyLine();
 
-  // Date, userId
-  // insert a table row (<tr></td>)
-  html += objNews.insertTableRow('');
-
-  // date
-  let date = (rowNumberNews === -1)
-    ? getCurrentDate()
-    : objNews.arrayNews[rowNumberNews].date;
-  date = formatNumberToNorDate(date);
-  html += objNews.editTableCell('date', date, 10, enableChanges);
+  // news date
+  html += startLine();
+  let newsDate = objNews.arrayNews[rowNumberNews]?.date ?? 0;
+  newsDate = formatNumberToISODate(newsDate);
+  html += showDate('Dato', 'newsDate', newsDate, enableChanges);
+  html += "</div>";
 
   // userId
-  const userId = (rowNumberNews === -1)
-    ? Number(objNews.userId)
-    : Number(objNews.arrayNews[rowNumberNews].userId);
-  html += objUser.showSelectedUsers('userId', '', userId, 'Velg forfatter', '', enableChanges);
-  html += "<td></td></tr>";
+  html += startLine();
+  const userId = objNews.arrayNews[rowNumberNews]?.userId ?? 0;
+  html += objUser.showSelectedUsersNew('Forfatter', 'userId', '', userId, 'Velg forfatter', '', true);
+  html += "</div>";
 
   // title
-  html += objNews.showTableHeaderMenu('', 'center', '', 'Tittel', '');
-
-  // insert a table row (<tr></td>)
-  html += objNews.insertTableRow('');
-
-  const title = (rowNumberNews === -1)
-    ? ''
-    : objNews.arrayNews[rowNumberNews].title;
-  html += objNews.editTableCell('title', title, 255, enableChanges, 3);
-  html += "</tr>";
-
-  // image
-  html += objNews.showTableHeaderMenu('', 'center', '', 'Bilde', '');
-
-  // insert a table row (<tr></td>)
-  html += objNews.insertTableRow('');
-
-  const image = (rowNumberNews === -1)
-    ? ''
-    : objNews.arrayNews[rowNumberNews].image;
-  html += objNews.editTableCell('image', image, 255, enableChanges, 3);
-  html += "</tr>";
+  html += startLine();
+  const title = objNews.arrayNews[rowNumberNews]?.title ?? '';
+  html += showTextArea('Tittel', 'title', title, 45, enableChanges, 2);
+  html += "</div>";
 
   // content
-  html += objNews.showTableHeaderMenu('', 'center', '', 'Innhold', '');
+  html += startLine();
+  const content = objNews.arrayNews[rowNumberNews]?.content ?? '';
+  html += showTextArea('Innhold', 'content', content, 512, enableChanges, 6);
+  html += "</div>";
 
-  // insert a table row (<tr></td>)
-  html += objNews.insertTableRow('');
-
-  const content = (rowNumberNews === -1)
-    ? ''
-    : objNews.arrayNews[rowNumberNews].content;
-  html += objNews.textAreaTableColumn('content', content, 512, enableChanges, 3, 3);
-  html += "</tr>";
-
-  // insert a table row 
-  html += "<tr><td></td><td></td><td></td></tr>";
-
-  // insert a table row 
-  html += "<tr><td></td><td></td><td></td></tr>";
-
-  // insert a table row (<tr></td>)
-  html += objNews.insertTableRow('');
-  html += "<td></td><td></td></tr>";
-
-  // Show buttons (<tr></td>)
+  // Buttons
   if (enableChanges) {
 
-    // insert a table row (<tr></td>)
-    html += objNews.insertTableRow('');
+    html += startLine();
+    html += showButtonNew('update', 'Oppdater');
+    html += showButtonNew('cancel', 'Angre');
+    html += "</div>";
 
-    html += objNews.showButton('update', 'Oppdater');
-    html += objNews.showButton('cancel', 'Angre');
-    html += "<td></td></tr>";
-
-    // insert a table row (<tr></td>)
-    html += objNews.insertTableRow('');
-
-    html += objNews.showButton('delete', 'Slett');
-    html += objNews.showButton('insert', 'Ny');
-    html += "<td></td></tr>";
+    html += startLine();
+    html += showButtonNew('delete', 'Slett');
+    html += showButtonNew('insert', 'Ny');
+    html += "</div>";
   }
 
-  // The end of the table
-  html += objNews.endTable();
-  document.querySelector('.news').innerHTML = html;
+  document.querySelector('.showNews').innerHTML = html;
 
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterNewsId', false, 'white');
+  }
 }
 
 // Update a news row
-async function updateCondoRow(newsId) {
+async function updateNewsRow(newsId) {
 
   if (newsId === '') newsId = -1
   newsId = Number(newsId);
-  const validNewsId = validateInterval('newsId', columnWidths, '', 'Ugyldig leilighet', true, newsId, -1, objNews.nineNine);
+  const validNewsId = validateInterval('newsId', '', 'Ugyldig leilighet', true, newsId, -1, objNews.nineNine);
 
   // validate title
   const title = document.querySelector('.title').value;
-  const validTitle = validateText('title', columnWidths, '', 'Ugyldig tittel', true, title, 3, 45);
+  const validTitle = validateTextNew('title', '', 'Ugyldig tittel', true, title, 3, 45);
 
   // validate date
-  let date = document.querySelector('.date').value;
+  let date = document.querySelector('.newsDate').value;
   date = Number(objNews.formatDateToNumber(date));
-  const validDate = validateInterval('date', columnWidths, '', 'Ugyldig dato', true, date, 1, objNews.nineNine);
+  const validDate = validateInterval('date', '', 'Ugyldig dato', true, date, 1, objNews.nineNine);
 
   // validate userId  
   const userId = Number(document.querySelector('.userId').value);
-  const validUserId = validateInterval('userId', columnWidths, '', 'Ugyldig forfatter', true, userId, 1, objNews.nineNine);
-
-  // validate image
-  const image = document.querySelector('.image').value.trim();
-  const validImage = objNews.validateText('image', columnWidths, '', 'Ugyldig bilde', true, image, 0, 255);
+  const validUserId = validateInterval('userId', '', 'Ugyldig forfatter', true, userId, 1, objNews.nineNine);
 
   // clean content
   let content = document.querySelector('.content').value.trim();
-  content = content.replace(/<[^>]*>?/gm, "");
+  //content = content.replace(/<[^>]*>?/gm, "");
+  const validContent = validateTextNew('content', '', 'Ugyldig innhold', true, content, 3, 512);
 
-  if (validNewsId && validTitle && validDate && validUserId && validImage) {
+  if (validNewsId && validTitle && validDate && validUserId && validContent) {
 
     document.querySelector('.showMessage').style.display = "none";
 
@@ -315,24 +255,33 @@ async function updateCondoRow(newsId) {
     if (rowNumberNews !== -1) {
 
       // update the news row
-      await objNews.updateNewsTable(newsId, objNews.user, date, userId, title, content, image);
+      await objNews.updateNewsTable(newsId, objNews.user, date, userId, title, content, '');
       await objNews.loadNewsTable(objNews.condominiumId, newsId);
     } else {
 
       // Insert the news row in news table
-      await objNews.insertNewsTable(objNews.condominiumId, objNews.user, date, userId, title, content, image);
-      await objNews.loadNewsTable(objNews.condominiumId, newsId);
-      document.querySelector('.filterNewsId').value = newsId;
+      debugger;
+      await objNews.insertNewsTable(objNews.condominiumId, objNews.user, date, userId, title, content, '');
+      await objNews.getHighestNewsId(objNews.condominiumId);
+      newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;
+      await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
     }
 
+    removeMessage();
 
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterNewsId', false, 'white');
+    }
+
+    // Show filter
     showFilter(newsId);
-    editNews(newsId);
 
-    objNews.removeMessage();
-    document.querySelector('.filterNewsId').disabled = false;
-    document.querySelector('.delete').disabled = false;
-    document.querySelector('.insert').disabled = false;
+    // Show news
+    showNews(newsId);
   }
 }
 
@@ -341,8 +290,9 @@ function resetValues() {
 
   document.querySelector('.filterNewsId').value = '';
 
-  // date
-  document.querySelector('.date').value = '';
+  // news date
+  const newsDate = getCurrentISODate();
+  document.querySelector('.newsDate').value = newsDate;
 
   // title
   document.querySelector('.title').value = '';
@@ -350,26 +300,23 @@ function resetValues() {
   //  content
   document.querySelector('.content').value = '';
 
-  //image  
-  document.querySelector('.image').value = '';
-
   // userId
   document.querySelector('.userId').value = '';
 
   document.querySelector('.filterNewsId').disabled = true;
 
+  // Buttons
+  removeMessage();
   if (enableChanges) {
-    document.querySelector('.delete').disabled = true;
-    document.querySelector('.insert').disabled = true;
-    document.querySelector('.cancel').disabled = false;
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterNewsId', true);
   }
 }
 
 // Delete news row
-async function deleteCondoRow() {
-
-  // newsId
-  const newsId = Number(document.querySelector('.filterNewsId').value);
+async function deleteNewsRow(newsId) {
 
   // Check if news number exist
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);

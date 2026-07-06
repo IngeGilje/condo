@@ -138,7 +138,7 @@ class News extends Condos {
         ${label}
       </label>
       <select 
-        class="${className} center one-line"
+        class="${className} left one-line"
         ${(enableChanges) ? '' : 'readonly'}
       >`;
 
@@ -228,6 +228,54 @@ class News extends Condos {
       this.arrayNews = await response.json();
     } catch (error) {
       console.log("Error loading News:", error);
+    }
+  }
+
+  // Get the highest ID in the table
+  async getHighestEmptyingCalendarId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/emptyingcalendar'
+      : 'http://localhost:3000/emptyingcalendar';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestEmptyingCalendarId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (emptyingcalendar)");
+      this.arrayEmptyingCalendars = await response.json();
+    } catch (error) {
+      console.log("Error selecting emptying calendars:", error);
+    }
+  }
+  
+  // Get the highest ID in the table
+  async getHighestNewsId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/news'
+      : 'http://localhost:3000/news';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestNewsId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (news)");
+      this.arrayNews = await response.json();
+    } catch (error) {
+      console.log("Error selecting news:", error);
     }
   }
 

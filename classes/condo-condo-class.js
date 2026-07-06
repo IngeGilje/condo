@@ -275,9 +275,6 @@ class Condo extends Condos {
 
     html += `
       </select >
-      <label>
-        ${label}
-      </label>
     </div>`;
 
     return html;
@@ -307,6 +304,30 @@ class Condo extends Condos {
       this.arrayCondo = await response.json();
     } catch (error) {
       console.log("Error loading condos:", error);
+    }
+  }
+
+  // Get the highest ID in the table
+  async getHighestCondoId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/condo'
+      : 'http://localhost:3000/condo';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestCondoId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (condo)");
+      this.arrayCondo = await response.json();
+    } catch (error) {
+      console.log("Error selecting condos:", error);
     }
   }
 

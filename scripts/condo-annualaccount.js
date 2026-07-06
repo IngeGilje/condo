@@ -199,29 +199,6 @@ function getBudgetAmount(accountId, year) {
   return formatOreToKroner(amount);
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objAnnualAccount.initializeTable(columnWidths);
-
-  // start table body
-  html += objAnnualAccount.startTableBody();
-
-  // show main header
-  html += objAnnualAccount.showTableHeaderLogOut('', '', 'Årsregnskap', '');
-  html += "</tr>";
-
-  // end table body
-  html += objAnnualAccount.endTableBody();
-
-  // The end of the table
-  html += objAnnualAccount.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter(budgetYear, fromDate, toDate) {
 
@@ -229,23 +206,23 @@ function showFilter(budgetYear, fromDate, toDate) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show year
   html += showSelectedNumbersNew('År', 'filterBudgetYear', '', 2020, 2030, budgetYear, true);
 
   // From date
-  html += editDate('Fra Dato', 'filterFromDate', fromDate, true)
+  html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
 
    // To date
   // Current date
-  html += editDate('Til Dato', 'filterToDate', toDate, true)
+  html += showDate('Til Dato', 'filterToDate', toDate, true)
 
  // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(budgetYear);
   html += objAnnualAccount.editAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
 
-   html += "</div>";
+   //html += "</div>";
 
    // End filter frame
   html += "</div>";
@@ -340,8 +317,6 @@ function showAnnualAccounts() {
   // The end of the table
   html += objAnnualAccount.endTable();
   document.querySelector('.annualaccount').innerHTML = html;
-
-
 }
 
 // Show income for next year
@@ -548,8 +523,6 @@ function showBankDeposit() {
   // The end of the table
   html += objAnnualAccount.endTable();
   document.querySelector('.bankDeposit').innerHTML = html;
-
-
 }
 
 // get price per squaremeter

@@ -165,29 +165,6 @@ async function events() {
   });
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objProject.initializeTable(columnWidths);
-
-  // start table body
-  html += objProject.startTableBody();
-
-  // show main header
-  html += objProject.showTableHeaderLogOut('', '', 'Prosjekt', '');
-  html += "</tr>";
-
-  // end table body
-  html += objProject.endTableBody();
-
-  // The end of the table
-  html += objProject.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter(projectId) {
 
@@ -195,63 +172,18 @@ function showFilter(projectId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show projects
   html += objProject.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', '', true);
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
-
-/*
-// Sow project
-function showProject() {
-
-  // start table
-  let html = objProject.initializeTable(columnWidths);
-
-  html += objProject.showTableHeaderMenu('#e0f0e0', 'center', '', '', 'Navn', 'Beløp', '');
-
-  objProject.arrayProjects.forEach((project) => {
-
-    // insert a table row (<tr></td>)
-    html += objProject.insertTableRow('', '', '');
-
-    // name
-    let name = project.name;
-    let className = `name${project.projectId}`;
-    html += objProject.editTableCell(className, name, 45, enableChanges);
-
-    // amount
-    let amount = project.amount;
-    amount = formatOreToKroner(amount);
-    className = `amount${project.projectId}`;
-    html += objProject.editTableCell(className, amount, 11, enableChanges);
-
-    // Delete
-    className = `delete${project.projectId}`;
-    html += objProject.showButton(className, 'Slett');
-    html += "</tr>";
-  });
-
-  if (enableChanges) {
-
-    // Insert empty table row for insertion
-    html += insertEmptyTableRow();
-  };
-
-  html += objProject.insertTableRow('', '', '', '', '', '');
-
-  // The end of the table
-  html += objProject.endTable();
-  document.querySelector('.showProject').innerHTML = html;
-}
-*/
 
 // Delete a projects row
 async function deleteProjectsRow(projectId) {
@@ -343,7 +275,7 @@ let html = emptyLine();
   html += "</div>";
 
   // amount
-  html += startRow();
+  html += startLine();
 
   // amount
   let amount = objProject.arrayProjects[rowNumberProject]?.amount ?? '';
@@ -354,20 +286,29 @@ let html = emptyLine();
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
-  html += startRow();
+  html += startLine();
   html += showButtonNew('back', 'Tilbake');
   html += "</div>";
 
   document.querySelector('.showProject').innerHTML = html;
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
+
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+          disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterProjectId', false, 'white');
+  }
 }

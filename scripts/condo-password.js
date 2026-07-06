@@ -162,12 +162,10 @@ function showFilter(userId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show users
   html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
-
-  "</div>";
 
   // End filter frame
   html += "</div>";
@@ -185,7 +183,7 @@ function showUser(userId) {
   let html = emptyLine();
 
   // Password, securitylevel
-  html += startRow();
+  html += startLine();
 
   // password
   const password = (rowNumberUser === -1)
@@ -204,65 +202,18 @@ function showUser(userId) {
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
   document.querySelector('.result').innerHTML = html;
 }
-
-/*
-// start table
-let html = objUser.initializeTable(columnWidths);
-
-// Check if users row exist
-const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
-if (rowNumberUser !== -1) {
-
-  // password, securityLevel,
-  //html += "<tr>";
-
-  html += objUser.showTableHeaderMenu('', 'centrum', 'Passord', 'Sikkerhetsnivå');
-
-  // insert a table row (<tr></td>)
-
-  html += objUser.insertTableRow('');
-
-  // password
-  html += objUser.inputTablePassword('password', '', 45);
-
-  // securityLevel (<td></td>)
-  html += objUser.showSelectedNumbers('securityLevel', '', 1, 9, objUser.arrayUsers[rowNumberUser].securityLevel, enableChanges);
-
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-
-  html += objUser.insertTableRow('');
-  html += "<td></td><td></td></tr>";
-
-  // show buttons
-
-  // insert a table row (<tr></td>)
-
-  html += objUser.insertTableRow('');
-
-  html += objUser.showButton('update', 'Oppdater');
-  html += "<td></td></tr>";
-
-  // The end of the table
-  html += objUser.endTable();
-  document.querySelector('.result').innerHTML = html;
-
-
-}
-*/
 
 // Update a users row
 async function updateUserRow(userId) {

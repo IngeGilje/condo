@@ -281,64 +281,19 @@ function showFilter(projectId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show projects
   html += objProjects.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, 'Velg prosjekt', '', true);
 
   // End row
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
-
-/*
-// Show projects
-function showProjects(projectId) {
-
-  // start table
-  let html = objProjects.initializeTable(columnWidths);
-
-  html += objProjects.showTableHeaderMenu('#e0f0e0', 'center', '', '', 'Navn', 'Beløp', '');
-
-  objProjects.arrayProjects.forEach((project) => {
-
-    // insert a table row (<tr></td>)
-    html += objProjects.insertTableRow('', '', '');
-
-    // name
-    let name = project.name;
-    let className = `name${project.projectId}`;
-    html += objProjects.editTableCell(className, name, 45, enableChanges);
-
-    // amount
-    let amount = project.amount;
-    amount = formatOreToKroner(amount);
-    className = `amount${project.projectId}`;
-    html += objProjects.editTableCell(className, amount, 11, enableChanges);
-
-    // Delete
-    className = `delete${project.projectId}`;
-    html += objProjects.showButton(className, 'Slett');
-    html += "</tr>";
-  });
-
-  if (enableChanges) {
-
-    // Insert empty table row for insertion
-    html += insertEmptyTableRow();
-  };
-
-  html += objProjects.insertTableRow('', '', '', '', '', '');
-
-  // The end of the table
-  html += objProjects.endTable();
-  document.querySelector('.showProjectTransactions').innerHTML = html;
-}
-*/
 
 /*
 // Delete a projects row

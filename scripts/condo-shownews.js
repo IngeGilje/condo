@@ -45,7 +45,6 @@ async function main() {
       if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;
 
       // Show news
-
       showNews();
 
       // Events

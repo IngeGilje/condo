@@ -94,7 +94,7 @@ async function events() {
     const arrayPrefixes = ['update'];
     if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
 
-    const accountId = document.querySelector('.filterAccountId').value;
+      const accountId = document.querySelector('.filterAccountId').value;
       updateAccountsRow(accountId);
     };
   });
@@ -163,30 +163,17 @@ function resetValues() {
 
   // Fixed cost
   document.querySelector('.select-accounts-fixedCost').value = '';
+
+  // Buttons
+  removeMessage();
+  if (enableChanges) {
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('update', true);
+    disableButton('cancel', false);
+    disableButton('filterFixedCost', true);
+  }
 }
-
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objAccount.initializeTable(columnWidths);
-
-  // start table body
-  html += objAccount.startTableBody();
-
-  // show main header
-  html += objAccount.showTableHeaderLogOut('', 'Konto');
-  html += "</tr>";
-
-  // end table body
-  html += objAccount.endTableBody();
-
-  // The end of the table
-  html += objAccount.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
 
 // Show filter
 function showFilter(accountId) {
@@ -195,68 +182,19 @@ function showFilter(accountId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show types of account
-  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId',    '', accountId,         '',        '', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', '', true);
 
   // End line 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
-
-/*
-// Show accounts
-function showAccounts() {
-
-  // start table
-  let html = objAccount.initializeTable(columnWidths);
-
-  // Table header (<tr></tr>)
-  html += objAccount.showTableHeaderMenu('#e0f0e0', 'center', 'Kostnadstype', 'Tekst', '');
-
-  objAccounts.arrayAccounts.forEach((account) => {
-
-    // Show menu
-    html += objAccount.insertTableRow('');
-
-    // fixed cost
-    let selected = "Ugyldig verdi";
-    if (account.fixedCost === 'Y') selected = constFixedCost;
-    if (account.fixedCost === 'N') selected = constVariableCost;
-
-    let className = `fixedCost${account.accountId}`;
-    html += objAccount.showSelectedValues(className, '', enableChanges, selected, constFixedCost, constVariableCost);
-
-    // name
-    const name = account.name;
-    className = `name${account.accountId}`;
-    html += objAccount.editTableCell(className, name, 45, enableChanges);
-
-    // Edit
-    className = `edit${account.accountId}`;
-    html += objAccount.showButton(className, 'Endre');
-    html += "</tr>";
-  });
-
-  // Make one last table row for insertion in table 
-
-  if (enableChanges) {
-
-    // Insert empty table row for insertion
-
-    html += insertEmptyTableRow();
-  };
-
-  // The end of the table
-  html += objAccount.endTable();
-  document.querySelector('.showAccounts').innerHTML = html;
-}
-*/
 
 // Show account
 function showAccount(accountId) {
@@ -267,7 +205,7 @@ function showAccount(accountId) {
   let html = emptyLine();
 
   // fixed cost
-  html += startRow();
+  html += startLine();
 
   let selected = "Ugyldig verdi";
   if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'Y') selected = constFixedCost;
@@ -278,7 +216,7 @@ function showAccount(accountId) {
   html += "</div>";
 
   // name
-  html += startRow();
+  html += startLine();
 
   const name = objAccounts.arrayAccounts[rowNumberAccount]?.name ?? '';
   html += showTextNew('Kontonavn', 'name', objAccounts.arrayAccounts[rowNumberAccount].name.trim(), enableChanges, 'Kontonavn');
@@ -287,46 +225,32 @@ function showAccount(accountId) {
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
 
-  html += startRow();
-    html += showButtonNew('back', 'Tilbake');
-    html += "</div>";
+  html += startLine();
+  html += showButtonNew('back', 'Tilbake');
+  html += "</div>";
 
   document.querySelector('.showAccount').innerHTML = html;
+
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterAccountId', false, 'white');
+  }
 }
-
-/*
-// Insert empty table row
-function insertEmptyTableRow() {
-
-  let html = "";
-
-  // Show menu
-  // insert a table row (<tr></td>)
-  html += objAccount.insertTableRow('');
-
-  // Fixed cost
-  html += objAccount.showSelectedValues('fixedCost0', '', enableChanges, 'Velg kostnadstype', constFixedCost, constVariableCost, 'Velg kostnadstype');
-
-  // name
-  html += objAccount.editTableCell('name0', '', 45, enableChanges);
-
-  // Insert new account
-  html += "<td>Ny konto</td></tr>";
-
-  return html;
-}
-*/
 
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
@@ -350,8 +274,8 @@ async function updateAccountsRow(accountId) {
 
   // name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew(  '.name',   '', 'Ugyldig kontonavn',               true, name,          3,       50);
-  
+  const validName = validateTextNew('.name', '', 'Ugyldig kontonavn', true, name, 3, 50);
+
   className = `.fixedCost${accountId}`;
   let fixedCost = document.querySelector(className).value;
   className = `fixedCost${accountId}`;
@@ -379,6 +303,16 @@ async function updateAccountsRow(accountId) {
 
     fixedCost = 'A';
     await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterAccountId', false, 'white');
+    }
+
+    showFilter(accountId);
 
     // Show account
     showAccount(accountId);

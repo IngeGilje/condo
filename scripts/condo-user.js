@@ -66,7 +66,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew( 'condo-server.js er ikke startet.');
+    showMessageNew('condo-server.js er ikke startet.');
   }
 }
 
@@ -180,10 +180,13 @@ function resetValues() {
 
   document.querySelector('.filterUserId').disabled = true;
 
+  // Buttons
+  removeMessage();
   if (enableChanges) {
-    document.querySelector('.delete').disabled = true;
-    document.querySelector('.insert').disabled = true;
-    document.querySelector('.cancel').disabled = false;
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterUserId', true);
   }
 }
 
@@ -215,12 +218,12 @@ function showFilter(userId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show users
   html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -235,10 +238,10 @@ function showUser(userId) {
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
 
   // Empty line
-let html = emptyLine();
+  let html = emptyLine();
 
   // email
-  html += startRow();
+  html += startLine();
   const email = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].email.trim();
@@ -246,7 +249,7 @@ let html = emptyLine();
   html += "</div>";
 
   // condoId
-  html += startRow();
+  html += startLine();
   const condoId = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].condoId;
@@ -254,7 +257,7 @@ let html = emptyLine();
   html += "</div>";
 
   // first Name, last Name
-  html += startRow();
+  html += startLine();
 
   // first Name
   const firstName = (rowNumberUser === -1)
@@ -270,7 +273,7 @@ let html = emptyLine();
   html += "</div>";
 
   // phone, activ user
-  html += startRow();
+  html += startLine();
 
   // phone
   const phone = (rowNumberUser === -1)
@@ -289,19 +292,28 @@ let html = emptyLine();
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
 
   document.querySelector('.showUser').innerHTML = html;
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
+
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
+
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+                 disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterUserId', false, 'white');
+  }
 }
 
 // Update a users row
@@ -343,7 +355,7 @@ async function updateUserRow(userId) {
     }
   } else {
 
-    showMessageNew( 'Ugyldig email.');
+    showMessageNew('Ugyldig email.');
   }
 
   // condoId
@@ -390,14 +402,21 @@ async function updateUserRow(userId) {
       document.querySelector('.filterUserId').value = userId;
     }
 
-    // Show filter
-    showFilter(userId);
-    showUser(userId);
-    objUser.removeMessage();
+    removeMessage();
 
-    document.querySelector('.filterUserId').disabled = false;
-    document.querySelector('.delete').disabled = false;
-    document.querySelector('.insert').disabled = false;
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+                   disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterUserId', false, 'white');
+    }
+
+    // show filter
+    showFilter(userId);
+
+    // Show transaction
+    showUser(userId);
   }
 }
 

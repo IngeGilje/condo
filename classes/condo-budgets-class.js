@@ -61,7 +61,9 @@ class Budgets extends Condos {
     if (this.arrayBudgets.length > 0) {
       this.arrayBudgets.forEach((budget) => {
 
-        const accountName = (budget.accountId) ? objAccounts.getAccountNameById(budget.accountId) : text;
+        const accountName = (budget.accountId) 
+        ? objAccounts.getAccountNameById(budget.accountId) 
+        : text;
         html += `
         <option 
           value=${budget.budgetId}
@@ -147,6 +149,31 @@ class Budgets extends Condos {
       console.log("Error loading budgets:", error);
     }
   }
+
+  // Get the highest ID in the table
+  async getHighestBudgetId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/budgets'
+      : 'http://localhost:3000/budgets';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestBudgetId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (budgets)");
+      this.arrayBudgets = await response.json();
+    } catch (error) {
+      console.log("Error selecting budgets:", error);
+    }
+  }
+
 
   // update budget row in budgets table
   async updateBudgetsTable(budgetId, user, accountId, amount, year, text) {

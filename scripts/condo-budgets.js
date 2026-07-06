@@ -219,29 +219,6 @@ function calculateSum() {
   document.querySelector('.sum2').value = sumAmount;
 };
 
-/*
-// Show header
-function showHeader() {
- 
-  // Start table
-  let html = objBudgets.initializeTable(columnWidths);
- 
-  // start table body
-  html += objBudgets.startTableBody();
- 
-  // show main header
-  html += objBudgets.showTableHeaderLogOut('', '', 'Budsjett', '');
-  html += "</tr>";
- 
-  // end table body
-  html += objBudgets.endTableBody();
- 
-  // The end of the table
-  html += objBudgets.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter() {
 
@@ -249,13 +226,13 @@ function showFilter() {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show years
   const year = today.getFullYear();
   html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -316,49 +293,6 @@ function showBudgets() {
   html += objBudgets.endTable();
   document.querySelector('.showBudgets').innerHTML = html;
 }
-
-/*
-// Show budget
-function showBudget(budgetId) {
-
-  const year = objBudgets.arrayBudgets[rowNumberBudget]?.year ?? '';
-  html += showSelectedNumbersNew('År', 'year', '', 2020, 2030, year, true);
-
-  // Show accounts
-  const accountId = objBudgets.arrayBudgets[rowNumberBudget]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
-
-  // amount
-  let amount = objBudgets.arrayBudgets[rowNumberBudget]?.amount ?? '0';
-  amount = formatOreToKroner(amount);
-  html += showTextNew('Beløp', 'amount', amount, enableChanges, "Beløp");
-
-  // text
-  const text = objBudgets.arrayBudgets[rowNumberBudget]?.text ?? '';
-  html += showTextNew('Tekst', 'text', text, enableChanges, "Tekst");
-  html += "</div>";
-
-  // Buttons
-  if (enableChanges) {
-
-    html += startRow();
-    html += showButtonNew('update', 'Oppdater');
-    html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
-
-    html += startRow();
-    html += showButtonNew('delete', 'Slett');
-    html += showButtonNew('insert', 'Ny');
-    html += "</div>";
-  }
-  html += startRow();
-  html += showButtonNew('back', 'Tilbake');
-  html += "</div>";
-
-  document.querySelector('.showBudget').innerHTML = html;
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
-}
-*/
 
 /*
 function insertEmptyTableRow() {

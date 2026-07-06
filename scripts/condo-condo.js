@@ -174,12 +174,12 @@ function showFilter(condoId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', '', true);
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -198,7 +198,7 @@ function showCondo(condoId) {
   let html = emptyLine();
 
   // condo
-  html += startRow();
+  html += startLine();
   /*
   const name = (rowNumberCondo === -1)
     ? ''
@@ -209,7 +209,7 @@ function showCondo(condoId) {
   html += "</div>";
 
   // street, address2
-  html += startRow();
+  html += startLine();
 
   // street
   /*
@@ -231,7 +231,7 @@ function showCondo(condoId) {
   html += "</div>";
 
   // post code, city
-  html += startRow();
+  html += startLine();
 
   // post code
   const postalCode = (rowNumberCondo === -1)
@@ -250,7 +250,7 @@ function showCondo(condoId) {
   html += "</div>";
 
   // squareMeters
-  html += startRow();
+  html += startLine();
   /*
   let squareMeters = (rowNumberCondo === -1)
     ? ''
@@ -264,19 +264,27 @@ function showCondo(condoId) {
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
 
   document.querySelector('.showCondo').innerHTML = html;
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
+  
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+        disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterCondoId', false, 'white');
+  }
 }
 
 // Update a condo row
@@ -330,14 +338,21 @@ async function updateCondoRow(condoId) {
       document.querySelector('.filterCondoId').value = condoId;
     }
 
+    removeMessage();
 
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+          disableButton('update', false);
+                disableButton('cancel', true);
+      disableButton('filterCondoId', false, 'white');
+    }
+
+    // show filter
     showFilter(condoId);
-    showCondo(condoId);
 
-    objCondo.removeMessage();
-    document.querySelector('.filterCondoId').disabled = false;
-    document.querySelector('.delete').disabled = false;
-    document.querySelector('.insert').disabled = false;
+    // Show condo
+    showCondo(condoId);
   }
 }
 
@@ -365,10 +380,13 @@ function resetValues() {
 
   document.querySelector('.filterCondoId').disabled = true;
 
+  // Buttons
+  removeMessage();
   if (enableChanges) {
-    document.querySelector('.delete').disabled = true;
-    document.querySelector('.insert').disabled = true;
-    document.querySelector('.cancel').disabled = false;
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterCondoId', true);
   }
 }
 

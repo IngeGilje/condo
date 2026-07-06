@@ -194,7 +194,7 @@ function showFilter() {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show bankaccounts
   // Get last id in last object in bankaccounts array
@@ -203,7 +203,7 @@ function showFilter() {
     : 0;
   html += objBankAccount.showSelectedBankAccountsNew('Bankkonto', 'filterBankAccountId', '', bankAccountId, '', '', true);
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -211,132 +211,8 @@ function showFilter() {
   document.querySelector('.showFilter').innerHTML = html;
 }
 
-// Show bank account
-function showBankAccount(bankAccountId) {
-
-  // row number bank account
-  const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
-
-  // Empty line
-  let html = emptyLine();
-
-  // name
-  html += startRow();
-  const name = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name.trim();
-  html += showTextNew('Navn', 'name', name, enableChanges, "Bankkonto navn");
-  html += "</div>";
-
-  // bank account number
-  html += startRow();
-  const bankAccount = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount.trim();
-  html += showTextNew('Bankkontonummer', 'bankAccount', bankAccount, enableChanges, "Bankkonto navn");
-  html += "</div>";
-
-  // opening balance date
-  html += startRow();
-  let openingBalanceDate = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate.trim();
-
-  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
-  openingBalanceDate = formatNumberToISODate(openingBalanceDate);
-  html += editDate('Dato', 'openingBalanceDate', openingBalanceDate, enableChanges);
-
-  // opening balance
-  let openingBalance = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance.trim();
-  openingBalance = formatOreToKroner(openingBalance);
-  html += showTextNew('Inngående saldo', 'openingBalance', openingBalance, enableChanges, "Inngående saldo");
-
-  html += "</div>";
-
-  // closing balance date
-  html += startRow();
-  let closingBalanceDate = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate.trim();
-
-  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
-  closingBalanceDate = formatNumberToISODate(closingBalanceDate);
-  html += editDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges)
-
-  // closing balance
-  let closingBalance = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance.trim();
-  closingBalance = formatOreToKroner(closingBalance);
-
-  html += showTextNew('Utgående saldo', 'closingBalance', closingBalance, enableChanges, "Utgående saldo");
-  html += "</div>";
-  /*
-  // closing balance
-  const closingBalance = (rowNumberBankAccount === -1)
-    ? ''
-    : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance)
-  //const closingBalance = formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
-  html += objBankAccount.editTableCell('closingBalance', closingBalance, 11, enableChanges);
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objBankAccount.insertTableRow('');
-  html += "</tr>";
-  */
-  // Buttons
-  if (enableChanges) {
-
-    html += startRow();
-    html += showButtonNew('update', 'Oppdater');
-    html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
-
-    html += startRow();
-    html += showButtonNew('delete', 'Slett');
-    html += showButtonNew('insert', 'Ny');
-    html += "</div>";
-  }
-
-  document.querySelector('.showBankAccount').innerHTML = html;
-
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
-  /*
-  // Show buttons (<tr></td>)
-  if (enableChanges) {
-
-    // insert a table row (<tr></td>)
-    html += objBankAccount.insertTableRow('');
-
-    // Show buttons (<tr></td>)
-    html += objBankAccount.showButton('update', 'Oppdater');
-    html += objBankAccount.showButton('cancel', 'Angre');
-    html += "</tr>";
-
-    // insert a table row (<tr></td>)
-    html += objBankAccount.insertTableRow('');
-
-    // Show buttons (<tr></td>)
-    html += objBankAccount.showButton('delete', 'Slett');
-    html += objBankAccount.showButton('insert', 'Ny');
-    html += "</tr>";
-  }
-
-  // The end of the table
-  html += objBankAccount.endTable();
-  document.querySelector('.showBankAccount').innerHTML = html;
-
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
-  */
-}
-
 // Update a bankaccounts row
 async function updateBankAccountRow(bankAccountId) {
-
-  // condominium id
-  //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -344,7 +220,7 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
-  const validBankAccount = objBankAccount.validateBankAccount('bankAccount', columnWidths, true, bankAccount, '', 'Ugyldig bankkonto');
+  const validBankAccount = validateBankAccount('bankAccount', true, bankAccount, '', 'Ugyldig bankkonto');
 
   // Opening balance date
   let validOpeningBalanceDate = true;
@@ -401,11 +277,21 @@ async function updateBankAccountRow(bankAccountId) {
       bankAccountId = objBankAccount.arrayBankAccounts.at(-1)?.bankAccountId ?? 0;
     }
 
-    //showHeader();
+    removeMessage();
 
-    objBankAccount.removeMessage();
-    showFilter();
-    showBankAccount(bankAccountId);
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('filterBankAccountId', false, 'white');
+      disableButton('cancel', true);
+    }
+
+    // show filter
+    showFilter(bankAccountId);
+
+    // Show account
+    showAccount(bankAccountId);
   }
 }
 
@@ -445,11 +331,13 @@ function resetValues() {
   // Closing balance date
   document.querySelector('.closingBalanceDate').value = '';
 
-  objBankAccount.removeMessage();
+  // Buttons
+  removeMessage();
   if (enableChanges) {
-    document.querySelector('.delete').disabled = true;
-    document.querySelector('.insert').disabled = true;
-    document.querySelector('.cancel').disabled = false;
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterBankAccountId', true);
   }
 }
 
@@ -463,7 +351,7 @@ function showBankAccount(bankAccountId) {
   let html = emptyLine();
 
   // name
-  html += startRow();
+  html += startLine();
   const name = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name.trim();
@@ -471,7 +359,7 @@ function showBankAccount(bankAccountId) {
   html += "</div>";
 
   // bank account number
-  html += startRow();
+  html += startLine();
   const bankAccount = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount.trim();
@@ -479,14 +367,14 @@ function showBankAccount(bankAccountId) {
   html += "</div>";
 
   // opening balance date
-  html += startRow();
+  html += startLine();
   let openingBalanceDate = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate.trim();
 
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   openingBalanceDate = formatNumberToISODate(openingBalanceDate);
-  html += editDate('Dato', 'openingBalanceDate', openingBalanceDate, enableChanges);
+  html += showDate('Dato', 'openingBalanceDate', openingBalanceDate, enableChanges);
 
   // opening balance
   let openingBalance = (rowNumberBankAccount === -1)
@@ -497,14 +385,14 @@ function showBankAccount(bankAccountId) {
   html += "</div>";
 
   // closing balance date
-  html += startRow();
+  html += startLine();
   let closingBalanceDate = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate.trim();
 
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   closingBalanceDate = formatNumberToISODate(closingBalanceDate);
-  html += editDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges)
+  html += showDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges)
 
   // closing balance
   let closingBalance = (rowNumberBankAccount === -1)
@@ -518,12 +406,12 @@ function showBankAccount(bankAccountId) {
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
@@ -531,5 +419,14 @@ function showBankAccount(bankAccountId) {
 
   document.querySelector('.showBankAccount').innerHTML = html;
 
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
+
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterBankAccountId', false, 'white');
+  }
 }

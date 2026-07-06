@@ -210,12 +210,12 @@ function showFilter(year) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show years
   html += showSelectedNumbersNew('År', 'filterYear', 'align:center;', 2020, 2030, year, true);
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -439,7 +439,6 @@ async function updateCommonCostsRow(commonCostId) {
     }
 
     await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
-
 
     showCommonCostYear();
 

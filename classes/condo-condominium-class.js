@@ -50,6 +50,31 @@ class Condominium extends Condos {
       console.log("Error loading condominiums:", error);
     }
   }
+
+  // Get the highest ID in the table
+  async getHighestCondominiumId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/condominiums'
+      : 'http://localhost:3000/condominiums';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestCondominiumId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (condominiums)");
+      this.arrayCondominiums = await response.json();
+    } catch (error) {
+      console.log("Error selecting condominiums:", error);
+    }
+  }
+
   // update condominium row in condominiums table
   async updateCondominiumsTable(user, condominiumId, name, street, address2,
     postalCode, city, phone, email, incomeRemoteHeatingAccountId,

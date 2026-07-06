@@ -184,14 +184,17 @@ function resetValues() {
   // name of importfile
   document.querySelector('.importPath').value = '';
 
-  objCondominium.removeMessage();
+  removeMessage();
 
   document.querySelector('.filterCondominiumId').disabled = true;
 
+  // Buttons
+  removeMessage();
   if (enableChanges) {
-    document.querySelector('.delete').disabled = true;
-    document.querySelector('.insert').disabled = true;
-    document.querySelector('.cancel').disabled = false;
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterCondominiumId', true);
   }
 }
 
@@ -236,12 +239,12 @@ function showFilter(condominiumId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show condominiums
   html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -260,7 +263,7 @@ function showCondominium(condominiumId) {
 
   // Empty line
   let html = emptyLine();
-  html += startRow();
+  html += startLine();
 
   // name
   /*
@@ -273,7 +276,7 @@ function showCondominium(condominiumId) {
   html += "</div>";
 
   // street, address2
-  html += startRow();
+  html += startLine();
 
   // street
   const street = (rowNumberCondominium === -1)
@@ -292,7 +295,7 @@ function showCondominium(condominiumId) {
   html += "</div>";
 
   // postalCode, city
-  html += startRow();
+  html += startLine();
 
   let postalCode = (rowNumberCondominium === -1)
     ? ''
@@ -312,7 +315,7 @@ function showCondominium(condominiumId) {
   html += "</div>";
 
   // phone, email
-  html += startRow();
+  html += startLine();
 
   // phone
   /*
@@ -334,7 +337,7 @@ function showCondominium(condominiumId) {
   html += "</div>";
 
   // income Remote Heating AccountId, bankAccount, commonCostAccountId
-  html += startRow();
+  html += startLine();
 
   // income Remote Heating AccountId
   /*
@@ -362,7 +365,7 @@ function showCondominium(condominiumId) {
   html += "</div>";
 
   // organizationNumber
-  html += startRow();
+  html += startLine();
   /*
   const organizationNumber = (rowNumberCondominium === -1)
     ? ''
@@ -373,7 +376,7 @@ function showCondominium(condominiumId) {
   html += "</div>";
 
   // import Path
-  html += startRow();
+  html += startLine();
   /*
   const importPath = (rowNumberCondominium === -1)
     ? ''
@@ -386,12 +389,12 @@ function showCondominium(condominiumId) {
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
@@ -399,7 +402,15 @@ function showCondominium(condominiumId) {
 
   document.querySelector('.showCondominium').innerHTML = html;
 
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterCondominiumId', false, 'white');
+  }
 }
 
 // Update a condominiums row
@@ -477,14 +488,20 @@ async function updateCondominiumRow(condominiumId) {
       condominiumId = Number(objCondominium.arrayCondominiums.at(-1)?.condominiumId ?? 0);
     }
 
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterCondominiumId', false, 'white');
+    }
+
     // Show filter
     showFilter(condominiumId);
 
     // Show condominium
     showCondominium(condominiumId);
-
-    document.querySelector('.filterCondominiumId').disabled = false;
-    document.querySelector('.delete').disabled = false;
-    document.querySelector('.insert').disabled = false;
   }
 }

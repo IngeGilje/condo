@@ -294,39 +294,6 @@ class Condos {
     </div>`;
   }
 
-  // Show selected numbers (from number - to number)
-  showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div class="field status" style="max-width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    for (let month = 1; month < 13; month++) {
-
-      html += `
-      <option 
-        value="${month}"
-        ${month === selectedMonth ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${findNameOfMonth(month).trim()}&nbsp;&nbsp;
-      </option>`;
-    };
-
-    html += `
-      </select >
-    </div>`;
-
-    return html;
-  }
-
   // Show input (<td></td>) with center text
   editTableCellCenter(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
@@ -343,24 +310,6 @@ class Condos {
         value="${(value ?? '').trim()}"
         ${(enableChanges) ? '' : 'readonly'}
       >
-    </td>`;
-  }
-
-  // Show textarea
-  textAreaTableColumn(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
-
-    return `
-    <td 
-      colspan="${colspan}" 
-      rowspan="${rowspan}" 
-    >
-      <textarea 
-        rows="6"
-        class="${className} news-text"
-        maxlength="${maxlength}"
-      >
-        ${value}
-      </textarea>
     </td>`;
   }
 
@@ -435,19 +384,6 @@ class Condos {
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
     if (!valid && showMessage) showMessageNew(style, message)
-
-    return valid;
-  }
-
-  // validate bank account
-  validateBankAccount(className, columnWidths, showMessage, bankAccount, style, message) {
-
-    const bankAccountPattern = /^\d{11}$/;
-    const valid = bankAccountPattern.test(bankAccount);
-
-    const inputElement = document.querySelector(`.${className}`);
-    if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid && showMessage) showMessageNew(style, message);
 
     return valid;
   }
@@ -748,7 +684,7 @@ class Condos {
 
   /*
   // Validate number
-  validateInterval(className, columnWidths, style, message, showMessage = true, number, min, max) {
+  validateInterval(className,  style, message, showMessage = true, number, min, max) {
 
     let valid = (Number(number) >= Number(min) && Number(number) <= Number(max));
 
@@ -1164,12 +1100,6 @@ class Condos {
   }
   */
 
-  // Remove message
-  removeMessage() {
-
-    document.querySelector(".showMessage").style.display = "none";
-  }
-
   // Format amount (1 234 567,89)
   formatAmount(amount) {
 
@@ -1200,6 +1130,69 @@ class Condos {
   }
 }
 
+// Show selected numbers (from number - to number)
+function showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
+
+  let selectedValue = false;
+
+  let html = `
+  <div class="field" 
+    style="max-width:175px"
+  >
+    <label>
+      ${label}
+    </label>
+    <select 
+      class="${className} center one-line"
+      ${(enableChanges) ? '' : 'readonly'}
+    >`;
+
+  for (let month = 1; month < 13; month++) {
+
+    html += `
+      <option 
+        value="${month}"
+        ${month === selectedMonth ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${findNameOfMonth(month).trim()}&nbsp;&nbsp;
+      </option>`;
+  };
+
+  html += `
+      </select >
+    </div>`;
+
+  return html;
+}
+
+// Show textarea
+function showTextArea(label, className, value, maxlength, enableChanges, rows = 1) {
+
+  return `
+  <div 
+    class="field" 
+    style="max-width:540px;margin-left:35px;margin-bottom:25px;border-radius: 20px;"
+  >
+    <label>
+      ${label}
+    </label>
+    <textarea 
+      rows="${rows}"
+      class="${className} news-text"
+      maxlength="${maxlength}"
+      style="border-radius: 20px;"
+    >
+      ${value}
+    </textarea>
+  </div>`;
+}
+
+// Remove message
+function removeMessage() {
+
+  document.querySelector(".showMessage").style.display = "none";
+}
+
 // Show horizontal menu
 function showHorizontalMenu(arrayMenu) {
 
@@ -1208,22 +1201,22 @@ function showHorizontalMenu(arrayMenu) {
     : 'http://localhost/';
 
   let html = `
-    <nav class="navbar horizontalMenu">
-      <ul class="nav-links">`;
+  <nav class="navbar horizontalMenu">
+    <ul class="nav-links">`;
 
   arrayMenu.forEach((array) => {
     html += `
       <li>
-        <a href="${URL}/${array.applicationName}"
-        >
-          ${array.text.trim()}
-        </a>
+      <a href="${URL}/${array.applicationName}"
+      >
+        ${array.text.trim()}
+      </a>
       </li>`;
   });
 
   html += `
-      </ul>
-    </nav>`;
+    </ul>
+  </nav>`;
 
   return html;
 }
@@ -1235,7 +1228,7 @@ function showMessageNew(message) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  html += startLine();
 
   // Show types of account
   html += `<p>${message}</p>`;
@@ -1249,21 +1242,23 @@ function showMessageNew(message) {
   document.querySelector('.showMessage').innerHTML = html;
 }
 
-
 // Show selected numbers (from number - to number)
 function showSelectedNumbersNew(label, className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
 
   let selectedValue = false;
 
   let html = `
-       <div class="field date" style="width:250px;margin-left:35px;margin-bottom:25px;">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
+  <div 
+    class="field" 
+    style="width:250px;margin-left:35px;margin-bottom:25px;"
+  >
+    <label>
+      ${label}
+    </label>
+    <select 
+      class="${className} center one-line"
+      ${(enableChanges) ? '' : 'readonly'}
+    >`;
 
   // show interval of numbers
   for (let number = fromNumber; number <= toNumber; number++) {
@@ -1286,6 +1281,20 @@ function showSelectedNumbersNew(label, className, style, fromNumber, toNumber, s
   return html;
 }
 
+// validate bank account
+function validateBankAccount(className, showMessage, bankAccount, style, message) {
+
+  const bankAccountPattern = /^\d{11}$/;
+  const valid = bankAccountPattern.test(bankAccount);
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) inputElement.classList.toggle('input-error', !valid);
+  if (inputElement) inputElement.classList.toggle('error-text', !valid);
+  if (!valid && showMessage) showMessageNew(message);
+
+  return valid;
+}
+
 // Validate number
 function validateInterval(className, style, message, showMessage = true, value, minValue, maxValue) {
 
@@ -1294,6 +1303,7 @@ function validateInterval(className, style, message, showMessage = true, value, 
 
   const inputElement = document.querySelector(`.${className}`);
   if (inputElement) inputElement.classList.toggle('input-error', !valid);
+  if (inputElement) inputElement.classList.toggle('error-text', !valid);
   if (!valid && showMessage) showMessageNew(message);
 
   return valid;
@@ -1348,7 +1358,7 @@ function formatNumberToISODate(date) {
 }
 
 // Show Date
-function editDate(label, className, value, enableChanges) {
+function showDate(label, className, value, enableChanges) {
 
   return `
     <div class="field date" style="width:250px;margin-left:35px;margin-bottom:25px;">
@@ -1368,12 +1378,15 @@ function editDate(label, className, value, enableChanges) {
 function startFrame() {
 
   return `
-    <div class="filter-frame">`;
+  <div 
+    class="filter-frame"
+    style="max-width: 1500px;"
+  >`;
 }
 
 // start line (<div>)
-function startRow() {
-  return `<div class="row">`;
+function startLine() {
+  return `<div class="line">`;
 }
 
 // empty line
@@ -1707,6 +1720,13 @@ function removeIframe() {
   if (iframe) {
     iframe.remove();
   }
+}
+
+// Enable/ disable button
+function disableButton(className, disabled = false, color = '#4c6fff') {
+  document.querySelector(`.${className}`).disabled = disabled;
+  const button = document.querySelector(`.${className}`);
+  color = button.style.backgroundColor = (disabled) ? 'lightgrey' : color;
 }
 
 // exit application after 1 hour

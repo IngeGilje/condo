@@ -169,21 +169,21 @@ function showFilter(condoId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
 
   // From date
   let fromDate = `${String(today.getFullYear())}-01-01`;
-  html += editDate('Fra Dato', 'filterFromDate', fromDate, true)
+  html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
 
   // To date
   // Current date
   let toDate = getCurrentISODate();
-  html += editDate('Til Dato', 'filterToDate', toDate, true)
+  html += showDate('Til Dato', 'filterToDate', toDate, true)
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -388,6 +388,4 @@ function showHowMuchToPay() {
   // The end of the table
   html += objOverview.endTable();
   document.querySelector('.howMuchToPay').innerHTML = html;
-
-
 }

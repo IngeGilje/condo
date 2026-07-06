@@ -44,57 +44,6 @@ async function events() {
 // Show login
 function showLogin() {
 
-  /*
-  // start table
-  let html = objLogIn.startTable('width:250px;margin: 0 auto;');
-
-  // Header for value
-  html += objLogIn.showTableHeader('', 'Email');
-
-  // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('margin: 0 auto;');
-
-  // email
-  const email = '';
-  html += objLogIn.editTableCellCenter('email', email, 45, true);
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('', '');
-  html += "</tr>";
-
-  // password
-  html += objLogIn.showTableHeader("width:250px;",  'Passord');
-
-  // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('');
-
-  // password
-  password = '';
-  html += objLogIn.inputTableCellPassword('password', password, 45, true);
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('', '');
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('');
-
-  // Show buttons (<tr></td>)
-  html += objLogIn.showButton('LogIn', 'LogIn');
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objLogIn.insertTableRow('',  '');
-
-  html += "</tr>";
-
-  // The end of the table
-  html += objLogIn.endTable();
-  document.querySelector('.result').innerHTML = html;
-  */
-
   document.querySelector('.showLogIn').innerHTML = `
   <h2>Logg inn</h2>
   <div class="field">

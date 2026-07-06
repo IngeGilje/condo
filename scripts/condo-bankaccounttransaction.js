@@ -251,7 +251,6 @@ function showFilter( condoId, accountId) {
   html += objBankAccountTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  
   html += objBankAccountTransaction.showTableHeaderMenu('', 'center','', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '', '');
 
   // start table body
@@ -290,8 +289,6 @@ function showFilter( condoId, accountId) {
   // The end of the table
   html += objBankAccountTransaction.endTable();
   document.querySelector('.filter').innerHTML = html;
-
-  
 }
 
 // update bankaccounttransactions row
@@ -303,19 +300,19 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
   className = `.accountId${bankAccountTransactionId}`;
   let accountId = Number(document.querySelector(className).value);
   className = `accountId${bankAccountTransactionId}`;
-  const validAccountId = validateInterval(className, columnWidths,    '', 'Ugyldig konto',               true, accountId, 1, objBankAccountTransaction.nineNine);
+  const validAccountId = validateInterval(className,     '', 'Ugyldig konto',               true, accountId, 1, objBankAccountTransaction.nineNine);
  
   // condoId
   className = `.condoId${bankAccountTransactionId}`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId${bankAccountTransactionId}`;
-  const validCondoId = validateInterval(className, columnWidths, '', 'Ugyldig leilighet', true, condoId, 0, objBankAccountTransaction.nineNine);
+  const validCondoId = validateInterval(className,  '', 'Ugyldig leilighet', true, condoId, 0, objBankAccountTransaction.nineNine);
 
   // kilowattHour
   className = `.kilowattHour${bankAccountTransactionId}`;
   const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
   className = `kilowattHour${bankAccountTransactionId}`;
-  const validNumberKWHour = validateInterval(className, columnWidths, '', 'Ugyldig kilowattime', true, kilowattHour, 0, objBankAccountTransaction.nineNine);
+  const validNumberKWHour = validateInterval(className,  '', 'Ugyldig kilowattime', true, kilowattHour, 0, objBankAccountTransaction.nineNine);
 
   // text
   className = `.text${bankAccountTransactionId}`;
@@ -382,7 +379,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     const orderBy = 'date DESC, income DESC';
     await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
 
-    showBankAccountTransactions(3);
+    showBankAccountTransactions();
   }
 }
 
@@ -507,7 +504,6 @@ async function showBankAccountTransactions() {
   // Insert empty table row for insertion
   if (enableChanges) {
 
-    
     html += insertEmptyTableRow();
   }
 

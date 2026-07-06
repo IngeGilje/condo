@@ -84,12 +84,11 @@ async function events() {
     };
   });
 
-  // create new user bank accounts row
+  // insert a new user bank accounts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('insert')) {
 
-      // Create new user bank account
-      debugger;
+      // insert a new user bank account
       resetValues();
     };
   });
@@ -110,40 +109,27 @@ async function events() {
     };
   });
 
-  /*
-  // Log out
+  // Cancel insert of bankaccountaccounts row
   document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('logOut')) {
+    if (event.target.classList.contains('cancel')) {
 
-      let url = (objUserBankAccount.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
+      if (enableChanges) {
+        disableButton('delete', false);
+        disableButton('insert', false);
+        disableButton('update', false);
+        disableButton('cancel', true);
+        disableButton('filterUserBankAccountId', false, 'white');
+
+      }
+      // Show last user bank account
+      await objUserBankAccount.getHighestUserBankAccountId(objUserBankAccount.condominiumId);
+      const userBankAccountId = objUserBankAccount.arrayUserBankAccounts[objUserBankAccount.arrayUserBankAccounts.length - 1].userBankAccountId;
+      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+
+      showFilter(userBankAccountId);
+      showUserBankAccount(userBankAccountId);
     };
   });
-  */
-}
-
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objUserBankAccount.initializeTable(columnWidths);
-
-  // start table body
-  html += objUserBankAccount.startTableBody();
-
-  // show main header
-  html += objUserBankAccount.showTableHeaderLogOut('', '', 'Bankkonto');
-  html += "</tr>";
-
-  // end table body
-  html += objUserBankAccount.endTableBody();
-
-  // The end of the table
-  html += objUserBankAccount.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -153,62 +139,17 @@ function showFilter(userBankAccountId) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show user bank accounts filter
   html += objUserBankAccount.showSelectedUserBankAccountsNew('Brukerkonto', 'filterUserBankAccountId', '', userBankAccountId, '', '', true);
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
-
-/*
-// Show user bank accounts
-function showUserBankAccount(userBankAccountId) {
-
-  // Empty row
-  // Empty line
-let html = emptyLine();
-
-  objUserBankAccount.arrayUserBankAccounts.forEach((userBankAccount) => {
-
-    html += startRow();
-
-    // Show user
-    let className = `userId${userBankAccount.userBankAccountId}`;
-    html += objUser.showSelectedUsersNew('Bruker', className, '', userBankAccount.userId, 'Velg bruker', '', enableChanges);
-
-    // Show accounts
-    className = `accountId${userBankAccount.userBankAccountId}`;
-    html += objAccounts.showSelectedAccountsNew('Konto', className, '', userBankAccount.accountId, 'Velg konto', '', enableChanges);
-
-    // bank account number
-    className = `bankAccount${userBankAccount.userBankAccountId}`;
-    html += showTextNew('Bankkonto', className, userBankAccount.bankAccount, enableChanges, 'Bankkonto');
-
-    // Buttons
-    if (enableChanges) {
-
-      className = `delete${userBankAccount.userBankAccountId}`;
-      html += showButtonNew(className, 'Slett');
-    }
-
-    html += "</div>";
-  });
-
-  // Make one last table row for insertion in table 
-  if (enableChanges) {
-
-    // Insert empty table row for insertion
-    html += insertEmptyTableRow();
-  };
-
-  document.querySelector('.showUserBankAccount').innerHTML = html;
-}
-*/
 
 // Show user bank account
 function showUserBankAccount(userBankAccountId) {
@@ -219,147 +160,51 @@ function showUserBankAccount(userBankAccountId) {
   let html = emptyLine();
 
   // user
-  html += startRow();
+  html += startLine();
 
-  const userId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.userId ?? '';
+  const userId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.userId ?? 0;
   html += objUser.showSelectedUsersNew('Bruker', 'userId', '', userId, 'Velg bruker', '', true);
   html += "</div>";
 
   // account
-  html += startRow();
+  html += startLine();
 
-  const accountId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.accountId ?? '';
+  const accountId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
   html += "</div>";
 
   // bank account
-  html += startRow();
+  html += startLine();
 
   const bankAccount = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.bankAccount ?? '';
-  html += showTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges, 'Bankkonto');
+  html += showTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges, 'Oppgi Bankkonto');
   html += "</div>";
 
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
 
-  html += startRow();
-  html += showButtonNew('back', 'Tilbake');
-  html += "</div>";
-
   document.querySelector('.showUserBankAccount').innerHTML = html;
+
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterUserBankAccountId', false, 'white');
+  }
 }
-
-/*
-// start table
-let html = objUserBankAccount.initializeTable(columnWidths);
- 
-// Table header (<tr></tr>)
- 
-html += objUserBankAccount.showTableHeaderMenu('#e0f0e0', 'center', 'Bruker', 'Konto', 'Bankkonto', '');
- 
-objUserBankAccount.arrayUserBankAccounts.forEach((userBankAccount) => {
- 
-  // insert a table row (<tr></td>)
- 
-  html += objUserBankAccount.insertTableRow('');
- 
-  // user Id
-  //const userId = userBankAccount.userId;
-  let className = `userId${userBankAccount.userBankAccountId}`;
-  html += objUser.showSelectedUsers(className, '', userBankAccount.userId, 'Velg bruker', '', enableChanges);
- 
-  // account Id
-  const accountId = userBankAccount.accountId;
-  className = `accountId${userBankAccount.userBankAccountId}`;
-  html += objAccounts.showSelectedAccounts(className, '', accountId, 'Velg konto', '', enableChanges);
- 
-  // bank account number
-  className = `bankAccount${userBankAccount.userBankAccountId}`;
-  html += objUserBankAccount.editTableCell(className, userBankAccount.bankAccount, 11, enableChanges);
- 
-  // Delete
-  className = `delete${userBankAccount.userBankAccountId}`;
-  html += objUserBankAccount.showButton(className, 'Slett');
- 
-  html += "</tr>";
-});
- 
-// Insert empty table row for insertion
-if (enableChanges) {
- 
-  // Insert empty table row for insertion
-  html += insertEmptyTableRow();
-}
- 
-// The end of the table
-html += objUserBankAccount.endTable();
-document.querySelector('.result').innerHTML = html;
-}
-*/
-/*
-// Insert empty table row
-function insertEmptyTableRow() {
-
-  let html = "";
-
-  // Insert a table row (<tr></td>)
-  html += objUserBankAccount.insertTableRow('');
-
-  // user column
-  html += objUser.showSelectedUsers('userId0', '', 0, 'Velg bruker', '', enableChanges);
-
-  // Account column
-  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
-
-  // Bank account number
-  html += objUserBankAccount.editTableCell('bankAccount0', '', '', 11, enableChanges);
-
-  html += "<td>Ny brukerkonto</td></tr>";
-  return html;
-
-  // Empty row
-  // Empty line
-  let html = emptyLine();
-
-  html += startRow();
-
-  // Show user
-  let className = 'userId0';
-  html += objUser.showSelectedUsersNew('Bruker', className, '', '', 'Velg bruker', '', enableChanges);
-
-  // Show accounts
-  className = 'accountId0';
-  html += objAccounts.showSelectedAccountsNew('Konto', className, '', 0, 'Velg konto', '', enableChanges);
-
-  // bank account number
-  className = 'bankAccount';
-  html += showTextNew('Bankkonto', className, '', enableChanges, 'Bankkonto');
-
-  // label for insert
-  html += `
-    <div 
-      style='width:250px;' 
-        <label>
-          Ny bankkonto
-        </label>
-    </div>`;
-
-  // end of row
-  html += "</div>";
-  return html;
-}
-*/
 
 // Delete userbankaccounts  row
 async function deleteUserBankAccountRow(userBankAccountId) {
@@ -388,12 +233,12 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   // account Id
   className = 'accountId';
   let accountId = Number(document.querySelector(`.${className}`).value);
-  const validAccountId = validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccount.nineNine);
+  const validAccountId = validateInterval(className, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccount.nineNine);
 
   // bank account
   className = 'bankAccount';
   const bankAccount = document.querySelector(`.${className}`).value;
-  const validBankAccount = objUserBankAccount.validateBankAccount(className, columnWidths, true, bankAccount, '', 'Ugyldig bankkonto');
+  const validBankAccount = validateBankAccount(className, true, bankAccount, '', 'Ugyldig bankkonto');
 
   if (validUserId && validAccountId && validBankAccount) {
 
@@ -405,23 +250,27 @@ async function updateUserBankAccountsRow(userBankAccountId) {
 
       // update the userbankaccounts row
       await objUserBankAccount.updateUserBankAccountsTable(userBankAccountId, objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
+      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 
     } else {
 
       // Insert the userbankaccounts row 
       await objUserBankAccount.insertUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
+      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+      await objUserBankAccount.getHighestUserBankAccountId(objUserBankAccount.condominiumId);
+      userBankAccountId = objUserBankAccount.arrayUserBankAccounts[objUserBankAccount.arrayUserBankAccounts.length - 1].userBankAccountId;
     }
 
     if (enableChanges) {
-      document.querySelector('.delete').disabled = false;
-      document.querySelector('.insert').disabled = false;
-      document.querySelector('.filterUserBankAccountId').disabled = false;
-      document.querySelector('.cancel').disabled = true;
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterUserBankAccountId', false, 'white');
     }
-    userId = Number(document.querySelector('.filterUserId').value);
-    accountId = Number(document.querySelector('.filterAccountId').value);
-    await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, userId, accountId);
 
+    // Show filter and user bank account
+    showFilter(userBankAccountId);
     showUserBankAccount(userBankAccountId);
   }
 }
@@ -429,22 +278,23 @@ async function updateUserBankAccountsRow(userBankAccountId) {
 function resetValues() {
 
   // User Id
-  document.querySelector('.filterUserBankAccountId').value = '';
+  document.querySelector('.filterUserBankAccountId').value = 0;
 
   // User Id
-  document.querySelector('.userId').value = '';
+  document.querySelector('.userId').value = 0;
 
   // account Id
-  document.querySelector('.accountId').value = '';
+  document.querySelector('.accountId').value = 0;
 
   // bank account
   document.querySelector('.bankAccount').value = '';
 
-  objUserBankAccount.removeMessage();
+  // Buttons
+  removeMessage();
   if (enableChanges) {
-    document.querySelector('.delete').disabled = true;
-    document.querySelector('.insert').disabled = true;
-    document.querySelector('.filterUserBankAccountId').disabled = true;
-    document.querySelector('.cancel').disabled = false;
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterUserBankAccountId', true);
   }
 }

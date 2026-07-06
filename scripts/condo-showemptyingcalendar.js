@@ -121,7 +121,7 @@ function showFilter() {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show years
   const year = String(today.getFullYear());
@@ -130,9 +130,9 @@ function showFilter() {
   // Show selected months
   const date = getCurrentDate();
   let month = Number(date.split('.')[1]); // Extract the month part
-  html += objShowEmptyingCalendar.showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
+  html += showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";

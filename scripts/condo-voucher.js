@@ -125,139 +125,6 @@ async function events() {
   });
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objTransaction.initializeTable(columnWidths);
-
-  // start table body
-  html += objTransaction.startTableBody();
-
-  // show main header
-  html += objTransaction.showTableHeaderLogOut('', '', 'Vis bilag', '');
-  html += "</tr>";
-
-  // end table body
-  html += objTransaction.endTableBody();
-
-  // The end of the table
-  html += objTransaction.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
-
-/*
-// Show filter
-function showFilter() {
-
-    // Start frame
-  let html = startFrame();
-
-  // Start table
-  html += objTransaction.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objTransaction.showTableHeaderMenu('', 'center', '', 'Bilagsnummer', '', '');
-
-  // start table body
-  html += objTransaction.startTableBody();
-
-  // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('', '');
-
-  // show selected transactions
-  html += objTransaction.showSelectedTransactions('filterTransactionId', '', paramTransactionId, '', '', false);
-
-  html += "<td></td><td></td></tr>";
-
-  // end table body
-  html += objTransaction.endTableBody();
-
-  // The end of the table
-  html += objTransaction.endTable();
-  document.querySelector('.showFilter2').innerHTML = html;
-}
-*/
-
-/*
-// Show Voucher
-function showVoucher(transactionId) {
-
-  // start table
-  let html = objTransaction.initializeTable(columnWidths);
-
-  // Check if transaction row exist
-  const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
-  if (rowNumberTransaction !== -1) {
-
-    // date and amount
-    html += objVoucher.showTableHeaderMenu('', 'center', 'Dato', 'Beløp', 'Konto', '');
-
-    html += objTransaction.insertTableRow('');
-
-    // date
-    let date = objTransaction.arrayTransactions[rowNumberTransaction].date;
-    date = (date) ? formatNumberToNorDate(date) : '';
-    html += objTransaction.editTableCell('date', date, 10, false);
-
-    // amount
-    const income = objTransaction.arrayTransactions[rowNumberTransaction].income;
-    const payment = objTransaction.arrayTransactions[rowNumberTransaction].payment;
-    const amount = formatOreToKroner((income) ? income : payment);
-    html += objTransaction.editTableCell('amount', amount, 11, false);
-
-    // account
-    const accountId = objTransaction.arrayTransactions[rowNumberTransaction].accountId;
-    html += objAccounts.showSelectedAccounts('accountId', '', accountId, '', '', false);
-    html += "</tr>";
-
-    // file name of the voucher
-    html += objVoucher.showTableHeaderMenu('', 'center', 'Filnavn', '', '', '');
-
-    html += objTransaction.insertTableRow('');
-
-    let voucherFileName = objTransaction.arrayTransactions[rowNumberTransaction].voucherFileName;
-    voucherFileName = (voucherFileName)
-      ? voucherFileName
-      : `${transactionId}.pdf`;
-    html += objTransaction.editTableCell('voucherFileName', voucherFileName, 45, enableChanges);
-
-    html += "<td></td><td></td><td></td></tr>";
-
-    // Show button
-
-    html += objTransaction.insertTableRow('', '', '', '', '');
-    html += "</tr>";
-
-    html += objTransaction.insertTableRow('');
-
-    html += objTransaction.showButton('back', 'Tilbake');
-    html += "<td></td><td></td><td></td></tr>";
-
-    html += objTransaction.insertTableRow('', '', '', '', '');
-    html += "</tr>";
-
-    // Show pdf file
-
-    html += objTransaction.insertTableRow('');
-
-    html += `
-      <td colspan="4" rowspan="13" class="left">
-        <iframe
-         src="/data/${voucherFileName}">
-        </iframe>
-      </td>
-    </tr>`;
-
-    // The end of the table
-    html += objTransaction.endTable();
-    document.querySelector('.showVoucher').innerHTML = html;
-  }
-}
-*/
-
 // Update a transaction row
 async function updateTransactionRow(transactionId) {
 
@@ -293,6 +160,17 @@ async function updateTransactionRow(transactionId) {
         showMessageNew('Bilag er ikke oppdatert.');
       }
 
+      removeMessage();
+
+      if (enableChanges) {
+        disableButton('delete', false);
+        disableButton('insert', false);
+        disableButton('update', false);
+        disableButton('cancel', true);
+        disableButton('filterUserId', false, 'white');
+      }
+
+      // Show transaction
       showVoucher(transactionId, 2);
     }
   }
@@ -305,21 +183,21 @@ function showVoucher(transactionId) {
   const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
 
   // Empty line
-let html = emptyLine();
+  let html = emptyLine();
 
   // date
-  html += startRow();
+  html += startLine();
 
   // transaction Id
   html += showTextNew('Bilagsnummer', 'transactionId', transactionId, false, "Bilagsnummer");
   html += "</div>";
 
   // Date
-  html += startRow();
+  html += startLine();
 
   let date = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? '';
   date = formatNumberToISODate(date);
-  html += editDate('Dato', 'date', date, false)
+  html += showDate('Dato', 'date', date, false)
 
   // Amount
   const income = objTransaction.arrayTransactions[rowNumberTransaction].income;
@@ -329,7 +207,7 @@ let html = emptyLine();
   html += "</div>";
 
   // Account
-  html += startRow();
+  html += startLine();
 
   const accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? '';
   // get account name
@@ -344,12 +222,12 @@ let html = emptyLine();
   html += showTextNew('Filnavn', 'voucherFileName', voucherFileName, false, "Filnavn");
   html += "</div>";
 
-    html += startRow();
+  html += startLine();
   className = `back`;
   html += showButtonNew(className, 'Tilbake');
   html += "</div>";
 
-  html += startRow();
+  html += startLine();
   html += `
   <iframe
     src="/data/${voucherFileName}"

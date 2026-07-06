@@ -55,13 +55,13 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       showFilter(supplierId);
 
       // Show supplier
-      editSupplier(supplierId);
+      showSupplier(supplierId);
 
       // Events
       events();
     } else {
 
-      showMessageNew( 'Server er ikke startet.');
+      showMessageNew('Server er ikke startet.');
     }
   }
 }
@@ -78,7 +78,7 @@ async function events() {
 
       const supplierId = Number(document.querySelector('.filterSupplierId').value);
 
-      editSupplier(2, supplierId);
+      showSupplier(2, supplierId);
     };
   });
 
@@ -107,7 +107,7 @@ async function events() {
       // Show filter
 
       showFilter(supplierId);
-      editSupplier(supplierId);
+      showSupplier(supplierId);
     };
   });
 
@@ -132,7 +132,7 @@ async function events() {
       // Show filter
 
       showFilter(supplierId);
-      editSupplier(supplierId);
+      showSupplier(supplierId);
     };
   });
 
@@ -195,10 +195,13 @@ function resetValues() {
 
   document.querySelector('.filterSupplierId').disabled = true;
 
+  // Buttons
+  removeMessage();
   if (enableChanges) {
-    document.querySelector('.delete').disabled = true;
-    document.querySelector('.insert').disabled = true;
-    document.querySelector('.cancel').disabled = false;
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterSupplierId', true);
   }
 }
 
@@ -226,22 +229,22 @@ function showHeader() {
 // Show filter
 function showFilter(supplierId) {
 
-    // Start frame
+  // Start frame
   let html = startFrame();
 
- // show filter
-  html += startRow();
+  // show filter
+  //html += startLine();
 
   // Show suppliers
-  html += objSupplier.showSelectedSuppliersNew('Leverandør', 'filterSupplierId',    '', supplierId, '', '', true);
+  html += objSupplier.showSelectedSuppliersNew('Leverandør', 'filterSupplierId', '', supplierId, '', '', true);
 
-   html += "</div>";
+  html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show supplier
-function editSupplier(supplierId) {
+function showSupplier(supplierId) {
 
   // start table
   let html = objSupplier.initializeTable(columnWidths);
@@ -405,7 +408,16 @@ function editSupplier(supplierId) {
   html += objSupplier.endTable();
   document.querySelector('.showSupplier').innerHTML = html;
 
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
+
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+          disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterSupplierId', false, 'white');
+  }
 }
 
 // Update a supplier row
@@ -450,7 +462,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
-  let validBankAccount = objSupplier.validateBankAccount('bankAccount', columnWidths, true, bankAccount, '', 'Ugyldig bankkontonummer');
+  let validBankAccount = validateBankAccount('bankAccount', true, bankAccount, '', 'Ugyldig bankkontonummer');
 
   if (bankAccount === '') validBankAccount = true;
 
@@ -495,17 +507,21 @@ async function updateSuppliersRow(supplierId) {
       //document.querySelector('.filterSupplierId').value = supplierId;
     }
 
-    // Show filter
-
-    showFilter(supplierId);
-    editSupplier(supplierId);
+    removeMessage();
 
     if (enableChanges) {
-      document.querySelector('.filterSupplierId').disabled = false;
-      document.querySelector('.delete').disabled = false;
-      document.querySelector('.insert').disabled = false;
-      document.querySelector('.cancel').disabled = true;
+      disableButton('delete', false);
+      disableButton('insert', false);
+            disableButton('update', false);
+                  disableButton('cancel', true);
+      disableButton('filterSupplierId', false, 'white');
     }
+
+    // show filter
+    showFilter(supplierId);
+
+    // Show supplier
+    showSupplier(supplierId);
   }
 }
 

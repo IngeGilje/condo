@@ -174,59 +174,12 @@ function showHeader() {
 // Show remote heating prices
 function showRemoteHeatingPrices() {
 
-  /*
-  // start table
-  let html = objRemoteHeatingPrice.initializeTable(columnWidths);
-
-  html += objRemoteHeatingPrice.showTableHeaderMenu( '','center', 'År', `Pris kilowatTimer`, 'Slett');
-
-  objRemoteHeatingPrice.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
-
-    // insert a table row (<tr></td>)
-    html += objRemoteHeatingPrice.insertTableRow('');
-
-    // Select year (<td></td>)
-    const year = remoteHeatingPrice.year;
-    let className = `year${remoteHeatingPrice.remoteHeatingPriceId}`;
-    html += objRemoteHeatingPrice.showSelectedNumbers(className, 'width:175px;', 2020, 2030, year, true);
-
-    // priceKilowattHour
-    let priceKilowattHour = remoteHeatingPrice.priceKilowattHour;
-    className = `priceKilowattHour${remoteHeatingPrice.remoteHeatingPriceId}`;
-    priceKilowattHour = formatOreToKroner(priceKilowattHour);
-    html += objRemoteHeatingPrice.editTableCell(className,  priceKilowattHour, 10, enableChanges);
-
-    // Delete
-    let selected = "Ugyldig verdi";
-    if (remoteHeatingPrice.deleted === 'Y') selected = "Ja";
-    if (remoteHeatingPrice.deleted === 'N') selected = "Nei";
-
-    className = `delete${remoteHeatingPrice.remoteHeatingPriceId}`;
-    //html += objRemoteHeatingPrice.showSelectedValues(className, 'width:175px;', enableChanges, selected, 'Nei', 'Ja')
-    html += objRemoteHeatingPrice.showButton(className, 'Slett');
-    html += "</tr>";
-  });
-
-  // Make one last table row for insertion in table 
-
-  // Insert empty table row for insertion
-  if (enableChanges) {
-
-    html += insertEmptyTableRow();
-  }
-
-  // The end of the table
-  html += objRemoteHeatingPrice.endTable();
-  document.querySelector('.result').innerHTML = html;
-  */
-
-  // Empty row
   // Empty line
 let html = emptyLine();
 
   objRemoteHeatingPrice.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
 
-    html += startRow();
+    html += startLine();
 
     // Year
     let className = `year${remoteHeatingPrice.remoteHeatingPriceId}`;
@@ -317,14 +270,14 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   className = `.year${remoteHeatingPriceId}`;
   let year = document.querySelector(className).value;
   className = `year${remoteHeatingPriceId}`;
-  const validYear = validateInterval(className, columnWidths, '', 'Ugyldig år', true, year, 2020, 2030);
+  const validYear = validateInterval(className,  '', 'Ugyldig år', true, year, 2020, 2030);
 
   // priceKilowattHour
   className = `.priceKilowattHour${remoteHeatingPriceId}`;
   let priceKilowattHour = document.querySelector(className).value;
   priceKilowattHour = formatKronerToOre(priceKilowattHour);
   className = `priceKilowattHour${remoteHeatingPriceId}`;
-  const validKilowattHourPrice = validateInterval(className, columnWidths, '', 'Ugyldig pris per kilowattimer', true, priceKilowattHour, 0, objRemoteHeatingPrice.nineNine);
+  const validKilowattHourPrice = validateInterval(className,  '', 'Ugyldig pris per kilowattimer', true, priceKilowattHour, 0, objRemoteHeatingPrice.nineNine);
 
   // Validate remoteheatingprices columns
   if (validYear && validKilowattHourPrice) {

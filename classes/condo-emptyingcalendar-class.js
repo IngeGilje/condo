@@ -66,6 +66,30 @@ class EmptyingCalendar extends Condos {
     }
   }
 
+  // Get the highest ID in the table
+  async getHighestEmptyingCalendarId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/emptyingcalendar'
+      : 'http://localhost:3000/emptyingcalendar';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestEmptyingCalendarId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (emptyingcalendar)");
+      this.arrayEmptyingCalendars = await response.json();
+    } catch (error) {
+      console.log("Error selecting emptying calendars:", error);
+    }
+  }
+
   // update emptying calendar row in emptying calendar table
   async updateEmptyingCalendarTable(emptyingCalendarId, user, condoId,date, residualWaste, paper, food, plastic, christmasTree) {
 

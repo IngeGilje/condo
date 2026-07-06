@@ -9,7 +9,7 @@ const objBankAccount = new BankAccount('bankaccount');
 const objSupplier = new Supplier('supplier');
 const objCondominium = new Condominium('scondominium');
 const objUserBankAccount = new UserBankAccount('userbankaccount');
-const objProject = new Project('project');
+const objProjects = new Projects('projects');
 const objTransaction = new Transaction('transaction');
 
 const enableChanges = (objTransaction.securityLevel > 5);
@@ -61,7 +61,7 @@ async function main() {
       await objCondo.loadCondoTable(objTransaction.condominiumId, objTransaction.nineNine);
       await objCondominium.loadCondominiumsTable();
       await objSupplier.loadSuppliersTable(objTransaction.condominiumId);
-      await objProject.loadProjectsTable(objTransaction.condominiumId);
+      await objProjects.loadProjectsTable(objTransaction.condominiumId);
 
       // Show header
       //showHeader();
@@ -258,69 +258,6 @@ async function events() {
   });
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objTransaction.initializeTable(columnWidths);
-
-  // start table body
-  html += objTransaction.startTableBody();
-
-  // show main header
-  html += objTransaction.showTableHeaderLogOut('', '', 'Transaksjoner', '', '');
-  html += "</tr>";
-
-  // end table body
-  html += objTransaction.endTableBody();
-
-  // The end of the table
-  html += objTransaction.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
-
-/*
-// Show filter
-function showFilter(condoId, accountId, fromDate, toDate, amount) {
-
-  // Start frame
-  let html = startFrame();
-
-  // show filter
-  html += startRow();
-
-  // Show condos
-  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
-
-  // Show accounts
-  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', objTransaction.nineNine, '', 'Vis alle', true);
-
-  // From date
-  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
-  fromDate = formatNumberToISODate(fromDate);
-  html += editDate('Fra Dato', 'filterFromDate', fromDate, true);
-
-  // To date
-  // Current date
-  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
-  toDate = formatNumberToISODate(toDate);
-  html += editDate('Til Dato', 'filterToDate', toDate, true);
-
-  // Amount
-  amount = formatOreToKroner(amount);
-  html += objTransaction.editAmount('Beløp', 'filterAmount', amount, true);
-
-  html += "</div>";
-
-  // End filter frame
-  html += "</div>";
-
-  document.querySelector('.showFilter').innerHTML = html;
-}
-*/
-
 function resetValues() {
 
   // Filter values
@@ -352,17 +289,17 @@ function resetValues() {
   // text
   document.querySelector('.text').value = '';
 
+  // Buttons
+  removeMessage();
   if (enableChanges) {
-
-    document.querySelector('.filterCondoId').disabled = true;
-    document.querySelector('.filterAccountId').disabled = true;
-    document.querySelector('.filterFromDate').disabled = true;
-    document.querySelector('.filterToDate').disabled = true;
-    document.querySelector('.filterAmount').disabled = true;
-
-    document.querySelector('.delete').disabled = true;
-    document.querySelector('.insert').disabled = true;
-    document.querySelector('.cancel').disabled = false;
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterCondoId', true);
+    disableButton('filterAccountId', true);
+    disableButton('filterFromDate', true);
+    disableButton('filterToDate', true);
+    disableButton('filterAmount', true);
   }
 }
 
@@ -377,43 +314,43 @@ async function updateTransactionRow(transactionId) {
   let transactionDate = document.querySelector(className).value;
   transactionDate = formatISODateToNumber(transactionDate);
   className = `date`;
-  const validDate = validateInterval(className, columnWidths, '', 'Ugyldig dato', true, transactionDate, 20150101, 20991231);
+  const validDate = validateInterval(className, '', 'Ugyldig dato', true, transactionDate, 20150101, 20991231);
 
   // accountId
   className = '.accountId';
   let accountId = Number(document.querySelector(className).value);
   className = 'accountId';
-  const validAccountId = validateInterval(className, columnWidths, '', 'Ugyldig konto', true, accountId, 1, objTransaction.nineNine);
+  const validAccountId = validateInterval(className, '', 'Ugyldig konto', true, accountId, 1, objTransaction.nineNine);
 
   // condoId
   className = `.condoId`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId`;
-  const validCondoId = validateInterval(className, columnWidths, '', 'Ugyldig leilighet', true, condoId, 0, objTransaction.nineNine);
+  const validCondoId = validateInterval(className, '', 'Ugyldig leilighet', true, condoId, 0, objTransaction.nineNine);
 
   // projectId 
   className = `.projectId`;
   let projectId = Number(document.querySelector(className).value);
   className = `projectId`;
-  const validProjectId = validateInterval(className, columnWidths, '', 'Ugyldig prosjekt', true, projectId, 0, objTransaction.nineNine);
+  const validProjectId = validateInterval(className, '', 'Ugyldig prosjekt', true, projectId, 0, objTransaction.nineNine);
 
   // income
   className = `.income`;
   let income = Number(formatKronerToOre(document.querySelector(className).value));
   className = `income`;
-  const validIncome = validateInterval(className, columnWidths, '', 'Ugyldig inntekt', true, income, objTransaction.minusNineNine, objTransaction.nineNine);
+  const validIncome = validateInterval(className, '', 'Ugyldig inntekt', true, income, objTransaction.minusNineNine, objTransaction.nineNine);
 
   // payment
   className = `.payment`;
   let payment = Number(formatKronerToOre(document.querySelector(className).value));
   className = `payment`;
-  const validPayment = validateInterval(className, columnWidths, '', 'Ugyldig utgift', true, payment, objTransaction.minusNineNine, objTransaction.nineNine);
+  const validPayment = validateInterval(className, '', 'Ugyldig utgift', true, payment, objTransaction.minusNineNine, objTransaction.nineNine);
 
   // kilowattHour
   className = `.kilowattHour`;
   const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
   className = `kilowattHour`;
-  const validNumberKWHour = validateInterval(className, columnWidths, '', 'Ugyldig kilowattime', true, kilowattHour, 0, objTransaction.nineNine);
+  const validNumberKWHour = validateInterval(className, '', 'Ugyldig kilowattime', true, kilowattHour, 0, objTransaction.nineNine);
 
   // text
   className = `.text`;
@@ -475,16 +412,26 @@ async function updateTransactionRow(transactionId) {
 
     transactionId = 0;
     if (objTransaction.arrayTransactions.length > 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+             disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterCondoId', false, 'white');
+      disableButton('filterAccountId', false, 'white');
+      disableButton('filterFromDate', false, 'white');
+      disableButton('filterToDate', false, 'white');
+      disableButton('filterAmount', false, 'white');
+    }
+
+    // show filter
+    showFilter(transactionId);
+
+    // Show transaction
     showTransaction(transactionId);
-
-    document.querySelector('.filterCondoId').disabled = false;
-    document.querySelector('.filterAccountId').disabled = false;
-    document.querySelector('.filterFromDate').disabled = false;
-    document.querySelector('.filterToDate').disabled = false;
-    document.querySelector('.filterAmount').disabled = false;
-
-    document.querySelector('.delete').disabled = false;
-    document.querySelector('.insert').disabled = false;
   }
 }
 
@@ -535,7 +482,7 @@ function showTransaction(transactionId) {
   let html = emptyLine();
 
   // Transaction Id
-  html += startRow();
+  html += startLine();
   html += showTextNew('Bilagsnummer', 'transactionId', transactionId, false, "Bilagsnummer");
   html += "</div>";
 
@@ -546,18 +493,18 @@ function showTransaction(transactionId) {
   */
 
   // Date
-  html += startRow();
+  html += startLine();
   let transactionDate = (rowNumberTransaction === -1)
     ? ''
     : objTransaction.arrayTransactions[rowNumberTransaction].date;
 
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   transactionDate = formatNumberToISODate(transactionDate);
-  html += editDate('Dato', 'transactionDate', transactionDate, enableChanges);
+  html += showDate('Dato', 'transactionDate', transactionDate, enableChanges);
   html += "</div>";
 
   // Condos
-  html += startRow();
+  html += startLine();
   let condoId = (rowNumberTransaction === -1)
     ? ''
     : objTransaction.arrayTransactions[rowNumberTransaction].condoId;
@@ -589,18 +536,11 @@ function showTransaction(transactionId) {
     ? ''
     : objTransaction.arrayTransactions[rowNumberTransaction].projectId;
 
-  html += objProject.showSelectedProjectsNew('Prosjekt', 'projectId', '', projectId, 'Velg prosjekt', '', enableChanges);
+  html += objProjects.showSelectedProjectsNew('Prosjekt', 'projectId', '', projectId, 'Velg prosjekt', '', enableChanges);
   html += "</div>";
 
-  /*
-  // projects
-  const projectId = objTransaction.arrayTransactions[rowNumberTransaction]?.projectId ?? 0;
-  className = `projectId`;
-  html += objProject.showSelectedProjects(className, '', projectId, 'Velg prosjekt', '', enableChanges);
-  html += "</tr>";
-  */
   // income
-  html += startRow();
+  html += startLine();
   let income = (rowNumberTransaction === -1)
     ? ''
     : objTransaction.arrayTransactions[rowNumberTransaction].income;
@@ -641,7 +581,7 @@ function showTransaction(transactionId) {
   html += "</tr>";
   */
   // Text
-  html += startRow();
+  html += startLine();
   let text = (rowNumberTransaction === -1)
     ? ''
     : objTransaction.arrayTransactions[rowNumberTransaction].text;
@@ -656,161 +596,32 @@ function showTransaction(transactionId) {
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
 
-  html += startRow();
+  html += startLine();
   html += showButtonNew('back', 'Tilbake');
   html += "</div>";
 
 
   document.querySelector('.showTransaction').innerHTML = html;
 
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
-}
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
 
-/*
-// Show transaction
-function showTransaction(transactionId) {
-
-  const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(bankTransaction => bankTransaction.transactionId === transactionId);
-
-  // Start table
-  let html = objTransaction.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objTransaction.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', '', '', '');
-
-  // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('', 'Bilagsnummer', 'Dato', 'Leilighet', '', '', '');
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('');
-
-  // Transaction Id
-  let className = `transactionId`;
-  html += objTransaction.editTableCell(className, transactionId, 10, false);
-
-  // Date
-  let date = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? '';
-  date = (date)
-    ? formatNumberToNorDate(date)
-    : '';
-  className = `transactionDate`;
-  html += objTransaction.editTableCell(className, date, 10, enableChanges);
-
-  // condos
-  const condoId = objTransaction.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
-  className = `condoId`;
-  html += objCondo.showSelectedCondos(className, '', condoId, 'Velg leilighet', '', enableChanges);
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('', 'Konto', 'Prosjekt', '', '', '', '');
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('');
-
-  // account Id
-  const accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
-  className = `accountId`;
-  html += objAccounts.showSelectedAccounts(className, '', accountId, 'Velg konto', '', enableChanges);
-
-  // project Id
-  const projectId = objTransaction.arrayTransactions[rowNumberTransaction]?.projectId ?? 0;
-  className = `projectId`;
-  html += objProject.showSelectedProjects(className, '', projectId, 'Velg prosjekt', '', enableChanges);
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('', 'Inntekt', 'Utgift', 'Kilowattimer', '', '', '');
-  html += "</tr>";
-
-  // income
-  html += objAccount.insertTableRow('');
-
-  let income = objTransaction.arrayTransactions[rowNumberTransaction]?.income ?? '';
-  income = formatOreToKroner(income);
-  className = `income`;
-  html += objTransaction.editTableCell(className, income, 10, enableChanges);
-
-  // payment
-  let payment = objTransaction.arrayTransactions[rowNumberTransaction]?.payment ?? '';
-  payment = formatOreToKroner(payment);
-  className = `payment`;
-  html += objTransaction.editTableCell(className, payment, 10, enableChanges);
-
-  let kilowattHour = objTransaction.arrayTransactions[rowNumberTransaction]?.kilowattHour ?? 0;
-  // let kilowattHour = objTransaction.arrayTransactions[rowNumberTransaction].kilowattHour;
-  kilowattHour = formatOreToKroner(kilowattHour);
-  className = `kilowattHour`;
-  html += objTransaction.editTableCell(className, kilowattHour, 10, enableChanges);
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-
-  html += objTransaction.insertTableRow('', 'Tekst', '', '', '', '', '');
-  html += "</tr>";
-
-  // text
-
-  html += objAccount.insertTableRow('');
-
-  const text = objTransaction.arrayTransactions[rowNumberTransaction]?.text ?? '';
-  className = `text`;
-  html += objTransaction.editTableCell(className, text, 45, enableChanges, 2);
-  html += "</tr>";
-
-  html += objTransaction.insertTableRow('', '', '', '', '', '', '');
-  html += "</tr>";
-
-  // Show buttons (<tr></td>)
+  // Buttons
   if (enableChanges) {
-
-    // insert a table row (<tr></td>)
-    html += objTransaction.insertTableRow('');
-
-    html += objTransaction.showButton('update', 'Oppdater');
-    html += objTransaction.showButton('cancel', 'Angre');
-    html += "</tr>";
-
-    // insert a table row (<tr></td>)
-    html += objTransaction.insertTableRow('');
-
-    html += objTransaction.showButton('delete', 'Slett');
-    html += objTransaction.showButton('insert', 'Ny');
-    html += "</tr>";
-
-    // insert a table row (<tr></td>)
-    html += objTransaction.insertTableRow('');
-
-    const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objTransaction.condominiumId);
-    if (rowNumberCondominium !== -1) {
-
-      const path = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
-      const voucherFileName = `${path}.pdf`;
-    } else {
-
-      html += "<td></td>";
-    }
-
-    html += "</tr>";
+    disableButton('delete', false);
+    disableButton('insert', false);
+                 disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterTransactionId', false, 'white');
   }
-
-  // The end of the table
-  html += objTransaction.endTable();
-  document.querySelector('.transaction').innerHTML = html;
-
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
 }
-*/

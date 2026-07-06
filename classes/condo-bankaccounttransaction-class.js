@@ -143,6 +143,30 @@ class BankAccountTransaction extends Condos {
     }
   }
 
+  // Get the highest ID in the table
+  async getHighestBankAccountTransactionId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/bankaccounttransactions'
+      : 'http://localhost:3000/bankaccounttransactions';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestBankAccountTransactionId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (bank account transactions)");
+      this.arrayBankAccountTransactions = await response.json();
+    } catch (error) {
+      console.log("Error selecting bank account transactions:", error);
+    }
+  }
+
   // update Bank account transactions row
   async updateBankAccountTransactionsTable(bankAccountTransactionId, condominiumId, user, condoId, accountId, income, payment, kilowattHour, date, text) {
 

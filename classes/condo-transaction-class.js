@@ -208,6 +208,34 @@ class Transaction extends Condos {
     }
   }
 
+  // get accounts from accounts table
+  async loadTransactionTable(condominiumId, fixedCost) {
+
+    const URL = (this.serverStatus === 1) 
+    ? '/api/transactions' 
+    : 'http://localhost:3000/transactions';
+    try {
+
+      // POST request
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'select',
+          condominiumId: condominiumId,
+          fixedCost: fixedCost
+        })
+      });
+
+      if (!response.ok) throw new Error("Network error (transactions)");
+      this.arrayAccounts = await response.json();
+    } catch (error) {
+      console.log("Error loading transactions:", error);
+    }
+  }
+
   // get last row in transactions table
   async loadLastRowTransactionsTable(condominiumId) {
 

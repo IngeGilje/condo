@@ -201,30 +201,16 @@ function resetValues() {
 
   // Fixed cost
   document.querySelector('.select-accounts-fixedCost').value = '';
+
+  // Buttons
+  removeMessage();
+  if (enableChanges) {
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterFixedCost', true);
+  }
 }
-
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objAccounts.initializeTable(columnWidths);
-
-  // start table body
-  html += objAccounts.startTableBody();
-
-  // show main header
-  html += objAccounts.showTableHeaderLogOut('', 'Konto');
-  html += "</tr>";
-
-  // end table body
-  html += objAccounts.endTableBody();
-
-  // The end of the table
-  html += objAccounts.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
 
 // Show filter
 function showFilter(fixedCost) {
@@ -233,14 +219,14 @@ function showFilter(fixedCost) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show types of account
   if (fixedCost === 'Y') fixedCost = constFixedCost;
   if (fixedCost === 'N') fixedCost = constVariableCost;
   if (fixedCost === 'A') fixedCost = 'Alle';
   html += showSelectedValuesNew('Kostnadstype', 'filterFixedCost',    '',          true, fixedCost, constFixedCost, constVariableCost, 'Alle')
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -289,29 +275,6 @@ function showAccounts() {
   document.querySelector('.showAccounts').innerHTML = html;
 }
 
-/*
-// Insert empty table row
-function insertEmptyTableRow() {
-
-  let html = "";
-
-  // Show menu
-  // insert a table row (<tr></td>)
-  html += objAccounts.insertTableRow('');
-
-  // Fixed cost
-  html += objAccounts.showSelectedValues('fixedCost0', '', enableChanges, 'Velg kostnadstype', constFixedCost, constVariableCost, 'Velg kostnadstype');
-
-  // name
-  html += objAccounts.editTableCell('name0', '', 45, enableChanges);
-
-  // Insert new account
-  html += "<td>Ny konto</td></tr>";
-
-  return html;
-}
-*/
-
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
 
@@ -326,48 +289,3 @@ async function deleteAccountRow(accountId, className) {
   const fixedCost = 'A';
   await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 }
-
-/*
-// Update a accounts table row
-async function updateAccountsRow(accountId) {
-
-  accountId = Number(accountId);
-
-  // name
-  className = `name${accountId}`;
-  const name = document.querySelector(`.${className}`).value;
-  const validName = objAccounts.validateText(className, columnWidths, '', 'Ugyldig kontonavn', true, name, 3, 50);
-
-  className = `.fixedCost${accountId}`;
-  let fixedCost = document.querySelector(className).value;
-  className = `fixedCost${accountId}`;
-  if (fixedCost === constFixedCost) fixedCost = 'Y';
-  if (fixedCost === constVariableCost) fixedCost = 'N';
-  const validFixedCost = objAccounts.validateValues(className, columnWidths, '', 'Ugyldig kostnadstype', true, fixedCost, 'Y', 'N');
-
-  // Validate accounts columns
-  if (validName && validFixedCost) {
-
-    document.querySelector('.message').style.display = "none";
-
-    // Check if the account id exist
-    rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (rowNumberAccount !== -1) {
-
-      // update the accounts row
-      await objAccounts.updateAccountsTable(objAccounts.user, accountId, fixedCost, name);
-
-    } else {
-
-      // Insert the account row in accounts table
-      await objAccounts.insertAccountsTable(objAccounts.condominiumId, objAccounts.user, name, fixedCost);
-    }
-
-    fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
-
-    // Show account
-    showAccounts();
-  }
-}
-*/

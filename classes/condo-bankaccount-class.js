@@ -299,6 +299,30 @@ class BankAccount extends Condos {
     }
   }
 
+  // Get the highest ID in the table
+  async getHighestBankAccountId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/bankaccounts'
+      : 'http://localhost:3000/bankaccounts';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestBankAccountId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (bank accounts)");
+      this.arrayBankAccounts = await response.json();
+    } catch (error) {
+      console.log("Error selecting bank accounts:", error);
+    }
+  }
+
   // update bank accounts row
   async updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate) {
 

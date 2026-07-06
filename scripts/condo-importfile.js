@@ -504,29 +504,6 @@ function checkTransaction(income, payment, date) {
   return bankTransactionExist;
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objImportFile.initializeTable(columnWidths);
-
-  // start table body
-  html += objImportFile.startTableBody();
-
-  // show main header
-  html += objImportFile.showTableHeaderLogOut('', '', '', 'Import av bankkontotransaksjoner', '', '', '');
-  html += "</tr>";
-
-  // end table body
-  html += objImportFile.endTableBody();
-
-  // The end of the table
-  html += objImportFile.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter() {
 

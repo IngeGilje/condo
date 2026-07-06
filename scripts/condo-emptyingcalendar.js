@@ -34,7 +34,7 @@ async function main() {
       let html = showHorizontalMenu(objEmptyingCalendar.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
-     // Show menu for empty calendar 
+      // Show menu for empty calendar 
       html = showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
 
@@ -45,8 +45,7 @@ async function main() {
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show header
-
-      showHeader();
+      //showHeader();
 
       // Show filter
       showFilter();
@@ -56,14 +55,15 @@ async function main() {
       await objEmptyingCalendar.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, year, month);
 
       // Show emtyingcalendar
-      showEmptyingCalendar();
+      const emptyingCalendarId = objEmptyingCalendar.arrayEmptyingCalendars[0]?.emptyingCalendarId ?? 0;
+      showEmptyingCalendar(emptyingCalendarId);
 
       // Events
       events();
     }
   } else {
 
-    showMessageNew( 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -80,7 +80,7 @@ async function events() {
       await objEmptyingCalendar.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, year, month);
 
       // Show emtyingcalendar
-      showEmptyingCalendar(3);
+      showEmptyingCalendar(emptyingCalendarId);
     };
   });
 
@@ -143,7 +143,7 @@ async function events() {
         await objEmptyingCalendar.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, year, month);
 
         // Show emtyingcalendar
-        showEmptyingCalendar(3);
+        showEmptyingCalendar(emptyingCalendarId);
       }
     }
   });
@@ -161,6 +161,7 @@ async function events() {
   });
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -181,15 +182,15 @@ function showHeader() {
   html += objEmptyingCalendar.endTable();
   document.querySelector('.showHeader').innerHTML = html;
 }
+*/
 
 // Show filter
 function showFilter() {
 
-    // Start frame
+  // Start frame
   let html = startFrame();
 
   // show filter
-  html += startRow();
 
   // Show years
   const year = String(today.getFullYear());
@@ -198,9 +199,7 @@ function showFilter() {
   // Show selected months
   const date = getCurrentDate();
   let month = Number(date.split('.')[1]); // Extract the month part
-  html += objEmptyingCalendar.showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
-
-  html += "</div>";
+  html += showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
 
   // End filter frame
   html += "</div>";
@@ -209,8 +208,9 @@ function showFilter() {
 }
 
 // Show emptyingCalendar
-function showEmptyingCalendar() {
+function showEmptyingCalendar(emptyingCalendarId) {
 
+  /*
   // start table
   let html = objEmptyingCalendar.initializeTable(columnWidths);
 
@@ -280,13 +280,98 @@ function showEmptyingCalendar() {
   if (enableChanges) {
 
     // Insert empty table row for insertion
-
     html += insertEmptyTableRow();
   };
 
   // The end of the table
   html += objEmptyingCalendar.endTable();
-  document.querySelector('.emptyingcalendar').innerHTML = html;
+  document.querySelector('.showEmptyCalendar').innerHTML = html;
+*/
+
+  // row number emptyingcalendar array
+  const rowNumberEmptyingCalendar = objEmptyingCalendar.arrayEmptyingCalendars.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);
+
+  // Empty line
+  let html = emptyLine();
+
+  // userId
+  html += startLine();
+  const condoId = objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar]?.condoId ?? 0;
+  html += objCondo.showSelectedCondosNew('Ansvarlig', 'condoId', '', condoId, 'Velg ansvarlig', '', true);
+
+  // date
+  let emptyingCalendarDate = objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar]?.date ?? 0;
+  emptyingCalendarDate = formatNumberToISODate(emptyingCalendarDate);
+  html += showDate('Dato', 'emptyingCalendarDate', emptyingCalendarDate, enableChanges);
+  html += "</div>";
+
+  // residual waste 
+  html += startLine();
+  selected = "Ugyldig verdi";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].residualWaste === 'Y') selected = "Ja";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].residualWaste === 'N') selected = "Nei";
+  className = 'residualWaste';
+  html += showSelectedValuesNew('Restavfall', className, '', enableChanges, selected, 'Nei', 'Ja');
+
+  // Paper waste
+  selected = "Ugyldig verdi";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].paper === 'Y') selected = "Ja";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].paper === 'N') selected = "Nei";
+  className = 'paper';
+  html += showSelectedValuesNew('Papiravfall', className, '', enableChanges, selected, 'Nei', 'Ja');
+  html += "</div>";
+
+  // food waste
+  html += startLine();
+  selected = "Ugyldig verdi";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].food === 'Y') selected = "Ja";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].food === 'N') selected = "Nei";
+  className = 'paper';
+  html += showSelectedValuesNew('Matavfall', className, '', enableChanges, selected, 'Nei', 'Ja');
+
+  // plastic waste
+  selected = "Ugyldig verdi";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].plastic === 'Y') selected = "Ja";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].plastic === 'N') selected = "Nei";
+  className = 'plastic';
+  html += showSelectedValuesNew('Plastavfall', className, '', enableChanges, selected, 'Nei', 'Ja');
+  html += "</div>";
+
+  // Christmas tree
+  html += startLine();
+  selected = "Ugyldig verdi";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].christmasTree === 'Y') selected = "Ja";
+  if (objEmptyingCalendar.arrayEmptyingCalendars[rowNumberEmptyingCalendar].christmasTree === 'N') selected = "Nei";
+  className = 'christmasTree';
+  html += showSelectedValuesNew('Juletre', className, '', enableChanges, selected, 'Nei', 'Ja');
+  html += "</div>";
+
+  // Buttons
+  if (enableChanges) {
+
+    html += startLine();
+    html += showButtonNew('update', 'Oppdater');
+    html += showButtonNew('cancel', 'Angre');
+    html += "</div>";
+
+    html += startLine();
+    html += showButtonNew('delete', 'Slett');
+    html += showButtonNew('insert', 'Ny');
+    html += "</div>";
+  }
+
+  // Show empty calendar
+  document.querySelector('.showEmptyCalendar').innerHTML = html;
+
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterYear', false, 'white');
+    disableButton('filterMonth', false, 'white');
+  }
 }
 
 // Insert empty table row
@@ -364,13 +449,13 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
   // condoId
   className = `condoId${emptyingCalendarId}`;
   condoId = Number(document.querySelector(`.${className}`).value);
-  const validCondoId = validateInterval(className, columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objCondo.nineNine);
+  const validCondoId = validateInterval(className, '', 'Ugyldig leilighet', true, condoId, 1, objCondo.nineNine);
 
   // date
   className = `date${emptyingCalendarId}`;
   let date = document.querySelector(`.${className}`).value;
   date = objEmptyingCalendar.formatDateToNumber(date);
-  const validDate = validateInterval(className, columnWidths, '', 'Ugyldig dato', true, date, 20100101, objEmptyingCalendar.nineNine);
+  const validDate = validateInterval(className, '', 'Ugyldig dato', true, date, 20100101, objEmptyingCalendar.nineNine);
 
   className = `paper${emptyingCalendarId}`;
   let paper = document.querySelector(`.${className}`).value;
@@ -425,6 +510,6 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
     await objEmptyingCalendar.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, year, month);
 
     // Show emtyingcalendar
-    showEmptyingCalendar(3);
+    showEmptyingCalendar(emptyingCalendarId);
   }
 }

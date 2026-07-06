@@ -73,13 +73,11 @@ app.listen(3000, () => {
 });
 
 // Get current user info
-//app.post("/me", async (req, res) => {
 routePath = "";
 if (serverStatus === 1) routePath = "/api/me";
 if (serverStatus === 2) routePath = "/me";
 app.post(routePath, async (req, res) => {
 
-  console.log('req.session', req.session);
   if (req.session.user) {
 
     res.send(req.session.user);
@@ -158,9 +156,7 @@ async function main() {
       try {
 
         const userId = req.body.userId;
-        console.log('userId :', userId);
         const password = req.body.password;
-        console.log('password :', password);
 
         // get password
         const SQLquery = `
@@ -242,7 +238,6 @@ async function main() {
         res.sendStatus(200);
       } catch (err) {
 
-        // console.log('access error:', err.message);
         res.sendStatus(404);
       }
     });
@@ -271,9 +266,33 @@ async function main() {
             WHERE condominiumId = ${condominiumId}
               AND deleted <> 'Y'`;
             if (fixedCost === 'Y' || fixedCost === 'N') SQLquery += ` AND fixedCost = '${fixedCost}'`;
-            console.log('SQLquery :', SQLquery);
-
             SQLquery += ` ORDER BY name ASC, accountId ASC;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestAccountId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM accounts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY accountId DESC
+            LIMIT 1;`;
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -397,7 +416,6 @@ async function main() {
     if (serverStatus === 2) routePath = "/users";
     app.post(routePath, async (req, res) => {
 
-      console.log(routePath);
       const action = req.body.action;
       const lastUpdate = today.toISOString();
 
@@ -418,7 +436,34 @@ async function main() {
             if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
             if (Number(userId) !== nineNine) SQLquery += ` AND userId = ${userId}`;
             SQLquery += ` ORDER BY firstName`;
+
             console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestUserId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM users
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY userId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
@@ -557,7 +602,6 @@ async function main() {
             const phone = req.body.phone;
             const securityLevel = req.body.securityLevel;
             const password = req.body.password;
-            console.log('password :', password);
 
             // Insert new row
             const SQLquery = `
@@ -622,7 +666,9 @@ async function main() {
                   WHERE userId = ${userId};
           `;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -656,7 +702,6 @@ async function main() {
             if (isValid) {
 
               isValid = await bcrypt.compare(password, rows[0].password);
-              console.log('valid 3:', isValid);
               rows[0].password = (isValid) ? 'OK' : 'Not OK';
 
               // Send a JSON response to the client containing the data
@@ -689,23 +734,45 @@ async function main() {
 
           try {
 
-            let SQLquery =
-              `
-          SELECT * FROM bankaccounts
-                WHERE condominiumId = ${condominiumId}
-                  AND deleted <> 'Y'
-            `;
+            let SQLquery = `
+            SELECT * FROM bankaccounts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'`;
             if (bankAccountId !== nineNine) SQLquery += `AND bankAccountId = ${bankAccountId} `;
+            SQLquery += `
+            ORDER BY bankAccountId;`;
 
-            SQLquery +=
-              `
-                ORDER BY bankAccountId;
-          `;
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestBankAccountId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM bankaccounts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY bankAccountId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
           } catch (err) {
 
             console.log(`Database error in ${routePath}:`, err.message);
@@ -727,22 +794,22 @@ async function main() {
             const closingBalanceDate = req.body.closingBalanceDate;
             const bankAccountId = req.body.bankAccountId;
 
-            const SQLquery =
-              `
-                UPDATE bankaccounts
-          SET
-          user = '${user}',
-            lastUpdate = '${lastUpdate}',
-            bankAccount = '${bankAccount}',
-            name = '${name}',
-            openingBalance = '${openingBalance}',
-            openingBalanceDate = '${openingBalanceDate}',
-            closingBalance = '${closingBalance}',
-            closingBalanceDate = '${closingBalanceDate}'
-                WHERE bankAccountId = ${bankAccountId};
-          `;
+            const SQLquery = `
+            UPDATE bankaccounts
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              bankAccount = '${bankAccount}',
+              name = '${name}',
+              openingBalance = '${openingBalance}',
+              openingBalanceDate = '${openingBalanceDate}',
+              closingBalance = '${closingBalance}',
+              closingBalanceDate = '${closingBalanceDate}'
+            WHERE bankAccountId = ${bankAccountId};`;
+
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -768,37 +835,36 @@ async function main() {
             const closingBalance = req.body.closingBalance;
 
             // Insert new row
-            const SQLquery =
-              `
-                INSERT INTO bankaccounts(
-            deleted,
-            condominiumId,
-            user,
-            lastUpdate,
-            bankAccount,
-            name,
-            openingBalance,
-            openingBalanceDate,
-            closingBalance,
-            closingBalanceDate
-          ) VALUES(
-            'N',
-            ${condominiumId},
-            '${user}',
-            '${lastUpdate}',
-            '${bankAccount}',
-            '${name}',
-            '${openingBalance}',
-            '${openingBalanceDate}',
-            '${closingBalance}',
-            '${closingBalanceDate}'
-          );
-          `;
+            const SQLquery = `
+            INSERT INTO bankaccounts(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              bankAccount,
+              name,
+              openingBalance,
+              openingBalanceDate,
+              closingBalance,
+              closingBalanceDate
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              '${bankAccount}',
+              '${name}',
+              '${openingBalance}',
+              '${openingBalanceDate}',
+              '${closingBalance}',
+              '${closingBalanceDate}'
+            );`;
+
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log(`Database error in ${routePath}:`, err.message);
@@ -828,6 +894,7 @@ async function main() {
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
@@ -857,14 +924,40 @@ async function main() {
 
           try {
 
-            const SQLquery =
-              `
-          SELECT * FROM condominiums
-                  WHERE deleted <> 'Y'
-                ORDER BY condominiumId;
-          `;
+            const SQLquery = `
+            SELECT * FROM condominiums
+            WHERE deleted <> 'Y'
+            ORDER BY condominiumId;`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestCondominiumId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM condominiums
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY condominiumId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -913,13 +1006,13 @@ async function main() {
           commonCostAccountId = ${commonCostAccountId},
           organizationNumber = '${organizationNumber}',
             importPath = '${importPath}'
-                WHERE condominiumId = ${condominiumId};
-          `;
+                WHERE condominiumId = ${condominiumId};`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
-            console.log('SQLquery :', SQLquery);
           } catch (err) {
 
             console.log(`Database error in ${routePath}:`, err.message);
@@ -948,44 +1041,43 @@ async function main() {
             const importPath = req.body.importPath;
 
             // Insert new row
-            const SQLquery =
-              `
-                INSERT INTO condominiums(
-            deleted,
-            user,
-            lastUpdate,
-            name,
-            street,
-            address2,
-            postalCode,
-            city,
-            phone,
-            email,
-            incomeRemoteHeatingAccountId,
-            paymentRemoteHeatingAccountId,
-            commonCostAccountId,
-            organizationNumber,
-            importPath
-          ) VALUES(
-            'N',
-            '${user}',
-            '${lastUpdate}',
-            '${name}',
-            '${street}',
-            '${address2}',
-            '${postalCode}',
-            '${city}',
-            '${phone}',
-            '${email}',
-            ${incomeRemoteHeatingAccountId},
-            ${paymentRemoteHeatingAccountId},
-            ${commonCostAccountId},
-            '${organizationNumber}',
-            '${importPath}'
-          );
-          `;
+            const SQLquery = `
+            INSERT INTO condominiums(
+              deleted,
+              user,
+              lastUpdate,
+              name,
+              street,
+              address2,
+              postalCode,
+              city,
+              phone,
+              email,
+              incomeRemoteHeatingAccountId,
+              paymentRemoteHeatingAccountId,
+              commonCostAccountId,
+              organizationNumber,
+              importPath
+            ) VALUES(
+              'N',
+              '${user}',
+              '${lastUpdate}',
+              '${name}',
+              '${street}',
+              '${address2}',
+              '${postalCode}',
+              '${city}',
+              '${phone}',
+              '${email}',
+              ${incomeRemoteHeatingAccountId},
+              ${paymentRemoteHeatingAccountId},
+              ${commonCostAccountId},
+              '${organizationNumber}',
+              '${importPath}');`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery :', SQLquery);
@@ -1006,17 +1098,17 @@ async function main() {
             const condominiumId = req.body.condominiumId;
 
             // Delete table
-            const SQLquery =
-              `
-                UPDATE condominiums
-          SET
-          deleted = 'Y',
-            user = '${user}',
-            lastUpdate = '${lastUpdate}'
-                WHERE condominiumId = ${condominiumId};
-          `;
+            const SQLquery = `
+            UPDATE condominiums
+            SET
+              deleted = 'Y',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}'
+            WHERE condominiumId = ${condominiumId};`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
@@ -1053,28 +1145,52 @@ async function main() {
             let SQLquery = `
               SELECT * FROM budgets
               WHERE condominiumId = ${condominiumId}
-                AND deleted <> 'Y'
-            `;
+              AND deleted <> 'Y'`;
 
             if (year !== nineNine) {
               SQLquery += `
-                AND year = ${year}
-              `;
+              AND year = ${year}`;
             }
             if (accountId !== nineNine) {
               SQLquery += `
-                AND accountId = ${accountId}
-              `;
+              AND accountId = ${accountId}`;
             }
 
             SQLquery += `
-              ORDER BY year, accountId;
-            `;
+            ORDER BY year, accountId;`;
+
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
             // Send a JSON response to the client containing the data
             res.json(rows);
             console.log('SQLquery: ', SQLquery);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestBudgetsId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM budgets
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY budgetId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
           } catch (err) {
 
             console.log(`Database error in ${routePath}:`, err.message);
@@ -1109,6 +1225,7 @@ async function main() {
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1155,6 +1272,7 @@ async function main() {
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1181,8 +1299,9 @@ async function main() {
                 lastUpdate = '${lastUpdate}'
               WHERE budgetId = ${budgetId};
             `;
-
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1245,15 +1364,40 @@ async function main() {
           `;
             }
 
-            SQLquery +=
-              `
-                ORDER BY condoId, date DESC;
-          `;
+            SQLquery += `
+            ORDER BY condoId, date DESC;`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestDueId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM dues
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY dueId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
           } catch (err) {
 
             console.log(`Database error in ${routePath}:`, err.message);
@@ -1288,8 +1432,10 @@ async function main() {
               kilowattHour = ${kilowattHour},
               text = '${text}'
             WHERE dueId = ${dueId};`;
+
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1340,6 +1486,7 @@ async function main() {
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1368,9 +1515,9 @@ async function main() {
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
-            console.log('SQLquery: ', SQLquery);
           } catch (err) {
 
             console.log(`Database error in ${routePath}:`, err.message);
@@ -1382,7 +1529,6 @@ async function main() {
     });
 
     // Requests for condo
-    //app.post("/condo", async (req, res) => {
     routePath = "";
     if (serverStatus === 1) routePath = "/api/condo";
     if (serverStatus === 2) routePath = "/condo";
@@ -1404,16 +1550,41 @@ async function main() {
             SELECT * FROM condo
             WHERE condominiumId = ${condominiumId}
               AND deleted <> 'Y'`;
-            console.log('SQLquery: ', SQLquery);
             if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
-            console.log('SQLquery: ', SQLquery);
             SQLquery += ` ORDER BY condoId;`;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
 
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestCondoId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM condo
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY condoId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
           } catch (err) {
 
             console.log(`Database error in ${routePath}:`, err.message);
@@ -1427,7 +1598,6 @@ async function main() {
           try {
 
             const condoId = Number(req.body.condoId);
-            console.log('condoId: ', condoId);
             const user = req.body.user;
             const name = req.body.name;
             const street = req.body.street;
@@ -1452,9 +1622,9 @@ async function main() {
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
-            console.log('SQLquery:', SQLquery);
           } catch (err) {
 
             console.log(`Database error in ${routePath}:`, err.message);
@@ -1501,7 +1671,9 @@ async function main() {
               '${city}',
               '${squareMeters}');`;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1520,7 +1692,6 @@ async function main() {
             const user = req.body.user;
 
             const condoId = Number(req.body.condoId);
-            console.log('condoId: ', condoId);
 
             // Delete table
             const SQLquery = `
@@ -1533,6 +1704,7 @@ async function main() {
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1547,7 +1719,6 @@ async function main() {
     });
 
     // Requests for user bank account
-    //app.post("/userbankaccounts", async (req, res) => {
     routePath = "";
     if (serverStatus === 1) routePath = "/api/userbankaccounts";
     if (serverStatus === 2) routePath = "/userbankaccounts";
@@ -1587,6 +1758,32 @@ async function main() {
           break;
         }
 
+        case 'highestUserBankAccountId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM userBankAccounts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY userBankAccountId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
         case 'update': {
 
           try {
@@ -1610,6 +1807,7 @@ async function main() {
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1653,6 +1851,7 @@ async function main() {
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1683,6 +1882,7 @@ async function main() {
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1723,7 +1923,35 @@ async function main() {
                 ORDER BY supplierId;
           `;
 
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestSupplierId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM suppliers
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY supplierId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1776,8 +2004,10 @@ async function main() {
             textAccountId = ${textAccountId}
                 WHERE supplierId = ${supplierId};
           `;
+
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1849,8 +2079,10 @@ async function main() {
             ${textAccountId}
           );
           `;
+
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1881,6 +2113,7 @@ async function main() {
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1920,7 +2153,9 @@ async function main() {
 
           try {
 
-            let SQLquery = `SELECT * FROM transactions WHERE condominiumId = ${condominiumId}`;
+            let SQLquery = `
+            SELECT * FROM transactions 
+            WHERE condominiumId = ${condominiumId}`;
             if (deleted === 'Y') SQLquery += ` AND deleted = 'Y'`;
             if (deleted === 'N') SQLquery += ` AND deleted = 'N'`;
             SQLquery += ` AND date BETWEEN ${fromDate} AND ${toDate}`;
@@ -1933,6 +2168,7 @@ async function main() {
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -1943,7 +2179,7 @@ async function main() {
           break;
         }
 
-        case 'selectLastRow': {
+        case 'highestTransactionId': {
 
           const condominiumId = Number(req.body.condominiumId);
 
@@ -1952,12 +2188,13 @@ async function main() {
             let SQLquery = `
             SELECT * FROM transactions
             WHERE condominiumId = ${condominiumId}
-            AND deleted = 'N'
+            AND deleted <> 'Y'
             ORDER BY transactionId DESC
             LIMIT 1;`;
 
-            console.log('SQLquery: ', SQLquery);
+            console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
+
             // Send a JSON response to the client containing the data
             res.json(rows);
           } catch (err) {
@@ -2113,7 +2350,6 @@ async function main() {
       try {
 
         const fileName = req.body.fileName;
-        console.log('fileName', fileName);
         const data = await fs.readFile(fileName, "utf8");
         res.json({ content: data });
       } catch (err) {
@@ -2147,7 +2383,9 @@ async function main() {
           const year = Number(req.body.year);
           const condoId = Number(req.body.condoId);
 
-          let SQLquery = `SELECT * FROM remoteheatings WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
+          let SQLquery =
+            `SELECT * FROM remoteheatings
+           WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
 
           if (year !== nineNine) SQLquery += ` AND year = ${year} `;
           if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId} `;
@@ -2155,6 +2393,33 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestRemoteHeatingId': {
+
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM remoteheatings
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY remoteHeatingId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2194,6 +2459,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2239,11 +2505,11 @@ async function main() {
             ${date},
             ${kilowattHour},
             ${priceYear}
-          );
-          `;
+          );`;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2274,6 +2540,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2304,11 +2571,40 @@ async function main() {
 
           const condominiumId = req.body.condominiumId;
 
-          let SQLquery = `SELECT * FROM remoteheatingprices WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
+          let SQLquery = `SELECT * FROM remoteheatingprices
+          WHERE condominiumId = ${condominiumId} 
+          AND deleted <> 'Y'`;
           SQLquery += ` ORDER BY year; `;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestRemoteHeatingPriceId': {
+
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM remoteheatingprices
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY remoteHeatingPriceId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2342,6 +2638,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2381,6 +2678,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2409,6 +2707,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2445,6 +2744,32 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestCondominiumId': {
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM condominiums
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY condominiumId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2480,6 +2805,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2521,6 +2847,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2549,6 +2876,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2562,7 +2890,6 @@ async function main() {
   });
 
   // Requests for news table
-  //app.post("/news", async (req, res) => {
   routePath = "";
   if (serverStatus === 1) routePath = "/api/news";
   if (serverStatus === 2) routePath = "/news";
@@ -2585,11 +2912,38 @@ async function main() {
           AND deleted <> 'Y'
           ORDER BY date DESC;`;
 
+          console.log('SQLquery :', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
 
           // Send a JSON response to the client containing the data
           res.json(rows);
           console.log('SQLquery: ', SQLquery);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestNewsId': {
+
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM news
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY newsId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
         } catch (err) {
 
           console.log(`Database error in ${routePath}:`, err.message);
@@ -2625,6 +2979,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2674,6 +3029,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2698,9 +3054,11 @@ async function main() {
               deleted = 'Y',
               user = '${user}',
               lastUpdate = '${lastUpdate}'
-            WHERE newsId = ${newsId};
-          `;
+            WHERE newsId = ${newsId};`;
+
+          console.log('SQLquery :', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2763,6 +3121,31 @@ async function main() {
         break;
       }
 
+      case 'highestEmptyingCalendarId': {
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM emptyingcalendar
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY emptyingCalendarId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
       case 'update': {
 
         try {
@@ -2794,6 +3177,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2850,6 +3234,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2876,7 +3261,10 @@ async function main() {
               lastUpdate = '${lastUpdate}'
             WHERE emptyingCalendarId = ${emptyingCalendarId};
           `;
+
+          console.log('SQLquery :', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -2890,7 +3278,6 @@ async function main() {
   });
 
   // Requests for projects table
-  //app.post("/projects", async (req, res) => {
   routePath = "";
   if (serverStatus === 1) routePath = "/api/projects";
   if (serverStatus === 2) routePath = "/projects";
@@ -2926,6 +3313,31 @@ async function main() {
         break;
       }
 
+      case 'highestProjectId': {
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM projects
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY projectId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
       case 'update': {
 
         try {
@@ -2947,7 +3359,6 @@ async function main() {
               amount = '${amount}'
             WHERE projectId = ${projectId};`;
 
-          // Send a JSON response to the client containing the data
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
 
@@ -2993,6 +3404,7 @@ async function main() {
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {
@@ -3019,7 +3431,9 @@ async function main() {
               lastUpdate = '${lastUpdate}'
             WHERE projectId = ${projectId};`;
 
+          console.log('SQLquery :', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
+
           // Send a JSON response to the client containing the data
           res.json(rows);
         } catch (err) {

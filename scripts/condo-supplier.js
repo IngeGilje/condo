@@ -60,7 +60,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       events();
     } else {
 
-      showMessageNew( 'Server er ikke startet.');
+      showMessageNew('Server er ikke startet.');
     }
   }
 }
@@ -193,10 +193,13 @@ function resetValues() {
 
   document.querySelector('.filterSupplierId').disabled = true;
 
+  // Buttons
+  removeMessage();
   if (enableChanges) {
-    document.querySelector('.delete').disabled = true;
-    document.querySelector('.insert').disabled = true;
-    document.querySelector('.cancel').disabled = false;
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterSupplierId', true);
   }
 }
 
@@ -227,13 +230,13 @@ function showFilter(supplierId) {
   // Start frame
   let html = startFrame();
 
-  html += startRow();
+  //html += startLine();
   html += emptyLine();
 
   // Show suppliers
   html += objSupplier.showSelectedSuppliersNew('Leverandør', 'filterSupplierId', '', supplierId, '', '', true);
 
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -251,8 +254,8 @@ function showSupplier(supplierId) {
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 
   // Empty line
-let html = emptyLine();
-  html += startRow();
+  let html = emptyLine();
+  html += startLine();
 
   // name
   const name = (rowNumberSupplier === -1)
@@ -261,7 +264,7 @@ let html = emptyLine();
   html += showTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
   html += "</div>";
   // street,address2
-  html += startRow();
+  html += startLine();
 
   // street
   const street = (rowNumberSupplier === -1)
@@ -277,7 +280,7 @@ let html = emptyLine();
   html += "</div>";
 
   // postalCode, city
-  html += startRow();
+  html += startLine();
 
   let postalCode = (rowNumberSupplier === -1)
     ? ''
@@ -293,7 +296,7 @@ let html = emptyLine();
   html += "</div>";
 
   // email,phone
-  html += startRow();
+  html += startLine();
 
   // email
   let email = (rowNumberSupplier === -1)
@@ -309,7 +312,7 @@ let html = emptyLine();
   html += "</div>";
 
   //  accountId, bankAccount
-  html += startRow();
+  html += startLine();
 
   // accountId
   const accountId = (rowNumberSupplier === -1)
@@ -325,7 +328,7 @@ let html = emptyLine();
   html += "</div>";
 
   // amountAccountId, amount
-  html += startRow();
+  html += startLine();
 
   // amountAccountId
   const amountAccountId = (rowNumberSupplier === -1)
@@ -342,7 +345,7 @@ let html = emptyLine();
   html += "</div>";
 
   // textAccountId, text
-  html += startRow();
+  html += startLine();
 
   // AccountId for text
   const textAccountId = (rowNumberSupplier === -1)
@@ -360,12 +363,12 @@ let html = emptyLine();
   // Buttons
   if (enableChanges) {
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
     html += "</div>";
 
-    html += startRow();
+    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
@@ -373,173 +376,14 @@ let html = emptyLine();
 
   document.querySelector('.showSupplier').innerHTML = html;
 
-  if (enableChanges) document.querySelector('.cancel').disabled = true;
-
-  /*
-  // start table
-
-  html = objSupplier.initializeTable(columnWidths);
-
-  // Check if supplier row exist
-  const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-
-  // Header for value
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Navn', '');
-
-  // insert a table row (<tr></td>)
-  html += objSupplier.insertTableRow('');
-
-  // name
-  name = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].name;
-
-  html += objSupplier.editTableCell('name', name, 45, enableChanges, 1);
-  html += "<td></td></tr>";
-
-  // street, address2
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Gate', 'Adresse 2');
-
-  // insert a table row (<tr></td>)
-  html += objSupplier.insertTableRow('');
-
-  // street
-  const street = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += objSupplier.editTableCell('street', street, 45, enableChanges);
-
-  // address2
-  const address2 = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += objSupplier.editTableCell('address2', address2, 45, enableChanges);
-  html += "</tr>";
-
-  // postalCode, city
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Postnummer', 'Poststed');
-
-  // insert a table row (<tr></td>)
-  html += objSupplier.insertTableRow('');
-
-  // postalCode
-  const postalCode = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
-
-  html += objSupplier.editTableCell('postalCode', postalCode, 4, enableChanges);
-
-  // city
-  const city = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += objSupplier.editTableCell('city', city, 45, enableChanges);
-  html += "</tr>";
-
-  // email,phone
-  html += objSupplier.showTableHeaderMenu('', 'center', 'E-mail', 'Telefonnummer');
-
-  // insert a table row (<tr></td>)
-  html += objSupplier.insertTableRow('');
-
-  // email
-  const email = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += objSupplier.editTableCell('email', email, 45, enableChanges);
-
-  // phone
-  const phone = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += objSupplier.editTableCell('phone', phone, 8, enableChanges);
-  html += "</tr>";
-
-  // bankAccount, accountId
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Konto', 'Bankkontonummer');
-
-  // insert a table row (<tr></td>)
-  html += objSupplier.insertTableRow('');
-
-  // accountId
-  const accountId = (rowNumberSupplier === -1)
-    ? 0
-    : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccounts.showSelectedAccounts('accountId', '', accountId, 'Velg konto', '', enableChanges);
-
-  // bankAccount number
-  const bankAccount = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += objSupplier.editTableCell('bankAccount', bankAccount, 11, enableChanges);
-  html += "</tr>";
-
-  // amountAccountId, amount
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Konto for beløp', 'Beløp');
-
-  // insert a table row (<tr></td>)
-  html += objSupplier.insertTableRow('');
-
-  // amountAccountId
-  const amountAccountId = (rowNumberSupplier === -1)
-    ? 0
-    : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccounts.showSelectedAccounts('amountAccountId', '', amountAccountId, 'Velg konto', '', enableChanges);
-
-  // amount
-  const amount = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].amount;
-  html += objSupplier.editTableCell('amount', amount, 11, enableChanges);
-  html += "</tr>";
-
-  // textAccountId, text
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Konto for tekst', 'Tekst');
-
-  // insert a table row (<tr></td>)
-  html += objSupplier.insertTableRow('');
-
-  // AccountId for text
-  const textAccountId = (rowNumberSupplier === -1)
-    ? 0
-    : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccounts.showSelectedAccounts('textAccountId', '', textAccountId, 'Velg konto', '', enableChanges);
-
-  // text for account id
-  const text = (rowNumberSupplier === -1)
-    ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += objSupplier.editTableCell('text', text, 50, enableChanges);
-  html += "</tr>";
-
-  // insert a table row (<tr></td>)
-  html += objSupplier.insertTableRow('', '', '');
-  html += "</tr>";
-
-  // Show buttons (<tr></td>)
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
   if (enableChanges) {
-
-    // insert a table row (<tr></td>)
-    html += objSupplier.insertTableRow('');
-
-    html += objSupplier.showButton('update', 'Oppdater');
-    html += objSupplier.showButton('cancel', 'Angre');
-    html += "</tr>";
-
-    // insert a table row (<tr></td>)
-    html += objSupplier.insertTableRow('');
-
-    html += objSupplier.showButton('delete', 'Slett');
-    html += objSupplier.showButton('insert', 'Ny');
-    html += "</tr>";
+    disableButton('delete', false);
+    disableButton('insert', false);
+     disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterSupplierId', false, 'white');
   }
-
-  // The end of the table
-  html += objSupplier.endTable();
-  document.querySelector('.showSupplier').innerHTML = html;
-  */
-
-
 }
 
 // Update a supplier row
@@ -584,7 +428,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
-  let validBankAccount = objSupplier.validateBankAccount('bankAccount', columnWidths, true, bankAccount, '', 'Ugyldig bankkontonummer');
+  let validBankAccount = validateBankAccount('bankAccount', true, bankAccount, '', 'Ugyldig bankkontonummer');
 
   if (bankAccount === '') validBankAccount = true;
 
@@ -628,17 +472,21 @@ async function updateSuppliersRow(supplierId) {
       supplierId = objSupplier.arraySuppliers.at(-1)?.supplierId ?? 0;
     }
 
-    // Show filter
-
-    showFilter(supplierId);
-    showSupplier(supplierId);
+    removeMessage();
 
     if (enableChanges) {
-      document.querySelector('.filterSupplierId').disabled = false;
-      document.querySelector('.delete').disabled = false;
-      document.querySelector('.insert').disabled = false;
-      document.querySelector('.cancel').disabled = true;
+      disableButton('delete', false);
+      disableButton('insert', false);
+       disableButton('update', false);
+      disableButton('cancel', true);
+            disableButton('filterSupplierId', false, 'white');
     }
+
+    // show filter
+    showFilter(supplierId);
+
+    // Show supplier
+    showSupplier(supplierId);
   }
 }
 
@@ -663,7 +511,7 @@ function showMenu() {
   // Show main menu
   let html = startFrame();
 
-  html += startRow();
+  html += startLine();
 
   html += showHorizontalMenu(objSupplier.arrayMenuMain);
 
@@ -673,7 +521,7 @@ function showMenu() {
   // Show due menu
   html += startFrame();
 
-  html += startRow();
+  html += startLine();
 
   html += showHorizontalMenu(objSupplier.arrayMenuDue);
 

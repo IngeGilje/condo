@@ -277,7 +277,7 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   let html = startFrame();
 
   // show filter
-  html += startRow();
+  //html += startLine();
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -287,18 +287,18 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
 
   // Bank Account Transaction date
   fromDate = formatNumberToISODate(fromDate);
-  html += editDate('Fra Dato', 'filterFromDate', fromDate, true)
+  html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
 
   // To date
   toDate = formatNumberToISODate(toDate);
-  html += editDate('Til Dato', 'filterToDate', toDate, true)
+  html += showDate('Til Dato', 'filterToDate', toDate, true)
 
   // Amount
   amount = formatOreToKroner(amount);
   html += objShowTransaction.editAmount('Beløp', 'filterAmount', amount, true);
 
   // End row
-  html += "</div>";
+  //html += "</div>";
 
   // End filter frame
   html += "</div>";

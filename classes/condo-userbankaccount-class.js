@@ -112,15 +112,38 @@ class UserBankAccount extends Condos {
     }
   }
 
-  // update user bank account row
-  async updateUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount) {
-
-    const URL = (this.serverStatus === 1) 
-    ? '/api/userbankaccounts' 
-    : 'http://localhost:3000/userbankaccounts';
+  // Get the highest ID in the table
+  async getHighestBankAccountId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/accounts'
+      : 'http://localhost:3000/accounts';
     try {
 
-      //const response = await fetch(`${URL}:3000/userbankaccounts?action=update&userBankAccountId=${userBankAccountId}&condominiumId=${condominiumId}&user=${user}&userId=${userId}&accountId=${accountId}&bankAccount=${bankAccount}`);
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestBankAccountId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (bank accounts)");
+      this.arrayAccounts = await response.json();
+    } catch (error) {
+      console.log("Error selecting bank accounts:", error);
+    }
+  }
+
+  // update user bank account row
+  async updateProjectsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount) {
+
+    const URL = (this.serverStatus === 1)
+      ? '/api/userbankaccounts'
+      : 'http://localhost:3000/userbankaccounts';
+    try {
+
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -140,6 +163,30 @@ class UserBankAccount extends Condos {
       this.arrayUserBankAccounts = await response.json();
     } catch (error) {
       console.log("Error updating user bank accounts:", error);
+    }
+  }
+
+  // Get the highest ID in the table
+  async getHighestUserBankAccountId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/userbankaccounts'
+      : 'http://localhost:3000/userbankaccounts';
+    try {
+
+       const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestUserBankAccountId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (user bank accounts)");
+      this.arrayUserBankAccounts = await response.json();
+    } catch (error) {
+      console.log("Error selecting user bank accounts:", error);
     }
   }
 
