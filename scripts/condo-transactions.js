@@ -276,9 +276,6 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   // Start frame
   let html = startFrame();
 
-  // show filter
-  //html += startLine();
-
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
 
@@ -296,9 +293,6 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   // Amount
   amount = formatOreToKroner(amount);
   html += objShowTransaction.editAmount('Beløp', 'filterAmount', amount, true);
-
-  // End row
-  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -349,7 +343,6 @@ function showTransactions() {
     // Show button for change of bank account transaction
     className = `change${bankTransaction.transactionId}`;
     html += objShowTransaction.showButton(className, 'Endre');
-
     html += "</tr>";
 
     // accumulate

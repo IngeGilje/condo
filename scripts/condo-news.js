@@ -147,13 +147,8 @@ function showFilter(newsId) {
   // Start frame
   let html = startFrame();
 
-  // show filter
-  //html += startLine();
-
   // Show news
   html += objNews.showSelectedNewsNew('Nyhet', 'filterNewsId', '', newsId, '', '', true);
-
-  //html += "</div>";
 
   // End filter frame
   html += "</div>";

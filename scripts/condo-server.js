@@ -3072,10 +3072,9 @@ async function main() {
   });
 
   // Requests for emptying calendar table
-  //app.post("/emptyingcalendar", async (req, res) => {
   routePath = "";
-  if (serverStatus === 1) routePath = "/api/emptyingcalendar";
-  if (serverStatus === 2) routePath = "/emptyingcalendar";
+  if (serverStatus === 1) routePath = "/api/emptyingcalendars";
+  if (serverStatus === 2) routePath = "/emptyingcalendars";
   app.post(routePath, async (req, res) => {
 
     const action = req.body.action;
@@ -3101,11 +3100,17 @@ async function main() {
           if (fromMonth < 10) fromMonth = '0' + String(fromMonth);
           if (toMonth < 10) toMonth = '0' + String(toMonth);
 
+          let fromDate = req.body.date;
+          let toDate = req.body.date;
+          if (fromDate === nineNine) fromDate = 0;
+          if (toDate === nineNine) toDate = 21000101;
+
           let SQLquery = `
-            SELECT * FROM emptyingcalendar
+            SELECT * FROM emptyingcalendars
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'
             AND date between ${fromYear}${fromMonth}01 AND ${toYear}${toMonth}31
+            AND date between ${fromDate} AND ${toDate}
             ORDER BY date ASC;`;
 
           console.log('SQLquery: ', SQLquery);
@@ -3127,7 +3132,7 @@ async function main() {
         try {
 
           let SQLquery = `
-            SELECT * FROM emptyingcalendar
+            SELECT * FROM emptyingcalendars
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'
             ORDER BY emptyingCalendarId DESC
@@ -3161,7 +3166,7 @@ async function main() {
 
           // Update row
           const SQLquery = `
-            UPDATE emptyingcalendar
+            UPDATE emptyingcalendars
             SET
               user = '${user}',
               deleted = 'N',
@@ -3204,7 +3209,7 @@ async function main() {
 
           // Insert new row
           const SQLquery = `
-            INSERT INTO emptyingcalendar(
+            INSERT INTO emptyingcalendars(
               deleted,
               condominiumId,
               user,
@@ -3254,7 +3259,7 @@ async function main() {
 
           // Delete table
           const SQLquery = `
-            UPDATE emptyingcalendar
+            UPDATE emptyingcalendars
             SET
               deleted = 'Y',
               user = '${user}',

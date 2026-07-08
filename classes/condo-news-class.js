@@ -232,10 +232,10 @@ class News extends Condos {
   }
 
   // Get the highest ID in the table
-  async getHighestEmptyingCalendarId(condominiumId) {
+  async getHighestNewsId(condominiumId) {
     const URL = (this.serverStatus === 1)
-      ? '/api/emptyingcalendar'
-      : 'http://localhost:3000/emptyingcalendar';
+      ? '/api/news'
+      : 'http://localhost:3000/news';
     try {
 
        const response = await fetch(URL, {
@@ -244,11 +244,11 @@ class News extends Condos {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          action: 'highestEmptyingCalendarId',
+          action: 'highestNewsId',
           condominiumId: condominiumId
         })
       });
-      if (!response.ok) throw new Error("Network error (emptyingcalendar)");
+      if (!response.ok) throw new Error("Network error (emptyingcalendars)");
       this.arrayEmptyingCalendars = await response.json();
     } catch (error) {
       console.log("Error selecting emptying calendars:", error);

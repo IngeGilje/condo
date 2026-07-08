@@ -29,7 +29,7 @@ class Condos {
       text: "Nyheter"
     },
     {
-      applicationName: "condo-showemptyingcalendar.html",
+      applicationName: "condo-emptyingcalendars.html",
       className: "Menu2",
       text: "Tømmekalender"
     },
@@ -77,7 +77,7 @@ class Condos {
   // array of horizontal emptying calendar menu
   arrayMenuEmptyingCalendar = [
     {
-      applicationName: "condo-showemptyingcalendar.html",
+      applicationName: "condo-emptyingcalendars.html",
       className: "Menu1",
       text: "Vis Tømmekalender"
     },
@@ -741,52 +741,6 @@ class Condos {
     return valid;
   }
 
-  // validate the iso date format yyyy-mm-dd
-  validateIsoDate(className, date, style, message) {
-
-    let valid = true;
-
-    // Check for valid date String
-    if (date === '' || typeof date === 'undefined') valid = false;
-    if (valid) {
-
-      // Regular expression for valuating the yyyy-mm-dd format
-      const regex = /^(\d{4})\-(\d{2})\-(\d{2})$/
-      const match = date.match(regex);
-
-      if (!match) valid = false;
-
-      if (valid) {
-
-        // Extract day, month, and year
-        const [year, month, day] = date.split('-');
-        //const day = parseInt(match[1], 10);
-        //const month = parseInt(match[2], 10);
-        //const year = parseInt(match[3], 10);
-
-        // Check if month is between 1 and 12
-        if (day < 1 || day > 31) valid = false;
-        if (month < 1 || month > 12) valid = false;
-        if (year < 1900 || year > 2099) valid = false;
-      }
-    }
-
-    // remove/ add 'message' 
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        // remove/ add 'message' class
-        inputElement.classList.toggle('message', !valid);
-      }
-    }
-
-    // Show error message?
-    if ((!valid) && (message.lenght > 0)) showMessageNew(message);
-    return valid;
-  }
-
   // Validate phone number 
   validatePhone(className, phone) {
 
@@ -1295,6 +1249,52 @@ function validateBankAccount(className, showMessage, bankAccount, style, message
   return valid;
 }
 
+// validate the iso date format yyyy-mm-dd
+function validateISODate(className, date, style, message) {
+
+  let valid = true;
+
+  // Check for valid date String
+  if (date === '' || typeof date === 'undefined') valid = false;
+  if (valid) {
+
+    // Regular expression for valuating the yyyy-mm-dd format
+    const regex = /^(\d{4})\-(\d{2})\-(\d{2})$/
+    const match = date.match(regex);
+
+    if (!match) valid = false;
+
+    if (valid) {
+
+      // Extract day, month, and year
+      const [year, month, day] = date.split('-');
+      //const day = parseInt(match[1], 10);
+      //const month = parseInt(match[2], 10);
+      //const year = parseInt(match[3], 10);
+
+      // Check if month is between 1 and 12
+      if (day < 1 || day > 31) valid = false;
+      if (month < 1 || month > 12) valid = false;
+      if (year < 1900 || year > 2099) valid = false;
+    }
+  }
+
+  // remove/ add 'message' 
+  if (this.isClassDefined(className)) {
+
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement) {
+
+      // remove/ add 'message' class
+      inputElement.classList.toggle('message', !valid);
+    }
+  }
+
+  // Show error message?
+  if ((!valid) && (message.lenght > 0)) showMessageNew(message);
+  return valid;
+}
+
 // Validate number
 function validateInterval(className, style, message, showMessage = true, value, minValue, maxValue) {
 
@@ -1343,14 +1343,21 @@ function validateNumberNew(className, style, message, showMessage = true, number
   return valid;
 }
 
-// Format date from yyyy-mm-dd (Iso format) -> yyyymmdd
+// Format date from yyyy-mm-dd (ISO format) -> yyyymmdd
 function formatISODateToNumber(date) {
 
   const [year, month, day] = date.split('-');
   return Number(`${year}${month}${day}`);
 }
 
-// Format date from yyyymmdd -> yyyy-mm-dd (Iso format)
+// Format date from dd.mm.yyyy -> yyyymmdd
+function formatNorDateToNumber(date) {
+
+  const [day, month, year] = date.split('-');
+  return Number(`${year}${month}${day}`);
+}
+
+// Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
 function formatNumberToISODate(date) {
 
   date = String(date);
@@ -1482,7 +1489,7 @@ function removeComma(amount) {
   return (amount === '000') ? '00' : amount;
 }
 
-// Format date from yyyymmdd (Basic ISO 8601 format) -> dd.mm.yyyy (European date format)
+// Format date from yyyymmdd -> dd.mm.yyyy (European date format)
 function formatNumberToNorDate(date) {
 
   date = String(date);
@@ -1569,7 +1576,7 @@ function getCurrentDate() {
   return `${day}.${month}.${year}`;  // Output in dd.mm.yyyy format
 }
 
-// Get current date in Iso date format (yyyy-mm-dd)
+// Get current date in ISO date format (yyyy-mm-dd)
 function getCurrentISODate() {
 
   const today = new Date();
