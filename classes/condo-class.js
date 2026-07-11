@@ -49,7 +49,7 @@ class Condos {
       text: "Transaksjoner"
     },
     {
-      applicationName: "condo-due.html",
+      applicationName: "condo-dues.html",
       className: "Menu6",
       text: "Forfall"
     },
@@ -169,7 +169,7 @@ class Condos {
   // menu array for due
   arrayMenuDue = [
     {
-      applicationName: "condo-due.html",
+      applicationName: "condo-dues.html",
       className: "Menu4",
       text: "Forfall"
     },
@@ -257,26 +257,10 @@ class Condos {
   }
   */
 
+  /*
   // Show amount
-  editAmount(label, className, value, enableChanges) {
+  showAmount(label, className, value, enableChanges) {
 
-    /*
-    let html = `
-    <div class="field date" style="margin-left:25px; width:175px;">
-      <label>
-        ${label}
-      </label>
-      <input 
-        type="text"
-        inputmode="decimal" 
-        autocomplete="off"
-        class="${className} center one-line"
-        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-      <label>${label}</label>
-    </div>`;
-    */
     return `
     <div class="field date" style="width:175px;">
       <label>
@@ -293,6 +277,7 @@ class Condos {
       <label>${label}</label>
     </div>`;
   }
+  */
 
   // Show input (<td></td>) with center text
   editTableCellCenter(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
@@ -367,7 +352,7 @@ class Condos {
   }
 
   // Validate text
-  validateText(className, columnWidths, style, message, showMessage = true, text, minLenght, maxLength) {
+  validateText(className, columnWidths, style, message, showMessage = true, text, minLength, maxLength) {
 
     let valid = true;
 
@@ -375,7 +360,7 @@ class Condos {
     if (typeof text !== "string") valid = false;
 
     // Check length
-    if (!(text.length >= minLenght) && (text.length <= maxLength)) valid = false;
+    if (!(text.length >= minLength) && (text.length <= maxLength)) valid = false;
 
     // Check allowed characters (letters, numbers, spaces)
     const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
@@ -677,24 +662,10 @@ class Condos {
 
     const inputElement = document.querySelector(`.${className}`);
     if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid && showMessage) showMessageNew(message);
+    if (!valid && showMessage && message.length > 0) showMessageNew(message);
 
     return valid;
   }
-
-  /*
-  // Validate number
-  validateInterval(className,  style, message, showMessage = true, number, min, max) {
-
-    let valid = (Number(number) >= Number(min) && Number(number) <= Number(max));
-
-    const inputElement = document.querySelector(`.${className}`);
-    if (inputElement) inputElement.classList.toggle('input-error', !valid);
-    if (!valid && showMessage) showMessageNew(message);
-
-    return valid;
-  }
-  */
 
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(className, date, style, message) {
@@ -737,7 +708,7 @@ class Condos {
       }
     }
 
-    if ((!valid) && (message.lenght > 0)) showMessageNew(message);
+    if ((!valid) && (message.length > 0)) showMessageNew(message);
     return valid;
   }
 
@@ -1054,6 +1025,7 @@ class Condos {
   }
   */
 
+  /*
   // Format amount (1 234 567,89)
   formatAmount(amount) {
 
@@ -1082,6 +1054,7 @@ class Condos {
 
     return `${integerPart},${decimals}`;
   }
+  */
 }
 
 // Show selected numbers (from number - to number)
@@ -1119,13 +1092,33 @@ function showSelectedMonthsNew(label, className, style, selectedMonth, enableCha
   return html;
 }
 
+// Show amount
+function showAmount(label, className, value, enableChanges) {
+
+  return `
+    <div class="field date" style="width:175px;">
+      <label>
+        ${label}
+      </label>
+      <input 
+        type="text"
+        inputmode="decimal" 
+        autocomplete="off"
+        class="${className} center one-line"
+        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+      <label>${label}</label>
+    </div>`;
+}
+
 // Show textarea
 function showTextArea(label, className, value, maxlength, enableChanges, rows = 1) {
 
   return `
   <div 
     class="field" 
-    style="max-width:540px;margin-left:35px;margin-bottom:25px;border-radius: 20px;"
+    style="width:550px;margin-left:35px;margin-bottom:25px;border-radius: 20px;"
   >
     <label>
       ${label}
@@ -1181,14 +1174,8 @@ function showMessageNew(message) {
   // Start frame
   let html = startFrame();
 
-  // show filter
-  html += startLine();
-
   // Show types of account
-  html += `<p>${message}</p>`;
-
-  // End row
-  html += "</div>";
+  html += message;
 
   // End filter frame
   html += "</div>";
@@ -1249,8 +1236,25 @@ function validateBankAccount(className, showMessage, bankAccount, style, message
   return valid;
 }
 
+// Validate values ('Yes','No','Ignore')
+function validateValuesNew(className, message, showMessage, selectedValue, ...values) {
+
+  let valid = false;
+
+  values.forEach((value) => {
+
+    if (value === selectedValue) valid = true;
+  });
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) inputElement.classList.toggle('input-error', !valid);
+  if (!valid && showMessage) showMessageNew(message);
+
+  return valid;
+}
+
 // validate the iso date format yyyy-mm-dd
-function validateISODate(className, date, style, message) {
+function validateISODate(className, date, showMessage, message) {
 
   let valid = true;
 
@@ -1261,16 +1265,12 @@ function validateISODate(className, date, style, message) {
     // Regular expression for valuating the yyyy-mm-dd format
     const regex = /^(\d{4})\-(\d{2})\-(\d{2})$/
     const match = date.match(regex);
-
     if (!match) valid = false;
 
     if (valid) {
 
       // Extract day, month, and year
       const [year, month, day] = date.split('-');
-      //const day = parseInt(match[1], 10);
-      //const month = parseInt(match[2], 10);
-      //const year = parseInt(match[3], 10);
 
       // Check if month is between 1 and 12
       if (day < 1 || day > 31) valid = false;
@@ -1279,19 +1279,12 @@ function validateISODate(className, date, style, message) {
     }
   }
 
-  // remove/ add 'message' 
-  if (this.isClassDefined(className)) {
+  // Show error message
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) inputElement.classList.toggle('input-error', !valid);
+  if (inputElement) inputElement.classList.toggle('error-text', !valid);
+  if (!valid && showMessage && (message.length > 0)) showMessageNew(message);
 
-    const inputElement = document.querySelector(`.${className}`);
-    if (inputElement) {
-
-      // remove/ add 'message' class
-      inputElement.classList.toggle('message', !valid);
-    }
-  }
-
-  // Show error message?
-  if ((!valid) && (message.lenght > 0)) showMessageNew(message);
   return valid;
 }
 
@@ -1304,13 +1297,13 @@ function validateInterval(className, style, message, showMessage = true, value, 
   const inputElement = document.querySelector(`.${className}`);
   if (inputElement) inputElement.classList.toggle('input-error', !valid);
   if (inputElement) inputElement.classList.toggle('error-text', !valid);
-  if (!valid && showMessage) showMessageNew(message);
+  if (!valid && showMessage && message.length > 0) showMessageNew(message);
 
   return valid;
 }
 
 // Validate text
-function validateTextNew(className, style, message, showMessage = true, value, minLenght, maxLength) {
+function validateTextNew(className, style, message, showMessage = true, value, minLength, maxLength) {
 
   let valid = true;
 
@@ -1318,14 +1311,14 @@ function validateTextNew(className, style, message, showMessage = true, value, m
   if (typeof value !== "string") valid = false;
 
   // Check length
-  if (!(value.length >= minLenght) && (value.length <= maxLength)) valid = false;
+  if (!(value.length >= minLength) && (value.length <= maxLength)) valid = false;
 
   // Check allowed characters (letters, numbers, spaces)
   const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
   if (!regex.test(value)) valid = false;
 
   const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) inputElement.classList.toggle('input-error', !valid);
+  if (inputElement) inputElement.classList.toggle('input-error', valid);
   if (!valid && showMessage) showMessageNew(message)
 
   return valid;
@@ -1346,14 +1339,18 @@ function validateNumberNew(className, style, message, showMessage = true, number
 // Format date from yyyy-mm-dd (ISO format) -> yyyymmdd
 function formatISODateToNumber(date) {
 
-  const [year, month, day] = date.split('-');
+  date = String(date);
+  (date.includes('-'))
+  ? [year, month, day] = date.split('-')
+  : [year, month, day] = date.split('.')
   return Number(`${year}${month}${day}`);
 }
 
 // Format date from dd.mm.yyyy -> yyyymmdd
 function formatNorDateToNumber(date) {
 
-  const [day, month, year] = date.split('-');
+  if (date.includes('-')) [day, month, year] = date.split('-');
+  if (date.includes('.')) [day, month, year] = date.split('.');
   return Number(`${year}${month}${day}`);
 }
 
@@ -1486,7 +1483,9 @@ function removeComma(amount) {
   amount = amount.replace(/\s+/g, '');
   amount = String(amount).replace(/\./g, "");
   amount = amount.replace(/\,/g, "");
-  return (amount === '000') ? '00' : amount;
+  return (amount === '000') 
+  ? '00' 
+  : amount;
 }
 
 // Format date from yyyymmdd -> dd.mm.yyyy (European date format)
@@ -1594,26 +1593,43 @@ function getCurrentISODate() {
   return `${year}-${month}-${day}`;  // Output in dd.mm.yyyy format
 }
 
-// Format number (12345) to norwegian amount (1 2345,00)
-function formatToNorAmount(amount) {
 
-  amount = (amount.includes(",")) ? amount.replace(",", ".") : amount;
-  amount = (amount.includes(".")) ? amount.replace(".", ",") : amount;
+// Format number (12345) to norwegian amount (1 2345,00)
+function formatStringToNorAmount(amount) {
+
+  amount = (amount.includes(","))
+    ? amount.replace(",", ".")
+    : amount;
+  amount = (amount.includes("."))
+    ? amount.replace(".", ",")
+    : amount;
   amount = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   return amount;
 }
 
+
 // Format number (1234567) to norwegian amount (1 2345,67)
-function formatOreToKroner(amount) {
+function formatNumberToNorAmount(amount) {
 
   amount = this.removeComma(String(amount));
   amount = String(Number(amount) / 100);
   amount = Number(amount).toFixed(2);
-  return formatToNorAmount(amount);
+  return formatStringToNorAmount(amount);
 }
 
+/*
+// Format number (1234567) to norwegian amount (1 2345,67)
+function formatNumberToNorAmount(amount) {
+
+  amount = this.removeComma(String(amount));
+  amount = String(Number(amount) / 100);
+  amount = Number(amount).toFixed(2);
+  return formatNumberToNorAmount(amount);
+}
+*/
+
 // Format norwegian kroner (12 345,67) to ore/number (1234567)
-function formatKronerToOre(amount) {
+function formatNorAmountToNumber(amount) {
 
   amount = String(amount);
   amount.replaceAll(' ', '');
@@ -1643,6 +1659,7 @@ function formatKronerToOre(amount) {
   return Number(kroner + ore);
 }
 
+/*
 // Format amount
 function formatAmount() {
   let value = amountInput.value.replace(/\D/g, '');
@@ -1668,6 +1685,8 @@ function formatAmount() {
 
   amountInput.value = `${integerPart},${decimals}`;
 }
+*/
+
 /*
 // Format norwegian date (11.05.1983) to number (19830511)
 function formatDateToNumber(norDate) {
@@ -1677,7 +1696,7 @@ function formatDateToNumber(norDate) {
 */
 
 // Generate password
-function generatePassword(passwordLenght, includeLowercase, includeUppercase, includeNumbers, includeSymbols) {
+function generatePassword(passwordLength, includeLowercase, includeUppercase, includeNumbers, includeSymbols) {
 
   const lowecaseChars = "abcdefghijlmnopqrstuvwxyzæøå";
   const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
@@ -1693,7 +1712,7 @@ function generatePassword(passwordLenght, includeLowercase, includeUppercase, in
   allowedChars += (includeSymbols) ? symbolChars : "";
 
 
-  if (Number(passwordLenght) < 1) {
+  if (Number(passwordLength) < 1) {
 
     return "Oppgi lengden på passordet.";
   }
@@ -1703,7 +1722,7 @@ function generatePassword(passwordLenght, includeLowercase, includeUppercase, in
     return "Oppgi minimum et sett av karakterer";
   }
 
-  for (let i = 0; i < Number(passwordLenght); i++) {
+  for (let i = 0; i < Number(passwordLength); i++) {
 
     const randomIndex = Math.floor(Math.random() * Number(allowedChars.length));
     password += allowedChars[randomIndex];
@@ -1711,6 +1730,7 @@ function generatePassword(passwordLenght, includeLowercase, includeUppercase, in
   return password;
 }
 
+/*
 // Validate amount in the (1 234,12 = true) format
 // This validateEuroAmount(amount) will never show any error message
 function validateEuroAmount(amount) {
@@ -1720,6 +1740,7 @@ function validateEuroAmount(amount) {
   amount = amount.replace(/\,/g, "");
   return isValidNumber(amount);
 }
+*/
 
 // Removes the iframe
 function removeIframe() {

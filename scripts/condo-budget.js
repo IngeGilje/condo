@@ -49,9 +49,6 @@ async function main() {
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objBudget.condominiumId, fixedCost);
 
-      // Show header
-      //showHeader();
-
       // Show filter
       await objBudgets.loadBudgetsTable(objBudget.condominiumId, paramYear, objBudgets.nineNine);
       showFilter(paramBudgetId);
@@ -73,20 +70,18 @@ async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('filterYear')
-      || event.target.classList.contains('filterAccountId')) {
+    if (event.target.classList.contains('filterBudgetId')) {
 
-      const year = Number(document.querySelector('.filterYear').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-      await objBudgets.loadBudgetsTable(objBudget.condominiumId, year, accountId);
+      const budgetId = Number(document.querySelector('.filterBudgetId').value);
+      await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
 
-      showBudgets(3);
+      showBudget(budgetId);
     };
   });
 
   // return to budgets
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    if (event.target.classList.contains('back')) {
 
       let URL = (objBudget.serverStatus === 1)
         ? 'http://ingegilje.no/'
@@ -148,7 +143,7 @@ async function events() {
       const accountId = Number(document.querySelector('.filterAccountId').value);
       await objBudgets.loadBudgetsTable(objBudget.condominiumId, year, accountId);
 
-      showBudgets(3);
+      showBudget(budgetId);
     };
   });
 
@@ -196,7 +191,7 @@ async function updateBudgetsRow(budgetId) {
   // amount
   className = `.amount${budgetId}`;
   let amount = document.querySelector(className).value;
-  amount = Number(formatKronerToOre(amount));
+  amount = Number(formatNorAmountToNumber(amount));
   className = `amount${budgetId}`;
   let validAmount = validateInterval(className, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
 
@@ -263,7 +258,7 @@ function calculateSum() {
     sumAmount += Number(budget.amount);
   });
 
-  sumAmount = formatOreToKroner(String(sumAmount));
+  sumAmount = formatNumberToNorAmount(String(sumAmount));
   document.querySelector('.sum2').value = sumAmount;
 };
 
@@ -273,12 +268,8 @@ function showFilter(budgetId) {
   // Start frame
   let html = startFrame();
 
-  // show filter
-  //html += startLine();
-
   // Show budgets
-  html += objBudgets.showSelectedBudgetsNew('Budsjett', 'filterProjectId', '', budgetId, '', '', true);
-  //html += "</div>";
+  html += objBudgets.showSelectedBudgetsNew('Budsjett', 'filterBudgetId', '', budgetId, '', '', true);
 
   // End filter frame
   html += "</div>";
@@ -295,21 +286,9 @@ function showBudget(budgetId) {
   // Empty line
   let html = emptyLine();
 
-  // Year
-  /*
-  const year = (rowNumberBudget === -1)
-    ? ''
-    : objBudgets.arrayBudgets[rowNumberBudget].year;
-  */
   const year = objBudgets.arrayBudgets[rowNumberBudget]?.year ?? '';
   html += showSelectedNumbersNew('År', 'year', '', 2020, 2030, year, true);
 
-  // Show accounts
-  /*
-  const accountId = (rowNumberBudget === -1)
-    ? ''
-    : objBudgets.arrayBudgets[rowNumberBudget].accountId;
-  */
   const accountId = objBudgets.arrayBudgets[rowNumberBudget]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
 
@@ -320,7 +299,7 @@ function showBudget(budgetId) {
     : objBudgets.arrayBudgets[rowNumberBudget].amount;
   */
   let amount = objBudgets.arrayBudgets[rowNumberBudget]?.amount ?? '0';
-  amount = formatOreToKroner(amount);
+  amount = formatNumberToNorAmount(amount);
   html += showTextNew('Beløp', 'amount', amount, enableChanges, "Beløp");
 
   // text
@@ -351,39 +330,13 @@ function showBudget(budgetId) {
   html += "</div>";
 
   document.querySelector('.showBudget').innerHTML = html;
-  //if (enableChanges) document.querySelector('.cancel').disabled = true;
 
   // Buttons
   if (enableChanges) {
     disableButton('delete', false);
     disableButton('insert', false);
-        disableButton('update', false);
+    disableButton('update', false);
     disableButton('cancel', true);
     disableButton('filterBudgetId', false, 'white');
   }
 }
-
-/*
-function insertEmptyTableRow() {
-
-  // Show menu
-  html = objBudget.insertTableRow('');
-
-  // Year (<td></td>)
-  const year = Number(document.querySelector('.filterYear').value);
-  html += objBudget.showSelectedNumbers('year0', '', 2020, 2030, year, enableChanges);
-
-  // accounts
-  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
-
-  const amount = "";
-  html += objBudget.editTableCell('amount0', amount, 11, enableChanges);
-
-  // text
-  const text = "";
-  html += objBudget.editTableCell('text0', text, 45, enableChanges);
-
-  html += "<td>Nytt budsjett</td></tr>";
-  return html;
-}
-*/

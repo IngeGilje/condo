@@ -187,7 +187,7 @@ let html = emptyLine();
 
     // price for kilowatt per Hour
     let priceKilowattHour = remoteHeatingPrice.priceKilowattHour;
-    priceKilowattHour = formatOreToKroner(priceKilowattHour);
+    priceKilowattHour = formatNumberToNorAmount(priceKilowattHour);
     className = `priceKilowattHour${remoteHeatingPrice.remoteHeatingPriceId}`;
     html += showTextNew('Pris per kilowatTimer', className, priceKilowattHour, enableChanges, '');
 
@@ -275,7 +275,7 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   // priceKilowattHour
   className = `.priceKilowattHour${remoteHeatingPriceId}`;
   let priceKilowattHour = document.querySelector(className).value;
-  priceKilowattHour = formatKronerToOre(priceKilowattHour);
+  priceKilowattHour = formatNorAmountToNumber(priceKilowattHour);
   className = `priceKilowattHour${remoteHeatingPriceId}`;
   const validKilowattHourPrice = validateInterval(className,  '', 'Ugyldig pris per kilowattimer', true, priceKilowattHour, 0, objRemoteHeatingPrice.nineNine);
 

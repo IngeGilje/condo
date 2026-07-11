@@ -6,11 +6,20 @@ const objUser = new User('user');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
 const objCondominium = new Condominium('condominium');
+const objDues = new Dues('dues');
 const objDue = new Due('due');
 
 const enableChanges = (objDue.securityLevel > 5);
 
 const columnWidths = [175, 100, 175, 175, 175, 175, 90];
+
+// query parameters
+const queryParameters = new URLSearchParams(window.location.search);
+const paramDueId = Number(queryParameters.get("dueId"));
+const paramCondoId = Number(queryParameters.get("condoId"));
+const paramAccountId = Number(queryParameters.get("accountId"));
+const paramFromDate = Number(queryParameters.get("fromDate"));
+const paramToDate = Number(queryParameters.get("toDate"));
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -47,34 +56,23 @@ async function main() {
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objDue.condominiumId, fixedCost);
 
-      // Show header
-      showHeader();
+      await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
 
       // Show filter
-      let condoId = 0;
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objUser.userId);
-      if (rowNumberUser !== -1) {
-        condoId = objUser.arrayUsers[rowNumberUser].condoId;
-      }
-      showFilter(objDue.condominiumId, condoId);
+      let dueId = (paramDueId === 0)
+        ? getHighestDueId(condominiumId)
+        : paramDueId;
+      showFilter(dueId);
 
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-      let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objDue.formatDateToNumber(fromDate));
-      let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objDue.formatDateToNumber(toDate));
-
-      await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
-
-      // Show result
-      editDues();
+      // Show due
+      showDue(dueId);
 
       // Events
       events();
     }
   } else {
 
-    showMessageNew( 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -90,44 +88,32 @@ async function events() {
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
-      
-      let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = formatISODateToNumber(fromDate);
-      let toDate = document.querySelector('.filterToDate').value;
-       toDate = formatISODateToNumber(toDate);
 
-      await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
+      await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
 
-      editDues();
+      showDue(dueId);
     };
   });
 
-  // update a dues row
-  document.addEventListener('change', async (event) => {
+  // return to emptyingcalendars
+  document.addEventListener('click', async (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
 
-    const arrayPrefixes = ['condoId', 'accountId', 'amount', 'date', 'kilowattHour', 'text'];
+      let URL = (objDues.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
 
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[3]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[4]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[5]))) {
+      URL = `${URL}condo-dues.html?dueId=${paramDueId}&condoId=${paramCondoId}&accountId=${paramAccountId}&fromDate=${paramFromDate}&toDate=${paramToDate}`;
+      window.location.href = URL;
+    };
+  });
 
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objDue.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let dueId = 0;
-      let prefix = '';
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        dueId = Number(className.slice(prefix.length));
-      }
+  // update/insert a dues row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('update')) {
 
       // Update a dues row
+      let dueId = document.querySelector('.filterDueId').value;
       updateDuesRow(dueId);
     };
   });
@@ -155,197 +141,112 @@ async function events() {
       const deleteDueRowValue = document.querySelector(`${classNameDelete}`).value;
       await deleteDueRow(dueId, className);
 
-      const condoId = Number(document.querySelector('.filterCondoId').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-      let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objDue.formatDateToNumber(fromDate));
-      let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objDue.formatDateToNumber(toDate));
+      await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
 
-      await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
-
-      editDues();
+      showDue(dueId);
     };
   });
 
-  // Log out
+  // insert a new news row
   document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('logOut')) {
+    if (event.target.classList.contains('insert')) {
 
-      let url = (objDue.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
+      // Insert new news row
+      resetValues();
     };
   });
-}
-
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objDue.initializeTable(columnWidths);
-
-  // start table body
-  html += objDue.startTableBody();
-
-  // show main header
-  html += objDue.showTableHeaderLogOut('', '', '', 'Forfall', '', '');
-  html += "</tr>";
-
-  // end table body
-  html += objDue.endTableBody();
-
-  // The end of the table
-  html += objDue.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
-function showFilter(condominiumId, condoId) {
+function showFilter(dueId) {
 
-    // Start frame
+  // Start frame
   let html = startFrame();
 
-  // show filter
-  //html += startLine();
+  // Show dues
+  html += objDues.showSelectedDuesNew('Forfall', 'filterDueId', '', dueId, '', 'Vis alle', true);
 
-  // Show condos
-  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
-
-  // Show accounts
-  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', objDue.nineNine, '', 'Vis alle', true);
-
-  // From date
-  let fromDate = `${String(today.getFullYear())}-01-01`;
-  html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
-
-   // To date
-  // Current date
-  let toDate = getCurrentISODate();
-  html += showDate('Til Dato', 'filterToDate', toDate, true)
-
-   // End filter frame
+  // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 }
 
-// Edit dues
-function editDues() {
+// show due
+function showDue(dueId) {
 
-  // start table
-  let html = objCondo.initializeTable(columnWidths);
+  // row number due array
+  const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
 
-  // Table header (<tr></tr>)
-  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Kilowatt Timer', 'Tekst', '');
+  // Empty line
+  let html = emptyLine();
 
-  let sumAmount = 0;
-  let sumKilowattHour = 0;
-
-  objDue.arrayDues.forEach((due) => {
-
-    // insert a table row (<tr></td>)
-    html += objDue.insertTableRow('')
-
-    // Date
-    const date = formatNumberToNorDate(due.date);
-    let className = `date${due.dueId}`;
-    html += objDue.editTableCell(className, date, 10, enableChanges);
-
-    // condos
-    className = `condoId${due.dueId}`;
-    html += objCondo.showSelectedCondos(className, '', due.condoId, 'ngen er valgt', '', enableChanges);
-
-    // accounts
-    className = `accountId${due.dueId}`;
-    html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', enableChanges);
-
-    // due amount
-    const amount = formatOreToKroner(due.amount);
-    className = `amount${due.dueId}`;
-    html += objDue.editTableCell(className, amount, 11, enableChanges);
-
-    // kilowattHour
-    const kilowattHour = formatOreToKroner(due.kilowattHour);
-    className = `kilowattHour${due.dueId}`;
-    html += objDue.editTableCell(className, kilowattHour, 10, enableChanges);
-
-    // text
-    const text = due.text;
-    className = `text${due.dueId}`;
-    html += objDue.editTableCell(className, text, 45, enableChanges);
-
-    // Delete
-    let selected = "Ugyldig verdi";
-    if (due.deleted === 'Y') selected = "Ja";
-    if (due.deleted === 'N') selected = "Nei";
-
-    className = `delete${due.dueId}`;
-    html += objDue.showButton(className, 'Slett');
-    html += "</tr>";
-
-    // accumulate
-    sumAmount += Number(due.amount);
-    sumKilowattHour += Number(due.kilowattHour);
-  });
-
-  // Make one last table row for insertion in table 
-  if (enableChanges) {
-
-    // Insert empty table row for insertion
-    html += insertEmptyTableRow();
-  }
-
-  // Show table sum row
-  sumAmount = formatOreToKroner(sumAmount);
-  sumKilowattHour = formatOreToKroner(sumKilowattHour);
-
-  html += objDue.insertTableRow('font-weight: 600;', '', '', 'Sum', sumAmount, '', '', '');
-
-  // The end of the table
-  html += objDue.endTable();
-  document.querySelector('.result').innerHTML = html;
-}
-
-// Insert empty table row
-function insertEmptyTableRow() {
-
-  let html = '';
-
-  // insert a table row (<tr></td>)
-  html += objCondominium.insertTableRow('');
-
-  // Date
-  html += objDue.editTableCell("date0", '', '', 10, enableChanges);
+  // date
+  html += startLine();
+  let dueDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
+  dueDate = formatNumberToISODate(dueDate);
+  html += showDate('Dato', 'dueDate', dueDate, enableChanges);
+  html += "</div>";
 
   // condoId
-  // Check for valid condo Id
-  const condoId = Number(document.querySelector('.filterCondoId').value);
-  const validCondoId = validateInterval('filterCondoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
-
-  html += (validCondoId)
-    ? objCondo.showSelectedCondos("condoId0", '', condoId, 'Velg leilighet', '', enableChanges)
-    : objCondo.showSelectedCondos("condoId0", '', 0, 'Velg leilighet', '', enableChanges);
+  html += startLine();
+  const condoId = objDues.arrayDues[rowNumberDue]?.condoId ?? 0;
+  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', '', condoId, 'Velg Leilighet', '', true);
 
   // accountId
-  const accountId = Number(document.querySelector('.filterAccountId').value);
-  html += (accountId !== objDue.nineNine)
-    ? objAccounts.showSelectedAccounts("accountId0", '', accountId, 'Velg konto', '', enableChanges)
-    : objAccounts.showSelectedAccounts("accountId0", '', 0, 'Velg konto', '', enableChanges);
+  const accountId = objDues.arrayDues[rowNumberDue]?.accountId ?? 0;
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg Konto', '', true);
+  html += "</div>";
 
-  // due amount
-  html += objDue.editTableCell('amount0', '', '0,00', 10, enableChanges);
+  // amount
+  html += startLine();
+  let amount = objDues.arrayDues[rowNumberDue]?.amount ?? 0;
+  amount = formatNumberToNorAmount(amount);
+  html += showTextNew('Beløp', 'amount', amount, enableChanges, 'Beløp');
 
-  // kilowatt hour
-  html += objDue.editTableCell('kilowattHour0', '', '0,00', 10, enableChanges);
+  // kilowattHour
+  let kilowattHour = objDues.arrayDues[rowNumberDue]?.kilowattHour ?? 0;
+  kilowattHour = formatNumberToNorAmount(kilowattHour);
+  html += showTextNew('Kilowatt Timer', 'kilowattHour', kilowattHour, enableChanges, 'Beløp');
+  html += "</div>";
 
   // text
-  html += objDue.editTableCell('text0', '', '', 45, enableChanges);
+  html += startLine();
+  const text = objDues.arrayDues[rowNumberDue]?.text ?? '';
+  html += showTextNew('Tekst', 'text', text, enableChanges, 'Tekst');
+  html += "</div>";
 
-  html += "<td>Nytt forfall</td></tr>";
-  return html;
+  // Buttons
+  if (enableChanges) {
+
+    html += startLine();
+    html += showButtonNew('update', 'Oppdater');
+    html += showButtonNew('cancel', 'Angre');
+    html += "</div>";
+
+    html += startLine();
+    html += showButtonNew('delete', 'Slett');
+    html += showButtonNew('insert', 'Ny');
+    html += "</div>";
+  }
+
+  if (paramDueId !== 0) {
+    html += startLine();
+    html += showButtonNew('back', 'Tilbake');
+    html += "</div>";
+  }
+
+  // Show empty calendar
+  document.querySelector('.showDue').innerHTML = html;
+
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterDueId', false, 'white');
+  }
 }
 
 // Update a dues row
@@ -353,35 +254,43 @@ async function updateDuesRow(dueId) {
 
   dueId = Number(dueId);
 
-  // Check dues columns
-  let className = `.condoId${dueId}`;
-  let condoId = Number(document.querySelector(className).value);
-  className = `condoId${dueId}`;
-  const validCondoId = validateInterval(className,  '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
-
-  className = `.date${dueId}`;
+  // date
+  let className = '.dueDate';
   const date = Number(objDue.formatDateToNumber(document.querySelector(`${className}`).value));
-  className = `date${dueId}`;
-  const validDate = validateInterval(className,  '', 'Ugyldig dato', true, date, 20150101, 20991231);
+  className = 'dueDate';
+  const validDate = validateInterval(className, '', 'Ugyldig dato', true, date, 20000101, 21001231);
 
-  className = `.accountId${dueId}`;
+  // condo Id
+  className = '.condoId';
+  let condoId = Number(document.querySelector(className).value);
+  className = 'condoId';
+  const validCondoId = validateInterval(className, '', 'Ugyldig leilighet', true, condoId, 1, objDue.nineNine);
+
+  // account Id
+  className = '.accountId';
   let accountId = Number(document.querySelector(className).value);
-  className = `accountId${dueId}`;
-  const validAccountId = validateInterval(className,  '', 'Ugyldig konto', true, accountId, 1, objDue.nineNine);
+  className = 'accountId';
+  const validAccountId = validateInterval(className, '', 'Ugyldig konto', true, accountId, 1, objDue.nineNine);
 
-  className = `.amount${dueId}`;
-  const amount = Number(formatKronerToOre(document.querySelector(`${className}`).value));
-  className = `amount${dueId}`;
-  const validAmount = validateInterval(className,  '', 'Ugyldig beløp', true, amount, objDue.minusNineNine, objDue.nineNine);
+  // amount
+  debugger;
+  className = '.amount';
+  const amount = Number(formatNorAmountToNumber(document.querySelector(className).value));
+  className = 'amount';
+  const validAmount = validateInterval(className, '', 'Ugyldig beløp', true, amount, objDue.minusNineNine, objDue.nineNine);
 
-  className = `.kilowattHour${dueId}`;
-  const kilowattHour = Number(formatKronerToOre(document.querySelector(`${className}`).value));
-  className = `kilowattHour${dueId}`;
-  const validKilowattHour = validateInterval(className,  '', 'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
+  // kilowatt hour
+  className = '.kilowattHour';
+  let kilowattHour = Number(formatNorAmountToNumber(document.querySelector(className).value));
+  kilowattHour = formatNorAmountToNumber(kilowattHour);
+  className = 'kilowattHour';
+  const validKilowattHour = validateInterval(className, '', 'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
 
-  className = `.text${dueId}`;
+  // Text
+  className = '.text';
   const text = document.querySelector(className).value;
-  const validText = true;
+  className = 'text';
+  const validText = validateTextNew(className, '', 'Ugyldig tekst', true, text, 3, 45)
 
   // Validate dues columns
   if (validAccountId && validCondoId && validAmount && validDate && validKilowattHour && validText) {
@@ -389,28 +298,20 @@ async function updateDuesRow(dueId) {
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the dues row exist
-    rowNumberDue = objDue.arrayDues.findIndex(dues => dues.dueId === dueId);
+    rowNumberDue = objDues.arrayDues.findIndex(dues => dues.dueId === dueId);
     if (rowNumberDue !== -1) {
 
       // update the dues row
-      await objDue.updateDuesTable(dueId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
+      await objDues.updateDuesTable(dueId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
 
     } else {
 
       // Insert the account row in accounts table
-      await objDue.insertDuesTable(objDue.condominiumId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
+      await objDues.insertDuesTable(objDue.condominiumId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
     }
+    await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
 
-    condoId = Number(document.querySelector('.filterCondoId').value);
-    accountId = Number(document.querySelector('.filterAccountId').value);
-    let fromDate = document.querySelector('.filterFromDate').value;
-    fromDate = Number(objDue.formatDateToNumber(fromDate));
-    let toDate = document.querySelector('.filterToDate').value;
-    toDate = Number(objDue.formatDateToNumber(toDate));
-
-    await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
-
-    editDues();
+    showDue(dueId);
   }
 }
 
@@ -418,19 +319,40 @@ async function updateDuesRow(dueId) {
 async function deleteDueRow(dueId, className) {
 
   // Check if dues row exist
-  rowNumberDue = objDue.arrayDues.findIndex(due => due.dueId === dueId);
+  rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
   if (rowNumberDue !== -1) {
 
     // delete dues row
     await objDue.deleteDuesTable(dueId, objDue.user);
   }
 
-  const condoId = Number(document.querySelector('.filterCondoId').value);
-  const accountId = Number(document.querySelector('.filterAccountId').value);
-  let fromDate = document.querySelector('.filterFromDate').value;
-  fromDate = Number(objDue.formatDateToNumber(fromDate));
-  let toDate = document.querySelector('.filterToDate').value;
-  toDate = Number(objDue.formatDateToNumber(toDate));
+  await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
+}
 
-  await objDue.loadDuesTable(objDue.condominiumId, accountId, condoId, fromDate, toDate);
+// reset values
+function resetValues() {
+
+  document.querySelector('.filterDueId').value = '';
+
+  document.querySelector('.dueDate').value = '';
+
+  document.querySelector('.condoId').value = '';
+
+  document.querySelector('.accountId').value = '';
+
+  document.querySelector('.amount').value = '0,00';
+
+  document.querySelector('.kilowattHour').value = '0,00';
+
+  document.querySelector('.text').value = '';
+
+  // Buttons
+  removeMessage();
+  if (enableChanges) {
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterDueId', true);
+  }
+
 }

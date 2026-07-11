@@ -3087,18 +3087,7 @@ async function main() {
         try {
 
           const condominiumId = req.body.condominiumId;
-
-          let fromYear = req.body.year;
-          let toYear = req.body.year;
-          if (fromYear === nineNine) fromYear = 0;
-          if (toYear === nineNine) toYear = 2100;
-
-          let fromMonth = req.body.month;
-          let toMonth = req.body.month;
-          if (fromMonth === nineNine) fromMonth = 1;
-          if (toMonth === nineNine) toMonth = 12;
-          if (fromMonth < 10) fromMonth = '0' + String(fromMonth);
-          if (toMonth < 10) toMonth = '0' + String(toMonth);
+          const date = req.body.date;
 
           let fromDate = req.body.date;
           let toDate = req.body.date;
@@ -3106,12 +3095,11 @@ async function main() {
           if (toDate === nineNine) toDate = 21000101;
 
           let SQLquery = `
-            SELECT * FROM emptyingcalendars
-            WHERE condominiumId = ${condominiumId}
-            AND deleted <> 'Y'
-            AND date between ${fromYear}${fromMonth}01 AND ${toYear}${toMonth}31
-            AND date between ${fromDate} AND ${toDate}
-            ORDER BY date ASC;`;
+          SELECT * FROM emptyingcalendars
+          WHERE condominiumId = ${condominiumId}
+          AND deleted <> 'Y'
+          AND date between ${fromDate} AND ${toDate}
+          ORDER BY date ASC;`;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -3257,6 +3245,7 @@ async function main() {
           const emptyingCalendarId = req.body.emptyingCalendarId;
           const user = req.body.user;
 
+          /*
           // Delete table
           const SQLquery = `
             UPDATE emptyingcalendars
@@ -3266,6 +3255,11 @@ async function main() {
               lastUpdate = '${lastUpdate}'
             WHERE emptyingCalendarId = ${emptyingCalendarId};
           `;
+          */
+          const SQLquery = `
+          DELETE FROM emptyingcalendars
+          WHERE emptyingCalendarId = ${emptyingCalendarId};
+          `;
 
           console.log('SQLquery :', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -3274,7 +3268,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log(`Database error in ${routePath}:`, err.message);
+          console.log(`Database error in ${ routePath }: `, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -3300,10 +3294,10 @@ async function main() {
           const condominiumId = req.body.condominiumId;
 
           let SQLquery = `
-            SELECT * FROM projects
-            WHERE condominiumId = ${condominiumId}
+          SELECT * FROM projects
+            WHERE condominiumId = ${ condominiumId }
             AND deleted <> 'Y'
-            ORDER BY name ASC;`;
+            ORDER BY name ASC; `;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -3312,7 +3306,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log(`Database error in ${routePath}:`, err.message);
+          console.log(`Database error in ${ routePath }: `, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -3324,11 +3318,11 @@ async function main() {
         try {
 
           let SQLquery = `
-            SELECT * FROM projects
-            WHERE condominiumId = ${condominiumId}
+          SELECT * FROM projects
+            WHERE condominiumId = ${ condominiumId }
             AND deleted <> 'Y'
             ORDER BY projectId DESC
-            LIMIT 1;`;
+            LIMIT 1; `;
 
           console.log('SQLquery :', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -3337,7 +3331,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log(`Database error in ${routePath}:`, err.message);
+          console.log(`Database error in ${ routePath }: `, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -3355,14 +3349,14 @@ async function main() {
           // Update row
           const SQLquery = `
             UPDATE projects
-            SET
-              user = '${user}',
-              deleted = 'N',
-              lastUpdate = '${lastUpdate}',
-              name = '${name}',
-              accountId = ${accountId},
-              amount = '${amount}'
-            WHERE projectId = ${projectId};`;
+          SET
+          user = '${user}',
+            deleted = 'N',
+            lastUpdate = '${lastUpdate}',
+            name = '${name}',
+            accountId = ${ accountId },
+          amount = '${amount}'
+            WHERE projectId = ${ projectId }; `;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -3371,7 +3365,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log(`Database error in ${routePath}:`, err.message);
+          console.log(`Database error in ${ routePath }: `, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -3400,12 +3394,12 @@ async function main() {
             amount
           ) VALUES(
             'N',
-            ${condominiumId},
+            ${ condominiumId },
             '${user}',
             '${lastUpdate}',
             '${name}',
-            ${accountId},
-            '${amount}');`;
+            ${ accountId },
+            '${amount}'); `;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -3414,7 +3408,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log(`Database error in ${routePath}:`, err.message);
+          console.log(`Database error in ${ routePath }: `, err.message);
           res.status(500).json({ error: err.message });
         }
         break;
@@ -3430,11 +3424,11 @@ async function main() {
           // Delete table
           const SQLquery = `
             UPDATE projects
-            SET
-              deleted = 'Y',
-              user = '${user}',
-              lastUpdate = '${lastUpdate}'
-            WHERE projectId = ${projectId};`;
+          SET
+          deleted = 'Y',
+            user = '${user}',
+            lastUpdate = '${lastUpdate}'
+            WHERE projectId = ${ projectId }; `;
 
           console.log('SQLquery :', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -3443,7 +3437,7 @@ async function main() {
           res.json(rows);
         } catch (err) {
 
-          console.log(`Database error in ${routePath}:`, err.message);
+          console.log(`Database error in ${ routePath }: `, err.message);
           res.status(500).json({ error: err.message });
         }
         break;

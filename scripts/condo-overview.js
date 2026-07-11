@@ -224,12 +224,12 @@ function showDues() {
     html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
 
     // amount
-    const amount = formatOreToKroner(due.amount);
+    const amount = formatNumberToNorAmount(due.amount);
     className = `income${due.dueId}`;
     html += objOverview.editTableCell(className, amount, 11, false);
 
     // kilowattHour
-    const kilowattHour = formatOreToKroner(due.kilowattHour);
+    const kilowattHour = formatNumberToNorAmount(due.kilowattHour);
     className = `income${due.dueId}`;
     html += objOverview.editTableCell(className, kilowattHour, 10, false);
 
@@ -245,8 +245,8 @@ function showDues() {
   });
 
   // Sum row
-  sumDue = formatOreToKroner(sumDue);
-  sumKilowattHour = formatOreToKroner(sumKilowattHour);
+  sumDue = formatNumberToNorAmount(sumDue);
+  sumKilowattHour = formatNumberToNorAmount(sumKilowattHour);
 
   html += objOverview.insertTableRow('font-weight: 600;', '', '', 'Sum', sumDue, '', '');
   html += "</tr>"
@@ -295,7 +295,7 @@ function showTransactions() {
     let income = bankTransaction.income;
     const payment = bankTransaction.payment;
     income += payment;
-    income = formatOreToKroner(income);
+    income = formatNumberToNorAmount(income);
     className = `income${bankTransaction.transactionId}`;
     html += objTransaction.editTableCell(className, income, 10, false);
 
@@ -312,8 +312,8 @@ function showTransactions() {
 
   // Sum row
   sumIncomes += sumPayments;
-  sumIncomes = formatOreToKroner(sumIncomes);
-  sumPayments = formatOreToKroner(sumPayments);
+  sumIncomes = formatNumberToNorAmount(sumIncomes);
+  sumPayments = formatNumberToNorAmount(sumPayments);
 
 
   html += objOverview.insertTableRow('font-weight: 600;', '', '', '', 'Sum', sumIncomes, '');
@@ -364,9 +364,9 @@ function showHowMuchToPay() {
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
-  overPay = formatOreToKroner(overPay);
-  sumIncome = formatOreToKroner(sumIncome);
-  sumToPay = formatOreToKroner(sumToPay);
+  overPay = formatNumberToNorAmount(overPay);
+  sumIncome = formatNumberToNorAmount(sumIncome);
+  sumToPay = formatNumberToNorAmount(sumToPay);
 
   // Show sum
   let toDate = document.querySelector('.filterToDate').value;
@@ -382,7 +382,7 @@ function showHowMuchToPay() {
   openingBalance += objDue.getDues(objOverview.condominiumId, condoId, toDate);
 
 
-  openingBalance = formatOreToKroner(openingBalance);
+  openingBalance = formatNumberToNorAmount(openingBalance);
   html += objOverview.insertTableRow('font-weight: 600;', '', '', 'Sum', sumToPay, sumIncome, overPay);
 
   // The end of the table

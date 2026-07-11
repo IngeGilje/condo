@@ -122,7 +122,7 @@ async function events() {
       toDate = formatISODateToNumber(toDate);
 
       let amount = document.querySelector('.filterAmount').value;
-      amount = formatKronerToOre(amount);
+      amount = formatNorAmountToNumber(amount);
 
       const orderBy = 'date DESC, income DESC';
       await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
@@ -310,7 +310,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
   // kilowattHour
   className = `.kilowattHour${bankAccountTransactionId}`;
-  const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
+  const kilowattHour = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `kilowattHour${bankAccountTransactionId}`;
   const validNumberKWHour = validateInterval(className,  '', 'Ugyldig kilowattime', true, kilowattHour, 0, objBankAccountTransaction.nineNine);
 
@@ -336,9 +336,9 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
 
     // Insert row into ankccountransactions table
     income = document.querySelector('.income0').value;
-    income = formatKronerToOre(income);
+    income = formatNorAmountToNumber(income);
     payment = document.querySelector('.payment0').value;
-    payment = formatKronerToOre(payment);
+    payment = formatNorAmountToNumber(payment);
     date = document.querySelector('.date0').value;
     date = Number(convertDateToISOFormat(date));
   }
@@ -374,7 +374,7 @@ async function updateBankAccountTransactionRow(bankAccountTransactionId) {
     toDate = Number(convertDateToISOFormat(toDate));
 
     let amount = document.querySelector('.filterAmount').value;
-    amount = formatKronerToOre(amount);
+    amount = formatNorAmountToNumber(amount);
 
     const orderBy = 'date DESC, income DESC';
     await objBankAccountTransaction.loadBankAccountTransactionsTable(orderBy, objBankAccountTransaction.condominiumId, deleted, condoId, accountId, amount, fromDate, toDate);
@@ -448,17 +448,17 @@ async function showBankAccountTransactions() {
       : objAccounts.showSelectedAccounts(className, '', bankAccountTransaction.accountId, 'Velg konto', '', enableChanges);
 
     // income
-    const income = formatOreToKroner(bankAccountTransaction.income);
+    const income = formatNumberToNorAmount(bankAccountTransaction.income);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransaction.inputTableColumn(className, 'left', income, 10, false);
 
     // payment
-    const payment = formatOreToKroner(bankAccountTransaction.payment);
+    const payment = formatNumberToNorAmount(bankAccountTransaction.payment);
     className = `income${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransaction.inputTableColumn(className, 'left', payment, 10, false);
 
     // kilowattHour
-    const kilowattHour = formatOreToKroner(bankAccountTransaction.kilowattHour);
+    const kilowattHour = formatNumberToNorAmount(bankAccountTransaction.kilowattHour);
     className = `kilowattHour${bankAccountTransaction.bankAccountTransactionId}`;
     html += objBankAccountTransaction.inputTableColumn(className, 'left', kilowattHour, 10, enableChanges);
 
@@ -508,8 +508,8 @@ async function showBankAccountTransactions() {
   }
 
   // Show table sum row
-  sumIncome = formatOreToKroner(sumIncome);
-  sumPayment = formatOreToKroner(sumPayment);
+  sumIncome = formatNumberToNorAmount(sumIncome);
+  sumPayment = formatNumberToNorAmount(sumPayment);
 
   
   html += objBankAccountTransaction.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, '', '', '', '');

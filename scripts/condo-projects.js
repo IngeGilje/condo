@@ -12,7 +12,7 @@ const objProjects = new Projects('projects');
 const enableChanges = (objProjects.securityLevel > 5);
 
 // column widths
-const columnWidths = [175, 175, 175, 175];
+const columnWidths = [125, 125, 125, 125,100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -50,9 +50,6 @@ async function main() {
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objProjects.condominiumId, fixedCost);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
-
-      // Show header
-      //showHeader();
 
       // Show filter
       projectId = (objProjects.arrayProjects.length === 0)
@@ -342,7 +339,7 @@ function showProjectTransactions(projectId) {
   let html = objProjects.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp');
+  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp','');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransaction.arrayTransactions) {
@@ -366,7 +363,7 @@ function showProjectTransactions(projectId) {
 
       // amount
       let amount = bankTransaction.income + bankTransaction.payment;
-      amount = formatOreToKroner(amount);
+      amount = formatNumberToNorAmount(amount);
       className = `amount${bankTransaction.transactionId}`;
       html += objTransaction.editTableCell(className, amount, 10, false);
 
@@ -376,7 +373,7 @@ function showProjectTransactions(projectId) {
   };
 
   // Show table sum row
-  sumAmount = formatOreToKroner(sumAmount);
+  sumAmount = formatNumberToNorAmount(sumAmount);
 
   html += objTransaction.insertTableRow('', '', '', 'Sum', sumAmount);
 

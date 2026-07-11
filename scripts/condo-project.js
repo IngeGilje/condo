@@ -7,6 +7,7 @@ const objCondominium = new Condominium('condominium');
 const objAccounts = new Accounts('accounts');
 const objCondo = new Condo('condo');
 const objTransaction = new Transaction('transaction');
+const objProjects = new Projects('projects');
 const objProject = new Project('project');
 
 const enableChanges = (objProject.securityLevel > 5);
@@ -43,18 +44,18 @@ async function main() {
       await objUser.loadUsersTable(objProject.condominiumId, resident, objProject.nineNine);
       await objCondominium.loadCondominiumsTable();
       await objCondo.loadCondoTable(objProject.condominiumId, objProject.nineNine);
-      await objProject.loadProjectsTable(objProject.condominiumId);
+      await objProjects.loadProjectsTable(objProject.condominiumId);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objProject.condominiumId, fixedCost);
-      await objProject.loadProjectsTable(objProject.condominiumId);
+      await objProjects.loadProjectsTable(objProject.condominiumId);
 
       // Show header
       //showHeader();
 
       // Show filter
-      projectId = (objProject.arrayProjects.length === 0)
+      projectId = (objProjects.arrayProjects.length === 0)
         ? 0
-        : objProject.arrayProjects.at(-1)?.projectId ?? 0;
+        : objProjects.arrayProjects.at(-1)?.projectId ?? 0;
       showFilter(projectId);
 
       // Show project
@@ -119,7 +120,7 @@ async function events() {
 
       const projectId = Number(document.querySelector('.filterProjectId').value);
       await updateProjectsRow(projectId);
-      await objProject.loadProjectsTable(objProject.condominiumId);
+      await objProjects.loadProjectsTable(objProject.condominiumId);
 
       showProject(projectId);
     };
@@ -144,7 +145,7 @@ async function events() {
       }
 
       await deleteProjectsRow(projectId);
-      await objProject.loadProjectsTable(objProject.condominiumId);
+      await objProjects.loadProjectsTable(objProject.condominiumId);
 
       showProject();
 
@@ -175,7 +176,7 @@ function showFilter(projectId) {
   //html += startLine();
 
   // Show projects
-  html += objProject.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', '', true);
+  html += objProjects.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', '', true);
 
   //html += "</div>";
 
@@ -189,7 +190,7 @@ function showFilter(projectId) {
 async function deleteProjectsRow(projectId) {
 
   // Check if projects row exist
-  rowNumberProjects = objProject.arrayProjects.findIndex(project => project.projectId === projectId);
+  rowNumberProjects = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
   if (rowNumberProjects !== -1) {
 
     // delete projects row
@@ -208,7 +209,7 @@ async function updateProjectsRow(projectId) {
 
   // amount
   let amount = document.querySelector('.amount').value;
-  amount = formatKronerToOre(amount);
+  amount = formatNorAmountToNumber(amount);
   const validAmount = validateNumberNew('amount', '', 'Ugyldig beløp', true, amount, objProject.minusNineNine, objProject.nineNine);
 
   // Validate projects columns
@@ -217,7 +218,7 @@ async function updateProjectsRow(projectId) {
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the project id exist
-    const rowNumberProjects = objProject.arrayProjects.findIndex(project => project.projectId === projectId);
+    const rowNumberProjects = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
     if (rowNumberProjects !== -1) {
 
       // update a projects row
@@ -230,7 +231,7 @@ async function updateProjectsRow(projectId) {
       await objProject.insertProjectsTable(objProject.condominiumId, objProject.user, name, accountId, amount);
     }
 
-    await objProject.loadProjectsTable(objProject.condominiumId);
+    await objProjects.loadProjectsTable(objProject.condominiumId);
     showProject();
   }
 }
@@ -264,13 +265,13 @@ function insertEmptyTableRow() {
 function showProject(projectId) {
 
   // row number project
-  const rowNumberProject = objProject.arrayProjects.findIndex(project => project.projectId === projectId);
+  const rowNumberProject = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
 
   // name
   // Empty line
 let html = emptyLine();
 
-  const name = objProject.arrayProjects[rowNumberProject]?.name.trim() ?? '';
+  const name = objProjects.arrayProjects[rowNumberProject]?.name.trim() ?? '';
   html += showTextNew('Navn', 'name', name, enableChanges, "Navn");
   html += "</div>";
 
@@ -278,8 +279,8 @@ let html = emptyLine();
   html += startLine();
 
   // amount
-  let amount = objProject.arrayProjects[rowNumberProject]?.amount ?? '';
-  amount = formatOreToKroner(amount);
+  let amount = objProjects.arrayProjects[rowNumberProject]?.amount ?? '';
+  amount = formatNumberToNorAmount(amount);
   html += showTextNew('Beløp', 'amount', amount, enableChanges, "Beløp");
   html += "</div>";
 

@@ -211,7 +211,7 @@ function showFilter(year) {
   // Price/kilowattHour
   const priceKilowattHour = getPriceKilowattHour(year);
   className = `filterPrice`;
-  html += objRemoteHeating.editAmount('Pris KilowatTimer', 'filterPrice', priceKilowattHour, true);
+  html += showAmount('Pris KilowatTimer', 'filterPrice', priceKilowattHour, true);
   html += "</div>";
 
   // End filter frame
@@ -254,7 +254,7 @@ let html = emptyLine();
       let kilowattHour = (remoteHeating.kilowattHour)
         ? remoteHeating.kilowattHour
         : 0;
-      kilowattHour = formatOreToKroner(kilowattHour);
+      kilowattHour = formatNumberToNorAmount(kilowattHour);
       className = `kilowattHour${remoteHeating.remoteHeatingId}`;
       html += showTextNew(`K.timer ${currentYear}`, className, kilowattHour, enableChanges, 'Kontonavn');
 
@@ -262,7 +262,7 @@ let html = emptyLine();
       let kilowattHourLastYear = (getKilowattHourLastYear(remoteHeating.condoId))
         ? getKilowattHourLastYear(remoteHeating.condoId)
         : 0;
-      kilowattHourLastYear = formatOreToKroner(kilowattHourLastYear);
+      kilowattHourLastYear = formatNumberToNorAmount(kilowattHourLastYear);
       className = `kilowattHourLastYear${remoteHeating.remoteHeatingId}`;
       html += showTextNew(`K.timer ${lastYear}`, className, kilowattHourLastYear, enableChanges, `K.timer ${lastYear}`);
 
@@ -272,15 +272,15 @@ let html = emptyLine();
 
         // calculate price for used elcticity/remote heating for one year
         let price = document.querySelector('.filterPrice').value;
-        price = formatKronerToOre(price);
-        kilowattHour = formatKronerToOre(kilowattHour);
-        kilowattHourLastYear = formatKronerToOre(kilowattHourLastYear);
+        price = formatNorAmountToNumber(price);
+        kilowattHour = formatNorAmountToNumber(kilowattHour);
+        kilowattHourLastYear = formatNorAmountToNumber(kilowattHourLastYear);
         priceYear = Number(price) * (Number(kilowattHour) - Number(kilowattHourLastYear));
         priceYear = (priceYear / 100);
-        priceYear = formatOreToKroner(priceYear);
+        priceYear = formatNumberToNorAmount(priceYear);
       } else {
 
-        priceYear = formatOreToKroner(remoteHeating.priceYear);
+        priceYear = formatNumberToNorAmount(remoteHeating.priceYear);
       }
       className = `priceYear${remoteHeating.remoteHeatingId}`;
       html += showTextNew('Beløp', className, priceYear, enableChanges, 'Beløp');
@@ -355,12 +355,12 @@ function insertEmptyRow() {
   /*
   // calculate price for used elcticity/remote heating for one year
   let price = document.querySelector('.filterPrice').value;
-  price = formatKronerToOre(price);
-  kilowattHour = formatKronerToOre(kilowattHour);
-  kilowattHourLastYear = formatKronerToOre(kilowattHourLastYear);
+  price = formatNorAmountToNumber(price);
+  kilowattHour = formatNorAmountToNumber(kilowattHour);
+  kilowattHourLastYear = formatNorAmountToNumber(kilowattHourLastYear);
   priceYear = Number(price) * (Number(kilowattHour) - Number(kilowattHourLastYear));
   priceYear = (priceYear / 100);
-  priceYear = formatOreToKroner(priceYear);
+  priceYear = formatNumberToNorAmount(priceYear);
   */
 
   className = `priceYear0`;
@@ -413,14 +413,14 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   // kilowattHour
   className = `.kilowattHour${remoteHeatingId}`;
   let kilowattHour = document.querySelector(className).value;
-  kilowattHour = formatKronerToOre(kilowattHour);
+  kilowattHour = formatNorAmountToNumber(kilowattHour);
   className = `kilowattHour${remoteHeatingId}`;
   const validkilowattHour = validateInterval(className,  '', 'Ugyldig kilowatttime', true, kilowattHour, 1, objRemoteHeating.nineNine);
 
   // Price for one year
   className = `.priceYear${remoteHeatingId}`;
   let priceYear = document.querySelector(className).value;
-  priceYear = formatKronerToOre(priceYear);
+  priceYear = formatNorAmountToNumber(priceYear);
   className = `priceYear${remoteHeatingId}`;
   const validPriceYear = validateInterval(className,  '', 'Ugyldig beløp', true, priceYear, 0, objRemoteHeating.nineNine);
 
@@ -486,6 +486,6 @@ function getPriceKilowattHour(year) {
     if (RremoteHeatingPrice.year === year) priceKilowattHour = Number(RremoteHeatingPrice.priceKilowattHour);
   });
 
-  priceKilowattHour = formatOreToKroner(priceKilowattHour);
+  priceKilowattHour = formatNumberToNorAmount(priceKilowattHour);
   return priceKilowattHour;
 }

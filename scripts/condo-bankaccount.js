@@ -97,7 +97,7 @@ async function events() {
       let bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
       await deleteBankAccountRow(bankAccountId);
       await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, objBankAccount.nineNine);
-      const bankAccountId = (objBankAccount.arrayBankAccounts.length === 0)
+      bankAccountId = (objBankAccount.arrayBankAccounts.length === 0)
         ? 0
         : objBankAccount.arrayBankAccounts.at(-1)?.bankAccountId ?? 0
       //const bankAccountId = (objBankAccount.arrayBankAccounts.length === 0)
@@ -233,7 +233,7 @@ async function updateBankAccountRow(bankAccountId) {
   // Opening balance
   let validOpeningBalance = true;
   let openingBalance = document.querySelector('.openingBalance').value;
-  openingBalance = formatKronerToOre(openingBalance);
+  openingBalance = formatNorAmountToNumber(openingBalance);
   validOpeningBalance = validateInterval('openingBalance', columnWidths, '', 'Ugyldig beløp', true, openingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine,);
 
   // Closing balance date
@@ -246,7 +246,7 @@ async function updateBankAccountRow(bankAccountId) {
   // Closing balance
   let validClosingBalance = true;
   let closingBalance = document.querySelector('.closingBalance').value;
-  closingBalance = formatKronerToOre(closingBalance);
+  closingBalance = formatNorAmountToNumber(closingBalance);
   validClosingBalance = validateInterval('closingBalance', columnWidths, '', 'Ugyldig beløp', true, closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
 
 
@@ -380,7 +380,7 @@ function showBankAccount(bankAccountId) {
   let openingBalance = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance.trim();
-  openingBalance = formatOreToKroner(openingBalance);
+  openingBalance = formatNumberToNorAmount(openingBalance);
   html += showTextNew('Inngående saldo', 'openingBalance', openingBalance, enableChanges, "Inngående saldo");
   html += "</div>";
 
@@ -398,7 +398,7 @@ function showBankAccount(bankAccountId) {
   let closingBalance = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance.trim();
-  closingBalance = formatOreToKroner(closingBalance);
+  closingBalance = formatNumberToNorAmount(closingBalance);
 
   html += showTextNew('Utgående saldo', 'closingBalance', closingBalance, enableChanges, "Utgående saldo");
   html += "</div>";

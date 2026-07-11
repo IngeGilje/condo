@@ -61,18 +61,45 @@ class EmptyingCalendars extends Condos {
         html += `
         <option 
           value=${emptyCalendar.date}
-          ${(emptyCalendar.date === date) ? 'selected' : ''}
+          ${((emptyCalendar.date === date)) ? 'selected' : ''}
         >`;
         if (emptyCalendar.date === date) selectedValue = true;
 
-        date = emptyCalendar.date;
-        date = formatNumberToNorDate(date);
-
+        const emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
         html += `
-          &nbsp;&nbsp;${date}&nbsp;&nbsp;
-        </option>`;
-
+          &nbsp;&nbsp;${emptyCalendarDate}&nbsp;&nbsp;
+        </option>
+        `;
       });
+
+      // If not match of date
+      // try start of the month
+      if (!selectedValue) {
+
+        const year = String(date).slice(0, 4);
+        const month = String(date).slice(4, 6);
+        const fromDate = Number(year + month + "01");
+        const toDate = Number(year + month + "31");
+
+        this.arrayEmptyingCalendars.forEach((emptyCalendar) => {
+
+          if (emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) {
+
+            html += `
+            <option 
+              value=${emptyCalendar.date}
+              ${((emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) && !selectedValue) ? 'selected' : ''}
+            >`;
+            if ((emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) && !selectedValue) selectedValue = true;
+
+            const emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
+            html += `
+              &nbsp;&nbsp;${emptyCalendarDate}&nbsp;&nbsp;
+            </option>
+            `;
+          }
+        });
+      }
     } else {
 
       // No emptyCalendars
@@ -122,7 +149,7 @@ class EmptyingCalendars extends Condos {
   }
 
   // get emtying calendar table
-  async loadEmptyingCalendarTable(condominiumId, year, month, date) {
+  async loadEmptyingCalendarTable(condominiumId, date) {
 
     // Get emptying calendar
     const URL = (this.serverStatus === 1)
@@ -138,8 +165,6 @@ class EmptyingCalendars extends Condos {
         body: JSON.stringify({
           action: 'select',
           condominiumId: condominiumId,
-          year: year,
-          month: month,
           date: date
         })
       });

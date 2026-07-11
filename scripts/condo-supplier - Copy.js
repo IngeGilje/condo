@@ -472,7 +472,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate amount
   let amount = document.querySelector('.amount').value;
-  amount = Number(formatKronerToOre(amount));
+  amount = Number(formatNorAmountToNumber(amount));
   const validAmount = validateInterval('amount', columnWidths, '', 'Ugyldig beløp', true, amount, objSupplier.minusNineNine, objSupplier.nineNine);
 
 

@@ -196,7 +196,7 @@ function getBudgetAmount(accountId, year) {
     }
   })
 
-  return formatOreToKroner(amount);
+  return formatNumberToNorAmount(amount);
 }
 
 // Show filter
@@ -220,7 +220,7 @@ function showFilter(budgetYear, fromDate, toDate) {
 
  // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(budgetYear);
-  html += objAnnualAccount.editAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
+  html += showAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
 
    //html += "</div>";
 
@@ -252,12 +252,12 @@ function showAnnualAccounts() {
     // Budget Amount for fiscal
     const budgetYear = Number(document.querySelector('.filterBudgetYear').value);
     let budgetAmount = getBudgetAmount(account.accountId, budgetYear);
-    const numBudgetAmount = Number(formatKronerToOre(budgetAmount));
+    const numBudgetAmount = Number(formatNorAmountToNumber(budgetAmount));
 
     // Transactions for selected account
     let accountAmount = getTotalMovementsBankAccount(account.accountId);
-    accountAmount = formatOreToKroner(accountAmount);
-    const numAccountAmount = Number(formatKronerToOre(accountAmount));
+    accountAmount = formatNumberToNorAmount(accountAmount);
+    const numAccountAmount = Number(formatNorAmountToNumber(accountAmount));
 
     if (numBudgetAmount !== 0 || numAccountAmount !== 0) {
 
@@ -267,20 +267,20 @@ function showAnnualAccounts() {
       html += objAnnualAccount.editTableCell('name', account.name, 45, false);
 
       // accountAmount
-      accountAmount = formatOreToKroner(accountAmount);
+      accountAmount = formatNumberToNorAmount(accountAmount);
       className = `accountAmount${account.accountId}`;
       html += objAnnualAccount.editTableCell('accountAmount', accountAmount, 11, false);
 
       // budgetAmount
-      budgetAmount = formatOreToKroner(budgetAmount);
+      budgetAmount = formatNumberToNorAmount(budgetAmount);
       className = `budgetAmount${account.accountId}`;
       html += objAnnualAccount.editTableCell('budgetAmount', budgetAmount, 11, false);
 
       // Deviation
-      accountAmount = Number(formatKronerToOre(accountAmount));
-      budgetAmount = Number(formatKronerToOre(budgetAmount));
+      accountAmount = Number(formatNorAmountToNumber(accountAmount));
+      budgetAmount = Number(formatNorAmountToNumber(budgetAmount));
       let deviation = accountAmount - budgetAmount;
-      deviation = formatOreToKroner(deviation);
+      deviation = formatNumberToNorAmount(deviation);
       className = `deviation${account.accountId}`;
       html += objAnnualAccount.editTableCell('deviation', deviation, 11, false);
       html += "</tr>";
@@ -294,19 +294,19 @@ function showAnnualAccounts() {
   // Sum row
 
   // Total amount annual accounts
-  totalAccountAmount = formatOreToKroner(totalAccountAmount);
+  totalAccountAmount = formatNumberToNorAmount(totalAccountAmount);
 
   // Budget fiscal year
-  totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
+  totalBudgetAmount = formatNumberToNorAmount(String(totalBudgetAmount));
 
   // Total deviation
-  totalAccountAmount = formatKronerToOre(totalAccountAmount);
-  totalBudgetAmount = formatKronerToOre(totalBudgetAmount);
+  totalAccountAmount = formatNorAmountToNumber(totalAccountAmount);
+  totalBudgetAmount = formatNorAmountToNumber(totalBudgetAmount);
   let totalDeviation = Number(totalAccountAmount) - Number(totalBudgetAmount);
-  totalDeviation = formatOreToKroner(String(totalDeviation));
+  totalDeviation = formatNumberToNorAmount(String(totalDeviation));
 
-  totalAccountAmount = formatOreToKroner(String(totalAccountAmount));
-  totalBudgetAmount = formatOreToKroner(String(totalBudgetAmount));
+  totalAccountAmount = formatNumberToNorAmount(String(totalAccountAmount));
+  totalBudgetAmount = formatNumberToNorAmount(String(totalBudgetAmount));
 
 
   html += objTransaction.insertTableRow('font-weight: 600;', '', 'Sum', totalAccountAmount, totalBudgetAmount, totalDeviation);
@@ -361,29 +361,29 @@ function showIncomeNextYear() {
     html += objAnnualAccount.editTableCell(className, condo.name, 45, false);
 
     // Square meters
-    let squareMeters = formatOreToKroner(condo.squareMeters);
+    let squareMeters = formatNumberToNorAmount(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;
     html += objAnnualAccount.editTableCell(className, squareMeters, 11, false);
 
     // fixed cost per month per condo
-    fixedCostCondoMonth = formatOreToKroner(fixedCostCondoMonth);
+    fixedCostCondoMonth = formatNumberToNorAmount(fixedCostCondoMonth);
     className = `fixedCostCondoMonth${condo.condoId}`;
     html += objAnnualAccount.editTableCell(className, fixedCostCondoMonth, 10, false);
 
     // Common cost per month per condo
     let commonCostSquareMeter = document.querySelector('.filterCommonCostSquareMeter').value;
-    commonCostSquareMeter = formatKronerToOre(commonCostSquareMeter);
-    squareMeters = formatKronerToOre(squareMeters);
+    commonCostSquareMeter = formatNorAmountToNumber(commonCostSquareMeter);
+    squareMeters = formatNorAmountToNumber(squareMeters);
     let commonCostsMonth = (squareMeters * commonCostSquareMeter) / 100;
-    commonCostsMonth = formatOreToKroner(commonCostsMonth);
+    commonCostsMonth = formatNumberToNorAmount(commonCostsMonth);
     className = `commonCostsMonth${condo.condoId}`;
     html += objAnnualAccount.editTableCell(className, commonCostsMonth, 11, false);
 
     // Common cost per year per condo
-    commonCostsMonth = formatKronerToOre(commonCostsMonth);
-    fixedCostCondoMonth = formatKronerToOre(fixedCostCondoMonth);
+    commonCostsMonth = formatNorAmountToNumber(commonCostsMonth);
+    fixedCostCondoMonth = formatNorAmountToNumber(fixedCostCondoMonth);
     let commonCostsCondoYear = (commonCostsMonth + fixedCostCondoMonth) * 12;
-    commonCostsCondoYear = formatOreToKroner(commonCostsCondoYear);
+    commonCostsCondoYear = formatNumberToNorAmount(commonCostsCondoYear);
     className = `commonCostsCondoYear${condo.condoId}`;
     html += objAnnualAccount.editTableCell(className, commonCostsCondoYear, 10, false);
 
@@ -393,14 +393,14 @@ function showIncomeNextYear() {
     totalSquareMeters += Number(squareMeters);
     totalFixedCostsCondoYear += Number(fixedCostCondoMonth);
     totalCommonCostsCondoMonth += Number(commonCostsMonth);
-    commonCostsCondoYear = formatKronerToOre(commonCostsCondoYear)
+    commonCostsCondoYear = formatNorAmountToNumber(commonCostsCondoYear)
     totalCommonCostsCondoYear += commonCostsCondoYear;
   });
 
-  totalSquareMeters = formatOreToKroner(totalSquareMeters);
-  totalFixedCostsCondoYear = formatOreToKroner(totalFixedCostsCondoYear);
-  totalCommonCostsCondoMonth = formatOreToKroner(totalCommonCostsCondoMonth);
-  totalCommonCostsCondoYear = formatOreToKroner(totalCommonCostsCondoYear);
+  totalSquareMeters = formatNumberToNorAmount(totalSquareMeters);
+  totalFixedCostsCondoYear = formatNumberToNorAmount(totalFixedCostsCondoYear);
+  totalCommonCostsCondoMonth = formatNumberToNorAmount(totalCommonCostsCondoMonth);
+  totalCommonCostsCondoYear = formatNumberToNorAmount(totalCommonCostsCondoYear);
 
   html += objAnnualAccount.insertTableRow('', 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
   html += "</tr>";
@@ -453,14 +453,14 @@ function showBankDeposit() {
   //let bankDepositAmount = "";
   const bankDepositAmount = (rowNumberBankAccount === -1)
     ? 0
-    : formatOreToKroner(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
+    : formatNumberToNorAmount(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
 
   className = `bankDepositAmount`;
   html += objAnnualAccount.editTableCell(className, bankDepositAmount, 11, false);
 
   html += "</tr>";
 
-  accAmount += Number(formatKronerToOre(bankDepositAmount));
+  accAmount += Number(formatNorAmountToNumber(bankDepositAmount));
 
   // budget
   objBudgets.arrayBudgets.forEach((budget) => {
@@ -484,14 +484,14 @@ function showBankDeposit() {
       html += objAnnualAccount.editTableCell(className, 10, false);
 
       // budget amount
-      let amount = formatOreToKroner(budget.amount);
+      let amount = formatNumberToNorAmount(budget.amount);
       className = `amount${budget.budgetId}`
       html += objAnnualAccount.editTableCell(className, amount, 11, false);
 
       html += "</tr>";
 
       // accumulate
-      accAmount += Number(formatKronerToOre(amount));
+      accAmount += Number(formatNorAmountToNumber(amount));
     }
   });
 
@@ -512,7 +512,7 @@ function showBankDeposit() {
   html += objTransaction.editTableCell(className, closingBalanceDateNextYear, 10, false);
 
   // Bank deposit next year
-  const bankDepositNextYear = formatOreToKroner(String(accAmount));
+  const bankDepositNextYear = formatNumberToNorAmount(String(accAmount));
   className = `bankDepositNextYear`;
   html += objTransaction.editTableCell(className, bankDepositNextYear, 10, false);
 
@@ -535,6 +535,6 @@ function getpriceSquaremeter(budgetYear) {
     if (commonCost.year === budgetYear) commonCostSquareMeter = Number(commonCost.commonCostSquareMeter);
   });
 
-  commonCostSquareMeter = formatOreToKroner(commonCostSquareMeter);
+  commonCostSquareMeter = formatNumberToNorAmount(commonCostSquareMeter);
   return commonCostSquareMeter;
 }

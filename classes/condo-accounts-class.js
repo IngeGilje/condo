@@ -54,9 +54,12 @@ class Accounts extends Condos {
       accountId = objSupplier.arraySuppliers[rowNumberSupplier].accountId;
 
       // get Account Id from supplier amount
-      const amount = (objSupplier.arraySuppliers[rowNumberSupplier].amount) ? Number(objSupplier.arraySuppliers[rowNumberSupplier].amount) : 0;
-
-      accountId = (amount === Number(payment)) ? Number(objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId) : accountId;
+      const amount = (objSupplier.arraySuppliers[rowNumberSupplier].amount)
+        ? Number(objSupplier.arraySuppliers[rowNumberSupplier].amount)
+        : 0;
+      accountId = (amount === Number(payment))
+        ? Number(objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId)
+        : accountId;
     }
 
     // get Account Id from supplier text
@@ -238,9 +241,9 @@ class Accounts extends Condos {
   // get accounts from accounts table
   async loadAccountsTable(condominiumId, fixedCost) {
 
-    const URL = (this.serverStatus === 1) 
-    ? '/api/accounts' 
-    : 'http://localhost:3000/accounts';
+    const URL = (this.serverStatus === 1)
+      ? '/api/accounts'
+      : 'http://localhost:3000/accounts';
     try {
 
       // POST request
@@ -270,7 +273,7 @@ class Accounts extends Condos {
       : 'http://localhost:3000/accounts';
     try {
 
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -287,7 +290,7 @@ class Accounts extends Condos {
     }
   }
 
-    // update account row
+  // update account row
   async updateAccountsTable(user, accountId, fixedCost, accountName) {
 
     const URL = (this.serverStatus === 1) ? '/api/accounts' : 'http://localhost:3000/accounts';
@@ -346,9 +349,9 @@ class Accounts extends Condos {
   // delete account row
   async deleteAccountsTable(accountId, user) {
 
-    const URL = (this.serverStatus === 1) 
-    ? '/api/accounts' 
-    : 'http://localhost:3000/accounts';
+    const URL = (this.serverStatus === 1)
+      ? '/api/accounts'
+      : 'http://localhost:3000/accounts';
     try {
       // POST request
       //const response = await fetch(`${URL}:3000/accounts?action=delete&accountId=${accountId}&user=${user}`);

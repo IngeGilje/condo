@@ -37,8 +37,8 @@ class Transaction extends Condos {
             ? formatNumberToNorDate(bankTransaction.date)
             : '';
           let amount = '';
-          if (bankTransaction.income !== 0) amount = formatOreToKroner(bankTransaction.income);
-          if (bankTransaction.payment !== 0) amount = formatOreToKroner(bankTransaction.payment);
+          if (bankTransaction.income !== 0) amount = formatNumberToNorAmount(bankTransaction.income);
+          if (bankTransaction.payment !== 0) amount = formatNumberToNorAmount(bankTransaction.payment);
           html += `
           <option value=${bankTransaction.transactionId}>
             ${bankTransaction.transactionId}

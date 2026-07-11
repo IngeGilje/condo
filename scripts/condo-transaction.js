@@ -95,6 +95,9 @@ async function main() {
       showTransactions(transactionId);
       */
 
+      // show filter
+      showFilter(transactionId);
+
       // Show bank account transaction
       showTransaction(paramTransactionId);
 
@@ -258,6 +261,21 @@ async function events() {
   });
 }
 
+// Show filter
+function showFilter(transactionId) {
+
+  // Start frame
+  let html = startFrame();
+
+  // Show dues
+  html += objTransactions.showSelectedTransactionsNew('Bilag', 'filtertransactionId', '', transactionId, '', '', true);
+
+  // End filter frame
+  html += "</div>";
+
+  document.querySelector('.showFilter').innerHTML = html;
+}
+
 function resetValues() {
 
   // Filter values
@@ -336,19 +354,19 @@ async function updateTransactionRow(transactionId) {
 
   // income
   className = `.income`;
-  let income = Number(formatKronerToOre(document.querySelector(className).value));
+  let income = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `income`;
   const validIncome = validateInterval(className, '', 'Ugyldig inntekt', true, income, objTransaction.minusNineNine, objTransaction.nineNine);
 
   // payment
   className = `.payment`;
-  let payment = Number(formatKronerToOre(document.querySelector(className).value));
+  let payment = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `payment`;
   const validPayment = validateInterval(className, '', 'Ugyldig utgift', true, payment, objTransaction.minusNineNine, objTransaction.nineNine);
 
   // kilowattHour
   className = `.kilowattHour`;
-  const kilowattHour = Number(formatKronerToOre(document.querySelector(className).value));
+  const kilowattHour = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `kilowattHour`;
   const validNumberKWHour = validateInterval(className, '', 'Ugyldig kilowattime', true, kilowattHour, 0, objTransaction.nineNine);
 
@@ -418,7 +436,7 @@ async function updateTransactionRow(transactionId) {
     if (enableChanges) {
       disableButton('delete', false);
       disableButton('insert', false);
-             disableButton('update', false);
+      disableButton('update', false);
       disableButton('cancel', true);
       disableButton('filterCondoId', false, 'white');
       disableButton('filterAccountId', false, 'white');
@@ -544,11 +562,11 @@ function showTransaction(transactionId) {
   let income = (rowNumberTransaction === -1)
     ? ''
     : objTransaction.arrayTransactions[rowNumberTransaction].income;
-  income = formatOreToKroner(income);
+  income = formatNumberToNorAmount(income);
   html += showTextNew('Inntekt', 'income', income, enableChanges, "Inntekt");
   /*
   let income = objTransaction.arrayTransactions[rowNumberTransaction]?.income ?? '';
-  income = formatOreToKroner(income);
+  income = formatNumberToNorAmount(income);
   className = `income`;
   html += objTransaction.editTableCell(className, income, 10, enableChanges);
   */
@@ -556,12 +574,12 @@ function showTransaction(transactionId) {
   let payment = (rowNumberTransaction === -1)
     ? "0"
     : objTransaction.arrayTransactions[rowNumberTransaction].payment;
-  payment = formatOreToKroner(payment);
+  payment = formatNumberToNorAmount(payment);
   html += showTextNew('Betaling', 'payment', payment, enableChanges, "Betaling");
   /*
    // payment
   let payment = objTransaction.arrayTransactions[rowNumberTransaction]?.payment ?? '';
-  payment = formatOreToKroner(payment);
+  payment = formatNumberToNorAmount(payment);
   className = `payment`;
   html += objTransaction.editTableCell(className, payment, 10, enableChanges);
   */
@@ -569,13 +587,13 @@ function showTransaction(transactionId) {
   let kilowattHour = (rowNumberTransaction === -1)
     ? "0"
     : objTransaction.arrayTransactions[rowNumberTransaction].kilowattHour;
-  kilowattHour = formatOreToKroner(kilowattHour);
+  kilowattHour = formatNumberToNorAmount(kilowattHour);
   html += showTextNew('KilowatTimer', 'kilowattHour', kilowattHour, enableChanges, "KilowatTimer");
   html += "</div>";
   /*
    let kilowattHour = objTransaction.arrayTransactions[rowNumberTransaction]?.kilowattHour ?? 0;
   // let kilowattHour = objTransaction.arrayTransactions[rowNumberTransaction].kilowattHour;
-  kilowattHour = formatOreToKroner(kilowattHour);
+  kilowattHour = formatNumberToNorAmount(kilowattHour);
   className = `kilowattHour`;
   html += objTransaction.editTableCell(className, kilowattHour, 10, enableChanges);
   html += "</tr>";
@@ -620,7 +638,7 @@ function showTransaction(transactionId) {
   if (enableChanges) {
     disableButton('delete', false);
     disableButton('insert', false);
-                 disableButton('update', false);
+    disableButton('update', false);
     disableButton('cancel', true);
     disableButton('filterTransactionId', false, 'white');
   }

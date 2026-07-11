@@ -157,8 +157,8 @@ async function events() {
       toDate = formatISODateToNumber(toDate);
 
       let amount = document.querySelector('.filterAmount').value;
-      amount = formatKronerToOre(amount);
-      document.querySelector('.filterAmount').value = formatOreToKroner(amount);
+      amount = formatNorAmountToNumber(amount);
+      document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
 
       const orderBy = 'date DESC, income DESC';
       await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
@@ -193,7 +193,7 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = formatISODateToNumber(toDate);
       let amount = document.querySelector('.filterAmount').value;
-      amount = formatKronerToOre(amount);
+      amount = formatNorAmountToNumber(amount);
       let URL = (objTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
@@ -227,7 +227,7 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = formatISODateToNumber(toDate);
       let amount = document.querySelector('.filterAmount').value;
-      amount = formatKronerToOre(amount);
+      amount = formatNorAmountToNumber(amount);
       let URL = (objTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
@@ -291,8 +291,8 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   html += showDate('Til Dato', 'filterToDate', toDate, true)
 
   // Amount
-  amount = formatOreToKroner(amount);
-  html += objShowTransaction.editAmount('Beløp', 'filterAmount', amount, true);
+  amount = formatNumberToNorAmount(amount);
+  html += showAmount('Beløp', 'filterAmount', amount, true);
 
   // End filter frame
   html += "</div>";
@@ -332,7 +332,7 @@ function showTransactions() {
 
     // amount
     let amount = bankTransaction.income + bankTransaction.payment;
-    amount = formatOreToKroner(amount);
+    amount = formatNumberToNorAmount(amount);
     className = `amount${bankTransaction.transactionId}`;
     html += objTransaction.editTableCell(className, amount, 10, false);
 
@@ -350,7 +350,7 @@ function showTransactions() {
   };
 
   // Show table sum row
-  sumAmount = formatOreToKroner(sumAmount);
+  sumAmount = formatNumberToNorAmount(sumAmount);
 
   html += objTransaction.insertTableRow('', '', '', 'Sum', sumAmount, '');
 

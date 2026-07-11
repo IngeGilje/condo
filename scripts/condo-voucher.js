@@ -202,7 +202,7 @@ function showVoucher(transactionId) {
   // Amount
   const income = objTransaction.arrayTransactions[rowNumberTransaction].income;
   const payment = objTransaction.arrayTransactions[rowNumberTransaction].payment;
-  const amount = formatOreToKroner((income) ? income : payment);
+  const amount = formatNumberToNorAmount((income) ? income : payment);
   html += showTextNew('Beløp', 'amount', amount, false, "Beløp");
   html += "</div>";
 

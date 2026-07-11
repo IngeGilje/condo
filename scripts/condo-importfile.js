@@ -180,10 +180,10 @@ function createTransactionsArray() {
       const condoName = objCondo.getCondoName(condoId);
 
       // Income
-      income = formatKronerToOre(income);
+      income = formatNorAmountToNumber(income);
 
       // Payment
-      payment = (-1) * (formatKronerToOre(payment));
+      payment = (-1) * (formatNorAmountToNumber(payment));
 
       // Account Id
 
@@ -281,8 +281,8 @@ async function updateOpeningClosingBalance() {
       row.split(';');
     if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '', 'Ugyldig dato')) {
 
-      totalIncome += Number(formatKronerToOre(income));
-      totalPayment += Number(formatKronerToOre(payment));
+      totalIncome += Number(formatNorAmountToNumber(income));
+      totalPayment += Number(formatNorAmountToNumber(payment));
     } else {
 
       // Not transactiong row
@@ -569,12 +569,12 @@ function showTransactions() {
     html += objImportFile.editTableCell(className, transaction.toBankAccountName, 45);
 
     // Income
-    const income = formatOreToKroner(transaction.income);
+    const income = formatNumberToNorAmount(transaction.income);
     className = `income${rowNumber}`;
     html += objImportFile.editTableCell(className, income, 10);
 
     // Payment
-    const payment = formatOreToKroner(transaction.payment);
+    const payment = formatNumberToNorAmount(transaction.payment);
     className = `payment${rowNumber}`;
     html += objImportFile.editTableCell(className, payment, 10);
 
@@ -593,10 +593,10 @@ function showTransactions() {
   });
 
   // Sum incomes
-  sumIncomes = formatOreToKroner(sumIncomes);
+  sumIncomes = formatNumberToNorAmount(sumIncomes);
 
   // Sum payments
-  sumPayments = formatOreToKroner(sumPayments);
+  sumPayments = formatNumberToNorAmount(sumPayments);
 
   // Show sum row
   html += objImportFile.insertTableRow('font-weight: 600;', '', '', '', '', 'Sum', sumIncomes, sumPayments, '');

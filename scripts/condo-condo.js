@@ -257,7 +257,7 @@ function showCondo(condoId) {
     : objCondo.arrayCondo[rowNumberCondo].squareMeters;
   */
   let squareMeters = objCondo.arrayCondo[rowNumberCondo]?.squareMeters ?? '';
-  squareMeters = formatOreToKroner(squareMeters);
+  squareMeters = formatNumberToNorAmount(squareMeters);
   html += showTextNew('Areal i m2', 'squareMeters', squareMeters, enableChanges, "Leilighet");
   html += "</div>";
 
@@ -315,7 +315,7 @@ async function updateCondoRow(condoId) {
   const validCity = validateText('city', columnWidths, '', 'Ugyldig poststed', true, city, 1, 45);
 
   // validate squaremeters
-  const squareMeters = Number(formatKronerToOre(document.querySelector('.squareMeters').value));
+  const squareMeters = Number(formatNorAmountToNumber(document.querySelector('.squareMeters').value));
   const validSquareMeters = validateInterval('squareMeters', columnWidths, '', 'Ugyldig areal', true, squareMeters, 1, objCondo.nineNine);
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {

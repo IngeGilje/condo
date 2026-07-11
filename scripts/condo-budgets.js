@@ -215,7 +215,7 @@ function calculateSum() {
     sumAmount += Number(budget.amount);
   });
 
-  sumAmount = formatOreToKroner(String(sumAmount));
+  sumAmount = formatNumberToNorAmount(String(sumAmount));
   document.querySelector('.sum2').value = sumAmount;
 };
 
@@ -266,7 +266,7 @@ function showBudgets() {
     html += objAccounts.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
 
     // due amount
-    const amount = formatOreToKroner(budget.amount);
+    const amount = formatNumberToNorAmount(budget.amount);
     className = `amount${budget.budgetId}`;
     html += objBudgets.editTableCell(className, amount, 11, enableChanges);
 
@@ -285,7 +285,7 @@ function showBudgets() {
   });
 
   // Show table sum row
-  sumAmount = formatOreToKroner(sumAmount);
+  sumAmount = formatNumberToNorAmount(sumAmount);
 
   html += objBudgets.insertTableRow('font-weight: 600;', '', 'Sum', sumAmount, '', '');
 
