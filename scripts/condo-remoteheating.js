@@ -307,30 +307,6 @@ let html = emptyLine();
 // Insert empty row
 function insertEmptyRow() {
 
-  /*
-  let html = "";
-  let date = "";
-
-  // insert a table row (<tr></td>)
-  html += objRemoteHeating.insertTableRow('');
-
-  // Date
-  html += objRemoteHeating.editTableCell('date0', '', '', 10, enableChanges);
-
-  // condoId
-  html += objCondo.showSelectedCondos('condoId0', '', 0, 'Velg leilighet', '', enableChanges);
-
-  // kilowattHour this year
-  html += objRemoteHeating.editTableCell('kilowattHour0', '', '0,00', 10, enableChanges);
-
-  // kilowattHour last year
-  html += objRemoteHeating.editTableCell('kilowattHourLastYear0', '', '0,00', 10, false);
-
-  // price for remote heating for one year
-  html += objRemoteHeating.editTableCell('priceYear0', '', '0,00', 10, enableChanges);
-  html += "<td class='center'>Ny fjernvarme</td></tr>";
-  return html;
-*/
   // start new row
   let html = startRow();
   // Date
@@ -447,7 +423,7 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   }
 }
 
-// get number of KilowattHour for last year
+// get number of kilowattHour for last year
 function getKilowattHourLastYear(condoId) {
 
   let kilowattHourLastYear = 0;

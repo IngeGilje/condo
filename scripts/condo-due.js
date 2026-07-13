@@ -120,29 +120,20 @@ async function events() {
 
   // Delete dues row
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
+    if (event.target.classList.contains('delete')) {
 
-      const arrayPrefixes = ['delete'];
+      let dueId = Number(document.querySelector('.filterDueId').value);
+      await deleteDueRow(dueId);
 
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objDue.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let dueId = 0;
-      let prefix = '';
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        dueId = Number(className.slice(prefix.length));
-      }
-
-      const classNameDelete = `.${className}`
-      const deleteDueRowValue = document.querySelector(`${classNameDelete}`).value;
-      await deleteDueRow(dueId, className);
-
+      // Show last row in dues tabel
+      await  objDues.getHighestDueId(objDues.condominiumId);
+      dueId = objDues.arrayDues.at(-1)?.dueId ?? 0;
       await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
 
+      // Show filter
+      showFilter(dueId);
+
+      // Show due
       showDue(dueId);
     };
   });
@@ -273,7 +264,6 @@ async function updateDuesRow(dueId) {
   const validAccountId = validateInterval(className, '', 'Ugyldig konto', true, accountId, 1, objDue.nineNine);
 
   // amount
-  debugger;
   className = '.amount';
   const amount = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = 'amount';
@@ -284,7 +274,7 @@ async function updateDuesRow(dueId) {
   let kilowattHour = Number(formatNorAmountToNumber(document.querySelector(className).value));
   kilowattHour = formatNorAmountToNumber(kilowattHour);
   className = 'kilowattHour';
-  const validKilowattHour = validateInterval(className, '', 'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
+  const validkilowattHour = validateInterval(className, '', 'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
 
   // Text
   className = '.text';
@@ -293,7 +283,7 @@ async function updateDuesRow(dueId) {
   const validText = validateTextNew(className, '', 'Ugyldig tekst', true, text, 3, 45)
 
   // Validate dues columns
-  if (validAccountId && validCondoId && validAmount && validDate && validKilowattHour && validText) {
+  if (validAccountId && validCondoId && validAmount && validDate && validkilowattHour && validText) {
 
     document.querySelector('.showMessage').style.display = "none";
 
@@ -303,27 +293,29 @@ async function updateDuesRow(dueId) {
 
       // update the dues row
       await objDues.updateDuesTable(dueId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
-
     } else {
 
       // Insert the account row in accounts table
       await objDues.insertDuesTable(objDue.condominiumId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
+      await objDues.getHighestDueId(objDue.condominiumId);
+      dueId = objDues.arrayDues.at(-1)?.dueId ?? 0;
     }
     await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
 
+    showFilter(dueId);
     showDue(dueId);
   }
 }
 
 // Delete dues row
-async function deleteDueRow(dueId, className) {
+async function deleteDueRow(dueId) {
 
   // Check if dues row exist
   rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
   if (rowNumberDue !== -1) {
 
     // delete dues row
-    await objDue.deleteDuesTable(dueId, objDue.user);
+    await objDues.deleteDuesTable(dueId, objDue.user);
   }
 
   await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
@@ -336,9 +328,9 @@ function resetValues() {
 
   document.querySelector('.dueDate').value = '';
 
-  document.querySelector('.condoId').value = '';
+  document.querySelector('.condoId').value = 0;
 
-  document.querySelector('.accountId').value = '';
+  document.querySelector('.accountId').value = 0;
 
   document.querySelector('.amount').value = '0,00';
 

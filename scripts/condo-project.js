@@ -65,7 +65,7 @@ async function main() {
 
         const projectId = Number(document.querySelector('.filterProjectId').value);
         const orderBy = 'date DESC, income ASC';
-        await objTransaction.loadTransactionsTable(orderBy, objProject.condominiumId, 'N', objProject.nineNine, objProject.nineNine, projectId, 0, 2019010, 20991231);
+        await objTransactions.loadTransactionsTable(orderBy, objProject.condominiumId, 'N', objProject.nineNine, objProject.nineNine, projectId, 0, 2019010, 20991231);
 
         // Show project per year
         showProject(projectId);
@@ -248,12 +248,12 @@ function insertEmptyTableRow() {
   // name
   let name = "";
   let className = `name0`;
-  html += objProject.editTableCell(className, name, 45, enableChanges);
+  html += editTableCell(className, name, 45, enableChanges);
 
   // amount
   let amount = 0;
   className = `amount0`;
-  html += objProject.editTableCell(className, amount, 11, enableChanges);
+  html += editTableCell(className, amount, 11, enableChanges);
 
   // Insert new account
   html += "<td>Nytt prosjekt</td></tr>";

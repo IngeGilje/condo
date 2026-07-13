@@ -214,22 +214,6 @@ let html = emptyLine();
 // Insert empty table row
 function insertEmptyTableRow() {
 
-  /*
-  let html = '';
-  let date = '';
-
-  // insert a table row (<tr></td>)
-  html += objRemoteHeatingPrice.insertTableRow('');
-
-  // Select year (<td></td>)
-  const year = today.getFullYear();
-  html += objRemoteHeatingPrice.showSelectedNumbers('year0', 'width:175px;', 2020, 2030, year, true);
-
-  // priceKilowattHour 
-  html += objRemoteHeatingPrice.editTableCell('priceKilowattHour0', '', '0,00', 10, enableChanges);
-
-  html += "<td>Ny fjernvarmepris</td></tr>";
-  */
  let html = startRow();
 
     // Year

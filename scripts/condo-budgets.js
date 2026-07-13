@@ -268,12 +268,12 @@ function showBudgets() {
     // due amount
     const amount = formatNumberToNorAmount(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += objBudgets.editTableCell(className, amount, 11, enableChanges);
+    html += editTableCell(className, amount, 11, enableChanges);
 
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += objBudgets.editTableCell(className, text, 45, enableChanges);
+    html += editTableCell(className, text, 45, enableChanges);
 
     // Edit budget
     className = `edit${budget.budgetId}`;
@@ -308,11 +308,11 @@ function insertEmptyTableRow() {
   html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
 
   const amount = "";
-  html += objBudgets.editTableCell('amount0', amount, 11, enableChanges);
+  html += editTableCell('amount0', amount, 11, enableChanges);
 
   // text
   const text = "";
-  html += objBudgets.editTableCell('text0', text, 45, enableChanges);
+  html += editTableCell('text0', text, 45, enableChanges);
 
   html += "<td>Nytt budsjett</td></tr>";
   return html;

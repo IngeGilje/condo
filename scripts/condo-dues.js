@@ -57,16 +57,33 @@ async function main() {
 
       // Show filter
       let condoId = 0;
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objUser.userId);
-      if (rowNumberUser !== -1) {
-        condoId = objUser.arrayUsers[rowNumberUser].condoId;
-      }
-      showFilter(condoId);
+      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objDues.userId);
+      if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
+      condoId = (paramCondoId === 0)
+        ? condoId
+        : paramCondoId;
 
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-      let fromDate = document.querySelector('.filterFromDate').value;
+      let accountId = (paramAccountId === 0)
+        ? objDues.nineNine
+        : paramAccountId;
+
+      // From date
+      let fromDate = (paramFromDate === 0)
+        ? `${String(today.getFullYear())}-01-01`
+        : formatNumberToISODate(paramFromDate);
+
+      // To date
+      let toDate = (paramToDate === 0)
+        ? getCurrentISODate()
+        : formatNumberToISODate(paramToDate);
+
+      showFilter(condoId, accountId, fromDate, toDate);
+
+      condoId = Number(document.querySelector('.filterCondoId').value);
+      accountId = Number(document.querySelector('.filterAccountId').value);
+      fromDate = document.querySelector('.filterFromDate').value;
       fromDate = Number(objDues.formatDateToNumber(fromDate));
-      let toDate = document.querySelector('.filterToDate').value;
+      toDate = document.querySelector('.filterToDate').value;
       toDate = Number(objDues.formatDateToNumber(toDate));
 
       await objDues.loadDuesTable(objDues.condominiumId, accountId, condoId, fromDate, toDate);
@@ -145,7 +162,7 @@ async function events() {
 }
 
 // Show filter
-function showFilter(condoId) {
+function showFilter(condoId, accountId, fromDate, toDate) {
 
   // Start frame
   let html = startFrame();
@@ -154,15 +171,12 @@ function showFilter(condoId) {
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
 
   // Show accounts
-  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', objDues.nineNine, '', 'Vis alle', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', 'Vis alle', true);
 
   // From date
-  let fromDate = `${String(today.getFullYear())}-01-01`;
   html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
 
   // To date
-  // Current date
-  let toDate = getCurrentISODate();
   html += showDate('Til Dato', 'filterToDate', toDate, true)
 
   // End filter frame
@@ -178,7 +192,7 @@ function showDues() {
   let html = objCondo.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Kilowatt Timer', 'Tekst');
+  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Kilowatt Timer', '');
 
   let sumAmount = 0;
   //let sumKilowattHour = 0;
@@ -191,7 +205,7 @@ function showDues() {
     // Date
     const date = formatNumberToNorDate(due.date);
     let className = `date${due.dueId}`;
-    html += objDues.editTableCell(className, date, 10, false);
+    html += editTableCell(className, date, 10, false);
 
     // condos
     className = `condoId${due.dueId}`;
@@ -204,19 +218,19 @@ function showDues() {
     // due amount
     const amount = formatNumberToNorAmount(due.amount);
     className = `amount${due.dueId}`;
-    html += objDues.editTableCell(className, amount, 11, false);
+    html += editTableCell(className, amount, 11, false);
 
     /*
     // kilowattHour
     const kilowattHour = formatNumberToNorAmount(due.kilowattHour);
     className = `kilowattHour${due.dueId}`;
-    html += objDues.editTableCell(className, kilowattHour, 10, false);
+    html += editTableCell(className, kilowattHour, 10, false);
     */
 
     // text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objDues.editTableCell(className, text, 45, false);
+    html += editTableCell(className, text, 45, false);
 
     // Change due
     className = `edit${due.dueId}`;

@@ -255,7 +255,6 @@ async function updateNewsRow(newsId) {
     } else {
 
       // Insert the news row in news table
-      debugger;
       await objNews.insertNewsTable(objNews.condominiumId, objNews.user, date, userId, title, content, '');
       await objNews.getHighestNewsId(objNews.condominiumId);
       newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;

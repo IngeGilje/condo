@@ -146,7 +146,7 @@ class Dues extends Condos {
       : 'http://localhost:3000/dues';
     try {
 
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -172,7 +172,7 @@ class Dues extends Condos {
     try {
 
       // POST request
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -203,7 +203,7 @@ class Dues extends Condos {
     try {
 
       // POST request
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -233,7 +233,6 @@ class Dues extends Condos {
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/dues?action=delete&dueId=${dueId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {

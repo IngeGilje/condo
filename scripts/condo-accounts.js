@@ -260,7 +260,7 @@ function showAccounts() {
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += objAccounts.editTableCell(className, name, 45, false);
+    html += editTableCell(className, name, 45, false);
 
     // edit account
     className = `edit${account.accountId}`;

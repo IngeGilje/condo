@@ -3,10 +3,10 @@
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
-const objDue = new Due('due');
+const objDues = new Dues('dues');
 const objAccounts = new Accounts('accounts');
 const objCondo = new Condo('condo');
-const objTransaction = new Transaction('transaction');
+const objTransactions = new Transactions('transactions');
 const objOverview = new Overview('overview');
 
 const enableChanges = (objOverview.securityLevel > 5);
@@ -48,9 +48,6 @@ async function main() {
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objOverview.condominiumId, fixedCost);
 
-      // Show header
-      showHeader();
-
       // Show filter
       // get current condo id
       let condoId = 0;
@@ -67,9 +64,9 @@ async function main() {
       fromDate = objOverview.formatDateToNumber(fromDate);
       let toDate = document.querySelector('.filterToDate').value;
       toDate = objOverview.formatDateToNumber(toDate);
-      await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
+      await objDues.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
       const orderBy = 'condoId ASC, date DESC, income ASC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
 
       // Show dues
       showDues();
@@ -99,10 +96,9 @@ async function events() {
       || event.target.classList.contains('filterFromDate')
       || event.target.classList.contains('filterToDate')) {
 
-      // valitadate filter
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      const validCondoId = validateInterval('filterCondoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objOverview.nineNine);
+      //const validCondoId = validateInterval('filterCondoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objOverview.nineNine);
 
       const accountId = objOverview.nineNine;
       const deleted = 'N';
@@ -113,9 +109,9 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = formatISODateToNumber(toDate);
 
-      await objDue.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
+      await objDues.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
       const orderBy = 'condoId ASC, date DESC, income ASC';
-      await objTransaction.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
 
       // Show dues
       showDues();
@@ -139,27 +135,6 @@ async function events() {
       window.location.href = url;
     };
   });
-}
-
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objOverview.initializeTable(columnWidths);
-
-  // start table body
-  html += objOverview.startTableBody();
-
-  // show main header
-  html += objOverview.showTableHeaderLogOut('', '', '', 'Betalingsoversikt', '');
-  html += "</tr>";
-
-  // end table body
-  html += objOverview.endTableBody();
-
-  // The end of the table
-  html += objOverview.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -205,15 +180,15 @@ function showDues() {
   html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Forfall', '', '');
   html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
-  objDue.arrayDues.forEach((due) => {
+  objDues.arrayDues.forEach((due) => {
 
     // insert a table row (<tr></td>)
-    html += objDue.insertTableRow('');
+    html += objDues.insertTableRow('');
 
     // date
     const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += objOverview.editTableCell(className, date, 10, false);
+    html += editTableCell(className, date, 10, false);
 
     // condo
     className = `condo${due.dueId}`;
@@ -226,17 +201,17 @@ function showDues() {
     // amount
     const amount = formatNumberToNorAmount(due.amount);
     className = `income${due.dueId}`;
-    html += objOverview.editTableCell(className, amount, 11, false);
+    html += editTableCell(className, amount, 11, false);
 
     // kilowattHour
     const kilowattHour = formatNumberToNorAmount(due.kilowattHour);
     className = `income${due.dueId}`;
-    html += objOverview.editTableCell(className, kilowattHour, 10, false);
+    html += editTableCell(className, kilowattHour, 10, false);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += objOverview.editTableCell(className, text, 45, false);
+    html += editTableCell(className, text, 45, false);
     html += "</tr>";
 
     // accumulate
@@ -255,8 +230,8 @@ function showDues() {
   html += "</tr>"
 
   // The end of the table
-  html += objAccount.endTable();
-  document.querySelector('.dues').innerHTML = html;
+  html += objOverview.endTable();
+  document.querySelector('.showDues').innerHTML = html;
 }
 
 // Transactions
@@ -273,7 +248,7 @@ function showTransactions() {
   let sumIncomes = 0;
   let sumPayments = 0;
 
-  objTransaction.arrayTransactions.forEach((bankTransaction) => {
+  objTransactions.arrayTransactions.forEach((bankTransaction) => {
 
     // insert a table row (<tr></td>)
     html += objOverview.insertTableRow('', '');
@@ -285,7 +260,7 @@ function showTransactions() {
     // date
     const date = formatNumberToNorDate(bankTransaction.date);
     className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, date, 10, false);
+    html += editTableCell(className, date, 10, false);
 
     // account
     className = `account${bankTransaction.transactionId}`;
@@ -297,12 +272,12 @@ function showTransactions() {
     income += payment;
     income = formatNumberToNorAmount(income);
     className = `income${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, income, 10, false);
+    html += editTableCell(className, income, 10, false);
 
     // Text
     const text = bankTransaction.text;
     className = `text${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, text, 45, false);
+    html += editTableCell(className, text, 45, false);
     html += "</tr>";
 
     // accumulate
@@ -322,8 +297,8 @@ function showTransactions() {
   html += objOverview.insertTableRow('', '', '', '', '', '', '');
 
   // The end of the table
-  html += objDue.endTable();
-  document.querySelector('.transactions').innerHTML = html;
+  html += objOverview.endTable();
+  document.querySelector('.showTransactions').innerHTML = html;
 }
 
 // show how much to pay
@@ -337,13 +312,13 @@ function showHowMuchToPay() {
 
   // How much to pay
   let sumToPay = 0;
-  objDue.arrayDues.forEach((due) => {
+  objDues.arrayDues.forEach((due) => {
 
     sumToPay += due.amount;
   });
 
   // How much is payd
-  objTransaction.arrayTransactions.forEach((bankTransaction) => {
+  objTransactions.arrayTransactions.forEach((bankTransaction) => {
 
     // Accomulate
     sumIncome += Number(bankTransaction.income);
@@ -378,8 +353,8 @@ function showHowMuchToPay() {
   if (rowNumberUser !== -1) {
     condoId = objUser.arrayUsers[rowNumberUser].condoId;
   }
-  let openingBalance = objTransaction.getTransactions(objOverview.condominiumId, condoId, toDate);
-  openingBalance += objDue.getDues(objOverview.condominiumId, condoId, toDate);
+  let openingBalance = objTransactions.getTransactions(objOverview.condominiumId, condoId, toDate);
+  openingBalance += objDues.getDues(objOverview.condominiumId, condoId, toDate);
 
 
   openingBalance = formatNumberToNorAmount(openingBalance);

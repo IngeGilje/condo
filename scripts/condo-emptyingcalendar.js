@@ -140,7 +140,6 @@ async function events() {
       showFilter(date);
 
       // Show news
-      debugger;
       showNews(emptyingCalendarId);
     };
   });
@@ -358,7 +357,6 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
     } else {
 
       // Insert the emtyingcalendar row
-      debugger;
       await objEmptyingCalendars.insertEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.user, condoId, date, residualWaste, paper, food, plastic, christmasTree);
       await objEmptyingCalendars.getHighestEmptyingCalendarId(objEmptyingCalendar.condominiumId);
       emptyingCalendarId = objEmptyingCalendars.arrayEmptyingCalendars.at(-1)?.emptyingCalendarId ?? 0;

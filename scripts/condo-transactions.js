@@ -10,9 +10,9 @@ const objSupplier = new Supplier('supplier');
 const objCondominium = new Condominium('scondominium');
 const objUserBankAccount = new UserBankAccount('userbankaccount');
 const objTransaction = new Transaction('transaction');
-const objShowTransaction = new ShowTransaction('showtransaction');
+const objTransactions = new Transactions('transactions');
 
-const enableChanges = (objShowTransaction.securityLevel > 5);
+const enableChanges = (objTransactions.securityLevel > 5);
 
 const columnWidths = [175, 175, 175, 175, 100, 100];
 
@@ -46,11 +46,11 @@ async function main() {
     } else {
 
       // Show main menu
-      html = showHorizontalMenu(objShowTransaction.arrayMenuMain);
+      html = showHorizontalMenu(objTransactions.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = showHorizontalMenu(objShowTransaction.arrayMenuTransaction);
+      html = showHorizontalMenu(objTransactions.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
 
       const resident = 'Y';
@@ -110,11 +110,11 @@ async function main() {
       condoId = Number(document.querySelector('.filterCondoId').value);
       accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
+      fromDate = Number(objTransactions.formatDateToNumber(fromDate));
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objShowTransaction.formatDateToNumber(toDate));
+      toDate = Number(objTransactions.formatDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
       // Show transactions
       showTransactions();
@@ -149,11 +149,11 @@ async function events() {
       accountId = Number(document.querySelector('.filterAccountId').value);
 
       let fromDate = document.querySelector('.filterFromDate').value;
-      //fromDate = Number(objShowTransaction.formatDateToNumber(fromDate));
+      //fromDate = Number(objTransactions.formatDateToNumber(fromDate));
       fromDate = formatISODateToNumber(fromDate);
 
       let toDate = document.querySelector('.filterToDate').value;
-      //toDate = Number(objShowTransaction.formatDateToNumber(toDate));
+      //toDate = Number(objTransactions.formatDateToNumber(toDate));
       toDate = formatISODateToNumber(toDate);
 
       let amount = document.querySelector('.filterAmount').value;
@@ -161,7 +161,7 @@ async function events() {
       document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
 
       const orderBy = 'date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
       showTransactions();
     };
@@ -253,20 +253,20 @@ async function events() {
 function showHeader() {
 
   // Start table
-  let html = objShowTransaction.initializeTable(columnWidths);
+  let html = objTransactions.initializeTable(columnWidths);
 
   // start table body
-  html += objShowTransaction.startTableBody();
+  html += objTransactions.startTableBody();
 
   // show main header
-  html += objShowTransaction.showTableHeaderLogOut('', '', '', 'Transaksjoner', '');
+  html += objTransactions.showTableHeaderLogOut('', '', '', 'Transaksjoner', '');
   html += "</tr>";
 
   // end table body
-  html += objShowTransaction.endTableBody();
+  html += objTransactions.endTableBody();
 
   // The end of the table
-  html += objShowTransaction.endTable();
+  html += objTransactions.endTable();
   document.querySelector('.showHeader').innerHTML = html;
 }
 
@@ -303,20 +303,20 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
 function showTransactions() {
 
   // Start table
-  let html = objShowTransaction.initializeTable(columnWidths);
+  let html = objTransactions.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
   html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '', '');
   let sumAmount = 0;
 
-  for (const bankTransaction of objTransaction.arrayTransactions) {
+  for (const bankTransaction of objTransactions.arrayTransactions) {
 
     html += objTransaction.insertTableRow('');
 
     // Date
     const date = formatNumberToNorDate(bankTransaction.date);
     let className = `date${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, date, 10, false);
+    html += editTableCell(className, date, 10, false);
 
     // account
     className = `accountId${bankTransaction.transactionId}`;
@@ -334,15 +334,15 @@ function showTransactions() {
     let amount = bankTransaction.income + bankTransaction.payment;
     amount = formatNumberToNorAmount(amount);
     className = `amount${bankTransaction.transactionId}`;
-    html += objTransaction.editTableCell(className, amount, 10, false);
+    html += editTableCell(className, amount, 10, false);
 
     // Show button for voucher
     className = `voucher${bankTransaction.transactionId}`;
-    html += objShowTransaction.showButton(className, 'Vis bilag');
+    html += objTransactions.showButton(className, 'Vis bilag');
 
     // Show button for change of bank account transaction
     className = `change${bankTransaction.transactionId}`;
-    html += objShowTransaction.showButton(className, 'Endre');
+    html += objTransactions.showButton(className, 'Endre');
     html += "</tr>";
 
     // accumulate
@@ -355,6 +355,6 @@ function showTransactions() {
   html += objTransaction.insertTableRow('', '', '', 'Sum', sumAmount, '');
 
   // The end of the table
-  html += objShowTransaction.endTable();
+  html += objTransactions.endTable();
   document.querySelector('.result').innerHTML = html;
 }

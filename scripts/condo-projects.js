@@ -64,7 +64,7 @@ async function main() {
 
         const projectId = Number(document.querySelector('.filterProjectId').value);
         const orderBy = 'date DESC, income ASC';
-        await objTransaction.loadTransactionsTable(orderBy, objProjects.condominiumId, 'N', objProjects.nineNine, objProjects.nineNine, projectId, 0, 2019010, 20991231);
+        await objTransactions.loadTransactionsTable(orderBy, objProjects.condominiumId, 'N', objProjects.nineNine, objProjects.nineNine, projectId, 0, 2019010, 20991231);
 
         // show bank account transactions this project
         showProjectTransactions(projectId);
@@ -305,32 +305,6 @@ async function deleteProjectsRow(projectId) {
   }
 }
 */
-/*
-// Insert empty table row
-function insertEmptyTableRow() {
-
-  let html = "";
-
-  // insert a table row (<tr></td>)
-
-  html += objProjects.insertTableRow('', '', '');
-
-  // name
-  let name = "";
-  let className = `name0`;
-  html += objProjects.editTableCell(className, name, 45, enableChanges);
-
-  // amount
-  let amount = 0;
-  className = `amount0`;
-  html += objProjects.editTableCell(className, amount, 11, enableChanges);
-
-  // Insert new account
-  html += "<td>Nytt prosjekt</td></tr>";
-
-  return html;
-}
-*/
 
 // show bank account transactions this project
 function showProjectTransactions(projectId) {
@@ -342,7 +316,7 @@ function showProjectTransactions(projectId) {
   html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp','');
   let sumAmount = 0;
 
-  for (const bankTransaction of objTransaction.arrayTransactions) {
+  for (const bankTransaction of objTransactions.arrayTransactions) {
     if (bankTransaction.projectId === projectId) {
 
       // Insert Table Row
@@ -351,7 +325,7 @@ function showProjectTransactions(projectId) {
       // Date
       const date = formatNumberToNorDate(bankTransaction.date);
       let className = `date${bankTransaction.transactionId}`;
-      html += objTransaction.editTableCell(className, date, 10, false);
+      html += editTableCell(className, date, 10, false);
 
       // account
       className = `accountId${bankTransaction.transactionId}`;
@@ -365,7 +339,7 @@ function showProjectTransactions(projectId) {
       let amount = bankTransaction.income + bankTransaction.payment;
       amount = formatNumberToNorAmount(amount);
       className = `amount${bankTransaction.transactionId}`;
-      html += objTransaction.editTableCell(className, amount, 10, false);
+      html += editTableCell(className, amount, 10, false);
 
       // accumulate
       sumAmount += Number(bankTransaction.income) + Number(bankTransaction.payment);

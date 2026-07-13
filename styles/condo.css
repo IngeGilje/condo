@@ -227,6 +227,15 @@ select {
   border: 1px solid #dc3545;
 }
 
+/* show error color */
+.input-valid {
+  background-color: white;
+}
+
+.input-invalid {
+  background-color: #ffe5e5;
+}
+
 iframe {
   width: 600px;
   height: 400px;

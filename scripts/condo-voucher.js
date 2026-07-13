@@ -57,12 +57,12 @@ async function main() {
       let fromDate = 20000101;
       let toDate = 20991231;
       const orderBy = 'transactionId DESC, date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, fromDate, toDate);
 
       //showFilter();
 
       // Show result
-      //if (transactionId === 0) transactionId = objTransaction.arrayTransactions[0].transactionId;
+      //if (transactionId === 0) transactionId = objTransactions.arrayTransactions[0].transactionId;
       showVoucher(paramTransactionId);
 
       // Events
@@ -82,7 +82,7 @@ async function events() {
     if (event.target.classList.contains('filterTransactionId')) {
 
       const orderBy = 'transactionId DESC, date DESC, income DESC';
-      await objTransaction.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, objVoucher.nineNine);
+      await objTransactions.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, objVoucher.nineNine);
 
       const transactionId = Number(document.querySelector('.filterTransactionId').value);
 
@@ -147,14 +147,14 @@ async function updateTransactionRow(transactionId) {
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the transactionId exist
-    const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(condo => condo.transactionId === transactionId);
+    const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(condo => condo.transactionId === transactionId);
     if (rowNumberTransaction !== -1) {
 
       // update the transactions row
       if (await objTransaction.updateVoucherFileName(user, transactionId, voucherFileName)) {
 
         const orderBy = 'transactionId DESC, date DESC, income DESC';
-        await objTransaction.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, objVoucher.nineNine);
+        await objTransactions.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransaction.nineNine, 0, objVoucher.nineNine);
       } else {
 
         showMessageNew('Bilag er ikke oppdatert.');
@@ -180,7 +180,7 @@ async function updateTransactionRow(transactionId) {
 function showVoucher(transactionId) {
 
   // row number voucher
-  const rowNumberTransaction = objTransaction.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
+  const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
 
   // Empty line
   let html = emptyLine();
@@ -195,13 +195,13 @@ function showVoucher(transactionId) {
   // Date
   html += startLine();
 
-  let date = objTransaction.arrayTransactions[rowNumberTransaction]?.date ?? '';
+  let date = objTransactions.arrayTransactions[rowNumberTransaction]?.date ?? '';
   date = formatNumberToISODate(date);
   html += showDate('Dato', 'date', date, false)
 
   // Amount
-  const income = objTransaction.arrayTransactions[rowNumberTransaction].income;
-  const payment = objTransaction.arrayTransactions[rowNumberTransaction].payment;
+  const income = objTransactions.arrayTransactions[rowNumberTransaction].income;
+  const payment = objTransactions.arrayTransactions[rowNumberTransaction].payment;
   const amount = formatNumberToNorAmount((income) ? income : payment);
   html += showTextNew('Beløp', 'amount', amount, false, "Beløp");
   html += "</div>";
@@ -209,13 +209,13 @@ function showVoucher(transactionId) {
   // Account
   html += startLine();
 
-  const accountId = objTransaction.arrayTransactions[rowNumberTransaction]?.accountId ?? '';
+  const accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? '';
   // get account name
   const accountName = objAccount.getAccountNameById(accountId);
   html += showTextNew('Konto', 'accountName', accountName, false, "Konto");
 
   // File name
-  let voucherFileName = objTransaction.arrayTransactions[rowNumberTransaction]?.voucherFileName ?? '';
+  let voucherFileName = objTransactions.arrayTransactions[rowNumberTransaction]?.voucherFileName ?? '';
   voucherFileName = (voucherFileName)
     ? ''
     : `${transactionId}.pdf`;

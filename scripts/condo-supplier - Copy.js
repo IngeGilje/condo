@@ -263,7 +263,7 @@ function showSupplier(supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].name;
 
-  html += objSupplier.editTableCell('name', name, 45, enableChanges, 1);
+  html += editTableCell('name', name, 45, enableChanges, 1);
   html += "<td></td></tr>";
 
   // street, address2
@@ -276,13 +276,13 @@ function showSupplier(supplierId) {
   const street = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += objSupplier.editTableCell('street', street, 45, enableChanges);
+  html += editTableCell('street', street, 45, enableChanges);
 
   // address2
   const address2 = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += objSupplier.editTableCell('address2', address2, 45, enableChanges);
+  html += editTableCell('address2', address2, 45, enableChanges);
   html += "</tr>";
 
   // postalCode, city
@@ -296,13 +296,13 @@ function showSupplier(supplierId) {
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
 
-  html += objSupplier.editTableCell('postalCode', postalCode, 4, enableChanges);
+  html += editTableCell('postalCode', postalCode, 4, enableChanges);
 
   // city
   const city = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += objSupplier.editTableCell('city', city, 45, enableChanges);
+  html += editTableCell('city', city, 45, enableChanges);
   html += "</tr>";
 
   // email,phone
@@ -315,13 +315,13 @@ function showSupplier(supplierId) {
   const email = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += objSupplier.editTableCell('email', email, 45, enableChanges);
+  html += editTableCell('email', email, 45, enableChanges);
 
   // phone
   const phone = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += objSupplier.editTableCell('phone', phone, 8, enableChanges);
+  html += editTableCell('phone', phone, 8, enableChanges);
   html += "</tr>";
 
   // bankAccount, accountId
@@ -340,7 +340,7 @@ function showSupplier(supplierId) {
   const bankAccount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += objSupplier.editTableCell('bankAccount', bankAccount, 11, enableChanges);
+  html += editTableCell('bankAccount', bankAccount, 11, enableChanges);
   html += "</tr>";
 
   // amountAccountId, amount
@@ -360,7 +360,7 @@ function showSupplier(supplierId) {
   const amount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].amount;
-  html += objSupplier.editTableCell('amount', amount, 11, enableChanges);
+  html += editTableCell('amount', amount, 11, enableChanges);
   html += "</tr>";
 
   // textAccountId, text
@@ -379,7 +379,7 @@ function showSupplier(supplierId) {
   const text = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += objSupplier.editTableCell('text', text, 50, enableChanges);
+  html += editTableCell('text', text, 50, enableChanges);
   html += "</tr>";
 
   // insert a table row (<tr></td>)

@@ -6,23 +6,22 @@ class ImportFile extends Condos {
   // Show all account movements to update
   showImportFile(columnName, importFileId, alternativeSelect) {
 
-    let htmlImportFile =
-      `
-        <form 
-          id="ImportFile"
-          action="/submit" 
-          method="POST"
-        >
-          <label 
-            id="ImportFile"
-            class="label-${columnName}"
-            for="ImportFile"
-          >
-              Velg import linje
-          </label>
-          <select 
-            class="select-${columnName}" 
-          >
+    let htmlImportFile = `
+    <form 
+      id="ImportFile"
+      action="/submit" 
+      method="POST"
+    >
+      <label 
+        id="ImportFile"
+        class="label-${columnName}"
+        for="ImportFile"
+      >
+          Velg import linje
+      </label>
+      <select 
+        class="select-${columnName}" 
+      >
       `;
 
     let selectedOption = false;
@@ -63,8 +62,7 @@ class ImportFile extends Condos {
         Ingen import linjer
         </option >
         `;
-      selectedOption =
-        true;
+      selectedOption = true;
     }
 
     // Alternative select
@@ -92,11 +90,10 @@ class ImportFile extends Condos {
       }
     }
 
-    htmlImportFile +=
-      `
-          </select >
-        </form >
-      `;
+    htmlImportFile += `
+        </select >
+      </form >
+    `;
 
     document.querySelector(`.div-${columnName}`).innerHTML = htmlImportFile;
   }
