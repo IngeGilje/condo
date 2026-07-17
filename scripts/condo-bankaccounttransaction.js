@@ -12,7 +12,9 @@ const objCondominium = new Condominium('scondominium');
 const objUserBankAccount = new UserBankAccount('userbankaccount');
 const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransaction');
 
+// Fixed values
 const enableChanges = (objAccount.securityLevel > 5);
+const applicationName = "condo-bankaccounttransaction";
 
 const columnWidths = [175, 175, 175, 175, 175, 175, 175, 175, 175, 100];
 
@@ -251,7 +253,7 @@ function showFilter( condoId, accountId) {
   html += objBankAccountTransaction.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  html += objBankAccountTransaction.showTableHeaderMenu('', 'center','', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '', '');
+  html += objBankAccountTransaction.showTableHeader('center','', '', 'Leilighet', 'Konto', 'Fra dato', 'Til dato', 'Beløp', '', '');
 
   // start table body
   html += objBankAccountTransaction.startTableBody();
@@ -416,7 +418,7 @@ async function showBankAccountTransactions() {
 
   // Table header (<tr></tr>)
   
-  html += objCondo.showTableHeaderMenu('#e0f0e0','center', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag', 'Slett');
+  html += objCondo.showTableHeader('center', 'Leilighet', 'Dato', 'Konto', 'Inntekt', 'Utgift', 'Kilowattimer', 'Tekst', 'Bilag', 'Slett');
 
   let sumIncome = 0;
   let sumPayment = 0;

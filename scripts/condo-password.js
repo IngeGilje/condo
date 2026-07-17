@@ -8,6 +8,7 @@ const objUser = new User('user');
 const objPassword = new Password('password');
 
 const enableChanges = (objPassword.securityLevel > 5);
+const applicationName = "condo-password";
 
 const columnWidths = [175, 175];
 
@@ -38,6 +39,7 @@ async function main() {
       // Show user menu
       html = showHorizontalMenu(objPassword.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
+      objPassword.markActivatedApplication(objPassword.arrayMenuNews, applicationName);
 
       const resident = 'A';
 

@@ -7,6 +7,7 @@ const objCondominium = new Condominium('condominium');
 const objUser = new User('user');
 
 const enableChanges = (objUser.securityLevel > 5);
+const applicationName = "condo-user";
 
 const columnWidths = [175, 175];
 
@@ -37,6 +38,7 @@ async function main() {
       // Show user menu
       html = showHorizontalMenu(objUser.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
+      objUser.markActivatedApplication(objUser.arrayMenuUser, applicationName);
 
       if (enableChanges) {
 

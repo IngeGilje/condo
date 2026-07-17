@@ -7,6 +7,7 @@ const objAccounts = new Accounts('accounts');
 const objBudgets = new Budgets('budgets');
 
 const enableChanges = (objBudgets.securityLevel > 5);
+const applicationName = "condo-budgets";
 
 const columnWidths = [100, 175, 175, 175, 100];
 
@@ -42,6 +43,7 @@ async function main() {
       // Show transaction menu
       html = showHorizontalMenu(objBudgets.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
+      objBudgets.markActivatedApplication(objBudgets.arrayMenuTransaction,applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
@@ -247,7 +249,7 @@ function showBudgets() {
   let html = objBudgets.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objBudgets.showTableHeaderMenu('#e0f0e0', 'center', 'År', 'Konto', 'Budsjett', 'Tekst', '');
+  html += objBudgets.showTableHeader( 'center', 'År', 'Konto', 'Budsjett', 'Tekst', '');
 
   let sumAmount = 0;
 

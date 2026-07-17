@@ -8,6 +8,7 @@ const objTransaction = new Transaction('transaction');
 const objVoucher = new Voucher('voucher');
 
 const enableChanges = (objVoucher.securityLevel > 5);
+const applicationName = "condo-voucher";
 
 const columnWidths = [175, 175, 175, 200, 100];
 
@@ -46,6 +47,7 @@ async function main() {
       // Show transaction menu
       html = showHorizontalMenu(objTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
+      objTransaction.markActivatedApplication(objTransaction.arrayMenuTransaction, applicationName);
 
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objVoucher.condominiumId, fixedCost);

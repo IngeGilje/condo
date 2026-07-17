@@ -8,6 +8,7 @@ const objBankAccount = new BankAccount('bankaccount');
 const objCondominium = new Condominium('condominium');
 
 const enableChanges = (objCondominium.securityLevel > 5);
+const applicationName = "condo-condominium";
 
 const columnWidths = [175, 175];
 
@@ -36,6 +37,7 @@ async function main() {
       // Show condominium menu
       html = showHorizontalMenu(objCondominium.arrayMenuCondominium);
       document.querySelector('.showMenuCondominium').innerHTML = html;
+      objCondominium.markActivatedApplication(objCondominium.arrayMenuCondominium,applicationName);
 
       await objCondominium.loadCondominiumsTable();
       const resident = 'Y';

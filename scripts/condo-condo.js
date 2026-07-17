@@ -6,6 +6,7 @@ const objUser = new User('user');
 const objCondo = new Condo('condo');
 
 const enableChanges = (objCondo.securityLevel > 5);
+const applicationName = "condo-condo";
 
 const columnWidths = [175, 175]
 
@@ -36,6 +37,7 @@ async function main() {
       // Show user menu
       html = showHorizontalMenu(objCondo.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
+      objCondo.markActivatedApplication(objCondo.arrayMenuUser,applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);

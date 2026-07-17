@@ -13,6 +13,7 @@ const objCommonCost = new CommonCost('commoncost');
 const objAnnualAccount = new AnnualAccount('annualaccount');
 
 const enableChanges = (objAnnualAccount.securityLevel > 5);
+const applicationName = "condo-annualaccount";
 
 // column widths
 const columnWidths = [175, 175, 175, 175, 175];
@@ -44,6 +45,7 @@ async function main() {
       // Show transaction menu
       html = showHorizontalMenu(objAnnualAccount.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
+      objAnnualAccount.markActivatedApplication(objAnnualAccount.arrayMenuTransaction,applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objAnnualAccount.condominiumId, resident, objAnnualAccount.nineNine);
@@ -202,7 +204,7 @@ function getBudgetAmount(accountId, year) {
 // Show filter
 function showFilter(budgetYear, fromDate, toDate) {
 
-    // Start frame
+  // Start frame
   let html = startFrame();
 
   // show filter
@@ -214,17 +216,17 @@ function showFilter(budgetYear, fromDate, toDate) {
   // From date
   html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
 
-   // To date
+  // To date
   // Current date
   html += showDate('Til Dato', 'filterToDate', toDate, true)
 
- // price per square meter per month
+  // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(budgetYear);
   html += showAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
 
-   //html += "</div>";
+  //html += "</div>";
 
-   // End filter frame
+  // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -239,10 +241,10 @@ function showAnnualAccounts() {
   // Table header (<tr></tr>)
   const budgetYear = document.querySelector('.filterBudgetYear').value;
 
-  html += objAnnualAccount.showTableHeaderMenu('#e0f0e0', 'center', '', '', 'Årsresultat', '', '');
+  html += objAnnualAccount.showTableHeader('center', '', '', 'Årsresultat', '', '');
 
 
-  html += objAnnualAccount.showTableHeaderMenu('', 'center', '', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
+  html += objAnnualAccount.showTableHeader( 'center', '', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
 
   let totalAccountAmount = 0;
   let totalBudgetAmount = 0;
@@ -328,8 +330,8 @@ function showIncomeNextYear() {
   // Table header (<tr></tr>)
   const budgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
 
-  html += objAnnualAccount.showTableHeaderMenu('#e0f0e0', 'center', '', `Bud. Leieinntekter ${budgetYear}`, '', '', '');
-  html += objAnnualAccount.showTableHeaderMenu('', 'center', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
+  html += objAnnualAccount.showTableHeader('center', '', `Bud. Leieinntekter ${budgetYear}`, '', '', '');
+  html += objAnnualAccount.showTableHeader('center', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;
@@ -425,10 +427,10 @@ function showBankDeposit() {
   let nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
 
 
-  html += objAnnualAccount.showTableHeaderMenu('#e0f0e0', 'center', '', '', `Budsjett ${nextBudgetYear}`, '', '');
+  html += objAnnualAccount.showTableHeader('center', '', '', `Budsjett ${nextBudgetYear}`, '', '');
 
 
-  html += objAnnualAccount.showTableHeaderMenu('', 'center', '', '', 'Konto', 'Dato', 'Budsjett');
+  html += objAnnualAccount.showTableHeader('center', '', '', 'Konto', 'Dato', 'Budsjett');
   let accAmount = 0;
 
   // insert a table row (<tr></td>)

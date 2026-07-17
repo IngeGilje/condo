@@ -6,6 +6,7 @@ const objUser = new User('user');
 const objNews = new News('news');
 
 const enableChanges = (objNews.securityLevel > 5);
+const applicationName = "condo-news";
 
 const columnWidths = [175, 175, 125];
 
@@ -36,6 +37,7 @@ async function main() {
       // Show news menu
       html = showHorizontalMenu(objNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
+      objNews.markActivatedApplication(objNews.arrayMenuNews, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);

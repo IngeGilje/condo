@@ -10,6 +10,7 @@ const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
 
 const enableChanges = (objAccounts.securityLevel > 5);
+const applicationName = "condo-accounts";
 
 // column widths
 const columnWidths = [175, 175, 100];
@@ -46,16 +47,17 @@ async function main() {
       // Show condominium menu
       html = showHorizontalMenu(objAccounts.arrayMenuCondominium);
       document.querySelector('.menuCondominium').innerHTML = html;
+      objAccounts.markActivatedApplication(objAccounts.arrayMenuCondominium,applicationName);
+
+      // mark activated application
+      objAccounts.markActivatedApplication(objAccounts.arrayMenuCondominium, applicationName);
 
       let resident = 'Y';
       await objUser.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
       if (paramFixedCost !== 'Y' && paramFixedCost !== 'N') paramFixedCost = 'A';
       await objAccounts.loadAccountsTable(objAccounts.condominiumId, paramFixedCost);
 
-      // Show header
-      //showHeader();
-
-      // Show filter
+       // Show filter
       showFilter(paramFixedCost);
 
       // Show account
@@ -218,15 +220,11 @@ function showFilter(fixedCost) {
   // Start frame
   let html = startFrame();
 
-  // show filter
-  //html += startLine();
-
   // Show types of account
   if (fixedCost === 'Y') fixedCost = constFixedCost;
   if (fixedCost === 'N') fixedCost = constVariableCost;
   if (fixedCost === 'A') fixedCost = 'Alle';
-  html += showSelectedValuesNew('Kostnadstype', 'filterFixedCost',    '',          true, fixedCost, constFixedCost, constVariableCost, 'Alle')
-  //html += "</div>";
+  html += showSelectedValuesNew('Kostnadstype', 'filterFixedCost', '', true, fixedCost, constFixedCost, constVariableCost, 'Alle')
 
   // End filter frame
   html += "</div>";
@@ -240,9 +238,10 @@ function showAccounts() {
   // start table
   let html = objAccounts.initializeTable(columnWidths);
 
-  // Table header (<tr></tr>)
+  html += objAccounts.insertTableRow('', '');
 
-  html += objAccounts.showTableHeaderMenu('#e0f0e0', 'center', 'Kostnadstype', 'Tekst', '');
+  // Table header (<tr></tr>)
+  html += objAccounts.showTableHeader('center', 'Kostnadstype', 'Tekst', '');
 
   objAccounts.arrayAccounts.forEach((account) => {
 

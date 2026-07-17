@@ -7,6 +7,7 @@ const objAccounts = new Accounts('accounts');
 const objUserBankAccount = new UserBankAccount('userbankaccount');
 
 const enableChanges = (objUserBankAccount.securityLevel > 5);
+const applicationName = "condo-userbankaccount";
 
 const columnWidths = [175, 175, 175, 175];
 
@@ -37,6 +38,7 @@ async function main() {
       // Show user menu
       html = showHorizontalMenu(objUserBankAccount.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
+      objUserBankAccount.markActivatedApplication(objUserBankAccount.arrayMenuUser, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objUserBankAccount.condominiumId, resident, objUserBankAccount.nineNine);

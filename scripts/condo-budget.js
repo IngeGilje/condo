@@ -8,6 +8,7 @@ const objBudgets = new Budgets('budgets');
 const objBudget = new Budget('budget');
 
 const enableChanges = (objBudget.securityLevel > 5);
+const applicationName = "condo-budget";
 
 const columnWidths = [100, 175, 175, 175, 100];
 
@@ -43,6 +44,7 @@ async function main() {
       // Show transaction menu
       html = showHorizontalMenu(objBudget.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
+      objBudget.markActivatedApplication(objBudget.arrayMenuTransaction,applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objBudget.condominiumId, resident, objBudget.nineNine);

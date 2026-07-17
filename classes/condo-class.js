@@ -6,6 +6,22 @@ class Condos {
     this.applicationName = applicationName;
   }
 
+  // Validate application name
+  set applicationName(validatedApplicationName) {
+
+    if (typeof validatedApplicationName === 'string' && validatedApplicationName.length >= 3) {
+
+      this._applicationName = validatedApplicationName;
+    } else {
+
+      console.error("Invalid application name.");
+    }
+  }
+
+  get applicationName() {
+    return this._applicationName;
+  }
+
   // const serverStatus = 1; // http://ingegilje.no
   // const serverStatus = 2; // http://localhost
   serverStatus = 2;
@@ -54,7 +70,7 @@ class Condos {
       text: "Forfall"
     },
     {
-      applicationName: "condo-remoteheating.html",
+      applicationName: "condo-remoteheatings.html",
       className: "Menu7",
       text: "Fjernvarme"
     }
@@ -102,6 +118,11 @@ class Condos {
     },
     {
       applicationName: "condo-accounts.html",
+      className: "Menu3",
+      text: "Vis Konti"
+    },
+    {
+      applicationName: "condo-account.html",
       className: "Menu3",
       text: "Konto"
     }
@@ -193,6 +214,11 @@ class Condos {
   // menu array for remote heating
   arrayMenuRemoteHeating = [
     {
+      applicationName: "condo-remoteheatings.html",
+      className: "Menu1",
+      text: "Fjernvarme"
+    },
+     {
       applicationName: "condo-remoteheating.html",
       className: "Menu1",
       text: "Fjernvarme"
@@ -203,33 +229,6 @@ class Condos {
       text: "Pris Fjernvarme"
     }
   ];
-
-  // Validate application name
-  set applicationName(validatedApplicationName) {
-
-    if (typeof validatedApplicationName === 'string' && validatedApplicationName.length >= 3) {
-
-      this._applicationName = validatedApplicationName;
-    } else {
-
-      console.error("Invalid application name.");
-    }
-  }
-
-  get applicationName() {
-    return this._applicationName;
-  }
-
-  // Show leading text for label
-  showLeadingTextLabel(className, labelText) {
-    return `
-      <label
-        class="label-${className}"
-      >
-        ${labelText}
-      </label>
-    `;
-  }
 
   /*
   // start input row (<div>)
@@ -615,7 +614,7 @@ class Condos {
   }
 
   // Show table header including menu (<tr></tr>)
-  showTableHeaderMenu(color, direction = "center", ...texts) {
+  showTableHeader(direction = "center", ...texts) {
 
     let html = "<tr>";
 
@@ -623,7 +622,7 @@ class Condos {
 
       html += `
       <td 
-        style="vertical-align:bottom;font-size:14px;color:#333;${(color) ? `background-color:${color};` : " "}"
+        style="vertical-align:bottom;font-size:14px;margin-left:25px;background-color:#38bdf8;"
         class="no-border ${direction} bold one-line"
       >
         ${text}
@@ -808,6 +807,7 @@ class Condos {
     return html;
   }
 
+  /*
   // Show main header table not including menu
   showTableHeader(style, ...texts) {
 
@@ -821,11 +821,12 @@ class Condos {
       if (text !== '' && style !== '') html += `<th class="no-border center" style="${style};">${text}</th>`;
     });
 
-    // empty row
+    // empty table row
     html += this.insertTableRow('', '');
     html += "</tr>";
     return html;
   }
+  */
 
   // Show main header table
   showTableHeaderLogOut(...texts) {
@@ -994,29 +995,33 @@ class Condos {
     }
   }
 
-  /*
-  // Show message
-  showMessageNew(columnWidths, style, message) {
+  // mark activated application
+  markActivatedApplication(arrayMenu, applicationName) {
 
-    let tableWidth = 0;
-    columnWidths.forEach((columnWidth) => {
-      tableWidth += (columnWidth + 10);
+    // Mark main menu
+    // Get first application name in arrayMenu
+    let firstApplicationName = arrayMenu[0].applicationName;
+    this.arrayMenuMain.forEach((array) => {
+      if (array.applicationName === firstApplicationName) {
+
+        const className = array.applicationName.slice(0, -5);
+        const element = document.querySelector(`.${className}`);
+        element.style.backgroundColor = "#38bdf8";
+        element.style.color = "white";
+      }
     });
 
-    // Start table
-    style = (style) ? style : `width:${tableWidth}px;`;
-    let html = this.startTable(style);
+    applicationName = applicationName + ".html";
+    arrayMenu.forEach((array) => {
+      if (array.applicationName === applicationName) {
 
-    // show main header
-    html += this.showTableHeaderMenu('', 'center', '');
-
-    html += this.showTableHeader(`width:${tableWidth}px;`, message);
-
-    // The end of the table
-    html += this.endTable();
-    document.querySelector('.showMessage').innerHTML = html;
+        const className = array.applicationName.slice(0, -5);
+        const element = document.querySelector(`.${className}`);
+        element.style.backgroundColor = "#38bdf8";
+        element.style.color = "white";
+      }
+    });
   }
-  */
 
   /*
   // Format amount (1 234 567,89)
@@ -1086,9 +1091,9 @@ function showSelectedMonthsNew(label, className, style, selectedMonth, enableCha
 }
 
 // Show input
-function  editTableCell(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
+function editTableCell(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
-    return `
+  return `
     <td 
       class="center one-line" 
       colspan="${colspan}" 
@@ -1102,13 +1107,13 @@ function  editTableCell(className, value, maxlength, enableChanges, colspan = 1,
         ${(enableChanges) ? '' : 'readonly'}
       >
     </td>`;
-  }
+}
 
 // Show amount
 function showAmount(label, className, value, enableChanges) {
 
   return `
-    <div class="field date" style="width:175px;">
+    <div class="field" style="width:175px;">
       <label>
         ${label}
       </label>
@@ -1130,7 +1135,7 @@ function showTextArea(label, className, value, maxlength, enableChanges, rows = 
   return `
   <div 
     class="field" 
-    style="width:550px;margin-left:35px;margin-bottom:25px;border-radius: 20px;"
+    style="width:550px;margin-left:35px;border-radius:20px;margin-bottom:25px;"
   >
     <label>
       ${label}
@@ -1161,12 +1166,17 @@ function showHorizontalMenu(arrayMenu) {
 
   let html = `
   <nav class="navbar horizontalMenu">
-    <ul class="nav-links">`;
+    <ul class="nav-links">
+  `;
 
   arrayMenu.forEach((array) => {
+
+    const className = array.applicationName.slice(0, -5);
     html += `
       <li>
-      <a href="${URL}/${array.applicationName}"
+      <a 
+        class="${className}"
+        href="${URL}/${array.applicationName}"
       >
         ${array.text.trim()}
       </a>
@@ -1458,7 +1468,10 @@ function setFrameTitle(text) {
 function showButtonNew(className, text) {
 
   return `
-  <button class="${className} filter-btn primary" style="width:250px;margin-left: 35px;">
+  <button 
+    class="${className} filter-btn primary"
+    style="width:250px;margin-left: 35px;background-color: #38bdf8"
+  >
     ${text}
   </button>`;
 }
@@ -1472,7 +1485,8 @@ function showTextNew(label, className, value, enableChanges, placeholder = "") {
   return `
   <div 
     class="field" 
-    style="width:250px;margin-left: 35px;margin-bottom: 25px;">
+    style="width:250px;margin-left:35px;margin-bottom:25px;"
+  >
     <input 
       type="text"
       autocomplete="off"
@@ -1481,7 +1495,9 @@ function showTextNew(label, className, value, enableChanges, placeholder = "") {
       placeholder="${placeholder}"
       ${(enableChanges ? '' : 'readonly')}
     >
-    <label>${label.trim()}</label>
+    <label>
+      ${label.trim()}
+    </label>
   </div>`;
 }
 
@@ -1818,8 +1834,17 @@ function removeIframe() {
   }
 }
 
+/*
 // Enable/ disable button
 function disableButton(className, disabled = false, color = '#4c6fff') {
+  document.querySelector(`.${className}`).disabled = disabled;
+  const button = document.querySelector(`.${className}`);
+  color = button.style.backgroundColor = (disabled) ? 'lightgrey' : color;
+}
+*/
+
+// Enable/ disable button
+function disableButton(className, disabled = false, color = '#38bdf8') {
   document.querySelector(`.${className}`).disabled = disabled;
   const button = document.querySelector(`.${className}`);
   color = button.style.backgroundColor = (disabled) ? 'lightgrey' : color;

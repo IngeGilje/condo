@@ -6,13 +6,14 @@ const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
 const objAccounts = new Accounts('accounts');
 const objCondo = new Condo('condo');
-const objTransaction = new Transaction('transaction');
+const objTransactions = new Transactions('transactions');
 const objProjects = new Projects('projects');
 
 const enableChanges = (objProjects.securityLevel > 5);
+const applicationName = "condo-projects";
 
 // column widths
-const columnWidths = [125, 125, 125, 125,100];
+const columnWidths = [125, 125, 125, 100];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -41,6 +42,7 @@ async function main() {
       // Show project menu
       html = showHorizontalMenu(objProjects.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
+      objProjects.markActivatedApplication(objProjects.arrayMenuTransaction, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
@@ -175,67 +177,6 @@ async function events() {
   */
 
   /*
-  // Show bank voucher
-  document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('voucher'))) {
-
-      const arrayPrefixes = ['voucher'];
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objTransaction.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let transactionId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        transactionId = Number(className.slice(prefix.length));
-      }
-
-      let URL = (objTransaction.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      const condoId = Number(document.querySelector('.filterCondoId').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value)
-      URL = `${URL}condo-voucher.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}`;
-      window.location.href = URL;
-    };
-  });
-  */
-
-  /*
-  // Change project
-  document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('change'))) {
-
-      const arrayPrefixes = ['change'];
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objTransaction.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let projectId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        projectId = Number(className.slice(prefix.length));
-      }
-
-      let URL = (objTransaction.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      //const projectId = Number(document.querySelector('.filterProjectId').value);
-      URL = `${URL}condo-project.html?projectId=${projectId}`;
-      window.location.href = URL;
-    };
-  });
-  */
-
-  /*
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -309,11 +250,14 @@ async function deleteProjectsRow(projectId) {
 // show bank account transactions this project
 function showProjectTransactions(projectId) {
 
+  // Empty line
+  let html = emptyLine();
+
   // Start table
-  let html = objProjects.initializeTable(columnWidths);
+  html += objProjects.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp','');
+  html += objCondo.showTableHeader('center', 'Dato', 'Konto', 'Leilighet', 'Beløp');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransactions.arrayTransactions) {
@@ -349,7 +293,7 @@ function showProjectTransactions(projectId) {
   // Show table sum row
   sumAmount = formatNumberToNorAmount(sumAmount);
 
-  html += objTransaction.insertTableRow('', '', '', 'Sum', sumAmount);
+  html += objTransactions.insertTableRow('', '', '', 'Sum', sumAmount);
 
   // The end of the table
   html += objProjects.endTable();

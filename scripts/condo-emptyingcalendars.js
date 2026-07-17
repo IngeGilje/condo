@@ -7,6 +7,7 @@ const objCondo = new Condo('condo');
 const objEmptyingCalendars = new EmptyingCalendars('emptyingcalendars');
 
 const enableChanges = (objEmptyingCalendars.securityLevel > 5);
+const applicationName = "condo-emptyingcalendars";
 
 const columnWidths = [100, 100, 100, 100, 100, 100, 100, 100];
 
@@ -42,6 +43,7 @@ async function main() {
       // Show menu for empty calendar 
       html = showHorizontalMenu(objEmptyingCalendars.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
+      objEmptyingCalendars.markActivatedApplication(objEmptyingCalendars.arrayMenuEmptyingCalendar, applicationName);
 
       await objCondo.loadCondoTable(objEmptyingCalendars.condominiumId, objEmptyingCalendars.nineNine);
 
@@ -139,7 +141,7 @@ function showEmptyingCalendars(year, month) {
   let html = objEmptyingCalendars.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objEmptyingCalendars.showTableHeaderMenu('#e0f0e0', 'center', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre', '');
+  html += objEmptyingCalendars.showTableHeader( 'center', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre', '');
 
   if (objEmptyingCalendars.arrayEmptyingCalendars.length > 0) {
     objEmptyingCalendars.arrayEmptyingCalendars.forEach((emptyingCalendar) => {

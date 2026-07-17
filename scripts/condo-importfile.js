@@ -17,6 +17,7 @@ const objSupplier = new Supplier('supplier');
 const objImportFile = new ImportFile('importfile');
 
 const enableChanges = (objImportFile.securityLevel > 5);
+const applicationName = "condo-importfile";
 
 const columnWidths = [175, 175, 175, 175, 175, 175, 175, 200];
 
@@ -41,12 +42,13 @@ async function main() {
     } else {
 
       // Show main menu
-      html = showHorizontalMenu(objImportFile.arrayMenuMain);
+      let html = showHorizontalMenu(objImportFile.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show account menu
       html = showHorizontalMenu(objImportFile.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
+      objImportFile.markActivatedApplication(objImportFile.arrayMenuTransaction, applicationName);
 
       let transactionFile = true;
 
@@ -162,9 +164,7 @@ function createTransactionsArray() {
       fromBankAccount = fromBankAccount.slice(0, 11);
       const condoId = objImportFile.getCondoId(fromBankAccount);
 
-      // Condo name
-      const condoName = objCondo.getCondoName(condoId);
-
+ 
       // Income
       income = formatNorAmountToNumber(income);
 
@@ -524,7 +524,7 @@ function showTransactions() {
   let html = objImportFile.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objImportFile.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += objImportFile.showTableHeader('center', 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -630,7 +630,7 @@ function importFileName() {
   let html = objImportFile.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  html += objImportFile.showTableHeaderMenu('', 'center', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
+  html += objImportFile.showTableHeader( 'center', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();

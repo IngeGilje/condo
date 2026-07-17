@@ -13,8 +13,9 @@ const objTransaction = new Transaction('transaction');
 const objTransactions = new Transactions('transactions');
 
 const enableChanges = (objTransactions.securityLevel > 5);
+const applicationName = "condo-transactions";
 
-const columnWidths = [175, 175, 175, 175, 100, 100];
+const columnWidths = [125, 175, 125, 125, 100, 100];
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
@@ -46,12 +47,13 @@ async function main() {
     } else {
 
       // Show main menu
-      html = showHorizontalMenu(objTransactions.arrayMenuMain);
+      let html = showHorizontalMenu(objTransactions.arrayMenuMain);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
       html = showHorizontalMenu(objTransactions.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
+      objTransactions.markActivatedApplication(objTransactions.arrayMenuTransaction, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
@@ -62,22 +64,6 @@ async function main() {
       await objCondo.loadCondoTable(objTransaction.condominiumId, objTransaction.nineNine);
       await objCondominium.loadCondominiumsTable();
       await objSupplier.loadSuppliersTable(objTransaction.condominiumId);
-
-      // Show header
-      //showHeader();
-
-      // Show filter
-      /*
-      let condoId = 0;
-      if (paramCondoId === 0) {
-
-        const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objTransaction.userId);
-        if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
-      } else {
-
-        condoId = paramCondoId;
-      }
-      */
 
       if ((paramTransactionId === 0)
         && (paramCondoId === 0)
@@ -121,8 +107,6 @@ async function main() {
 
       // Events
       events();
-
-
     }
   } else {
 
@@ -249,27 +233,6 @@ async function events() {
   });
 }
 
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objTransactions.initializeTable(columnWidths);
-
-  // start table body
-  html += objTransactions.startTableBody();
-
-  // show main header
-  html += objTransactions.showTableHeaderLogOut('', '', '', 'Transaksjoner', '');
-  html += "</tr>";
-
-  // end table body
-  html += objTransactions.endTableBody();
-
-  // The end of the table
-  html += objTransactions.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-
 // Show filter
 function showFilter(condoId, accountId, fromDate, toDate, amount) {
 
@@ -302,11 +265,13 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
 // Show transactions
 function showTransactions() {
 
+  let html = emptyLine();
+
   // Start table
-  let html = objTransactions.initializeTable(columnWidths);
+  html += objTransactions.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '', '');
+  html += objTransactions.showTableHeader( 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransactions.arrayTransactions) {

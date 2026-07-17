@@ -8,6 +8,7 @@ const objEmptyingCalendars = new EmptyingCalendars('emptyingcalendars');
 const objEmptyingCalendar = new EmptyingCalendar('emptyingcalendar');
 
 const enableChanges = (objEmptyingCalendar.securityLevel > 5);
+const applicationName = "condo-emptyingcalendar";
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
@@ -41,6 +42,7 @@ async function main() {
       // Show menu for empty calendar 
       html = showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
+      objEmptyingCalendar.markActivatedApplication(objEmptyingCalendar.arrayMenuEmptyingCalendar, applicationName);
 
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
 

@@ -9,6 +9,7 @@ const objCondominium = new Condominium('condominium');
 const objDues = new Dues('dues');
 
 const enableChanges = (objDues.securityLevel > 5);
+const applicationName = "condo-dues";
 
 const columnWidths = [175, 100, 175, 175, 175, 90];
 
@@ -47,6 +48,7 @@ async function main() {
       // Show due menu
       html = showHorizontalMenu(objDues.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
+      objDues.markActivatedApplication(objDues.arrayMenuDue, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
@@ -192,7 +194,7 @@ function showDues() {
   let html = objCondo.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeaderMenu('#e0f0e0', 'center', 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Kilowatt Timer', '');
+  html += objCondo.showTableHeader('center', 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Kilowatt Timer', '');
 
   let sumAmount = 0;
   //let sumKilowattHour = 0;

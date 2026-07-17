@@ -14,6 +14,7 @@ const objTransactions = new Transactions('transactions');
 const objTransaction = new Transaction('transaction');
 
 const enableChanges = (objTransaction.securityLevel > 5);
+const applicationName = "condo-transaction";
 
 const columnWidths = [175, 175, 175, 175, 175, 100];
 
@@ -52,6 +53,7 @@ async function main() {
       // Show transaction menu
       html = showHorizontalMenu(objTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
+      objTransaction.markActivatedApplication(objTransaction.arrayMenuTransaction, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);

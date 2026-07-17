@@ -7,6 +7,7 @@ const objAccounts = new Accounts('accounts');
 const objSupplier = new Supplier('supplier');
 
 const enableChanges = (objSupplier.securityLevel > 5);
+const applicationName = "condo-supplier";
 
 const columnWidths = [175, 175];
 
@@ -30,6 +31,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
   // Show due menu
   html = showHorizontalMenu(objSupplier.arrayMenuDue);
   document.querySelector('.menuDue').innerHTML = html;
+  objShowNews.markActivatedApplication(objShowNews.arrayMenuNews, applicationName);
 
   // Call main when script loads
   main();
@@ -253,7 +255,7 @@ function showSupplier(supplierId) {
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 
   // Header for value
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Navn', '');
+  html += objSupplier.showTableHeader( 'center', 'Navn', '');
 
   // insert a table row (<tr></td>)
   html += objSupplier.insertTableRow('');
@@ -267,7 +269,7 @@ function showSupplier(supplierId) {
   html += "<td></td></tr>";
 
   // street, address2
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Gate', 'Adresse 2');
+  html += objSupplier.showTableHeader('center', 'Gate', 'Adresse 2');
 
   // insert a table row (<tr></td>)
   html += objSupplier.insertTableRow('');
@@ -286,7 +288,7 @@ function showSupplier(supplierId) {
   html += "</tr>";
 
   // postalCode, city
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Postnummer', 'Poststed');
+  html += objSupplier.showTableHeader( 'center', 'Postnummer', 'Poststed');
 
   // insert a table row (<tr></td>)
   html += objSupplier.insertTableRow('');
@@ -306,7 +308,7 @@ function showSupplier(supplierId) {
   html += "</tr>";
 
   // email,phone
-  html += objSupplier.showTableHeaderMenu('', 'center', 'E-mail', 'Telefonnummer');
+  html += objSupplier.showTableHeader('center', 'E-mail', 'Telefonnummer');
 
   // insert a table row (<tr></td>)
   html += objSupplier.insertTableRow('');
@@ -325,7 +327,7 @@ function showSupplier(supplierId) {
   html += "</tr>";
 
   // bankAccount, accountId
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Konto', 'Bankkontonummer');
+  html += objSupplier.showTableHeader('center', 'Konto', 'Bankkontonummer');
 
   // insert a table row (<tr></td>)
   html += objSupplier.insertTableRow('');
@@ -344,7 +346,7 @@ function showSupplier(supplierId) {
   html += "</tr>";
 
   // amountAccountId, amount
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Konto for beløp', 'Beløp');
+  html += objSupplier.showTableHeader( 'center', 'Konto for beløp', 'Beløp');
 
   // insert a table row (<tr></td>)
 
@@ -364,7 +366,7 @@ function showSupplier(supplierId) {
   html += "</tr>";
 
   // textAccountId, text
-  html += objSupplier.showTableHeaderMenu('', 'center', 'Konto for tekst', 'Tekst');
+  html += objSupplier.showTableHeader( 'center', 'Konto for tekst', 'Tekst');
 
   // insert a table row (<tr></td>)
   html += objSupplier.insertTableRow('');

@@ -10,6 +10,7 @@ const objTransactions = new Transactions('transactions');
 const objOverview = new Overview('overview');
 
 const enableChanges = (objOverview.securityLevel > 5);
+const applicationName = "condo-overview";
 
 const columnWidths = [150, 100, 150, 175, 150, 175];
 
@@ -41,6 +42,7 @@ async function main() {
       // Show due menu
       html = showHorizontalMenu(objOverview.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
+      objOverview.markActivatedApplication(objOverview.arrayMenuNews, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objOverview.condominiumId, resident, objOverview.nineNine);
@@ -177,8 +179,8 @@ function showDues() {
 
   // Header
 
-  html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Forfall', '', '');
-  html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  html += objOverview.showTableHeader( 'center', '', '', '', 'Forfall', '', '');
+  html += objOverview.showTableHeader( 'center', 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -242,8 +244,8 @@ function showTransactions() {
 
   // Header
 
-  html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Innbetalinger', '', '');
-  html += objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  html += objOverview.showTableHeader( 'center', '', '', '', 'Innbetalinger', '', '');
+  html += objOverview.showTableHeader('center', '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -330,12 +332,12 @@ function showHowMuchToPay() {
   let overPay = sumIncome - sumToPay;
 
   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Til gode', '', '')
-    : objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Skyldig', '', '');
+    ? objOverview.showTableHeader('center', '', '', '', 'Til gode', '', '')
+    : objOverview.showTableHeader( 'center', '', '', '', 'Skyldig', '', '');
 
   html += (overPay >= 0)
-    ? objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : objOverview.showTableHeaderMenu('#e0f0e0', 'center', '', '', '', 'Forfall', 'Betalt', 'Skyldig')
+    ? objOverview.showTableHeader( 'center', '', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : objOverview.showTableHeader( 'center', '', '', '', 'Forfall', 'Betalt', 'Skyldig')
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);

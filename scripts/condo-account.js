@@ -11,6 +11,7 @@ const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
 
 const enableChanges = (objAccount.securityLevel > 5);
+const applicationName = "condo-account";
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
@@ -47,20 +48,29 @@ async function main() {
       // Show condominium menu
       html = showHorizontalMenu(objAccount.arrayMenuCondominium);
       document.querySelector('.menuCondominium').innerHTML = html;
+      objAccount.markActivatedApplication(objAccount.arrayMenuCondominium,applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
-      // Show header
-      //showHeader();
+      let accountId = 0;
+      if (paramAccountId === 0) {
+
+        await objAccounts.getHighestAccountId(objAccount.condominiumId);
+        accountId = objAccounts.arrayAccounts.at(-1)?.accountId ?? 0;
+        await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+      } else {
+
+        accountId = paramAccountId;
+      }
 
       // Show filter
-      showFilter(paramAccountId);
+      showFilter(accountId);
 
       // Show account
-      showAccount(paramAccountId);
+      showAccount(accountId);
 
       // Events
       events();
@@ -139,18 +149,6 @@ async function events() {
       showAccounts(accountId);
     };
   });
-
-  // Log out
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('logOut')) {
-
-      let url = (objAccount.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
-    };
-  });
 }
 
 function resetValues() {
@@ -181,14 +179,8 @@ function showFilter(accountId) {
   // Start frame
   let html = startFrame();
 
-  // show filter
-  //html += startLine();
-
   // Show types of account
   html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', '', true);
-
-  // End line 
-  //html += "</div>";
 
   // End filter frame
   html += "</div>";
@@ -236,9 +228,11 @@ function showAccount(accountId) {
     html += "</div>";
   }
 
-  html += startLine();
-  html += showButtonNew('back', 'Tilbake');
-  html += "</div>";
+  if (paramAccountId > 0) {
+    html += startLine();
+    html += showButtonNew('back', 'Tilbake');
+    html += "</div>";
+  }
 
   document.querySelector('.showAccount').innerHTML = html;
 
@@ -248,7 +242,7 @@ function showAccount(accountId) {
     disableButton('insert', false);
     disableButton('update', false);
     disableButton('cancel', true);
-    disableButton('filterAccountId', false, 'white');
+    disableButton('filterAccountId', false);
   }
 }
 
@@ -274,11 +268,11 @@ async function updateAccountsRow(accountId) {
 
   // name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('.name', '', 'Ugyldig kontonavn', true, name, 3, 50);
+  const validName = validateTextNew('name', '', 'Ugyldig kontonavn', true, name, 3, 50);
 
-  className = `.fixedCost${accountId}`;
+  className = `.fixedCost`;
   let fixedCost = document.querySelector(className).value;
-  className = `fixedCost${accountId}`;
+  className = `fixedCost`;
   if (fixedCost === constFixedCost) fixedCost = 'Y';
   if (fixedCost === constVariableCost) fixedCost = 'N';
   const validFixedCost = objAccount.validateValues(className, columnWidths, '', 'Ugyldig kostnadstype', true, fixedCost, 'Y', 'N');
@@ -286,19 +280,19 @@ async function updateAccountsRow(accountId) {
   // Validate accounts columns
   if (validName && validFixedCost) {
 
-    document.querySelector('.message').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the account id exist
     rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
     if (rowNumberAccount !== -1) {
 
       // update the accounts row
-      await objAccount.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
+      await objAccounts.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
 
     } else {
 
       // Insert the account row in accounts table
-      await objAccount.insertAccountsTable(objAccount.condominiumId, objAccount.user, name, fixedCost);
+      await objAccounts.insertAccountsTable(objAccount.condominiumId, objAccount.user, name, fixedCost);
     }
 
     fixedCost = 'A';

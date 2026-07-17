@@ -6,11 +6,13 @@ const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
 const objAccounts = new Accounts('accounts');
 const objCondo = new Condo('condo');
-const objTransaction = new Transaction('transaction');
+const objTransactions = new Transactions('transactions');
 const objProjects = new Projects('projects');
 const objProject = new Project('project');
 
+// Fixed values
 const enableChanges = (objProject.securityLevel > 5);
+const applicationName = "condo-project";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -39,6 +41,7 @@ async function main() {
       // Show project menu
       html = showHorizontalMenu(objProject.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
+      objProject.markActivatedApplication(objProject.arrayMenuTransaction, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objProject.condominiumId, resident, objProject.nineNine);
@@ -48,9 +51,6 @@ async function main() {
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objProject.condominiumId, fixedCost);
       await objProjects.loadProjectsTable(objProject.condominiumId);
-
-      // Show header
-      //showHeader();
 
       // Show filter
       projectId = (objProjects.arrayProjects.length === 0)
@@ -96,18 +96,6 @@ async function events() {
     };
   });
 
-  // return to projects
-  document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
-
-      let URL = (objBudget.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      URL = `${URL}condo-projects.html?accountId=${paramAccountId}&fixedCost=${paramFixedCost}`;
-      window.location.href = URL;
-    };
-  });
-
   // update projects row
   document.addEventListener('click', async (event) => {
     const arrayPrefixes = ['update'];
@@ -148,8 +136,6 @@ async function events() {
       await objProjects.loadProjectsTable(objProject.condominiumId);
 
       showProject();
-
-      //showProjectCondo();
     };
   });
 
@@ -267,10 +253,11 @@ function showProject(projectId) {
   // row number project
   const rowNumberProject = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
 
-  // name
+
   // Empty line
 let html = emptyLine();
 
+  // name
   const name = objProjects.arrayProjects[rowNumberProject]?.name.trim() ?? '';
   html += showTextNew('Navn', 'name', name, enableChanges, "Navn");
   html += "</div>";
@@ -297,9 +284,6 @@ let html = emptyLine();
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
-  html += startLine();
-  html += showButtonNew('back', 'Tilbake');
-  html += "</div>";
 
   document.querySelector('.showProject').innerHTML = html;
   //if (enableChanges) document.querySelector('.cancel').disabled = true;

@@ -7,7 +7,9 @@ const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
 const objBankAccount = new BankAccount('bankaccount');
 
+// Fixed values
 const enableChanges = (objBankAccount.securityLevel > 5);
+const applicationName = "condo-bankaccount";
 
 const columnWidths = [175, 175]
 
@@ -31,6 +33,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
   // Show condominium menu
   html = showHorizontalMenu(objBankAccount.arrayMenuCondominium);
   document.querySelector('.menuCondominium').innerHTML = html;
+  objBankAccount.markActivatedApplication(objBankAccount.arrayMenuCondominium,applicationName);
 
   // Call main when script loads
   main();

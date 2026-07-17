@@ -49,6 +49,8 @@ function showLogin() {
 
   // Header for value
   html += objLogIn.showTableHeader('', 'Email');
+    showTableHeader(direction = "center", ...texts)
+
 
   // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('margin: 0 auto;');

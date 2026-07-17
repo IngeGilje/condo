@@ -167,14 +167,18 @@ class Accounts extends Condos {
     let selectedValue = false;
 
     let html = `
-    <div class="field" style="width:250px;margin-left:35px;margin-bottom:25px;">
-    <label>
-      ${label}
-    </label>
-    <select 
-      class="${className} center one-line"
-      ${(enableChanges) ? '' : 'readonly'}
-    >`;
+    <div 
+      class="field"
+      style="width:250px;margin-left:35px;margin-bottom:25px;"
+    >
+      <label>
+        ${label}
+      </label>
+      <select 
+        class="${className} center one-line"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
 
     // Check if accounts array is empty
     if (this.arrayAccounts.length > 0) {

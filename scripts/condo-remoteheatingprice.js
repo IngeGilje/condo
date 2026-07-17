@@ -7,6 +7,7 @@ const objCondo = new Condo('condo');
 const objRemoteHeatingPrice = new RemoteHeatingPrice('remoteheatingprice');
 
 const enableChanges = (objRemoteHeatingPrice.securityLevel > 5);
+const applicationName = "condo-remoteheatingprice";
 
 const columnWidths = [175, 175, 100];
 
@@ -37,6 +38,7 @@ async function main() {
       // Show remote heating menu
       html = showHorizontalMenu(objRemoteHeatingPrice.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
+      objRemoteHeatingPrice.markActivatedApplication(objRemoteHeatingPrice.arrayMenuRemoteHeating, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeatingPrice.condominiumId, resident, objRemoteHeatingPrice.nineNine);

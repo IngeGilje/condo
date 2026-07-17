@@ -7,6 +7,7 @@ const objNews = new News('news');
 const objShowNews = new ShowNews('shownews');
 
 const enableChanges = (objShowNews.securityLevel > 5);
+const applicationName = "condo-shownews";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -35,6 +36,7 @@ async function main() {
       // Show news menu
       html = showHorizontalMenu(objShowNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
+      objShowNews.markActivatedApplication(objShowNews.arrayMenuNews, applicationName);
 
       // Load users and news tables
       const resident = 'Y';

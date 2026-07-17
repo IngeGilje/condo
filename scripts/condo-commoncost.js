@@ -11,7 +11,9 @@ const objTransaction = new Transaction('bankTransaction');
 const objCondo = new Condo('condo');
 const objCommonCost = new CommonCost('commoncost');
 
+// Fixed values
 const enableChanges = (objCommonCost.securityLevel > 5);
+const applicationName = "condo-commoncost";
 
 // column widths
 const columnWidths = [100, 175, 175, 175, 175];
@@ -43,6 +45,7 @@ async function main() {
       // Show due menu
       html = showHorizontalMenu(objCommonCost.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
+      objCommonCost.markActivatedApplication(objCommonCost.arrayMenuDue,applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCommonCost.condominiumId, resident, objCommonCost.nineNine);
@@ -234,7 +237,7 @@ function showCommonCostYear() {
   let html = objCommonCost.initializeTable(columnWidths);
 
 
-  html += objCommonCost.showTableHeaderMenu('#e0f0e0', 'center', '', '', 'Felleskostnad/m2', 'Fast felleskostnad', '');
+  html += objCommonCost.showTableHeader( 'center', '', '', 'Felleskostnad/m2', 'Fast felleskostnad', '');
 
   // insert a table row (<tr></td>)
   html += objCommonCost.insertTableRow('', '', '');
@@ -277,7 +280,7 @@ function showCommonCostCondo() {
   html += objCommonCost.startTableBody();
 
   // Table header (<tr></tr>)
-  html += objCommonCost.showTableHeaderMenu('#e0f0e0', 'center', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
+  html += objCommonCost.showTableHeader( 'center', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;

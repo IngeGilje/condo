@@ -10,6 +10,7 @@ const objDues = new Dues('dues');
 const objDue = new Due('due');
 
 const enableChanges = (objDue.securityLevel > 5);
+const applicationName = "condo-due";
 
 const columnWidths = [175, 100, 175, 175, 175, 175, 90];
 
@@ -48,6 +49,7 @@ async function main() {
       // Show due menu
       html = showHorizontalMenu(objDue.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
+      objDue.markActivatedApplication(objDue.arrayMenuDue,applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objDue.condominiumId, resident, objDue.nineNine);

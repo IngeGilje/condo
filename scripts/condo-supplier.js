@@ -7,6 +7,7 @@ const objAccounts = new Accounts('accounts');
 const objSupplier = new Supplier('supplier');
 
 const enableChanges = (objSupplier.securityLevel > 5);
+const applicationName = "condo-supplier";
 
 const columnWidths = [175, 175];
 
@@ -37,6 +38,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       // Show due menu
       html = showHorizontalMenu(objSupplier.arrayMenuCondominium);
       document.querySelector('.showDueMenu').innerHTML = html;
+      objSupplier.markActivatedApplication(objSupplier.arrayMenuCondominium, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objSupplier.condominiumId, resident, objSupplier.nineNine);
