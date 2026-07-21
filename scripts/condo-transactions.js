@@ -260,6 +260,9 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   // End filter frame
   html += "</div>";
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show transactions

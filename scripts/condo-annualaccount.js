@@ -224,12 +224,13 @@ function showFilter(budgetYear, fromDate, toDate) {
   const commonCostSquareMeter = getpriceSquaremeter(budgetYear);
   html += showAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
 
-  //html += "</div>";
-
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show annual accounts

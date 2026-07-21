@@ -163,6 +163,9 @@ function showFilter(dueId) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // show due

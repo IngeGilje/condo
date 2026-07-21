@@ -44,15 +44,15 @@ async function main() {
       // Show transaction menu
       html = showHorizontalMenu(objBudget.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
-      objBudget.markActivatedApplication(objBudget.arrayMenuTransaction,applicationName);
+      objBudget.markActivatedApplication(objBudget.arrayMenuTransaction, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objBudget.condominiumId, resident, objBudget.nineNine);
-      const fixedCost = 'A';
+      const fixedCost = "A";
       await objAccounts.loadAccountsTable(objBudget.condominiumId, fixedCost);
+      await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
 
       // Show filter
-      await objBudgets.loadBudgetsTable(objBudget.condominiumId, paramYear, objBudgets.nineNine);
       showFilter(paramBudgetId);
 
       // Show result of filter
@@ -81,7 +81,7 @@ async function events() {
     };
   });
 
-  // return to budgets
+  // return to condo-budgets.js
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('back')) {
 
@@ -93,29 +93,12 @@ async function events() {
     };
   });
 
-  // update a accounts row
-  document.addEventListener('change', async (event) => {
+  // update a budgets row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('update')) {
 
-    const arrayPrefixes = ['accountId', 'amount', 'text'];
-
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objBudget.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let budgetId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        budgetId = Number(className.slice(prefix.length));
-      }
-
-      // Update amount
+      // Update budget
+      budgetId = Number(document.querySelector('.filterBudgetId').value);
       await updateBudgetsRow(budgetId);
     };
   });
@@ -143,7 +126,7 @@ async function events() {
 
       const year = Number(document.querySelector('.filterYear').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
-      await objBudgets.loadBudgetsTable(objBudget.condominiumId, year, accountId);
+      await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
 
       showBudget(budgetId);
     };
@@ -174,44 +157,36 @@ async function deleteBudgetRow(budgetId, className) {
   }
 
   const year = Number(document.querySelector('.filterYear').value);
-  await objBudgets.loadBudgetsTable(objBudget.condominiumId, year, objBudget.nineNine);
+  await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
 }
 
 // Update a budgets row
 async function updateBudgetsRow(budgetId) {
 
+  debugger;
   budgetId = Number(budgetId);
 
-  // Get budgets row values
-
   // accountId
-  className = `.accountId${budgetId}`;
-  let accountId = Number(document.querySelector(className).value);
-  className = `accountId${budgetId}`;
-  const validAccountId = validateInterval(className, '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
+  let accountId = Number(document.querySelector('.accountId').value);
+  const validAccountId = validateIntervalNew('accountId', '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
 
   // amount
-  className = `.amount${budgetId}`;
-  let amount = document.querySelector(className).value;
+  let amount = document.querySelector('.amount').value;
   amount = Number(formatNorAmountToNumber(amount));
-  className = `amount${budgetId}`;
-  let validAmount = validateInterval(className, '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
+  let validAmount = validateIntervalNew('amount', '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
 
   // year
-  className = `.year${budgetId}`;
-  let year = Number(document.querySelector(`${className}`).value);
-  className = `year${budgetId}`;
-  const validYear = validateInterval(className, '', 'Ugyldig budsjettår', true, year, 2020, 2029);
+  let year = Number(document.querySelector('.year').value);
+  const validYear = validateIntervalNew('year', '', 'Ugyldig budsjettår', true, year, 2020, 2029);
 
   // text
-  className = `.text${budgetId}`;
-  let text = document.querySelector(className).value;
-  className = `text${budgetId}`;
-  let validText = objBudget.validateText(className, columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
-
+  let text = document.querySelector('.text').value;
+ 
   // Validate budgets columns
-  if (validAccountId && validAmount && validAmount && validYear && validText) {
+  debugger;
+  if (validAccountId && validAmount && validYear) {
 
+    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the budgets row exist
@@ -247,6 +222,42 @@ async function updateBudgetsRow(budgetId) {
     // Show budget
     showBudget(budgetId);
   }
+  */
+    debugger;
+    document.querySelector('.showMessage').style.display = "none";
+
+    // Check if the budget Id exist
+    const rowNumberBudget = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
+    if (rowNumberBudget !== -1) {
+
+      // update a budgets row
+      await objBudgets.updateBudgetsTable(budgetId, objBudget.user, accountId, amount, year, text);
+    } else {
+
+      // Insert a budgets row
+      await objBudget.insertBudgetsTable(objBudget.condominiumId, objBudget.user, accountId, amount, year, text);
+      await objBudget.getHighestBudgetId(objBudget.condominiumId);
+      budgetId = objBudget.arrayBudgets[0].budgetId;
+    }
+
+    await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterBudgetId', false);
+    }
+
+    // Show filter
+    showFilter(budgetId);
+
+    // Show budget
+    showBudget(budgetId);
+  }
 }
 
 // Calculate sum budget
@@ -277,6 +288,9 @@ function showFilter(budgetId) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show budget

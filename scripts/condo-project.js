@@ -170,6 +170,9 @@ function showFilter(projectId) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Delete a projects row
@@ -228,7 +231,6 @@ function insertEmptyTableRow() {
   let html = "";
 
   // insert a table row (<tr></td>)
-
   html += objProject.insertTableRow('', '', '');
 
   // name

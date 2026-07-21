@@ -156,6 +156,9 @@ function showFilter(newsId) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show news
@@ -223,7 +226,7 @@ async function updateNewsRow(newsId) {
 
   if (newsId === '') newsId = -1
   newsId = Number(newsId);
-  const validNewsId = validateInterval('newsId', '', 'Ugyldig leilighet', true, newsId, -1, objNews.nineNine);
+  const validNewsId = validateIntervalNew('newsId', '', 'Ugyldig leilighet', true, newsId, -1, objNews.nineNine);
 
   // validate title
   const title = document.querySelector('.title').value;
@@ -232,11 +235,11 @@ async function updateNewsRow(newsId) {
   // validate date
   let date = document.querySelector('.newsDate').value;
   date = Number(objNews.formatDateToNumber(date));
-  const validDate = validateInterval('date', '', 'Ugyldig dato', true, date, 1, objNews.nineNine);
+  const validDate = validateIntervalNew('date', '', 'Ugyldig dato', true, date, 1, objNews.nineNine);
 
   // validate userId  
   const userId = Number(document.querySelector('.userId').value);
-  const validUserId = validateInterval('userId', '', 'Ugyldig forfatter', true, userId, 1, objNews.nineNine);
+  const validUserId = validateIntervalNew('userId', '', 'Ugyldig forfatter', true, userId, 1, objNews.nineNine);
 
   // clean content
   let content = document.querySelector('.content').value.trim();

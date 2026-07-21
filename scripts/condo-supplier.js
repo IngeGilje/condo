@@ -393,22 +393,22 @@ async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = validateInterval('supplierId', columnWidths, '', 'Ugyldig leverandør', true, supplierId, -1, objSupplier.nineNine);
+  const validSupplierId = validateIntervalNew('supplierId', columnWidths, '', 'Ugyldig leverandør', true, supplierId, -1, objSupplier.nineNine);
 
   const name = document.querySelector('.name').value;
-  const validName = validateText('name', columnWidths, '', 'Ugyldig navn', true, name, 3, 45);
+  const validName = validateTextNew('name', columnWidths, '', 'Ugyldig navn', true, name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateText('street', columnWidths, '', 'Ugyldig adresse', true, street, 0, 45);
+  const validStreet = validateTextNew('street', columnWidths, '', 'Ugyldig adresse', true, street, 0, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = validateText('address2', columnWidths, '', 'Ugyldig adresse', true, address2, 0, 45);
+  const validAddress2 = validateTextNew('address2', columnWidths, '', 'Ugyldig adresse', true, address2, 0, 45);
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = validateInterval('postalCode', columnWidths, '', 'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
+  const validPostalCode = validateIntervalNew('postalCode', columnWidths, '', 'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value.trim();
@@ -426,31 +426,31 @@ async function updateSuppliersRow(supplierId) {
 
   // validate accountId
   const accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = validateInterval('accountId', columnWidths, '', 'Ugyldig konto', true, accountId, 1, objSupplier.nineNine);
+  const validAccountId = validateIntervalNew('accountId', columnWidths, '', 'Ugyldig konto', true, accountId, 1, objSupplier.nineNine);
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
-  let validBankAccount = validateBankAccount('bankAccount', true, bankAccount, '', 'Ugyldig bankkontonummer');
+  let validBankAccount = validateBankAccountNew('bankAccount', true, bankAccount, '', 'Ugyldig bankkontonummer');
 
   if (bankAccount === '') validBankAccount = true;
 
   // validate amountAccountId
   const amountAccountId = Number(document.querySelector('.amountAccountId').value);
-  const validAmountAccountId = validateInterval('amountAccountId', columnWidths, '', 'Ugyldig konto for beløp', true, amountAccountId, 0, objSupplier.nineNine);
+  const validAmountAccountId = validateIntervalNew('amountAccountId', columnWidths, '', 'Ugyldig konto for beløp', true, amountAccountId, 0, objSupplier.nineNine);
 
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatNorAmountToNumber(amount));
-  const validAmount = validateInterval('amount', columnWidths, '', 'Ugyldig beløp', true, amount, objSupplier.minusNineNine, objSupplier.nineNine);
+  const validAmount = validateIntervalNew('amount', columnWidths, '', 'Ugyldig beløp', true, amount, objSupplier.minusNineNine, objSupplier.nineNine);
 
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);
-  const validTextAccountId = validateInterval('textAccountId', columnWidths, '', 'Ugyldig konto for tekst', true, textAccountId, 0, objSupplier.nineNine);
+  const validTextAccountId = validateIntervalNew('textAccountId', columnWidths, '', 'Ugyldig konto for tekst', true, textAccountId, 0, objSupplier.nineNine);
 
   // validate text
   const text = document.querySelector('.accountText').value;
-  const validText = validateText('accountText', columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
+  const validText = validateTextNew('accountText', columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
 
   if (validSupplierId && validName && validStreet && validAddress2
     && validPostalCode && validCity && validBankAccount && validAccountId

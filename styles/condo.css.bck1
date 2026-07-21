@@ -181,22 +181,21 @@ select {
   border-bottom: 1px solid black;
 }
 
-/*
 .button {
   display: block;
   width: 100%;
   height: 100%;
-  space inside the link 
+  /* space inside the link */
   padding: 12px;
   padding-left: 15px;
-  include padding in size
+  /* include padding in size */
   box-sizing: border-box;
   transition: background 0.2s, box-shadow 0.2s;
 
   border: 2px solid #38bdf8;
   border-radius: 10px;
   border-style: outset;
-  remove underscore
+  /* remove underscore */
   text-decoration: none;
   cursor: pointer;
 
@@ -208,9 +207,7 @@ select {
     cursor: default;
   }
 }
-*/
 
-/*
 .button::after {
   content: "";
   position: absolute;
@@ -221,7 +218,6 @@ select {
   background: #38bdf8;
   transition: width 0.3s ease;
 }
-*/
 
 
 /* menu */
@@ -321,6 +317,7 @@ iframe {
   width: 100%;
   box-sizing: border-box;
 }
+
 
 @media (max-width: 600px) {
   .news-title {
@@ -428,11 +425,24 @@ iframe {
   border: 1px solid #cbd5e1;
   border-radius: 14px;
   font-size: 16px;
+}
+
+.field select,
+.field button {
   max-width: 250px;
   padding-left: 14px;
   padding-right: 14px;
 }
 
+.field button {
+  background-color: #38bdf8;
+  color:white;
+}
+
+.field select {
+  background-color: white;
+  color:black;
+}
 /* Apply the style when the input has keyboard focus 
 (the user clicked into it or tabbed to it). 
 + label means: Select the label that comes immediately after the input.

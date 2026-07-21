@@ -185,6 +185,9 @@ function showFilter(condoId, accountId, fromDate, toDate) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // show dues

@@ -224,13 +224,13 @@ function showFilter(projectId) {
   // Show projects
   html += objProjects.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, 'Velg prosjekt', '', true);
 
-  // End row
-  //html += "</div>";
-
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 /*

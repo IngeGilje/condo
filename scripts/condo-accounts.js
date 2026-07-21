@@ -230,6 +230,9 @@ function showFilter(fixedCost) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show accounts

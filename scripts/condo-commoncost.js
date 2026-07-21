@@ -9,14 +9,16 @@ const objAccounts = new Accounts('accounts');
 const objBankAccount = new BankAccount('bankaccount');
 const objTransaction = new Transaction('bankTransaction');
 const objCondo = new Condo('condo');
+const objCommonCosts = new CommonCosts('commoncosts');
 const objCommonCost = new CommonCost('commoncost');
 
 // Fixed values
 const enableChanges = (objCommonCost.securityLevel > 5);
 const applicationName = "condo-commoncost";
 
-// column widths
-const columnWidths = [100, 175, 175, 175, 175];
+// query parameters
+const queryParameters = new URLSearchParams(window.location.search);
+const paramCommonCostId = Number(queryParameters.get("commonCostId"));
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -45,25 +47,32 @@ async function main() {
       // Show due menu
       html = showHorizontalMenu(objCommonCost.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
-      objCommonCost.markActivatedApplication(objCommonCost.arrayMenuDue,applicationName);
+      objCommonCost.markActivatedApplication(objCommonCost.arrayMenuDue, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCommonCost.condominiumId, resident, objCommonCost.nineNine);
       await objCondominium.loadCondominiumsTable();
       await objCondo.loadCondoTable(objCommonCost.condominiumId, objCommonCost.nineNine);
-      await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
+      await objCommonCosts.loadCommonCostsTable(objCommonCost.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCost.condominiumId, objCommonCost.nineNine, objCommonCost.nineNine);
       await objBankAccount.loadBankAccountsTable(objCommonCost.condominiumId, objCommonCost.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objCommonCost.condominiumId, fixedCost);
 
-      // Show header
+      let commonCostId = 0;
+      if (paramCommonCostId === 0) {
 
-      showHeader();
+        await objCommonCosts.getHighestCommonCostId(objCommonCost.condominiumId);
+        commonCostId = objCommonCosts.arrayCommonCosts.at(-1)?.commonCostId ?? 0;
+        const fixedCost = "A";
+        await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId, fixedCost);
+      } else {
+
+        commonCostId = paramCommonCostId;
+      }
 
       // Show filter
-      const year = today.getFullYear();
-      showFilter(year);
+      showFilter(commonCostId);
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
@@ -71,10 +80,7 @@ async function main() {
       if (rowNumberCondominium !== -1) {
 
         // Show common cost per year
-        showCommonCostYear();
-
-        // Show common cost per condo
-        showCommonCostCondo();
+        showCommonCost(commonCostId);
 
         // Events
         events();
@@ -82,7 +88,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew( 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -110,13 +116,21 @@ async function events() {
       }
 
       // Show common cost per year
-      showCommonCostYear();
-
-      // Show common cost per condo
-      showCommonCostCondo();
+      showCommonCost(commonCostId);
     };
   });
 
+  // update a commoncosts row
+  document.addEventListener('click', async (event) => {
+
+    if (event.target.classList.contains('update')) {
+
+      const commonCostId = Number(document.querySelector('.filterCommonCostId').value);
+      updateCommonCostsRow(commonCostId);
+    };
+  });
+
+  /*
   // update a commoncosts row
   document.addEventListener('change', async (event) => {
 
@@ -142,6 +156,7 @@ async function events() {
       await updateCommonCostsRow(commonCostId);
     };
   });
+  */
 
   // Delete commoncosts row
   document.addEventListener('click', async (event) => {
@@ -162,13 +177,11 @@ async function events() {
       }
 
       await deleteCommonCostsRow(commonCostId, className);
-      await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
+      await objCommonCosts.loadCommonCostsTable(objCommonCost.condominiumId);
 
 
-      showCommonCostYear();
-
-
-      showCommonCostCondo();
+      // Show common cost
+      showCommonCost(commonCostId);
     };
   });
 
@@ -185,49 +198,27 @@ async function events() {
   });
 }
 
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objCommonCost.initializeTable(columnWidths);
-
-  // start table body
-  html += objCommonCost.startTableBody();
-
-  // show main header
-  html += objCommonCost.showTableHeaderLogOut('', '', 'Felleskostnader', '');
-  html += "</tr>";
-
-  // end table body
-  html += objCommonCost.endTableBody();
-
-  // The end of the table
-  html += objCommonCost.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-
 // Show filter
-function showFilter(year) {
+function showFilter(commonCostId) {
 
-    // Start frame
+  // Start frame
   let html = startFrame();
 
-  // show filter
-  //html += startLine();
-
-  // Show years
-  html += showSelectedNumbersNew('År', 'filterYear', 'align:center;', 2020, 2030, year, true);
-
-  //html += "</div>";
+  // Show commoncosts
+  html += objCommonCosts.showSelectedCommonCostsNew('Felleskost', 'filterCommonCostId', '', commonCostId, 'Velg Felleskost', '', true);
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
-// Show commoncosts per year
-function showCommonCostYear() {
+/*
+// Show commoncost
+function showCommonCost(commonCostId) {
 
   const year = Number(document.querySelector(".filterYear").value);
   const rowNumberCommonCost = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
@@ -265,98 +256,69 @@ function showCommonCostYear() {
 
   // The end of the table
   html += objCommonCost.endTable();
-  document.querySelector('.showcommoncostyear').innerHTML = html;
+  document.querySelector('.showCommonCost').innerHTML = html;
 }
+*/
 
-// Show common costs per condo
-function showCommonCostCondo() {
+// Show commoncost
+function showCommonCost(commonCostId) {
 
-  const year = Number(document.querySelector(".filterYear").value);
-  const rowNumberCommonCost = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
+  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.commonCostId === commonCostId);
 
-  // start table
-  let html = objCommonCost.initializeTable(columnWidths);
+  // Empty line
+  let html = emptyLine();
 
-  html += objCommonCost.startTableBody();
+  // common cost per squaremeter
 
-  // Table header (<tr></tr>)
-  html += objCommonCost.showTableHeader( 'center', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
+  let commonCostSquareMeter = 0;
+  if (rowNumberCommonCost !== -1) commonCostSquareMeter = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].commonCostSquareMeter;
+  commonCostSquareMeter = formatNumberToNorAmount(commonCostSquareMeter);
+  html += showTextNew('Felleskostnad/m2', 'commonCostSquareMeter', commonCostSquareMeter, enableChanges, 'Felleskostnad/m2');
 
-  let totalCommonCostsCondoMonth = 0;
-  let totalCommonCostsCondoYear = 0;
-  let totalSquareMeters = 0;
-  let totalFixedCostsCondoYear = 0;
+  /*
+  // name
+  html += startLine();
 
-  // Get fixed costs per month
-  let fixedCostCondoMonth = 0;
-  if (rowNumberCommonCost !== -1) {
+  const name = objCommonCosts.arrayCommonCosts[rowNumberCommonCost]?.name ?? '';
+  html += showTextNew('Kontonavn', 'name', objCommonCosts.arrayCommonCosts[rowNumberCommonCost].name.trim(), enableChanges, 'Kontonavn');
+  html += "</div>";
+  */
 
-    // Fixed cost per month per condo
-    fixedCostCondoMonth = Number(objCommonCost.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo);
+  // fixed cost per condo
+  if (rowNumberCommonCost !== -1) fixedCostCondo = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo;
+  fixedCostCondo = formatNumberToNorAmount(fixedCostCondo);
+  html += showTextNew('Fast kostnad', 'fixedCostCondo', fixedCostCondo, enableChanges, 'Fast Kostnad');
+
+  // Buttons
+  if (enableChanges) {
+
+    html += startLine();
+    html += showButtonNew('update', 'Oppdater');
+    html += showButtonNew('cancel', 'Angre');
+    html += "</div>";
+
+    html += startLine();
+    html += showButtonNew('delete', 'Slett');
+    html += showButtonNew('insert', 'Ny');
+    html += "</div>";
   }
 
-  objCondo.arrayCondo.forEach((condo) => {
+  if (paramCommonCostId > 0) {
+    html += startLine();
+    html += showButtonNew('back', 'Tilbake');
+    html += "</div>";
+  }
 
-    const year = Number(document.querySelector(".filterYear").value);
-    const rowNumberCommonCost = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
-    const commonCostId = objCommonCost.arrayCommonCosts[rowNumberCommonCost]?.commonCostId || 0;
+  document.querySelector('.showCommonCost').innerHTML = html;
 
-    // insert a table row (<tr></td>)
-
-    html += objCommonCost.insertTableRow('');
-
-    // condo name
-    let className = `name${condo.condoId}`;
-    html += editTableCellCenter(className, condo.name, 45, false);
-
-    // Square meters
-    let squareMeters = formatNumberToNorAmount(condo.squareMeters);
-    className = `squareMeters${condo.condoId}`;
-    html += editTableCell(className, squareMeters, 11, false);
-
-    // fixed cost per month per condo
-    fixedCostCondoMonth = formatNumberToNorAmount(fixedCostCondoMonth);
-    className = `fixedCostCondoMonth${condo.condoId}`;
-    html += editTableCell(className, fixedCostCondoMonth, 10, false);
-
-    // Common cost per month per condo
-    let commonCostSquareMeter = 0;
-    if (rowNumberCommonCost !== -1) commonCostSquareMeter = objCommonCost.arrayCommonCosts[rowNumberCommonCost].commonCostSquareMeter;
-    squareMeters = formatNorAmountToNumber(squareMeters);
-    fixedCostCondoMonth = formatNorAmountToNumber(fixedCostCondoMonth);
-    let commonCostsMonth = (((squareMeters * commonCostSquareMeter) / 100) + (fixedCostCondoMonth));
-    className = `commonCostsMonth${commonCostId}`;
-    commonCostsMonth = formatNumberToNorAmount(commonCostsMonth);
-    html += editTableCell(className, commonCostsMonth, 11, enableChanges);
-
-    // Common cost per year per condo
-    commonCostsMonth = formatNorAmountToNumber(commonCostsMonth);
-    let commonCostsCondoYear = commonCostsMonth * 12;
-    commonCostsCondoYear = formatNumberToNorAmount(commonCostsCondoYear);
-    className = `commonCostsCondoYear${condo.condoId}`;
-    html += editTableCell(className, commonCostsCondoYear, 10, false);
-
-    html += "</tr>";
-
-    // Accomulate
-    totalSquareMeters += Number(squareMeters);
-    totalFixedCostsCondoYear += Number(fixedCostCondoMonth);
-    totalCommonCostsCondoMonth += Number(commonCostsMonth);
-    commonCostsCondoYear = formatNorAmountToNumber(commonCostsCondoYear)
-    totalCommonCostsCondoYear += commonCostsCondoYear;
-  });
-
-  totalSquareMeters = formatNumberToNorAmount(totalSquareMeters);
-  totalFixedCostsCondoYear = formatNumberToNorAmount(totalFixedCostsCondoYear);
-  totalCommonCostsCondoMonth = formatNumberToNorAmount(totalCommonCostsCondoMonth);
-  totalCommonCostsCondoYear = formatNumberToNorAmount(totalCommonCostsCondoYear);
-
-  html += objCommonCost.insertTableRow('', 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
-  html += "</tr>";
-
-  // The end of the table
-  html += objCommonCost.endTable();
-  document.querySelector('.incomeNextYear').innerHTML = html;
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterCommonCostId', false);
+  }
 }
 
 // get price per squaremeter
@@ -404,47 +366,56 @@ async function updateCommonCostsRow(commonCostId) {
 
   commonCostId = Number(commonCostId);
 
+  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.commonCostId === commonCostId);
+  
   // year
-  let className = '.filterYear';
-  let year = Number(document.querySelector(className).value);
-  className = 'filterYear';
-  const validYear = validateInterval(className, columnWidths, '', 'Ugyldig årstall', true, year, 2020, 2030);
+  const year = objCommonCosts.arrayCommonCosts[rowNumberCommonCost]?.year ?? 0;
+  const validYear = validateIntervalNew('filterCommonCostId', '', 'Ugyldig årstall', true, year, 2020, 2030);
 
-  // commonCostSquareMeter
-  className = `.commonCostSquareMeter${commonCostId}`;
-  let commonCostSquareMeter = document.querySelector(className).value;
+  // common cost per squaremeter 
+  let commonCostSquareMeter = document.querySelector('.commonCostSquareMeter').value;
   commonCostSquareMeter = formatNorAmountToNumber(commonCostSquareMeter);
-  className = `commonCostSquareMeter${commonCostId}`;
-  const validcommonCostSquareMeter = validateInterval(className, columnWidths, '', 'Ugyldig m2 pris', true, commonCostSquareMeter, 1, objCommonCost.nineNine);
+  const validCommonCostSquareMeter = validateIntervalNew('commonCostSquareMeter', '', 'Ugyldig Felleskost/m2', true, commonCostSquareMeter, 0, objCommonCost.nineNine);
 
-  // fixedCostCondo
-  className = `.fixedCostCondo${commonCostId}`;
-  let fixedCostCondo = document.querySelector(className).value;
+  // fix common cost per condo
+  let fixedCostCondo = document.querySelector('.fixedCostCondo').value;
   fixedCostCondo = formatNorAmountToNumber(fixedCostCondo);
-  className = `fixedCostCondo${commonCostId}`;
-  const validfixedCostCondo = validateInterval(className, columnWidths, '', 'Ugyldig fast felleskostnad', true, fixedCostCondo, 1, objCommonCost.nineNine, '');
+  const validFixedCostCondo = validateIntervalNew('fixedCostCondo', '', 'Ugyldig fast kost per leilighet', true, fixedCostCondo, 0, objCommonCost.nineNine);
 
   // Validate commoncosts columns
-  if (validYear && validcommonCostSquareMeter && validfixedCostCondo) {
+  if (validYear && validCommonCostSquareMeter && validFixedCostCondo) {
 
     document.querySelector('.showMessage').style.display = "none";
 
-    // Check if the commonCost id exist
-    const rowNumberCommonCosts = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
-    if (rowNumberCommonCosts !== -1) {
+    // Check if the Common Cost row
+    if (rowNumberCommonCost !== -1) {
 
       // update a commoncosts row
-      await objCommonCost.updateCommonCostsTable(objCommonCost.user, commonCostId, year, commonCostSquareMeter, fixedCostCondo);
+      await objCommonCosts.updateCommonCostsTable(objCommonCost.user, commonCostId, year, commonCostSquareMeter, fixedCostCondo);
     } else {
 
       // Insert a commoncosts row
-      await objCommonCost.insertCommonCostsTable(objCommonCost.condominiumId, objCommonCost.user, year, commonCostSquareMeter, fixedCostCondo);
+      await objCommonCosts.insertCommonCostsTable(objCommonCost.condominiumId, objCommonCost.user, year, commonCostSquareMeter, fixedCostCondo);
+      await objCommonCosts.getHighestCommonCostId(objCommonCost.condominiumId);
+      commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
     }
 
-    await objCommonCost.loadCommonCostsTable(objCommonCost.condominiumId);
+    await objCommonCosts.loadCommonCostsTable(objCommonCost.condominiumId);
 
-    showCommonCostYear();
+    removeMessage();
 
-    showCommonCostCondo();
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterCommonCostId', false);
+    }
+
+    // Show filter
+    showFilter(commonCostId);
+
+    // Show commoncost
+    showCommonCost(commonCostId);
   }
 }

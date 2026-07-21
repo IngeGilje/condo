@@ -48,7 +48,7 @@ async function main() {
       // Show condominium menu
       html = showHorizontalMenu(objAccount.arrayMenuCondominium);
       document.querySelector('.menuCondominium').innerHTML = html;
-      objAccount.markActivatedApplication(objAccount.arrayMenuCondominium,applicationName);
+      objAccount.markActivatedApplication(objAccount.arrayMenuCondominium, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
@@ -101,9 +101,7 @@ async function events() {
   // update a accounts row
   document.addEventListener('click', async (event) => {
 
-    const arrayPrefixes = ['update'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
+    if (event.target.classList.contains('update')) {
       const accountId = document.querySelector('.filterAccountId').value;
       updateAccountsRow(accountId);
     };
@@ -186,6 +184,9 @@ function showFilter(accountId) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show account
@@ -280,6 +281,7 @@ async function updateAccountsRow(accountId) {
   // Validate accounts columns
   if (validName && validFixedCost) {
 
+    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the account id exist
@@ -306,6 +308,42 @@ async function updateAccountsRow(accountId) {
       disableButton('filterAccountId', false, 'white');
     }
 
+    showFilter(accountId);
+
+    // Show account
+    showAccount(accountId);
+  }
+  */
+    document.querySelector('.showMessage').style.display = "none";
+
+    // Check if the account Id exist
+    const rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+    if (rowNumberAccount !== -1) {
+
+      // update a accounts row
+      await objAccounts.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
+    } else {
+
+      // Insert a accounts row
+      await objAccount.insertAccountsTable(objAccount.condominiumId, objAccount.user, year, priceKilowattHour);
+      await objAccount.getHighestAccountId(objAccount.condominiumId);
+      accountId = objAccount.arrayAccounts[0].accountId;
+    }
+
+    fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterAccountId', false);
+    }
+
+    // Show filter
     showFilter(accountId);
 
     // Show account

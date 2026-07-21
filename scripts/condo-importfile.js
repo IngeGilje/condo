@@ -515,6 +515,9 @@ function showFilter() {
   // The end of the table
   html += objImportFile.endTable();
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show csv file for transactions

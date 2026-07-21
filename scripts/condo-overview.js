@@ -100,7 +100,7 @@ async function events() {
 
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      //const validCondoId = validateInterval('filterCondoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objOverview.nineNine);
+      //const validCondoId = validateIntervalNew('filterCondoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objOverview.nineNine);
 
       const accountId = objOverview.nineNine;
       const deleted = 'N';
@@ -166,6 +166,9 @@ function showFilter(condoId) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show dues

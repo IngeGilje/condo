@@ -61,9 +61,9 @@ class Budgets extends Condos {
     if (this.arrayBudgets.length > 0) {
       this.arrayBudgets.forEach((budget) => {
 
-        const accountName = (budget.accountId) 
-        ? objAccounts.getAccountNameById(budget.accountId) 
-        : text;
+        const accountName = (budget.accountId)
+          ? objAccounts.getAccountNameById(budget.accountId)
+          : text;
         html += `
         <option 
           value=${budget.budgetId}
@@ -157,7 +157,7 @@ class Budgets extends Condos {
       : 'http://localhost:3000/budgets';
     try {
 
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -4,6 +4,7 @@ class RemoteHeatings extends Condos {
   // remote heating information
   arrayRemoteHeatings;
 
+  /*
   // Show all selected remoteheatings
   showSelectedRemoteHeatingsNew(label, className, style, remoteHeatingId, selectNone, selectAll, enableChanges) {
 
@@ -86,7 +87,87 @@ class RemoteHeatings extends Condos {
 
     return html;
   }
+  */
+  // Show remoteHeatings
+  showSelectedRemoteHeatingsNew(label, className, style, remoteHeatingId, selectNone, selectAll, enableChanges) {
 
+    let selectedValue = false;
+
+    let html = `
+    <div class="field" style="width:250px;margin-left:35px;margin-bottom:25px;">
+    <label>
+      ${label}
+    </label>
+    <select 
+      class="${className} center one-line"
+      ${(enableChanges) ? '' : 'readonly'}
+    >`;
+
+    // Check if remoteHeatings array is empty
+    if (this.arrayRemoteHeatings.length > 0) {
+      this.arrayRemoteHeatings.forEach((remoteHeating) => {
+
+        // Condo name
+        const condoName = (remoteHeating.condoId)
+          ? objCondo.getCondoNameById(remoteHeating.condoId)
+          : '';
+
+        html += `
+        <option 
+          value=${remoteHeating.remoteHeatingId}
+          ${(remoteHeating.remoteHeatingId === remoteHeatingId) ? 'selected' : ''}
+        >
+          &nbsp;&nbsp;${condoName} - ${remoteHeating.year}&nbsp;&nbsp;
+        </option>`;
+        if (remoteHeating.remoteHeatingId === remoteHeatingId) selectedValue = true;
+      });
+    } else {
+
+      // No remoteHeatings
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;Ingen prosjekter&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayRemoteHeatings.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayRemoteHeatings.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+      <label>
+        ${label}
+      </label>
+    </div>`;
+
+    return html;
+  }
 
   // get remoteheatings from remoteheatings table
   async loadRemoteHeatingsTable(condominiumId, year, condoId) {

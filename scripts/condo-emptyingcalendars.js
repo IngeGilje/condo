@@ -132,6 +132,9 @@ function showFilter() {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show emptyingCalendars

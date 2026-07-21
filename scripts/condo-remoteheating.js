@@ -50,7 +50,7 @@ async function main() {
       await objCondo.loadCondoTable(objRemoteHeating.condominiumId, objRemoteHeatings.nineNine);
       await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeating.condominiumId);
 
-       await objRemoteHeatings.loadRemoteHeatingsTable(objRemoteHeating.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
+      await objRemoteHeatings.loadRemoteHeatingsTable(objRemoteHeating.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
       let remoteHeatingId = 0;
       if (paramRemoteHeatingId === 0) {
@@ -64,7 +64,7 @@ async function main() {
 
       await objRemoteHeatings.loadRemoteHeatingsTable(objRemoteHeating.condominiumId, objRemoteHeating.nineNine, objRemoteHeating.nineNine);
 
-           // Show filter
+      // Show filter
       showFilter(remoteHeatingId);
 
       // Show remoteHeating
@@ -86,8 +86,7 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterRemoteHeatingId')) {
 
-      const year = Number(document.querySelector(".filterRemoteHeatingId").value);
-      showFilter(remoteHeatingId);
+      const remoteHeatingId = Number(document.querySelector(".filterRemoteHeatingId").value);
       await objRemoteHeatings.loadRemoteHeatingsTable(objRemoteHeating.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
       showRemoteHeating(remoteHeatingId);
@@ -96,23 +95,9 @@ async function events() {
 
   // Delete remoteheatings row
   document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
 
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objRemoteHeatings.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract remoteHeatingId in the class name
-      let remoteHeatingId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        remoteHeatingId = Number(className.slice(prefix.length));
-      }
-
+      const remoteHeatingId = Number(document.querySelector(".filterRemoteHeatingId").value);
       await objRemoteHeatings.deleteRemoteHeatingTable(remoteHeatingId, objRemoteHeatings.user);
       await objRemoteHeatings.loadRemoteHeatingsTable(objRemoteHeating.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
@@ -123,32 +108,13 @@ async function events() {
   // update a remoteheatings row
   document.addEventListener('change', async (event) => {
 
-    const arrayPrefixes = ['date', 'condoId', 'kilowattHour', 'priceYear'];
-
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[2]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[3]))
-    ) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objRemoteHeatings.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract remoteHeatingId in the class name
-      let remoteHeatingId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        remoteHeatingId = Number(className.slice(prefix.length));
-      }
+          const remoteHeatingId = Number(document.querySelector(".filterRemoteHeatingId").value);
+      await objRemoteHeatings.updateRemoteHeatingRow(remoteHeatingId, objRemoteHeatings.user);
 
       await updateRemoteHeatingRow(remoteHeatingId);
-    };
   });
 
-  // Delete suppliers row
+  // Delete a remoteheating row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
@@ -173,39 +139,6 @@ async function events() {
       };
     };
   });
-
-  // Log out
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('logOut')) {
-
-      let url = (objRemoteHeating.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
-    };
-  });
-}
-
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objRemoteHeatings.initializeTable(columnWidths);
-
-  // start table body
-  html += objRemoteHeatings.startTableBody();
-
-  // show main header
-  html += objRemoteHeatings.showTableHeaderLogOut('', '', '', 'Fjernvarme', '');
-  html += "</tr>";
-
-  // end table body
-  html += objRemoteHeatings.endTableBody();
-
-  // The end of the table
-  html += objRemoteHeatings.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -214,12 +147,15 @@ function showFilter(remoteHeatingId) {
   // Start frame
   let html = startFrame();
 
-  html += objRemoteHeatings.showSelectedRemoteHeatingsNew('Fjernvarme', 'filterRemoteHeatingId',    '',remoteHeatingId, 'Velg fjernvarme ', '',true);
+  html += objRemoteHeatings.showSelectedRemoteHeatingsNew('Fjernvarme', 'filterRemoteHeatingId', '', remoteHeatingId, 'Velg fjernvarme ', '', true);
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show remoteheatings
@@ -302,14 +238,17 @@ function showRemoteHeating(remoteHeatingId) {
 function insertEmptyRow() {
 
   // start new row
-  let html = startRow();
+  //let html = startRow();
+
+  // insert a table row (<tr></td>)
+  html += objRemoteHeating.insertTableRow('');
 
   // Date
   const currentYear = Number(document.querySelector(".filterRemoteHeating").value);
   const lastYear = currentYear - 1;
 
   let className = `date0`;
-  html += showDate('Dato', className, "", enableChanges)
+  let html = showDate('Dato', className, "", enableChanges)
 
   // condo Id
   className = `condoId0`;

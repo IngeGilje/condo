@@ -264,7 +264,7 @@ async function main() {
             let SQLquery = `
             SELECT * FROM accounts
             WHERE condominiumId = ${condominiumId}
-              AND deleted <> 'Y'`;
+            AND deleted <> 'Y'`;
             if (fixedCost === 'Y' || fixedCost === 'N') SQLquery += ` AND fixedCost = '${fixedCost}'`;
             SQLquery += ` ORDER BY name ASC, accountId ASC;`;
 
@@ -1549,7 +1549,7 @@ async function main() {
             let SQLquery = `
             SELECT * FROM condo
             WHERE condominiumId = ${condominiumId}
-              AND deleted <> 'Y'`;
+            AND deleted <> 'Y'`;
             if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
             SQLquery += ` ORDER BY condoId;`;
 
@@ -2554,7 +2554,6 @@ async function main() {
   });
 
   // Requests for remoteheatingprices table
-  //app.post("/remoteheatingprices", async (req, res) => {
   routePath = "";
   if (serverStatus === 1) routePath = "/api/remoteheatingprices";
   if (serverStatus === 2) routePath = "/remoteheatingprices";
@@ -2571,7 +2570,8 @@ async function main() {
 
           const condominiumId = req.body.condominiumId;
 
-          let SQLquery = `SELECT * FROM remoteheatingprices
+          let SQLquery = `
+          SELECT * FROM remoteheatingprices
           WHERE condominiumId = ${condominiumId} 
           AND deleted <> 'Y'`;
           SQLquery += ` ORDER BY year; `;
@@ -2596,11 +2596,11 @@ async function main() {
         try {
 
           let SQLquery = `
-            SELECT * FROM remoteheatingprices
-            WHERE condominiumId = ${condominiumId}
-            AND deleted <> 'Y'
-            ORDER BY remoteHeatingPriceId DESC
-            LIMIT 1;`;
+          SELECT * FROM remoteheatingprices
+          WHERE condominiumId = ${condominiumId}
+          AND deleted <> 'Y'
+          ORDER BY remoteHeatingPriceId DESC
+          LIMIT 1;`;
 
           console.log('SQLquery :', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -2619,21 +2619,20 @@ async function main() {
 
         try {
 
-          const remoteHeatingpricesId = req.body.remoteHeatingpricesId;
+          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
           const user = req.body.user;
           const year = req.body.year;
           const priceKilowattHour = req.body.priceKilowattHour;
 
           // Update row
-          const SQLquery =
-            `
-              UPDATE remoteheatingprices
+          const SQLquery = `
+          UPDATE remoteheatingprices
           SET
-          user = '${user}',
+            user = '${user}',
             lastUpdate = '${lastUpdate}',
             year = ${year},
-          priceKilowattHour = ${priceKilowattHour}
-              WHERE remoteHeatingpricesId = ${remoteHeatingpricesId};
+            priceKilowattHour = ${priceKilowattHour}
+          WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
           `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2693,17 +2692,14 @@ async function main() {
 
         try {
 
-          const remoteHeatingpricesId = req.body.remoteHeatingpricesId;
+          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
           const user = req.body.user;
 
           // Delete table
           const SQLquery = `
-          UPDATE remoteheatingprices
-          SET
-            deleted = 'Y',
-            user = '${user}',
-            lastUpdate = '${lastUpdate}'
-          WHERE remoteHeatingpricesId = ${remoteHeatingpricesId};`;
+          DELETE FROM remoteheatingprices
+          WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+          `;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -2721,12 +2717,10 @@ async function main() {
   });
 
   // Requests for commoncosts table
-  //app.post("/commoncosts", async (req, res) => {
   routePath = "";
   if (serverStatus === 1) routePath = "/api/commoncosts";
   if (serverStatus === 2) routePath = "/commoncosts";
   app.post(routePath, async (req, res) => {
-
 
     const action = req.body.action;
     const lastUpdate = today.toISOString();
@@ -2739,7 +2733,10 @@ async function main() {
 
           const condominiumId = req.body.condominiumId;
 
-          let SQLquery = `SELECT * FROM commoncosts WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
+          let SQLquery = `
+          SELECT * FROM commoncosts
+          WHERE condominiumId = ${condominiumId}
+          AND deleted <> 'Y'`;
           SQLquery += ` ORDER BY year; `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2755,13 +2752,13 @@ async function main() {
         break;
       }
 
-      case 'highestCondominiumId': {
+      case 'highestCommonCostId': {
         const condominiumId = Number(req.body.condominiumId);
 
         try {
 
           let SQLquery = `
-            SELECT * FROM condominiums
+            SELECT * FROM commoncosts
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'
             ORDER BY condominiumId DESC

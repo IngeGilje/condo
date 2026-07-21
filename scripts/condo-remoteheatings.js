@@ -121,17 +121,22 @@ function showFilter(year) {
   // Show years
   html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
 
+  /*
   // Price/kilowattHour
   const priceKilowattHour = getPriceKilowattHour(year);
   className = `filterPrice`;
   //html += showAmount('Pris KilowatTimer', 'filterPrice', priceKilowattHour, true);
   html += showTextNew('Pris KilowatTimer', 'filterPrice', priceKilowattHour, true, 'Pris KilowatTimer');
   html += "</div>";
+  */
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show remoteheatings
@@ -226,14 +231,17 @@ function showRemoteHeatings() {
 function insertEmptyRow() {
 
   // start new row
-  let html = startRow();
+  //let html = startRow();
+
+  // insert a table row (<tr></td>)
+  html += objRemoteHeatings.insertTableRow('');
 
   // Date
   const currentYear = Number(document.querySelector(".filterYear").value);
   const lastYear = currentYear - 1;
 
   let className = `date0`;
-  html += showDate('Dato', className, "", enableChanges)
+  let html = showDate('Dato', className, "", enableChanges)
 
   // condo Id
   className = `condoId0`;

@@ -255,6 +255,9 @@ function showFilter(transactionId) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 function resetValues() {

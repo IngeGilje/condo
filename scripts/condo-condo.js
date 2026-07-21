@@ -37,7 +37,7 @@ async function main() {
       // Show user menu
       html = showHorizontalMenu(objCondo.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
-      objCondo.markActivatedApplication(objCondo.arrayMenuUser,applicationName);
+      objCondo.markActivatedApplication(objCondo.arrayMenuUser, applicationName);
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);
@@ -181,12 +181,13 @@ function showFilter(condoId) {
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', '', true);
 
-  //html += "</div>";
-
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Maintain condo information
@@ -278,12 +279,12 @@ function showCondo(condoId) {
   }
 
   document.querySelector('.showCondo').innerHTML = html;
-  
+
   //if (enableChanges) document.querySelector('.cancel').disabled = true;
   if (enableChanges) {
     disableButton('delete', false);
     disableButton('insert', false);
-        disableButton('update', false);
+    disableButton('update', false);
     disableButton('cancel', true);
     disableButton('filterCondoId', false, 'white');
   }
@@ -294,54 +295,55 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = validateInterval('condoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, -1, objCondo.nineNine);
+  const validCondoId = validateIntervalNew('condoId', '', 'Ugyldig Leilighet', true, condoId, 0, objCondo.nineNine);
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = validateText('name', columnWidths, '', 'Ugyldig kontonavn', true, name, 3, 45);
+  const validName = validateTextNew('name', '', 'Ugyldig Kontonavn', showMessage = true, name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = objCondo.validateText('street', columnWidths, '', 'Ugyldig gatenavn', true, street, 3, 45);
+  const validStreet = validateTextNew('street', '', 'Ugyldig Gatenavn', true, street, 3, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = objCondo.validateText('address2', columnWidths, '', 'Ugyldig adresse', true, address2, 0, 45);
+  const validAddress2 = validateTextNew('address2', '', 'Ugyldig Adresse', true, address2, 0, 45);
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = validateInterval('postalCode', columnWidths, '', 'Ugyldig postnummer', true, Number(postalCode), 1, objCondo.nineNine);
+  const validPostalCode = validateIntervalNew('postalCode', '', 'Ugyldig postnummer', true, Number(postalCode), 1, 9999);
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = validateText('city', columnWidths, '', 'Ugyldig poststed', true, city, 1, 45);
+  const validCity = validateTextNew('city', '', 'Ugyldig Poststed', true, city, 0, 45);
 
   // validate squaremeters
   const squareMeters = Number(formatNorAmountToNumber(document.querySelector('.squareMeters').value));
-  const validSquareMeters = validateInterval('squareMeters', columnWidths, '', 'Ugyldig areal', true, squareMeters, 1, objCondo.nineNine);
+  const validSquareMeters = validateIntervalNew('squareMeters', '', 'Ugyldig Areal', true, squareMeters, 1, 9999);
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 
+    /*
     document.querySelector('.showMessage').style.display = "none";
-
+ 
     // Check if the condoId exist
     const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
     if (rowNumberCondo !== -1) {
-
+ 
       // update the condos row
       await objCondo.updateCondoTable(condoId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
       await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
     } else {
-
+ 
       // Insert the condo row in condo table
       await objCondo.insertCondoTable(objCondo.condominiumId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
       await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
       condoId = objCondo.arrayCondo.at(-1)?.condoId;
       document.querySelector('.filterCondoId').value = condoId;
     }
-
+ 
     removeMessage();
-
+ 
     if (enableChanges) {
       disableButton('delete', false);
       disableButton('insert', false);
@@ -349,8 +351,42 @@ async function updateCondoRow(condoId) {
                 disableButton('cancel', true);
       disableButton('filterCondoId', false, 'white');
     }
-
+ 
     // show filter
+    showFilter(condoId);
+ 
+    // Show condo
+    showCondo(condoId);
+    */
+    document.querySelector('.showMessage').style.display = "none";
+
+    // Check if the condoId exist
+    const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
+    if (rowNumberCondo !== -1) {
+
+      // update a condo row
+      await objCondo.updateCondoTable(condoId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
+    } else {
+
+      // Insert the condo row in condo table
+      await objCondo.insertCondoTable(objCondo.condominiumId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
+      await objCondo.getHighestCondoId(objCondo.condominiumId);
+      condoId = objCondo.arrayCondos[0].condoId;
+    }
+
+    await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterCondoId', false);
+    }
+
+    // Show filter
     showFilter(condoId);
 
     // Show condo

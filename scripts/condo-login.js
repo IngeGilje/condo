@@ -46,21 +46,37 @@ function showLogin() {
 
   document.querySelector('.showLogIn').innerHTML = `
   <h2>Logg inn</h2>
-  <div class="field">
-    <input type="text" class="one-line center" autocomplete="off">
-    <label>Brukernavn</label>
+  <div 
+    class="field center"
+  >
+    <label>
+      Brukernavn
+    </label>
+    <input 
+      type="text" 
+      class="one-line"
+      autocomplete="off"
+    >
   </div>
 
   <p>&nbsp</p>
 
-  <div class="field">
-    <input type="password" class="one-line center">
-    <label>Passord</label>
+  <div 
+    class="field center"
+  >
+    <label>
+      Passord
+    </label>
+    <input
+      type="password"
+      class="one-line center">
   </div>
 
    <p>&nbsp</p>
 
-  <button class="login-btn LogIn">
+  <button 
+    class="login-btn LogIn"
+  >
     Logg inn
   </button>`;
 }

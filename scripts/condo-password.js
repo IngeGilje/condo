@@ -173,6 +173,9 @@ function showFilter(userId) {
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("Filter");
 }
 
 // Show user
@@ -223,11 +226,11 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = validateInterval('userId', columnWidths, '', 'Ugyldig bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateIntervalNew('userId', columnWidths, '', 'Ugyldig bruker', true, userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = validateInterval('securityLevel', columnWidths, '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
+  const validSecurityLevel = validateIntervalNew('securityLevel', columnWidths, '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
 
   // validate password
   let password = document.querySelector('.password').value;
