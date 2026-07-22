@@ -40,9 +40,10 @@ class EmptyingCalendars extends Condos {
   }
 
   // Show selected emptycaledars
-  showSelectedEmptyCalendarsNew(label, className, style, date, selectNone, selectAll, enableChanges) {
+  showSelectedEmptyCalendarsNew(label, className, style, emptyingCalendarId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
+    let emptyCalendarDate = "20200101";
 
     let html = `
     <div class="field" style="width:250px;margin-left:35px;margin-bottom:25px;">
@@ -61,11 +62,11 @@ class EmptyingCalendars extends Condos {
         html += `
         <option 
           value=${emptyCalendar.date}
-          ${((emptyCalendar.date === date)) ? 'selected' : ''}
+          ${((emptyCalendar.emptyingCalendarId === emptyingCalendarId)) ? 'selected' : ''}
         >`;
-        if (emptyCalendar.date === date) selectedValue = true;
+        if (emptyCalendar.emptyingCalendarId === emptyingCalendarId) selectedValue = true;
 
-        const emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
+        emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
         html += `
           &nbsp;&nbsp;${emptyCalendarDate}&nbsp;&nbsp;
         </option>
@@ -76,8 +77,9 @@ class EmptyingCalendars extends Condos {
       // try start of the month
       if (!selectedValue) {
 
-        const year = String(date).slice(0, 4);
-        const month = String(date).slice(4, 6);
+        emptyCalendarDate = getCurrentDate();
+        const year = String(emptyCalendarDate).slice(6, 10);
+        const month = String(emptyCalendarDate).slice(3, 5);
         const fromDate = Number(year + month + "01");
         const toDate = Number(year + month + "31");
 

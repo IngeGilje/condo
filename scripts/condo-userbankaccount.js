@@ -9,8 +9,6 @@ const objUserBankAccount = new UserBankAccount('userbankaccount');
 const enableChanges = (objUserBankAccount.securityLevel > 5);
 const applicationName = "condo-userbankaccount";
 
-const columnWidths = [175, 175, 175, 175];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -229,20 +227,21 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   // User Id
   let className = 'userId';
   let userId = Number(document.querySelector(`.${className}`).value);
-  const validUserId = validateInterval(className, '', 'Ugyldig bruker', true, userId, 1, objUserBankAccount.nineNine, objUserBankAccount);
+  const validUserId = validateIntervalNew(className, '', 'Ugyldig Bruker', true, userId, 1, objUserBankAccount.nineNine, objUserBankAccount);
 
   // account Id
   className = 'accountId';
   let accountId = Number(document.querySelector(`.${className}`).value);
-  const validAccountId = validateInterval(className, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccount.nineNine);
+  const validAccountId = validateIntervalNew(className, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccount.nineNine);
 
   // bank account
   className = 'bankAccount';
   const bankAccount = document.querySelector(`.${className}`).value;
-  const validBankAccount = validateBankAccount(className, true, bankAccount, '', 'Ugyldig bankkonto');
+  const validBankAccount = validateBankAccountNew(className, true, bankAccount, '', 'Ugyldig bankkonto');
 
   if (validUserId && validAccountId && validBankAccount) {
 
+    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the userbankaccounts row exist
@@ -272,6 +271,41 @@ async function updateUserBankAccountsRow(userBankAccountId) {
 
     // Show filter and user bank account
     showFilter(userBankAccountId);
+    showUserBankAccount(userBankAccountId);
+  }
+  */
+ document.querySelector('.showMessage').style.display = "none";
+
+    // Check if the userbankaccounts row exist
+    const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    if (rowNumberUserBankAccount !== -1) {
+
+       // update the userbankaccounts row
+      await objUserBankAccount.updateUserBankAccountsTable(userBankAccountId, objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
+    } else {
+
+     // Insert the userbankaccounts row 
+      await objUserBankAccount.insertUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
+      await objUserBankAccount.getHighestUserBankAccountId(objUserBankAccount.condominiumId);
+      userBankAccountId = objUserBankAccount.arrayUserBankAccounts[objUserBankAccount.arrayUserBankAccounts.length - 1].userBankAccountId;
+    }
+
+      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterUserBankAccountId', false);
+    }
+
+    // Show filter
+    showFilter(userBankAccountId);
+
+    // Show user bank account
     showUserBankAccount(userBankAccountId);
   }
 }

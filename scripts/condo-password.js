@@ -10,8 +10,6 @@ const objPassword = new Password('password');
 const enableChanges = (objPassword.securityLevel > 5);
 const applicationName = "condo-password";
 
-const columnWidths = [175, 175];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -136,27 +134,6 @@ async function deleteCondo() {
   }
 }
 
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objUser.initializeTable(columnWidths);
-
-  // start table body
-  html += objUser.startTableBody();
-
-  // show main header
-  html += objUser.showTableHeaderLogOut('Passord');
-  html += "</tr>";
-
-  // end table body
-  html += objUser.endTableBody();
-
-  // The end of the table
-  html += objUser.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-
 // Show filter
 function showFilter(userId) {
 
@@ -226,12 +203,12 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = validateIntervalNew('userId', columnWidths, '', 'Ugyldig bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateIntervalNew('userId',   '', 'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = validateIntervalNew('securityLevel', columnWidths, '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
-
+  const validSecurityLevel = validateIntervalNew('securityLevel',    '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
+ 
   // validate password
   let password = document.querySelector('.password').value;
   /*
@@ -241,8 +218,10 @@ async function updateUserRow(userId) {
   */
   const validPassword = ((password.length >= 5) || (password === ''));
 
+
   if (validUserId && validSecurityLevel && validPassword) {
 
+    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the userId exist
@@ -256,14 +235,7 @@ async function updateUserRow(userId) {
       // or only personal password
       const resident = 'A';
 
-      /*
-      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
- 
-      (enableChanges)
-        ? await objUser.loadUsersTable(condominiumId, resident, objPassword.userId)
-        : await objUser.loadUsersTable(condominiumId, resident, objPassword.nineNine);
-      */
-      if (enableChanges) await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
+       if (enableChanges) await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
     }
 
     // Show filter
@@ -275,6 +247,42 @@ async function updateUserRow(userId) {
   } else {
 
     showMessageNew('Ugyldig passord.');
+  }
+  */
+
+    document.querySelector('.showMessage').style.display = "none";
+
+    // Check if the userId exist
+    const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+    if (rowNumberUser !== -1) {
+
+      // update a accounts row
+      await objAccounts.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
+    } else {
+
+      // Insert a accounts row
+      await objAccount.insertAccountsTable(objAccount.condominiumId, objAccount.user, year, priceKilowattHour);
+      await objAccount.getHighestAccountId(objAccount.condominiumId);
+      accountId = objAccount.arrayAccounts[0].accountId;
+    }
+
+    await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterAccountId', false);
+    }
+
+    // Show filter
+    showFilter(accountId);
+
+    // Show account
+    showAccount(accountId);
   }
 }
 

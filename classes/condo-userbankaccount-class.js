@@ -137,7 +137,7 @@ class UserBankAccount extends Condos {
   }
 
   // update user bank account row
-  async updateProjectsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount) {
+  async updateUserBankAccountsTable(userBankAccountId, condominiumId, user, userId, accountId, bankAccount) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/userbankaccounts'

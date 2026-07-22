@@ -100,7 +100,7 @@ async function events() {
 
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      //const validCondoId = validateIntervalNew('filterCondoId', columnWidths, '', 'Ugyldig leilighet', true, condoId, 1, objOverview.nineNine);
+      //const validCondoId = validateIntervalNew('filterCondoId', columnWidths, '', 'Ugyldig Leilighet', true, condoId, 1, objOverview.nineNine);
 
       const accountId = objOverview.nineNine;
       const deleted = 'N';

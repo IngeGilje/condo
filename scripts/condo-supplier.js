@@ -9,8 +9,6 @@ const objSupplier = new Supplier('supplier');
 const enableChanges = (objSupplier.securityLevel > 5);
 const applicationName = "condo-supplier";
 
-const columnWidths = [175, 175];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -48,9 +46,6 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
 
       // Find selected supplier id
       const supplierId = objSupplier.getSelectedSupplierId('select-supplierId');
-
-      // Show header
-      //showHeader();
 
       // Show filter
       showFilter(supplierId);
@@ -203,27 +198,6 @@ function resetValues() {
     disableButton('cancel', false);
     disableButton('filterSupplierId', true);
   }
-}
-
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objSupplier.initializeTable(columnWidths);
-
-  // start table body
-  html += objSupplier.startTableBody();
-
-  // show main header
-  html += objSupplier.showTableHeaderLogOut('Leverandør');
-  html += "</tr>";
-
-  // end table body
-  html += objSupplier.endTableBody();
-
-  // The end of the table
-  html += objSupplier.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -382,7 +356,7 @@ function showSupplier(supplierId) {
   if (enableChanges) {
     disableButton('delete', false);
     disableButton('insert', false);
-     disableButton('update', false);
+    disableButton('update', false);
     disableButton('cancel', true);
     disableButton('filterSupplierId', false, 'white');
   }
@@ -393,26 +367,26 @@ async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = validateIntervalNew('supplierId', columnWidths, '', 'Ugyldig leverandør', true, supplierId, -1, objSupplier.nineNine);
+  const validSupplierId = validateIntervalNew('supplierId', '', 'Ugyldig leverandør', true, supplierId, -1, objSupplier.nineNine);
 
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', columnWidths, '', 'Ugyldig navn', true, name, 3, 45);
+  const validName = validateTextNew('name', '', 'Ugyldig navn', true, name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateTextNew('street', columnWidths, '', 'Ugyldig adresse', true, street, 0, 45);
+  const validStreet = validateTextNew('street', '', 'Ugyldig adresse', true, street, 0, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = validateTextNew('address2', columnWidths, '', 'Ugyldig adresse', true, address2, 0, 45);
+  const validAddress2 = validateTextNew('address2', '', 'Ugyldig adresse', true, address2, 0, 45);
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = validateIntervalNew('postalCode', columnWidths, '', 'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
+  const validPostalCode = validateIntervalNew('postalCode', '', 'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value.trim();
-  const validCity = objSupplier.validateText('city', columnWidths, '', 'Ugyldig poststed', true, city, 0, 45, '',);
+  const validCity = validateTextNew('city', '', 'Ugyldig poststed', true, city, 0, 45, '',);
 
   // validate email
   const email = document.querySelector('.email').value.trim();
@@ -426,7 +400,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate accountId
   const accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = validateIntervalNew('accountId', columnWidths, '', 'Ugyldig konto', true, accountId, 1, objSupplier.nineNine);
+  const validAccountId = validateIntervalNew('accountId', '', 'Ugyldig konto', true, accountId, 1, objSupplier.nineNine);
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
@@ -436,27 +410,28 @@ async function updateSuppliersRow(supplierId) {
 
   // validate amountAccountId
   const amountAccountId = Number(document.querySelector('.amountAccountId').value);
-  const validAmountAccountId = validateIntervalNew('amountAccountId', columnWidths, '', 'Ugyldig konto for beløp', true, amountAccountId, 0, objSupplier.nineNine);
+  const validAmountAccountId = validateIntervalNew('amountAccountId', '', 'Ugyldig konto for beløp', true, amountAccountId, 0, objSupplier.nineNine);
 
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatNorAmountToNumber(amount));
-  const validAmount = validateIntervalNew('amount', columnWidths, '', 'Ugyldig beløp', true, amount, objSupplier.minusNineNine, objSupplier.nineNine);
+  const validAmount = validateIntervalNew('amount', '', 'Ugyldig beløp', true, amount, objSupplier.minusNineNine, objSupplier.nineNine);
 
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);
-  const validTextAccountId = validateIntervalNew('textAccountId', columnWidths, '', 'Ugyldig konto for tekst', true, textAccountId, 0, objSupplier.nineNine);
+  const validTextAccountId = validateIntervalNew('textAccountId', '', 'Ugyldig konto for tekst', true, textAccountId, 0, objSupplier.nineNine);
 
   // validate text
   const text = document.querySelector('.accountText').value;
-  const validText = validateTextNew('accountText', columnWidths, '', 'Ugyldig tekst', true, text, 0, 45);
+  const validText = validateTextNew('accountText', '', 'Ugyldig tekst', true, text, 0, 45);
 
   if (validSupplierId && validName && validStreet && validAddress2
     && validPostalCode && validCity && validBankAccount && validAccountId
     && validAmountAccountId && validAmount && validTextAccountId
     && validEmail && validText) {
 
+    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the supplierId exist
@@ -485,6 +460,42 @@ async function updateSuppliersRow(supplierId) {
     }
 
     // show filter
+    showFilter(supplierId);
+
+    // Show supplier
+    showSupplier(supplierId);
+  }
+  */
+
+    document.querySelector('.showMessage').style.display = "none";
+
+    // Check if the supplierId exist
+    const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
+    if (rowNumberSupplier !== -1) {
+
+      // update the suppliers row
+      await objSupplier.updateSuppliersTable(supplierId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
+    } else {
+
+      // Insert the supplier row in supplier table
+      await objSupplier.insertSuppliersTable(objSupplier.condominiumId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
+      await objSupplier.getHighestSupplierId(objSupplier.condominiumId);
+      supplierId = objSupplier.arrSuppliers[0].supplierId;
+    }
+
+    await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterSupplierId', false);
+    }
+
+    // Show filter
     showFilter(supplierId);
 
     // Show supplier

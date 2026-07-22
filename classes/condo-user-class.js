@@ -563,7 +563,7 @@ class User extends Condos {
     const rowNumberUser = this.arrayUsers.findIndex(user => user.userId === userId);
     userName = (rowNumberUser !== -1)
       ? this.arrayUsers[rowNumberUser].firstName
-      : 'Ugyldig bruker';
+      : 'Ugyldig Bruker';
     return userName;
   }
 }

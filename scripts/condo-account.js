@@ -18,9 +18,6 @@ const queryParameters = new URLSearchParams(window.location.search);
 const paramAccountId = Number(queryParameters.get("accountId"));
 const paramFixedCost = queryParameters.get("fixedCost");
 
-// column widths
-const columnWidths = [175, 175, 100];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -77,7 +74,7 @@ async function main() {
     }
   } else {
 
-    objAccount.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -276,7 +273,7 @@ async function updateAccountsRow(accountId) {
   className = `fixedCost`;
   if (fixedCost === constFixedCost) fixedCost = 'Y';
   if (fixedCost === constVariableCost) fixedCost = 'N';
-  const validFixedCost = objAccount.validateValues(className, columnWidths, '', 'Ugyldig kostnadstype', true, fixedCost, 'Y', 'N');
+  const validFixedCost = validateValuesNew(className, 'Ugyldig kostnadstype', true, fixedCost, 'Y', 'N');
 
   // Validate accounts columns
   if (validName && validFixedCost) {

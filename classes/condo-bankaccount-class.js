@@ -306,7 +306,7 @@ class BankAccount extends Condos {
       : 'http://localhost:3000/bankaccounts';
     try {
 
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -326,10 +326,11 @@ class BankAccount extends Condos {
   // update bank accounts row
   async updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate) {
 
-    const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
+    const URL = (this.serverStatus === 1)
+      ? '/api/bankaccounts'
+      : 'http://localhost:3000/bankaccounts';
     try {
       // POST request
-      //const response = await fetch(`${URL}:3000/bankaccounts?action=update&bankAccountId=${bankAccountId}&user=${user}&bankAccount=${bankAccount}&name=${name}&openingBalanceDate=${openingBalanceDate}&openingBalance=${openingBalance}&closingBalanceDate=${closingBalanceDate}&closingBalance=${closingBalance}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {

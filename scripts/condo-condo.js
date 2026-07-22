@@ -8,8 +8,6 @@ const objCondo = new Condo('condo');
 const enableChanges = (objCondo.securityLevel > 5);
 const applicationName = "condo-condo";
 
-const columnWidths = [175, 175]
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -146,27 +144,6 @@ async function events() {
       window.location.href = url;
     };
   });
-}
-
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objCondo.initializeTable(columnWidths);
-
-  // start table body
-  html += objCondo.startTableBody();
-
-  // show main header
-  html += objCondo.showTableHeaderLogOut('Leilighet');
-  html += "</tr>";
-
-  // end table body
-  html += objCondo.endTableBody();
-
-  // The end of the table
-  html += objCondo.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter

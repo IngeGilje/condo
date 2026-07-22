@@ -269,7 +269,7 @@ async function updateOpeningClosingBalance() {
 
     [accountingDate, balance, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
-    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '', 'Ugyldig dato')) {
+    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '', 'Ugyldig Dato')) {
 
       totalIncome += Number(formatNorAmountToNumber(income));
       totalPayment += Number(formatNorAmountToNumber(payment));

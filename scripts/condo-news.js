@@ -8,8 +8,6 @@ const objNews = new News('news');
 const enableChanges = (objNews.securityLevel > 5);
 const applicationName = "condo-news";
 
-const columnWidths = [175, 175, 125];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -226,16 +224,16 @@ async function updateNewsRow(newsId) {
 
   if (newsId === '') newsId = -1
   newsId = Number(newsId);
-  const validNewsId = validateIntervalNew('newsId', '', 'Ugyldig leilighet', true, newsId, -1, objNews.nineNine);
+  const validNewsId = validateIntervalNew('newsId', '', 'Ugyldig Leilighet', true, newsId, 0, objNews.nineNine);
 
   // validate title
-  const title = document.querySelector('.title').value;
-  const validTitle = validateTextNew('title', '', 'Ugyldig tittel', true, title, 3, 45);
-
+  const title = document.querySelector('.title').value.trim();
+  const validTitle = validateTextNew('title',    '', 'Ugyldig Tittel',               true, title, 3, 45);
+ 
   // validate date
   let date = document.querySelector('.newsDate').value;
   date = Number(objNews.formatDateToNumber(date));
-  const validDate = validateIntervalNew('date', '', 'Ugyldig dato', true, date, 1, objNews.nineNine);
+  const validDate = validateIntervalNew('date', '', 'Ugyldig Dato', true, date, 1, objNews.nineNine);
 
   // validate userId  
   const userId = Number(document.querySelector('.userId').value);
@@ -248,6 +246,7 @@ async function updateNewsRow(newsId) {
 
   if (validNewsId && validTitle && validDate && validUserId && validContent) {
 
+    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the newsId exist
@@ -265,6 +264,41 @@ async function updateNewsRow(newsId) {
       newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
     }
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterNewsId', false, 'white');
+    }
+
+    // Show filter
+    showFilter(newsId);
+
+    // Show news
+    showNews(newsId);
+  }
+  */
+    document.querySelector('.showMessage').style.display = "none";
+
+    // Check if the news row exist
+    const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
+    if (rowNumberNews !== -1) {
+
+      // update the news row
+      await objNews.updateNewsTable(newsId, objNews.user, date, userId, title, content, '');
+    } else {
+
+      // Insert a news row
+      await objNews.insertNewsTable(objNews.condominiumId, objNews.user, date, userId, title, content, '');
+      await objNews.getHighestNewsId(objNews.condominiumId);
+      newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;
+    }
+
+    await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
     removeMessage();
 

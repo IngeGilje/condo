@@ -336,6 +336,7 @@ class Condos {
     return html;
   }
 
+  /*
   // Validate text
   validateText(className, columnWidths, style, message, showMessage = true, text, minLength, maxLength) {
 
@@ -374,6 +375,7 @@ class Condos {
       return false;
     }
   }
+  */
 
   // Select numbers
   selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
@@ -1261,7 +1263,26 @@ function validateOrganizationNumberNew(className, organizationNumber) {
   }
 
   if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
-  return isValid;  
+  return isValid;
+}
+
+// Validate E-mail
+function validateEmailNew(className, eMail, style, message) {
+
+  // Validate eMail
+  const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValid = ((eMailRegex.test(eMail))) ? true : false;
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
+
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
+
+  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  return isValid;
 }
 
 // Validate phone number 
@@ -1349,7 +1370,6 @@ function validateISODate(className, date, showMessage = true, errorMessage) {
     }
   }
 
-  // Show error message
   const inputElement = document.querySelector(`.${className}`);
   if (inputElement) {
 
@@ -1368,7 +1388,7 @@ function validateIntervalNew(className, style, errorMessage, showMessage = true,
   number = Number(number);
   let isValid = (Number(number) >= Number(minNumber) && Number(number) <= Number(maxNumber));
 
-  const inputElement = document.querySelector(`.${className}`);
+const inputElement = document.querySelector(`.${className}`);
   if (inputElement) {
 
     (isValid)
@@ -1376,12 +1396,14 @@ function validateIntervalNew(className, style, errorMessage, showMessage = true,
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
 // Validate text
 function validateTextNew(className, style, errorMessage, showMessage = true, value, minLength, maxLength) {
+
+  value = value.trim();
 
   let isValid = true;
 
@@ -1396,11 +1418,14 @@ function validateTextNew(className, style, errorMessage, showMessage = true, val
   if (!regex.test(value)) isValid = false;
 
   const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
 
-  // remove/ add 'input-error' class
-  if (inputElement) inputElement.classList.toggle('input-error', !isValid);
-  if (!isValid && showMessage) showMessageNew(errorMessage)
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
 
+  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -1410,11 +1435,14 @@ function validateNumberNew(className, style, errorMessage, showMessage = true, n
   let isValid = (Number(number) >= Number(minValue) && Number(number) <= Number(maxValue));
 
   const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
 
-  // remove/ add 'input-error' class
-  if (inputElement) inputElement.classList.toggle('input-error', !isValid);
-  if (!isValid && showMessage) showMessageNew(errorMessage);
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
 
+  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -1737,7 +1765,7 @@ function formatNumberToNorAmount(amount) {
 }
 */
 
-// Format norwegian kroner (12 345,67) to ore/number (1234567)
+// Format norwegian kroner (12 345,67) to number (1234567)
 function formatNorAmountToNumber(amount) {
 
   amount = String(amount);

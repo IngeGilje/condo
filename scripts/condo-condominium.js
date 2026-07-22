@@ -10,8 +10,6 @@ const objCondominium = new Condominium('condominium');
 const enableChanges = (objCondominium.securityLevel > 5);
 const applicationName = "condo-condominium";
 
-const columnWidths = [175, 175];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -37,7 +35,7 @@ async function main() {
       // Show condominium menu
       html = showHorizontalMenu(objCondominium.arrayMenuCondominium);
       document.querySelector('.showMenuCondominium').innerHTML = html;
-      objCondominium.markActivatedApplication(objCondominium.arrayMenuCondominium,applicationName);
+      objCondominium.markActivatedApplication(objCondominium.arrayMenuCondominium, applicationName);
 
       await objCondominium.loadCondominiumsTable();
       const resident = 'Y';
@@ -210,25 +208,6 @@ async function deleteCondominiumRow() {
     // delete condominium row
     await objCondominium.deleteCondominiumsTable(condominiumId, objCondominium.user);
   }
-}
-
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objCondominium.initializeTable(columnWidths);
-
-  // show main header
-  html += objCondominium.showTableHeaderLogOut('', 'Sameie');
-
-  html += "</tr>";
-
-  // end table body
-  html += objCondominium.endTableBody();
-
-  // The end of the table
-  html += objCondominium.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
 }
 
 // Show filter
@@ -415,27 +394,24 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  //const validName = objCondominium.validateText('name', '', 'Ugyldig navn', true, name, 3, 45);
-  const validName =               validateTextNew('name', '', 'Ugyldig Navn', true, name, 3, 45);
+  const validName = validateTextNew('name', '', 'Ugyldig Navn', true, name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  //const validStreet = objCondominium.validateText('street', '', 'Ugyldig addresse', true, street, 3, 45);
-                const validStreet = validateTextNew('street', '', 'Ugyldig Addresse', true, street, 3, 45);
+  const validStreet = validateTextNew('street', '', 'Ugyldig Addresse', true, street, 3, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  //const validAddress2 = objCondominium.validateText('address2', '', 'Ugyldig addresse', true, address2, 0, 45);
-                const validAddress2 = validateTextNew('address2', '', 'Ugyldig addresse', true, address2, 0, 45);
+  const validAddress2 = validateTextNew('address2', '', 'Ugyldig addresse', true, address2, 0, 45);
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = validateIntervalNew('postalCode', columnWidths, '', 'Ugyldig postnummer', true, Number(postalCode), 1, objCondominium.nineNine);
+  const validPostalCode = validateIntervalNew('postalCode', '', 'Ugyldig postnummer', true, Number(postalCode), 1, objCondominium.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value;
   //const validCity = validateTextNew('city', '', 'Ugyldig poststed', true, city, 1, 45);
-   const validCity =  validateTextNew('city', '', 'Ugyldig Poststed', true, city, 0, 45);
+  const validCity = validateTextNew('city', '', 'Ugyldig Poststed', true, city, 0, 45);
 
   // validate phone
   const phone = document.querySelector('.phone').value;
@@ -447,17 +423,17 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate incomeRemoteHeatingAccountId
   const incomeRemoteHeatingAccountId = Number(document.querySelector('.incomeRemoteHeatingAccountId').value);
-  const validIncomeRemoteHeatingAccountId = validateIntervalNew('incomeRemoteHeatingAccountId', columnWidths, '', 'Ugyldig inntektskonto for husleie', true, incomeRemoteHeatingAccountId, 0, objCondominium.nineNine);
+  const validIncomeRemoteHeatingAccountId = validateIntervalNew('incomeRemoteHeatingAccountId', '', 'Ugyldig inntektskonto for husleie', true, incomeRemoteHeatingAccountId, 0, objCondominium.nineNine);
 
   // validate paymentRemoteHeatingAccountId
   const paymentRemoteHeatingAccountId = Number(document.querySelector('.paymentRemoteHeatingAccountId').value);
   //const validPaymentRemoteHeatingAccountId = validateIntervalNew('paymentRemoteHeatingAccountId', '', 'Ugyldig inntektskonto for fjernvarme', true, paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
-    const validPaymentRemoteHeatingAccountId = validateIntervalNew('paymentRemoteHeatingAccountId', '', 'Ugyldig Inntektskonto for Fjernvarme', true, paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
+  const validPaymentRemoteHeatingAccountId = validateIntervalNew('paymentRemoteHeatingAccountId', '', 'Ugyldig Inntektskonto for Fjernvarme', true, paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
 
   // validate commonCostAccountId
   const commonCostAccountId = Number(document.querySelector('.commonCostAccountId').value);
   //const validCommonCostAccountId = validateIntervalNew('commonCostAccountId', '', 'Ugyldig konto', true, commonCostAccountId, 0, objCondominium.nineNine);
-    const validCommonCostAccountId = validateIntervalNew('commonCostAccountId', '', 'Ugyldig Konto', true, commonCostAccountId, 0, objCondominium.nineNine);
+  const validCommonCostAccountId = validateIntervalNew('commonCostAccountId', '', 'Ugyldig Konto', true, commonCostAccountId, 0, objCondominium.nineNine);
 
   // validate organizationNumber
   const organizationNumber = Number(document.querySelector('.organizationNumber').value);
@@ -471,22 +447,58 @@ async function updateCondominiumRow(condominiumId) {
     && validIncomeRemoteHeatingAccountId && validPaymentRemoteHeatingAccountId
     && validCommonCostAccountId && validOrganizationNumber && validimportPath) {
 
+    /*
+  document.querySelector('.showMessage').style.display = "none";
+
+  // Check if the condominiumId exist
+  const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+  if (rowNumberCondominium !== -1) {
+
+    // update the condominiums row
+    await objCondominium.updateCondominiumsTable(objCondominium.user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
+    await objCondominium.loadCondominiumsTable();
+  } else {
+
+    // Insert the bankaccount row in condominiums table
+    await objCondominium.insertCondominiumsTable(objCondominium.user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
+    await objCondominium.loadCondominiumsTable();
+    condominiumId = Number(objCondominium.arrayCondominiums.at(-1)?.condominiumId ?? 0);
+  }
+
+  removeMessage();
+
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterCondominiumId', false, 'white');
+  }
+
+  // Show filter
+  showFilter(condominiumId);
+
+  // Show condominium
+  showCondominium(condominiumId);
+}
+*/
     document.querySelector('.showMessage').style.display = "none";
 
-    // Check if the condominiumId exist
+    // Check if the condominium row exist
     const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
     if (rowNumberCondominium !== -1) {
 
-      // update the condominiums row
+      // update a condominiums row
       await objCondominium.updateCondominiumsTable(objCondominium.user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
-      await objCondominium.loadCondominiumsTable();
     } else {
 
-      // Insert the bankaccount row in condominiums table
+      // Insert a condominiums row
       await objCondominium.insertCondominiumsTable(objCondominium.user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath);
-      await objCondominium.loadCondominiumsTable();
-      condominiumId = Number(objCondominium.arrayCondominiums.at(-1)?.condominiumId ?? 0);
+      await objCondominium.getHighestAccountId(objCondominium.condominiumId);
+      condominiumId = objCondominium.arrayCondominiums[0].condominiumId;
     }
+
+    await objCondominium.loadCondominiumsTable();
 
     removeMessage();
 
@@ -495,7 +507,7 @@ async function updateCondominiumRow(condominiumId) {
       disableButton('insert', false);
       disableButton('update', false);
       disableButton('cancel', true);
-      disableButton('filterCondominiumId', false, 'white');
+      disableButton('filterCondominiumId', false);
     }
 
     // Show filter

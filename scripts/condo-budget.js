@@ -10,8 +10,6 @@ const objBudget = new Budget('budget');
 const enableChanges = (objBudget.securityLevel > 5);
 const applicationName = "condo-budget";
 
-const columnWidths = [100, 175, 175, 175, 100];
-
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramBudgetId = Number(queryParameters.get("budgetId"));
@@ -183,7 +181,6 @@ async function updateBudgetsRow(budgetId) {
   let text = document.querySelector('.text').value;
  
   // Validate budgets columns
-  debugger;
   if (validAccountId && validAmount && validYear) {
 
     /*

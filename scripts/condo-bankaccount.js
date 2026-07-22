@@ -10,8 +10,6 @@ const objBankAccount = new BankAccount('bankaccount');
 const enableChanges = (objBankAccount.securityLevel > 5);
 const applicationName = "condo-bankaccount";
 
-const columnWidths = [175, 175]
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -165,27 +163,6 @@ async function deleteBankAccount() {
   }
 }
 
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objBankAccount.initializeTable(columnWidths);
-
-  // start table body
-  html += objBankAccount.startTableBody();
-
-  // show main header
-  html += objBankAccount.showTableHeaderLogOut('Bankkonto');
-  html += "</tr>";
-
-  // end table body
-  html += objBankAccount.endTableBody();
-
-  // The end of the table
-  html += objBankAccount.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-
 // Show filter
 function showFilter(bankAccountId) {
 
@@ -215,7 +192,7 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = objBankAccount.validateText('name', columnWidths, '', 'Ugyldig navn', name, 3, 45);
+  const validName = validateTextNew('name', '', 'Ugyldig navn', true, name, 3, 45)
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
@@ -224,7 +201,7 @@ async function updateBankAccountRow(bankAccountId) {
   // Opening balance date
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
   openingBalanceDate = formatISODateToNumber(openingBalanceDate);
-  const validOpeningBalanceDate = validateIntervalNew('openingBalanceDate', '', 'Ugyldig dato inngående saldo', true, openingBalanceDate, 20200101, 20291231);
+  const validOpeningBalanceDate = validateIntervalNew('openingBalanceDate', '', 'Ugyldig Dato inngående saldo', true, openingBalanceDate, 20200101, 20291231);
 
   // Opening balance
   let openingBalance = document.querySelector('.openingBalance').value;
@@ -234,7 +211,7 @@ async function updateBankAccountRow(bankAccountId) {
   // Closing balance date
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
   closingBalanceDate = formatISODateToNumber(closingBalanceDate)
-  const validClosingBalanceDate = validateIntervalNew('closingBalanceDate', '', 'Ugyldig dato utgående saldo', true, closingBalanceDate, 20200101, 20291231);
+  const validClosingBalanceDate = validateIntervalNew('closingBalanceDate', '', 'Ugyldig Dato utgående saldo', true, closingBalanceDate, 20200101, 20291231);
 
   // Closing balance
   let closingBalance = document.querySelector('.closingBalance').value;

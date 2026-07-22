@@ -9,8 +9,6 @@ const objRemoteHeatingPrice = new RemoteHeatingPrice('remoteheatingprice');
 const enableChanges = (objRemoteHeatingPrice.securityLevel > 5);
 const applicationName = "condo-remoteheatingprice";
 
-const columnWidths = [175, 175, 100];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -230,7 +228,6 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   let validYear = validateIntervalNew('year', '', 'Ugyldig år', true, year, 2020, 2030);
 
   // Check if year already exist (year is unique)
-  debugger;
   rowNumberRemoteHeatingPrice = objRemoteHeatingPrice.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
   if (rowNumberRemoteHeatingPrice === -1) {
 
@@ -247,6 +244,7 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   // Validate remoteheatingprices columns
   if (validYear && validKilowattHourPrice) {
 
+    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the remoteHeatingPrice Id exist
@@ -278,6 +276,41 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
     showFilter(remoteHeatingPriceId);
 
     // Show remote heating price
+    showRemoteHeatingPrice(remoteHeatingPriceId);
+  }
+  */
+    document.querySelector('.showMessage').style.display = "none";
+
+    // Check if the remoteHeatingPrice Id exist
+    const rowNumberRemoteHeatingPrice = objRemoteHeatingPrice.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
+    if (rowNumberRemoteHeatingPrice !== -1) {
+
+      // update a remoteheatingprices row
+      await objRemoteHeatingPrice.updateRemoteHeatingPricesTable(objRemoteHeatingPrice.user, remoteHeatingPriceId, year, priceKilowattHour);
+    } else {
+
+      // Insert a remoteheatingprices row
+      await objRemoteHeatingPrice.insertRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId, objRemoteHeatingPrice.user, year, priceKilowattHour);
+      await objRemoteHeatingPrice.getHighestRemoteHeatingPriceId(objRemoteHeatingPrice.condominiumId);
+      remoteHeatingPriceId = objRemoteHeatingPrice.arrayobjRemoteHeatingPrices[0].remoteHeatingPriceId;
+    }
+
+     await objRemoteHeatingPrice.loadRemoteHeatingPricesTable(objRemoteHeatingPrice.condominiumId);
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterRemoteHeatingPriceId', false);
+    }
+
+    // Show filter
+    showFilter(remoteHeatingPriceId);
+
+    // Show remoteHeatingPrice
     showRemoteHeatingPrice(remoteHeatingPriceId);
   }
 }

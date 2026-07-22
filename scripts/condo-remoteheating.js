@@ -106,37 +106,24 @@ async function events() {
   });
 
   // update a remoteheatings row
-  document.addEventListener('change', async (event) => {
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('update')) {
 
-          const remoteHeatingId = Number(document.querySelector(".filterRemoteHeatingId").value);
-      await objRemoteHeatings.updateRemoteHeatingRow(remoteHeatingId, objRemoteHeatings.user);
-
+      const remoteHeatingId = Number(document.querySelector(".filterRemoteHeatingId").value);
       await updateRemoteHeatingRow(remoteHeatingId);
+    }
   });
 
   // Delete a remoteheating row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      const arrayPrefixes = ['delete'];
+      const remoteHeatingId = Number(className.substring(6));
+      await deleteAccountRow(remoteHeatingId, className);
 
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objRemoteHeatings.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
+      await objRemoteHeatings.loadRemoteHeatingsTable(objRemoteHeating.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
-      //const className = objRemoteHeatings.getDeleteClass(event.target);
-      const classNameDelete = `.${className}`
-      const deleteAccountRowValue = document.querySelector(`${classNameDelete}`).value;
-      if (deleteAccountRowValue === "Ja") {
-
-        const remoteHeatingId = Number(className.substring(6));
-        awaitdeleteAccountRow(remoteHeatingId, className);
-
-        await objRemoteHeatings.loadRemoteHeatingsTable(objRemoteHeating.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
-
-        showRemoteHeating(remoteHeatingId);
-      };
+      showRemoteHeating(remoteHeatingId);
     };
   });
 }
@@ -168,12 +155,12 @@ function showRemoteHeating(remoteHeatingId) {
 
   // date
   html += startLine();
-  let date = (objRemoteHeatings.arrayRemoteHeatings[rowNumberRemoteHeating].date)
+  let remoteHeatingDate = (objRemoteHeatings.arrayRemoteHeatings[rowNumberRemoteHeating].date)
     ? objRemoteHeatings.arrayRemoteHeatings[rowNumberRemoteHeating].date
     : 0;
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
-  date = formatNumberToISODate(date);
-  html += showDate('Dato', 'date', date, enableChanges)
+  remoteHeatingDate = formatNumberToISODate(remoteHeatingDate);
+  html += showDate('Dato', 'remoteHeatingDate', remoteHeatingDate, enableChanges)
   html += "</div>";
 
   // condo Id
@@ -290,36 +277,28 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   remoteHeatingId = Number(remoteHeatingId);
 
   // date
-  className = `.date${remoteHeatingId}`;
-  let date = document.querySelector(className).value;
-  if (date === '') date = '01.01.2000';
-  date = objRemoteHeatings.formatDateToNumber(date);
-  className = `date${remoteHeatingId}`;
-  const validDate = validateInterval(className, '', 'Ugyldig dato', true, Number(date), 20150101, 20291231);
+  let remoteHeatingDate = document.querySelector('.remoteHeatingDate').value;
+  remoteHeatingDate = formatISODateToNumber(remoteHeatingDate);
+  const validDate = validateIntervalNew('remoteHeatingDate',    '', 'Ugyldig Dato',               true, remoteHeatingDate, 20150101, 20291231);
 
   // condoId
-  className = `.condoId${remoteHeatingId}`;
-  const condoId = Number(document.querySelector(className).value);
-  className = `condoId${remoteHeatingId}`;
-  const validCondoId = validateInterval(className, '', 'Ugyldig leilighet', true, condoId, 1, objRemoteHeatings.nineNine);
+  const condoId = Number(document.querySelector('.condoId').value);
+  const validCondoId = validateIntervalNew('condoId', '', 'Ugyldig Leilighet', true, condoId, 1, objRemoteHeatings.nineNine);
 
   // kilowattHour
-  className = `.kilowattHour${remoteHeatingId}`;
-  let kilowattHour = document.querySelector(className).value;
+  let kilowattHour = document.querySelector('.kilowattHour').value;
   kilowattHour = formatNorAmountToNumber(kilowattHour);
-  className = `kilowattHour${remoteHeatingId}`;
-  const validkilowattHour = validateInterval(className, '', 'Ugyldig kilowatttime', true, kilowattHour, 1, objRemoteHeatings.nineNine);
+  const validkilowattHour = validateIntervalNew('kilowattHour', '', 'Ugyldig Kilowatttime', true, kilowattHour, 1, objRemoteHeatings.nineNine);
 
   // Price for one year
-  className = `.priceYear${remoteHeatingId}`;
-  let priceYear = document.querySelector(className).value;
+  let priceYear = document.querySelector('.priceYear').value;
   priceYear = formatNorAmountToNumber(priceYear);
-  className = `priceYear${remoteHeatingId}`;
-  const validPriceYear = validateInterval(className, '', 'Ugyldig beløp', true, priceYear, 0, objRemoteHeatings.nineNine);
+  const validPriceYear = validateIntervalNew('priceYear', '', 'Ugyldig beløp', true, priceYear, 0, objRemoteHeatings.nineNine);
 
   // Validate remoteheatings columns
-  if (validYear && validDate && validCondoId && validkilowattHour && validPriceYear) {
+  if (validDate && validCondoId && validkilowattHour && validPriceYear) {
 
+    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the remoteHeating id exist
@@ -336,6 +315,41 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
 
     await objRemoteHeatings.loadRemoteHeatingsTable(objRemoteHeating.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
 
+    showRemoteHeating(remoteHeatingId);
+    */
+
+    document.querySelector('.showMessage').style.display = "none";
+
+    // Check if the remoteHeating id exist
+    rowNumberRemoteHeating = objRemoteHeatings.arrayRemoteHeatings.findIndex(remoteHeating => remoteHeating.remoteHeatingId === remoteHeatingId);
+    if (rowNumberRemoteHeating !== -1) {
+
+      // update a remoteheatings row
+      await objRemoteHeatings.updateRemoteHeatingTable(objRemoteHeating.user, remoteHeatingId, condoId, year, remoteHeatingDate, kilowattHour, priceYear);
+    } else {
+
+      // Insert a remoteheatings row
+      await objRemoteHeatings.insertRemoteHeatingTable(objRemoteHeating.condominiumId, objRemoteHeatings.user, condoId, year, remoteHeatingDate, kilowattHour, priceYear);
+      await objRemoteHeatings.getHighestRemoteHeatingId(objRemoteHeating.condominiumId);
+      remoteHeatingId = objRemoteHeatings.arrayRemoteHeatings[0].remoteheatingId;
+    }
+
+    await objRemoteHeatings.loadRemoteHeatingsTable(objRemoteHeating.condominiumId, objRemoteHeatings.nineNine, objRemoteHeatings.nineNine);
+
+    removeMessage();
+
+    if (enableChanges) {
+      disableButton('delete', false);
+      disableButton('insert', false);
+      disableButton('update', false);
+      disableButton('cancel', true);
+      disableButton('filterRemoteHeatingId', false);
+    }
+
+    // Show filter
+    showFilter(remoteHeatingId);
+
+    // Show remoteheating row
     showRemoteHeating(remoteHeatingId);
   }
 }
