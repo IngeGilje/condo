@@ -41,7 +41,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objVoucher.arrayMenuMain);
+      let html = showHorizontalMenu(objVoucher.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu

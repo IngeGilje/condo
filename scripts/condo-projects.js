@@ -36,7 +36,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objProjects.arrayMenuMain);
+      let html = showHorizontalMenu(objProjects.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show project menu

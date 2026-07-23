@@ -30,7 +30,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objRemoteHeatingPrice.arrayMenuMain);
+      let html = showHorizontalMenu(objRemoteHeatingPrice.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show remote heating menu

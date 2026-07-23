@@ -42,7 +42,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objImportFile.arrayMenuMain);
+      let html = showHorizontalMenu(objImportFile.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show account menu

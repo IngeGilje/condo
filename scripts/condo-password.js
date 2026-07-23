@@ -31,7 +31,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objPassword.arrayMenuMain);
+      let html = showHorizontalMenu(objPassword.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu

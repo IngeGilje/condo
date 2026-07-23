@@ -39,7 +39,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objAccount.arrayMenuMain);
+      let html = showHorizontalMenu(objAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show condominium menu

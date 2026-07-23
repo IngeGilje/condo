@@ -30,7 +30,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objUserBankAccount.arrayMenuMain);
+      let html = showHorizontalMenu(objUserBankAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu

@@ -37,7 +37,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objEmptyingCalendars.arrayMenuMain);
+      let html = showHorizontalMenu(objEmptyingCalendars.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show menu for empty calendar 

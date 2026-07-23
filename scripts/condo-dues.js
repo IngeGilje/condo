@@ -42,7 +42,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objDues.arrayMenuMain);
+      let html = showHorizontalMenu(objDues.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu

@@ -39,9 +39,9 @@ class Condos {
 
   // array of horizontal main menu
   path = (this.serverStatus === 1) 
-  ? "http://ingegilje.no/"
+  ? "https://ingegilje.no/"
   : ""
-  arrayMenuMain = [
+  arrayMainMenu = [
     {
       applicationName: `${this.path}condo-shownews.html`,
       className: "main-condo-shownews",
@@ -978,7 +978,7 @@ class Condos {
     // Mark menuitem in main menu
     // Get first class name in arrayMenu (second menu)
     let firstClassName = "main-" + arrayMenu[0].className;
-    this.arrayMenuMain.forEach((array) => {
+    this.arrayMainMenu.forEach((array) => {
       if (array.className === firstClassName) {
 
         const element = document.querySelector(`.${array.className}`);

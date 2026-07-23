@@ -39,7 +39,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objAnnualAccount.arrayMenuMain);
+      let html = showHorizontalMenu(objAnnualAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu

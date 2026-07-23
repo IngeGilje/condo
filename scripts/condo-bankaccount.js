@@ -24,7 +24,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 } else {
 
   // Show main menu
-  let html = showHorizontalMenu(objBankAccount.arrayMenuMain);
+  let html = showHorizontalMenu(objBankAccount.arrayMainMenu);
   document.querySelector('.menuMain').innerHTML = html;
 
   // Show condominium menu

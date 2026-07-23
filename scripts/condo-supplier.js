@@ -30,7 +30,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
     if (await objUser.checkServer()) {
 
       // Show main menu
-      let html = showHorizontalMenu(objSupplier.arrayMenuMain);
+      let html = showHorizontalMenu(objSupplier.arrayMainMenu);
       document.querySelector('.showMainMenu').innerHTML = html;
 
       // Show due menu
@@ -526,7 +526,7 @@ function showMenu() {
 
   html += startLine();
 
-  html += showHorizontalMenu(objSupplier.arrayMenuMain);
+  html += showHorizontalMenu(objSupplier.arrayMainMenu);
 
   html += "</div>";
   html += "</div>";

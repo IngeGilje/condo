@@ -41,7 +41,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objCommonCost.arrayMenuMain);
+      let html = showHorizontalMenu(objCommonCost.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu

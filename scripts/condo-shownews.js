@@ -30,7 +30,7 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objShowNews.arrayMenuMain);
+      let html = showHorizontalMenu(objShowNews.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show news menu

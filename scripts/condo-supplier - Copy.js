@@ -25,7 +25,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
 } else {
 
   // Show main menu
-  let html = showHorizontalMenu(objSupplier.arrayMenuMain);
+  let html = showHorizontalMenu(objSupplier.arrayMainMenu);
   document.querySelector('.menuMain').innerHTML = html;
 
   // Show due menu
