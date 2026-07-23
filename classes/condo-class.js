@@ -38,39 +38,42 @@ class Condos {
   userId = Number(sessionStorage.getItem("userId"));
 
   // array of horizontal main menu
+  path = (this.serverStatus === 1) 
+  ? "http://ingegilje.no/"
+  : ""
   arrayMenuMain = [
     {
-      applicationName: "condo-shownews.html",
+      applicationName: `${this.path}condo-shownews.html`,
       className: "Menu1",
       text: "Nyheter"
     },
     {
-      applicationName: "condo-emptyingcalendars.html",
+      applicationName: `${this.path}condo-emptyingcalendars.html`,
       className: "Menu2",
       text: "Tømmekalender"
     },
     {
-      applicationName: "condo-condominium.html",
+      applicationName: `${this.path}condo-condominium.html`,
       className: "Menu3",
       text: "Sameie"
     },
     {
-      applicationName: "condo-user.html",
+      applicationName: `${this.path}condo-user.html`,
       className: "Menu4",
       text: "Bruker"
     },
     {
-      applicationName: "condo-transactions.html",
+      applicationName: `${this.path}condo-transactions.html`,
       className: "Menu5",
       text: "Transaksjoner"
     },
     {
-      applicationName: "condo-dues.html",
+      applicationName: `${this.path}condo-dues.html`,
       className: "Menu6",
       text: "Forfall"
     },
     {
-      applicationName: "condo-remoteheatings.html",
+      applicationName: `${this.path}condo-remoteheatings.html`,
       className: "Menu7",
       text: "Fjernvarme"
     }
@@ -79,12 +82,12 @@ class Condos {
   // array of horizontal news menu
   arrayMenuNews = [
     {
-      applicationName: "condo-shownews.html",
+      applicationName: `${this.path}condo-shownews.html`,
       className: "Menu1",
       text: "Vis Nyheter"
     },
     {
-      applicationName: "condo-news.html",
+      applicationName: `${this.path}condo-news.html`,
       className: "Menu2",
       text: "Nyheter"
     },
@@ -93,12 +96,12 @@ class Condos {
   // array of horizontal emptying calendar menu
   arrayMenuEmptyingCalendar = [
     {
-      applicationName: "condo-emptyingcalendars.html",
+      applicationName: `${this.path}condo-emptyingcalendars.html`,
       className: "Menu1",
       text: "Vis Tømmekalender"
     },
     {
-      applicationName: "condo-emptyingcalendar.html",
+      applicationName: `${this.path}condo-emptyingcalendar.html`,
       className: "Menu2",
       text: "Tømmekalender"
     },
@@ -107,22 +110,22 @@ class Condos {
   // menu array for condominium
   arrayMenuCondominium = [
     {
-      applicationName: "condo-condominium.html",
+      applicationName: `${this.path}condo-condominium.html`,
       className: "Menu1",
       text: "Sameie"
     },
     {
-      applicationName: "condo-bankaccount.html",
+      applicationName: `${this.path}condo-bankaccount.html`,
       className: "Menu2",
       text: "Bankkonto"
     },
     {
-      applicationName: "condo-accounts.html",
+      applicationName: `${this.path}condo-accounts.html`,
       className: "Menu3",
       text: "Vis Konti"
     },
     {
-      applicationName: "condo-account.html",
+      applicationName: `${this.path}condo-account.html`,
       className: "Menu3",
       text: "Konto"
     }
@@ -131,22 +134,22 @@ class Condos {
   // menu array for user
   arrayMenuUser = [
     {
-      applicationName: "condo-user.html",
+      applicationName: `${this.path}condo-user.html`,
       className: "Menu1",
       text: "Bruker"
     },
     {
-      applicationName: "condo-password.html",
+      applicationName: `${this.path}condo-password.html`,
       className: "Menu2",
       text: "Passord"
     },
     {
-      applicationName: "condo-condo.html",
+      applicationName: `${this.path}condo-condo.html`,
       className: "Menu3",
       text: "Leilighet"
     },
     {
-      applicationName: "condo-userbankaccount.html",
+      applicationName: `${this.path}condo-userbankaccount.html`,
       className: "Menu4",
       text: "Bankkonto"
     }
@@ -155,33 +158,33 @@ class Condos {
   // menu array for transactions
   arrayMenuTransaction = [
     {
-      applicationName: "condo-transactions.html",
+      applicationName: `${this.path}condo-transactions.html`,
       className: "Menu1",
       text: "Transaksjoner"
     },
     {
-      applicationName: "condo-projects.html",
+      applicationName: `${this.path}condo-projects.html`,
       className: "Menu2",
       text: "Prosjektoversikt"
     },
 
     {
-      applicationName: "condo-project.html",
+      applicationName: `${this.path}condo-project.html`,
       className: "Menu3",
       text: "Prosjekt"
     },
     {
-      applicationName: "condo-budgets.html",
+      applicationName: `${this.path}condo-budgets.html`,
       className: "Menu4",
       text: "Budsjett"
     },
     {
-      applicationName: "condo-annualaccount.html",
+      applicationName: `${this.path}condo-annualaccount.html`,
       className: "Menu5",
       text: "Årsregnskap"
     },
     {
-      applicationName: "condo-importfile.html",
+      applicationName: `${this.path}condo-importfile.html`,
       className: "Menu6",
       text: "Hent transaksjoner"
     },
@@ -190,27 +193,27 @@ class Condos {
   // menu array for due
   arrayMenuDue = [
     {
-      applicationName: "condo-dues.html",
+      applicationName: `${this.path}condo-dues.html`,
       className: "Menu4",
       text: "Forfall"
     },
     {
-      applicationName: "condo-supplier.html",
+      applicationName: `${this.path}condo-supplier.html`,
       className: "Menu1",
       text: "Leverandør"
     },
     {
-      applicationName: "condo-commoncosts.html",
+      applicationName: `${this.path}condo-commoncosts.html`,
       className: "Menu2",
       text: "Vis Felleskostnader"
     },
     {
-      applicationName: "condo-commoncost.html",
+      applicationName: `${this.path}condo-commoncost.html`,
       className: "Menu3",
       text: "Felleskostnad"
     },
     {
-      applicationName: "condo-overview.html",
+      applicationName: `${this.path}condo-overview.html`,
       className: "Menu4",
       text: "Betalingsoversikt"
     }
@@ -219,17 +222,17 @@ class Condos {
   // menu array for remote heating
   arrayMenuRemoteHeating = [
     {
-      applicationName: "condo-remoteheatings.html",
+      applicationName: `${this.path}condo-remoteheatings.html`,
       className: "Menu1",
       text: "Vis Fjernvarme"
     },
     {
-      applicationName: "condo-remoteheating.html",
+      applicationName: `${this.path}condo-remoteheating.html`,
       className: "Menu2",
       text: "Fjernvarme"
     },
     {
-      applicationName: "condo-remoteheatingprice.html",
+      applicationName: `${this.path}condo-remoteheatingprice.html`,
       className: "Menu3",
       text: "Pris Fjernvarme"
     }
