@@ -640,7 +640,7 @@ class Condos {
   }
 
   // Validate values ('Yes','No','Ignore')
-  validateValues(className, columnWidths, style, message, showMessage = true, selectedValue, ...values) {
+  validateValues(className, columnWidths, style, errorMessage, showMessage = true, selectedValue, ...values) {
 
     let isValid = false;
 
@@ -653,13 +653,13 @@ class Condos {
 
     // remove/ add 'input-error' class
     if (inputElement) inputElement.classList.toggle('input-error', !isValid);
-    if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+    if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
 
     return isValid;
   }
 
   // validate the norwegian date format dd.mm.yyyy
-  validateNorDate(className, date, style, message) {
+  validateNorDate(className, date, style, errorMessage) {
 
     let isValid = true;
 
@@ -699,7 +699,7 @@ class Condos {
       }
     }
 
-    if ((!isValid) && (message.length > 0)) showMessageNew(errorMessage);
+    if ((!isValid) && (errorMessage.length > 0)) showMessageNew(errorMessage);
     return isValid;
   }
 
@@ -1262,12 +1262,12 @@ function validateOrganizationNumberNew(className, organizationNumber) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
 // Validate E-mail
-function validateEmailNew(className, eMail, style, message) {
+function validateEmailNew(className, eMail, style, errorMessage) {
 
   // Validate eMail
   const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1281,12 +1281,12 @@ function validateEmailNew(className, eMail, style, message) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
 // Validate phone number 
-function validatePhoneNew(className, phone) {
+function validatePhoneNew(className, phone,errorMessage) {
 
   // Validate phone number
   phone = phone.replace(/\s+/g, "");
@@ -1300,7 +1300,7 @@ function validatePhoneNew(className, phone) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -1318,7 +1318,7 @@ function validateBankAccountNew(className, showMessage = true, bankAccount, styl
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -1340,7 +1340,7 @@ function validateValuesNew(className, errorMessage, showMessage = true, selected
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -1378,7 +1378,7 @@ function validateISODate(className, date, showMessage = true, errorMessage) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -1396,7 +1396,7 @@ const inputElement = document.querySelector(`.${className}`);
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -1425,7 +1425,7 @@ function validateTextNew(className, style, errorMessage, showMessage = true, val
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -1442,7 +1442,7 @@ function validateNumberNew(className, style, errorMessage, showMessage = true, n
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && message.length > 0) showMessageNew(errorMessage);
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 

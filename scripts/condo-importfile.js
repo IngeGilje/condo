@@ -143,11 +143,6 @@ function createTransactionsArray() {
   let textFile = objImportFile.strCSVTransaction.split(/\r?\n/);
   textFile.forEach((row) => {
 
-    //  [accountingDate, Rentedato, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
-    //    row.split(';');
-    //[accountingDate, Type, Antall, Konto, income, payment, Valuta, text, fromBankAccount, toBankAccount, toAccount] =
-    //  row.split(';');
-    // Dato;Fra;Antall;Til;Beskrivelse;Inn;Ut;Valuta
     //         Dato; Type;    Kontonummer;    Inn;      Ut; Valuta; Beskrivelse;Fra kontonummer;Til kontonummer;         Fra (navn);Til (navn)
     [accountingDate, Type, fromBankAccount, income, payment, Valuta, text, fromBankAccount, toBankAccount, fromBankAccountName, toBankAccountName] =
       row.split(';');
@@ -163,17 +158,15 @@ function createTransactionsArray() {
       // Condo id
       fromBankAccount = fromBankAccount.slice(0, 11);
       const condoId = objImportFile.getCondoId(fromBankAccount);
+      const condoName = objCondo.getCondoNameById(condoId);
 
- 
-      // Income
+       // Income
       income = formatNorAmountToNumber(income);
 
       // Payment
       payment = (payment === '')
         ? 0
         : (-1) * (formatNorAmountToNumber(payment));
-
-      // Account Id
 
       // Account Id from bank account
       let accountId = objAccounts.getAccountIdFromBankAccount(fromBankAccount, payment, text);

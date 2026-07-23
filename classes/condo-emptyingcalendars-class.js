@@ -151,7 +151,7 @@ class EmptyingCalendars extends Condos {
   }
 
   // get emtying calendar table
-  async loadEmptyingCalendarTable(condominiumId, date) {
+  async loadEmptyingCalendarsTable(condominiumId, orderBy) {
 
     // Get emptying calendar
     const URL = (this.serverStatus === 1)
@@ -167,7 +167,7 @@ class EmptyingCalendars extends Condos {
         body: JSON.stringify({
           action: 'select',
           condominiumId: condominiumId,
-          date: date
+          orderBy: orderBy
         })
       });
       if (!response.ok) throw new Error("Network error (emptyingcalendars)");

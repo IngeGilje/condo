@@ -45,26 +45,37 @@ async function main() {
       objEmptyingCalendar.markActivatedApplication(objEmptyingCalendar.arrayMenuEmptyingCalendar, applicationName);
 
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
+      const orderBy = "date DESC";
+      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
 
-      // Show filter
-      await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
+      let emptyingCalendarId = 0;
+      let date = String(getCurrentDate());
 
+      emptyingCalendarId = (paramEmptyingCalendarId === 0)
+        ? emptyingCalendarId = objEmptyingCalendars.arrayEmptyingCalendars[0].emptyingCalendarId
+        : emptyingCalendarId = paramEmptyingCalendarId;
+
+      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
+
+      /*
       // Show emtyingcalendar
       let currentDate = getCurrentDate();
       currentDate = Number(formatNorDateToNumber(currentDate));
-
+ 
       let emptyingCalendarId = (paramEmptyingCalendarId === 0)
         ? getEmptyingCalendarIdMonth(currentDate)
         : paramEmptyingCalendarId;
-
+ 
       // Next month ?
       let date = String(currentDate);
       year = date.slice(0, 4);
       month = date.slice(4, 6);
       currentDate = Number(year + month + "01");
       if (emptyingCalendarId === 0) emptyingCalendarId = getEmptyingCalendarIdNextMonth(currentDate + 100);
-
+ 
       date = getEmptyingCalendarDate(emptyingCalendarId)
+      */
+      // Show filter
       showFilter(emptyingCalendarId);
 
       showEmptyingCalendar(emptyingCalendarId);
@@ -135,14 +146,15 @@ async function events() {
       // Show last row in emptyingCalendars tabel
       await objEmptyingCalendars.getHighestEmptyingCalendarId(objEmptyingCalendar.condominiumId);
       emptyingCalendarId = objEmptyingCalendars.arrayEmptyingCalendars.at(-1)?.emptyingCalendarId ?? 0;
-      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, objEmptyingCalendars.nineNine);
+      const orderBy = "date DESC";
+      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
 
       // Show filter
       date = getEmptyingCalendarDate(emptyingCalendarId);
       showFilter(emptyingCalendarId);
 
-      // Show news
-      showNews(emptyingCalendarId);
+      // Show emptyingCalendar
+      showEmptyingCalendar(emptyingCalendarId);
     };
   });
 
@@ -151,8 +163,8 @@ async function events() {
     if (event.target.classList.contains('cancel')) {
 
       // Reload emptyingcalendars table
-      await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
-
+      const orderBy = "date DESC";
+      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
       await objEmptyingCalendars.getHighestEmptyingCalendarId(objEmptyingCalendar.condominiumId);
       const emptyingCalendarId = objEmptyingCalendars.arrayEmptyingCalendars[0]?.emptyingCalendarId ?? 0;
       const date = objEmptyingCalendars.arrayEmptyingCalendars[0]?.date ?? 0;
@@ -169,15 +181,11 @@ async function events() {
 // Show filter
 function showFilter(emptyingCalendarId) {
 
-  rowNumberEmptyingCalendar = objEmptyingCalendars.arrayEmptyingCalendars.findIndex(emptyingcalendar => emptyingcalendar.emptyingCalendarId === emptyingCalendarId);
-  let date = 0;
-  if (rowNumberEmptyingCalendar !== -1) date = objEmptyingCalendars.arrayEmptyingCalendars[rowNumberEmptyingCalendar].date;
-
   // Start frame
   let html = startFrame();
 
   // Show date
-  html += objEmptyingCalendars.showSelectedEmptyCalendarsNew('Tømmedato', 'filterEmptyingCalendarId', '', date, 'Velg Dato', '', true);
+  html += objEmptyingCalendars.showSelectedEmptyCalendarsNew('Tømmedato', 'filterEmptyingCalendarId', '', emptyingCalendarId, 'Velg Dato', '', true);
 
   // End filter frame
   html += "</div>";
@@ -196,15 +204,14 @@ function showEmptyingCalendar(emptyingCalendarId) {
   // Empty line
   let html = emptyLine();
 
-  // userId
-  html += startLine();
-  const condoId = objEmptyingCalendars.arrayEmptyingCalendars[rowNumberEmptyingCalendar]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('Ansvarlig', 'condoId', '', condoId, 'Velg ansvarlig', '', true);
-
   // date
+  html += startLine();
   let emptyingCalendarDate = objEmptyingCalendars.arrayEmptyingCalendars[rowNumberEmptyingCalendar]?.date ?? 0;
   emptyingCalendarDate = formatNumberToISODate(emptyingCalendarDate);
   html += showDate('Dato', 'emptyingCalendarDate', emptyingCalendarDate, enableChanges);
+
+  const condoId = objEmptyingCalendars.arrayEmptyingCalendars[rowNumberEmptyingCalendar]?.condoId ?? 0;
+  html += objCondo.showSelectedCondosNew('Ansvarlig', 'condoId', '', condoId, 'Velg ansvarlig', '', true);
   html += "</div>";
 
   // residual waste 
@@ -292,7 +299,8 @@ async function deleteEmptyingCalendarRow(emptyingCalendarId, className) {
     await objEmptyingCalendars.deleteEmptyingCalendarTable(emptyingCalendarId, objEmptyingCalendar.user);
   }
 
-  await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
+  const orderBy = "date DESC";
+  await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
 }
 
 // Update a emptyingcalendar table row
@@ -309,15 +317,18 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
   let validDate = validateISODate('emptyingCalendarDate', date, true, 'Ugyldig Dato');
   date = formatISODateToNumber(date);
 
+  /*
   // Check if the emtyingcalendar id exist
   const rowNumberEmptyingCalendar = objEmptyingCalendars.arrayEmptyingCalendars.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);
   if (rowNumberEmptyingCalendar === -1) {
 
     // Check for unique date
-    await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, date);
+    const orderBy = "date DESC";
+    await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
     if (objEmptyingCalendars.arrayEmptyingCalendars.length !== 0) validDate = false;
-    await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
+    await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
   }
+  */
 
   let residualWaste = document.querySelector('.residualWaste').value;
   const validResidualWaste = validateValuesNew('residualWaste', 'Ugylgig valg', true, residualWaste, 'Nei', 'Ja');
@@ -347,38 +358,6 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
   // Validate emptyingcalendar columns
   if (validCondoId && validDate && validPaper && validResidualWaste && validFood && validPlastic && validChristmasTree) {
 
-    /*
-    document.querySelector('.showMessage').style.display = "none";
-
-    // Check if the emtyingcalendar id exist
-    rowNumberEmptyingCalendar = objEmptyingCalendars.arrayEmptyingCalendars.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);
-    if (rowNumberEmptyingCalendar !== -1) {
-
-      // update the emtyingcalendar row
-      await objEmptyingCalendars.updateEmptyingCalendarTable(emptyingCalendarId, objEmptyingCalendar.user, condoId, date, residualWaste, paper, food, plastic, christmasTree);
-
-      // get emptying calendar date
-      await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
-      date = getEmptyingCalendarDate(emptyingCalendarId);
-      await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
-
-    } else {
-
-      // Insert the emtyingcalendar row
-      await objEmptyingCalendars.insertEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.user, condoId, date, residualWaste, paper, food, plastic, christmasTree);
-      await objEmptyingCalendars.getHighestEmptyingCalendarId(objEmptyingCalendar.condominiumId);
-      emptyingCalendarId = objEmptyingCalendars.arrayEmptyingCalendars.at(-1)?.emptyingCalendarId ?? 0;
-      date = getEmptyingCalendarDate(emptyingCalendarId);
-      await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
-    }
-
-    // Show filter
-    showFilter(date);
-
-    // Show emtyingcalendar
-    showEmptyingCalendar(emptyingCalendarId);
-  }
-  */
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the emptyingcalendars row exist
@@ -394,7 +373,8 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
       emptyingCalendarId = objEmptyingCalendars.arrayEmptyingCalendars.at(-1)?.emptyingCalendarId ?? 0;
     }
 
-    await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
+    const orderBy = "date DESC";
+    await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
 
     removeMessage();
 
@@ -433,22 +413,6 @@ function getEmptyingCalendarId(date) {
   objEmptyingCalendars.arrayEmptyingCalendars.forEach(emptyingCalendar => {
 
     if (emptyingCalendar.date === date) emptyingCalendarId = emptyingCalendar.emptyingCalendarId;
-  });
-
-  return emptyingCalendarId;
-}
-
-// get first emptying calendar Id for month
-function getEmptyingCalendarIdMonth(date) {
-
-  let emptyingCalendarId = 0;
-  const year = String(date).slice(0, 4);
-  const month = String(date).slice(4, 6);
-  const fromDate = Number(year + month + "01");
-  const toDate = Number(year + month + "31");
-  objEmptyingCalendars.arrayEmptyingCalendars.forEach(emptyingCalendar => {
-
-    if (emptyingCalendar.date >= fromDate && emptyingCalendar.date <= toDate && emptyingCalendarId === 0) emptyingCalendarId = emptyingCalendar.emptyingCalendarId;
   });
 
   return emptyingCalendarId;

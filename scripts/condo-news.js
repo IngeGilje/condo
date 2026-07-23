@@ -244,7 +244,7 @@ async function updateNewsRow(newsId) {
   //content = content.replace(/<[^>]*>?/gm, "");
   const validContent = validateTextNew('content', '', 'Ugyldig innhold', true, content, 3, 512);
 
-  if (validNewsId && validTitle && validDate && validUserId && validContent) {
+  if (validTitle && validDate && validUserId && validContent) {
 
     /*
     document.querySelector('.showMessage').style.display = "none";
@@ -307,7 +307,7 @@ async function updateNewsRow(newsId) {
       disableButton('insert', false);
       disableButton('update', false);
       disableButton('cancel', true);
-      disableButton('filterNewsId', false, 'white');
+      disableButton('filterNewsId', false);
     }
 
     // Show filter

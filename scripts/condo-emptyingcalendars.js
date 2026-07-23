@@ -48,11 +48,15 @@ async function main() {
       await objCondo.loadCondoTable(objEmptyingCalendars.condominiumId, objEmptyingCalendars.nineNine);
 
       // Show filter
-      showFilter();
+      calendarDate = getCurrentDate();
+      const year = String(calendarDate).slice(6, 10);
+      const month = String(calendarDate).slice(3, 5);
+      const fromDate = Number(year + month + "01");
+      const toDate = Number(year + month + "31");
 
-      const year = Number(document.querySelector('.filterYear').value);
-      const month = Number(document.querySelector('.filterMonth').value);
-      await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendars.condominiumId, objEmptyingCalendars.nineNine);
+      const orderBy = "date ASC";
+      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendars.condominiumId, orderBy, fromDate, toDate);
+      showFilter(Number(year), Number(month));
 
       // Show emtyingcalendars
       showEmptyingCalendars(year, month);
@@ -76,7 +80,8 @@ async function events() {
 
       const year = Number(document.querySelector('.filterYear').value);
       const month = Number(document.querySelector('.filterMonth').value);
-      await objEmptyingCalendars.loadEmptyingCalendarTable(objEmptyingCalendars.condominiumId, objEmptyingCalendars.nineNine);
+      const orderBy = "date ASC";
+      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendars.condominiumId, orderBy, fromDate, toDate);
 
       // Show emtyingcalendar
       showEmptyingCalendars(year, month);
@@ -114,18 +119,15 @@ async function events() {
 }
 
 // Show filter
-function showFilter() {
+function showFilter(year, month) {
 
   // Start frame
   let html = startFrame();
 
   // Show years
-  const year = String(today.getFullYear());
-  html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, Number(year), true);
+  html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
 
   // Show selected months
-  const date = getCurrentDate();
-  let month = Number(date.split('.')[1]); // Extract the month part
   html += showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
 
   // End filter frame
@@ -144,16 +146,15 @@ function showEmptyingCalendars(year, month) {
   let html = objEmptyingCalendars.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objEmptyingCalendars.showTableHeader( 'center', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre', '');
+  html += objEmptyingCalendars.showTableHeader('center', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre', '');
 
+  if (Number(document.querySelector('.filterMonth')) < 10) month = "0" + month;
+  const fromDate = Number(document.querySelector('.filterYear').value + month + "01");
+  const toDate = Number(document.querySelector('.filterYear').value + month + "31");
   if (objEmptyingCalendars.arrayEmptyingCalendars.length > 0) {
     objEmptyingCalendars.arrayEmptyingCalendars.forEach((emptyingCalendar) => {
 
-      const emptyingCalendarDate = String(emptyingCalendar.date);
-      const emptyingCalendarYear = Number(emptyingCalendarDate.slice(0, 4));
-      const emptyingCalendarMonth = Number(emptyingCalendarDate.slice(4, 6));
-
-      if (year === emptyingCalendarYear && month === emptyingCalendarMonth) {
+      if (emptyingCalendar.date >= fromDate && emptyingCalendar.date <= toDate) {
 
         // Show menu
         html += objEmptyingCalendars.insertTableRow('');
