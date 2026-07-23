@@ -1151,7 +1151,7 @@ function showHorizontalMenu(arrayMenu) {
       <li>
       <a 
         class="${className}"
-        href="${URL}/${array.applicationName}"
+        href="${URL}${array.applicationName}"
       >
         ${array.text.trim()}
       </a>
