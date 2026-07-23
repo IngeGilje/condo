@@ -44,37 +44,37 @@ class Condos {
   arrayMenuMain = [
     {
       applicationName: `${this.path}condo-shownews.html`,
-      className: "Menu1",
+      className: "main-condo-shownews",
       text: "Nyheter"
     },
     {
       applicationName: `${this.path}condo-emptyingcalendars.html`,
-      className: "Menu2",
+      className: "main-condo-emptyingcalendars",
       text: "Tømmekalender"
     },
     {
       applicationName: `${this.path}condo-condominium.html`,
-      className: "Menu3",
+      className: "main-condo-condominium",
       text: "Sameie"
     },
     {
       applicationName: `${this.path}condo-user.html`,
-      className: "Menu4",
+      className: "main-condo-user",
       text: "Bruker"
     },
     {
       applicationName: `${this.path}condo-transactions.html`,
-      className: "Menu5",
+      className: "main-condo-transactions",
       text: "Transaksjoner"
     },
     {
       applicationName: `${this.path}condo-dues.html`,
-      className: "Menu6",
+      className: "main-condo-dues",
       text: "Forfall"
     },
     {
       applicationName: `${this.path}condo-remoteheatings.html`,
-      className: "Menu7",
+      className: "main-condo-remoteheatings",
       text: "Fjernvarme"
     }
   ];
@@ -83,12 +83,12 @@ class Condos {
   arrayMenuNews = [
     {
       applicationName: `${this.path}condo-shownews.html`,
-      className: "Menu1",
+      className: "condo-shownews",
       text: "Vis Nyheter"
     },
     {
       applicationName: `${this.path}condo-news.html`,
-      className: "Menu2",
+      className: "condo-news",
       text: "Nyheter"
     },
   ];
@@ -97,12 +97,12 @@ class Condos {
   arrayMenuEmptyingCalendar = [
     {
       applicationName: `${this.path}condo-emptyingcalendars.html`,
-      className: "Menu1",
+      className: "condo-emptyingcalendars",
       text: "Vis Tømmekalender"
     },
     {
       applicationName: `${this.path}condo-emptyingcalendar.html`,
-      className: "Menu2",
+      className: "condo-emptyingcalendar",
       text: "Tømmekalender"
     },
   ];
@@ -111,22 +111,22 @@ class Condos {
   arrayMenuCondominium = [
     {
       applicationName: `${this.path}condo-condominium.html`,
-      className: "Menu1",
+      className: "condo-condominium",
       text: "Sameie"
     },
     {
       applicationName: `${this.path}condo-bankaccount.html`,
-      className: "Menu2",
+      className: "condo-bankaccount",
       text: "Bankkonto"
     },
     {
       applicationName: `${this.path}condo-accounts.html`,
-      className: "Menu3",
+      className: "condo-accounts",
       text: "Vis Konti"
     },
     {
       applicationName: `${this.path}condo-account.html`,
-      className: "Menu3",
+      className: "condo-account",
       text: "Konto"
     }
   ];
@@ -135,22 +135,22 @@ class Condos {
   arrayMenuUser = [
     {
       applicationName: `${this.path}condo-user.html`,
-      className: "Menu1",
+      className: "condo-user",
       text: "Bruker"
     },
     {
       applicationName: `${this.path}condo-password.html`,
-      className: "Menu2",
+      className: "condo-password",
       text: "Passord"
     },
     {
       applicationName: `${this.path}condo-condo.html`,
-      className: "Menu3",
+      className: "condo-condo",
       text: "Leilighet"
     },
     {
       applicationName: `${this.path}condo-userbankaccount.html`,
-      className: "Menu4",
+      className: "condo-userbankaccount",
       text: "Bankkonto"
     }
   ];
@@ -159,33 +159,33 @@ class Condos {
   arrayMenuTransaction = [
     {
       applicationName: `${this.path}condo-transactions.html`,
-      className: "Menu1",
+      className: "condo-transactions",
       text: "Transaksjoner"
     },
     {
       applicationName: `${this.path}condo-projects.html`,
-      className: "Menu2",
+      className: "condo-projects",
       text: "Prosjektoversikt"
     },
 
     {
       applicationName: `${this.path}condo-project.html`,
-      className: "Menu3",
+      className: "condo-project",
       text: "Prosjekt"
     },
     {
       applicationName: `${this.path}condo-budgets.html`,
-      className: "Menu4",
+      className: "condo-budgets",
       text: "Budsjett"
     },
     {
       applicationName: `${this.path}condo-annualaccount.html`,
-      className: "Menu5",
+      className: "condo-annualaccount",
       text: "Årsregnskap"
     },
     {
       applicationName: `${this.path}condo-importfile.html`,
-      className: "Menu6",
+      className: "condo-importfile",
       text: "Hent transaksjoner"
     },
   ];
@@ -194,27 +194,27 @@ class Condos {
   arrayMenuDue = [
     {
       applicationName: `${this.path}condo-dues.html`,
-      className: "Menu4",
+      className: "condo-dues",
       text: "Forfall"
     },
     {
       applicationName: `${this.path}condo-supplier.html`,
-      className: "Menu1",
+      className: "condo-supplier",
       text: "Leverandør"
     },
     {
       applicationName: `${this.path}condo-commoncosts.html`,
-      className: "Menu2",
+      className: "condo-commoncosts",
       text: "Vis Felleskostnader"
     },
     {
       applicationName: `${this.path}condo-commoncost.html`,
-      className: "Menu3",
+      className: "condo-commoncost",
       text: "Felleskostnad"
     },
     {
       applicationName: `${this.path}condo-overview.html`,
-      className: "Menu4",
+      className: "condo-overview",
       text: "Betalingsoversikt"
     }
   ];
@@ -223,49 +223,20 @@ class Condos {
   arrayMenuRemoteHeating = [
     {
       applicationName: `${this.path}condo-remoteheatings.html`,
-      className: "Menu1",
+      className: "condo-remoteheatings",
       text: "Vis Fjernvarme"
     },
     {
       applicationName: `${this.path}condo-remoteheating.html`,
-      className: "Menu2",
+      className: "condo-remoteheating",
       text: "Fjernvarme"
     },
     {
       applicationName: `${this.path}condo-remoteheatingprice.html`,
-      className: "Menu3",
+      className: "condo-remoteheatingprice",
       text: "Pris Fjernvarme"
     }
   ];
-
-  /*
-  // start input row (<div>)
-  startRow() {
-    return `<div class="row">`;
-  }
-  */
-
-  /*
-  // Show amount
-  showAmount(label, className, value, enableChanges) {
-
-    return `
-    <div class="field date" style="width:175px;">
-      <label>
-        ${label}
-      </label>
-      <input 
-        type="text"
-        inputmode="decimal" 
-        autocomplete="off"
-        class="${className} center one-line"
-        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-      <label>${label}</label>
-    </div>`;
-  }
-  */
 
   // Show input (<td></td>) with center text
   editTableCellCenter(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
@@ -1002,26 +973,24 @@ class Condos {
   }
 
   // mark activated application
-  markActivatedApplication(arrayMenu, applicationName) {
+  markActivatedApplication(arrayMenu, className) {
 
-    // Mark main menu
-    // Get first application name in arrayMenu
-    let firstApplicationName = arrayMenu[0].applicationName;
+    // Mark menuitem in main menu
+    // Get first class name in arrayMenu (second menu)
+    let firstClassName = "main-" + arrayMenu[0].className;
     this.arrayMenuMain.forEach((array) => {
-      if (array.applicationName === firstApplicationName) {
+      if (array.className === firstClassName) {
 
-        const className = array.applicationName.slice(0, -5);
-        const element = document.querySelector(`.${className}`);
+        const element = document.querySelector(`.${array.className}`);
         element.style.backgroundColor = "#38bdf8";
         element.style.color = "white";
       }
     });
 
-    applicationName = applicationName + ".html";
+    // Mark menuitem in second menu
     arrayMenu.forEach((array) => {
-      if (array.applicationName === applicationName) {
+      if (array.className === className) {
 
-        const className = array.applicationName.slice(0, -5);
         const element = document.querySelector(`.${className}`);
         element.style.backgroundColor = "#38bdf8";
         element.style.color = "white";
@@ -1177,7 +1146,7 @@ function showHorizontalMenu(arrayMenu) {
 
   arrayMenu.forEach((array) => {
 
-    const className = array.applicationName.slice(0, -5);
+    const className = array.className;
     html += `
       <li>
       <a 
