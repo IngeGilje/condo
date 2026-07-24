@@ -14,6 +14,17 @@ const objProject = new Project('project');
 const enableChanges = (objProject.securityLevel > 5);
 const applicationName = "condo-project";
 
+// query parameters
+const queryParameters = new URLSearchParams(window.location.search);
+const paramTransactionId = Number(queryParameters.get("transactionId"));
+const paramCondoId = Number(queryParameters.get("condoId"));
+const paramAccountId = Number(queryParameters.get("accountId"));
+const paramProjectId = Number(queryParameters.get("projectId"));
+const paramFromDate = Number(queryParameters.get("fromDate"));
+const paramToDate = Number(queryParameters.get("toDate"));
+const paramAmount = Number(queryParameters.get("amount"));
+const paramBackApplication = queryParameters.get("backApplication");
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -138,6 +149,18 @@ async function events() {
       showProject();
     };
   });
+
+  // return to bank account transactions
+  document.addEventListener('click', async (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+
+      let URL = (objProject.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      URL = `${URL}condo-transactions.html?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
+      window.location.href = URL;
+    };
+  });
 }
 
 // Show filter
@@ -196,6 +219,10 @@ function showProject(projectId) {
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
+
+  html += startLine();
+  html += showButtonNew('back', 'Tilbake');
+  html += "</div>";
 
   document.querySelector('.showProject').innerHTML = html;
 

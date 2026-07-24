@@ -22,6 +22,7 @@ const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
 const paramCondoId = Number(queryParameters.get("condoId"));
 const paramAccountId = Number(queryParameters.get("accountId"));
+const paramProjectId = Number(queryParameters.get("projectId"));
 const paramFromDate = Number(queryParameters.get("fromDate"));
 const paramToDate = Number(queryParameters.get("toDate"));
 const paramAmount = Number(queryParameters.get("amount"));
@@ -68,6 +69,7 @@ async function main() {
       if ((paramTransactionId === 0)
         && (paramCondoId === 0)
         && (paramAccountId === 0)
+        && (paramProjectId === 0)
         && (paramFromDate === 0)
         && (paramToDate === 0)
         && (paramAmount === 0)) {
@@ -92,7 +94,8 @@ async function main() {
       }
 
       const deleted = 'N';
-      const amount = Number(document.querySelector('.filterAmount').value);
+      let amount = document.querySelector('.filterAmount').value;
+      amount = formatNorAmountToNumber(amount);
       condoId = Number(document.querySelector('.filterCondoId').value);
       accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
@@ -204,6 +207,12 @@ async function events() {
         transactionId = Number(className.slice(prefix.length));
       }
 
+      // Project id
+      let projectId = 0;
+      const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
+      if (rowNumberTransaction !== -1) {
+        projectId = objTransactions.arrayTransactions[rowNumberTransaction].projectId
+      }
       const condoId = Number(document.querySelector('.filterCondoId').value);
       const accountId = Number(document.querySelector('.filterAccountId').value);
       let fromDate = document.querySelector('.filterFromDate').value;
@@ -215,19 +224,9 @@ async function events() {
       let URL = (objTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}`;
-      window.location.href = URL;
-    };
-  });
+    //URL = `${URL}condo-transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}`;
+      URL = `${URL}condo-transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}&backApplication=${applicationName}.html`;
 
-  // Log out
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('logOut')) {
-
-      let URL = (objTransaction.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      URL = `${URL}condo-login.html`;
       window.location.href = URL;
     };
   });
@@ -274,7 +273,7 @@ function showTransactions() {
   html += objTransactions.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objTransactions.showTableHeader( 'center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '', '');
+  html += objTransactions.showTableHeader('center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransactions.arrayTransactions) {

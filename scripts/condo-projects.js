@@ -13,7 +13,17 @@ const enableChanges = (objProjects.securityLevel > 5);
 const applicationName = "condo-projects";
 
 // column widths
-const columnWidths = [125, 125, 125, 100];
+const columnWidths = [125, 125, 125, 100, 100];
+
+// query parameters
+const queryParameters = new URLSearchParams(window.location.search);
+const paramTransactionId = Number(queryParameters.get("transactionId"));
+const paramCondoId = Number(queryParameters.get("condoId"));
+const paramAccountId = Number(queryParameters.get("accountId"));
+const paramFromDate = Number(queryParameters.get("fromDate"));
+const paramToDate = Number(queryParameters.get("toDate"));
+const paramAmount = Number(queryParameters.get("amount"));
+const paramBackApplication = queryParameters.get("backApplication");
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -96,99 +106,46 @@ async function events() {
     };
   });
 
-  /*
-  // update a projects row
-  document.addEventListener('change', async (event) => {
-
-    const arrayPrefixes = ['name', 'amount'];
-
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objProjects.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract projectId in the class name
-      let projectId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        projectId = Number(className.slice(prefix.length));
-      }
-
-      // Update a projects row
-      await updateProjectsRow(projectId);
-    };
-  });
-  */
-
-  /*
-  // Delete projects row
+  // change bank account transaction
   document.addEventListener('click', async (event) => {
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
+    if ([...event.target.classList].some(cls => cls.startsWith('change'))) {
+
+      const arrayPrefixes = ['change'];
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objProjects.getClassByPrefix(event.target, prefix))
+        .map(prefix => objTransactions.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
-      let projectId = 0;
+      let transactionId = 0;
       let prefix = "";
       if (className) {
         prefix = arrayPrefixes.find(p => className.startsWith(p));
-        projectId = Number(className.slice(prefix.length));
+        transactionId = Number(className.slice(prefix.length));
       }
 
-      await deleteProjectsRow(projectId, className);
-      await objProjects.loadProjectsTable(objProjects.condominiumId);
+      // Project id
+      const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
+      if (rowNumberTransaction !== -1) {
 
+        const condoId = objTransactions.arrayTransactions[rowNumberTransaction].condoId;
+        const projectId = objTransactions.arrayTransactions[rowNumberTransaction].projectId;
+        const accountId = objTransactions.arrayTransactions[rowNumberTransaction].accountId;
+        const fromDate = objTransactions.arrayTransactions[rowNumberTransaction].date;
+        const toDate = objTransactions.arrayTransactions[rowNumberTransaction].date;
+        const amount = (objTransactions.arrayTransactions[rowNumberTransaction].income)
+        ? (objTransactions.arrayTransactions[rowNumberTransaction].income)
+        : (objTransactions.arrayTransactions[rowNumberTransaction].payment);
 
-      //showProjects();
-
-      //showProjectCondo();
-    };
-  });
-  */
-
-  /*
-  // change projects row
-  document.addEventListener('click', async (event) => {
-    const arrayPrefixes = ['change'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objProjects.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let projectId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        projectId = Number(className.slice(prefix.length));
+        let URL = (objTransactions.serverStatus === 1)
+          ? 'http://ingegilje.no/'
+          : 'http://localhost/';
+        URL = `${URL}condo-transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}&backApplication=${applicationName}.html`;
+        window.location.href = URL;
       }
     };
   });
-  */
-
-  /*
-  // Log out
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('logOut')) {
-
-      let url = (objProjects.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
-    };
-  });
-  */
 }
 
 // Show header
@@ -257,7 +214,7 @@ function showProjectTransactions(projectId) {
   html += objProjects.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeader('center', 'Dato', 'Konto', 'Leilighet', 'Beløp');
+  html += objCondo.showTableHeader('center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransactions.arrayTransactions) {
@@ -284,6 +241,11 @@ function showProjectTransactions(projectId) {
       amount = formatNumberToNorAmount(amount);
       className = `amount${bankTransaction.transactionId}`;
       html += editTableCell(className, amount, 10, false);
+
+      // Show button for change of bank account transaction
+      className = `change${bankTransaction.transactionId}`;
+      html += objProjects.showButton(className, 'Endre');
+      html += "</tr>";
 
       // accumulate
       sumAmount += Number(bankTransaction.income) + Number(bankTransaction.payment);

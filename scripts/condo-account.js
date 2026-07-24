@@ -97,8 +97,8 @@ async function events() {
 
   // update a accounts row
   document.addEventListener('click', async (event) => {
-
     if (event.target.classList.contains('update')) {
+      
       const accountId = document.querySelector('.filterAccountId').value;
       updateAccountsRow(accountId);
     };

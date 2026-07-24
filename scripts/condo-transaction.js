@@ -16,13 +16,16 @@ const objTransaction = new Transaction('transaction');
 const enableChanges = (objTransaction.securityLevel > 5);
 const applicationName = "condo-transaction";
 
+// query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
 const paramCondoId = Number(queryParameters.get("condoId"));
 const paramAccountId = Number(queryParameters.get("accountId"));
+const paramProjectId = Number(queryParameters.get("projectId"));
 const paramFromDate = Number(queryParameters.get("fromDate"));
 const paramToDate = Number(queryParameters.get("toDate"));
 const paramAmount = Number(queryParameters.get("amount"));
+const paramBackApplication = queryParameters.get("backApplication");
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -64,20 +67,21 @@ async function main() {
       await objSupplier.loadSuppliersTable(objTransaction.condominiumId);
       await objProjects.loadProjectsTable(objTransaction.condominiumId);
 
-      const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20190101, 20991231);
-
       // show filter
       let transactionId = 0;
       if (paramTransactionId === 0) {
 
+        // Application is startet from menu
         objTransactions.getHighestTransactionId(objTransaction.condominiumId);
         transactionId = objTransactions.arrayTransactions.at(-1)?.transactionId ?? 0;
-        const orderBy = 'date DESC, income DESC';
-        await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, 0, fromDate, toDate);
+
       } else {
 
+        // Application is not startet from menu
+        transactionId = paramTransactionId;
       }
+      const orderBy = 'date DESC, income DESC';
+      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20190101, 20991231);
 
       showFilter(transactionId);
 
@@ -98,7 +102,7 @@ async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('filterSupplierId')) {
+    if (event.target.classList.contains('filterTransactionId')) {
 
       const transactionId = Number(document.querySelector('.filterTransactionId').value);
       showTransaction(transactionId);
@@ -112,7 +116,7 @@ async function events() {
       let URL = (objTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-transactions.html?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}`;
+      URL = `${URL}${paramBackApplication}?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
     };
   });
@@ -176,7 +180,7 @@ async function events() {
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       const condoId = Number(document.querySelector('.condoId').value);
-      const accountId = Number(document.querySelector('.accountId').value)
+      const accountId = Number(document.querySelector('.accountId').value);
       URL = `${URL}condo-voucher.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}`;
       window.location.href = URL;
     };
@@ -336,53 +340,6 @@ async function updateTransactionRow(transactionId) {
   if (validDate && validCondoId && validAccountId && validProjectId
     && validIncome && validPayment && validNumberKWHour && validText) {
 
-    /*
-    document.querySelector('.showMessage').style.display = "none";
-
-    // Check if the transactions row exist
-    if (rowNumberTransaction !== -1) {
-
-      // update the transactions row
-      await objTransactions.updateTransactionsTable(transactionId, objTransaction.condominiumId, objTransaction.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text);
-    } else {
-
-      // insert transactions row
-      await objTransactions.insertTransactionsTable(objTransaction.condominiumId, objTransaction.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text, 'N');
-    }
-
-     // from date
-    className = '.transactionDate';
-    let fromDate = document.querySelector(className).value;
-    fromDate = formatISODateToNumber(fromDate);
-
-    // to date
-    className = '.transactionDate';
-    let toDate = document.querySelector(className).value;
-    toDate = formatISODateToNumber(toDate);
-
-    const orderBy = 'date DESC, income DESC';
-    await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', condoId, accountId, objTransaction.nineNine, 0, fromDate, toDate);
-
-    transactionId = 0;
-    if (objTransactions.arrayTransactions.length > 0) transactionId = objTransactions.arrayTransactions[0].transactionId;
-
-    removeMessage();
-
-    if (enableChanges) {
-      disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      disableButton('cancel', true);
-      disableButton('filterTransactionId', false);
-    }
-
-    // show filter
-    showFilter(transactionId);
-
-    // Show transaction
-    showTransaction(transactionId);
-    */
-
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the transactions row exist
@@ -482,35 +439,20 @@ function showTransaction(transactionId) {
   html += showDate('Dato', 'transactionDate', transactionDate, enableChanges);
   html += "</div>";
 
-  // Condos
+  // Condo
   html += startLine();
   let condoId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].condoId;
   html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', '', condoId, 'Velg leilighet', '', enableChanges);
 
-  /*
-  // condos
-  const condoId = objTransactions.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
-  className = `condoId`;
-  html += objCondo.showSelectedCondos(className, '', condoId, 'Velg leilighet', '', enableChanges);
-  html += "</tr>";
-  */
-  // Accounts
+  // Account
   let accountId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].accountId;
-
   html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', enableChanges);
 
-  /*
-    // account Id
-  const accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
-  className = `accountId`;
-  html += objAccounts.showSelectedAccounts(className, '', accountId, 'Velg konto', '', enableChanges);
-  */
-
-  // projects
+  // project
   let projectId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].projectId;
@@ -566,7 +508,6 @@ function showTransaction(transactionId) {
   html += startLine();
   html += showButtonNew('back', 'Tilbake');
   html += "</div>";
-
 
   document.querySelector('.showTransaction').innerHTML = html;
 

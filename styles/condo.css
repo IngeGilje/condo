@@ -589,7 +589,6 @@ body {
 
 /* Login card */
 .login-box {
-  width: 360px;
   padding: 35px;
 
   background: white;
@@ -679,7 +678,7 @@ body {
 
 /* LogIn Button */
 .login-btn {
-  width: 100%;
+
   height: 50px;
 
   border: none;

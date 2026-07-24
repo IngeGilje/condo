@@ -45,10 +45,11 @@ function showLogin() {
   document.querySelector('.showLogIn').innerHTML = `
   <h2>Logg inn 1.1</h2>
   <div 
-    class="field center"
+    class="field"
   >
     <label
-      class="center"  
+      class="center" 
+      style="padding-left:0px;"
     >
       Brukernavn
     </label>
@@ -62,7 +63,7 @@ function showLogin() {
   <p>&nbsp</p>
 
   <div 
-    class="field center"
+    class="field"
   >
     <label
       class="center"  
