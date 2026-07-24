@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objRemoteHeatingPrice.arrayMainMenu);
+      let html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show remote heating menu
-      html = showHorizontalMenu(objRemoteHeatingPrice.arrayMenuRemoteHeating);
+      html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
       objRemoteHeatingPrice.markActivatedApplication(objRemoteHeatingPrice.arrayMenuRemoteHeating, applicationName);
 

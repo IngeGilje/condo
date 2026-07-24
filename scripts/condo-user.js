@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objUser.arrayMainMenu);
+      let html = objUser.showHorizontalMenu(objUser.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = showHorizontalMenu(objUser.arrayMenuUser);
+      html = objUser.showHorizontalMenu(objUser.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
       objUser.markActivatedApplication(objUser.arrayMenuUser, applicationName);
 

@@ -24,11 +24,11 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 } else {
 
   // Show main menu
-  let html = showHorizontalMenu(objBankAccount.arrayMainMenu);
+  let html = objBankAccount.showHorizontalMenu(objBankAccount.arrayMainMenu);
   document.querySelector('.menuMain').innerHTML = html;
 
   // Show condominium menu
-  html = showHorizontalMenu(objBankAccount.arrayMenuCondominium);
+  html = objBankAccount.showHorizontalMenu(objBankAccount.arrayMenuCondominium);
   document.querySelector('.menuCondominium').innerHTML = html;
   objBankAccount.markActivatedApplication(objBankAccount.arrayMenuCondominium, applicationName);
 

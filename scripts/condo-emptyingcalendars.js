@@ -37,11 +37,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objEmptyingCalendars.arrayMainMenu);
+      let html = objEmptyingCalendars.showHorizontalMenu(objEmptyingCalendars.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show menu for empty calendar 
-      html = showHorizontalMenu(objEmptyingCalendars.arrayMenuEmptyingCalendar);
+      html = objEmptyingCalendars.showHorizontalMenu(objEmptyingCalendars.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
       objEmptyingCalendars.markActivatedApplication(objEmptyingCalendars.arrayMenuEmptyingCalendar, applicationName);
 

@@ -31,11 +31,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objPassword.arrayMainMenu);
+      let html = objPassword.showHorizontalMenu(objPassword.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = showHorizontalMenu(objPassword.arrayMenuUser);
+      html = objPassword.showHorizontalMenu(objPassword.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
       objPassword.markActivatedApplication(objPassword.arrayMenuNews, applicationName);
 

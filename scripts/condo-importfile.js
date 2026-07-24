@@ -42,11 +42,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objImportFile.arrayMainMenu);
+      let html = objImportFile.showHorizontalMenu(objImportFile.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show account menu
-      html = showHorizontalMenu(objImportFile.arrayMenuTransaction);
+      html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objImportFile.markActivatedApplication(objImportFile.arrayMenuTransaction, applicationName);
 

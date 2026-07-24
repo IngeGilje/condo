@@ -36,11 +36,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objEmptyingCalendar.arrayMainMenu);
+      let html = objEmptyingCalendar.showHorizontalMenu(objEmptyingCalendar.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show menu for empty calendar 
-      html = showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
+      html = objEmptyingCalendar.showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
       objEmptyingCalendar.markActivatedApplication(objEmptyingCalendar.arrayMenuEmptyingCalendar, applicationName);
 

@@ -29,11 +29,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objCondominium.arrayMainMenu);
+      let html = objCondominium.showHorizontalMenu(objCondominium.arrayMainMenu);
       document.querySelector('.showMenuMain').innerHTML = html;
 
       // Show condominium menu
-      html = showHorizontalMenu(objCondominium.arrayMenuCondominium);
+      html = objCondominium.showHorizontalMenu(objCondominium.arrayMenuCondominium);
       document.querySelector('.showMenuCondominium').innerHTML = html;
       objCondominium.markActivatedApplication(objCondominium.arrayMenuCondominium, applicationName);
 

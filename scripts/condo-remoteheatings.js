@@ -38,11 +38,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objRemoteHeatings.arrayMainMenu);
+      let html = objRemoteHeatings.showHorizontalMenu(objRemoteHeatings.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show remote heating menu
-      html = showHorizontalMenu(objRemoteHeatings.arrayMenuRemoteHeating);
+      html = objRemoteHeatings.showHorizontalMenu(objRemoteHeatings.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
       objRemoteHeatings.markActivatedApplication(objRemoteHeatings.arrayMenuRemoteHeating, applicationName);
 

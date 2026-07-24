@@ -45,11 +45,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objTransaction.arrayMainMenu);
+      let html = objTransaction.showHorizontalMenu(objTransaction.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = showHorizontalMenu(objTransaction.arrayMenuTransaction);
+      html = objTransaction.showHorizontalMenu(objTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objTransaction.markActivatedApplication(objTransaction.arrayMenuTransaction, applicationName);
 

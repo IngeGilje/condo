@@ -36,11 +36,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objOverview.arrayMainMenu);
+      let html = objOverview.showHorizontalMenu(objOverview.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = showHorizontalMenu(objOverview.arrayMenuDue);
+      html = objOverview.showHorizontalMenu(objOverview.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
       objOverview.markActivatedApplication(objOverview.arrayMenuNews, applicationName);
 

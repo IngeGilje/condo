@@ -39,11 +39,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objCommonCosts.arrayMainMenu);
+      let html = objCommonCosts.showHorizontalMenu(objCommonCosts.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = showHorizontalMenu(objCommonCosts.arrayMenuDue);
+      html = objCommonCosts.showHorizontalMenu(objCommonCosts.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
       objCommonCosts.markActivatedApplication(objCommonCosts.arrayMenuDue, applicationName);
 

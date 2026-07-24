@@ -39,11 +39,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objAnnualAccount.arrayMainMenu);
+      let html = objAnnualAccount.showHorizontalMenu(objAnnualAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = showHorizontalMenu(objAnnualAccount.arrayMenuTransaction);
+      html = objAnnualAccount.showHorizontalMenu(objAnnualAccount.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objAnnualAccount.markActivatedApplication(objAnnualAccount.arrayMenuTransaction,applicationName);
 

@@ -25,11 +25,11 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
 } else {
 
   // Show main menu
-  let html = showHorizontalMenu(objSupplier.arrayMainMenu);
+  let html = objShowNews.showHorizontalMenu(objSupplier.arrayMainMenu);
   document.querySelector('.menuMain').innerHTML = html;
 
   // Show due menu
-  html = showHorizontalMenu(objSupplier.arrayMenuDue);
+  html = objShowNews.showHorizontalMenu(objSupplier.arrayMenuDue);
   document.querySelector('.menuDue').innerHTML = html;
   objShowNews.markActivatedApplication(objShowNews.arrayMenuNews, applicationName);
 

@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objShowNews.arrayMainMenu);
+      let html = objShowNews.showHorizontalMenu(objShowNews.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show news menu
-      html = showHorizontalMenu(objShowNews.arrayMenuNews);
+      html = objShowNews.showHorizontalMenu(objShowNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
       objShowNews.markActivatedApplication(objShowNews.arrayMenuNews, applicationName);
 

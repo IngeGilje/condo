@@ -30,11 +30,11 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
     if (await objUser.checkServer()) {
 
       // Show main menu
-      let html = showHorizontalMenu(objSupplier.arrayMainMenu);
+      let html = objSupplier.showHorizontalMenu(objSupplier.arrayMainMenu);
       document.querySelector('.showMainMenu').innerHTML = html;
 
       // Show due menu
-      html = showHorizontalMenu(objSupplier.arrayMenuCondominium);
+      html = objSupplier.showHorizontalMenu(objSupplier.arrayMenuCondominium);
       document.querySelector('.showDueMenu').innerHTML = html;
       objSupplier.markActivatedApplication(objSupplier.arrayMenuCondominium, applicationName);
 
@@ -516,35 +516,4 @@ async function deleteSupplierRow() {
     // delete supplier row
     await objSupplier.deleteSuppliersTable(supplierId, objSupplier.user);
   }
-}
-
-// Show menu
-function showMenu() {
-
-  // Show main menu
-  let html = startFrame();
-
-  html += startLine();
-
-  html += showHorizontalMenu(objSupplier.arrayMainMenu);
-
-  html += "</div>";
-  html += "</div>";
-
-  // Show due menu
-  html += startFrame();
-
-  html += startLine();
-
-  html += showHorizontalMenu(objSupplier.arrayMenuDue);
-
-  html += "</div>";
-
-  // end filter frame
-  html += "</div>";
-
-  document.querySelector('.showDueMenu').innerHTML = html;
-
-  // Change frame title
-  setFrameTitle("Forfalls Meny");
 }

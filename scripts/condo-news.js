@@ -29,11 +29,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objNews.arrayMainMenu);
+      let html = objNews.showHorizontalMenu(objNews.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show news menu
-      html = showHorizontalMenu(objNews.arrayMenuNews);
+      html = objNews.showHorizontalMenu(objNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
       objNews.markActivatedApplication(objNews.arrayMenuNews, applicationName);
 

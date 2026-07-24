@@ -41,11 +41,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objCommonCost.arrayMainMenu);
+      let html = objCommonCost.showHorizontalMenu(objCommonCost.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = showHorizontalMenu(objCommonCost.arrayMenuDue);
+      html = objCommonCost.showHorizontalMenu(objCommonCost.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
       objCommonCost.markActivatedApplication(objCommonCost.arrayMenuDue, applicationName);
 

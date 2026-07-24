@@ -47,11 +47,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objTransactions.arrayMainMenu);
+      let html = objTransactions.showHorizontalMenu(objTransactions.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = showHorizontalMenu(objTransactions.arrayMenuTransaction);
+      html = objTransactions.showHorizontalMenu(objTransactions.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objTransactions.markActivatedApplication(objTransactions.arrayMenuTransaction, applicationName);
 

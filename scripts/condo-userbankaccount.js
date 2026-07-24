@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objUserBankAccount.arrayMainMenu);
+      let html = objUserBankAccount.showHorizontalMenu(objUserBankAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = showHorizontalMenu(objUserBankAccount.arrayMenuUser);
+      html = objUserBankAccount.showHorizontalMenu(objUserBankAccount.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
       objUserBankAccount.markActivatedApplication(objUserBankAccount.arrayMenuUser, applicationName);
 

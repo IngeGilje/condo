@@ -903,6 +903,39 @@ class Condos {
       }
     });
   }
+
+  // Show horizontal menu
+  showHorizontalMenu(arrayMenu) {
+
+    const URL = (this.serverStatus === 1)
+      ? 'http://ingegilje.no/'
+      : 'http://localhost/';
+
+    let html = `
+  <nav class="navbar horizontalMenu">
+    <ul class="nav-links">
+  `;
+
+    arrayMenu.forEach((array) => {
+
+      const className = array.className;
+      html += `
+      <li>
+      <a 
+        class="${className}"
+        href="${URL}${array.applicationName}"
+      >
+        ${array.text.trim()}
+      </a>
+      </li>`;
+    });
+
+    html += `
+    </ul>
+  </nav>`;
+
+    return html;
+  }
 }
 
 // Show selected numbers (from number - to number)
@@ -1005,39 +1038,6 @@ function showTextArea(label, className, value, maxlength, enableChanges, rows = 
 function removeMessage() {
 
   document.querySelector(".showMessage").style.display = "none";
-}
-
-// Show horizontal menu
-function showHorizontalMenu(arrayMenu) {
-
-  const URL = (this.serverStatus === 1)
-    ? 'http://ingegilje.no/'
-    : 'http://localhost/';
-
-  let html = `
-  <nav class="navbar horizontalMenu">
-    <ul class="nav-links">
-  `;
-
-  arrayMenu.forEach((array) => {
-
-    const className = array.className;
-    html += `
-      <li>
-      <a 
-        class="${className}"
-        href="${URL}${array.applicationName}"
-      >
-        ${array.text.trim()}
-      </a>
-      </li>`;
-  });
-
-  html += `
-    </ul>
-  </nav>`;
-
-  return html;
 }
 
 // Show message

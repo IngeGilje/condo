@@ -37,11 +37,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = showHorizontalMenu(objBudgets.arrayMainMenu);
+      let html = objBudgets.showHorizontalMenu(objBudgets.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = showHorizontalMenu(objBudgets.arrayMenuTransaction);
+      html = objBudgets.showHorizontalMenu(objBudgets.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objBudgets.markActivatedApplication(objBudgets.arrayMenuTransaction,applicationName);
 
