@@ -38,42 +38,42 @@ class Condos {
   userId = Number(sessionStorage.getItem("userId"));
 
   // array of horizontal main menu
-  path = (this.serverStatus === 1) 
-  ? "https://ingegilje.no/"
-  : ""
+  //path = (this.serverStatus === 1)
+  //  ? "https://ingegilje.no/"
+  //  : "localhost/"
   arrayMainMenu = [
     {
-      applicationName: `${this.path}condo-shownews.html`,
+      applicationName: 'condo-shownews.html',
       className: "main-condo-shownews",
       text: "Nyheter"
     },
     {
-      applicationName: `${this.path}condo-emptyingcalendars.html`,
+      applicationName: 'condo-emptyingcalendars.html',
       className: "main-condo-emptyingcalendars",
       text: "Tømmekalender"
     },
     {
-      applicationName: `${this.path}condo-condominium.html`,
+      applicationName: 'condo-condominium.html',
       className: "main-condo-condominium",
       text: "Sameie"
     },
     {
-      applicationName: `${this.path}condo-user.html`,
+      applicationName: 'condo-user.html',
       className: "main-condo-user",
       text: "Bruker"
     },
     {
-      applicationName: `${this.path}condo-transactions.html`,
+      applicationName: 'condo-transactions.html',
       className: "main-condo-transactions",
       text: "Transaksjoner"
     },
     {
-      applicationName: `${this.path}condo-dues.html`,
+      applicationName: 'condo-dues.html',
       className: "main-condo-dues",
       text: "Forfall"
     },
     {
-      applicationName: `${this.path}condo-remoteheatings.html`,
+      applicationName: 'condo-remoteheatings.html',
       className: "main-condo-remoteheatings",
       text: "Fjernvarme"
     }
@@ -82,12 +82,12 @@ class Condos {
   // array of horizontal news menu
   arrayMenuNews = [
     {
-      applicationName: `${this.path}condo-shownews.html`,
+      applicationName: 'condo-shownews.html',
       className: "condo-shownews",
       text: "Vis Nyheter"
     },
     {
-      applicationName: `${this.path}condo-news.html`,
+      applicationName: 'condo-news.html',
       className: "condo-news",
       text: "Nyheter"
     },
@@ -96,12 +96,12 @@ class Condos {
   // array of horizontal emptying calendar menu
   arrayMenuEmptyingCalendar = [
     {
-      applicationName: `${this.path}condo-emptyingcalendars.html`,
+      applicationName: 'condo-emptyingcalendars.html',
       className: "condo-emptyingcalendars",
       text: "Vis Tømmekalender"
     },
     {
-      applicationName: `${this.path}condo-emptyingcalendar.html`,
+      applicationName: 'condo-emptyingcalendar.html',
       className: "condo-emptyingcalendar",
       text: "Tømmekalender"
     },
@@ -110,22 +110,22 @@ class Condos {
   // menu array for condominium
   arrayMenuCondominium = [
     {
-      applicationName: `${this.path}condo-condominium.html`,
+      applicationName: 'condo-condominium.html',
       className: "condo-condominium",
       text: "Sameie"
     },
     {
-      applicationName: `${this.path}condo-bankaccount.html`,
+      applicationName: 'condo-bankaccount.html',
       className: "condo-bankaccount",
       text: "Bankkonto"
     },
     {
-      applicationName: `${this.path}condo-accounts.html`,
+      applicationName: 'condo-accounts.html',
       className: "condo-accounts",
       text: "Vis Konti"
     },
     {
-      applicationName: `${this.path}condo-account.html`,
+      applicationName: 'condo-account.html',
       className: "condo-account",
       text: "Konto"
     }
@@ -134,22 +134,22 @@ class Condos {
   // menu array for user
   arrayMenuUser = [
     {
-      applicationName: `${this.path}condo-user.html`,
+      applicationName: 'condo-user.html',
       className: "condo-user",
       text: "Bruker"
     },
     {
-      applicationName: `${this.path}condo-password.html`,
+      applicationName: 'condo-password.html',
       className: "condo-password",
       text: "Passord"
     },
     {
-      applicationName: `${this.path}condo-condo.html`,
+      applicationName: 'condo-condo.html',
       className: "condo-condo",
       text: "Leilighet"
     },
     {
-      applicationName: `${this.path}condo-userbankaccount.html`,
+      applicationName: 'condo-userbankaccount.html',
       className: "condo-userbankaccount",
       text: "Bankkonto"
     }
@@ -158,33 +158,33 @@ class Condos {
   // menu array for transactions
   arrayMenuTransaction = [
     {
-      applicationName: `${this.path}condo-transactions.html`,
+      applicationName: 'condo-transactions.html',
       className: "condo-transactions",
       text: "Transaksjoner"
     },
     {
-      applicationName: `${this.path}condo-projects.html`,
+      applicationName: 'condo-projects.html',
       className: "condo-projects",
       text: "Prosjektoversikt"
     },
 
     {
-      applicationName: `${this.path}condo-project.html`,
+      applicationName: 'condo-project.html',
       className: "condo-project",
       text: "Prosjekt"
     },
     {
-      applicationName: `${this.path}condo-budgets.html`,
+      applicationName: 'condo-budgets.html',
       className: "condo-budgets",
       text: "Budsjett"
     },
     {
-      applicationName: `${this.path}condo-annualaccount.html`,
+      applicationName: 'condo-annualaccount.html',
       className: "condo-annualaccount",
       text: "Årsregnskap"
     },
     {
-      applicationName: `${this.path}condo-importfile.html`,
+      applicationName: 'condo-importfile.html',
       className: "condo-importfile",
       text: "Hent transaksjoner"
     },
@@ -193,27 +193,27 @@ class Condos {
   // menu array for due
   arrayMenuDue = [
     {
-      applicationName: `${this.path}condo-dues.html`,
+      applicationName: 'condo-dues.html',
       className: "condo-dues",
       text: "Forfall"
     },
     {
-      applicationName: `${this.path}condo-supplier.html`,
+      applicationName: 'condo-supplier.html',
       className: "condo-supplier",
       text: "Leverandør"
     },
     {
-      applicationName: `${this.path}condo-commoncosts.html`,
+      applicationName: 'condo-commoncosts.html',
       className: "condo-commoncosts",
       text: "Vis Felleskostnader"
     },
     {
-      applicationName: `${this.path}condo-commoncost.html`,
+      applicationName: 'condo-commoncost.html',
       className: "condo-commoncost",
       text: "Felleskostnad"
     },
     {
-      applicationName: `${this.path}condo-overview.html`,
+      applicationName: 'condo-overview.html',
       className: "condo-overview",
       text: "Betalingsoversikt"
     }
@@ -222,17 +222,17 @@ class Condos {
   // menu array for remote heating
   arrayMenuRemoteHeating = [
     {
-      applicationName: `${this.path}condo-remoteheatings.html`,
+      applicationName: 'condo-remoteheatings.html',
       className: "condo-remoteheatings",
       text: "Vis Fjernvarme"
     },
     {
-      applicationName: `${this.path}condo-remoteheating.html`,
+      applicationName: 'condo-remoteheating.html',
       className: "condo-remoteheating",
       text: "Fjernvarme"
     },
     {
-      applicationName: `${this.path}condo-remoteheatingprice.html`,
+      applicationName: 'condo-remoteheatingprice.html',
       className: "condo-remoteheatingprice",
       text: "Pris Fjernvarme"
     }
@@ -308,100 +308,6 @@ class Condos {
     </td>`;
 
     return html;
-  }
-
-  /*
-  // Validate text
-  validateText(className, columnWidths, style, message, showMessage = true, text, minLength, maxLength) {
-
-    let isValid = true;
-
-    // Check for string
-    if (typeof text !== "string") isValid = false;
-
-    // Check length
-    if (!(text.length >= minLength) && (text.length <= maxLength)) isValid = false;
-
-    // Check allowed characters (letters, numbers, spaces)
-    const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
-    if (!regex.test(text)) isValid = false;
-
-    const inputElement = document.querySelector(`.${className}`);
-
-    // remove/ add 'input-error' class
-    if (inputElement) inputElement.classList.toggle('input-error', !isValid);
-    if (!isValid && showMessage) showMessageNew(style, message)
-
-    return isValid;
-  }
-
-  // Select bank account
-  selectBankAccountId(bankAccountId, className) {
-
-    // Check if account id exist
-    const rowNumberBankAccount = this.arrayBankAccounts.findIndex(bankAccounts => bankAccounts.bankAccountId === bankAccountId);
-    if (rowNumberBankAccount !== -1) {
-
-      document.querySelector(`.select-${className}`).value = bankAccountId;
-      return true;
-    } else {
-
-      return false;
-    }
-  }
-  */
-
-  // Select numbers
-  selectNumber(className, fromNumber, toNumber, selectedNumber, labelText) {
-
-    selectedNumber = Number(selectedNumber);
-    let html =
-      `
-      <form 
-        id="selectedNumber"
-        action="/submit" method="POST"
-      >
-        <label 
-          class="label-${className}"
-          for="selectedNumber">
-            ${labelText}
-        </label>
-        <select class="select-${className}" 
-          id="selectedNumber"
-          name="selectedNumber"
-        >
-    `;
-
-    for (let number = fromNumber; number <= toNumber; number++) {
-      if (number === selectedNumber) {
-
-        html += `
-        <option 
-          value="${number}"
-          selected
-          >
-          ${number}
-        </option>
-      `;
-        selectedOption =
-          true;
-      } else {
-        html += `
-        <option 
-          value="${number}"
-          >
-          ${number}
-        </option>
-      `;
-      }
-    };
-
-    html += `
-      </select >
-    </form>
-  `;
-
-    document.querySelector(`.div-${className}`).innerHTML = html;
   }
 
   // Select numbers
@@ -997,37 +903,6 @@ class Condos {
       }
     });
   }
-
-  /*
-  // Format amount (1 234 567,89)
-  formatAmount(amount) {
-
-    //let value = amount.value.replace(/\D/g, '');
-    amount = String(amount);
-    if (!amount) {
-      return ' ';
-    }
-
-    while (amount.length < 3) {
-      amount = '0' + amount;
-    }
-
-    // decimal
-    const decimals = amount.slice(-2);
-
-    // Integer
-    let integerPart = amount.slice(0, -2);
-
-    integerPart = integerPart.replace(/^0+/, '') || '0';
-
-    integerPart = integerPart.replace(
-      /\B(?=(\d{3})+(?!\d))/g,
-      ' '
-    );
-
-    return `${integerPart},${decimals}`;
-  }
-  */
 }
 
 // Show selected numbers (from number - to number)
@@ -1258,7 +1133,7 @@ function validateEmailNew(className, eMail, style, errorMessage) {
 }
 
 // Validate phone number 
-function validatePhoneNew(className, phone,errorMessage) {
+function validatePhoneNew(className, phone, errorMessage) {
 
   // Validate phone number
   phone = phone.replace(/\s+/g, "");
@@ -1360,7 +1235,7 @@ function validateIntervalNew(className, style, errorMessage, showMessage = true,
   number = Number(number);
   let isValid = (Number(number) >= Number(minNumber) && Number(number) <= Number(maxNumber));
 
-const inputElement = document.querySelector(`.${className}`);
+  const inputElement = document.querySelector(`.${className}`);
   if (inputElement) {
 
     (isValid)
@@ -1839,18 +1714,6 @@ function generatePassword(passwordLength, includeLowercase, includeUppercase, in
   return password;
 }
 
-/*
-// Validate amount in the (1 234,12 = true) format
-// This validateEuroAmount(amount) will never show any error message
-function validateEuroAmount(amount) {
- 
-  amount = amount.replace(/\s+/g, '');
-  amount = String(amount).replace(/\./g, "");
-  amount = amount.replace(/\,/g, "");
-  return isValidNumber(amount);
-}
-*/
-
 // Removes the iframe
 function removeIframe() {
   const iframe = document.getElementById("div-condo-login");
@@ -1858,15 +1721,6 @@ function removeIframe() {
     iframe.remove();
   }
 }
-
-/*
-// Enable/ disable button
-function disableButton(className, disabled = false, color = '#4c6fff') {
-  document.querySelector(`.${className}`).disabled = disabled;
-  const button = document.querySelector(`.${className}`);
-  color = button.style.backgroundColor = (disabled) ? 'lightgrey' : color;
-}
-*/
 
 // Enable/ disable button
 function disableButton(className, disabled = false, color = '#38bdf8') {
