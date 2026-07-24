@@ -4,8 +4,6 @@
 const objUser = new User('user');
 const objLogIn = new Login('login');
 
-const columnWidths = [175];
-
 sessionStorage.clear();
 
 // Call main when script loads
@@ -49,12 +47,14 @@ function showLogin() {
   <div 
     class="field center"
   >
-    <label>
+    <label
+      class="center"  
+    >
       Brukernavn
     </label>
     <input 
       type="text" 
-      class="one-line"
+      class="email one-line center"
       autocomplete="off"
     >
   </div>
@@ -64,12 +64,14 @@ function showLogin() {
   <div 
     class="field center"
   >
-    <label>
+    <label
+      class="center"  
+    >
       Passord
     </label>
     <input
       type="password"
-      class="one-line center">
+      class="password one-line center">
   </div>
 
    <p>&nbsp</p>
@@ -97,38 +99,42 @@ function resetValues() {
 async function checkLogin() {
 
   // validate email
-  //const email = document.querySelector('.email').value;
+  const email = document.querySelector('.email').value;
 
   // validate password
-  //const password = document.querySelector('.password').value;
+  const password = document.querySelector('.password').value;
 
   // get userId
-  //const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
-  //if (rowNumberUser !== -1) {
+  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
+  if (rowNumberUser !== -1) {
 
-  // Check user and password 
-  //userId = objUser.arrayUsers[rowNumberUser].userId;
-  password = "12345";
-  userId = 2;
-  if (await objUser.validateUser(userId, password)) {
+    // Check user and password 
+    //password = "12345";
+    //userId = 2;
+    if (await objUser.validateUser(Number(objUser.arrayUsers[rowNumberUser].userId), password)) {
 
-    // The sessionStorage object stores data for only one session
-    window.sessionStorage.setItem("condominiumId", 2);
-    window.sessionStorage.setItem("user", "inge.gilje@gmail.com");
-    window.sessionStorage.setItem("securityLevel", 9);
-    window.sessionStorage.setItem("userId", 2);
+      // The sessionStorage object stores data for only one session
+      //window.sessionStorage.setItem("condominiumId", 2);
+      //window.sessionStorage.setItem("user", "inge.gilje@gmail.com");
+      //window.sessionStorage.setItem("securityLevel", 9);
+      //window.sessionStorage.setItem("userId", 2);
 
-    // Start news display
-    const URL = (objUser.serverStatus === 1)
-      ? 'http://ingegilje.no/condo-shownews.html'
-      : 'http://localhost/condo-shownews.html';
-    window.location.href = URL;
-    return true;
+      window.sessionStorage.setItem("condominiumId", objUser.arrayUsers[rowNumberUser].condominiumId);
+      window.sessionStorage.setItem("user", objUser.arrayUsers[rowNumberUser].user);
+      window.sessionStorage.setItem("securityLevel", objUser.arrayUsers[rowNumberUser].securityLevel);
+      window.sessionStorage.setItem("userId", objUser.arrayUsers[rowNumberUser].userId);
+
+      // Start to show news
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-shownews.html'
+        : 'http://localhost/condo-shownews.html';
+      window.location.href = URL;
+      return true;
+    }
   }
-  //}
 
   // password/ user is not OK
-  showMessageNew(columnWidths, 'width:250px;margin: 0 auto;', 'Ugyldig email/passord');
+  showMessageNew('Ugyldig brukernavn/passord');
 
   resetValues();
   return false;
