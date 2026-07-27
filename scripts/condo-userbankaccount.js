@@ -136,7 +136,7 @@ async function events() {
 function showFilter(userBankAccountId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show user bank accounts filter
   html += objUserBankAccount.showSelectedUserBankAccountsNew('Brukerkonto', 'filterUserBankAccountId', '', userBankAccountId, '', '', true);

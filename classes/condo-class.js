@@ -912,32 +912,39 @@ class Condos {
   // Show horizontal menu
   showHorizontalMenu(arrayMenu) {
 
+    // Start frame
+    let html = startFrame();
+
     const URL = (this.serverStatus === 1)
       ? 'http://ingegilje.no/'
       : 'http://localhost/';
 
-    let html = `
-  <nav class="navbar horizontalMenu">
-    <ul class="nav-links">
-  `;
+    html += `
+    <nav class="navbar horizontalMenu">
+      <ul 
+        class="nav-links"
+      >
+    `;
 
     arrayMenu.forEach((array) => {
 
       const className = array.className;
       html += `
       <li>
-      <a 
-        class="${className}"
-        href="${URL}${array.applicationName}"
-      >
-        ${array.text.trim()}
-      </a>
+        <a 
+          class="${className}"
+          href="${URL}${array.applicationName}"
+        >
+          ${array.text.trim()}
+        </a>
       </li>`;
     });
 
     html += `
-    </ul>
-  </nav>`;
+      </ul>
+    </nav>
+  </div>
+  `;
 
     return html;
   }

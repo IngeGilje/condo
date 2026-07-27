@@ -152,7 +152,7 @@ async function events() {
 function showFilter(dueId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show dues
   html += objDues.showSelectedDuesNew('Forfall', 'filterDueId', '', dueId, '', 'Vis alle', true);

@@ -173,7 +173,7 @@ function showHeader() {
 function showFilter(projectId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // show filter
   //html += startLine();

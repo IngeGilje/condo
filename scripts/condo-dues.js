@@ -167,7 +167,7 @@ async function events() {
 function showFilter(condoId, accountId, fromDate, toDate) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);

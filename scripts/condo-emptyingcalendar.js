@@ -182,7 +182,7 @@ async function events() {
 function showFilter(emptyingCalendarId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show date
   html += objEmptyingCalendars.showSelectedEmptyCalendarsNew('Tømmedato', 'filterEmptyingCalendarId', '', emptyingCalendarId, 'Velg Dato', '', true);

@@ -167,7 +167,7 @@ async function deleteBankAccount() {
 function showFilter(bankAccountId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   /*
   // Show bankaccounts

@@ -132,7 +132,7 @@ async function events() {
 function showFilter(remoteHeatingId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   html += objRemoteHeatings.showSelectedRemoteHeatingsNew('Fjernvarme', 'filterRemoteHeatingId', '', remoteHeatingId, 'Velg fjernvarme ', '', true);
 

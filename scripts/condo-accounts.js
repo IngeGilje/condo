@@ -218,7 +218,7 @@ function resetValues() {
 function showFilter(fixedCost) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show types of account
   if (fixedCost === 'Y') fixedCost = constFixedCost;

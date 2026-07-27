@@ -94,7 +94,7 @@ async function events() {
 function showFilter(year) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show years
   html += showSelectedNumbersNew('År', 'filterYear', 'align:center;', 2020, 2030, year, true);

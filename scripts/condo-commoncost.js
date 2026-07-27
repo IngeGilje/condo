@@ -202,7 +202,7 @@ async function events() {
 function showFilter(commonCostId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show commoncosts
   html += objCommonCosts.showSelectedCommonCostsNew('Felleskost', 'filterCommonCostId', '', commonCostId, 'Velg Felleskost', '', true);

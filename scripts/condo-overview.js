@@ -143,7 +143,7 @@ async function events() {
 function showFilter(condoId) {
 
    // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // show filter
   //html += startLine();

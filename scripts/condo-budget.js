@@ -276,7 +276,7 @@ function calculateSum() {
 function showFilter(budgetId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show budgets
   html += objBudgets.showSelectedBudgetsNew('Budsjett', 'filterBudgetId', '', budgetId, '', '', true);

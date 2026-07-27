@@ -226,7 +226,7 @@ async function events() {
 function showFilter(transactionId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show dues
   html += objTransactions.showSelectedTransactionsNew('Bilag', 'filterTransactionId', '', transactionId, '', '', true);

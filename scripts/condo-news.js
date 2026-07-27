@@ -145,7 +145,7 @@ async function events() {
 function showFilter(newsId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show news
   html += objNews.showSelectedNewsNew('Nyhet', 'filterNewsId', '', newsId, '', '', true);

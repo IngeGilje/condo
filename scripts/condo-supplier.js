@@ -204,7 +204,7 @@ function resetValues() {
 function showFilter(supplierId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   //html += startLine();
   html += emptyLine();

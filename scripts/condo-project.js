@@ -167,7 +167,7 @@ async function events() {
 function showFilter(projectId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show projects
   html += objProjects.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', '', true);

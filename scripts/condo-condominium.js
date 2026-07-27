@@ -214,7 +214,7 @@ async function deleteCondominiumRow() {
 function showFilter(condominiumId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show condominiums
   html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);

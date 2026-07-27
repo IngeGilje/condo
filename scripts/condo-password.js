@@ -138,7 +138,7 @@ async function deleteCondo() {
 function showFilter(userId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // show filter
   //html += startLine();

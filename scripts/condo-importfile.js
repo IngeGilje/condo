@@ -491,7 +491,7 @@ function checkTransaction(income, payment, date) {
 function showFilter() {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Start table
   html += objImportFile.initializeTable(columnWidths);

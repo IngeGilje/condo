@@ -140,7 +140,7 @@ async function events() {
 function showFilter(remoteHeatingPriceId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   html += objRemoteHeatingPrice.showSelectedRemoteHeatingPricesNew('Pris Fjernvarme', 'filterRemoteHeatingPriceId', '', remoteHeatingPriceId, 'Velg Pris Fjernvarme ', '', true);
 

@@ -172,7 +172,7 @@ function resetValues() {
 function showFilter(accountId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // Show types of account
   html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', '', true);
@@ -278,39 +278,6 @@ async function updateAccountsRow(accountId) {
   // Validate accounts columns
   if (validName && validFixedCost) {
 
-    /*
-    document.querySelector('.showMessage').style.display = "none";
-
-    // Check if the account id exist
-    rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-    if (rowNumberAccount !== -1) {
-
-      // update the accounts row
-      await objAccounts.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
-
-    } else {
-
-      // Insert the account row in accounts table
-      await objAccounts.insertAccountsTable(objAccount.condominiumId, objAccount.user, name, fixedCost);
-    }
-
-    fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
-
-    if (enableChanges) {
-      disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      disableButton('cancel', true);
-      disableButton('filterAccountId', false, 'white');
-    }
-
-    showFilter(accountId);
-
-    // Show account
-    showAccount(accountId);
-  }
-  */
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the account Id exist

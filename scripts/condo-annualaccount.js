@@ -205,7 +205,7 @@ function getBudgetAmount(accountId, year) {
 function showFilter(budgetYear, fromDate, toDate) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // show filter
   //html += startLine();

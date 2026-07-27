@@ -150,7 +150,7 @@ async function events() {
 function showFilter(condoId) {
 
   // Start frame
-  let html = startFrame();
+  let html = startFrame('showFilter');
 
   // show filter
   //html += startLine();
@@ -158,7 +158,7 @@ function showFilter(condoId) {
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', '', true);
 
-  // End filter frame
+  // End frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
