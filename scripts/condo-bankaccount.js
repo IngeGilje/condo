@@ -24,11 +24,11 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 } else {
 
   // Show main menu
-  let html = objBankAccount.showHorizontalMenu(objBankAccount.arrayMainMenu);
+  let html = objBankAccount.showHorizontalMenu("filter-frame", objBankAccount.arrayMainMenu);
   document.querySelector('.menuMain').innerHTML = html;
 
   // Show condominium menu
-  html = objBankAccount.showHorizontalMenu(objBankAccount.arrayMenuCondominium);
+  html = objBankAccount.showHorizontalMenu("filter-frame", objBankAccount.arrayMenuCondominium);
   document.querySelector('.menuCondominium').innerHTML = html;
   objBankAccount.markActivatedApplication(objBankAccount.arrayMenuCondominium, applicationName);
 
@@ -167,7 +167,7 @@ async function deleteBankAccount() {
 function showFilter(bankAccountId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   /*
   // Show bankaccounts
@@ -184,7 +184,7 @@ function showFilter(bankAccountId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Update a bankaccounts row

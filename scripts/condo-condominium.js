@@ -29,11 +29,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objCondominium.showHorizontalMenu(objCondominium.arrayMainMenu);
+      let html = objCondominium.showHorizontalMenu("filter-frame", objCondominium.arrayMainMenu);
       document.querySelector('.showMenuMain').innerHTML = html;
 
       // Show condominium menu
-      html = objCondominium.showHorizontalMenu(objCondominium.arrayMenuCondominium);
+      html = objCondominium.showHorizontalMenu("filter-frame", objCondominium.arrayMenuCondominium);
       document.querySelector('.showMenuCondominium').innerHTML = html;
       objCondominium.markActivatedApplication(objCondominium.arrayMenuCondominium, applicationName);
 
@@ -214,7 +214,7 @@ async function deleteCondominiumRow() {
 function showFilter(condominiumId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show condominiums
   html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
@@ -225,7 +225,7 @@ function showFilter(condominiumId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show condominium

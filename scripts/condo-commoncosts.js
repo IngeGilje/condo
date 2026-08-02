@@ -39,11 +39,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objCommonCosts.showHorizontalMenu(objCommonCosts.arrayMainMenu);
+      let html = objCommonCosts.showHorizontalMenu("filter-frame", objCommonCosts.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = objCommonCosts.showHorizontalMenu(objCommonCosts.arrayMenuDue);
+      html = objCommonCosts.showHorizontalMenu("filter-frame", objCommonCosts.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
       objCommonCosts.markActivatedApplication(objCommonCosts.arrayMenuDue, applicationName);
 
@@ -94,7 +94,7 @@ async function events() {
 function showFilter(year) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show years
   html += showSelectedNumbersNew('År', 'filterYear', 'align:center;', 2020, 2030, year, true);
@@ -105,7 +105,7 @@ function showFilter(year) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show common costs

@@ -39,11 +39,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objAnnualAccount.showHorizontalMenu(objAnnualAccount.arrayMainMenu);
+      let html = objAnnualAccount.showHorizontalMenu("filter-frame", objAnnualAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objAnnualAccount.showHorizontalMenu(objAnnualAccount.arrayMenuTransaction);
+      html = objAnnualAccount.showHorizontalMenu("filter-frame", objAnnualAccount.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objAnnualAccount.markActivatedApplication(objAnnualAccount.arrayMenuTransaction,applicationName);
 
@@ -205,10 +205,7 @@ function getBudgetAmount(accountId, year) {
 function showFilter(budgetYear, fromDate, toDate) {
 
   // Start frame
-  let html = startFrame('showFilter');
-
-  // show filter
-  //html += startLine();
+  let html = startFrame('filter-frame');
 
   // Show year
   html += showSelectedNumbersNew('År', 'filterBudgetYear', '', 2020, 2030, budgetYear, true);
@@ -230,7 +227,7 @@ function showFilter(budgetYear, fromDate, toDate) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show annual accounts

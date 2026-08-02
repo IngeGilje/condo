@@ -48,11 +48,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objTransaction.showHorizontalMenu(objTransaction.arrayMainMenu);
+      let html = objTransaction.showHorizontalMenu("filter-frame", objTransaction.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objTransaction.showHorizontalMenu(objTransaction.arrayMenuTransaction);
+      html = objTransaction.showHorizontalMenu("filter-frame", objTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objTransaction.markActivatedApplication(objTransaction.arrayMenuTransaction, applicationName);
 
@@ -226,7 +226,7 @@ async function events() {
 function showFilter(transactionId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show dues
   html += objTransactions.showSelectedTransactionsNew('Bilag', 'filterTransactionId', '', transactionId, '', '', true);
@@ -237,7 +237,7 @@ function showFilter(transactionId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 function resetValues() {

@@ -910,10 +910,10 @@ class Condos {
   }
 
   // Show horizontal menu
-  showHorizontalMenu(arrayMenu) {
+  showHorizontalMenu(className,arrayMenu) {
 
     // Start frame
-    let html = startFrame();
+    let html = startFrame(className);
 
     const URL = (this.serverStatus === 1)
       ? 'http://ingegilje.no/'
@@ -1348,11 +1348,11 @@ function showDate(label, className, value, enableChanges) {
 }
 
 // Start frame
-function startFrame() {
+function startFrame(className) {
 
   return `
   <div 
-    class="filter-frame"
+    class=${className}
     style="max-width: 1500px;"
   >`;
 }
@@ -1369,12 +1369,20 @@ function emptyLine() {
 }
 
 // Change frame title
+function setFrameTitle(className="filter-frame",text="Filter") {
+
+  const frameElement = document.querySelector(`.${className}`);
+  frameElement.style.setProperty("--title", `"${text}"`);
+}
+
+/*
+// Change frame title
 function setFrameTitle(text) {
 
-  document
-    .querySelector(".filter-frame")
-    .style.setProperty("--title", `"${text}"`);
+  const element = document.querySelector(".filter-frame");
+  element.style.setProperty("--title", `"${text}"`);
 }
+*/
 
 // Show button
 function showButtonNew(className, text) {

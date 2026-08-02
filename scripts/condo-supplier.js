@@ -30,11 +30,11 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
     if (await objUser.checkServer()) {
 
       // Show main menu
-      let html = objSupplier.showHorizontalMenu(objSupplier.arrayMainMenu);
+      let html = objSupplier.showHorizontalMenu("filter-frame", objSupplier.arrayMainMenu);
       document.querySelector('.showMainMenu').innerHTML = html;
 
       // Show due menu
-      html = objSupplier.showHorizontalMenu(objSupplier.arrayMenuCondominium);
+      html = objSupplier.showHorizontalMenu("filter-frame", objSupplier.arrayMenuCondominium);
       document.querySelector('.showDueMenu').innerHTML = html;
       objSupplier.markActivatedApplication(objSupplier.arrayMenuCondominium, applicationName);
 
@@ -204,7 +204,7 @@ function resetValues() {
 function showFilter(supplierId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   //html += startLine();
   html += emptyLine();
@@ -220,7 +220,7 @@ function showFilter(supplierId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show supplier

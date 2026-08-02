@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMainMenu);
+      let html = objRemoteHeatingPrice.showHorizontalMenu("filter-frame", objRemoteHeatingPrice.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show remote heating menu
-      html = objRemoteHeatingPrice.showHorizontalMenu(objRemoteHeatingPrice.arrayMenuRemoteHeating);
+      html = objRemoteHeatingPrice.showHorizontalMenu("filter-frame", objRemoteHeatingPrice.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
       objRemoteHeatingPrice.markActivatedApplication(objRemoteHeatingPrice.arrayMenuRemoteHeating, applicationName);
 
@@ -140,7 +140,7 @@ async function events() {
 function showFilter(remoteHeatingPriceId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   html += objRemoteHeatingPrice.showSelectedRemoteHeatingPricesNew('Pris Fjernvarme', 'filterRemoteHeatingPriceId', '', remoteHeatingPriceId, 'Velg Pris Fjernvarme ', '', true);
 
@@ -150,7 +150,7 @@ function showFilter(remoteHeatingPriceId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show remote heating prices

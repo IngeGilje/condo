@@ -31,11 +31,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objPassword.showHorizontalMenu(objPassword.arrayMainMenu);
+      let html = objPassword.showHorizontalMenu("filter-frame", objPassword.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = objPassword.showHorizontalMenu(objPassword.arrayMenuUser);
+      html = objPassword.showHorizontalMenu("filter-frame", objPassword.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
       objPassword.markActivatedApplication(objPassword.arrayMenuNews, applicationName);
 
@@ -138,7 +138,7 @@ async function deleteCondo() {
 function showFilter(userId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // show filter
   //html += startLine();
@@ -152,7 +152,7 @@ function showFilter(userId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show user

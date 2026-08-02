@@ -42,11 +42,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objImportFile.showHorizontalMenu(objImportFile.arrayMainMenu);
+      let html = objImportFile.showHorizontalMenu("filter-frame", objImportFile.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show account menu
-      html = objImportFile.showHorizontalMenu(objImportFile.arrayMenuTransaction);
+      html = objImportFile.showHorizontalMenu("filter-frame", objImportFile.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objImportFile.markActivatedApplication(objImportFile.arrayMenuTransaction, applicationName);
 
@@ -491,7 +491,7 @@ function checkTransaction(income, payment, date) {
 function showFilter() {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Start table
   html += objImportFile.initializeTable(columnWidths);
@@ -510,7 +510,7 @@ function showFilter() {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show csv file for transactions

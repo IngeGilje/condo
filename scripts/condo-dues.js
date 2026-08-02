@@ -42,11 +42,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objDues.showHorizontalMenu(objDues.arrayMainMenu);
+      let html = objDues.showHorizontalMenu("filter-frame", objDues.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = objDues.showHorizontalMenu(objDues.arrayMenuDue);
+      html = objDues.showHorizontalMenu("filter-frame", objDues.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
       objDues.markActivatedApplication(objDues.arrayMenuDue, applicationName);
 
@@ -167,7 +167,7 @@ async function events() {
 function showFilter(condoId, accountId, fromDate, toDate) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -187,7 +187,7 @@ function showFilter(condoId, accountId, fromDate, toDate) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // show dues

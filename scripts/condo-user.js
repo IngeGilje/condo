@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objUser.showHorizontalMenu(objUser.arrayMainMenu);
+      let html = objUser.showHorizontalMenu("filter-frame", objUser.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = objUser.showHorizontalMenu(objUser.arrayMenuUser);
+      html = objUser.showHorizontalMenu("filter-frame", objUser.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
       objUser.markActivatedApplication(objUser.arrayMenuUser, applicationName);
 
@@ -51,9 +51,6 @@ async function main() {
         await objCondominium.loadCondominiumsTable(objUser.condominiumId);
         await objCondo.loadCondoTable(objUser.condominiumId, objUser.nineNine);
       }
-
-      // Show header
-      //showHeader();
 
       // Show filter
       showFilter(objUser.userId);
@@ -194,23 +191,18 @@ function resetValues() {
 function showFilter(userId) {
 
   // Start frame
-  let html = startFrame('showFilter');
-
-  // show filter
-  //html += startLine();
+  let html = startFrame("filter-frame");
 
   // Show users
   html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
-
-  //html += "</div>";
 
   // End filter frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 
-  // Change frame title
-  setFrameTitle("Filter");
+    // Change frame title
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show user

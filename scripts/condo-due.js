@@ -41,11 +41,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objDue.showHorizontalMenu(objDue.arrayMainMenu);
+      let html = objDue.showHorizontalMenu("filter-frame", objDue.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = objDue.showHorizontalMenu(objDue.arrayMenuDue);
+      html = objDue.showHorizontalMenu("filter-frame", objDue.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
       objDue.markActivatedApplication(objDue.arrayMenuDue, applicationName);
 
@@ -152,7 +152,7 @@ async function events() {
 function showFilter(dueId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show dues
   html += objDues.showSelectedDuesNew('Forfall', 'filterDueId', '', dueId, '', 'Vis alle', true);
@@ -163,7 +163,7 @@ function showFilter(dueId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // show due

@@ -37,11 +37,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objRemoteHeatings.showHorizontalMenu(objRemoteHeating.arrayMainMenu);
+      let html = objRemoteHeatings.showHorizontalMenu("filter-frame", objRemoteHeating.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show remote heating menu
-      html = objRemoteHeatings.showHorizontalMenu(objRemoteHeating.arrayMenuRemoteHeating);
+      html = objRemoteHeatings.showHorizontalMenu("filter-frame", objRemoteHeating.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
       objRemoteHeatings.markActivatedApplication(objRemoteHeating.arrayMenuRemoteHeating, applicationName);
 
@@ -132,7 +132,7 @@ async function events() {
 function showFilter(remoteHeatingId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   html += objRemoteHeatings.showSelectedRemoteHeatingsNew('Fjernvarme', 'filterRemoteHeatingId', '', remoteHeatingId, 'Velg fjernvarme ', '', true);
 
@@ -142,7 +142,7 @@ function showFilter(remoteHeatingId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show remoteheatings

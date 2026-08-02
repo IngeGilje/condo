@@ -37,11 +37,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objBudgets.showHorizontalMenu(objBudgets.arrayMainMenu);
+      let html = objBudgets.showHorizontalMenu("filter-frame", objBudgets.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objBudgets.showHorizontalMenu(objBudgets.arrayMenuTransaction);
+      html = objBudgets.showHorizontalMenu("filter-frame", objBudgets.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objBudgets.markActivatedApplication(objBudgets.arrayMenuTransaction,applicationName);
 
@@ -225,7 +225,7 @@ function calculateSum() {
 function showFilter() {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // show filter
   //html += startLine();
@@ -242,7 +242,7 @@ function showFilter() {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show budgets

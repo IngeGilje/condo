@@ -41,11 +41,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objAccounts.showHorizontalMenu(objAccounts.arrayMainMenu);
+      let html = objAccounts.showHorizontalMenu("filter-frame", objAccounts.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show condominium menu
-      html = objAccounts.showHorizontalMenu(objAccounts.arrayMenuCondominium);
+      html = objAccounts.showHorizontalMenu("filter-frame", objAccounts.arrayMenuCondominium);
       document.querySelector('.menuCondominium').innerHTML = html;
       objAccounts.markActivatedApplication(objAccounts.arrayMenuCondominium,applicationName);
 
@@ -218,7 +218,7 @@ function resetValues() {
 function showFilter(fixedCost) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show types of account
   if (fixedCost === 'Y') fixedCost = constFixedCost;
@@ -232,7 +232,7 @@ function showFilter(fixedCost) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show accounts

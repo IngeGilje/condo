@@ -36,11 +36,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objOverview.showHorizontalMenu(objOverview.arrayMainMenu);
+      let html = objOverview.showHorizontalMenu("filter-frame", objOverview.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = objOverview.showHorizontalMenu(objOverview.arrayMenuDue);
+      html = objOverview.showHorizontalMenu("filter-frame", objOverview.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
       objOverview.markActivatedApplication(objOverview.arrayMenuNews, applicationName);
 
@@ -143,7 +143,7 @@ async function events() {
 function showFilter(condoId) {
 
    // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // show filter
   //html += startLine();
@@ -168,7 +168,7 @@ function showFilter(condoId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show dues

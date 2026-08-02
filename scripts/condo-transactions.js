@@ -48,11 +48,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objTransactions.showHorizontalMenu(objTransactions.arrayMainMenu);
+      let html = objTransactions.showHorizontalMenu("filter-frame", objTransactions.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objTransactions.showHorizontalMenu(objTransactions.arrayMenuTransaction);
+      html = objTransactions.showHorizontalMenu("filter-frame", objTransactions.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objTransactions.markActivatedApplication(objTransactions.arrayMenuTransaction, applicationName);
 
@@ -236,7 +236,7 @@ async function events() {
 function showFilter(condoId, accountId, fromDate, toDate, amount) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
@@ -261,7 +261,7 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show transactions

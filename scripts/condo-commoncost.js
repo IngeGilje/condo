@@ -41,11 +41,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objCommonCost.showHorizontalMenu(objCommonCost.arrayMainMenu);
+      let html = objCommonCost.showHorizontalMenu("filter-frame", objCommonCost.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show due menu
-      html = objCommonCost.showHorizontalMenu(objCommonCost.arrayMenuDue);
+      html = objCommonCost.showHorizontalMenu("filter-frame", objCommonCost.arrayMenuDue);
       document.querySelector('.menuDue').innerHTML = html;
       objCommonCost.markActivatedApplication(objCommonCost.arrayMenuDue, applicationName);
 
@@ -202,7 +202,7 @@ async function events() {
 function showFilter(commonCostId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show commoncosts
   html += objCommonCosts.showSelectedCommonCostsNew('Felleskost', 'filterCommonCostId', '', commonCostId, 'Velg Felleskost', '', true);
@@ -213,7 +213,7 @@ function showFilter(commonCostId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show commoncost

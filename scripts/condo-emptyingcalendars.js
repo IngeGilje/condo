@@ -37,11 +37,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objEmptyingCalendars.showHorizontalMenu(objEmptyingCalendars.arrayMainMenu);
+      let html = objEmptyingCalendars.showHorizontalMenu("filter-frame", objEmptyingCalendars.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show menu for empty calendar 
-      html = objEmptyingCalendars.showHorizontalMenu(objEmptyingCalendars.arrayMenuEmptyingCalendar);
+      html = objEmptyingCalendars.showHorizontalMenu("filter-frame", objEmptyingCalendars.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
       objEmptyingCalendars.markActivatedApplication(objEmptyingCalendars.arrayMenuEmptyingCalendar, applicationName);
 
@@ -122,7 +122,7 @@ async function events() {
 function showFilter(year, month) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show years
   html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
@@ -136,7 +136,7 @@ function showFilter(year, month) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show emptyingCalendars

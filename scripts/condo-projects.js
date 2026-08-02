@@ -46,11 +46,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objProjects.showHorizontalMenu(objProjects.arrayMainMenu);
+      let html = objProjects.showHorizontalMenu("filter-frame", objProjects.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show project menu
-      html = objProjects.showHorizontalMenu(objProjects.arrayMenuTransaction);
+      html = objProjects.showHorizontalMenu("filter-frame", objProjects.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objProjects.markActivatedApplication(objProjects.arrayMenuTransaction, applicationName);
 
@@ -173,7 +173,7 @@ function showHeader() {
 function showFilter(projectId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // show filter
   //html += startLine();
@@ -187,7 +187,7 @@ function showFilter(projectId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 /*

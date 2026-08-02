@@ -36,11 +36,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objEmptyingCalendar.showHorizontalMenu(objEmptyingCalendar.arrayMainMenu);
+      let html = objEmptyingCalendar.showHorizontalMenu("filter-frame", objEmptyingCalendar.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show menu for empty calendar 
-      html = objEmptyingCalendar.showHorizontalMenu(objEmptyingCalendar.arrayMenuEmptyingCalendar);
+      html = objEmptyingCalendar.showHorizontalMenu("filter-frame", objEmptyingCalendar.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
       objEmptyingCalendar.markActivatedApplication(objEmptyingCalendar.arrayMenuEmptyingCalendar, applicationName);
 
@@ -182,7 +182,7 @@ async function events() {
 function showFilter(emptyingCalendarId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show date
   html += objEmptyingCalendars.showSelectedEmptyCalendarsNew('Tømmedato', 'filterEmptyingCalendarId', '', emptyingCalendarId, 'Velg Dato', '', true);
@@ -193,7 +193,7 @@ function showFilter(emptyingCalendarId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show emptyingCalendar

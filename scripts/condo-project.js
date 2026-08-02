@@ -46,11 +46,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objProject.showHorizontalMenu(objProject.arrayMainMenu);
+      let html = objProject.showHorizontalMenu("filter-frame", objProject.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show project menu
-      html = objProject.showHorizontalMenu(objProject.arrayMenuTransaction);
+      html = objProject.showHorizontalMenu("filter-frame", objProject.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objProject.markActivatedApplication(objProject.arrayMenuTransaction, applicationName);
 
@@ -167,7 +167,7 @@ async function events() {
 function showFilter(projectId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show projects
   html += objProjects.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', '', true);
@@ -178,7 +178,7 @@ function showFilter(projectId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show project

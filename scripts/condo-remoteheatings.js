@@ -38,11 +38,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objRemoteHeatings.showHorizontalMenu(objRemoteHeatings.arrayMainMenu);
+      let html = objRemoteHeatings.showHorizontalMenu("filter-frame", objRemoteHeatings.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show remote heating menu
-      html = objRemoteHeatings.showHorizontalMenu(objRemoteHeatings.arrayMenuRemoteHeating);
+      html = objRemoteHeatings.showHorizontalMenu("filter-frame", objRemoteHeatings.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
       objRemoteHeatings.markActivatedApplication(objRemoteHeatings.arrayMenuRemoteHeating, applicationName);
 
@@ -116,7 +116,7 @@ async function events() {
 function showFilter(year) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show years
   html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
@@ -136,7 +136,7 @@ function showFilter(year) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show remoteheatings

@@ -29,11 +29,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objCondo.showHorizontalMenu(objCondo.arrayMainMenu);
+      let html = objCondo.showHorizontalMenu("filter-frame", objCondo.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = objCondo.showHorizontalMenu(objCondo.arrayMenuUser);
+      html = objCondo.showHorizontalMenu("filter-frame", objCondo.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
       objCondo.markActivatedApplication(objCondo.arrayMenuUser, applicationName);
 
@@ -150,21 +150,17 @@ async function events() {
 function showFilter(condoId) {
 
   // Start frame
-  let html = startFrame('showFilter');
-
-  // show filter
-  //html += startLine();
+  let html = startFrame('filter-frame');
 
   // Show condos
   html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', '', true);
 
   // End frame
   html += "</div>";
-
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Maintain condo information

@@ -29,11 +29,12 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objNews.showHorizontalMenu(objNews.arrayMainMenu);
+      debugger;
+      let html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show news menu
-      html = objNews.showHorizontalMenu(objNews.arrayMenuNews);
+      html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
       objNews.markActivatedApplication(objNews.arrayMenuNews, applicationName);
 
@@ -145,7 +146,7 @@ async function events() {
 function showFilter(newsId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show news
   html += objNews.showSelectedNewsNew('Nyhet', 'filterNewsId', '', newsId, '', '', true);
@@ -156,7 +157,7 @@ function showFilter(newsId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show news

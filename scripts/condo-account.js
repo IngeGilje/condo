@@ -39,11 +39,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objAccount.showHorizontalMenu(objAccount.arrayMainMenu);
+      let html = objAccount.showHorizontalMenu("filter-frame",objAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show condominium menu
-      html = objAccount.showHorizontalMenu(objAccount.arrayMenuCondominium);
+      html = objAccount.showHorizontalMenu("filter-frame",objAccount.arrayMenuCondominium);
       document.querySelector('.menuCondominium').innerHTML = html;
       objAccount.markActivatedApplication(objAccount.arrayMenuCondominium, applicationName);
 
@@ -172,7 +172,7 @@ function resetValues() {
 function showFilter(accountId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame("filter-frame");
 
   // Show types of account
   html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', '', true);
@@ -183,7 +183,7 @@ function showFilter(accountId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show account

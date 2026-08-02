@@ -30,11 +30,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objUserBankAccount.showHorizontalMenu(objUserBankAccount.arrayMainMenu);
+      let html = objUserBankAccount.showHorizontalMenu("filter-frame", objUserBankAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = objUserBankAccount.showHorizontalMenu(objUserBankAccount.arrayMenuUser);
+      html = objUserBankAccount.showHorizontalMenu("filter-frame", objUserBankAccount.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
       objUserBankAccount.markActivatedApplication(objUserBankAccount.arrayMenuUser, applicationName);
 
@@ -136,7 +136,7 @@ async function events() {
 function showFilter(userBankAccountId) {
 
   // Start frame
-  let html = startFrame('showFilter');
+  let html = startFrame('filter-frame');
 
   // Show user bank accounts filter
   html += objUserBankAccount.showSelectedUserBankAccountsNew('Brukerkonto', 'filterUserBankAccountId', '', userBankAccountId, '', '', true);
@@ -147,7 +147,7 @@ function showFilter(userBankAccountId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("Filter");
+  setFrameTitle("filter-frame","Filter");
 }
 
 // Show user bank account

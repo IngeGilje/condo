@@ -41,11 +41,11 @@ async function main() {
     } else {
 
       // Show main menu
-      let html = objTransactions.showHorizontalMenu(objVoucher.arrayMainMenu);
+      let html = objTransactions.showHorizontalMenu("filter-frame", objVoucher.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show transaction menu
-      html = objTransactions.showHorizontalMenu(objTransactions.arrayMenuTransaction);
+      html = objTransactions.showHorizontalMenu("filter-frame", objTransactions.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objTransactions.markActivatedApplication(objTransactions.arrayMenuTransaction, applicationName);
 
