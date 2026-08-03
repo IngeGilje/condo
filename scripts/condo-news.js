@@ -29,7 +29,6 @@ async function main() {
     } else {
 
       // Show main menu
-      debugger;
       let html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
