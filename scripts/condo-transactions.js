@@ -244,7 +244,7 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   // Show accounts
   html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', 'Vis alle', true);
 
-  // Bank Account Transaction date
+  // From date
   fromDate = formatNumberToISODate(fromDate);
   html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
 

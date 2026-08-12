@@ -1,0 +1,26 @@
+<canvas id="myChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById("myChart");
+
+new Chart(ctx, {
+  type: "line",
+
+  data: {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+
+    datasets: [{
+      label: "Income",
+      data: [1200, 1800, 1500, 2300, 2100, 2800],
+      borderWidth: 2,
+      tension: 0.3
+    }]
+  },
+
+  options: {
+    responsive: true
+  }
+});
+</script>

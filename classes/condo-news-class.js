@@ -133,7 +133,7 @@ class News extends Condos {
     let selectedValue = false;
 
     let html = `
-    <div class="field status" style="width:175px">
+    <div class="field status" style="width:350px">
       <label>
         ${label}
       </label>

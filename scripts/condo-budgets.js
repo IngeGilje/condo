@@ -227,9 +227,6 @@ function showFilter() {
   // Start frame
   let html = startFrame('filter-frame');
 
-  // show filter
-  //html += startLine();
-
   // Show years
   const year = today.getFullYear();
   html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);

@@ -43,7 +43,7 @@ async function events() {
 function showLogin() {
 
   document.querySelector('.showLogIn').innerHTML = `
-  <h2>Logg inn 1.1</h2>
+  <h2>Logg inn</h2>
   <div 
     class="field"
   >

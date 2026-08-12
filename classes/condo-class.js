@@ -84,12 +84,12 @@ class Condos {
     {
       applicationName: 'condo-shownews.html',
       className: "condo-shownews",
-      text: "Vis Nyheter"
+      text: "Nyheter"
     },
     {
       applicationName: 'condo-news.html',
       className: "condo-news",
-      text: "Nyheter"
+      text: "Nyhet"
     },
   ];
 
@@ -128,6 +128,11 @@ class Condos {
       applicationName: 'condo-account.html',
       className: "condo-account",
       text: "Konto"
+    },
+    {
+      applicationName: 'condo-liquidity.html',
+      className: "condo-liquidity",
+      text: "Likviditet"
     }
   ];
 
@@ -1279,7 +1284,8 @@ function validateTextNew(className, style, errorMessage, showMessage = true, val
   if (!(value.length >= minLength) && (value.length <= maxLength)) isValid = false;
 
   // Check allowed characters (letters, numbers, spaces)
-  const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
+  //const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
+  const regex = /^[a-zA-ZæøåÆØÅ0-9.,+\-_%!:#"'*/\\\s]*$/;
   if (!regex.test(value)) isValid = false;
 
   const inputElement = document.querySelector(`.${className}`);

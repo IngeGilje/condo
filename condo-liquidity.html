@@ -3,7 +3,7 @@
 
 <head>
 
-  <title>Konto</title>
+  <title>Likviditet</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,19 +28,21 @@
     <!-- show filter -->
     <div class="showFilter"></div>
 
-    <!-- show accounts -->
-    <div class="showAccount"></div>
+    <!-- show liquidity chart -->
+    <canvas id="showLiquidity"></canvas>
 
     <!-- show message -->
     <div class="showMessage"></div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script src="classes/condo-class.js"></script>
   <script src="classes/condo-user-class.js"></script>
   <script src="classes/condo-condominium-class.js"></script>
-  <script src="classes/condo-accounts-class.js"></script>
-  <script src="classes/condo-account-class.js"></script>
-  <script src="scripts/condo-account.js"></script>
+  <script src="classes/condo-bankaccount-class.js"></script>
+  <script src="classes/condo-transactions-class.js"></script>
+  <script src="classes/condo-liquidity-class.js"></script>
+  <script src="scripts/condo-liquidity.js"></script>
 </body>
 
 </html>

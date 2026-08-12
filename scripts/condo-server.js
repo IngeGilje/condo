@@ -3022,8 +3022,8 @@ async function main() {
               '${content}',
               '${image}');
           `;
-
-          console.log('SQLquery: ', SQLquery);
+          
+          console.log('SQLquery:', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
 
           // Send a JSON response to the client containing the data

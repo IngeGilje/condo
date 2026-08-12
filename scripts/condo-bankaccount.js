@@ -218,7 +218,7 @@ async function updateBankAccountRow(bankAccountId) {
   closingBalance = formatNorAmountToNumber(closingBalance);
   const validClosingBalance = validateIntervalNew('closingBalance', '', 'Ugyldig beløp utgående saldo', true, closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
 
-  if (validBankAccount && validName && validBalanceDates && validOpeningBalanceDate && validOpeningBalance
+  if (validBankAccount && validName && validOpeningBalanceDate && validOpeningBalance
     && validClosingBalanceDate && validOpeningBalance) {
 
     /*
@@ -260,20 +260,20 @@ async function updateBankAccountRow(bankAccountId) {
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the bankAccount Id exist
-    const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+    const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
     if (rowNumberBankAccount !== -1) {
 
       // update a bankAccounts row
-      await objBankAccounts.updateAccountsTable(objBankAccount.user, bankAccountId, fixedCost, name);
+      await objBankAccount.updateBankAccountsTable(bankAccountId, objBankAccount.user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
     } else {
 
       // Insert a bankAccounts row
-      await objBankAccount.insertAccountsTable(objBankAccount.condominiumId, objBankAccount.user, year, priceKilowattHour);
-      await objBankAccount.getHighestAccountId(objBankAccount.condominiumId);
+      await objBankAccount.insertBankAccountsTable(objBankAccount.condominiumId, objBankAccount.user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
+      await objBankAccount.getHighestBankAccountId(objBankAccount.condominiumId);
       bankAccountId = objBankAccount.arrayBankAccounts[0].bankAccountId;
     }
 
-    await objBankAccounts.loadBankAccountsTable(objBankAccount.condominiumId, fixedCost);
+    await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, objBankAccount.nineNine);
 
     removeMessage();
 
