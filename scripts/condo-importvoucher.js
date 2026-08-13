@@ -420,6 +420,7 @@ function getOpeningBalanceDate() {
 
     [accountingDate, description, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
+      
 
     if (accountingDate.includes("Inngående saldo pr")) {
 
