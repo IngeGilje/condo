@@ -15,7 +15,7 @@ const objTransactions = new Transactions('transactions');
 const enableChanges = (objTransactions.securityLevel > 5);
 const applicationName = "condo-transactions";
 
-const columnWidths = [125, 175, 125, 125, 100, 100];
+const columnWidths = [125, 175, 125, 125, 125, 100, 100];
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
@@ -74,9 +74,9 @@ async function main() {
         && (paramToDate === 0)
         && (paramAmount === 0)) {
 
-        const amount = 0
-        condoId = objTransaction.nineNine;
-        accountId = objTransaction.nineNine;
+        const amount = 0;
+        let condoId = objTransaction.nineNine;
+        let accountId = objTransaction.nineNine;
 
         // From date
         let month = today.getMonth();
@@ -93,17 +93,8 @@ async function main() {
         showFilter(paramCondoId, paramAccountId, paramFromDate, paramToDate, paramAmount);
       }
 
-      const deleted = 'N';
-      let amount = document.querySelector('.filterAmount').value;
-      amount = formatNorAmountToNumber(amount);
-      condoId = Number(document.querySelector('.filterCondoId').value);
-      accountId = Number(document.querySelector('.filterAccountId').value);
-      let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objTransactions.formatDateToNumber(fromDate));
-      let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objTransactions.formatDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 20200101, objTransaction.nineNine);
 
       // Show transactions
       showTransactions();
@@ -128,27 +119,6 @@ async function events() {
       || [...event.target.classList].some(cls => cls.startsWith('filterFromDate'))
       || [...event.target.classList].some(cls => cls.startsWith('filterToDate'))
       || [...event.target.classList].some(cls => cls.startsWith('filterAmount'))) {
-
-      // Show transactions after change of filter
-      const deleted = 'N';
-
-      condoId = Number(document.querySelector('.filterCondoId').value);
-      accountId = Number(document.querySelector('.filterAccountId').value);
-
-      let fromDate = document.querySelector('.filterFromDate').value;
-      //fromDate = Number(objTransactions.formatDateToNumber(fromDate));
-      fromDate = formatISODateToNumber(fromDate);
-
-      let toDate = document.querySelector('.filterToDate').value;
-      //toDate = Number(objTransactions.formatDateToNumber(toDate));
-      toDate = formatISODateToNumber(toDate);
-
-      let amount = document.querySelector('.filterAmount').value;
-      amount = formatNorAmountToNumber(amount);
-      document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
-
-      const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
 
       showTransactions();
     };
@@ -224,7 +194,7 @@ async function events() {
       let URL = (objTransaction.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-    //URL = `${URL}condo-transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}`;
+      //URL = `${URL}condo-transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}`;
       URL = `${URL}condo-transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}&backApplication=${applicationName}.html`;
 
       window.location.href = URL;
@@ -261,11 +231,38 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  setFrameTitle("filter-frame", "Filter");
 }
 
 // Show transactions
 function showTransactions() {
+
+  // Filter values
+  // date
+  let fromDate = document.querySelector('.filterFromDate').value;
+  fromDate = Number(objTransactions.formatDateToNumber(fromDate));
+  let toDate = document.querySelector('.filterToDate').value;
+  toDate = Number(objTransactions.formatDateToNumber(toDate));
+
+  // condoId
+  let fromCondoId = Number(document.querySelector('.filterCondoId').value);
+  if (fromCondoId === objTransaction.nineNine) fromCondoId = 0;
+  let toCondoId = Number(document.querySelector('.filterCondoId').value);
+  if (toCondoId === objTransaction.nineNine) toCondoId = objTransaction.nineNine;
+
+  // accountId
+  let fromAccountId = Number(document.querySelector('.filterAccountId').value);
+  if (fromAccountId === objTransaction.nineNine) fromAccountId = 0;
+  let toAccountId = Number(document.querySelector('.filterAccountId').value);
+  if (toAccountId === objTransaction.nineNine) toAccountId = objTransaction.nineNine;
+
+  // amount
+  let amount = document.querySelector('.filterAmount').value;
+  amount = formatNorAmountToNumber(amount);
+   if (amount !== 0) fromAmount = amount;
+  if (amount !== 0) toAmount = amount;
+  if (amount === 0) fromAmount = objTransaction.minusNineNine;
+  if (amount === 0) toAmount = objTransaction.nineNine;
 
   let html = emptyLine();
 
@@ -273,53 +270,80 @@ function showTransactions() {
   html += objTransactions.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objTransactions.showTableHeader('center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '', '');
-  let sumAmount = 0;
+  html += objTransactions.showTableHeader('center', 'Dato', 'Konto', 'Leilighet', 'Inntekter', 'Utbetalinger', '', '');
+  let sumIncome = 0;
+  let sumPayment = 0;
 
-  for (const bankTransaction of objTransactions.arrayTransactions) {
+  //for (const bankTransaction of objTransactions.arrayTransactions) {
+  objTransactions.arrayTransactions.forEach(bankTransaction => {
 
-    html += objTransaction.insertTableRow('');
+    let amount = bankTransaction.income;
+    if (bankTransaction.income === 0) amount = bankTransaction.payment;
 
-    // Date
-    const date = formatNumberToNorDate(bankTransaction.date);
-    let className = `date${bankTransaction.transactionId}`;
-    html += editTableCell(className, date, 10, false);
+    // Check for valid transaction
+    if ((bankTransaction.date >= fromDate && bankTransaction.date <= toDate)
+      && (bankTransaction.condoId >= fromCondoId && bankTransaction.condoId <= toCondoId)
+      && (bankTransaction.accountId >= fromAccountId && bankTransaction.accountId <= toAccountId)
+      && (amount >= fromAmount && amount <= toAmount)) {
 
-    // account
-    className = `accountId${bankTransaction.transactionId}`;
-    html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+      html += objTransaction.insertTableRow('');
 
-    // condos
-    className = `condoId${bankTransaction.transactionId}`;
-    html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
+      // Date
+      const date = formatNumberToNorDate(bankTransaction.date);
+      let className = `date${bankTransaction.transactionId}`;
+      html += editTableCell(className, date, 10, false);
 
-    // accounts
-    className = `accountId${bankTransaction.transactionId}`;
-    objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+      // account
+      className = `accountId${bankTransaction.transactionId}`;
+      html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
-    // amount
-    let amount = bankTransaction.income + bankTransaction.payment;
-    amount = formatNumberToNorAmount(amount);
-    className = `amount${bankTransaction.transactionId}`;
-    html += editTableCell(className, amount, 10, false);
+      // condos
+      className = `condoId${bankTransaction.transactionId}`;
+      html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
 
-    // Show button for voucher
-    className = `voucher${bankTransaction.transactionId}`;
-    html += objTransactions.showButton(className, 'Vis bilag');
+      // accounts
+      className = `accountId${bankTransaction.transactionId}`;
+      objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
 
-    // Show button for change of bank account transaction
-    className = `change${bankTransaction.transactionId}`;
-    html += objTransactions.showButton(className, 'Endre');
-    html += "</tr>";
+      // income
+      let income = bankTransaction.income;
+      income = formatNumberToNorAmount(income);
+      className = `income${bankTransaction.transactionId}`;
+      html += editTableCell(className, income, 10, false);
 
-    // accumulate
-    sumAmount += Number(bankTransaction.income) + Number(bankTransaction.payment);
-  };
+      // payment
+      let payment = bankTransaction.payment;
+      payment = formatNumberToNorAmount(payment);
+      className = `payment${bankTransaction.transactionId}`;
+      html += editTableCell(className, payment, 10, false);
+
+      // Show button for voucher
+      className = `voucher${bankTransaction.transactionId}`;
+      html += objTransactions.showButton(className, 'Vis bilag');
+
+      // Show button for change of bank account transaction
+      className = `change${bankTransaction.transactionId}`;
+      html += objTransactions.showButton(className, 'Endre');
+      html += "</tr>";
+
+      // accumulate
+      sumIncome += Number(bankTransaction.income);
+      sumPayment += Number(bankTransaction.payment);
+    }
+  });
 
   // Show table sum row
+  sumAmount = sumIncome + sumPayment;
   sumAmount = formatNumberToNorAmount(sumAmount);
+  sumIncome = formatNumberToNorAmount(sumIncome);
+  sumPayment = formatNumberToNorAmount(sumPayment);
 
-  html += objTransaction.insertTableRow('', '', '', 'Sum', sumAmount, '');
+  html += objTransaction.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, sumAmount, '', '');
+
+  // get from date
+  let bankBalance = objTransactions.getBankBalance(toDate);
+  bankBalance = formatNumberToNorAmount(bankBalance);
+  html += objTransaction.insertTableRow('', '', '', 'Saldo', bankBalance, '', '', '', '');
 
   // The end of the table
   html += objTransactions.endTable();

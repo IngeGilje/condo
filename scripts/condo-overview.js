@@ -67,7 +67,7 @@ async function main() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = objOverview.formatDateToNumber(toDate);
       await objDues.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
-      const orderBy = 'condoId ASC, date DESC, income ASC';
+      const orderBy = 'condoId ASC';
       await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
 
       // Show dues
@@ -112,7 +112,7 @@ async function events() {
       toDate = formatISODateToNumber(toDate);
 
       await objDues.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
-      const orderBy = 'condoId ASC, date DESC, income ASC';
+      const orderBy = 'condoId ASC';
       await objTransactions.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
 
       // Show dues

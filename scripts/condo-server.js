@@ -2154,16 +2154,34 @@ async function main() {
 
             let SQLquery = `
             SELECT * FROM transactions 
-            WHERE condominiumId = ${condominiumId}`;
+            WHERE condominiumId = ${condominiumId}
+            `;
             if (deleted === 'Y') SQLquery += ` AND deleted = 'Y'`;
             if (deleted === 'N') SQLquery += ` AND deleted = 'N'`;
-            SQLquery += ` AND date BETWEEN ${fromDate} AND ${toDate}`;
-            if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
-            if (accountId !== nineNine) SQLquery += ` AND accountId = ${accountId}`;
-            if (projectId !== nineNine) SQLquery += ` AND projectId = ${projectId}`;
-            if (amount !== 0) SQLquery += ` AND(income = ${amount} OR payment = ${amount})`;
-            if (orderBy) SQLquery += ` ORDER BY ${orderBy};`;
-            if (!orderBy) SQLquery += ` ORDER BY date DESC, income DESC;`;
+            SQLquery += `
+             AND date BETWEEN ${fromDate} AND ${toDate}
+            `;
+            if (condoId !== nineNine) SQLquery += `
+              AND condoId = ${condoId}
+             `;
+            if (accountId !== nineNine) SQLquery += ` 
+              AND accountId = ${accountId}
+            `;
+            if (projectId !== nineNine) SQLquery += ` 
+              AND projectId = ${projectId}
+            `;
+            //if (amount !== 0) SQLquery += `
+            //  AND(income = ${amount} OR payment = ${amount})
+            //`;
+            if (amount !== nineNine) SQLquery += ` 
+              AND income = ${amount} OR payment = ${amount}
+            `;
+            if (orderBy) SQLquery += `
+            ORDER BY ${orderBy};
+            `;
+            if (!orderBy) SQLquery += `
+            ORDER BY date DESC, income DESC;
+            `;
 
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);

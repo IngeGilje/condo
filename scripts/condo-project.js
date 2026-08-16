@@ -75,7 +75,7 @@ async function main() {
       if (rowNumberCondominium !== -1) {
 
         const projectId = Number(document.querySelector('.filterProjectId').value);
-        const orderBy = 'date DESC, income ASC';
+        const orderBy = 'date DESC';
         await objTransactions.loadTransactionsTable(orderBy, objProject.condominiumId, 'N', objProject.nineNine, objProject.nineNine, projectId, 0, 2019010, 20991231);
 
         // Show project per year

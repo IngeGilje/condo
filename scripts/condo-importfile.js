@@ -69,7 +69,7 @@ async function main() {
       await objDues.loadDuesTable(objImportFile.condominiumId, accountId, condoId, fromDate, toDate);
 
       amount = 0;
-      const orderBy = 'condoId ASC, date DESC, income ASC';
+      const orderBy = 'condoId ASC';
       await objTransactions.loadTransactionsTable(orderBy, objImportFile.condominiumId, deleted, condoId, accountId, objImportFile.nineNine, amount, fromDate, toDate);
       await objCondominium.loadCondominiumsTable();
 

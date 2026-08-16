@@ -44,7 +44,7 @@ async function main() {
 
       await objBankAccount.loadBankAccountsTable(objLiquidity.condominiumId, objLiquidity.nineNine);
 
-      const orderBy = 'condoId ASC, date DESC, income ASC';
+      const orderBy = 'condoId ASC';
       const fromDate = 20200101;
       let toDate = getCurrentDate();
       toDate = formatNorDateToNumber(toDate);

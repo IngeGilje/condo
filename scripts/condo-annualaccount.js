@@ -79,7 +79,7 @@ async function main() {
       if (rowNumberCondominium !== -1) {
 
         // Show annual accounts
-        const orderBy = 'condoId ASC, date DESC, income ASC';
+        const orderBy = 'condoId ASC';
         await objTransactions.loadTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
         showAnnualAccounts();
 
@@ -132,7 +132,7 @@ async function events() {
         const year = Number(document.querySelector('.filterBudgetYear').value);
         await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, year, objAnnualAccount.nineNine);
 
-        const orderBy = 'condoId ASC, date DESC, income ASC';
+        const orderBy = 'condoId ASC';
         await objTransactions.loadTransactionsTable(orderBy, objAnnualAccount.condominiumId, deleted, objAnnualAccount.nineNine, objAnnualAccount.nineNine, objAnnualAccount.nineNine, 0, fromDate, toDate);
         showAnnualAccounts(3);
 

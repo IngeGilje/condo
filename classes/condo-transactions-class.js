@@ -99,79 +99,79 @@ class Transactions extends Condos {
     return html;
   }
     */
-   /*
-  // show selected transactions
-  showSelectedTransactions(className, style, transactionId, selectNone, selectAll, enableChanges = false) {
+  /*
+ // show selected transactions
+ showSelectedTransactions(className, style, transactionId, selectNone, selectAll, enableChanges = false) {
 
-    let selectedValue = false;
+   let selectedValue = false;
 
-    let html = `
-    <td
-      class="one-line center"
-    >
-      <select 
-        class="${className} center"
-        ${(style) ? `style="${style}"` : ""}
-        ${(enableChanges) ? '' : 'disabled'}
-      >`;
+   let html = `
+   <td
+     class="one-line center"
+   >
+     <select 
+       class="${className} center"
+       ${(style) ? `style="${style}"` : ""}
+       ${(enableChanges) ? '' : 'disabled'}
+     >`;
 
-    // Check if transactions array is empty
-    if (this.arrayTransactions.length > 0) {
-      this.arrayTransactions.forEach((transaction) => {
+   // Check if transactions array is empty
+   if (this.arrayTransactions.length > 0) {
+     this.arrayTransactions.forEach((transaction) => {
 
-        html += `
-        <option 
-          value=${transaction.transactionId}
-          ${(transaction.transactionId === transactionId) ? 'selected' : ''}
-        >
-          ${transaction.transactionId}
-        </option>`;
-        if (transaction.transactionId === transactionId) selectedValue = true;
-      });
-    } else {
+       html += `
+       <option 
+         value=${transaction.transactionId}
+         ${(transaction.transactionId === transactionId) ? 'selected' : ''}
+       >
+         ${transaction.transactionId}
+       </option>`;
+       if (transaction.transactionId === transactionId) selectedValue = true;
+     });
+   } else {
 
-      html += `
-      <option
-        value="0" 
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        Ingen konti
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
+     html += `
+     <option
+       value="0" 
+       ${(!selectedValue) ? 'selected' : ''}
+     >
+       Ingen konti
+     </option>`;
+     if (!selectedValue) selectedValue = true;
+   }
 
-    // Select all
-    if (selectAll && (this.arrayTransactions.length > 0)) {
+   // Select all
+   if (selectAll && (this.arrayTransactions.length > 0)) {
 
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        ${selectAll}
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
+     html += `
+     <option 
+       value=${this.nineNine}
+       ${(!selectedValue) ? 'selected' : ''}
+     >
+       ${selectAll}
+     </option>`;
+     if (!selectedValue) selectedValue = true;
+   }
 
-    // Select none
-    if (selectNone && (this.arrayTransactions.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        ${selectNone}
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-    html += `
-      </select >
-    </td>`;
+   // Select none
+   if (selectNone && (this.arrayTransactions.length > 0)) {
+     html += `
+     <option 
+       value=0
+       ${(!selectedValue) ? 'selected' : ''}
+     >
+       ${selectNone}
+     </option>`;
+     if (!selectedValue) selectedValue = true;
+   }
+   html += `
+     </select >
+   </td>`;
 
-    return html;
-  }
+   return html;
+ }
 */
-// Show transactions
+  // Show transactions
   showSelectedTransactionsNew(label, className, style, transactionId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
@@ -505,5 +505,33 @@ class Transactions extends Condos {
     } catch (error) {
       console.log("Error selecting accounts:", error);
     }
+  }
+
+  // What was the bank balance on last day of each month this year
+  // date of format yyyyymmdd
+  getBankBalance(date) {
+
+    // get opening balance
+    let bankBalance = 0;
+    const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objTransactions.condominiumId);
+    if (rowNumberBankAccount !== -1) bankBalance += Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance);
+
+        // get opening date
+    const fromDate = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
+
+    // Get all Bank transactions from 01.01.2020 to selected date
+    this.arrayTransactions.forEach(transaction => {
+
+      // Accoumulate all transactions up to the selected date
+      if ( (transaction.date >= fromDate) && (transaction.date <= date) ) {
+
+        // Add payment and income to bank balance
+        bankBalance += transaction.income + transaction.payment;
+      }
+    });
+
+    if (bankBalance !== 0) bankBalance = bankBalance / 100;
+
+    return bankBalance;
   }
 }
