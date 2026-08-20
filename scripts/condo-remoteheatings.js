@@ -37,6 +37,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objRemoteHeatings.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objRemoteHeatings.showHorizontalMenu("filter-frame", objRemoteHeatings.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -45,6 +53,7 @@ async function main() {
       html = objRemoteHeatings.showHorizontalMenu("filter-frame", objRemoteHeatings.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
       objRemoteHeatings.markActivatedApplication(objRemoteHeatings.arrayMenuRemoteHeating, applicationName);
+      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeatings.condominiumId, resident, objRemoteHeatings.nineNine);

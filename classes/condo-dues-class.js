@@ -68,7 +68,7 @@ class Dues extends Condos {
     let selectedValue = false;
 
     let html = `
-    <div class="field" style="width:250px;margin-left:35px;margin-bottom:25px;">
+    <div class="field" style="width:250px;margin-left:35px;margin-bottom:5px;">
     <label>
       ${label}
     </label>

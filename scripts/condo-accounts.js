@@ -40,6 +40,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+      // Show vertical menu
+      let html = objAccounts.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objAccounts.showHorizontalMenu("filter-frame", objAccounts.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -51,13 +59,14 @@ async function main() {
 
       // mark activated application
       objAccounts.markActivatedApplication(objAccounts.arrayMenuCondominium, applicationName);
+      */
 
       let resident = 'Y';
       await objUser.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
       if (paramFixedCost !== 'Y' && paramFixedCost !== 'N') paramFixedCost = 'A';
       await objAccounts.loadAccountsTable(objAccounts.condominiumId, paramFixedCost);
 
-       // Show filter
+      // Show filter
       showFilter(paramFixedCost);
 
       // Show account
@@ -232,7 +241,7 @@ function showFilter(fixedCost) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  setFrameTitle("filter-frame", "Filter");
 }
 
 // Show accounts

@@ -33,6 +33,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objLiquidity.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objLiquidity.showHorizontalMenu("filter-frame", objLiquidity.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -41,6 +49,7 @@ async function main() {
       html = objLiquidity.showHorizontalMenu("filter-frame", objLiquidity.arrayMenuCondominium);
       document.querySelector('.menuCondominium').innerHTML = html;
       objLiquidity.markActivatedApplication(objLiquidity.arrayMenuCondominium, applicationName);
+      */
 
       await objBankAccount.loadBankAccountsTable(objLiquidity.condominiumId, objLiquidity.nineNine);
 

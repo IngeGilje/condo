@@ -38,6 +38,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objAnnualAccount.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objAnnualAccount.showHorizontalMenu("filter-frame", objAnnualAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -46,6 +54,7 @@ async function main() {
       html = objAnnualAccount.showHorizontalMenu("filter-frame", objAnnualAccount.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objAnnualAccount.markActivatedApplication(objAnnualAccount.arrayMenuTransaction,applicationName);
+      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objAnnualAccount.condominiumId, resident, objAnnualAccount.nineNine);

@@ -23,6 +23,14 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
   window.location.href = URL;
 } else {
 
+  // Show vertical menu
+  let html = objBankAccount.showMenu();
+  document.querySelector('.menuVertical').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("menu-frame", "Meny");
+
+  /*
   // Show main menu
   let html = objBankAccount.showHorizontalMenu("filter-frame", objBankAccount.arrayMainMenu);
   document.querySelector('.menuMain').innerHTML = html;
@@ -31,6 +39,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
   html = objBankAccount.showHorizontalMenu("filter-frame", objBankAccount.arrayMenuCondominium);
   document.querySelector('.menuCondominium').innerHTML = html;
   objBankAccount.markActivatedApplication(objBankAccount.arrayMenuCondominium, applicationName);
+  */
 
   // Call main when script loads
   main();
@@ -184,7 +193,7 @@ function showFilter(bankAccountId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  setFrameTitle("filter-frame", "Filter");
 }
 
 // Update a bankaccounts row

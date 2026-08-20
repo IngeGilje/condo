@@ -28,6 +28,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objNews.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -36,6 +44,7 @@ async function main() {
       html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
       objNews.markActivatedApplication(objNews.arrayMenuNews, applicationName);
+      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);

@@ -30,6 +30,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objPassword.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objPassword.showHorizontalMenu("filter-frame", objPassword.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -38,6 +46,7 @@ async function main() {
       html = objPassword.showHorizontalMenu("filter-frame", objPassword.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
       objPassword.markActivatedApplication(objPassword.arrayMenuNews, applicationName);
+      */
 
       const resident = 'A';
 

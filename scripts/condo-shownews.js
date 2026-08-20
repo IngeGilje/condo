@@ -29,6 +29,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objShowNews.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objShowNews.showHorizontalMenu("filter-frame", objShowNews.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -37,6 +45,7 @@ async function main() {
       html = objShowNews.showHorizontalMenu("filter-frame", objShowNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
       objShowNews.markActivatedApplication(objShowNews.arrayMenuNews, applicationName);
+      */
 
       // Load users and news tables
       const resident = 'Y';

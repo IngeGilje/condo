@@ -36,6 +36,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objEmptyingCalendars.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objEmptyingCalendars.showHorizontalMenu("filter-frame", objEmptyingCalendars.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -44,6 +52,7 @@ async function main() {
       html = objEmptyingCalendars.showHorizontalMenu("filter-frame", objEmptyingCalendars.arrayMenuEmptyingCalendar);
       document.querySelector('.menuEmptyingCalendar').innerHTML = html;
       objEmptyingCalendars.markActivatedApplication(objEmptyingCalendars.arrayMenuEmptyingCalendar, applicationName);
+      */
 
       await objCondo.loadCondoTable(objEmptyingCalendars.condominiumId, objEmptyingCalendars.nineNine);
 

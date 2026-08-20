@@ -917,9 +917,6 @@ class Condos {
   // Show horizontal menu
   showHorizontalMenu(className, arrayMenu) {
 
-    // Start frame
-    //let html = startFrame(className);
-
     const URL = (this.serverStatus === 1)
       ? 'http://ingegilje.no/'
       : 'http://localhost/';
@@ -945,18 +942,82 @@ class Condos {
       </li>`;
     });
 
+    html += `
+      </ul>
+    </nav>
+  </div>
+  `;
+    return html;
+  }
+
+  // Show vertical menu
+  showMenu() {
+
+    // Empty line
+    let html = emptyLine();
+
+    // Start frame
+    html += startFrame("menu-frame");
+
+    // Vertical menu
+    html += `<div class="menu-row">`;
+    html += this.showVerticalMenu('menu', this.arrayMenuNews);
+    html += this.showVerticalMenu('menu', this.arrayMenuEmptyingCalendar);
+    html += this.showVerticalMenu('menu', this.arrayMenuCondominium);
+    html += this.showVerticalMenu('menu', this.arrayMenuUser);
+    html += this.showVerticalMenu('menu', this.arrayMenuTransaction);
+    html += this.showVerticalMenu('menu', this.arrayMenuDue);
+    html += this.showVerticalMenu('menu', this.arrayMenuRemoteHeating);
+    html += '</div>';
+
+    // End frame
+    html += "</div>";
+
+    return html;
+  }
+
+  // Show vertical menu
+  showVerticalMenu(className, arrayMenu) {
+
+    const URL = (this.serverStatus === 1)
+      ? 'http://ingegilje.no/'
+      : 'http://localhost/';
+
     /*
+    let html = `
+    <div 
+      class="field"
+      style="width:150px;margin-left:35px;margin-bottom:25px;"
+    >
+      <select 
+        class="${className} center one-line"
+        onchange="window.location.href=this.value"
+      >
+    `;
+    */
+    let html = `
+    <div 
+      class="field"
+      style="width:150px;"
+    >
+      <select 
+        class="${className} center one-line"
+        onchange="window.location.href=this.value"
+      >
+    `;
+    arrayMenu.forEach((menu) => {
+
+      html += `
+        <option 
+          value="${URL}${menu.applicationName}"
+        >
+          &nbsp;&nbsp;${menu.text.trim()}&nbsp;&nbsp;
+        </option>`;
+    });
     html += `
-      </ul>
-    </nav>
-  </div>
-  `;
-  */
-    html += `
-      </ul>
-    </nav>
-  </div>
-  `;
+      </select >
+    </div>`;
+
     return html;
   }
 }
@@ -1086,7 +1147,7 @@ function showSelectedNumbersNew(label, className, style, fromNumber, toNumber, s
   let html = `
   <div 
     class="field" 
-    style="width:250px;margin-left:35px;margin-bottom:25px;"
+    style="width:250px;margin-left:35px;margin-bottom:5px;"
   >
     <label>
       ${label}
@@ -1346,7 +1407,7 @@ function formatNumberToISODate(date) {
 function showDate(label, className, value, enableChanges) {
 
   return `
-    <div class="field date" style="width:250px;margin-left:35px;margin-bottom:25px;">
+    <div class="field date" style="width:250px;margin-left:35px;margin-bottom:5px;">
       <label>
         ${label}
       </label>
@@ -1387,15 +1448,6 @@ function setFrameTitle(className = "filter-frame", text = "Filter") {
   frameElement.style.setProperty("--title", `"${text}"`);
 }
 
-/*
-// Change frame title
-function setFrameTitle(text) {
-
-  const element = document.querySelector(".filter-frame");
-  element.style.setProperty("--title", `"${text}"`);
-}
-*/
-
 // Show button
 function showButtonNew(className, text) {
 
@@ -1417,7 +1469,7 @@ function showTextNew(label, className, value, enableChanges, placeholder = "") {
   return `
   <div 
     class="field" 
-    style="width:250px;margin-left:35px;margin-bottom:25px;"
+    style="width:250px;margin-left:35px;margin-bottom:5px;"
   >
     <input 
       type="text"
@@ -1439,7 +1491,7 @@ function showSelectedValuesNew(label, className, style, enableChanges, selectedV
   let selected = false;
 
   let html = `
-    <div class="field" style="width:250px;margin-left:35px;margin-bottom:25px;">
+    <div class="field" style="width:250px;margin-left:35px;margin-bottom:5px;">
       <label>
         ${label}
       </label>

@@ -29,6 +29,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objRemoteHeatingPrice.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objRemoteHeatingPrice.showHorizontalMenu("filter-frame", objRemoteHeatingPrice.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -37,6 +45,7 @@ async function main() {
       html = objRemoteHeatingPrice.showHorizontalMenu("filter-frame", objRemoteHeatingPrice.arrayMenuRemoteHeating);
       document.querySelector('.menuRemoteHeating').innerHTML = html;
       objRemoteHeatingPrice.markActivatedApplication(objRemoteHeatingPrice.arrayMenuRemoteHeating, applicationName);
+      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeatingPrice.condominiumId, resident, objRemoteHeatingPrice.nineNine);

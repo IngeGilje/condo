@@ -169,7 +169,7 @@ class Accounts extends Condos {
     let html = `
     <div 
       class="field"
-      style="width:250px;margin-left:35px;margin-bottom:25px;"
+      style="width:250px;margin-left:35px;margin-bottom:5px;"
     >
       <label>
         ${label}

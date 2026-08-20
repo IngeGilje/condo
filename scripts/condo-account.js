@@ -38,14 +38,23 @@ async function main() {
       window.location.href = URL;
     } else {
 
+      // Show vertical menu
+      let html = objAccount.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
-      let html = objAccount.showHorizontalMenu("filter-frame",objAccount.arrayMainMenu);
+      html = objAccount.showHorizontalMenu("filter-frame", objAccount.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show condominium menu
-      html = objAccount.showHorizontalMenu("filter-frame",objAccount.arrayMenuCondominium);
+      html = objAccount.showHorizontalMenu("filter-frame", objAccount.arrayMenuCondominium);
       document.querySelector('.menuCondominium').innerHTML = html;
       objAccount.markActivatedApplication(objAccount.arrayMenuCondominium, applicationName);
+      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
@@ -98,7 +107,7 @@ async function events() {
   // update a accounts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
-      
+
       const accountId = document.querySelector('.filterAccountId').value;
       updateAccountsRow(accountId);
     };
@@ -177,13 +186,13 @@ function showFilter(accountId) {
   // Show types of account
   html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', '', true);
 
-  // End filter frame
+  // End frame
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  setFrameTitle("filter-frame", "Filter");
 }
 
 // Show account

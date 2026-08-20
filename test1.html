@@ -13,49 +13,31 @@
 
 <body>
 
+  <div class="menu-row">
 
-  <div class="filter-frame" style="max-width: 1500px;">
-    <nav class="navbar horizontalMenu">
-      <ul class="nav-links">
-        <li>
-          <a class="main-condo-shownews" href="http://localhost/condo-shownews.html">
-            Nyheter
-          </a>
-        </li>
-        <li>
-          <a class="main-condo-emptyingcalendars" href="http://localhost/condo-emptyingcalendars.html">
-            Tømmekalender
-          </a>
-        </li>
-        <li>
-          <a class="main-condo-condominium" href="http://localhost/condo-condominium.html">
-            Sameie
-          </a>
-        </li>
-        <li>
-          <a class="main-condo-user" href="http://localhost/condo-user.html">
-            Bruker
-          </a>
-        </li>
-        <li>
-          <a class="main-condo-transactions" href="http://localhost/condo-transactions.html">
-            Transaksjoner
-          </a>
-        </li>
-        <li>
-          <a class="main-condo-dues" href="http://localhost/condo-dues.html">
-            Forfall
-          </a>
-        </li>
-        <li>
-          <a class="main-condo-remoteheatings" href="http://localhost/condo-remoteheatings.html">
-            Fjernvarme
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div class="field" style="width:150px;">
+      <select class="menu center one-line" onchange="window.location.href=this.value">
+
+        <option value="http://localhost/condo-shownews.html">
+          &nbsp;&nbsp;Nyheter&nbsp;&nbsp;
+        </option>
+        <option value="http://localhost/condo-news.html">
+          &nbsp;&nbsp;Nyhet&nbsp;&nbsp;
+        </option>
+      </select>
+    </div>
+    <div class="field" style="width:150px;margin-left:35px;margin-bottom:25px;">
+      <select class="menu center one-line" onchange="window.location.href=this.value">
+
+        <option value="http://localhost/condo-emptyingcalendars.html">
+          &nbsp;&nbsp;Vis Tømmekalender&nbsp;&nbsp;
+        </option>
+        <option value="http://localhost/condo-emptyingcalendar.html">
+          &nbsp;&nbsp;Tømmekalender&nbsp;&nbsp;
+        </option>
+      </select>
+    </div>
   </div>
-
 </body>
 
 </html>

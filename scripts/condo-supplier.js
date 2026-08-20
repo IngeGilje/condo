@@ -29,6 +29,14 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
     // Check if server is running
     if (await objUser.checkServer()) {
 
+            // Show vertical menu
+      let html = objSupplier.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objSupplier.showHorizontalMenu("filter-frame", objSupplier.arrayMainMenu);
       document.querySelector('.showMainMenu').innerHTML = html;
@@ -37,6 +45,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       html = objSupplier.showHorizontalMenu("filter-frame", objSupplier.arrayMenuCondominium);
       document.querySelector('.showDueMenu').innerHTML = html;
       objSupplier.markActivatedApplication(objSupplier.arrayMenuCondominium, applicationName);
+      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objSupplier.condominiumId, resident, objSupplier.nineNine);

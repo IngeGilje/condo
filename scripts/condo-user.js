@@ -29,6 +29,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objUser.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objUser.showHorizontalMenu("filter-frame", objUser.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -37,6 +45,7 @@ async function main() {
       html = objUser.showHorizontalMenu("filter-frame", objUser.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
       objUser.markActivatedApplication(objUser.arrayMenuUser, applicationName);
+      */
 
       if (enableChanges) {
 

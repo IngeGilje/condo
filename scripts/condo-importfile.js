@@ -41,6 +41,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objImportFile.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objImportFile.showHorizontalMenu("filter-frame", objImportFile.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -49,6 +57,7 @@ async function main() {
       html = objImportFile.showHorizontalMenu("filter-frame", objImportFile.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objImportFile.markActivatedApplication(objImportFile.arrayMenuTransaction, applicationName);
+      */
 
       let transactionFile = true;
 

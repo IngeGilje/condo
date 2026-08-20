@@ -47,6 +47,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+            // Show vertical menu
+      let html = objTransaction.showMenu();
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      // Change frame title
+      setFrameTitle("menu-frame", "Meny");
+
+      /*
       // Show main menu
       let html = objTransaction.showHorizontalMenu("filter-frame", objTransaction.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
@@ -55,6 +63,7 @@ async function main() {
       html = objTransaction.showHorizontalMenu("filter-frame", objTransaction.arrayMenuTransaction);
       document.querySelector('.menuTransaction').innerHTML = html;
       objTransaction.markActivatedApplication(objTransaction.arrayMenuTransaction, applicationName);
+      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
