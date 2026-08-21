@@ -2170,8 +2170,8 @@ async function main() {
             if (projectId !== nineNine) SQLquery += ` 
               AND projectId = ${projectId}
             `;
-            if (amount !== 0) SQLquery += ` 
-              AND income = ${amount} OR payment = ${amount}
+            if (amount !== 0 && amount !== nineNine ) 
+              SQLquery += ` AND income = ${amount} OR payment = ${amount}
             `;
             if (orderBy) SQLquery += `
             ORDER BY ${orderBy};

@@ -39,7 +39,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objCommonCosts.showMenu();
+      let html = objCommonCosts.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title

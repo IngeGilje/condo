@@ -37,7 +37,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objBudgets.showMenu();
+      let html = objBudgets.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -288,7 +288,7 @@ function showBudgets() {
 
     // Edit budget
     className = `edit${budget.budgetId}`;
-    html += objBudgets.showButton(className, 'Endre');
+    html += objBudgets.showButton(className, 'Rediger');
     html += "</tr>";
 
     // accumulate

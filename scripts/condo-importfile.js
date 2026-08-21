@@ -42,7 +42,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objImportFile.showMenu();
+      let html = objImportFile.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title

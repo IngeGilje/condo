@@ -24,7 +24,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 } else {
 
   // Show vertical menu
-  let html = objBankAccount.showMenu();
+  let html = objBankAccount.showMenu(applicationName);
   document.querySelector('.menuVertical').innerHTML = html;
 
   // Change frame title

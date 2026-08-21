@@ -42,7 +42,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objDues.showMenu();
+      let html = objDues.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -248,7 +248,7 @@ function showDues() {
 
     // Change due
     className = `edit${due.dueId}`;
-    html += objDues.showButton(className, 'Endre');
+    html += objDues.showButton(className, 'Rediger');
     html += "</tr>";
 
     // accumulate

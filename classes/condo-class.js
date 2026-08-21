@@ -37,10 +37,7 @@ class Condos {
   securityLevel = Number(sessionStorage.getItem("securityLevel"));
   userId = Number(sessionStorage.getItem("userId"));
 
-  // array of horizontal main menu
-  //path = (this.serverStatus === 1)
-  //  ? "https://ingegilje.no/"
-  //  : "localhost/"
+  /*
   arrayMainMenu = [
     {
       applicationName: 'condo-shownews.html',
@@ -78,20 +75,21 @@ class Condos {
       text: "Fjernvarme"
     }
   ];
+  */
 
   // array of horizontal news menu
   arrayMenuNews = [
     {
       applicationName: 'condo-shownews.html',
       className: "condo-shownews",
-      text: "Nyheter"
+      text: "Vis Nyheter"
     },
-    {
+   {
       applicationName: 'condo-news.html',
       className: "condo-news",
-      text: "Nyhet"
+      text: "Rediger Nyheter"
     },
-  ];
+   ];
 
   // array of horizontal emptying calendar menu
   arrayMenuEmptyingCalendar = [
@@ -103,7 +101,7 @@ class Condos {
     {
       applicationName: 'condo-emptyingcalendar.html',
       className: "condo-emptyingcalendar",
-      text: "Tømmekalender"
+      text: "Rediger Tømmekalender"
     },
   ];
 
@@ -112,12 +110,12 @@ class Condos {
     {
       applicationName: 'condo-condominium.html',
       className: "condo-condominium",
-      text: "Sameie"
+      text: "Rediger Sameie"
     },
     {
       applicationName: 'condo-bankaccount.html',
       className: "condo-bankaccount",
-      text: "Bankkonto"
+      text: "Rediger Bankkonto"
     },
     {
       applicationName: 'condo-accounts.html',
@@ -127,13 +125,8 @@ class Condos {
     {
       applicationName: 'condo-account.html',
       className: "condo-account",
-      text: "Konto"
+      text: "Rediger Konto"
     },
-    {
-      applicationName: 'condo-liquidity.html',
-      className: "condo-liquidity",
-      text: "Likviditet"
-    }
   ];
 
   // menu array for user
@@ -141,22 +134,22 @@ class Condos {
     {
       applicationName: 'condo-user.html',
       className: "condo-user",
-      text: "Bruker"
+      text: "Rediger Bruker"
     },
     {
       applicationName: 'condo-password.html',
       className: "condo-password",
-      text: "Passord"
+      text: "Rediger Passord"
     },
     {
       applicationName: 'condo-condo.html',
       className: "condo-condo",
-      text: "Leilighet"
+      text: "Rediger Leilighet"
     },
     {
       applicationName: 'condo-userbankaccount.html',
       className: "condo-userbankaccount",
-      text: "Bankkonto"
+      text: "Rediger Bankkonto"
     }
   ];
 
@@ -165,52 +158,56 @@ class Condos {
     {
       applicationName: 'condo-transactions.html',
       className: "condo-transactions",
-      text: "Transaksjoner"
+      text: "Vis Transaksjoner"
     },
     {
       applicationName: 'condo-transaction.html',
       className: "condo-transaction",
-      text: "Transaksjon"
+      text: "Rediger Transaksjon"
     },
     {
       applicationName: 'condo-projects.html',
       className: "condo-projects",
-      text: "Prosjekter"
+      text: "Vis Prosjekter"
     },
-
     {
       applicationName: 'condo-project.html',
       className: "condo-project",
-      text: "Prosjekt"
+      text: "Rediger Prosjekt"
     },
     {
       applicationName: 'condo-budgets.html',
       className: "condo-budgets",
-      text: "Budsjett"
+      text: "Vis Budsjett"
     },
     {
       applicationName: 'condo-annualaccount.html',
       className: "condo-annualaccount",
-      text: "Årsregnskap"
+      text: "Vis Årsregnskap"
     },
     {
       applicationName: 'condo-importfile.html',
       className: "condo-importfile",
       text: "Hent transaksjoner"
     },
+    {
+      applicationName: 'condo-liquidity.html',
+      className: "condo-liquidity",
+      text: "Vis Likviditet"
+    }
   ];
 
   // menu array for due
   arrayMenuDue = [
-    {
+     {
       applicationName: 'condo-dues.html',
       className: "condo-dues",
-      text: "Forfall"
+      text: "Vis Forfall"
     },
-    {
+   {
       applicationName: 'condo-supplier.html',
       className: "condo-supplier",
-      text: "Leverandør"
+      text: "Rediger Leverandør"
     },
     {
       applicationName: 'condo-commoncosts.html',
@@ -220,31 +217,31 @@ class Condos {
     {
       applicationName: 'condo-commoncost.html',
       className: "condo-commoncost",
-      text: "Felleskostnad"
+      text: "Rediger Felleskostnad"
     },
     {
       applicationName: 'condo-overview.html',
       className: "condo-overview",
-      text: "Betalingsoversikt"
+      text: "Vis Betalingsoversikt"
     }
   ];
 
   // menu array for remote heating
   arrayMenuRemoteHeating = [
     {
+      applicationName: 'condo-remoteheating.html',
+      className: "condo-remoteheating",
+      text: "Rediger Fjernvarme"
+    },
+    {
       applicationName: 'condo-remoteheatings.html',
       className: "condo-remoteheatings",
       text: "Vis Fjernvarme"
     },
     {
-      applicationName: 'condo-remoteheating.html',
-      className: "condo-remoteheating",
-      text: "Fjernvarme"
-    },
-    {
       applicationName: 'condo-remoteheatingprice.html',
       className: "condo-remoteheatingprice",
-      text: "Pris Fjernvarme"
+      text: "Rediger  Fjernvarmepris"
     }
   ];
 
@@ -951,7 +948,7 @@ class Condos {
   }
 
   // Show vertical menu
-  showMenu() {
+  showMenu(applicationName) {
 
     // Empty line
     let html = emptyLine();
@@ -961,13 +958,13 @@ class Condos {
 
     // Vertical menu
     html += `<div class="menu-row">`;
-    html += this.showVerticalMenu('menu', this.arrayMenuNews);
-    html += this.showVerticalMenu('menu', this.arrayMenuEmptyingCalendar);
-    html += this.showVerticalMenu('menu', this.arrayMenuCondominium);
-    html += this.showVerticalMenu('menu', this.arrayMenuUser);
-    html += this.showVerticalMenu('menu', this.arrayMenuTransaction);
-    html += this.showVerticalMenu('menu', this.arrayMenuDue);
-    html += this.showVerticalMenu('menu', this.arrayMenuRemoteHeating);
+    html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", applicationName);
+    html += this.showVerticalMenu('emptyingCalendar', this.arrayMenuEmptyingCalendar, "Tømmekalender", applicationName);
+    html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", applicationName);
+    html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", applicationName);
+    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Regnskap", applicationName);
+    html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", applicationName);
+    html += this.showVerticalMenu('remoteHeating', this.arrayMenuRemoteHeating, "Fjernvarme", applicationName);
     html += '</div>';
 
     // End frame
@@ -977,44 +974,55 @@ class Condos {
   }
 
   // Show vertical menu
-  showVerticalMenu(className, arrayMenu) {
+  showVerticalMenu(className, arrayMenu, label, applicationName) {
+
+    let menuSelected = false;
+    let programName = "";
 
     const URL = (this.serverStatus === 1)
       ? 'http://ingegilje.no/'
       : 'http://localhost/';
 
-    /*
-    let html = `
-    <div 
-      class="field"
-      style="width:150px;margin-left:35px;margin-bottom:25px;"
-    >
-      <select 
-        class="${className} center one-line"
-        onchange="window.location.href=this.value"
-      >
-    `;
-    */
     let html = `
     <div 
       class="field"
       style="width:150px;"
     >
+      <label>
+        ${label}
+      </label>
       <select 
         class="${className} center one-line"
         onchange="window.location.href=this.value"
       >
     `;
+
+    let menuNumber = 0;
     arrayMenu.forEach((menu) => {
 
+      menuNumber++;
       html += `
         <option 
           value="${URL}${menu.applicationName}"
+          ${(menu.applicationName.includes(applicationName))
+          ? 'selected'
+          : ''}
         >
           &nbsp;&nbsp;${menu.text.trim()}&nbsp;&nbsp;
         </option>`;
+        if (menu.applicationName.includes(applicationName)) menuSelected = true;
+        if (menuNumber === 1) programName = URL + menu.applicationName;
     });
+
     html += `
+        <option 
+          value="${programName}"
+          ${(!menuSelected)
+          ? 'selected'
+          : ''}
+        >
+          &nbsp;&nbsp;${label}&nbsp;&nbsp;
+        </option>
       </select >
     </div>`;
 
@@ -1442,10 +1450,10 @@ function emptyLine() {
 }
 
 // Change frame title
-function setFrameTitle(className = "filter-frame", text = "Filter") {
+function setFrameTitle(className, label) {
 
   const frameElement = document.querySelector(`.${className}`);
-  frameElement.style.setProperty("--title", `"${text}"`);
+  frameElement.style.setProperty("--title", `"${label}"`);
 }
 
 // Show button

@@ -456,6 +456,7 @@ means: The field contains some text.*/
   }
 }
 
+/* frame */
 .filter-frame {
   display: flex;
   align-items: center;

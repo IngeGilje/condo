@@ -36,7 +36,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objOverview.showMenu();
+      let html = objOverview.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title

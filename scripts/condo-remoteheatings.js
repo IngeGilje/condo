@@ -38,7 +38,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objRemoteHeatings.showMenu();
+      let html = objRemoteHeatings.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -216,7 +216,7 @@ function showRemoteHeatings() {
       if (remoteHeating.deleted === 'N') selected = "Nei";
 
       className = `change${remoteHeating.remoteHeatingId}`;
-      html += objRemoteHeatings.showButton(className, 'Endre');
+      html += objRemoteHeatings.showButton(className, 'Rediger');
       html += "</tr>";
 
       // accumulate

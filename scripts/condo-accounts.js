@@ -41,7 +41,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objAccounts.showMenu();
+      let html = objAccounts.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -275,7 +275,7 @@ function showAccounts() {
 
     // edit account
     className = `edit${account.accountId}`;
-    html += objAccounts.showButton(className, 'Endre');
+    html += objAccounts.showButton(className, 'Rediger');
     html += "</tr>";
   });
 

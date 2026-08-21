@@ -30,7 +30,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
     if (await objUser.checkServer()) {
 
             // Show vertical menu
-      let html = objSupplier.showMenu();
+      let html = objSupplier.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title

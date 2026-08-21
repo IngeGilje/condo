@@ -34,7 +34,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objLiquidity.showMenu();
+      let html = objLiquidity.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title

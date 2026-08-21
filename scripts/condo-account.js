@@ -39,11 +39,12 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objAccount.showMenu();
+      let html = objAccount.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      setFrameTitle("menu-frame", "Meny",);
+      setFrameTitle("news", "Nyheter",);
 
       /*
       // Show main menu
@@ -155,28 +156,6 @@ async function events() {
   });
 }
 
-function resetValues() {
-
-  // account Id
-  document.querySelector('.select-accounts-accountId').value = '';
-
-  // account Name
-  document.querySelector('.input-accounts-accountName').value = '';
-
-  // Fixed cost
-  document.querySelector('.select-accounts-fixedCost').value = '';
-
-  // Buttons
-  removeMessage();
-  if (enableChanges) {
-    disableButton('delete', true);
-    disableButton('insert', true);
-    disableButton('update', true);
-    disableButton('cancel', false);
-    disableButton('filterFixedCost', true);
-  }
-}
-
 // Show filter
 function showFilter(accountId) {
 
@@ -250,6 +229,28 @@ function showAccount(accountId) {
     disableButton('update', false);
     disableButton('cancel', true);
     disableButton('filterAccountId', false);
+  }
+}
+
+function resetValues() {
+
+  // account Id
+  document.querySelector('.select-accounts-accountId').value = '';
+
+  // account Name
+  document.querySelector('.input-accounts-accountName').value = '';
+
+  // Fixed cost
+  document.querySelector('.select-accounts-fixedCost').value = '';
+
+  // Buttons
+  removeMessage();
+  if (enableChanges) {
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('update', true);
+    disableButton('cancel', false);
+    disableButton('filterFixedCost', true);
   }
 }
 

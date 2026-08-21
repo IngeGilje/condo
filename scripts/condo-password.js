@@ -31,7 +31,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objPassword.showMenu();
+      let html = objPassword.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title

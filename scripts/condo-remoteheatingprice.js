@@ -30,7 +30,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objRemoteHeatingPrice.showMenu();
+      let html = objRemoteHeatingPrice.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title

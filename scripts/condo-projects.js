@@ -46,7 +46,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objProjects.showMenu();
+      let html = objProjects.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -253,7 +253,7 @@ function showProjectTransactions(projectId) {
 
       // Show button for change of bank account transaction
       className = `change${bankTransaction.transactionId}`;
-      html += objProjects.showButton(className, 'Endre');
+      html += objProjects.showButton(className, 'Rediger');
       html += "</tr>";
 
       // accumulate

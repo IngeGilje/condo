@@ -36,22 +36,11 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objEmptyingCalendar.showMenu();
+      let html = objEmptyingCalendar.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objEmptyingCalendar.showHorizontalMenu("filter-frame", objEmptyingCalendar.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show menu for empty calendar 
-      html = objEmptyingCalendar.showHorizontalMenu("filter-frame", objEmptyingCalendar.arrayMenuEmptyingCalendar);
-      document.querySelector('.menuEmptyingCalendar').innerHTML = html;
-      objEmptyingCalendar.markActivatedApplication(objEmptyingCalendar.arrayMenuEmptyingCalendar, applicationName);
-      */
 
       await objCondo.loadCondoTable(objEmptyingCalendar.condominiumId, objEmptyingCalendar.nineNine);
       const orderBy = "date DESC";
@@ -325,19 +314,6 @@ async function updateEmptyingCalendarRow(emptyingCalendarId) {
   let date = document.querySelector('.emptyingCalendarDate').value;
   let validDate = validateISODate('emptyingCalendarDate', date, true, 'Ugyldig Dato');
   date = formatISODateToNumber(date);
-
-  /*
-  // Check if the emtyingcalendar id exist
-  const rowNumberEmptyingCalendar = objEmptyingCalendars.arrayEmptyingCalendars.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);
-  if (rowNumberEmptyingCalendar === -1) {
-
-    // Check for unique date
-    const orderBy = "date DESC";
-    await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
-    if (objEmptyingCalendars.arrayEmptyingCalendars.length !== 0) validDate = false;
-    await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
-  }
-  */
 
   let residualWaste = document.querySelector('.residualWaste').value;
   const validResidualWaste = validateValuesNew('residualWaste', 'Ugylgig valg', true, residualWaste, 'Nei', 'Ja');

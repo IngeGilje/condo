@@ -5,7 +5,7 @@ class Transactions extends Condos {
   }
 
   // Transactions information
-  arrayTransactions = Array;;
+  arrayTransactions = Array;
   #arrayTransactions = Array;
 
   /*

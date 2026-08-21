@@ -48,7 +48,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objTransactions.showMenu();
+      let html = objTransactions.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -332,7 +332,7 @@ function showTransactions() {
 
       // Show button for change of bank account transaction
       className = `change${bankTransaction.transactionId}`;
-      html += objTransactions.showButton(className, 'Endre');
+      html += objTransactions.showButton(className, 'Rediger');
       html += "</tr>";
 
       // accumulate
@@ -342,7 +342,7 @@ function showTransactions() {
   });
 
   // Show table sum row
-  sumAmount = sumIncome + sumPayment;
+  let sumAmount = sumIncome + sumPayment;
   sumAmount = formatNumberToNorAmount(sumAmount);
   sumIncome = formatNumberToNorAmount(sumIncome);
   sumPayment = formatNumberToNorAmount(sumPayment);

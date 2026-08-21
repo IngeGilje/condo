@@ -47,23 +47,12 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
-      let html = objTransaction.showMenu();
+      // Show vertical menu
+      let html = objTransaction.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objTransaction.showHorizontalMenu("filter-frame", objTransaction.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show transaction menu
-      html = objTransaction.showHorizontalMenu("filter-frame", objTransaction.arrayMenuTransaction);
-      document.querySelector('.menuTransaction').innerHTML = html;
-      objTransaction.markActivatedApplication(objTransaction.arrayMenuTransaction, applicationName);
-      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
@@ -75,6 +64,8 @@ async function main() {
       await objCondominium.loadCondominiumsTable();
       await objSupplier.loadSuppliersTable(objTransaction.condominiumId);
       await objProjects.loadProjectsTable(objTransaction.condominiumId);
+      const orderBy = 'date DESC, income DESC';
+      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20190101, 20991231);
 
       // show filter
       let transactionId = 0;
@@ -89,8 +80,8 @@ async function main() {
         // Application is not startet from menu
         transactionId = paramTransactionId;
       }
-      const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20190101, 20991231);
+      //const orderBy = 'date DESC, income DESC';
+      //await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20190101, 20991231);
 
       showFilter(transactionId);
 
@@ -246,7 +237,7 @@ function showFilter(transactionId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  setFrameTitle("filter-frame", "Filter");
 }
 
 function resetValues() {

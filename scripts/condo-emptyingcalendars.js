@@ -37,7 +37,7 @@ async function main() {
     } else {
 
             // Show vertical menu
-      let html = objEmptyingCalendars.showMenu();
+      let html = objEmptyingCalendars.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -64,7 +64,7 @@ async function main() {
       const toDate = Number(year + month + "31");
 
       const orderBy = "date ASC";
-      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendars.condominiumId, orderBy, fromDate, toDate);
+      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendars.condominiumId, orderBy);
       showFilter(Number(year), Number(month));
 
       // Show emtyingcalendars
@@ -90,7 +90,7 @@ async function events() {
       const year = Number(document.querySelector('.filterYear').value);
       const month = Number(document.querySelector('.filterMonth').value);
       const orderBy = "date ASC";
-      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendars.condominiumId, orderBy, fromDate, toDate);
+      await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendars.condominiumId, orderBy);
 
       // Show emtyingcalendar
       showEmptyingCalendars(year, month);
@@ -220,7 +220,7 @@ function showEmptyingCalendars(year, month) {
 
         // Change emptycalenders
         className = `change${emptyingCalendar.emptyingCalendarId}`;
-        html += objEmptyingCalendars.showButton(className, 'Endre');
+        html += objEmptyingCalendars.showButton(className, 'Rediger');
 
         html += "</td>";
       }
