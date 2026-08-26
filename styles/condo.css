@@ -135,11 +135,11 @@ button:active {
   transform: scale(0.97);
 }
 
-input {
+.input {
   height: 30px;
 }
 
-select {
+.select {
   height: 35px;
 }
 
@@ -421,16 +421,33 @@ iframe {
   align-items: flex-start;
 }
 
+/* Field */
+.field {
+  position: relative;
+}
+
+.field input {
+  width: 100%;
+  height: 50px;
+  padding: 0 14px;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  outline: none;
+
+  font-size: 14px;
+  background: white;
+  box-sizing: border-box;
+}
+
 .field button,
-.field input,
 .field select {
   height: 56px;
   border: 1px solid #cbd5e1;
   border-radius: 14px;
   font-size: 16px;
+  min-width: 100px;
   max-width: 250px;
-  padding-left: 14px;
-  padding-right: 14px;
 }
 
 /* Apply the style when the input has keyboard focus 
@@ -497,7 +514,7 @@ means: The field contains some text.*/
 .menu-frame {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 10px;
 
   padding: 10px;
   margin-left: 20px;
@@ -648,25 +665,6 @@ body {
 }
 */
 
-/* Field */
-.field {
-  position: relative;
-}
-
-.field input {
-  width: 100%;
-  height: 50px;
-  padding: 0 14px;
-
-  border: 1px solid #dbe3ef;
-  border-radius: 14px;
-  outline: none;
-
-  font-size: 14px;
-  background: white;
-  box-sizing: border-box;
-}
-
 /* Floating label */
 .field label {
   position: absolute;
@@ -717,9 +715,29 @@ body {
   transform: translateY(0);
 }
 
+/*
 .menu-row {
   display: flex;
   gap: 15px;
   margin-left: 35px;
   margin-bottom: 5px;
+}
+*/
+
+.menu-row {
+  display: flex;
+}
+
+.field-position {
+  width: 250px;
+  margin-left: 35px;
+  margin-bottom: 15px;
+  max-width: 250px;
+  min-width: 100px;
+}
+
+.field-position-menu {
+  margin-bottom: 5px;
+  margin-left: 15px;
+  text-align: center;
 }

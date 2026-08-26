@@ -171,14 +171,14 @@ function showUserBankAccount(userBankAccountId) {
   html += startLine();
 
   const userId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.userId ?? 0;
-  html += objUser.showSelectedUsersNew('Bruker', 'userId', '', userId, 'Velg bruker', '', true);
+  html += objUser.showSelectedUsersNew('Bruker', 'userId', userId, 'Velg bruker', '', true);
   html += "</div>";
 
   // account
   html += startLine();
 
   const accountId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', true);
   html += "</div>";
 
   // bank account

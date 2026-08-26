@@ -1,0 +1,168 @@
+/* Shared frame style */
+.menu-frame,
+.filter-frame {
+  position: relative;
+
+  width: fit-content;
+
+  margin: 25px 15px;
+  padding: 18px 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #d9e0e8;
+  border-radius: 12px;
+
+  box-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.04),
+    0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+
+/* Shared frame title */
+.menu-frame::before,
+.filter-frame::before {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+
+  padding: 0 8px;
+
+  background: #ffffff;
+
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  color: #4c6fff;
+}
+
+
+.menu-frame::before {
+  content: var(--title, "Meny");
+}
+
+.filter-frame::before {
+  content: var(--title, "Filter");
+}
+
+/* horizontal layout */
+.menu-row,
+.filter-frame {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+/* field sizes */
+.menu-row .field,
+.filter-frame .field {
+  width: 180px;
+}
+
+/* controls */
+.menu-row select,
+.filter-frame select,
+.filter-frame input {
+  width: 100%;
+  max-width: none;
+
+  height: 42px;
+
+  padding: 0 12px;
+
+  background: #ffffff;
+  color: #1e293b;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+/* dropdowns */
+.menu-row select,
+.filter-frame select {
+  padding-right: 34px;
+  cursor: pointer;
+}
+
+/* hover effect */
+.menu-row select:hover,
+.filter-frame select:hover,
+.filter-frame input:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+/* focus effect */
+.menu-row select:focus,
+.filter-frame select:focus,
+.filter-frame input:focus {
+  outline: none;
+
+  border-color: #4c6fff;
+
+  box-shadow:
+    0 0 0 3px rgba(76, 111, 255, 0.12);
+}
+
+/* cell phone */
+@media (max-width: 800px) {
+
+  .menu-frame,
+  .filter-frame {
+    width: auto;
+
+    margin: 25px 12px;
+    padding: 20px 14px;
+  }
+
+  .menu-row,
+  .filter-frame {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .menu-row .field,
+  .filter-frame .field {
+    width: 200px;
+  }
+
+  .menu-row select,
+  .filter-frame select,
+  .filter-frame input {
+    width: 200px;
+  }
+}
+
+/* position */
+.field {
+  position: relative;
+}
+
+/* floating label */
+.field label {
+  position: absolute;
+  top: -8px;
+  left: 14px;
+
+  padding: 0 6px;
+
+  background: white;
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  z-index: 1;
+}

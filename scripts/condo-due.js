@@ -194,11 +194,11 @@ function showDue(dueId) {
   // condoId
   html += startLine();
   const condoId = objDues.arrayDues[rowNumberDue]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', '', condoId, 'Velg Leilighet', '', true);
+  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', condoId, 'Velg Leilighet', '', true);
 
   // accountId
   const accountId = objDues.arrayDues[rowNumberDue]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg Konto', '', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg Konto', '', true);
   html += "</div>";
 
   // amount

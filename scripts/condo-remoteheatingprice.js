@@ -175,7 +175,7 @@ function showRemoteHeatingPrice(remoteHeatingPriceId) {
   const year = (objRemoteHeatingPrice.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].year)
     ? objRemoteHeatingPrice.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].year
     : 0;
-  html += showSelectedNumbersNew('År', 'year', '', 2020, 2030, year, enableChanges);
+  html += showSelectedNumbersNew('År', 'year', 2020, 2030, year, enableChanges);
   html += "</div>"
 
   // price for kilowatt per Hour

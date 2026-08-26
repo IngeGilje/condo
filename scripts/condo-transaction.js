@@ -80,9 +80,6 @@ async function main() {
         // Application is not startet from menu
         transactionId = paramTransactionId;
       }
-      //const orderBy = 'date DESC, income DESC';
-      //await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20190101, 20991231);
-
       showFilter(transactionId);
 
       // Show bank account transaction
@@ -240,47 +237,6 @@ function showFilter(transactionId) {
   setFrameTitle("filter-frame", "Filter");
 }
 
-function resetValues() {
-
-  // Filter values
-
-  // transaction Id
-  document.querySelector('.transactionId').value = 0;
-
-  // date
-  document.querySelector('.date').value = '';
-
-  // condo Id
-  document.querySelector('.condoId').value = 0;
-
-  // account Id
-  document.querySelector('.accountId').value = 0;
-
-  // project Id
-  document.querySelector('.projectId').value = 0;
-
-  // income
-  document.querySelector('.income').value = '';
-
-  // payment
-  document.querySelector('.payment').value = '';
-
-  // kilowattHour
-  document.querySelector('.kilowattHour').value = '';
-
-  // text
-  document.querySelector('.text').value = '';
-
-  // Buttons
-  removeMessage();
-  if (enableChanges) {
-    disableButton('delete', true);
-    disableButton('insert', true);
-    disableButton('cancel', false);
-    disableButton('filterTransactionId', true);
-  }
-}
-
 // update transactions row
 async function updateTransactionRow(transactionId) {
 
@@ -376,44 +332,6 @@ async function updateTransactionRow(transactionId) {
   }
 }
 
-// Delete transactions row
-async function deleteTransactionRow() {
-
-  // Check if transactions row exist
-  let transactionId = Number(document.querySelector('.transactionId').value);
-  const transactionsRowNumber = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
-  if (transactionsRowNumber !== -1) {
-
-    // delete transaction row
-    await objTransaction.deleteTransactionsTable(transactionId, objTransaction.user);
-
-    // get last row in transactions table
-    await objTransaction.loadLastRowTransactionsTable(objTransaction.condominiumId);
-  }
-
-  const rowNumberTransaction = objTransactions.arrayTransactions.at(-1)?.transactionId ?? 0;
-
-  transactionId = objTransactions.arrayTransactions[rowNumberTransaction]?.transactionId ?? 0;
-  condoId = objTransactions.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
-  accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
-  income = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? 0;
-  payment = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
-  let fromdate = objTransactions.arrayTransactions[rowNumberTransaction]?.date ?? 0;
-  let todate = objTransactions.arrayTransactions[rowNumberTransaction]?.date ?? 0;
-
-  // amount
-  let amount = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? 0;
-  if (amount === 0) {
-    amount = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
-  }
-
-  // Show filter
-  showFilter(transactionId);
-
-  // Show transaction
-  showTransaction(transactionId);
-}
-
 // Show bank account transaction
 function showTransaction(transactionId) {
 
@@ -444,20 +362,20 @@ function showTransaction(transactionId) {
   let condoId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].condoId;
-  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', '', condoId, 'Velg leilighet', '', enableChanges);
+  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', condoId, 'Velg leilighet', '', enableChanges);
 
   // Account
   let accountId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].accountId;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', enableChanges);
 
   // project
   let projectId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].projectId;
 
-  html += objProjects.showSelectedProjectsNew('Prosjekt', 'projectId', '', projectId, 'Velg prosjekt', '', enableChanges);
+  html += objProjects.showSelectedProjectsNew('Prosjekt', 'projectId', projectId, 'Velg prosjekt', '', enableChanges);
   html += "</div>";
 
   // income
@@ -511,8 +429,6 @@ function showTransaction(transactionId) {
 
   document.querySelector('.showTransaction').innerHTML = html;
 
-  //if (enableChanges) document.querySelector('.cancel').disabled = true;
-
   // Buttons
   if (enableChanges) {
     disableButton('delete', false);
@@ -521,4 +437,81 @@ function showTransaction(transactionId) {
     disableButton('cancel', true);
     disableButton('filterTransactionId', false);
   }
+}
+
+function resetValues() {
+
+  // Filter values
+
+  // transaction Id
+  document.querySelector('.transactionId').value = 0;
+
+  // date
+  document.querySelector('.date').value = '';
+
+  // condo Id
+  document.querySelector('.condoId').value = 0;
+
+  // account Id
+  document.querySelector('.accountId').value = 0;
+
+  // project Id
+  document.querySelector('.projectId').value = 0;
+
+  // income
+  document.querySelector('.income').value = '';
+
+  // payment
+  document.querySelector('.payment').value = '';
+
+  // kilowattHour
+  document.querySelector('.kilowattHour').value = '';
+
+  // text
+  document.querySelector('.text').value = '';
+
+  // Buttons
+  removeMessage();
+  if (enableChanges) {
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterTransactionId', true);
+  }
+}
+
+// Delete transactions row
+async function deleteTransactionRow() {
+
+  // Check if transactions row exist
+  let transactionId = Number(document.querySelector('.transactionId').value);
+  const transactionsRowNumber = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
+  if (transactionsRowNumber !== -1) {
+
+    // delete transaction row
+    await objTransaction.deleteTransactionsTable(transactionId, objTransaction.user);
+
+    // get last row in transactions table
+    await objTransaction.loadLastRowTransactionsTable(objTransaction.condominiumId);
+  }
+
+  const rowNumberTransaction = objTransactions.arrayTransactions.at(-1)?.transactionId ?? 0;
+
+  transactionId = objTransactions.arrayTransactions[rowNumberTransaction]?.transactionId ?? 0;
+  condoId = objTransactions.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
+  accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
+  income = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? 0;
+  payment = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
+
+  // amount
+  let amount = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? 0;
+  if (amount === 0) {
+    amount = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
+  }
+
+  // Show filter
+  showFilter(transactionId);
+
+  // Show transaction
+  showTransaction(transactionId);
 }

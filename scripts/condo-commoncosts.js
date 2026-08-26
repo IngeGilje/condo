@@ -106,7 +106,7 @@ function showFilter(year) {
   let html = startFrame('filter-frame');
 
   // Show years
-  html += showSelectedNumbersNew('År', 'filterYear', 'align:center;', 2020, 2030, year, true);
+  html += showSelectedNumbersNew('År', 'filterYear',  2020, 2030, year, true);
 
   // End filter frame
   html += "</div>";

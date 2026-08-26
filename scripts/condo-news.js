@@ -187,7 +187,7 @@ function showNews(newsId) {
   // userId
   html += startLine();
   const userId = objNews.arrayNews[rowNumberNews]?.userId ?? 0;
-  html += objUser.showSelectedUsersNew('Forfatter', 'userId', '', userId, 'Velg forfatter', '', true);
+  html += objUser.showSelectedUsersNew('Forfatter', 'userId', userId, 'Velg forfatter', '', true);
   html += "</div>";
 
   // title

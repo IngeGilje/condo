@@ -47,23 +47,12 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objTransactions.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objTransactions.showHorizontalMenu("filter-frame", objTransactions.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show transaction menu
-      html = objTransactions.showHorizontalMenu("filter-frame", objTransactions.arrayMenuTransaction);
-      document.querySelector('.menuTransaction').innerHTML = html;
-      objTransactions.markActivatedApplication(objTransactions.arrayMenuTransaction, applicationName);
-      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
@@ -218,10 +207,10 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   let html = startFrame('filter-frame');
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', condoId, '', 'Vis alle', true);
 
   // Show accounts
-  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', 'Vis alle', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', accountId, '', 'Vis alle', true);
 
   // From date
   fromDate = formatNumberToISODate(fromDate);
@@ -268,7 +257,7 @@ function showTransactions() {
   // amount
   let amount = document.querySelector('.filterAmount').value;
   amount = formatNorAmountToNumber(amount);
-   if (amount !== 0) fromAmount = amount;
+  if (amount !== 0) fromAmount = amount;
   if (amount !== 0) toAmount = amount;
   if (amount === 0) fromAmount = objTransaction.minusNineNine;
   if (amount === 0) toAmount = objTransaction.nineNine;
@@ -356,5 +345,5 @@ function showTransactions() {
 
   // The end of the table
   html += objTransactions.endTable();
-  document.querySelector('.result').innerHTML = html;
+  document.querySelector('.showTransactions').innerHTML = html;
 }

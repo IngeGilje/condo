@@ -158,7 +158,7 @@ function createTransactionsArray() {
     // Check for valid date
     // validate the dd.mm.yyyy (Norwegian date format)
 
-    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '', '')) {
+    if (objImportFile.validateNorDate('message', accountingDate, objImportFile,  '')) {
 
       // text
       // remove first and last "
@@ -271,7 +271,7 @@ async function updateOpeningClosingBalance() {
 
     [accountingDate, balance, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
-    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '', 'Ugyldig Dato')) {
+    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, 'Ugyldig Dato')) {
 
       totalIncome += Number(formatNorAmountToNumber(income));
       totalPayment += Number(formatNorAmountToNumber(payment));

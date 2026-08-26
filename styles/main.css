@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+
+  background: #f6f8fb;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+  color: #1e293b;
+}
+
+/* General form controls */
+button,
+select,
+input {
+  font-family: inherit;
+}
+
+/* Buttons */
+button {
+  height: 42px;
+
+  padding: 0 18px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #334155;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+button:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.08);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: none;
+
+  border-color: #4c6fff;
+
+  box-shadow:
+    0 0 0 3px rgba(76, 111, 255, 0.12);
+}
+
+.center {
+  text-align: center;
+}
+
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Field */
+.field {
+  position: relative;
+}
+
+/* Floating label */
+.field label {
+  position: absolute;
+  top: -8px;
+  left: 14px;
+  padding: 0 6px;
+  background: white;
+  color: #2563eb;
+  font-size: 13px;
+  z-index: 1;
+}

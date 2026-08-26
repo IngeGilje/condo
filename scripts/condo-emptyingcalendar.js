@@ -209,7 +209,7 @@ function showEmptyingCalendar(emptyingCalendarId) {
   html += showDate('Dato', 'emptyingCalendarDate', emptyingCalendarDate, enableChanges);
 
   const condoId = objEmptyingCalendars.arrayEmptyingCalendars[rowNumberEmptyingCalendar]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('Ansvarlig', 'condoId', '', condoId, 'Velg ansvarlig', '', true);
+  html += objCondo.showSelectedCondosNew('Ansvarlig', 'condoId', condoId, 'Velg ansvarlig', '', true);
   html += "</div>";
 
   // residual waste 

@@ -254,7 +254,9 @@ class Condominium extends Condos {
     let selectedValue = false;
 
     let html = `
-    <div class="field" style="width:250px;margin-left: 35px;">
+    <div 
+      class="field field-position" 
+    >
     <label>
       ${label}
     </label>

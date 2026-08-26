@@ -309,10 +309,10 @@ function showBudget(budgetId) {
   let html = emptyLine();
 
   const year = objBudgets.arrayBudgets[rowNumberBudget]?.year ?? '';
-  html += showSelectedNumbersNew('År', 'year', '', 2020, 2030, year, true);
+  html += showSelectedNumbersNew('År', 'year', 2020, 2030, year, true);
 
   const accountId = objBudgets.arrayBudgets[rowNumberBudget]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', true);
 
   // amount
   /*

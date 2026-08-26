@@ -47,20 +47,6 @@ async function main() {
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
 
-      /*
-      // Show main menu
-      let html = objAccounts.showHorizontalMenu("filter-frame", objAccounts.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show condominium menu
-      html = objAccounts.showHorizontalMenu("filter-frame", objAccounts.arrayMenuCondominium);
-      document.querySelector('.menuCondominium').innerHTML = html;
-      objAccounts.markActivatedApplication(objAccounts.arrayMenuCondominium,applicationName);
-
-      // mark activated application
-      objAccounts.markActivatedApplication(objAccounts.arrayMenuCondominium, applicationName);
-      */
-
       let resident = 'Y';
       await objUser.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
       if (paramFixedCost !== 'Y' && paramFixedCost !== 'N') paramFixedCost = 'A';

@@ -100,7 +100,7 @@ class Accounts extends Condos {
       class="one-line center"
     >
       <select 
-        class="${className} center"
+        class="${className} center select"
         ${(style) ? `style="${style}"` : ""}
         ${(enableChanges) ? '' : 'disabled'}
       >`;
@@ -162,14 +162,13 @@ class Accounts extends Condos {
   }
 
   // Show accounts
-  showSelectedAccountsNew(label, className, style, accountId, selectNone, selectAll, enableChanges) {
+  showSelectedAccountsNew(label, className, accountId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
     let html = `
     <div 
-      class="field"
-      style="width:250px;margin-left:35px;margin-bottom:5px;"
+      class="field field-position" 
     >
       <label>
         ${label}

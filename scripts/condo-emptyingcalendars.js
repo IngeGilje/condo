@@ -134,7 +134,7 @@ function showFilter(year, month) {
   let html = startFrame('filter-frame');
 
   // Show years
-  html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
+  html += showSelectedNumbersNew('År', 'filterYear',  2020, 2030, year, true);
 
   // Show selected months
   html += showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);

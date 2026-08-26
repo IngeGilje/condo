@@ -217,7 +217,7 @@ function showFilter(budgetYear, fromDate, toDate) {
   let html = startFrame('filter-frame');
 
   // Show year
-  html += showSelectedNumbersNew('År', 'filterBudgetYear', '', 2020, 2030, budgetYear, true);
+  html += showSelectedNumbersNew('År', 'filterBudgetYear', 2020, 2030, budgetYear, true);
 
   // From date
   html += showDate('Fra Dato', 'filterFromDate', fromDate, true)

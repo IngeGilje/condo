@@ -303,7 +303,7 @@ function showSupplier(supplierId) {
   const accountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', enableChanges);
 
   // bank Account number
   const bankAccount = (rowNumberSupplier === -1)
@@ -319,7 +319,7 @@ function showSupplier(supplierId) {
   const amountAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccounts.showSelectedAccountsNew('Konto for beløp', 'amountAccountId', '', amountAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('Konto for beløp', 'amountAccountId', amountAccountId, 'Velg konto', '', enableChanges);
 
   // amount
   let amount = (rowNumberSupplier === -1)
@@ -336,7 +336,7 @@ function showSupplier(supplierId) {
   const textAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccounts.showSelectedAccountsNew('Konto for tekst', 'textAccountId', '', textAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('Konto for tekst', 'textAccountId', textAccountId, 'Velg konto', '', enableChanges);
 
   // text for account id
   const text = (rowNumberSupplier === -1)

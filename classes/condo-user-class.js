@@ -381,92 +381,15 @@ class User extends Condos {
     return html;
   }
 
-  /*
   // Show users
-  showSelectedUsersNew(label, className, style, userId, selectNone, selectAll, enableChanges) {
+  showSelectedUsersNew(label, className, userId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
     let html = `
-    <div class="field status" style="width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    // Check if users array is empty
-    if (this.arrayUsers.length > 0) {
-      this.arrayUsers.forEach((user) => {
-
-        html += `
-        <option 
-          value=${user.userId}
-          ${(user.userId === userId) ? 'selected' : ''}
-        >
-          &nbsp;&nbsp;${user.firstName.trim()}&nbsp;&nbsp;
-        </option>`;
-
-        if (user.userId === userId) selectedValue = true;
-      });
-    } else {
-
-      // No users
-      html += `
-      <option 
-        value="0" 
-         ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;Ingen brukere&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayUsers.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayUsers.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    html += `
-      </select >
-      <label>
-        ${label}
-      </label>
-    </div>`;
-
-    return html;
-  }
-  */
-
-  // Show users
-  showSelectedUsersNew(label, className, style, userId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div class="field" style="width:250px;margin-left:35px;margin-bottom:5px;">
+    <div 
+      class="field field-position" 
+    >
     <label>
       ${label}
     </label>

@@ -1,62 +1,135 @@
-<div class="row">
+<!DOCTYPE html>
+<html lang="nb-NO">
 
-  <p></p>
-  <div class="field status">
-    <label>Status</label>
-    <select>
-      <option>Active</option>
-      <option>Inactive</option>
-    </select>
+<head>
+
+  <title>Filter test</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/filter.css">
+  <link rel="stylesheet" href="styles/frame.css">
+</head>
+
+<body>
+
+
+  <div 
+    class="filter-frame"
+  >
+    <div class="field field-position">
+      <label>
+        Leilighet
+      </label>
+      <select class="filterCondoId center one-line">
+        <option value=3>
+          &nbsp;&nbsp;95A&nbsp;&nbsp;
+        </option>
+        <option value=4>
+          &nbsp;&nbsp;95B&nbsp;&nbsp;
+        </option>
+        <option value=5>
+          &nbsp;&nbsp;97A&nbsp;&nbsp;
+        </option>
+        <option value=6>
+          &nbsp;&nbsp;97B&nbsp;&nbsp;
+        </option>
+        <option value=7>
+          &nbsp;&nbsp;97C&nbsp;&nbsp;
+        </option>
+        <option value=8>
+          &nbsp;&nbsp;99A&nbsp;&nbsp;
+        </option>
+        <option value=9>
+          &nbsp;&nbsp;99B&nbsp;&nbsp;
+        </option>
+        <option value=999999998 selected>
+          &nbsp;&nbsp;Vis alle&nbsp;&nbsp;
+        </option>
+      </select>
+    </div>
+    <div class="field field-position">
+      <label>
+        Konto
+      </label>
+      <select class="filterAccountId center one-line">
+
+        <option value=13>
+          &nbsp;&nbsp;1,2,3,4... transaksjoner&nbsp;&nbsp;
+        </option>
+        <option value=67>
+          &nbsp;&nbsp;Diverse&nbsp;&nbsp;
+        </option>
+        <option value=6>
+          &nbsp;&nbsp;Forsikring&nbsp;&nbsp;
+        </option>
+        <option value=10>
+          &nbsp;&nbsp;Gebyr - FAKT.TJ&nbsp;&nbsp;
+        </option>
+        <option value=56>
+          &nbsp;&nbsp;Inntekt drift&nbsp;&nbsp;
+        </option>
+        <option value=4>
+          &nbsp;&nbsp;Inntekt fjernvarme&nbsp;&nbsp;
+        </option>
+        <option value=69>
+          &nbsp;&nbsp;Inntekt Rygg og Myrland&nbsp;&nbsp;
+        </option>
+        <option value=2>
+          &nbsp;&nbsp;Inntekter husleie&nbsp;&nbsp;
+        </option>
+        <option value=5>
+          &nbsp;&nbsp;Nettleie Lyse&nbsp;&nbsp;
+        </option>
+        <option value=52>
+          &nbsp;&nbsp;Omkostninger BedriftsNett&nbsp;&nbsp;
+        </option>
+        <option value=8>
+          &nbsp;&nbsp;TV og bredbånd&nbsp;&nbsp;
+        </option>
+        <option value=9>
+          &nbsp;&nbsp;Ugift drift&nbsp;&nbsp;
+        </option>
+        <option value=3>
+          &nbsp;&nbsp;Utgift fjernvarme&nbsp;&nbsp;
+        </option>
+        <option value=70>
+          &nbsp;&nbsp;Utgift Rygg og Myraland&nbsp;&nbsp;
+        </option>
+        <option value=22>
+          &nbsp;&nbsp;Velforening&nbsp;&nbsp;
+        </option>
+        <option value=999999998 selected>
+          &nbsp;&nbsp;Vis alle&nbsp;&nbsp;
+        </option>
+      </select>
+      <label>
+        Konto
+      </label>
+    </div>
+    <div class="field field-position">
+      <label>
+        Fra Dato
+      </label>
+      <input type="date" style="height: 52px;" class="filterFromDate center one-line input" value="2026-07-01">
+    </div>
+    <div class="field field-position">
+      <label>
+        Til Dato
+      </label>
+      <input type="date" style="height: 52px;" class="filterToDate center one-line input" value="2026-08-25">
+    </div>
+    <div class="field field-position">
+      <label>
+        Beløp
+      </label>
+      <input style="height:50px;" type="text" inputmode="decimal" autocomplete="off"
+        class="filterAmount center one-line" value="0,00">
+      <label>Beløp</label>
+    </div>
   </div>
 
-  <div class="field date">
-    <label>Fra Dato</label>
-    <input type="date">
-  </div>
+</body>
 
-  <div class="field date">
-    <label>Til Dato</label>
-    <input type="date">
-  </div>
-
-</div>
-
-<style>
-  .row {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-  }
-
-  .field {
-    position: relative;
-  }
-
-  .field label {
-    position: absolute;
-    top: -8px;
-    left: 14px;
-    padding: 0 6px;
-    background: white;
-    color: #2563eb;
-    font-size: 13px;
-    z-index: 1;
-  }
-
-  .field select,
-  .field input {
-    height: 56px;
-    border: 1px solid #cbd5e1;
-    border-radius: 14px;
-    padding: 0 16px;
-    font-size: 16px;
-  }
-
-  .status {
-    width: 500px;
-  }
-
-  .date {
-    width: 210px;
-  }
-</style>
+</html>

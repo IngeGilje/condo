@@ -63,8 +63,7 @@ class CommonCosts extends Condos {
 
     let html = `
     <div 
-      class="field"
-      style="width:250px;margin-left:35px;margin-bottom:5px;"
+      class="field field-position"
     >
       <label>
         ${label}

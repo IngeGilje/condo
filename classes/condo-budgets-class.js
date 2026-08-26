@@ -48,7 +48,9 @@ class Budgets extends Condos {
     let selectedValue = false;
 
     let html = `
-    <div class="field" style="width:250px;margin-left:35px;margin-bottom:5px;">
+    <div 
+      class="field field-position"
+    >
     <label>
       ${label}
     </label>

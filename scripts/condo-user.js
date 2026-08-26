@@ -203,7 +203,7 @@ function showFilter(userId) {
   let html = startFrame("filter-frame");
 
   // Show users
-  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
+  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
 
   // End filter frame
   html += "</div>";
@@ -236,7 +236,7 @@ function showUser(userId) {
   const condoId = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].condoId;
-  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', '', condoId, '', 'Velg leilighet', enableChanges);
+  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', condoId, '', 'Velg leilighet', enableChanges);
   html += "</div>";
 
   // first Name, last Name

@@ -162,7 +162,7 @@ function showFilter(condoId) {
   let html = startFrame('filter-frame');
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', '', true);
+  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', condoId, '', '', true);
 
   // End frame
   html += "</div>";

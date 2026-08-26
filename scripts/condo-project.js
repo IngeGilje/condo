@@ -179,7 +179,7 @@ function showFilter(projectId) {
   let html = startFrame('filter-frame');
 
   // Show projects
-  html += objProjects.showSelectedProjectsNew('Prosjekt', 'filterProjectId', '', projectId, '', '', true);
+  html += objProjects.showSelectedProjectsNew('Prosjekt', 'filterProjectId', projectId, '', '', true);
 
   // End filter frame
   html += "</div>";
@@ -199,7 +199,7 @@ function showProject(projectId) {
   // account
   let html = emptyLine();
   const accountId = objProjects.arrayProjects[rowNumberProject]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', '', accountId, 'Velg Konto', '', enableChanges)
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg Konto', '', enableChanges)
   html += "</div>";
 
   // name

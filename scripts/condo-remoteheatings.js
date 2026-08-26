@@ -128,7 +128,7 @@ function showFilter(year) {
   let html = startFrame('filter-frame');
 
   // Show years
-  html += showSelectedNumbersNew('År', 'filterYear', '', 2020, 2030, year, true);
+  html += showSelectedNumbersNew('År', 'filterYear', 2020, 2030, year, true);
 
   /*
   // Price/kilowattHour
@@ -254,7 +254,7 @@ function insertEmptyRow() {
 
   // condo Id
   className = `condoId0`;
-  html += objCondo.showSelectedCondosNew('Leilighet', className, '', 0, 'Velg leilighet', '', enableChanges);
+  html += objCondo.showSelectedCondosNew('Leilighet', className, 0, 'Velg leilighet', '', enableChanges);
 
   // kilowattHour current year
   className = `kilowattHour0`;

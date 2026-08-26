@@ -64,7 +64,7 @@ class Condo extends Condos {
       class="one-line center"
     >
       <select 
-        class="${className} center"
+        class="${className} center select"
         ${(style) ? `style="${style}"` : ""}
         ${(enableChanges) ? '' : 'disabled'}
       >`;
@@ -127,94 +127,14 @@ class Condo extends Condos {
     return html;
   }
 
-  /*
-  // Show selected condos
-  showSelectedCondosNew(label, className, style, condoId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div class="field status" style="width:175px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    // Check if condos array is empty
-    if (this.arrayCondo.length > 0) {
-      this.arrayCondo.forEach((condo) => {
-
-        html += `
-        <option 
-          value=${condo.condoId}
-          ${(condo.condoId === condoId) ? 'selected' : ''}
-        >
-          &nbsp;&nbsp;${condo.name.trim()}&nbsp;&nbsp;
-        </option>`;
-
-        if (condo.condoId === condoId) selectedValue = true;
-      });
-    } else {
-
-      // No condos
-      html += `
-      <option 
-        value="0" 
-         ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayCondo.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayCondo.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    html += `
-      </select >
-      <label>
-        ${label}
-      </label>
-    </div>`;
-
-    return html;
-  }
-  */
-
   // Show condos
-  showSelectedCondosNew(label, className, style, condoId, selectNone, selectAll, enableChanges) {
+  showSelectedCondosNew(label, className, condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
     let html = `
     <div 
-      class="field" 
-      style="width:250px;margin-left:35px;margin-bottom:5px;"
+      class="field field-position"
     >
     <label>
       ${label}

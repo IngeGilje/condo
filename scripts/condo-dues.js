@@ -179,10 +179,10 @@ function showFilter(condoId, accountId, fromDate, toDate) {
   let html = startFrame('filter-frame');
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', '', condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', condoId, '', 'Vis alle', true);
 
   // Show accounts
-  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', 'Vis alle', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', accountId, '', 'Vis alle', true);
 
   // From date
   html += showDate('Fra Dato', 'filterFromDate', fromDate, true)

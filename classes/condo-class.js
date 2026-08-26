@@ -84,12 +84,12 @@ class Condos {
       className: "condo-shownews",
       text: "Vis Nyheter"
     },
-   {
+    {
       applicationName: 'condo-news.html',
       className: "condo-news",
       text: "Rediger Nyheter"
     },
-   ];
+  ];
 
   // array of horizontal emptying calendar menu
   arrayMenuEmptyingCalendar = [
@@ -199,12 +199,12 @@ class Condos {
 
   // menu array for due
   arrayMenuDue = [
-     {
+    {
       applicationName: 'condo-dues.html',
       className: "condo-dues",
       text: "Vis Forfall"
     },
-   {
+    {
       applicationName: 'condo-supplier.html',
       className: "condo-supplier",
       text: "Rediger Leverandør"
@@ -546,7 +546,7 @@ class Condos {
   }
 
   // validate the norwegian date format dd.mm.yyyy
-  validateNorDate(className, date, style, errorMessage) {
+  validateNorDate(className, date, errorMessage) {
 
     let isValid = true;
 
@@ -580,8 +580,6 @@ class Condos {
       const inputElement = document.querySelector(`.${className}`);
       if (inputElement) {
 
-        // remove/ add 'input-error' class
-        //inputElement.classList.toggle('input-error', !isValid);
         inputElement.classList.toggle('message', !isValid);
       }
     }
@@ -950,19 +948,16 @@ class Condos {
   // Show vertical menu
   showMenu(applicationName) {
 
-    // Empty line
-    let html = emptyLine();
-
     // Start frame
-    html += startFrame("menu-frame");
+    let html = startFrame("menu-frame");
 
     // Vertical menu
-    html += `<div class="menu-row">`;
+    html += '<div class="menu-row">';
     html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", applicationName);
     html += this.showVerticalMenu('emptyingCalendar', this.arrayMenuEmptyingCalendar, "Tømmekalender", applicationName);
     html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", applicationName);
     html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", applicationName);
-    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Regnskap", applicationName);
+    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", applicationName);
     html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", applicationName);
     html += this.showVerticalMenu('remoteHeating', this.arrayMenuRemoteHeating, "Fjernvarme", applicationName);
     html += '</div>';
@@ -986,13 +981,13 @@ class Condos {
     let html = `
     <div 
       class="field"
-      style="width:150px;"
     >
-      <label>
+      <label for="${className}-${className}">
         ${label}
       </label>
       <select 
-        class="${className} center one-line"
+        id="${className}-${className}"
+        class="${className} center one-line field-position-menu"
         onchange="window.location.href=this.value"
       >
     `;
@@ -1008,20 +1003,20 @@ class Condos {
           ? 'selected'
           : ''}
         >
-          &nbsp;&nbsp;${menu.text.trim()}&nbsp;&nbsp;
+          ${menu.text.trim()}
         </option>`;
-        if (menu.applicationName.includes(applicationName)) menuSelected = true;
-        if (menuNumber === 1) programName = URL + menu.applicationName;
+      if (menu.applicationName.includes(applicationName)) menuSelected = true;
+      if (menuNumber === 1) programName = URL + menu.applicationName;
     });
 
     html += `
         <option 
           value="${programName}"
           ${(!menuSelected)
-          ? 'selected'
-          : ''}
+        ? 'selected'
+        : ''}
         >
-          &nbsp;&nbsp;${label}&nbsp;&nbsp;
+          ${label}
         </option>
       </select >
     </div>`;
@@ -1036,8 +1031,7 @@ function showSelectedMonthsNew(label, className, style, selectedMonth, enableCha
   let selectedValue = false;
 
   let html = `
-  <div class="field" 
-    style="max-width:175px"
+  <div class="field field-position" 
   >
     <label>
       ${label}
@@ -1075,7 +1069,7 @@ function editTableCell(className, value, maxlength, enableChanges, colspan = 1, 
       rowspan="${rowspan}"
     >
       <input
-        class="${className} center one-line"
+        class="${className} center one-line input"
         type="text"
         maxlength="${maxlength}"
         ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
@@ -1088,12 +1082,15 @@ function editTableCell(className, value, maxlength, enableChanges, colspan = 1, 
 function showAmount(label, className, value, enableChanges) {
 
   return `
-    <div class="field" style="width:175px;">
+    <div 
+      class="field field-position"
+    >
       <label>
         ${label}
       </label>
       <input 
         type="text"
+        style="height: 52px;"
         inputmode="decimal" 
         autocomplete="off"
         class="${className} center one-line"
@@ -1109,8 +1106,7 @@ function showTextArea(label, className, value, maxlength, enableChanges, rows = 
 
   return `
   <div 
-    class="field" 
-    style="width:550px;margin-left:35px;border-radius:20px;margin-bottom:25px;"
+    class="field field-position" 
   >
     <label>
       ${label}
@@ -1148,14 +1144,13 @@ function showMessageNew(message) {
 }
 
 // Show selected numbers (from number - to number)
-function showSelectedNumbersNew(label, className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
+function showSelectedNumbersNew(label, className, fromNumber, toNumber, selectedNumber, enableChanges) {
 
   let selectedValue = false;
 
   let html = `
   <div 
-    class="field" 
-    style="width:250px;margin-left:35px;margin-bottom:5px;"
+    class="field field-position" 
   >
     <label>
       ${label}
@@ -1414,18 +1409,22 @@ function formatNumberToISODate(date) {
 // Show Date
 function showDate(label, className, value, enableChanges) {
 
-  return `
-    <div class="field date" style="width:250px;margin-left:35px;margin-bottom:5px;">
-      <label>
-        ${label}
-      </label>
-      <input 
-        type="date" 
-        class="${className} center one-line"
-        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-    </div>`;
+  const html = `
+  <div 
+    class="field field-position"
+  >
+    <label>
+      ${label}
+    </label>
+    <input 
+      type="date" 
+      style="height: 52px"
+      class="${className} center one-line input"
+      ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
+      ${(enableChanges) ? '' : 'readonly'}
+    >
+  </div>`;
+  return html;
 }
 
 // Start frame
@@ -1433,8 +1432,7 @@ function startFrame(className) {
 
   return `
   <div 
-    class=${className}
-    style="max-width: 1500px;"
+    class="${className}"
   >`;
 }
 
@@ -1476,9 +1474,8 @@ function showTextNew(label, className, value, enableChanges, placeholder = "") {
     : value;
   return `
   <div 
-    class="field" 
-    style="width:250px;margin-left:35px;margin-bottom:5px;"
-  >
+    class="field field-position" 
+   >
     <input 
       type="text"
       autocomplete="off"
@@ -1499,7 +1496,9 @@ function showSelectedValuesNew(label, className, style, enableChanges, selectedV
   let selected = false;
 
   let html = `
-    <div class="field" style="width:250px;margin-left:35px;margin-bottom:5px;">
+    <div 
+    class="field field-position" 
+    >
       <label>
         ${label}
       </label>

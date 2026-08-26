@@ -46,17 +46,6 @@ async function main() {
       setFrameTitle("menu-frame", "Meny",);
       setFrameTitle("news", "Nyheter",);
 
-      /*
-      // Show main menu
-      html = objAccount.showHorizontalMenu("filter-frame", objAccount.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show condominium menu
-      html = objAccount.showHorizontalMenu("filter-frame", objAccount.arrayMenuCondominium);
-      document.querySelector('.menuCondominium').innerHTML = html;
-      objAccount.markActivatedApplication(objAccount.arrayMenuCondominium, applicationName);
-      */
-
       const resident = 'Y';
       await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
       const fixedCost = 'A';
@@ -163,7 +152,7 @@ function showFilter(accountId) {
   let html = startFrame("filter-frame");
 
   // Show types of account
-  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', '', accountId, '', '', true);
+  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId',  accountId, '', '', true);
 
   // End frame
   html += "</div>";

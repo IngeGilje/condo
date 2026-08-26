@@ -153,7 +153,7 @@ function showFilter(userId) {
   //html += startLine();
 
   // Show users
-  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', '', userId, '', '', true);
+  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
 
   // End filter frame
   html += "</div>";
@@ -187,7 +187,7 @@ function showUser(userId) {
   const securityLevel = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].securityLevel;
-  html += showSelectedNumbersNew('Sikkerhetsnivå', 'securityLevel', '', 1, 9, 1, enableChanges)
+  html += showSelectedNumbersNew('Sikkerhetsnivå', 'securityLevel', 1, 9, 1, enableChanges)
   html += "</div>";
 
   // Buttons
