@@ -29,12 +29,12 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objShowNews.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -93,8 +93,13 @@ async function events() {
 function showNews() {
 
   let html = `
-  <div class="news-container">
-    <div class="news-card">`;
+  <div 
+    class="news-container"
+  >
+    <div
+      class="news-card"
+    >
+  `;
 
   if (objNews.arrayNews.length > 0) {
     for (const news of objNews.arrayNews) {
@@ -108,35 +113,32 @@ function showNews() {
         ? `${objUser.arrayUsers[rowNumberUser].firstName} ${objUser.arrayUsers[rowNumberUser].lastName}`
         : 'Ukjent';
 
-      /*
-      // Show background picture
-      let src = (objShowNews.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      src = `${src}images/hinna-park.jpg`;
-      */
-
-      /*
       html += `
-      <div class="news-image">
-        <img src="${src}" alt="News Image">
-      </div>
-      */
-      html += `
-      <div class="news-content">
-        <h1 class="news-title">${news.title}</h1>
-        <div class="news-meta">${date} • av ${userName}</div>
-        <p class="news-text">
+      <div 
+        class="news-content"
+      >
+        <h1
+          class="news-title"
+        >
+          ${news.title}
+        </h1>
+        <div
+          class="news-meta"
+        >
+          ${date} • av ${userName}
+        </div>
+        <p 
+          class="news-text"
+        >
           ${news.content}
         </p>
       </div>`;
 
     }
     html += `
-          </div>
+        </div>
       </div>`;
 
-    document.querySelector('.shownews').innerHTML = html;
+    document.querySelector('.showNews').innerHTML = html;
   }
-
 }

@@ -37,46 +37,6 @@ class Condos {
   securityLevel = Number(sessionStorage.getItem("securityLevel"));
   userId = Number(sessionStorage.getItem("userId"));
 
-  /*
-  arrayMainMenu = [
-    {
-      applicationName: 'condo-shownews.html',
-      className: "main-condo-shownews",
-      text: "Nyheter"
-    },
-    {
-      applicationName: 'condo-emptyingcalendars.html',
-      className: "main-condo-emptyingcalendars",
-      text: "Tømmekalender"
-    },
-    {
-      applicationName: 'condo-condominium.html',
-      className: "main-condo-condominium",
-      text: "Sameie"
-    },
-    {
-      applicationName: 'condo-user.html',
-      className: "main-condo-user",
-      text: "Bruker"
-    },
-    {
-      applicationName: 'condo-transactions.html',
-      className: "main-condo-transactions",
-      text: "Transaksjoner"
-    },
-    {
-      applicationName: 'condo-dues.html',
-      className: "main-condo-dues",
-      text: "Forfall"
-    },
-    {
-      applicationName: 'condo-remoteheatings.html',
-      className: "main-condo-remoteheatings",
-      text: "Fjernvarme"
-    }
-  ];
-  */
-
   // array of horizontal news menu
   arrayMenuNews = [
     {
@@ -88,6 +48,11 @@ class Condos {
       applicationName: 'condo-news.html',
       className: "condo-news",
       text: "Rediger Nyheter"
+    },
+    {
+      applicationName: 'condo-news.html',
+      className: "condo-news",
+      text: "Menyvalg"
     },
   ];
 
@@ -102,6 +67,11 @@ class Condos {
       applicationName: 'condo-emptyingcalendar.html',
       className: "condo-emptyingcalendar",
       text: "Rediger Tømmekalender"
+    },
+    {
+      applicationName: 'condo-emptyingcalendar.html',
+      className: "condo-emptyingcalendar",
+      text: "Menyvalg"
     },
   ];
 
@@ -127,6 +97,12 @@ class Condos {
       className: "condo-account",
       text: "Rediger Konto"
     },
+        {
+      applicationName: 'condo-condominium.html',
+      className: "condo-condominium",
+      text: "Menyvalg"
+    },
+
   ];
 
   // menu array for user
@@ -150,7 +126,12 @@ class Condos {
       applicationName: 'condo-userbankaccount.html',
       className: "condo-userbankaccount",
       text: "Rediger Bankkonto"
-    }
+    },
+    {
+      applicationName: 'condo-user.html',
+      className: "condo-user",
+      text: "Menyvalg"
+    },
   ];
 
   // menu array for transactions
@@ -194,7 +175,12 @@ class Condos {
       applicationName: 'condo-liquidity.html',
       className: "condo-liquidity",
       text: "Vis Likviditet"
-    }
+    },
+    {
+      applicationName: 'condo-transactions.html',
+      className: "condo-transactions",
+      text: "Menyvalg"
+    },
   ];
 
   // menu array for due
@@ -223,7 +209,12 @@ class Condos {
       applicationName: 'condo-overview.html',
       className: "condo-overview",
       text: "Vis Betalingsoversikt"
-    }
+    },
+    {
+      applicationName: 'condo-dues.html',
+      className: "condo-dues",
+      text: "Menyvalg"
+    },
   ];
 
   // menu array for remote heating
@@ -242,7 +233,12 @@ class Condos {
       applicationName: 'condo-remoteheatingprice.html',
       className: "condo-remoteheatingprice",
       text: "Rediger  Fjernvarmepris"
-    }
+    },
+       {
+      applicationName: 'condo-remoteheating.html',
+      className: "condo-remoteheating",
+      text: "Menyvalg"
+    },
   ];
 
   // Show input (<td></td>) with center text
@@ -513,12 +509,18 @@ class Condos {
 
     texts.forEach((text) => {
 
+      /*
       html += `
       <td 
         style="vertical-align:bottom;font-size:14px;margin-left:25px;background-color:#38bdf8;"
         class="no-border ${direction} bold one-line"
       >
         ${text}
+      </td>`;
+      */
+      html += `
+      <td>
+       ${text}
       </td>`;
     });
 
@@ -669,7 +671,8 @@ class Condos {
 
     return `
     <table 
-      ${(style) ? `style="${style};"` : ""}>`;
+      ${(style) ? style = "${style}" : ''}
+    >`;
   }
 
   // Initializing of a table
@@ -680,11 +683,23 @@ class Condos {
       tableWidth += (columnWidth + 10);
     });
 
+    /*
     let html = `
     <table 
-      style="table-layout: fixed;"
+      style="table-layout: fixed;
       width: ${tableWidth}px;
       border: 1px;">`;
+    */
+
+
+    let html = `
+    <div class="table-container">
+      <table 
+        class="transaction-table"
+      >
+    `;
+
+
     html += '<colgroup>';
 
     columnWidths.forEach((columnWidth) => {
@@ -694,27 +709,6 @@ class Condos {
     html += '</colgroup>';
     return html;
   }
-
-  /*
-  // Show main header table not including menu
-  showTableHeader(style, ...texts) {
-
-    let html = `<tr>`;
-
-    texts.forEach((text) => {
-
-      if (text === '' && style === '') html += `<th class="no-border">${text}</th>`;
-      if (text === '' && style !== '') html += `<th class="no-border" style="${style};">${text}</th>`;
-      if (text !== '' && style === '') html += `<th class="no-border center">${text}</th>`;
-      if (text !== '' && style !== '') html += `<th class="no-border center" style="${style};">${text}</th>`;
-    });
-
-    // empty table row
-    html += this.insertTableRow('', '');
-    html += "</tr>";
-    return html;
-  }
-  */
 
   // Show main header table
   showTableHeaderLogOut(...texts) {
@@ -772,23 +766,6 @@ class Condos {
     return html;
   }
 
-  /*
-  // insert menu at start of a row 
-  insertMenu(className, style, menuType, ...texts) {
-
-    let html = "<tr>";
-
-    texts.forEach((text) => {
-
-      html += (style === '')
-        ? `<td class="center no-border ${className}">${text}</td>`
-        : `<td class="center no-border ${className}" style="${style}">${text}</td>`;
-    });
-
-    return html;
-  }
-  */
-
   // end body table
   endTableBody() {
 
@@ -797,7 +774,10 @@ class Condos {
   // End of the table
   endTable() {
 
-    return `</table>`;
+    return `
+      </table>
+    </div>
+    `;
   }
 
   // check if server is started
@@ -909,6 +889,7 @@ class Condos {
     });
   }
 
+  /*
   // Show horizontal menu
   showHorizontalMenu(className, arrayMenu) {
 
@@ -944,7 +925,9 @@ class Condos {
   `;
     return html;
   }
+  */
 
+  /*
   // Show vertical menu
   showMenu(applicationName) {
 
@@ -967,12 +950,49 @@ class Condos {
 
     return html;
   }
+  */
 
+  // Show vertical menu
+  showMenu(applicationName) {
+
+    // Start frame
+    let html = `
+    <!-- start showMenu -->
+    <section 
+      class="card"
+    >
+      <h2 
+        class="card-title"
+      >
+        Meny
+      </h2>
+      <div 
+        class="grid grid-menu"
+      >
+    `;
+
+    html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", "Menyvalg");
+    html += this.showVerticalMenu('emptyingCalendar', this.arrayMenuEmptyingCalendar, "Tømmekalender", "Menyvalg");
+    html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", "Menyvalg");
+    html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", "Menyvalg");
+    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", "Menyvalg");
+    html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", "Menyvalg");
+    html += this.showVerticalMenu('remoteHeating', this.arrayMenuRemoteHeating, "Fjernvarme", "Menyvalg");
+
+    html += `
+      </div>
+    </section>
+    <!-- end showMenu -->
+    `;
+
+    return html;
+  }
+
+  /*
   // Show vertical menu
   showVerticalMenu(className, arrayMenu, label, applicationName) {
 
     let menuSelected = false;
-    let programName = "";
 
     const URL = (this.serverStatus === 1)
       ? 'http://ingegilje.no/'
@@ -987,42 +1007,213 @@ class Condos {
       </label>
       <select 
         id="${className}-${className}"
-        class="${className} center one-line field-position-menu"
+        class="${className} center one-line"
         onchange="window.location.href=this.value"
       >
     `;
 
-    let menuNumber = 0;
     arrayMenu.forEach((menu) => {
 
-      menuNumber++;
+      //menuNumber++;
       html += `
         <option 
           value="${URL}${menu.applicationName}"
-          ${(menu.applicationName.includes(applicationName))
+          ${(menu.applicationName.includes(applicationName) && menuSelected === false)
           ? 'selected'
           : ''}
         >
           ${menu.text.trim()}
         </option>`;
       if (menu.applicationName.includes(applicationName)) menuSelected = true;
-      if (menuNumber === 1) programName = URL + menu.applicationName;
     });
 
     html += `
-        <option 
-          value="${programName}"
-          ${(!menuSelected)
-        ? 'selected'
-        : ''}
-        >
-          ${label}
-        </option>
       </select >
     </div>`;
 
     return html;
   }
+  */
+
+  // Show vertical menu
+  showVerticalMenu(className, arrayMenu, label, applicationName) {
+
+    let menuSelected = false;
+
+    const URL = (this.serverStatus === 1)
+      ? 'http://ingegilje.no/'
+      : 'http://localhost/';
+
+    let html = `
+    <div 
+      class="field"
+    >
+      <label 
+        for="${className}-${className}"
+      >
+        ${label}
+      </label>
+      <select 
+        id="${className}-${className}"
+        onchange="window.location.href=this.value"
+      >`;
+
+    arrayMenu.forEach((menu) => {
+
+      html += `
+        <option 
+          value="${URL}${menu.applicationName}"
+          ${(menu.text.includes(applicationName) && menuSelected === false)
+          ? 'selected'
+          : ''}
+        >
+          ${menu.text.trim()}
+        </option>`;
+      if (menu.text.includes(applicationName)) menuSelected = true;
+    });
+
+    html += `
+      </select>
+    </div>
+    `;
+
+    return html;
+  }
+}
+
+// input number
+function inputNumber(className, label, value, readOnly) {
+
+  html = `
+    <!-- start inputNumber --> 
+    <div
+     class="field"
+    >
+      <label
+        for="${className}"
+      >
+        ${label}
+      </label>
+      <input 
+        class="${className}"
+        id="${className}"
+        value="${value}"
+        ${(readOnly) ? 'readonly' : ''}
+      >
+    </div>
+    <!-- end inputNumber --> 
+    `;
+
+  return html
+}
+
+// input date
+function inputDate(className, label, value,  readOnly) {
+
+    let html = `
+    <!-- start inputDate -->
+    <div
+      class="field"
+    >
+      <label
+        for="date"
+      >
+        ${label}
+      </label>
+      <input 
+        class="${className}"
+        id="date" 
+        type="date"
+        value="${value}"
+        ${(readOnly) ? 'readonly' : ''}
+      >
+    </div>
+    <!-- end inputDate -->
+  `;
+  return html;
+}
+
+// Input wide text
+function inputWideText(className, label, value, readOnly) {
+
+  let html = `
+    <!-- start inputWideText -->
+    <div 
+      class="field wide"
+    >
+    <label
+      for="${className}"
+    >
+      ${label}
+    </label>
+    <input
+      class="${className}"
+      id="${className}"
+      value="${value}"
+      ${(readOnly) ? 'readonly' : ''}
+    >
+    </div>
+    <!-- end inputWideText -->
+
+  `;
+
+  return html;
+}
+
+
+// Start buttons
+function startButtons() {
+
+  return `
+  <!-- start startButtons -->
+  <div 
+    class="actions"
+  >
+  <!-- end startButtons -->
+  `;
+}
+
+// primary Button
+function primaryButton(text) {
+
+  return `
+  <button
+    class="primary"
+    type="submit"
+  >
+    ${text}
+  </button>
+  `;
+}
+
+// Button
+function inputButton(className,text,buttonType) {
+
+  // Check for valid button type
+  if (buttonType !== "submit" && buttonType !== "button" && buttonType !== "reset") {
+    buttonType = "button";
+  }
+
+  return `
+  <!-- start inputButton -->
+  <button
+    class="${className}"
+    type="${buttonType}"
+  >
+    ${text}
+  </button>
+  <!-- end inputButton -->
+  `;
+}
+
+// End buttons
+function endButtons() {
+
+  return `
+  <!-- start endButtons -->
+    </div>
+  <!-- end endButtons -->
+  `;
 }
 
 // Show selected numbers (from number - to number)
@@ -1431,9 +1622,79 @@ function showDate(label, className, value, enableChanges) {
 function startFrame(className) {
 
   return `
+  <!-- start startFrame -->
   <div 
     class="${className}"
-  >`;
+  >
+  <!-- end startFrame -->
+  `;
+}
+
+// Start frame
+function startFilterFrame() {
+
+  return `
+  <!-- start startFilterFrame -->
+  <aside 
+    class="card filter-card"
+    >
+    <h2 
+      class="card-title"
+    >
+      Filter
+    </h2>
+    <div 
+      class="grid grid-voucher"
+    >
+      <div 
+        class="field">
+        <label
+          for="voucherType"
+        >
+          Bilagstype
+        </label>
+        <!-- end startFilterFrame -->
+  `;
+}
+
+function endFilterFrame() {
+
+  return `
+    <!-- start endFilterFrame -->
+        </div>
+      </div>
+    </aside>
+    <!-- end endFilterFrame -->
+  `;
+}
+
+function startContent(text) {
+
+  return `
+  <!-- start startContent -->
+  <section class="card">
+    <h2 
+      class="card-title"
+    >
+      ${text}
+    </h2>
+    <form>
+      <div 
+        class="grid grid-form"
+      >
+  <!-- end startContent -->
+  `;
+}
+
+function endContent() {
+
+  return `
+  <!-- start endContent -->
+      </div>
+    </form>
+  </section>
+  <!-- end endContent -->
+  `;
 }
 
 // start line (<div>)
@@ -1450,8 +1711,10 @@ function emptyLine() {
 // Change frame title
 function setFrameTitle(className, label) {
 
+  /*
   const frameElement = document.querySelector(`.${className}`);
   frameElement.style.setProperty("--title", `"${label}"`);
+  */
 }
 
 // Show button

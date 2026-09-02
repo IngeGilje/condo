@@ -181,48 +181,6 @@ button:active {
   border-bottom: 1px solid black;
 }
 
-/*
-.button {
-  display: block;
-  width: 100%;
-  height: 100%;
-  space inside the link 
-  padding: 12px;
-  padding-left: 15px;
-  include padding in size
-  box-sizing: border-box;
-  transition: background 0.2s, box-shadow 0.2s;
-
-  border: 2px solid #38bdf8;
-  border-radius: 10px;
-  border-style: outset;
-  remove underscore
-  text-decoration: none;
-  cursor: pointer;
-
-  select[disabled],
-  input[readonly] {
-    background-color: #f2f2f2;
-    color: #555;
-    border: 1px solid #ccc;
-    cursor: default;
-  }
-}
-*/
-
-/*
-.button::after {
-  content: "";
-  position: absolute;
-  width: 0%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background: #38bdf8;
-  transition: width 0.3s ease;
-}
-*/
-
 
 /* menu */
 /* horizontal menu */
@@ -382,28 +340,6 @@ iframe {
   overflow-y: auto;
   display: flex;
   height: 100vh;
-}
-
-/* Left menu 
-.leftMenuNew {
-  width: 220px;
-  background: #2c3e50;
-  padding: 10px;
-  box-sizing: border-box;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-.leftMenuNew button {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 8px;
-  border: none;
-  background: #34495e;
-  color: white;
-  cursor: pointer;
-  text-align: left;
 }
 
 .leftMenuNew button:hover {
@@ -654,16 +590,6 @@ body {
   color: #4c6fff;
   font-size: 24px;
 }
-
-/* Field */
-/*
-.field {
-  position: relative;
-  margin-left: 5px;
-  max-width: 175px;
-  margin-bottom: 22px;
-}
-*/
 
 /* Floating label */
 .field label {

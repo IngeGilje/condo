@@ -8,183 +8,16 @@ class Transactions extends Condos {
   arrayTransactions = Array;
   #arrayTransactions = Array;
 
-  /*
-  // Show all selected transactions
-  showSelectedTransactions(className, style, transactionId, selectNone, selectAll, enableChanges = false) {
-
-    let selectedValue = false;
-
-    let html = `
-    <td
-      class="one-line left"
-    >
-      <select 
-        class="${className} center"
-        ${(style) ? `style="${style}"` : ""}
-        ${(enableChanges) ? '' : 'disabled'}
-      >`;
-
-    // Check if transaction array is empty
-    if (this.arrayTransactions.length > 0) {
-      this.arrayTransactions.forEach((bankTransaction) => {
-        if (bankTransaction.transactionId === transactionId) {
-
-          html += `<option value=${bankTransaction.transactionId} selected>${bankTransaction.transactionId}</option>`;
-          selectedValue = true;
-        } else {
-
-          let date = (bankTransaction.date)
-            ? formatNumberToNorDate(bankTransaction.date)
-            : '';
-          let amount = '';
-          if (bankTransaction.income !== 0) amount = formatNumberToNorAmount(bankTransaction.income);
-          if (bankTransaction.payment !== 0) amount = formatNumberToNorAmount(bankTransaction.payment);
-          html += `
-          <option value=${bankTransaction.transactionId}>
-            ${bankTransaction.transactionId}
-          </option>`;
-        }
-      });
-    } else {
-
-      html += `
-      <option 
-        value=0 
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        Ingen prosjekter
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayTransactions.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        ${selectAll}
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayTransactions.length > 1)) {
-      if (selectedValue) {
-        html += `
-        <option
-          value=0
-          ${(!selectedValue) ? 'selected' : ''}
-        >
-          ${selectNone}
-        </option>`;
-        if (!selectedValue) selectedValue = true;
-      } else {
-
-        html += `
-        <option
-          value=0
-          ${(!selectedValue) ? 'selected' : ''}
-        >
-          ${selectNone}
-        </option>`;
-        if (!selectedValue) selectedValue = true;
-      }
-    }
-
-    html += `</select></td>`;
-
-    return html;
-  }
-    */
-  /*
- // show selected transactions
- showSelectedTransactions(className, style, transactionId, selectNone, selectAll, enableChanges = false) {
-
-   let selectedValue = false;
-
-   let html = `
-   <td
-     class="one-line center"
-   >
-     <select 
-       class="${className} center"
-       ${(style) ? `style="${style}"` : ""}
-       ${(enableChanges) ? '' : 'disabled'}
-     >`;
-
-   // Check if transactions array is empty
-   if (this.arrayTransactions.length > 0) {
-     this.arrayTransactions.forEach((transaction) => {
-
-       html += `
-       <option 
-         value=${transaction.transactionId}
-         ${(transaction.transactionId === transactionId) ? 'selected' : ''}
-       >
-         ${transaction.transactionId}
-       </option>`;
-       if (transaction.transactionId === transactionId) selectedValue = true;
-     });
-   } else {
-
-     html += `
-     <option
-       value="0" 
-       ${(!selectedValue) ? 'selected' : ''}
-     >
-       Ingen konti
-     </option>`;
-     if (!selectedValue) selectedValue = true;
-   }
-
-   // Select all
-   if (selectAll && (this.arrayTransactions.length > 0)) {
-
-     html += `
-     <option 
-       value=${this.nineNine}
-       ${(!selectedValue) ? 'selected' : ''}
-     >
-       ${selectAll}
-     </option>`;
-     if (!selectedValue) selectedValue = true;
-   }
-
-   // Select none
-   if (selectNone && (this.arrayTransactions.length > 0)) {
-     html += `
-     <option 
-       value=0
-       ${(!selectedValue) ? 'selected' : ''}
-     >
-       ${selectNone}
-     </option>`;
-     if (!selectedValue) selectedValue = true;
-   }
-   html += `
-     </select >
-   </td>`;
-
-   return html;
- }
-*/
   // Show transactions
-  showSelectedTransactionsNew(label, className, style, transactionId, selectNone, selectAll, enableChanges) {
+  showSelectedTransactionsNew(label, className, transactionId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
     let html = `
-    <div 
-      class="field field-position"
-    >
-    <label>
-      ${label}
-    </label>
+    <!-- start showSelectedTransactionsNew -->
     <select 
-      class="${className} center one-line"
+      id="voucherType"
+      class="${className}"
       ${(enableChanges) ? '' : 'readonly'}
     >`;
 
@@ -197,9 +30,8 @@ class Transactions extends Condos {
           value=${transaction.transactionId}
           ${(transaction.transactionId === transactionId) ? 'selected' : ''}
         >
-          &nbsp;&nbsp;${transaction.text.trim()}&nbsp;&nbsp;
+          ${transaction.transactionId}
         </option>`;
-
         if (transaction.transactionId === transactionId) selectedValue = true;
       });
     } else {
@@ -210,7 +42,7 @@ class Transactions extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen Konti&nbsp;&nbsp;
+        Ingen Konti
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -223,7 +55,7 @@ class Transactions extends Condos {
         value=${this.nineNine}
         ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
+        ${selectAll}
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -235,17 +67,15 @@ class Transactions extends Condos {
         value=0
         ${(!selectedValue) ? 'selected' : ''}
       >
-        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
+        ${selectNone}
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
 
     html += `
-      </select >
-      <label>
-        ${label}
-      </label>
-    </div>`;
+    </select>
+    <!-- end showSelectedTransactionsNew -->
+    `;
 
     return html;
   }

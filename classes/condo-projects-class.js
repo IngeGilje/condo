@@ -74,6 +74,7 @@ class Projects extends Condos {
     return html;
   }
 
+  /*
   // Show projects
   showSelectedProjectsNew(label, className, projectId, selectNone, selectAll, enableChanges) {
 
@@ -100,7 +101,7 @@ class Projects extends Condos {
           value=${project.projectId}
           ${(project.projectId === projectId) ? 'selected' : ''}
         >
-          &nbsp;&nbsp;${project.name.trim()}&nbsp;&nbsp;
+          ${project.name.trim()}
         </option>`;
         if (project.projectId === projectId) selectedValue = true;
       });
@@ -112,7 +113,7 @@ class Projects extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen prosjekter&nbsp;&nbsp;
+        Ingen prosjekter
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -125,7 +126,7 @@ class Projects extends Condos {
         value=${this.nineNine}
         ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
+        ${selectAll}
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -137,7 +138,7 @@ class Projects extends Condos {
         value=0
         ${(!selectedValue) ? 'selected' : ''}
       >
-        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
+        ${selectNone}
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -145,6 +146,107 @@ class Projects extends Condos {
     html += `
       </select >
     </div>`;
+
+    return html;
+  }
+  */
+
+  // Show projects
+  showSelectedProjectsNew(label, className, projectId, selectNone, selectAll, enableChanges) {
+
+    /*
+
+    <div 
+      class="field"
+    >
+      <label
+        for="project"
+      >
+        Prosjekt
+      </label>
+      <select
+        id="project"
+      >
+        <option>
+          Utvendig vedlikehold
+        </option>
+      </select>
+    </div>
+
+    */
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedProjectsNew -->
+    <div 
+      class="field"
+    >
+      <label for="project">
+        ${label}
+      </label>
+      <select 
+        id="project"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if projects array is empty
+    if (this.arrayProjects.length > 0) {
+      this.arrayProjects.forEach((project) => {
+
+        html += `
+        <option 
+          value=${project.projectId}
+          ${(project.projectId === projectId) ? 'selected' : ''}
+        >
+          ${project.name.trim()}
+        </option>`;
+        if (!selectedValue) selectedValue = true;
+      });
+    } else {
+
+      // No projects
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen prosjekter
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayProjects.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayProjects.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedProjectsNew -->
+    `;
 
     return html;
   }
@@ -216,7 +318,7 @@ class Projects extends Condos {
       : 'http://localhost:3000/projects';
     try {
 
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -234,7 +336,7 @@ class Projects extends Condos {
   }
 
   // update project row in projects table
-  async updateProjectsTable(projectId, user,  name,accountId, amount) {
+  async updateProjectsTable(projectId, user, name, accountId, amount) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/projects'
@@ -264,7 +366,7 @@ class Projects extends Condos {
   }
 
   // insert project row in projects table
-  async insertProjectsTable(condominiumId, user, name,accountId, amount) {
+  async insertProjectsTable(condominiumId, user, name, accountId, amount) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/projects'

@@ -161,6 +161,7 @@ class Accounts extends Condos {
     return html;
   }
 
+  /*
   // Show accounts
   showSelectedAccountsNew(label, className, accountId, selectNone, selectAll, enableChanges) {
 
@@ -188,7 +189,7 @@ class Accounts extends Condos {
           value=${account.accountId}
           ${(account.accountId === accountId) ? 'selected' : ''}
         >
-          &nbsp;&nbsp;${account.name.trim()}&nbsp;&nbsp;
+          ${account.name.trim()}
         </option>`;
 
         if (account.accountId === accountId) selectedValue = true;
@@ -201,7 +202,7 @@ class Accounts extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen Konti&nbsp;&nbsp;
+        Ingen Konti
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -214,7 +215,7 @@ class Accounts extends Condos {
         value=${this.nineNine}
         ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
+        ${selectAll}
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -226,7 +227,7 @@ class Accounts extends Condos {
         value=0
         ${(!selectedValue) ? 'selected' : ''}
       >
-        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
+        ${selectNone}
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -240,6 +241,87 @@ class Accounts extends Condos {
 
     return html;
   }
+  */
+ // Show accounts
+  showSelectedAccountsNew(label, className, accountId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedAccountsNew -->
+    <div 
+      class="field"
+    >
+      <label for="account">
+        ${label}
+      </label>
+      <select 
+        id="account"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if accounts array is empty
+    if (this.arrayAccounts.length > 0) {
+      this.arrayAccounts.forEach((account) => {
+
+        html += `
+        <option 
+          value=${account.accountId}
+          ${(account.accountId === accountId) ? 'selected' : ''}
+        >
+          ${account.name.trim()}
+        </option>`;
+        if (!selectedValue) selectedValue = true;
+      });
+    } else {
+
+      // No accounts
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen prosjekter
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayAccounts.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayAccounts.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedAccountsNew -->
+    `;
+
+    return html;
+  }
+
 
   // get accounts from accounts table
   async loadAccountsTable(condominiumId, fixedCost) {

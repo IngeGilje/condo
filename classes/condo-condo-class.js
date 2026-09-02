@@ -13,9 +13,9 @@ class Condo extends Condos {
     if (isClassDefined(className)) {
 
       condoId = Number(document.querySelector(`.${className}`).value);
-      condoId = (condoId === 0) 
-      ? this.arrayCondo.at(-1)?.condoId ?? 0 
-      : condoId;
+      condoId = (condoId === 0)
+        ? this.arrayCondo.at(-1)?.condoId ?? 0
+        : condoId;
     } else {
 
       // Get last id in last object in condo array
@@ -127,6 +127,7 @@ class Condo extends Condos {
     return html;
   }
 
+  /*
   // Show condos
   showSelectedCondosNew(label, className, condoId, selectNone, selectAll, enableChanges) {
 
@@ -202,6 +203,87 @@ class Condo extends Condos {
 
     return html;
   }
+  */
+
+  // Show Condos
+  showSelectedCondosNew(label, className, condoId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedCondosNew -->
+    <div 
+      class="field"
+    >
+      <label for="apartment">
+        ${label}
+      </label>
+      <select 
+        id="apartment"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if Condos array is empty
+    if (this.arrayCondo.length > 0) {
+      this.arrayCondo.forEach((condo) => {
+
+        html += `
+        <option 
+          value=${condo.condoId}
+          ${(condo.condoId === condoId) ? 'selected' : ''}
+        >
+          ${condo.name.trim()}
+        </option>`;
+        if (!selectedValue) selectedValue = true;
+      });
+    } else {
+
+      // No Condos
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen prosjekter
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayCondo.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayCondo.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedCondosNew -->
+    `;
+
+    return html;
+  }
 
   // get condos
   async loadCondoTable(condominiumId, condoId) {
@@ -237,7 +319,7 @@ class Condo extends Condos {
       : 'http://localhost:3000/condo';
     try {
 
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

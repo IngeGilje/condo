@@ -1,0 +1,279 @@
+:root {
+  --page: #f3f6fa;
+  --surface: #ffffff;
+  --text: #182230;
+  --muted: #667085;
+  --border: #d0d9e6;
+  --primary: #3157d5;
+  --primary-dark: #2445b7;
+  --danger: #b42318;
+  --radius: 12px;
+  --shadow: 0 8px 28px rgba(30, 50, 80, .08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--page);
+}
+
+.page {
+  width: min(1120px, calc(100% - 32px));
+  margin: 32px auto 56px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  letter-spacing: -.02em;
+}
+
+.page-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.card {
+  margin-bottom: 20px;
+  padding: 24px;
+  border: 1px solid #e0e6ef;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #344054;
+}
+
+.card-title::before {
+  content: "";
+  width: 4px;
+  height: 18px;
+  border-radius: 99px;
+  background: var(--primary);
+}
+
+.grid {
+  display: grid;
+  gap: 18px;
+}
+
+.grid-menu {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-voucher {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 550px;
+}
+
+.grid-form {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.content-layout {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.content-layout .card {
+  margin-bottom: 0;
+}
+
+.filter-card {
+  position: sticky;
+  top: 20px;
+}
+
+.filter-card .grid-voucher {
+  grid-template-columns: 1fr;
+}
+
+.field {
+  position: relative;
+  min-width: 0;
+}
+
+.field.wide {
+  grid-column: span 2;
+}
+
+.field label {
+  position: absolute;
+  z-index: 1;
+  top: -8px;
+  left: 12px;
+  padding: 0 6px;
+  color: #475467;
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+input,
+select {
+  width: 100%;
+  height: 50px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: 0;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+}
+
+input:hover,
+select:hover {
+  border-color: #98a8bd;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(49, 87, 213, .12);
+}
+
+input[readonly] {
+  background: #f8fafc;
+  color: #475467;
+}
+
+.number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+button {
+  min-width: 112px;
+  height: 44px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform .15s, background .15s, border-color .15s, box-shadow .15s;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.primary {
+  color: #fff;
+  background: var(--primary);
+  box-shadow: 0 5px 14px rgba(49, 87, 213, .24);
+}
+
+.primary:hover {
+  background: var(--primary-dark);
+}
+
+.secondary {
+  color: #344054;
+  background: #fff;
+  border-color: var(--border);
+}
+
+.secondary:hover {
+  background: #f8fafc;
+  border-color: #98a8bd;
+}
+
+.danger {
+  margin-left: auto;
+  color: var(--danger);
+  background: #fff;
+  border-color: #f2c7c3;
+}
+
+.danger:hover {
+  background: #fff5f4;
+}
+
+@media (max-width: 850px) {
+
+  .grid-menu,
+  .grid-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .content-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .page {
+    width: min(100% - 20px, 1120px);
+    margin-top: 18px;
+  }
+
+  .card {
+    padding: 20px 16px;
+  }
+
+  .grid-menu,
+  .grid-voucher,
+  .grid-form {
+    grid-template-columns: 1fr;
+  }
+
+  .content-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-card {
+    position: static;
+  }
+
+  .field.wide {
+    grid-column: auto;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .danger {
+    margin-left: 0;
+  }
+}

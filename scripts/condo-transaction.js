@@ -51,9 +51,6 @@ async function main() {
       let html = objTransaction.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      setFrameTitle("menu-frame", "Meny");
-
       const resident = 'Y';
       await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
       const fixedCost = 'A';
@@ -65,7 +62,7 @@ async function main() {
       await objSupplier.loadSuppliersTable(objTransaction.condominiumId);
       await objProjects.loadProjectsTable(objTransaction.condominiumId);
       const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20190101, 20991231);
+      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20260801, 20991231);
 
       // show filter
       let transactionId = 0;
@@ -80,10 +77,13 @@ async function main() {
         // Application is not startet from menu
         transactionId = paramTransactionId;
       }
+
+      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20260801, 20991231);
+
       showFilter(transactionId);
 
       // Show bank account transaction
-      showTransaction(paramTransactionId);
+      showTransaction(transactionId);
 
       // Events
       events();
@@ -161,7 +161,7 @@ async function events() {
       let toDate = document.querySelector('.transactionDate').value;
       toDate = Number(objTransaction.formatDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, 20260801, toDate);
 
       showTransaction(transactionId);
     };
@@ -222,19 +222,121 @@ async function events() {
 // Show filter
 function showFilter(transactionId) {
 
-  // Start frame
-  let html = startFrame('filter-frame');
+  // Start filter frame
+  let html = startFilterFrame();
 
-  // Show dues
-  html += objTransactions.showSelectedTransactionsNew('Bilag', 'filterTransactionId', '', transactionId, '', '', true);
+  // Show transactions
+  html += objTransactions.showSelectedTransactionsNew('Bilag', 'filterTransactionId', transactionId, '', '', true);
 
   // End filter frame
-  html += "</div>";
+  html += endFilterFrame();
 
   document.querySelector('.showFilter').innerHTML = html;
+}
 
-  // Change frame title
-  setFrameTitle("filter-frame", "Filter");
+// Show bank account transaction
+function showTransaction(transactionId) {
+
+  // row number bank account transaction
+  const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
+
+  let html = startContent('Transaksjonsdetaljer');
+
+  // transactionId
+  html += inputNumber('transactionId', 'Bilagsnummer', transactionId, enableChanges);
+
+  // Date
+  let transactionDate = (rowNumberTransaction === -1)
+    ? ''
+    : objTransactions.arrayTransactions[rowNumberTransaction].date;
+
+  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
+  transactionDate = formatNumberToISODate(transactionDate);
+  //html += showDate('Dato', 'transactionDate', transactionDate, enableChanges);
+  html += inputDate('transactionDate', 'Dato', transactionDate, enableChanges);
+  html += "<div></div>";
+
+  // Condo
+  let condoId = (rowNumberTransaction === -1)
+    ? ''
+    : objTransactions.arrayTransactions[rowNumberTransaction].condoId;
+  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', condoId, 'Velg leilighet', '', enableChanges);
+
+  // Account
+  let accountId = (rowNumberTransaction === -1)
+    ? ''
+    : objTransactions.arrayTransactions[rowNumberTransaction].accountId;
+  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', enableChanges);
+
+  // project
+  let projectId = (rowNumberTransaction === -1)
+    ? ''
+    : objTransactions.arrayTransactions[rowNumberTransaction].projectId;
+
+  html += objProjects.showSelectedProjectsNew('Prosjekt', 'projectId', projectId, 'Velg prosjekt', '', enableChanges);
+
+  // income
+  let income = (rowNumberTransaction === -1)
+    ? ''
+    : objTransactions.arrayTransactions[rowNumberTransaction].income;
+  income = formatNumberToNorAmount(income);
+  //html += showTextNew('Inntekt', 'income', income, enableChanges, "Inntekt");
+  html += inputNumber('income', 'Inntekt', income, enableChanges);
+
+  // payment
+  let payment = (rowNumberTransaction === -1)
+    ? "0"
+    : objTransactions.arrayTransactions[rowNumberTransaction].payment;
+  payment = formatNumberToNorAmount(payment);
+  //html += showTextNew('Betaling', 'payment', payment, enableChanges, "Betaling");
+  html += inputNumber('payment', 'Betaling', payment, enableChanges);
+
+  // kilowattHour
+  let kilowattHour = (rowNumberTransaction === -1)
+    ? "0"
+    : objTransactions.arrayTransactions[rowNumberTransaction].kilowattHour;
+  kilowattHour = formatNumberToNorAmount(kilowattHour);
+  //html += showTextNew('KilowatTimer', 'kilowattHour', kilowattHour, enableChanges, "KilowatTimer");
+  html += inputNumber('kilowattHour', 'KilowatTimer', kilowattHour, enableChanges);
+
+  // Text
+  let text = (rowNumberTransaction === -1)
+    ? ''
+    : objTransactions.arrayTransactions[rowNumberTransaction].text;
+  //html += showTextNew('Tekst', 'text', text, enableChanges, "Tekst");
+  html += inputWideText('text', 'Tekst', text, enableChanges);
+
+  html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+
+  document.querySelector('.showTransaction').innerHTML = html;
+
+  /*
+  // Buttons
+  if (enableChanges) {
+
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterTransactionId', false);
+  }
+  */
 }
 
 // update transactions row
@@ -312,7 +414,7 @@ async function updateTransactionRow(transactionId) {
     }
 
     const orderBy = 'date DESC, income DESC';
-    await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20200131, 20291231);
+    await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20260801, 20291231);
 
     removeMessage();
 
@@ -329,113 +431,6 @@ async function updateTransactionRow(transactionId) {
 
     // Show transaction
     showTransaction(transactionId);
-  }
-}
-
-// Show bank account transaction
-function showTransaction(transactionId) {
-
-  // row number bank account transaction
-  const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
-
-  // Empty line
-  let html = emptyLine();
-
-  // Transaction Id
-  html += startLine();
-  html += showTextNew('Bilagsnummer', 'transactionId', transactionId, false, "Bilagsnummer");
-  html += "</div>";
-
-  // Date
-  html += startLine();
-  let transactionDate = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].date;
-
-  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
-  transactionDate = formatNumberToISODate(transactionDate);
-  html += showDate('Dato', 'transactionDate', transactionDate, enableChanges);
-  html += "</div>";
-
-  // Condo
-  html += startLine();
-  let condoId = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].condoId;
-  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', condoId, 'Velg leilighet', '', enableChanges);
-
-  // Account
-  let accountId = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].accountId;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', enableChanges);
-
-  // project
-  let projectId = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].projectId;
-
-  html += objProjects.showSelectedProjectsNew('Prosjekt', 'projectId', projectId, 'Velg prosjekt', '', enableChanges);
-  html += "</div>";
-
-  // income
-  html += startLine();
-  let income = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].income;
-  income = formatNumberToNorAmount(income);
-  html += showTextNew('Inntekt', 'income', income, enableChanges, "Inntekt");
-
-  // payment
-  let payment = (rowNumberTransaction === -1)
-    ? "0"
-    : objTransactions.arrayTransactions[rowNumberTransaction].payment;
-  payment = formatNumberToNorAmount(payment);
-  html += showTextNew('Betaling', 'payment', payment, enableChanges, "Betaling");
-
-  // kilowattHour
-  let kilowattHour = (rowNumberTransaction === -1)
-    ? "0"
-    : objTransactions.arrayTransactions[rowNumberTransaction].kilowattHour;
-  kilowattHour = formatNumberToNorAmount(kilowattHour);
-  html += showTextNew('KilowatTimer', 'kilowattHour', kilowattHour, enableChanges, "KilowatTimer");
-  html += "</div>";
-
-  // Text
-  html += startLine();
-  let text = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].text;
-  html += showTextNew('Tekst', 'text', text, enableChanges, "Tekst");
-  html += "</div>";
-
-  // Buttons
-  if (enableChanges) {
-
-    html += startLine();
-    html += showButtonNew('update', 'Oppdater');
-    html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
-
-    html += startLine();
-    html += showButtonNew('delete', 'Slett');
-    html += showButtonNew('insert', 'Ny');
-    html += "</div>";
-  }
-
-  html += startLine();
-  html += showButtonNew('back', 'Tilbake');
-  html += "</div>";
-
-  document.querySelector('.showTransaction').innerHTML = html;
-
-  // Buttons
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterTransactionId', false);
   }
 }
 

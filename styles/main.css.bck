@@ -1,0 +1,247 @@
+/* ---------- Page ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 32px 20px;
+  background: #f4f6f9;
+  color: #263244;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ---------- Separate sections ---------- */
+
+.content-layout {
+  width: min(1100px, 100%);
+  margin: 0 auto 24px;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+  position: relative;
+  padding: 32px;
+  background: #ffffff;
+  border: 1px solid #dce2ea;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgb(30 45 70 / 8%);
+}
+
+.card-title {
+  position: absolute;
+  top: 0;
+  left: 24px;
+  margin: 0;
+  padding: 0 10px;
+  background: #ffffff;
+  color: #315fc4;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+/* Give the filter a slightly different appearance */
+
+.filter-card {
+  background: #fdfefe;
+  border-color: #cbd7e8;
+}
+
+/* ---------- Grids ---------- */
+
+.grid {
+  display: grid;
+  gap: 22px;
+}
+
+.grid-voucher {
+  grid-template-columns: repeat(2, minmax(180px, 280px));
+}
+
+.grid-form {
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+}
+
+/* Text field uses the complete row */
+
+.field.wide {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Form fields ---------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.field label {
+  color: #56647a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #cbd3df;
+  border-radius: 8px;
+  outline: none;
+  background: #ffffff;
+  color: #263244;
+  font: inherit;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+}
+
+.field input:hover,
+.field select:hover {
+  border-color: #94a5bd;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #4c6fff;
+  box-shadow: 0 0 0 3px rgb(76 111 255 / 14%);
+}
+
+.field input[readonly] {
+  background: #f1f3f6;
+  color: #697586;
+  cursor: default;
+}
+
+.field .number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Buttons ---------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid #e4e8ee;
+}
+
+.actions button {
+  min-width: 105px;
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    transform 0.1s;
+}
+
+.actions button:active {
+  transform: translateY(1px);
+}
+
+.actions .primary {
+  background: #315fc4;
+  color: #ffffff;
+}
+
+.actions .primary:hover {
+  background: #264fa8;
+}
+
+.actions .secondary {
+  background: #ffffff;
+  border-color: #cbd3df;
+  color: #3d4b60;
+}
+
+.actions .secondary:hover {
+  background: #f3f5f8;
+  border-color: #aeb9c8;
+}
+
+.actions .danger {
+  margin-left: auto;
+  background: #ffffff;
+  border-color: #dc3545;
+  color: #c62838;
+}
+
+.actions .danger:hover {
+  background: #dc3545;
+  color: #ffffff;
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 850px) {
+  .grid-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Remove the empty grid placeholder */
+  .grid-form > div:empty {
+    display: none;
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 600px) {
+  body {
+    padding: 22px 12px;
+  }
+
+  .content-layout {
+    margin-bottom: 20px;
+  }
+
+  .card {
+    padding: 27px 18px 20px;
+    border-radius: 11px;
+  }
+
+  .card-title {
+    left: 16px;
+  }
+
+  .grid-voucher,
+  .grid-form {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .field.wide {
+    grid-column: auto;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .actions .danger {
+    grid-column: 1 / -1;
+    margin-left: 0;
+  }
+}

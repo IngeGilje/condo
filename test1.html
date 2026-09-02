@@ -3,305 +3,461 @@
 
 <head>
 
-  <title>Meny test</title>
+  <title>Rediger Transaksjon</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/filter.css">
-  <link rel="stylesheet" href="styles/frame.css">
-
 </head>
 
 <body>
 
+  <main class="page">
 
+    <!-- start showMenu -->
+    <section class="card">
+      <h2 class="card-title">
+        Filter
+      </h2>
+      <div class="grid grid-menu">
 
-  <div class="menu-frame">
-    <div class="menu-row">
-      <div class="field">
-        <label for="news-news">
-          Nyheter
-        </label>
-        <select id="news-news" class="news center one-line field-position-menu"
-          onchange="window.location.href=this.value">
-
-          <option value="http://localhost/condo-shownews.html">
-            Vis Nyheter
-          </option>
-          <option value="http://localhost/condo-news.html">
-            Rediger Nyheter
-          </option>
-          <option value="http://localhost/condo-shownews.html" selected>
+        <div class="field">
+          <label for="news-news">
             Nyheter
-          </option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="emptyingCalendar-emptyingCalendar">
-          Tømmekalender
-        </label>
-        <select id="emptyingCalendar-emptyingCalendar" class="emptyingCalendar center one-line field-position-menu"
-          onchange="window.location.href=this.value">
+          </label>
+          <select id="news-news" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-shownews.html">
+              Vis Nyheter
+            </option>
+            <option value="http://localhost/condo-news.html">
+              Rediger Nyheter
+            </option>
+          </select>
+        </div>
 
-          <option value="http://localhost/condo-emptyingcalendars.html">
-            Vis Tømmekalender
-          </option>
-          <option value="http://localhost/condo-emptyingcalendar.html">
-            Rediger Tømmekalender
-          </option>
-          <option value="http://localhost/condo-emptyingcalendars.html" selected>
+        <div class="field">
+          <label for="emptyingCalendar-emptyingCalendar">
             Tømmekalender
-          </option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="condominium-condominium">
-          Sameie
-        </label>
-        <select id="condominium-condominium" class="condominium center one-line field-position-menu"
-          onchange="window.location.href=this.value">
+          </label>
+          <select id="emptyingCalendar-emptyingCalendar" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-emptyingcalendars.html">
+              Vis Tømmekalender
+            </option>
+            <option value="http://localhost/condo-emptyingcalendar.html">
+              Rediger Tømmekalender
+            </option>
+          </select>
+        </div>
 
-          <option value="http://localhost/condo-condominium.html">
-            Rediger Sameie
-          </option>
-          <option value="http://localhost/condo-bankaccount.html">
-            Rediger Bankkonto
-          </option>
-          <option value="http://localhost/condo-accounts.html">
-            Vis Konti
-          </option>
-          <option value="http://localhost/condo-account.html">
-            Rediger Konto
-          </option>
-          <option value="http://localhost/condo-condominium.html" selected>
+        <div class="field">
+          <label for="condominium-condominium">
             Sameie
-          </option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="user-user">
-          Bruker
-        </label>
-        <select id="user-user" class="user center one-line field-position-menu"
-          onchange="window.location.href=this.value">
+          </label>
+          <select id="condominium-condominium" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-condominium.html">
+              Rediger Sameie
+            </option>
+            <option value="http://localhost/condo-bankaccount.html">
+              Rediger Bankkonto
+            </option>
+            <option value="http://localhost/condo-accounts.html">
+              Vis Konti
+            </option>
+            <option value="http://localhost/condo-account.html">
+              Rediger Konto
+            </option>
+          </select>
+        </div>
 
-          <option value="http://localhost/condo-user.html">
-            Rediger Bruker
-          </option>
-          <option value="http://localhost/condo-password.html">
-            Rediger Passord
-          </option>
-          <option value="http://localhost/condo-condo.html">
-            Rediger Leilighet
-          </option>
-          <option value="http://localhost/condo-userbankaccount.html">
-            Rediger Bankkonto
-          </option>
-          <option value="http://localhost/condo-user.html" selected>
+        <div class="field">
+          <label for="user-user">
             Bruker
-          </option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="transaction-transaction">
-          Transaksjoner
-        </label>
-        <select id="transaction-transaction" class="transaction center one-line field-position-menu"
-          onchange="window.location.href=this.value">
+          </label>
+          <select id="user-user" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-user.html">
+              Rediger Bruker
+            </option>
+            <option value="http://localhost/condo-password.html">
+              Rediger Passord
+            </option>
+            <option value="http://localhost/condo-condo.html">
+              Rediger Leilighet
+            </option>
+            <option value="http://localhost/condo-userbankaccount.html">
+              Rediger Bankkonto
+            </option>
+          </select>
+        </div>
 
-          <option value="http://localhost/condo-transactions.html" selected>
-            Vis Transaksjoner
-          </option>
-          <option value="http://localhost/condo-transaction.html">
-            Rediger Transaksjon
-          </option>
-          <option value="http://localhost/condo-projects.html">
-            Vis Prosjekter
-          </option>
-          <option value="http://localhost/condo-project.html">
-            Rediger Prosjekt
-          </option>
-          <option value="http://localhost/condo-budgets.html">
-            Vis Budsjett
-          </option>
-          <option value="http://localhost/condo-annualaccount.html">
-            Vis Årsregnskap
-          </option>
-          <option value="http://localhost/condo-importfile.html">
-            Hent transaksjoner
-          </option>
-          <option value="http://localhost/condo-liquidity.html">
-            Vis Likviditet
-          </option>
-          <option value="http://localhost/condo-transactions.html">
+        <div class="field">
+          <label for="transaction-transaction">
             Transaksjoner
-          </option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="due-due">
-          Forfall
-        </label>
-        <select id="due-due" class="due center one-line field-position-menu" onchange="window.location.href=this.value">
+          </label>
+          <select id="transaction-transaction" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-transactions.html" selected>
+              Vis Transaksjoner
+            </option>
+            <option value="http://localhost/condo-transaction.html">
+              Rediger Transaksjon
+            </option>
+            <option value="http://localhost/condo-projects.html">
+              Vis Prosjekter
+            </option>
+            <option value="http://localhost/condo-project.html">
+              Rediger Prosjekt
+            </option>
+            <option value="http://localhost/condo-budgets.html">
+              Vis Budsjett
+            </option>
+            <option value="http://localhost/condo-annualaccount.html">
+              Vis Årsregnskap
+            </option>
+            <option value="http://localhost/condo-importfile.html">
+              Hent transaksjoner
+            </option>
+            <option value="http://localhost/condo-liquidity.html">
+              Vis Likviditet
+            </option>
+          </select>
+        </div>
 
-          <option value="http://localhost/condo-dues.html">
-            Vis Forfall
-          </option>
-          <option value="http://localhost/condo-supplier.html">
-            Rediger Leverandør
-          </option>
-          <option value="http://localhost/condo-commoncosts.html">
-            Vis Felleskostnader
-          </option>
-          <option value="http://localhost/condo-commoncost.html">
-            Rediger Felleskostnad
-          </option>
-          <option value="http://localhost/condo-overview.html">
-            Vis Betalingsoversikt
-          </option>
-          <option value="http://localhost/condo-dues.html" selected>
+        <div class="field">
+          <label for="due-due">
             Forfall
-          </option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="remoteHeating-remoteHeating">
-          Fjernvarme
-        </label>
-        <select id="remoteHeating-remoteHeating" class="remoteHeating center one-line field-position-menu"
-          onchange="window.location.href=this.value">
+          </label>
+          <select id="due-due" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-dues.html">
+              Vis Forfall
+            </option>
+            <option value="http://localhost/condo-supplier.html">
+              Rediger Leverandør
+            </option>
+            <option value="http://localhost/condo-commoncosts.html">
+              Vis Felleskostnader
+            </option>
+            <option value="http://localhost/condo-commoncost.html">
+              Rediger Felleskostnad
+            </option>
+            <option value="http://localhost/condo-overview.html">
+              Vis Betalingsoversikt
+            </option>
+          </select>
+        </div>
 
-          <option value="http://localhost/condo-remoteheating.html">
-            Rediger Fjernvarme
-          </option>
-          <option value="http://localhost/condo-remoteheatings.html">
-            Vis Fjernvarme
-          </option>
-          <option value="http://localhost/condo-remoteheatingprice.html">
-            Rediger Fjernvarmepris
-          </option>
-          <option value="http://localhost/condo-remoteheating.html" selected>
+        <div class="field">
+          <label for="remoteHeating-remoteHeating">
             Fjernvarme
-          </option>
-        </select>
+          </label>
+          <select id="remoteHeating-remoteHeating" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-remoteheating.html">
+              Rediger Fjernvarme
+            </option>
+            <option value="http://localhost/condo-remoteheatings.html">
+              Vis Fjernvarme
+            </option>
+            <option value="http://localhost/condo-remoteheatingprice.html">
+              Rediger Fjernvarmepris
+            </option>
+          </select>
+        </div>
+
       </div>
-    </div>
-  </div>
+    </section>
+    <!-- end showMenu -->
+
+    <!-- start startFilterFrame -->
+    <aside class="card filter-card">
+      <h2 class="card-title">
+        Filter
+      </h2>
+      <div class="grid grid-voucher">
+        <div class="field">
+          <label for="voucherType">
+            Bilagstype
+          </label>
+          <!-- end startFilterFrame -->
+
+          <!-- start showSelectedTransactionsNew -->
+          <select id="voucherType" class="filterTransactionId">
+            <option value=1686>
+              1686
+            </option>
+            <option value=1773>
+              1773
+            </option>
+            <option value=1772>
+              1772
+            </option>
+            <option value=1775>
+              1775
+            </option>
+            <option value=1774>
+              1774
+            </option>
+            <option value=1771>
+              1771
+            </option>
+            <option value=1770>
+              1770
+            </option>
+            <option value=1759>
+              1759
+            </option>
+            <option value=1762>
+              1762
+            </option>
+            <option value=1764>
+              1764
+            </option>
+            <option value=1763>
+              1763
+            </option>
+            <option value=1768>
+              1768
+            </option>
+            <option value=1760>
+              1760
+            </option>
+            <option value=1765>
+              1765
+            </option>
+            <option value=1766>
+              1766
+            </option>
+            <option value=1767>
+              1767
+            </option>
+            <option value=1769 selected>
+              1769
+            </option>
+          </select>
+          <!-- end showSelectedTransactionsNew -->
+
+          <!-- start endFilterFrame -->
+        </div>
+      </div>
+    </aside>
+    <!-- end endFilterFrame -->
+
+    <!-- start startContent -->
+    <section class="card">
+      <h2 class="card-title">
+        Transaksjonsdetaljer
+      </h2>
+      <form>
+        <div class="grid grid-form">
+          <!-- end startContent -->
+
+          <!-- start inputNumber -->
+          <div class="field">
+            <label for="transactionId">
+              Bilagsnummer
+            </label>
+            <input class="transactionId" id="transactionId" value="1769" readonly>
+          </div>
+          <!-- end inputNumber -->
+          <!-- start inputDate -->
+          <div class="field">
+            <label for="date">
+              Dato
+            </label>
+            <input class="transactionDate" id="date" type="date" value="2026-08-03" readonly>
+          </div>
+          <!-- end inputDate -->
+          <div></div>
+          <!-- start showSelectedCondosNew -->
+          <div class="field">
+            <label for="apartment">
+              Leilighet
+            </label>
+            <select id="apartment" class="condoId">
+
+              <option value=3>
+                95A
+              </option>
+              <option value=4>
+                95B
+              </option>
+              <option value=5>
+                97A
+              </option>
+              <option value=6>
+                97B
+              </option>
+              <option value=7>
+                97C
+              </option>
+              <option value=8>
+                99A
+              </option>
+              <option value=9>
+                99B
+              </option>
+              <option value=0>
+                Velg leilighet
+              </option>
+            </select>
+          </div>
+          <!-- end showSelectedCondosNew -->
+
+          <!-- start showSelectedAccountsNew -->
+          <div class="field">
+            <label for="account">
+              Konto
+            </label>
+            <select id="account" class="accountId">
+
+              <option value=13>
+                1,2,3,4... transaksjoner
+              </option>
+              <option value=67>
+                Diverse
+              </option>
+              <option value=6>
+                Forsikring
+              </option>
+              <option value=10>
+                Gebyr - FAKT.TJ
+              </option>
+              <option value=56>
+                Inntekt drift
+              </option>
+              <option value=4>
+                Inntekt fjernvarme
+              </option>
+              <option value=69>
+                Inntekt Rygg og Myrland
+              </option>
+              <option value=2>
+                Inntekter husleie
+              </option>
+              <option value=5>
+                Nettleie Lyse
+              </option>
+              <option value=52>
+                Omkostninger BedriftsNett
+              </option>
+              <option value=8>
+                TV og bredbånd
+              </option>
+              <option value=9>
+                Ugift drift
+              </option>
+              <option value=3 selected>
+                Utgift fjernvarme
+              </option>
+              <option value=70>
+                Utgift Rygg og Myraland
+              </option>
+              <option value=22>
+                Velforening
+              </option>
+              <option value=0>
+                Velg konto
+              </option>
+            </select>
+          </div>
+          <!-- end showSelectedAccountsNew -->
+
+          <!-- start showSelectedProjectsNew -->
+          <div class="field">
+            <label for="project">
+              Prosjekt
+            </label>
+            <select id="project" class="projectId">
+
+              <option value=1>
+                Utvendig vedlikehold 2026
+              </option>
+              <option value=0>
+                Velg prosjekt
+              </option>
+            </select>
+          </div>
+          <!-- end showSelectedProjectsNew -->
+
+          <!-- start inputNumber -->
+          <div class="field">
+            <label for="income">
+              Inntekt
+            </label>
+            <input class="income" id="income" value="0,00" readonly>
+          </div>
+          <!-- end inputNumber -->
+
+          <!-- start inputNumber -->
+          <div class="field">
+            <label for="payment">
+              Betaling
+            </label>
+            <input class="payment" id="payment" value="-3 685,25" readonly>
+          </div>
+          <!-- end inputNumber -->
+
+          <!-- start inputNumber -->
+          <div class="field">
+            <label for="kilowattHour">
+              KilowatTimer
+            </label>
+            <input class="kilowattHour" id="kilowattHour" value="0,00" readonly>
+          </div>
+          <!-- end inputNumber -->
+
+          <!-- start inputWideText -->
+          <div class="field wide">
+            <label for="text">
+              Tekst
+            </label>
+            <input class="text" id="text" value="0005061219837" readonly>
+          </div>
+          <!-- end inputWideText -->
 
 
-  <div class="filter-frame">
-    <div class="field field-position">
-      <label>
-        Leilighet
-      </label>
-      <select class="filterCondoId center one-line">
-        <option value=3>
-          95A
-        </option>
-        <option value=4>
-          95B
-        </option>
-        <option value=5>
-          97A
-        </option>
-        <option value=6>
-          97B
-        </option>
-        <option value=7>
-          97C
-        </option>
-        <option value=8>
-          99A
-        </option>
-        <option value=9>
-          99B
-        </option>
-        <option value=999999998 selected>
-          Vis alle
-        </option>
-      </select>
-    </div>
-    <div class="field field-position">
-      <label>
-        Konto
-      </label>
-      <select class="filterAccountId center one-line">
+          <!-- start endContent -->
+        </div>
+      </form>
+    </section>
+    <!-- end endContent -->
 
-        <option value=13>
-          1,2,3,4... transaksjoner
-        </option>
-        <option value=67>
-          Diverse
-        </option>
-        <option value=6>
-          Forsikring
-        </option>
-        <option value=10>
-          Gebyr - FAKT.TJ
-        </option>
-        <option value=56>
-          Inntekt drift
-        </option>
-        <option value=4>
-          Inntekt fjernvarme
-        </option>
-        <option value=69>
-          Inntekt Rygg og Myrland
-        </option>
-        <option value=2>
-          Inntekter husleie
-        </option>
-        <option value=5>
-          Nettleie Lyse
-        </option>
-        <option value=52>
-          Omkostninger BedriftsNett
-        </option>
-        <option value=8>
-          TV og bredbånd
-        </option>
-        <option value=9>
-          Ugift drift
-        </option>
-        <option value=3>
-          Utgift fjernvarme
-        </option>
-        <option value=70>
-          Utgift Rygg og Myraland
-        </option>
-        <option value=22>
-          Velforening
-        </option>
-        <option value=999999998 selected>
-          Vis alle
-        </option>
-      </select>
-      <label>
-        Konto
-      </label>
+    <!-- start startButtons -->
+    <div class="actions">
+      <!-- end startButtons -->
+
+      <!-- start inputButton -->
+      <button class="update primary" type="submit">
+        Oppdater
+      </button>
+      <!-- end inputButton -->
+
+      <!-- start inputButton -->
+      <button class="insert secondary" type="button">
+        Ny
+      </button>
+      <!-- end inputButton -->
+
+      <!-- start inputButton -->
+      <button class="cancel secondary" type="reset">
+        Angre
+      </button>
+      <!-- end inputButton -->
+
+      <!-- start inputButton -->
+      <button class="back secondary" type="button">
+        Tilbake
+      </button>
+      <!-- end inputButton -->
+
+      <!-- start inputButton -->
+      <button class="delete danger" type="button">
+        Slett
+      </button>
+      <!-- end inputButton -->
+
+      <!-- start endButtons -->
     </div>
-    <div class="field field-position">
-      <label>
-        Fra Dato
-      </label>
-      <input type="date" style="height: 52px" class="filterFromDate center one-line input" value="2026-07-01">
-    </div>
-    <div class="field field-position">
-      <label>
-        Til Dato
-      </label>
-      <input type="date" style="height: 52px;" class="filterToDate center one-line input" value="2026-08-25">
-    </div>
-    <div class="field field-position">
-      <label>
-        Beløp
-      </label>
-      <input type="text" style="height: 52px;" inputmode="decimal" autocomplete="off"
-        class="filterAmount center one-line" value="0,00">
-      <label>Beløp</label>
-    </div>
-  </div>
+    <!-- end endButtons -->
+
+  </main>
 </body>
 
 </html>

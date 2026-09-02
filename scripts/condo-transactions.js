@@ -336,12 +336,12 @@ function showTransactions() {
   sumIncome = formatNumberToNorAmount(sumIncome);
   sumPayment = formatNumberToNorAmount(sumPayment);
 
-  html += objTransaction.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, sumAmount, '', '');
+  html += objTransaction.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, sumAmount, '');
 
   // get from date
   let bankBalance = objTransactions.getBankBalance(toDate);
   bankBalance = formatNumberToNorAmount(bankBalance);
-  html += objTransaction.insertTableRow('', '', '', 'Saldo', bankBalance, '', '', '', '');
+  html += objTransaction.insertTableRow('', '', '', 'Saldo', bankBalance, '', '', '');
 
   // The end of the table
   html += objTransactions.endTable();

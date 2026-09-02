@@ -2,50 +2,199 @@
 <html lang="nb-NO">
 
 <head>
-
-  <title>Filter test</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Bilag</title>
+
+  <link rel="stylesheet" href="styles/condo.css">
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/filter.css">
   <link rel="stylesheet" href="styles/frame.css">
 </head>
 
 <body>
 
+  <!-- vertical menu -->
+  <div class="menu-frame">
+    <div class="menu-row">
+      <div class="field">
+        <label for="news-news">
+          Nyheter
+        </label>
+        <select id="news-news" class="news center one-line field-position-menu"
+          onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-shownews.html">
+            Vis Nyheter
+          </option>
+          <option value="http://localhost/condo-news.html">
+            Rediger Nyheter
+          </option>
+          <option value="http://localhost/condo-shownews.html" selected>
+            Nyheter
+          </option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="user-user">
+          Bruker
+        </label>
+        <select id="user-user" class="user center one-line field-position-menu"
+          onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-user.html">
+            Rediger Bruker
+          </option>
+          <option value="http://localhost/condo-password.html">
+            Rediger Passord
+          </option>
+          <option value="http://localhost/condo-condo.html">
+            Rediger Leilighet
+          </option>
+          <option value="http://localhost/condo-userbankaccount.html">
+            Rediger Bankkonto
+          </option>
+          <option value="http://localhost/condo-user.html" selected>
+            Bruker
+          </option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="due-due">
+          Forfall
+        </label>
+        <select id="due-due" class="due center one-line field-position-menu" onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-dues.html">
+            Vis Forfall
+          </option>
+          <option value="http://localhost/condo-supplier.html">
+            Rediger Leverandør
+          </option>
+          <option value="http://localhost/condo-commoncosts.html">
+            Vis Felleskostnader
+          </option>
+          <option value="http://localhost/condo-commoncost.html">
+            Rediger Felleskostnad
+          </option>
+          <option value="http://localhost/condo-overview.html">
+            Vis Betalingsoversikt
+          </option>
+          <option value="http://localhost/condo-dues.html" selected>
+            Forfall
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
 
-  <div 
-    class="filter-frame"
-  >
+  <!-- Filter-->
+  <div class="filter-frame">
+    <div class="field field-position">
+      <select class="filterTransactionId center one-line">
+        <option value=1686>
+          Slettes
+        </option>
+        <option value=1773>
+          Laberget 95B
+        </option>
+        <option value=1772>
+          GIROGiro
+        </option>
+        <option value=1775>
+          AVTALE Avtale
+        </option>
+        <option value=1774>
+          Sameie 99a
+        </option>
+        <option value=1771>
+          Fabiana Gaspar Franco
+        </option>
+        <option value=1770>
+          Fabiana Gaspar Franco
+        </option>
+        <option value=1759>
+          Fellesutgifter
+        </option>
+        <option value=1762>
+          20011129161124048660
+        </option>
+        <option value=1764>
+          800537080710356
+        </option>
+        <option value=1763>
+          Omkostninger BedriftsNett
+        </option>
+        <option value=1768>
+          leil 301 Oskar Fausk 97C
+        </option>
+        <option value=1760>
+          0005061219837
+        </option>
+        <option value=1765>
+          800537080710356
+        </option>
+        <option value=1766>
+          0005061219837
+        </option>
+        <option value=1767>
+          800537080710356
+        </option>
+        <option value=1769 selected>
+          0005061219837
+        </option>
+      </select>
+      <label>
+        Bilag
+      </label>
+    </div>
+  </div>
+
+  <!-- the part to change values -->
+  <div class="line">
+    <div class="field field-position">
+      <input type="text" autocomplete="off" class="transactionId center one-line" value="1769"
+        placeholder="Bilagsnummer" readonly>
+      <label>
+        Bilagsnummer
+      </label>
+    </div>
+  </div>
+  <div class="line">
+    <div class="field field-position">
+      <label>
+        Dato
+      </label>
+      <input type="date" style="height: 52px" class="transactionDate center one-line input" value="2026-08-03">
+    </div>
+  </div>
+  <div class="line">
     <div class="field field-position">
       <label>
         Leilighet
       </label>
-      <select class="filterCondoId center one-line">
+      <select class="condoId center one-line">
         <option value=3>
-          &nbsp;&nbsp;95A&nbsp;&nbsp;
+          95A
         </option>
         <option value=4>
-          &nbsp;&nbsp;95B&nbsp;&nbsp;
+          95B
         </option>
         <option value=5>
-          &nbsp;&nbsp;97A&nbsp;&nbsp;
+          97A
         </option>
         <option value=6>
-          &nbsp;&nbsp;97B&nbsp;&nbsp;
+          97B
         </option>
         <option value=7>
-          &nbsp;&nbsp;97C&nbsp;&nbsp;
+          97C
         </option>
         <option value=8>
-          &nbsp;&nbsp;99A&nbsp;&nbsp;
+          99A
         </option>
         <option value=9>
-          &nbsp;&nbsp;99B&nbsp;&nbsp;
+          99B
         </option>
-        <option value=999999998 selected>
-          &nbsp;&nbsp;Vis alle&nbsp;&nbsp;
+        <option value=0 selected>
+          Velg leilighet
         </option>
       </select>
     </div>
@@ -53,55 +202,54 @@
       <label>
         Konto
       </label>
-      <select class="filterAccountId center one-line">
-
+      <select class="accountId center one-line">
         <option value=13>
-          &nbsp;&nbsp;1,2,3,4... transaksjoner&nbsp;&nbsp;
+          1,2,3,4... transaksjoner
         </option>
         <option value=67>
-          &nbsp;&nbsp;Diverse&nbsp;&nbsp;
+          Diverse
         </option>
         <option value=6>
-          &nbsp;&nbsp;Forsikring&nbsp;&nbsp;
+          Forsikring
         </option>
         <option value=10>
-          &nbsp;&nbsp;Gebyr - FAKT.TJ&nbsp;&nbsp;
+          Gebyr - FAKT.TJ
         </option>
         <option value=56>
-          &nbsp;&nbsp;Inntekt drift&nbsp;&nbsp;
+          Inntekt drift
         </option>
         <option value=4>
-          &nbsp;&nbsp;Inntekt fjernvarme&nbsp;&nbsp;
+          Inntekt fjernvarme
         </option>
         <option value=69>
-          &nbsp;&nbsp;Inntekt Rygg og Myrland&nbsp;&nbsp;
+          Inntekt Rygg og Myrland
         </option>
         <option value=2>
-          &nbsp;&nbsp;Inntekter husleie&nbsp;&nbsp;
+          Inntekter husleie
         </option>
         <option value=5>
-          &nbsp;&nbsp;Nettleie Lyse&nbsp;&nbsp;
+          Nettleie Lyse
         </option>
         <option value=52>
-          &nbsp;&nbsp;Omkostninger BedriftsNett&nbsp;&nbsp;
+          Omkostninger BedriftsNett
         </option>
         <option value=8>
-          &nbsp;&nbsp;TV og bredbånd&nbsp;&nbsp;
+          TV og bredbånd
         </option>
         <option value=9>
-          &nbsp;&nbsp;Ugift drift&nbsp;&nbsp;
+          Ugift drift
         </option>
-        <option value=3>
-          &nbsp;&nbsp;Utgift fjernvarme&nbsp;&nbsp;
+        <option value=3 selected>
+          Utgift fjernvarme
         </option>
         <option value=70>
-          &nbsp;&nbsp;Utgift Rygg og Myraland&nbsp;&nbsp;
+          Utgift Rygg og Myraland
         </option>
         <option value=22>
-          &nbsp;&nbsp;Velforening&nbsp;&nbsp;
+          Velforening
         </option>
-        <option value=999999998 selected>
-          &nbsp;&nbsp;Vis alle&nbsp;&nbsp;
+        <option value=0>
+          Velg konto
         </option>
       </select>
       <label>
@@ -110,26 +258,68 @@
     </div>
     <div class="field field-position">
       <label>
-        Fra Dato
+        Prosjekt
       </label>
-      <input type="date" style="height: 52px;" class="filterFromDate center one-line input" value="2026-07-01">
-    </div>
-    <div class="field field-position">
-      <label>
-        Til Dato
-      </label>
-      <input type="date" style="height: 52px;" class="filterToDate center one-line input" value="2026-08-25">
-    </div>
-    <div class="field field-position">
-      <label>
-        Beløp
-      </label>
-      <input style="height:50px;" type="text" inputmode="decimal" autocomplete="off"
-        class="filterAmount center one-line" value="0,00">
-      <label>Beløp</label>
+      <select class="projectId center one-line">
+        <option value=1>
+          Utvendig vedlikehold 2026
+        </option>
+        <option value=0 selected>
+          Velg prosjekt
+        </option>
+      </select>
     </div>
   </div>
-
+  <div class="line">
+    <div class="field field-position">
+      <input type="text" autocomplete="off" class="income center one-line" value="0,00" placeholder="Inntekt">
+      <label>
+        Inntekt
+      </label>
+    </div>
+    <div class="field field-position">
+      <input type="text" autocomplete="off" class="payment center one-line" value="-3 685,25" placeholder="Betaling">
+      <label>
+        Betaling
+      </label>
+    </div>
+    <div class="field field-position">
+      <input type="text" autocomplete="off" class="kilowattHour center one-line" value="0,00"
+        placeholder="KilowatTimer">
+      <label>
+        KilowatTimer
+      </label>
+    </div>
+  </div>
+  <div class="line">
+    <div class="field field-position">
+      <input type="text" autocomplete="off" class="text center one-line" value="0005061219837" placeholder="Tekst">
+      <label>
+        Tekst
+      </label>
+    </div>
+  </div>
+  <div class="line">
+    <button class="update filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
+      Oppdater
+    </button>
+    <button class="cancel filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
+      Angre
+    </button>
+  </div>
+  <div class="line">
+    <button class="delete filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
+      Slett
+    </button>
+    <button class="insert filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
+      Ny
+    </button>
+  </div>
+  <div class="line">
+    <button class="back filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
+      Tilbake
+    </button>
+  </div>
 </body>
 
 </html>

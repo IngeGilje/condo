@@ -1,6 +1,5 @@
 /* Shared frame style */
-.menu-frame,
-.filter-frame {
+.frame {
   position: relative;
 
   width: fit-content;
@@ -20,8 +19,7 @@
 
 
 /* Shared frame title */
-.menu-frame::before,
-.filter-frame::before {
+.frame::before {
   position: absolute;
   top: -10px;
   left: 20px;
@@ -37,18 +35,13 @@
   color: #4c6fff;
 }
 
-
-.menu-frame::before {
-  content: var(--title, "Meny");
-}
-
-.filter-frame::before {
+.frame::before {
   content: var(--title, "Filter");
 }
 
 /* horizontal layout */
 .menu-row,
-.filter-frame {
+.frame {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -57,14 +50,14 @@
 
 /* field sizes */
 .menu-row .field,
-.filter-frame .field {
+.frame .field {
   width: 180px;
 }
 
 /* controls */
 .menu-row select,
-.filter-frame select,
-.filter-frame input {
+.frame select,
+.frame input {
   width: 100%;
   max-width: none;
 
@@ -90,59 +83,29 @@
 
 /* dropdowns */
 .menu-row select,
-.filter-frame select {
+.frame select {
   padding-right: 34px;
   cursor: pointer;
 }
 
 /* hover effect */
 .menu-row select:hover,
-.filter-frame select:hover,
-.filter-frame input:hover {
+.frame select:hover,
+.frame input:hover {
   border-color: #94a3b8;
   background: #f8fafc;
 }
 
 /* focus effect */
 .menu-row select:focus,
-.filter-frame select:focus,
-.filter-frame input:focus {
+.frame select:focus,
+.frame input:focus {
   outline: none;
 
   border-color: #4c6fff;
 
   box-shadow:
     0 0 0 3px rgba(76, 111, 255, 0.12);
-}
-
-/* cell phone */
-@media (max-width: 800px) {
-
-  .menu-frame,
-  .filter-frame {
-    width: auto;
-
-    margin: 25px 12px;
-    padding: 20px 14px;
-  }
-
-  .menu-row,
-  .filter-frame {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .menu-row .field,
-  .filter-frame .field {
-    width: 200px;
-  }
-
-  .menu-row select,
-  .filter-frame select,
-  .filter-frame input {
-    width: 200px;
-  }
 }
 
 /* position */

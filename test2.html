@@ -1,32 +1,525 @@
-<!DOCTYPE html>
-<html lang="nb-NO">
+<!doctype html>
+<html lang="nb">
 
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transaksjon</title>
 
-  <title>Meny test</title>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/condo.css">
+  <style>
+    :root {
+      --page: #f3f6fa;
+      --surface: #ffffff;
+      --text: #182230;
+      --muted: #667085;
+      --border: #d0d9e6;
+      --primary: #3157d5;
+      --primary-dark: #2445b7;
+      --danger: #b42318;
+      --radius: 12px;
+      --shadow: 0 8px 28px rgba(30, 50, 80, .08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--page);
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 32px auto 56px;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      letter-spacing: -.02em;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      margin-bottom: 20px;
+      padding: 24px;
+      border: 1px solid #e0e6ef;
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 20px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #344054;
+    }
+
+    .card-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      border-radius: 99px;
+      background: var(--primary);
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-menu {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .grid-voucher {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 550px;
+    }
+
+    .grid-form {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .content-layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      align-items: start;
+      gap: 20px;
+    }
+
+    .content-layout .card {
+      margin-bottom: 0;
+    }
+
+    .filter-card {
+      position: sticky;
+      top: 20px;
+    }
+
+    .filter-card .grid-voucher {
+      grid-template-columns: 1fr;
+    }
+
+    .field {
+      position: relative;
+      min-width: 0;
+    }
+
+    .field.wide {
+      grid-column: span 2;
+    }
+
+    .field label {
+      position: absolute;
+      z-index: 1;
+      top: -8px;
+      left: 12px;
+      padding: 0 6px;
+      color: #475467;
+      background: var(--surface);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 50px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      outline: 0;
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+      transition: border-color .18s, box-shadow .18s, background .18s;
+    }
+
+    input:hover,
+    select:hover {
+      border-color: #98a8bd;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(49, 87, 213, .12);
+    }
+
+    input[readonly] {
+      background: #f8fafc;
+      color: #475467;
+    }
+
+    .number {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    button {
+      min-width: 112px;
+      height: 44px;
+      padding: 0 20px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform .15s, background .15s, border-color .15s, box-shadow .15s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 5px 14px rgba(49, 87, 213, .24);
+    }
+
+    .primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .secondary {
+      color: #344054;
+      background: #fff;
+      border-color: var(--border);
+    }
+
+    .secondary:hover {
+      background: #f8fafc;
+      border-color: #98a8bd;
+    }
+
+    .danger {
+      margin-left: auto;
+      color: var(--danger);
+      background: #fff;
+      border-color: #f2c7c3;
+    }
+
+    .danger:hover {
+      background: #fff5f4;
+    }
+
+    @media (max-width: 850px) {
+
+      .grid-menu,
+      .grid-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .content-layout {
+        grid-template-columns: 220px minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 20px, 1120px);
+        margin-top: 18px;
+      }
+
+      .card {
+        padding: 20px 16px;
+      }
+
+      .grid-menu,
+      .grid-voucher,
+      .grid-form {
+        grid-template-columns: 1fr;
+      }
+
+      .content-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-card {
+        position: static;
+      }
+
+      .field.wide {
+        grid-column: auto;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      button {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .danger {
+        margin-left: 0;
+      }
+    }
+  </style>
 
 </head>
 
 <body>
-  <h1 class="_e0f0e0">#e0f0e0</h1>
-  <h1 class="_ffe5e5">#ffe5e5</h1>
-  <h1 class="_f8d7da">#f8d7da</h1>
-  <h1 class="_dbe3ef">#dbe3ef</h1>
-  <h1 class="_ddd">#ddd</h1>
-  <h1 class="_ccc">#ccc</h1>
-  <h1 class="_555">#555</h1>
-  <h1 class="_f9f9f9">#f9f9f9</h1>
-  <h1 class="_f2f2f2">#f2f2f2</h1>
-  <h1 class="_f4f7fb">#f4f7fb</h1>
-  <h1 class="_edf2ff">#edf2ff</h1>
-  <h1 class="_4c6fff">#4c6fff</h1>
-  <h1 class="_2563eb">#2563eb</h1>
-  <h1 class="_38bdf8">#38bdf8</h1>
 
+  <main class="page">
+
+    <section class="card">
+      <h1 class="card-title">
+        Navigasjon
+      </h1>
+      <div class="grid grid-menu">
+
+        <div class="field">
+          <label for="news-news">
+            Nyheter
+          </label>
+          <select id="news-news" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-shownews.html" selected>
+              Vis Nyheter
+            </option>
+            <option value="http://localhost/condo-news.html">
+              Rediger Nyheter
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="emptyingCalendar-emptyingCalendar">
+            Tømmekalender
+          </label>
+          <select id="emptyingCalendar-emptyingCalendar" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-emptyingcalendars.html">
+              Vis Tømmekalender
+            </option>
+            <option value="http://localhost/condo-emptyingcalendar.html">
+              Rediger Tømmekalender
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="condominium-condominium">
+            Sameie
+          </label>
+          <select id="condominium-condominium" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-condominium.html">
+              Rediger Sameie
+            </option>
+            <option value="http://localhost/condo-bankaccount.html">
+              Rediger Bankkonto
+            </option>
+            <option value="http://localhost/condo-accounts.html">
+              Vis Konti
+            </option>
+            <option value="http://localhost/condo-account.html">
+              Rediger Konto
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="user-user">
+            Bruker
+          </label>
+          <select id="user-user" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-user.html">
+              Rediger Bruker
+            </option>
+            <option value="http://localhost/condo-password.html">
+              Rediger Passord
+            </option>
+            <option value="http://localhost/condo-condo.html">
+              Rediger Leilighet
+            </option>
+            <option value="http://localhost/condo-userbankaccount.html">
+              Rediger Bankkonto
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="transaction-transaction">
+            Transaksjoner
+          </label>
+          <select id="transaction-transaction" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-transactions.html">
+              Vis Transaksjoner
+            </option>
+            <option value="http://localhost/condo-transaction.html">
+              Rediger Transaksjon
+            </option>
+            <option value="http://localhost/condo-projects.html">
+              Vis Prosjekter
+            </option>
+            <option value="http://localhost/condo-project.html">
+              Rediger Prosjekt
+            </option>
+            <option value="http://localhost/condo-budgets.html">
+              Vis Budsjett
+            </option>
+            <option value="http://localhost/condo-annualaccount.html">
+              Vis Årsregnskap
+            </option>
+            <option value="http://localhost/condo-importfile.html">
+              Hent transaksjoner
+            </option>
+            <option value="http://localhost/condo-liquidity.html">
+              Vis Likviditet
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="due-due">
+            Forfall
+          </label>
+          <select id="due-due" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-dues.html">
+              Vis Forfall
+            </option>
+            <option value="http://localhost/condo-supplier.html">
+              Rediger Leverandør
+            </option>
+            <option value="http://localhost/condo-commoncosts.html">
+              Vis Felleskostnader
+            </option>
+            <option value="http://localhost/condo-commoncost.html">
+              Rediger Felleskostnad
+            </option>
+            <option value="http://localhost/condo-overview.html">
+              Vis Betalingsoversikt
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="remoteHeating-remoteHeating">
+            Fjernvarme
+          </label>
+          <select id="remoteHeating-remoteHeating" onchange="window.location.href=this.value">
+            <option value="http://localhost/condo-remoteheating.html">
+              Rediger Fjernvarme
+            </option>
+            <option value="http://localhost/condo-remoteheatings.html">
+              Vis Fjernvarme
+            </option>
+            <option value="http://localhost/condo-remoteheatingprice.html">
+              Rediger Fjernvarmepris
+            </option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <div class="content-layout">
+
+      <!-- start startFilterFrame -->
+      <aside class="card filter-card">
+        <h2 class="card-title">
+          Filter
+        </h2>
+        <div class="grid grid-voucher">
+          <div class="field">
+            <label for="voucherType">
+              Bilagstype
+            </label>
+            <!-- end startFilterFrame -->
+
+            <!-- start showSelectedTransactionsNew -->
+            <select id="voucherType" class="filterTransactionId">
+              <option value=1686>
+                1686
+              </option>
+              <option value=1773>
+                1773
+              </option>
+              <option value=1772>
+                1772
+              </option>
+              <option value=1775>
+                1775
+              </option>
+            </select>
+            <!-- end showSelectedTransactionsNew -->
+
+            <!-- start endFilterFrame -->
+          </div>
+        </div>
+      </aside>
+      <!-- end endFilterFrame -->
+
+      <!-- content -->
+
+      <!-- start startcontent -->
+      <section class="card">
+        <h2 class="card-title">Transaksjonsdetaljer</h2>
+        <form>
+          <div class="grid grid-form">
+      <!-- end startcontent -->
+
+            <div class="field"><label for="number">Bilagsnummer</label><input id="number" value="1769" readonly></div>
+            <div class="field"><label for="date">Dato</label><input id="date" type="date" value="2026-08-03"></div>
+            <div></div>
+            <div class="field"><label for="apartment">Leilighet</label><select id="apartment">
+                <option>95A</option>
+              </select></div>
+            <div class="field"><label for="account">Konto</label><select id="account">
+                <option>Utgift fjernvarme</option>
+              </select></div>
+            <div class="field"><label for="project">Prosjekt</label><select id="project">
+                <option>Utvendig vedlikehold</option>
+              </select></div>
+            <div class="field"><label for="income">Inntekt</label><input class="number" id="income" value="0,00">
+            </div>
+            <div class="field"><label for="payment">Betaling</label><input class="number" id="payment"
+                value="-3 685,25">
+            </div>
+            <div class="field"><label for="kwh">Kilowattimer</label><input class="number" id="kwh" value="0,00"></div>
+            <div class="field wide"><label for="text">Tekst</label><input id="text" value="0005061219837"></div>
+          </div>
+
+          <div class="actions">
+            <button class="primary" type="submit">Oppdater</button>
+            <button class="secondary" type="button">Ny</button>
+            <button class="secondary" type="reset">Angre</button>
+            <button class="secondary" type="button">Tilbake</button>
+            <button class="danger" type="button">Slett</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
 </body>
 
 </html>

@@ -35,7 +35,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objEmptyingCalendar.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
@@ -55,24 +55,6 @@ async function main() {
 
       await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendar.condominiumId, orderBy);
 
-      /*
-      // Show emtyingcalendar
-      let currentDate = getCurrentDate();
-      currentDate = Number(formatNorDateToNumber(currentDate));
- 
-      let emptyingCalendarId = (paramEmptyingCalendarId === 0)
-        ? getEmptyingCalendarIdMonth(currentDate)
-        : paramEmptyingCalendarId;
- 
-      // Next month ?
-      let date = String(currentDate);
-      year = date.slice(0, 4);
-      month = date.slice(4, 6);
-      currentDate = Number(year + month + "01");
-      if (emptyingCalendarId === 0) emptyingCalendarId = getEmptyingCalendarIdNextMonth(currentDate + 100);
- 
-      date = getEmptyingCalendarDate(emptyingCalendarId)
-      */
       // Show filter
       showFilter(emptyingCalendarId);
 
@@ -191,7 +173,7 @@ function showFilter(emptyingCalendarId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  setFrameTitle("filter-frame", "Filter");
 }
 
 // Show emptyingCalendar
