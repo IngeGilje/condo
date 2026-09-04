@@ -205,7 +205,7 @@ class Condo extends Condos {
   }
   */
 
-  // Show Condos
+  // Show condos
   showSelectedCondosNew(label, className, condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
@@ -215,17 +215,17 @@ class Condo extends Condos {
     <div 
       class="field"
     >
-      <label for="apartment">
+      <label for="${className}">
         ${label}
       </label>
       <select 
-        id="apartment"
+        id="${className}"
         class="${className}"
         ${(enableChanges) ? '' : 'readonly'}
       >
     `;
 
-    // Check if Condos array is empty
+    // Check if condos array is empty
     if (this.arrayCondo.length > 0) {
       this.arrayCondo.forEach((condo) => {
 
@@ -240,13 +240,13 @@ class Condo extends Condos {
       });
     } else {
 
-      // No Condos
+      // No condos
       html += `
       <option 
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        Ingen prosjekter
+        Ingen leiligheter
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

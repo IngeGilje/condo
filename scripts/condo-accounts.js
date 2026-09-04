@@ -219,7 +219,7 @@ function showFilter(fixedCost) {
   if (fixedCost === 'Y') fixedCost = constFixedCost;
   if (fixedCost === 'N') fixedCost = constVariableCost;
   if (fixedCost === 'A') fixedCost = 'Alle';
-  html += showSelectedValuesNew('Kostnadstype', 'filterFixedCost', '', true, fixedCost, constFixedCost, constVariableCost, 'Alle')
+  html += inputValues('Kostnadstype', 'filterFixedCost', '', true, fixedCost, constFixedCost, constVariableCost, 'Alle')
 
   // End filter frame
   html += "</div>";

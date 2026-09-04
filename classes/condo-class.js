@@ -97,7 +97,7 @@ class Condos {
       className: "condo-account",
       text: "Rediger Konto"
     },
-        {
+    {
       applicationName: 'condo-condominium.html',
       className: "condo-condominium",
       text: "Menyvalg"
@@ -234,7 +234,7 @@ class Condos {
       className: "condo-remoteheatingprice",
       text: "Rediger  Fjernvarmepris"
     },
-       {
+    {
       applicationName: 'condo-remoteheating.html',
       className: "condo-remoteheating",
       text: "Menyvalg"
@@ -334,7 +334,7 @@ class Condos {
         value="${number}"
         ${(number === selectedNumber) ? 'selected' : ''}
         >
-          &nbsp;&nbsp;${number.toString().trim()}&nbsp;&nbsp;
+          ${number.toString().trim()}
       </option>`;
     }
     html += `
@@ -400,7 +400,7 @@ class Condos {
         value="${(selected ?? '').trim()}"
         ${(choice === selected) ? 'selected' : ''}
       >
-        &nbsp;&nbsp;${choice}&nbsp;&nbsp;
+        ${choice}
       </option>`;
     });
 
@@ -509,15 +509,6 @@ class Condos {
 
     texts.forEach((text) => {
 
-      /*
-      html += `
-      <td 
-        style="vertical-align:bottom;font-size:14px;margin-left:25px;background-color:#38bdf8;"
-        class="no-border ${direction} bold one-line"
-      >
-        ${text}
-      </td>`;
-      */
       html += `
       <td>
        ${text}
@@ -666,6 +657,7 @@ class Condos {
     return isValid;
   }
 
+
   // Start of table
   startTable(style) {
 
@@ -678,19 +670,11 @@ class Condos {
   // Initializing of a table
   initializeTable(columnWidths) {
 
+    // Calculate total table width
     let tableWidth = 0;
     columnWidths.forEach((columnWidth) => {
       tableWidth += (columnWidth + 10);
     });
-
-    /*
-    let html = `
-    <table 
-      style="table-layout: fixed;
-      width: ${tableWidth}px;
-      border: 1px;">`;
-    */
-
 
     let html = `
     <div class="table-container">
@@ -698,7 +682,6 @@ class Condos {
         class="transaction-table"
       >
     `;
-
 
     html += '<colgroup>';
 
@@ -937,7 +920,7 @@ class Condos {
     // Vertical menu
     html += '<div class="menu-row">';
     html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", applicationName);
-    html += this.showVerticalMenu('emptyingCalendar', this.arrayMenuEmptyingCalendar, "Tømmekalender", applicationName);
+    html += this.showVerticalMenu('emptyingcalendar', this.arrayMenuEmptyingCalendar, "Tømmekalender", applicationName);
     html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", applicationName);
     html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", applicationName);
     html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", applicationName);
@@ -972,7 +955,7 @@ class Condos {
     `;
 
     html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", "Menyvalg");
-    html += this.showVerticalMenu('emptyingCalendar', this.arrayMenuEmptyingCalendar, "Tømmekalender", "Menyvalg");
+    html += this.showVerticalMenu('emptyingcalendar', this.arrayMenuEmptyingCalendar, "Tømmekalender", "Menyvalg");
     html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", "Menyvalg");
     html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", "Menyvalg");
     html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", "Menyvalg");
@@ -1082,7 +1065,7 @@ class Condos {
 }
 
 // input number
-function inputNumber(className, label, value, readOnly) {
+function inputNumber(className, label, value, enableChanges) {
 
   html = `
     <!-- start inputNumber --> 
@@ -1095,10 +1078,11 @@ function inputNumber(className, label, value, readOnly) {
         ${label}
       </label>
       <input 
+        type="number"
         class="${className}"
         id="${className}"
         value="${value}"
-        ${(readOnly) ? 'readonly' : ''}
+        ${(enableChanges) ? '' : 'readonly'}
       >
     </div>
     <!-- end inputNumber --> 
@@ -1107,25 +1091,52 @@ function inputNumber(className, label, value, readOnly) {
   return html
 }
 
-// input date
-function inputDate(className, label, value,  readOnly) {
+// input text
+function inputText(className, label, value, enableChanges) {
 
-    let html = `
+  html = `
+    <!-- start inputText --> 
+    <div
+     class="field"
+    >
+      <label
+        for="${className}"
+      >
+        ${label}
+      </label>
+      <input 
+        type="text"
+        class="${className}"
+        id="${className}"
+        value="${value}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    </div>
+    <!-- end inputText --> 
+    `;
+
+  return html
+}
+
+// input date
+function inputDate(className, label, value, enableChanges) {
+
+  let html = `
     <!-- start inputDate -->
     <div
       class="field"
     >
       <label
-        for="date"
+        for="${className}"
       >
         ${label}
       </label>
       <input 
-        class="${className}"
-        id="date" 
         type="date"
+        class="${className}"
+        id="${className}" 
         value="${value}"
-        ${(readOnly) ? 'readonly' : ''}
+        ${(enableChanges) ? '' : 'readonly'}
       >
     </div>
     <!-- end inputDate -->
@@ -1133,13 +1144,86 @@ function inputDate(className, label, value,  readOnly) {
   return html;
 }
 
-// Input wide text
-function inputWideText(className, label, value, readOnly) {
+// Input text
+function inputTableText(className, value, enableChanges) {
 
+  return `
+  <!-- start inputTableText -->
+  <td>
+    <input
+      class="${className} center one-line input"
+      type="text"
+      value="${value}"
+      ${(enableChanges) ? '' : 'readonly'}
+    >
+  </td>
+  <!-- end inputTableText -->
+  `;
+
+}
+
+function showTableIcon(className, color) {
+  return `
+  <!-- start showTableIcon -->
+  <td>
+    <span
+      class="waste-icon waste-icon--food"
+      role="img"
+      aria-label="Matavfall hentes"
+    >
+      <i 
+        class="${className}"
+        style="color: ${color}; font-size: 29px;"
+        aria-hidden="true"
+      >
+      </i>
+    </span>
+  </td>
+  <!-- end showTableIcon -->
+  `;
+}
+
+function endTable() {
+  return `
+  <!-- start endtable -->
+        </table>
+      </div>
+    </section>
+  </main>
+  <!-- end endtable -->
+  `;
+}
+
+function showTableButton(className, text, month, year) {
+
+  const monthName = findNameOfMonth(month);
+  return `
+    <!-- start showTableButton -->
+    <td>
+      <button 
+        type="button"
+        class="${className} center button"
+        aria-label="Rediger 1. ${monthName} ${year}">
+        <i
+          class="bi bi-pencil"
+          aria-hidden="true"
+        >
+      </i>
+        ${text}
+    </button>
+  </td>
+  <!-- end showTableButton -->
+  `;
+}
+
+// Input wide text
+function inputWideText(className, label, value, colSpan, enableChanges) {
+
+  const colspan = `wide wide${colSpan}`;
   let html = `
     <!-- start inputWideText -->
     <div 
-      class="field wide"
+      class="field ${colspan}"
     >
     <label
       for="${className}"
@@ -1147,10 +1231,11 @@ function inputWideText(className, label, value, readOnly) {
       ${label}
     </label>
     <input
+      type="text"
       class="${className}"
       id="${className}"
       value="${value}"
-      ${(readOnly) ? 'readonly' : ''}
+      ${(enableChanges) ? '' : 'readonly'}
     >
     </div>
     <!-- end inputWideText -->
@@ -1187,7 +1272,7 @@ function primaryButton(text) {
 }
 
 // Button
-function inputButton(className,text,buttonType) {
+function inputButton(className, text, buttonType) {
 
   // Check for valid button type
   if (buttonType !== "submit" && buttonType !== "button" && buttonType !== "reset") {
@@ -1216,6 +1301,7 @@ function endButtons() {
   `;
 }
 
+/*
 // Show selected numbers (from number - to number)
 function showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
 
@@ -1239,13 +1325,52 @@ function showSelectedMonthsNew(label, className, style, selectedMonth, enableCha
         value="${month}"
         ${month === selectedMonth ? 'selected' : ''}
       >
-        &nbsp;&nbsp;${findNameOfMonth(month).trim()}&nbsp;&nbsp;
+        ${findNameOfMonth(month).trim()}
       </option>`;
   };
 
   html += `
       </select >
     </div>`;
+
+  return html;
+}
+*/
+
+// Show all months for a year (1-12) with selected month
+function showSelectedMonthsNew(label, className, selectedMonth, enableChanges) {
+
+  let html = `
+    <!-- start showSelectedCondosNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+  for (let month = 1; month < 13; month++) {
+
+    html += `
+      <option 
+        value="${month}"
+        ${month === selectedMonth ? 'selected' : ''}
+      >
+        ${findNameOfMonth(month).trim()}
+      </option>`;
+  };
+
+  html += `
+      </select >
+    </div>
+    <!-- end showSelectedCondosNew -->
+  `;
 
   return html;
 }
@@ -1334,6 +1459,7 @@ function showMessageNew(message) {
   document.querySelector('.showMessage').innerHTML = html;
 }
 
+/*
 // Show selected numbers (from number - to number)
 function showSelectedNumbersNew(label, className, fromNumber, toNumber, selectedNumber, enableChanges) {
 
@@ -1359,7 +1485,7 @@ function showSelectedNumbersNew(label, className, fromNumber, toNumber, selected
           value=${number}
           ${(number === selectedNumber) ? 'selected' : ''}
         >
-          &nbsp;&nbsp;${number}&nbsp;&nbsp;
+          ${number}
         </option>`;
 
     if (number === selectedNumber) selectedValue = true;
@@ -1368,6 +1494,50 @@ function showSelectedNumbersNew(label, className, fromNumber, toNumber, selected
   html += `
       </select >
     </div>`;
+
+  return html;
+}
+*/
+
+// Show selected numbers (from number - to number)
+function showSelectedNumbersNew(label, className, fromNumber, toNumber, selectedNumber, enableChanges) {
+
+  let selectedValue = false;
+
+  let html = `
+    <!-- start showSelectedNumbersNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+  // show interval of numbers
+  for (let number = fromNumber; number <= toNumber; number++) {
+
+    html += `
+        <option 
+          value=${number}
+          ${(number === selectedNumber) ? 'selected' : ''}
+        >
+          ${number}
+        </option>`;
+
+    if (number === selectedNumber) selectedValue = true;
+  };
+
+  html += `
+      </select >
+    </div>
+    <!-- end showSelectedNumbersNew -->
+    `;
 
   return html;
 }
@@ -1631,7 +1801,7 @@ function startFrame(className) {
 }
 
 // Start frame
-function startFilterFrame() {
+function startFilterFrame(label) {
 
   return `
   <!-- start startFilterFrame -->
@@ -1648,10 +1818,8 @@ function startFilterFrame() {
     >
       <div 
         class="field">
-        <label
-          for="voucherType"
-        >
-          Bilagstype
+        <label>
+          ${label}
         </label>
         <!-- end startFilterFrame -->
   `;
@@ -1753,8 +1921,9 @@ function showTextNew(label, className, value, enableChanges, placeholder = "") {
   </div>`;
 }
 
+/*
 // Show selected values 
-function showSelectedValuesNew(label, className, style, enableChanges, selectedValue, ...values) {
+function inputValues(label, className, style, enableChanges, selectedValue, ...values) {
 
   let selected = false;
 
@@ -1777,7 +1946,7 @@ function showSelectedValuesNew(label, className, style, enableChanges, selectedV
         value="${(value ?? '').trim()}"
         ${value === selectedValue ? 'selected' : ''}
       >
-        &nbsp;&nbsp;${value}&nbsp;&nbsp;
+        ${value}
       </option>`;
     if (value === selectedValue) selected = true;
   });
@@ -1785,6 +1954,50 @@ function showSelectedValuesNew(label, className, style, enableChanges, selectedV
   html += `
       </select >
     </div>`;
+
+  return html;
+}
+*/
+
+// Show selected values 
+function inputValues(label, className, enableChanges, selectedValue, ...values) {
+
+  let selected = false;
+
+  let html = `
+    <!-- start inputValues -->
+    <div 
+      class="field"
+    >
+      <label 
+        for="${className}"
+      >
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+  values.forEach((value) => {
+
+    html += `
+    <option 
+      value="${(value ?? '').trim()}"
+      ${value === selectedValue ? 'selected' : ''}
+    >
+      ${value.trim()}
+    </option>`;
+    if (value === selectedValue) selected = true;
+  });
+
+  html += `
+      </select >
+    </div>
+    <!-- end inputValues -->
+    `;
 
   return html;
 }
@@ -2105,3 +2318,83 @@ function exitIfNoActivity() {
   document.addEventListener(event, exitIfNoActivity);
 });
 
+// Table handling
+function startTable(year, month, text) {
+
+  const monthName = findNameOfMonth(month);
+  return `
+  <!-- start startTable -->
+  <main class="waste-page">
+    <section
+      class="waste-card"
+      aria-labelledby="waste-title"
+    >
+
+      <header
+        class="waste-heading"
+      >
+        <h1
+          id="waste-title"
+        >
+          ${text}
+        </h1>
+        <p>
+          ${monthName} ${year}
+        </p>
+      </header>
+
+      <div
+        class="waste-scroll"
+        role="region"
+        aria-label="${text} for ${monthName} ${year}"
+        tabindex="0"
+      >
+        <table class="transaction-table">
+    <!-- end startTable -->
+  `;
+}
+
+function tableHeader(columnWidths, ...texts) {
+
+  // Calculate total table width
+  let tableWidth = 0;
+  columnWidths.forEach((columnWidth) => {
+    tableWidth += (columnWidth + 10);
+  });
+
+  let html = `
+    <!-- start tableHeader -->
+    <colgroup>
+  `;
+
+  // Colomn widths
+  columnWidths.forEach((columnWidth) => {
+    html += `<col style="width: ${columnWidth}px;">`;
+  });
+
+  html += '</colgroup>';
+
+  html += `
+      <thead>
+    <tr>
+  `;
+
+  texts.forEach((text) => {
+
+    html += `
+      <th 
+        scope="col"
+      >
+        ${text.trim()}
+      </th>
+      `;
+  });
+
+  html += `
+         </tr>
+      </thead>
+    <!-- end tableHeader -->
+  `;
+
+  return html;
+}

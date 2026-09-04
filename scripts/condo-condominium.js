@@ -28,12 +28,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      // Show vertical menu
+      // Show menu
       let html = objCondominium.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      setFrameTitle("menu-frame", "Meny");
 
       await objCondominium.loadCondominiumsTable();
       const resident = 'Y';
@@ -68,7 +65,7 @@ async function events() {
       const fixedCost = 'A';
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       await objAccounts.loadAccountsTable(condominiumId, fixedCost);
-      showCondominium(condominiumId, 3);
+      showCondominium(condominiumId);
     };
   });
 
@@ -139,63 +136,10 @@ async function events() {
   });
 }
 
-// Reset all values for condominium
-function resetValues() {
-
-  document.querySelector('.filterCondominiumId').value = '';
-
-  document.querySelector('.name').value = '';
-
-  // street
-  document.querySelector('.street').value = '';
-
-  //  address 2
-  document.querySelector('.address2').value = '';
-
-  // postal code
-  document.querySelector('.postalCode').value = '';
-
-  // city
-  document.querySelector('.city').value = '';
-
-  // phone number
-  document.querySelector('.phone').value = '';
-
-  // email
-  document.querySelector('.email').value = '';
-
-  // account id for income remote heating
-  document.querySelector('.incomeRemoteHeatingAccountId').value = 0;
-
-  // account id for payment remote heating
-  document.querySelector('.paymentRemoteHeatingAccountId').value = 0;
-
-  // account id for common cost
-  document.querySelector('.commonCostAccountId').value = 0;
-
-  // organization number
-  document.querySelector('.organizationNumber').value = '';
-
-  // name of importfile
-  document.querySelector('.importPath').value = '';
-
-  removeMessage();
-
-  document.querySelector('.filterCondominiumId').disabled = true;
-
-  // Buttons
-  removeMessage();
-  if (enableChanges) {
-    disableButton('delete', true);
-    disableButton('insert', true);
-    disableButton('cancel', false);
-    disableButton('filterCondominiumId', true);
-  }
-}
-
 // Show filter
 function showFilter(condominiumId) {
 
+  /*
   // Start frame
   let html = startFrame('filter-frame');
 
@@ -209,6 +153,18 @@ function showFilter(condominiumId) {
 
   // Change frame title
   setFrameTitle("filter-frame", "Filter");
+  */
+
+  // Start filter frame
+  let html = startFilterFrame("Sameie");
+
+  // Show condominiums
+  html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
+
+  // End filter frame
+  html += endFilterFrame();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show condominium
@@ -218,55 +174,47 @@ function showCondominium(condominiumId) {
   const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
 
   // Empty line
-  let html = emptyLine();
-  html += startLine();
+  //let html = emptyLine();
+  //html += startLine();
+
+  let html = startContent('Sameie');
 
   let name = objCondominium.arrayCondominiums[rowNumberCondominium]?.name.trim() ?? '';
-  html += showTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
-  html += "</div>";
-
-  // street, address2
-  html += startLine();
+  html += inputText("name", "Navn", name, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // street
   const street = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].street;
-  html += showTextNew('Gatenavn', 'street', street, enableChanges);
+  html += inputText("street", "Gatenavn", street, enableChanges);
 
+  // address2
   const address2 = objCondominium.arrayCondominiums[rowNumberCondominium]?.address2.trim() ?? '';
-  html += showTextNew('Adresse2', 'address2', address2, enableChanges);
-  html += "</div>";
+  html += inputText("address2", "Adresse2", address2, enableChanges);
+  html += "<div></div>";
 
-  // postalCode, city
-  html += startLine();
-
+  // postalCode
   let postalCode = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].postalCode;
   if (postalCode === '0') postalCode = "";
-  html += showTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
+  html += inputText("postalCode", "Postnummer", postalCode, enableChanges);
 
   // city
   const city = objCondominium.arrayCondominiums[rowNumberCondominium]?.city.trim() ?? '';
-
-  html += showTextNew('Poststed', 'city', city, enableChanges);
-  html += "</div>";
-
-  // phone, email
-  html += startLine();
+  html += inputText("city", "Poststed", city, enableChanges);
+  html += "<div></div>";
 
   // phone
   const phone = objCondominium.arrayCondominiums[rowNumberCondominium]?.phone.trim() ?? '';
-  html += showTextNew('Telefonnummer', 'phone', phone, enableChanges);
+  html += inputText("phone", "Telefonnummer", phone, enableChanges);
 
   // email
   const email = objCondominium.arrayCondominiums[rowNumberCondominium]?.email.trim() ?? '';
-  html += showTextNew('E-mail', 'email', email, enableChanges);
-  html += "</div>";
-
-  // income Remote Heating AccountId, bankAccount, commonCostAccountId
-  html += startLine();
+  html += inputText("email", "E-mail", email, enableChanges);
+  html += "<div></div>";
 
   // income Remote Heating AccountId
   const incomeRemoteHeatingAccountId = objCondominium.arrayCondominiums[rowNumberCondominium]?.incomeRemoteHeatingAccountId ?? 0;
@@ -275,26 +223,24 @@ function showCondominium(condominiumId) {
   // payment Remote Heating AccountId
   const paymentRemoteHeatingAccountId = objCondominium.arrayCondominiums[rowNumberCondominium]?.paymentRemoteHeatingAccountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('Ugiftskonto fjernvarme', 'paymentRemoteHeatingAccountId', paymentRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
+  html += "<div></div>";
 
   // common Cost AccountId
   const commonCostAccountId = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId;
   html += objAccounts.showSelectedAccountsNew('Inntektskonto husleie', 'commonCostAccountId', commonCostAccountId, 'Velg konto', '', enableChanges);
-  html += "</div>";
 
   // organizationNumber
-  html += startLine();
   const organizationNumber = objCondominium.arrayCondominiums[rowNumberCondominium]?.organizationNumber ?? '';
-  html += showTextNew('Organisasjonsnummer', 'organizationNumber', organizationNumber, enableChanges);
-  html += "</div>";
+  html += inputText("organizationNumber", "Organisasjonsnummer", organizationNumber, enableChanges);
+  html += "<div></div>";
 
   // import Path
-  html += startLine();
   const importPath = objCondominium.arrayCondominiums[rowNumberCondominium]?.importPath.trim() ?? '';
-  html += showTextNew('Plassering av data', 'importPath', importPath, enableChanges);
-  html += "</div>";
+   html += inputWideText("importPath", "Plassering av data", importPath, 2, enableChanges);
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -308,18 +254,26 @@ function showCondominium(condominiumId) {
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
+  */
 
-  document.querySelector('.showCondominium').innerHTML = html;
+  html += endContent();
 
-  //if (enableChanges) document.querySelector('.cancel').disabled = true;
   // Buttons
   if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterCondominiumId', false, 'white');
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
   }
+  document.querySelector('.showCondominium').innerHTML = html;
 }
 
 // Update a condominiums row
@@ -434,3 +388,56 @@ async function deleteCondominiumRow() {
   }
 }
 
+// Reset all values for condominium
+function resetValues() {
+
+  document.querySelector('.filterCondominiumId').value = '';
+
+  document.querySelector('.name').value = '';
+
+  // street
+  document.querySelector('.street').value = '';
+
+  //  address 2
+  document.querySelector('.address2').value = '';
+
+  // postal code
+  document.querySelector('.postalCode').value = '';
+
+  // city
+  document.querySelector('.city').value = '';
+
+  // phone number
+  document.querySelector('.phone').value = '';
+
+  // email
+  document.querySelector('.email').value = '';
+
+  // account id for income remote heating
+  document.querySelector('.incomeRemoteHeatingAccountId').value = 0;
+
+  // account id for payment remote heating
+  document.querySelector('.paymentRemoteHeatingAccountId').value = 0;
+
+  // account id for common cost
+  document.querySelector('.commonCostAccountId').value = 0;
+
+  // organization number
+  document.querySelector('.organizationNumber').value = '';
+
+  // name of importfile
+  document.querySelector('.importPath').value = '';
+
+  removeMessage();
+
+  document.querySelector('.filterCondominiumId').disabled = true;
+
+  // Buttons
+  removeMessage();
+  if (enableChanges) {
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterCondominiumId', true);
+  }
+}

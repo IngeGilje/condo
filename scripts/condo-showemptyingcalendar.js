@@ -130,7 +130,7 @@ function showFilter() {
   // Show selected months
   const date = getCurrentDate();
   let month = Number(date.split('.')[1]); // Extract the month part
-  html += objShowEmptyingCalendar.showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
+  html += objShowEmptyingCalendar.showSelectedMonthsNew('Måned', 'filterMonth', month, true);
 
   html += "</div>";
 
@@ -140,7 +140,7 @@ function showFilter() {
   document.querySelector('.showFilter').innerHTML = html;
 }
 
-// Show emptyingCalendar
+// Show emptyingcalendar
 function showEmptyingCalendar() {
 
   // start table
@@ -150,58 +150,58 @@ function showEmptyingCalendar() {
   html += objEmptyingCalendar.showTableHeaderMenu('#e0f0e0', 'center', 'Ansvarlig', 'Dato', 'Restavfall', 'Papiravfall', 'Matavfall', 'Plastavfall', 'Juletre');
 
   if (objEmptyingCalendar.arrayEmptyingCalendars.length > 0) {
-    objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingCalendar) => {
+    objEmptyingCalendar.arrayEmptyingCalendars.forEach((emptyingcalendar) => {
 
       // Show menu
       html += objShowEmptyingCalendar.insertTableRow('');
 
       // condoId
-      let condoId = emptyingCalendar.condoId;
-      className = `condoId${emptyingCalendar.emptyingCalendarId}`;
+      let condoId = emptyingcalendar.condoId;
+      className = `condoId${emptyingcalendar.emptyingCalendarId}`;
       html += objCondo.showSelectedCondos(className, '', condoId, 'Velg leilighet', '', false);
 
       // date
-      let date = emptyingCalendar.date;
+      let date = emptyingcalendar.date;
       date = formatNumberToNorDate(date);
-      className = `date${emptyingCalendar.emptyingCalendarId}`;
+      className = `date${emptyingcalendar.emptyingCalendarId}`;
       html += objShowEmptyingCalendar.editTableCell(className, date, 10, false);
 
       // residual waste  
-      className = `residualWaste${emptyingCalendar.emptyingCalendarId}`;
+      className = `residualWaste${emptyingcalendar.emptyingCalendarId}`;
       html += '<td class="center underscore">';
-      html += (emptyingCalendar.residualWaste === 'Y')
+      html += (emptyingcalendar.residualWaste === 'Y')
         ? `<i class="bi bi-trash-fill" style="color: black; font-size: 29px;"></i>`
         : ``;
       html += "</td>";
 
       // Paper waste
-      className = `paper${emptyingCalendar.emptyingCalendarId}`;
+      className = `paper${emptyingcalendar.emptyingCalendarId}`;
       html += "<td class='center underscore'>";
-      html += (emptyingCalendar.paper === 'Y')
+      html += (emptyingcalendar.paper === 'Y')
         ? `<i class="bi bi-newspaper" style="color: blue; font-size: 29px;"></i>`
         : ``;
       html += "</td>";
 
       // food waste
-      className = `food${emptyingCalendar.emptyingCalendarId}`;
+      className = `food${emptyingcalendar.emptyingCalendarId}`;
       html += "<td class='center underscore'>";
-      html += (emptyingCalendar.food === 'Y')
+      html += (emptyingcalendar.food === 'Y')
         ? `<i class="bi bi-apple" style="color: green; font-size: 29px;"></i>`
         : ``;
       html += "</td>";
 
       // plastic waste
-      className = `plastic${emptyingCalendar.emptyingCalendarId}`;
+      className = `plastic${emptyingcalendar.emptyingCalendarId}`;
       html += "<td class='center underscore'>";
-      html += (emptyingCalendar.plastic === 'Y')
+      html += (emptyingcalendar.plastic === 'Y')
         ? `<i class="bi bi-recycle"style="color: greenyellow; font-size: 29px;"></i>`
         : ``;
       html += "</td>";
 
       // Christmas tree
-      className = `christmasTree${emptyingCalendar.emptyingCalendarId}`;
+      className = `christmasTree${emptyingcalendar.emptyingCalendarId}`;
       html += "<td class='center underscore'>";
-      html += (emptyingCalendar.christmasTree === 'Y')
+      html += (emptyingcalendar.christmasTree === 'Y')
         ? `<i class="bi bi-tree-fill" style="color: green; font-size: 29px;"></i>`
         : ``;
       html += "</td>";

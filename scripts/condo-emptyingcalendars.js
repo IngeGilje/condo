@@ -9,7 +9,7 @@ const objEmptyingCalendars = new EmptyingCalendars('emptyingcalendars');
 const enableChanges = (objEmptyingCalendars.securityLevel > 5);
 const applicationName = "condo-emptyingcalendars";
 
-const columnWidths = [100, 100, 100, 100, 100, 100, 100, 100];
+const columnWidths = [100, 100, 50, 50, 50, 50,50, 100];
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
@@ -36,23 +36,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objEmptyingCalendars.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objEmptyingCalendars.showHorizontalMenu("filter-frame", objEmptyingCalendars.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show menu for empty calendar 
-      html = objEmptyingCalendars.showHorizontalMenu("filter-frame", objEmptyingCalendars.arrayMenuEmptyingCalendar);
-      document.querySelector('.menuEmptyingCalendar').innerHTML = html;
-      objEmptyingCalendars.markActivatedApplication(objEmptyingCalendars.arrayMenuEmptyingCalendar, applicationName);
-      */
 
       await objCondo.loadCondoTable(objEmptyingCalendars.condominiumId, objEmptyingCalendars.nineNine);
 
@@ -60,15 +46,13 @@ async function main() {
       calendarDate = getCurrentDate();
       const year = String(calendarDate).slice(6, 10);
       const month = String(calendarDate).slice(3, 5);
-      const fromDate = Number(year + month + "01");
-      const toDate = Number(year + month + "31");
 
       const orderBy = "date ASC";
       await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendars.condominiumId, orderBy);
       showFilter(Number(year), Number(month));
 
       // Show emtyingcalendars
-      showEmptyingCalendars(year, month);
+      showEmptyingCalendars(month);
 
       // events for emptyingcalendar
       events();
@@ -93,7 +77,7 @@ async function events() {
       await objEmptyingCalendars.loadEmptyingCalendarsTable(objEmptyingCalendars.condominiumId, orderBy);
 
       // Show emtyingcalendar
-      showEmptyingCalendars(year, month);
+      showEmptyingCalendars(month);
     };
   });
 
@@ -130,6 +114,7 @@ async function events() {
 // Show filter
 function showFilter(year, month) {
 
+  /*
   // Start frame
   let html = startFrame('filter-frame');
 
@@ -146,11 +131,28 @@ function showFilter(year, month) {
 
   // Change frame title
   setFrameTitle("filter-frame","Filter");
+  */
+
+  // Start filter frame
+  let html = startFilterFrame("Tømmekalender");
+
+  // Show years
+  //html += showSelectedNumbersNew('År', 'filterYear',  2020, 2030, year, true);
+  html += showSelectedNumbersNew('År', 'filterYear', 2020, 2030, year, true);
+
+  // Show months
+  html += showSelectedMonthsNew('Måned', 'filterMonth', month, true);
+
+  // End filter frame
+  html += endFilterFrame();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show emptyingCalendars
-function showEmptyingCalendars(year, month) {
+function showEmptyingCalendars(month) {
 
+  /*
   // start table
   let html = objEmptyingCalendars.initializeTable(columnWidths);
 
@@ -161,65 +163,66 @@ function showEmptyingCalendars(year, month) {
   const fromDate = Number(document.querySelector('.filterYear').value + month + "01");
   const toDate = Number(document.querySelector('.filterYear').value + month + "31");
   if (objEmptyingCalendars.arrayEmptyingCalendars.length > 0) {
-    objEmptyingCalendars.arrayEmptyingCalendars.forEach((emptyingCalendar) => {
+    objEmptyingCalendars.arrayEmptyingCalendars.forEach((emptyingcalendar) => {
 
-      if (emptyingCalendar.date >= fromDate && emptyingCalendar.date <= toDate) {
+      if (emptyingcalendar.date >= fromDate && emptyingcalendar.date <= toDate) {
 
-        // Show menu
         html += objEmptyingCalendars.insertTableRow('');
 
         // condoId
-        let condoId = emptyingCalendar.condoId;
-        className = `condoId${emptyingCalendar.emptyingCalendarId}`;
+        let condoId = emptyingcalendar.condoId;
+        className = `condoId${emptyingcalendar.emptyingCalendarId}`;
         html += objCondo.showSelectedCondos(className, '', condoId, 'Velg leilighet', '', false);
 
         // date
-        let date = emptyingCalendar.date;
+        let date = emptyingcalendar.date;
         date = formatNumberToNorDate(date);
-        className = `date${emptyingCalendar.emptyingCalendarId}`;
+        className = `date${emptyingcalendar.emptyingCalendarId}`;
         html += editTableCell(className, date, 10, false);
+        //html += inputDate(className, "Dato", date, false);
 
         // residual waste  
-        className = `residualWaste${emptyingCalendar.emptyingCalendarId}`;
+        className = `residualWaste${emptyingcalendar.emptyingCalendarId}`;
+
         html += '<td class="center underscore">';
-        html += (emptyingCalendar.residualWaste === 'Y')
+        html += (emptyingcalendar.residualWaste === 'Y')
           ? `<i class="bi bi-trash-fill" style="color: black; font-size: 29px;"></i>`
           : ``;
         html += "</td>";
 
         // Paper waste
-        className = `paper${emptyingCalendar.emptyingCalendarId}`;
+        className = `paper${emptyingcalendar.emptyingCalendarId}`;
         html += "<td class='center underscore'>";
-        html += (emptyingCalendar.paper === 'Y')
+        html += (emptyingcalendar.paper === 'Y')
           ? `<i class="bi bi-newspaper" style="color: blue; font-size: 29px;"></i>`
           : ``;
         html += "</td>";
 
         // food waste
-        className = `food${emptyingCalendar.emptyingCalendarId}`;
+        className = `food${emptyingcalendar.emptyingCalendarId}`;
         html += "<td class='center underscore'>";
-        html += (emptyingCalendar.food === 'Y')
+        html += (emptyingcalendar.food === 'Y')
           ? `<i class="bi bi-apple" style="color: green; font-size: 29px;"></i>`
           : ``;
         html += "</td>";
 
         // plastic waste
-        className = `plastic${emptyingCalendar.emptyingCalendarId}`;
+        className = `plastic${emptyingcalendar.emptyingCalendarId}`;
         html += "<td class='center underscore'>";
-        html += (emptyingCalendar.plastic === 'Y')
+        html += (emptyingcalendar.plastic === 'Y')
           ? `<i class="bi bi-recycle"style="color: greenyellow; font-size: 29px;"></i>`
           : ``;
         html += "</td>";
 
         // Christmas tree
-        className = `christmasTree${emptyingCalendar.emptyingCalendarId}`;
+        className = `christmasTree${emptyingcalendar.emptyingCalendarId}`;
         html += "<td class='center underscore'>";
-        html += (emptyingCalendar.christmasTree === 'Y')
+        html += (emptyingcalendar.christmasTree === 'Y')
           ? `<i class="bi bi-tree-fill" style="color: green; font-size: 29px;"></i>`
           : ``;
 
         // Change emptycalenders
-        className = `change${emptyingCalendar.emptyingCalendarId}`;
+        className = `change${emptyingcalendar.emptyingCalendarId}`;
         html += objEmptyingCalendars.showButton(className, 'Rediger');
 
         html += "</td>";
@@ -229,5 +232,78 @@ function showEmptyingCalendars(year, month) {
 
   // The end of the table
   html += objEmptyingCalendars.endTable();
+  */
+
+  // Show emptyingcalenders
+  const year = Number(document.querySelector('.filterYear').value);
+  month = Number(document.querySelector('.filterMonth').value);
+  let html = startTable(year, month, "Tømmeplan");
+  
+  html += tableHeader(columnWidths, "Ansvarlig", "Dato", "Restavfall", "Papiravfall", "Matavfall", "Plastavfall","Juletre"," ");
+
+  if (Number(document.querySelector('.filterMonth').value) < 10) month = "0" + month;
+  const fromDate = Number(document.querySelector('.filterYear').value + month + "01");
+  const toDate = Number(document.querySelector('.filterYear').value + month + "31");
+  if (objEmptyingCalendars.arrayEmptyingCalendars.length > 0) {
+    objEmptyingCalendars.arrayEmptyingCalendars.forEach((emptyingcalendar) => {
+
+      if (emptyingcalendar.date >= fromDate && emptyingcalendar.date <= toDate) {
+
+        // New table row
+        html += `
+          <tr>
+        `;
+
+        // condoId 1
+        const condoName = objCondo.getCondoNameById(emptyingcalendar.condoId);
+        html += inputTableText("condoId22", condoName, false);
+        
+        // date 2
+        let date = emptyingcalendar.date;
+        date = formatNumberToNorDate(date);
+        className = `date${emptyingcalendar.emptyingCalendarId}`;
+        html += inputTableText(className, date, false);
+
+        // residual waste 3
+        className = `residualWaste${emptyingcalendar.emptyingCalendarId}`;
+        html += (emptyingcalendar.residualWaste === 'Y')
+          ? showTableIcon("bi bi-trash-fill", "black")
+          : `<td></td>`;
+
+        // Paper waste 4
+        className = `paper${emptyingcalendar.emptyingCalendarId}`;
+        html += (emptyingcalendar.paper === 'Y')
+          ? showTableIcon("bi bi-newspaper", "blue")
+          : `<td></td>`;
+
+        // food waste 5
+        className = `food${emptyingcalendar.emptyingCalendarId}`;
+        html += (emptyingcalendar.food === 'Y')
+          ? showTableIcon("bi bi-apple", "green")
+          : `<td></td>`;
+
+        // plastic waste 6
+        className = `plastic${emptyingcalendar.emptyingCalendarId}`;
+        html += (emptyingcalendar.plastic === 'Y')
+          ? showTableIcon("bi-recycle", "greenyellow")
+          : `<td></td>`;
+
+        // Christmas tree 7
+        className = `christmasTree${emptyingcalendar.emptyingCalendarId}`;
+        html += (emptyingcalendar.christmasTree === 'Y')
+          ? showTableIcon("bi bi-tree-fill", "green")
+          : `<td></td>`;
+
+        // Change emptycalenders 8
+        className = `change${emptyingcalendar.emptyingCalendarId}`;
+        html += showTableButton(className, 'Rediger');
+        html += `
+          </tr>
+        `;
+      }
+    });
+  }
+
+  html += endTable();
   document.querySelector('.showEmptyingCalendars').innerHTML = html;
 }

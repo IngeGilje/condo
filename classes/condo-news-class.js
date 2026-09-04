@@ -127,6 +127,7 @@ class News extends Condos {
     return html;
   }
 
+  /*
   // Show news
   showSelectedNewsNew(label, className, style, newsId, selectNone, selectAll, enableChanges) {
 
@@ -200,6 +201,78 @@ class News extends Condos {
         ${label}
       </label>
     </div>`;
+
+    return html;
+  }
+  */
+
+  // Show news
+  showSelectedNewsNew(className, newsId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedNewsNew -->
+    <select 
+      class="${className}"
+      ${(enableChanges) ? '' : 'readonly'}
+    >`;
+
+    // Check if news array is empty
+    if (this.arrayNews.length > 0) {
+      this.arrayNews.forEach((news) => {
+
+        html += `
+        <option 
+          value=${news.newsId}
+          ${(news.newsId === newsId) ? 'selected' : ''}
+        >
+          ${news.title.trim()}
+        </option>`;
+        if (news.newsId === newsId) selectedValue = true;
+      });
+    } else {
+
+      // No news
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen Konti
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayNews.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayNews.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+    </select>
+    <!-- end showSelectedNewsNew -->
+    `;
 
     return html;
   }

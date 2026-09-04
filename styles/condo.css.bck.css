@@ -1,0 +1,669 @@
+._f9f9f9 {
+  background-color: #f9f9f9;
+}
+
+._f2f2f2 {
+  background-color: #f2f2f2;
+}
+
+._f8d7da {
+  background-color: #f8d7da;
+}
+
+._ffe5e5 {
+  background-color: #ffe5e5;
+}
+
+._2563eb {
+  background-color: #2563eb;
+}
+
+._ccc {
+  background-color: #ccc;
+}
+
+._e0f0e0 {
+  background-color: #e0f0e0;
+}
+
+._ddd {
+  background-color: #ddd;
+}
+
+._4c6fff {
+  background-color: #4c6fff;
+}
+
+._2563eb {
+  background-color: #2563eb;
+}
+
+._dbe3ef {
+  background-color: #dbe3ef
+}
+
+._38bdf8 {
+  background-color: #38bdf8;
+}
+
+._555 {
+  background-color: #555;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif, Arial, Helvetica;
+  margin-left: 35px;
+  margin-top: 35px;
+  font-size: 16px;
+}
+
+/* table container for all tables */
+div.tableContainer {
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+table {
+  border: "1";
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 100%;
+  font-family: system-ui, sans-serif;
+  border: 1px solid black;
+}
+
+button,
+th,
+td {
+  border: 1px solid #ccc;
+  text-align: center;
+  height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 8px;
+}
+
+/*
+th {
+  background: #e0f0e0;
+  padding: 12px 16px;
+  text-align: left;
+}
+*/
+
+th {
+  background: #e0f0e0;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.green-background {
+  background: #e0f0e0;
+  text-align: center;
+}
+
+td {
+  border: 0px;
+  font-family: sans-serif;
+  font-size: 13px;
+}
+
+button,
+select,
+input {
+  cursor: pointer;
+  border-radius: 5px;
+  border-color: #38bdf8;
+  width: 100%;
+}
+
+button:hover,
+select:hover,
+input:hover,
+.menu a:hover {
+  background: #38bdf8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.input {
+  height: 30px;
+}
+
+.select {
+  height: 35px;
+}
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.centerTable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.right {
+  text-align: right;
+}
+
+.no-border {
+  border: 0px solid #ddd;
+}
+
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* bold */
+.bold {
+  font-weight: 600;
+}
+
+.underscore {
+  border-bottom: 1px solid black;
+}
+
+
+/* menu */
+/* horizontal menu */
+.horizontalMenu {
+  display: flex;
+  list-style: none;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+.horizontalMenu li a {
+  display: block;
+  padding: 12px 15px;
+  color: black;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+
+  border: 2px outset #e0f0e0;
+  border-radius: 10px;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.horizontalMenu li a:hover {
+  background: #e0f0e0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.input-error {
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+}
+
+/* show error color */
+.input-valid {
+  background-color: white;
+}
+
+.input-invalid {
+  background-color: #ffe5e5;
+}
+
+iframe {
+  width: 600px;
+  height: 400px;
+}
+
+/* news */
+.News-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.news-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.news-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+}
+
+.news-content {
+  padding: 20px;
+}
+
+.news-title {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.news-meta {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.news-text {
+  line-height: 1.6;
+  font-size: 1rem;
+  white-space: pre-line;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .news-title {
+    font-size: 1.4rem;
+  }
+}
+
+/* horizaontal menu */
+/* Navbar container */
+.navbar {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+}
+
+/* Menu list */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+/* Links */
+.nav-links a {
+  text-decoration: none;
+  color: #e2e8f0;
+  font-size: 16px;
+  position: relative;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+  background-color: #2563eb;
+}
+
+/* Hover effect */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: #38bdf8;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.pageContainerNew {
+  overflow-x: auto;
+  overflow-y: auto;
+  display: flex;
+  height: 100vh;
+}
+
+.leftMenuNew button:hover {
+  background: #e0f0e0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  color: #2c3e50;
+}
+*/
+
+/* input */
+.line {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* Field */
+.field {
+  position: relative;
+}
+
+.field input {
+  width: 100%;
+  height: 50px;
+  padding: 0 14px;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  outline: none;
+
+  font-size: 14px;
+  background: white;
+  box-sizing: border-box;
+}
+
+.field button,
+.field select {
+  height: 56px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  font-size: 16px;
+  min-width: 100px;
+  max-width: 250px;
+}
+
+/* Apply the style when the input has keyboard focus 
+(the user clicked into it or tabbed to it). 
++ label means: Select the label that comes immediately after the input.
+input:focus + label
+selects that label when the input is focused.
+:placeholder-shown
+means: The input is currently showing its placeholder.
+:not(:placeholder-shown)
+means: The field contains some text.*/
+.field input:focus+label,
+.field input:not(:placeholder-shown)+label {
+  top: -9px;
+  font-size: 12px;
+  color: #2563eb;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .input-row {
+    flex-direction: column;
+  }
+}
+
+/* frame */
+.filter-frame {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  padding: 10px;
+  margin-left: 20px;
+  margin-top: 20px;
+
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 18px;
+
+  /* look more modern */
+  backdrop-filter: blur(8px);
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.03);
+
+  position: relative;
+}
+
+.filter-frame::before {
+  content: var(--title);
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  padding: 0px;
+
+  background: white;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #4c6fff;
+}
+
+.menu-frame {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px;
+  margin-left: 20px;
+  margin-top: 20px;
+
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 18px;
+
+  /* look more modern */
+  backdrop-filter: blur(8px);
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.03);
+
+  position: relative;
+}
+
+.menu-frame::before {
+  content: var(--title);
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  padding: 0px;
+
+  background: white;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #4c6fff;
+}
+
+/* Filter button */
+.filter-btn {
+
+  height: 46px;
+  min-width: 120px;
+  margin-bottom: 15px;
+
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+
+  background: white;
+  color: #4c6fff;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+/* Hover effect */
+.filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px rgba(76, 111, 255, 0.15),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+
+  border-color: #4c6fff;
+}
+
+/* Active (pressed) */
+.filter-btn:active {
+  transform: translateY(0);
+}
+
+/* the button stands out more */
+.filter-btn.primary {
+  background: #4c6fff;
+  color: white;
+  border-color: #4c6fff;
+}
+
+.filter-btn.primary:hover {
+  box-shadow:
+    0 8px 20px rgba(76, 111, 255, 0.25);
+}
+
+.filter-btn.primary:hover {
+  box-shadow:
+    0 8px 20px rgba(76, 111, 255, 0.25);
+}
+
+/* Log In */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f4f7fb, #edf2ff);
+}
+
+.login-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Login card */
+.login-box {
+  padding: 35px;
+
+  background: white;
+  border: 1px solid #dbe3ef;
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.06),
+    0 2px 8px rgba(0, 0, 0, 0.03);
+
+  /* Animation */
+  opacity: 0;
+  transform: translateY(25px);
+  animation: fadeInUp 0.7s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #4c6fff;
+  font-size: 24px;
+}
+
+/* Floating label */
+.field label {
+  position: absolute;
+  top: -8px;
+  left: 14px;
+  padding: 0 6px;
+  background: white;
+  color: #2563eb;
+  font-size: 13px;
+  z-index: 1;
+}
+
+.field input:focus+label,
+.field input:not(:placeholder-shown)+label {
+  top: -8px;
+  left: 10px;
+  font-size: 12px;
+  background: white;
+  padding: 0 6px;
+  color: #4c6fff;
+  border-color: #2563eb;
+}
+
+/* LogIn Button */
+.login-btn {
+
+  height: 50px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #4c6fff;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(76, 111, 255, 0.25);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+/*
+.menu-row {
+  display: flex;
+  gap: 15px;
+  margin-left: 35px;
+  margin-bottom: 5px;
+}
+*/
+
+.menu-row {
+  display: flex;
+}
+
+.field-position {
+  width: 250px;
+  margin-left: 35px;
+  margin-bottom: 15px;
+  max-width: 250px;
+  min-width: 100px;
+}
+
+.field-position-menu {
+  margin-bottom: 5px;
+  margin-left: 15px;
+  text-align: center;
+}

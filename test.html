@@ -8,318 +8,111 @@
 
   <title>Bilag</title>
 
-  <link rel="stylesheet" href="styles/condo.css">
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/frame.css">
 </head>
 
 <body>
 
-  <!-- vertical menu -->
-  <div class="menu-frame">
-    <div class="menu-row">
-      <div class="field">
-        <label for="news-news">
-          Nyheter
-        </label>
-        <select id="news-news" class="news center one-line field-position-menu"
-          onchange="window.location.href=this.value">
-          <option value="http://localhost/condo-shownews.html">
-            Vis Nyheter
-          </option>
-          <option value="http://localhost/condo-news.html">
-            Rediger Nyheter
-          </option>
-          <option value="http://localhost/condo-shownews.html" selected>
-            Nyheter
-          </option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="user-user">
-          Bruker
-        </label>
-        <select id="user-user" class="user center one-line field-position-menu"
-          onchange="window.location.href=this.value">
-          <option value="http://localhost/condo-user.html">
-            Rediger Bruker
-          </option>
-          <option value="http://localhost/condo-password.html">
-            Rediger Passord
-          </option>
-          <option value="http://localhost/condo-condo.html">
-            Rediger Leilighet
-          </option>
-          <option value="http://localhost/condo-userbankaccount.html">
-            Rediger Bankkonto
-          </option>
-          <option value="http://localhost/condo-user.html" selected>
-            Bruker
-          </option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="due-due">
-          Forfall
-        </label>
-        <select id="due-due" class="due center one-line field-position-menu" onchange="window.location.href=this.value">
-          <option value="http://localhost/condo-dues.html">
-            Vis Forfall
-          </option>
-          <option value="http://localhost/condo-supplier.html">
-            Rediger Leverandør
-          </option>
-          <option value="http://localhost/condo-commoncosts.html">
-            Vis Felleskostnader
-          </option>
-          <option value="http://localhost/condo-commoncost.html">
-            Rediger Felleskostnad
-          </option>
-          <option value="http://localhost/condo-overview.html">
-            Vis Betalingsoversikt
-          </option>
-          <option value="http://localhost/condo-dues.html" selected>
-            Forfall
-          </option>
-        </select>
-      </div>
-    </div>
-  </div>
+  <!-- start startContent -->
+  <section class="card">
+    <h2 class="card-title">
+      Transaksjonsdetaljer
+    </h2>
+    <form>
+      <div class="grid grid-form">
+        <!-- end startContent -->
 
-  <!-- Filter-->
-  <div class="filter-frame">
-    <div class="field field-position">
-      <select class="filterTransactionId center one-line">
-        <option value=1686>
-          Slettes
-        </option>
-        <option value=1773>
-          Laberget 95B
-        </option>
-        <option value=1772>
-          GIROGiro
-        </option>
-        <option value=1775>
-          AVTALE Avtale
-        </option>
-        <option value=1774>
-          Sameie 99a
-        </option>
-        <option value=1771>
-          Fabiana Gaspar Franco
-        </option>
-        <option value=1770>
-          Fabiana Gaspar Franco
-        </option>
-        <option value=1759>
-          Fellesutgifter
-        </option>
-        <option value=1762>
-          20011129161124048660
-        </option>
-        <option value=1764>
-          800537080710356
-        </option>
-        <option value=1763>
-          Omkostninger BedriftsNett
-        </option>
-        <option value=1768>
-          leil 301 Oskar Fausk 97C
-        </option>
-        <option value=1760>
-          0005061219837
-        </option>
-        <option value=1765>
-          800537080710356
-        </option>
-        <option value=1766>
-          0005061219837
-        </option>
-        <option value=1767>
-          800537080710356
-        </option>
-        <option value=1769 selected>
-          0005061219837
-        </option>
-      </select>
-      <label>
-        Bilag
-      </label>
-    </div>
-  </div>
+        <!-- start inputDate -->
+        <div class="field">
+          <label for="date">
+            Dato
+          </label>
+          <input class="newsDate" id="date" type="date" value="2026-08-20" readonly>
+        </div>
+        <!-- end inputDate -->
+        <div></div>
+        <!-- start showSelectedUsersNew -->
+        <div class="field">
+          <label for="apartment">
+            Forfatter
+          </label>
+          <select id="apartment" class="userId">
 
-  <!-- the part to change values -->
-  <div class="line">
-    <div class="field field-position">
-      <input type="text" autocomplete="off" class="transactionId center one-line" value="1769"
-        placeholder="Bilagsnummer" readonly>
-      <label>
-        Bilagsnummer
-      </label>
-    </div>
-  </div>
-  <div class="line">
-    <div class="field field-position">
-      <label>
-        Dato
-      </label>
-      <input type="date" style="height: 52px" class="transactionDate center one-line input" value="2026-08-03">
-    </div>
-  </div>
-  <div class="line">
-    <div class="field field-position">
-      <label>
-        Leilighet
-      </label>
-      <select class="condoId center one-line">
-        <option value=3>
-          95A
-        </option>
-        <option value=4>
-          95B
-        </option>
-        <option value=5>
-          97A
-        </option>
-        <option value=6>
-          97B
-        </option>
-        <option value=7>
-          97C
-        </option>
-        <option value=8>
-          99A
-        </option>
-        <option value=9>
-          99B
-        </option>
-        <option value=0 selected>
-          Velg leilighet
-        </option>
-      </select>
-    </div>
-    <div class="field field-position">
-      <label>
-        Konto
-      </label>
-      <select class="accountId center one-line">
-        <option value=13>
-          1,2,3,4... transaksjoner
-        </option>
-        <option value=67>
-          Diverse
-        </option>
-        <option value=6>
-          Forsikring
-        </option>
-        <option value=10>
-          Gebyr - FAKT.TJ
-        </option>
-        <option value=56>
-          Inntekt drift
-        </option>
-        <option value=4>
-          Inntekt fjernvarme
-        </option>
-        <option value=69>
-          Inntekt Rygg og Myrland
-        </option>
-        <option value=2>
-          Inntekter husleie
-        </option>
-        <option value=5>
-          Nettleie Lyse
-        </option>
-        <option value=52>
-          Omkostninger BedriftsNett
-        </option>
-        <option value=8>
-          TV og bredbånd
-        </option>
-        <option value=9>
-          Ugift drift
-        </option>
-        <option value=3 selected>
-          Utgift fjernvarme
-        </option>
-        <option value=70>
-          Utgift Rygg og Myraland
-        </option>
-        <option value=22>
-          Velforening
-        </option>
-        <option value=0>
-          Velg konto
-        </option>
-      </select>
-      <label>
-        Konto
-      </label>
-    </div>
-    <div class="field field-position">
-      <label>
-        Prosjekt
-      </label>
-      <select class="projectId center one-line">
-        <option value=1>
-          Utvendig vedlikehold 2026
-        </option>
-        <option value=0 selected>
-          Velg prosjekt
-        </option>
-      </select>
-    </div>
-  </div>
-  <div class="line">
-    <div class="field field-position">
-      <input type="text" autocomplete="off" class="income center one-line" value="0,00" placeholder="Inntekt">
-      <label>
-        Inntekt
-      </label>
-    </div>
-    <div class="field field-position">
-      <input type="text" autocomplete="off" class="payment center one-line" value="-3 685,25" placeholder="Betaling">
-      <label>
-        Betaling
-      </label>
-    </div>
-    <div class="field field-position">
-      <input type="text" autocomplete="off" class="kilowattHour center one-line" value="0,00"
-        placeholder="KilowatTimer">
-      <label>
-        KilowatTimer
-      </label>
-    </div>
-  </div>
-  <div class="line">
-    <div class="field field-position">
-      <input type="text" autocomplete="off" class="text center one-line" value="0005061219837" placeholder="Tekst">
-      <label>
-        Tekst
-      </label>
-    </div>
-  </div>
-  <div class="line">
-    <button class="update filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
+            <option value=9>
+              Åse
+            </option>
+            <option value=3>
+              Fabiana
+            </option>
+            <option value=2>
+              Inge
+            </option>
+            <option value=5>
+              Kristine
+            </option>
+            <option value=7>
+              Ladan
+            </option>
+            <option value=8 selected>
+              Oskar
+            </option>
+          </select>
+        </div>
+        <!-- end showSelectedUsersNew -->
+
+        <!-- start inputWideText -->
+        <div class="field wide">
+          <label for="title">
+            Tittel
+          </label>
+          <input class="title" id="title" value="Programmering av fjernkontroll til garasje" readonly>
+        </div>
+        <!-- end inputWideText -->
+
+
+        <!-- start endContent -->
+      </div>
+    </form>
+  </section>
+  <!-- end endContent -->
+
+  <!-- start startButtons -->
+  <div class="actions">
+    <!-- end startButtons -->
+
+    <!-- start inputButton -->
+    <button class="update primary" type="submit">
       Oppdater
     </button>
-    <button class="cancel filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
-      Angre
-    </button>
-  </div>
-  <div class="line">
-    <button class="delete filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
-      Slett
-    </button>
-    <button class="insert filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
+    <!-- end inputButton -->
+
+    <!-- start inputButton -->
+    <button class="insert secondary" type="button">
       Ny
     </button>
-  </div>
-  <div class="line">
-    <button class="back filter-btn primary" style="width:250px;margin-left: 35px;background-color: #38bdf8">
+    <!-- end inputButton -->
+
+    <!-- start inputButton -->
+    <button class="cancel secondary" type="reset">
+      Angre
+    </button>
+    <!-- end inputButton -->
+
+    <!-- start inputButton -->
+    <button class="back secondary" type="button">
       Tilbake
     </button>
+    <!-- end inputButton -->
+
+    <!-- start inputButton -->
+    <button class="delete danger" type="button">
+      Slett
+    </button>
+    <!-- end inputButton -->
+
+    <!-- start endButtons -->
   </div>
+  <!-- end endButtons -->
 </body>
 
 </html>

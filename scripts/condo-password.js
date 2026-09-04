@@ -153,12 +153,13 @@ function showFilter(userId) {
   //html += startLine();
 
   // Show users
-  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
+  //html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
+  html += objUser.showSelectedUsersNew('Bruker','filterUserId', userId, '', '', true);
 
   // End filter frame
   html += "</div>";
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector('.showFilter').innerHTML = html
 
   // Change frame title
   setFrameTitle("filter-frame","Filter");

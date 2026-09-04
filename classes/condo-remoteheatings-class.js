@@ -47,7 +47,7 @@ class RemoteHeatings extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen prosjekter&nbsp;&nbsp;
+        Ingen fjernvarme
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

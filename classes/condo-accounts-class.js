@@ -242,7 +242,7 @@ class Accounts extends Condos {
     return html;
   }
   */
- // Show accounts
+  // Show accounts
   showSelectedAccountsNew(label, className, accountId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
@@ -283,7 +283,7 @@ class Accounts extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        Ingen prosjekter
+        Ingen konti
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

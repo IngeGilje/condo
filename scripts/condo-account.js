@@ -179,7 +179,7 @@ function showAccount(accountId) {
   if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'N') selected = constVariableCost;
 
   let className = `fixedCost`;
-  html += showSelectedValuesNew('Kostnadstype', 'fixedCost', '', enableChanges, selected, constFixedCost, constVariableCost)
+  html += inputValues('Kostnadstype', 'fixedCost', '', enableChanges, selected, constFixedCost, constVariableCost)
   html += "</div>";
 
   // name

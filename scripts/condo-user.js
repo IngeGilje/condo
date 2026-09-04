@@ -203,7 +203,8 @@ function showFilter(userId) {
   let html = startFrame("filter-frame");
 
   // Show users
-  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
+  //html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
+  html += objUser.showSelectedUsersNew('Bruker','filterUserId', userId, '', '', true);
 
   // End filter frame
   html += "</div>";
@@ -269,7 +270,7 @@ function showUser(userId) {
     ? ''
     : objUser.arrayUsers[rowNumberUser].resident.trim();
   resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
-  html += showSelectedValuesNew('Beboer', 'resident', '', enableChanges, resident, 'Nei', 'Ja');
+  html += inputValues('Beboer', 'resident', '', enableChanges, resident, 'Nei', 'Ja');
   html += "</div>"
 
   // Buttons

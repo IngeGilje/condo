@@ -126,7 +126,7 @@ class User extends Condos {
       : 'http://localhost:3000/users';
     try {
 
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -381,6 +381,7 @@ class User extends Condos {
     return html;
   }
 
+  /*
   // Show users
   showSelectedUsersNew(label, className, userId, selectNone, selectAll, enableChanges) {
 
@@ -456,6 +457,86 @@ class User extends Condos {
         ${label}
       </label>
     </div>`;
+
+    return html;
+  }
+  */
+  // Show Users
+  showSelectedUsersNew(label, className, userId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedUsersNew -->
+    <div 
+      class="field"
+    >
+      <label for="apartment">
+        ${label}
+      </label>
+      <select 
+        id="apartment"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if Users array is empty
+    if (this.arrayUsers.length > 0) {
+      this.arrayUsers.forEach((user) => {
+
+        html += `
+        <option 
+          value=${user.userId}
+          ${(user.userId === userId) ? 'selected' : ''}
+        >
+          ${user.firstName.trim()}
+        </option>`;
+        if (!selectedValue) selectedValue = true;
+      });
+    } else {
+
+      // No Users
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen leiligheter
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayUsers.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayUsers.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedUsersNew -->
+    `;
 
     return html;
   }

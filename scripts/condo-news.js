@@ -28,7 +28,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objNews.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
@@ -153,6 +153,7 @@ async function events() {
 // Show filter
 function showFilter(newsId) {
 
+  /*
   // Start frame
   let html = startFrame('filter-frame');
 
@@ -166,6 +167,18 @@ function showFilter(newsId) {
 
   // Change frame title
   setFrameTitle("filter-frame","Filter");
+  */
+
+  // Start filter frame
+  let html = startFilterFrame("Nyheter");
+
+  // Show news
+  html += objNews.showSelectedNewsNew('filterNewsId', newsId, '', '', enableChanges);
+
+  // End filter frame
+  html += endFilterFrame();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show news
@@ -174,34 +187,37 @@ function showNews(newsId) {
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
 
-  // Empty line
-  let html = emptyLine();
+  let html = startContent('Transaksjonsdetaljer');
 
   // news date
-  html += startLine();
   let newsDate = objNews.arrayNews[rowNumberNews]?.date ?? 0;
   newsDate = formatNumberToISODate(newsDate);
-  html += showDate('Dato', 'newsDate', newsDate, enableChanges);
-  html += "</div>";
+  //html += showDate('Dato', 'newsDate', newsDate, enableChanges);
+  //html += "</div>";
+  html += inputDate('newsDate', 'Dato', newsDate, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // userId
-  html += startLine();
   const userId = objNews.arrayNews[rowNumberNews]?.userId ?? 0;
-  html += objUser.showSelectedUsersNew('Forfatter', 'userId', userId, 'Velg forfatter', '', true);
-  html += "</div>";
+  //html += objUser.showSelectedUsersNew('Forfatter', 'userId', userId, 'Velg forfatter', '', true);
+  //html += "</div>";
+  html += objUser.showSelectedUsersNew('Forfatter', 'userId', userId, '', '', true);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // title
-  html += startLine();
   const title = objNews.arrayNews[rowNumberNews]?.title ?? '';
-  html += showTextArea('Tittel', 'title', title, 45, enableChanges, 2);
-  html += "</div>";
+  //html += showTextArea('Tittel', 'title', title, 45, enableChanges, 2);
+  //html += "</div>";
+  html += inputWideText('title', 'Tittel', title, 2, enableChanges);
 
   // content
-  html += startLine();
   const content = objNews.arrayNews[rowNumberNews]?.content ?? '';
-  html += showTextArea('Innhold', 'content', content, 512, enableChanges, 6);
-  html += "</div>";
+  //html += showTextArea('Innhold', 'content', content, 512, enableChanges, 6);
+  html += inputWideText('content', 'Innhold', content, 3, enableChanges);
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -226,6 +242,26 @@ function showNews(newsId) {
     disableButton('cancel', true);
     disableButton('filterNewsId', false, 'white');
   }
+  */
+  html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+
+  document.querySelector('.showNews').innerHTML = html;
 }
 
 // Update a news row
@@ -237,8 +273,8 @@ async function updateNewsRow(newsId) {
 
   // validate title
   const title = document.querySelector('.title').value.trim();
-  const validTitle = validateTextNew('title',    '', 'Ugyldig Tittel',               true, title, 3, 45);
- 
+  const validTitle = validateTextNew('title', '', 'Ugyldig Tittel', true, title, 3, 45);
+
   // validate date
   let date = document.querySelector('.newsDate').value;
   date = Number(objNews.formatDateToNumber(date));

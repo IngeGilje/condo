@@ -223,10 +223,10 @@ async function events() {
 function showFilter(transactionId) {
 
   // Start filter frame
-  let html = startFilterFrame();
+  let html = startFilterFrame("Bilagsnummer");
 
   // Show transactions
-  html += objTransactions.showSelectedTransactionsNew('Bilag', 'filterTransactionId', transactionId, '', '', true);
+  html += objTransactions.showSelectedTransactionsNew('filterTransactionId', transactionId, '', '', true);
 
   // End filter frame
   html += endFilterFrame();
@@ -304,7 +304,7 @@ function showTransaction(transactionId) {
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].text;
   //html += showTextNew('Tekst', 'text', text, enableChanges, "Tekst");
-  html += inputWideText('text', 'Tekst', text, enableChanges);
+  html += inputWideText('text', 'Tekst', text, 2, enableChanges);
 
   html += endContent();
 

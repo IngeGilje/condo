@@ -41,7 +41,7 @@ class RemoteHeatingPrice extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen prosjekter&nbsp;&nbsp;
+        Ingen fjernvarmepriser
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

@@ -23,23 +23,9 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
   window.location.href = URL;
 } else {
 
-  // Show vertical menu
-  let html = objBankAccount.showMenu(applicationName);
+  // Show menu
+  let html = objCondominium.showMenu(applicationName);
   document.querySelector('.menuVertical').innerHTML = html;
-
-  // Change frame title
-  setFrameTitle("menu-frame", "Meny");
-
-  /*
-  // Show main menu
-  let html = objBankAccount.showHorizontalMenu("filter-frame", objBankAccount.arrayMainMenu);
-  document.querySelector('.menuMain').innerHTML = html;
-
-  // Show condominium menu
-  html = objBankAccount.showHorizontalMenu("filter-frame", objBankAccount.arrayMenuCondominium);
-  document.querySelector('.menuCondominium').innerHTML = html;
-  objBankAccount.markActivatedApplication(objBankAccount.arrayMenuCondominium, applicationName);
-  */
 
   // Call main when script loads
   main();
@@ -53,14 +39,16 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
       await objCondominium.loadCondominiumsTable();
       await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, objBankAccount.nineNine);
 
-      // Show header
-      //showHeader();
-
       // Show filter
-      showFilter();
+      // Get last id in last object in condominiums array
+      let bankAccountId = (objCondominium.arrayCondominiums.length > 0)
+        ? objCondominium.arrayCondominiums.at(-1)?.bankAccountId ?? 0
+        : 0;
+      showFilter(bankAccountId);
 
       // Show bank account
-      const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
+      bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
+
       showBankAccount(bankAccountId);
 
       // Events
@@ -175,16 +163,15 @@ async function deleteBankAccount() {
 // Show filter
 function showFilter(bankAccountId) {
 
+  /*
   // Start frame
   let html = startFrame('filter-frame');
 
-  /*
   // Show bankaccounts
   // Get last id in last object in bankaccounts array
-  const bankAccountId = (objBankAccount.arrayBankAccounts.length !== 0)
-    ? objBankAccount.arrayBankAccounts.at(-1)?.bankAccountId ?? 0
-    : 0;
-  */
+  //const bankAccountId = (objBankAccount.arrayBankAccounts.length !== 0)
+  //  ? objBankAccount.arrayBankAccounts.at(-1)?.bankAccountId ?? 0
+
   html += objBankAccount.showSelectedBankAccountsNew('Bankkonto', 'filterBankAccountId', '', bankAccountId, '', '', true);
 
   // End filter frame
@@ -194,6 +181,130 @@ function showFilter(bankAccountId) {
 
   // Change frame title
   setFrameTitle("filter-frame", "Filter");
+  */
+  // Start filter frame
+  let html = startFilterFrame("Sameie");
+
+  // Show bankaccounts
+  html += objBankAccount.showSelectedBankAccountsNew('Bankkonto', 'filterBankAccountId', '', bankAccountId, '', '', true);
+
+  // End filter frame
+  html += endFilterFrame();
+
+  document.querySelector('.showFilter').innerHTML = html;
+}
+
+// Show bank account
+function showBankAccount(bankAccountId) {
+
+  // row number bank account
+  const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
+
+  // Empty line
+  //let html = emptyLine();
+
+  let html = startContent('Sameie');
+
+  // name
+  const name = (rowNumberBankAccount === -1)
+    ? ''
+    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name.trim();
+  //html += showTextNew('Navn', 'name', name, enableChanges, "Bankkonto navn");
+  html += inputText('name', 'Navn', name, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
+
+  // bank account number
+  const bankAccount = (rowNumberBankAccount === -1)
+    ? ''
+    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount.trim();
+  html += inputText('bankAccount', 'Bankkontonummer', bankAccount, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
+
+  // opening balance date
+  let openingBalanceDate = (rowNumberBankAccount === -1)
+    ? ''
+    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate.trim();
+  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
+  openingBalanceDate = formatNumberToISODate(openingBalanceDate);
+  html += inputDate('openingBalanceDate', 'Dato', openingBalanceDate, enableChanges);
+
+  // opening balance
+  let openingBalance = (rowNumberBankAccount === -1)
+    ? ''
+    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance.trim();
+  openingBalance = formatNumberToNorAmount(openingBalance);
+  //html += showTextNew('Inngående saldo', 'openingBalance', openingBalance, enableChanges, "Inngående saldo");
+  html += inputNumber('openingBalance', 'Inngående saldo', openingBalance, enableChanges)
+  html += "<div></div>";
+
+  // closing balance date
+  let closingBalanceDate = (rowNumberBankAccount === -1)
+    ? ''
+    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate;
+
+  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
+  closingBalanceDate = formatNumberToISODate(closingBalanceDate);
+  html += showDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges);
+
+  // closing balance
+  let closingBalance = (rowNumberBankAccount === -1)
+    ? ''
+    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance;
+  closingBalance = formatNumberToNorAmount(closingBalance);
+
+  //html += showTextNew('Utgående saldo', 'closingBalance', closingBalance, enableChanges, "Utgående saldo");
+  html += inputNumber('closingBalance', 'Utgående saldo', closingBalance, enableChanges)
+  html += "<div></div>";
+
+  /*
+  // Buttons
+  if (enableChanges) {
+
+    html += startLine();
+    html += showButtonNew('update', 'Oppdater');
+    html += showButtonNew('cancel', 'Angre');
+    html += "</div>";
+
+    html += startLine();
+    html += showButtonNew('delete', 'Slett');
+    html += showButtonNew('insert', 'Ny');
+    html += "</div>";
+  }
+  */
+  html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+
+  document.querySelector('.showBankAccount').innerHTML = html;
+
+  //if (enableChanges) document.querySelector('.cancel').disabled = true;
+
+  /*
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', false);
+    disableButton('insert', false);
+    disableButton('update', false);
+    disableButton('cancel', true);
+    disableButton('filterBankAccountId', false, 'white');
+  }
+  */
 }
 
 // Update a bankaccounts row
@@ -302,18 +413,6 @@ async function updateBankAccountRow(bankAccountId) {
   }
 }
 
-// Delete one bankaccounts row
-async function deleteBankAccountRow(bankAccountId) {
-
-  // Check if bankaccount row exist
-  bankAccountsRowNumber = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
-  if (bankAccountsRowNumber !== -1) {
-
-    // delete bankaccount row
-    await objBankAccount.deleteBankAccountsTable(bankAccountId, objBankAccount.user);
-  }
-}
-
 // Reset values
 function resetValues() {
 
@@ -348,92 +447,14 @@ function resetValues() {
   }
 }
 
-// Show bank account
-function showBankAccount(bankAccountId) {
+// Delete one bankaccounts row
+async function deleteBankAccountRow(bankAccountId) {
 
-  // row number bank account
-  const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
+  // Check if bankaccount row exist
+  bankAccountsRowNumber = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+  if (bankAccountsRowNumber !== -1) {
 
-  // Empty line
-  let html = emptyLine();
-
-  // name
-  html += startLine();
-  const name = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name.trim();
-  html += showTextNew('Navn', 'name', name, enableChanges, "Bankkonto navn");
-  html += "</div>";
-
-  // bank account number
-  html += startLine();
-  const bankAccount = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount.trim();
-  html += showTextNew('Bankkontonummer', 'bankAccount', bankAccount, enableChanges, "Bankkonto navn");
-  html += "</div>";
-
-  // opening balance date
-  html += startLine();
-  let openingBalanceDate = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate.trim();
-
-  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
-  openingBalanceDate = formatNumberToISODate(openingBalanceDate);
-  html += showDate('Dato', 'openingBalanceDate', openingBalanceDate, enableChanges);
-
-  // opening balance
-  let openingBalance = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance.trim();
-  openingBalance = formatNumberToNorAmount(openingBalance);
-  html += showTextNew('Inngående saldo', 'openingBalance', openingBalance, enableChanges, "Inngående saldo");
-  html += "</div>";
-
-  // closing balance date
-  html += startLine();
-  let closingBalanceDate = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate.trim();
-
-  // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
-  closingBalanceDate = formatNumberToISODate(closingBalanceDate);
-  html += showDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges)
-
-  // closing balance
-  let closingBalance = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance.trim();
-  closingBalance = formatNumberToNorAmount(closingBalance);
-
-  html += showTextNew('Utgående saldo', 'closingBalance', closingBalance, enableChanges, "Utgående saldo");
-  html += "</div>";
-
-  // Buttons
-  if (enableChanges) {
-
-    html += startLine();
-    html += showButtonNew('update', 'Oppdater');
-    html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
-
-    html += startLine();
-    html += showButtonNew('delete', 'Slett');
-    html += showButtonNew('insert', 'Ny');
-    html += "</div>";
-  }
-
-  document.querySelector('.showBankAccount').innerHTML = html;
-
-  //if (enableChanges) document.querySelector('.cancel').disabled = true;
-
-  // Buttons
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterBankAccountId', false, 'white');
+    // delete bankaccount row
+    await objBankAccount.deleteBankAccountsTable(bankAccountId, objBankAccount.user);
   }
 }

@@ -2,159 +2,192 @@
 <html lang="nb-NO">
 
 <head>
-
-  <title>Rediger Transaksjon</title>
+  <title>Sameie</title>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/table.css">
   <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
 </head>
 
 <body>
 
-  <main class="page">
 
-    <div class="news-container">
-      <div class="news-card">
-        <div class="news-content">
-          <h1 class="news-title">Programmering av fjernkontroll til garasje</h1>
-          <div class="news-meta">20.08.2026 • av Oskar Fausk</div>
-          <p class="news-text">
-            I forbindelse med programmering av fjernkontroll til garasjeporten, ble dessverre alle fjernkontrollene
-            nullet ut.
-            Det betyr at hver enkelt må få programmert sin fjernkontroll på nytt.
 
-            Det må gjøres ved å kopiere min kontroll.
-            Gi lyd når det passer.
+  <!-- start showMenu -->
+  <section class="card">
+    <h2 class="card-title">
+      Meny
+    </h2>
+    <div class="grid grid-menu">
 
-            Mvh
-            Oskar
-          </p>
-        </div>
-        <div class="news-content">
-          <h1 class="news-title">Vinduer som ikke lar seg åpne pga maling</h1>
-          <div class="news-meta">09.08.2026 • av Oskar Fausk</div>
-          <p class="news-text">
-            I dag prøvde jeg å åpne kjøkkenvinduet mitt, som var malt igjen. Jeg klarte å åpne det nå. Vet ikke om det
-            har "gått seg til", eller om maler har vært oppe på terrassen til Ladan og fikset det.
-            Kan dere andre og sjekke om dere klarer å åpne de vinduene som var malt igjen:
-
-            95B: ett vindu mot sør.
-            99B: ett eller to vinduer mot sør.
-          </p>
-        </div>
-        <div class="news-content">
-          <h1 class="news-title">Rydd i bossrommet</h1>
-          <div class="news-meta">13.07.2026 • av Ladan Pazoki</div>
-          <p class="news-text">
-            Jeg ser at noen setter store pappesker i bossrommet uten å brette dem. Vennligst brett eskene sammen før
-            dere kaster dem i papircontaineren. Da blir det plass til mer, og bossrommet holder seg ryddig. Takk!
-          </p>
-        </div>
-        <div class="news-content">
-          <h1 class="news-title">Fasadevask</h1>
-          <div class="news-meta">29.05.2026 • av Oskar Fausk</div>
-          <p class="news-text">
-            Det blir oppstart av fasadevask i neste uke (uke 23).
-            På de sidene som skal males, ikke der som det ble skiftet kledning sist.
-            Vinduer må holdes lukket på dagtid.
-          </p>
-        </div>
-        <div class="news-content">
-          <h1 class="news-title">Referat fra styremøte i Sameiet Hinna Park B3-08, torsdag 21. Mai 2026</h1>
-          <div class="news-meta">21.05.2026 • av Oskar Fausk</div>
-          <p class="news-text">
-            Referat fra styremøte i Sameiet Hinna Park B3-08, torsdag 21. Mai 2026
-
-            Tilstede:
-            95A – Fabiana Franco og Øyvind Tveit
-            95B - Inge Gilje
-            97A - Kristine Sømme
-            97B - Ladan Pazoki
-            97C - Oskar Fausk (Referent)
-            99B – Birgit Schober
-            Fraværende:
-            99A - Åse Stapnes
-            1. Vurdere tilbud for utbedring av kledning og maling som er sendt ut i går på
-            mail. Avgjøre om vi skal ta utbedringene nå.
-            Konklusjon i møtet:
-            Vi går for tilbudet fra Byggmester Torgersen, med oppstart i uke 23.
-            Antatt kostnad er ca 550 000 kr inkl moms til Byggmester Torgersen.
-            Antatt kostnad til takstmann er ca 30 000 kr inkl moms.
-            Oskar gir klarsignal til takstmannen/byggmester Torgersen, på vegne av sameiet.
-            Det tas 300 000 kr fra felleskontoen, resten fordeles i henhold til sameiebrøken.
-            Inge sette opp betalingsoversikt, og sender ut regning to ganger: forfall 15 Juni og 15 Juli (sum for hver
-            leilighet
-            delt i to innbetalinger).
-            Fabiana i 95A ba om hun kunne dele opp betalingen på 10 måneder fom 15 juni, dette ble godkjent av styret.
-
-            2. Start av årlig sjekk på varmeskapene fra rørlegger sunde. Ref tidligere vedtak
-            på at dette bør gjøres. Ta en avgjørelse på dette. 
-            Konklusjon i møtet:
-            Vi starter årlig sjekk av alle vannskapene.
-            Oskar avtaler med Rørlegger Sunde.
-
-            3. Planlegging av vårens dugnad i sameiet. 
-            Følgende dugnadsoppgaver er identifisert:
-            - Sope garasjen: Fabiana og Øyvind
-            - Rydde og sope teknisk rom: Fabiana og Øyvind
-            - Rydde og sope sykkelrom: Kristine
-            - Rydde og sope bossrom: Ladan
-            - Sope fortau: Oskar og Birgit
-            - Sope / spyle evt høytrykkspyle trappenedgang øst til garasje: Ladan
-            - Sope / spyle evt høytrykkspyle trappenedgang vest til garasje: Inge
-            - Smøre dørhengsler, låser og port, skifte lysrør: Oskar
-            - Spyle garasjeporten: Inge
-            - Pusse rust og male metalldører i garasje/sykkelbod/bossrom:
-            - Montere dørstopper på døren inn til bossrommet: Øyvind
-            - Sprøyte ugressmiddel (Eddik) langs byggene: Inge
-            - Male utsatte deler av grått rekkverk på østsiden av 99 blokken: Birgit
-
-            4. Evt andre ting å ta opp.
-            Det ble bestemt at vi begynner å lese av vannmålerene en gang i måneden.
-            For å unngå en stor regning, en gang i året.
-            Begynner med det når Ladan har fått fikset sin måler (pågående med Rørlegger Sunde, Oskar følger opp).
-          </p>
-        </div>
-        <div class="news-content">
-          <h1 class="news-title">Innkalling til styremøte i sameiet torsdag 21 mai kl 1830</h1>
-          <div class="news-meta">19.05.2026 • av Oskar Fausk</div>
-          <p class="news-text">
-            Velkommen til styremøte.
-            Det er torsdagen som passet best for de fleste.
-
-            Torsdag 21 mai kl 1830, hos meg.
-
-            Agenda:
-            1.
-            Vurdere tilbud for utbedring av kledning og maling som er sendt ut igår på mail. Avgjøre om vi skal ta
-            utbedringene nå.
-
-            2.
-            Start av årlig sjekk på varmeskapene fra rørlegger sunde. Ref tidligere vedtak på at dette bør gjøres. Ta en
-            avgjørelse på dette.
-
-            3.
-            Planlegging av vårens dugnad i sameiet.
-
-            4.
-            Eventuelle andre ting å ta opp/diskutere.
-          </p>
-        </div>
-        <div class="news-content">
-          <h1 class="news-title">Årsmøte 2026 Hinna Park velforening er utsatt til 4. mai 2026</h1>
-          <div class="news-meta">21.04.2026 • av Inge Gilje</div>
-          <p class="news-text">
-            Grunnet tekniske årsaker har styret i HPV besluttet å utsette årsmøte til 4. mai 2026 kl 18.00.
-            Samme sted.
-
-            Hilsen Elin Kro - styreleder
-            På vegne av styret HPV
-          </p>
-        </div>
+      <div class="field">
+        <label for="news-news">
+          Nyheter
+        </label>
+        <select id="news-news" onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-shownews.html">
+            Vis Nyheter
+          </option>
+          <option value="http://localhost/condo-news.html">
+            Rediger Nyheter
+          </option>
+          <option value="http://localhost/condo-news.html" selected>
+            Menyvalg
+          </option>
+        </select>
       </div>
+
+      <div class="field">
+        <label for="emptyingcalendar-emptyingcalendar">
+          Tømmekalender
+        </label>
+        <select id="emptyingcalendar-emptyingcalendar" onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-emptyingcalendars.html">
+            Vis Tømmekalender
+          </option>
+          <option value="http://localhost/condo-emptyingcalendar.html">
+            Rediger Tømmekalender
+          </option>
+          <option value="http://localhost/condo-emptyingcalendar.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="condominium-condominium">
+          Sameie
+        </label>
+        <select id="condominium-condominium" onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-condominium.html">
+            Rediger Sameie
+          </option>
+          <option value="http://localhost/condo-bankaccount.html">
+            Rediger Bankkonto
+          </option>
+          <option value="http://localhost/condo-accounts.html">
+            Vis Konti
+          </option>
+          <option value="http://localhost/condo-account.html">
+            Rediger Konto
+          </option>
+          <option value="http://localhost/condo-condominium.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="user-user">
+          Bruker
+        </label>
+        <select id="user-user" onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-user.html">
+            Rediger Bruker
+          </option>
+          <option value="http://localhost/condo-password.html">
+            Rediger Passord
+          </option>
+          <option value="http://localhost/condo-condo.html">
+            Rediger Leilighet
+          </option>
+          <option value="http://localhost/condo-userbankaccount.html">
+            Rediger Bankkonto
+          </option>
+          <option value="http://localhost/condo-user.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="transaction-transaction">
+          Transaksjoner
+        </label>
+        <select id="transaction-transaction" onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-transactions.html">
+            Vis Transaksjoner
+          </option>
+          <option value="http://localhost/condo-transaction.html">
+            Rediger Transaksjon
+          </option>
+          <option value="http://localhost/condo-projects.html">
+            Vis Prosjekter
+          </option>
+          <option value="http://localhost/condo-project.html">
+            Rediger Prosjekt
+          </option>
+          <option value="http://localhost/condo-budgets.html">
+            Vis Budsjett
+          </option>
+          <option value="http://localhost/condo-annualaccount.html">
+            Vis Årsregnskap
+          </option>
+          <option value="http://localhost/condo-importfile.html">
+            Hent transaksjoner
+          </option>
+          <option value="http://localhost/condo-liquidity.html">
+            Vis Likviditet
+          </option>
+          <option value="http://localhost/condo-transactions.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="due-due">
+          Forfall
+        </label>
+        <select id="due-due" onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-dues.html">
+            Vis Forfall
+          </option>
+          <option value="http://localhost/condo-supplier.html">
+            Rediger Leverandør
+          </option>
+          <option value="http://localhost/condo-commoncosts.html">
+            Vis Felleskostnader
+          </option>
+          <option value="http://localhost/condo-commoncost.html">
+            Rediger Felleskostnad
+          </option>
+          <option value="http://localhost/condo-overview.html">
+            Vis Betalingsoversikt
+          </option>
+          <option value="http://localhost/condo-dues.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="remoteHeating-remoteHeating">
+          Fjernvarme
+        </label>
+        <select id="remoteHeating-remoteHeating" onchange="window.location.href=this.value">
+          <option value="http://localhost/condo-remoteheating.html">
+            Rediger Fjernvarme
+          </option>
+          <option value="http://localhost/condo-remoteheatings.html">
+            Vis Fjernvarme
+          </option>
+          <option value="http://localhost/condo-remoteheatingprice.html">
+            Rediger Fjernvarmepris
+          </option>
+          <option value="http://localhost/condo-remoteheating.html" selected>
+            Menyvalg
+          </option>
+        </select>
+      </div>
+
     </div>
-  </main>
+  </section>
+  <!-- end showMenu -->
+
+
 </body>
 
 </html>

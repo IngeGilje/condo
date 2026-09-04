@@ -9,14 +9,13 @@ class Transactions extends Condos {
   #arrayTransactions = Array;
 
   // Show transactions
-  showSelectedTransactionsNew(label, className, transactionId, selectNone, selectAll, enableChanges) {
+  showSelectedTransactionsNew(className, transactionId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
     let html = `
     <!-- start showSelectedTransactionsNew -->
     <select 
-      id="voucherType"
       class="${className}"
       ${(enableChanges) ? '' : 'readonly'}
     >`;

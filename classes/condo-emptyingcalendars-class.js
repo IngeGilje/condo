@@ -27,7 +27,7 @@ class EmptyingCalendars extends Condos {
   selectEmptyingCalendarId(emptyingCalendarId, className) {
 
     // Check if emptying calendar id exist
-    const rowNumberEmptyingCalendar = this.arrayEmptyingCalendars.findIndex(emptyingCalendar => emptyingCalendar.emptyingCalendarId === emptyingCalendarId);
+    const rowNumberEmptyingCalendar = this.arrayEmptyingCalendars.findIndex(emptyingcalendar => emptyingcalendar.emptyingCalendarId === emptyingCalendarId);
     if (rowNumberEmptyingCalendar !== -1) {
 
       document.querySelector(`.select-${className}`).value =
@@ -39,6 +39,7 @@ class EmptyingCalendars extends Condos {
     }
   }
 
+  /*
   // Show selected emptycaledars
   showSelectedEmptyCalendarsNew(label, className, style, emptyingCalendarId, selectNone, selectAll, enableChanges) {
 
@@ -151,6 +152,122 @@ class EmptyingCalendars extends Condos {
 
     return html;
   }
+  */
+  // Show emptyingcalendar
+  showSelectedEmptyCalendarsNew(label, className, emptyingCalendarId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+    let emptyCalendarDate = "20200101";
+
+    let html = `
+    <!-- start showSelectedEmptyCalendarsNew -->
+    <div 
+      class="field"
+    >
+      <label for="apartment">
+        ${label}
+      </label>
+      <select 
+        id="apartment"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if emptyalendars array is empty
+    if (this.arrayEmptyingCalendars.length > 0) {
+      this.arrayEmptyingCalendars.forEach((emptyCalendar) => {
+
+        html += `
+        <option 
+          value=${emptyCalendar.date}
+          ${((emptyCalendar.emptyingCalendarId === emptyingCalendarId)) ? 'selected' : ''}
+        >`;
+        if (emptyCalendar.emptyingCalendarId === emptyingCalendarId) selectedValue = true;
+
+        emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
+        html += `
+          &nbsp;&nbsp;${emptyCalendarDate}&nbsp;&nbsp;
+        </option>
+        `;
+      });
+
+      // If not match of date
+      // try start of the month
+      if (!selectedValue) {
+
+        emptyCalendarDate = getCurrentDate();
+        const year = String(emptyCalendarDate).slice(6, 10);
+        const month = String(emptyCalendarDate).slice(3, 5);
+        const fromDate = Number(year + month + "01");
+        const toDate = Number(year + month + "31");
+
+        this.arrayEmptyingCalendars.forEach((emptyCalendar) => {
+
+          if (emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) {
+
+            html += `
+            <option 
+              value=${emptyCalendar.date}
+              ${((emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) && !selectedValue) ? 'selected' : ''}
+            >`;
+            if ((emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) && !selectedValue) selectedValue = true;
+
+            const emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
+            html += `
+              ${emptyCalendarDate}
+            </option>
+            `;
+          }
+        });
+      }
+    } else {
+
+      // No emptyCalendars
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen leiligheter
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayEmptyingCalendars.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayEmptyingCalendars.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedEmptyCalendarsNew -->
+    `;
+
+    return html;
+  }
+
 
   // get emtying calendar table
   async loadEmptyingCalendarsTable(condominiumId, orderBy) {
