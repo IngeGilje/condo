@@ -234,12 +234,12 @@ class RemoteHeatings extends Condos {
   }
 
   // Show remoteheatings
-  showSelectedRemoteheatingsNew(className, label, remoteHeatingId, selectNone, selectAll, enableChanges) {
+  showSelectedRemoteHeatingsNew(className, label, remoteHeatingId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
     let html = `
-    <!-- start showSelectedRemoteheatingsNew -->
+    <!-- start showSelectedRemoteHeatingsNew -->
     <div 
       class="field"
     >
@@ -254,15 +254,29 @@ class RemoteHeatings extends Condos {
     `;
 
     // Check if remoteheatings array is empty
-    if (this.arrayRemoteheatings.length > 0) {
-      this.arrayRemoteheatings.forEach((remoteHeating) => {
+    if (this.arrayRemoteHeatings.length > 0) {
+      this.arrayRemoteHeatings.forEach((remoteHeating) => {
 
+        /*
         html += `
         <option 
           value=${remoteHeating.remoteHeatingId}
           ${(remoteHeating.remoteHeatingId === remoteHeatingId) ? 'selected' : ''}
         >
           ${remoteHeating.name.trim()}
+        </option>`;
+        */
+       // Condo name
+        const condoName = (remoteHeating.condoId)
+          ? objCondo.getCondoNameById(remoteHeating.condoId)
+          : '';
+
+        html += `
+        <option 
+          value=${remoteHeating.remoteHeatingId}
+          ${(remoteHeating.remoteHeatingId === remoteHeatingId) ? 'selected' : ''}
+        >
+          ${condoName} - ${remoteHeating.year}
         </option>`;
         if (remoteHeating.remoteHeatingId === remoteHeatingId) selectedValue = true;
       });
@@ -280,7 +294,7 @@ class RemoteHeatings extends Condos {
     }
 
     // Select all
-    if (selectAll && (this.arrayRemoteheatings.length > 0)) {
+    if (selectAll && (this.arrayRemoteHeatings.length > 0)) {
 
       html += `
       <option 
@@ -293,7 +307,7 @@ class RemoteHeatings extends Condos {
     }
 
     // Select none
-    if (selectNone && (this.arrayRemoteheatings.length > 0)) {
+    if (selectNone && (this.arrayRemoteHeatings.length > 0)) {
       html += `
       <option 
         value=0
@@ -307,7 +321,7 @@ class RemoteHeatings extends Condos {
     html += `
       </select >
     </div>
-    <!-- end showSelectedRemoteheatingsNew -->
+    <!-- end showSelectedRemoteHeatingsNew -->
     `;
 
     return html;

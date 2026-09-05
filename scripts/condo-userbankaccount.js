@@ -4,9 +4,9 @@
 const today = new Date();
 const objUser = new User('user');
 const objAccounts = new Accounts('accounts');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
+const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 
-const enableChanges = (objUserBankAccount.securityLevel > 5);
+const enableChanges = (objUserBankAccounts.securityLevel > 5);
 const applicationName = "condo-userbankaccount";
 
 // Exit application if no activity for 1 hour
@@ -20,7 +20,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objUserBankAccount.condominiumId === 0) || (objUserBankAccount.user === null)) {
+    if ((objUserBankAccounts.condominiumId === 0) || (objUserBankAccounts.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -30,7 +30,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objUserBankAccount.showMenu(applicationName);
+      let html = objUserBankAccounts.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -38,26 +38,26 @@ async function main() {
 
       /*
       // Show main menu
-      let html = objUserBankAccount.showHorizontalMenu("filter-frame", objUserBankAccount.arrayMainMenu);
+      let html = objUserBankAccounts.showHorizontalMenu("filter-frame", objUserBankAccounts.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show user menu
-      html = objUserBankAccount.showHorizontalMenu("filter-frame", objUserBankAccount.arrayMenuUser);
+      html = objUserBankAccounts.showHorizontalMenu("filter-frame", objUserBankAccounts.arrayMenuUser);
       document.querySelector('.menuUser').innerHTML = html;
-      objUserBankAccount.markActivatedApplication(objUserBankAccount.arrayMenuUser, applicationName);
+      objUserBankAccounts.markActivatedApplication(objUserBankAccounts.arrayMenuUser, applicationName);
       */
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objUserBankAccount.condominiumId, resident, objUserBankAccount.nineNine);
+      await objUser.loadUsersTable(objUserBankAccounts.condominiumId, resident, objUserBankAccounts.nineNine);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objUserBankAccount.condominiumId, fixedCost);
-      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+      await objAccounts.loadAccountsTable(objUserBankAccounts.condominiumId, fixedCost);
+      await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
       // Show header
       //showHeader();
 
       // Show filter
-      const userBankAccountId = objUserBankAccount.arrayUserBankAccounts[0]?.userBankAccountId ?? 0;
+      const userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[0]?.userBankAccountId ?? 0;
       showFilter(userBankAccountId);
 
       showUserBankAccount(userBankAccountId);
@@ -110,9 +110,9 @@ async function events() {
       let userBankAccountId = Number(document.querySelector('.filterUserBankAccountId').value);
       await deleteUserBankAccountRow(userBankAccountId);
 
-      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
-      userBankAccountId = objUserBankAccount.arrayUserBankAccounts[0]?.userBankAccountId ?? 0;
+      userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[0]?.userBankAccountId ?? 0;
       showFilter(userBankAccountId);
       showUserBankAccount(userBankAccountId);
     };
@@ -131,9 +131,9 @@ async function events() {
 
       }
       // Show last user bank account
-      await objUserBankAccount.getHighestUserBankAccountId(objUserBankAccount.condominiumId);
-      const userBankAccountId = objUserBankAccount.arrayUserBankAccounts[objUserBankAccount.arrayUserBankAccounts.length - 1].userBankAccountId;
-      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+      await objUserBankAccounts.getHighestUserBankAccountId(objUserBankAccounts.condominiumId);
+      const userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[objUserBankAccounts.arrayUserBankAccounts.length - 1].userBankAccountId;
+      await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
       showFilter(userBankAccountId);
       showUserBankAccount(userBankAccountId);
@@ -148,7 +148,7 @@ function showFilter(userBankAccountId) {
   let html = startFilter("Bankkonto");
 
   // Show user bank accounts filter
-  html += objUserBankAccount.showSelectedUserBankAccountsNew('filterUserBankAccountId', 'Brukerkonto', userBankAccountId, '', '', true);
+  html += objUserBankAccounts.showSelectedUserBankAccountsNew('filterUserBankAccountId', 'Brukerkonto', userBankAccountId, '', '', true);
 
   // End filter
   html += endFilter();
@@ -162,12 +162,12 @@ function showFilter(userBankAccountId) {
 // Show user bank account
 function showUserBankAccount(userBankAccountId) {
 
-  const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+  const rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
   let html = startContent('Bankkonto');
 
   // user
-  const userId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.userId ?? 0;
+  const userId = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount]?.userId ?? 0;
   //html += objUser.showSelectedUsersNew('Bruker', 'userId', userId, 'Velg bruker', '', true);
   //html += "</div>";
   html += objUser.showSelectedUsersNew('userId', 'Bruker', userId, 'Velg bruker', '', true);
@@ -175,13 +175,13 @@ function showUserBankAccount(userBankAccountId) {
   html += "<div></div>";
 
   // account
-  const accountId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.accountId ?? 0;
+  const accountId = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId','Konto',  accountId, 'Velg konto', '', true);
   html += "<div></div>";
   html += "<div></div>";
 
   // bank account
-  const bankAccount = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.bankAccount ?? '';
+  const bankAccount = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount]?.bankAccount ?? '';
   html += showTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges, 'Oppgi Bankkonto');
   html += "<div></div>";
   html += "<div></div>";
@@ -237,14 +237,14 @@ function showUserBankAccount(userBankAccountId) {
 async function deleteUserBankAccountRow(userBankAccountId) {
 
   // Check if account row exist
-  accountsRowNumber = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+  accountsRowNumber = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
   if (accountsRowNumber !== -1) {
 
     // delete user bank account row
-    await objUserBankAccount.deleteUserBankAccountsTable(userBankAccountId, objUserBankAccount.user);
+    await objUserBankAccounts.deleteUserBankAccountsTable(userBankAccountId, objUserBankAccounts.user);
   }
 
-  await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+  await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 }
 
 // Update userbankaccounts row
@@ -255,12 +255,12 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   // User Id
   let className = 'userId';
   let userId = Number(document.querySelector(`.${className}`).value);
-  const validUserId = validateIntervalNew(className, '', 'Ugyldig Bruker', true, userId, 1, objUserBankAccount.nineNine, objUserBankAccount);
+  const validUserId = validateIntervalNew(className, '', 'Ugyldig Bruker', true, userId, 1, objUserBankAccounts.nineNine, objUserBankAccount);
 
   // account Id
   className = 'accountId';
   let accountId = Number(document.querySelector(`.${className}`).value);
-  const validAccountId = validateIntervalNew(className, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccount.nineNine);
+  const validAccountId = validateIntervalNew(className, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccounts.nineNine);
 
   // bank account
   className = 'bankAccount';
@@ -273,20 +273,20 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the userbankaccounts row exist
-    const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (rowNumberUserBankAccount !== -1) {
 
       // update the userbankaccounts row
-      await objUserBankAccount.updateUserBankAccountsTable(userBankAccountId, objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
-      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+      await objUserBankAccounts.updateUserBankAccountsTable(userBankAccountId, objUserBankAccounts.condominiumId, objUserBankAccounts.user, userId, accountId, bankAccount);
+      await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
     } else {
 
       // Insert the userbankaccounts row 
-      await objUserBankAccount.insertUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
-      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
-      await objUserBankAccount.getHighestUserBankAccountId(objUserBankAccount.condominiumId);
-      userBankAccountId = objUserBankAccount.arrayUserBankAccounts[objUserBankAccount.arrayUserBankAccounts.length - 1].userBankAccountId;
+      await objUserBankAccounts.insertUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.user, userId, accountId, bankAccount);
+      await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
+      await objUserBankAccounts.getHighestUserBankAccountId(objUserBankAccounts.condominiumId);
+      userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[objUserBankAccounts.arrayUserBankAccounts.length - 1].userBankAccountId;
     }
 
     if (enableChanges) {
@@ -305,20 +305,20 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the userbankaccounts row exist
-    const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+    const rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (rowNumberUserBankAccount !== -1) {
 
       // update the userbankaccounts row
-      await objUserBankAccount.updateUserBankAccountsTable(userBankAccountId, objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
+      await objUserBankAccounts.updateUserBankAccountsTable(userBankAccountId, objUserBankAccounts.condominiumId, objUserBankAccounts.user, userId, accountId, bankAccount);
     } else {
 
       // Insert the userbankaccounts row 
-      await objUserBankAccount.insertUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
-      await objUserBankAccount.getHighestUserBankAccountId(objUserBankAccount.condominiumId);
-      userBankAccountId = objUserBankAccount.arrayUserBankAccounts[objUserBankAccount.arrayUserBankAccounts.length - 1].userBankAccountId;
+      await objUserBankAccounts.insertUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.user, userId, accountId, bankAccount);
+      await objUserBankAccounts.getHighestUserBankAccountId(objUserBankAccounts.condominiumId);
+      userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[objUserBankAccounts.arrayUserBankAccounts.length - 1].userBankAccountId;
     }
 
-    await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+    await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
     removeMessage();
 

@@ -68,8 +68,7 @@ async function events() {
     if (event.target.classList.contains('filterBankAccountId')) {
 
       const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-      //await objBankAccount.loadBankAccountsTable(objBankAccount.condominiumId, bankAccountId);
-
+ 
       // show filter
       showFilter(bankAccountId);
 
@@ -163,30 +162,11 @@ async function deleteBankAccount() {
 // Show filter
 function showFilter(bankAccountId) {
 
-  /*
-  // Start frame
-  let html = startFrame('filter-frame');
-
-  // Show bankaccounts
-  // Get last id in last object in bankaccounts array
-  //const bankAccountId = (objBankAccount.arrayBankAccounts.length !== 0)
-  //  ? objBankAccount.arrayBankAccounts.at(-1)?.bankAccountId ?? 0
-
-  html += objBankAccount.showSelectedBankAccountsNew('Bankkonto', 'filterBankAccountId', '', bankAccountId, '', '', true);
-
-  // End filter
-  html += "</div>";
-
-  document.querySelector('.showFilter').innerHTML = html;
-
-  // Change frame title
-  setFrameTitle("filter-frame", "Filter");
-  */
   // Start filter
   let html = startFilter("Sameie");
 
   // Show bankaccounts
-  html += objBankAccount.showSelectedBankAccountsNew('Bankkonto', 'filterBankAccountId', '', bankAccountId, '', '', true);
+  html += objBankAccount.showSelectedBankAccountsNew( 'filterBankAccountId','Bankkonto',  bankAccountId, '', '', true);
 
   // End filter
   html += endFilter();

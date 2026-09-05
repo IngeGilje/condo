@@ -161,9 +161,6 @@ function showFilter(remoteHeatingPriceId) {
   html += objRemoteHeatingPrices.showSelectedRemoteheatingPricesNew('filterRemoteHeatingPriceId', 'Pris Fjernvarme', remoteHeatingPriceId, 'Velg Pris Fjernvarme ', '', true);
 
   // End filter
-  html += "</div>";
-
-  // End filter
   html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -175,25 +172,29 @@ function showRemoteHeatingPrice(remoteHeatingPriceId) {
   const rowNumberRemoteHeatingPrice = objRemoteHeatingPrices.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
 
   // Empty line
-  let html = emptyLine();
+  //let html = emptyLine();
+
+  let html = startContent('Fjernvarmepris');
 
   // Year
-  html += startLine();
   const year = (objRemoteHeatingPrices.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].year)
     ? objRemoteHeatingPrices.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].year
     : 0;
   html += inputSelectedNumbers('year', 'År', 2020, 2030, year, enableChanges);
-  html += "</div>"
+  html += "<div></div>";
+  html += "<div></div>";
+
 
   // price for kilowatt per Hour
-  html += startLine();
   let priceKilowattHour = (objRemoteHeatingPrices.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].priceKilowattHour)
     ? objRemoteHeatingPrices.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].priceKilowattHour
     : '';
   priceKilowattHour = formatNumberToNorAmount(priceKilowattHour);
-  html += showTextNew('Pris per kilowatTimer', 'priceKilowattHour', priceKilowattHour, enableChanges, '');
-  html += "</div>"
+  html += inputText('priceKilowattHour', 'Pris per kilowatTimer', priceKilowattHour, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -218,6 +219,25 @@ function showRemoteHeatingPrice(remoteHeatingPriceId) {
     disableButton('cancel', true);
     //disableButton('filterRemoteHeatingId', false);
   }
+  */
+  html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+  document.querySelector('.showRemoteHeatingPrice').innerHTML = html;
 }
 
 // Delete one remoteHeatingPrice row

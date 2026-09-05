@@ -8,7 +8,7 @@ const objAccounts = new Accounts('accounts');
 const objBankAccount = new BankAccount('bankaccount');
 const objSupplier = new Supplier('supplier');
 const objCondominium = new Condominium('scondominium');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
+const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objProjects = new Projects('projects');
 const objTransactions = new Transactions('transactions');
 const objTransaction = new Transaction('transaction');
@@ -56,7 +56,7 @@ async function main() {
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objTransaction.condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine);
-      await objUserBankAccount.loadUserBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine, objTransaction.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine, objTransaction.nineNine);
       await objCondo.loadCondoTable(objTransaction.condominiumId, objTransaction.nineNine);
       await objCondominium.loadCondominiumsTable();
       await objSupplier.loadSuppliersTable(objTransaction.condominiumId);
