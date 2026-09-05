@@ -145,7 +145,7 @@ function showFilter(remoteHeatingId) {
 
   html += objRemoteHeatings.showSelectedRemoteHeatingsNew('Fjernvarme', 'filterRemoteHeatingId', '', remoteHeatingId, 'Velg fjernvarme ', '', true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -177,7 +177,7 @@ function showRemoteHeating(remoteHeatingId) {
   let condoId = (objRemoteHeatings.arrayRemoteHeatings[rowNumberRemoteHeating].condoId)
     ? objRemoteHeatings.arrayRemoteHeatings[rowNumberRemoteHeating].condoId
     : 0;
-  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', condoId, '', '', enableChanges);
+  html += objCondo.showSelectedCondosNew('condoId','Leilighet',  condoId, '', '', enableChanges);
   html += "</div>";
 
   // kilowattHour current year
@@ -248,7 +248,7 @@ function insertEmptyRow() {
 
   // condo Id
   className = `condoId0`;
-  html += objCondo.showSelectedCondosNew('Leilighet', className, 0, 'Velg leilighet', '', enableChanges);
+  html += objCondo.showSelectedCondosNew(className,'Leilighet',  0, 'Velg leilighet', '', enableChanges);
 
   // kilowattHour current year
   className = `kilowattHour0`;

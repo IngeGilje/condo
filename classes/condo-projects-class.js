@@ -76,7 +76,7 @@ class Projects extends Condos {
 
   /*
   // Show projects
-  showSelectedProjectsNew(label, className, projectId, selectNone, selectAll, enableChanges) {
+  showSelectedProjectsNew( className,label, projectId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -151,10 +151,10 @@ class Projects extends Condos {
   }
   */
 
+  /*
   // Show projects
-  showSelectedProjectsNew(label, className, projectId, selectNone, selectAll, enableChanges) {
+  showSelectedProjectsNew( className,label, projectId, selectNone, selectAll, enableChanges) {
 
-    /*
 
     <div 
       class="field"
@@ -173,7 +173,6 @@ class Projects extends Condos {
       </select>
     </div>
 
-    */
     let selectedValue = false;
 
     let html = `
@@ -202,7 +201,7 @@ class Projects extends Condos {
         >
           ${project.name.trim()}
         </option>`;
-        if (!selectedValue) selectedValue = true;
+        if (project.projectId === projectId) selectedValue = true;
       });
     } else {
 
@@ -213,6 +212,87 @@ class Projects extends Condos {
          ${(selectedValue) ? '' : 'selected'} 
       >
         Ingen prosjekter
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayProjects.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayProjects.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedProjectsNew -->
+    `;
+
+    return html;
+  }
+  */
+
+  // Show projects
+  showSelectedProjectsNew(className, label, projectId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedProjectsNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if projects array is empty
+    if (this.arrayProjects.length > 0) {
+      this.arrayProjects.forEach((project) => {
+
+        html += `
+        <option 
+          value=${project.projectId}
+          ${(project.projectId === projectId) ? 'selected' : ''}
+        >
+          ${project.name.trim()}
+        </option>`;
+        if (project.projectId === projectId) selectedValue = true;
+      });
+    } else {
+
+      // No projects
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen Prosjekter
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

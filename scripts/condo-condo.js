@@ -28,12 +28,17 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      /*
+      // Show vertical menu
       let html = objCondo.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
+      */
+      // Show menu
+      let html = objCondo.showMenu(applicationName);
+      document.querySelector('.menuVertical').innerHTML = html;
 
       /*
       // Show main menu
@@ -159,17 +164,27 @@ async function events() {
 function showFilter(condoId) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  //let html = startFrame('filter-frame');
+
+  // Start filter
+  let html = startFilter("leilighet");
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', condoId, '', '', true);
+  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', '', true);
 
+  /*
   // End frame
   html += "</div>";
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  setFrameTitle("filter-frame", "Filter");
+  */
+
+  // End filter
+  html += endFilter();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Maintain condo information
@@ -180,72 +195,44 @@ function showCondo(condoId) {
 
   // condo
   // Empty line
-  let html = emptyLine();
+  //let html = emptyLine();
+
+  let html = startContent('Leilighet');
 
   // condo
-  html += startLine();
-  /*
-  const name = (rowNumberCondo === -1)
-    ? ''
-    : objCondo.arrayCondo[rowNumberCondo].name.trim();
-  */
   const name = objCondo.arrayCondo[rowNumberCondo]?.name ?? '';
-  html += showTextNew('Leilighet', 'name', name, enableChanges, "Leilighet");
-  html += "</div>";
-
-  // street, address2
-  html += startLine();
+  html += inputText('name','Leilighet',  name, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // street
-  /*
-  const street = (rowNumberCondo === -1)
-    ? ''
-    : objCondo.arrayCondo[rowNumberCondo].street.trim();
-  */
-  const street = objCondo.arrayCondo[rowNumberCondo]?.street ?? '';
-  html += showTextNew('Gate', 'street', street, enableChanges, "Gate");
+   const street = objCondo.arrayCondo[rowNumberCondo]?.street ?? '';
+  html += inputText('street','Gate',  street, enableChanges);
 
   // address 2
-  /*
-  const address2 = (rowNumberCondo === -1)
-    ? ''
-    : objCondo.arrayCondo[rowNumberCondo].address2.trim();
-    */
   const address2 = objCondo.arrayCondo[rowNumberCondo]?.address2 ?? '';
-  html += showTextNew('Addresse 2', 'address2', address2, enableChanges, "");
-  html += "</div>";
-
-  // post code, city
-  html += startLine();
+  html += inputText('address2','Addresse 2',  address2, enableChanges);
+  html += "<div></div>";
 
   // post code
   const postalCode = (rowNumberCondo === -1)
     ? ''
     : objCondo.arrayCondo[rowNumberCondo].postalCode;
-  html += showTextNew('PostNummer', 'postalCode', postalCode, enableChanges, "Postnummer");
+  html += inputText('postalCode', 'PostNummer', postalCode, enableChanges);
 
   // City
-  /*
-  const city = (rowNumberCondo === -1)
-    ? ''
-    : objCondo.arrayCondo[rowNumberCondo].city.trim();
-  */
   const city = objCondo.arrayCondo[rowNumberCondo]?.city ?? '';
-  html += showTextNew('Poststed', 'city', city, enableChanges, "Poststed");
-  html += "</div>";
+  html += inputText('city','Poststed',  city, enableChanges);
+  html += "<div></div>";
 
   // squareMeters
-  html += startLine();
-  /*
-  let squareMeters = (rowNumberCondo === -1)
-    ? ''
-    : objCondo.arrayCondo[rowNumberCondo].squareMeters;
-  */
   let squareMeters = objCondo.arrayCondo[rowNumberCondo]?.squareMeters ?? '';
   squareMeters = formatNumberToNorAmount(squareMeters);
-  html += showTextNew('Areal i m2', 'squareMeters', squareMeters, enableChanges, "Leilighet");
-  html += "</div>";
+  html += inputText('squareMeters', 'Areal i m2', squareMeters, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -270,6 +257,25 @@ function showCondo(condoId) {
     disableButton('cancel', true);
     disableButton('filterCondoId', false, 'white');
   }
+  */
+ html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+   document.querySelector('.showCondo').innerHTML = html;
 }
 
 // Update a condo row

@@ -462,7 +462,7 @@ class User extends Condos {
   }
   */
   // Show Users
-  showSelectedUsersNew(label, className, userId, selectNone, selectAll, enableChanges) {
+  showSelectedUsersNew(className,label,  userId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -492,7 +492,7 @@ class User extends Condos {
         >
           ${user.firstName.trim()}
         </option>`;
-        if (!selectedValue) selectedValue = true;
+        if (user.userId === userId) selectedValue = true;
       });
     } else {
 

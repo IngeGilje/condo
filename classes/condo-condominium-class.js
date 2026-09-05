@@ -14,9 +14,9 @@ class Condominium extends Condos {
     if (isClassDefined(className)) {
 
       condominiumId = Number(document.querySelector(`.${className}`).value);
-      condominiumId = (condominiumId === 0) 
-      ? this.arrayCondominiums.at(-1)?.condominiumId ?? 0 
-      : condominiumId;
+      condominiumId = (condominiumId === 0)
+        ? this.arrayCondominiums.at(-1)?.condominiumId ?? 0
+        : condominiumId;
     } else {
 
       // Get last id in last object in condominium array
@@ -58,7 +58,7 @@ class Condominium extends Condos {
       : 'http://localhost:3000/condominiums';
     try {
 
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -248,6 +248,7 @@ class Condominium extends Condos {
     return html;
   }
 
+  /*
   // Show condominiums
   showSelectedCondominiumsNew(label, className, style, condominiumId, selectNone, selectAll, enableChanges) {
 
@@ -323,6 +324,87 @@ class Condominium extends Condos {
         ${label}
       </label>
     </div>`;
+
+    return html;
+  }
+  */
+
+  // Show condominiums
+  showSelectedCondominiumsNew(className, label, condominiumId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedCondominiumsNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if condominiums array is empty
+    if (this.arrayCondominiums.length > 0) {
+      this.arrayCondominiums.forEach((condominium) => {
+
+        html += `
+        <option 
+          value=${condominium.condominiumId}
+          ${(condominium.condominiumId === condominiumId) ? 'selected' : ''}
+        >
+          ${condominium.name.trim()}
+        </option>`;
+        if (condominium.condominiumId === condominiumId) selectedValue = true;
+      });
+    } else {
+
+      // No condominiums
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen konti
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayCondominiums.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayCondominiums.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedCondominiumsNew -->
+    `;
 
     return html;
   }

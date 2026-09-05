@@ -158,14 +158,14 @@ async function events() {
 // Show filter
 function showFilter(emptyingCalendarId) {
 
-   // Start filter frame
-  let html = startFilterFrame("Tømmekalender");
+   // Start filter
+  let html = startFilter("Tømmekalender");
 
   // Show date
   html += objEmptyingCalendars.showSelectedEmptyCalendarsNew('Tømmedato', 'filterEmptyingCalendarId', '', emptyingCalendarId, 'Velg Dato', '', true);
 
-  // End filter frame
-  html += endFilterFrame();
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
 }
@@ -186,7 +186,7 @@ function showEmptyingCalendar(emptyingCalendarId) {
 
   // condo
   const condoId = objEmptyingCalendars.arrayEmptyingCalendars[rowNumberEmptyingCalendar]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('Ansvarlig', 'condoId', condoId, 'Velg ansvarlig', '', true);
+  html += objCondo.showSelectedCondosNew('condoId','Ansvarlig',  condoId, 'Velg ansvarlig', '', true);
   html += "<div></div>";
 
   // residual waste 

@@ -222,14 +222,14 @@ async function events() {
 // Show filter
 function showFilter(transactionId) {
 
-  // Start filter frame
-  let html = startFilterFrame("Bilagsnummer");
+  // Start filter
+  let html = startFilter("Bilagsnummer");
 
   // Show transactions
   html += objTransactions.showSelectedTransactionsNew('filterTransactionId', transactionId, '', '', true);
 
-  // End filter frame
-  html += endFilterFrame();
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
 }
@@ -260,20 +260,20 @@ function showTransaction(transactionId) {
   let condoId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].condoId;
-  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', condoId, 'Velg leilighet', '', enableChanges);
+  html += objCondo.showSelectedCondosNew('condoId','Leilighet',  condoId, 'Velg leilighet', '', enableChanges);
 
   // Account
   let accountId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].accountId;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('accountId','Konto',  accountId, 'Velg konto', '', enableChanges);
 
   // project
   let projectId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].projectId;
 
-  html += objProjects.showSelectedProjectsNew('Prosjekt', 'projectId', projectId, 'Velg prosjekt', '', enableChanges);
+  html += objProjects.showSelectedProjectsNew('projectId','Prosjekt',  projectId, 'Velg prosjekt', '', enableChanges);
 
   // income
   let income = (rowNumberTransaction === -1)
@@ -281,7 +281,7 @@ function showTransaction(transactionId) {
     : objTransactions.arrayTransactions[rowNumberTransaction].income;
   income = formatNumberToNorAmount(income);
   //html += showTextNew('Inntekt', 'income', income, enableChanges, "Inntekt");
-  html += inputNumber('income', 'Inntekt', income, enableChanges);
+  html += inputText('income', 'Inntekt', income, enableChanges);
 
   // payment
   let payment = (rowNumberTransaction === -1)
@@ -289,7 +289,7 @@ function showTransaction(transactionId) {
     : objTransactions.arrayTransactions[rowNumberTransaction].payment;
   payment = formatNumberToNorAmount(payment);
   //html += showTextNew('Betaling', 'payment', payment, enableChanges, "Betaling");
-  html += inputNumber('payment', 'Betaling', payment, enableChanges);
+  html += inputText('payment', 'Betaling', payment, enableChanges);
 
   // kilowattHour
   let kilowattHour = (rowNumberTransaction === -1)
@@ -297,7 +297,7 @@ function showTransaction(transactionId) {
     : objTransactions.arrayTransactions[rowNumberTransaction].kilowattHour;
   kilowattHour = formatNumberToNorAmount(kilowattHour);
   //html += showTextNew('KilowatTimer', 'kilowattHour', kilowattHour, enableChanges, "KilowatTimer");
-  html += inputNumber('kilowattHour', 'KilowatTimer', kilowattHour, enableChanges);
+  html += inputText('kilowattHour', 'KilowatTimer', kilowattHour, enableChanges);
 
   // Text
   let text = (rowNumberTransaction === -1)

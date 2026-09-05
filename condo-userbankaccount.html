@@ -4,39 +4,55 @@
 <head>
 
   <title>Bankkonto for bruker</title>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/condo.css">
+  <link rel="stylesheet" href="styles/main.css">
 
 </head>
 
 <body>
 
-  <!-- table container for all tables -->
+  <!-- table container for all tables 
   <div class="tableContainer">
+
+    show vertical menu 
+    <div class="menuVertical"></div>
+    
+    show main menu
+    <div class="menuMain"></div>
+
+    show user menu 
+    <div class="menuUser"></div>
+
+    show filter
+    <div class="showFilter"></div>
+
+    show user bank account
+    <div class="showUserBankAccount"></div>
+
+    show message 
+    <div class="showMessage"></div>
+  </div>
+  -->
+
+  <main class="page">
 
     <!-- show vertical menu -->
     <div class="menuVertical"></div>
-    
-    <!-- show main menu -->
-    <div class="menuMain"></div>
 
-    <!-- show user menu -->
-    <div class="menuUser"></div>
+    <div class="content-layout">
 
-    <!-- show header -->
-    <div class="showHeader"></div>
+      <!-- show filter -->
+      <div class="showFilter"></div>
 
-    <!-- show filter -->
-    <div class="showFilter"></div>
+      <!-- show userbankaccounts -->
+      <div class="showUserBankAccount"></div>
 
-    <!-- show user bank account -->
-    <div class="showUserBankAccount"></div>
-
-    <!-- show message -->
-    <div class="showMessage"></div>
-  </div>
+      <!-- show message -->
+      <div class="showMessage"></div>
+    </div>
+  </main>
 
   <script src="classes/condo-class.js"></script>
   <script src="classes/condo-user-class.js"></script>

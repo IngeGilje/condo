@@ -29,6 +29,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
     // Check if server is running
     if (await objUser.checkServer()) {
 
+      /*
             // Show vertical menu
       let html = objSupplier.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
@@ -36,7 +37,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
 
-      /*
+
       // Show main menu
       let html = objSupplier.showHorizontalMenu("filter-frame", objSupplier.arrayMainMenu);
       document.querySelector('.showMainMenu').innerHTML = html;
@@ -46,6 +47,9 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       document.querySelector('.showDueMenu').innerHTML = html;
       objSupplier.markActivatedApplication(objSupplier.arrayMenuCondominium, applicationName);
       */
+      // Show menu
+      let html = objSupplier.showMenu(applicationName);
+      document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objSupplier.condominiumId, resident, objSupplier.nineNine);
@@ -213,23 +217,18 @@ function resetValues() {
 function showFilter(supplierId) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  //let html = startFrame('filter-frame');
 
-  //html += startLine();
-  html += emptyLine();
+  // Start filter
+  let html = startFilter("Leverandør");
 
   // Show suppliers
-  html += objSupplier.showSelectedSuppliersNew('Leverandør', 'filterSupplierId', '', supplierId, '', '', true);
+  html += objSupplier.showSelectedSuppliersNew('filterSupplierId', 'Leverandør', supplierId, '', '', true);
 
-  //html += "</div>";
-
-  // End filter frame
-  html += "</div>";
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
-
-  // Change frame title
-  setFrameTitle("filter-frame","Filter");
 }
 
 // Show supplier
@@ -238,113 +237,96 @@ function showSupplier(supplierId) {
   // row Number Supplier
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 
-  // Empty line
-  let html = emptyLine();
-  html += startLine();
+  let html = startContent('Leverandør');
 
   // name
   const name = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].name.trim();
-  html += showTextNew('Navn', 'name', name, enableChanges, "Leverandørnavn");
-  html += "</div>";
-  // street,address2
-  html += startLine();
+  html += inputText('name', 'Navn', name, enableChanges);
+  html += "<div></div>";
+html += "<div></div>";
 
   // street
   const street = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += showTextNew('Gatenavn', 'street', street, enableChanges);
+  html += inputText('street', 'Gatenavn', street, enableChanges);
 
   // address2
   const address2 = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].address2;
-  html += showTextNew('Adresse2', 'address2', address2, enableChanges);
-  html += "</div>";
+  html += inputText('address2', 'Adresse2', address2, enableChanges);
+  html += "<div></div>";
 
-  // postalCode, city
-  html += startLine();
-
+  // postalCode
   let postalCode = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
   if (postalCode === '0') postalCode = "";
-  html += showTextNew('Postnummer', 'postalCode', postalCode, enableChanges);
+  html += inputText('postalCode', 'Postnummer', postalCode, enableChanges);
 
   // city
   const city = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].city;
-  html += showTextNew('Poststed', 'city', city, enableChanges);
-  html += "</div>";
-
-  // email,phone
-  html += startLine();
+  html += inputText('city', 'Poststed', city, enableChanges);
+  html += "<div></div>";
 
   // email
   let email = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].email;
-  html += showTextNew('E-mail', 'email', email, enableChanges);
+  html += inputText('email', 'E-mail', email, enableChanges);
 
   // phone
   const phone = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].phone;
-  html += showTextNew('Telefonnummer', 'phone', phone, enableChanges);
-  html += "</div>";
-
-  //  accountId, bankAccount
-  html += startLine();
+  html += inputText('phone', 'Telefonnummer', phone, enableChanges);
+  html += "<div></div>";
 
   // accountId
   const accountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg konto', '', enableChanges);
 
   // bank Account number
   const bankAccount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
-  html += showTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges);
-  html += "</div>";
-
-  // amountAccountId, amount
-  html += startLine();
+  html += inputText('bankAccount', 'Bankkonto', bankAccount, enableChanges);
+  html += "<div></div>";
 
   // amountAccountId
   const amountAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
-  html += objAccounts.showSelectedAccountsNew('Konto for beløp', 'amountAccountId', amountAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('amountAccountId', 'Konto for beløp', amountAccountId, 'Velg konto', '', enableChanges);
 
   // amount
   let amount = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].amount;
   if (amount === '0') amount = "";
-  html += showTextNew('Beløp', 'amount', amount, enableChanges);
-  html += "</div>";
-
-  // textAccountId, text
-  html += startLine();
+  html += inputText('amount', 'Beløp', amount, enableChanges);
+    html += "<div></div>";
 
   // AccountId for text
   const textAccountId = (rowNumberSupplier === -1)
     ? 0
     : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
-  html += objAccounts.showSelectedAccountsNew('Konto for tekst', 'textAccountId', textAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('textAccountId', 'Konto for tekst', textAccountId, 'Velg konto', '', enableChanges);
 
   // text for account id
   const text = (rowNumberSupplier === -1)
     ? ''
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
-  html += showTextNew('Tekst', 'accountText', text, enableChanges);
-  html += "</div>";
+  html += inputText('accountText', 'Tekst', text, enableChanges);
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -369,6 +351,25 @@ function showSupplier(supplierId) {
     disableButton('cancel', true);
     disableButton('filterSupplierId', false, 'white');
   }
+  */
+  html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+  document.querySelector('.showSupplier').innerHTML = html;
 }
 
 // Update a supplier row
@@ -376,7 +377,7 @@ async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = validateIntervalNew('supplierId', '', 'Ugyldig leverandør', true, supplierId, -1, objSupplier.nineNine);
+  const validSupplierId = validateIntervalNew('supplierId', '', 'Ugyldig Leverandør', true, supplierId, -1, objSupplier.nineNine);
 
   const name = document.querySelector('.name').value;
   const validName = validateTextNew('name', '', 'Ugyldig navn', true, name, 3, 45);

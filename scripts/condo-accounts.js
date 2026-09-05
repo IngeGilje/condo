@@ -221,7 +221,7 @@ function showFilter(fixedCost) {
   if (fixedCost === 'A') fixedCost = 'Alle';
   html += inputValues('Kostnadstype', 'filterFixedCost', '', true, fixedCost, constFixedCost, constVariableCost, 'Alle')
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;

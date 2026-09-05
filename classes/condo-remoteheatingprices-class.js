@@ -1,9 +1,10 @@
 // class for remote heating price
-class RemoteHeatingPrice extends Condos {
+class RemoteHeatingPrices extends Condos {
 
   // remote heating information
   arrayRemoteHeatingPrices;
 
+  /*
   // Show remoteHeatingPrices
   showSelectedRemoteHeatingPricesNew(label, className, style, remoteHeatingPriceId, selectNone, selectAll, enableChanges) {
 
@@ -80,6 +81,7 @@ class RemoteHeatingPrice extends Condos {
 
     return html;
   }
+  */
 
   // get remoteheatingprices
   async loadRemoteHeatingPricesTable(condominiumId) {
@@ -214,5 +216,85 @@ class RemoteHeatingPrice extends Condos {
     } catch (error) {
       console.log("Error delete remoteheatingprices:", error);
     }
+  }
+  
+  // Show remoteheatingprices
+  showSelectedRemoteheatingPricesNew(className,label,  remoteHeatingPriceId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedRemoteheatingPricesNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if remoteheatingprices array is empty
+    if (this.arrayRemoteHeatingPrices.length > 0) {
+      this.arrayRemoteHeatingPrices.forEach((remoteHeatingPrice) => {
+
+        html += `
+        <option 
+          value=${remoteHeatingPrice.remoteHeatingPriceId}
+          ${(remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId) ? 'selected' : ''}
+        >
+          ${remoteHeatingPrice.year}
+        </option>`;
+        if (remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId) selectedValue = true;
+      });
+    } else {
+
+      // No remoteheatingprices
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen konti
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayRemoteHeatingPrices.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayRemoteHeatingPrices.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedRemoteheatingPricesNew -->
+    `;
+
+    return html;
   }
 }

@@ -38,6 +38,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
+      /*
       // Show vertical menu
       let html = objAccount.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
@@ -45,6 +46,10 @@ async function main() {
       // Change frame title
       setFrameTitle("menu-frame", "Meny",);
       setFrameTitle("news", "Nyheter",);
+      */
+      // Show menu
+      let html = objAccount.showMenu(applicationName);
+      document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
       await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
@@ -148,19 +153,16 @@ async function events() {
 // Show filter
 function showFilter(accountId) {
 
-  // Start frame
-  let html = startFrame("filter-frame");
+  // Start filter
+  let html = startFilter("Tømmekalender");
 
   // Show types of account
-  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId',  accountId, '', '', true);
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', 'Konto', accountId, '', '', true);
 
-  // End frame
-  html += "</div>";
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
-
-  // Change frame title
-  setFrameTitle("filter-frame", "Filter");
 }
 
 // Show account
@@ -168,27 +170,27 @@ function showAccount(accountId) {
 
   const rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
 
+  let html = startContent('Konto');
+
   // Empty line
-  let html = emptyLine();
+  //let html = emptyLine();
 
   // fixed cost
-  html += startLine();
-
   let selected = "Ugyldig verdi";
   if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'Y') selected = constFixedCost;
   if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'N') selected = constVariableCost;
-
-  let className = `fixedCost`;
-  html += inputValues('Kostnadstype', 'fixedCost', '', enableChanges, selected, constFixedCost, constVariableCost)
-  html += "</div>";
+  //html += inputValues('Kostnadstype', 'fixedCost', '', enableChanges, selected, constFixedCost, constVariableCost)
+  html += inputValues('Kostnadstype', 'fixedCost', enableChanges, constFixedCost, constFixedCost, constVariableCost);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // name
-  html += startLine();
-
   const name = objAccounts.arrayAccounts[rowNumberAccount]?.name ?? '';
   html += showTextNew('Kontonavn', 'name', objAccounts.arrayAccounts[rowNumberAccount].name.trim(), enableChanges, 'Kontonavn');
-  html += "</div>";
+  html += "<div></div>";
+  html += "<div></div>";
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -208,9 +210,28 @@ function showAccount(accountId) {
     html += showButtonNew('back', 'Tilbake');
     html += "</div>";
   }
+  */
 
+  html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
   document.querySelector('.showAccount').innerHTML = html;
 
+  /*
   // Buttons
   if (enableChanges) {
     disableButton('delete', false);
@@ -219,6 +240,7 @@ function showAccount(accountId) {
     disableButton('cancel', true);
     disableButton('filterAccountId', false);
   }
+  */
 }
 
 function resetValues() {

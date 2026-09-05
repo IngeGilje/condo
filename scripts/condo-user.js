@@ -29,12 +29,18 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      /*
+      // Show vertical menu
       let html = objUser.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
+      */
+
+      // Show menu
+      let html = objUser.showMenu(applicationName);
+      document.querySelector('.menuVertical').innerHTML = html;
 
       /*
       // Show main menu
@@ -64,7 +70,7 @@ async function main() {
       // Show filter
       showFilter(objUser.userId);
 
-      // Show result
+      // Show user
       showUser(objUser.userId);
 
       // Events
@@ -157,62 +163,35 @@ async function events() {
   });
 }
 
-function resetValues() {
-
-  // conmdominium Id
-  //document.querySelector('.filterCondominiumId').value = 0;
-
-  // user Id
-  document.querySelector('.filterUserId').value = 0;
-
-  // reset e-mail
-  document.querySelector('.email').value = '';
-
-  // reset condo Id
-  document.querySelector('.condoId').value = 0;
-
-  // reset first name
-  document.querySelector('.firstName').value = '';
-
-  // reset last name
-  document.querySelector('.lastName').value = '';
-
-  // reset phone number
-  document.querySelector('.phone').value = '';
-
-  // resident
-  document.querySelector('.resident').value = '';
-
-
-  document.querySelector('.filterUserId').disabled = true;
-
-  // Buttons
-  removeMessage();
-  if (enableChanges) {
-    disableButton('delete', true);
-    disableButton('insert', true);
-    disableButton('cancel', false);
-    disableButton('filterUserId', true);
-  }
-}
-
 // Show filter
 function showFilter(userId) {
 
+  /*
   // Start frame
   let html = startFrame("filter-frame");
 
   // Show users
   //html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
-  html += objUser.showSelectedUsersNew('Bruker','filterUserId', userId, '', '', true);
+  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 
-    // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  // Change frame title
+  setFrameTitle("filter-frame", "Filter");
+  */
+  // Start filter
+  let html = startFilter("Bruker");
+
+   // Show users
+  html += objUser.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
+
+  // End filter
+  html += endFilter();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show user
@@ -221,58 +200,59 @@ function showUser(userId) {
   // row number user
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
 
+  let html = startContent('Bruker');
+
   // Empty line
-  let html = emptyLine();
+  //let html = emptyLine();
 
   // email
-  html += startLine();
   const email = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].email.trim();
-  html += showTextNew('E-mail', 'email', email, enableChanges, "E-mail");
-  html += "</div>";
+  html += inputText('email', 'E-mail', email, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // condoId
-  html += startLine();
   const condoId = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].condoId;
-  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', condoId, '', 'Velg leilighet', enableChanges);
-  html += "</div>";
+  html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, '', 'Velg leilighet', enableChanges);
 
-  // first Name, last Name
-  html += startLine();
+  html += "<div></div>";
+  html += "<div></div>";
 
   // first Name
   const firstName = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].firstName.trim();
-  html += showTextNew('Fornavn', 'firstName', firstName, enableChanges, "Fornavn");
+  html += inputText('firstName', 'Fornavn', firstName, enableChanges);
 
   // last Name
   const lastName = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].lastName.trim();
-  html += showTextNew('Etternavn', 'lastName', lastName, enableChanges, "Etternavn");
-  html += "</div>";
-
-  // phone, activ user
-  html += startLine();
+  html += inputText('lastName', 'Etternavn', lastName, enableChanges);
+  html += "<div></div>";
 
   // phone
   const phone = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].phone.trim();
-  html += showTextNew('Telefonnummer', 'phone', phone, enableChanges, "Telefonnummer");
+  html += inputText('phone', 'Telefonnummer', phone, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // Activ user?
   let resident = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].resident.trim();
   resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
-  html += inputValues('Beboer', 'resident', '', enableChanges, resident, 'Nei', 'Ja');
-  html += "</div>"
+  html += inputValues('Beboer', 'resident', enableChanges, resident, 'Nei', 'Ja');
+  html += "<div></div>";
+  html += "<div></div>";
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -286,11 +266,30 @@ function showUser(userId) {
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
+  */
+   html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
 
   document.querySelector('.showUser').innerHTML = html;
 
   //if (enableChanges) document.querySelector('.cancel').disabled = true;
 
+  /*
   if (enableChanges) {
     disableButton('delete', false);
     disableButton('insert', false);
@@ -298,6 +297,7 @@ function showUser(userId) {
     disableButton('cancel', true);
     disableButton('filterUserId', false, 'white');
   }
+  */
 }
 
 // Update a users row
@@ -454,5 +454,44 @@ async function deleteUserRow() {
 
     // delete a user row
     await objUser.deleteUsersTable(userId, objUser.user);
+  }
+}
+
+function resetValues() {
+
+  // conmdominium Id
+  //document.querySelector('.filterCondominiumId').value = 0;
+
+  // user Id
+  document.querySelector('.filterUserId').value = 0;
+
+  // reset e-mail
+  document.querySelector('.email').value = '';
+
+  // reset condo Id
+  document.querySelector('.condoId').value = 0;
+
+  // reset first name
+  document.querySelector('.firstName').value = '';
+
+  // reset last name
+  document.querySelector('.lastName').value = '';
+
+  // reset phone number
+  document.querySelector('.phone').value = '';
+
+  // resident
+  document.querySelector('.resident').value = '';
+
+
+  document.querySelector('.filterUserId').disabled = true;
+
+  // Buttons
+  removeMessage();
+  if (enableChanges) {
+    disableButton('delete', true);
+    disableButton('insert', true);
+    disableButton('cancel', false);
+    disableButton('filterUserId', true);
   }
 }

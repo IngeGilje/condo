@@ -39,6 +39,7 @@ class EmptyingCalendars extends Condos {
     }
   }
 
+
   /*
   // Show selected emptycaledars
   showSelectedEmptyCalendarsNew(label, className, style, emptyingCalendarId, selectNone, selectAll, enableChanges) {
@@ -153,6 +154,7 @@ class EmptyingCalendars extends Condos {
     return html;
   }
   */
+
   // Show emptyingcalendar
   showSelectedEmptyCalendarsNew(label, className, emptyingCalendarId, selectNone, selectAll, enableChanges) {
 

@@ -207,10 +207,10 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   let html = startFrame('filter-frame');
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondosNew('filterCondoId','Leilighet',  condoId, '', 'Vis alle', true);
 
   // Show accounts
-  html += objAccounts.showSelectedAccountsNew('Konto', 'filterAccountId', accountId, '', 'Vis alle', true);
+  html += objAccounts.showSelectedAccountsNew('filterAccountId','Konto',  accountId, '', 'Vis alle', true);
 
   // From date
   fromDate = formatNumberToISODate(fromDate);
@@ -224,7 +224,7 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   amount = formatNumberToNorAmount(amount);
   html += showAmount('Beløp', 'filterAmount', amount, true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
   document.querySelector('.showFilter').innerHTML = html;
 

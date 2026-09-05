@@ -243,7 +243,7 @@ class Accounts extends Condos {
   }
   */
   // Show accounts
-  showSelectedAccountsNew(label, className, accountId, selectNone, selectAll, enableChanges) {
+  showSelectedAccountsNew(className,label,  accountId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -252,11 +252,11 @@ class Accounts extends Condos {
     <div 
       class="field"
     >
-      <label for="account">
+      <label for="${className}">
         ${label}
       </label>
       <select 
-        id="account"
+        id="${className}"
         class="${className}"
         ${(enableChanges) ? '' : 'readonly'}
       >
@@ -273,7 +273,7 @@ class Accounts extends Condos {
         >
           ${account.name.trim()}
         </option>`;
-        if (!selectedValue) selectedValue = true;
+        if (account.accountId === accountId) selectedValue = true;
       });
     } else {
 

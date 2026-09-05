@@ -1338,7 +1338,7 @@ function showSelectedMonthsNew(label, className, style, selectedMonth, enableCha
 */
 
 // Show all months for a year (1-12) with selected month
-function showSelectedMonthsNew(label, className, selectedMonth, enableChanges) {
+function showSelectedMonthsNew(className, label, selectedMonth, enableChanges) {
 
   let html = `
     <!-- start showSelectedCondosNew -->
@@ -1453,7 +1453,7 @@ function showMessageNew(message) {
   // Show message
   html += message;
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showMessage').innerHTML = html;
@@ -1461,7 +1461,7 @@ function showMessageNew(message) {
 
 /*
 // Show selected numbers (from number - to number)
-function showSelectedNumbersNew(label, className, fromNumber, toNumber, selectedNumber, enableChanges) {
+function inputSelectedNumbers(label, className, fromNumber, toNumber, selectedNumber, enableChanges) {
 
   let selectedValue = false;
 
@@ -1500,12 +1500,10 @@ function showSelectedNumbersNew(label, className, fromNumber, toNumber, selected
 */
 
 // Show selected numbers (from number - to number)
-function showSelectedNumbersNew(label, className, fromNumber, toNumber, selectedNumber, enableChanges) {
-
-  let selectedValue = false;
+function inputSelectedNumbers(className,label,  fromNumber, toNumber, selectedNumber, enableChanges) {
 
   let html = `
-    <!-- start showSelectedNumbersNew -->
+    <!-- start inputSelectedNumbers -->
     <div 
       class="field"
     >
@@ -1536,7 +1534,7 @@ function showSelectedNumbersNew(label, className, fromNumber, toNumber, selected
   html += `
       </select >
     </div>
-    <!-- end showSelectedNumbersNew -->
+    <!-- end inputSelectedNumbers -->
     `;
 
   return html;
@@ -1801,10 +1799,10 @@ function startFrame(className) {
 }
 
 // Start frame
-function startFilterFrame(label) {
+function startFilter(label) {
 
   return `
-  <!-- start startFilterFrame -->
+  <!-- start startFilter -->
   <aside 
     class="card filter-card"
     >
@@ -1821,18 +1819,18 @@ function startFilterFrame(label) {
         <label>
           ${label}
         </label>
-        <!-- end startFilterFrame -->
+  <!-- end startFilter -->
   `;
 }
 
-function endFilterFrame() {
+function endFilter() {
 
   return `
-    <!-- start endFilterFrame -->
+    <!-- start endFilter -->
         </div>
       </div>
     </aside>
-    <!-- end endFilterFrame -->
+    <!-- end endFilter -->
   `;
 }
 

@@ -40,7 +40,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objCommonCost.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
@@ -211,18 +211,18 @@ async function events() {
 function showFilter(commonCostId) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  //let html = startFrame('filter-frame');
+
+  // Start filter
+  let html = startFilter("Tømmekalender");
 
   // Show commoncosts
-  html += objCommonCosts.showSelectedCommonCostsNew('Felleskost', 'filterCommonCostId', '', commonCostId, 'Velg Felleskost', '', true);
+  html += objCommonCosts.showSelectedCommonCostsNew('filterCommonCostId', 'Felleskost', commonCostId, 'Velg Felleskost', '', true);
 
-  // End filter frame
-  html += "</div>";
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
-
-  // Change frame title
-  setFrameTitle("filter-frame","Filter");
 }
 
 // Show commoncost
@@ -231,29 +231,26 @@ function showCommonCost(commonCostId) {
   const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.commonCostId === commonCostId);
 
   // Empty line
-  let html = emptyLine();
+  //let html = emptyLine();
+
+  let html = startContent('Felleskostnader');
 
   // common cost per squaremeter
-
   let commonCostSquareMeter = 0;
   if (rowNumberCommonCost !== -1) commonCostSquareMeter = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].commonCostSquareMeter;
   commonCostSquareMeter = formatNumberToNorAmount(commonCostSquareMeter);
-  html += showTextNew('Felleskostnad/m2', 'commonCostSquareMeter', commonCostSquareMeter, enableChanges, 'Felleskostnad/m2');
-
-  /*
-  // name
-  html += startLine();
-
-  const name = objCommonCosts.arrayCommonCosts[rowNumberCommonCost]?.name ?? '';
-  html += showTextNew('Kontonavn', 'name', objCommonCosts.arrayCommonCosts[rowNumberCommonCost].name.trim(), enableChanges, 'Kontonavn');
-  html += "</div>";
-  */
+  html += inputText('commonCostSquareMeter', 'Felleskostnad/m2', commonCostSquareMeter, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // fixed cost per condo
   if (rowNumberCommonCost !== -1) fixedCostCondo = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo;
   fixedCostCondo = formatNumberToNorAmount(fixedCostCondo);
-  html += showTextNew('Fast kostnad', 'fixedCostCondo', fixedCostCondo, enableChanges, 'Fast Kostnad');
+  html += inputText('fixedCostCondo', 'Fast kostnad', fixedCostCondo, enableChanges, 'Fast Kostnad');
+  html += "<div></div>";
+  html += "<div></div>";
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -284,6 +281,25 @@ function showCommonCost(commonCostId) {
     disableButton('cancel', true);
     disableButton('filterCommonCostId', false);
   }
+  */
+  html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+  document.querySelector('.showCommonCost').innerHTML = html;
 }
 
 // get price per squaremeter
@@ -332,7 +348,7 @@ async function updateCommonCostsRow(commonCostId) {
   commonCostId = Number(commonCostId);
 
   const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.commonCostId === commonCostId);
-  
+
   // year
   const year = objCommonCosts.arrayCommonCosts[rowNumberCommonCost]?.year ?? 0;
   const validYear = validateIntervalNew('filterCommonCostId', '', 'Ugyldig årstall', true, year, 2020, 2030);

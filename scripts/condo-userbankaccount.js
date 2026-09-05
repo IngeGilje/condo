@@ -29,7 +29,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objUserBankAccount.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
@@ -144,19 +144,19 @@ async function events() {
 // Show filter
 function showFilter(userBankAccountId) {
 
-  // Start frame
-  let html = startFrame('filter-frame');
+  // Start filter
+  let html = startFilter("Bankkonto");
 
   // Show user bank accounts filter
-  html += objUserBankAccount.showSelectedUserBankAccountsNew('Brukerkonto', 'filterUserBankAccountId', '', userBankAccountId, '', '', true);
+  html += objUserBankAccount.showSelectedUserBankAccountsNew('filterUserBankAccountId', 'Brukerkonto', userBankAccountId, '', '', true);
 
-  // End filter frame
-  html += "</div>";
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  //setFrameTitle("filter-frame","Filter");
 }
 
 // Show user bank account
@@ -164,31 +164,29 @@ function showUserBankAccount(userBankAccountId) {
 
   const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
-  // Empty line
-  let html = emptyLine();
+  let html = startContent('Bankkonto');
 
   // user
-  html += startLine();
-
   const userId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.userId ?? 0;
   //html += objUser.showSelectedUsersNew('Bruker', 'userId', userId, 'Velg bruker', '', true);
   //html += "</div>";
-  html += objUser.showSelectedUsersNew('Bruker','userId', userId, 'Velg bruker', '', true);
+  html += objUser.showSelectedUsersNew('userId', 'Bruker', userId, 'Velg bruker', '', true);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // account
-  html += startLine();
-
   const accountId = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', true);
-  html += "</div>";
+  html += objAccounts.showSelectedAccountsNew('accountId','Konto',  accountId, 'Velg konto', '', true);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // bank account
-  html += startLine();
-
   const bankAccount = objUserBankAccount.arrayUserBankAccounts[rowNumberUserBankAccount]?.bankAccount ?? '';
   html += showTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges, 'Oppgi Bankkonto');
-  html += "</div>";
+  html += "<div></div>";
+  html += "<div></div>";
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -202,9 +200,28 @@ function showUserBankAccount(userBankAccountId) {
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
+  */
+  html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
 
   document.querySelector('.showUserBankAccount').innerHTML = html;
 
+  /*
   // Buttons
   if (enableChanges) {
     disableButton('delete', false);
@@ -213,6 +230,7 @@ function showUserBankAccount(userBankAccountId) {
     disableButton('cancel', true);
     disableButton('filterUserBankAccountId', false, 'white');
   }
+  */
 }
 
 // Delete userbankaccounts  row
@@ -284,23 +302,23 @@ async function updateUserBankAccountsRow(userBankAccountId) {
     showUserBankAccount(userBankAccountId);
   }
   */
- document.querySelector('.showMessage').style.display = "none";
+    document.querySelector('.showMessage').style.display = "none";
 
     // Check if the userbankaccounts row exist
     const rowNumberUserBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
     if (rowNumberUserBankAccount !== -1) {
 
-       // update the userbankaccounts row
+      // update the userbankaccounts row
       await objUserBankAccount.updateUserBankAccountsTable(userBankAccountId, objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
     } else {
 
-     // Insert the userbankaccounts row 
+      // Insert the userbankaccounts row 
       await objUserBankAccount.insertUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.user, userId, accountId, bankAccount);
       await objUserBankAccount.getHighestUserBankAccountId(objUserBankAccount.condominiumId);
       userBankAccountId = objUserBankAccount.arrayUserBankAccounts[objUserBankAccount.arrayUserBankAccounts.length - 1].userBankAccountId;
     }
 
-      await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
+    await objUserBankAccount.loadUserBankAccountsTable(objUserBankAccount.condominiumId, objUserBankAccount.nineNine, objUserBankAccount.nineNine);
 
     removeMessage();
 

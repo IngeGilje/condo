@@ -30,12 +30,18 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      /*
+      // Show vertical menu
       let html = objPassword.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
+      */
+
+      // Show menu
+      let html = objPassword.showMenu(applicationName);
+      document.querySelector('.menuVertical').innerHTML = html;
 
       /*
       // Show main menu
@@ -147,22 +153,18 @@ async function deleteCondo() {
 function showFilter(userId) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  //let html = startFrame('filter-frame');
 
-  // show filter
-  //html += startLine();
+  // Start  frame
+  let html = startFilter("Tømmekalender");
 
   // Show users
-  //html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
-  html += objUser.showSelectedUsersNew('Bruker','filterUserId', userId, '', '', true);
+  html += objUser.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
 
-  // End filter frame
-  html += "</div>";
+  // End filter
+  html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html
-
-  // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show user
@@ -171,26 +173,25 @@ function showUser(userId) {
   // row number user
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
 
-  // Empty line
-  let html = emptyLine();
-
-  // Password, securitylevel
-  html += startLine();
+  let html = startContent('Konto');
 
   // password
   const password = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].password.trim();
-  html += showTextNew('Passord', 'password', password, enableChanges, "Passord");
-  html += "</div>";
+  html += inputText('Passord', 'password', password, enableChanges, "Passord");
+  html += "<div></div>";
+  html += "<div></div>";
 
   // security level
   const securityLevel = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].securityLevel;
-  html += showSelectedNumbersNew('Sikkerhetsnivå', 'securityLevel', 1, 9, 1, enableChanges)
-  html += "</div>";
+  html += inputSelectedNumbers('securityLevel','Sikkerhetsnivå',  1, 9, 1, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -204,7 +205,25 @@ function showUser(userId) {
     html += showButtonNew('insert', 'Ny');
     html += "</div>";
   }
-  document.querySelector('.result').innerHTML = html;
+  */
+  html += endContent();
+
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+  document.querySelector('.showPassword').innerHTML = html;
 }
 
 // Update a users row
@@ -213,12 +232,12 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = validateIntervalNew('userId',   '', 'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateIntervalNew('userId', '', 'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = validateIntervalNew('securityLevel',    '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
- 
+  const validSecurityLevel = validateIntervalNew('securityLevel', '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
+
   // validate password
   let password = document.querySelector('.password').value;
   /*

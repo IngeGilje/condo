@@ -166,7 +166,7 @@ function showFilter(dueId) {
   // Show dues
   html += objDues.showSelectedDuesNew('Forfall', 'filterDueId', '', dueId, '', 'Vis alle', true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -194,11 +194,11 @@ function showDue(dueId) {
   // condoId
   html += startLine();
   const condoId = objDues.arrayDues[rowNumberDue]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('Leilighet', 'condoId', condoId, 'Velg Leilighet', '', true);
+  html += objCondo.showSelectedCondosNew('condoId','Leilighet',  condoId, 'Velg Leilighet', '', true);
 
   // accountId
   const accountId = objDues.arrayDues[rowNumberDue]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg Konto', '', true);
+  html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg Konto', '', true);
   html += "</div>";
 
   // amount

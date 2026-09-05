@@ -174,7 +174,7 @@ function showFilter(bankAccountId) {
 
   html += objBankAccount.showSelectedBankAccountsNew('Bankkonto', 'filterBankAccountId', '', bankAccountId, '', '', true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -182,14 +182,14 @@ function showFilter(bankAccountId) {
   // Change frame title
   setFrameTitle("filter-frame", "Filter");
   */
-  // Start filter frame
-  let html = startFilterFrame("Sameie");
+  // Start filter
+  let html = startFilter("Sameie");
 
   // Show bankaccounts
   html += objBankAccount.showSelectedBankAccountsNew('Bankkonto', 'filterBankAccountId', '', bankAccountId, '', '', true);
 
-  // End filter frame
-  html += endFilterFrame();
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
 }
@@ -236,7 +236,7 @@ function showBankAccount(bankAccountId) {
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance.trim();
   openingBalance = formatNumberToNorAmount(openingBalance);
   //html += showTextNew('Inngående saldo', 'openingBalance', openingBalance, enableChanges, "Inngående saldo");
-  html += inputNumber('openingBalance', 'Inngående saldo', openingBalance, enableChanges)
+  html += inputText('openingBalance', 'Inngående saldo', openingBalance, enableChanges)
   html += "<div></div>";
 
   // closing balance date
@@ -255,7 +255,7 @@ function showBankAccount(bankAccountId) {
   closingBalance = formatNumberToNorAmount(closingBalance);
 
   //html += showTextNew('Utgående saldo', 'closingBalance', closingBalance, enableChanges, "Utgående saldo");
-  html += inputNumber('closingBalance', 'Utgående saldo', closingBalance, enableChanges)
+  html += inputText('closingBalance', 'Utgående saldo', closingBalance, enableChanges)
   html += "<div></div>";
 
   /*

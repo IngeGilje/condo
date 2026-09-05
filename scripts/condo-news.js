@@ -160,7 +160,7 @@ function showFilter(newsId) {
   // Show news
   html += objNews.showSelectedNewsNew('Nyhet', 'filterNewsId', '', newsId, '', '', true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -169,14 +169,14 @@ function showFilter(newsId) {
   setFrameTitle("filter-frame","Filter");
   */
 
-  // Start filter frame
-  let html = startFilterFrame("Nyheter");
+  // Start filter
+  let html = startFilter("Nyheter");
 
   // Show news
   html += objNews.showSelectedNewsNew('filterNewsId', newsId, '', '', enableChanges);
 
-  // End filter frame
-  html += endFilterFrame();
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
 }
@@ -202,7 +202,7 @@ function showNews(newsId) {
   const userId = objNews.arrayNews[rowNumberNews]?.userId ?? 0;
   //html += objUser.showSelectedUsersNew('Forfatter', 'userId', userId, 'Velg forfatter', '', true);
   //html += "</div>";
-  html += objUser.showSelectedUsersNew('Forfatter', 'userId', userId, '', '', true);
+  html += objUser.showSelectedUsersNew('userId', 'Forfatter', userId, '', '', true);
   html += "<div></div>";
   html += "<div></div>";
 

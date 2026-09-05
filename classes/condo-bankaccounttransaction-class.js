@@ -83,6 +83,86 @@ class BankAccountTransaction extends Condos {
     return html;
   }
 
+  // Show all selected bank account transactions
+  showSelectedBankAccountTransactionsNew(className, label, bankAccountTransactionId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedBankAccountTransactionsNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if bankAccountTransaction array is empty
+    if (this.arrayBankAccountTransactions.length > 0) {
+      this.arrayBankAccountTransactions.forEach((bankAccountTransaction) => {
+
+        html += `
+        <option 
+          value=${bankAccountTransaction.bankAccountTransactionId}
+          ${(bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId) ? 'selected' : ''}
+        >
+          ${bankAccountTransaction.name.trim()}
+        </option>`;
+        if (bankAccountTransaction.bankAccountTransactionId === bankAccountTransactionId) selectedValue = true;
+      });
+    } else {
+
+      // No accounts
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen Bankkontotransaksjoner
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayBankAccountTransactions.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayBankAccountTransactions.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedBankAccountTransactionsNew -->
+    `;
+
+    return html;
+  }
+
   // Find selected Bank Account Movement Id
   getSelectedBankAccountTransactionId(className) {
 
@@ -150,7 +230,7 @@ class BankAccountTransaction extends Condos {
       : 'http://localhost:3000/bankaccounttransactions';
     try {
 
-       const response = await fetch(URL, {
+      const response = await fetch(URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -45,12 +45,17 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      /*
+      // Show vertical menu
       let html = objProject.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
+      */
+      // Show menu
+      let html = objProject.showMenu(applicationName);
+      document.querySelector('.menuVertical').innerHTML = html;
 
       /*
       // Show main menu
@@ -176,18 +181,21 @@ async function events() {
 function showFilter(projectId) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  //let html = startFrame('filter-frame');
+
+  // Start filter
+  let html = startFilter("Prosjekt");
 
   // Show projects
-  html += objProjects.showSelectedProjectsNew('Prosjekt', 'filterProjectId', projectId, '', '', true);
+  html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, '', '', true);
 
-  // End filter frame
-  html += "</div>";
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  //setFrameTitle("filter-frame", "Filter");
 }
 
 // Show project
@@ -196,25 +204,28 @@ function showProject(projectId) {
   // row number project
   const rowNumberProject = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
 
+   let html = startContent('Konto');
+   
   // account
-  let html = emptyLine();
   const accountId = objProjects.arrayProjects[rowNumberProject]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg Konto', '', enableChanges)
-  html += "</div>";
+  html += objAccounts.showSelectedAccountsNew('accountId','Konto',  accountId, 'Velg Konto', '', enableChanges)
+  html += "<div></div>";
+  html += "<div></div>";
 
   // name
-  html += emptyLine();
   const name = objProjects.arrayProjects[rowNumberProject]?.name.trim() ?? '';
-  html += showTextNew('Navn', 'name', name, enableChanges, "Navn");
-  html += "</div>";
+  html += inputText('name','Navn',  name, enableChanges, "Navn");
+   html += "<div></div>";
+  html += "<div></div>";
 
   // amount
-  html += startLine();
   let amount = objProjects.arrayProjects[rowNumberProject]?.amount ?? '';
   amount = formatNumberToNorAmount(amount);
-  html += showTextNew('Beløp', 'amount', amount, enableChanges, "Beløp");
-  html += "</div>";
+  html += inputText('amount', 'Beløp', amount, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -234,7 +245,27 @@ function showProject(projectId) {
   html += "</div>";
 
   document.querySelector('.showProject').innerHTML = html;
+  */
+ html += endContent();
 
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("back secondary", "Tilbake", "button");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+  document.querySelector('.showProject').innerHTML = html;
+
+  /*
   // Buttons
   if (enableChanges) {
     disableButton('delete', false);
@@ -243,6 +274,7 @@ function showProject(projectId) {
     disableButton('cancel', true);
     disableButton('filterProjectId', false);
   }
+  */
 }
 
 // Update a projects table row

@@ -206,7 +206,7 @@ class Condo extends Condos {
   */
 
   // Show condos
-  showSelectedCondosNew(label, className, condoId, selectNone, selectAll, enableChanges) {
+  showSelectedCondosNew(className,label,  condoId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -236,7 +236,7 @@ class Condo extends Condos {
         >
           ${condo.name.trim()}
         </option>`;
-        if (!selectedValue) selectedValue = true;
+        if (condo.condoId === condoId) selectedValue = true;
       });
     } else {
 

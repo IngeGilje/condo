@@ -56,6 +56,7 @@ class CommonCosts extends Condos {
   }
   */
 
+  /*
   // Show commoncosts
   showSelectedCommonCostsNew(label, className, style, commonCostId, selectNone, selectAll, enableChanges) {
 
@@ -96,7 +97,7 @@ class CommonCosts extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen Konti&nbsp;&nbsp;
+        Ingen Felleskostnad
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -135,13 +136,14 @@ class CommonCosts extends Condos {
 
     return html;
   }
+  */
 
   // get commoncosts
   async loadCommonCostsTable(condominiumId) {
 
-    const URL = (this.serverStatus === 1) 
-    ? '/api/commoncosts' 
-    : 'http://localhost:3000/commoncosts';
+    const URL = (this.serverStatus === 1)
+      ? '/api/commoncosts'
+      : 'http://localhost:3000/commoncosts';
     try {
 
       // POST request
@@ -286,5 +288,85 @@ class CommonCosts extends Condos {
     } catch (error) {
       console.log("Error delete commoncosts:", error);
     }
+  }
+
+  // Show commonCosts
+  showSelectedCommonCostsNew(className, label, commonCostId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedCommonCostsNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if commonCosts array is empty
+    if (this.arrayCommonCosts.length > 0) {
+      this.arrayCommonCosts.forEach((commonCost) => {
+
+        html += `
+        <option 
+          value=${commonCost.commonCostId}
+          ${(commonCost.commonCostId === commonCostId) ? 'selected' : ''}
+        >
+          ${commonCost.year}
+        </option>`;
+        if (commonCost.commonCostId === commonCostId) selectedValue = true;
+      });
+    } else {
+
+      // No commonCosts
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen konti
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayCommonCosts.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayCommonCosts.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedCommonCostsNew -->
+    `;
+
+    return html;
   }
 }

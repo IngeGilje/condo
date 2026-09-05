@@ -42,6 +42,7 @@ class Budgets extends Condos {
     }
   }
 
+  /*
   // Show budgets
   showSelectedBudgetsNew(label, className, style, budgetId, selectNone, selectAll, enableChanges) {
 
@@ -123,6 +124,7 @@ class Budgets extends Condos {
 
     return html;
   }
+  */
 
   // get budgets
   async loadBudgetsTable(condominiumId, year, accountId) {
@@ -263,5 +265,86 @@ class Budgets extends Condos {
     } catch (error) {
       console.log("Error deleting budgets:", error);
     }
+  }
+
+
+// Show budgets
+  showSelectedBudgetsNew(className,label,  budgetId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedBudgetsNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if budgets array is empty
+    if (this.arrayBudgets.length > 0) {
+      this.arrayBudgets.forEach((budget) => {
+
+        html += `
+        <option 
+          value=${budget.budgetId}
+          ${(budget.budgetId === budgetId) ? 'selected' : ''}
+        >
+          ${budget.name.trim()}
+        </option>`;
+        if (budget.budgetId === budgetId) selectedValue = true;
+      });
+    } else {
+
+      // No budgets
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen budsjett
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayBudgets.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayBudgets.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedBudgetsNew -->
+    `;
+
+    return html;
   }
 }

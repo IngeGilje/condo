@@ -238,11 +238,11 @@ function showFilter() {
 
   // Show years
   const year = today.getFullYear();
-  html += showSelectedNumbersNew('År', 'filterYear', 2020, 2030, year, true);
+  html += inputSelectedNumbers('filterYear','År',  2020, 2030, year, true);
 
   //html += "</div>";
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;

@@ -158,7 +158,7 @@ function showFilter(condoId) {
   //html += startLine();
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('Leilighet', 'filterCondoId', condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondosNew('filterCondoId','Leilighet',  condoId, '', 'Vis alle', true);
 
   // From date
   let fromDate = `${String(today.getFullYear())}-01-01`;
@@ -171,7 +171,7 @@ function showFilter(condoId) {
 
   //html += "</div>";
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;

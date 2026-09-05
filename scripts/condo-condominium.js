@@ -146,7 +146,7 @@ function showFilter(condominiumId) {
   // Show condominiums
   html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -155,14 +155,14 @@ function showFilter(condominiumId) {
   setFrameTitle("filter-frame", "Filter");
   */
 
-  // Start filter frame
-  let html = startFilterFrame("Sameie");
+  // Start filter
+  let html = startFilter("Sameie");
 
   // Show condominiums
   html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
 
-  // End filter frame
-  html += endFilterFrame();
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
 }
@@ -218,18 +218,18 @@ function showCondominium(condominiumId) {
 
   // income Remote Heating AccountId
   const incomeRemoteHeatingAccountId = objCondominium.arrayCondominiums[rowNumberCondominium]?.incomeRemoteHeatingAccountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Inntekstkonto fjernvarme', 'incomeRemoteHeatingAccountId', incomeRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('incomeRemoteHeatingAccountId','Inntekstkonto fjernvarme',  incomeRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
 
   // payment Remote Heating AccountId
   const paymentRemoteHeatingAccountId = objCondominium.arrayCondominiums[rowNumberCondominium]?.paymentRemoteHeatingAccountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Ugiftskonto fjernvarme', 'paymentRemoteHeatingAccountId', paymentRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('paymentRemoteHeatingAccountId','Ugiftskonto fjernvarme',  paymentRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
   html += "<div></div>";
 
   // common Cost AccountId
   const commonCostAccountId = (rowNumberCondominium === -1)
     ? ''
     : objCondominium.arrayCondominiums[rowNumberCondominium].commonCostAccountId;
-  html += objAccounts.showSelectedAccountsNew('Inntektskonto husleie', 'commonCostAccountId', commonCostAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('commonCostAccountId','Inntektskonto husleie',  commonCostAccountId, 'Velg konto', '', enableChanges);
 
   // organizationNumber
   const organizationNumber = objCondominium.arrayCondominiums[rowNumberCondominium]?.organizationNumber ?? '';

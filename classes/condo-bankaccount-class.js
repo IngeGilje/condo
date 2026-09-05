@@ -27,7 +27,7 @@ class BankAccount extends Condos {
         >
     `;
 
-    // Check if bank account array is empty
+    // Check if bankaccount array is empty
     if (this.arrayBankAccounts.length > 0) {
       this.arrayBankAccounts.forEach((bankaccount) => {
         if (bankaccount.bankAccountId >= 0) {
@@ -72,6 +72,86 @@ class BankAccount extends Condos {
       `;
 
     document.querySelector(`.div-${className}`).innerHTML = html;
+  }
+
+  // Show bankaccounts
+  showSelectedBankAccountsNew(className, label, bankAccountId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedBankAccountsNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if bankaccounts array is empty
+    if (this.arrayBankAccounts.length > 0) {
+      this.arrayBankAccounts.forEach((bankAccount) => {
+
+        html += `
+        <option 
+          value=${bankAccount.bankAccountId}
+          ${(bankAccount.bankAccountId === bankAccountId) ? 'selected' : ''}
+        >
+          ${bankAccount.name.trim()}
+        </option>`;
+        if (bankAccount.bankAccountId === bankAccountId) selectedValue = true;
+      });
+    } else {
+
+      // No bankaccounts
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen bankkonti
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayBankAccounts.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayBankAccounts.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedBankAccountsNew -->
+    `;
+
+    return html;
   }
 
   // Find selected bankaccount id
@@ -145,7 +225,7 @@ class BankAccount extends Condos {
           <option value="0" 
             selected
           >
-            Ingen konti
+            Ingen bankkonti
           </option>
         `;
       selectedValue = true;
@@ -197,6 +277,7 @@ class BankAccount extends Condos {
     return html;
   }
 
+  /*
   // Show bank accounts
   showSelectedBankAccountsNew(label, className, style, bankAccountId, selectNone, selectAll, enableChanges) {
 
@@ -275,6 +356,7 @@ class BankAccount extends Condos {
 
     return html;
   }
+  */
 
   // Show bank accounts with alternative select options
   async loadBankAccountsTable(condominiumId, bankAccountId) {
@@ -413,4 +495,3 @@ class BankAccount extends Condos {
     }
   }
 }
-

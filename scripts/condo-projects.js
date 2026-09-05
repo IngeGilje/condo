@@ -188,9 +188,9 @@ function showFilter(projectId) {
   //html += startLine();
 
   // Show projects
-  html += objProjects.showSelectedProjectsNew('Prosjekt', 'filterProjectId', projectId, 'Velg prosjekt', '', true);
+  html += objProjects.showSelectedProjectsNew('filterProjectId','Prosjekt',  projectId, 'Velg prosjekt', '', true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;

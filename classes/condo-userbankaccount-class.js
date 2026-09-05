@@ -4,8 +4,9 @@ class UserBankAccount extends Condos {
   // user bank account information
   arrayUserBankAccounts = [];
 
+  /*
   // Show selected user bank accounts
-  showSelectedUserBankAccountsNew(label, className, style, userBankAccountId, selectNone, selectAll, enableChanges) {
+  showSelectedUserBankAccountsNew( className, label, userBankAccountId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -85,6 +86,7 @@ class UserBankAccount extends Condos {
 
     return html;
   }
+  */
 
   // get user bank accounts
   async loadUserBankAccountsTable(condominiumId, userId, accountId) {
@@ -244,5 +246,85 @@ class UserBankAccount extends Condos {
     } catch (error) {
       console.log("Error deleting user bank accounts:", error);
     }
+  }
+
+  // Show userbankaccounts
+  showSelectedAccountsNew(className,label,  userbankaccountId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedUserbankaccountsNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if userbankaccounts array is empty
+    if (this.arrayUserbankaccounts.length > 0) {
+      this.arrayUserbankaccounts.forEach((userbankaccount) => {
+
+        html += `
+        <option 
+          value=${userbankaccount.userbankaccountId}
+          ${(userbankaccount.userbankaccountId === userbankaccountId) ? 'selected' : ''}
+        >
+          ${userbankaccount.name.trim()}
+        </option>`;
+        if (userbankaccount.userbankaccountId === userbankaccountId) selectedValue = true;
+      });
+    } else {
+
+      // No userbankaccounts
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen konti
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayUserbankaccounts.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayUserbankaccounts.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedUserbankaccountsNew -->
+    `;
+
+    return html;
   }
 }

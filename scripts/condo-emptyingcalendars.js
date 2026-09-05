@@ -119,12 +119,12 @@ function showFilter(year, month) {
   let html = startFrame('filter-frame');
 
   // Show years
-  html += showSelectedNumbersNew('År', 'filterYear',  2020, 2030, year, true);
+  html += inputSelectedNumbers('År', 'filterYear',  2020, 2030, year, true);
 
   // Show selected months
   html += showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -133,18 +133,18 @@ function showFilter(year, month) {
   setFrameTitle("filter-frame","Filter");
   */
 
-  // Start filter frame
-  let html = startFilterFrame("Tømmekalender");
+  // Start filter
+  let html = startFilter("Tømmekalender");
 
   // Show years
-  //html += showSelectedNumbersNew('År', 'filterYear',  2020, 2030, year, true);
-  html += showSelectedNumbersNew('År', 'filterYear', 2020, 2030, year, true);
+  //html += inputSelectedNumbers('År', 'filterYear',  2020, 2030, year, true);
+  html += inputSelectedNumbers('filterYear','År',  2020, 2030, year, true);
 
   // Show months
   html += showSelectedMonthsNew('Måned', 'filterMonth', month, true);
 
-  // End filter frame
-  html += endFilterFrame();
+  // End filter
+  html += endFilter();
 
   document.querySelector('.showFilter').innerHTML = html;
 }

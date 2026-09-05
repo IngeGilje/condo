@@ -290,7 +290,7 @@ function showFilter(budgetId) {
   // Show budgets
   html += objBudgets.showSelectedBudgetsNew('Budsjett', 'filterBudgetId', '', budgetId, '', '', true);
 
-  // End filter frame
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
@@ -309,10 +309,10 @@ function showBudget(budgetId) {
   let html = emptyLine();
 
   const year = objBudgets.arrayBudgets[rowNumberBudget]?.year ?? '';
-  html += showSelectedNumbersNew('År', 'year', 2020, 2030, year, true);
+  html += inputSelectedNumbers('year','År',  2020, 2030, year, true);
 
   const accountId = objBudgets.arrayBudgets[rowNumberBudget]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('Konto', 'accountId', accountId, 'Velg konto', '', true);
+  html += objAccounts.showSelectedAccountsNew('accountId','Konto',  accountId, 'Velg konto', '', true);
 
   // amount
   /*

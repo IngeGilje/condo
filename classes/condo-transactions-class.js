@@ -41,7 +41,7 @@ class Transactions extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        Ingen Konti
+        Ingen Transaksjoner
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

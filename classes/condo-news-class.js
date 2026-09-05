@@ -239,7 +239,7 @@ class News extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        Ingen Konti
+        Ingen Nyheter
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

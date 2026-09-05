@@ -74,8 +74,9 @@ class Supplier extends Condos {
     return html;
   }
 
+  /*
   // Show selected suppliers
-  showSelectedSuppliersNew(label, className, style, supplierId, selectNone, selectAll, enableChanges) {
+  showSelectedSuppliersNew(className, label,  supplierId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -150,6 +151,87 @@ class Supplier extends Condos {
 
     return html;
   }
+  */
+
+  // Show suppliers
+  showSelectedSuppliersNew(className, label, supplierId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedSuppliersNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if suppliers array is empty
+    if (this.arraySuppliers.length > 0) {
+      this.arraySuppliers.forEach((supplier) => {
+
+        html += `
+        <option 
+          value=${supplier.supplierId}
+          ${(supplier.supplierId === supplierId) ? 'selected' : ''}
+        >
+          ${supplier.name.trim()}
+        </option>`;
+        if (supplier.supplierId === supplierId) selectedValue = true;
+      });
+    } else {
+
+      // No suppliers
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen leverandører
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arraySuppliers.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arraySuppliers.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedSuppliersNew -->
+    `;
+
+    return html;
+  }
 
   // Find selected supplier id
   getSelectedSupplierId(classValue) {
@@ -202,16 +284,6 @@ class Supplier extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/suppliers' : 'http://localhost:3000/suppliers';
     try {
 
-      //const response = await fetch(`${URL}:3000/suppliers?action=update&supplierId=${supplierId}
-      /*
-        &name=${name}
-        &street=${street}&address2=${address2}
-        &postalCode=${postalCode}&city=${city}
-        &email=${email}&phone=${phone}
-        &accountId=${accountId}&bankAccount=${bankAccount}
-        &amountAccountId=${amountAccountId}&amount=${amount}
-        &textAccountId=${textAccountId}&text=${text}`);
-      */
       const response = await fetch(URL, {
         method: "POST",
         headers: {

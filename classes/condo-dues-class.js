@@ -62,6 +62,7 @@ class Dues extends Condos {
     }
   }
 
+  /*
   // Show dues
   showSelectedDuesNew(label, className, style, dueId, selectNone, selectAll, enableChanges) {
 
@@ -101,7 +102,7 @@ class Dues extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        &nbsp;&nbsp;Ingen Konti&nbsp;&nbsp;
+        Ingen Forfall
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -140,6 +141,7 @@ class Dues extends Condos {
 
     return html;
   }
+  */
 
   // Get the highest ID in the table
   async getHighestDueId(condominiumId) {
@@ -265,5 +267,85 @@ class Dues extends Condos {
     });
 
     return openingBalance;
+  }
+
+  // Show dues
+  showSelectedDuesNew(className,label,  dueId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedDuesNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if dues array is empty
+    if (this.arrayDues.length > 0) {
+      this.arrayDues.forEach((due) => {
+
+        html += `
+        <option 
+          value=${due.dueId}
+          ${(due.dueId === dueId) ? 'selected' : ''}
+        >
+          ${due.name.trim()}
+        </option>`;
+        if (due.dueId === dueId) selectedValue = true;
+      });
+    } else {
+
+      // No dues
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen forfall
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayDues.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayDues.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedDuesNew -->
+    `;
+
+    return html;
   }
 }

@@ -33,12 +33,14 @@ async function main() {
       window.location.href = URL;
     } else {
 
+      /*
             // Show vertical menu
       let html = objLiquidity.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       setFrameTitle("menu-frame", "Meny");
+      */
 
       /*
       // Show main menu
@@ -50,6 +52,10 @@ async function main() {
       document.querySelector('.menuCondominium').innerHTML = html;
       objLiquidity.markActivatedApplication(objLiquidity.arrayMenuCondominium, applicationName);
       */
+
+      // Show menu
+      let html = objLiquidity.showMenu(applicationName);
+      document.querySelector('.menuVertical').innerHTML = html;
 
       await objBankAccount.loadBankAccountsTable(objLiquidity.condominiumId, objLiquidity.nineNine);
 
@@ -91,19 +97,29 @@ async function events() {
 function showFilter() {
 
   // Start frame
-  let html = startFrame("filter-frame");
+  //let html = startFrame("filter-frame");
+
+  // Start filter
+  let html = startFilter("Tømmekalender");
 
   // Show years
   const year = today.getFullYear();
-  html += showSelectedNumbersNew('År', 'filterYear',  2020, 2030, year, true);
+  html += inputSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
 
-  // End filter frame
+  /*
+  // End filter
   html += "</div>";
 
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
   setFrameTitle("filter-frame", "Filter");
+  */
+
+  // End filter
+  html += endFilter();
+
+  document.querySelector('.showFilter').innerHTML = html;
 }
 
 // Show liquidity
@@ -119,7 +135,7 @@ function showLiquidity() {
   for (month = 1; month < 13; month++) {
     if (month < 10) month = "0" + String(month);
     let date = year + String(month) + "31";
-    arrayMonth[month-1] = objTransactions.getBankBalance(Number(date));
+    arrayMonth[month - 1] = objTransactions.getBankBalance(Number(date));
   }
 
   // Remove previous chart
@@ -133,9 +149,9 @@ function showLiquidity() {
     data: {
       labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       datasets: [{
-        label: "Liquidity",
+        label: "Likviditet",
         data: [arrayMonth[0], arrayMonth[1], arrayMonth[2], arrayMonth[3], arrayMonth[4], arrayMonth[5], arrayMonth[6], arrayMonth[7], arrayMonth[8], arrayMonth[9], arrayMonth[10], arrayMonth[11]]
       }]
     }
-  }); 
+  });
 }
