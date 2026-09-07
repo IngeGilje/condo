@@ -40,12 +40,12 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objVoucher.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -135,7 +135,7 @@ function showVoucher(transactionId) {
   html += startLine();
 
   // transaction Id
-  html += showTextNew('Bilagsnummer', 'transactionId', transactionId, false, "Bilagsnummer");
+  html += showTextNew('transactionId', 'Bilagsnummer', transactionId, false, "Bilagsnummer");
   html += "</div>";
 
   // Date
@@ -143,13 +143,14 @@ function showVoucher(transactionId) {
 
   let date = objTransactions.arrayTransactions[rowNumberTransaction]?.date ?? '';
   date = formatNumberToISODate(date);
-  html += showDate('Dato', 'date', date, false)
+  //html += showDate('Dato', 'date', date, false);
+  html += inputDate('date', 'Dato', date, false);
 
   // Amount
   const income = objTransactions.arrayTransactions[rowNumberTransaction].income;
   const payment = objTransactions.arrayTransactions[rowNumberTransaction].payment;
   const amount = formatNumberToNorAmount((income) ? income : payment);
-  html += showTextNew('Beløp', 'amount', amount, false, "Beløp");
+  html += showTextNew('amount', 'Beløp', amount, false, "Beløp");
   html += "</div>";
 
   // Account
@@ -158,14 +159,14 @@ function showVoucher(transactionId) {
   // Account
   const accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? '';
   const accountName = objAccounts.getAccountNameById(accountId);
-  html += showTextNew('Konto', 'accountName', accountName, false, "Konto");
+  html += showTextNew('accountName', 'Konto', accountName, false, "Konto");
 
   // File name
   let voucherFileName = objTransactions.arrayTransactions[rowNumberTransaction]?.voucherFileName ?? '';
   voucherFileName = (voucherFileName)
     ? ''
     : `${transactionId}.pdf`;
-  html += showTextNew('Filnavn', 'voucherFileName', voucherFileName, false, "Filnavn");
+  html += showTextNew('voucherFileName', 'Filnavn', voucherFileName, false, "Filnavn");
   html += "</div>";
 
   html += startLine();

@@ -1,4 +1,4 @@
-// Show emptying calendar
-class ShowEmptyingCalendar extends Condos {
+// Show empty calendar
+class showemptycalendar extends Condos {
 
 }

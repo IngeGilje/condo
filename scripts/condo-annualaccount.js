@@ -7,9 +7,9 @@ const objCondominium = new Condominium('condominium');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
 const objBankAccount = new BankAccount('bankaccount');
-const objTransaction = new Transaction('bankTransaction');
+const objTransactions = new Transactions('bankTransactions');
 const objCondo = new Condo('condo');
-const objCommonCost = new CommonCost('commoncost');
+const objCommonCosts = new CommonCosts('commoncosts');
 const objAnnualAccount = new AnnualAccount('annualaccount');
 
 const enableChanges = (objAnnualAccount.securityLevel > 5);
@@ -43,7 +43,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -60,7 +60,7 @@ async function main() {
       await objUser.loadUsersTable(objAnnualAccount.condominiumId, resident, objAnnualAccount.nineNine);
       await objCondominium.loadCondominiumsTable();
       await objCondo.loadCondoTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
-      await objCommonCost.loadCommonCostsTable(objAnnualAccount.condominiumId);
+      await objCommonCosts.loadCommonCostsTable(objAnnualAccount.condominiumId);
       await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
       await objBankAccount.loadBankAccountsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
       const fixedCost = 'A';
@@ -220,11 +220,13 @@ function showFilter(budgetYear, fromDate, toDate) {
   html += inputSelectedNumbers('filterBudgetYear','År',  2020, 2030, budgetYear, true);
 
   // From date
-  html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
+  //html += showDate('Fra Dato', 'filterFromDate', fromDate, true);
+  html += inputDate('filterFromDate', 'Fra Dato', fromDate, true);
 
   // To date
   // Current date
-  html += showDate('Til Dato', 'filterToDate', toDate, true)
+  //html += showDate('Til Dato', 'filterToDate', toDate, true)
+  html += inputDate('filterToDate','Til Dato',  toDate, true)
 
   // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(budgetYear);
@@ -318,10 +320,10 @@ function showAnnualAccounts() {
   totalBudgetAmount = formatNumberToNorAmount(String(totalBudgetAmount));
 
 
-  html += objTransaction.insertTableRow('font-weight: 600;', '', 'Sum', totalAccountAmount, totalBudgetAmount, totalDeviation);
+  html += objTransactions.insertTableRow('font-weight: 600;', '', 'Sum', totalAccountAmount, totalBudgetAmount, totalDeviation);
 
   // empty table row
-  html += objTransaction.insertTableRow('', '', '', '', '', '');
+  html += objTransactions.insertTableRow('', '', '', '', '', '');
 
   // The end of the table
   html += objAnnualAccount.endTable();
@@ -348,11 +350,11 @@ function showIncomeNextYear() {
   // Get fixed costs per month
   const year = Number(document.querySelector(".filterBudgetYear").value);
   let fixedCostCondoMonth = 0;
-  const rowNumberCommonCost = objCommonCost.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
+  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
   if (rowNumberCommonCost !== -1) {
 
     // Fixed cost per month per condo
-    fixedCostCondoMonth = Number(objCommonCost.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo);
+    fixedCostCondoMonth = Number(objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo);
 
     // Get fixed costs per year
     // 12 month and 7 condos
@@ -424,7 +426,7 @@ function showIncomeNextYear() {
   document.querySelector('.incomeNextYear').innerHTML = html;
 }
 
-// Show showBank Deposit for next year
+// Show Bank Deposit for next year
 function showBankDeposit() {
 
   // start table
@@ -441,7 +443,7 @@ function showBankDeposit() {
   let accAmount = 0;
 
   // insert a table row (<tr></td>)
-  html += objTransaction.insertTableRow('', '', '');
+  html += objTransactions.insertTableRow('', '', '');
 
   // Text
   className = `text`;
@@ -539,7 +541,7 @@ function getpriceSquaremeter(budgetYear) {
 
   budgetYear = Number(budgetYear);
   let commonCostSquareMeter = 0;
-  objCommonCost.arrayCommonCosts.forEach((commonCost) => {
+  objCommonCosts.arrayCommonCosts.forEach((commonCost) => {
 
     if (commonCost.year === budgetYear) commonCostSquareMeter = Number(commonCost.commonCostSquareMeter);
   });

@@ -40,7 +40,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -174,7 +174,8 @@ function showRemoteHeating(remoteHeatingId) {
     : 0;
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   remoteHeatingDate = formatNumberToISODate(remoteHeatingDate);
-  html += showDate('Dato', 'remoteHeatingDate', remoteHeatingDate, enableChanges)
+  //html += showDate('Dato', 'remoteHeatingDate', remoteHeatingDate, enableChanges)
+  html += inputDate('remoteHeatingDate', 'Dato', remoteHeatingDate, enableChanges)
   html += "</div>";
 
   // condo Id
@@ -191,7 +192,7 @@ function showRemoteHeating(remoteHeatingId) {
     ? objRemoteHeatings.arrayRemoteHeatings[rowNumberRemoteHeating].kilowattHour
     : 0;
   kilowattHour = formatNumberToNorAmount(kilowattHour);
-  html += showTextNew('K.timer', 'kilowattHour', kilowattHour, enableChanges, 'Kontonavn');
+  html += showTextNew('kilowattHour','K.timer',  kilowattHour, enableChanges, 'Kontonavn');
   html += "</div>";
 
   // Price for current year
@@ -200,7 +201,7 @@ function showRemoteHeating(remoteHeatingId) {
     ? objRemoteHeatings.arrayRemoteHeatings[rowNumberRemoteHeating].priceYear
     : 0;
   priceYear = formatNumberToNorAmount(priceYear);
-  html += showTextNew('Beløp', 'priceYear', priceYear, enableChanges, 'Beløp');
+  html += showTextNew('priceYear','Beløp',  priceYear, enableChanges, 'Beløp');
   html += "</div>";
 
   /*
@@ -269,7 +270,8 @@ function insertEmptyRow() {
   const lastYear = currentYear - 1;
 
   let className = `date0`;
-  let html = showDate('Dato', className, "", enableChanges)
+  //let html = showDate('Dato', className, "", enableChanges)
+  let html = inputDate(className,'Dato',  "", enableChanges);
 
   // condo Id
   className = `condoId0`;
@@ -277,14 +279,14 @@ function insertEmptyRow() {
 
   // kilowattHour current year
   className = `kilowattHour0`;
-  html += showTextNew(`K.timer ${currentYear}`, className, "", enableChanges, `K.timer ${currentYear}`);
+  html += showTextNew(className, `K.timer ${currentYear}`, enableChanges, `K.timer ${currentYear}`);
 
   // kilowattHour last year
   className = `kilowattHourLastYear0`;
-  html += showTextNew(`K.timer ${lastYear}`, className, "", enableChanges, `K.timer ${lastYear}`);
+  html += showTextNew(className,`K.timer ${lastYear}`,  enableChanges, `K.timer ${lastYear}`);
 
   className = `priceYear0`;
-  html += showTextNew('Beløp', className, "", enableChanges, 'Beløp');
+  html += showTextNew(className,'Beløp',  enableChanges, 'Beløp');
 
   // end row
   html += showButtonNew('update', '');

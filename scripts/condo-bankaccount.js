@@ -226,7 +226,8 @@ function showBankAccount(bankAccountId) {
 
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   closingBalanceDate = formatNumberToISODate(closingBalanceDate);
-  html += showDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges);
+  //html += showDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges);
+  //html += inputDate('closingBalanceDate','Dato',  closingBalanceDate, enableChanges);
 
   // closing balance
   let closingBalance = (rowNumberBankAccount === -1)

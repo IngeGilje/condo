@@ -11,9 +11,8 @@ const objCondominium = new Condominium('scondominium');
 const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objProjects = new Projects('projects');
 const objTransactions = new Transactions('transactions');
-const objTransaction = new Transaction('transaction');
 
-const enableChanges = (objTransaction.securityLevel > 5);
+const enableChanges = (objTransactions.securityLevel > 5);
 const applicationName = "condo-transaction";
 
 // query parameters
@@ -35,41 +34,41 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objTransaction.checkServer()) {
+  if (await objTransactions.checkServer()) {
 
     // Validate LogIn
-    if ((objTransaction.condominiumId === 0) || (objTransaction.user === null)) {
+    if ((objTransactions.condominiumId === 0) || (objTransactions.user === null)) {
 
       // LogIn is not valid
-      const URL = (objTransaction.serverStatus === 1)
+      const URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       // Show vertical menu
-      let html = objTransaction.showMenu(applicationName);
+      let html = objTransactions.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
+      await objUser.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objTransaction.condominiumId, fixedCost);
-      await objBankAccount.loadBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine);
-      await objUserBankAccounts.loadUserBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine, objTransaction.nineNine);
-      await objCondo.loadCondoTable(objTransaction.condominiumId, objTransaction.nineNine);
+      await objAccounts.loadAccountsTable(objTransactions.condominiumId, fixedCost);
+      await objBankAccount.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
+      await objCondo.loadCondoTable(objTransactions.condominiumId, objTransactions.nineNine);
       await objCondominium.loadCondominiumsTable();
-      await objSupplier.loadSuppliersTable(objTransaction.condominiumId);
-      await objProjects.loadProjectsTable(objTransaction.condominiumId);
+      await objSupplier.loadSuppliersTable(objTransactions.condominiumId);
+      await objProjects.loadProjectsTable(objTransactions.condominiumId);
       const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20260801, 20991231);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20260801, 20991231);
 
       // show filter
       let transactionId = 0;
       if (paramTransactionId === 0) {
 
         // Application is startet from menu
-        objTransactions.getHighestTransactionId(objTransaction.condominiumId);
+        objTransactions.getHighestTransactionId(objTransactions.condominiumId);
         transactionId = objTransactions.arrayTransactions.at(-1)?.transactionId ?? 0;
 
       } else {
@@ -78,7 +77,7 @@ async function main() {
         transactionId = paramTransactionId;
       }
 
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20260801, 20991231);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20260801, 20991231);
 
       showFilter(transactionId);
 
@@ -110,7 +109,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
 
-      let URL = (objTransaction.serverStatus === 1)
+      let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}${paramBackApplication}?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
@@ -157,11 +156,11 @@ async function events() {
       condoId = Number(document.querySelector('.condoId').value);
       accountId = Number(document.querySelector('.accountId').value);
       let fromDate = document.querySelector('.transactionDate').value;
-      fromDate = Number(objTransaction.formatDateToNumber(fromDate));
+      fromDate = Number(objTransactions.formatDateToNumber(fromDate));
       let toDate = document.querySelector('.transactionDate').value;
-      toDate = Number(objTransaction.formatDateToNumber(toDate));
+      toDate = Number(objTransactions.formatDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, deleted, condoId, accountId, objTransaction.nineNine, amount, 20260801, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, accountId, objTransactions.nineNine, amount, 20260801, toDate);
 
       showTransaction(transactionId);
     };
@@ -173,7 +172,7 @@ async function events() {
 
       const arrayPrefixes = ['voucher'];
 
-      let URL = (objTransaction.serverStatus === 1)
+      let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       const condoId = Number(document.querySelector('.condoId').value);
@@ -191,7 +190,7 @@ async function events() {
 
       // Find the first matching class
       let className = arrayPrefixes
-        .map(prefix => objTransaction.getClassByPrefix(event.target, prefix))
+        .map(prefix => objTransactions.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
@@ -210,7 +209,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let URL = (objTransaction.serverStatus === 1)
+      let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}condo-login.html`;
@@ -356,37 +355,37 @@ async function updateTransactionRow(transactionId) {
   className = '.accountId';
   let accountId = Number(document.querySelector(className).value);
   className = 'accountId';
-  const validAccountId = validateIntervalNew(className, '', 'Ugyldig konto', true, accountId, 1, objTransaction.nineNine);
+  const validAccountId = validateIntervalNew(className, '', 'Ugyldig konto', true, accountId, 1, objTransactions.nineNine);
 
   // condoId
   className = `.condoId`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId`;
-  const validCondoId = validateIntervalNew(className, '', 'Ugyldig Leilighet', true, condoId, 0, objTransaction.nineNine);
+  const validCondoId = validateIntervalNew(className, '', 'Ugyldig Leilighet', true, condoId, 0, objTransactions.nineNine);
 
   // projectId 
   className = `.projectId`;
   let projectId = Number(document.querySelector(className).value);
   className = `projectId`;
-  const validProjectId = validateIntervalNew(className, '', 'Ugyldig prosjekt', true, projectId, 0, objTransaction.nineNine);
+  const validProjectId = validateIntervalNew(className, '', 'Ugyldig prosjekt', true, projectId, 0, objTransactions.nineNine);
 
   // income
   className = `.income`;
   let income = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `income`;
-  const validIncome = validateIntervalNew(className, '', 'Ugyldig inntekt', true, income, objTransaction.minusNineNine, objTransaction.nineNine);
+  const validIncome = validateIntervalNew(className, '', 'Ugyldig inntekt', true, income, objTransactions.minusNineNine, objTransactions.nineNine);
 
   // payment
   className = `.payment`;
   let payment = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `payment`;
-  const validPayment = validateIntervalNew(className, '', 'Ugyldig utgift', true, payment, objTransaction.minusNineNine, objTransaction.nineNine);
+  const validPayment = validateIntervalNew(className, '', 'Ugyldig utgift', true, payment, objTransactions.minusNineNine, objTransactions.nineNine);
 
   // kilowattHour
   className = `.kilowattHour`;
   const kilowattHour = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `kilowattHour`;
-  const validNumberKWHour = validateIntervalNew(className, '', 'Ugyldig kilowattime', true, kilowattHour, 0, objTransaction.nineNine);
+  const validNumberKWHour = validateIntervalNew(className, '', 'Ugyldig kilowattime', true, kilowattHour, 0, objTransactions.nineNine);
 
   // text
   className = `.text`;
@@ -404,17 +403,17 @@ async function updateTransactionRow(transactionId) {
     if (rowNumberTransaction !== -1) {
 
       // update the transactions row
-      await objTransactions.updateTransactionsTable(transactionId, objTransaction.condominiumId, objTransaction.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text);
+      await objTransactions.updateTransactionsTable(transactionId, objTransactions.condominiumId, objTransactions.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text);
     } else {
 
       // insert transactions row
-      await objTransactions.insertTransactionsTable(objTransaction.condominiumId, objTransaction.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text, 'N'); await objAccount.getHighestAccountId(objAccount.condominiumId);
+      await objTransactions.insertTransactionsTable(objTransactions.condominiumId, objTransactions.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text, 'N'); await objAccount.getHighestAccountId(objAccount.condominiumId);
       await objTransactions.getHighestTransactionId(objTransactions.condominiumId);
       transactionId = objTransactions.arrayTransactions[0].transactionId;
     }
 
     const orderBy = 'date DESC, income DESC';
-    await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 0, 20260801, 20291231);
+    await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20260801, 20291231);
 
     removeMessage();
 
@@ -484,10 +483,10 @@ async function deleteTransactionRow() {
   if (transactionsRowNumber !== -1) {
 
     // delete transaction row
-    await objTransaction.deleteTransactionsTable(transactionId, objTransaction.user);
+    await objTransactions.deleteTransactionsTable(transactionId, objTransactions.user);
 
     // get last row in transactions table
-    await objTransaction.loadLastRowTransactionsTable(objTransaction.condominiumId);
+    await objTransactions.loadLastRowTransactionsTable(objTransactions.condominiumId);
   }
 
   const rowNumberTransaction = objTransactions.arrayTransactions.at(-1)?.transactionId ?? 0;

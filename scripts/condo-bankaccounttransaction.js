@@ -9,7 +9,7 @@ const objAccounts = new Accounts('accounts');
 const objBankAccount = new BankAccount('bankaccount');
 const objSupplier = new Supplier('supplier');
 const objCondominium = new Condominium('scondominium');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
+const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransaction');
 
 const enableChanges = (objAccount.securityLevel > 5);
@@ -50,7 +50,7 @@ async function main() {
       const fixedCost = 'A';
       await objAccount.loadAccountsTable(objBankAccountTransaction.condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine);
-      await objUserBankAccount.loadUserBankAccountsTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine, objBankAccountTransaction.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine, objBankAccountTransaction.nineNine);
       await objCondo.loadCondoTable(objBankAccountTransaction.condominiumId, objBankAccountTransaction.nineNine);
       await objCondominium.loadCondominiumsTable();
       await objSupplier.loadSuppliersTable(objBankAccountTransaction.condominiumId);

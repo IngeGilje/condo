@@ -45,7 +45,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -104,7 +104,7 @@ async function events() {
     };
   });
 
-  // return to emptyingcalendars
+  // return to emptycalendars
   document.addEventListener('click', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
 
@@ -188,7 +188,8 @@ function showDue(dueId) {
   html += startLine();
   let dueDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
   dueDate = formatNumberToISODate(dueDate);
-  html += showDate('Dato', 'dueDate', dueDate, enableChanges);
+  //html += showDate('Dato', 'dueDate', dueDate, enableChanges);
+  html += inputDate('dueDate','Dato',  dueDate, enableChanges);
   html += "</div>";
 
   // condoId
@@ -205,18 +206,18 @@ function showDue(dueId) {
   html += startLine();
   let amount = objDues.arrayDues[rowNumberDue]?.amount ?? 0;
   amount = formatNumberToNorAmount(amount);
-  html += showTextNew('Beløp', 'amount', amount, enableChanges, 'Beløp');
+  html += showTextNew('amount','Beløp',  amount, enableChanges, 'Beløp');
 
   // kilowattHour
   let kilowattHour = objDues.arrayDues[rowNumberDue]?.kilowattHour ?? 0;
   kilowattHour = formatNumberToNorAmount(kilowattHour);
-  html += showTextNew('Kilowatt Timer', 'kilowattHour', kilowattHour, enableChanges, 'Beløp');
+  html += showTextNew('kilowattHour','Kilowatt Timer',  kilowattHour, enableChanges, 'Beløp');
   html += "</div>";
 
   // text
   html += startLine();
   const text = objDues.arrayDues[rowNumberDue]?.text ?? '';
-  html += showTextNew('Tekst', 'text', text, enableChanges, 'Tekst');
+  html += showTextNew('text','Tekst',  text, enableChanges, 'Tekst');
   html += "</div>";
 
   // Buttons

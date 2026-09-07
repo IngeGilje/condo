@@ -35,7 +35,7 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
 
       // Show main menu

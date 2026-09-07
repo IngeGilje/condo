@@ -46,7 +46,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -185,10 +185,12 @@ function showFilter(condoId, accountId, fromDate, toDate) {
   html += objAccounts.showSelectedAccountsNew('filterAccountId','Konto',  accountId, '', 'Vis alle', true);
 
   // From date
-  html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
+  //html += showDate('Fra Dato', 'filterFromDate', fromDate, true);
+  html += inputDate('filterFromDate','Fra Dato',  fromDate, true);
 
   // To date
-  html += showDate('Til Dato', 'filterToDate', toDate, true)
+  //html += showDate('Til Dato', 'filterToDate', toDate, true);
+  html += inputDate('filterToDate','Til Dato',  toDate, true);
 
   // End filter
   html += "</div>";
@@ -206,7 +208,7 @@ function showDues() {
   let html = objCondo.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeader('center', 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Kilowatt Timer', '');
+  html += objCondo.showTableHeader('center', 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Tekst', '');
 
   let sumAmount = 0;
   //let sumKilowattHour = 0;
@@ -219,20 +221,26 @@ function showDues() {
     // Date
     const date = formatNumberToNorDate(due.date);
     let className = `date${due.dueId}`;
-    html += editTableCell(className, date, 10, false);
+    //html += editTableCell(className, date, 10, false);
+    html += showTableText(className, date);
 
     // condos
     className = `condoId${due.dueId}`;
-    html += objCondo.showSelectedCondos(className, '', due.condoId, 'ngen er valgt', '', false);
+    //html += objCondo.showSelectedCondos(className, '', due.condoId, 'ngen er valgt', '', false);
+    const condoName = objCondo.getCondoNameById(due.condoId);
+    html += showTableText(className, condoName);
 
-    // accounts
+    // account
     className = `accountId${due.dueId}`;
-    html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
+    //html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
+   const accountName = objAccounts.getAccountNameById(due.accountId);
+    html += showTableText(className, accountName);
 
     // due amount
     const amount = formatNumberToNorAmount(due.amount);
     className = `amount${due.dueId}`;
-    html += editTableCell(className, amount, 11, false);
+    //html += editTableCell(className, amount, 11, false);
+    html += showTableText(className, amount);
 
     /*
     // kilowattHour
@@ -244,7 +252,8 @@ function showDues() {
     // text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += editTableCell(className, text, 45, false);
+    //html += editTableCell(className, text, 45, false);
+    html += showTableText(className, text);
 
     // Change due
     className = `edit${due.dueId}`;

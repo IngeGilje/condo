@@ -1,3 +1,0 @@
-class EmptyingCalendar extends Condos {
-
-}

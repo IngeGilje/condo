@@ -1,37 +1,37 @@
-// Show emptying calendar
-class EmptyingCalendars extends Condos {
+// Show empty calendar
+class EmptyCalendars extends Condos {
 
-  // Emptying Calendar
-  arrayEmptyingCalendars;
+  // Empty Calendar
+  arrayEmptyCalendars;
 
-  // Find selected emptying calendar id
-  getSelectedEmptyingCalendarId(className) {
+  // Find selected empty calendar id
+  getSelectedEmptyCalendarId(className) {
 
-    let emptyingCalendarId = 0;
+    let emptyCalendarId = 0;
 
     // Check if HTML class exist
     if (isClassDefined(className)) {
 
-      emptyingCalendarId = Number(document.querySelector(`.${className}`).value);
-      emptyingCalendarId = (emptyingCalendarId === 0) ? this.arrayEmptyingCalendars.at(-1)?.emptyingCalendarId ?? 0 : emptyingCalendarId;
+      emptyCalendarId = Number(document.querySelector(`.${className}`).value);
+      emptyCalendarId = (emptyCalendarId === 0) ? this.arrayEmptyCalendars.at(-1)?.emptyCalendarId ?? 0 : emptyCalendarId;
     } else {
 
-      // Get last id in last object in emptying calendar array
-      emptyingCalendarId = this.arrayEmptyingCalendars.at(-1)?.emptyingCalendarId ?? 0;
+      // Get last id in last object in empty calendar array
+      emptyCalendarId = this.arrayEmptyCalendars.at(-1)?.emptyCalendarId ?? 0;
     }
 
-    return emptyingCalendarId;
+    return emptyCalendarId;
   }
 
-  // Select emptying calendar Id
-  selectEmptyingCalendarId(emptyingCalendarId, className) {
+  // Select empty calendar Id
+  selectEmptyCalendarId(emptyCalendarId, className) {
 
-    // Check if emptying calendar id exist
-    const rowNumberEmptyingCalendar = this.arrayEmptyingCalendars.findIndex(emptyingcalendar => emptyingcalendar.emptyingCalendarId === emptyingCalendarId);
-    if (rowNumberEmptyingCalendar !== -1) {
+    // Check if empty calendar id exist
+    const rowNumberEmptyCalendar = this.arrayEmptyCalendars.findIndex(emptycalendar => emptycalendar.emptyCalendarId === emptyCalendarId);
+    if (rowNumberEmptyCalendar !== -1) {
 
       document.querySelector(`.select-${className}`).value =
-        emptyingCalendarId;
+        emptyCalendarId;
       return true;
     } else {
 
@@ -42,7 +42,7 @@ class EmptyingCalendars extends Condos {
 
   /*
   // Show selected emptycaledars
-  showSelectedEmptyCalendarsNew(label, className, style, emptyingCalendarId, selectNone, selectAll, enableChanges) {
+  showSelectedEmptyCalendarsNew(label, className, style, emptyCalendarId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
     let emptyCalendarDate = "20200101";
@@ -60,15 +60,15 @@ class EmptyingCalendars extends Condos {
     >`;
 
     // Check if emptyalendars array is empty
-    if (this.arrayEmptyingCalendars.length > 0) {
-      this.arrayEmptyingCalendars.forEach((emptyCalendar) => {
+    if (this.arrayEmptyCalendars.length > 0) {
+      this.arrayEmptyCalendars.forEach((emptyCalendar) => {
 
         html += `
         <option 
           value=${emptyCalendar.date}
-          ${((emptyCalendar.emptyingCalendarId === emptyingCalendarId)) ? 'selected' : ''}
+          ${((emptyCalendar.emptyCalendarId === emptyCalendarId)) ? 'selected' : ''}
         >`;
-        if (emptyCalendar.emptyingCalendarId === emptyingCalendarId) selectedValue = true;
+        if (emptyCalendar.emptyCalendarId === emptyCalendarId) selectedValue = true;
 
         emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
         html += `
@@ -87,7 +87,7 @@ class EmptyingCalendars extends Condos {
         const fromDate = Number(year + month + "01");
         const toDate = Number(year + month + "31");
 
-        this.arrayEmptyingCalendars.forEach((emptyCalendar) => {
+        this.arrayEmptyCalendars.forEach((emptyCalendar) => {
 
           if (emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) {
 
@@ -120,7 +120,7 @@ class EmptyingCalendars extends Condos {
     }
 
     // Select all
-    if (selectAll && (this.arrayEmptyingCalendars.length > 0)) {
+    if (selectAll && (this.arrayEmptyCalendars.length > 0)) {
 
       html += `
       <option 
@@ -133,7 +133,7 @@ class EmptyingCalendars extends Condos {
     }
 
     // Select none
-    if (selectNone && (this.arrayEmptyingCalendars.length > 0)) {
+    if (selectNone && (this.arrayEmptyCalendars.length > 0)) {
       html += `
       <option 
         value=0
@@ -155,8 +155,8 @@ class EmptyingCalendars extends Condos {
   }
   */
 
-  // Show emptyingcalendar
-  showSelectedEmptyCalendarsNew(label, className, emptyingCalendarId, selectNone, selectAll, enableChanges) {
+  // show EmptyCalendar
+  showSelectedEmptyCalendarsNew(label, className, emptyCalendarId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
     let emptyCalendarDate = "20200101";
@@ -177,15 +177,15 @@ class EmptyingCalendars extends Condos {
     `;
 
     // Check if emptyalendars array is empty
-    if (this.arrayEmptyingCalendars.length > 0) {
-      this.arrayEmptyingCalendars.forEach((emptyCalendar) => {
+    if (this.arrayEmptyCalendars.length > 0) {
+      this.arrayEmptyCalendars.forEach((emptyCalendar) => {
 
         html += `
         <option 
           value=${emptyCalendar.date}
-          ${((emptyCalendar.emptyingCalendarId === emptyingCalendarId)) ? 'selected' : ''}
+          ${((emptyCalendar.emptyCalendarId === emptyCalendarId)) ? 'selected' : ''}
         >`;
-        if (emptyCalendar.emptyingCalendarId === emptyingCalendarId) selectedValue = true;
+        if (emptyCalendar.emptyCalendarId === emptyCalendarId) selectedValue = true;
 
         emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
         html += `
@@ -204,7 +204,7 @@ class EmptyingCalendars extends Condos {
         const fromDate = Number(year + month + "01");
         const toDate = Number(year + month + "31");
 
-        this.arrayEmptyingCalendars.forEach((emptyCalendar) => {
+        this.arrayEmptyCalendars.forEach((emptyCalendar) => {
 
           if (emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) {
 
@@ -237,7 +237,7 @@ class EmptyingCalendars extends Condos {
     }
 
     // Select all
-    if (selectAll && (this.arrayEmptyingCalendars.length > 0)) {
+    if (selectAll && (this.arrayEmptyCalendars.length > 0)) {
 
       html += `
       <option 
@@ -250,7 +250,7 @@ class EmptyingCalendars extends Condos {
     }
 
     // Select none
-    if (selectNone && (this.arrayEmptyingCalendars.length > 0)) {
+    if (selectNone && (this.arrayEmptyCalendars.length > 0)) {
       html += `
       <option 
         value=0
@@ -270,14 +270,13 @@ class EmptyingCalendars extends Condos {
     return html;
   }
 
-
   // get emtying calendar table
-  async loadEmptyingCalendarsTable(condominiumId, orderBy) {
+  async loadEmptyCalendarsTable(condominiumId, orderBy) {
 
-    // Get emptying calendar
+    // Get empty calendar
     const URL = (this.serverStatus === 1)
-      ? '/api/emptyingcalendars'
-      : 'http://localhost:3000/emptyingcalendars';
+      ? '/api/emptycalendars'
+      : 'http://localhost:3000/emptycalendars';
     try {
       // POST request
       const response = await fetch(URL, {
@@ -291,18 +290,18 @@ class EmptyingCalendars extends Condos {
           orderBy: orderBy
         })
       });
-      if (!response.ok) throw new Error("Network error (emptyingcalendars)");
-      this.arrayEmptyingCalendars = await response.json();
+      if (!response.ok) throw new Error("Network error (emptycalendars)");
+      this.arrayEmptyCalendars = await response.json();
     } catch (error) {
-      console.log("Error loading emptying calendar:", error);
+      console.log("Error loading empty calendar:", error);
     }
   }
 
   // Get the highest ID in the table
-  async getHighestEmptyingCalendarId(condominiumId) {
+  async getHighestEmptyCalendarId(condominiumId) {
     const URL = (this.serverStatus === 1)
-      ? '/api/emptyingcalendars'
-      : 'http://localhost:3000/emptyingcalendars';
+      ? '/api/emptycalendars'
+      : 'http://localhost:3000/emptycalendars';
     try {
 
       const response = await fetch(URL, {
@@ -311,23 +310,23 @@ class EmptyingCalendars extends Condos {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          action: 'highestEmptyingCalendarId',
+          action: 'highestEmptyCalendarId',
           condominiumId: condominiumId
         })
       });
-      if (!response.ok) throw new Error("Network error (emptyingcalendars)");
-      this.arrayEmptyingCalendars = await response.json();
+      if (!response.ok) throw new Error("Network error (emptycalendars)");
+      this.arrayEmptyCalendars = await response.json();
     } catch (error) {
-      console.log("Error selecting emptying calendars:", error);
+      console.log("Error selecting empty calendars:", error);
     }
   }
 
-  // update emptying calendar row in emptying calendar table
-  async updateEmptyingCalendarTable(emptyingCalendarId, user, condoId, date, residualWaste, paper, food, plastic, christmasTree) {
+  // update empty calendar row in empty calendar table
+  async updateEmptyCalendarTable(emptyCalendarId, user, condoId, date, residualWaste, paper, food, plastic, christmasTree) {
 
     const URL = (this.serverStatus === 1)
-      ? '/api/emptyingcalendars'
-      : 'http://localhost:3000/emptyingcalendars';
+      ? '/api/emptycalendars'
+      : 'http://localhost:3000/emptycalendars';
     try {
 
       // POST request
@@ -338,7 +337,7 @@ class EmptyingCalendars extends Condos {
         },
         body: JSON.stringify({
           action: 'update',
-          emptyingCalendarId: emptyingCalendarId,
+          emptyCalendarId: emptyCalendarId,
           user: user,
           condoId: condoId,
           date: date,
@@ -349,18 +348,18 @@ class EmptyingCalendars extends Condos {
           christmasTree: christmasTree
         })
       });
-      if (!response.ok) throw new Error("Network error (emptyingcalendars)");
-      this.arrayEmptyingCalendars = await response.json();
+      if (!response.ok) throw new Error("Network error (emptycalendars)");
+      this.arrayEmptyCalendars = await response.json();
     } catch (error) {
-      console.log("Error updating emptying calendar:", error);
+      console.log("Error updating empty calendar:", error);
     }
   }
 
-  // insert emptying calendar row in emptying calendar table
-  async insertEmptyingCalendarTable(condominiumId, user, condoId, date, residualWaste, paper, food, plastic, christmasTree) {
+  // insert empty calendar row in empty calendar table
+  async insertEmptyCalendarTable(condominiumId, user, condoId, date, residualWaste, paper, food, plastic, christmasTree) {
     const URL = (this.serverStatus === 1)
-      ? '/api/emptyingcalendars'
-      : 'http://localhost:3000/emptyingcalendars';
+      ? '/api/emptycalendars'
+      : 'http://localhost:3000/emptycalendars';
     try {
       // POST request
       const response = await fetch(URL, {
@@ -382,19 +381,19 @@ class EmptyingCalendars extends Condos {
           christmasTree: christmasTree
         })
       });
-      if (!response.ok) throw new Error("Network error (emptyingcalendars)");
-      this.arrayEmptyingCalendars = await response.json();
+      if (!response.ok) throw new Error("Network error (emptycalendars)");
+      this.arrayEmptyCalendars = await response.json();
     } catch (error) {
-      console.log("Error inserting emptying calendar:", error);
+      console.log("Error inserting empty calendar:", error);
     }
   }
 
-  // delete emptying calendar row
-  async deleteEmptyingCalendarTable(emptyingCalendarId, user) {
+  // delete empty calendar row
+  async deleteEmptyCalendarTable(emptyCalendarId, user) {
 
     const URL = (this.serverStatus === 1)
-      ? '/api/emptyingcalendars'
-      : 'http://localhost:3000/emptyingcalendars';
+      ? '/api/emptycalendars'
+      : 'http://localhost:3000/emptycalendars';
     try {
       // POST request
       const response = await fetch(URL, {
@@ -404,14 +403,14 @@ class EmptyingCalendars extends Condos {
         },
         body: JSON.stringify({
           action: 'delete',
-          emptyingCalendarId: emptyingCalendarId,
+          emptyCalendarId: emptyCalendarId,
           user: user
         })
       });
-      if (!response.ok) throw new Error("Network error (emptyingcalendars)");
-      this.arrayEmptyingCalendars = await response.json();
+      if (!response.ok) throw new Error("Network error (emptycalendars)");
+      this.arrayEmptyCalendars = await response.json();
     } catch (error) {
-      console.log("Error deleting emptying calendar:", error);
+      console.log("Error deleting empty calendar:", error);
     }
   }
 }

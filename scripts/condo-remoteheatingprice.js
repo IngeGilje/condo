@@ -29,28 +29,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      /*
-            // Show vertical menu
-      let html = objRemoteHeatingPrices.showMenu(applicationName);
-      document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      setFrameTitle("menu-frame", "Meny");
-      */
       // Show menu
       let html = objRemoteHeatingPrices.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
-
-      /*
-      // Show main menu
-      let html = objRemoteHeatingPrices.showHorizontalMenu("filter-frame", objRemoteHeatingPrices.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show remote heating menu
-      html = objRemoteHeatingPrices.showHorizontalMenu("filter-frame", objRemoteHeatingPrices.arrayMenuRemoteHeating);
-      document.querySelector('.menuRemoteHeating').innerHTML = html;
-      objRemoteHeatingPrices.markActivatedApplication(objRemoteHeatingPrices.arrayMenuRemoteHeating, applicationName);
-      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objRemoteHeatingPrices.condominiumId, resident, objRemoteHeatingPrices.nineNine);
@@ -153,8 +134,6 @@ async function events() {
 // Show filter
 function showFilter(remoteHeatingPriceId) {
 
-  // Start frame
-  //let html = startFrame('filter-frame');
   // Start filter
   let html = startFilter("Tømmekalender");
 
@@ -171,9 +150,6 @@ function showRemoteHeatingPrice(remoteHeatingPriceId) {
 
   const rowNumberRemoteHeatingPrice = objRemoteHeatingPrices.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
 
-  // Empty line
-  //let html = emptyLine();
-
   let html = startContent('Fjernvarmepris');
 
   // Year
@@ -184,15 +160,15 @@ function showRemoteHeatingPrice(remoteHeatingPriceId) {
   html += "<div></div>";
   html += "<div></div>";
 
-
   // price for kilowatt per Hour
   let priceKilowattHour = (objRemoteHeatingPrices.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].priceKilowattHour)
     ? objRemoteHeatingPrices.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].priceKilowattHour
     : '';
   priceKilowattHour = formatNumberToNorAmount(priceKilowattHour);
-  html += inputText('priceKilowattHour', 'Pris per kilowatTimer', priceKilowattHour, enableChanges);
+  html += inputText('priceKilowattHour', 'Pris kilowatTimer', priceKilowattHour, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
+
 
   /*
   // Buttons
@@ -237,6 +213,7 @@ function showRemoteHeatingPrice(remoteHeatingPriceId) {
     // End buttons
     html += endButtons();
   }
+
   document.querySelector('.showRemoteHeatingPrice').innerHTML = html;
 }
 

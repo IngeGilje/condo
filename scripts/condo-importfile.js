@@ -6,7 +6,7 @@ let arrayTransactions = [];
 // Activate objects
 const today = new Date();
 const objUser = new User('user');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
+const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objCondominium = new Condominium('condominium');
 const objCondo = new Condo('condo');
 const objTransactions = new Transactions('transactions');
@@ -46,7 +46,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -66,7 +66,7 @@ async function main() {
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objImportFile.condominiumId, fixedCost);
       await objBankAccount.loadBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine);
-      await objUserBankAccount.loadUserBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
       await objCondo.loadCondoTable(objImportFile.condominiumId, objImportFile.nineNine);
       await objSupplier.loadSuppliersTable(objImportFile.condominiumId);
 

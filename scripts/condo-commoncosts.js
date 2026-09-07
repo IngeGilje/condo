@@ -7,7 +7,7 @@ const objCondominium = new Condominium('condominium');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
 //const objBankAccount = new BankAccount('bankaccount');
-const objTransaction = new Transaction('bankTransaction');
+const objTransactions = new Transactions('bankTransactions');
 const objCondo = new Condo('condo');
 const objCommonCosts = new CommonCosts('commoncosts');
 
@@ -43,7 +43,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu

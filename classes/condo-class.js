@@ -56,21 +56,21 @@ class Condos {
     },
   ];
 
-  // array of horizontal emptying calendar menu
-  arrayMenuEmptyingCalendar = [
+  // array of horizontal empty calendar menu
+  arrayMenuEmptyCalendar = [
     {
-      applicationName: 'condo-emptyingcalendars.html',
-      className: "condo-emptyingcalendars",
+      applicationName: 'condo-emptycalendars.html',
+      className: "condo-emptycalendars",
       text: "Vis Tømmekalender"
     },
     {
-      applicationName: 'condo-emptyingcalendar.html',
-      className: "condo-emptyingcalendar",
+      applicationName: 'condo-emptycalendar.html',
+      className: "condo-emptycalendar",
       text: "Rediger Tømmekalender"
     },
     {
-      applicationName: 'condo-emptyingcalendar.html',
-      className: "condo-emptyingcalendar",
+      applicationName: 'condo-emptycalendar.html',
+      className: "condo-emptycalendar",
       text: "Menyvalg"
     },
   ];
@@ -379,7 +379,7 @@ class Condos {
   }
 
   // Select choices like Yes, No, Ignore
-  showSelectedValues(className, style, enableChanges, selected, ...choices) {
+  showSelectedValues(className, enableChanges, selected, ...choices) {
 
     let selectedValue = false;
 
@@ -389,7 +389,6 @@ class Condos {
     >
       <select 
         class="${className} center"
-        ${(style) ? `style="${style}"` : ""}
         ${(enableChanges) ? '' : 'disabled'}
       >`;
 
@@ -452,10 +451,10 @@ class Condos {
     if (!bankAccountName) {
 
       // Bank account name from user bank account
-      const rowNumberBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
+      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);
       if (rowNumberBankAccount !== -1) {
 
-        bankAccountName = objUserBankAccount.arrayUserBankAccounts[rowNumberBankAccount].name;
+        bankAccountName = objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].name;
       }
     }
 
@@ -473,10 +472,10 @@ class Condos {
     const bankAccountPattern = /^\d{11}$/;
     if ((bankAccountPattern.test(fromBankAccount))) {
 
-      const rowNumberBankAccount = objUserBankAccount.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
+      const rowNumberBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === fromBankAccount);
       if (rowNumberBankAccount !== -1) {
 
-        const userId = Number(objUserBankAccount.arrayUserBankAccounts[rowNumberBankAccount].userId);
+        const userId = Number(objUserBankAccounts.arrayUserBankAccounts[rowNumberBankAccount].userId);
 
         if (userId >= 0) {
 
@@ -920,7 +919,7 @@ class Condos {
     // Vertical menu
     html += '<div class="menu-row">';
     html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", applicationName);
-    html += this.showVerticalMenu('emptyingcalendar', this.arrayMenuEmptyingCalendar, "Tømmekalender", applicationName);
+    html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender", applicationName);
     html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", applicationName);
     html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", applicationName);
     html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", applicationName);
@@ -955,7 +954,7 @@ class Condos {
     `;
 
     html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", "Menyvalg");
-    html += this.showVerticalMenu('emptyingcalendar', this.arrayMenuEmptyingCalendar, "Tømmekalender", "Menyvalg");
+    html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender", "Menyvalg");
     html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", "Menyvalg");
     html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", "Menyvalg");
     html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", "Menyvalg");
@@ -1118,6 +1117,40 @@ function inputText(className, label, value, enableChanges) {
   return html
 }
 
+// show text
+function showText( value) {
+
+  html = `
+    <!-- start showText --> 
+      <input 
+        type="text"
+        value="${value}"
+      >
+    <!-- end showText --> 
+    `;
+
+  return html
+}
+
+// input text
+function inputTextTabel(className, value, enableChanges) {
+
+  html = `
+    <!-- start inputText --> 
+
+      <input 
+        type="text"
+        class="${className}"
+        value="${value}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+
+    <!-- end inputText --> 
+    `;
+
+  return html
+}
+
 // input date
 function inputDate(className, label, value, enableChanges) {
 
@@ -1159,7 +1192,23 @@ function inputTableText(className, value, enableChanges) {
   </td>
   <!-- end inputTableText -->
   `;
+}
 
+// Show text in table
+function showTableText(className, value) {
+
+  return `
+  <!-- start showTableText -->
+  <td>
+    <input
+      class="${className} center one-line input"
+      type="text"
+      value="${value}"
+      readonly
+    >
+  </td>
+  <!-- end showTableText -->
+  `;
 }
 
 function showTableIcon(className, color) {
@@ -1379,6 +1428,7 @@ function showSelectedMonthsNew(className, label, selectedMonth, enableChanges) {
 function editTableCell(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
   return `
+    <!-- start editTableCell -->
     <td 
       class="center one-line" 
       colspan="${colspan}" 
@@ -1391,7 +1441,9 @@ function editTableCell(className, value, maxlength, enableChanges, colspan = 1, 
         ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
         ${(enableChanges) ? '' : 'readonly'}
       >
-    </td>`;
+    </td>
+    <!-- end editTableCell -->
+    `;
 }
 
 // Show amount
@@ -1500,7 +1552,7 @@ function inputSelectedNumbers(label, className, fromNumber, toNumber, selectedNu
 */
 
 // Show selected numbers (from number - to number)
-function inputSelectedNumbers(className,label,  fromNumber, toNumber, selectedNumber, enableChanges) {
+function inputSelectedNumbers(className, label, fromNumber, toNumber, selectedNumber, enableChanges) {
 
   let html = `
     <!-- start inputSelectedNumbers -->
@@ -1765,6 +1817,7 @@ function formatNumberToISODate(date) {
   return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6,)}`;
 }
 
+/*
 // Show Date
 function showDate(label, className, value, enableChanges) {
 
@@ -1785,6 +1838,7 @@ function showDate(label, className, value, enableChanges) {
   </div>`;
   return html;
 }
+*/
 
 // Start frame
 function startFrame(className) {
@@ -1896,7 +1950,7 @@ function showButtonNew(className, text) {
 }
 
 // Show text
-function showTextNew(label, className, value, enableChanges, placeholder = "") {
+function showTextNew(className, label, value, enableChanges, placeholder = "") {
 
   value = (typeof value === 'string')
     ? value.trim()
@@ -1959,8 +2013,6 @@ function inputValues(label, className, style, enableChanges, selectedValue, ...v
 
 // Show selected values 
 function inputValues(label, className, enableChanges, selectedValue, ...values) {
-
-  let selected = false;
 
   let html = `
     <!-- start inputValues -->
@@ -2316,6 +2368,7 @@ function exitIfNoActivity() {
   document.addEventListener(event, exitIfNoActivity);
 });
 
+/*
 // Table handling
 function startTable(year, month, text) {
 
@@ -2345,6 +2398,42 @@ function startTable(year, month, text) {
         class="waste-scroll"
         role="region"
         aria-label="${text} for ${monthName} ${year}"
+        tabindex="0"
+      >
+        <table class="transaction-table">
+    <!-- end startTable -->
+  `;
+}
+*/
+
+// start table
+function startTable(header, underHeader) {
+
+  return `
+  <!-- start startTable -->
+  <main class="waste-page">
+    <section
+      class="waste-card"
+      aria-labelledby="waste-title"
+    >
+
+      <header
+        class="waste-heading"
+      >
+        <h1
+          id="waste-title"
+        >
+          ${header}
+        </h1>
+        <p>
+          ${underHeader}
+        </p>
+      </header>
+
+      <div
+        class="waste-scroll"
+        role="region"
+        aria-label="${underHeader}"
         tabindex="0"
       >
         <table class="transaction-table">
@@ -2393,6 +2482,42 @@ function tableHeader(columnWidths, ...texts) {
       </thead>
     <!-- end tableHeader -->
   `;
+
+  return html;
+}
+
+
+// Show horizontal filter
+function startHorizontalFilter() {
+
+  let html = `
+    <!-- start startTableFilter -->
+    <section 
+      class="card"
+    >
+      <h2 
+        class="card-title"
+      >
+        Filter
+      </h2>
+      <div 
+        class="grid grid-menu"
+      >
+      <!-- end startTableFilter -->
+      `;
+  return html;
+}
+
+
+// Show horizontal filter
+function endHorizontalFilter() {
+
+  let html = `
+    <!-- end showTableFilter -->
+      </div>
+    </section>
+    <!-- end showTableFilter -->
+    `;
 
   return html;
 }

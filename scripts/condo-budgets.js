@@ -36,12 +36,12 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objBudgets.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -238,7 +238,7 @@ function showFilter() {
 
   // Show years
   const year = today.getFullYear();
-  html += inputSelectedNumbers('filterYear','År',  2020, 2030, year, true);
+  html += inputSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
 
   //html += "</div>";
 
@@ -248,7 +248,7 @@ function showFilter() {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  setFrameTitle("filter-frame", "Filter");
 }
 
 // Show budgets
@@ -258,7 +258,7 @@ function showBudgets() {
   let html = objBudgets.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objBudgets.showTableHeader( 'center', 'År', 'Konto', 'Budsjett', 'Tekst', '');
+  html += objBudgets.showTableHeader('center', 'År', 'Konto', 'Budsjett', 'Tekst', '');
 
   let sumAmount = 0;
 
@@ -270,21 +270,26 @@ function showBudgets() {
     // Year (<td></td>)
     const year = Number(budget.year);
     let className = `year${budget.budgetId}`;
-    html += objBudgets.showSelectedNumbers(className, '', 2020, 2030, year, enableChanges);
+    //html += objBudgets.showSelectedNumbers(className, '', 2020, 2030, year, enableChanges);
+    html += showTableText(className, year);
 
     // accountId
     className = `accountId${budget.budgetId}`;
-    html += objAccounts.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
+    //html += objAccounts.showSelectedAccounts(className, '', budget.accountId, '', '', enableChanges);
+    const accountName = objAccounts.getAccountNameById(budget.accountId);
+    html += showTableText(className, accountName);
 
     // due amount
     const amount = formatNumberToNorAmount(budget.amount);
     className = `amount${budget.budgetId}`;
-    html += editTableCell(className, amount, 11, enableChanges);
+    //html += editTabelCell(className, amount, 11, enableChanges);
+    html += showTableText(className, amount);
 
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += editTableCell(className, text, 45, enableChanges);
+    //html += editTableCell(className, text, 45, enableChanges);
+    html += showTableText(className,text);
 
     // Edit budget
     className = `edit${budget.budgetId}`;

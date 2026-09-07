@@ -40,7 +40,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -322,7 +322,7 @@ function showBudget(budgetId) {
   */
   let amount = objBudgets.arrayBudgets[rowNumberBudget]?.amount ?? '0';
   amount = formatNumberToNorAmount(amount);
-  html += showTextNew('Beløp', 'amount', amount, enableChanges, "Beløp");
+  html += showTextNew('amount','Beløp',  amount, enableChanges, "Beløp");
 
   // text
   /*
@@ -331,7 +331,7 @@ function showBudget(budgetId) {
     : objBudgets.arrayBudgets[rowNumberBudget].text.trim();
   */
   const text = objBudgets.arrayBudgets[rowNumberBudget]?.text ?? '';
-  html += showTextNew('Tekst', 'text', text, enableChanges, "Tekst");
+  html += showTextNew('text','Tekst',  text, enableChanges, "Tekst");
   html += "</div>";
 
   // Buttons

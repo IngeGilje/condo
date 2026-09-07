@@ -34,7 +34,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -182,7 +182,7 @@ function showUserBankAccount(userBankAccountId) {
 
   // bank account
   const bankAccount = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount]?.bankAccount ?? '';
-  html += showTextNew('Bankkonto', 'bankAccount', bankAccount, enableChanges, 'Oppgi Bankkonto');
+  html += showTextNew('bankAccount','Bankkonto',  bankAccount, enableChanges, 'Oppgi Bankkonto');
   html += "<div></div>";
   html += "<div></div>";
 

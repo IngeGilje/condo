@@ -34,7 +34,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
       */
       // Show menu
       let html = objCondo.showMenu(applicationName);

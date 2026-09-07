@@ -8,8 +8,7 @@ const objAccounts = new Accounts('accounts');
 const objBankAccount = new BankAccount('bankaccount');
 const objSupplier = new Supplier('supplier');
 const objCondominium = new Condominium('scondominium');
-const objUserBankAccount = new UserBankAccount('userbankaccount');
-const objTransaction = new Transaction('transaction');
+const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objTransactions = new Transactions('transactions');
 
 const enableChanges = (objTransactions.securityLevel > 5);
@@ -38,7 +37,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objTransaction.condominiumId === 0) || (objTransaction.user === null)) {
+    if ((objTransactions.condominiumId === 0) || (objTransactions.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -51,18 +50,15 @@ async function main() {
       let html = objTransactions.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      setFrameTitle("menu-frame", "Meny");
-
       const resident = 'Y';
-      await objUser.loadUsersTable(objTransaction.condominiumId, resident, objTransaction.nineNine);
+      await objUser.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objTransaction.condominiumId, fixedCost);
-      await objBankAccount.loadBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine);
-      await objUserBankAccount.loadUserBankAccountsTable(objTransaction.condominiumId, objTransaction.nineNine, objTransaction.nineNine);
-      await objCondo.loadCondoTable(objTransaction.condominiumId, objTransaction.nineNine);
+      await objAccounts.loadAccountsTable(objTransactions.condominiumId, fixedCost);
+      await objBankAccount.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
+      await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
+      await objCondo.loadCondoTable(objTransactions.condominiumId, objTransactions.nineNine);
       await objCondominium.loadCondominiumsTable();
-      await objSupplier.loadSuppliersTable(objTransaction.condominiumId);
+      await objSupplier.loadSuppliersTable(objTransactions.condominiumId);
 
       if ((paramTransactionId === 0)
         && (paramCondoId === 0)
@@ -73,8 +69,8 @@ async function main() {
         && (paramAmount === 0)) {
 
         const amount = 0;
-        let condoId = objTransaction.nineNine;
-        let accountId = objTransaction.nineNine;
+        let condoId = objTransactions.nineNine;
+        let accountId = objTransactions.nineNine;
 
         // From date
         let month = today.getMonth();
@@ -92,7 +88,7 @@ async function main() {
       }
 
       const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransaction.condominiumId, 'N', objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, objTransaction.nineNine, 20200101, objTransaction.nineNine);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 20200101, objTransactions.nineNine);
 
       // Show transactions
       showTransactions();
@@ -130,7 +126,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objTransaction.getClassByPrefix(event.target, prefix))
+        .map(prefix => objTransactions.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
@@ -149,7 +145,7 @@ async function events() {
       toDate = formatISODateToNumber(toDate);
       let amount = document.querySelector('.filterAmount').value;
       amount = formatNorAmountToNumber(amount);
-      let URL = (objTransaction.serverStatus === 1)
+      let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}condo-voucher.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}`;
@@ -164,7 +160,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objTransaction.getClassByPrefix(event.target, prefix))
+        .map(prefix => objTransactions.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
@@ -189,7 +185,7 @@ async function events() {
       toDate = formatISODateToNumber(toDate);
       let amount = document.querySelector('.filterAmount').value;
       amount = formatNorAmountToNumber(amount);
-      let URL = (objTransaction.serverStatus === 1)
+      let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       //URL = `${URL}condo-transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}`;
@@ -207,22 +203,25 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   let html = startFrame('filter-frame');
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('filterCondoId','Leilighet',  condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
 
   // Show accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId','Konto',  accountId, '', 'Vis alle', true);
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', 'Konto', accountId, '', 'Vis alle', true);
 
   // From date
   fromDate = formatNumberToISODate(fromDate);
-  html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
+  //html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
+  html += inputDate('filterFromDate', 'Fra Dato', fromDate, true);
 
   // To date
   toDate = formatNumberToISODate(toDate);
-  html += showDate('Til Dato', 'filterToDate', toDate, true)
+  //html += showDate('Til Dato', 'filterToDate', toDate, true)
+  html += inputDate('filterToDate', 'Til Dato', toDate, true)
 
   // Amount
   amount = formatNumberToNorAmount(amount);
-  html += showAmount('Beløp', 'filterAmount', amount, true);
+  //html += showAmount('Beløp', 'filterAmount', amount, true);
+  html += inputText('filterAmount', 'Beløp', amount, true);
 
   // End filter
   html += "</div>";
@@ -244,23 +243,23 @@ function showTransactions() {
 
   // condoId
   let fromCondoId = Number(document.querySelector('.filterCondoId').value);
-  if (fromCondoId === objTransaction.nineNine) fromCondoId = 0;
+  if (fromCondoId === objTransactions.nineNine) fromCondoId = 0;
   let toCondoId = Number(document.querySelector('.filterCondoId').value);
-  if (toCondoId === objTransaction.nineNine) toCondoId = objTransaction.nineNine;
+  if (toCondoId === objTransactions.nineNine) toCondoId = objTransactions.nineNine;
 
   // accountId
   let fromAccountId = Number(document.querySelector('.filterAccountId').value);
-  if (fromAccountId === objTransaction.nineNine) fromAccountId = 0;
+  if (fromAccountId === objTransactions.nineNine) fromAccountId = 0;
   let toAccountId = Number(document.querySelector('.filterAccountId').value);
-  if (toAccountId === objTransaction.nineNine) toAccountId = objTransaction.nineNine;
+  if (toAccountId === objTransactions.nineNine) toAccountId = objTransactions.nineNine;
 
   // amount
   let amount = document.querySelector('.filterAmount').value;
   amount = formatNorAmountToNumber(amount);
   if (amount !== 0) fromAmount = amount;
   if (amount !== 0) toAmount = amount;
-  if (amount === 0) fromAmount = objTransaction.minusNineNine;
-  if (amount === 0) toAmount = objTransaction.nineNine;
+  if (amount === 0) fromAmount = objTransactions.minusNineNine;
+  if (amount === 0) toAmount = objTransactions.nineNine;
 
   let html = emptyLine();
 
@@ -284,36 +283,42 @@ function showTransactions() {
       && (bankTransaction.accountId >= fromAccountId && bankTransaction.accountId <= toAccountId)
       && (amount >= fromAmount && amount <= toAmount)) {
 
-      html += objTransaction.insertTableRow('');
+      html += objTransactions.insertTableRow('');
 
       // Date
       const date = formatNumberToNorDate(bankTransaction.date);
       let className = `date${bankTransaction.transactionId}`;
-      html += editTableCell(className, date, 10, false);
+      //html += showDate(className,"Dato",  date, enableChanges, "Dato");
+      //html += inputDate(className,"Dato",  date, enableChanges, "Dato");
+      //html += editTableCell(className, date, 10, false);
+      html += showTableText(className, date);
 
       // account
       className = `accountId${bankTransaction.transactionId}`;
-      html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+      //html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+      const accountName = objAccounts.getAccountNameById(bankTransaction.accountId);
+      html += showTableText(className, accountName);
 
       // condos
       className = `condoId${bankTransaction.transactionId}`;
-      html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
-
-      // accounts
-      className = `accountId${bankTransaction.transactionId}`;
-      objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+      //html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
+      const condoName = objCondo.getCondoNameById(bankTransaction.condoId);
+      html += showTableText(className, condoName);
 
       // income
       let income = bankTransaction.income;
       income = formatNumberToNorAmount(income);
       className = `income${bankTransaction.transactionId}`;
-      html += editTableCell(className, income, 10, false);
+      //html += editTableCell(className, income, 10, false);
+      //html += inputTableText(className, income, enableChanges);
+      html += showTableText(className, income);
 
       // payment
       let payment = bankTransaction.payment;
       payment = formatNumberToNorAmount(payment);
       className = `payment${bankTransaction.transactionId}`;
-      html += editTableCell(className, payment, 10, false);
+      //html += editTableCell(className, payment, 10, false);
+      html += showTableText(className, payment);
 
       // Show button for voucher
       className = `voucher${bankTransaction.transactionId}`;
@@ -336,12 +341,12 @@ function showTransactions() {
   sumIncome = formatNumberToNorAmount(sumIncome);
   sumPayment = formatNumberToNorAmount(sumPayment);
 
-  html += objTransaction.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, sumAmount, '');
+  html += objTransactions.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, sumAmount, '');
 
   // get from date
   let bankBalance = objTransactions.getBankBalance(toDate);
   bankBalance = formatNumberToNorAmount(bankBalance);
-  html += objTransaction.insertTableRow('', '', '', 'Saldo', bankBalance, '', '', '');
+  html += objTransactions.insertTableRow('', '', '', 'Saldo', bankBalance, '', '', '');
 
   // The end of the table
   html += objTransactions.endTable();

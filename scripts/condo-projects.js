@@ -45,12 +45,12 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objProjects.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -144,8 +144,8 @@ async function events() {
         const fromDate = objTransactions.arrayTransactions[rowNumberTransaction].date;
         const toDate = objTransactions.arrayTransactions[rowNumberTransaction].date;
         const amount = (objTransactions.arrayTransactions[rowNumberTransaction].income)
-        ? (objTransactions.arrayTransactions[rowNumberTransaction].income)
-        : (objTransactions.arrayTransactions[rowNumberTransaction].payment);
+          ? (objTransactions.arrayTransactions[rowNumberTransaction].income)
+          : (objTransactions.arrayTransactions[rowNumberTransaction].payment);
 
         let URL = (objTransactions.serverStatus === 1)
           ? 'http://ingegilje.no/'
@@ -157,6 +157,7 @@ async function events() {
   });
 }
 
+/*
 // Show header
 function showHeader() {
 
@@ -177,6 +178,7 @@ function showHeader() {
   html += objProjects.endTable();
   document.querySelector('.showHeader').innerHTML = html;
 }
+*/
 
 // Show filter
 function showFilter(projectId) {
@@ -188,7 +190,7 @@ function showFilter(projectId) {
   //html += startLine();
 
   // Show projects
-  html += objProjects.showSelectedProjectsNew('filterProjectId','Prosjekt',  projectId, 'Velg prosjekt', '', true);
+  html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg prosjekt', '', true);
 
   // End filter
   html += "</div>";
@@ -196,7 +198,7 @@ function showFilter(projectId) {
   document.querySelector('.showFilter').innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  setFrameTitle("filter-frame", "Filter");
 }
 
 /*
@@ -235,21 +237,27 @@ function showProjectTransactions(projectId) {
       // Date
       const date = formatNumberToNorDate(bankTransaction.date);
       let className = `date${bankTransaction.transactionId}`;
-      html += editTableCell(className, date, 10, false);
+      //html += editTableCell(className, date, 10, false);
+      html += showTableText(className, date);
 
       // account
       className = `accountId${bankTransaction.transactionId}`;
-      html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+      //html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+      const accountName = objAccounts.getAccountNameById(bankTransaction.accountId)
+      html += showTableText(className, accountName);
 
-      // condos
+      // condo
       className = `condoId${bankTransaction.transactionId}`;
-      html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
+      //html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
+      const condoName = objCondo.getCondoNameById(bankTransaction.condoId)
+      html += showTableText(className, condoName);
 
       // amount
       let amount = bankTransaction.income + bankTransaction.payment;
       amount = formatNumberToNorAmount(amount);
       className = `amount${bankTransaction.transactionId}`;
-      html += editTableCell(className, amount, 10, false);
+      //html += editTableCell(className, amount, 10, false);
+      html += showTableText(className, amount);
 
       // Show button for change of bank account transaction
       className = `change${bankTransaction.transactionId}`;

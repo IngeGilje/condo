@@ -35,12 +35,12 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objOverview.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       /*
       // Show main menu
@@ -151,26 +151,31 @@ async function events() {
 // Show filter
 function showFilter(condoId) {
 
-   // Start frame
+  // Start frame
   let html = startFrame('filter-frame');
 
   // show filter
   //html += startLine();
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('filterCondoId','Leilighet',  condoId, '', 'Vis alle', true);
+  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
 
   // From date
   let fromDate = `${String(today.getFullYear())}-01-01`;
-  html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
+  html += inputDate('filterFromDate', 'Fra Dato', fromDate, true)
 
   // To date
   // Current date
   let toDate = getCurrentISODate();
-  html += showDate('Til Dato', 'filterToDate', toDate, true)
+  //html += showDate('Til Dato', 'filterToDate', toDate, true)
+  html += inputDate('filterToDate', 'Til Dato', toDate, true);
 
-  //html += "</div>";
+  // End filter
+  html += endFilter();
 
+  document.querySelector('.showFilter').innerHTML = html;
+
+  /*
   // End filter
   html += "</div>";
 
@@ -178,21 +183,23 @@ function showFilter(condoId) {
 
   // Change frame title
   setFrameTitle("filter-frame","Filter");
+  */
 }
 
 // Show dues
 function showDues() {
 
-  // Start HTML table
-  let html = objOverview.initializeTable(columnWidths);
+  let html = emptyLine();
+
+  // Start table
+  html += objOverview.initializeTable(columnWidths);
 
   let sumDue = 0;
   let sumKilowattHour = 0;
 
   // Header
-
-  html += objOverview.showTableHeader( 'center', '', '', '', 'Forfall', '', '');
-  html += objOverview.showTableHeader( 'center', 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  html += objOverview.showTableHeader('center', '', '', '', 'Forfall', '', '');
+  html += objOverview.showTableHeader('center', 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -202,30 +209,39 @@ function showDues() {
     // date
     const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
-    html += editTableCell(className, date, 10, false);
+    //html += editTableCell(className, date, 10, false);
+    html += showTableText(className, date);
 
     // condo
     className = `condo${due.dueId}`;
-    html += objCondo.showSelectedCondos(className, '', due.condoId, 'Velg leilighet', '', false);
+    //html += objCondo.showSelectedCondos(className, '', due.condoId, 'Velg leilighet', '', false);
+    const condoName = objCondo.getCondoNameById(due.condoId);
+    html += showTableText(className, condoName);
 
     // account
     className = `account${due.dueId}`;
-    html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
+    //html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
+    const accountName = objAccounts.getAccountNameById(due.accountId);
+    html += showTableText(className, accountName);
 
     // amount
     const amount = formatNumberToNorAmount(due.amount);
     className = `income${due.dueId}`;
-    html += editTableCell(className, amount, 11, false);
+    //html += editTableCell(className, amount, 11, false);
+    html += showTableText(className, amount);
 
     // kilowattHour
     const kilowattHour = formatNumberToNorAmount(due.kilowattHour);
     className = `income${due.dueId}`;
-    html += editTableCell(className, kilowattHour, 10, false);
+    //html += editTableCell(className, kilowattHour, 10, false);
+    html += showTableText(className, kilowattHour);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    html += editTableCell(className, text, 45, false);
+    //html += editTableCell(className, text, 45, false);
+    html += showTableText(className, text);
+
     html += "</tr>";
 
     // accumulate
@@ -256,7 +272,7 @@ function showTransactions() {
 
   // Header
 
-  html += objOverview.showTableHeader( 'center', '', '', '', 'Innbetalinger', '', '');
+  html += objOverview.showTableHeader('center', '', '', '', 'Innbetalinger', '', '');
   html += objOverview.showTableHeader('center', '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   let sumIncomes = 0;
@@ -269,16 +285,21 @@ function showTransactions() {
 
     // condos
     className = `condo${bankTransaction.transactionId}`;
-    html += objCondo.showSelectedCondos(className, '', Number(bankTransaction.condoId), 'Velg leilighet', '', false);
+    //html += objCondo.showSelectedCondos(className, '', Number(bankTransaction.condoId), 'Velg leilighet', '', false);
+    const condoName = objCondo.getCondoNameById(bankTransaction.condoId);
+    html += showTableText(className,condoName);
 
     // date
     const date = formatNumberToNorDate(bankTransaction.date);
     className = `date${bankTransaction.transactionId}`;
-    html += editTableCell(className, date, 10, false);
+    //html += editTableCell(className, date, 10, false);
+    html += showTableText(className,date);
 
     // account
     className = `account${bankTransaction.transactionId}`;
-    html += objAccounts.showSelectedAccounts(className, '', Number(bankTransaction.accountId), 'Velg konto', '', false);
+    //html += objAccounts.showSelectedAccounts(className, '', Number(bankTransaction.accountId), 'Velg konto', '', false);
+      const accountName = objAccounts.getAccountNameById(bankTransaction.accountId);
+    html += showTableText(className,accountName);
 
     // income - payment
     let income = bankTransaction.income;
@@ -286,12 +307,14 @@ function showTransactions() {
     income += payment;
     income = formatNumberToNorAmount(income);
     className = `income${bankTransaction.transactionId}`;
-    html += editTableCell(className, income, 10, false);
+    //html += editTableCell(className, income, 10, false);
+    html += showTableText(className,income);
 
     // Text
     const text = bankTransaction.text;
     className = `text${bankTransaction.transactionId}`;
-    html += editTableCell(className, text, 45, false);
+    //html += editTableCell(className, text, 45, false);
+    html += showTableText(className,text);
     html += "</tr>";
 
     // accumulate
@@ -345,11 +368,11 @@ function showHowMuchToPay() {
 
   html += (overPay >= 0)
     ? objOverview.showTableHeader('center', '', '', '', 'Til gode', '', '')
-    : objOverview.showTableHeader( 'center', '', '', '', 'Skyldig', '', '');
+    : objOverview.showTableHeader('center', '', '', '', 'Skyldig', '', '');
 
   html += (overPay >= 0)
-    ? objOverview.showTableHeader( 'center', '', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : objOverview.showTableHeader( 'center', '', '', '', 'Forfall', 'Betalt', 'Skyldig')
+    ? objOverview.showTableHeader('center', '', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : objOverview.showTableHeader('center', '', '', '', 'Forfall', 'Betalt', 'Skyldig')
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);

@@ -45,7 +45,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny");
+      //setFrameTitle("menu-frame", "Meny");
 
       let resident = 'Y';
       await objUser.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
@@ -115,103 +115,12 @@ async function events() {
       window.location.href = URL;
     };
   });
-
-  /*
-  // update a accounts row
-  document.addEventListener('change', async (event) => {
-
-    const arrayPrefixes = ['fixedCost', 'name'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))
-      || [...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[1]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let accountId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        accountId = Number(className.slice(prefix.length));
-      }
-
-      updateAccountsRow(accountId);
-    };
-  });
-  */
-
-  /*
-  // Delete account row
-  document.addEventListener('click', async (event) => {
-    //if (event.target.classList.contains('delete')) {
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let accountId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        accountId = Number(className.slice(prefix.length));
-      }
-
-      await deleteAccountRow(accountId, className);
-
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
-
-      // Show account
-      showAccounts();
-    };
-  });
-  */
-
-  /*
-  // Log out
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('logOut')) {
-
-      let url = (objAccounts.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      url = `${url}condo-login.html`;
-      window.location.href = url;
-    };
-  });
-  */
-}
-
-function resetValues() {
-
-  // account Id
-  document.querySelector('.select-accounts-accountId').value = '';
-
-  // account Name
-  document.querySelector('.input-accounts-accountName').value = '';
-
-  // Fixed cost
-  document.querySelector('.select-accounts-fixedCost').value = '';
-
-  // Buttons
-  removeMessage();
-  if (enableChanges) {
-    disableButton('delete', true);
-    disableButton('insert', true);
-    disableButton('cancel', false);
-    disableButton('filterFixedCost', true);
-  }
 }
 
 // Show filter
 function showFilter(fixedCost) {
 
+  /*
   // Start frame
   let html = startFrame('filter-frame');
 
@@ -228,22 +137,58 @@ function showFilter(fixedCost) {
 
   // Change frame title
   setFrameTitle("filter-frame", "Filter");
+  */
+
+  /*
+  let html = startHorizontalFilter();
+
+  // Show types of account
+  if (fixedCost === 'Y') fixedCost = constFixedCost;
+  if (fixedCost === 'N') fixedCost = constVariableCost;
+  if (fixedCost === 'A') fixedCost = 'Vis Alle';
+  html += inputValues('Kostnadstype', 'filterFixedCost', true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
+
+  html += endHorizontalFilter();
+  document.querySelector('.showFilter').innerHTML = html;
+  */
+  // Start frame
+  let html = startFrame('filter-frame');
+
+  // Show types of account
+  if (fixedCost === 'Y') fixedCost = constFixedCost;
+  if (fixedCost === 'N') fixedCost = constVariableCost;
+  if (fixedCost === 'A') fixedCost = 'Vis Alle';
+  html += inputValues('Kostnadstype', 'filterFixedCost', true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
+
+  // End filter
+  html += "</div>";
+  document.querySelector('.showFilter').innerHTML = html;
+
+  // Change frame title
+  setFrameTitle("filter-frame", "Filter");
 }
 
 // Show accounts
 function showAccounts() {
 
+  /*
   // start table
-  let html = objAccounts.initializeTable(columnWidths);
+  const underHeader = document.querySelector(".filterFixedCost").value
+  let html = startTable("Konti", underHeader);
 
-  html += objAccounts.insertTableRow('', '');
+  //html += objAccounts.showTableHeader('center', 'Kostnadstype', 'Tekst', '');
+  html += tableHeader(columnWidths, "Kostnadstype", "Tekst", " ");
+  */
+  let html = emptyLine();
+
+  // Start table
+  html += objAccounts.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
   html += objAccounts.showTableHeader('center', 'Kostnadstype', 'Tekst', '');
 
   objAccounts.arrayAccounts.forEach((account) => {
 
-    // Show menu
     html += objAccounts.insertTableRow('');
 
     // fixed cost
@@ -252,24 +197,35 @@ function showAccounts() {
     if (account.fixedCost === 'N') selected = constVariableCost;
 
     let className = `fixedCost${account.accountId}`;
-    html += objAccounts.showSelectedValues(className, '', false, selected, constFixedCost, constVariableCost);
+    html += editTableCell(className, selected, 10, false);
 
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += editTableCell(className, name, 45, false);
+    html += editTableCell(className, selected, 10, false);
 
-    // edit account
+     // Show button for maintnance
     className = `edit${account.accountId}`;
     html += objAccounts.showButton(className, 'Rediger');
-    html += "</tr>";
+
+    html += `
+      </tr>
+    `;
+
   });
+
 
   // Make one last table row for insertion in table 
 
+  /*
   // The end of the table
-  html += objAccounts.endTable();
+  //html += objAccounts.endTable();
+  html += endTable();
   document.querySelector('.showAccounts').innerHTML = html;
+  */
+ // The end of the table
+  html += objAccounts.endTable();
+  document.querySelector(".showAccounts").innerHTML = html;
 }
 
 // Delete one account row

@@ -321,10 +321,10 @@ class News extends Condos {
           condominiumId: condominiumId
         })
       });
-      if (!response.ok) throw new Error("Network error (emptyingcalendars)");
-      this.arrayEmptyingCalendars = await response.json();
+      if (!response.ok) throw new Error("Network error (emptycalendars)");
+      this.arrayEmptyCalendars = await response.json();
     } catch (error) {
-      console.log("Error selecting emptying calendars:", error);
+      console.log("Error selecting empty calendars:", error);
     }
   }
   

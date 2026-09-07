@@ -4,13 +4,12 @@
 const today = new Date();
 const objUser = new User('user');
 const objAccounts = new Accounts('accounts');
-const objAccount = new Account('account');
 
 // Fixed values
 const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
 
-const enableChanges = (objAccount.securityLevel > 5);
+const enableChanges = (objAccounts.securityLevel > 5);
 const applicationName = "condo-account";
 
 // query parameters
@@ -29,7 +28,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objAccount.condominiumId === 0) || (objAccount.user === null)) {
+    if ((objAccounts.condominiumId === 0) || (objAccounts.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -40,28 +39,28 @@ async function main() {
 
       /*
       // Show vertical menu
-      let html = objAccount.showMenu(applicationName);
+      let html = objAccounts.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
-      setFrameTitle("menu-frame", "Meny",);
-      setFrameTitle("news", "Nyheter",);
+      //setFrameTitle("menu-frame", "Meny",);
+      //setFrameTitle("news", "Nyheter",);
       */
       // Show menu
-      let html = objAccount.showMenu(applicationName);
+      let html = objAccounts.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objAccount.condominiumId, resident, objAccount.nineNine);
+      await objUser.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 
       let accountId = 0;
       if (paramAccountId === 0) {
 
-        await objAccounts.getHighestAccountId(objAccount.condominiumId);
+        await objAccounts.getHighestAccountId(objAccounts.condominiumId);
         accountId = objAccounts.arrayAccounts.at(-1)?.accountId ?? 0;
-        await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+        await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
       } else {
 
         accountId = paramAccountId;
@@ -92,7 +91,7 @@ async function events() {
       let fixedCost = document.querySelector('.filterFixedCost').value;
       if (fixedCost === constFixedCost) fixedCost = 'Y';
       if (fixedCost === constVariableCost) fixedCost = 'N';
-      await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 
       // Show account
       showAccount(accountId);
@@ -112,7 +111,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
 
-      let URL = (objAccount.serverStatus === 1)
+      let URL = (objAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}condo-accounts.html?accountId=${paramAccountId}&fixedCost=${paramFixedCost}`;
@@ -128,7 +127,7 @@ async function events() {
 
       // Find the first matching class
       const className = arrayPrefixes
-        .map(prefix => objAccount.getClassByPrefix(event.target, prefix))
+        .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
       // Extract the number in the class name
@@ -142,7 +141,7 @@ async function events() {
       await deleteAccountRow(accountId, className);
 
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 
       // Show account
       showAccounts(accountId);
@@ -186,7 +185,7 @@ function showAccount(accountId) {
 
   // name
   const name = objAccounts.arrayAccounts[rowNumberAccount]?.name ?? '';
-  html += showTextNew('Kontonavn', 'name', objAccounts.arrayAccounts[rowNumberAccount].name.trim(), enableChanges, 'Kontonavn');
+  html += showTextNew( 'name','Kontonavn', objAccounts.arrayAccounts[rowNumberAccount].name.trim(), enableChanges, 'Kontonavn');
   html += "<div></div>";
   html += "<div></div>";
 
@@ -273,11 +272,11 @@ async function deleteAccountRow(accountId, className) {
   if (accountsRowNumber !== -1) {
 
     // delete account row
-    await objAccount.deleteAccountsTable(accountId, objAccount.user);
+    await objAccounts.deleteAccountsTable(accountId, objAccounts.user);
   }
 
   const fixedCost = 'A';
-  await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+  await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 }
 
 // Update a accounts table row
@@ -306,17 +305,17 @@ async function updateAccountsRow(accountId) {
     if (rowNumberAccount !== -1) {
 
       // update a accounts row
-      await objAccounts.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
+      await objAccounts.updateAccountsTable(objAccounts.user, accountId, fixedCost, name);
     } else {
 
       // Insert a accounts row
-      await objAccount.insertAccountsTable(objAccount.condominiumId, objAccount.user, year, priceKilowattHour);
-      await objAccount.getHighestAccountId(objAccount.condominiumId);
-      accountId = objAccount.arrayAccounts[0].accountId;
+      await objAccounts.insertAccountsTable(objAccounts.condominiumId, objAccounts.user, year, priceKilowattHour);
+      await objAccounts.getHighestAccountId(objAccounts.condominiumId);
+      accountId = objAccounts.arrayAccounts[0].accountId;
     }
 
     fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+    await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 
     removeMessage();
 

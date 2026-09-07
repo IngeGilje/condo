@@ -3082,10 +3082,10 @@ async function main() {
     }
   });
 
-  // Requests for emptying calendar table
+  // Requests for empty calendar table
   routePath = "";
-  if (serverStatus === 1) routePath = "/api/emptyingcalendars";
-  if (serverStatus === 2) routePath = "/emptyingcalendars";
+  if (serverStatus === 1) routePath = "/api/emptycalendars";
+  if (serverStatus === 2) routePath = "/emptycalendars";
   app.post(routePath, async (req, res) => {
 
     const action = req.body.action;
@@ -3102,7 +3102,7 @@ async function main() {
           const orderBy = req.body.orderBy;
 
           let SQLquery = `
-          SELECT * FROM emptyingcalendars
+          SELECT * FROM emptycalendars
           WHERE condominiumId = ${condominiumId}
           AND deleted <> 'Y'`;
 
@@ -3122,16 +3122,16 @@ async function main() {
         break;
       }
 
-      case 'highestEmptyingCalendarId': {
+      case 'highestEmptyCalendarId': {
         const condominiumId = Number(req.body.condominiumId);
 
         try {
 
           let SQLquery = `
-            SELECT * FROM emptyingcalendars
+            SELECT * FROM emptycalendars
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'
-            ORDER BY emptyingCalendarId DESC
+            ORDER BY emptyCalendarId DESC
             LIMIT 1;`;
 
           console.log('SQLquery :', SQLquery);
@@ -3150,7 +3150,7 @@ async function main() {
       case 'update': {
 
         try {
-          const emptyingCalendarId = req.body.emptyingCalendarId;
+          const emptyCalendarId = req.body.emptyCalendarId;
           const user = req.body.user;
           const condoId = Number(req.body.condoId);
           const date = req.body.date;
@@ -3162,7 +3162,7 @@ async function main() {
 
           // Update row
           const SQLquery = `
-            UPDATE emptyingcalendars
+            UPDATE emptycalendars
             SET
               user = '${user}',
               deleted = 'N',
@@ -3174,7 +3174,7 @@ async function main() {
               food = '${food}',
               plastic = '${plastic}',
               christmasTree = '${christmasTree}'
-            WHERE emptyingCalendarId = ${emptyingCalendarId};`;
+            WHERE emptyCalendarId = ${emptyCalendarId};`;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -3205,7 +3205,7 @@ async function main() {
 
           // Insert new row
           const SQLquery = `
-            INSERT INTO emptyingcalendars(
+            INSERT INTO emptycalendars(
               deleted,
               condominiumId,
               user,
@@ -3250,23 +3250,23 @@ async function main() {
 
         try {
 
-          const emptyingCalendarId = req.body.emptyingCalendarId;
+          const emptyCalendarId = req.body.emptyCalendarId;
           const user = req.body.user;
 
           /*
           // Delete table
           const SQLquery = `
-            UPDATE emptyingcalendars
+            UPDATE emptycalendars
             SET
               deleted = 'Y',
               user = '${user}',
               lastUpdate = '${lastUpdate}'
-            WHERE emptyingCalendarId = ${emptyingCalendarId};
+            WHERE emptyCalendarId = ${emptyCalendarId};
           `;
           */
           const SQLquery = `
-          DELETE FROM emptyingcalendars
-          WHERE emptyingCalendarId = ${emptyingCalendarId};
+          DELETE FROM emptycalendars
+          WHERE emptyCalendarId = ${emptyCalendarId};
           `;
 
           console.log('SQLquery :', SQLquery);
