@@ -261,17 +261,16 @@ function showTransactions() {
   if (amount === 0) fromAmount = objTransactions.minusNineNine;
   if (amount === 0) toAmount = objTransactions.nineNine;
 
-  let html = emptyLine();
-
-  // Start table
-  html += objTransactions.initializeTable(columnWidths);
-
-  // Table header (<tr></tr>)
-  html += objTransactions.showTableHeader('center', 'Dato', 'Konto', 'Leilighet', 'Inntekter', 'Utbetalinger', '', '');
   let sumIncome = 0;
   let sumPayment = 0;
 
-  //for (const bankTransaction of objTransactions.arrayTransactions) {
+  // Start table
+  let html = emptyLine();
+  html += objTransactions.initializeTable(columnWidths);
+
+  // Table header (<tr></tr>)
+  html += objTransactions.showTableHeader('Dato', 'Konto', 'Leilighet', 'Inntekter', 'Utbetalinger', '', '');
+
   objTransactions.arrayTransactions.forEach(bankTransaction => {
 
     let amount = bankTransaction.income;
@@ -283,51 +282,52 @@ function showTransactions() {
       && (bankTransaction.accountId >= fromAccountId && bankTransaction.accountId <= toAccountId)
       && ((amount >= fromAmount && amount <= toAmount))) {
 
-      html += objTransactions.insertTableRow('');
+      let amount = bankTransaction.income;
+      if (bankTransaction.income === 0) amount = bankTransaction.payment;
+
+      // New table row
+      html += `
+        <tr>
+      `;
 
       // Date
       const date = formatNumberToNorDate(bankTransaction.date);
       let className = `date${bankTransaction.transactionId}`;
-      //html += showDate(className,"Dato",  date, enableChanges, "Dato");
-      //html += inputDate(className,"Dato",  date, enableChanges, "Dato");
-      //html += editTableCell(className, date, 10, false);
-      html += showTableText(className, date);
+      html += inputTableText(className, date, false);
 
       // account
       className = `accountId${bankTransaction.transactionId}`;
-      //html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
       const accountName = objAccounts.getAccountNameById(bankTransaction.accountId);
-      html += showTableText(className, accountName);
+      html += inputTableText(className, accountName, false);
 
       // condos
       className = `condoId${bankTransaction.transactionId}`;
       //html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
       const condoName = objCondo.getCondoNameById(bankTransaction.condoId);
-      html += showTableText(className, condoName);
+      html += inputTableText(className, condoName, false);
 
       // income
       let income = bankTransaction.income;
       income = formatNumberToNorAmount(income);
       className = `income${bankTransaction.transactionId}`;
-      //html += editTableCell(className, income, 10, false);
-      //html += inputTableText(className, income, enableChanges);
-      html += showTableText(className, income);
+      html += inputTableText(className, income, false);
 
       // payment
       let payment = bankTransaction.payment;
       payment = formatNumberToNorAmount(payment);
       className = `payment${bankTransaction.transactionId}`;
-      //html += editTableCell(className, payment, 10, false);
-      html += showTableText(className, payment);
+      html += inputTableText(className, payment, false);
 
       // Show button for voucher
       className = `voucher${bankTransaction.transactionId}`;
-      html += objTransactions.showButton(className, 'Vis bilag');
+      html += showTableButton(className, 'Vis bilag');
 
-      // Show button for change of bank account transaction
+      // Change transaction
       className = `change${bankTransaction.transactionId}`;
-      html += objTransactions.showButton(className, 'Rediger');
-      html += "</tr>";
+      html += showTableButton(className, 'Rediger');
+      html += `
+        </tr>
+      `;
 
       // accumulate
       sumIncome += Number(bankTransaction.income);

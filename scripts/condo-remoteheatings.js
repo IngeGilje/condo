@@ -150,7 +150,7 @@ function showRemoteHeatings() {
   const currentYear = Number(document.querySelector(".filterYear").value);
   const lastYear = currentYear - 1;
 
-  html += objRemoteHeatings.showTableHeader('center', 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp', '');
+  html += objRemoteHeatings.showTableHeader( 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp', '');
 
   objRemoteHeatings.arrayRemoteHeatings.forEach((remoteHeating) => {
 

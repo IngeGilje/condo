@@ -208,7 +208,7 @@ function showDues() {
   let html = objCondo.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeader('center', 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Tekst', '');
+  html += objCondo.showTableHeader( 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Tekst', '');
 
   let sumAmount = 0;
   //let sumKilowattHour = 0;

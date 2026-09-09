@@ -63,7 +63,7 @@ function showLogin() {
   html += "</tr>";
 
   // password
-  html += objLogIn.showTableHeader("width:250px;",  'Passord');
+  html += objLogIn.showTableHeader(  'Passord');
 
   // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('');

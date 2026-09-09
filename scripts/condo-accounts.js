@@ -185,7 +185,7 @@ function showAccounts() {
   html += objAccounts.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objAccounts.showTableHeader('center', 'Kostnadstype', 'Tekst', '');
+  html += objAccounts.showTableHeader('Kostnadstype', 'Tekst', '');
 
   objAccounts.arrayAccounts.forEach((account) => {
 

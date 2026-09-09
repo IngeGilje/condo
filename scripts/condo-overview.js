@@ -198,8 +198,8 @@ function showDues() {
   let sumKilowattHour = 0;
 
   // Header
-  html += objOverview.showTableHeader('center', '', '', '', 'Forfall', '', '');
-  html += objOverview.showTableHeader('center', 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  html += objOverview.showTableHeader( '', '', '', 'Forfall', '', '');
+  html += objOverview.showTableHeader( 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -272,8 +272,8 @@ function showTransactions() {
 
   // Header
 
-  html += objOverview.showTableHeader('center', '', '', '', 'Innbetalinger', '', '');
-  html += objOverview.showTableHeader('center', '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  html += objOverview.showTableHeader('', '', '', 'Innbetalinger', '', '');
+  html += objOverview.showTableHeader( '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -367,12 +367,12 @@ function showHowMuchToPay() {
   let overPay = sumIncome - sumToPay;
 
   html += (overPay >= 0)
-    ? objOverview.showTableHeader('center', '', '', '', 'Til gode', '', '')
-    : objOverview.showTableHeader('center', '', '', '', 'Skyldig', '', '');
+    ? objOverview.showTableHeader( '', '', '', 'Til gode', '', '')
+    : objOverview.showTableHeader( '', '', '', 'Skyldig', '', '');
 
   html += (overPay >= 0)
-    ? objOverview.showTableHeader('center', '', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : objOverview.showTableHeader('center', '', '', '', 'Forfall', 'Betalt', 'Skyldig')
+    ? objOverview.showTableHeader( '', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : objOverview.showTableHeader( '', '', '', 'Forfall', 'Betalt', 'Skyldig')
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);

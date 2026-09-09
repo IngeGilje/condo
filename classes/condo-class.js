@@ -502,9 +502,12 @@ class Condos {
   }
 
   // Show table header including menu (<tr></tr>)
-  showTableHeader(direction = "center", ...texts) {
+  showTableHeader( ...texts) {
 
-    let html = "<tr>";
+    let html = `
+    <!-- start showTableHeader -->
+      <tr>
+    `;
 
     texts.forEach((text) => {
 
@@ -514,7 +517,10 @@ class Condos {
       </td>`;
     });
 
-    html += "</tr>";
+    html += `
+      </tr>
+    <!-- end showTableHeader -->
+    `;
     return html;
   }
 
@@ -676,6 +682,7 @@ class Condos {
     });
 
     let html = `
+    <!-- start initializeTable -->
     <div class="table-container">
       <table 
         class="transaction-table"
@@ -688,10 +695,14 @@ class Condos {
       html += `<col style="width: ${columnWidth}px;">`;
     });
 
-    html += '</colgroup>';
+    html += `
+      </colgroup>
+    <!-- end initializeTable -->
+    `;
     return html;
   }
 
+  /*
   // Show main header table
   showTableHeaderLogOut(...texts) {
 
@@ -716,6 +727,7 @@ class Condos {
 
     return html;
   }
+  */
 
   // end table header
   endTableHeader() {

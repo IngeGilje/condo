@@ -242,7 +242,7 @@ function showProjectTransactions(projectId, condoId, amount) {
   html += objProjects.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeader('center', 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+  html += objCondo.showTableHeader( 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
   let sumAmount = 0;
 
   for (const bankTransaction of objTransactions.arrayTransactions) {

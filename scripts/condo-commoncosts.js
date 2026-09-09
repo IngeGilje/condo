@@ -129,7 +129,7 @@ function showCommonCosts() {
   html += objCommonCosts.startTableBody();
 
   // Table header (<tr></tr>)
-  html += objCommonCosts.showTableHeader('center', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
+  html += objCommonCosts.showTableHeader('Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;

@@ -258,7 +258,7 @@ function showBudgets() {
   let html = objBudgets.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objBudgets.showTableHeader('center', 'År', 'Konto', 'Budsjett', 'Tekst', '');
+  html += objBudgets.showTableHeader( 'År', 'Konto', 'Budsjett', 'Tekst', '');
 
   let sumAmount = 0;
 

@@ -250,10 +250,10 @@ function showAnnualAccounts() {
   // Table header (<tr></tr>)
   const budgetYear = document.querySelector('.filterBudgetYear').value;
 
-  html += objAnnualAccount.showTableHeader('center', '', '', 'Årsresultat', '', '');
+  html += objAnnualAccount.showTableHeader( '', '', 'Årsresultat', '', '');
 
 
-  html += objAnnualAccount.showTableHeader( 'center', '', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
+  html += objAnnualAccount.showTableHeader(  '', 'Konto', 'Beløp', `Budsjett ${budgetYear}`, 'Avvik');
 
   let totalAccountAmount = 0;
   let totalBudgetAmount = 0;
@@ -339,8 +339,8 @@ function showIncomeNextYear() {
   // Table header (<tr></tr>)
   const budgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
 
-  html += objAnnualAccount.showTableHeader('center', '', `Bud. Leieinntekter ${budgetYear}`, '', '', '');
-  html += objAnnualAccount.showTableHeader('center', 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
+  html += objAnnualAccount.showTableHeader( '', `Bud. Leieinntekter ${budgetYear}`, '', '', '');
+  html += objAnnualAccount.showTableHeader( 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;
@@ -436,10 +436,10 @@ function showBankDeposit() {
   let nextBudgetYear = Number(document.querySelector('.filterBudgetYear').value) + 1;
 
 
-  html += objAnnualAccount.showTableHeader('center', '', '', `Budsjett ${nextBudgetYear}`, '', '');
+  html += objAnnualAccount.showTableHeader( '', '', `Budsjett ${nextBudgetYear}`, '', '');
 
 
-  html += objAnnualAccount.showTableHeader('center', '', '', 'Konto', 'Dato', 'Budsjett');
+  html += objAnnualAccount.showTableHeader('', '', 'Konto', 'Dato', 'Budsjett');
   let accAmount = 0;
 
   // insert a table row (<tr></td>)
