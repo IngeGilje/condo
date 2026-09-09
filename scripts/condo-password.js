@@ -164,7 +164,7 @@ function showFilter(userId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Show user
@@ -232,11 +232,11 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = validateIntervalNew('userId', '', 'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateIntervalNew('userId',  'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = validateIntervalNew('securityLevel', '', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
+  const validSecurityLevel = validateIntervalNew('securityLevel',  'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
 
   // validate password
   let password = document.querySelector('.password').value;

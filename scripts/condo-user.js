@@ -177,10 +177,10 @@ function showFilter(userId) {
   // End filter
   html += "</div>";
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame", "Filter");
+  //setFrameTitle("filter-frame", "Filter");
   */
   // Start filter
   let html = startFilter("Bruker");
@@ -191,7 +191,7 @@ function showFilter(userId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Show user
@@ -306,7 +306,7 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1;
   userId = Number(userId);
-  const validUserId = validateIntervalNew('userId', '', 'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateIntervalNew('userId', 'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
 
   // resident
   let resident = document.querySelector('.resident').value;
@@ -344,7 +344,7 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', '', 'Ugyldig Leilighet', true, condoId, 0, objUser.nineNine);
+  const validCondoId = validateIntervalNew('condoId',  'Ugyldig Leilighet', true, condoId, 0, objUser.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;

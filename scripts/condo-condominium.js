@@ -149,10 +149,10 @@ function showFilter(condominiumId) {
   // End filter
   html += "</div>";
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame", "Filter");
+  //setFrameTitle("filter-frame", "Filter");
   */
 
   // Start filter
@@ -164,7 +164,7 @@ function showFilter(condominiumId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Show condominium
@@ -296,7 +296,7 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = validateIntervalNew('postalCode', '', 'Ugyldig postnummer', true, Number(postalCode), 1, objCondominium.nineNine);
+  const validPostalCode = validateIntervalNew('postalCode',  'Ugyldig postnummer', true, Number(postalCode), 1, objCondominium.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value;
@@ -313,17 +313,17 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate incomeRemoteHeatingAccountId
   const incomeRemoteHeatingAccountId = Number(document.querySelector('.incomeRemoteHeatingAccountId').value);
-  const validIncomeRemoteHeatingAccountId = validateIntervalNew('incomeRemoteHeatingAccountId', '', 'Ugyldig inntektskonto for husleie', true, incomeRemoteHeatingAccountId, 0, objCondominium.nineNine);
+  const validIncomeRemoteHeatingAccountId = validateIntervalNew('incomeRemoteHeatingAccountId',  'Ugyldig inntektskonto for husleie', true, incomeRemoteHeatingAccountId, 0, objCondominium.nineNine);
 
   // validate paymentRemoteHeatingAccountId
   const paymentRemoteHeatingAccountId = Number(document.querySelector('.paymentRemoteHeatingAccountId').value);
   //const validPaymentRemoteHeatingAccountId = validateIntervalNew('paymentRemoteHeatingAccountId', '', 'Ugyldig inntektskonto for fjernvarme', true, paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
-  const validPaymentRemoteHeatingAccountId = validateIntervalNew('paymentRemoteHeatingAccountId', '', 'Ugyldig Inntektskonto for Fjernvarme', true, paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
+  const validPaymentRemoteHeatingAccountId = validateIntervalNew('paymentRemoteHeatingAccountId',  'Ugyldig Inntektskonto for Fjernvarme', true, paymentRemoteHeatingAccountId, 0, objCondominium.nineNine);
 
   // validate commonCostAccountId
   const commonCostAccountId = Number(document.querySelector('.commonCostAccountId').value);
-  //const validCommonCostAccountId = validateIntervalNew('commonCostAccountId', '', 'Ugyldig konto', true, commonCostAccountId, 0, objCondominium.nineNine);
-  const validCommonCostAccountId = validateIntervalNew('commonCostAccountId', '', 'Ugyldig Konto', true, commonCostAccountId, 0, objCondominium.nineNine);
+  //const validCommonCostAccountId = validateIntervalNew('commonCostAccountId',  'Ugyldig konto', true, commonCostAccountId, 0, objCondominium.nineNine);
+  const validCommonCostAccountId = validateIntervalNew('commonCostAccountId',  'Ugyldig Konto', true, commonCostAccountId, 0, objCondominium.nineNine);
 
   // validate organizationNumber
   const organizationNumber = Number(document.querySelector('.organizationNumber').value);

@@ -171,7 +171,7 @@ function showFilter(bankAccountId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Show bank account
@@ -302,22 +302,22 @@ async function updateBankAccountRow(bankAccountId) {
   // Opening balance date
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
   openingBalanceDate = formatISODateToNumber(openingBalanceDate);
-  const validOpeningBalanceDate = validateIntervalNew('openingBalanceDate', '', 'Ugyldig Dato inngående saldo', true, openingBalanceDate, 20200101, 20291231);
+  const validOpeningBalanceDate = validateIntervalNew('openingBalanceDate', 'Ugyldig Dato inngående saldo', true, openingBalanceDate, 20200101, 20291231);
 
   // Opening balance
   let openingBalance = document.querySelector('.openingBalance').value;
   openingBalance = formatNorAmountToNumber(openingBalance);
-  const validOpeningBalance = validateIntervalNew('openingBalance', '', 'Ugyldig beløp inngående saldo', true, openingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
+  const validOpeningBalance = validateIntervalNew('openingBalance',  'Ugyldig beløp inngående saldo', true, openingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
 
   // Closing balance date
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
   closingBalanceDate = formatISODateToNumber(closingBalanceDate)
-  const validClosingBalanceDate = validateIntervalNew('closingBalanceDate', '', 'Ugyldig Dato utgående saldo', true, closingBalanceDate, 20200101, 20291231);
+  const validClosingBalanceDate = validateIntervalNew('closingBalanceDate',  'Ugyldig Dato utgående saldo', true, closingBalanceDate, 20200101, 20291231);
 
   // Closing balance
   let closingBalance = document.querySelector('.closingBalance').value;
   closingBalance = formatNorAmountToNumber(closingBalance);
-  const validClosingBalance = validateIntervalNew('closingBalance', '', 'Ugyldig beløp utgående saldo', true, closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
+  const validClosingBalance = validateIntervalNew('closingBalance',  'Ugyldig beløp utgående saldo', true, closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
 
   if (validBankAccount && validName && validOpeningBalanceDate && validOpeningBalance
     && validClosingBalanceDate && validOpeningBalance) {

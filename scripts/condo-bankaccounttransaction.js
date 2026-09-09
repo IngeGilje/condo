@@ -261,10 +261,10 @@ function showFilter( condoId, accountId) {
   
   html += objBankAccountTransaction.insertTableRow('',  '', '');
 
-  // Show all selected condos
+  // Show selected condos
   html += objCondo.showSelectedCondos('filterCondoId', '', condoId, '', 'Vis alle', true);
 
-  // Show all selected accounts
+  // Show selected accounts
   html += objAccount.showSelectedAccounts('filterAccountId', '', accountId, '', 'Vis alle', true);
 
   // show from date

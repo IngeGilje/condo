@@ -228,7 +228,7 @@ function showFilter(supplierId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Show supplier
@@ -377,7 +377,7 @@ async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = validateIntervalNew('supplierId', '', 'Ugyldig Leverandør', true, supplierId, -1, objSupplier.nineNine);
+  const validSupplierId = validateIntervalNew('supplierId',  'Ugyldig Leverandør', true, supplierId, -1, objSupplier.nineNine);
 
   const name = document.querySelector('.name').value;
   const validName = validateTextNew('name', '', 'Ugyldig navn', true, name, 3, 45);
@@ -392,7 +392,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = validateIntervalNew('postalCode', '', 'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
+  const validPostalCode = validateIntervalNew('postalCode',  'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value.trim();
@@ -410,7 +410,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate accountId
   const accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = validateIntervalNew('accountId', '', 'Ugyldig konto', true, accountId, 1, objSupplier.nineNine);
+  const validAccountId = validateIntervalNew('accountId',  'Ugyldig konto', true, accountId, 1, objSupplier.nineNine);
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
@@ -420,17 +420,17 @@ async function updateSuppliersRow(supplierId) {
 
   // validate amountAccountId
   const amountAccountId = Number(document.querySelector('.amountAccountId').value);
-  const validAmountAccountId = validateIntervalNew('amountAccountId', '', 'Ugyldig konto for beløp', true, amountAccountId, 0, objSupplier.nineNine);
+  const validAmountAccountId = validateIntervalNew('amountAccountId',  'Ugyldig konto for beløp', true, amountAccountId, 0, objSupplier.nineNine);
 
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatNorAmountToNumber(amount));
-  const validAmount = validateIntervalNew('amount', '', 'Ugyldig beløp', true, amount, objSupplier.minusNineNine, objSupplier.nineNine);
+  const validAmount = validateIntervalNew('amount',  'Ugyldig beløp', true, amount, objSupplier.minusNineNine, objSupplier.nineNine);
 
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);
-  const validTextAccountId = validateIntervalNew('textAccountId', '', 'Ugyldig konto for tekst', true, textAccountId, 0, objSupplier.nineNine);
+  const validTextAccountId = validateIntervalNew('textAccountId',  'Ugyldig konto for tekst', true, textAccountId, 0, objSupplier.nineNine);
 
   // validate text
   const text = document.querySelector('.accountText').value;

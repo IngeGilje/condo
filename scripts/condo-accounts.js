@@ -133,10 +133,10 @@ function showFilter(fixedCost) {
   // End filter
   html += "</div>";
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame", "Filter");
+  //setFrameTitle("filter-frame", "Filter");
   */
 
   /*
@@ -149,7 +149,7 @@ function showFilter(fixedCost) {
   html += inputValues('Kostnadstype', 'filterFixedCost', true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
 
   html += endHorizontalFilter();
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
   */
   // Start frame
   let html = startFrame('filter-frame');
@@ -162,10 +162,10 @@ function showFilter(fixedCost) {
 
   // End filter
   html += "</div>";
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame", "Filter");
+  //setFrameTitle("filter-frame", "Filter");
 }
 
 // Show accounts

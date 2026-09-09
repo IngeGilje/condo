@@ -137,7 +137,7 @@ function showFilter() {
   // End filter
   html += "</div>";
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // show EmptyCalendar

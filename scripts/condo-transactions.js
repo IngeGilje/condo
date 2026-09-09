@@ -225,10 +225,10 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
 
   // End filter
   html += "</div>";
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame", "Filter");
+  //setFrameTitle("filter-frame", "Filter");
 }
 
 // Show transactions
@@ -281,7 +281,7 @@ function showTransactions() {
     if ((bankTransaction.date >= fromDate && bankTransaction.date <= toDate)
       && (bankTransaction.condoId >= fromCondoId && bankTransaction.condoId <= toCondoId)
       && (bankTransaction.accountId >= fromAccountId && bankTransaction.accountId <= toAccountId)
-      && (amount >= fromAmount && amount <= toAmount)) {
+      && ((amount >= fromAmount && amount <= toAmount))) {
 
       html += objTransactions.insertTableRow('');
 

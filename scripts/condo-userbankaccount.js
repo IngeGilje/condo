@@ -153,7 +153,7 @@ function showFilter(userBankAccountId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
   //setFrameTitle("filter-frame","Filter");
@@ -255,12 +255,12 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   // User Id
   let className = 'userId';
   let userId = Number(document.querySelector(`.${className}`).value);
-  const validUserId = validateIntervalNew(className, '', 'Ugyldig Bruker', true, userId, 1, objUserBankAccounts.nineNine, objUserBankAccount);
+  const validUserId = validateIntervalNew(className,  'Ugyldig Bruker', true, userId, 1, objUserBankAccounts.nineNine, objUserBankAccount);
 
   // account Id
   className = 'accountId';
   let accountId = Number(document.querySelector(`.${className}`).value);
-  const validAccountId = validateIntervalNew(className, '', 'Ugyldig konto', true, accountId, 1, objUserBankAccounts.nineNine);
+  const validAccountId = validateIntervalNew(className,  'Ugyldig konto', true, accountId, 1, objUserBankAccounts.nineNine);
 
   // bank account
   className = 'bankAccount';

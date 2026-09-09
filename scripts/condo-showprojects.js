@@ -10,7 +10,7 @@ const objTransactions = new Transactions('transactions');
 const objProjects = new Projects('projects');
 
 const enableChanges = (objProjects.securityLevel > 5);
-const applicationName = "condo-projects";
+const applicationName = "condo-showprojects";
 
 // column widths
 const columnWidths = [125, 125, 125, 100, 100];
@@ -73,22 +73,30 @@ async function main() {
       await objProjects.loadProjectsTable(objProjects.condominiumId);
 
       // Show filter
-      projectId = (objProjects.arrayProjects.length === 0)
+      const projectId = (objProjects.arrayProjects.length === 0)
         ? 0
         : objProjects.arrayProjects.at(-1)?.projectId ?? 0;
-      showFilter(projectId);
+
+      const condoId = 0;
+
+      showFilter(projectId, "", condoId);
 
       // Show project
       // Get row number for condominium
       const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objProjects.condominiumId);
       if (rowNumberCondominium !== -1) {
 
-        const projectId = Number(document.querySelector('.filterProjectId').value);
         const orderBy = 'date DESC';
-        await objTransactions.loadTransactionsTable(orderBy, objProjects.condominiumId, 'N', objProjects.nineNine, objProjects.nineNine, projectId, 0, 2019010, 20991231);
+        await objTransactions.loadTransactionsTable(orderBy, objProjects.condominiumId, 'N', objProjects.nineNine, objProjects.nineNine, objProjects.nineNine, 0, 2019010, 20991231);
 
         // show bank account transactions this project
-        showProjectTransactions(projectId);
+        const projectId = Number(document.querySelector('.filterProjectId').value);
+        const condoId = Number(document.querySelector('.filterCondoId').value);
+
+        let amount = document.querySelector('.filterAmount').value;
+        amount = formatNorAmountToNumber(amount);
+        document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
+        showProjectTransactions(projectId, condoId,amount);
 
         // Events
         events();
@@ -105,14 +113,17 @@ async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
+    if ((event.target.classList.contains('filterProjectId'))
+      || (event.target.classList.contains('filterCondoId'))
+      || (event.target.classList.contains('filterAmount')));
 
-    const arrayPrefixes = ['filterProjectId'];
+    const projectId = Number(document.querySelector('.filterProjectId').value);
+    const condoId = Number(document.querySelector('.filterCondoId').value);
 
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-      const projectId = Number(document.querySelector('.filterProjectId').value);
-      showProjectTransactions(projectId);
-    };
+    let amount = document.querySelector('.filterAmount').value;
+    amount = formatNorAmountToNumber(amount);
+    document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
+    showProjectTransactions(projectId, condoId, amount);
   });
 
   // change bank account transaction
@@ -181,7 +192,7 @@ function showHeader() {
 */
 
 // Show filter
-function showFilter(projectId) {
+function showFilter(projectId, amount, condoId) {
 
   // Start frame
   let html = startFrame('filter-frame');
@@ -192,13 +203,19 @@ function showFilter(projectId) {
   // Show projects
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg prosjekt', '', true);
 
+  // Show selected condos
+  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true)
+ 
+  // Amount
+  html += inputText('filterAmount', 'Beløp', amount, true);
+
   // End filter
   html += "</div>";
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame", "Filter");
+  //setFrameTitle("filter-frame", "Filter");
 }
 
 /*
@@ -216,7 +233,7 @@ async function deleteProjectsRow(projectId) {
 */
 
 // show bank account transactions this project
-function showProjectTransactions(projectId) {
+function showProjectTransactions(projectId, condoId, amount) {
 
   // Empty line
   let html = emptyLine();
@@ -229,7 +246,9 @@ function showProjectTransactions(projectId) {
   let sumAmount = 0;
 
   for (const bankTransaction of objTransactions.arrayTransactions) {
-    if (bankTransaction.projectId === projectId) {
+    if ((bankTransaction.projectId === projectId)
+      && ((bankTransaction.condoId === condoId) || (condoId === objProjects.nineNine))
+      && ((bankTransaction.income === amount) || (bankTransaction.payment === amount) || (amount === 0))) {
 
       // Insert Table Row
       html += objProjects.insertTableRow('');

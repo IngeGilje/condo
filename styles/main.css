@@ -555,3 +555,9 @@ body {
     font-size: 20px;
   }
 }
+
+/* table */
+.table-container {
+
+  margin-left: 25px;
+}

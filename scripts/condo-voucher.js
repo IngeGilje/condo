@@ -16,9 +16,11 @@ const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
 const paramCondoId = Number(queryParameters.get("condoId"));
 const paramAccountId = Number(queryParameters.get("accountId"));
+const paramProjectId = Number(queryParameters.get("projectId"));
 const paramFromDate = Number(queryParameters.get("fromDate"));
 const paramToDate = Number(queryParameters.get("toDate"));
 const paramAmount = Number(queryParameters.get("amount"));
+let paramBackApplication = queryParameters.get("backApplication")
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -83,40 +85,23 @@ async function main() {
 // Events for voucher
 async function events() {
 
-  /*
-  // Filter
-  document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('filterTransactionId')) {
-
-      const orderBy = 'transactionId DESC, date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransactions.nineNine, 0, objVoucher.nineNine);
-
-      const transactionId = Number(document.querySelector('.filterTransactionId').value);
-      showVoucher(transactionId);
-    };
-  });
-  */
-
-  /*
-  // file name pdf document
-  document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('voucherFileName')) {
-
-      // Update a transaction row
-      const transactionId = Number(document.querySelector('.filterTransactionId').value);
-      updateTransactionRow(transactionId);
-    };
-  });
-  */
-
   // return to bank account transactions
+  //document.addEventListener('click', async (event) => {
+  //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    if (event.target.classList.contains('back')) {
 
+      /*
       let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}condo-transactions.html?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}`;
+      window.location.href = URL;
+      */
+    let URL = (objProjects.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      URL = `${URL}${paramBackApplication}?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
     };
   });
@@ -129,37 +114,36 @@ function showVoucher(transactionId) {
   const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
 
   // Empty line
-  let html = emptyLine();
+  //let html = emptyLine();
 
   // date
-  html += startLine();
+  //html += startLine();
+
+  let html = startContent('Bilag');
 
   // transaction Id
   html += showTextNew('transactionId', 'Bilagsnummer', transactionId, false, "Bilagsnummer");
-  html += "</div>";
+  html += "<div></div>";
+  html += "<div></div>";
 
   // Date
-  html += startLine();
-
   let date = objTransactions.arrayTransactions[rowNumberTransaction]?.date ?? '';
   date = formatNumberToISODate(date);
-  //html += showDate('Dato', 'date', date, false);
-  html += inputDate('date', 'Dato', date, false);
+  html += showTextNew('date', 'Dato', date, false);
 
-  // Amount
-  const income = objTransactions.arrayTransactions[rowNumberTransaction].income;
-  const payment = objTransactions.arrayTransactions[rowNumberTransaction].payment;
+  // amount
+  const income = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? 0;
+  const payment = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
   const amount = formatNumberToNorAmount((income) ? income : payment);
   html += showTextNew('amount', 'Beløp', amount, false, "Beløp");
-  html += "</div>";
+  html += "<div></div>";
 
   // Account
-  html += startLine();
-
-  // Account
-  const accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? '';
+  const accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
   const accountName = objAccounts.getAccountNameById(accountId);
-  html += showTextNew('accountName', 'Konto', accountName, false, "Konto");
+  html += showTextNew('accountName', 'Konto', accountName, false);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // File name
   let voucherFileName = objTransactions.arrayTransactions[rowNumberTransaction]?.voucherFileName ?? '';
@@ -167,19 +151,52 @@ function showVoucher(transactionId) {
     ? ''
     : `${transactionId}.pdf`;
   html += showTextNew('voucherFileName', 'Filnavn', voucherFileName, false, "Filnavn");
-  html += "</div>";
+  html += "<div></div>";
+  html += "<div></div>";
 
-  html += startLine();
+  // Start buttons
+  html += startButtons();
+
+  html += inputButton("back primary", "Tilbake", "submit");
+
+  // End buttons
+  html += endButtons();
+
+  /*
   className = `back`;
   html += showButtonNew(className, 'Tilbake');
-  html += "</div>";
+    html += "<div></div>";
+      html += "<div></div>";
+  */
 
-  html += startLine();
+  /*
   html += `
   <iframe
     src="/data/${voucherFileName}"
   >`;
   html += "</div>";
+  */
 
+  /*
+  html += `
+  <iframe 
+    src="/data/${voucherFileName}"
+    width="100%" 
+    height="400px"
+  >
+    </iframe>
+  `;
+  */
+  html += endContent();
   document.querySelector('.showVoucher').innerHTML = html;
+
+  // Show Voucher
+  const path = `/data/${voucherFileName}`;
+
+  const iframe = document.createElement("iframe");
+  iframe.src = path;
+  iframe.width = "100%";
+  iframe.height = "600px";
+
+  document.body.appendChild(iframe);
 }

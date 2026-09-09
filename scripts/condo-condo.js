@@ -175,16 +175,16 @@ function showFilter(condoId) {
   /*
   // End frame
   html += "</div>";
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame", "Filter");
+  //setFrameTitle("filter-frame", "Filter");
   */
 
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Maintain condo information
@@ -283,7 +283,7 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = validateIntervalNew('condoId', '', 'Ugyldig Leilighet', true, condoId, 0, objCondo.nineNine);
+  const validCondoId = validateIntervalNew('condoId',  'Ugyldig Leilighet', true, condoId, 0, objCondo.nineNine);
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -299,7 +299,7 @@ async function updateCondoRow(condoId) {
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = validateIntervalNew('postalCode', '', 'Ugyldig postnummer', true, Number(postalCode), 1, 9999);
+  const validPostalCode = validateIntervalNew('postalCode',  'Ugyldig postnummer', true, Number(postalCode), 1, 9999);
 
   // validate city
   const city = document.querySelector('.city').value;
@@ -307,7 +307,7 @@ async function updateCondoRow(condoId) {
 
   // validate squaremeters
   const squareMeters = Number(formatNorAmountToNumber(document.querySelector('.squareMeters').value));
-  const validSquareMeters = validateIntervalNew('squareMeters', '', 'Ugyldig Areal', true, squareMeters, 1, 9999);
+  const validSquareMeters = validateIntervalNew('squareMeters', 'Ugyldig Areal', true, squareMeters, 1, 9999);
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 

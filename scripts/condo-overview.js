@@ -109,7 +109,7 @@ async function events() {
 
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      //const validCondoId = validateIntervalNew('filterCondoId', columnWidths, '', 'Ugyldig Leilighet', true, condoId, 1, objOverview.nineNine);
+      //const validCondoId = validateIntervalNew('filterCondoId', columnWidths, 'Ugyldig Leilighet', true, condoId, 1, objOverview.nineNine);
 
       const accountId = objOverview.nineNine;
       const deleted = 'N';
@@ -173,16 +173,16 @@ function showFilter(condoId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   /*
   // End filter
   html += "</div>";
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  //setFrameTitle("filter-frame","Filter");
   */
 }
 

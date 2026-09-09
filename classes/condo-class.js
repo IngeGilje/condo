@@ -147,9 +147,9 @@ class Condos {
       text: "Rediger Transaksjon"
     },
     {
-      applicationName: 'condo-projects.html',
-      className: "condo-projects",
-      text: "Vis Prosjekter"
+      applicationName: 'condo-showprojects.html',
+      className: "condo-showprojects",
+      text: "Vis Prosjekt"
     },
     {
       applicationName: 'condo-project.html',
@@ -1114,11 +1114,11 @@ function inputText(className, label, value, enableChanges) {
     <!-- end inputText --> 
     `;
 
-  return html
+  return html;
 }
 
 // show text
-function showText( value) {
+function showText(value) {
 
   html = `
     <!-- start showText --> 
@@ -1728,7 +1728,7 @@ function validateISODate(className, date, showMessage = true, errorMessage) {
 }
 
 // Validate number
-function validateIntervalNew(className, style, errorMessage, showMessage = true, number, minNumber, maxNumber) {
+function validateIntervalNew(className, errorMessage, showMessage, number, minNumber, maxNumber) {
 
   number = Number(number);
   let isValid = (Number(number) >= Number(minNumber) && Number(number) <= Number(maxNumber));
@@ -1928,14 +1928,14 @@ function emptyLine() {
   return `<p>&nbsp;</p>`;
 }
 
+/*
 // Change frame title
 function setFrameTitle(className, label) {
 
-  /*
   const frameElement = document.querySelector(`.${className}`);
   frameElement.style.setProperty("--title", `"${label}"`);
-  */
 }
+*/
 
 // Show button
 function showButtonNew(className, text) {

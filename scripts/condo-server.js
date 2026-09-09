@@ -3082,7 +3082,7 @@ async function main() {
     }
   });
 
-  // Requests for empty calendar table
+  // Requests for emptying calendar table
   routePath = "";
   if (serverStatus === 1) routePath = "/api/emptycalendars";
   if (serverStatus === 2) routePath = "/emptycalendars";

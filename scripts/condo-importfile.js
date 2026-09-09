@@ -41,7 +41,7 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
+      // Show vertical menu
       let html = objImportFile.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
@@ -154,11 +154,11 @@ function createTransactionsArray() {
 
     //         Dato; Type;    Kontonummer;    Inn;      Ut; Valuta; Beskrivelse;Fra kontonummer;Til kontonummer;         Fra (navn);Til (navn)
     [accountingDate, Type, fromBankAccount, income, payment, Valuta, text, fromBankAccount, toBankAccount, fromBankAccountName, toBankAccountName] =
-      row.split(';');
+      row.split(',');
     // Check for valid date
     // validate the dd.mm.yyyy (Norwegian date format)
 
-    if (objImportFile.validateNorDate('message', accountingDate, objImportFile,  '')) {
+    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '')) {
 
       // text
       // remove first and last "
@@ -169,7 +169,7 @@ function createTransactionsArray() {
       const condoId = objImportFile.getCondoId(fromBankAccount);
       const condoName = objCondo.getCondoNameById(condoId);
 
-       // Income
+      // Income
       income = formatNorAmountToNumber(income);
 
       // Payment
@@ -496,6 +496,7 @@ function checkTransaction(income, payment, date) {
   return bankTransactionExist;
 }
 
+/*
 // Show filter
 function showFilter() {
 
@@ -516,11 +517,12 @@ function showFilter() {
 
   // The end of the table
   html += objImportFile.endTable();
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  //setFrameTitle("filter-frame","Filter");
 }
+*/
 
 // Show csv file for transactions
 function showTransactions() {
@@ -604,7 +606,7 @@ function showTransactions() {
 
   // The end of the table
   html += objImportFile.endTable();
-  document.querySelector('.result').innerHTML = html;
+  document.querySelector('.showTransactions').innerHTML = html;
 }
 
 // Update transactions table
@@ -635,7 +637,7 @@ function importFileName() {
   let html = objImportFile.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  html += objImportFile.showTableHeader( 'center', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
+  html += objImportFile.showTableHeader('center', '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();
@@ -649,7 +651,7 @@ function importFileName() {
   html += `
     <td class="center no-border"></td>
     <td class="center" colspan="3">
-      <input class="nameImportFile center one-line" type="text" maxlength="255" value="${importFileName}" style="width:500px;">
+      <input class="nameImportFile center one-line" type="text" maxlength="255" value="${importFileName}transaksjonsliste.csv" style="width:500px;">
     </td>
     <td></td><td></td><td></td><td></td></tr>`;
 
@@ -660,7 +662,7 @@ function importFileName() {
   // insert a table row (<tr></td>)
   html += objImportFile.insertTableRow('', '', '');
 
-  // Show buttons (<tr></td>)
+  // Show button (<tr></td>)
   html += objBankAccount.showButton('importTransacionFile', 'Start import', 'Importer transaksjonsfil');
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 

@@ -500,4 +500,28 @@ class Projects extends Condos {
       console.log("Error deleting projects:", error);
     }
   }
+
+  // Get the highest ID in the table
+  async getHighestProjectId(projectId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/projects'
+      : 'http://localhost:3000/projects';
+    try {
+
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestProjectId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (projects)");
+      this.arrayProjects = await response.json();
+    } catch (error) {
+      console.log("Error selecting projects:", error);
+    }
+  }
 }

@@ -147,15 +147,15 @@ function showFilter(remoteHeatingId) {
   html += objRemoteHeatings.showSelectedRemoteHeatingsNew('filterRemoteHeatingId', 'Fjernvarme', remoteHeatingId, 'Velg fjernvarme', '', true);  // End filter
 
   /*
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame", "Filter");
+  //setFrameTitle("filter-frame", "Filter");
   */
  // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Show remoteheatings
@@ -315,21 +315,21 @@ async function updateRemoteHeatingRow(remoteHeatingId) {
   // date
   let remoteHeatingDate = document.querySelector('.remoteHeatingDate').value;
   remoteHeatingDate = formatISODateToNumber(remoteHeatingDate);
-  const validDate = validateIntervalNew('remoteHeatingDate', '', 'Ugyldig Dato', true, remoteHeatingDate, 20150101, 20291231);
+  const validDate = validateIntervalNew('remoteHeatingDate',  'Ugyldig Dato', true, remoteHeatingDate, 20150101, 20291231);
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', '', 'Ugyldig Leilighet', true, condoId, 1, objRemoteHeatings.nineNine);
+  const validCondoId = validateIntervalNew('condoId',  'Ugyldig Leilighet', true, condoId, 1, objRemoteHeatings.nineNine);
 
   // kilowattHour
   let kilowattHour = document.querySelector('.kilowattHour').value;
   kilowattHour = formatNorAmountToNumber(kilowattHour);
-  const validkilowattHour = validateIntervalNew('kilowattHour', '', 'Ugyldig Kilowatttime', true, kilowattHour, 1, objRemoteHeatings.nineNine);
+  const validkilowattHour = validateIntervalNew('kilowattHour',  'Ugyldig Kilowatttime', true, kilowattHour, 1, objRemoteHeatings.nineNine);
 
   // Price for one year
   let priceYear = document.querySelector('.priceYear').value;
   priceYear = formatNorAmountToNumber(priceYear);
-  const validPriceYear = validateIntervalNew('priceYear', '', 'Ugyldig beløp', true, priceYear, 0, objRemoteHeatings.nineNine);
+  const validPriceYear = validateIntervalNew('priceYear',  'Ugyldig beløp', true, priceYear, 0, objRemoteHeatings.nineNine);
 
   // Validate remoteheatings columns
   if (validDate && validCondoId && validkilowattHour && validPriceYear) {

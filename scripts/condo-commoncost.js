@@ -221,7 +221,7 @@ function showFilter(commonCostId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Show commoncost
@@ -350,17 +350,17 @@ async function updateCommonCostsRow(commonCostId) {
 
   // year
   const year = objCommonCosts.arrayCommonCosts[rowNumberCommonCost]?.year ?? 0;
-  const validYear = validateIntervalNew('filterCommonCostId', '', 'Ugyldig årstall', true, year, 2020, 2030);
+  const validYear = validateIntervalNew('filterCommonCostId',  'Ugyldig årstall', true, year, 2020, 2030);
 
   // common cost per squaremeter 
   let commonCostSquareMeter = document.querySelector('.commonCostSquareMeter').value;
   commonCostSquareMeter = formatNorAmountToNumber(commonCostSquareMeter);
-  const validCommonCostSquareMeter = validateIntervalNew('commonCostSquareMeter', '', 'Ugyldig Felleskost/m2', true, commonCostSquareMeter, 0, objCommonCosts.nineNine);
+  const validCommonCostSquareMeter = validateIntervalNew('commonCostSquareMeter',  'Ugyldig Felleskost/m2', true, commonCostSquareMeter, 0, objCommonCosts.nineNine);
 
   // fix common cost per condo
   let fixedCostCondo = document.querySelector('.fixedCostCondo').value;
   fixedCostCondo = formatNorAmountToNumber(fixedCostCondo);
-  const validFixedCostCondo = validateIntervalNew('fixedCostCondo', '', 'Ugyldig fast kost per leilighet', true, fixedCostCondo, 0, objCommonCosts.nineNine);
+  const validFixedCostCondo = validateIntervalNew('fixedCostCondo',  'Ugyldig fast kost per leilighet', true, fixedCostCondo, 0, objCommonCosts.nineNine);
 
   // Validate commoncosts columns
   if (validYear && validCommonCostSquareMeter && validFixedCostCondo) {

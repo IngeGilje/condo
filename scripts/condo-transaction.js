@@ -61,7 +61,7 @@ async function main() {
       await objSupplier.loadSuppliersTable(objTransactions.condominiumId);
       await objProjects.loadProjectsTable(objTransactions.condominiumId);
       const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20260801, 20991231);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
 
       // show filter
       let transactionId = 0;
@@ -77,7 +77,7 @@ async function main() {
         transactionId = paramTransactionId;
       }
 
-      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20260801, 20991231);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
 
       showFilter(transactionId);
 
@@ -98,7 +98,7 @@ async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('filterTransactionId')) {
+    if (event.target.classList.contains("filterTransactionId")) {
 
       const transactionId = Number(document.querySelector('.filterTransactionId').value);
       showTransaction(transactionId);
@@ -107,7 +107,8 @@ async function events() {
 
   // return to bank account transactions
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    if (event.target.classList.contains("back")) {
 
       let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
@@ -137,7 +138,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      const transactionId = Number(document.querySelector('.transactionId').value);
+      const transactionId = Number(document.querySelector(".filterTransactionId").value);
       updateTransactionRow(transactionId);
     };
   });
@@ -160,19 +161,19 @@ async function events() {
       let toDate = document.querySelector('.transactionDate').value;
       toDate = Number(objTransactions.formatDateToNumber(toDate));
       const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, accountId, objTransactions.nineNine, amount, 20260801, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, accountId, objTransactions.nineNine, amount, 20190101, toDate);
 
       showTransaction(transactionId);
     };
   });
 
+  /*
   // Show bank voucher
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('voucher'))) {
+    //if ([...event.target.classList].some(cls => cls.startsWith('voucher'))) {
+    if (event.target.classList.contains("voucher")) {
 
-      const arrayPrefixes = ['voucher'];
-
-      let URL = (objTransactions.serverStatus === 1)
+       let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       const condoId = Number(document.querySelector('.condoId').value);
@@ -181,6 +182,7 @@ async function events() {
       window.location.href = URL;
     };
   });
+  */
 
   // Edit transaction
   document.addEventListener('click', async (event) => {
@@ -225,12 +227,12 @@ function showFilter(transactionId) {
   let html = startFilter("Bilagsnummer");
 
   // Show transactions
-  html += objTransactions.showSelectedTransactionsNew('filterTransactionId', transactionId, '', '', true);
+  html += objTransactions.showSelectedTransactionsNew("filterTransactionId", transactionId, '', '', true);
 
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Show bank account transaction
@@ -242,7 +244,7 @@ function showTransaction(transactionId) {
   let html = startContent('Transaksjonsdetaljer');
 
   // transactionId
-  html += inputNumber('transactionId', 'Bilagsnummer', transactionId, enableChanges);
+  //html += inputNumber("transactionId", 'Bilagsnummer', transactionId, enableChanges);
 
   // Date
   let transactionDate = (rowNumberTransaction === -1)
@@ -254,25 +256,26 @@ function showTransaction(transactionId) {
   //html += showDate('Dato', 'transactionDate', transactionDate, enableChanges);
   html += inputDate('transactionDate', 'Dato', transactionDate, enableChanges);
   html += "<div></div>";
+  html += "<div></div>";
 
   // Condo
   let condoId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].condoId;
-  html += objCondo.showSelectedCondosNew('condoId','Leilighet',  condoId, 'Velg leilighet', '', enableChanges);
+  html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, 'Velg leilighet', '', enableChanges);
 
   // Account
   let accountId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].accountId;
-  html += objAccounts.showSelectedAccountsNew('accountId','Konto',  accountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg konto', '', enableChanges);
 
   // project
   let projectId = (rowNumberTransaction === -1)
     ? ''
     : objTransactions.arrayTransactions[rowNumberTransaction].projectId;
 
-  html += objProjects.showSelectedProjectsNew('projectId','Prosjekt',  projectId, 'Velg prosjekt', '', enableChanges);
+  html += objProjects.showSelectedProjectsNew('projectId', 'Prosjekt', projectId, 'Velg prosjekt', '', enableChanges);
 
   // income
   let income = (rowNumberTransaction === -1)
@@ -316,7 +319,12 @@ function showTransaction(transactionId) {
     html += inputButton("update primary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
-    html += inputButton("back secondary", "Tilbake", "button");
+
+    // check for return back to an application
+    if (paramBackApplication) {
+
+      html += inputButton("back secondary", "Tilbake", "button");
+    }
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons
@@ -333,7 +341,7 @@ function showTransaction(transactionId) {
     disableButton('insert', false);
     disableButton('update', false);
     disableButton('cancel', true);
-    disableButton('filterTransactionId', false);
+    disableButton("filterTransactionId", false);
   }
   */
 }
@@ -348,44 +356,44 @@ async function updateTransactionRow(transactionId) {
   className = '.transactionDate';
   let transactionDate = document.querySelector(className).value;
   transactionDate = formatISODateToNumber(transactionDate);
-  className = `date`;
-  const validDate = validateIntervalNew(className, '', 'Ugyldig Dato', true, transactionDate, 20150101, 20991231);
+  className = "transactionDate";
+  const validDate = validateIntervalNew(className, 'Ugyldig Dato', true, transactionDate, 20150101, 20991231);
 
   // accountId
   className = '.accountId';
   let accountId = Number(document.querySelector(className).value);
   className = 'accountId';
-  const validAccountId = validateIntervalNew(className, '', 'Ugyldig konto', true, accountId, 1, objTransactions.nineNine);
+  const validAccountId = validateIntervalNew(className, 'Ugyldig konto', true, accountId, 1, objTransactions.nineNine);
 
   // condoId
   className = `.condoId`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId`;
-  const validCondoId = validateIntervalNew(className, '', 'Ugyldig Leilighet', true, condoId, 0, objTransactions.nineNine);
+  const validCondoId = validateIntervalNew(className, 'Ugyldig Leilighet', true, condoId, 0, objTransactions.nineNine);
 
   // projectId 
   className = `.projectId`;
   let projectId = Number(document.querySelector(className).value);
   className = `projectId`;
-  const validProjectId = validateIntervalNew(className, '', 'Ugyldig prosjekt', true, projectId, 0, objTransactions.nineNine);
+  const validProjectId = validateIntervalNew(className, 'Ugyldig prosjekt', true, projectId, 0, objTransactions.nineNine);
 
   // income
   className = `.income`;
   let income = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `income`;
-  const validIncome = validateIntervalNew(className, '', 'Ugyldig inntekt', true, income, objTransactions.minusNineNine, objTransactions.nineNine);
+  const validIncome = validateIntervalNew(className, 'Ugyldig inntekt', true, income, objTransactions.minusNineNine, objTransactions.nineNine);
 
   // payment
   className = `.payment`;
   let payment = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `payment`;
-  const validPayment = validateIntervalNew(className, '', 'Ugyldig utgift', true, payment, objTransactions.minusNineNine, objTransactions.nineNine);
+  const validPayment = validateIntervalNew(className, 'Ugyldig utgift', true, payment, objTransactions.minusNineNine, objTransactions.nineNine);
 
   // kilowattHour
   className = `.kilowattHour`;
   const kilowattHour = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `kilowattHour`;
-  const validNumberKWHour = validateIntervalNew(className, '', 'Ugyldig kilowattime', true, kilowattHour, 0, objTransactions.nineNine);
+  const validNumberKWHour = validateIntervalNew(className, 'Ugyldig kilowattime', true, kilowattHour, 0, objTransactions.nineNine);
 
   // text
   className = `.text`;
@@ -407,13 +415,14 @@ async function updateTransactionRow(transactionId) {
     } else {
 
       // insert transactions row
-      await objTransactions.insertTransactionsTable(objTransactions.condominiumId, objTransactions.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text, 'N'); await objAccount.getHighestAccountId(objAccount.condominiumId);
+      await objTransactions.insertTransactionsTable(objTransactions.condominiumId, objTransactions.user, condoId, accountId, projectId, income, payment, kilowattHour, transactionDate, text, 'N');
+      await objAccounts.getHighestAccountId(objAccounts.condominiumId);
       await objTransactions.getHighestTransactionId(objTransactions.condominiumId);
       transactionId = objTransactions.arrayTransactions[0].transactionId;
     }
 
     const orderBy = 'date DESC, income DESC';
-    await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20260801, 20291231);
+    await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20291231);
 
     removeMessage();
 
@@ -422,7 +431,7 @@ async function updateTransactionRow(transactionId) {
       disableButton('insert', false);
       disableButton('update', false);
       disableButton('cancel', true);
-      disableButton('filterTransactionId', false);
+      disableButton("filterTransactionId", false);
     }
 
     // Show filter
@@ -436,12 +445,11 @@ async function updateTransactionRow(transactionId) {
 function resetValues() {
 
   // Filter values
-
   // transaction Id
-  document.querySelector('.transactionId').value = 0;
+  document.querySelector(".filterTransactionId").value = 0;
 
   // date
-  document.querySelector('.date').value = '';
+  document.querySelector('.transactionDate').value = '';
 
   // condo Id
   document.querySelector('.condoId').value = 0;
@@ -470,7 +478,7 @@ function resetValues() {
     disableButton('delete', true);
     disableButton('insert', true);
     disableButton('cancel', false);
-    disableButton('filterTransactionId', true);
+    disableButton("filterTransactionId", true);
   }
 }
 
@@ -478,7 +486,7 @@ function resetValues() {
 async function deleteTransactionRow() {
 
   // Check if transactions row exist
-  let transactionId = Number(document.querySelector('.transactionId').value);
+  let transactionId = Number(document.querySelector(".filterTransactionId").value);
   const transactionsRowNumber = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
   if (transactionsRowNumber !== -1) {
 

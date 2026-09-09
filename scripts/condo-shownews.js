@@ -4,9 +4,8 @@
 const today = new Date();
 const objUser = new User('user');
 const objNews = new News('news');
-const objShowNews = new ShowNews('shownews');
 
-const enableChanges = (objShowNews.securityLevel > 5);
+const enableChanges = (objNews.securityLevel > 5);
 const applicationName = "condo-shownews";
 
 // Exit application if no activity for 1 hour
@@ -20,7 +19,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objShowNews.condominiumId === 0) || (objShowNews.user === null)) {
+    if ((objNews.condominiumId === 0) || (objNews.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -30,7 +29,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objShowNews.showMenu(applicationName);
+      let html = objNews.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -38,19 +37,19 @@ async function main() {
 
       /*
       // Show main menu
-      let html = objShowNews.showHorizontalMenu("filter-frame", objShowNews.arrayMainMenu);
+      let html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMainMenu);
       document.querySelector('.menuMain').innerHTML = html;
 
       // Show news menu
-      html = objShowNews.showHorizontalMenu("filter-frame", objShowNews.arrayMenuNews);
+      html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMenuNews);
       document.querySelector('.menuNews').innerHTML = html;
-      objShowNews.markActivatedApplication(objShowNews.arrayMenuNews, applicationName);
+      objNews.markActivatedApplication(objNews.arrayMenuNews, applicationName);
       */
 
       // Load users and news tables
       const resident = 'Y';
-      await objUser.loadUsersTable(objShowNews.condominiumId, resident, objShowNews.nineNine);
-      await objNews.loadNewsTable(objShowNews.condominiumId, objShowNews.nineNine);
+      await objUser.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);
+      await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
       let newsId = 0;
       if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;
@@ -80,7 +79,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objShowNews.serverStatus === 1)
+      let url = (objNews.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;

@@ -142,7 +142,7 @@ function showFilter(remoteHeatingPriceId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // Show remote heating prices
@@ -238,7 +238,7 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
 
   // year
   const year = Number(document.querySelector('.year').value)
-  let validYear = validateIntervalNew('year', '', 'Ugyldig år', true, year, 2020, 2030);
+  let validYear = validateIntervalNew('year', 'Ugyldig år', true, year, 2020, 2030);
 
   // Check if year already exist (year is unique)
   rowNumberRemoteHeatingPrice = objRemoteHeatingPrices.arrayRemoteHeatingPrices.findIndex(remoteHeatingPrice => remoteHeatingPrice.remoteHeatingPriceId === remoteHeatingPriceId);
@@ -252,7 +252,7 @@ async function updateRemoteHeatingPricesRow(remoteHeatingPriceId) {
   // priceKilowattHour
   let priceKilowattHour = document.querySelector('.priceKilowattHour').value;
   priceKilowattHour = formatNorAmountToNumber(priceKilowattHour);
-  const validKilowattHourPrice = validateIntervalNew('priceKilowattHour', '', 'Ugyldig Pris Per Kilowattimer', true, priceKilowattHour, 0, objRemoteHeatingPrices.nineNine);
+  const validKilowattHourPrice = validateIntervalNew('priceKilowattHour', 'Ugyldig Pris Per Kilowattimer', true, priceKilowattHour, 0, objRemoteHeatingPrices.nineNine);
 
   // Validate remoteheatingprices columns
   if (validYear && validKilowattHourPrice) {

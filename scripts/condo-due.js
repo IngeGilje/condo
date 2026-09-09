@@ -169,10 +169,10 @@ function showFilter(dueId) {
   // End filter
   html += "</div>";
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  //setFrameTitle("filter-frame","Filter");
 }
 
 // show due
@@ -262,32 +262,32 @@ async function updateDuesRow(dueId) {
   let className = '.dueDate';
   const date = Number(objDue.formatDateToNumber(document.querySelector(`${className}`).value));
   className = 'dueDate';
-  const validDate = validateIntervalNew(className,    '', 'Ugyldig Dato',               true,   date, 20000101, 21001231);
+  const validDate = validateIntervalNew(className,    'Ugyldig Dato',               true,   date, 20000101, 21001231);
  
   // condo Id
   className = '.condoId';
   let condoId = Number(document.querySelector(className).value);
   className = 'condoId';
-  const validCondoId = validateIntervalNew(className, '', 'Ugyldig Leilighet', true, condoId, 1, objDue.nineNine);
+  const validCondoId = validateIntervalNew(className,  'Ugyldig Leilighet', true, condoId, 1, objDue.nineNine);
 
   // account Id
   className = '.accountId';
   let accountId = Number(document.querySelector(className).value);
   className = 'accountId';
-  const validAccountId = validateIntervalNew(className, '', 'Ugyldig konto', true, accountId, 1, objDue.nineNine);
+  const validAccountId = validateIntervalNew(className,  'Ugyldig konto', true, accountId, 1, objDue.nineNine);
 
   // amount
   className = '.amount';
   const amount = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = 'amount';
-  const validAmount = validateIntervalNew(className, '', 'Ugyldig beløp', true, amount, objDue.minusNineNine, objDue.nineNine);
+  const validAmount = validateIntervalNew(className,  'Ugyldig beløp', true, amount, objDue.minusNineNine, objDue.nineNine);
 
   // kilowatt hour
   className = '.kilowattHour';
   let kilowattHour = document.querySelector(className).value;
   kilowattHour = formatNorAmountToNumber(kilowattHour);
   className = 'kilowattHour';
-  const validkilowattHour = validateIntervalNew(className, '', 'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
+  const validkilowattHour = validateIntervalNew(className,  'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
 
   // Text
   className = '.text';
@@ -374,8 +374,6 @@ async function deleteDueRow(dueId) {
 // reset values
 function resetValues() {
 
-  document.querySelector('.filterDueId').value = '';
-
   document.querySelector('.dueDate').value = '';
 
   document.querySelector('.condoId').value = 0;
@@ -387,6 +385,8 @@ function resetValues() {
   document.querySelector('.kilowattHour').value = '0,00';
 
   document.querySelector('.text').value = '';
+
+  document.querySelector('.filterDueId').value = '';
 
   // Buttons
   removeMessage();

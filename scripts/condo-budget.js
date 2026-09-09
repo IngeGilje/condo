@@ -175,16 +175,16 @@ async function updateBudgetsRow(budgetId) {
 
   // accountId
   let accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = validateIntervalNew('accountId', '', 'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
+  const validAccountId = validateIntervalNew('accountId',  'Ugyldig konto', true, accountId, 1, objBudget.nineNine);
 
   // amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatNorAmountToNumber(amount));
-  let validAmount = validateIntervalNew('amount', '', 'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
+  let validAmount = validateIntervalNew('amount',  'Ugyldig budsjett', true, amount, objBudget.minusNineNine, objBudget.nineNine);
 
   // year
   let year = Number(document.querySelector('.year').value);
-  const validYear = validateIntervalNew('year', '', 'Ugyldig budsjettår', true, year, 2020, 2029);
+  const validYear = validateIntervalNew('year',  'Ugyldig budsjettår', true, year, 2020, 2029);
 
   // text
   let text = document.querySelector('.text').value;
@@ -293,10 +293,10 @@ function showFilter(budgetId) {
   // End filter
   html += "</div>";
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 
   // Change frame title
-  setFrameTitle("filter-frame","Filter");
+  //setFrameTitle("filter-frame","Filter");
 }
 
 // Show budget

@@ -166,7 +166,7 @@ function showFilter(emptyCalendarId) {
   // End filter
   html += endFilter();
 
-  document.querySelector('.showFilter').innerHTML = html;
+  document.querySelector(".showFilter").innerHTML = html;
 }
 
 // show EmptyCalendar
@@ -303,7 +303,7 @@ async function updateEmptyingCalendarRow(emptyCalendarId) {
 
   // condoId
   condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', '', 'Ugyldig ansvarlig', true, condoId, 1, objCondo.nineNine);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig ansvarlig', true, condoId, 1, objCondo.nineNine);
 
   // date
   let date = document.querySelector('.emptyingCalendarDate').value;
