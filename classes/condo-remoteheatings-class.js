@@ -277,7 +277,8 @@ class RemoteHeatings extends Condos {
           ${(remoteHeating.remoteHeatingId === remoteHeatingId) ? 'selected' : ''}
         >
           ${condoName} - ${remoteHeating.year}
-        </option>`;
+        </option>
+        `;
         if (remoteHeating.remoteHeatingId === remoteHeatingId) selectedValue = true;
       });
     } else {

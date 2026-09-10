@@ -113,12 +113,6 @@ function showVoucher(transactionId) {
   // row number voucher
   const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
 
-  // Empty line
-  //let html = emptyLine();
-
-  // date
-  //html += startLine();
-
   let html = startContent('Bilag');
 
   // transaction Id

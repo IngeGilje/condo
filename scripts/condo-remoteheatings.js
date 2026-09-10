@@ -150,7 +150,7 @@ function showRemoteHeatings() {
   const currentYear = Number(document.querySelector(".filterYear").value);
   const lastYear = currentYear - 1;
 
-  html += objRemoteHeatings.showTableHeader( 'Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp', '');
+  html += objRemoteHeatings.showTableHeader('Dato', 'Leilighet', `K.timer ${currentYear}`, `K.timer ${lastYear}`, 'Beløp', '');
 
   objRemoteHeatings.arrayRemoteHeatings.forEach((remoteHeating) => {
 
@@ -163,29 +163,26 @@ function showRemoteHeatings() {
       let date = remoteHeating.date;
       let className = `date${remoteHeating.remoteHeatingId}`;
       date = formatNumberToNorDate(date);
-      //html += editTableCell(className, date, 10, enableChanges);
-      html += showTableText(className,date);
+      html += showTableText(className, date);
 
       // condoId
       const condoId = remoteHeating.condoId;
       className = `condoId${remoteHeating.remoteHeatingId}`;
       //html += objCondo.showSelectedCondos(className, '', condoId, '', '', enableChanges);
       const condoName = objCondo.getCondoNameById(remoteHeating.condoId);
-       html += showTableText(className,condoName);
+      html += showTableText(className, condoName);
 
       // kilowattHour current year
       let kilowattHour = remoteHeating.kilowattHour;
       className = `kilowattHour${remoteHeating.remoteHeatingId}`;
       kilowattHour = formatNumberToNorAmount(kilowattHour);
-      //html += editTableCell(className, kilowattHour, 10, enableChanges);
-       html += showTableText(className,kilowattHour);
+      html += showTableText(className, kilowattHour);
 
       // kilowattHour last year
       let kilowattHourLastYear = getKilowattHourLastYear(remoteHeating.condoId);
       className = `kilowattHourLastYear${remoteHeating.remoteHeatingId}`;
       kilowattHourLastYear = formatNumberToNorAmount(kilowattHourLastYear);
-      //html += editTableCell(className, kilowattHourLastYear, 10, false);
-      html += showTableText(className,kilowattHourLastYear);
+      html += showTableText(className, kilowattHourLastYear);
 
       // price for used elcticity/remote heating for one year
       let priceYear = Number(remoteHeating.priceYear);
@@ -204,8 +201,7 @@ function showRemoteHeatings() {
         priceYear = formatNumberToNorAmount(remoteHeating.priceYear);
       }
       className = `priceYear${remoteHeating.remoteHeatingId}`;
-      //html += editTableCell(className, priceYear, 10, enableChanges);
-      html += showTableText(className,priceYear);
+      html += showTableText(className, priceYear);
 
       // Maintnance
       className = `change${remoteHeating.remoteHeatingId}`;
@@ -221,7 +217,7 @@ function showRemoteHeatings() {
   // How much to pay for remote heating for all condos
   totalPriceYear = formatNumberToNorAmount(totalPriceYear);
 
-  html += objRemoteHeatings.insertTableRow('', '','', '', 'Totalt', totalPriceYear,  '');
+  html += objRemoteHeatings.insertTableRow('', '', '', '', 'Totalt', totalPriceYear, '');
   html += "</tr>";
 
   // The end of the table

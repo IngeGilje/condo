@@ -1189,6 +1189,7 @@ function inputDate(className, label, value, enableChanges) {
   return html;
 }
 
+/*
 // Input text
 function inputTableText(className, value, enableChanges) {
 
@@ -1205,6 +1206,7 @@ function inputTableText(className, value, enableChanges) {
   <!-- end inputTableText -->
   `;
 }
+*/
 
 // Show text in table
 function showTableText(className, value) {
@@ -1436,6 +1438,7 @@ function showSelectedMonthsNew(className, label, selectedMonth, enableChanges) {
   return html;
 }
 
+/*
 // Show input
 function editTableCell(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
@@ -1457,6 +1460,7 @@ function editTableCell(className, value, maxlength, enableChanges, colspan = 1, 
     <!-- end editTableCell -->
     `;
 }
+*/
 
 // Show amount
 function showAmount(label, className, value, enableChanges) {
@@ -1929,10 +1933,18 @@ function endContent() {
   `;
 }
 
+/*
 // start line (<div>)
 function startLine() {
-  return `<div class="line">`;
+  return `
+  <!-- start startLine -->
+    <div 
+      class="line"
+    >
+  <!-- end startLine -->
+  `;
 }
+*/
 
 // empty line
 function emptyLine() {
@@ -1968,6 +1980,7 @@ function showTextNew(className, label, value, enableChanges, placeholder = "") {
     ? value.trim()
     : value;
   return `
+  <!-- start showTextNew -->
   <div 
     class="field field-position" 
    >
@@ -1982,7 +1995,9 @@ function showTextNew(className, label, value, enableChanges, placeholder = "") {
     <label>
       ${label.trim()}
     </label>
-  </div>`;
+  </div>
+  <!-- end showTextNew -->
+  `;
 }
 
 /*

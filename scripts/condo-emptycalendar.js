@@ -99,7 +99,7 @@ async function events() {
     };
   });
 
-  // update/insert a emptycalendars row
+  // update a emptycalendars row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
@@ -180,7 +180,6 @@ function showEmptyCalendar(emptyCalendarId) {
   // date
   let emptyingCalendarDate = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar]?.date ?? 0;
   emptyingCalendarDate = formatNumberToISODate(emptyingCalendarDate);
-  //html += showDate('Dato', 'emptyingCalendarDate', emptyingCalendarDate, enableChanges);
   html += inputDate('emptyingCalendarDate', 'Dato', emptyingCalendarDate, enableChanges);
 
   // condo
@@ -192,7 +191,6 @@ function showEmptyCalendar(emptyCalendarId) {
   selected = "Ugyldig verdi";
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].residualWaste === 'Y') selected = "Ja";
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].residualWaste === 'N') selected = "Nei";
-  //html += inputValues('Restavfall', 'residualWaste', '', enableChanges, selected, 'Nei', 'Ja');
   html += inputValues('Restavfall', 'residualWaste', enableChanges, selected, 'Nei', 'Ja');
 
   // Paper waste
@@ -200,7 +198,6 @@ function showEmptyCalendar(emptyCalendarId) {
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].paper === 'Y') selected = "Ja";
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].paper === 'N') selected = "Nei";
   className = 'paper';
-  //html += inputValues('Papiravfall', className, '', enableChanges, selected, 'Nei', 'Ja');
   html += inputValues('Papiravfall', 'paper', enableChanges, selected, 'Nei', 'Ja');
   html += "<div></div>";
 
@@ -214,7 +211,6 @@ function showEmptyCalendar(emptyCalendarId) {
   selected = "Ugyldig verdi";
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].plastic === 'Y') selected = "Ja";
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].plastic === 'N') selected = "Nei";
-  //html += inputValues('Plastavfall', className, '', enableChanges, selected, 'Nei', 'Ja');
   html += inputValues('Plastavfall', 'plastic', enableChanges, selected, 'Nei', 'Ja');
   html += "<div></div>";
 
@@ -223,43 +219,8 @@ function showEmptyCalendar(emptyCalendarId) {
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].christmasTree === 'Y') selected = "Ja";
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].christmasTree === 'N') selected = "Nei";
   className = 'christmasTree';
-  //html += inputValues('Juletre', className, '', enableChanges, selected, 'Nei', 'Ja');
   html += inputValues('Juletre', 'christmasTree', enableChanges, selected, 'Nei', 'Ja');
 
-  /*
-  // Buttons
-  if (enableChanges) {
-
-    html += startLine();
-    html += showButtonNew('update', 'Oppdater');
-    html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
-
-    html += startLine();
-    html += showButtonNew('delete', 'Slett');
-    html += showButtonNew('insert', 'Ny');
-    html += "</div>";
-  }
-
-  if (paramEmptyCalendarId !== 0) {
-    html += startLine();
-    html += showButtonNew('back', 'Tilbake');
-    html += "</div>";
-  }
-
-
-  // Show empty calendar
-  document.querySelector('.showEmptyCalendar').innerHTML = html;
-
-  // Buttons
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterEmptyCalendarId', false, 'white');
-  }
-  */
   html += endContent();
 
   // Buttons
@@ -271,7 +232,6 @@ function showEmptyCalendar(emptyCalendarId) {
     html += inputButton("update primary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
-    html += inputButton("back secondary", "Tilbake", "button");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons

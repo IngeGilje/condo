@@ -334,22 +334,31 @@ function showBudget(budgetId) {
   html += showTextNew('text','Tekst',  text, enableChanges, "Tekst");
   html += "</div>";
 
+  /*
   // Buttons
   if (enableChanges) {
 
-    html += startLine();
     html += showButtonNew('update', 'Oppdater');
     html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
 
-    html += startLine();
     html += showButtonNew('delete', 'Slett');
     html += showButtonNew('insert', 'Ny');
-    html += "</div>";
   }
-  html += startLine();
-  html += showButtonNew('back', 'Tilbake');
-  html += "</div>";
+    */
+   // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
 
   document.querySelector('.showBudget').innerHTML = html;
 

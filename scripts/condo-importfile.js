@@ -547,37 +547,37 @@ function showTransactions() {
 
     // Date
     let className = `accountingDate${rowNumber}`;
-    html += editTableCell(className, transaction.accountingDate, 10);
+    html += showTableText(className, transaction.accountingDate);
 
     // Condo name
     className = `condoName${rowNumber}`;
-    html += editTableCell(className, transaction.condoName, 45);
+    html += showTableText(className, transaction.condoName);
 
     // Account name
     className = `accountName${rowNumber}`;
-    html += editTableCell(className, transaction.accountName, 45);
+    html += showTableText(className, transaction.accountName);
 
     // fromBankAccountName
     className = `fromBankAccountName${rowNumber}`;
-    html += editTableCell(className, transaction.fromBankAccountName, 45);
+    html += showTableText(className, transaction.fromBankAccountName);
 
     // toBankAccountName
     className = `toBankAccountName${rowNumber}`;
-    html += editTableCell(className, transaction.toBankAccountName, 45);
+    html += showTableText(className, transaction.toBankAccountName);
 
     // Income
     const income = formatNumberToNorAmount(transaction.income);
     className = `income${rowNumber}`;
-    html += editTableCell(className, income, 10);
+    html += showTableText(className, income);
 
     // Payment
     const payment = formatNumberToNorAmount(transaction.payment);
     className = `payment${rowNumber}`;
-    html += editTableCell(className, payment, 10);
+    html += showTableText(className, payment);
 
     // Text
     className = `payment${rowNumber}`;
-    html += editTableCell(className, transaction.text, 10);
+    html += showTableText(className, transaction.text);
 
     // Accomulate
 

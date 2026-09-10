@@ -293,30 +293,30 @@ function showTransactions() {
       // Date
       const date = formatNumberToNorDate(bankTransaction.date);
       let className = `date${bankTransaction.transactionId}`;
-      html += inputTableText(className, date, false);
+      html += showTableText(className, date);
 
       // account
       className = `accountId${bankTransaction.transactionId}`;
       const accountName = objAccounts.getAccountNameById(bankTransaction.accountId);
-      html += inputTableText(className, accountName, false);
+      html += showTableText(className, accountName);
 
       // condos
       className = `condoId${bankTransaction.transactionId}`;
       //html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
       const condoName = objCondo.getCondoNameById(bankTransaction.condoId);
-      html += inputTableText(className, condoName, false);
+      html += showTableText(className, condoName);
 
       // income
       let income = bankTransaction.income;
       income = formatNumberToNorAmount(income);
       className = `income${bankTransaction.transactionId}`;
-      html += inputTableText(className, income, false);
+      html += showTableText(className, income);
 
       // payment
       let payment = bankTransaction.payment;
       payment = formatNumberToNorAmount(payment);
       className = `payment${bankTransaction.transactionId}`;
-      html += inputTableText(className, payment, false);
+      html += showTableText(className, payment);
 
       // Show button for voucher
       className = `voucher${bankTransaction.transactionId}`;

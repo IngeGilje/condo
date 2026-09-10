@@ -154,9 +154,6 @@ function showFilter(condoId) {
   // Start frame
   let html = startFrame('filter-frame');
 
-  // show filter
-  //html += startLine();
-
   // Show condos
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
 
@@ -209,7 +206,6 @@ function showDues() {
     // date
     const date = formatNumberToNorDate(due.date);
     className = `date${due.dueId}`;
-    //html += editTableCell(className, date, 10, false);
     html += showTableText(className, date);
 
     // condo
@@ -227,19 +223,16 @@ function showDues() {
     // amount
     const amount = formatNumberToNorAmount(due.amount);
     className = `income${due.dueId}`;
-    //html += editTableCell(className, amount, 11, false);
     html += showTableText(className, amount);
 
     // kilowattHour
     const kilowattHour = formatNumberToNorAmount(due.kilowattHour);
     className = `income${due.dueId}`;
-    //html += editTableCell(className, kilowattHour, 10, false);
     html += showTableText(className, kilowattHour);
 
     // Text
     const text = due.text;
     className = `text${due.dueId}`;
-    //html += editTableCell(className, text, 45, false);
     html += showTableText(className, text);
 
     html += "</tr>";
@@ -292,7 +285,6 @@ function showTransactions() {
     // date
     const date = formatNumberToNorDate(bankTransaction.date);
     className = `date${bankTransaction.transactionId}`;
-    //html += editTableCell(className, date, 10, false);
     html += showTableText(className,date);
 
     // account
@@ -307,13 +299,11 @@ function showTransactions() {
     income += payment;
     income = formatNumberToNorAmount(income);
     className = `income${bankTransaction.transactionId}`;
-    //html += editTableCell(className, income, 10, false);
     html += showTableText(className,income);
 
     // Text
     const text = bankTransaction.text;
     className = `text${bankTransaction.transactionId}`;
-    //html += editTableCell(className, text, 45, false);
     html += showTableText(className,text);
     html += "</tr>";
 

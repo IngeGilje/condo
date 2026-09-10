@@ -197,12 +197,12 @@ function showAccounts() {
     if (account.fixedCost === 'N') selected = constVariableCost;
 
     let className = `fixedCost${account.accountId}`;
-    html += editTableCell(className, selected, 10, false);
+    html += showTableText(className, selected);
 
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += editTableCell(className, selected, 10, false);
+    html += showTableText(className, selected);
 
      // Show button for maintnance
     className = `edit${account.accountId}`;

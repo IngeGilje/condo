@@ -326,32 +326,6 @@ html += "<div></div>";
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
   html += inputText('accountText', 'Tekst', text, enableChanges);
 
-  /*
-  // Buttons
-  if (enableChanges) {
-
-    html += startLine();
-    html += showButtonNew('update', 'Oppdater');
-    html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
-
-    html += startLine();
-    html += showButtonNew('delete', 'Slett');
-    html += showButtonNew('insert', 'Ny');
-    html += "</div>";
-  }
-
-  document.querySelector('.showSupplier').innerHTML = html;
-
-  //if (enableChanges) document.querySelector('.cancel').disabled = true;
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterSupplierId', false, 'white');
-  }
-  */
   html += endContent();
 
   // Buttons
@@ -363,7 +337,6 @@ html += "<div></div>";
     html += inputButton("update primary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
-    html += inputButton("back secondary", "Tilbake", "button");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons

@@ -173,10 +173,6 @@ function showCondominium(condominiumId) {
   // row number condominium
   const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
 
-  // Empty line
-  //let html = emptyLine();
-  //html += startLine();
-
   let html = startContent('Sameie');
 
   let name = objCondominium.arrayCondominiums[rowNumberCondominium]?.name.trim() ?? '';
@@ -240,22 +236,6 @@ function showCondominium(condominiumId) {
   const importPath = objCondominium.arrayCondominiums[rowNumberCondominium]?.importPath.trim() ?? '';
    html += inputWideText("importPath", "Plassering av data", importPath, 2, enableChanges);
 
-  /*
-  // Buttons
-  if (enableChanges) {
-
-    html += startLine();
-    html += showButtonNew('update', 'Oppdater');
-    html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
-
-    html += startLine();
-    html += showButtonNew('delete', 'Slett');
-    html += showButtonNew('insert', 'Ny');
-    html += "</div>";
-  }
-  */
-
   html += endContent();
 
   // Buttons
@@ -267,7 +247,6 @@ function showCondominium(condominiumId) {
     html += inputButton("update primary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
-    html += inputButton("back secondary", "Tilbake", "button");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons

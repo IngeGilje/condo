@@ -217,32 +217,6 @@ function showNews(newsId) {
   //html += showTextArea('Innhold', 'content', content, 512, enableChanges, 6);
   html += inputWideText('content', 'Innhold', content, 3, enableChanges);
 
-  /*
-  // Buttons
-  if (enableChanges) {
-
-    html += startLine();
-    html += showButtonNew('update', 'Oppdater');
-    html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
-
-    html += startLine();
-    html += showButtonNew('delete', 'Slett');
-    html += showButtonNew('insert', 'Ny');
-    html += "</div>";
-  }
-
-  document.querySelector('.showNews').innerHTML = html;
-
-  // Buttons
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterNewsId', false, 'white');
-  }
-  */
   html += endContent();
 
   // Buttons
@@ -254,7 +228,6 @@ function showNews(newsId) {
     html += inputButton("update primary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
-    html += inputButton("back secondary", "Tilbake", "button");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons

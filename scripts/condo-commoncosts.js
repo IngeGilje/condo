@@ -155,17 +155,17 @@ function showCommonCosts() {
 
     // condo name
     let className = `name${condo.condoId}`;
-    html += editTableCell(className, condo.name, 45, false);
+    html += showTableText(className, condo.name);
 
     // Square meters
     let squareMeters = formatNumberToNorAmount(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;
-    html += editTableCell(className, squareMeters, 11, false);
+    html += showTableText(className, squareMeters);
 
     // fixed cost 
     fixedCostCondoMonth = formatNumberToNorAmount(fixedCostCondoMonth);
     className = `fixedCostCondoMonth${condo.condoId}`;
-    html += editTableCell(className, fixedCostCondoMonth, 10, false);
+    html += showTableText(className, fixedCostCondoMonth);
 
     // Common cost per month
     let commonCostSquareMeter = 0;
@@ -175,14 +175,14 @@ function showCommonCosts() {
     let commonCostsMonth = (((squareMeters * commonCostSquareMeter) / 100) + (fixedCostCondoMonth));
     className = `commonCostsMonth${commonCostId}`;
     commonCostsMonth = formatNumberToNorAmount(commonCostsMonth);
-    html += editTableCell(className, commonCostsMonth, 11, enableChanges);
+    html += showTableText(className, commonCostsMonth);
 
     // Common cost per year
     commonCostsMonth = formatNorAmountToNumber(commonCostsMonth);
     let commonCostsCondoYear = commonCostsMonth * 12;
     commonCostsCondoYear = formatNumberToNorAmount(commonCostsCondoYear);
     className = `commonCostsCondoYear${condo.condoId}`;
-    html += editTableCell(className, commonCostsCondoYear, 10, false);
+    html += showTableText(className, commonCostsCondoYear);
 
     html += "</tr>";
 

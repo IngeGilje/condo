@@ -14,361 +14,138 @@
 <body>
 
   <main class="page">
+    <div class="content-layout">
 
-    <!-- show vertical menu -->
-    <div class="menuVertical"></div>
+      <!-- start startContent -->
+      <section class="card">
+        <h2 class="card-title">
+          Fjernvarme
+        </h2>
+        <form>
+          <div class="grid grid-form">
+            <!-- end startContent -->
 
+            <!-- start startLine -->
+            <div class="line">
+              <!-- end startLine -->
 
-    <!-- show filter -->
-    <!-- start startFrame -->
-    <div class="filter-frame">
-      <!-- end startFrame -->
+              <!-- start inputDate -->
+              <div class="field">
+                <label for="remoteHeatingDate">
+                  Dato
+                </label>
+                <input type="date" class="remoteHeatingDate" id="remoteHeatingDate" value="2021-02-15">
+              </div>
+              <!-- end inputDate -->
+            </div>
+            <div></div>
+            <div></div>
+            <!-- start startLine -->
+            <div class="line">
+              <!-- end startLine -->
 
-      <!-- start showSelectedCondosNew -->
-      <div class="field">
-        <label for="filterCondoId">
-          Leilighet
-        </label>
-        <select 
-          id="filterCondoId" 
-          class="filterCondoId"
-        >
-          <option value=3>
-            95A
-          </option>
-          <option value=4>
-            95B
-          </option>
-          <option value=5>
-            97A
-          </option>
-          <option value=6>
-            97B
-          </option>
-          <option value=7>
-            97C
-          </option>
-          <option value=8>
-            99A
-          </option>
-          <option value=9>
-            99B
-          </option>
-          <option 
-            value=999999998 
-            selected
-          >
-            Vis alle
-          </option>
-        </select>
+              <!-- start showSelectedCondosNew -->
+              <div class="field">
+                <label for="condoId">
+                  Leilighet
+                </label>
+                <select id="condoId" class="condoId">
+
+                  <option value=3>
+                    95A
+                  </option>
+                  <option value=4>
+                    95B
+                  </option>
+                  <option value=5 selected>
+                    97A
+                  </option>
+                  <option value=6>
+                    97B
+                  </option>
+                  <option value=7>
+                    97C
+                  </option>
+                  <option value=8>
+                    99A
+                  </option>
+                  <option value=9>
+                    99B
+                  </option>
+                </select>
+              </div>
+              <!-- end showSelectedCondosNew -->
+            </div>
+            <div></div>
+            <div></div>
+            <!-- start startLine -->
+            <div class="line">
+              <!-- end startLine -->
+
+              <!-- start showTextNew -->
+              <div class="field field-position">
+                <input type="text" autocomplete="off" class="kilowattHour center one-line" value="75 665,00"
+                  placeholder="Kontonavn">
+                <label>
+                  K.timer
+                </label>
+              </div>
+              <!-- end showTextNew -->
+
+              <!-- start showTextNew -->
+              <div class="field field-position">
+                <input type="text" autocomplete="off" class="priceYear center one-line" value="4 404,00"
+                  placeholder="Beløp">
+                <label>
+                  Beløp
+                </label>
+              </div>
+              <!-- end showTextNew -->
+            </div>
+            <div></div>
+            <!-- start endContent -->
+          </div>
+        </form>
+      </section>
+      <!-- end endContent -->
+
+      <!-- start startButtons -->
+      <div class="actions">
+        <!-- end startButtons -->
+
+        <!-- start inputButton -->
+        <button class="update primary" type="submit">
+          Oppdater
+        </button>
+        <!-- end inputButton -->
+
+        <!-- start inputButton -->
+        <button class="insert secondary" type="button">
+          Ny
+        </button>
+        <!-- end inputButton -->
+
+        <!-- start inputButton -->
+        <button class="cancel secondary" type="reset">
+          Angre
+        </button>
+        <!-- end inputButton -->
+
+        <!-- start inputButton -->
+        <button class="back secondary" type="button">
+          Tilbake
+        </button>
+        <!-- end inputButton -->
+
+        <!-- start inputButton -->
+        <button class="delete danger" type="button">
+          Slett
+        </button>
+        <!-- end inputButton -->
+
+        <!-- start endButtons -->
       </div>
-      <!-- end showSelectedCondosNew -->
-
-      <!-- start showSelectedAccountsNew -->
-      <div class="field">
-        <label for="filterAccountId">
-          Konto
-        </label>
-        <select 
-          id="filterAccountId"
-          class="filterAccountId"
-        >
-          <option value=69>
-            Inntekt Rygg og Myrland
-          </option>
-          <option value=2>
-            Inntekter husleie
-          </option>
-        </select>
-      </div>
-      <!-- end showSelectedAccountsNew -->
-
-      <!-- start inputDate -->
-      <div class="field">
-        <label for="filterFromDate">
-          Fra Dato
-        </label>
-        <input 
-          type="date" 
-          class="filterFromDate" 
-          id="filterFromDate" 
-          value="2026-08-01"
-        >
-      </div>
-      <!-- end inputDate -->
-
-      <!-- start inputDate -->
-      <div class="field">
-        <label for="filterToDate">
-          Til Dato
-        </label>
-        <input type="date" class="filterToDate" id="filterToDate" value="2026-09-09">
-      </div>
-      <!-- end inputDate -->
-
-      <!-- start inputText -->
-      <div class="field">
-        <label for="filterAmount">
-          Beløp
-        </label>
-        <input type="text" class="filterAmount" id="filterAmount" value="0,00">
-      </div>
-      <!-- end inputText -->
-    </div>
-
-    <!-- table container for all tables -->
-    <div class="tableContainer">
-
-      <p>&nbsp;</p>
-      <!-- start initializeTable -->
-      <div class="table-container">
-        <table class="transaction-table">
-          <colgroup>
-            <col style="width: 125px;">
-            <col style="width: 175px;">
-            <col style="width: 125px;">
-            <col style="width: 125px;">
-            <col style="width: 125px;">
-            <col style="width: 100px;">
-            <col style="width: 100px;">
-          </colgroup>
-          <!-- end initializeTable -->
-
-          <!-- start showTableHeader -->
-          <tr>
-            <td>
-              Dato
-            </td>
-            <td>
-              Konto
-            </td>
-            <td>
-              Leilighet
-            </td>
-            <td>
-              Inntekter
-            </td>
-            <td>
-              Utbetalinger
-            </td>
-            <td>
-            </td>
-            <td>
-            </td>
-          </tr>
-          <!-- end showTableHeader -->
-
-          <tr>
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="date1781 center one-line input" type="text" value="08.09.2026" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="accountId1781 center one-line input" type="text" value="Omkostninger BedriftsNett" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="condoId1781 center one-line input" type="text" value="" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="income1781 center one-line input" type="text" value="0,00" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="payment1781 center one-line input" type="text" value="-105,00" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start showTableButton -->
-            <td>
-              <button type="button" class="voucher1781 center button" aria-label="Rediger 1.  undefined">
-                <i class="bi bi-pencil" aria-hidden="true">
-                </i>
-                Vis bilag
-              </button>
-            </td>
-            <!-- end showTableButton -->
-
-            <!-- start showTableButton -->
-            <td>
-              <button type="button" class="change1781 center button" aria-label="Rediger 1.  undefined">
-                <i class="bi bi-pencil" aria-hidden="true">
-                </i>
-                Rediger
-              </button>
-            </td>
-            <!-- end showTableButton -->
-
-          </tr>
-          <tr>
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="date1766 center one-line input" type="text" value="03.08.2026" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="accountId1766 center one-line input" type="text" value="Utgift fjernvarme" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="condoId1766 center one-line input" type="text" value="" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="income1766 center one-line input" type="text" value="0,00" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="payment1766 center one-line input" type="text" value="-3 685,25" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start showTableButton -->
-            <td>
-              <button type="button" class="voucher1766 center button" aria-label="Rediger 1.  undefined">
-                <i class="bi bi-pencil" aria-hidden="true">
-                </i>
-                Vis bilag
-              </button>
-            </td>
-            <!-- end showTableButton -->
-
-            <!-- start showTableButton -->
-            <td>
-              <button type="button" class="change1766 center button" aria-label="Rediger 1.  undefined">
-                <i class="bi bi-pencil" aria-hidden="true">
-                </i>
-                Rediger
-              </button>
-            </td>
-            <!-- end showTableButton -->
-
-          </tr>
-
-          <tr>
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="date1767 center one-line input" type="text" value="03.08.2026" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="accountId1767 center one-line input" type="text" value="Nettleie Lyse" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="condoId1767 center one-line input" type="text" value="" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="income1767 center one-line input" type="text" value="0,00" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start inputTableText -->
-            <td>
-              <input class="payment1767 center one-line input" type="text" value="-533,36" readonly>
-            </td>
-            <!-- end inputTableText -->
-
-            <!-- start showTableButton -->
-            <td>
-              <button type="button" class="voucher1767 center button" aria-label="Rediger 1.  undefined">
-                <i class="bi bi-pencil" aria-hidden="true">
-                </i>
-                Vis bilag
-              </button>
-            </td>
-            <!-- end showTableButton -->
-
-            <!-- start showTableButton -->
-            <td>
-              <button type="button" class="change1767 center button" aria-label="Rediger 1.  undefined">
-                <i class="bi bi-pencil" aria-hidden="true">
-                </i>
-                Rediger
-              </button>
-            </td>
-            <!-- end showTableButton -->
-
-          </tr>
-          <tr>
-            <td class="center no-border">
-
-            </td>
-            <td class="center no-border">
-
-            </td>
-            <td class="center no-border">
-              Sum
-            </td>
-            <td class="center no-border">
-              35 822,36
-            </td>
-            <td class="center no-border">
-              -29 698,47
-            </td>
-            <td class="center no-border">
-              6 123,89
-            </td>
-            <td class="center no-border">
-
-            </td>
-          </tr>
-          <tr>
-            <td class="center no-border">
-
-            </td>
-            <td class="center no-border">
-
-            </td>
-            <td class="center no-border">
-              Saldo
-            </td>
-            <td class="center no-border">
-              93 286,72
-            </td>
-            <td class="center no-border">
-
-            </td>
-            <td class="center no-border">
-
-            </td>
-            <td class="center no-border">
-
-            </td>
-          </tr>
-        </table>
-      </div>
-      <!-- show message -->
-
-      <div class="showMessage"></div>
+      <!-- end endButtons -->
     </div>
   </main>
 

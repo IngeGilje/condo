@@ -221,7 +221,6 @@ function showDues() {
     // Date
     const date = formatNumberToNorDate(due.date);
     let className = `date${due.dueId}`;
-    //html += editTableCell(className, date, 10, false);
     html += showTableText(className, date);
 
     // condos
@@ -239,20 +238,11 @@ function showDues() {
     // due amount
     const amount = formatNumberToNorAmount(due.amount);
     className = `amount${due.dueId}`;
-    //html += editTableCell(className, amount, 11, false);
     html += showTableText(className, amount);
-
-    /*
-    // kilowattHour
-    const kilowattHour = formatNumberToNorAmount(due.kilowattHour);
-    className = `kilowattHour${due.dueId}`;
-    html += editTableCell(className, kilowattHour, 10, false);
-    */
-
+    
     // text
     const text = due.text;
     className = `text${due.dueId}`;
-    //html += editTableCell(className, text, 45, false);
     html += showTableText(className, text);
 
     // Change due

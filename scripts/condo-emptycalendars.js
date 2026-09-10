@@ -175,13 +175,13 @@ function showEmptyCalendars(month) {
 
         // condoId 1
         const condoName = objCondo.getCondoNameById(emptycalendar.condoId);
-        html += inputTableText("condoId22", condoName, false);
+        html += showTableText("condoId22", condoName);
         
         // date 2
         let date = emptycalendar.date;
         date = formatNumberToNorDate(date);
         className = `date${emptycalendar.emptyCalendarId}`;
-        html += inputTableText(className, date, false);
+        html += showTableText(className, date);
 
         // residual waste 3
         className = `residualWaste${emptycalendar.emptyCalendarId}`;

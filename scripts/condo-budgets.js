@@ -240,22 +240,18 @@ function showFilter() {
   const year = today.getFullYear();
   html += inputSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
 
-  //html += "</div>";
-
   // End filter
   html += "</div>";
 
   document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame", "Filter");
 }
 
 // Show budgets
 function showBudgets() {
 
-  // start table
-  let html = objBudgets.initializeTable(columnWidths);
+  // Start table
+  let html = emptyLine();
+  html += objBudgets.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
   html += objBudgets.showTableHeader( 'År', 'Konto', 'Budsjett', 'Tekst', '');
@@ -270,7 +266,6 @@ function showBudgets() {
     // Year (<td></td>)
     const year = Number(budget.year);
     let className = `year${budget.budgetId}`;
-    //html += objBudgets.showSelectedNumbers(className, '', 2020, 2030, year, enableChanges);
     html += showTableText(className, year);
 
     // accountId
@@ -282,13 +277,11 @@ function showBudgets() {
     // due amount
     const amount = formatNumberToNorAmount(budget.amount);
     className = `amount${budget.budgetId}`;
-    //html += editTabelCell(className, amount, 11, enableChanges);
     html += showTableText(className, amount);
 
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    //html += editTableCell(className, text, 45, enableChanges);
     html += showTableText(className,text);
 
     // Edit budget
@@ -309,28 +302,3 @@ function showBudgets() {
   html += objBudgets.endTable();
   document.querySelector('.showBudgets').innerHTML = html;
 }
-
-/*
-function insertEmptyTableRow() {
-
-  // Show menu
-  html = objBudgets.insertTableRow('');
-
-  // Year (<td></td>)
-  const year = Number(document.querySelector('.filterYear').value);
-  html += objBudgets.showSelectedNumbers('year0', '', 2020, 2030, year, enableChanges);
-
-  // accounts
-  html += objAccounts.showSelectedAccounts('accountId0', '', 0, 'Velg konto', '', enableChanges);
-
-  const amount = "";
-  html += editTableCell('amount0', amount, 11, enableChanges);
-
-  // text
-  const text = "";
-  html += editTableCell('text0', text, 45, enableChanges);
-
-  html += "<td>Nytt budsjett</td></tr>";
-  return html;
-}
-*/

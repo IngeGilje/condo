@@ -164,7 +164,7 @@ function showEmptyCalendar() {
       let date = emptycalendar.date;
       date = formatNumberToNorDate(date);
       className = `date${emptycalendar.emptyCalendarId}`;
-      html += objshowemptycalendar.editTableCell(className, date, 10, false);
+      html += objshowemptycalendar.showTableText(className, date);
 
       // residual waste  
       className = `residualWaste${emptycalendar.emptyCalendarId}`;

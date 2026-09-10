@@ -42,20 +42,6 @@ async function main() {
       let html = objAnnualAccount.showMenu(applicationName);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objAnnualAccount.showHorizontalMenu("filter-frame", objAnnualAccount.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show transaction menu
-      html = objAnnualAccount.showHorizontalMenu("filter-frame", objAnnualAccount.arrayMenuTransaction);
-      document.querySelector('.menuTransaction').innerHTML = html;
-      objAnnualAccount.markActivatedApplication(objAnnualAccount.arrayMenuTransaction,applicationName);
-      */
-
       const resident = 'Y';
       await objUser.loadUsersTable(objAnnualAccount.condominiumId, resident, objAnnualAccount.nineNine);
       await objCondominium.loadCondominiumsTable();
@@ -65,9 +51,6 @@ async function main() {
       await objBankAccount.loadBankAccountsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objAnnualAccount.condominiumId, fixedCost);
-
-      // Show header
-      //showHeader();
 
       // Show filter
       const budgetYear = today.getFullYear();
@@ -275,17 +258,17 @@ function showAnnualAccounts() {
       html += objAnnualAccount.insertTableRow('', '');
 
       // account name
-      html += editTableCell('name', account.name, 45, false);
+      html += showTableText('name', account.name);
 
       // accountAmount
       accountAmount = formatNumberToNorAmount(accountAmount);
       className = `accountAmount${account.accountId}`;
-      html += editTableCell('accountAmount', accountAmount, 11, false);
+      html += showTableText('accountAmount', accountAmount);
 
       // budgetAmount
       budgetAmount = formatNumberToNorAmount(budgetAmount);
       className = `budgetAmount${account.accountId}`;
-      html += editTableCell('budgetAmount', budgetAmount, 11, false);
+      html += showTableText('budgetAmount', budgetAmount);
 
       // Deviation
       accountAmount = Number(formatNorAmountToNumber(accountAmount));
@@ -293,7 +276,7 @@ function showAnnualAccounts() {
       let deviation = accountAmount - budgetAmount;
       deviation = formatNumberToNorAmount(deviation);
       className = `deviation${account.accountId}`;
-      html += editTableCell('deviation', deviation, 11, false);
+      html += showTableText('deviation', deviation);
       html += "</tr>";
 
       // Accomulate
@@ -369,17 +352,17 @@ function showIncomeNextYear() {
 
     // condo name
     className = `name${condo.condoId}`;
-    html += editTableCell(className, condo.name, 45, false);
+    html += showTableText(className, condo.name);
 
     // Square meters
     let squareMeters = formatNumberToNorAmount(condo.squareMeters);
     className = `squareMeters${condo.condoId}`;
-    html += editTableCell(className, squareMeters, 11, false);
+    html += showTableText(className, squareMeters);
 
     // fixed cost per month per condo
     fixedCostCondoMonth = formatNumberToNorAmount(fixedCostCondoMonth);
     className = `fixedCostCondoMonth${condo.condoId}`;
-    html += editTableCell(className, fixedCostCondoMonth, 10, false);
+    html += showTableText(className, fixedCostCondoMonth);
 
     // Common cost per month per condo
     let commonCostSquareMeter = document.querySelector('.filterCommonCostSquareMeter').value;
@@ -388,7 +371,7 @@ function showIncomeNextYear() {
     let commonCostsMonth = (squareMeters * commonCostSquareMeter) / 100;
     commonCostsMonth = formatNumberToNorAmount(commonCostsMonth);
     className = `commonCostsMonth${condo.condoId}`;
-    html += editTableCell(className, commonCostsMonth, 11, false);
+    html += showTableText(className, commonCostsMonth);
 
     // Common cost per year per condo
     commonCostsMonth = formatNorAmountToNumber(commonCostsMonth);
@@ -396,7 +379,7 @@ function showIncomeNextYear() {
     let commonCostsCondoYear = (commonCostsMonth + fixedCostCondoMonth) * 12;
     commonCostsCondoYear = formatNumberToNorAmount(commonCostsCondoYear);
     className = `commonCostsCondoYear${condo.condoId}`;
-    html += editTableCell(className, commonCostsCondoYear, 10, false);
+    html += showTableText(className, commonCostsCondoYear);
 
     html += "</tr>";
 
@@ -447,7 +430,7 @@ function showBankDeposit() {
 
   // Text
   className = `text`;
-  html += editTableCell(className, 'Bankinnskudd', 10, false);
+  html += showTableText(className, 'Bankinnskudd');
 
   // closingBalanceDate
   let closingBalanceDate = "";
@@ -458,7 +441,7 @@ function showBankDeposit() {
     closingBalanceDate = formatNumberToNorDate(closingBalanceDate);
   }
   className = `closingBalanceDate`;
-  html += editTableCell(className, closingBalanceDate, 10, false);
+  html += showTableText(className, closingBalanceDate);
 
   // Bank deposit
   //let bankDepositAmount = "";
@@ -467,7 +450,7 @@ function showBankDeposit() {
     : formatNumberToNorAmount(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
 
   className = `bankDepositAmount`;
-  html += editTableCell(className, bankDepositAmount, 11, false);
+  html += showTableText(className, bankDepositAmount);
 
   html += "</tr>";
 
@@ -488,16 +471,16 @@ function showBankDeposit() {
         name = objAccounts.arrayAccounts[rowNumberAccount].name;
       }
       className = `name${budget.budgetId}`
-      html += editTableCell(className, name, 10, false);
+      html += showTableText(className, name);
 
       //empty column
       className = `emptyColumn${budget.budgetId}`
-      html += editTableCell(className, 10, false);
+      html += showTableText(className, "");
 
       // budget amount
       let amount = formatNumberToNorAmount(budget.amount);
       className = `amount${budget.budgetId}`
-      html += editTableCell(className, amount, 11, false);
+      html += showTableText(className, amount);
 
       html += "</tr>";
 
@@ -513,19 +496,19 @@ function showBankDeposit() {
   html += objAnnualAccount.insertTableRow('', '', '');
 
   className = `estimatedBankDeposit`;
-  html += editTableCell(className, 'Estimert bankinnskudd', 10, false);
+  html += showTableText(className, 'Estimert bankinnskudd');
 
   // Next year
   closingBalanceDate = Number(objAnnualAccount.formatDateToNumber(closingBalanceDate));
   let closingBalanceDateNextYear = closingBalanceDate + 10000;
   closingBalanceDateNextYear = formatNumberToNorDate(closingBalanceDateNextYear);
   className = `closingBalanceDateNextYear`;
-  html += editTableCell(className, closingBalanceDateNextYear, 10, false);
+  html += showTableText(className, closingBalanceDateNextYear);
 
   // Bank deposit next year
   const bankDepositNextYear = formatNumberToNorAmount(String(accAmount));
   className = `bankDepositNextYear`;
-  html += editTableCell(className, bankDepositNextYear, 10, false);
+  html += showTableText(className, bankDepositNextYear);
 
   // insert table columns in start of a 
 

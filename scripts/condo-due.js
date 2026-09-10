@@ -185,25 +185,20 @@ function showDue(dueId) {
   let html = emptyLine();
 
   // date
-  html += startLine();
   let dueDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
   dueDate = formatNumberToISODate(dueDate);
   //html += showDate('Dato', 'dueDate', dueDate, enableChanges);
   html += inputDate('dueDate','Dato',  dueDate, enableChanges);
-  html += "</div>";
 
   // condoId
-  html += startLine();
   const condoId = objDues.arrayDues[rowNumberDue]?.condoId ?? 0;
   html += objCondo.showSelectedCondosNew('condoId','Leilighet',  condoId, 'Velg Leilighet', '', true);
 
   // accountId
   const accountId = objDues.arrayDues[rowNumberDue]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg Konto', '', true);
-  html += "</div>";
 
   // amount
-  html += startLine();
   let amount = objDues.arrayDues[rowNumberDue]?.amount ?? 0;
   amount = formatNumberToNorAmount(amount);
   html += showTextNew('amount','Beløp',  amount, enableChanges, 'Beløp');
@@ -212,32 +207,24 @@ function showDue(dueId) {
   let kilowattHour = objDues.arrayDues[rowNumberDue]?.kilowattHour ?? 0;
   kilowattHour = formatNumberToNorAmount(kilowattHour);
   html += showTextNew('kilowattHour','Kilowatt Timer',  kilowattHour, enableChanges, 'Beløp');
-  html += "</div>";
 
   // text
-  html += startLine();
   const text = objDues.arrayDues[rowNumberDue]?.text ?? '';
   html += showTextNew('text','Tekst',  text, enableChanges, 'Tekst');
-  html += "</div>";
 
   // Buttons
   if (enableChanges) {
 
-    html += startLine();
-    html += showButtonNew('update', 'Oppdater');
-    html += showButtonNew('cancel', 'Angre');
-    html += "</div>";
+    // Start buttons
+    html += startButtons();
 
-    html += startLine();
-    html += showButtonNew('delete', 'Slett');
-    html += showButtonNew('insert', 'Ny');
-    html += "</div>";
-  }
+    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("delete danger", "Slett", "button");
 
-  if (paramDueId !== 0) {
-    html += startLine();
-    html += showButtonNew('back', 'Tilbake');
-    html += "</div>";
+    // End buttons
+    html += endButtons();
   }
 
   // Show empty calendar

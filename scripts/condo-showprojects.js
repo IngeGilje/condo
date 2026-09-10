@@ -197,9 +197,6 @@ function showFilter(projectId, amount, condoId) {
   // Start frame
   let html = startFrame('filter-frame');
 
-  // show filter
-  //html += startLine();
-
   // Show projects
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg prosjekt', '', true);
 
@@ -256,7 +253,6 @@ function showProjectTransactions(projectId, condoId, amount) {
       // Date
       const date = formatNumberToNorDate(bankTransaction.date);
       let className = `date${bankTransaction.transactionId}`;
-      //html += editTableCell(className, date, 10, false);
       html += showTableText(className, date);
 
       // account
@@ -275,7 +271,6 @@ function showProjectTransactions(projectId, condoId, amount) {
       let amount = bankTransaction.income + bankTransaction.payment;
       amount = formatNumberToNorAmount(amount);
       className = `amount${bankTransaction.transactionId}`;
-      //html += editTableCell(className, amount, 10, false);
       html += showTableText(className, amount);
 
       // Show button for change of bank account transaction
