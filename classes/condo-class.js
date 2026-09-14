@@ -102,7 +102,6 @@ class Condos {
       className: "condo-condominium",
       text: "Menyvalg"
     },
-
   ];
 
   // menu array for user
@@ -147,14 +146,9 @@ class Condos {
       text: "Rediger Transaksjon"
     },
     {
-      applicationName: 'condo-showprojects.html',
-      className: "condo-showprojects",
-      text: "Vis Prosjekt"
-    },
-    {
-      applicationName: 'condo-project.html',
-      className: "condo-project",
-      text: "Rediger Prosjekt"
+      applicationName: 'condo-budget.html',
+      className: "condo-budget",
+      text: "Rediger Budsjett"
     },
     {
       applicationName: 'condo-budgets.html',
@@ -191,6 +185,11 @@ class Condos {
       text: "Vis Forfall"
     },
     {
+      applicationName: 'condo-due.html',
+      className: "condo-due",
+      text: "Rediger Forfall"
+    },
+    {
       applicationName: 'condo-supplier.html',
       className: "condo-supplier",
       text: "Rediger Leverandør"
@@ -217,6 +216,27 @@ class Condos {
     },
   ];
 
+  // menu array for projects
+  arrayMenuProject = [
+    {
+      applicationName: 'condo-project.html',
+      className: "condo-project",
+      text: "Rediger Prosjekt"
+    },
+    {
+      applicationName: 'condo-showprojects.html',
+      className: "condo-showprojects",
+      text: "Vis Prosjekt"
+    },
+    {
+      applicationName: 'condo-project.html',
+      className: "condo-project",
+      text: "Menyvalg"
+    },
+  ];
+
+
+  /*
   // menu array for remote heating
   arrayMenuRemoteHeating = [
     {
@@ -240,6 +260,7 @@ class Condos {
       text: "Menyvalg"
     },
   ];
+  */
 
   // Show input (<td></td>) with center text
   editTableCellCenter(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
@@ -313,6 +334,7 @@ class Condos {
     return html;
   }
 
+  /*
   // Select numbers
   showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
 
@@ -343,6 +365,7 @@ class Condos {
 
     return html;
   };
+  */
 
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {
@@ -502,7 +525,7 @@ class Condos {
   }
 
   // Show table header including menu (<tr></tr>)
-  showTableHeader( ...texts) {
+  showTableHeader(...texts) {
 
     let html = `
     <!-- start showTableHeader -->
@@ -921,33 +944,8 @@ class Condos {
   }
   */
 
-  /*
   // Show vertical menu
-  showMenu(applicationName) {
-
-    // Start frame
-    let html = startFrame("menu-frame");
-
-    // Vertical menu
-    html += '<div class="menu-row">';
-    html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", applicationName);
-    html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender", applicationName);
-    html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", applicationName);
-    html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", applicationName);
-    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", applicationName);
-    html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", applicationName);
-    html += this.showVerticalMenu('remoteHeating', this.arrayMenuRemoteHeating, "Fjernvarme", applicationName);
-    html += '</div>';
-
-    // End frame
-    html += "</div>";
-
-    return html;
-  }
-  */
-
-  // Show vertical menu
-  showMenu(applicationName) {
+  showMenu() {
 
     // Start frame
     let html = `
@@ -965,13 +963,13 @@ class Condos {
       >
     `;
 
-    html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", "Menyvalg");
-    html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender", "Menyvalg");
-    html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", "Menyvalg");
-    html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", "Menyvalg");
-    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", "Menyvalg");
-    html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", "Menyvalg");
-    html += this.showVerticalMenu('remoteHeating', this.arrayMenuRemoteHeating, "Fjernvarme", "Menyvalg");
+    html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter");
+    html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender");
+    html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie");
+    html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker");
+    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner");
+    html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall");
+    html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt");
 
     html += `
       </div>
@@ -982,57 +980,9 @@ class Condos {
     return html;
   }
 
-  /*
-  // Show vertical menu
-  showVerticalMenu(className, arrayMenu, label, applicationName) {
-
-    let menuSelected = false;
-
-    const URL = (this.serverStatus === 1)
-      ? 'http://ingegilje.no/'
-      : 'http://localhost/';
-
-    let html = `
-    <div 
-      class="field"
-    >
-      <label for="${className}-${className}">
-        ${label}
-      </label>
-      <select 
-        id="${className}-${className}"
-        class="${className} center one-line"
-        onchange="window.location.href=this.value"
-      >
-    `;
-
-    arrayMenu.forEach((menu) => {
-
-      //menuNumber++;
-      html += `
-        <option 
-          value="${URL}${menu.applicationName}"
-          ${(menu.applicationName.includes(applicationName) && menuSelected === false)
-          ? 'selected'
-          : ''}
-        >
-          ${menu.text.trim()}
-        </option>`;
-      if (menu.applicationName.includes(applicationName)) menuSelected = true;
-    });
-
-    html += `
-      </select >
-    </div>`;
-
-    return html;
-  }
-  */
 
   // Show vertical menu
   showVerticalMenu(className, arrayMenu, label, applicationName) {
-
-    let menuSelected = false;
 
     const URL = (this.serverStatus === 1)
       ? 'http://ingegilje.no/'
@@ -1057,13 +1007,12 @@ class Condos {
       html += `
         <option 
           value="${URL}${menu.applicationName}"
-          ${(menu.text.includes(applicationName) && menuSelected === false)
+          ${menu.text.includes('Menyvalg')
           ? 'selected'
           : ''}
         >
           ${menu.text.trim()}
         </option>`;
-      if (menu.text.includes(applicationName)) menuSelected = true;
     });
 
     html += `
@@ -1073,6 +1022,7 @@ class Condos {
 
     return html;
   }
+
 }
 
 // input number
@@ -1364,42 +1314,6 @@ function endButtons() {
   `;
 }
 
-/*
-// Show selected numbers (from number - to number)
-function showSelectedMonthsNew(label, className, style, selectedMonth, enableChanges) {
-
-  let selectedValue = false;
-
-  let html = `
-  <div class="field field-position" 
-  >
-    <label>
-      ${label}
-    </label>
-    <select 
-      class="${className} center one-line"
-      ${(enableChanges) ? '' : 'readonly'}
-    >`;
-
-  for (let month = 1; month < 13; month++) {
-
-    html += `
-      <option 
-        value="${month}"
-        ${month === selectedMonth ? 'selected' : ''}
-      >
-        ${findNameOfMonth(month).trim()}
-      </option>`;
-  };
-
-  html += `
-      </select >
-    </div>`;
-
-  return html;
-}
-*/
-
 // Show all months for a year (1-12) with selected month
 function showSelectedMonthsNew(className, label, selectedMonth, enableChanges) {
 
@@ -1529,7 +1443,7 @@ function showMessageNew(message) {
 
 /*
 // Show selected numbers (from number - to number)
-function inputSelectedNumbers(label, className, fromNumber, toNumber, selectedNumber, enableChanges) {
+function showSelectedNumbers(label, className, fromNumber, toNumber, selectedNumber, enableChanges) {
 
   let selectedValue = false;
 
@@ -1568,10 +1482,10 @@ function inputSelectedNumbers(label, className, fromNumber, toNumber, selectedNu
 */
 
 // Show selected numbers (from number - to number)
-function inputSelectedNumbers(className, label, fromNumber, toNumber, selectedNumber, enableChanges) {
+function showSelectedNumbers(className, label, fromNumber, toNumber, selectedNumber, enableChanges) {
 
   let html = `
-    <!-- start inputSelectedNumbers -->
+    <!-- start showSelectedNumbers -->
     <div 
       class="field"
     >
@@ -1602,7 +1516,7 @@ function inputSelectedNumbers(className, label, fromNumber, toNumber, selectedNu
   html += `
       </select >
     </div>
-    <!-- end inputSelectedNumbers -->
+    <!-- end showSelectedNumbers -->
     `;
 
   return html;
@@ -1762,7 +1676,7 @@ function validateIntervalNew(className, errorMessage, showMessage, number, minNu
 }
 
 // Validate text
-function validateTextNew(className, style, errorMessage, showMessage = true, value, minLength, maxLength) {
+function validateTextNew(className, errorMessage, showMessage = true, value, minLength, maxLength) {
 
   value = value.trim();
 
@@ -2095,7 +2009,7 @@ function removeComma(amount) {
     : amount;
 }
 
-// Format date from yyyymmdd -> dd.mm.yyyy (European date format)
+// Format date from yyyymmdd -> dd.mm.yyyy (Norwegian date format)
 function formatNumberToNorDate(date) {
 
   date = String(date);
@@ -2367,10 +2281,12 @@ function removeIframe() {
 }
 
 // Enable/ disable button
-function disableButton(className, disabled = false, color = '#38bdf8') {
+function disableButton(className, disabled) {
+
   document.querySelector(`.${className}`).disabled = disabled;
   const button = document.querySelector(`.${className}`);
-  color = button.style.backgroundColor = (disabled) ? 'lightgrey' : color;
+  //color = button.style.backgroundColor = (disabled) ? 'lightgrey' : color;
+  if (disabled) button.style.backgroundColor = '#F8FAFC';
 }
 
 // exit application after 1 hour

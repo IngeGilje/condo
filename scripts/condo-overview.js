@@ -36,7 +36,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objOverview.showMenu(applicationName);
+      let html = objOverview.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -75,7 +75,7 @@ async function main() {
       fromDate = objOverview.formatDateToNumber(fromDate);
       let toDate = document.querySelector('.filterToDate').value;
       toDate = objOverview.formatDateToNumber(toDate);
-      await objDues.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
+      await objDues.loadDuesTable(objOverview.condominiumId);
       const orderBy = 'condoId ASC';
       await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
 
@@ -120,7 +120,7 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = formatISODateToNumber(toDate);
 
-      await objDues.loadDuesTable(objOverview.condominiumId, accountId, condoId, fromDate, toDate);
+      await objDues.loadDuesTable(objOverview.condominiumId);
       const orderBy = 'condoId ASC';
       await objTransactions.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
 
@@ -171,16 +171,6 @@ function showFilter(condoId) {
   html += endFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
-
-  /*
-  // End filter
-  html += "</div>";
-
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame","Filter");
-  */
 }
 
 // Show dues
@@ -194,52 +184,62 @@ function showDues() {
   let sumDue = 0;
   let sumKilowattHour = 0;
 
+  const filterCondoId = Number(document.querySelector('.filterCondoId').value);
+  let filterFromDate = document.querySelector('.filterFromDate').value;
+  filterFromDate = formatISODateToNumber(filterFromDate);
+  let filterToDate = document.querySelector('.filterToDate').value;
+  filterToDate = formatISODateToNumber(filterToDate);
+
   // Header
-  html += objOverview.showTableHeader( '', '', '', 'Forfall', '', '');
-  html += objOverview.showTableHeader( 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  html += objOverview.showTableHeader('', '', '', 'Forfall', '', '');
+  html += objOverview.showTableHeader('Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
-    // insert a table row (<tr></td>)
-    html += objDues.insertTableRow('');
+    if ((due.condoId === filterCondoId || filterCondoId === objDues.nineNine)
+      && (due.date >= filterFromDate && due.date <= filterToDate)) {
 
-    // date
-    const date = formatNumberToNorDate(due.date);
-    className = `date${due.dueId}`;
-    html += showTableText(className, date);
+      // insert a table row (<tr></td>)
+      html += objDues.insertTableRow('');
 
-    // condo
-    className = `condo${due.dueId}`;
-    //html += objCondo.showSelectedCondos(className, '', due.condoId, 'Velg leilighet', '', false);
-    const condoName = objCondo.getCondoNameById(due.condoId);
-    html += showTableText(className, condoName);
+      // date
+      const date = formatNumberToNorDate(due.date);
+      className = `date${due.dueId}`;
+      html += showTableText(className, date);
 
-    // account
-    className = `account${due.dueId}`;
-    //html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
-    const accountName = objAccounts.getAccountNameById(due.accountId);
-    html += showTableText(className, accountName);
+      // condo
+      className = `condo${due.dueId}`;
+      //html += objCondo.showSelectedCondos(className, '', due.condoId, 'Velg leilighet', '', false);
+      const condoName = objCondo.getCondoNameById(due.condoId);
+      html += showTableText(className, condoName);
 
-    // amount
-    const amount = formatNumberToNorAmount(due.amount);
-    className = `income${due.dueId}`;
-    html += showTableText(className, amount);
+      // account
+      className = `account${due.dueId}`;
+      //html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
+      const accountName = objAccounts.getAccountNameById(due.accountId);
+      html += showTableText(className, accountName);
 
-    // kilowattHour
-    const kilowattHour = formatNumberToNorAmount(due.kilowattHour);
-    className = `income${due.dueId}`;
-    html += showTableText(className, kilowattHour);
+      // amount
+      const amount = formatNumberToNorAmount(due.amount);
+      className = `income${due.dueId}`;
+      html += showTableText(className, amount);
 
-    // Text
-    const text = due.text;
-    className = `text${due.dueId}`;
-    html += showTableText(className, text);
+      // kilowattHour
+      const kilowattHour = formatNumberToNorAmount(due.kilowattHour);
+      className = `income${due.dueId}`;
+      html += showTableText(className, kilowattHour);
 
-    html += "</tr>";
+      // Text
+      const text = due.text;
+      className = `text${due.dueId}`;
+      html += showTableText(className, text);
 
-    // accumulate
-    sumDue += Number(due.amount);
-    sumKilowattHour += Number(due.kilowattHour);
+      html += "</tr>";
+
+      // accumulate
+      sumDue += Number(due.amount);
+      sumKilowattHour += Number(due.kilowattHour);
+    }
   });
 
   // Sum row
@@ -266,50 +266,59 @@ function showTransactions() {
   // Header
 
   html += objOverview.showTableHeader('', '', '', 'Innbetalinger', '', '');
-  html += objOverview.showTableHeader( '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  html += objOverview.showTableHeader('', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+
+  const filterCondoId = Number(document.querySelector('.filterCondoId').value);
+  let filterFromDate = document.querySelector('.filterFromDate').value;
+  filterFromDate = formatISODateToNumber(filterFromDate);
+  let filterToDate = document.querySelector('.filterToDate').value;
+  filterToDate = formatISODateToNumber(filterToDate);
 
   let sumIncomes = 0;
   let sumPayments = 0;
 
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
+    if ((bankTransaction.condoId === filterCondoId || filterCondoId === objDues.nineNine)
+      && (bankTransaction.date >= filterFromDate && bankTransaction.date <= filterToDate)) {
 
-    // insert a table row (<tr></td>)
-    html += objOverview.insertTableRow('', '');
+      // insert a table row (<tr></td>)
+      html += objOverview.insertTableRow('', '');
 
-    // condos
-    className = `condo${bankTransaction.transactionId}`;
-    //html += objCondo.showSelectedCondos(className, '', Number(bankTransaction.condoId), 'Velg leilighet', '', false);
-    const condoName = objCondo.getCondoNameById(bankTransaction.condoId);
-    html += showTableText(className,condoName);
+      // condos
+      className = `condo${bankTransaction.transactionId}`;
+      //html += objCondo.showSelectedCondos(className, '', Number(bankTransaction.condoId), 'Velg leilighet', '', false);
+      const condoName = objCondo.getCondoNameById(bankTransaction.condoId);
+      html += showTableText(className, condoName);
 
-    // date
-    const date = formatNumberToNorDate(bankTransaction.date);
-    className = `date${bankTransaction.transactionId}`;
-    html += showTableText(className,date);
+      // date
+      const date = formatNumberToNorDate(bankTransaction.date);
+      className = `date${bankTransaction.transactionId}`;
+      html += showTableText(className, date);
 
-    // account
-    className = `account${bankTransaction.transactionId}`;
-    //html += objAccounts.showSelectedAccounts(className, '', Number(bankTransaction.accountId), 'Velg konto', '', false);
+      // account
+      className = `account${bankTransaction.transactionId}`;
+      //html += objAccounts.showSelectedAccounts(className, '', Number(bankTransaction.accountId), 'Velg konto', '', false);
       const accountName = objAccounts.getAccountNameById(bankTransaction.accountId);
-    html += showTableText(className,accountName);
+      html += showTableText(className, accountName);
 
-    // income - payment
-    let income = bankTransaction.income;
-    const payment = bankTransaction.payment;
-    income += payment;
-    income = formatNumberToNorAmount(income);
-    className = `income${bankTransaction.transactionId}`;
-    html += showTableText(className,income);
+      // income - payment
+      let income = bankTransaction.income;
+      const payment = bankTransaction.payment;
+      income += payment;
+      income = formatNumberToNorAmount(income);
+      className = `income${bankTransaction.transactionId}`;
+      html += showTableText(className, income);
 
-    // Text
-    const text = bankTransaction.text;
-    className = `text${bankTransaction.transactionId}`;
-    html += showTableText(className,text);
-    html += "</tr>";
+      // Text
+      const text = bankTransaction.text;
+      className = `text${bankTransaction.transactionId}`;
+      html += showTableText(className, text);
+      html += "</tr>";
 
-    // accumulate
-    sumIncomes += Number(bankTransaction.income);
-    sumPayments += Number(bankTransaction.payment);
+      // accumulate
+      sumIncomes += Number(bankTransaction.income);
+      sumPayments += Number(bankTransaction.payment);
+    }
   });
 
   // Sum row
@@ -337,19 +346,32 @@ function showHowMuchToPay() {
   let sumIncome = 0;
   let sumPayment = 0;
 
+  const filterCondoId = Number(document.querySelector('.filterCondoId').value);
+  let filterFromDate = document.querySelector('.filterFromDate').value;
+  filterFromDate = formatISODateToNumber(filterFromDate);
+  let filterToDate = document.querySelector('.filterToDate').value;
+  filterToDate = formatISODateToNumber(filterToDate);
+
   // How much to pay
   let sumToPay = 0;
   objDues.arrayDues.forEach((due) => {
+    if ((due.condoId === filterCondoId || filterCondoId === objDues.nineNine)
+      && (due.date >= filterFromDate && due.date <= filterToDate)) {
 
-    sumToPay += due.amount;
+      sumToPay += due.amount;
+    }
   });
 
   // How much is payd
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
 
-    // Accomulate
-    sumIncome += Number(bankTransaction.income);
-    sumPayment += Number(bankTransaction.payment);
+    if ((bankTransaction.condoId === filterCondoId || filterCondoId === objDues.nineNine)
+      && (bankTransaction.date >= filterFromDate && bankTransaction.date <= filterToDate)) {
+
+      // Accomulate
+      sumIncome += Number(bankTransaction.income);
+      sumPayment += Number(bankTransaction.payment);
+    }
   });
 
   // show main header
@@ -357,12 +379,12 @@ function showHowMuchToPay() {
   let overPay = sumIncome - sumToPay;
 
   html += (overPay >= 0)
-    ? objOverview.showTableHeader( '', '', '', 'Til gode', '', '')
-    : objOverview.showTableHeader( '', '', '', 'Skyldig', '', '');
+    ? objOverview.showTableHeader('', '', '', 'Til gode', '', '')
+    : objOverview.showTableHeader('', '', '', 'Skyldig', '', '');
 
   html += (overPay >= 0)
-    ? objOverview.showTableHeader( '', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : objOverview.showTableHeader( '', '', '', 'Forfall', 'Betalt', 'Skyldig')
+    ? objOverview.showTableHeader('', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : objOverview.showTableHeader('', '', '', 'Forfall', 'Betalt', 'Skyldig')
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);

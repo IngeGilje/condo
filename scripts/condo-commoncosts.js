@@ -6,7 +6,6 @@ const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
-//const objBankAccount = new BankAccount('bankaccount');
 const objTransactions = new Transactions('bankTransactions');
 const objCondo = new Condo('condo');
 const objCommonCosts = new CommonCosts('commoncosts');
@@ -14,6 +13,12 @@ const objCommonCosts = new CommonCosts('commoncosts');
 // Fixed values
 const enableChanges = (objCommonCosts.securityLevel > 5);
 const applicationName = "condo-commoncost";
+
+// query parameters
+const queryParameters = new URLSearchParams(window.location.search);
+const paramYear = Number(queryParameters.get("year"));
+const paramCommonCostId = Number(queryParameters.get("commonCostId"));
+const paramBackApplication = queryParameters.get("backApplication");
 
 // column widths
 const columnWidths = [100, 125, 125, 125, 125];
@@ -38,23 +43,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
-      let html = objCommonCosts.showMenu(applicationName);
+      // Show vertical menu
+      let html = objCommonCosts.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objCommonCosts.showHorizontalMenu("filter-frame", objCommonCosts.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show due menu
-      html = objCommonCosts.showHorizontalMenu("filter-frame", objCommonCosts.arrayMenuDue);
-      document.querySelector('.menuDue').innerHTML = html;
-      objCommonCosts.markActivatedApplication(objCommonCosts.arrayMenuDue, applicationName);
-      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
@@ -86,7 +77,7 @@ async function main() {
   }
 }
 
-// Make events
+// events
 async function events() {
 
   // Filter
@@ -97,24 +88,52 @@ async function events() {
       showCommonCosts();
     };
   });
+
+  // maintain commoncost
+  document.addEventListener('click', async (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('change'))) {
+
+      const arrayPrefixes = ['change'];
+
+      // Find the first matching class
+      const className = arrayPrefixes
+        .map(prefix => objCommonCosts.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
+      // Extract the number in the class name
+      let commonCostId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        commonCostId = Number(className.slice(prefix.length));
+      }
+
+      const year = Number(document.querySelector('.filterYear').value);
+
+      let URL = (objCommonCosts.serverStatus === 1)
+        ? 'http://ingegilje.no/'
+        : 'http://localhost/';
+      URL = `${URL}condo-commoncost.html?backApplication=${applicationName}.html&year=${year}&commonCostId=${commonCostId}`;
+      window.location.href = URL;
+    }
+  });
 }
 
 // Show filter
 function showFilter(year) {
 
   // Start frame
+  //let html = startFrame('filter-frame');
+
+  // Start frame
   let html = startFrame('filter-frame');
 
   // Show years
-  html += inputSelectedNumbers('filterYear', 'År',  2020, 2030, year, true);
+  html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
 
-  // End filter
+  // End frame
   html += "</div>";
-
   document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame","Filter");
 }
 
 // Show common costs
@@ -123,13 +142,9 @@ function showCommonCosts() {
   const year = Number(document.querySelector(".filterYear").value);
   const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
 
-  // start table
-  let html = objCommonCosts.initializeTable(columnWidths);
-
-  html += objCommonCosts.startTableBody();
-
-  // Table header (<tr></tr>)
-  html += objCommonCosts.showTableHeader('Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
+  // Start table
+  let html = startTable("Felleskostnader", "");
+  html += tableHeader(columnWidths, 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;
@@ -173,7 +188,7 @@ function showCommonCosts() {
     squareMeters = formatNorAmountToNumber(squareMeters);
     fixedCostCondoMonth = formatNorAmountToNumber(fixedCostCondoMonth);
     let commonCostsMonth = (((squareMeters * commonCostSquareMeter) / 100) + (fixedCostCondoMonth));
-    className = `commonCostsMonth${commonCostId}`;
+    className = `commonCostsMonth${condo.condoId}`;
     commonCostsMonth = formatNumberToNorAmount(commonCostsMonth);
     html += showTableText(className, commonCostsMonth);
 
@@ -184,7 +199,12 @@ function showCommonCosts() {
     className = `commonCostsCondoYear${condo.condoId}`;
     html += showTableText(className, commonCostsCondoYear);
 
+    /*
+    // Change commoncosts row
+    className = `change${condo.condoId}`;
+    html += showTableButton(className, 'Rediger');
     html += "</tr>";
+    */
 
     // Accomulate
     totalSquareMeters += Number(squareMeters);
@@ -202,7 +222,12 @@ function showCommonCosts() {
   html += objCommonCosts.insertTableRow('', 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
   html += "</tr>";
 
+  /*
   // The end of the table
   html += objCommonCosts.endTable();
+  document.querySelector('.showCommonCosts').innerHTML = html;
+  */
+  // The end of the table
+  html += endTable();
   document.querySelector('.showCommonCosts').innerHTML = html;
 }

@@ -46,14 +46,14 @@ async function main() {
 
       /*
       // Show vertical menu
-      let html = objProjects.showMenu(applicationName);
+      let html = objProjects.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       //setFrameTitle("menu-frame", "Meny");
       */
       // Show menu
-      let html = objProjects.showMenu(applicationName);
+      let html = objProjects.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       /*
@@ -122,17 +122,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      /*
-      //const arrayPrefixes = ['update'];
-      //if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objProjects.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-      */
-
-      const projectId = Number(document.querySelector('.filterProjectId').value);
+       const projectId = Number(document.querySelector('.filterProjectId').value);
       await updateProjectsRow(projectId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
 
@@ -151,24 +141,7 @@ async function events() {
   // Delete projects row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
-      /*
-      const arrayPrefixes = ['delete'];
-      if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-  
-        // Find the first matching class
-        const className = arrayPrefixes
-          .map(prefix => objProjects.getClassByPrefix(event.target, prefix))
-          .find(Boolean); // find the first non-null/undefined one
-  
-        // Extract the number in the class name
-        let projectId = 0;
-        let prefix = "";
-        if (className) {
-          prefix = arrayPrefixes.find(p => className.startsWith(p));
-          projectId = Number(className.slice(prefix.length));
-        }
-        */
-
+      
       const projectId = Number(document.querySelector('.filterProjectId').value);
       await deleteProjectsRow(projectId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
@@ -181,6 +154,19 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
 
+      // Find the first matching class
+      const className = arrayPrefixes
+        .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
+      // Extract the number in the class name
+      let accountId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        accountId = Number(className.slice(prefix.length));
+      }
+      
       let URL = (objProjects.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
@@ -248,7 +234,7 @@ function showProject(projectId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     // check for return back to an application
@@ -288,7 +274,7 @@ async function updateProjectsRow(projectId) {
 
   // name
   let name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', '', 'Ugyldig tekst', true, name, 3, 45);
+  const validName = validateTextNew('name',  'Ugyldig tekst', true, name, 3, 45);
 
   // amount
   let amount = document.querySelector('.amount').value;

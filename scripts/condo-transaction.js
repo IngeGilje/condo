@@ -47,7 +47,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objTransactions.showMenu(applicationName);
+      let html = objTransactions.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -145,13 +145,13 @@ async function events() {
 
   // Delete a transactions row
   document.addEventListener('click', async (event) => {
+if (event.target.classList.contains('delete')) {
+    //if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
-    if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
+    let transactionId = Number(document.querySelector(".filterTransactionId").value);
+      await deleteTransactionRow(transactionId);
 
-      const arrayPrefixes = ['delete'];
-
-      await deleteTransactionRow();
-
+      /*
       const amount = 0;
       const deleted = 'N';
       condoId = Number(document.querySelector('.condoId').value);
@@ -164,6 +164,7 @@ async function events() {
       await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, accountId, objTransactions.nineNine, amount, 20190101, toDate);
 
       showTransaction(transactionId);
+      */
     };
   });
 
@@ -316,7 +317,7 @@ function showTransaction(transactionId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
 
@@ -330,21 +331,8 @@ function showTransaction(transactionId) {
     // End buttons
     html += endButtons();
   }
-
   document.querySelector('.showTransaction').innerHTML = html;
-
-  /*
-  // Buttons
-  if (enableChanges) {
-
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton("filterTransactionId", false);
-  }
-  */
-}
+ }
 
 // update transactions row
 async function updateTransactionRow(transactionId) {
@@ -399,7 +387,7 @@ async function updateTransactionRow(transactionId) {
   className = `.text`;
   const text = document.querySelector(className).value;
   className = `text`;
-  const validText = validateTextNew(className, '', 'Ugyldig tekst', true, text, 3, 255);
+  const validText = validateTextNew(className,  'Ugyldig tekst', true, text, 3, 255);
 
   // Validate transactions columns
   if (validDate && validCondoId && validAccountId && validProjectId
@@ -483,32 +471,22 @@ function resetValues() {
 }
 
 // Delete transactions row
-async function deleteTransactionRow() {
+async function deleteTransactionRow(transactionId) {
 
   // Check if transactions row exist
-  let transactionId = Number(document.querySelector(".filterTransactionId").value);
   const transactionsRowNumber = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
   if (transactionsRowNumber !== -1) {
 
     // delete transaction row
     await objTransactions.deleteTransactionsTable(transactionId, objTransactions.user);
+    await objTransactions.getHighestTransactionId(objTransactions.condominiumId);
+    transactionId = objTransactions.arrayTransactions[0].transactionId;
+
+    const orderBy = 'date DESC, income DESC';
+    await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20291231);
 
     // get last row in transactions table
-    await objTransactions.loadLastRowTransactionsTable(objTransactions.condominiumId);
-  }
-
-  const rowNumberTransaction = objTransactions.arrayTransactions.at(-1)?.transactionId ?? 0;
-
-  transactionId = objTransactions.arrayTransactions[rowNumberTransaction]?.transactionId ?? 0;
-  condoId = objTransactions.arrayTransactions[rowNumberTransaction]?.condoId ?? 0;
-  accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
-  income = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? 0;
-  payment = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
-
-  // amount
-  let amount = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? 0;
-  if (amount === 0) {
-    amount = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
+    //await objTransactions.loadLastRowTransactionsTable(objTransactions.condominiumId);
   }
 
   // Show filter

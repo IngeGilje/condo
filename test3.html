@@ -13,141 +13,381 @@
 
 <body>
 
-  <main class="page">
-    <div class="content-layout">
 
-      <!-- start startContent -->
-      <section class="card">
-        <h2 class="card-title">
-          Fjernvarme
-        </h2>
-        <form>
-          <div class="grid grid-form">
-            <!-- end startContent -->
 
-            <!-- start startLine -->
-            <div class="line">
-              <!-- end startLine -->
-
-              <!-- start inputDate -->
-              <div class="field">
-                <label for="remoteHeatingDate">
-                  Dato
-                </label>
-                <input type="date" class="remoteHeatingDate" id="remoteHeatingDate" value="2021-02-15">
-              </div>
-              <!-- end inputDate -->
-            </div>
-            <div></div>
-            <div></div>
-            <!-- start startLine -->
-            <div class="line">
-              <!-- end startLine -->
-
-              <!-- start showSelectedCondosNew -->
-              <div class="field">
-                <label for="condoId">
-                  Leilighet
-                </label>
-                <select id="condoId" class="condoId">
-
-                  <option value=3>
-                    95A
-                  </option>
-                  <option value=4>
-                    95B
-                  </option>
-                  <option value=5 selected>
-                    97A
-                  </option>
-                  <option value=6>
-                    97B
-                  </option>
-                  <option value=7>
-                    97C
-                  </option>
-                  <option value=8>
-                    99A
-                  </option>
-                  <option value=9>
-                    99B
-                  </option>
-                </select>
-              </div>
-              <!-- end showSelectedCondosNew -->
-            </div>
-            <div></div>
-            <div></div>
-            <!-- start startLine -->
-            <div class="line">
-              <!-- end startLine -->
-
-              <!-- start showTextNew -->
-              <div class="field field-position">
-                <input type="text" autocomplete="off" class="kilowattHour center one-line" value="75 665,00"
-                  placeholder="Kontonavn">
-                <label>
-                  K.timer
-                </label>
-              </div>
-              <!-- end showTextNew -->
-
-              <!-- start showTextNew -->
-              <div class="field field-position">
-                <input type="text" autocomplete="off" class="priceYear center one-line" value="4 404,00"
-                  placeholder="Beløp">
-                <label>
-                  Beløp
-                </label>
-              </div>
-              <!-- end showTextNew -->
-            </div>
-            <div></div>
-            <!-- start endContent -->
-          </div>
-        </form>
-      </section>
-      <!-- end endContent -->
-
-      <!-- start startButtons -->
-      <div class="actions">
-        <!-- end startButtons -->
-
-        <!-- start inputButton -->
-        <button class="update primary" type="submit">
-          Oppdater
-        </button>
-        <!-- end inputButton -->
-
-        <!-- start inputButton -->
-        <button class="insert secondary" type="button">
-          Ny
-        </button>
-        <!-- end inputButton -->
-
-        <!-- start inputButton -->
-        <button class="cancel secondary" type="reset">
-          Angre
-        </button>
-        <!-- end inputButton -->
-
-        <!-- start inputButton -->
-        <button class="back secondary" type="button">
-          Tilbake
-        </button>
-        <!-- end inputButton -->
-
-        <!-- start inputButton -->
-        <button class="delete danger" type="button">
-          Slett
-        </button>
-        <!-- end inputButton -->
-
-        <!-- start endButtons -->
-      </div>
-      <!-- end endButtons -->
+    <!-- start showSelectedBudgetsNew -->
+    <div 
+      class="field"
+    >
+      <label for="filterBudgetId">
+        Budsjett
+      </label>
+      <select 
+        id="filterBudgetId"
+        class="filterBudgetId"
+        
+      >
+    
+        <option 
+          value=53
+          
+        >
+          2020
+        </option>
+        <option 
+          value=94
+          
+        >
+          2020
+        </option>
+        <option 
+          value=54
+          
+        >
+          2020
+        </option>
+        <option 
+          value=93
+          
+        >
+          2020
+        </option>
+        <option 
+          value=96
+          
+        >
+          2020
+        </option>
+        <option 
+          value=95
+          
+        >
+          2020
+        </option>
+        <option 
+          value=97
+          
+        >
+          2020
+        </option>
+        <option 
+          value=85
+          
+        >
+          2021
+        </option>
+        <option 
+          value=88
+          
+        >
+          2021
+        </option>
+        <option 
+          value=86
+          
+        >
+          2021
+        </option>
+        <option 
+          value=87
+          
+        >
+          2021
+        </option>
+        <option 
+          value=90
+          
+        >
+          2021
+        </option>
+        <option 
+          value=89
+          
+        >
+          2021
+        </option>
+        <option 
+          value=92
+          
+        >
+          2021
+        </option>
+        <option 
+          value=91
+          
+        >
+          2021
+        </option>
+        <option 
+          value=77
+          
+        >
+          2022
+        </option>
+        <option 
+          value=80
+          
+        >
+          2022
+        </option>
+        <option 
+          value=78
+          
+        >
+          2022
+        </option>
+        <option 
+          value=79
+          
+        >
+          2022
+        </option>
+        <option 
+          value=82
+          
+        >
+          2022
+        </option>
+        <option 
+          value=81
+          
+        >
+          2022
+        </option>
+        <option 
+          value=84
+          
+        >
+          2022
+        </option>
+        <option 
+          value=83
+          
+        >
+          2022
+        </option>
+        <option 
+          value=68
+          
+        >
+          2023
+        </option>
+        <option 
+          value=71
+          
+        >
+          2023
+        </option>
+        <option 
+          value=69
+          
+        >
+          2023
+        </option>
+        <option 
+          value=70
+          
+        >
+          2023
+        </option>
+        <option 
+          value=72
+          
+        >
+          2023
+        </option>
+        <option 
+          value=74
+          
+        >
+          2023
+        </option>
+        <option 
+          value=73
+          
+        >
+          2023
+        </option>
+        <option 
+          value=76
+          
+        >
+          2023
+        </option>
+        <option 
+          value=60
+          
+        >
+          2024
+        </option>
+        <option 
+          value=63
+          
+        >
+          2024
+        </option>
+        <option 
+          value=61
+          
+        >
+          2024
+        </option>
+        <option 
+          value=62
+          
+        >
+          2024
+        </option>
+        <option 
+          value=64
+          
+        >
+          2024
+        </option>
+        <option 
+          value=67
+          
+        >
+          2024
+        </option>
+        <option 
+          value=66
+          
+        >
+          2024
+        </option>
+        <option 
+          value=65
+          
+        >
+          2024
+        </option>
+        <option 
+          value=1
+          
+        >
+          2025
+        </option>
+        <option 
+          value=20
+          
+        >
+          2025
+        </option>
+        <option 
+          value=7
+          
+        >
+          2025
+        </option>
+        <option 
+          value=3
+          
+        >
+          2025
+        </option>
+        <option 
+          value=5
+          
+        >
+          2025
+        </option>
+        <option 
+          value=8
+          
+        >
+          2025
+        </option>
+        <option 
+          value=52
+          
+        >
+          2025
+        </option>
+        <option 
+          value=51
+          
+        >
+          2025
+        </option>
+        <option 
+          value=11
+          
+        >
+          2026
+        </option>
+        <option 
+          value=10
+          
+        >
+          2026
+        </option>
+        <option 
+          value=19
+          
+        >
+          2026
+        </option>
+        <option 
+          value=12
+          
+        >
+          2026
+        </option>
+        <option 
+          value=13
+          
+        >
+          2026
+        </option>
+        <option 
+          value=21
+          
+        >
+          2026
+        </option>
+        <option 
+          value=15
+          
+        >
+          2026
+        </option>
+        <option 
+          value=23
+          
+        >
+          2026
+        </option>
+        <option 
+          value=29
+          
+        >
+          2026
+        </option>
+        <option 
+          value=31
+          
+        >
+          2027
+        </option>
+        <option 
+          value=56
+          
+        >
+          2027
+        </option>
+      <option 
+        value=0
+        selected
+      >
+        Velg Budsjett
+      </option>
+      </select >
     </div>
-  </main>
+    <!-- end showSelectedBudgetsNew -->
+    
+  
+
 
 </body>
 

@@ -242,8 +242,9 @@ class Accounts extends Condos {
     return html;
   }
   */
+
   // Show accounts
-  showSelectedAccountsNew(className,label,  accountId, selectNone, selectAll, enableChanges) {
+  showSelectedAccountsNew(className, label, accountId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -280,7 +281,7 @@ class Accounts extends Condos {
       // No accounts
       html += `
       <option 
-        value="0" 
+        value=0 
          ${(selectedValue) ? '' : 'selected'} 
       >
         Ingen konti

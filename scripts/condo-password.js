@@ -32,7 +32,7 @@ async function main() {
 
       /*
       // Show vertical menu
-      let html = objPassword.showMenu(applicationName);
+      let html = objPassword.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -40,7 +40,7 @@ async function main() {
       */
 
       // Show menu
-      let html = objPassword.showMenu(applicationName);
+      let html = objPassword.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       /*
@@ -187,7 +187,7 @@ function showUser(userId) {
   const securityLevel = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].securityLevel;
-  html += inputSelectedNumbers('securityLevel','Sikkerhetsnivå',  1, 9, 1, enableChanges);
+  html += showSelectedNumbers('securityLevel','Sikkerhetsnivå',  1, 9, 1, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
 
@@ -199,7 +199,7 @@ function showUser(userId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");

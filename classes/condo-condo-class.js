@@ -205,6 +205,7 @@ class Condo extends Condos {
   }
   */
 
+  /*
   // Show condos
   showSelectedCondosNew(className,label,  condoId, selectNone, selectAll, enableChanges) {
 
@@ -247,6 +248,86 @@ class Condo extends Condos {
          ${(selectedValue) ? '' : 'selected'} 
       >
         Ingen leiligheter
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayCondo.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayCondo.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+      </select >
+    </div>
+    <!-- end showSelectedCondosNew -->
+    `;
+
+    return html;
+  }
+  */
+  // Show condos
+  showSelectedCondosNew(className, label, condoId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedCondosNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if condos array is empty
+    if (this.arrayCondo.length > 0) {
+      this.arrayCondo.forEach((condo) => {
+
+        html += `
+        <option 
+          value=${condo.condoId}
+          ${(condo.condoId === condoId) ? 'selected' : ''}
+        >
+          ${condo.name.trim()}
+        </option>`;
+        if (condo.condoId === condoId) selectedValue = true;
+      });
+    } else {
+
+      // No condos
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen konti
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

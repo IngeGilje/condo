@@ -24,7 +24,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 } else {
 
   // Show menu
-  let html = objCondominium.showMenu(applicationName);
+  let html = objCondominium.showMenu();
   document.querySelector('.menuVertical').innerHTML = html;
 
   // Call main when script loads
@@ -180,9 +180,6 @@ function showBankAccount(bankAccountId) {
   // row number bank account
   const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
 
-  // Empty line
-  //let html = emptyLine();
-
   let html = startContent('Sameie');
 
   // name
@@ -227,7 +224,7 @@ function showBankAccount(bankAccountId) {
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   closingBalanceDate = formatNumberToISODate(closingBalanceDate);
   //html += showDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges);
-  //html += inputDate('closingBalanceDate','Dato',  closingBalanceDate, enableChanges);
+  html += inputDate('closingBalanceDate','Dato',  closingBalanceDate, enableChanges);
 
   // closing balance
   let closingBalance = (rowNumberBankAccount === -1)
@@ -247,7 +244,7 @@ function showBankAccount(bankAccountId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
@@ -257,19 +254,6 @@ function showBankAccount(bankAccountId) {
   }
 
   document.querySelector('.showBankAccount').innerHTML = html;
-
-  //if (enableChanges) document.querySelector('.cancel').disabled = true;
-
-  /*
-  // Buttons
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterBankAccountId', false, 'white');
-  }
-  */
 }
 
 // Update a bankaccounts row
@@ -277,7 +261,7 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', '', 'Ugyldig navn', true, name, 3, 45)
+  const validName = validateTextNew('name',  'Ugyldig navn', true, name, 3, 45)
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;

@@ -410,7 +410,6 @@ async function main() {
     });
 
     // Requests for users tabel
-    //app.post("/api/users", async (req, res) => {
     routePath = "";
     if (serverStatus === 1) routePath = "/api/users";
     if (serverStatus === 2) routePath = "/users";
@@ -509,21 +508,20 @@ async function main() {
             const lastName = req.body.lastName;
             const phone = req.body.phone;
 
-            const SQLquery =
-              `
-                UPDATE users
-                SET
-                  resident = '${resident}',
-                  user = '${user}',
-                  condominiumId = '${condominiumId}',
-                  lastUpdate = '${lastUpdate}',
-                  email = '${email}',
-                  condoId = ${condoId},
-                  firstName = '${firstName}',
-                  lastName = '${lastName}',
-                  phone = '${phone}'
-                WHERE userId = ${userId};
-              `;
+            const SQLquery = `
+            UPDATE users
+            SET
+              resident = '${resident}',
+              user = '${user}',
+              condominiumId = '${condominiumId}',
+              lastUpdate = '${lastUpdate}',
+              email = '${email}',
+              condoId = ${condoId},
+              firstName = '${firstName}',
+              lastName = '${lastName}',
+              phone = '${phone}'
+            WHERE userId = ${userId};
+            `;
             console.log('SQLquery: ', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
 
@@ -909,7 +907,6 @@ async function main() {
     });
 
     // Requests for condominiums table
-    //app.post("/condominiums", async (req, res) => {
     routePath = "";
     if (serverStatus === 1) routePath = "/api/condominiums";
     if (serverStatus === 2) routePath = "/condominiums";
@@ -987,26 +984,29 @@ async function main() {
             const commonCostAccountId = req.body.commonCostAccountId;
             const organizationNumber = req.body.organizationNumber;
             const importPath = req.body.importPath;
+            const fromMonth = req.body.fromMonth;
+            const toMonth = req.body.toMonth;
 
-            const SQLquery =
-              `        
-                UPDATE condominiums
-          SET
-          user = '${user}',
-            lastUpdate = '${lastUpdate}',
-            name = '${name}',
-            street = '${street}',
-            address2 = '${address2}',
-            postalCode = '${postalCode}',
-            city = '${city}',
-            phone = '${phone}',
-            email = '${email}',
-            incomeRemoteHeatingAccountId = ${incomeRemoteHeatingAccountId},
-          paymentRemoteHeatingAccountId = ${paymentRemoteHeatingAccountId},
-          commonCostAccountId = ${commonCostAccountId},
-          organizationNumber = '${organizationNumber}',
-            importPath = '${importPath}'
-                WHERE condominiumId = ${condominiumId};`;
+            const SQLquery = `        
+            UPDATE condominiums
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              name = '${name}',
+              street = '${street}',
+              address2 = '${address2}',
+              postalCode = '${postalCode}',
+              city = '${city}',
+              phone = '${phone}',
+              email = '${email}',
+              incomeRemoteHeatingAccountId = ${incomeRemoteHeatingAccountId},
+              paymentRemoteHeatingAccountId = ${paymentRemoteHeatingAccountId},
+              commonCostAccountId = ${commonCostAccountId},
+              organizationNumber = '${organizationNumber}',
+              importPath = '${importPath}',
+              fromMonth = ${fromMonth},
+              toMonth = ${toMonth}
+            WHERE condominiumId = ${condominiumId};`;
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1039,6 +1039,8 @@ async function main() {
             const commonCostAccountId = req.body.commonCostAccountId;
             const organizationNumber = req.body.organizationNumber;
             const importPath = req.body.importPath;
+            const fromMonth = req.body.fromMonth;
+            const toMonth = req.body.toMonth;
 
             // Insert new row
             const SQLquery = `
@@ -1057,7 +1059,9 @@ async function main() {
               paymentRemoteHeatingAccountId,
               commonCostAccountId,
               organizationNumber,
-              importPath
+              importPath,
+              fromMonth,
+              toMonth
             ) VALUES(
               'N',
               '${user}',
@@ -1073,7 +1077,10 @@ async function main() {
               ${paymentRemoteHeatingAccountId},
               ${commonCostAccountId},
               '${organizationNumber}',
-              '${importPath}');`;
+              '${importPath}',
+              ${fromMonth},
+              ${toMonth});
+            `;
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1123,7 +1130,6 @@ async function main() {
     });
 
     // Requests for budgets table
-    //app.post("/budgets", async (req, res) => {
     routePath = "";
     if (serverStatus === 1) routePath = "/api/budgets";
     if (serverStatus === 2) routePath = "/budgets";
@@ -1133,7 +1139,6 @@ async function main() {
       const lastUpdate = today.toISOString();
 
       switch (action) {
-
         case 'select': {
 
           try {
@@ -1173,7 +1178,7 @@ async function main() {
           break;
         }
 
-        case 'highestBudgetsId': {
+        case 'highestBudgetId': {
 
           const condominiumId = Number(req.body.condominiumId);
 
@@ -1315,12 +1320,10 @@ async function main() {
     });
 
     // Requests for dues table
-    //app.post("/dues", async (req, res) => {
     routePath = "";
     if (serverStatus === 1) routePath = "/api/dues";
     if (serverStatus === 2) routePath = "/dues";
     app.post(routePath, async (req, res) => {
-
 
       const action = req.body.action;
       const lastUpdate = today.toISOString();
@@ -1331,41 +1334,13 @@ async function main() {
 
           try {
             const condominiumId = req.body.condominiumId;
-            const accountId = Number(req.body.accountId);
-            const condoId = Number(req.body.condoId);
-            const fromDate = Number(req.body.fromDate);
-            const toDate = Number(req.body.toDate);
 
-            let SQLquery =
-              `
-          SELECT * FROM dues
-                WHERE condominiumId = ${condominiumId}
-                  AND deleted <> 'Y'
+            let SQLquery = `
+            SELECT * FROM dues
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY condoId, date DESC;
             `;
-
-            if (fromDate !== nineNine) {
-              SQLquery +=
-                `
-                  AND date BETWEEN ${fromDate} AND ${toDate}
-          `;
-            }
-
-            if (condoId !== nineNine) {
-              SQLquery +=
-                `
-                  AND condoId = ${condoId}
-          `;
-            }
-
-            if (accountId !== nineNine) {
-              SQLquery +=
-                `
-                  AND accountId = ${accountId}
-          `;
-            }
-
-            SQLquery += `
-            ORDER BY condoId, date DESC;`;
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1414,6 +1389,7 @@ async function main() {
             const user = req.body.user;
             const condoId = Number(req.body.condoId);
             const accountId = req.body.accountId;
+            const projectId = req.body.projectId;
             const amount = req.body.amount;
             const date = req.body.date;
             const kilowattHour = req.body.kilowattHour;
@@ -1427,6 +1403,7 @@ async function main() {
               lastUpdate = '${lastUpdate}',
               condoId = ${condoId},
               accountId = ${accountId},
+              projectId = ${projectId},
               amount = ${amount},
               date = ${date},
               kilowattHour = ${kilowattHour},
@@ -1454,6 +1431,7 @@ async function main() {
             const user = req.body.user;
             const condoId = Number(req.body.condoId);
             const accountId = req.body.accountId;
+            const projectId = req.body.projectId;
             const amount = req.body.amount;
             const date = req.body.date;
             const kilowattHour = req.body.kilowattHour;
@@ -1468,6 +1446,7 @@ async function main() {
               lastUpdate,
               condoId,
               accountId,
+              projectId,
               amount,
               date,
               kilowattHour,
@@ -1479,6 +1458,7 @@ async function main() {
               '${lastUpdate}',
               ${condoId},
               ${accountId},
+              ${projectId},
               ${amount},
               ${date},
               ${kilowattHour},
@@ -2170,7 +2150,7 @@ async function main() {
             if (projectId !== nineNine) SQLquery += ` 
               AND projectId = ${projectId}
             `;
-            if (amount !== 0 && amount !== nineNine ) 
+            if (amount !== 0 && amount !== nineNine)
               SQLquery += ` AND income = ${amount} OR payment = ${amount}
             `;
             if (orderBy) SQLquery += `
@@ -2355,7 +2335,6 @@ async function main() {
     });
 
     // bank account transaction csv file
-    //app.post("/importFile", async (req, res) => {
     routePath = "";
     if (serverStatus === 1) routePath = "/api/importFile";
     if (serverStatus === 2) routePath = "/importFile";
@@ -2378,7 +2357,6 @@ async function main() {
   }
 
   // Requests for remoteheatings table
-  //app.post("/remoteheatings", async (req, res) => {
   routePath = "";
   if (serverStatus === 1) routePath = "/api/remoteheatings";
   if (serverStatus === 2) routePath = "/remoteheatings";
@@ -2394,16 +2372,13 @@ async function main() {
         try {
 
           const condominiumId = req.body.condominiumId;
-          const year = Number(req.body.year);
-          const condoId = Number(req.body.condoId);
 
-          let SQLquery =
-            `SELECT * FROM remoteheatings
-           WHERE condominiumId = ${condominiumId} AND deleted <> 'Y'`;
-
-          if (year !== nineNine) SQLquery += ` AND year = ${year} `;
-          if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId} `;
-          SQLquery += ` ORDER BY year, condoId; `;
+          let SQLquery = `
+          SELECT * FROM remoteheatings
+          WHERE condominiumId = ${condominiumId} 
+          AND deleted <> 'Y'
+          ORDER BY date DESC;
+          `;
 
           console.log('SQLquery: ', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -2451,24 +2426,23 @@ async function main() {
           const remoteHeatingId = req.body.remoteHeatingId;
           const user = req.body.user;
           const condoId = Number(req.body.condoId);
-          const year = req.body.year;
           const date = req.body.date;
           const kilowattHour = req.body.kilowattHour;
-          const priceYear = req.body.priceYear;
+          const amount = req.body.amount;
+          const text = req.body.text;
 
           // Update row
-          const SQLquery =
-            `
-              UPDATE remoteheatings
+          const SQLquery = `
+          UPDATE remoteheatings
           SET
-          user = '${user}',
+            user = '${user}',
             lastUpdate = '${lastUpdate}',
             condoId = ${condoId},
-          year = ${year},
-          date = ${date},
-          kilowattHour = ${kilowattHour},
-          priceYear = ${priceYear}
-              WHERE remoteHeatingId = ${remoteHeatingId};
+            date = ${date},
+            kilowattHour = ${kilowattHour},
+            amount = ${amount},
+            text = '${text}'
+          WHERE remoteHeatingId = ${remoteHeatingId};
           `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2491,34 +2465,33 @@ async function main() {
           const user = req.body.user;
           const condominiumId = req.body.condominiumId;
           const condoId = Number(req.body.condoId);
-          const year = req.body.year;
           const date = req.body.date;
           const kilowattHour = req.body.kilowattHour;
-          const priceYear = req.body.priceYear;
+          const amount = req.body.amount;
+          const text = req.body.text;
 
           // Insert new row
-          const SQLquery =
-            `
-                INSERT INTO remoteheatings(
+          const SQLquery = `
+          INSERT INTO remoteheatings(
             deleted,
             condominiumId,
             user,
             lastUpdate,
             condoId,
-            year,
             date,
             kilowattHour,
-            priceYear
+            amount,
+            text
           ) VALUES(
             'N',
             ${condominiumId},
             '${user}',
             '${lastUpdate}',
             ${condoId},
-            ${year},
             ${date},
             ${kilowattHour},
-            ${priceYear}
+            ${amount},
+            '${text}'
           );`;
 
           console.log('SQLquery: ', SQLquery);
@@ -2542,14 +2515,13 @@ async function main() {
           const user = req.body.user;
 
           // Delete table
-          const SQLquery =
-            `
-                UPDATE remoteheatings
+          const SQLquery = `
+          UPDATE remoteheatings
           SET
-          deleted = 'Y',
+            deleted = 'Y',
             user = '${user}',
             lastUpdate = '${lastUpdate}'
-                WHERE remoteHeatingId = ${remoteHeatingId};
+          WHERE remoteHeatingId = ${remoteHeatingId};
           `;
 
           console.log('SQLquery: ', SQLquery);
@@ -2921,7 +2893,8 @@ async function main() {
           SELECT * FROM news
           WHERE condominiumId = ${condominiumId}
           AND deleted <> 'Y'
-          ORDER BY date DESC;`;
+          ORDER BY date DESC;
+          `;
 
           console.log('SQLquery :', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
@@ -3037,7 +3010,7 @@ async function main() {
               '${content}',
               '${image}');
           `;
-          
+
           console.log('SQLquery:', SQLquery);
           const [rows] = await mySqlDB.query(SQLquery);
 

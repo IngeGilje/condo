@@ -1,24 +1,22 @@
-// Due maintenance
+// maintenance of dues
 
-// Activate objects
+// Activate classes
 const today = new Date();
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
-const objCondominium = new Condominium('condominium');
+const objProjects = new Projects('projects');
 const objDues = new Dues('dues');
-const objDue = new Due('due');
 
-const enableChanges = (objDue.securityLevel > 5);
+// Fixed values
+const enableChanges = (objDues.securityLevel > 5);
 const applicationName = "condo-due";
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramDueId = Number(queryParameters.get("dueId"));
-const paramCondoId = Number(queryParameters.get("condoId"));
-const paramAccountId = Number(queryParameters.get("accountId"));
-const paramFromDate = Number(queryParameters.get("fromDate"));
-const paramToDate = Number(queryParameters.get("toDate"));
+const paramYear = Number(queryParameters.get("year"));
+const paramBackApplication = queryParameters.get("backApplication");
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -31,7 +29,7 @@ async function main() {
   if (await objUser.checkServer()) {
 
     // Validate LogIn
-    if ((objDue.condominiumId === 0) || (objDue.user === null)) {
+    if ((objDues.condominiumId === 0) || (objDues.user === null)) {
 
       // LogIn is not valid
       const URL = (objUser.serverStatus === 1)
@@ -40,37 +38,30 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
-      let html = objDue.showMenu(applicationName);
+      // Show vertical menu
+      let html = objDues.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objDue.showHorizontalMenu("filter-frame", objDue.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show due menu
-      html = objDue.showHorizontalMenu("filter-frame", objDue.arrayMenuDue);
-      document.querySelector('.menuDue').innerHTML = html;
-      objDue.markActivatedApplication(objDue.arrayMenuDue, applicationName);
-      */
-
       const resident = 'Y';
-      await objUser.loadUsersTable(objDue.condominiumId, resident, objDue.nineNine);
-      await objCondo.loadCondoTable(objDue.condominiumId, objDue.nineNine);
-      await objCondominium.loadCondominiumsTable();
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objDue.condominiumId, fixedCost);
+      await objUser.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
+      await objCondo.loadCondoTable(objDues.condominiumId, objDues.nineNine);
+      await objAccounts.loadAccountsTable(objDues.condominiumId, objAccounts.nineNine);
+      await objProjects.loadProjectsTable(objDues.condominiumId);
 
-      await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
+      await objDues.loadDuesTable(objDues.condominiumId);
+
+      let dueId = 0;
+      if (paramDueId === 0) {
+
+        await objDues.getHighestDueId(objDues.condominiumId);
+        dueId = objDues.arrayDues.at(-1)?.dueId ?? 0;
+        await objDues.loadDuesTable(objDues.condominiumId);
+      } else {
+
+        dueId = paramDueId;
+      }
 
       // Show filter
-      let dueId = (paramDueId === 0)
-        ? getHighestDueId(condominiumId)
-        : paramDueId;
       showFilter(dueId);
 
       // Show due
@@ -85,45 +76,38 @@ async function main() {
   }
 }
 
-// Make due events
+// Events for dues
 async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('filterAccountId')
-      || event.target.classList.contains('filterCondoId')
-      || event.target.classList.contains('filterFromDate')
-      || event.target.classList.contains('filterToDate')) {
+    if ((event.target.classList.contains('filterFromdate'))
+      || (event.target.classList.contains('filterToDate'))
+      || (event.target.classList.contains('filterCondoId'))
+      || (event.target.classList.contains('filterProjectId'))) {
 
+      // get first dueId for fromDate, toDate, condoId,projectId
+      let fromDate = document.querySelector('.filterFromdate').value;
+      fromDate = formatISODateToNumber(fromDate);
+      let toDate = document.querySelector('.filterToDate').value;
+      toDate = formatISODateToNumber(toDate);
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
+      const projectId = Number(document.querySelector('.filterProjectId').value);
 
-      await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
-
-      showDue(dueId);
+      const dueId = objDues.getFirstDueId(fromDate, toDate, condoId, projectId);
+      if (dueId > 0) showDue(dueId);
     };
   });
 
-  // return to emptycalendars
+  // return to bank account transactions
   document.addEventListener('click', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
 
       let URL = (objDues.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-
-      URL = `${URL}condo-dues.html?dueId=${paramDueId}&condoId=${paramCondoId}&accountId=${paramAccountId}&fromDate=${paramFromDate}&toDate=${paramToDate}`;
+      URL = `${URL}condo-dues.html?dueId=${paramDueId}&year=${paramYear}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
-    };
-  });
-
-  // update/insert a dues row
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('update')) {
-
-      // Update a dues row
-      let dueId = document.querySelector('.filterDueId').value;
-      updateDuesRow(dueId);
     };
   });
 
@@ -131,86 +115,140 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      let dueId = Number(document.querySelector('.filterDueId').value);
-      await deleteDueRow(dueId);
+      const dueId = Number(document.querySelector('.dueId').value);
 
-      // Show last row in dues tabel
-      await objDues.getHighestDueId(objDues.condominiumId);
-      dueId = objDues.arrayDues.at(-1)?.dueId ?? 0;
-      await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
-
-      // Show filter
-      showFilter(dueId);
-
-      // Show due
-      showDue(dueId);
+      deleteDue(dueId);
     };
   });
 
-  // insert a new news row
+  // insert a new dues row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('insert')) {
 
-      // Insert new news row
       resetValues();
     };
+  });
+
+  // update a dues row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('update')) {
+
+      const dueId = Number(document.querySelector(".dueId").value);
+      await updateDueRow(dueId);
+    }
   });
 }
 
 // Show filter
 function showFilter(dueId) {
 
-  // Start frame
-  let html = startFrame('filter-frame');
+  // Start filter
+  let html = startFilter("Forfall");
 
-  // Show dues
-  html += objDues.showSelectedDuesNew('Forfall', 'filterDueId', '', dueId, '', 'Vis alle', true);
-
-  // End filter
-  html += "</div>";
-
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame","Filter");
-}
-
-// show due
-function showDue(dueId) {
-
-  // row number due array
   const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
 
-  // Empty line
-  let html = emptyLine();
+  // from date
+  let fromDate = (objDues.arrayDues[rowNumberDue].date)
+    ? objDues.arrayDues[rowNumberDue].date
+    : 0;
+  //html += showSelectedNumbers('filterFromdate', 'Fra dato', 2019, 2029, Number(year), enableChanges);
+  fromDate = formatNumberToISODate(fromDate);
+  html += inputDate('filterFromdate', 'Fra Dato', fromDate, true);
+
+  // to date
+  let toDate = (objDues.arrayDues[rowNumberDue].date)
+    ? objDues.arrayDues[rowNumberDue].date
+    : 0;
+  toDate = formatNumberToISODate(toDate);
+  html += inputDate('filterToDate', 'Til Dato', toDate, true);
+
+  // condo
+  const condoId = (objDues.arrayDues[rowNumberDue].condoId)
+    ? objDues.arrayDues[rowNumberDue].condoId
+    : 0;
+  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, 'Velg Leilighet', '', true);
+
+  // account
+  const accountId = (objDues.arrayDues[rowNumberDue].accountId)
+    ? objDues.arrayDues[rowNumberDue].accountId
+    : 0;
+  html += objAccounts.showSelectedAccountsNew('filterAccountd', 'Konto', accountId, 'Velg Konto', '', true);
+
+  // project
+  const projectId = (objDues.arrayDues[rowNumberDue].projectId)
+    ? objDues.arrayDues[rowNumberDue].projectId
+    : 0;
+  html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg Prosjekt', '', true);
+
+  // End filter
+  html += endFilter();
+
+  document.querySelector(".showFilter").innerHTML = html;
+}
+
+// Show dues
+function showDue(dueId) {
+
+  const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
+
+  let html = startContent('Forfall');
+
+  // due Id
+  html += showTextNew('dueId', 'Forfall Id', dueId, false);
+  html += "<div></div>";
+  html += "<div></div>";
 
   // date
-  let dueDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
+  let dueDate = (objDues.arrayDues[rowNumberDue].date)
+    ? objDues.arrayDues[rowNumberDue].date
+    : 0;
   dueDate = formatNumberToISODate(dueDate);
-  //html += showDate('Dato', 'dueDate', dueDate, enableChanges);
-  html += inputDate('dueDate','Dato',  dueDate, enableChanges);
+  html += inputDate('dueDate', 'Dato', dueDate, enableChanges);
+  html += "<div></div>";
+  html += "<div></div>";
 
-  // condoId
-  const condoId = objDues.arrayDues[rowNumberDue]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('condoId','Leilighet',  condoId, 'Velg Leilighet', '', true);
+  // condo Id
+  let condoId = (objDues.arrayDues[rowNumberDue].condoId)
+    ? objDues.arrayDues[rowNumberDue].condoId
+    : 0;
+  html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, 'Velg Leilighet', '', enableChanges);
 
-  // accountId
-  const accountId = objDues.arrayDues[rowNumberDue]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg Konto', '', true);
+  // account Id
+  let accountId = (objDues.arrayDues[rowNumberDue].accountId)
+    ? objDues.arrayDues[rowNumberDue].accountId
+    : 0;
+  html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg konto', '', enableChanges);
 
-  // amount
-  let amount = objDues.arrayDues[rowNumberDue]?.amount ?? 0;
-  amount = formatNumberToNorAmount(amount);
-  html += showTextNew('amount','Beløp',  amount, enableChanges, 'Beløp');
+  // project Id
+  let projectId = (objDues.arrayDues[rowNumberDue].projectId)
+    ? objDues.arrayDues[rowNumberDue].projectId
+    : 0;
+  html += objProjects.showSelectedProjectsNew('projectId', 'Prosjekt', projectId, 'Velg Prosjekt', '', enableChanges);
 
   // kilowattHour
-  let kilowattHour = objDues.arrayDues[rowNumberDue]?.kilowattHour ?? 0;
+  let kilowattHour = (objDues.arrayDues[rowNumberDue].kilowattHour)
+    ? objDues.arrayDues[rowNumberDue].kilowattHour
+    : 0;
   kilowattHour = formatNumberToNorAmount(kilowattHour);
-  html += showTextNew('kilowattHour','Kilowatt Timer',  kilowattHour, enableChanges, 'Beløp');
+  html += showTextNew('kilowattHour', 'K.timer', kilowattHour, enableChanges, 'Kontonavn');
+
+  // amount
+  let amount = (objDues.arrayDues[rowNumberDue].amount)
+    ? objDues.arrayDues[rowNumberDue].amount
+    : 0;
+  amount = formatNumberToNorAmount(amount);
+  html += showTextNew('amount', 'Beløp', amount, enableChanges, 'Beløp');
+  html += "<div></div>";
 
   // text
-  const text = objDues.arrayDues[rowNumberDue]?.text ?? '';
-  html += showTextNew('text','Tekst',  text, enableChanges, 'Tekst');
+  let text = (objDues.arrayDues[rowNumberDue].text)
+    ? objDues.arrayDues[rowNumberDue].text
+    : "";
+  html += showTextNew('text', 'Tekst', text, enableChanges, 'Tekst');
+  html += "<div></div>";
+  html += "<div></div>";
+
+  html += endContent();
 
   // Buttons
   if (enableChanges) {
@@ -218,113 +256,81 @@ function showDue(dueId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
+
+    // check for return back to an application
+    if (paramBackApplication) {
+
+      html += inputButton("back secondary", "Tilbake", "button");
+    }
     html += inputButton("delete danger", "Slett", "button");
-
-    // End buttons
-    html += endButtons();
   }
+  
 
-  // Show empty calendar
+  // End buttons
+  html += endButtons();
+
   document.querySelector('.showDue').innerHTML = html;
-
-  // Buttons
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterDueId', false, 'white');
-  }
 }
 
-// Update a dues row
-async function updateDuesRow(dueId) {
+// Update a dues table row
+async function updateDueRow(dueId) {
 
   dueId = Number(dueId);
 
   // date
-  let className = '.dueDate';
-  const date = Number(objDue.formatDateToNumber(document.querySelector(`${className}`).value));
-  className = 'dueDate';
-  const validDate = validateIntervalNew(className,    'Ugyldig Dato',               true,   date, 20000101, 21001231);
- 
-  // condo Id
-  className = '.condoId';
-  let condoId = Number(document.querySelector(className).value);
-  className = 'condoId';
-  const validCondoId = validateIntervalNew(className,  'Ugyldig Leilighet', true, condoId, 1, objDue.nineNine);
+  let dueDate = document.querySelector('.dueDate').value;
+  dueDate = formatISODateToNumber(dueDate);
+  const validDate = validateIntervalNew('dueDate', 'Ugyldig Dato', true, dueDate, 20150101, 20291231);
 
-  // account Id
-  className = '.accountId';
-  let accountId = Number(document.querySelector(className).value);
-  className = 'accountId';
-  const validAccountId = validateIntervalNew(className,  'Ugyldig konto', true, accountId, 1, objDue.nineNine);
+  // condoId
+  const condoId = Number(document.querySelector('.condoId').value);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet', true, condoId, 0, objDues.nineNine);
+
+  // accountId
+  const accountId = Number(document.querySelector('.accountId').value);
+  const validAccountId = validateIntervalNew('accountId', 'Ugyldig Konto', true, accountId, 1, objDues.nineNine);
+
+  // projectId
+  const projectId = Number(document.querySelector('.projectId').value);
+  const validProjectId = validateIntervalNew('projectId', 'Ugyldig Prosjekt', true, projectId, 0, objDues.nineNine);
+
+  // kilowattHour
+  let kilowattHour = document.querySelector('.kilowattHour').value;
+  kilowattHour = formatNorAmountToNumber(kilowattHour);
+  const validkilowattHour = validateIntervalNew('kilowattHour', 'Ugyldig Kilowatttime', true, kilowattHour, 0, objDues.nineNine);
 
   // amount
-  className = '.amount';
-  const amount = Number(formatNorAmountToNumber(document.querySelector(className).value));
-  className = 'amount';
-  const validAmount = validateIntervalNew(className,  'Ugyldig beløp', true, amount, objDue.minusNineNine, objDue.nineNine);
+  let amount = document.querySelector('.amount').value;
+  amount = formatNorAmountToNumber(amount);
+  const validAmount = validateIntervalNew('amount', 'Ugyldig beløp', true, amount, 0, objDues.nineNine);
 
-  // kilowatt hour
-  className = '.kilowattHour';
-  let kilowattHour = document.querySelector(className).value;
-  kilowattHour = formatNorAmountToNumber(kilowattHour);
-  className = 'kilowattHour';
-  const validkilowattHour = validateIntervalNew(className,  'Ugyldig kilowattimer', true, kilowattHour, 0, objDue.nineNine);
-
-  // Text
-  className = '.text';
-  const text = document.querySelector(className).value;
-  className = 'text';
-  const validText = validateTextNew(className, '', 'Ugyldig tekst', true, text, 3, 45)
+  // text
+  const text = document.querySelector('.text').value;
+  const validText = validateTextNew('text', 'Ugyldig Tekst', true, text, 0, 45);
 
   // Validate dues columns
-  if (validAccountId && validCondoId && validAmount && validDate && validkilowattHour && validText) {
-
-    /*
-    document.querySelector('.showMessage').style.display = "none";
-
-    // Check if the dues row exist
-    rowNumberDue = objDues.arrayDues.findIndex(dues => dues.dueId === dueId);
-    if (rowNumberDue !== -1) {
-
-      // update the dues row
-      await objDues.updateDuesTable(dueId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
-    } else {
-
-      // Insert the account row in accounts table
-      await objDues.insertDuesTable(objDue.condominiumId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
-      await objDues.getHighestDueId(objDue.condominiumId);
-      dueId = objDues.arrayDues.at(-1)?.dueId ?? 0;
-    }
-    await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
-
-    showFilter(dueId);
-    showDue(dueId);
-  }
-  */
+  if (validDate && validCondoId && validkilowattHour && validAmount && validAccountId && validProjectId && validText) {
 
     document.querySelector('.showMessage').style.display = "none";
 
-    // Check if the accounts row exist
-    const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
+    // Check if the due id exist
+    rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
     if (rowNumberDue !== -1) {
 
-      // update the dues row
-      await objDues.updateDuesTable(dueId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
-    } else {
+      // update a dues row
+      await objDues.updateDuesTable(objDues.user, dueId, condoId, accountId, projectId, amount, dueDate, kilowattHour, text);
+      } else {
 
-      // Insert a accounts row
-      await objDues.insertDuesTable(objDue.condominiumId, objDue.user, condoId, accountId, amount, date, kilowattHour, text);
-      await objDues.getHighestDueId(objDue.condominiumId);
+      // Insert a dues row
+      await objDues.insertDuesTable(objDues.condominiumId, objDues.user, condoId, accountId, projectId, amount, dueDate, kilowattHour, text);
+      await objDues.getHighestDueId(objDues.condominiumId);
       dueId = objDues.arrayDues[0].dueId;
     }
 
-    await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
+    await objDues.loadDuesTable(objDues.condominiumId);
 
     removeMessage();
 
@@ -333,55 +339,82 @@ async function updateDuesRow(dueId) {
       disableButton('insert', false);
       disableButton('update', false);
       disableButton('cancel', true);
-      disableButton('filterDueId', false);
+
+      // Filter
+      disableButton('filterFromdate', false);
+      disableButton('filterToDate', false);
+      disableButton('filterCondoId', false);
+      disableButton('filterProjectId', false);
     }
 
     // Show filter
     showFilter(dueId);
 
-    // Show due
+    // Show a dues row
     showDue(dueId);
   }
 }
 
-// Delete dues row
-async function deleteDueRow(dueId) {
+// Delete a dues row
+async function deleteDue(dueId) {
 
-  // Check if dues row exist
-  rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
-  if (rowNumberDue !== -1) {
-
-    // delete dues row
-    await objDues.deleteDuesTable(dueId, objDue.user);
+  if (dueId > 0) {
+    await objDues.deleteDuesTable(dueId, objDues.user);
+    await objDues.loadDuesTable(objDues.condominiumId);
   }
 
-  await objDues.loadDuesTable(objDue.condominiumId, objDue.nineNine, objDue.nineNine, 20200101, 21000101);
+  // Show last dueId
+  await objDues.getHighestDueId(objDues.condominiumId);
+  dueId = objDues.arrayDues.at(-1)?.dueId ?? 0;
+  await objDues.loadDuesTable(objDues.condominiumId);
+
+  showFilter(dueId);
+  showDue(dueId);
 }
 
-// reset values
+// resetValues
 function resetValues() {
 
-  document.querySelector('.dueDate').value = '';
+  // Filter
+  document.querySelector('.filterFromdate').value = 0;
+  document.querySelector('.filterToDate').value = 0;
+  document.querySelector('.filterCondoId').value = 0;
+  document.querySelector('.filterProjectId').value = 0;
 
+  // dueId
+  document.querySelector('.dueId').value = "";
+
+  // condoId
   document.querySelector('.condoId').value = 0;
 
+  // accountId
   document.querySelector('.accountId').value = 0;
 
-  document.querySelector('.amount').value = '0,00';
+  // projectId
+  document.querySelector('.projectId').value = 0;
 
-  document.querySelector('.kilowattHour').value = '0,00';
+  // date
+  document.querySelector('.dueDate').value = "";
 
-  document.querySelector('.text').value = '';
+  // Kilowatt hours
+  document.querySelector('.kilowattHour').value = "";
 
-  document.querySelector('.filterDueId').value = '';
+  // amount
+  document.querySelector('.amount').value = "";
 
   // Buttons
   removeMessage();
+
   if (enableChanges) {
     disableButton('delete', true);
     disableButton('insert', true);
     disableButton('cancel', false);
-    disableButton('filterDueId', true);
-  }
+    disableButton('update', false);
 
+    // Filter
+    disableButton('filterFromdate', true);
+    disableButton('filterToDate', true);
+    disableButton('filterCondoId', true);
+    disableButton('filterProjectId', true);
+  }
 }

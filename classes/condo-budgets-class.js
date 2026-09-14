@@ -178,7 +178,6 @@ class Budgets extends Condos {
     }
   }
 
-
   // update budget row in budgets table
   async updateBudgetsTable(budgetId, user, accountId, amount, year, text) {
 
@@ -268,8 +267,8 @@ class Budgets extends Condos {
   }
 
 
-// Show budgets
-  showSelectedBudgetsNew(className,label,  budgetId, selectNone, selectAll, enableChanges) {
+  // Show budgets
+  showSelectedBudgetsNew(className, label, budgetId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
 
@@ -292,12 +291,15 @@ class Budgets extends Condos {
     if (this.arrayBudgets.length > 0) {
       this.arrayBudgets.forEach((budget) => {
 
+        const accountName = (budget.accountId)
+          ? objAccounts.getAccountNameById(budget.accountId)
+          : "";
         html += `
         <option 
           value=${budget.budgetId}
           ${(budget.budgetId === budgetId) ? 'selected' : ''}
         >
-          ${budget.name.trim()}
+          ${budget.year} - ${accountName}
         </option>`;
         if (budget.budgetId === budgetId) selectedValue = true;
       });
@@ -306,7 +308,7 @@ class Budgets extends Condos {
       // No budgets
       html += `
       <option 
-        value="0" 
+        value=0 
          ${(selectedValue) ? '' : 'selected'} 
       >
         Ingen budsjett

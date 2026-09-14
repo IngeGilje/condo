@@ -156,7 +156,7 @@ function showRemoteHeatingPrice(remoteHeatingPriceId) {
   const year = (objRemoteHeatingPrices.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].year)
     ? objRemoteHeatingPrices.arrayRemoteHeatingPrices[rowNumberRemoteHeatingPrice].year
     : 0;
-  html += inputSelectedNumbers('year', 'År', 2020, 2030, year, enableChanges);
+  html += showSelectedNumbers('year', 'År', 2020, 2030, year, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
 
@@ -177,7 +177,7 @@ function showRemoteHeatingPrice(remoteHeatingPriceId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");

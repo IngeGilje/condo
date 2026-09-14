@@ -1,25 +1,20 @@
-// Due maintenance
+// show dues
 
-// Activate objects
+// Activate classes
 const today = new Date();
 const objUser = new User('user');
 const objCondo = new Condo('condo');
-const objAccounts = new Accounts('accounts');
-const objCondominium = new Condominium('condominium');
 const objDues = new Dues('dues');
 
+// Fixed values
 const enableChanges = (objDues.securityLevel > 5);
 const applicationName = "condo-dues";
 
-const columnWidths = [175, 100, 175, 175, 175, 90];
+const columnWidths = [150, 150, 175, 175, 100];
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramDueId = Number(queryParameters.get("dueId"));
-const paramCondoId = Number(queryParameters.get("condoId"));
-const paramAccountId = Number(queryParameters.get("accountId"));
-const paramFromDate = Number(queryParameters.get("fromDate"));
-const paramToDate = Number(queryParameters.get("toDate"));
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -41,65 +36,23 @@ async function main() {
       window.location.href = URL;
     } else {
 
-            // Show vertical menu
-      let html = objDues.showMenu(applicationName);
+      // Show vertical menu
+      let html = objDues.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objDues.showHorizontalMenu("filter-frame", objDues.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show due menu
-      html = objDues.showHorizontalMenu("filter-frame", objDues.arrayMenuDue);
-      document.querySelector('.menuDue').innerHTML = html;
-      objDues.markActivatedApplication(objDues.arrayMenuDue, applicationName);
-      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
       await objCondo.loadCondoTable(objDues.condominiumId, objDues.nineNine);
-      await objCondominium.loadCondominiumsTable();
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objDues.condominiumId, fixedCost);
 
       // Show filter
-      let condoId = 0;
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objDues.userId);
-      if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
-      condoId = (paramCondoId === 0)
-        ? condoId
-        : paramCondoId;
+      const date = getCurrentDate();
+      const year = String(date).slice(6, 10);
+      const month = String(date).slice(3, 5);
+      showFilter(year, month, 0);
 
-      let accountId = (paramAccountId === 0)
-        ? objDues.nineNine
-        : paramAccountId;
+      await objDues.loadDuesTable(objDues.condominiumId);
 
-      // From date
-      let fromDate = (paramFromDate === 0)
-        ? `${String(today.getFullYear())}-01-01`
-        : formatNumberToISODate(paramFromDate);
-
-      // To date
-      let toDate = (paramToDate === 0)
-        ? getCurrentISODate()
-        : formatNumberToISODate(paramToDate);
-
-      showFilter(condoId, accountId, fromDate, toDate);
-
-      condoId = Number(document.querySelector('.filterCondoId').value);
-      accountId = Number(document.querySelector('.filterAccountId').value);
-      fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(objDues.formatDateToNumber(fromDate));
-      toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(objDues.formatDateToNumber(toDate));
-
-      await objDues.loadDuesTable(objDues.condominiumId, accountId, condoId, fromDate, toDate);
-
-      // Show result
+      // Show due
       showDues();
 
       // Events
@@ -111,37 +64,33 @@ async function main() {
   }
 }
 
-// Make due events
+// Events for dues
 async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
-    if (event.target.classList.contains('filterAccountId')
-      || event.target.classList.contains('filterCondoId')
-      || event.target.classList.contains('filterFromDate')
-      || event.target.classList.contains('filterToDate')) {
+    if ((event.target.classList.contains('filterYear'))
+      || (event.target.classList.contains('filterMonth'))
+      || (event.target.classList.contains('filterCondoId'))) {
 
-      const condoId = Number(document.querySelector('.filterCondoId').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-
-      let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = formatISODateToNumber(fromDate);
-      let toDate = document.querySelector('.filterToDate').value;
-      toDate = formatISODateToNumber(toDate);
-
-      await objDues.loadDuesTable(objDues.condominiumId, accountId, condoId, fromDate, toDate);
+      const year = Number(document.querySelector(".filterYear").value);
+      const month = Number(document.querySelector(".filterMonth").value);
+      const condoId = Number(document.querySelector(".filterCondoId").value);
+      showFilter(year, month, condoId);
+      await objDues.loadDuesTable(objDues.condominiumId);
 
       showDues();
     };
   });
 
-  // change due
+  // change a dues row
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('edit'))) {
-      const arrayPrefixes = ['edit'];
+    if ([...event.target.classList].some(cls => cls.startsWith('change'))) {
+
+      const arrayPrefixes = ['change'];
 
       // Find the first matching class
-      let className = arrayPrefixes
+      const className = arrayPrefixes
         .map(prefix => objDues.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
 
@@ -153,113 +102,126 @@ async function events() {
         dueId = Number(className.slice(prefix.length));
       }
 
-      className = `date${dueId}`
-      let date = document.querySelector(`.${className}`).value;
-      date = formatNorDateToNumber(date);
+      // due id
+      const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
+      if (rowNumberDue !== -1) {
 
-      const condoId = Number(document.querySelector('.filterCondoId').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-      let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = Number(formatISODateToNumber(fromDate));
-      let toDate = document.querySelector('.filterToDate').value;
-      toDate = Number(formatISODateToNumber(toDate));
-      let URL = (objDues.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      URL = `${URL}condo-due.html?dueId=${dueId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}`;
-      window.location.href = URL;
+        const date = objDues.arrayDues[rowNumberDue].date;
+        const year = Number(String(date).slice(0, 4));
+
+        let URL = (objDues.serverStatus === 1)
+          ? 'http://ingegilje.no/'
+          : 'http://localhost/';
+        URL = `${URL}condo-due.html?dueId=${dueId}&year=${year}&backApplication=${applicationName}.html`;
+        window.location.href = URL;
+      }
     };
   });
-}
+};
 
 // Show filter
-function showFilter(condoId, accountId, fromDate, toDate) {
+function showFilter(year, month, condoId) {
 
   // Start frame
   let html = startFrame('filter-frame');
 
-  // Show condos
-  html += objCondo.showSelectedCondosNew('filterCondoId','Leilighet',  condoId, '', 'Vis alle', true);
+  // year
+  html += showSelectedNumbers('filterYear', 'År', 2019, 2029, Number(year), enableChanges);
 
-  // Show accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId','Konto',  accountId, '', 'Vis alle', true);
+  // month
+  html += showSelectedMonthsNew('filterMonth', 'Måned', Number(month), enableChanges);
 
-  // From date
-  //html += showDate('Fra Dato', 'filterFromDate', fromDate, true);
-  html += inputDate('filterFromDate','Fra Dato',  fromDate, true);
+  // condo
+  html += objCondo.showSelectedCondosNew('filterCondoId', 'leilighet', condoId, 'Velg leilighet', '', true);
 
-  // To date
-  //html += showDate('Til Dato', 'filterToDate', toDate, true);
-  html += inputDate('filterToDate','Til Dato',  toDate, true);
-
-  // End filter
+  // End frame
   html += "</div>";
-
   document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame","Filter");
 }
 
-// show dues
+
+// Show dues
 function showDues() {
 
+  let totalPriceYear = 0;
+
   // start table
-  let html = objCondo.initializeTable(columnWidths);
+  let html = emptyLine();
+  html += objDues.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeader( 'Dato', 'Leilighet', 'Konto', 'Beløp', 'Tekst', '');
+  const filterYear = Number(document.querySelector(".filterYear").value);
+  const filterMonth = Number(document.querySelector(".filterMonth").value);
+  const filterCondoId = Number(document.querySelector(".filterCondoId").value);
 
-  let sumAmount = 0;
-  //let sumKilowattHour = 0;
+  html += objDues.showTableHeader('Dato', 'Leilighet', `K.timer`, 'Beløp', '');
 
   objDues.arrayDues.forEach((due) => {
 
-    // insert a table row (<tr></td>)
-    html += objDues.insertTableRow('')
+    // Filter
+    const date = String(due.date);
+    const year = String(date).slice(0, 4);
+    const month = String(date).slice(4, 6);
+    if ((Number(year) === filterYear)
+      && (Number(month) === filterMonth || filterMonth === objDues.nineNine)
+      && (due.condoId === filterCondoId || filterCondoId === 0)) {
 
-    // Date
-    const date = formatNumberToNorDate(due.date);
-    let className = `date${due.dueId}`;
-    html += showTableText(className, date);
+      // insert a table row (<tr></td>)
+      html += objDues.insertTableRow('');
 
-    // condos
-    className = `condoId${due.dueId}`;
-    //html += objCondo.showSelectedCondos(className, '', due.condoId, 'ngen er valgt', '', false);
-    const condoName = objCondo.getCondoNameById(due.condoId);
-    html += showTableText(className, condoName);
+      // date
+      let date = due.date;
+      let className = `date${due.dueId}`;
+      date = formatNumberToNorDate(date);
+      html += showTableText(className, date);
 
-    // account
-    className = `accountId${due.dueId}`;
-    //html += objAccounts.showSelectedAccounts(className, '', due.accountId, 'Velg konto', '', false);
-   const accountName = objAccounts.getAccountNameById(due.accountId);
-    html += showTableText(className, accountName);
+      // condoId
+      const condoId = due.condoId;
+      className = `condoId${due.dueId}`;
+      const condoName = objCondo.getCondoNameById(due.condoId);
+      html += showTableText(className, condoName);
 
-    // due amount
-    const amount = formatNumberToNorAmount(due.amount);
-    className = `amount${due.dueId}`;
-    html += showTableText(className, amount);
-    
-    // text
-    const text = due.text;
-    className = `text${due.dueId}`;
-    html += showTableText(className, text);
+      // kilowattHour
+      let kilowattHour = due.kilowattHour;
+      className = `kilowattHour${due.dueId}`;
+      kilowattHour = formatNumberToNorAmount(kilowattHour);
+      html += showTableText(className, kilowattHour);
 
-    // Change due
-    className = `edit${due.dueId}`;
-    html += objDues.showButton(className, 'Rediger');
-    html += "</tr>";
+      // price for used elcticity/remote heating for one year
+      let amount = Number(due.amount);
+      if (amount === 0) {
 
-    // accumulate
-    sumAmount += Number(due.amount);
-    //sumKilowattHour += Number(due.kilowattHour);
+        // calculate price for used elcticity/remote heating for one year
+        let price = document.querySelector('.filterPrice').value;
+        price = formatNumberToNorAmount(price);
+        kilowattHour = formatNumberToNorAmount(kilowattHour);
+        kilowattHourLastYear = formatNumberToNorAmount(kilowattHourLastYear);
+        amount = Number(price) * (Number(kilowattHour) - Number(kilowattHourLastYear));
+        amount = (amount / 100);
+        amount = formatNumberToNorAmount(amount);
+      } else {
+
+        amount = formatNumberToNorAmount(due.amount);
+      }
+      className = `amount${due.dueId}`;
+      html += showTableText(className, amount);
+
+      // Maintnance
+      className = `change${due.dueId}`;
+      html += objDues.showButton(className, 'Rediger');
+      html += "</tr>";
+
+      // accumulate
+      amount = formatNorAmountToNumber(amount);
+      totalPriceYear += amount;
+    }
   });
 
-  // Show table sum row
-  sumAmount = formatNumberToNorAmount(sumAmount);
-  //sumKilowattHour = formatNumberToNorAmount(sumKilowattHour);
+  // How much to pay for remote heating for all condos
+  totalPriceYear = formatNumberToNorAmount(totalPriceYear);
 
-  html += objDues.insertTableRow('font-weight: 600;', '', '', 'Sum', sumAmount, '', '', '');
+  html += objDues.insertTableRow('', '', 'Totalt', totalPriceYear, '', '');
+  html += "</tr>";
 
   // The end of the table
   html += objDues.endTable();

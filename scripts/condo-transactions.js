@@ -14,7 +14,7 @@ const objTransactions = new Transactions('transactions');
 const enableChanges = (objTransactions.securityLevel > 5);
 const applicationName = "condo-transactions";
 
-const columnWidths = [125, 175, 125, 125, 125, 100, 100];
+const columnWidths = [125, 175, 125, 125, 125, 100];
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
@@ -25,6 +25,7 @@ const paramProjectId = Number(queryParameters.get("projectId"));
 const paramFromDate = Number(queryParameters.get("fromDate"));
 const paramToDate = Number(queryParameters.get("toDate"));
 const paramAmount = Number(queryParameters.get("amount"));
+const paramBackApplication = queryParameters.get("backApplication");
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -47,7 +48,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objTransactions.showMenu(applicationName);
+      let html = objTransactions.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -148,7 +149,7 @@ async function events() {
       let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-voucher.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}`;
+      URL = `${URL}condo-voucher.html?backApplication=${applicationName}.html&transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}`;
       window.location.href = URL;
     };
   });
@@ -223,7 +224,7 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   //html += showAmount('Beløp', 'filterAmount', amount, true);
   html += inputText('filterAmount', 'Beløp', amount, true);
 
-  // End filter
+  // End frame
   html += "</div>";
   document.querySelector(".showFilter").innerHTML = html;
 
@@ -265,11 +266,8 @@ function showTransactions() {
   let sumPayment = 0;
 
   // Start table
-  let html = emptyLine();
-  html += objTransactions.initializeTable(columnWidths);
-
-  // Table header (<tr></tr>)
-  html += objTransactions.showTableHeader('Dato', 'Konto', 'Leilighet', 'Inntekter', 'Utbetalinger', '', '');
+  let html = startTable("Kontobevegelser", "");
+  html += tableHeader(columnWidths, 'Dato', 'Konto', 'Leilighet', 'Inntekter', 'Utbetalinger',  '');
 
   objTransactions.arrayTransactions.forEach(bankTransaction => {
 
@@ -318,9 +316,11 @@ function showTransactions() {
       className = `payment${bankTransaction.transactionId}`;
       html += showTableText(className, payment);
 
+      /*
       // Show button for voucher
       className = `voucher${bankTransaction.transactionId}`;
       html += showTableButton(className, 'Vis bilag');
+      */
 
       // Change transaction
       className = `change${bankTransaction.transactionId}`;
@@ -341,14 +341,14 @@ function showTransactions() {
   sumIncome = formatNumberToNorAmount(sumIncome);
   sumPayment = formatNumberToNorAmount(sumPayment);
 
-  html += objTransactions.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, sumAmount, '');
+  html += objTransactions.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, sumAmount);
 
   // get from date
   let bankBalance = objTransactions.getBankBalance(toDate);
   bankBalance = formatNumberToNorAmount(bankBalance);
-  html += objTransactions.insertTableRow('', '', '', 'Saldo', bankBalance, '', '', '');
+  html += objTransactions.insertTableRow('', '', '', 'Saldo', bankBalance, '', '');
 
   // The end of the table
-  html += objTransactions.endTable();
+  html += endTable();
   document.querySelector('.showTransactions').innerHTML = html;
 }

@@ -29,7 +29,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objNews.showMenu(applicationName);
+      let html = objNews.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -225,7 +225,7 @@ function showNews(newsId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
@@ -246,7 +246,7 @@ async function updateNewsRow(newsId) {
 
   // validate title
   const title = document.querySelector('.title').value.trim();
-  const validTitle = validateTextNew('title', '', 'Ugyldig Tittel', true, title, 3, 45);
+  const validTitle = validateTextNew('title',  'Ugyldig Tittel', true, title, 3, 45);
 
   // validate date
   let date = document.querySelector('.newsDate').value;
@@ -260,7 +260,7 @@ async function updateNewsRow(newsId) {
   // clean content
   let content = document.querySelector('.content').value.trim();
   //content = content.replace(/<[^>]*>?/gm, "");
-  const validContent = validateTextNew('content', '', 'Ugyldig innhold', true, content, 3, 512);
+  const validContent = validateTextNew('content',  'Ugyldig innhold', true, content, 3, 512);
 
   if (validTitle && validDate && validUserId && validContent) {
 

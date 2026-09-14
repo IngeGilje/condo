@@ -189,7 +189,7 @@ class EmptyCalendars extends Condos {
 
         emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
         html += `
-          &nbsp;&nbsp;${emptyCalendarDate}&nbsp;&nbsp;
+          ${emptyCalendarDate}
         </option>
         `;
       });

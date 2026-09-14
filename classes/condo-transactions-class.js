@@ -298,6 +298,29 @@ class Transactions extends Condos {
     }
   }
 
+  // Get fixed cost for period
+  async getFixedCostPeriod(fromDate, toDate) {
+
+    this.arrayTransactions.forEach((transaction) => {
+      if (transaction.date >= fromDate && transaction.date <= toDate) {
+
+        let amountPeriod = 0;
+        // check for fixed cost
+        const rowNumberAccount = objAccounts.arrayAccounts.findIndex((account) => account.accountId === transaction.accountId);
+        if (rowNumberAccount !== -1) {
+
+          const fixedCost = objAccounts.arrayAccounts[rowNumberAccount].fixedCost;
+          if (fixedCost === 'Y') {
+
+            amountPeriod += transaction.income;
+            amountPeriod += transaction.payment;
+          }
+        }
+      }
+    });
+    return amountPeriod;
+  }
+
   // get Transactions from start (20200101) to toDate
   async getTransactions(condominiumId, condoId, toDate) {
 
@@ -347,14 +370,14 @@ class Transactions extends Condos {
     const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objTransactions.condominiumId);
     if (rowNumberBankAccount !== -1) bankBalance += Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance);
 
-        // get opening date
+    // get opening date
     const fromDate = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
 
     // Get all Bank transactions from 01.01.2020 to selected date
     this.arrayTransactions.forEach(transaction => {
 
       // Accoumulate all transactions up to the selected date
-      if ( (transaction.date >= fromDate) && (transaction.date <= date) ) {
+      if ((transaction.date >= fromDate) && (transaction.date <= date)) {
 
         // Add payment and income to bank balance
         bankBalance += transaction.income + transaction.payment;

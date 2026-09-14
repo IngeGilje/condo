@@ -42,7 +42,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objImportFile.showMenu(applicationName);
+      let html = objImportFile.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -75,7 +75,7 @@ async function main() {
       const condoId = objImportFile.nineNine;
       let fromDate = 0;
       let toDate = objImportFile.nineNine;
-      await objDues.loadDuesTable(objImportFile.condominiumId, accountId, condoId, fromDate, toDate);
+      await objDues.loadDuesTable(objImportFile.condominiumId);
 
       amount = 0;
       const orderBy = 'condoId ASC';

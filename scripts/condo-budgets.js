@@ -37,7 +37,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objBudgets.showMenu(applicationName);
+      let html = objBudgets.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -118,7 +118,7 @@ async function events() {
       let URL = (objBudgets.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-budget.html?budgetId=${budgetId}&year=${year}`;
+      URL = `${URL}condo-budget.html?&backApplication=${applicationName}.html&budgetId=${budgetId}&year=${year}`;
       window.location.href = URL;
     };
   });
@@ -238,7 +238,7 @@ function showFilter() {
 
   // Show years
   const year = today.getFullYear();
-  html += inputSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
+  html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
 
   // End filter
   html += "</div>";
@@ -251,10 +251,11 @@ function showBudgets() {
 
   // Start table
   let html = emptyLine();
+
   html += objBudgets.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objBudgets.showTableHeader( 'År', 'Konto', 'Budsjett', 'Tekst', '');
+  html += objBudgets.showTableHeader('År', 'Konto', 'Budsjett', 'Tekst', '');
 
   let sumAmount = 0;
 
@@ -282,7 +283,7 @@ function showBudgets() {
     // text
     const text = (budget.text === null) ? '' : budget.text;
     className = `text${budget.budgetId}`;
-    html += showTableText(className,text);
+    html += showTableText(className, text);
 
     // Edit budget
     className = `edit${budget.budgetId}`;

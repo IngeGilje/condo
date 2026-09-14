@@ -30,7 +30,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objUserBankAccounts.showMenu(applicationName);
+      let html = objUserBankAccounts.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -194,7 +194,7 @@ function showUserBankAccount(userBankAccountId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");

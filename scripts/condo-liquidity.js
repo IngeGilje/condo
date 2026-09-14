@@ -35,7 +35,7 @@ async function main() {
 
       /*
             // Show vertical menu
-      let html = objLiquidity.showMenu(applicationName);
+      let html = objLiquidity.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -54,7 +54,7 @@ async function main() {
       */
 
       // Show menu
-      let html = objLiquidity.showMenu(applicationName);
+      let html = objLiquidity.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objBankAccount.loadBankAccountsTable(objLiquidity.condominiumId, objLiquidity.nineNine);
@@ -104,7 +104,7 @@ function showFilter() {
 
   // Show years
   const year = today.getFullYear();
-  html += inputSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
+  html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
 
   /*
   // End filter

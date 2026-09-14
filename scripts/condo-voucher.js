@@ -1,4 +1,4 @@
-// Voucher maintenance
+// Voucher maintenapplicationNameance
 
 // Activate classes
 const today = new Date();
@@ -43,34 +43,18 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objVoucher.showMenu(applicationName);
+      let html = objVoucher.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objTransactions.showHorizontalMenu("filter-frame", objVoucher.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show transaction menu
-      html = objTransactions.showHorizontalMenu("filter-frame", objTransactions.arrayMenuTransaction);
-      document.querySelector('.menuTransaction').innerHTML = html;
-      objTransactions.markActivatedApplication(objTransactions.arrayMenuTransaction, applicationName);
-      */
 
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objVoucher.condominiumId, fixedCost);
 
-      // Show filter
       let fromDate = 20000101;
       let toDate = 20991231;
       const orderBy = 'transactionId DESC, date DESC, income DESC';
       await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objVoucher.nineNine, objVoucher.nineNine, objTransactions.nineNine, 0, fromDate, toDate);
 
       // Show result
-      //if (transactionId === 0) transactionId = objTransactions.arrayTransactions[0].transactionId;
       showVoucher(paramTransactionId);
 
       // Events
@@ -86,22 +70,13 @@ async function main() {
 async function events() {
 
   // return to bank account transactions
-  //document.addEventListener('click', async (event) => {
-  //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('back')) {
 
-      /*
-      let URL = (objTransactions.serverStatus === 1)
+      let URL = (objVoucher.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-transactions.html?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}`;
-      window.location.href = URL;
-      */
-    let URL = (objProjects.serverStatus === 1)
-        ? 'http://ingegilje.no/'
-        : 'http://localhost/';
-      URL = `${URL}${paramBackApplication}?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
+      URL = `${URL}condo-transactions.html?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}`;
       window.location.href = URL;
     };
   });

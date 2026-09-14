@@ -35,7 +35,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objEmptyCalendars.showMenu(applicationName);
+      let html = objEmptyCalendars.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objCondo.loadCondoTable(objEmptyCalendars.condominiumId, objEmptyCalendars.nineNine);
@@ -229,7 +229,7 @@ function showEmptyCalendar(emptyCalendarId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");

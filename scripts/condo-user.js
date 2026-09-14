@@ -31,7 +31,7 @@ async function main() {
 
       /*
       // Show vertical menu
-      let html = objUser.showMenu(applicationName);
+      let html = objUser.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -39,7 +39,7 @@ async function main() {
       */
 
       // Show menu
-      let html = objUser.showMenu(applicationName);
+      let html = objUser.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       /*
@@ -185,7 +185,7 @@ function showFilter(userId) {
   // Start filter
   let html = startFilter("Bruker");
 
-   // Show users
+  // Show users
   html += objUser.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
 
   // End filter
@@ -200,10 +200,10 @@ function showUser(userId) {
   // row number user
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
 
-  let html = startContent('Bruker');
-
   // Empty line
-  //let html = emptyLine();
+  html = emptyLine();
+
+  html += startContent('Bruker');
 
   // email
   const email = (rowNumberUser === -1)
@@ -252,7 +252,7 @@ function showUser(userId) {
   html += "<div></div>";
   html += "<div></div>";
 
-   html += endContent();
+  html += endContent();
 
   // Buttons
   if (enableChanges) {
@@ -260,7 +260,7 @@ function showUser(userId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
@@ -328,15 +328,15 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId',  'Ugyldig Leilighet', true, condoId, 0, objUser.nineNine);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet', true, condoId, 0, objUser.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
-  const validFirstName = validateTextNew('firstName', '', 'Ugyldig fornavn', true, firstName, 3, 45);
+  const validFirstName = validateTextNew('firstName', 'Ugyldig fornavn', true, firstName, 3, 45);
 
   // validate lastName
   const lastName = document.querySelector('.lastName').value;
-  const validLastName = validateTextNew('lastName', '', 'Ugyldig etternavn', true, lastName, 3, 45);
+  const validLastName = validateTextNew('lastName', 'Ugyldig etternavn', true, lastName, 3, 45);
 
   // validate phone
   const phone = document.querySelector('.phone').value;

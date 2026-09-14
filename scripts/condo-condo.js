@@ -30,14 +30,14 @@ async function main() {
 
       /*
       // Show vertical menu
-      let html = objCondo.showMenu(applicationName);
+      let html = objCondo.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
       //setFrameTitle("menu-frame", "Meny");
       */
       // Show menu
-      let html = objCondo.showMenu(applicationName);
+      let html = objCondo.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       /*
@@ -193,10 +193,6 @@ function showCondo(condoId) {
   // row number user
   const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
 
-  // condo
-  // Empty line
-  //let html = emptyLine();
-
   let html = startContent('Leilighet');
 
   // condo
@@ -240,7 +236,7 @@ function showCondo(condoId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
@@ -260,15 +256,15 @@ async function updateCondoRow(condoId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', '', 'Ugyldig Kontonavn', showMessage = true, name, 3, 45);
+  const validName = validateTextNew('name', 'Ugyldig Kontonavn', showMessage = true, name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateTextNew('street', '', 'Ugyldig Gatenavn', true, street, 3, 45);
+  const validStreet = validateTextNew('street',  'Ugyldig Gatenavn', true, street, 3, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = validateTextNew('address2', '', 'Ugyldig Adresse', true, address2, 0, 45);
+  const validAddress2 = validateTextNew('address2',  'Ugyldig Adresse', true, address2, 0, 45);
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
@@ -276,7 +272,7 @@ async function updateCondoRow(condoId) {
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = validateTextNew('city', '', 'Ugyldig Poststed', true, city, 0, 45);
+  const validCity = validateTextNew('city',  'Ugyldig Poststed', true, city, 0, 45);
 
   // validate squaremeters
   const squareMeters = Number(formatNorAmountToNumber(document.querySelector('.squareMeters').value));

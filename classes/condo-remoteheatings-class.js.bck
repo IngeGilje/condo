@@ -4,93 +4,8 @@ class RemoteHeatings extends Condos {
   // remote heating information
   arrayRemoteHeatings;
 
-  /*
-  // Show remoteHeatings
-  showSelectedRemoteHeatingsNew(label, className, style, remoteHeatingId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div 
-      class="field field-position" 
-    >
-    <label>
-      ${label}
-    </label>
-    <select 
-      class="${className} center one-line"
-      ${(enableChanges) ? '' : 'readonly'}
-    >`;
-
-    // Check if remoteHeatings array is empty
-    if (this.arrayRemoteHeatings.length > 0) {
-      this.arrayRemoteHeatings.forEach((remoteHeating) => {
-
-        // Condo name
-        const condoName = (remoteHeating.condoId)
-          ? objCondo.getCondoNameById(remoteHeating.condoId)
-          : '';
-
-        html += `
-        <option 
-          value=${remoteHeating.remoteHeatingId}
-          ${(remoteHeating.remoteHeatingId === remoteHeatingId) ? 'selected' : ''}
-        >
-          &nbsp;&nbsp;${condoName} - ${remoteHeating.year}&nbsp;&nbsp;
-        </option>`;
-        if (remoteHeating.remoteHeatingId === remoteHeatingId) selectedValue = true;
-      });
-    } else {
-
-      // No remoteHeatings
-      html += `
-      <option 
-        value="0" 
-         ${(selectedValue) ? '' : 'selected'} 
-      >
-        Ingen fjernvarme
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayRemoteHeatings.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayRemoteHeatings.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    html += `
-      </select >
-      <label>
-        ${label}
-      </label>
-    </div>`;
-
-    return html;
-  }
-  */
-
   // get remoteheatings from remoteheatings table
-  async loadRemoteHeatingsTable(condominiumId, year, condoId) {
+  async loadRemoteHeatingsTable(condominiumId) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/remoteheatings'
@@ -105,9 +20,7 @@ class RemoteHeatings extends Condos {
         },
         body: JSON.stringify({
           action: 'select',
-          condominiumId: condominiumId,
-          year: year,
-          condoId: condoId
+          condominiumId: condominiumId
         })
       });
       if (!response.ok) throw new Error("Network error (remoteheatings)");
@@ -142,13 +55,14 @@ class RemoteHeatings extends Condos {
   }
 
   // update a remoteheatings row
-  async updateRemoteHeatingTable(user, remoteHeatingId, condoId, year, date, kilowattHour, priceYear) {
+  async updateRemoteHeatingTable(user, remoteHeatingId, condoId, date, kilowattHour, amount, text) {
 
-    const URL = (this.serverStatus === 1) ? '/api/remoteheatings' : 'http://localhost:3000/remoteheatings';
+    const URL = (this.serverStatus === 1)
+      ? '/api/remoteheatings'
+      : 'http://localhost:3000/remoteheatings';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/remoteheatings?action=update&user=${user}&remoteHeatingId=${remoteHeatingId}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}&priceYear=${priceYear}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -159,10 +73,10 @@ class RemoteHeatings extends Condos {
           user: user,
           remoteHeatingId: remoteHeatingId,
           condoId: condoId,
-          year: year,
           date: date,
           kilowattHour: kilowattHour,
-          priceYear: priceYear
+          amount: amount,
+          text: text
         })
       });
       if (!response.ok) throw new Error("Network error (remoteheatings)");
@@ -173,13 +87,14 @@ class RemoteHeatings extends Condos {
   }
 
   // insert remoteheatings row
-  async insertRemoteHeatingTable(condominiumId, user, condoId, year, date, kilowattHour, priceYear) {
+  async insertRemoteHeatingTable(condominiumId, user, condoId, date, kilowattHour, amount, text) {
 
-    const URL = (this.serverStatus === 1) ? '/api/remoteheatings' : 'http://localhost:3000/remoteheatings';
+    const URL = (this.serverStatus === 1)
+      ? '/api/remoteheatings'
+      : 'http://localhost:3000/remoteheatings';
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/remoteheatings?action=insert&condominiumId=${condominiumId}&user=${user}&condoId=${condoId}&year=${year}&date=${date}&kilowattHour=${kilowattHour}&priceYear=${priceYear}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -190,10 +105,10 @@ class RemoteHeatings extends Condos {
           condominiumId: condominiumId,
           user: user,
           condoId: condoId,
-          year: year,
           date: date,
           kilowattHour: kilowattHour,
-          priceYear: priceYear
+          amount: amount,
+          text: text
         })
       });
       if (!response.ok) throw new Error("Network error (remoteheatings)");
@@ -257,26 +172,17 @@ class RemoteHeatings extends Condos {
     if (this.arrayRemoteHeatings.length > 0) {
       this.arrayRemoteHeatings.forEach((remoteHeating) => {
 
-        /*
-        html += `
-        <option 
-          value=${remoteHeating.remoteHeatingId}
-          ${(remoteHeating.remoteHeatingId === remoteHeatingId) ? 'selected' : ''}
-        >
-          ${remoteHeating.name.trim()}
-        </option>`;
-        */
-       // Condo name
+        // Condo name
         const condoName = (remoteHeating.condoId)
           ? objCondo.getCondoNameById(remoteHeating.condoId)
           : '';
-
+        const date = formatNumberToNorDate(remoteHeating.date);
         html += `
         <option 
           value=${remoteHeating.remoteHeatingId}
           ${(remoteHeating.remoteHeatingId === remoteHeatingId) ? 'selected' : ''}
         >
-          ${condoName} - ${remoteHeating.year}
+          ${condoName} - ${date}
         </option>
         `;
         if (remoteHeating.remoteHeatingId === remoteHeatingId) selectedValue = true;
@@ -326,5 +232,27 @@ class RemoteHeatings extends Condos {
     `;
 
     return html;
+  }
+
+  // get first remoteheatingId for year,month,condoId
+  getFirstRemoteHeatingId(year, month, condoId) {
+
+    let remoteHeatingId = 0;
+    this.arrayRemoteHeatings.forEach((remoteHeating) => {
+
+      // year
+      const date = remoteHeating.date;
+      const searchYear = String(date).slice(0, 4);
+
+      // month
+      const searchMonth = String(date).slice(3, 5);
+
+      if (Number(searchYear) === Number(year) && Number(searchMonth) === Number(month) && remoteHeating.condoId === condoId) {
+
+        remoteHeatingId = remoteHeating.remoteHeatingId;
+      }
+    });
+
+    return remoteHeatingId;
   }
 }

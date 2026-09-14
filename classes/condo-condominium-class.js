@@ -78,7 +78,8 @@ class Condominium extends Condos {
   // update condominium row in condominiums table
   async updateCondominiumsTable(user, condominiumId, name, street, address2,
     postalCode, city, phone, email, incomeRemoteHeatingAccountId,
-    paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath) {
+    paymentRemoteHeatingAccountId, commonCostAccountId,
+    organizationNumber, importPath, fromMonth, toMonth) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/condominiums'
@@ -106,7 +107,9 @@ class Condominium extends Condos {
           paymentRemoteHeatingAccountId: paymentRemoteHeatingAccountId,
           commonCostAccountId: commonCostAccountId,
           organizationNumber: organizationNumber,
-          importPath: importPath
+          importPath: importPath,
+          fromMonth: fromMonth,
+          toMonth: toMonth
         })
       });
       if (!response.ok) throw new Error("Network error (condominiums)");
@@ -117,7 +120,9 @@ class Condominium extends Condos {
   }
 
   // insert condominium row in users table
-  async insertCondominiumsTable(user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath) {
+  async insertCondominiumsTable(user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId,
+    commonCostAccountId, organizationNumber, importPath,
+    fromMonth, toMonth) {
 
     const URL = (this.serverStatus === 1) ? '/api/condominiums' : 'http://localhost:3000/condominiums';
     try {
@@ -142,7 +147,9 @@ class Condominium extends Condos {
           paymentRemoteHeatingAccountId: paymentRemoteHeatingAccountId,
           commonCostAccountId: commonCostAccountId,
           organizationNumber: organizationNumber,
-          importPath: importPath
+          importPath: importPath,
+          fromMonth: toMonth,
+          toMonth: toMonth
         })
       });
       if (!response.ok) throw new Error("Network error (condominiums)");

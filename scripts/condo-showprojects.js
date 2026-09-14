@@ -46,22 +46,8 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objProjects.showMenu(applicationName);
+      let html = objProjects.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objProjects.showHorizontalMenu("filter-frame", objProjects.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show project menu
-      html = objProjects.showHorizontalMenu("filter-frame", objProjects.arrayMenuTransaction);
-      document.querySelector('.menuTransaction').innerHTML = html;
-      objProjects.markActivatedApplication(objProjects.arrayMenuTransaction, applicationName);
-      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
@@ -168,29 +154,6 @@ async function events() {
   });
 }
 
-/*
-// Show header
-function showHeader() {
-
-  // Start table
-  let html = objProjects.initializeTable(columnWidths);
-
-  // start table body
-  html += objProjects.startTableBody();
-
-  // show main header
-  html += objProjects.showTableHeaderLogOut('', '', 'Prosjekt', '');
-  html += "</tr>";
-
-  // end table body
-  html += objProjects.endTableBody();
-
-  // The end of the table
-  html += objProjects.endTable();
-  document.querySelector('.showHeader').innerHTML = html;
-}
-*/
-
 // Show filter
 function showFilter(projectId, amount, condoId) {
 
@@ -215,31 +178,21 @@ function showFilter(projectId, amount, condoId) {
   //setFrameTitle("filter-frame", "Filter");
 }
 
-/*
-// Delete a projects row
-async function deleteProjectsRow(projectId) {
-
-  // Check if projects row exist
-  rowNumberProjects = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
-  if (rowNumberProjects !== -1) {
-
-    // delete projects row
-    await objProjects.deleteProjectsTable(projectId, objProjects.user);
-  }
-}
-*/
-
 // show bank account transactions this project
 function showProjectTransactions(projectId, condoId, amount) {
 
   // Empty line
-  let html = emptyLine();
+  //let html = emptyLine();
 
   // Start table
-  html += objProjects.initializeTable(columnWidths);
+  //html += objProjects.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objCondo.showTableHeader( 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+  //html += objCondo.showTableHeader( 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+
+  let html = startTable("Prosjekt","");
+  html += tableHeader(columnWidths, 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+
   let sumAmount = 0;
 
   for (const bankTransaction of objTransactions.arrayTransactions) {
@@ -275,7 +228,7 @@ function showProjectTransactions(projectId, condoId, amount) {
 
       // Show button for change of bank account transaction
       className = `change${bankTransaction.transactionId}`;
-      html += objProjects.showButton(className, 'Rediger');
+      html += showTableButton(className, 'Rediger');
       html += "</tr>";
 
       // accumulate
@@ -289,6 +242,6 @@ function showProjectTransactions(projectId, condoId, amount) {
   html += objTransactions.insertTableRow('', '', '', 'Sum', sumAmount);
 
   // The end of the table
-  html += objProjects.endTable();
+  html += endTable();
   document.querySelector('.showProjectTransactions').innerHTML = html;
 }

@@ -41,7 +41,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objAccounts.showMenu(applicationName);
+      let html = objAccounts.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -171,21 +171,17 @@ function showFilter(fixedCost) {
 // Show accounts
 function showAccounts() {
 
-  /*
-  // start table
-  const underHeader = document.querySelector(".filterFixedCost").value
-  let html = startTable("Konti", underHeader);
-
-  //html += objAccounts.showTableHeader('center', 'Kostnadstype', 'Tekst', '');
-  html += tableHeader(columnWidths, "Kostnadstype", "Tekst", " ");
-  */
-  let html = emptyLine();
+  //let html = emptyLine();
 
   // Start table
-  html += objAccounts.initializeTable(columnWidths);
+  //html += objAccounts.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objAccounts.showTableHeader('Kostnadstype', 'Tekst', '');
+  //html += objAccounts.showTableHeader('Kostnadstype', 'Tekst', '');
+
+   // Start table
+  let html = startTable("Konti", "");
+  html += tableHeader(columnWidths, 'Kostnadstype', 'Tekst', '');
 
   objAccounts.arrayAccounts.forEach((account) => {
 

@@ -125,7 +125,7 @@ function showFilter() {
 
   // Show years
   const year = String(today.getFullYear());
-  html += inputSelectedNumbers('filterYear','År',  2020, 2030, Number(year), true);
+  html += showSelectedNumbers('filterYear','År',  2020, 2030, Number(year), true);
 
   // Show selected months
   const date = getCurrentDate();

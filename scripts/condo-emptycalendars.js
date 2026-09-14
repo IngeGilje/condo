@@ -37,7 +37,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objEmptyCalendars.showMenu(applicationName);
+      let html = objEmptyCalendars.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objCondo.loadCondoTable(objEmptyCalendars.condominiumId, objEmptyCalendars.nineNine);
@@ -114,38 +114,18 @@ async function events() {
 // Show filter
 function showFilter(year, month) {
 
-  /*
-  // Start frame
+   // Start frame
   let html = startFrame('filter-frame');
 
   // Show years
-  html += inputSelectedNumbers('År', 'filterYear',  2020, 2030, year, true);
-
-  // Show selected months
-  html += showSelectedMonthsNew('Måned', 'filterMonth', '', month, true);
-
-  // End filter
-  html += "</div>";
-
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame","Filter");
-  */
-
-  // Start filter
-  let html = startFilter("Tømmekalender");
-
-  // Show years
-  //html += inputSelectedNumbers('År', 'filterYear',  2020, 2030, year, true);
-  html += inputSelectedNumbers('filterYear','År',  2020, 2030, year, true);
+  html += showSelectedNumbers('filterYear','År',  2020, 2030, year, true);
 
   // Show months
   html += showSelectedMonthsNew('filterMonth', 'Måned', month, true);
 
-  // End filter
-  html += endFilter();
 
+  // End frame
+  html += "</div>";
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -156,8 +136,8 @@ function showEmptyCalendars(month) {
   const year = Number(document.querySelector('.filterYear').value);
   month = Number(document.querySelector('.filterMonth').value);
   const text = findNameOfMonth(month) + " " +String(year);
-  let html = startTable("Tømmeplan",text);
   
+  let html = startTable("Tømmeplan",text);
   html += tableHeader(columnWidths, "Ansvarlig", "Dato", "Restavfall", "Papiravfall", "Matavfall", "Plastavfall","Juletre"," ");
 
   if (Number(document.querySelector('.filterMonth').value) < 10) month = "0" + month;
@@ -169,9 +149,7 @@ function showEmptyCalendars(month) {
       if (emptycalendar.date >= fromDate && emptycalendar.date <= toDate) {
 
         // New table row
-        html += `
-          <tr>
-        `;
+        html += "<tr>";
 
         // condoId 1
         const condoName = objCondo.getCondoNameById(emptycalendar.condoId);
@@ -216,9 +194,7 @@ function showEmptyCalendars(month) {
         // Change emptycalenders 8
         className = `change${emptycalendar.emptyCalendarId}`;
         html += showTableButton(className, 'Rediger');
-        html += `
-          </tr>
-        `;
+        html += "</tr>";
       }
     });
   }

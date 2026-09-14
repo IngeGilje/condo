@@ -37,17 +37,8 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      /*
-      // Show vertical menu
-      let html = objAccounts.showMenu(applicationName);
-      document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny",);
-      //setFrameTitle("news", "Nyheter",);
-      */
       // Show menu
-      let html = objAccounts.showMenu(applicationName);
+      let html = objAccounts.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
@@ -121,7 +112,7 @@ async function events() {
 
   // Delete account row
   document.addEventListener('click', async (event) => {
-    //if (event.target.classList.contains('delete')) {
+    
     const arrayPrefixes = ['delete'];
     if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
 
@@ -171,9 +162,6 @@ function showAccount(accountId) {
 
   let html = startContent('Konto');
 
-  // Empty line
-  //let html = emptyLine();
-
   // fixed cost
   let selected = "Ugyldig verdi";
   if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'Y') selected = constFixedCost;
@@ -197,7 +185,7 @@ function showAccount(accountId) {
     // Start buttons
     html += startButtons();
 
-    html += inputButton("update primary", "Oppdater", "submit");
+    html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
@@ -263,7 +251,7 @@ async function updateAccountsRow(accountId) {
 
   // name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', '', 'Ugyldig kontonavn', true, name, 3, 50);
+  const validName = validateTextNew('name', 'Ugyldig kontonavn', true, name, 3, 50);
 
   className = `.fixedCost`;
   let fixedCost = document.querySelector(className).value;
