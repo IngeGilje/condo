@@ -253,7 +253,7 @@ function showDues() {
   html += "</tr>"
 
   // The end of the table
-  html += objOverview.endTable();
+  html += endTable();
   document.querySelector('.showDues').innerHTML = html;
 }
 
@@ -333,7 +333,7 @@ function showTransactions() {
   html += objOverview.insertTableRow('', '', '', '', '', '', '');
 
   // The end of the table
-  html += objOverview.endTable();
+  html += endTable();
   document.querySelector('.showTransactions').innerHTML = html;
 }
 
@@ -410,6 +410,6 @@ function showHowMuchToPay() {
   html += objOverview.insertTableRow('font-weight: 600;', '', '', 'Sum', sumToPay, sumIncome, overPay);
 
   // The end of the table
-  html += objOverview.endTable();
+  html += endTable();
   document.querySelector('.howMuchToPay').innerHTML = html;
 }

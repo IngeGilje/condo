@@ -81,7 +81,8 @@ function showLogin() {
   html += objLogIn.insertTableRow('');
 
   // Show buttons (<tr></td>)
-  html += objLogIn.showButton('LogIn', 'LogIn');
+  //html += objLogIn.showTableButton('LogIn', 'LogIn');
+  html += showTableButton('LogIn', 'LogIn');
   html += "</tr>";
 
   // insert a table row (<tr></td>)
@@ -90,7 +91,7 @@ function showLogin() {
   html += "</tr>";
 
   // The end of the table
-  html += objLogIn.endTable();
+  html += endTable();
   document.querySelector('.result').innerHTML = html;
 }
 

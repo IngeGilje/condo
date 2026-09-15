@@ -19,6 +19,7 @@ const columnWidths = [175, 175, 100];
 const queryParameters = new URLSearchParams(window.location.search);
 const paramAccountId = Number(queryParameters.get("accountId"));
 let paramFixedCost = queryParameters.get("fixedCost");
+const paramBackApplication = queryParameters.get("backApplication");
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -111,7 +112,7 @@ async function events() {
       let URL = (objAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-account.html?accountId=${accountId}&fixedCost=${fixedCost}`;
+      URL = `${URL}condo-account.html?backApplication=${applicationName}.html&accountId=${accountId}&fixedCost=${fixedCost}`;
       window.location.href = URL;
     };
   });
@@ -202,28 +203,18 @@ function showAccounts() {
 
      // Show button for maintnance
     className = `edit${account.accountId}`;
-    html += objAccounts.showButton(className, 'Rediger');
+    //html += objAccounts.showTableButton(className, 'Rediger');
+    html += showTableButton(className, 'Rediger');
 
-    html += `
-      </tr>
-    `;
-
+    html += "</tr>";
   });
 
-
-  // Make one last table row for insertion in table 
-
-  /*
   // The end of the table
-  //html += objAccounts.endTable();
   html += endTable();
-  document.querySelector('.showAccounts').innerHTML = html;
-  */
- // The end of the table
-  html += objAccounts.endTable();
   document.querySelector(".showAccounts").innerHTML = html;
-}
+ }
 
+ /*
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
 
@@ -238,3 +229,4 @@ async function deleteAccountRow(accountId, className) {
   const fixedCost = 'A';
   await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 }
+*/

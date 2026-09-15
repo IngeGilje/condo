@@ -68,7 +68,7 @@ async function main() {
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
       await objBankAccount.loadBankAccountsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
       const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, 'N', objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, 20200101, 20291231, false);
+      await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, 'N', objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, 20200101, 20291231, false);
 
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objCommonCosts.condominiumId, fixedCost);
@@ -89,14 +89,8 @@ async function main() {
       const year = today.getFullYear();
       showFilter(year);
 
-      // remote Heating
-      commonCostId = 0;
-      const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
-      if (rowNumberCommonCost !== -1) {
-        commonCostId = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].commonCostId;
-      }
       // Show commoncost
-      showCommonCost(commonCostId);
+      showCommonCost(year);
 
       // Events
       events();
@@ -112,36 +106,21 @@ async function events() {
 
   // Filter
   document.addEventListener('change', async (event) => {
+    if (event.target.classList.contains('filterYear')) {
 
-    const arrayPrefixes = ['filterYear'];
-
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objCommonCosts.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract commonCostId in the class name
-      let commonCostId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        commonCostId = Number(className.slice(prefix.length));
-      }
+      const year = Number(document.querySelector(".filterYear").value);
 
       // Show common cost per year
-      showCommonCost(commonCostId);
+      showCommonCost(year);
     };
   });
 
   // update a commoncosts row
   document.addEventListener('click', async (event) => {
-
     if (event.target.classList.contains('update')) {
 
-      const commonCostId = Number(document.querySelector('.filterCommonCostId').value);
-      updateCommonCostsRow(commonCostId);
+      const year = Number(document.querySelector('.filterYear').value);
+      updateCommonCostsRow(year);
     };
   });
 
@@ -175,28 +154,13 @@ async function events() {
 
   // Delete commoncosts row
   document.addEventListener('click', async (event) => {
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
+    if (event.target.classList.contains('delete')) {
 
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objCommonCosts.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let commonCostId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        commonCostId = Number(className.slice(prefix.length));
-      }
-
-      await deleteCommonCostsRow(commonCostId, className);
-      await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
-
+      const year = Number(document.querySelector('.filterYear').value);
+      await deleteCommonCostsRow(year);
 
       // Show common cost
-      showCommonCost(commonCostId);
+      showCommonCost(year);
     };
   });
 
@@ -222,8 +186,7 @@ function showFilter(year) {
   // Start filter
   let html = startFilter("Felleskostnader");
 
-  // Show commoncosts
-  //html += objCommonCosts.showSelectedCommonCostsNew('filterCommonCostId', 'År', commonCostId, 'Velg År', '', true);
+  // Show year
   html += showSelectedNumbers('filterYear', "Regnskapsår", 2020, 2030, year, true)
 
   // End filter
@@ -233,9 +196,9 @@ function showFilter(year) {
 }
 
 // Show commoncost
-function showCommonCost(commonCostId) {
+function showCommonCost(year) {
 
-  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.commonCostId === commonCostId);
+  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.year === year);
 
   html = startContent('Felleskostnader');
 
@@ -248,17 +211,12 @@ function showCommonCost(commonCostId) {
   html += "<div></div>";
 
   // fixed cost per condo per year
-
   let fixedCostCondo = 0;
   if (rowNumberCommonCost !== -1) fixedCostCondo = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo;
   fixedCostCondo = formatNumberToNorAmount(fixedCostCondo);
   html += inputText('fixedCostCondo', 'Fast kostnad', fixedCostCondo, enableChanges, 'Fast Kostnad');
-  html += "<div></div>";
 
   // calculated fixed cost
-
-  // Financial year
-
   // month
   let month = 0;
   const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex((condominium) => condominium.condominiumId === objCommonCosts.condominiumId);
@@ -267,15 +225,18 @@ function showCommonCost(commonCostId) {
   }
   if (month < 10) month = Number("0" + month);
 
-  // year
+  // from date
   const fromYear = Number(document.querySelector('.filterYear').value) - 1;
-  const fromDate = Number(fromYear + month + "01");
+  const fromDate = String(fromYear) + String(month) + "01";
 
+  // todate
   const toYear = Number(document.querySelector('.filterYear').value);
-  const toDate = Number(toYear + month + "31");
+  const toDate = String(toYear) + String(month) + "31";
 
-  let calculatedFixedCost = objTransactions.getFixedCostPeriod(fromDate, toDate)
-  calculatedFixedCost = formatNumberToNorAmount(calculatedFixedCost);
+  let calculatedFixedCost = objTransactions.getFixedCostPeriod(Number(fromDate), Number(toDate));
+  calculatedFixedCost = calculatedFixedCost / 12;
+  calculatedFixedCost = calculatedFixedCost / 7;
+  calculatedFixedCost = formatNumberToNorAmount(-calculatedFixedCost);
   html += inputText('calculatedFixedCost', 'Beregnet Fast Kostnad', calculatedFixedCost, enableChanges, 'Fast Kostnad');
   html += "<div></div>";
 
@@ -333,27 +294,30 @@ function getpriceSquaremeter(budgetYear) {
 }
 
 // Delete a commoncosts row
-async function deleteCommonCostsRow(commonCostId) {
+async function deleteCommonCostsRow(year) {
 
   // Check if commoncosts row exist
-  rowNumberCommonCosts = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.commonCostId === commonCostId);
+  rowNumberCommonCosts = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
   if (rowNumberCommonCosts !== -1) {
 
     // delete commoncosts row
     await objCommonCosts.deleteCommonCostsTable(commonCostId, objCommonCosts.user);
+    await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
   }
 }
 
 // Update a commoncosts table row
-async function updateCommonCostsRow(commonCostId) {
+async function updateCommonCostsRow(year) {
 
-  commonCostId = Number(commonCostId);
+  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.year === year);
 
-  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.commonCostId === commonCostId);
+  // commoncost Id
+  const commonCostId = (rowNumberCommonCost === -1)
+    ? 0
+    : objCommonCosts.arrayCommonCosts[rowNumberCommonCost].commonCostId;
 
   // year
-  const year = objCommonCosts.arrayCommonCosts[rowNumberCommonCost]?.year ?? 0;
-  const validYear = validateIntervalNew('filterCommonCostId', 'Ugyldig årstall', true, year, 2020, 2030);
+  const validYear = validateIntervalNew('filterYear', 'Ugyldig årstall', true, year, 2020, 2030);
 
   // common cost per squaremeter 
   let commonCostSquareMeter = document.querySelector('.commonCostSquareMeter').value;
@@ -392,13 +356,13 @@ async function updateCommonCostsRow(commonCostId) {
       disableButton('insert', false);
       disableButton('update', false);
       disableButton('cancel', true);
-      disableButton('filterCommonCostId', false);
+      disableButton('filterYear', false);
     }
 
     // Show filter
     showFilter(year);
 
     // Show commoncost
-    showCommonCost(commonCostId);
+    showCommonCost(year);
   }
 }

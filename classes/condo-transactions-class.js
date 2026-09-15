@@ -299,12 +299,13 @@ class Transactions extends Condos {
   }
 
   // Get fixed cost for period
-  async getFixedCostPeriod(fromDate, toDate) {
+  getFixedCostPeriod(fromDate, toDate) {
+
+    let amountPeriod = 0;
 
     this.arrayTransactions.forEach((transaction) => {
       if (transaction.date >= fromDate && transaction.date <= toDate) {
 
-        let amountPeriod = 0;
         // check for fixed cost
         const rowNumberAccount = objAccounts.arrayAccounts.findIndex((account) => account.accountId === transaction.accountId);
         if (rowNumberAccount !== -1) {

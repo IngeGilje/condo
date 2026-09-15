@@ -12,7 +12,9 @@ const applicationName = "condo-emptycalendar";
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramEmptyCalendarId = Number(queryParameters.get("emptyCalendarId"));
-const paramDate = Number(queryParameters.get("date"));
+const paramYear = Number(queryParameters.get("year"));
+const paramMonth = Number(queryParameters.get("month"));
+const paramBackApplication = queryParameters.get("backApplication");
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -45,15 +47,16 @@ async function main() {
       let emptyCalendarId = 0;
       let date = String(getCurrentDate());
 
+      await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
+
+      // Show filter
       emptyCalendarId = (paramEmptyCalendarId === 0)
         ? emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0].emptyCalendarId
         : emptyCalendarId = paramEmptyCalendarId;
 
-      await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
-
-      // Show filter
       showFilter(emptyCalendarId);
 
+      // Show empty calendar
       showEmptyCalendar(emptyCalendarId);
 
       // Events
@@ -94,10 +97,10 @@ async function events() {
       let URL = (objEmptyCalendars.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-emptyCalendars.html?emptyingCalendarsId=${paramEmptyCalendarId}&date=${paramDate}`;
+      URL = `${URL}condo-emptyCalendars.html?emptyingCalendarsId=${paramEmptyCalendarId}&year=${paramYear}&month=${paramMonth}`;
       window.location.href = URL;
-    };
-  });
+    }
+  })
 
   // update a emptycalendars row
   document.addEventListener('click', async (event) => {
@@ -157,7 +160,7 @@ async function events() {
 // Show filter
 function showFilter(emptyCalendarId) {
 
-   // Start filter
+  // Start filter
   let html = startFilter("Tømmekalender");
 
   // Show date
@@ -184,7 +187,7 @@ function showEmptyCalendar(emptyCalendarId) {
 
   // condo
   const condoId = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('condoId','Ansvarlig',  condoId, 'Velg ansvarlig', '', true);
+  html += objCondo.showSelectedCondosNew('condoId', 'Ansvarlig', condoId, 'Velg ansvarlig', '', true);
   html += "<div></div>";
 
   // residual waste 
@@ -232,6 +235,13 @@ function showEmptyCalendar(emptyCalendarId) {
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
+
+    // check for return back to an application
+    if (paramBackApplication) {
+
+      html += inputButton("back secondary", "Tilbake", "button");
+    }
+
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons

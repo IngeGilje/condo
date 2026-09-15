@@ -2774,16 +2774,15 @@ async function main() {
           const fixedCostCondo = req.body.fixedCostCondo;
 
           // Update row
-          const SQLquery =
-            `
-              UPDATE commoncosts
+          const SQLquery = `
+          UPDATE commoncosts
           SET
-          user = '${user}',
+            user = '${user}',
             lastUpdate = '${lastUpdate}',
             year = ${year},
-          commonCostSquareMeter = ${commonCostSquareMeter},
-          fixedCostCondo = ${fixedCostCondo}
-              WHERE commonCostId = ${commonCostId};
+            commonCostSquareMeter = ${commonCostSquareMeter},
+            fixedCostCondo = ${fixedCostCondo}
+          WHERE commonCostId = ${commonCostId};
           `;
 
           console.log('SQLquery: ', SQLquery);

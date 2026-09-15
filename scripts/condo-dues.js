@@ -208,7 +208,7 @@ function showDues() {
 
       // Maintnance
       className = `change${due.dueId}`;
-      html += objDues.showButton(className, 'Rediger');
+      html += showTableButton(className, 'Rediger');
       html += "</tr>";
 
       // accumulate
@@ -224,6 +224,6 @@ function showDues() {
   html += "</tr>";
 
   // The end of the table
-  html += objDues.endTable();
+  html += endTable();
   document.querySelector('.showDues').innerHTML = html;
 }

@@ -288,7 +288,7 @@ function showFilter( condoId, accountId) {
   html += objBankAccountTransaction.endTableBody();
 
   // The end of the table
-  html += objBankAccountTransaction.endTable();
+  html += endTable();
   document.querySelector('.filter').innerHTML = html;
 
   
@@ -481,12 +481,12 @@ async function showBankAccountTransactions() {
 
         // Show button if the file exist
         className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
-        html += objBankAccountTransaction.showButton(className, 'Vis bilag');
+        html += showTableButton(className, 'Vis bilag');
       } else {
 
         // Show empty column if the file does not exist
         className = `voucher${bankAccountTransaction.bankAccountTransactionId}`;
-        html += objBankAccountTransaction.showButton(className, 'Vis bilag');
+        html += showTableButton(className, 'Vis bilag');
       }
     } else {
 
@@ -495,7 +495,7 @@ async function showBankAccountTransactions() {
 
     // Delete
     className = `delete${bankAccountTransaction.bankAccountTransactionId}`;
-    html += objBankAccountTransaction.showButton(className, 'Slett');
+    html += showTableButton(className, 'Slett');
 
     html += "</tr>";
 
@@ -519,7 +519,7 @@ async function showBankAccountTransactions() {
   html += objBankAccountTransaction.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, '', '', '', '');
 
   // The end of the table
-  html += objBankAccountTransaction.endTable();
+  html += endTable();
   document.querySelector('.result').innerHTML = html;
 }
 
@@ -540,7 +540,7 @@ function showHeader() {
   html += objBankAccountTransaction.endTableBody();
 
   // The end of the table
-  html += objBankAccountTransaction.endTable();
+  html += endTable();
   document.querySelector('.header').innerHTML = html;
 }
 

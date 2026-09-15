@@ -16,6 +16,7 @@ const applicationName = "condo-account";
 const queryParameters = new URLSearchParams(window.location.search);
 const paramAccountId = Number(queryParameters.get("accountId"));
 const paramFixedCost = queryParameters.get("fixedCost");
+const paramBackApplication = queryParameters.get("backApplication");
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -112,7 +113,7 @@ async function events() {
 
   // Delete account row
   document.addEventListener('click', async (event) => {
-    
+
     const arrayPrefixes = ['delete'];
     if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
 
@@ -173,12 +174,13 @@ function showAccount(accountId) {
 
   // name
   const name = objAccounts.arrayAccounts[rowNumberAccount]?.name ?? '';
-  html += showTextNew( 'name','Kontonavn', objAccounts.arrayAccounts[rowNumberAccount].name.trim(), enableChanges, 'Kontonavn');
+  html += showTextNew('name', 'Kontonavn', objAccounts.arrayAccounts[rowNumberAccount].name.trim(), enableChanges, 'Kontonavn');
   html += "<div></div>";
   html += "<div></div>";
 
   html += endContent();
 
+  /*
   // Buttons
   if (enableChanges) {
 
@@ -188,6 +190,27 @@ function showAccount(accountId) {
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
     html += inputButton("cancel secondary", "Angre", "reset");
+    html += inputButton("delete danger", "Slett", "button");
+
+    // End buttons
+    html += endButtons();
+  }
+  */
+  // Buttons
+  if (enableChanges) {
+
+    // Start buttons
+    html += startButtons();
+
+    html += inputButton("update secondary", "Oppdater", "submit");
+    html += inputButton("insert secondary", "Ny", "button");
+    html += inputButton("cancel secondary", "Angre", "reset");
+
+    // check for return back to an application
+    if (paramBackApplication) {
+
+      html += inputButton("back secondary", "Tilbake", "button");
+    }
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons

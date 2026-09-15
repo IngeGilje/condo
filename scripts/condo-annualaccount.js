@@ -230,8 +230,8 @@ function showAnnualAccounts() {
 
   // start table
   const accountYear = document.querySelector('.filterAccountYear').value;
-  let html = startTable("Årsregnskap", "");
-  html += tableHeader(columnWidths, '', '', `Årsresultat for ${accountYear}`, '', '');
+  let html = startTable(`Årsresultat for ${accountYear}`, "");
+  //html += tableHeader(columnWidths, '', '', `Årsresultat for ${accountYear}`, '', '');
   html += tableHeader(columnWidths, '', 'Konto', 'Beløp', `Budsjett`, 'Avvik');
 
   let totalAccountAmount = 0;
@@ -257,12 +257,10 @@ function showAnnualAccounts() {
       html += showTableText('name', account.name);
 
       // accountAmount
-      accountAmount = formatNumberToNorAmount(accountAmount);
       className = `accountAmount${account.accountId}`;
       html += showTableText('accountAmount', accountAmount);
 
       // budgetAmount
-      budgetAmount = formatNumberToNorAmount(budgetAmount);
       className = `budgetAmount${account.accountId}`;
       html += showTableText('budgetAmount', budgetAmount);
 
@@ -407,11 +405,6 @@ function showIncomeNextYear() {
   html += objAnnualAccount.insertTableRow('', '', '', '', '', '');
   html += "</tr>";
 
-  /*
-  // The end of the table
-  html += objAnnualAccount.endTable();
-  document.querySelector('.incomeNextYear').innerHTML = html;
-  */
   // The end of the table
   html += endTable();
   document.querySelector('.incomeNextYear').innerHTML = html;
@@ -532,11 +525,6 @@ function showBankDeposit() {
 
   html += objAnnualAccount.insertTableRow('', '', '', '', '', '');
 
-  /*
-  // The end of the table
-  html += objAnnualAccount.endTable();
-  document.querySelector('.bankDeposit').innerHTML = html;
-  */
   // The end of the table
   html += endTable();
   document.querySelector('.bankDeposit').innerHTML = html;

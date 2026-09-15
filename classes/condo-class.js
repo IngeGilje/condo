@@ -319,7 +319,7 @@ class Condos {
   }
 
   // Show button
-  showButton(className, text) {
+  showTableButton(className, text) {
 
     let html = `
     <td class="one-line center"
@@ -788,6 +788,7 @@ class Condos {
 
     return "</tbody>";
   }
+  /*
   // End of the table
   endTable() {
 
@@ -796,6 +797,7 @@ class Condos {
     </div>
     `;
   }
+  */
 
   // check if server is started
   async checkServer() {
@@ -2153,6 +2155,8 @@ function formatStringToNorAmount(amount) {
 // Format number (1234567) to norwegian amount (1 2345,67)
 function formatNumberToNorAmount(amount) {
 
+  amount = Number(amount);
+  amount = Math.round(amount);
   amount = this.removeComma(String(amount));
   amount = String(Number(amount) / 100);
   amount = Number(amount).toFixed(2);
@@ -2184,8 +2188,12 @@ function formatNorAmountToNumber(amount) {
 
     // decimal number
     [kroner, ore] = amount.split('.');
-    ore = (ore.length === 1) ? ore + '0' : '00';
-
+    /*
+    ore = (ore.length === 1)
+      ? ore + '0'
+      : '00';
+    */
+    if (ore.length === 1) ore = ore + '0';
   } else {
     if (amount.includes(',')) {
       [kroner, ore] = amount.split(',');

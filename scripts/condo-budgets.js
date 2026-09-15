@@ -287,7 +287,7 @@ function showBudgets() {
 
     // Edit budget
     className = `edit${budget.budgetId}`;
-    html += objBudgets.showButton(className, 'Rediger');
+    html += showTableButton(className, 'Rediger');
     html += "</tr>";
 
     // accumulate
@@ -300,6 +300,6 @@ function showBudgets() {
   html += objBudgets.insertTableRow('font-weight: 600;', '', 'Sum', sumAmount, '', '');
 
   // The end of the table
-  html += objBudgets.endTable();
+  html += endTable();
   document.querySelector('.showBudgets').innerHTML = html;
 }

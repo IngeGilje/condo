@@ -45,20 +45,6 @@ async function main() {
       let html = objImportFile.showMenu();
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objImportFile.showHorizontalMenu("filter-frame", objImportFile.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show account menu
-      html = objImportFile.showHorizontalMenu("filter-frame", objImportFile.arrayMenuTransaction);
-      document.querySelector('.menuTransaction').innerHTML = html;
-      objImportFile.markActivatedApplication(objImportFile.arrayMenuTransaction, applicationName);
-      */
-
       let transactionFile = true;
 
       const resident = 'A';
@@ -152,7 +138,7 @@ function createTransactionsArray() {
   let textFile = objImportFile.strCSVTransaction.split(/\r?\n/);
   textFile.forEach((row) => {
 
-    //         Dato; Type;    Kontonummer;    Inn;      Ut; Valuta; Beskrivelse;Fra kontonummer;Til kontonummer;         Fra (navn);Til (navn)
+    //         Dato; Type;     Kontonummer;    Inn;      Ut; Valuta; Beskrivelse;Fra kontonummer;Til kontonummer;         Fra (navn);Til (navn)
     [accountingDate, Type, fromBankAccount, income, payment, Valuta, text, fromBankAccount, toBankAccount, fromBankAccountName, toBankAccountName] =
       row.split(',');
     // Check for valid date
@@ -496,34 +482,6 @@ function checkTransaction(income, payment, date) {
   return bankTransactionExist;
 }
 
-/*
-// Show filter
-function showFilter() {
-
-  // Start frame
-  let html = startFrame('filter-frame');
-
-  // Start table
-  html += objImportFile.initializeTable(columnWidths);
-
-  // start table body
-  html += objImportFile.startTableBody();
-  html += "</tr>";
-
-  html += objImportFile.insertTableRow('', objImportFile.accountMenu, '', '', '', '', '', '', '', '');
-
-  // end table body
-  html += objImportFile.endTableBody();
-
-  // The end of the table
-  html += objImportFile.endTable();
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame","Filter");
-}
-*/
-
 // Show csv file for transactions
 function showTransactions() {
 
@@ -601,11 +559,11 @@ function showTransactions() {
   // Show update button
   html += objImportFile.insertTableRow('', '');
 
-  html += objImportFile.showButton('update', 'Oppdater');
+  html += showTableButton('update', 'Oppdater');
   html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";
 
   // The end of the table
-  html += objImportFile.endTable();
+  html += endTable();
   document.querySelector('.showTransactions').innerHTML = html;
 }
 
@@ -663,7 +621,7 @@ function importFileName() {
   html += objImportFile.insertTableRow('', '', '');
 
   // Show button (<tr></td>)
-  html += objBankAccount.showButton('importTransacionFile', 'Start import', 'Importer transaksjonsfil');
+  html += showTableButton('importTransacionFile', 'Start import', 'Importer transaksjonsfil');
   html += "<td></td><td></td><td></td><td></td><td></td></tr>";
 
   // insert a table row (<tr></td>)
@@ -674,6 +632,6 @@ function importFileName() {
   html += objImportFile.endTableBody();
 
   // The end of the table
-  html += objImportFile.endTable();
+  html += endTable();
   document.querySelector('.importFileName').innerHTML = html;
 }

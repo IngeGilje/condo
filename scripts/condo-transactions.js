@@ -200,7 +200,7 @@ async function events() {
 // Show filter
 function showFilter(condoId, accountId, fromDate, toDate, amount) {
 
-  // Start frame
+    // Start frame
   let html = startFrame('filter-frame');
 
   // Show condos
@@ -224,7 +224,7 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   //html += showAmount('Beløp', 'filterAmount', amount, true);
   html += inputText('filterAmount', 'Beløp', amount, true);
 
-  // End frame
+   // End filter
   html += "</div>";
   document.querySelector(".showFilter").innerHTML = html;
 
@@ -284,9 +284,7 @@ function showTransactions() {
       if (bankTransaction.income === 0) amount = bankTransaction.payment;
 
       // New table row
-      html += `
-        <tr>
-      `;
+      html += "<tr>";
 
       // Date
       const date = formatNumberToNorDate(bankTransaction.date);
@@ -325,9 +323,7 @@ function showTransactions() {
       // Change transaction
       className = `change${bankTransaction.transactionId}`;
       html += showTableButton(className, 'Rediger');
-      html += `
-        </tr>
-      `;
+      html += "</tr>";
 
       // accumulate
       sumIncome += Number(bankTransaction.income);

@@ -9,12 +9,14 @@ const objEmptyCalendars = new EmptyCalendars("emptycalendars");
 const enableChanges = (objEmptyCalendars.securityLevel > 5);
 const applicationName = "condo-emptycalendars";
 
-const columnWidths = [100, 100, 50, 50, 50, 50,50, 100];
+const columnWidths = [100, 100, 50, 50, 50, 50, 50, 100];
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramEmptyCalendarId = Number(queryParameters.get("emptyCalendarId"));
-const paramDate = Number(queryParameters.get("date"));
+const paramYear = Number(queryParameters.get("year"));
+const paramMonth = Number(queryParameters.get("month"));
+const paramBackApplication = Number(queryParameters.get("backApplication"));
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -52,7 +54,7 @@ async function main() {
       showFilter(Number(year), Number(month));
 
       // Show emtyingcalendars
-      showEmptyCalendars(month);
+      showEmptyCalendars(Number(year), Number(month));
 
       // events for emptycalendar
       events();
@@ -77,7 +79,7 @@ async function events() {
       await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
 
       // Show emtyingcalendar
-      showEmptyCalendars(month);
+      showEmptyCalendars(year, month);
     };
   });
 
@@ -99,13 +101,12 @@ async function events() {
         emptyCalendarId = Number(className.slice(prefix.length));
       }
 
-      className = `date${emptyCalendarId}`
-      let date = document.querySelector(`.${className}`).value;
-      date = formatNorDateToNumber(date);
+      const year = Number(document.querySelector(".filterYear").value)
+      const month = Number(document.querySelector(".filterMonth").value)
       let URL = (objEmptyCalendars.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-emptycalendar.html?emptyCalendarId=${emptyCalendarId}&date=${date}`;
+      URL = `${URL}condo-emptycalendar.html?backApplication=${applicationName}.html&emptyCalendarId=${emptyCalendarId}&year=${year}&month=${month}`;
       window.location.href = URL;
     };
   });
@@ -114,11 +115,11 @@ async function events() {
 // Show filter
 function showFilter(year, month) {
 
-   // Start frame
+  // Start frame
   let html = startFrame('filter-frame');
 
   // Show years
-  html += showSelectedNumbers('filterYear','År',  2020, 2030, year, true);
+  html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
 
   // Show months
   html += showSelectedMonthsNew('filterMonth', 'Måned', month, true);
@@ -130,15 +131,13 @@ function showFilter(year, month) {
 }
 
 // show emptycalendars
-function showEmptyCalendars(month) {
+function showEmptyCalendars(year, month) {
 
   // Show emptyingcalenders
-  const year = Number(document.querySelector('.filterYear').value);
-  month = Number(document.querySelector('.filterMonth').value);
-  const text = findNameOfMonth(month) + " " +String(year);
-  
-  let html = startTable("Tømmeplan",text);
-  html += tableHeader(columnWidths, "Ansvarlig", "Dato", "Restavfall", "Papiravfall", "Matavfall", "Plastavfall","Juletre"," ");
+  const text = findNameOfMonth(month) + " " + String(year);
+
+  let html = startTable("Tømmeplan", text);
+  html += tableHeader(columnWidths, "Ansvarlig", "Dato", "Restavfall", "Papiravfall", "Matavfall", "Plastavfall", "Juletre", " ");
 
   if (Number(document.querySelector('.filterMonth').value) < 10) month = "0" + month;
   const fromDate = Number(document.querySelector('.filterYear').value + month + "01");
@@ -154,7 +153,7 @@ function showEmptyCalendars(month) {
         // condoId 1
         const condoName = objCondo.getCondoNameById(emptycalendar.condoId);
         html += showTableText("condoId22", condoName);
-        
+
         // date 2
         let date = emptycalendar.date;
         date = formatNumberToNorDate(date);

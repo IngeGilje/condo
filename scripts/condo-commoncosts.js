@@ -222,11 +222,6 @@ function showCommonCosts() {
   html += objCommonCosts.insertTableRow('', 'Sum', totalSquareMeters, totalFixedCostsCondoYear, totalCommonCostsCondoMonth, totalCommonCostsCondoYear);
   html += "</tr>";
 
-  /*
-  // The end of the table
-  html += objCommonCosts.endTable();
-  document.querySelector('.showCommonCosts').innerHTML = html;
-  */
   // The end of the table
   html += endTable();
   document.querySelector('.showCommonCosts').innerHTML = html;
