@@ -116,6 +116,10 @@ body {
   min-width: 0;
 }
 
+.field.wide {
+  grid-column: auto;
+}
+
 .field.wide2 {
   grid-column: span 2;
 }
@@ -274,10 +278,6 @@ button:hover {
 
   .filter-card {
     position: static;
-  }
-
-  .field.wide {
-    grid-column: auto;
   }
 
   .actions {
