@@ -7,7 +7,7 @@ const objAccounts = new Accounts('accounts');
 const objBudgets = new Budgets('budgets');
 
 const enableChanges = (objBudgets.securityLevel > 5);
-const applicationName = "condo-budgets";
+const applicationName = "condo-showbudgets";
 
 const columnWidths = [100, 175, 175, 175, 100];
 

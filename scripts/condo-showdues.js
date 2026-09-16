@@ -8,7 +8,7 @@ const objDues = new Dues('dues');
 
 // Fixed values
 const enableChanges = (objDues.securityLevel > 5);
-const applicationName = "condo-dues";
+const applicationName = "condo-showdues";
 
 const columnWidths = [150, 150, 175, 175, 100];
 

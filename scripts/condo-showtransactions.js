@@ -12,7 +12,7 @@ const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objTransactions = new Transactions('transactions');
 
 const enableChanges = (objTransactions.securityLevel > 5);
-const applicationName = "condo-transactions";
+const applicationName = "condo-showtransactions";
 
 const columnWidths = [125, 175, 125, 125, 125, 100];
 

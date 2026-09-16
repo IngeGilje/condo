@@ -10,7 +10,7 @@ const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
 
 const enableChanges = (objAccounts.securityLevel > 5);
-const applicationName = "condo-accounts";
+const applicationName = "condo-showaccounts";
 
 // column widths
 const columnWidths = [175, 175, 100];

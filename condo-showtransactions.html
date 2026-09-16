@@ -3,7 +3,7 @@
 
 <head>
 
-  <title>Konto</title>
+  <title>Bankontotransaksjoner</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,26 +14,21 @@
 
 <body>
 
+  <!-- show vertical menu
+  <div class="menuVertical"></div>
 
-  <!--
-  <main class="page">
+  container for tables
+  <div class="tableContainer">
 
-   show vertical menu 
-    <div class="menuVertical"></div>
+    show filter 
+    <div class="showFilter"></div>
 
-    <div class="content-layout">
+    show transactions
+    <div class="showTransactions"></div>
 
-      show filter 
-      <div class="showFilter"></div>
-
-      show accounts 
-      <div class="showAccount"></div>
-
-      show accounts 
-    <div class="showAccounts"></div>
-
-    </div>
-  </main>
+    show message 
+    <div class="showMessage"></div>
+  </div>
   -->
 
   <main class="page">
@@ -47,8 +42,8 @@
     <!-- table container for all tables -->
     <div class="tableContainer">
 
-      <!-- show accounts -->
-      <div class="showAccounts"></div>
+      <!-- show transactions -->
+      <div class="showTransactions"></div>
 
     </div>
 
@@ -56,11 +51,17 @@
     <div class="showMessage"></div>
   </main>
 
+
   <script src="classes/condo-class.js"></script>
   <script src="classes/condo-user-class.js"></script>
+  <script src="classes/condo-condo-class.js"></script>
+  <script src="classes/condo-showaccounts-class.js"></script>
+  <script src="classes/condo-bankaccount-class.js"></script>
+  <script src="classes/condo-supplier-class.js"></script>
+  <script src="classes/condo-userbankaccounts-class.js"></script>
   <script src="classes/condo-condominium-class.js"></script>
-  <script src="classes/condo-accounts-class.js"></script>
-  <script src="scripts/condo-accounts.js"></script>
+  <script src="classes/condo-showtransactions-class.js"></script>
+  <script src="scripts/condo-showtransactions.js"></script>
 </body>
 
 </html>

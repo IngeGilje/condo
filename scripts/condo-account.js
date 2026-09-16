@@ -106,7 +106,7 @@ async function events() {
       let URL = (objAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-accounts.html?accountId=${paramAccountId}&fixedCost=${paramFixedCost}`;
+      URL = `${URL}condo-showaccounts.html?accountId=${paramAccountId}&fixedCost=${paramFixedCost}`;
       window.location.href = URL;
     };
   });

@@ -49,7 +49,7 @@ class Condos {
       applicationName: 'condo-news.html',
       className: "condo-news",
       text: "Rediger Nyheter",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-news.html',
@@ -62,8 +62,8 @@ class Condos {
   // array of horizontal empty calendar menu
   arrayMenuEmptyCalendar = [
     {
-      applicationName: 'condo-emptycalendars.html',
-      className: "condo-emptycalendars",
+      applicationName: 'condo-showemptycalendars.html',
+      className: "condo-showemptycalendars",
       text: "Vis Tømmekalender",
       securityLevel: 1
     },
@@ -71,7 +71,7 @@ class Condos {
       applicationName: 'condo-emptycalendar.html',
       className: "condo-emptycalendar",
       text: "Rediger Tømmekalender",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-emptycalendar.html',
@@ -87,17 +87,17 @@ class Condos {
       applicationName: 'condo-condominium.html',
       className: "condo-condominium",
       text: "Rediger Sameie",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-bankaccount.html',
       className: "condo-bankaccount",
       text: "Rediger Bankkonto",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
-      applicationName: 'condo-accounts.html',
-      className: "condo-accounts",
+      applicationName: 'condo-showaccounts.html',
+      className: "condo-showaccounts",
       text: "Vis Konti",
       securityLevel: 1
     },
@@ -105,7 +105,7 @@ class Condos {
       applicationName: 'condo-account.html',
       className: "condo-account",
       text: "Rediger Konto",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-condominium.html',
@@ -121,39 +121,39 @@ class Condos {
       applicationName: 'condo-user.html',
       className: "condo-user",
       text: "Rediger Bruker",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-password.html',
       className: "condo-password",
       text: "Rediger Passord",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-condo.html',
       className: "condo-condo",
       text: "Rediger Leilighet",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-userbankaccount.html',
       className: "condo-userbankaccount",
       text: "Rediger Bankkonto",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-user.html',
       className: "condo-user",
       text: "Menyvalg",
-      securityLevel: 1
+      securityLevel: 6
     },
   ];
 
   // menu array for transactions
   arrayMenuTransaction = [
     {
-      applicationName: 'condo-transactions.html',
-      className: "condo-transactions",
+      applicationName: 'condo-showtransactions.html',
+      className: "condo-showtransactions",
       text: "Vis Transaksjoner",
       securityLevel: 1
     },
@@ -161,17 +161,17 @@ class Condos {
       applicationName: 'condo-transaction.html',
       className: "condo-transaction",
       text: "Rediger Transaksjon",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-budget.html',
       className: "condo-budget",
       text: "Rediger Budsjett",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
-      applicationName: 'condo-budgets.html',
-      className: "condo-budgets",
+      applicationName: 'condo-showbudgets.html',
+      className: "condo-showbudgets",
       text: "Vis Budsjett",
       securityLevel: 1
     },
@@ -194,8 +194,8 @@ class Condos {
       securityLevel: 1
     },
     {
-      applicationName: 'condo-transactions.html',
-      className: "condo-transactions",
+      applicationName: 'condo-showtransactions.html',
+      className: "condo-showtransactions",
       text: "Menyvalg",
       securityLevel: 1
     },
@@ -204,8 +204,8 @@ class Condos {
   // menu array for due
   arrayMenuDue = [
     {
-      applicationName: 'condo-dues.html',
-      className: "condo-dues",
+      applicationName: 'condo-showdues.html',
+      className: "condo-showdues",
       text: "Vis Forfall",
       securityLevel: 1
     },
@@ -213,17 +213,17 @@ class Condos {
       applicationName: 'condo-due.html',
       className: "condo-due",
       text: "Rediger Forfall",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-supplier.html',
       className: "condo-supplier",
       text: "Rediger Leverandør",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
-      applicationName: 'condo-commoncosts.html',
-      className: "condo-commoncosts",
+      applicationName: 'condo-showcommoncosts.html',
+      className: "condo-showcommoncosts",
       text: "Vis Felleskostnader",
       securityLevel: 1
     },
@@ -231,7 +231,7 @@ class Condos {
       applicationName: 'condo-commoncost.html',
       className: "condo-commoncost",
       text: "Rediger Felleskostnad",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-overview.html',
@@ -240,8 +240,8 @@ class Condos {
       securityLevel: 1
     },
     {
-      applicationName: 'condo-dues.html',
-      className: "condo-dues",
+      applicationName: 'condo-showdues.html',
+      className: "condo-showdues",
       text: "Menyvalg",
       securityLevel: 1
     },
@@ -253,7 +253,7 @@ class Condos {
       applicationName: 'condo-project.html',
       className: "condo-project",
       text: "Rediger Prosjekt",
-      securityLevel: 1
+      securityLevel: 6
     },
     {
       applicationName: 'condo-showprojects.html',
@@ -268,33 +268,6 @@ class Condos {
       securityLevel: 1
     },
   ];
-
-
-  /*
-  // menu array for remote heating
-  arrayMenuRemoteHeating = [
-    {
-      applicationName: 'condo-remoteheating.html',
-      className: "condo-remoteheating",
-      text: "Rediger Fjernvarme"
-    },
-    {
-      applicationName: 'condo-remoteheatings.html',
-      className: "condo-remoteheatings",
-      text: "Vis Fjernvarme"
-    },
-    {
-      applicationName: 'condo-remoteheatingprice.html',
-      className: "condo-remoteheatingprice",
-      text: "Rediger  Fjernvarmepris"
-    },
-    {
-      applicationName: 'condo-remoteheating.html',
-      className: "condo-remoteheating",
-      text: "Menyvalg"
-    },
-  ];
-  */
 
   // Show input (<td></td>) with center text
   editTableCellCenter(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {

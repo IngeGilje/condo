@@ -74,14 +74,14 @@ async function events() {
     };
   });
 
-  // return to condo-budgets.js
+  // return to condo-showbudgets.js
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('back')) {
 
       let URL = (objBudgets.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-budgets.html?budgetId=${paramBudgetId}&year=${paramYear}`;
+      URL = `${URL}condo-showbudgets.html?budgetId=${paramBudgetId}&year=${paramYear}`;
       window.location.href = URL;
     };
   });

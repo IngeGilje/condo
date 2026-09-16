@@ -95,8 +95,8 @@ async function events() {
 
       // Start transactions
       const URL = (objUser.serverStatus === 1)
-        ? 'http://ingegilje.no/condo-transactions.html'
-        : 'http://localhost/condo-transactions.html';
+        ? 'http://ingegilje.no/condo-showtransactions.html'
+        : 'http://localhost/condo-showtransactions.html';
       window.location.href = URL;
     };
   });

@@ -3,18 +3,19 @@
 
 <head>
 
-  <title>Budsjett</title>
+  <title>Felleskostnader</title>
+  <meta charset="UTF-8">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles/condo.css">
   <link rel="stylesheet" href="styles/main.css">
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <!-- table container for all tables
+  <!-- table container for all tables 
   <div class="tableContainer">
 
     show vertical menu
@@ -23,24 +24,22 @@
     show main menu 
     <div class="menuMain"></div>
 
-    show transaction menu
-    <div class="menuTransaction"></div>
+    show due menu 
+    <div class="menuDue"></div>
 
     show filter
     <div class="showFilter"></div>
 
-    show budgets
-    <div class="showBudgets"></div>
+    show common costs 
+    <div class="showCommonCosts"></div>
 
     show message 
     <div class="showMessage"></div>
 
-    show message 
-    <div class="showMessage"></div>
   </div>
   -->
 
-   <main class="page">
+  <main class="page">
 
     <!-- show vertical menu -->
     <div class="menuVertical"></div>
@@ -51,8 +50,8 @@
     <!-- table container for all tables -->
     <div class="tableContainer">
 
-      <!-- show budgets -->
-    <div class="showBudgets"></div>
+      <!-- show common costs -->
+      <div class="showCommonCosts"></div>
     </div>
 
     <!-- show message -->
@@ -61,9 +60,14 @@
 
   <script src="classes/condo-class.js"></script>
   <script src="classes/condo-user-class.js"></script>
-  <script src="classes/condo-accounts-class.js"></script>
-  <script src="classes/condo-budgets-class.js"></script>
-  <script src="scripts/condo-budgets.js"></script>
+  <script src="classes/condo-condominium-class.js"></script>
+  <script src="classes/condo-showbudgets-class.js"></script>
+  <script src="classes/condo-showaccounts-class.js"></script>
+  <script src="classes/condo-showtransactions-class.js"></script>
+  <script src="classes/condo-annualaccount-class.js"></script>
+  <script src="classes/condo-condo-class.js"></script>
+  <script src="classes/condo-showcommoncosts-class.js"></script>
+  <script src="scripts/condo-showcommoncosts.js"></script>
 </body>
 
 </html>

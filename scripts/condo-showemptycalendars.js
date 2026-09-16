@@ -7,7 +7,7 @@ const objCondo = new Condo('condo');
 const objEmptyCalendars = new EmptyCalendars("emptycalendars");
 
 const enableChanges = (objEmptyCalendars.securityLevel > 5);
-const applicationName = "condo-emptycalendars";
+const applicationName = "condo-showemptycalendars";
 
 const columnWidths = [100, 100, 50, 50, 50, 50, 50, 100];
 

@@ -106,7 +106,7 @@ async function events() {
       let URL = (objDues.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-dues.html?dueId=${paramDueId}&year=${paramYear}&backApplication=${paramBackApplication}`;
+      URL = `${URL}condo-showdues.html?dueId=${paramDueId}&year=${paramYear}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
     };
   });
