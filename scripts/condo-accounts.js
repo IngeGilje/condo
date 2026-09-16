@@ -42,7 +42,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objAccounts.showMenu();
+      let html = objAccounts.showMenu(objAccounts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title

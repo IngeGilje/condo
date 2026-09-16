@@ -12,7 +12,7 @@ const objCondominium = new Condominium('scondominium');
 const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objBankAccountTransaction = new BankAccountTransaction('bankaccounttransaction');
 
-const enableChanges = (objAccount.securityLevel > 5);
+const enableChanges = (objAccounts.securityLevel > 5);
 
 const columnWidths = [175, 175, 175, 175, 175, 175, 175, 175, 175, 100];
 

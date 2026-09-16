@@ -47,7 +47,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objTransactions.showMenu();
+      let html = objTransactions.showMenu(objTransactions.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';

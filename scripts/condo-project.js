@@ -44,28 +44,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      /*
-      // Show vertical menu
-      let html = objProjects.showMenu();
+       // Show menu
+      let html = objProjects.showMenu(objProjects.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-      */
-      // Show menu
-      let html = objProjects.showMenu();
-      document.querySelector('.menuVertical').innerHTML = html;
-
-      /*
-      // Show main menu
-      let html = objProjects.showHorizontalMenu("filter-frame", objProjects.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show project menu
-      html = objProjects.showHorizontalMenu("filter-frame", objProjects.arrayMenuTransaction);
-      document.querySelector('.menuTransaction').innerHTML = html;
-      objProjects.markActivatedApplication(objProjects.arrayMenuTransaction, applicationName);
-      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);

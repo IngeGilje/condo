@@ -30,31 +30,14 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objUserBankAccounts.showMenu();
+      let html = objUserBankAccounts.showMenu(objUserBankAccounts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objUserBankAccounts.showHorizontalMenu("filter-frame", objUserBankAccounts.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show user menu
-      html = objUserBankAccounts.showHorizontalMenu("filter-frame", objUserBankAccounts.arrayMenuUser);
-      document.querySelector('.menuUser').innerHTML = html;
-      objUserBankAccounts.markActivatedApplication(objUserBankAccounts.arrayMenuUser, applicationName);
-      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objUserBankAccounts.condominiumId, resident, objUserBankAccounts.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objUserBankAccounts.condominiumId, fixedCost);
       await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
-
-      // Show header
-      //showHeader();
 
       // Show filter
       const userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[0]?.userBankAccountId ?? 0;

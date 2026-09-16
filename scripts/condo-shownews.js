@@ -1,4 +1,4 @@
-// News maintenance
+// News maintenance 1.1
 
 // Activate classes
 const today = new Date();
@@ -29,22 +29,8 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objNews.showMenu();
+      let html = objNews.showMenu(objNews.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show news menu
-      html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMenuNews);
-      document.querySelector('.menuNews').innerHTML = html;
-      objNews.markActivatedApplication(objNews.arrayMenuNews, applicationName);
-      */
 
       // Load users and news tables
       const resident = 'Y';

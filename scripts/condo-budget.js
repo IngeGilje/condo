@@ -36,7 +36,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objBudgets.showMenu();
+      let html = objBudgets.showMenu(objBudgets.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';

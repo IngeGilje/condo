@@ -1,4 +1,4 @@
-// News maintenance
+// News maintenance 1.1
 
 // Activate classes
 const today = new Date();
@@ -29,7 +29,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objNews.showMenu();
+      let html = objNews.showMenu(objNews.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       // Change frame title
@@ -187,7 +187,7 @@ function showNews(newsId) {
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
 
-  let html = startContent('Transaksjonsdetaljer');
+  let html = startContent('Nyheter');
 
   // news date
   let newsDate = objNews.arrayNews[rowNumberNews]?.date ?? 0;

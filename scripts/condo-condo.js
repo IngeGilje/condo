@@ -28,28 +28,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      /*
-      // Show vertical menu
-      let html = objCondo.showMenu();
-      document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-      */
       // Show menu
-      let html = objCondo.showMenu();
+      let html = objCondo.showMenu(objCondo.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
-
-      /*
-      // Show main menu
-      let html = objCondo.showHorizontalMenu("filter-frame", objCondo.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show user menu
-      html = objCondo.showHorizontalMenu("filter-frame", objCondo.arrayMenuUser);
-      document.querySelector('.menuUser').innerHTML = html;
-      objCondo.markActivatedApplication(objCondo.arrayMenuUser, applicationName);
-      */
 
       const resident = 'Y';
       await objUser.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);
@@ -197,17 +178,17 @@ function showCondo(condoId) {
 
   // condo
   const name = objCondo.arrayCondo[rowNumberCondo]?.name ?? '';
-  html += inputText('name','Leilighet',  name, enableChanges);
+  html += inputText('name', 'Leilighet', name, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
 
   // street
-   const street = objCondo.arrayCondo[rowNumberCondo]?.street ?? '';
-  html += inputText('street','Gate',  street, enableChanges);
+  const street = objCondo.arrayCondo[rowNumberCondo]?.street ?? '';
+  html += inputText('street', 'Gate', street, enableChanges);
 
   // address 2
   const address2 = objCondo.arrayCondo[rowNumberCondo]?.address2 ?? '';
-  html += inputText('address2','Addresse 2',  address2, enableChanges);
+  html += inputText('address2', 'Addresse 2', address2, enableChanges);
   html += "<div></div>";
 
   // post code
@@ -218,7 +199,7 @@ function showCondo(condoId) {
 
   // City
   const city = objCondo.arrayCondo[rowNumberCondo]?.city ?? '';
-  html += inputText('city','Poststed',  city, enableChanges);
+  html += inputText('city', 'Poststed', city, enableChanges);
   html += "<div></div>";
 
   // squareMeters
@@ -228,7 +209,7 @@ function showCondo(condoId) {
   html += "<div></div>";
   html += "<div></div>";
 
- html += endContent();
+  html += endContent();
 
   // Buttons
   if (enableChanges) {
@@ -244,7 +225,7 @@ function showCondo(condoId) {
     // End buttons
     html += endButtons();
   }
-   document.querySelector('.showCondo').innerHTML = html;
+  document.querySelector('.showCondo').innerHTML = html;
 }
 
 // Update a condo row
@@ -252,7 +233,7 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = validateIntervalNew('condoId',  'Ugyldig Leilighet', true, condoId, 0, objCondo.nineNine);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet', true, condoId, 0, objCondo.nineNine);
 
   // validate name
   const name = document.querySelector('.name').value;
@@ -260,19 +241,19 @@ async function updateCondoRow(condoId) {
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateTextNew('street',  'Ugyldig Gatenavn', true, street, 3, 45);
+  const validStreet = validateTextNew('street', 'Ugyldig Gatenavn', true, street, 3, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = validateTextNew('address2',  'Ugyldig Adresse', true, address2, 0, 45);
+  const validAddress2 = validateTextNew('address2', 'Ugyldig Adresse', true, address2, 0, 45);
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = validateIntervalNew('postalCode',  'Ugyldig postnummer', true, Number(postalCode), 1, 9999);
+  const validPostalCode = validateIntervalNew('postalCode', 'Ugyldig postnummer', true, Number(postalCode), 1, 9999);
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = validateTextNew('city',  'Ugyldig Poststed', true, city, 0, 45);
+  const validCity = validateTextNew('city', 'Ugyldig Poststed', true, city, 0, 45);
 
   // validate squaremeters
   const squareMeters = Number(formatNorAmountToNumber(document.querySelector('.squareMeters').value));

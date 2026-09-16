@@ -37,7 +37,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objEmptyCalendars.showMenu();
+      let html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objCondo.loadCondoTable(objEmptyCalendars.condominiumId, objEmptyCalendars.nineNine);

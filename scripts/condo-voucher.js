@@ -43,7 +43,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objVoucher.showMenu();
+      let html = objVoucher.showMenu(objVoucher.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const fixedCost = 'A';

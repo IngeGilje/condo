@@ -42,7 +42,7 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objImportFile.showMenu();
+      let html = objImportFile.showMenu(objImportFile.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       let transactionFile = true;

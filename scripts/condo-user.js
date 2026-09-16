@@ -29,29 +29,9 @@ async function main() {
       window.location.href = URL;
     } else {
 
-      /*
-      // Show vertical menu
-      let html = objUser.showMenu();
-      document.querySelector('.menuVertical').innerHTML = html;
-
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-      */
-
       // Show menu
-      let html = objUser.showMenu();
+      let html = objUser.showMenu(objUser.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
-
-      /*
-      // Show main menu
-      let html = objUser.showHorizontalMenu("filter-frame", objUser.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show user menu
-      html = objUser.showHorizontalMenu("filter-frame", objUser.arrayMenuUser);
-      document.querySelector('.menuUser').innerHTML = html;
-      objUser.markActivatedApplication(objUser.arrayMenuUser, applicationName);
-      */
 
       if (enableChanges) {
 

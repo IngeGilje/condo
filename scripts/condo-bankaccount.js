@@ -24,7 +24,7 @@ if ((objBankAccount.condominiumId === 0) || (objBankAccount.user === null)) {
 } else {
 
   // Show menu
-  let html = objCondominium.showMenu();
+  let html = objCondominium.showMenu(objBankAccount.securityLevel);
   document.querySelector('.menuVertical').innerHTML = html;
 
   // Call main when script loads

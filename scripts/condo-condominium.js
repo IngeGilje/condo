@@ -29,7 +29,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objCondominium.showMenu();
+      let html = objCondominium.showMenu(objCondominium.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objCondominium.loadCondominiumsTable();

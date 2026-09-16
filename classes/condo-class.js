@@ -42,17 +42,20 @@ class Condos {
     {
       applicationName: 'condo-shownews.html',
       className: "condo-shownews",
-      text: "Vis Nyheter"
+      text: "Vis Nyheter",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-news.html',
       className: "condo-news",
-      text: "Rediger Nyheter"
+      text: "Rediger Nyheter",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-news.html',
       className: "condo-news",
-      text: "Menyvalg"
+      text: "Menyvalg",
+      securityLevel: 1
     },
   ];
 
@@ -61,17 +64,20 @@ class Condos {
     {
       applicationName: 'condo-emptycalendars.html',
       className: "condo-emptycalendars",
-      text: "Vis Tømmekalender"
+      text: "Vis Tømmekalender",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-emptycalendar.html',
       className: "condo-emptycalendar",
-      text: "Rediger Tømmekalender"
+      text: "Rediger Tømmekalender",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-emptycalendar.html',
       className: "condo-emptycalendar",
-      text: "Menyvalg"
+      text: "Menyvalg",
+      securityLevel: 1
     },
   ];
 
@@ -80,27 +86,32 @@ class Condos {
     {
       applicationName: 'condo-condominium.html',
       className: "condo-condominium",
-      text: "Rediger Sameie"
+      text: "Rediger Sameie",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-bankaccount.html',
       className: "condo-bankaccount",
-      text: "Rediger Bankkonto"
+      text: "Rediger Bankkonto",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-accounts.html',
       className: "condo-accounts",
-      text: "Vis Konti"
+      text: "Vis Konti",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-account.html',
       className: "condo-account",
-      text: "Rediger Konto"
+      text: "Rediger Konto",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-condominium.html',
       className: "condo-condominium",
-      text: "Menyvalg"
+      text: "Menyvalg",
+      securityLevel: 1
     },
   ];
 
@@ -109,27 +120,32 @@ class Condos {
     {
       applicationName: 'condo-user.html',
       className: "condo-user",
-      text: "Rediger Bruker"
+      text: "Rediger Bruker",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-password.html',
       className: "condo-password",
-      text: "Rediger Passord"
+      text: "Rediger Passord",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-condo.html',
       className: "condo-condo",
-      text: "Rediger Leilighet"
+      text: "Rediger Leilighet",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-userbankaccount.html',
       className: "condo-userbankaccount",
-      text: "Rediger Bankkonto"
+      text: "Rediger Bankkonto",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-user.html',
       className: "condo-user",
-      text: "Menyvalg"
+      text: "Menyvalg",
+      securityLevel: 1
     },
   ];
 
@@ -138,42 +154,50 @@ class Condos {
     {
       applicationName: 'condo-transactions.html',
       className: "condo-transactions",
-      text: "Vis Transaksjoner"
+      text: "Vis Transaksjoner",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-transaction.html',
       className: "condo-transaction",
-      text: "Rediger Transaksjon"
+      text: "Rediger Transaksjon",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-budget.html',
       className: "condo-budget",
-      text: "Rediger Budsjett"
+      text: "Rediger Budsjett",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-budgets.html',
       className: "condo-budgets",
-      text: "Vis Budsjett"
+      text: "Vis Budsjett",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-annualaccount.html',
       className: "condo-annualaccount",
-      text: "Vis Årsregnskap"
+      text: "Vis Årsregnskap",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-importfile.html',
       className: "condo-importfile",
-      text: "Hent transaksjoner"
+      text: "Hent transaksjoner",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-liquidity.html',
       className: "condo-liquidity",
-      text: "Vis Likviditet"
+      text: "Vis Likviditet",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-transactions.html',
       className: "condo-transactions",
-      text: "Menyvalg"
+      text: "Menyvalg",
+      securityLevel: 1
     },
   ];
 
@@ -182,37 +206,44 @@ class Condos {
     {
       applicationName: 'condo-dues.html',
       className: "condo-dues",
-      text: "Vis Forfall"
+      text: "Vis Forfall",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-due.html',
       className: "condo-due",
-      text: "Rediger Forfall"
+      text: "Rediger Forfall",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-supplier.html',
       className: "condo-supplier",
-      text: "Rediger Leverandør"
+      text: "Rediger Leverandør",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-commoncosts.html',
       className: "condo-commoncosts",
-      text: "Vis Felleskostnader"
+      text: "Vis Felleskostnader",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-commoncost.html',
       className: "condo-commoncost",
-      text: "Rediger Felleskostnad"
+      text: "Rediger Felleskostnad",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-overview.html',
       className: "condo-overview",
-      text: "Vis Betalingsoversikt"
+      text: "Vis Betalingsoversikt",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-dues.html',
       className: "condo-dues",
-      text: "Menyvalg"
+      text: "Menyvalg",
+      securityLevel: 1
     },
   ];
 
@@ -221,17 +252,20 @@ class Condos {
     {
       applicationName: 'condo-project.html',
       className: "condo-project",
-      text: "Rediger Prosjekt"
+      text: "Rediger Prosjekt",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-showprojects.html',
       className: "condo-showprojects",
-      text: "Vis Prosjekt"
+      text: "Vis Prosjekt",
+      securityLevel: 1
     },
     {
       applicationName: 'condo-project.html',
       className: "condo-project",
-      text: "Menyvalg"
+      text: "Menyvalg",
+      securityLevel: 1
     },
   ];
 
@@ -947,7 +981,7 @@ class Condos {
   */
 
   // Show vertical menu
-  showMenu() {
+  showMenu(securityLevel) {
 
     // Start frame
     let html = `
@@ -965,13 +999,13 @@ class Condos {
       >
     `;
 
-    html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter");
-    html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender");
-    html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie");
-    html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker");
-    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner");
-    html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall");
-    html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt");
+    html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter",securityLevel);
+    html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender",securityLevel);
+    html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie",securityLevel);
+    html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker",securityLevel);
+    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner",securityLevel);
+    html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall",securityLevel);
+    html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt",securityLevel);
 
     html += `
       </div>
@@ -984,7 +1018,7 @@ class Condos {
 
 
   // Show vertical menu
-  showVerticalMenu(className, arrayMenu, label, applicationName) {
+  showVerticalMenu(className, arrayMenu, label, securityLevel) {
 
     const URL = (this.serverStatus === 1)
       ? 'http://ingegilje.no/'
@@ -1006,15 +1040,17 @@ class Condos {
 
     arrayMenu.forEach((menu) => {
 
-      html += `
+      if (securityLevel >= menu.securityLevel) {
+        html += `
         <option 
           value="${URL}${menu.applicationName}"
           ${menu.text.includes('Menyvalg')
-          ? 'selected'
-          : ''}
+            ? 'selected'
+            : ''}
         >
           ${menu.text.trim()}
         </option>`;
+      }
     });
 
     html += `

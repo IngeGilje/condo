@@ -39,7 +39,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objAccounts.showMenu();
+      let html = objAccounts.showMenu(objAccounts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
