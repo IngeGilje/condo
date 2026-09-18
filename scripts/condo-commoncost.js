@@ -181,16 +181,16 @@ async function events() {
 function showFilter(year) {
 
   // Start frame
-  //let html = startFrame('filter-frame');
+  //let html = startTableFilter('filter-frame');
 
   // Start filter
-  let html = startFilter("Felleskostnader");
+  let html = startGridFilter("Felleskostnader");
 
   // Show year
   html += showSelectedNumbers('filterYear', "Regnskapsår", 2020, 2030, year, true)
 
   // End filter
-  html += endFilter();
+  html += endGridFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }
@@ -200,7 +200,7 @@ function showCommonCost(year) {
 
   const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.year === year);
 
-  html = startContent('Felleskostnader');
+  html = startGrid('Felleskostnader');
 
   // common cost per squaremeter
   let commonCostSquareMeter = 0;
@@ -240,7 +240,7 @@ function showCommonCost(year) {
   html += inputText('calculatedFixedCost', 'Beregnet Fast Kostnad', calculatedFixedCost, enableChanges, 'Fast Kostnad');
   html += "<div></div>";
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {

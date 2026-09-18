@@ -32,20 +32,6 @@ async function main() {
       let html = objNews.showMenu(objNews.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show news menu
-      html = objNews.showHorizontalMenu("filter-frame", objNews.arrayMenuNews);
-      document.querySelector('.menuNews').innerHTML = html;
-      objNews.markActivatedApplication(objNews.arrayMenuNews, applicationName);
-      */
-
       const resident = 'Y';
       await objUser.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
@@ -153,31 +139,14 @@ async function events() {
 // Show filter
 function showFilter(newsId) {
 
-  /*
-  // Start frame
-  let html = startFrame('filter-frame');
-
-  // Show news
-  html += objNews.showSelectedNewsNew('Nyhet', 'filterNewsId', '', newsId, '', '', true);
-
-  // End filter
-  html += "</div>";
-
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame","Filter");
-  */
-
   // Start filter
-  let html = startFilter("Nyheter");
+  let html = startGridFilter("Nyheter");
 
   // Show news
   html += objNews.showSelectedNewsNew('filterNewsId', newsId, '', '', enableChanges);
 
   // End filter
-  html += endFilter();
-
+  html += endGridFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -187,37 +156,31 @@ function showNews(newsId) {
   // row number news array
   const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
 
-  let html = startContent('Nyheter');
+  let html = startGrid('Nyheter');
 
   // news date
   let newsDate = objNews.arrayNews[rowNumberNews]?.date ?? 0;
   newsDate = formatNumberToISODate(newsDate);
-  //html += showDate('Dato', 'newsDate', newsDate, enableChanges);
-  //html += "</div>";
   html += inputDate('newsDate', 'Dato', newsDate, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
 
   // userId
   const userId = objNews.arrayNews[rowNumberNews]?.userId ?? 0;
-  //html += objUser.showSelectedUsersNew('Forfatter', 'userId', userId, 'Velg forfatter', '', true);
-  //html += "</div>";
   html += objUser.showSelectedUsersNew('userId', 'Forfatter', userId, '', '', true);
   html += "<div></div>";
   html += "<div></div>";
 
   // title
   const title = objNews.arrayNews[rowNumberNews]?.title ?? '';
-  //html += showTextArea('Tittel', 'title', title, 45, enableChanges, 2);
-  //html += "</div>";
-  html += inputWideText('title', 'Tittel', title, 2, enableChanges);
+  html += inputGridWideText('title', "Tittel",title, 45, 1);
+  html += "<div></div>";
 
   // content
   const content = objNews.arrayNews[rowNumberNews]?.content ?? '';
-  //html += showTextArea('Innhold', 'content', content, 512, enableChanges, 6);
-  html += inputWideText('content', 'Innhold', content, 3, enableChanges);
+  html += inputGridWideText('content', "Innhold",content, 250, 10);
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {
@@ -246,21 +209,21 @@ async function updateNewsRow(newsId) {
 
   // validate title
   const title = document.querySelector('.title').value.trim();
-  const validTitle = validateTextNew('title',  'Ugyldig Tittel', true, title, 3, 45);
+  const validTitle = validateTextNew('title', 'Ugyldig Tittel', true, title, 3, 45);
 
   // validate date
   let date = document.querySelector('.newsDate').value;
   date = Number(objNews.formatDateToNumber(date));
-  const validDate = validateIntervalNew('date',  'Ugyldig Dato', true, date, 1, objNews.nineNine);
+  const validDate = validateIntervalNew('date', 'Ugyldig Dato', true, date, 20200101, 20291231);
 
   // validate userId  
   const userId = Number(document.querySelector('.userId').value);
-  const validUserId = validateIntervalNew('userId',  'Ugyldig forfatter', true, userId, 1, objNews.nineNine);
+  const validUserId = validateIntervalNew('userId', 'Ugyldig forfatter', true, userId, 1, objNews.nineNine);
 
   // clean content
   let content = document.querySelector('.content').value.trim();
   //content = content.replace(/<[^>]*>?/gm, "");
-  const validContent = validateTextNew('content',  'Ugyldig innhold', true, content, 3, 512);
+  const validContent = validateTextNew('content', 'Ugyldig innhold', true, content, 3, 512);
 
   if (validTitle && validDate && validUserId && validContent) {
 

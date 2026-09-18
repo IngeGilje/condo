@@ -1,31 +1,95 @@
 <!DOCTYPE html>
-<html lang="nb-NO">
-
+<html lang="en">
 <head>
-
-  <title>Rediger Transaksjon</title>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/main.css">
+
+  <style>
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 750px;
+    }
+
+    .text-field {
+      grid-column: 1 / -1;
+    }
+
+    .text-field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .text-field textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 12px;
+
+      font-family: inherit;
+      font-size: 16px;
+      line-height: 1.5;
+
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+
+    .text-field textarea:focus {
+      border-color: #2563eb;
+      outline: 3px solid rgb(37 99 235 / 15%);
+    }
+
+    .character-counter {
+      display: block;
+      margin-top: 5px;
+      text-align: right;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .character-counter.limit-reached {
+      color: #dc2626;
+      font-weight: 600;
+    }
+  </style>
 </head>
 
 <body>
 
-  <main class="page">
+  <div class="form-grid">
+    <div class="text-field">
+      <label for="content">Text</label>
 
-
-    <!-- start inputDate -->
-    <div class="field">
-      <label 
-        for="newsDate"
-      >
-        Dato
-      </label>
-      <input type="date" class="newsDate" id="newsDate" value="2026-08-20">
+      <textarea
+        id="content"
+        class="content"
+        name="content"
+        rows="4"
+        maxlength="250"></textarea>
     </div>
-    <!-- end inputDate -->
+  </div>
+
+  <script>
+    const textArea = document.querySelector("#content");
+    const counter = document.querySelector("#characterCounter");
+    const maximumLength = 250;
+
+    function updateCharacterCounter() {
+      const currentLength = textArea.value.length;
+
+      counter.textContent =
+        `${currentLength} / ${maximumLength} characters`;
+
+      counter.classList.toggle(
+        "limit-reached",
+        currentLength >= maximumLength
+      );
+    }
+  </script>
 
 </body>
-
 </html>

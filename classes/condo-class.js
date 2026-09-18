@@ -269,6 +269,8 @@ class Condos {
     },
   ];
 
+  // Login
+
   // Show input (<td></td>) with center text
   editTableCellCenter(className, value, maxlength, enableChanges, colspan = 1, rowspan = 1) {
 
@@ -315,6 +317,7 @@ class Condos {
     </td>`;
   }
 
+  /*
   // Show label
   showLabel(className, labelText) {
     return `
@@ -324,7 +327,9 @@ class Condos {
         </label>
       `;
   }
+  */
 
+  /*
   // Show button
   showTableButton(className, text) {
 
@@ -340,6 +345,7 @@ class Condos {
 
     return html;
   }
+  */
 
   /*
   // Select numbers
@@ -463,11 +469,13 @@ class Condos {
 
     // Bank account name from bank account table 
     const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    /*
     if (rowNumberBankAccount !== -1) {
 
       bankAccountName = objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;
     }
-
+    */
+    bankAccountName = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.name ?? '';
     if (!bankAccountName) {
 
       // Bank account name from supplier table
@@ -972,13 +980,13 @@ class Condos {
       >
     `;
 
-    html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter",securityLevel);
-    html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender",securityLevel);
-    html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie",securityLevel);
-    html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker",securityLevel);
-    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner",securityLevel);
-    html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall",securityLevel);
-    html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt",securityLevel);
+    html += this.showVerticalMenu('news', this.arrayMenuNews, "Nyheter", securityLevel);
+    html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender", securityLevel);
+    html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", securityLevel);
+    html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", securityLevel);
+    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", securityLevel);
+    html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", securityLevel);
+    html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt", securityLevel);
 
     html += `
       </div>
@@ -1063,32 +1071,6 @@ function inputNumber(className, label, value, enableChanges) {
   return html
 }
 
-// input text
-function inputText(className, label, value, enableChanges) {
-
-  html = `
-    <!-- start inputText --> 
-    <div
-     class="field"
-    >
-      <label
-        for="${className}"
-      >
-        ${label}
-      </label>
-      <input 
-        type="text"
-        class="${className}"
-        id="${className}"
-        value="${value}"
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-    </div>
-    <!-- end inputText --> 
-    `;
-
-  return html;
-}
 
 // show text
 function showText(value) {
@@ -1109,7 +1091,7 @@ function showText(value) {
 function inputTextTabel(className, value, enableChanges) {
 
   html = `
-    <!-- start inputText --> 
+    <!-- start inputTextTabel --> 
 
       <input 
         type="text"
@@ -1118,37 +1100,12 @@ function inputTextTabel(className, value, enableChanges) {
         ${(enableChanges) ? '' : 'readonly'}
       >
 
-    <!-- end inputText --> 
+    <!-- end inputTextTabel --> 
     `;
 
   return html
 }
 
-// input date
-function inputDate(className, label, value, enableChanges) {
-
-  let html = `
-    <!-- start inputDate -->
-    <div
-      class="field"
-    >
-      <label
-        for="${className}"
-      >
-        ${label}
-      </label>
-      <input 
-        type="date"
-        class="${className}"
-        id="${className}" 
-        value="${value}"
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-    </div>
-    <!-- end inputDate -->
-  `;
-  return html;
-}
 
 /*
 // Input text
@@ -1240,6 +1197,7 @@ function showTableButton(className, text, month, year) {
   `;
 }
 
+/*
 // Input wide text
 function inputWideText(className, label, value, colSpan, enableChanges) {
 
@@ -1268,6 +1226,7 @@ function inputWideText(className, label, value, colSpan, enableChanges) {
 
   return html;
 }
+*/
 
 
 // Start buttons
@@ -1425,9 +1384,7 @@ function showTextArea(label, className, value, maxlength, enableChanges, rows = 
       class="${className} news-text"
       maxlength="${maxlength}"
       style="border-radius: 20px;"
-    >
-      ${value}
-    </textarea>
+    >${value}</textarea>
   </div>`;
 }
 
@@ -1441,14 +1398,13 @@ function removeMessage() {
 function showMessageNew(message) {
 
   // Start frame
-  let html = startFrame();
+  let html = startTableFilter();
 
   // Show message
   html += message;
 
   // End filter
-  html += "</div>";
-
+  html += endTableFilter();
   document.querySelector('.showMessage').innerHTML = html;
 }
 
@@ -1780,83 +1736,6 @@ function showDate(label, className, value, enableChanges) {
   return html;
 }
 */
-
-// Start frame
-function startFrame(className) {
-
-  return `
-  <!-- start startFrame -->
-  <div 
-    class="${className}"
-  >
-  <!-- end startFrame -->
-  `;
-}
-
-// Start frame
-function startFilter(label) {
-
-  return `
-  <!-- start startFilter -->
-  <aside 
-    class="card filter-card"
-    >
-    <h2 
-      class="card-title"
-    >
-      Filter
-    </h2>
-    <div 
-      class="grid grid-voucher"
-    >
-      <div 
-        class="field">
-        <label>
-          ${label}
-        </label>
-  <!-- end startFilter -->
-  `;
-}
-
-function endFilter() {
-
-  return `
-    <!-- start endFilter -->
-        </div>
-      </div>
-    </aside>
-    <!-- end endFilter -->
-  `;
-}
-
-function startContent(text) {
-
-  return `
-  <!-- start startContent -->
-  <section class="card">
-    <h2 
-      class="card-title"
-    >
-      ${text}
-    </h2>
-    <form>
-      <div 
-        class="grid grid-form"
-      >
-  <!-- end startContent -->
-  `;
-}
-
-function endContent() {
-
-  return `
-  <!-- start endContent -->
-      </div>
-    </form>
-  </section>
-  <!-- end endContent -->
-  `;
-}
 
 /*
 // start line (<div>)
@@ -2366,40 +2245,135 @@ function startTable(year, month, text) {
 }
 */
 
-// start table
-function startTable(header, underHeader) {
+/*
+// Show horizontal filter
+function startHorizontalFilter() {
+
+  let html = `
+    <!-- start startTableFilter -->
+    <section 
+      class="card"
+    >
+      <h2 
+        class="card-title"
+      >
+        Filter
+      </h2>
+      <div 
+        class="grid grid-menu"
+      >
+      <!-- end startTableFilter -->
+      `;
+  return html;
+}
+*/
+
+/*
+// Show horizontal filter
+function endHorizontalFilter() {
+
+  let html = `
+    <!-- end showTableFilter -->
+      </div>
+    </section>
+    <!-- end showTableFilter -->
+    `;
+
+  return html;
+}
+*/
+
+// Grid
+
+// Start filter
+function startGridFilter(label) {
 
   return `
-  <!-- start startTable -->
-  <main class="waste-page">
-    <section
-      class="waste-card"
-      aria-labelledby="waste-title"
+  <!-- start startGridFilter -->
+  <aside 
+    class="card filter-card"
     >
-
-      <header
-        class="waste-heading"
-      >
-        <h1
-          id="waste-title"
-        >
-          ${header}
-        </h1>
-        <p>
-          ${underHeader}
-        </p>
-      </header>
-
-      <div
-        class="waste-scroll"
-        role="region"
-        aria-label="${underHeader}"
-        tabindex="0"
-      >
-        <table class="transaction-table">
-    <!-- end startTable -->
+    <h2 
+      class="card-title"
+    >
+      Filter
+    </h2>
+    <div 
+      class="grid grid-voucher"
+    >
+      <div 
+        class="field">
+        <label>
+          ${label}
+        </label>
+  <!-- end startGridFilter -->
   `;
 }
+
+function endGridFilter() {
+
+  return `
+    <!-- start endGridFilter -->
+        </div>
+      </div>
+    </aside>
+    <!-- end endGridFilter -->
+  `;
+}
+
+// Input wide text in a grid
+function inputGridWideText(className, label, text, maxLength, rows) {
+
+  return `
+    <div class="text-field">
+      <label 
+        for="${className}"
+      >
+        ${label}
+      </label>
+
+      <textarea
+        id="${className}"
+        class="${className}"
+        name="${className}"
+        rows="${rows}"
+        maxlength="${maxLength}"
+      >${text}</textarea>
+  </div>
+  `;
+}
+
+function startGrid(text) {
+
+  return `
+  <!-- start startGrid -->
+  <section class="card">
+    <h2 
+      class="card-title"
+    >
+      ${text}
+    </h2>
+    <form>
+      <div 
+        class="grid grid-form"
+      >
+  <!-- end startGrid -->
+  `;
+}
+
+function endGrid() {
+
+  return `
+  <!-- start endGrid -->
+      </div>
+    </form>
+  </section>
+  <!-- end endGrid -->
+  `;
+}
+
+
+// Table
 
 function tableHeader(columnWidths, ...texts) {
 
@@ -2446,37 +2420,109 @@ function tableHeader(columnWidths, ...texts) {
   return html;
 }
 
+// start table
+function startTable(header, underHeader) {
 
-// Show horizontal filter
-function startHorizontalFilter() {
-
-  let html = `
-    <!-- start startTableFilter -->
-    <section 
-      class="card"
+  return `
+  <!-- start startTable -->
+  <main class="waste-page">
+    <section
+      class="waste-card"
+      aria-labelledby="waste-title"
     >
-      <h2 
-        class="card-title"
+
+      <header
+        class="waste-heading"
       >
-        Filter
-      </h2>
-      <div 
-        class="grid grid-menu"
+        <h1
+          id="waste-title"
+        >
+          ${header}
+        </h1>
+        <p>
+          ${underHeader}
+        </p>
+      </header>
+
+      <div
+        class="waste-scroll"
+        role="region"
+        aria-label="${underHeader}"
+        tabindex="0"
       >
-      <!-- end startTableFilter -->
-      `;
+        <table class="transaction-table">
+    <!-- end startTable -->
+  `;
+}
+
+// Start table filter
+function startTableFilter(className) {
+
+  return `
+  <!-- start startTableFilter -->
+  <div 
+    class="${className}"
+  >
+  <!-- end startTableFilter -->
+  `;
+}
+
+// End table filter
+function endTableFilter() {
+
+  return "</div>";
+}
+
+// Table and grid
+
+// input date
+function inputDate(className, label, value, enableChanges) {
+
+  const html = `
+    <!-- start inputDate -->
+    <div
+      class="field"
+    >
+      <label
+        for="${className}"
+      >
+        ${label}
+      </label>
+      <input 
+        type="date"
+        class="${className}"
+        id="${className}" 
+        value="${value}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    </div>
+    <!-- end inputDate -->
+  `;
   return html;
 }
 
+// input text
+function inputText(className, label, value, enableChanges) {
 
-// Show horizontal filter
-function endHorizontalFilter() {
-
-  let html = `
-    <!-- end showTableFilter -->
-      </div>
-    </section>
-    <!-- end showTableFilter -->
+  html = `
+    <!-- start inputText --> 
+    <div
+     class="field"
+    >
+      <label
+        for="${className}"
+      >
+        ${label}
+      </label>
+      <input 
+        type="text"
+        class="${className}"
+        id="${className}"
+        value="${value}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    </div>
+    <!-- end inputText --> 
     `;
 
   return html;

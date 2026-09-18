@@ -161,16 +161,16 @@ async function events() {
 function showFilter(projectId) {
 
   // Start frame
-  //let html = startFrame('filter-frame');
+  //let html = startTableFilter('filter-frame');
 
   // Start filter
-  let html = startFilter("Prosjekt");
+  let html = startGridFilter("Prosjekt");
 
   // Show projects
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg prosjekt', '', true);
 
   // End filter
-  html += endFilter();
+  html += endGridFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 
@@ -184,7 +184,7 @@ function showProject(projectId) {
   // row number project
   const rowNumberProject = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
 
-  let html = startContent('Konto');
+  let html = startGrid('Konto');
 
   /*
   // account
@@ -207,7 +207,7 @@ function showProject(projectId) {
   html += "<div></div>";
   html += "<div></div>";
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {

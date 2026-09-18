@@ -133,16 +133,16 @@ async function deleteCondo() {
 function showFilter(userId) {
 
   // Start frame
-  //let html = startFrame('filter-frame');
+  //let html = startTableFilter('filter-frame');
 
   // Start  frame
-  let html = startFilter("Tømmekalender");
+  let html = startGridFilter("Tømmekalender");
 
   // Show users
   html += objUser.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
 
   // End filter
-  html += endFilter();
+  html += endGridFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }
@@ -153,25 +153,31 @@ function showUser(userId) {
   // row number user
   const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
 
-  let html = startContent('Konto');
+  let html = startGrid('Konto');
 
   // password
+  /*
   const password = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].password.trim();
+  */
+ const password = objUser.arrayUsers[rowNumberUser]?.password ?? '';
   html += inputText('Passord', 'password', password, enableChanges, "Passord");
   html += "<div></div>";
   html += "<div></div>";
 
   // security level
+  /*
   const securityLevel = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].securityLevel;
+  */
+ const securityLevel = objUser.arrayUsers[rowNumberUser]?.securityLevel ?? 0;
   html += showSelectedNumbers('securityLevel','Sikkerhetsnivå',  1, 9, 1, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {

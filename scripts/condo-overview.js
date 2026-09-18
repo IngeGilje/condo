@@ -152,7 +152,7 @@ async function events() {
 function showFilter(condoId) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // Show condos
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
@@ -168,8 +168,7 @@ function showFilter(condoId) {
   html += inputDate('filterToDate', 'Til Dato', toDate, true);
 
   // End filter
-  html += endFilter();
-
+  html += endTableFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

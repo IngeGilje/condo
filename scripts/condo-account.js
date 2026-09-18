@@ -145,14 +145,13 @@ async function events() {
 function showFilter(accountId) {
 
   // Start filter
-  let html = startFilter("Tømmekalender");
+  let html = startGridFilter("Tømmekalender");
 
   // Show types of account
   html += objAccounts.showSelectedAccountsNew('filterAccountId', 'Konto', accountId, '', '', true);
 
   // End filter
-  html += endFilter();
-
+  html += endGridFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -161,7 +160,7 @@ function showAccount(accountId) {
 
   const rowNumberAccount = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
 
-  let html = startContent('Konto');
+  let html = startGrid('Konto');
 
   // fixed cost
   let selected = "Ugyldig verdi";
@@ -178,7 +177,7 @@ function showAccount(accountId) {
   html += "<div></div>";
   html += "<div></div>";
 
-  html += endContent();
+  html += endGrid();
 
   /*
   // Buttons

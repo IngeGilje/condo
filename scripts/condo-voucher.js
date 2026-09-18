@@ -88,7 +88,7 @@ function showVoucher(transactionId) {
   // row number voucher
   const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
 
-  let html = startContent('Bilag');
+  let html = startGrid('Bilag');
 
   // transaction Id
   html += showTextNew('transactionId', 'Bilagsnummer', transactionId, false, "Bilagsnummer");
@@ -156,7 +156,7 @@ function showVoucher(transactionId) {
     </iframe>
   `;
   */
-  html += endContent();
+  html += endGrid();
   document.querySelector('.showVoucher').innerHTML = html;
 
   // Show Voucher

@@ -234,15 +234,14 @@ function calculateSum() {
 function showFilter() {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // Show years
   const year = today.getFullYear();
   html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
 
   // End filter
-  html += "</div>";
-
+  html += endTableFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

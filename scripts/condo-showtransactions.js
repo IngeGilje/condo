@@ -157,6 +157,7 @@ async function events() {
   // change bank account transaction
   document.addEventListener('click', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('change'))) {
+      
       const arrayPrefixes = ['change'];
 
       // Find the first matching class
@@ -201,7 +202,7 @@ async function events() {
 function showFilter(condoId, accountId, fromDate, toDate, amount) {
 
     // Start frame
-  let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // Show condos
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
@@ -225,11 +226,8 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   html += inputText('filterAmount', 'Beløp', amount, true);
 
    // End filter
-  html += "</div>";
+  html += endTableFilter();
   document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame", "Filter");
 }
 
 // Show transactions

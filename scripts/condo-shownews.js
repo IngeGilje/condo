@@ -94,9 +94,12 @@ function showNews() {
 
       // user name
       const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === news.userId);
+      /*
       const userName = (rowNumberUser !== -1)
         ? `${objUser.arrayUsers[rowNumberUser].firstName} ${objUser.arrayUsers[rowNumberUser].lastName}`
         : 'Ukjent';
+      */
+     const userName = objUser.arrayUsers[rowNumberUser]?.userName ?? 'Ukjent';
 
       html += `
       <div 

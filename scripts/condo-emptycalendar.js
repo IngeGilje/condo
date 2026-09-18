@@ -161,13 +161,13 @@ async function events() {
 function showFilter(emptyCalendarId) {
 
   // Start filter
-  let html = startFilter("Tømmekalender");
+  let html = startGridFilter("Tømmekalender");
 
   // Show date
   html += objEmptyCalendars.showSelectedEmptyCalendarsNew('Tømmedato', 'filterEmptyCalendarId', '', emptyCalendarId, 'Velg Dato', '', true);
 
   // End filter
-  html += endFilter();
+  html += endGridFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }
@@ -178,7 +178,7 @@ function showEmptyCalendar(emptyCalendarId) {
   // row number emptycalendar array
   const rowNumberEmptyCalendar = objEmptyCalendars.arrayEmptyCalendars.findIndex(emptycalendar => emptycalendar.emptyCalendarId === emptyCalendarId);
 
-  let html = startContent('Tømmekalender');
+  let html = startGrid('Tømmekalender');
 
   // date
   let emptyingCalendarDate = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar]?.date ?? 0;
@@ -224,7 +224,7 @@ function showEmptyCalendar(emptyCalendarId) {
   className = 'christmasTree';
   html += inputValues('Juletre', 'christmasTree', enableChanges, selected, 'Nei', 'Ja');
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {

@@ -116,7 +116,7 @@ async function events() {
 function showFilter(year, month) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // Show years
   html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
@@ -124,9 +124,8 @@ function showFilter(year, month) {
   // Show months
   html += showSelectedMonthsNew('filterMonth', 'Måned', month, true);
 
-
-  // End frame
-  html += "</div>";
+  // End table filter
+  html += endTableFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

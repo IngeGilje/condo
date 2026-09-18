@@ -123,16 +123,16 @@ async function events() {
 function showFilter(year) {
 
   // Start frame
-  //let html = startFrame('filter-frame');
+  //let html = startTableFilter('filter-frame');
 
   // Start frame
-  let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // Show years
   html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
 
   // End frame
-  html += "</div>";
+  html += endTableFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

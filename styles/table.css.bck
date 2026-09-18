@@ -48,6 +48,7 @@ body {
   outline-offset: -3px;
 }
 
+/*
 .waste-card .transaction-table {
   width: 100%;
   min-width: 960px;
@@ -58,7 +59,9 @@ body {
   background: transparent;
   font-size: 14px;
 }
+*/
 
+/*
 .waste-card .transaction-table th,
 .waste-card .transaction-table td {
   padding: 16px 14px;
@@ -67,6 +70,7 @@ body {
   vertical-align: middle;
   white-space: nowrap;
 }
+*/
 
 .waste-card .transaction-table thead th {
   padding-top: 15px;

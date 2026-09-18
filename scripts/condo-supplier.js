@@ -199,16 +199,16 @@ function resetValues() {
 function showFilter(supplierId) {
 
   // Start frame
-  //let html = startFrame('filter-frame');
+  //let html = startTableFilter('filter-frame');
 
   // Start filter
-  let html = startFilter("Leverandør");
+  let html = startGridFilter("Leverandør");
 
   // Show suppliers
   html += objSupplier.showSelectedSuppliersNew('filterSupplierId', 'Leverandør', supplierId, '', '', true);
 
   // End filter
-  html += endFilter();
+  html += endGridFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }
@@ -219,7 +219,7 @@ function showSupplier(supplierId) {
   // row Number Supplier
   const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 
-  let html = startContent('Leverandør');
+  let html = startGrid('Leverandør');
 
   // name
   const name = (rowNumberSupplier === -1)
@@ -308,7 +308,7 @@ html += "<div></div>";
     : objSupplier.arraySuppliers[rowNumberSupplier].text;
   html += inputText('accountText', 'Tekst', text, enableChanges);
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {

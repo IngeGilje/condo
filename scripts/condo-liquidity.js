@@ -77,10 +77,10 @@ async function events() {
 function showFilter() {
 
   // Start frame
-  //let html = startFrame("filter-frame");
+  //let html = startTableFilter("filter-frame");
 
   // Start filter
-  let html = startFilter("Tømmekalender");
+  let html = startGridFilter("Tømmekalender");
 
   // Show years
   const year = today.getFullYear();
@@ -97,7 +97,7 @@ function showFilter() {
   */
 
   // End filter
-  html += endFilter();
+  html += endGridFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }
@@ -115,7 +115,7 @@ function showLiquidity() {
   for (month = 1; month < 13; month++) {
     if (month < 10) month = "0" + String(month);
     let date = year + String(month) + "31";
-    arrayMonth[month - 1] = objTransactions.getBankBalance(Number(date));
+    arrayMonth[month - 1] = objTransactions.getBankBalance(Number(date))/100;
   }
 
   // Remove previous chart

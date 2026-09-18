@@ -123,7 +123,7 @@ async function events() {
 function showFilter(year, month, condoId) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // year
   html += showSelectedNumbers('filterYear', 'År', 2019, 2029, Number(year), enableChanges);
@@ -134,8 +134,8 @@ function showFilter(year, month, condoId) {
   // condo
   html += objCondo.showSelectedCondosNew('filterCondoId', 'leilighet', condoId, 'Velg leilighet', '', true);
 
-  // End frame
-  html += "</div>";
+  // End table filter
+  html += endTableFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

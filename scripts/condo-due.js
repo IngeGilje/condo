@@ -143,7 +143,7 @@ async function events() {
 function showFilter(dueId) {
 
   // Start filter
-  let html = startFilter("Forfall");
+  let html = startGridFilter("Forfall");
 
   const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
 
@@ -181,8 +181,7 @@ function showFilter(dueId) {
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg Prosjekt', '', true);
 
   // End filter
-  html += endFilter();
-
+  html += endGridFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -191,7 +190,7 @@ function showDue(dueId) {
 
   const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
 
-  let html = startContent('Forfall');
+  let html = startGrid('Forfall');
 
   // due Id
   html += showTextNew('dueId', 'Forfall Id', dueId, false);
@@ -248,7 +247,7 @@ function showDue(dueId) {
   html += "<div></div>";
   html += "<div></div>";
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {

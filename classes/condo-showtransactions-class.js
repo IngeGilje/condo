@@ -364,7 +364,7 @@ class Transactions extends Condos {
 
   // What was the bank balance on last day of each month this year
   // date of format yyyyymmdd
-  getBankBalance(date) {
+  getBankBalance(toDate) {
 
     // get opening balance
     let bankBalance = 0;
@@ -378,14 +378,14 @@ class Transactions extends Condos {
     this.arrayTransactions.forEach(transaction => {
 
       // Accoumulate all transactions up to the selected date
-      if ((transaction.date >= fromDate) && (transaction.date <= date)) {
+      if ((transaction.date >= fromDate) && (transaction.date <= toDate)) {
 
         // Add payment and income to bank balance
         bankBalance += transaction.income + transaction.payment;
       }
     });
 
-    if (bankBalance !== 0) bankBalance = bankBalance / 100;
+    //if (bankBalance !== 0) bankBalance = bankBalance / 100;
 
     return bankBalance;
   }

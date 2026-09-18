@@ -128,18 +128,14 @@ async function events() {
 function showFilter(userBankAccountId) {
 
   // Start filter
-  let html = startFilter("Bankkonto");
+  let html = startGridFilter("Bankkonto");
 
   // Show user bank accounts filter
   html += objUserBankAccounts.showSelectedUserBankAccountsNew('filterUserBankAccountId', 'Brukerkonto', userBankAccountId, '', '', true);
 
   // End filter
-  html += endFilter();
-
+  html += endGridFilter();
   document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame","Filter");
 }
 
 // Show user bank account
@@ -147,7 +143,7 @@ function showUserBankAccount(userBankAccountId) {
 
   const rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
 
-  let html = startContent('Bankkonto');
+  let html = startGrid('Bankkonto');
 
   // user
   const userId = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount]?.userId ?? 0;
@@ -169,7 +165,7 @@ function showUserBankAccount(userBankAccountId) {
   html += "<div></div>";
   html += "<div></div>";
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {
@@ -187,17 +183,6 @@ function showUserBankAccount(userBankAccountId) {
   }
 
   document.querySelector('.showUserBankAccount').innerHTML = html;
-
-  /*
-  // Buttons
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterUserBankAccountId', false, 'white');
-  }
-  */
 }
 
 // Delete userbankaccounts  row

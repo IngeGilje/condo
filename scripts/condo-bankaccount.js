@@ -68,7 +68,7 @@ async function events() {
     if (event.target.classList.contains('filterBankAccountId')) {
 
       const bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
- 
+
       // show filter
       showFilter(bankAccountId);
 
@@ -163,13 +163,13 @@ async function deleteBankAccount() {
 function showFilter(bankAccountId) {
 
   // Start filter
-  let html = startFilter("Sameie");
+  let html = startGridFilter("Sameie");
 
   // Show bankaccounts
-  html += objBankAccount.showSelectedBankAccountsNew( 'filterBankAccountId','Bankkonto',  bankAccountId, '', '', true);
+  html += objBankAccount.showSelectedBankAccountsNew('filterBankAccountId', 'Bankkonto', bankAccountId, '', '', true);
 
   // End filter
-  html += endFilter();
+  html += endGridFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }
@@ -180,63 +180,81 @@ function showBankAccount(bankAccountId) {
   // row number bank account
   const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
 
-  let html = startContent('Sameie');
+  let html = startGrid('Sameie');
 
   // name
+  /*
   const name = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].name.trim();
+  */
+  const name = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.name ?? '';
   //html += showTextNew('Navn', 'name', name, enableChanges, "Bankkonto navn");
   html += inputText('name', 'Navn', name, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
 
   // bank account number
+  /*
   const bankAccount = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].bankAccount.trim();
+  */
+  const bankAccount = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.bankAccount.trim() ?? '';
   html += inputText('bankAccount', 'Bankkontonummer', bankAccount, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
 
   // opening balance date
+  /*
   let openingBalanceDate = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate.trim();
+  */
+  const openingBalanceDate = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.openingBalanceDate.trim() ?? '';
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   openingBalanceDate = formatNumberToISODate(openingBalanceDate);
   html += inputDate('openingBalanceDate', 'Dato', openingBalanceDate, enableChanges);
 
   // opening balance
+  /*
   let openingBalance = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance.trim();
+  */
+  const openingBalance = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.openingBalance.trim() ?? '';
   openingBalance = formatNumberToNorAmount(openingBalance);
   //html += showTextNew('Inngående saldo', 'openingBalance', openingBalance, enableChanges, "Inngående saldo");
   html += inputText('openingBalance', 'Inngående saldo', openingBalance, enableChanges)
   html += "<div></div>";
 
   // closing balance date
+
+  /*
   let closingBalanceDate = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate;
-
+  */
+  const closingBalanceDate = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.closingBalanceDate ?? '';
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   closingBalanceDate = formatNumberToISODate(closingBalanceDate);
   //html += showDate('Dato', 'closingBalanceDate', closingBalanceDate, enableChanges);
-  html += inputDate('closingBalanceDate','Dato',  closingBalanceDate, enableChanges);
+  html += inputDate('closingBalanceDate', 'Dato', closingBalanceDate, enableChanges);
 
   // closing balance
+  /*
   let closingBalance = (rowNumberBankAccount === -1)
     ? ''
     : objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance;
+  */
+  const closingBalance = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.closingBalance ?? '';
   closingBalance = formatNumberToNorAmount(closingBalance);
 
   //html += showTextNew('Utgående saldo', 'closingBalance', closingBalance, enableChanges, "Utgående saldo");
   html += inputText('closingBalance', 'Utgående saldo', closingBalance, enableChanges)
   html += "<div></div>";
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {
@@ -261,7 +279,7 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name',  'Ugyldig navn', true, name, 3, 45)
+  const validName = validateTextNew('name', 'Ugyldig navn', true, name, 3, 45)
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
@@ -275,17 +293,17 @@ async function updateBankAccountRow(bankAccountId) {
   // Opening balance
   let openingBalance = document.querySelector('.openingBalance').value;
   openingBalance = formatNorAmountToNumber(openingBalance);
-  const validOpeningBalance = validateIntervalNew('openingBalance',  'Ugyldig beløp inngående saldo', true, openingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
+  const validOpeningBalance = validateIntervalNew('openingBalance', 'Ugyldig beløp inngående saldo', true, openingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
 
   // Closing balance date
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
   closingBalanceDate = formatISODateToNumber(closingBalanceDate)
-  const validClosingBalanceDate = validateIntervalNew('closingBalanceDate',  'Ugyldig Dato utgående saldo', true, closingBalanceDate, 20200101, 20291231);
+  const validClosingBalanceDate = validateIntervalNew('closingBalanceDate', 'Ugyldig Dato utgående saldo', true, closingBalanceDate, 20200101, 20291231);
 
   // Closing balance
   let closingBalance = document.querySelector('.closingBalance').value;
   closingBalance = formatNorAmountToNumber(closingBalance);
-  const validClosingBalance = validateIntervalNew('closingBalance',  'Ugyldig beløp utgående saldo', true, closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
+  const validClosingBalance = validateIntervalNew('closingBalance', 'Ugyldig beløp utgående saldo', true, closingBalance, objBankAccount.minusNineNine, objBankAccount.nineNine);
 
   if (validBankAccount && validName && validOpeningBalanceDate && validOpeningBalance
     && validClosingBalanceDate && validOpeningBalance) {

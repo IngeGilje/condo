@@ -98,14 +98,14 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .content-layout {
+    .grid-layout {
       display: grid;
       grid-template-columns: 260px minmax(0, 1fr);
       align-items: start;
       gap: 20px;
     }
 
-    .content-layout .card {
+    .grid-layout .card {
       margin-bottom: 0;
     }
 
@@ -239,7 +239,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .content-layout {
+      .grid-layout {
         grid-template-columns: 220px minmax(0, 1fr);
       }
     }
@@ -260,7 +260,7 @@
         grid-template-columns: 1fr;
       }
 
-      .content-layout {
+      .grid-layout {
         grid-template-columns: 1fr;
       }
 
@@ -442,9 +442,9 @@
       </div>
     </section>
 
-    <div class="content-layout">
+    <div class="grid-layout">
 
-      <!-- start startFilter -->
+      <!-- start startGridFilter -->
       <aside class="card filter-card">
         <h2 class="card-title">
           Filter
@@ -454,7 +454,7 @@
             <label for="voucherType">
               Bilagstype
             </label>
-            <!-- end startFilter -->
+            <!-- end startGridFilter -->
 
             <!-- start showSelectedTransactionsNew -->
             <select id="voucherType" class="filterTransactionId">
@@ -473,11 +473,11 @@
             </select>
             <!-- end showSelectedTransactionsNew -->
 
-            <!-- start endFilter -->
+            <!-- start endGridFilter -->
           </div>
         </div>
       </aside>
-      <!-- end endFilter -->
+      <!-- end endGridFilter -->
 
       <!-- content -->
 

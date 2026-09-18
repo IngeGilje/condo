@@ -27,18 +27,6 @@ class News extends Condos {
     return newsId;
   }
 
-  getNewsTitle(newsId) {
-
-    let newsTitle;
-    const rowNumberNews = this.arrayNews.findIndex(news => news.newsId === newsId);
-    if (rowNumberNews !== -1) {
-      newsTitle = this.arrayNews[rowNumberNews].title;
-    } else {
-      newsTitle = "";
-    }
-    return newsTitle;
-  }
-
   // Select news Id
   selectNewsId(newsId, className) {
 

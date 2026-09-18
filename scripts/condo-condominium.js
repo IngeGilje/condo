@@ -24,7 +24,9 @@ async function main() {
     if ((objCondominium.condominiumId === 0) || (objCondominium.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1) ? 'http://ingegilje.no/condo-login.html' : 'http://localhost/condo-login.html';
+      const URL = (objUser.serverStatus === 1)
+        ? 'http://ingegilje.no/condo-login.html'
+        : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
@@ -139,31 +141,14 @@ async function events() {
 // Show filter
 function showFilter(condominiumId) {
 
-  /*
-  // Start frame
-  let html = startFrame('filter-frame');
-
-  // Show condominiums
-  html += objCondominium.showSelectedCondominiumsNew('Sameie', 'filterCondominiumId', '', condominiumId, '', '', true);
-
-  // End filter
-  html += "</div>";
-
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame", "Filter");
-  */
-
   // Start filter
-  let html = startFilter("Sameie");
+  let html = startGridFilter("Sameie");
 
   // Show condominiums
   html += objCondominium.showSelectedCondominiumsNew('filterCondominiumId', 'Sameie', condominiumId, '', '', true);
 
   // End filter
-  html += endFilter();
-
+  html += endGridFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -173,7 +158,7 @@ function showCondominium(condominiumId) {
   // row number condominium
   const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
 
-  let html = startContent('Sameie');
+  let html = startGrid('Sameie');
 
   let name = objCondominium.arrayCondominiums[rowNumberCondominium]?.name.trim() ?? '';
   html += inputText("name", "Navn", name, enableChanges);
@@ -243,9 +228,10 @@ function showCondominium(condominiumId) {
 
   // import Path
   const importPath = objCondominium.arrayCondominiums[rowNumberCondominium]?.importPath.trim() ?? '';
-  html += inputWideText("importPath", "Plassering av data", importPath, 2, enableChanges);
+  //html += inputWideText("importPath", "Plassering av data", importPath, 2, enableChanges);
+  html += inputGridWideText("importPath","Plassering av data", importPath,100,2)
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {
@@ -340,11 +326,11 @@ async function updateCondominiumRow(condominiumId) {
     if (rowNumberCondominium !== -1) {
 
       // update a condominiums row
-      await objCondominium.updateCondominiumsTable(objCondominium.user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath,fromMonth,toMonth);
+      await objCondominium.updateCondominiumsTable(objCondominium.user, condominiumId, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath, fromMonth, toMonth);
     } else {
 
       // Insert a condominiums row
-      await objCondominium.insertCondominiumsTable(objCondominium.user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath,fromMonth,toMonth);
+      await objCondominium.insertCondominiumsTable(objCondominium.user, name, street, address2, postalCode, city, phone, email, incomeRemoteHeatingAccountId, paymentRemoteHeatingAccountId, commonCostAccountId, organizationNumber, importPath, fromMonth, toMonth);
       await objCondominium.getHighestAccountId(objCondominium.condominiumId);
       condominiumId = objCondominium.arrayCondominiums[0].condominiumId;
     }

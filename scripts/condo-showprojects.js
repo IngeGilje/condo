@@ -82,7 +82,7 @@ async function main() {
         let amount = document.querySelector('.filterAmount').value;
         amount = formatNorAmountToNumber(amount);
         document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
-        showProjectTransactions(projectId, condoId,amount);
+        showProjectTransactions(projectId, condoId, amount);
 
         // Events
         events();
@@ -158,39 +158,26 @@ async function events() {
 function showFilter(projectId, amount, condoId) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // Show projects
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg prosjekt', '', true);
 
-  // Show selected condos
+  // Show condos
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true)
- 
+
   // Amount
   html += inputText('filterAmount', 'Beløp', amount, true);
 
-  // End filter
-  html += "</div>";
-
+  // End table filter
+  html += endTableFilter();
   document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame", "Filter");
 }
 
 // show bank account transactions this project
 function showProjectTransactions(projectId, condoId, amount) {
 
-  // Empty line
-  //let html = emptyLine();
-
-  // Start table
-  //html += objProjects.initializeTable(columnWidths);
-
-  // Table header (<tr></tr>)
-  //html += objCondo.showTableHeader( 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
-
-  let html = startTable("Prosjekt","");
+  let html = startTable("Prosjekt", "");
   html += tableHeader(columnWidths, 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
 
   let sumAmount = 0;

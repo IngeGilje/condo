@@ -34,10 +34,12 @@ class Accounts extends Condos {
 
     // Bank Account <> Condominium Bank Account
     let rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    /*
     if (rowNumberBankAccount !== -1) {
 
       //accountId = objBankAccount.arrayBankAccounts[rowNumberBankAccount].accountId;
     }
+    */
 
     // Check user bank account
     const rowNumberUserBankAccount = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.bankAccount === bankAccountNumber);

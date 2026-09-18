@@ -43,9 +43,6 @@ async function main() {
       const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objCondo.userId);
       if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
 
-      // Show header
-      //showHeader();
-
       // Show filter
       showFilter(condoId);
 
@@ -145,10 +142,10 @@ async function events() {
 function showFilter(condoId) {
 
   // Start frame
-  //let html = startFrame('filter-frame');
+  //let html = startTableFilter('filter-frame');
 
   // Start filter
-  let html = startFilter("leilighet");
+  let html = startGridFilter("leilighet");
 
   // Show condos
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', '', true);
@@ -163,8 +160,7 @@ function showFilter(condoId) {
   */
 
   // End filter
-  html += endFilter();
-
+  html += endGridFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -174,7 +170,7 @@ function showCondo(condoId) {
   // row number user
   const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
 
-  let html = startContent('Leilighet');
+  let html = startGrid('Leilighet');
 
   // condo
   const name = objCondo.arrayCondo[rowNumberCondo]?.name ?? '';
@@ -209,7 +205,7 @@ function showCondo(condoId) {
   html += "<div></div>";
   html += "<div></div>";
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {

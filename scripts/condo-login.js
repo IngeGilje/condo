@@ -115,12 +115,7 @@ async function checkLogin() {
     if (await objUser.validateUser(Number(objUser.arrayUsers[rowNumberUser].userId), password)) {
 
       // The sessionStorage object stores data for only one session
-      //window.sessionStorage.setItem("condominiumId", 2);
-      //window.sessionStorage.setItem("user", "inge.gilje@gmail.com");
-      //window.sessionStorage.setItem("securityLevel", 9);
-      //window.sessionStorage.setItem("userId", 2);
-
-      window.sessionStorage.setItem("condominiumId", objUser.arrayUsers[rowNumberUser].condominiumId);
+       window.sessionStorage.setItem("condominiumId", objUser.arrayUsers[rowNumberUser].condominiumId);
       window.sessionStorage.setItem("user", objUser.arrayUsers[rowNumberUser].user);
       window.sessionStorage.setItem("securityLevel", objUser.arrayUsers[rowNumberUser].securityLevel);
       window.sessionStorage.setItem("userId", objUser.arrayUsers[rowNumberUser].userId);

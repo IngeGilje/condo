@@ -73,6 +73,7 @@ body {
   background: var(--primary);
 }
 
+/* grid */
 .grid {
   display: grid;
   gap: 18px;
@@ -91,14 +92,15 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.content-layout {
+/* Grid */
+.grid-layout {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
   align-items: start;
   gap: 20px;
 }
 
-.content-layout .card {
+.grid-layout .card {
   margin-bottom: 0;
 }
 
@@ -140,6 +142,7 @@ body {
   font-weight: 600;
 }
 
+/*
 input,
 select {
   width: 100%;
@@ -148,6 +151,22 @@ select {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   outline: 0;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+}
+*/
+
+input,
+select {
+  width: 100%;
+  height: 50px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: 3px solid rgb(37 99 235 / 15%);
   background: var(--surface);
   color: var(--text);
   font: inherit;
@@ -251,7 +270,7 @@ button:hover {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .content-layout {
+  .grid-layout {
     grid-template-columns: 220px minmax(0, 1fr);
   }
 }
@@ -272,7 +291,7 @@ button:hover {
     grid-template-columns: 1fr;
   }
 
-  .content-layout {
+  .grid-layout {
     grid-template-columns: 1fr;
   }
 
@@ -388,8 +407,14 @@ body {
   overflow-x: auto;
 }
 
+/*
 .waste-scroll:focus-visible {
   outline: 3px solid #93c5fd;
+  outline-offset: -3px;
+}
+*/
+.waste-scroll:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 15%);
   outline-offset: -3px;
 }
 
@@ -476,10 +501,20 @@ body {
   cursor: pointer;
 }
 
+/*
 .waste-card .transaction-table input:focus-visible,
 .waste-card .transaction-table select:focus-visible,
 .waste-card .transaction-table button:focus-visible {
   outline: 3px solid #bfdbfe;
+  outline-offset: 2px;
+  border-color: #3b82f6;
+}
+*/
+
+.waste-card .transaction-table input:focus-visible,
+.waste-card .transaction-table select:focus-visible,
+.waste-card .transaction-table button:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 15%);
   outline-offset: 2px;
   border-color: #3b82f6;
 }
@@ -572,3 +607,77 @@ body {
 
   margin-left: 25px;
 }
+
+/*
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 750px;
+}
+*/
+
+/* wide input text */
+.text-field {
+  grid-column: 1 / -1;
+}
+
+/*
+.text-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color:  #475467;
+}
+*/
+
+.text-field label {
+  z-index: 1;
+  top: -8px;
+  left: 12px;
+  padding: 0 6px;
+  color: #475467;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.text-field textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 12px;
+
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+/*
+.text-field textarea:focus {
+  border-color: #2563eb;
+  outline: 3px solid rgb(37 99 235 / 15%);
+}
+*/
+
+.text-field textarea:focus {
+  border-color: #2563eb;
+  outline: 3px solid rgb(37 99 235 / 15%);
+}
+/*
+.character-counter {
+  display: block;
+  margin-top: 5px;
+  text-align: right;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.character-counter.limit-reached {
+  color: #dc2626;
+  font-weight: 600;
+}
+*/

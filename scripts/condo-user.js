@@ -148,7 +148,7 @@ function showFilter(userId) {
 
   /*
   // Start frame
-  let html = startFrame("filter-frame");
+  let html = startTableFilter("filter-frame");
 
   // Show users
   //html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
@@ -163,14 +163,13 @@ function showFilter(userId) {
   //setFrameTitle("filter-frame", "Filter");
   */
   // Start filter
-  let html = startFilter("Bruker");
+  let html = startGridFilter("Bruker");
 
   // Show users
   html += objUser.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
 
   // End filter
-  html += endFilter();
-
+  html += endGridFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -183,56 +182,74 @@ function showUser(userId) {
   // Empty line
   html = emptyLine();
 
-  html += startContent('Bruker');
+  html += startGrid('Bruker');
 
   // email
+  /*
   const email = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].email.trim();
+  */
+  const email = objUser.arrayUsers[rowNumberUser]?.email ?? '';
   html += inputText('email', 'E-mail', email, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
 
   // condoId
+  /*
   const condoId = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].condoId;
+  */
+  const condoId = objUser.arrayUsers[rowNumberUser]?.condoId ?? 0;
   html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, '', 'Velg leilighet', enableChanges);
 
   html += "<div></div>";
   html += "<div></div>";
 
   // first Name
+  /*
   const firstName = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].firstName.trim();
+  */
+  const firstName = objUser.arrayUsers[rowNumberUser]?.firstName ?? '';
   html += inputText('firstName', 'Fornavn', firstName, enableChanges);
 
   // last Name
+  /*
   const lastName = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].lastName.trim();
+  */
+  const lastName = objUser.arrayUsers[rowNumberUser]?.lastName ?? '';
   html += inputText('lastName', 'Etternavn', lastName, enableChanges);
   html += "<div></div>";
 
   // phone
+  /*
   const phone = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].phone.trim();
+  */
+  const phone = objUser.arrayUsers[rowNumberUser]?.phone ?? '';
   html += inputText('phone', 'Telefonnummer', phone, enableChanges);
   html += "<div></div>";
   html += "<div></div>";
 
   // Activ user?
+  /*
   let resident = (rowNumberUser === -1)
     ? ''
     : objUser.arrayUsers[rowNumberUser].resident.trim();
+  */
+  let resident = objUser.arrayUsers[rowNumberUser]?.resident ?? '';
   resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
   html += inputValues('Beboer', 'resident', enableChanges, resident, 'Nei', 'Ja');
   html += "<div></div>";
   html += "<div></div>";
 
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {
@@ -295,7 +312,6 @@ async function updateUserRow(userId) {
 
       // user exist
       // Check if email is changed
-      //if (objUser.arrayUsers[rowNumberUser].email !== email) {
       if (objUser.arrayUsers[rowNumberUser].email.toLowerCase() !== email.toLowerCase()) {
         // check if email exist
         validEmail = objUser.checkUiqueEmail(email, objUser, '', 'Ugyldig e-mail. Finnes fra før.');

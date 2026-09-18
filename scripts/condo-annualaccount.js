@@ -54,8 +54,18 @@ async function main() {
 
       // Show filter
       const accountYear = today.getFullYear();
-      let fromDate = `${accountYear - 1}-10-01`;
-      let toDate = `${accountYear}-09-30`;
+
+      // From date
+      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
+      let fromMonth = objCondominium.arrayCondominiums[rowNumberCondominium]?.fromMonth ?? '';
+      if (fromMonth < 10) fromMonth = "0" + fromMonth;
+      let fromDate = (accountYear-1) + fromMonth + "01";
+
+      // To date
+      let toMonth = objCondominium.arrayCondominiums[rowNumberCondominium]?.toMonth ?? '';
+      if (toMonth < 10) toMonth = "0" + toMonth;
+      let toDate = accountYear + toMonth + "31";
+
       showFilter(accountYear, fromDate, toDate);
 
       const deleted = "N";
@@ -67,7 +77,7 @@ async function main() {
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
-      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
+      //const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // Show annual accounts
@@ -202,26 +212,32 @@ function getBudgetAmount(accountId, year) {
 function showFilter(accountYear, fromDate, toDate) {
 
   // Start frame
-  let html = startFrame('filter-frame');
+  //let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // Show year
   html += showSelectedNumbers('filterAccountYear', 'Regnskapsår', 2020, 2030, accountYear, true);
 
   // From date
+  //html += inputDate('filterFromDate', 'Fra Dato', fromDate, true);
+  fromDate = formatNumberToISODate(fromDate);
   html += inputDate('filterFromDate', 'Fra Dato', fromDate, true);
 
   // To date
   // Current date
   //html += showDate('Til Dato', 'filterToDate', toDate, true)
+  //html += inputDate('filterToDate', 'Til Dato', toDate, true);
+  toDate = formatNumberToISODate(toDate);
   html += inputDate('filterToDate', 'Til Dato', toDate, true)
 
   // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(accountYear);
-  html += showAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
+  //html += showAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
+   html += inputText('filterCommonCostSquareMeter', 'Pris per m2', commonCostSquareMeter, true);
+
 
   // End filter
-  html += endFilter();
-
+  html += endTableFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -457,10 +473,12 @@ function showBankDeposit() {
 
   // Bank deposit
   //let bankDepositAmount = "";
+  /*
   const bankDepositAmount = (rowNumberBankAccount === -1)
     ? 0
     : formatNumberToNorAmount(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
-
+  */
+ const bankDepositAmount = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.bankDepositAmount ?? '';
   className = `bankDepositAmount`;
   html += showTableText(className, bankDepositAmount);
 

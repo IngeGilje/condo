@@ -150,7 +150,7 @@ async function events() {
 function showFilter(budgetId) {
 
   // Start filter
-  let html = startFilter("Forfall");
+  let html = startGridFilter("Forfall");
 
   const rowNumberBudget = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
 
@@ -158,8 +158,7 @@ function showFilter(budgetId) {
   html += objBudgets.showSelectedBudgetsNew('filterBudgetId', 'Budsjett', budgetId, 'Velg Budsjett', '', true);
 
   // End filter
-  html += endFilter();
-
+  html += endGridFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -168,7 +167,7 @@ function showBudget(budgetId) {
 
   const rowNumberBudget = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
 
-  let html = startContent('Budsjett');
+  let html = startGrid('Budsjett');
 
   // Year
   const year = objBudgets.arrayBudgets[rowNumberBudget]?.year ?? "";
@@ -222,7 +221,7 @@ function showBudget(budgetId) {
     disableButton('filterBudgetId', false, 'white');
   }
   */
-  html += endContent();
+  html += endGrid();
 
   // Buttons
   if (enableChanges) {

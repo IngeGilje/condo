@@ -45,9 +45,6 @@ async function main() {
       let html = objAccounts.showMenu(objAccounts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
       let resident = 'Y';
       await objUser.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
       if (paramFixedCost !== 'Y' && paramFixedCost !== 'N') paramFixedCost = 'A';
@@ -123,7 +120,7 @@ function showFilter(fixedCost) {
 
   /*
   // Start frame
-  let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // Show types of account
   if (fixedCost === 'Y') fixedCost = constFixedCost;
@@ -153,7 +150,7 @@ function showFilter(fixedCost) {
   document.querySelector(".showFilter").innerHTML = html;
   */
   // Start frame
-  let html = startFrame('filter-frame');
+  let html = startTableFilter('filter-frame');
 
   // Show types of account
   if (fixedCost === 'Y') fixedCost = constFixedCost;
@@ -162,11 +159,8 @@ function showFilter(fixedCost) {
   html += inputValues('Kostnadstype', 'filterFixedCost', true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
 
   // End filter
-  html += "</div>";
+  html += endTableFilter();
   document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame", "Filter");
 }
 
 // Show accounts
