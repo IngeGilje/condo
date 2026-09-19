@@ -6,7 +6,7 @@ const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
-const objBankAccount = new BankAccount('bankaccount');
+const objBankAccounts = new BankAccounts('bankaccounts');
 const objTransactions = new Transactions('bankTransactions');
 const objCondo = new Condo('condo');
 const objCommonCosts = new CommonCosts('commoncosts');
@@ -66,7 +66,7 @@ async function main() {
       await objCondo.loadCondoTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
-      await objBankAccount.loadBankAccountsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
       const orderBy = 'date DESC, income DESC';
       await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, 'N', objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, 20200101, 20291231, false);
 
@@ -208,7 +208,7 @@ function showCommonCost(year) {
   commonCostSquareMeter = formatNumberToNorAmount(commonCostSquareMeter);
   html += inputText('commonCostSquareMeter', 'Felleskostnad/m2', commonCostSquareMeter, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // fixed cost per condo per year
   let fixedCostCondo = 0;
@@ -238,7 +238,7 @@ function showCommonCost(year) {
   calculatedFixedCost = calculatedFixedCost / 7;
   calculatedFixedCost = formatNumberToNorAmount(-calculatedFixedCost);
   html += inputText('calculatedFixedCost', 'Beregnet Fast Kostnad', calculatedFixedCost, enableChanges, 'Fast Kostnad');
-  html += "<div></div>";
+  //html += "<div></div>";
 
   html += endGrid();
 
@@ -250,7 +250,7 @@ function showCommonCost(year) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
 
     // check for return back to an application
     if (paramBackApplication) {
@@ -312,10 +312,13 @@ async function updateCommonCostsRow(year) {
   const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commoncost => commoncost.year === year);
 
   // commoncost Id
+  /*
   const commonCostId = (rowNumberCommonCost === -1)
     ? 0
     : objCommonCosts.arrayCommonCosts[rowNumberCommonCost].commonCostId;
-
+  */
+  const commonCostId = objCommonCosts.arrayCommonCosts[rowNumberCommonCost]?.commonCostId ?? 0;
+  
   // year
   const validYear = validateIntervalNew('filterYear', 'Ugyldig årstall', true, year, 2020, 2030);
 
@@ -355,7 +358,7 @@ async function updateCommonCostsRow(year) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterYear', false);
     }
 

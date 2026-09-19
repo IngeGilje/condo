@@ -33,11 +33,11 @@ class Accounts extends Condos {
     let accountId = 0;
 
     // Bank Account <> Condominium Bank Account
-    let rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    let rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
     /*
     if (rowNumberBankAccount !== -1) {
 
-      //accountId = objBankAccount.arrayBankAccounts[rowNumberBankAccount].accountId;
+      //accountId = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].accountId;
     }
     */
 
@@ -324,7 +324,6 @@ class Accounts extends Condos {
 
     return html;
   }
-
 
   // get accounts from accounts table
   async loadAccountsTable(condominiumId, fixedCost) {

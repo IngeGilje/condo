@@ -112,6 +112,7 @@ async function events() {
     };
   });
 
+  /*
   // Cancel
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
@@ -129,6 +130,7 @@ async function events() {
       showUser(userId);
     };
   });
+  */
 
   // Log out
   document.addEventListener('click', async (event) => {
@@ -193,7 +195,7 @@ function showUser(userId) {
   const email = objUser.arrayUsers[rowNumberUser]?.email ?? '';
   html += inputText('email', 'E-mail', email, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // condoId
   /*
@@ -205,7 +207,7 @@ function showUser(userId) {
   html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, '', 'Velg leilighet', enableChanges);
 
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // first Name
   /*
@@ -224,7 +226,7 @@ function showUser(userId) {
   */
   const lastName = objUser.arrayUsers[rowNumberUser]?.lastName ?? '';
   html += inputText('lastName', 'Etternavn', lastName, enableChanges);
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // phone
   /*
@@ -235,7 +237,7 @@ function showUser(userId) {
   const phone = objUser.arrayUsers[rowNumberUser]?.phone ?? '';
   html += inputText('phone', 'Telefonnummer', phone, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // Activ user?
   /*
@@ -247,7 +249,7 @@ function showUser(userId) {
   resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
   html += inputValues('Beboer', 'resident', enableChanges, resident, 'Nei', 'Ja');
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   html += endGrid();
 
@@ -259,7 +261,7 @@ function showUser(userId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons
@@ -275,7 +277,7 @@ function showUser(userId) {
     disableButton('delete', false);
     disableButton('insert', false);
     disableButton('update', false);
-    disableButton('cancel', true);
+    //disableButton('cancel', true);
     disableButton('filterUserId', false, 'white');
   }
   */
@@ -372,8 +374,8 @@ async function updateUserRow(userId) {
     if (enableChanges) {
       disableButton('delete', false);
       disableButton('insert', false);
-                   disableButton('update', false);
-      disableButton('cancel', true);
+      disableButton('update', false);
+      //disableButton('cancel', true);
       disableButton('filterUserId', false, 'white');
     }
 
@@ -410,7 +412,7 @@ async function updateUserRow(userId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterUserId', false);
     }
 
@@ -471,7 +473,7 @@ function resetValues() {
   if (enableChanges) {
     disableButton('delete', true);
     disableButton('insert', true);
-    disableButton('cancel', false);
+    //disableButton('cancel', false);
     disableButton('filterUserId', true);
   }
 }

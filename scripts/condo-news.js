@@ -105,6 +105,7 @@ async function events() {
     };
   });
 
+  /*
   // Cancel
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
@@ -122,6 +123,7 @@ async function events() {
       showNews(newsId);
     };
   });
+  */
 
   // Log out
   document.addEventListener('click', async (event) => {
@@ -163,22 +165,22 @@ function showNews(newsId) {
   newsDate = formatNumberToISODate(newsDate);
   html += inputDate('newsDate', 'Dato', newsDate, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+ //html += "<div></div>";
 
   // userId
   const userId = objNews.arrayNews[rowNumberNews]?.userId ?? 0;
   html += objUser.showSelectedUsersNew('userId', 'Forfatter', userId, '', '', true);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // title
   const title = objNews.arrayNews[rowNumberNews]?.title ?? '';
-  html += inputGridWideText('title', "Tittel",title, 45, 1);
-  html += "<div></div>";
+  html += inputGridWideText('title', "Tittel", title, 45, 1);
+  //html += "<div></div>";
 
   // content
   const content = objNews.arrayNews[rowNumberNews]?.content ?? '';
-  html += inputGridWideText('content', "Innhold",content, 250, 10);
+  html += inputGridWideText('content', "Innhold", content, 250, 10);
 
   html += endGrid();
 
@@ -190,7 +192,7 @@ function showNews(newsId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons
@@ -252,7 +254,7 @@ async function updateNewsRow(newsId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterNewsId', false, 'white');
     }
 
@@ -287,7 +289,7 @@ async function updateNewsRow(newsId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterNewsId', false);
     }
 
@@ -324,11 +326,12 @@ function resetValues() {
   if (enableChanges) {
     disableButton('delete', true);
     disableButton('insert', true);
-    disableButton('cancel', false);
+    //disableButton('cancel', false);
     disableButton('filterNewsId', true);
   }
 }
 
+/*
 // Delete news row
 async function deleteNewsRow(newsId) {
 
@@ -339,4 +342,26 @@ async function deleteNewsRow(newsId) {
     // delete a news row
     await objNews.deleteNewsTable(newsId, objNews.user);
   }
+}
+  */
+// Delete a news row
+async function deleteNewsRow(newsId) {
+
+  // Check if news row exist
+  newsRowNumber = objNews.arrayNews.findIndex(news => news.newsId === newsId);
+  if (newsRowNumber !== -1) {
+
+    // delete news row
+    await objNews.deleteNewsTable(newsId, objNews.user);
+    await objNews.getHighestNewsId(objNews.condominiumId);
+    newsId = objNews.arrayNews[0].newsId;
+  }
+
+  await objNews.loadNewsTable(objNews.condominiumId);
+
+  // Show filter
+  showFilter(newsId);
+
+  // Show news
+  showNews(newsId);
 }

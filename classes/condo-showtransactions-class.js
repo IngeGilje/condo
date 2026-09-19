@@ -368,11 +368,11 @@ class Transactions extends Condos {
 
     // get opening balance
     let bankBalance = 0;
-    const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objTransactions.condominiumId);
-    if (rowNumberBankAccount !== -1) bankBalance += Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalance);
+    const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objTransactions.condominiumId);
+    if (rowNumberBankAccount !== -1) bankBalance += Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance);
 
     // get opening date
-    const fromDate = Number(objBankAccount.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
+    const fromDate = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate);
 
     // Get all Bank transactions from 01.01.2020 to selected date
     this.arrayTransactions.forEach(transaction => {

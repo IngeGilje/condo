@@ -34,7 +34,7 @@ async function main() {
       let html = objPassword.showMenu(objPassword.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-       const resident = 'A';
+      const resident = 'A';
 
       // Verify whether the user has permission to change all passwords
       // or only their own password
@@ -65,6 +65,7 @@ async function main() {
 // Events for users
 async function events() {
 
+  /*
   // Filter
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterUserId')) {
@@ -76,6 +77,7 @@ async function events() {
       showUser(userId);
     };
   });
+  */
 
   // Filter
   document.addEventListener('change', async (event) => {
@@ -114,6 +116,7 @@ async function events() {
   });
 }
 
+/*
 // Delete condo
 async function deleteCondo() {
 
@@ -128,6 +131,7 @@ async function deleteCondo() {
     await objCondo.deleteCondoTable(userId, user);
   }
 }
+*/
 
 // Show filter
 function showFilter(userId) {
@@ -161,10 +165,10 @@ function showUser(userId) {
     ? ''
     : objUser.arrayUsers[rowNumberUser].password.trim();
   */
- const password = objUser.arrayUsers[rowNumberUser]?.password ?? '';
-  html += inputText('Passord', 'password', password, enableChanges, "Passord");
+  const password = objUser.arrayUsers[rowNumberUser]?.password ?? '';
+  html += inputText('password','Passord',  password, enableChanges, "Passord");
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // security level
   /*
@@ -172,10 +176,10 @@ function showUser(userId) {
     ? ''
     : objUser.arrayUsers[rowNumberUser].securityLevel;
   */
- const securityLevel = objUser.arrayUsers[rowNumberUser]?.securityLevel ?? 0;
-  html += showSelectedNumbers('securityLevel','Sikkerhetsnivå',  1, 9, 1, enableChanges);
+  const securityLevel = objUser.arrayUsers[rowNumberUser]?.securityLevel ?? 0;
+  html += showSelectedNumbers('securityLevel', 'Sikkerhetsnivå', 1, 9, 1, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   html += endGrid();
 
@@ -186,9 +190,9 @@ function showUser(userId) {
     html += startButtons();
 
     html += inputButton("update secondary", "Oppdater", "submit");
-    html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
-    html += inputButton("delete danger", "Slett", "button");
+    //html += inputButton("insert secondary", "Ny", "button");
+    //html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("delete danger", "Slett", "button");
 
     // End buttons
     html += endButtons();
@@ -202,11 +206,11 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = validateIntervalNew('userId',  'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateIntervalNew('userId', 'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = validateIntervalNew('securityLevel',  'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
+  const validSecurityLevel = validateIntervalNew('securityLevel', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
 
   // validate password
   let password = document.querySelector('.password').value;
@@ -257,24 +261,24 @@ async function updateUserRow(userId) {
 
       // update a accounts row
       await objAccounts.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
-    } else {
+    } /*else {
 
       // Insert a accounts row
       await objAccount.insertAccountsTable(objAccount.condominiumId, objAccount.user, year, priceKilowattHour);
       await objAccount.getHighestAccountId(objAccount.condominiumId);
       accountId = objAccount.arrayAccounts[0].accountId;
     }
-
+    */
     await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
     removeMessage();
 
     if (enableChanges) {
-      disableButton('delete', false);
-      disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
-      disableButton('filterAccountId', false);
+      //disableButton('delete', false);
+      //disableButton('insert', false);
+      //disableButton('cancel', true);
+      //disableButton('filterAccountId', false);
     }
 
     // Show filter
@@ -285,6 +289,7 @@ async function updateUserRow(userId) {
   }
 }
 
+/*
 // Delete a user row
 async function deleteUserRow() {
 
@@ -299,3 +304,4 @@ async function deleteUserRow() {
     await objUser.deleteUsersTable(userId, user);
   }
 }
+*/

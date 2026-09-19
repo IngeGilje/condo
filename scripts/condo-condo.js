@@ -112,6 +112,7 @@ async function events() {
     };
   });
 
+  /*
   // Cancel
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
@@ -125,6 +126,8 @@ async function events() {
       showCondo(condoId);
     };
   });
+  */
+
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -176,7 +179,7 @@ function showCondo(condoId) {
   const name = objCondo.arrayCondo[rowNumberCondo]?.name ?? '';
   html += inputText('name', 'Leilighet', name, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // street
   const street = objCondo.arrayCondo[rowNumberCondo]?.street ?? '';
@@ -185,25 +188,28 @@ function showCondo(condoId) {
   // address 2
   const address2 = objCondo.arrayCondo[rowNumberCondo]?.address2 ?? '';
   html += inputText('address2', 'Addresse 2', address2, enableChanges);
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // post code
+  /*
   const postalCode = (rowNumberCondo === -1)
     ? ''
     : objCondo.arrayCondo[rowNumberCondo].postalCode;
+  */
+  const postalCode = objCondo.arrayCondo[rowNumberCondo]?.postalCode ?? '';
   html += inputText('postalCode', 'PostNummer', postalCode, enableChanges);
 
   // City
   const city = objCondo.arrayCondo[rowNumberCondo]?.city ?? '';
   html += inputText('city', 'Poststed', city, enableChanges);
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // squareMeters
   let squareMeters = objCondo.arrayCondo[rowNumberCondo]?.squareMeters ?? '';
   squareMeters = formatNumberToNorAmount(squareMeters);
   html += inputText('squareMeters', 'Areal i m2', squareMeters, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   html += endGrid();
 
@@ -215,7 +221,7 @@ function showCondo(condoId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons
@@ -257,41 +263,6 @@ async function updateCondoRow(condoId) {
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 
-    /*
-    document.querySelector('.showMessage').style.display = "none";
- 
-    // Check if the condoId exist
-    const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
-    if (rowNumberCondo !== -1) {
- 
-      // update the condos row
-      await objCondo.updateCondoTable(condoId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
-      await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
-    } else {
- 
-      // Insert the condo row in condo table
-      await objCondo.insertCondoTable(objCondo.condominiumId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
-      await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
-      condoId = objCondo.arrayCondo.at(-1)?.condoId;
-      document.querySelector('.filterCondoId').value = condoId;
-    }
- 
-    removeMessage();
- 
-    if (enableChanges) {
-      disableButton('delete', false);
-      disableButton('insert', false);
-          disableButton('update', false);
-                disableButton('cancel', true);
-      disableButton('filterCondoId', false, 'white');
-    }
- 
-    // show filter
-    showFilter(condoId);
- 
-    // Show condo
-    showCondo(condoId);
-    */
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the condoId exist
@@ -316,7 +287,7 @@ async function updateCondoRow(condoId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterCondoId', false);
     }
 
@@ -357,7 +328,7 @@ function resetValues() {
   if (enableChanges) {
     disableButton('delete', true);
     disableButton('insert', true);
-    disableButton('cancel', false);
+    //disableButton('cancel', false);
     disableButton('filterCondoId', true);
   }
 }
@@ -373,8 +344,6 @@ async function deleteCondoRow() {
   if (rowNumberCondo !== -1) {
 
     // delete a condo row
-
-
     await objCondo.deleteCondoTable(condoId, objCondo.user);
   }
 }

@@ -2,7 +2,7 @@
 class EmptyCalendars extends Condos {
 
   // Empty Calendar
-  arrayEmptyCalendars;
+  arrayEmptyCalendars = Array;
 
   // Find selected empty calendar id
   getSelectedEmptyCalendarId(className) {
@@ -155,8 +155,9 @@ class EmptyCalendars extends Condos {
   }
   */
 
+  /*
   // show EmptyCalendar
-  showSelectedEmptyCalendarsNew(label, className, emptyCalendarId, selectNone, selectAll, enableChanges) {
+  showSelectedEmptyCalendarsNew(className,label,  emptyCalendarId, selectNone, selectAll, enableChanges) {
 
     let selectedValue = false;
     let emptyCalendarDate = "20200101";
@@ -265,6 +266,88 @@ class EmptyCalendars extends Condos {
       </select >
     </div>
     <!-- end showSelectedEmptyCalendarsNew -->
+    `;
+
+    return html;
+  }
+  */
+  // Show emptycalendars
+  showSelectedEmptyCalendarsNew(className, label, emptyCalendarId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    let html = `
+    <!-- start showSelectedEmptyCalendarsNew -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+
+    // Check if emptycalendars array is empty
+    if (this.arrayEmptyCalendars.length > 0) {
+      this.arrayEmptyCalendars.forEach((emptyCalendar) => {
+
+        const emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
+
+        html += `
+        <option 
+          value=${emptyCalendar.emptyCalendarId}
+          ${(emptyCalendar.emptyCalendarId === emptyCalendarId) ? 'selected' : ''}
+        >
+          ${emptyCalendarDate}
+        </option > `;
+        if (emptyCalendar.emptyCalendarId === emptyCalendarId) selectedValue = true;
+      });
+    } else {
+
+      // No emptycalendars
+      html += `
+          < option
+        value = 0 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+          Ingen konti
+      </option > `;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayEmptyCalendars.length > 0)) {
+
+      html += `
+          < option
+        value = ${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+          ${selectAll}
+      </option > `;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayEmptyCalendars.length > 0)) {
+      html += `
+          < option
+        value = 0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+          ${selectNone}
+      </option > `;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+        </select >
+      </div >
+    <!--end showSelectedEmptyCalendarsNew-- >
     `;
 
     return html;

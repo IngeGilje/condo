@@ -125,10 +125,7 @@ async function events() {
       
       const projectId = Number(document.querySelector('.filterProjectId').value);
       await deleteProjectsRow(projectId);
-      await objProjects.loadProjectsTable(objProjects.condominiumId);
-
-      showProject(projectId);
-    };
+     };
   });
 
   // return to bank account transactions
@@ -198,14 +195,14 @@ function showProject(projectId) {
   const name = objProjects.arrayProjects[rowNumberProject]?.name.trim() ?? '';
   html += inputText('name', 'Navn', name, enableChanges, "Navn");
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // amount
   let amount = objProjects.arrayProjects[rowNumberProject]?.amount ?? '';
   amount = formatNumberToNorAmount(amount);
   html += inputText('amount', 'Beløp', amount, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   html += endGrid();
 
@@ -217,7 +214,7 @@ function showProject(projectId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
     // check for return back to an application
     if (paramBackApplication) {
 
@@ -236,7 +233,7 @@ function showProject(projectId) {
     disableButton('delete', false);
     disableButton('insert', false);
     disableButton('update', false);
-    disableButton('cancel', true);
+    //disableButton('cancel', true);
     disableButton('filterProjectId', false);
   }
   */
@@ -311,7 +308,7 @@ async function updateProjectsRow(projectId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterProjectId', false);
     }
 
@@ -323,6 +320,7 @@ async function updateProjectsRow(projectId) {
   }
 }
 
+/*
 // Delete a projects row
 async function deleteProjectsRow(projectId) {
 
@@ -334,6 +332,7 @@ async function deleteProjectsRow(projectId) {
     await objProjects.deleteProjectsTable(projectId, objProjects.user);
   }
 }
+*/
 
 // Reset values
 function resetValues() {
@@ -353,4 +352,26 @@ function resetValues() {
   document.querySelector('.filterProjectId').disabled = true;
 
   removeMessage();
+}
+
+// Delete one projects row
+async function deleteProjectsRow(projectId) {
+
+  // Check if projects row exist
+  projectsRowNumber = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
+  if (projectsRowNumber !== -1) {
+
+    // delete projects row
+    await objProjects.deleteProjectsTable(projectId, objProjects.user);
+    await objProjects.getHighestAccountId(objProjects.condominiumId);
+    projectId = objProjects.arrayProjects[0].projectId;
+  }
+
+  await objProjects.loadProjectsTable(objProjects.condominiumId);
+
+  // Show filter
+  showFilter(projectId);
+
+  // Show project
+  showAccount(projectId);
 }

@@ -5,7 +5,7 @@ const today = new Date();
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
-const objBankAccount = new BankAccount('bankaccount');
+const objBankAccounts = new BankAccounts('bankaccounts');
 const objSupplier = new Supplier('supplier');
 const objCondominium = new Condominium('scondominium');
 const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
@@ -55,7 +55,7 @@ async function main() {
       await objUser.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objTransactions.condominiumId, fixedCost);
-      await objBankAccount.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
       await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
       await objCondo.loadCondoTable(objTransactions.condominiumId, objTransactions.nineNine);
       await objCondominium.loadCondominiumsTable();
@@ -265,7 +265,7 @@ function showTransactions() {
 
   // Start table
   let html = startTable("Kontobevegelser", "");
-  html += tableHeader(columnWidths, 'Dato', 'Konto', 'Leilighet', 'Inntekter', 'Utbetalinger',  '');
+  html += tableHeader(columnWidths, 'Dato', 'Konto', 'Leilighet', 'Innbetalinger', 'Utbetalinger',  '');
 
   objTransactions.arrayTransactions.forEach(bankTransaction => {
 

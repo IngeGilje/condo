@@ -468,14 +468,14 @@ class Condos {
     let bankAccountName = '';
 
     // Bank account name from bank account table 
-    const rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
+    const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
     /*
     if (rowNumberBankAccount !== -1) {
 
-      bankAccountName = objBankAccount.arrayBankAccounts[rowNumberBankAccount].name;
+      bankAccountName = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
     }
     */
-    bankAccountName = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.name ?? '';
+    bankAccountName = objBankAccounts.arrayBankAccounts[rowNumberBankAccount]?.name ?? '';
     if (!bankAccountName) {
 
       // Bank account name from supplier table
@@ -1258,7 +1258,8 @@ function primaryButton(text) {
 function inputButton(className, text, buttonType) {
 
   // Check for valid button type
-  if (buttonType !== "submit" && buttonType !== "button" && buttonType !== "reset") {
+  //if (buttonType !== "submit" && buttonType !== "button" && buttonType !== "reset") {
+  if (buttonType !== "submit" && buttonType !== "button") {
     buttonType = "button";
   }
 

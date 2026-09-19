@@ -148,36 +148,51 @@ function showFilter(dueId) {
   const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
 
   // from date
+  /*
   let fromDate = (objDues.arrayDues[rowNumberDue].date)
     ? objDues.arrayDues[rowNumberDue].date
     : 0;
+  */
+  let fromDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
   //html += showSelectedNumbers('filterFromdate', 'Fra dato', 2019, 2029, Number(year), enableChanges);
   fromDate = formatNumberToISODate(fromDate);
   html += inputDate('filterFromdate', 'Fra Dato', fromDate, true);
 
   // to date
+  /*
   let toDate = (objDues.arrayDues[rowNumberDue].date)
     ? objDues.arrayDues[rowNumberDue].date
     : 0;
+  */
+  let toDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
   toDate = formatNumberToISODate(toDate);
   html += inputDate('filterToDate', 'Til Dato', toDate, true);
 
   // condo
+  /*
   const condoId = (objDues.arrayDues[rowNumberDue].condoId)
     ? objDues.arrayDues[rowNumberDue].condoId
     : 0;
+  */
+  const condoId = objDues.arrayDues[rowNumberDue]?.condoId ?? 0;
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, 'Velg Leilighet', '', true);
 
   // account
+  /*
   const accountId = (objDues.arrayDues[rowNumberDue].accountId)
     ? objDues.arrayDues[rowNumberDue].accountId
     : 0;
+  */
+  const accountId = objDues.arrayDues[rowNumberDue]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('filterAccountd', 'Konto', accountId, 'Velg Konto', '', true);
 
   // project
+  /*
   const projectId = (objDues.arrayDues[rowNumberDue].projectId)
     ? objDues.arrayDues[rowNumberDue].projectId
     : 0;
+  */
+  const projectId = objDues.arrayDues[rowNumberDue]?.projectId ?? 0;
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg Prosjekt', '', true);
 
   // End filter
@@ -195,57 +210,78 @@ function showDue(dueId) {
   // due Id
   html += showTextNew('dueId', 'Forfall Id', dueId, false);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // date
+  /*
   let dueDate = (objDues.arrayDues[rowNumberDue].date)
     ? objDues.arrayDues[rowNumberDue].date
     : 0;
+  */
+  let dueDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
   dueDate = formatNumberToISODate(dueDate);
   html += inputDate('dueDate', 'Dato', dueDate, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // condo Id
+  /*
   let condoId = (objDues.arrayDues[rowNumberDue].condoId)
     ? objDues.arrayDues[rowNumberDue].condoId
     : 0;
+  */
+  let condoId = objDues.arrayDues[rowNumberDue]?.condoId ?? 0;
   html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, 'Velg Leilighet', '', enableChanges);
 
   // account Id
+  /*
   let accountId = (objDues.arrayDues[rowNumberDue].accountId)
     ? objDues.arrayDues[rowNumberDue].accountId
     : 0;
+  */
+  const accountId = objDues.arrayDues[rowNumberDue]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg konto', '', enableChanges);
 
   // project Id
+  /*
   let projectId = (objDues.arrayDues[rowNumberDue].projectId)
     ? objDues.arrayDues[rowNumberDue].projectId
     : 0;
+  */
+  const projectId = objDues.arrayDues[rowNumberDue]?.projectId ?? 0;
   html += objProjects.showSelectedProjectsNew('projectId', 'Prosjekt', projectId, 'Velg Prosjekt', '', enableChanges);
 
   // kilowattHour
+  /*
   let kilowattHour = (objDues.arrayDues[rowNumberDue].kilowattHour)
     ? objDues.arrayDues[rowNumberDue].kilowattHour
     : 0;
+  */
+  let kilowattHour = objDues.arrayDues[rowNumberDue]?.kilowattHour ?? 0;
   kilowattHour = formatNumberToNorAmount(kilowattHour);
   html += showTextNew('kilowattHour', 'K.timer', kilowattHour, enableChanges, 'Kontonavn');
 
   // amount
+  /*
   let amount = (objDues.arrayDues[rowNumberDue].amount)
     ? objDues.arrayDues[rowNumberDue].amount
     : 0;
+  */
+  let amount = objDues.arrayDues[rowNumberDue]?.amount ?? 0;
   amount = formatNumberToNorAmount(amount);
   html += showTextNew('amount', 'Beløp', amount, enableChanges, 'Beløp');
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // text
+  /*
   let text = (objDues.arrayDues[rowNumberDue].text)
     ? objDues.arrayDues[rowNumberDue].text
     : "";
+  */
+  const text = objDues.arrayDues[rowNumberDue]?.text ?? "";
   html += showTextNew('text', 'Tekst', text, enableChanges, 'Tekst');
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   html += endGrid();
 
@@ -257,7 +293,7 @@ function showDue(dueId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
 
     // check for return back to an application
     if (paramBackApplication) {
@@ -266,7 +302,7 @@ function showDue(dueId) {
     }
     html += inputButton("delete danger", "Slett", "button");
   }
-  
+
 
   // End buttons
   html += endButtons();
@@ -321,7 +357,7 @@ async function updateDueRow(dueId) {
 
       // update a dues row
       await objDues.updateDuesTable(objDues.user, dueId, condoId, accountId, projectId, amount, dueDate, kilowattHour, text);
-      } else {
+    } else {
 
       // Insert a dues row
       await objDues.insertDuesTable(objDues.condominiumId, objDues.user, condoId, accountId, projectId, amount, dueDate, kilowattHour, text);
@@ -337,7 +373,7 @@ async function updateDueRow(dueId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
 
       // Filter
       disableButton('filterFromdate', false);
@@ -407,7 +443,7 @@ function resetValues() {
   if (enableChanges) {
     disableButton('delete', true);
     disableButton('insert', true);
-    disableButton('cancel', false);
+    //disableButton('cancel', false);
     disableButton('update', false);
 
     // Filter

@@ -11,7 +11,7 @@ const applicationName = "condo-emptycalendar";
 
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
-const paramEmptyCalendarId = Number(queryParameters.get("emptyCalendarId"));
+const paramemptyCalendarId = Number(queryParameters.get("emptyCalendarId"));
 const paramYear = Number(queryParameters.get("year"));
 const paramMonth = Number(queryParameters.get("month"));
 const paramBackApplication = queryParameters.get("backApplication");
@@ -41,18 +41,21 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       await objCondo.loadCondoTable(objEmptyCalendars.condominiumId, objEmptyCalendars.nineNine);
-      const orderBy = "date DESC";
-      await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
-
-      let emptyCalendarId = 0;
-      let date = String(getCurrentDate());
-
-      await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
 
       // Show filter
-      emptyCalendarId = (paramEmptyCalendarId === 0)
-        ? emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0].emptyCalendarId
-        : emptyCalendarId = paramEmptyCalendarId;
+      let emptyCalendarId = 0;
+      if (paramemptyCalendarId) {
+
+        emptyCalendarId = paramemptyCalendarId;
+      } else {
+
+        // Last emptycalendars row
+        await objEmptyCalendars.getHighestEmptyCalendarId(objEmptyCalendars.condominiumId);
+        emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0]?.emptyCalendarId ?? 0;
+      }
+
+      const orderBy = "date DESC";
+      await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
 
       showFilter(emptyCalendarId);
 
@@ -75,8 +78,10 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterEmptyCalendarId')) {
 
-      const date = Number(document.querySelector('.filterEmptyCalendarId').value);
-      const emptyCalendarId = getEmptyCalendarId(date);
+      const emptyCalendarId = Number(document.querySelector('.filterEmptyCalendarId').value);
+      //const rowNumberEmptyCalendars = objEmptyCalendars.arrayEmptyCalendars.findIndex((emptycalendar) => emptycalendar.date === date);
+      //const emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendars]?.emptyCalendarId ?? 0;
+      //const emptyCalendarId = getemptyCalendarId(date);
       showEmptyCalendar(emptyCalendarId);
     };
   });
@@ -97,7 +102,7 @@ async function events() {
       let URL = (objEmptyCalendars.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
-      URL = `${URL}condo-emptyCalendars.html?emptyingCalendarsId=${paramEmptyCalendarId}&year=${paramYear}&month=${paramMonth}`;
+      URL = `${URL}condo-showemptycalendars.html?emptyingCalendarsId=${paramemptyCalendarId}&year=${paramYear}&month=${paramMonth}`;
       window.location.href = URL;
     }
   })
@@ -106,10 +111,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      // Update a emptycalendars row
-      let date = document.querySelector('.emptyingCalendarDate').value;
-      date = formatISODateToNumber(date);
-      const emptyCalendarId = getEmptyCalendarId(date);
+      const emptyCalendarId = Number(document.querySelector('.filterEmptyCalendarId').value);
       updateEmptyingCalendarRow(emptyCalendarId);
     };
   });
@@ -118,25 +120,12 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      let date = Number(document.querySelector('.filterEmptyCalendarId').value);
-      let emptyCalendarId = getEmptyCalendarId(date);
-      await deleteEmptyingCalendarRow(emptyCalendarId);
-
-      // Show last row in emptyingCalendars tabel
-      await objEmptyCalendars.getHighestEmptyCalendarId(objEmptyCalendars.condominiumId);
-      emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars.at(-1)?.emptyCalendarId ?? 0;
-      const orderBy = "date DESC";
-      await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
-
-      // Show filter
-      date = getEmptyingCalendarDate(emptyCalendarId);
-      showFilter(emptyCalendarId);
-
-      // show EmptyCalendar
-      showEmptyCalendar(emptyCalendarId);
+      const emptyCalendarId = Number(document.querySelector('.filterEmptyCalendarId').value)
+      await deleteEmptyCalendarsRow(emptyCalendarId);
     };
   });
 
+  /*
   // Cancel
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
@@ -146,7 +135,7 @@ async function events() {
       await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
       await objEmptyCalendars.getHighestEmptyCalendarId(objEmptyCalendars.condominiumId);
       const emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0]?.emptyCalendarId ?? 0;
-      const date = objEmptyCalendars.arrayEmptyCalendars[0]?.date ?? 0;
+      await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
 
       // Show filter
       showFilter(emptyCalendarId);
@@ -155,6 +144,7 @@ async function events() {
       showEmptyCalendar(emptyCalendarId);
     };
   });
+  */
 }
 
 // Show filter
@@ -164,7 +154,7 @@ function showFilter(emptyCalendarId) {
   let html = startGridFilter("Tømmekalender");
 
   // Show date
-  html += objEmptyCalendars.showSelectedEmptyCalendarsNew('Tømmedato', 'filterEmptyCalendarId', '', emptyCalendarId, 'Velg Dato', '', true);
+  html += objEmptyCalendars.showSelectedEmptyCalendarsNew('filterEmptyCalendarId', 'Tømmedato', emptyCalendarId, 'Velg Dato', '', true);
 
   // End filter
   html += endGridFilter();
@@ -188,7 +178,7 @@ function showEmptyCalendar(emptyCalendarId) {
   // condo
   const condoId = objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar]?.condoId ?? 0;
   html += objCondo.showSelectedCondosNew('condoId', 'Ansvarlig', condoId, 'Velg ansvarlig', '', true);
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // residual waste 
   selected = "Ugyldig verdi";
@@ -202,7 +192,7 @@ function showEmptyCalendar(emptyCalendarId) {
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].paper === 'N') selected = "Nei";
   className = 'paper';
   html += inputValues('Papiravfall', 'paper', enableChanges, selected, 'Nei', 'Ja');
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // food waste
   selected = "Ugyldig verdi";
@@ -215,7 +205,7 @@ function showEmptyCalendar(emptyCalendarId) {
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].plastic === 'Y') selected = "Ja";
   if (objEmptyCalendars.arrayEmptyCalendars[rowNumberEmptyCalendar].plastic === 'N') selected = "Nei";
   html += inputValues('Plastavfall', 'plastic', enableChanges, selected, 'Nei', 'Ja');
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // Christmas tree
   selected = "Ugyldig verdi";
@@ -234,7 +224,7 @@ function showEmptyCalendar(emptyCalendarId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
 
     // check for return back to an application
     if (paramBackApplication) {
@@ -251,6 +241,7 @@ function showEmptyCalendar(emptyCalendarId) {
   document.querySelector('.showEmptyCalendar').innerHTML = html;
 }
 
+/*
 // Delete one emtyingcalendar row
 async function deleteEmptyingCalendarRow(emptyCalendarId, className) {
 
@@ -265,6 +256,7 @@ async function deleteEmptyingCalendarRow(emptyCalendarId, className) {
   const orderBy = "date DESC";
   await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
 }
+*/
 
 // Update a emptycalendar table row
 async function updateEmptyingCalendarRow(emptyCalendarId) {
@@ -310,6 +302,8 @@ async function updateEmptyingCalendarRow(emptyCalendarId) {
 
     document.querySelector('.showMessage').style.display = "none";
 
+    const rowNumberEmptyCalendar = objEmptyCalendars.arrayEmptyCalendars.findIndex((emptyCalendar) => emptyCalendar.emptyCalendarId = emptyCalendarId);
+
     // Check if the emptycalendars row exist
     if (rowNumberEmptyCalendar !== -1) {
 
@@ -332,7 +326,7 @@ async function updateEmptyingCalendarRow(emptyCalendarId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterEmptyCalendarId', false);
     }
 
@@ -356,8 +350,9 @@ function getEmptyingCalendarDate(emptyCalendarId) {
   return date;
 }
 
+/*
 // get empty calendar Id
-function getEmptyCalendarId(date) {
+function getemptyCalendarId(date) {
 
   let emptyCalendarId = 0;
   objEmptyCalendars.arrayEmptyCalendars.forEach(emptycalendar => {
@@ -367,9 +362,11 @@ function getEmptyCalendarId(date) {
 
   return emptyCalendarId;
 }
+*/
 
+/*
 // get empty calendar Id
-function getEmptyCalendarId(date) {
+function getemptyCalendarId(date) {
 
   let emptyCalendarId = 0;
   objEmptyCalendars.arrayEmptyCalendars.forEach(emptycalendar => {
@@ -379,11 +376,12 @@ function getEmptyCalendarId(date) {
 
   return emptyCalendarId;
 }
+*/
 
 // resetValues
 function resetValues() {
 
-  document.querySelector('.filterEmptyCalendarId').value = '';
+  document.querySelector('.filterEmptyCalendarId').value = 0;
 
   // condoId
   document.querySelector('.condoId').value = 0;
@@ -413,7 +411,29 @@ function resetValues() {
   if (enableChanges) {
     disableButton('delete', true);
     disableButton('insert', true);
-    disableButton('cancel', false);
+    //disableButton('cancel', false);
     disableButton('filterEmptyCalendarId', true);
   }
+}
+
+// Delete a emptycalendars row
+async function deleteEmptyCalendarsRow(emptyCalendarId) {
+
+  // Check if emptycalendars row exist
+  const emptyEmptyCalendarsRowNumber = objEmptyCalendars.arrayEmptyCalendars.findIndex(emptycalendar => emptycalendar.emptyCalendarId === emptyCalendarId);
+  if (emptyEmptyCalendarsRowNumber !== -1) {
+
+    // delete emptycalendar row
+    await objEmptyCalendars.deleteEmptyCalendarTable(emptyCalendarId, objEmptyCalendars.user);
+    await objEmptyCalendars.getHighestEmptyCalendarId(objEmptyCalendars.condominiumId);
+    emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0].emptyCalendarId;
+  }
+
+  await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId);
+
+  // Show filter
+  showFilter(emptyCalendarId);
+
+  // Show emptycalendar
+  showEmptyCalendar(emptyCalendarId);
 }

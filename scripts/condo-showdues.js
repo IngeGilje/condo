@@ -106,7 +106,8 @@ async function events() {
       const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
       if (rowNumberDue !== -1) {
 
-        const date = objDues.arrayDues[rowNumberDue].date;
+        //const date = objDues.arrayDues[rowNumberDue].date;
+        const date = objDues.arrayDues[rowNumberDue]?.date ?? "";
         const year = Number(String(date).slice(0, 4));
 
         let URL = (objDues.serverStatus === 1)

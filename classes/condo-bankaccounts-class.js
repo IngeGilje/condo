@@ -1,5 +1,5 @@
 // class for bankaccount
-class BankAccount extends Condos {
+class BankAccounts extends Condos {
 
   // bankaccount information
   arrayBankAccounts = [];

@@ -93,7 +93,7 @@ function showVoucher(transactionId) {
   // transaction Id
   html += showTextNew('transactionId', 'Bilagsnummer', transactionId, false, "Bilagsnummer");
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // Date
   let date = objTransactions.arrayTransactions[rowNumberTransaction]?.date ?? '';
@@ -105,14 +105,14 @@ function showVoucher(transactionId) {
   const payment = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
   const amount = formatNumberToNorAmount((income) ? income : payment);
   html += showTextNew('amount', 'Beløp', amount, false, "Beløp");
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // Account
   const accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
   const accountName = objAccounts.getAccountNameById(accountId);
   html += showTextNew('accountName', 'Konto', accountName, false);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // File name
   let voucherFileName = objTransactions.arrayTransactions[rowNumberTransaction]?.voucherFileName ?? '';
@@ -121,7 +121,7 @@ function showVoucher(transactionId) {
     : `${transactionId}.pdf`;
   html += showTextNew('voucherFileName', 'Filnavn', voucherFileName, false, "Filnavn");
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // Start buttons
   html += startButtons();

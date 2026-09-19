@@ -5,7 +5,7 @@ const today = new Date();
 const objUser = new User('user');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
-const objBankAccount = new BankAccount('bankaccount');
+const objBankAccounts = new BankAccounts('bankaccounts');
 const objSupplier = new Supplier('supplier');
 const objCondominium = new Condominium('scondominium');
 const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
@@ -54,7 +54,7 @@ async function main() {
       await objUser.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objTransactions.condominiumId, fixedCost);
-      await objBankAccount.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
       await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
       await objCondo.loadCondoTable(objTransactions.condominiumId, objTransactions.nineNine);
       await objCondominium.loadCondominiumsTable();
@@ -126,6 +126,7 @@ async function events() {
     };
   });
 
+  /*
   // cancel
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
@@ -133,6 +134,7 @@ async function events() {
       resetValues();
     };
   });
+  */
 
   // update a bankaccounts row
   document.addEventListener('click', async (event) => {
@@ -254,7 +256,7 @@ function showTransaction(transactionId) {
   transactionDate = formatNumberToISODate(transactionDate);
   html += inputDate('transactionDate', 'Dato', transactionDate, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // Condo
   /*
@@ -337,7 +339,7 @@ function showTransaction(transactionId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
 
     // check for return back to an application
     if (paramBackApplication) {
@@ -436,7 +438,7 @@ async function updateTransactionRow(transactionId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton("filterTransactionId", false);
     }
 
@@ -483,7 +485,7 @@ function resetValues() {
   if (enableChanges) {
     disableButton('delete', true);
     disableButton('insert', true);
-    disableButton('cancel', false);
+    //disableButton('cancel', false);
     disableButton("filterTransactionId", true);
   }
 }

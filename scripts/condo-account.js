@@ -113,30 +113,11 @@ async function events() {
 
   // Delete account row
   document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
 
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
+      const accountId = Number(document.querySelector('.filterAccountId').value);
+      await deleteAccountRow(accountId);
 
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let accountId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        accountId = Number(className.slice(prefix.length));
-      }
-
-      await deleteAccountRow(accountId, className);
-
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
-
-      // Show account
-      showAccounts(accountId);
     };
   });
 }
@@ -163,19 +144,22 @@ function showAccount(accountId) {
   let html = startGrid('Konto');
 
   // fixed cost
-  let selected = "Ugyldig verdi";
-  if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'Y') selected = constFixedCost;
-  if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'N') selected = constVariableCost;
+  //let selected = "Ugyldig verdi";
+  let selected = objAccounts.arrayAccounts[rowNumberAccount]?.fixedCost ?? '';
+  if (selected === 'Y') selected = constFixedCost;
+  if (selected === 'N') selected = constVariableCost;
+  if (selected !== constFixedCost && selected !== constVariableCost) selected = "Ukjent";
+  //if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'N') selected = constVariableCost;
   //html += inputValues('Kostnadstype', 'fixedCost', '', enableChanges, selected, constFixedCost, constVariableCost)
-  html += inputValues('Kostnadstype', 'fixedCost', enableChanges, constFixedCost, constFixedCost, constVariableCost);
+  html += inputValues('Kostnadstype', 'fixedCost', enableChanges, selected, constFixedCost, constVariableCost);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // name
   const name = objAccounts.arrayAccounts[rowNumberAccount]?.name ?? '';
-  html += showTextNew('name', 'Kontonavn', objAccounts.arrayAccounts[rowNumberAccount].name.trim(), enableChanges, 'Kontonavn');
+  html += showTextNew('name', 'Kontonavn', name, enableChanges, 'Kontonavn');
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   html += endGrid();
 
@@ -188,7 +172,7 @@ function showAccount(accountId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons
@@ -203,7 +187,6 @@ function showAccount(accountId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
 
     // check for return back to an application
     if (paramBackApplication) {
@@ -246,13 +229,13 @@ function resetValues() {
     disableButton('delete', true);
     disableButton('insert', true);
     disableButton('update', true);
-    disableButton('cancel', false);
+    //disableButton('cancel', false);
     disableButton('filterFixedCost', true);
   }
 }
 
 // Delete one account row
-async function deleteAccountRow(accountId, className) {
+async function deleteAccountRow(accountId) {
 
   // Check if account row exist
   accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
@@ -260,10 +243,18 @@ async function deleteAccountRow(accountId, className) {
 
     // delete account row
     await objAccounts.deleteAccountsTable(accountId, objAccounts.user);
+    await objAccounts.getHighestAccountId(objAccounts.condominiumId);
+    accountId = objAccounts.arrayAccounts[0].accountId;
   }
 
   const fixedCost = 'A';
   await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
+
+  // Show filter
+  showFilter(accountId);
+
+  // Show account
+  showAccount(accountId);
 }
 
 // Update a accounts table row
@@ -310,7 +301,7 @@ async function updateAccountsRow(accountId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterAccountId', false);
     }
 

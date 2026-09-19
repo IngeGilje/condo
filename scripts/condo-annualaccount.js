@@ -6,7 +6,7 @@ const objUser = new User('user');
 const objCondominium = new Condominium('condominium');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
-const objBankAccount = new BankAccount('bankaccount');
+const objBankAccounts = new BankAccounts('bankaccounts');
 const objTransactions = new Transactions('bankTransactions');
 const objCondo = new Condo('condo');
 const objCommonCosts = new CommonCosts('commoncosts');
@@ -48,7 +48,7 @@ async function main() {
       await objCondo.loadCondoTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
       await objCommonCosts.loadCommonCostsTable(objAnnualAccount.condominiumId);
       await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
-      await objBankAccount.loadBankAccountsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objAnnualAccount.condominiumId, fixedCost);
 
@@ -462,10 +462,10 @@ function showBankDeposit() {
 
   // closingBalanceDate
   let closingBalanceDate = "";
-  let rowNumberBankAccount = objBankAccount.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objAnnualAccount.condominiumId);
+  let rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.condominiumId === objAnnualAccount.condominiumId);
   if (rowNumberBankAccount !== -1) {
 
-    closingBalanceDate = (objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
+    closingBalanceDate = (objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
     closingBalanceDate = formatNumberToNorDate(closingBalanceDate);
   }
   className = `closingBalanceDate`;
@@ -476,9 +476,9 @@ function showBankDeposit() {
   /*
   const bankDepositAmount = (rowNumberBankAccount === -1)
     ? 0
-    : formatNumberToNorAmount(objBankAccount.arrayBankAccounts[rowNumberBankAccount].closingBalance);
+    : formatNumberToNorAmount(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
   */
- const bankDepositAmount = objBankAccount.arrayBankAccounts[rowNumberBankAccount]?.bankDepositAmount ?? '';
+ const bankDepositAmount = objBankAccounts.arrayBankAccounts[rowNumberBankAccount]?.bankDepositAmount ?? '';
   className = `bankDepositAmount`;
   html += showTableText(className, bankDepositAmount);
 

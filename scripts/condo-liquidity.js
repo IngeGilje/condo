@@ -3,7 +3,7 @@
 // Activate classes
 const today = new Date();
 const objUser = new User('user');
-const objBankAccount = new BankAccount('bankAccount');
+const objBankAccounts = new BankAccounts('bankAccounts');
 const objTransactions = new Transactions('transactions');
 const objLiquidity = new Liquidity('liquidity');
 
@@ -37,7 +37,7 @@ async function main() {
       let html = objLiquidity.showMenu(objLiquidity.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      await objBankAccount.loadBankAccountsTable(objLiquidity.condominiumId, objLiquidity.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objLiquidity.condominiumId, objLiquidity.nineNine);
 
       const orderBy = 'condoId ASC';
       const fromDate = 20200101;
@@ -109,7 +109,7 @@ function showLiquidity() {
 
   const year = document.querySelector('.filterYear').value;
 
-  let mounth = 0;
+  let month = 0;
   let arrayMonth = [];
 
   for (month = 1; month < 13; month++) {

@@ -101,6 +101,7 @@ async function events() {
     };
   });
 
+  /*
   // Cancel insert of bankaccountaccounts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('cancel')) {
@@ -109,7 +110,7 @@ async function events() {
         disableButton('delete', false);
         disableButton('insert', false);
         disableButton('update', false);
-        disableButton('cancel', true);
+        //disableButton('cancel', true);
         disableButton('filterUserBankAccountId', false, 'white');
 
       }
@@ -122,6 +123,7 @@ async function events() {
       showUserBankAccount(userBankAccountId);
     };
   });
+  */
 }
 
 // Show filter
@@ -151,19 +153,19 @@ function showUserBankAccount(userBankAccountId) {
   //html += "</div>";
   html += objUser.showSelectedUsersNew('userId', 'Bruker', userId, 'Velg bruker', '', true);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // account
   const accountId = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId','Konto',  accountId, 'Velg konto', '', true);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // bank account
   const bankAccount = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount]?.bankAccount ?? '';
   html += showTextNew('bankAccount','Bankkonto',  bankAccount, enableChanges, 'Oppgi Bankkonto');
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   html += endGrid();
 
@@ -175,7 +177,7 @@ function showUserBankAccount(userBankAccountId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons
@@ -245,7 +247,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterUserBankAccountId', false, 'white');
     }
 
@@ -278,7 +280,7 @@ async function updateUserBankAccountsRow(userBankAccountId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
       disableButton('filterUserBankAccountId', false);
     }
 
@@ -309,7 +311,7 @@ function resetValues() {
   if (enableChanges) {
     disableButton('delete', true);
     disableButton('insert', true);
-    disableButton('cancel', false);
+    //disableButton('cancel', false);
     disableButton('filterUserBankAccountId', true);
   }
 }

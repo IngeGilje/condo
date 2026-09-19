@@ -173,26 +173,26 @@ function showBudget(budgetId) {
   const year = objBudgets.arrayBudgets[rowNumberBudget]?.year ?? "";
   html += showSelectedNumbers('year', 'År', 2020, 2030, year, enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // Show accounts
   const accountId = objBudgets.arrayBudgets[rowNumberBudget]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg Konto', '', enableChanges);
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // Amount
   let amount = objBudgets.arrayBudgets[rowNumberBudget]?.amount ?? '0';
   amount = formatNumberToNorAmount(amount);
   html += showTextNew('amount', 'Beløp', amount, enableChanges, 'Beløp');
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   // text
   const text = objBudgets.arrayBudgets[rowNumberBudget]?.text ?? '';
   html += showTextNew('text', 'Tekst', text, enableChanges, "Tekst");
   html += "<div></div>";
-  html += "<div></div>";
+  //html += "<div></div>";
 
   /*
    // Buttons
@@ -203,7 +203,7 @@ function showBudget(budgetId) {
  
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
+    //html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
  
     // End buttons
@@ -217,7 +217,7 @@ function showBudget(budgetId) {
     disableButton('delete', false);
     disableButton('insert', false);
     disableButton('update', false);
-    disableButton('cancel', true);
+    //disableButton('cancel', true);
     disableButton('filterBudgetId', false, 'white');
   }
   */
@@ -231,7 +231,6 @@ function showBudget(budgetId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    html += inputButton("cancel secondary", "Angre", "reset");
 
     // check for return back to an application
     if (paramBackApplication) {
@@ -310,7 +309,7 @@ async function updateBudgetsRow(budgetId) {
       disableButton('delete', false);
       disableButton('insert', false);
       disableButton('update', false);
-      disableButton('cancel', true);
+      //disableButton('cancel', true);
 
       // Filter
       disableButton('filterBudgetId', false);
@@ -348,7 +347,7 @@ function resetValues() {
   if (enableChanges) {
     disableButton('delete', true);
     disableButton('insert', true);
-    disableButton('cancel', false);
+    //disableButton('cancel', false);
     disableButton('update', false);
 
     // Filter

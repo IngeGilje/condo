@@ -174,7 +174,7 @@ function showAccounts() {
   // Table header (<tr></tr>)
   //html += objAccounts.showTableHeader('Kostnadstype', 'Tekst', '');
 
-   // Start table
+  // Start table
   let html = startTable("Konti", "");
   html += tableHeader(columnWidths, 'Kostnadstype', 'Tekst', '');
 
@@ -193,9 +193,9 @@ function showAccounts() {
     // name
     const name = account.name;
     className = `name${account.accountId}`;
-    html += showTableText(className, selected);
+    html += showTableText(className, name);
 
-     // Show button for maintnance
+    // Show button for maintnance
     className = `edit${account.accountId}`;
     //html += objAccounts.showTableButton(className, 'Rediger');
     html += showTableButton(className, 'Rediger');
@@ -206,21 +206,21 @@ function showAccounts() {
   // The end of the table
   html += endTable();
   document.querySelector(".showAccounts").innerHTML = html;
- }
+}
 
- /*
+/*
 // Delete one account row
 async function deleteAccountRow(accountId, className) {
 
-  // Check if account row exist
-  accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-  if (accountsRowNumber !== -1) {
+ // Check if account row exist
+ accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+ if (accountsRowNumber !== -1) {
 
-    // delete account row
-    await objAccounts.deleteAccountsTable(accountId, objAccounts.user);
-  }
+   // delete account row
+   await objAccounts.deleteAccountsTable(accountId, objAccounts.user);
+ }
 
-  const fixedCost = 'A';
-  await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
+ const fixedCost = 'A';
+ await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 }
 */

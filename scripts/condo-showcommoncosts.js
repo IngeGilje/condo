@@ -53,7 +53,7 @@ async function main() {
       await objCondo.loadCondoTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
-      //await objBankAccount.loadBankAccountsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
+      //await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objCommonCosts.condominiumId, fixedCost);
 
