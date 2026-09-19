@@ -93,14 +93,8 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      awaitdeleteCondoRow();
-
-      await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
-
-      // Show filter
-      const condoId = objCondo.arrayCondo.at(-1)?.condoId ?? 0;
-      showFilter(condoId);
-      showCondo(condoId);
+      const condoId = Number(document.querySelector('.filterCindoId').value);
+      await deleteCondosRow(condoId);
     };
   });
 
@@ -333,6 +327,7 @@ function resetValues() {
   }
 }
 
+/*
 // Delete condo row
 async function deleteCondoRow() {
 
@@ -346,4 +341,27 @@ async function deleteCondoRow() {
     // delete a condo row
     await objCondo.deleteCondoTable(condoId, objCondo.user);
   }
+}
+*/
+
+// Delete condos row
+async function deleteCondosRow(condoId) {
+
+  // Check if condos row exist
+  const rowNumberCondos = objCondos.arrayCondos.findIndex(account => account.condoId === condoId);
+  if (rowNumberCondos !== -1) {
+
+    // delete condos row
+    await objCondos.deleteCondosTable(condoId, objCondos.user);
+    await objCondos.getHighestCondoId(objCondos.condominiumId);
+    condoId = objCondos.arrayCondos[0].condoId;
+  }
+
+  await objCondos.loadCondosTable(objCondos.condominiumId);
+
+  // Show filter
+  showFilter(condoId);
+
+  // Show account
+  showCondo(condoId);
 }

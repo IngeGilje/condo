@@ -390,6 +390,7 @@ async function updateDueRow(dueId) {
   }
 }
 
+/*
 // Delete a dues row
 async function deleteDue(dueId) {
 
@@ -404,6 +405,29 @@ async function deleteDue(dueId) {
   await objDues.loadDuesTable(objDues.condominiumId);
 
   showFilter(dueId);
+  showDue(dueId);
+}
+*/
+
+// Delete dues row
+async function deleteDuesRow(dueId) {
+
+  // Check if dues row exist
+  const rowNumberDues = objDues.arrayDues.findIndex(due => due.dueId === dueId);
+  if (rowNumberDues !== -1) {
+
+    // delete dues row
+    await objDues.deleteDuesTable(dueId, objDues.user);
+    await objDues.getHighestDueId(objDues.condominiumId);
+    dueId = objDues.arrayDues[0].dueId;
+  }
+
+  await objDues.loadDuesTable(objDues.condominiumId);
+
+  // Show filter
+  showFilter(dueId);
+
+  // Show due
   showDue(dueId);
 }
 

@@ -85,16 +85,9 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      await deleteCondominiumRow();
-
-      await objCondominium.loadCondominiumsTable();
-
-      // Show filter
-      showFilter(0);
-
-      // Show condominium
-      showCondominium(objCondominium.condominiumId);
-    };
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      await deleteCondominiumsRow(condominiumId);
+     };
   });
 
   // Insert a condominiums row
@@ -366,6 +359,7 @@ async function updateCondominiumRow(condominiumId) {
   }
 }
 
+/*
 // Delete condominium row
 async function deleteCondominiumRow() {
 
@@ -380,6 +374,30 @@ async function deleteCondominiumRow() {
     await objCondominium.deleteCondominiumsTable(condominiumId, objCondominium.user);
   }
 }
+*/
+
+// Delete condominiums row
+async function deleteCondominiumsRow(condominiumId) {
+
+  // Check if condominiums row exist
+  const rowNumberCondominiums = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === condominiumId);
+  if (rowNumberCondominiums !== -1) {
+
+    // delete condominiums row
+    await objCondominiums.deleteCondominiumsTable(condominiumId, objCondominiums.user);
+    await objCondominiums.getHighestCondominiumId(objCondominiums.condominiumId);
+    condominiumId = objCondominiums.arrayCondominiums[0].condominiumId;
+  }
+
+  await objCondominiums.loadCondominiumsTable(objCondominiums.condominiumId);
+
+  // Show filter
+  showFilter(condominiumId);
+
+  // Show condominium
+  showCondominium(condominiumId);
+}
+
 
 // Reset all values for condominium
 function resetValues() {

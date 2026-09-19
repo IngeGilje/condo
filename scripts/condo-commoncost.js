@@ -158,9 +158,6 @@ async function events() {
 
       const year = Number(document.querySelector('.filterYear').value);
       await deleteCommonCostsRow(year);
-
-      // Show common cost
-      showCommonCost(year);
     };
   });
 
@@ -293,6 +290,7 @@ function getpriceSquaremeter(budgetYear) {
   return commonCostSquareMeter;
 }
 
+/*
 // Delete a commoncosts row
 async function deleteCommonCostsRow(year) {
 
@@ -305,6 +303,31 @@ async function deleteCommonCostsRow(year) {
     await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
   }
 }
+*/
+
+// Delete commoncosts row
+async function deleteCommonCostsRow(year) {
+
+  // Check if commoncosts row exist
+  const rowNumberCommonCosts = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
+  if (rowNumberCommonCosts !== -1) {
+
+    // delete commoncosts row
+    const commonCostId = objCommonCosts.arrayCommonCosts[rowNumberCommonCosts]?.commonCostId ?? 0;
+    await objCommonCosts.deleteCommonCostsTable(commonCostId, objCommonCosts.user);
+    await objCommonCosts.getHighestCommonCostId(objCommonCosts.condominiumId);
+    commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
+  }
+
+  await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
+
+  // Show filter
+  showFilter(accountId);
+
+  // Show account
+  showCommonCost(accountId);
+}
+
 
 // Update a commoncosts table row
 async function updateCommonCostsRow(year) {

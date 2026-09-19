@@ -416,6 +416,7 @@ function resetValues() {
   }
 }
 
+/*
 // Delete a emptycalendars row
 async function deleteEmptyCalendarsRow(emptyCalendarId) {
 
@@ -437,3 +438,27 @@ async function deleteEmptyCalendarsRow(emptyCalendarId) {
   // Show emptycalendar
   showEmptyCalendar(emptyCalendarId);
 }
+*/
+
+// Delete emptyCalendars row
+async function deleteEmptyCalendarsRow(emptyCalendarId) {
+
+  // Check if emptyCalendars row exist
+  const rowNumberEmptyCalendars = objEmptyCalendars.arrayEmptyCalendars.findIndex(emptyCalendar => emptyCalendar.emptyCalendarId === emptyCalendarId);
+  if (rowNumberEmptyCalendars !== -1) {
+
+    // delete emptyCalendars row
+    await objEmptyCalendars.deleteEmptyCalendarsTable(emptyCalendarId, objEmptyCalendars.user);
+    await objEmptyCalendars.getHighestEmptyCalendarId(objEmptyCalendars.condominiumId);
+    emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0].emptyCalendarId;
+  }
+
+  await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId);
+
+  // Show filter
+  showFilter(emptyCalendarId);
+
+  // Show emptyCalendar
+  showEmptyCalendar(emptyCalendarId);
+}
+

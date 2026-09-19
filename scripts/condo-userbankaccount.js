@@ -91,13 +91,7 @@ async function events() {
 
       // Delete user bank account
       let userBankAccountId = Number(document.querySelector('.filterUserBankAccountId').value);
-      await deleteUserBankAccountRow(userBankAccountId);
-
-      await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
-
-      userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[0]?.userBankAccountId ?? 0;
-      showFilter(userBankAccountId);
-      showUserBankAccount(userBankAccountId);
+      await deleteUserBankAccountsRow(userBankAccountId);
     };
   });
 
@@ -187,6 +181,7 @@ function showUserBankAccount(userBankAccountId) {
   document.querySelector('.showUserBankAccount').innerHTML = html;
 }
 
+/*
 // Delete userbankaccounts  row
 async function deleteUserBankAccountRow(userBankAccountId) {
 
@@ -200,6 +195,30 @@ async function deleteUserBankAccountRow(userBankAccountId) {
 
   await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 }
+*/
+
+// Delete userBankAccounts row
+async function deleteUserBankAccountsRow(userBankAccountId) {
+
+  // Check if userBankAccounts row exist
+  const rowNumberUserBankAccounts = objUserBankAccounts.arrayUserBankAccounts.findIndex(userBankAccount => userBankAccount.userBankAccountId === userBankAccountId);
+  if (rowNumberUserBankAccounts !== -1) {
+
+    // delete userBankAccounts row
+    await objUserBankAccounts.deleteUserBankAccountsTable(userBankAccountId, objUserBankAccounts.user);
+    await objUserBankAccounts.getHighestUserBankAccountId(objUserBankAccounts.condominiumId);
+    userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[0].userBankAccountId;
+  }
+
+  await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId);
+
+  // Show filter
+  showFilter(userBankAccountId);
+
+  // Show userBankAccount
+  showUserBankAccount(userBankAccountId);
+}
+
 
 // Update userbankaccounts row
 async function updateUserBankAccountsRow(userBankAccountId) {

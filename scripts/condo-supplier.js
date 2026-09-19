@@ -85,19 +85,8 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      await deleteSupplierRow();
-
-      //const condominiumId = Number(condominiumId);
-      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
-
-      // Show filter
-      const supplierId = (objSupplier.arraySuppliers.length > 0)
-        ? objSupplier.arraySuppliers.at(-1)?.supplierId ?? 0
-        : 0;
-      // Show filter
-
-      showFilter(supplierId);
-      showSupplier(supplierId);
+      const supplierId = Number(document.querySelector('.filterSupplierId'));
+      await deleteSuppliersRow(supplierId);
     };
   });
 
@@ -506,6 +495,7 @@ async function updateSuppliersRow(supplierId) {
   }
 }
 
+/*
 // Delete a suppliers row
 async function deleteSupplierRow() {
 
@@ -520,3 +510,27 @@ async function deleteSupplierRow() {
     await objSupplier.deleteSuppliersTable(supplierId, objSupplier.user);
   }
 }
+*/
+
+// Delete suppliers row
+async function deleteSuppliersRow(supplierId) {
+
+  // Check if suppliers row exist
+  const rowNumberSuppliers = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
+  if (rowNumberSuppliers !== -1) {
+
+    // delete suppliers row
+    await objSuppliers.deleteSuppliersTable(supplierId, objSuppliers.user);
+    await objSuppliers.getHighestSupplierId(objSuppliers.condominiumId);
+    supplierId = objSuppliers.arraySuppliers[0].supplierId;
+  }
+
+  await objSuppliers.loadSuppliersTable(objSuppliers.condominiumId);
+
+  // Show filter
+  showFilter(supplierId);
+
+  // Show supplier
+  showSupplier(supplierId);
+}
+

@@ -116,23 +116,6 @@ async function events() {
   });
 }
 
-/*
-// Delete condo
-async function deleteCondo() {
-
-  // Check for valid condo Id
-  const userId = Number(document.querySelector('.select-condo-userId').value);
-
-  // Check if condo id exist
-  const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.userId === userId);
-  if (rowNumberCondo !== -1) {
-
-    // delete condo row
-    await objCondo.deleteCondoTable(userId, user);
-  }
-}
-*/
-
 // Show filter
 function showFilter(userId) {
 
@@ -288,20 +271,3 @@ async function updateUserRow(userId) {
     showAccount(accountId);
   }
 }
-
-/*
-// Delete a user row
-async function deleteUserRow() {
-
-  // userId
-  const userId = Number(document.querySelector('.filterUserId').value);
-
-  // Check if user exist
-  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
-  if (rowNumberUser !== -1) {
-
-    // delete a user row
-    await objUser.deleteUsersTable(userId, user);
-  }
-}
-*/

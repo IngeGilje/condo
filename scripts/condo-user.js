@@ -90,17 +90,8 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      await deleteUserRow();
-
-      const resident = 'A';
-      await objUser.loadUsersTable(condominiumId, resident, objUser.nineNine);
-
-      // Show filter
-      const userId = objUser.arrayUsers.at(-1)?.userId ?? 0;
-
-      // Show filter
-      showFilter(userId);
-      showUser(userId);
+      const userId = Number(document.arrayUsers('.filterCondoId').value);
+      await deleteUsersRow(userId);
     };
   });
 
@@ -424,6 +415,7 @@ async function updateUserRow(userId) {
   }
 }
 
+/*
 // Delete a users row
 async function deleteUserRow() {
 
@@ -437,6 +429,29 @@ async function deleteUserRow() {
     // delete a user row
     await objUser.deleteUsersTable(userId, objUser.user);
   }
+}
+*/
+
+// Delete users row
+async function deleteUsersRow(userId) {
+
+  // Check if users row exist
+  const rowNumberUsers = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+  if (rowNumberUsers !== -1) {
+
+    // delete users row
+    await objUsers.deleteUsersTable(userId, objUsers.user);
+    await objUsers.getHighestUserId(objUsers.condominiumId);
+    userId = objUsers.arrayUsers[0].userId;
+  }
+
+  await objUsers.loadUsersTable(objUsers.condominiumId);
+
+  // Show filter
+  showFilter(userId);
+
+  // Show user
+  showUser(userId);
 }
 
 function resetValues() {

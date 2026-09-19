@@ -358,7 +358,7 @@ function resetValues() {
 async function deleteProjectsRow(projectId) {
 
   // Check if projects row exist
-  projectsRowNumber = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
+  const projectsRowNumber = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
   if (projectsRowNumber !== -1) {
 
     // delete projects row

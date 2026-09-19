@@ -198,23 +198,6 @@ document.addEventListener('click', async (event) => {
 });
 */
 
-/*
-// Delete budgets row
-async function deleteBudgetRow(budgetId, className) {
- 
-  // Check if budget row exist
-  budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-  if (budgetsRowNumber !== -1) {
- 
-    // delete budget row
-    await objBudgets.deleteBudgetsTable(budgetId, objBudgets.user);
-  }
- 
-  const year = Number(document.querySelector('.filterYear').value);
-  await objBudgets.loadBudgetsTable(objBudgets.condominiumId, year, objBudgets.nineNine);
-}
-*/
-
 // Calculate sum budget
 function calculateSum() {
 

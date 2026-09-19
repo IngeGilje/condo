@@ -43,13 +43,25 @@ async function main() {
       await objUser.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
       const fixedCost = "A";
       await objAccounts.loadAccountsTable(objBudgets.condominiumId, fixedCost);
+
+      // budgetId
+      let budgetId = 0;
+      if (paramBudgetId) {
+
+        budgetId = paramBudgetId;
+      } else {
+
+        await objBudgets.getHighestBudgetId(objBudgets.condominiumId);
+        budgetId = objBudgets.arrayBudgets[0].budgetId;
+      }
+
       await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
 
       // Show filter
-      showFilter(paramBudgetId);
+      showFilter(budgetId);
 
       // Show result of filter
-      showBudget(paramBudgetId);
+      showBudget(budgetId);
 
       // Events
       events();
@@ -98,30 +110,10 @@ async function events() {
 
   // Delete budgets row
   document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
 
-    const arrayPrefixes = ['delete'];
-    if ([...event.target.classList].some(cls => cls.startsWith(arrayPrefixes[0]))) {
-
-      // Find the first matching class
-      const className = arrayPrefixes
-        .map(prefix => objBudgets.getClassByPrefix(event.target, prefix))
-        .find(Boolean); // find the first non-null/undefined one
-
-      // Extract the number in the class name
-      let budgetId = 0;
-      let prefix = "";
-      if (className) {
-        prefix = arrayPrefixes.find(p => className.startsWith(p));
-        budgetId = Number(className.slice(prefix.length));
-      }
-
-      await deleteBudgetRow(budgetId, className);
-
-      const year = Number(document.querySelector('.filterYear').value);
-      const accountId = Number(document.querySelector('.filterAccountId').value);
-      await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
-
-      showBudget(budgetId);
+      const budgetId = Number(document.querySelector('.filterBudgetId').value);
+      await deleteBudgetsRow(budgetId);
     };
   });
 
@@ -152,7 +144,7 @@ function showFilter(budgetId) {
   // Start filter
   let html = startGridFilter("Forfall");
 
-  const rowNumberBudget = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
+  //const rowNumberBudget = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
 
   // Show budgets
   html += objBudgets.showSelectedBudgetsNew('filterBudgetId', 'Budsjett', budgetId, 'Velg Budsjett', '', true);
@@ -246,12 +238,13 @@ function showBudget(budgetId) {
   document.querySelector('.showBudget').innerHTML = html;
 }
 
+/*
 // Delete budgets row
 async function deleteBudgetRow(budgetId, className) {
 
   // Check if budget row exist
-  const budgetsRowNumber = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-  if (budgetsRowNumber !== -1) {
+  const rowNumberBudgets = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
+  if (rowNumberBudgets !== -1) {
 
     // delete budget row
     await objBudgets.deleteBudgetsTable(budgetId, objBudgets.user);
@@ -260,6 +253,30 @@ async function deleteBudgetRow(budgetId, className) {
   const year = Number(document.querySelector('.filterYear').value);
   await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
 }
+*/
+
+// Delete budgets row
+async function deleteBudgetsRow(budgetId) {
+
+  // Check if budgets row exist
+  const rowNumberBudgets = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
+  if (rowNumberBudgets !== -1) {
+
+    // delete budget row
+    await objBudgets.deleteBudgetsTable(budgetId, objBudgets.user);
+    await objBudgets.getHighestBudgetId(objBudgets.condominiumId);
+    budgetId = objBudgets.arrayBudgets[0].budgetId;
+  }
+
+  await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
+
+  // Show filter
+  showFilter(budgetId);
+
+  // Show budget
+  showBudget(budgetId);
+}
+
 
 // Update a budgets row
 async function updateBudgetsRow(budgetId) {

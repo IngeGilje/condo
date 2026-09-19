@@ -116,8 +116,7 @@ async function events() {
     if (event.target.classList.contains('delete')) {
 
       const accountId = Number(document.querySelector('.filterAccountId').value);
-      await deleteAccountRow(accountId);
-
+      await deleteAccountsRow(accountId);
     };
   });
 }
@@ -238,8 +237,8 @@ function resetValues() {
 async function deleteAccountRow(accountId) {
 
   // Check if account row exist
-  accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
-  if (accountsRowNumber !== -1) {
+  rowNumberAccounts = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
+  if (rowNumberAccounts !== -1) {
 
     // delete account row
     await objAccounts.deleteAccountsTable(accountId, objAccounts.user);

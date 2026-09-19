@@ -207,20 +207,3 @@ function showAccounts() {
   html += endTable();
   document.querySelector(".showAccounts").innerHTML = html;
 }
-
-/*
-// Delete one account row
-async function deleteAccountRow(accountId, className) {
-
- // Check if account row exist
- accountsRowNumber = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
- if (accountsRowNumber !== -1) {
-
-   // delete account row
-   await objAccounts.deleteAccountsTable(accountId, objAccounts.user);
- }
-
- const fixedCost = 'A';
- await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
-}
-*/

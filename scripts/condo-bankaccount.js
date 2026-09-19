@@ -91,7 +91,7 @@ async function events() {
 
       //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       let bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
-      await deleteBankAccountRow(bankAccountId);
+      await deleteBankAccountsRow(bankAccountId);
     };
   });
 
@@ -154,8 +154,8 @@ async function deleteBankAccount() {
 async function deleteBankAccount(bankAccountId) {
 
   // Check if bankaccount row exist
-  bankAccountsRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.accountId === accountId);
-  if (bankAccountsRowNumber !== -1) {
+  rowNumberBankAccounts = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.accountId === accountId);
+  if (rowNumberBankAccounts !== -1) {
 
     // delete bankAccount row
     await objAccounts.deleteAccountsTable(accountId, objAccounts.user);
@@ -430,8 +430,8 @@ function resetValues() {
 async function deleteBankAccountRow(bankAccountId) {
 
   // Check if bankaccount row exist
-  bankAccountsRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
-  if (bankAccountsRowNumber !== -1) {
+  rowNumberBankAccounts = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
+  if (rowNumberBankAccounts !== -1) {
 
     // delete bankaccount row
     await objBankAccounts.deleteBankAccountsTable(bankAccountId, objBankAccounts.user);
@@ -442,8 +442,8 @@ async function deleteBankAccountRow(bankAccountId) {
 async function deleteBankAccountRow(bankAccountId) {
 
   // Check if bankaccount row exist
-  bankAccountsRowNumber = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.accountId === accountId);
-  if (bankAccountsRowNumber !== -1) {
+  const rowNumberBankAccounts = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.accountId === accountId);
+  if (rowNumberBankAccounts !== -1) {
 
     // delete bankaccounts row
     await objBankAccounts.deleteAccountsTable(accountId, objBankAccounts.user);

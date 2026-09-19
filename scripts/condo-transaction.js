@@ -490,6 +490,7 @@ function resetValues() {
   }
 }
 
+/*
 // Delete transactions row
 async function deleteTransactionRow(transactionId) {
 
@@ -508,6 +509,29 @@ async function deleteTransactionRow(transactionId) {
     // get last row in transactions table
     //await objTransactions.loadLastRowTransactionsTable(objTransactions.condominiumId);
   }
+
+  // Show filter
+  showFilter(transactionId);
+
+  // Show transaction
+  showTransaction(transactionId);
+}
+*/
+
+// Delete transactions row
+async function deleteTransactionsRow(transactionId) {
+
+  // Check if transactions row exist
+  const rowNumberTransactions = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
+  if (rowNumberTransactions !== -1) {
+
+    // delete transactions row
+    await objTransactions.deleteTransactionsTable(transactionId, objTransactions.user);
+    await objTransactions.getHighestTransactionId(objTransactions.condominiumId);
+    transactionId = objTransactions.arrayTransactions[0].transactionId;
+  }
+
+  await objTransactions.loadTransactionsTable(objTransactions.condominiumId);
 
   // Show filter
   showFilter(transactionId);
