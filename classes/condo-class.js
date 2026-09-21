@@ -347,39 +347,6 @@ class Condos {
   }
   */
 
-  /*
-  // Select numbers
-  showSelectedNumbers(className, style, fromNumber, toNumber, selectedNumber, enableChanges) {
-
-    selectedNumber = Number(selectedNumber);
-
-    let html = `
-    <td
-      class="one-line center"
-    >
-      <select 
-        class="${className} center"
-        ${(style) ? `style="${style}"` : ""}
-        ${(enableChanges) ? '' : 'disabled'}>`;
-
-    for (let number = fromNumber; number <= toNumber; number++) {
-
-      html += `
-      <option 
-        value="${number}"
-        ${(number === selectedNumber) ? 'selected' : ''}
-        >
-          ${number.toString().trim()}
-      </option>`;
-    }
-    html += `
-      </select >
-    </td>`;
-
-    return html;
-  };
-  */
-
   // Select months
   showSelectedMonths(className, style, selectedMonth, enableChanges) {
 
@@ -517,8 +484,8 @@ class Condos {
 
         if (userId >= 0) {
 
-          const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
-          if (rowNumberUser !== -1) condoId = Number(objUser.arrayUsers[rowNumberUser].condoId);
+          const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
+          if (rowNumberUser !== -1) condoId = Number(objUsers.arrayUsers[rowNumberUser].condoId);
         }
       }
     }
@@ -563,7 +530,7 @@ class Condos {
   }
 
   // Validate values ('Yes','No','Ignore')
-  validateValues(className, columnWidths, style, errorMessage, showMessage = true, selectedValue, ...values) {
+  validateValues(className, columnWidths, style, errorMessage,  selectedValue, ...values) {
 
     let isValid = false;
 
@@ -644,43 +611,6 @@ class Condos {
     return isValid;
   }
 
-  // Validate E-mail
-  validateEmail(className, eMail, style, message) {
-
-    // Validate eMail
-    const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = ((eMailRegex.test(eMail))) ? true : false;
-
-    const inputElement = document.querySelector(`.${className}`);
-
-    // remove/ add 'input-error' class
-    if (inputElement) inputElement.classList.toggle('input-error', !isValid);
-    //if (inputElement) inputElement.classList.toggle('error-text', !isValid);
-    if (!isValid) showMessageNew(errorMessage);
-
-    return isValid;
-  }
-
-  // Validate organization number
-  validateOrganizationNumber(className, organizationNumber) {
-
-    // Validate organization number Organization Number
-    const organizationNumberPattern = /^\d{9}$/;
-    const isValid = (organizationNumberPattern.test(organizationNumber)) ? true : false;
-
-    // Invalid/ Valid organization number
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        // remove/ add 'input-error' class
-        if (inputElement) inputElement.classList.toggle('input-error', !isValid);
-      }
-    }
-    return isValid;
-  }
-
   // Validate filename
   validateFileName(className, fileName) {
 
@@ -739,33 +669,6 @@ class Condos {
     `;
     return html;
   }
-
-  /*
-  // Show main header table
-  showTableHeaderLogOut(...texts) {
-
-    let html = `<tr>`;
-
-    texts.forEach((text) => {
-
-      if (text === '') html += `<th class="no-border">${text}</th>`;
-      if (text !== '') html += `<th class="no-border center">${text}</th>`;
-    });
-
-    html += `
-    <th 
-      class="right no-border"
-    >
-      <button 
-        class="logOut right one-line"
-      >
-        Logg ut
-      </button>
-    </th>`;
-
-    return html;
-  }
-  */
 
   // end table header
   endTableHeader() {
@@ -1087,7 +990,7 @@ function showText(value) {
   return html
 }
 
-// input text
+// input text for tbale
 function inputTextTabel(className, value, enableChanges) {
 
   html = `
@@ -1105,26 +1008,6 @@ function inputTextTabel(className, value, enableChanges) {
 
   return html
 }
-
-
-/*
-// Input text
-function inputTableText(className, value, enableChanges) {
-
-  return `
-  <!-- start inputTableText -->
-  <td>
-    <input
-      class="${className} center one-line input"
-      type="text"
-      value="${value}"
-      ${(enableChanges) ? '' : 'readonly'}
-    >
-  </td>
-  <!-- end inputTableText -->
-  `;
-}
-*/
 
 // Show text in table
 function showTableText(className, value) {
@@ -1347,6 +1230,7 @@ function editTableCell(className, value, maxlength, enableChanges, colspan = 1, 
 }
 */
 
+/*
 // Show amount
 function showAmount(label, className, value, enableChanges) {
 
@@ -1369,6 +1253,7 @@ function showAmount(label, className, value, enableChanges) {
       <label>${label}</label>
     </div>`;
 }
+*/
 
 // Show textarea
 function showTextArea(label, className, value, maxlength, enableChanges, rows = 1) {
@@ -1398,56 +1283,18 @@ function removeMessage() {
 // Show message
 function showMessageNew(message) {
 
-  // Start frame
-  let html = startTableFilter();
+  let html = "<!-- start showMessageNew -->";
+
+  html += startTableFilter('message');
 
   // Show message
-  html += message;
+  html += showText(message);
 
   // End filter
   html += endTableFilter();
+  html += "<!-- end showMessageNew -->"
   document.querySelector('.showMessage').innerHTML = html;
 }
-
-/*
-// Show selected numbers (from number - to number)
-function showSelectedNumbers(label, className, fromNumber, toNumber, selectedNumber, enableChanges) {
-
-  let selectedValue = false;
-
-  let html = `
-  <div 
-    class="field field-position" 
-  >
-    <label>
-      ${label}
-    </label>
-    <select 
-      class="${className} center one-line"
-      ${(enableChanges) ? '' : 'readonly'}
-    >`;
-
-  // show interval of numbers
-  for (let number = fromNumber; number <= toNumber; number++) {
-
-    html += `
-        <option 
-          value=${number}
-          ${(number === selectedNumber) ? 'selected' : ''}
-        >
-          ${number}
-        </option>`;
-
-    if (number === selectedNumber) selectedValue = true;
-  };
-
-  html += `
-      </select >
-    </div>`;
-
-  return html;
-}
-*/
 
 // Show selected numbers (from number - to number)
 function showSelectedNumbers(className, label, fromNumber, toNumber, selectedNumber, enableChanges) {
@@ -1488,206 +1335,6 @@ function showSelectedNumbers(className, label, fromNumber, toNumber, selectedNum
     `;
 
   return html;
-}
-
-// Validate organization number
-function validateOrganizationNumberNew(className, organizationNumber) {
-
-  // Validate organization number Organization Number
-  const organizationNumberPattern = /^\d{9}$/;
-  const isValid = (organizationNumberPattern.test(organizationNumber)) ? true : false;
-
-  const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) {
-
-    (isValid)
-      ? inputElement.style.backgroundColor = "white"
-      : inputElement.style.backgroundColor = " #ffe5e5";
-  }
-
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
-  return isValid;
-}
-
-// Validate E-mail
-function validateEmailNew(className, eMail, style, errorMessage) {
-
-  // Validate eMail
-  const eMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isValid = ((eMailRegex.test(eMail))) ? true : false;
-
-  const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) {
-
-    (isValid)
-      ? inputElement.style.backgroundColor = "white"
-      : inputElement.style.backgroundColor = " #ffe5e5";
-  }
-
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
-  return isValid;
-}
-
-// Validate phone number 
-function validatePhoneNew(className, phone, errorMessage) {
-
-  // Validate phone number
-  phone = phone.replace(/\s+/g, "");
-  const isValid = /^\d{8,15}$/.test(phone);
-
-  const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) {
-
-    (isValid)
-      ? inputElement.style.backgroundColor = "white"
-      : inputElement.style.backgroundColor = " #ffe5e5";
-  }
-
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
-  return isValid;
-}
-
-// validate bank account
-function validateBankAccountNew(className, showMessage = true, bankAccount, style, errorMessage) {
-
-  const bankAccountPattern = /^\d{11}$/;
-  const isValid = bankAccountPattern.test(bankAccount);
-
-  const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) {
-
-    (isValid)
-      ? inputElement.style.backgroundColor = "white"
-      : inputElement.style.backgroundColor = " #ffe5e5";
-  }
-
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
-  return isValid;
-}
-
-// Validate values ('Yes','No','Ignore')
-function validateValuesNew(className, errorMessage, showMessage = true, selectedValue, ...values) {
-
-  let isValid = false;
-
-  values.forEach((value) => {
-
-    if (value === selectedValue) isValid = true;
-  });
-
-  const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) {
-
-    (isValid)
-      ? inputElement.style.backgroundColor = "white"
-      : inputElement.style.backgroundColor = " #ffe5e5";
-  }
-
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
-  return isValid;
-}
-
-// validate the iso date format yyyy-mm-dd
-function validateISODate(className, date, showMessage = true, errorMessage) {
-
-  let isValid = true;
-
-  // Check for isValid date String
-  if (date === '' || typeof date === 'undefined') isValid = false;
-  if (isValid) {
-
-    // Regular expression for valuating the yyyy-mm-dd format
-    const regex = /^(\d{4})\-(\d{2})\-(\d{2})$/
-    const match = date.match(regex);
-    if (!match) isValid = false;
-
-    if (isValid) {
-
-      // Extract day, month, and year
-      const [year, month, day] = date.split('-');
-
-      // Check if month is between 1 and 12
-      if (day < 1 || day > 31) isValid = false;
-      if (month < 1 || month > 12) isValid = false;
-      if (year < 1900 || year > 2099) isValid = false;
-    }
-  }
-
-  const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) {
-
-    (isValid)
-      ? inputElement.style.backgroundColor = "white"
-      : inputElement.style.backgroundColor = " #ffe5e5";
-  }
-
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
-  return isValid;
-}
-
-// Validate number
-function validateIntervalNew(className, errorMessage, showMessage, number, minNumber, maxNumber) {
-
-  number = Number(number);
-  let isValid = (Number(number) >= Number(minNumber) && Number(number) <= Number(maxNumber));
-
-  const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) {
-
-    (isValid)
-      ? inputElement.style.backgroundColor = "white"
-      : inputElement.style.backgroundColor = " #ffe5e5";
-  }
-
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
-  return isValid;
-}
-
-// Validate text
-function validateTextNew(className, errorMessage, showMessage = true, value, minLength, maxLength) {
-
-  value = value.trim();
-
-  let isValid = true;
-
-  // Check for string
-  if (typeof value !== "string") isValid = false;
-
-  // Check length
-  if (!(value.length >= minLength) && (value.length <= maxLength)) isValid = false;
-
-  // Check allowed characters (letters, numbers, spaces)
-  //const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
-  const regex = /^[a-zA-ZæøåÆØÅ0-9.,+\-_%!:#"'*/\\\s]*$/;
-  if (!regex.test(value)) isValid = false;
-
-  const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) {
-
-    (isValid)
-      ? inputElement.style.backgroundColor = "white"
-      : inputElement.style.backgroundColor = " #ffe5e5";
-  }
-
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
-  return isValid;
-}
-
-// Validate number
-function validateNumberNew(className, style, errorMessage, showMessage = true, number, minValue, maxValue) {
-
-  let isValid = (Number(number) >= Number(minValue) && Number(number) <= Number(maxValue));
-
-  const inputElement = document.querySelector(`.${className}`);
-  if (inputElement) {
-
-    (isValid)
-      ? inputElement.style.backgroundColor = "white"
-      : inputElement.style.backgroundColor = " #ffe5e5";
-  }
-
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
-  return isValid;
 }
 
 // Format date from yyyy-mm-dd (ISO format) -> yyyymmdd
@@ -1960,6 +1607,7 @@ function findNameOfMonth(month) {
   return nameOfMonth;
 }
 
+/*
 // Validate phone number
 function checkPhone(phone, className, labelText) {
 
@@ -1989,6 +1637,7 @@ function checkPhone(phone, className, labelText) {
     return true;
   }
 }
+*/
 
 // Get current date in  European date format (dd.mm.yyyy)
 function getCurrentDate() {
@@ -2183,7 +1832,13 @@ function disableButton(className, disabled) {
   document.querySelector(`.${className}`).disabled = disabled;
   const button = document.querySelector(`.${className}`);
   //color = button.style.backgroundColor = (disabled) ? 'lightgrey' : color;
-  if (disabled) button.style.backgroundColor = '#F8FAFC';
+  // Cursor off/default
+  if (disabled) button.style.cursor = "none";
+  if (disabled) button.style.backgroundColor = '#f8fafc73';
+
+  // Cursor on
+  if (!disabled) button.style.cursor = "pointer";
+  if (!disabled) button.style.backgroundColor = 'white';
 }
 
 // exit application after 1 hour
@@ -2502,8 +2157,8 @@ function inputDate(className, label, value, enableChanges) {
   return html;
 }
 
-// input text
-function inputText(className, label, value, enableChanges) {
+// input text for grid and table
+function inputText(className, label, value, maxlenght, enableChanges) {
 
   html = `
     <!-- start inputText --> 
@@ -2517,6 +2172,7 @@ function inputText(className, label, value, enableChanges) {
       </label>
       <input 
         type="text"
+         maxlength="${maxlenght}"
         class="${className}"
         id="${className}"
         value="${value}"
@@ -2527,4 +2183,195 @@ function inputText(className, label, value, enableChanges) {
     `;
 
   return html;
+}
+
+
+// Validation
+
+// Validate E-mail
+function validateEmail(className, emMail, message) {
+
+  let isValid = false;
+
+  // Validate email
+  const eMailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (eMailPattern.test(emMail)) isValid = true;
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
+
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
+
+  if (!isValid && message.length > 0) showMessageNew(message);
+  return isValid;
+}
+
+// Validate organization number
+function validateOrganizationNumberNew(className, organizationNumber, message) {
+
+  let isValid = false;
+
+  // Validate organization number Organization Number
+  const organizationNumberPattern = /^\d{9}$/;
+  //const isValid = (organizationNumberPattern.test(organizationNumber)) ? true : false;
+  if (organizationNumberPattern.test(organizationNumber)) isValid = true;
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
+
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
+
+  if (!isValid && message.length > 0) showMessageNew(message);
+  return isValid;
+}
+
+// Validate phone number 
+function validatePhoneNew(className, phone, errorMessage) {
+
+  // Validate phone number
+  phone = phone.replace(/\s+/g, "");
+  const isValid = /^\d{8,15}$/.test(phone);
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
+
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
+
+  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
+  return isValid;
+}
+
+// validate bank account
+function validateBankAccountNew(className,  bankAccount, errorMessage) {
+
+  const bankAccountPattern = /^\d{11}$/;
+  const isValid = bankAccountPattern.test(bankAccount);
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
+
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
+
+  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
+  return isValid;
+}
+
+// Validate values ('Yes','No','Ignore')
+function validateValuesNew(className, errorMessage,  selectedValue, ...values) {
+
+  let isValid = false;
+
+  values.forEach((value) => {
+
+    if (value === selectedValue) isValid = true;
+  });
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
+
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
+
+  if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
+  return isValid;
+}
+
+// validate the iso date format yyyy-mm-dd
+function validateISODate(className, date, errorMessage) {
+
+  let isValid = true;
+
+  // Check for isValid date String
+  if (date === '' || typeof date === 'undefined') isValid = false;
+  if (isValid) {
+
+    // Regular expression for valuating the yyyy-mm-dd format
+    const regex = /^(\d{4})\-(\d{2})\-(\d{2})$/
+    const match = date.match(regex);
+    if (!match) isValid = false;
+
+    if (isValid) {
+
+      // Extract day, month, and year
+      const [year, month, day] = date.split('-');
+
+      // Check if month is between 1 and 12
+      if (day < 1 || day > 31) isValid = false;
+      if (month < 1 || month > 12) isValid = false;
+      if (year < 1900 || year > 2099) isValid = false;
+    }
+  }
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
+
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
+
+  if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
+  return isValid;
+}
+
+// Validate number
+function validateIntervalNew(className, errorMessage, number, minNumber, maxNumber) {
+
+  number = Number(number);
+  let isValid = (Number(number) >= Number(minNumber) && Number(number) <= Number(maxNumber));
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
+
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
+
+  if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
+  return isValid;
+}
+
+// Validate text
+function validateTextNew(className, errorMessage, value, minLength, maxLength) {
+
+  value = value.trim();
+
+  let isValid = true;
+
+  // Check for string
+  if (typeof value !== "string") isValid = false;
+
+  // Check length
+  if (!(value.length >= minLength) && (value.length <= maxLength)) isValid = false;
+
+  // Check allowed characters (letters, numbers, spaces)
+  //const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
+  const regex = /^[a-zA-ZæøåÆØÅ0-9.,+\-_%!:#"'*/\\\s]*$/;
+  if (!regex.test(value)) isValid = false;
+
+  const inputElement = document.querySelector(`.${className}`);
+  if (inputElement) {
+
+    (isValid)
+      ? inputElement.style.backgroundColor = "white"
+      : inputElement.style.backgroundColor = " #ffe5e5";
+  }
+
+  if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
+  return isValid;
 }

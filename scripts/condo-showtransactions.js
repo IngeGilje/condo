@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
@@ -35,13 +35,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objTransactions.condominiumId === 0) || (objTransactions.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -52,13 +52,13 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
+      await objUsers.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objTransactions.condominiumId, fixedCost);
       await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
       await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
       await objCondo.loadCondoTable(objTransactions.condominiumId, objTransactions.nineNine);
-      await objCondominium.loadCondominiumsTable();
+      await objCondominiums.loadCondominiumsTable();
       await objSupplier.loadSuppliersTable(objTransactions.condominiumId);
 
       if ((paramTransactionId === 0)
@@ -223,7 +223,7 @@ function showFilter(condoId, accountId, fromDate, toDate, amount) {
   // Amount
   amount = formatNumberToNorAmount(amount);
   //html += showAmount('Beløp', 'filterAmount', amount, true);
-  html += inputText('filterAmount', 'Beløp', amount, true);
+  html += inputText('filterAmount', 'Beløp', amount, 11, true);
 
    // End filter
   html += endTableFilter();

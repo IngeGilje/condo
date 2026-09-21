@@ -155,122 +155,6 @@ class EmptyCalendars extends Condos {
   }
   */
 
-  /*
-  // show EmptyCalendar
-  showSelectedEmptyCalendarsNew(className,label,  emptyCalendarId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-    let emptyCalendarDate = "20200101";
-
-    let html = `
-    <!-- start showSelectedEmptyCalendarsNew -->
-    <div 
-      class="field"
-    >
-      <label for="apartment">
-        ${label}
-      </label>
-      <select 
-        id="apartment"
-        class="${className}"
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-    `;
-
-    // Check if emptyalendars array is empty
-    if (this.arrayEmptyCalendars.length > 0) {
-      this.arrayEmptyCalendars.forEach((emptyCalendar) => {
-
-        html += `
-        <option 
-          value=${emptyCalendar.date}
-          ${((emptyCalendar.emptyCalendarId === emptyCalendarId)) ? 'selected' : ''}
-        >`;
-        if (emptyCalendar.emptyCalendarId === emptyCalendarId) selectedValue = true;
-
-        emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
-        html += `
-          ${emptyCalendarDate}
-        </option>
-        `;
-      });
-
-      // If not match of date
-      // try start of the month
-      if (!selectedValue) {
-
-        emptyCalendarDate = getCurrentDate();
-        const year = String(emptyCalendarDate).slice(6, 10);
-        const month = String(emptyCalendarDate).slice(3, 5);
-        const fromDate = Number(year + month + "01");
-        const toDate = Number(year + month + "31");
-
-        this.arrayEmptyCalendars.forEach((emptyCalendar) => {
-
-          if (emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) {
-
-            html += `
-            <option 
-              value=${emptyCalendar.date}
-              ${((emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) && !selectedValue) ? 'selected' : ''}
-            >`;
-            if ((emptyCalendar.date >= fromDate && emptyCalendar.date <= toDate) && !selectedValue) selectedValue = true;
-
-            const emptyCalendarDate = formatNumberToNorDate(emptyCalendar.date);
-            html += `
-              ${emptyCalendarDate}
-            </option>
-            `;
-          }
-        });
-      }
-    } else {
-
-      // No emptyCalendars
-      html += `
-      <option 
-        value="0" 
-         ${(selectedValue) ? '' : 'selected'} 
-      >
-        Ingen leiligheter
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayEmptyCalendars.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        ${selectAll}
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayEmptyCalendars.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        ${selectNone}
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    html += `
-      </select >
-    </div>
-    <!-- end showSelectedEmptyCalendarsNew -->
-    `;
-
-    return html;
-  }
-  */
   // Show emptycalendars
   showSelectedEmptyCalendarsNew(className, label, emptyCalendarId, selectNone, selectAll, enableChanges) {
 
@@ -314,7 +198,7 @@ class EmptyCalendars extends Condos {
         value = 0 
          ${(selectedValue) ? '' : 'selected'} 
       >
-          Ingen konti
+          Ingen Tømmekalender
       </option > `;
       if (!selectedValue) selectedValue = true;
     }

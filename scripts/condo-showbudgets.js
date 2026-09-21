@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objAccounts = new Accounts('accounts');
 const objBudgets = new Budgets('budgets');
 
@@ -24,13 +24,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objBudgets.condominiumId === 0) || (objBudgets.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -55,7 +55,7 @@ async function main() {
       */
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
+      await objUsers.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objBudgets.condominiumId, fixedCost);
 

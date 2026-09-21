@@ -2,21 +2,21 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objAccounts = new Accounts('accounts');
-const objSupplier = new Supplier('supplier');
+const objSuppliers = new Suppliers('suppliers');
 
-const enableChanges = (objSupplier.securityLevel > 5);
+const enableChanges = (objSuppliers.securityLevel > 5);
 const applicationName = "condo-supplier";
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
 // Validate LogIn
-if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
+if ((objSuppliers.condominiumId === 0) || (objSuppliers.user === null)) {
 
   // LogIn is not valid
-  const URL = (objUser.serverStatus === 1)
+  const URL = (objUsers.serverStatus === 1)
     ? 'http://ingegilje.no/condo-login.html'
     : 'http://localhost/condo-login.html';
   window.location.href = URL;
@@ -27,20 +27,20 @@ if ((objSupplier.condominiumId === 0) || (objSupplier.user === null)) {
   async function main() {
 
     // Check if server is running
-    if (await objUser.checkServer()) {
+    if (await objUsers.checkServer()) {
 
       // Show menu
-      let html = objSupplier.showMenu(objSupplier.securityLevel);
+      let html = objSuppliers.showMenu(objSuppliers.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objSupplier.condominiumId, resident, objSupplier.nineNine);
+      await objUsers.loadUsersTable(objSuppliers.condominiumId, resident, objSuppliers.nineNine);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objSupplier.condominiumId, fixedCost);
-      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
+      await objAccounts.loadAccountsTable(objSuppliers.condominiumId, fixedCost);
+      await objSuppliers.loadSuppliersTable(objSuppliers.condominiumId);
 
       // Find selected supplier id
-      const supplierId = objSupplier.getSelectedSupplierId('select-supplierId');
+      const supplierId = objSuppliers.getSelectedSupplierId('select-supplierId');
 
       // Show filter
       showFilter(supplierId);
@@ -64,7 +64,7 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterSupplierId')) {
 
-      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
+      await objSuppliers.loadSuppliersTable(objSuppliers.condominiumId);
 
       const supplierId = Number(document.querySelector('.filterSupplierId').value);
 
@@ -104,10 +104,10 @@ async function events() {
     if (event.target.classList.contains('cancel')) {
 
       // Reload suppliers table
-      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
+      await objSuppliers.loadSuppliersTable(objSuppliers.condominiumId);
 
       let supplierId = Number(document.querySelector('.filterSupplierId').value);
-      if (supplierId === 0) supplierId = objSupplier.arraySuppliers.at(-1)?.supplierId ?? 0;
+      if (supplierId === 0) supplierId = objSuppliers.arraySuppliers.at(-1)?.supplierId ?? 0;
 
       // Show filter
 
@@ -121,7 +121,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objSupplier.serverStatus === 1)
+      let url = (objSuppliers.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -174,15 +174,9 @@ function resetValues() {
   // text
   document.querySelector('.text').value = '';
 
-  document.querySelector('.filterSupplierId').disabled = true;
-
   // Buttons
-  removeMessage();
   if (enableChanges) {
     disableButton('delete', true);
-    disableButton('insert', true);
-    //disableButton('cancel', false);
-    disableButton('filterSupplierId', true);
   }
 }
 
@@ -196,7 +190,7 @@ function showFilter(supplierId) {
   let html = startGridFilter("Leverandør");
 
   // Show suppliers
-  html += objSupplier.showSelectedSuppliersNew('filterSupplierId', 'Leverandør', supplierId, '', '', true);
+  html += objSuppliers.showSelectedSuppliersNew('filterSupplierId', 'Leverandør', supplierId, '', '', true);
 
   // End filter
   html += endGridFilter();
@@ -208,7 +202,7 @@ function showFilter(supplierId) {
 function showSupplier(supplierId) {
 
   // row Number Supplier
-  const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
+  const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
 
   let html = startGrid('Leverandør');
 
@@ -216,124 +210,124 @@ function showSupplier(supplierId) {
   /*
   const name = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].name.trim();
+    : objSuppliers.arraySuppliers[rowNumberSupplier].name.trim();
   */
-  const name = objSupplier.arraySuppliers[rowNumberSupplier]?.name.trim() ?? '';
-  html += inputText('name', 'Navn', name, enableChanges);
+  const name = objSuppliers.arraySuppliers[rowNumberSupplier]?.name.trim() ?? '';
+  html += inputText('name', 'Navn', name, 45, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 
   // street
   const street = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].street;
-  html += inputText('street', 'Gatenavn', street, enableChanges);
+    : objSuppliers.arraySuppliers[rowNumberSupplier].street;
+  html += inputText('street', 'Gatenavn', street, 45, enableChanges);
 
   // address2
   /*
   const address2 = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].address2;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].address2;
   */
-  const address2 = objSupplier.arraySuppliers[rowNumberSupplier]?.address2 ?? '';
-  html += inputText('address2', 'Adresse2', address2, enableChanges);
+  const address2 = objSuppliers.arraySuppliers[rowNumberSupplier]?.address2 ?? '';
+  html += inputText('address2', 'Adresse2', address2, 45, enableChanges);
   //html += "<div></div>";
 
   // postalCode
   /*
   let postalCode = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].postalCode;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].postalCode;
   */
-  const postalCode = objSupplier.arraySuppliers[rowNumberSupplier]?.postalCode ?? '';
+  const postalCode = objSuppliers.arraySuppliers[rowNumberSupplier]?.postalCode ?? '';
   //if (postalCode === '0') postalCode = "";
-  html += inputText('postalCode', 'Postnummer', postalCode, enableChanges);
+  html += inputText('postalCode', 'Postnummer', postalCode, 4, enableChanges);
 
   // city
   /*
   const city = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].city;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].city;
   */
-  const city = objSupplier.arraySuppliers[rowNumberSupplier]?.city ?? '';
-  html += inputText('city', 'Poststed', city, enableChanges);
+  const city = objSuppliers.arraySuppliers[rowNumberSupplier]?.city ?? '';
+  html += inputText('city', 'Poststed', city, 45, enableChanges);
   //html += "<div></div>";
 
   // email
   /*
   let email = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].email;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].email;
   */
-  const email = objSupplier.arraySuppliers[rowNumberSupplier]?.email ?? '';
-  html += inputText('email', 'E-mail', email, enableChanges);
+  const email = objSuppliers.arraySuppliers[rowNumberSupplier]?.email ?? '';
+  html += inputText('email', 'E-mail', email, 45, enableChanges);
 
   // phone
   /*
   const phone = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].phone;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].phone;
   */
-  const phone = objSupplier.arraySuppliers[rowNumberSupplier]?.phone ?? '';
-  html += inputText('phone', 'Telefonnummer', phone, enableChanges);
+  const phone = objSuppliers.arraySuppliers[rowNumberSupplier]?.phone ?? '';
+  html += inputText('phone', 'Telefonnummer', phone, 20, enableChanges);
   //html += "<div></div>";
 
   // accountId
   /*
   const accountId = (rowNumberSupplier === -1)
     ? 0
-    : objSupplier.arraySuppliers[rowNumberSupplier].accountId;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].accountId;
   */
-  const accountId = objSupplier.arraySuppliers[rowNumberSupplier]?.accountId ?? 0;
+  const accountId = objSuppliers.arraySuppliers[rowNumberSupplier]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg konto', '', enableChanges);
 
   // bank Account number
   /*
   const bankAccount = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].bankAccount;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].bankAccount;
   */
-  const bankAccount = objSupplier.arraySuppliers[rowNumberSupplier]?.bankAccount ?? '';
-  html += inputText('bankAccount', 'Bankkonto', bankAccount, enableChanges);
+  const bankAccount = objSuppliers.arraySuppliers[rowNumberSupplier]?.bankAccount ?? '';
+  html += inputText('bankAccount', 'Bankkonto', bankAccount, 11, enableChanges);
   //html += "<div></div>";
 
   // amountAccountId
   /*
   const amountAccountId = (rowNumberSupplier === -1)
     ? 0
-    : objSupplier.arraySuppliers[rowNumberSupplier].amountAccountId;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].amountAccountId;
   */
-  const amountAccountId = objSupplier.arraySuppliers[rowNumberSupplier]?.amountAccountId ?? 0;
+  const amountAccountId = objSuppliers.arraySuppliers[rowNumberSupplier]?.amountAccountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('amountAccountId', 'Konto for beløp', amountAccountId, 'Velg konto', '', enableChanges);
 
   // amount
   /*
   let amount = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].amount;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].amount;
   */
-  const amount = objSupplier.arraySuppliers[rowNumberSupplier]?.amount ?? '';
+  const amount = objSuppliers.arraySuppliers[rowNumberSupplier]?.amount ?? '';
   //if (amount === '0') amount = "";
-  html += inputText('amount', 'Beløp', amount, enableChanges);
+  html += inputText('amount', 'Beløp', amount, 11, enableChanges);
   //html += "<div></div>";
 
   // AccountId for text
   /*
   const textAccountId = (rowNumberSupplier === -1)
     ? 0
-    : objSupplier.arraySuppliers[rowNumberSupplier].textAccountId;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].textAccountId;
   */
-  const textAccountId = objSupplier.arraySuppliers[rowNumberSupplier]?.textAccountId ?? 0;
+  const textAccountId = objSuppliers.arraySuppliers[rowNumberSupplier]?.textAccountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('textAccountId', 'Konto for tekst', textAccountId, 'Velg konto', '', enableChanges);
 
   // text for account id
   /*
   const text = (rowNumberSupplier === -1)
     ? ''
-    : objSupplier.arraySuppliers[rowNumberSupplier].text;
+    : objSuppliers.arraySuppliers[rowNumberSupplier].text;
   */
-  const text = objSupplier.arraySuppliers[rowNumberSupplier]?.text ?? '';
-  html += inputText('accountText', 'Tekst', text, enableChanges);
+  const text = objSuppliers.arraySuppliers[rowNumberSupplier]?.text ?? '';
+  html += inputText('accountText', 'Tekst', text, 45, enableChanges);
 
   html += endGrid();
 
@@ -359,32 +353,32 @@ async function updateSuppliersRow(supplierId) {
 
   if (supplierId === '') supplierId = -1;
   supplierId = Number(supplierId);
-  const validSupplierId = validateIntervalNew('supplierId', 'Ugyldig Leverandør', true, supplierId, -1, objSupplier.nineNine);
+  const validSupplierId = validateIntervalNew('supplierId', 'Ugyldig Leverandør',  supplierId, -1, objSuppliers.nineNine);
 
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig navn', true, name, 3, 45);
+  const validName = validateTextNew('name', 'Ugyldig navn', name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateTextNew('street', 'Ugyldig adresse', true, street, 0, 45);
+  const validStreet = validateTextNew('street', 'Ugyldig adresse',  street, 0, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = validateTextNew('address2', 'Ugyldig adresse', true, address2, 0, 45);
+  const validAddress2 = validateTextNew('address2', 'Ugyldig adresse',  address2, 0, 45);
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
-  const validPostalCode = validateIntervalNew('postalCode', 'Ugyldig poststed', true, Number(postalCode), 0, objSupplier.nineNine);
+  const validPostalCode = validateIntervalNew('postalCode', 'Ugyldig poststed',  Number(postalCode), 0, objSuppliers.nineNine);
 
   // validate city
   const city = document.querySelector('.city').value.trim();
-  const validCity = validateTextNew('city', 'Ugyldig poststed', true, city, 0, 45, '',);
+  const validCity = validateTextNew('city', 'Ugyldig poststed',  city, 0, 45, '',);
 
   // validate email
   const email = document.querySelector('.email').value.trim();
   const validEmail = (email === '')
     ? true
-    : objSupplier.validateEmail('email', email, objSupplier, '', 'Ugyldig mail');
+    : validateEmail('email', email, objSupplier, 'Ugyldig mail');
 
   // validate phone
   const phone = document.querySelector('.phone').value.trim();
@@ -392,99 +386,58 @@ async function updateSuppliersRow(supplierId) {
 
   // validate accountId
   const accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = validateIntervalNew('accountId', 'Ugyldig konto', true, accountId, 1, objSupplier.nineNine);
+  const validAccountId = validateIntervalNew('accountId', 'Ugyldig konto',  accountId, 1, objSuppliers.nineNine);
 
   // validate bankAccount
   const bankAccount = document.querySelector('.bankAccount').value.trim();
-  let validBankAccount = validateBankAccountNew('bankAccount', true, bankAccount, '', 'Ugyldig bankkontonummer');
+  let validBankAccount = validateBankAccountNew('bankAccount', bankAccount,  'Ugyldig bankkontonummer');
 
   if (bankAccount === '') validBankAccount = true;
 
   // validate amountAccountId
   const amountAccountId = Number(document.querySelector('.amountAccountId').value);
-  const validAmountAccountId = validateIntervalNew('amountAccountId', 'Ugyldig konto for beløp', true, amountAccountId, 0, objSupplier.nineNine);
+  const validAmountAccountId = validateIntervalNew('amountAccountId', 'Ugyldig konto for beløp',  amountAccountId, 0, objSuppliers.nineNine);
 
   // validate amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatNorAmountToNumber(amount));
-  const validAmount = validateIntervalNew('amount', 'Ugyldig beløp', true, amount, objSupplier.minusNineNine, objSupplier.nineNine);
-
+  const validAmount = validateIntervalNew('amount', 'Ugyldig beløp', amount, objSuppliers.minusNineNine, objSuppliers.nineNine);
 
   // validate textAccountId
   const textAccountId = Number(document.querySelector('.textAccountId').value);
-  const validTextAccountId = validateIntervalNew('textAccountId', 'Ugyldig konto for tekst', true, textAccountId, 0, objSupplier.nineNine);
+  const validTextAccountId = validateIntervalNew('textAccountId', 'Ugyldig konto for tekst',  textAccountId, 0, objSuppliers.nineNine);
 
   // validate text
   const text = document.querySelector('.accountText').value;
-  const validText = validateTextNew('accountText', 'Ugyldig tekst', true, text, 0, 45);
+  const validText = validateTextNew('accountText', 'Ugyldig tekst',  text, 0, 45);
 
   if (validSupplierId && validName && validStreet && validAddress2
     && validPostalCode && validCity && validBankAccount && validAccountId
     && validAmountAccountId && validAmount && validTextAccountId
     && validEmail && validText) {
 
-    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the supplierId exist
-    const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
+    const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
     if (rowNumberSupplier !== -1) {
 
       // update the suppliers row
-      await objSupplier.updateSuppliersTable(supplierId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
-      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
+      await objSuppliers.updateSuppliersTable(supplierId, objSuppliers.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
     } else {
 
       // Insert the supplier row in supplier table
-      await objSupplier.insertSuppliersTable(objSupplier.condominiumId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
-      await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
-      supplierId = objSupplier.arraySuppliers.at(-1)?.supplierId ?? 0;
+      await objSuppliers.insertSuppliersTable(objSuppliers.condominiumId, objSuppliers.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
+      await objSuppliers.getHighestSupplierId(objSuppliers.condominiumId);
+      supplierId = objSuppliers.arrSuppliers[0].supplierId;
     }
+
+    await objSuppliers.loadSuppliersTable(objSuppliers.condominiumId);
 
     removeMessage();
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterSupplierId', false, 'white');
-    }
-
-    // show filter
-    showFilter(supplierId);
-
-    // Show supplier
-    showSupplier(supplierId);
-  }
-  */
-
-    document.querySelector('.showMessage').style.display = "none";
-
-    // Check if the supplierId exist
-    const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-    if (rowNumberSupplier !== -1) {
-
-      // update the suppliers row
-      await objSupplier.updateSuppliersTable(supplierId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
-    } else {
-
-      // Insert the supplier row in supplier table
-      await objSupplier.insertSuppliersTable(objSupplier.condominiumId, objSupplier.user, name, street, address2, postalCode, city, email, phone, bankAccount, accountId, amount, amountAccountId, text, textAccountId);
-      await objSupplier.getHighestSupplierId(objSupplier.condominiumId);
-      supplierId = objSupplier.arrSuppliers[0].supplierId;
-    }
-
-    await objSupplier.loadSuppliersTable(objSupplier.condominiumId);
-
-    removeMessage();
-
-    if (enableChanges) {
-      disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterSupplierId', false);
     }
 
     // Show filter
@@ -494,23 +447,6 @@ async function updateSuppliersRow(supplierId) {
     showSupplier(supplierId);
   }
 }
-
-/*
-// Delete a suppliers row
-async function deleteSupplierRow() {
-
-  // Check for supplier Id
-  const supplierId = Number(document.querySelector('.filterSupplierId').value);
-
-  // Check if supplier id exist
-  const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.supplierId === supplierId);
-  if (rowNumberSupplier !== -1) {
-
-    // delete supplier row
-    await objSupplier.deleteSuppliersTable(supplierId, objSupplier.user);
-  }
-}
-*/
 
 // Delete suppliers row
 async function deleteSuppliersRow(supplierId) {
@@ -522,7 +458,17 @@ async function deleteSuppliersRow(supplierId) {
     // delete suppliers row
     await objSuppliers.deleteSuppliersTable(supplierId, objSuppliers.user);
     await objSuppliers.getHighestSupplierId(objSuppliers.condominiumId);
-    supplierId = objSuppliers.arraySuppliers[0].supplierId;
+
+    //supplierId = objSuppliers.arraySuppliers[0].supplierId;
+    // Check for empty array
+    if (Array.isArray(objSuppliers.arraySuppliers) && objSuppliers.arraySuppliers.length === 0) {
+
+      // Empty array
+      supplierId = 0;
+    } else {
+
+      supplierId = objSuppliers.arraySuppliers[0].supplierId;
+    }
   }
 
   await objSuppliers.loadSuppliersTable(objSuppliers.condominiumId);

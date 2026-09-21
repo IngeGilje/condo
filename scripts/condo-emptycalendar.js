@@ -2,7 +2,7 @@
 
 // Activate classes
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objCondo = new Condo('condo');
 const objEmptyCalendars = new EmptyCalendars("emptycalendars");
 
@@ -24,13 +24,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objEmptyCalendars.condominiumId === 0) || (objEmptyCalendars.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -124,27 +124,6 @@ async function events() {
       await deleteEmptyCalendarsRow(emptyCalendarId);
     };
   });
-
-  /*
-  // Cancel
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('cancel')) {
-
-      // Reload emptycalendars table
-      const orderBy = "date DESC";
-      await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
-      await objEmptyCalendars.getHighestEmptyCalendarId(objEmptyCalendars.condominiumId);
-      const emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0]?.emptyCalendarId ?? 0;
-      await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId, orderBy);
-
-      // Show filter
-      showFilter(emptyCalendarId);
-
-      // show emptycalendar
-      showEmptyCalendar(emptyCalendarId);
-    };
-  });
-  */
 }
 
 // Show filter
@@ -265,35 +244,35 @@ async function updateEmptyingCalendarRow(emptyCalendarId) {
 
   // condoId
   condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', 'Ugyldig ansvarlig', true, condoId, 1, objCondo.nineNine);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig ansvarlig',  condoId, 1, objCondo.nineNine);
 
   // date
   let date = document.querySelector('.emptyingCalendarDate').value;
-  let validDate = validateISODate('emptyingCalendarDate', date, true, 'Ugyldig Dato');
+  let validDate = validateISODate('emptyingCalendarDate', date,  'Ugyldig Dato');
   date = formatISODateToNumber(date);
 
   let residualWaste = document.querySelector('.residualWaste').value;
-  const validResidualWaste = validateValuesNew('residualWaste', 'Ugylgig valg', true, residualWaste, 'Nei', 'Ja');
+  const validResidualWaste = validateValuesNew('residualWaste', 'Ugylgig valg',  residualWaste, 'Nei', 'Ja');
   if (residualWaste === "Ja") residualWaste = 'Y';
   if (residualWaste === "Nei") residualWaste = 'N';
 
   let paper = document.querySelector('.paper').value;
-  const validPaper = validateValuesNew('paper', 'Ugylgig valg', true, paper, 'Nei', 'Ja');
+  const validPaper = validateValuesNew('paper', 'Ugylgig valg',  paper, 'Nei', 'Ja');
   if (paper === "Ja") paper = 'Y';
   if (paper === "Nei") paper = 'N';
 
   let food = document.querySelector('.food').value;
-  const validFood = validateValuesNew('food', 'Ugylgig valg', true, food, 'Nei', 'Ja');
+  const validFood = validateValuesNew('food', 'Ugylgig valg',  food, 'Nei', 'Ja');
   if (food === "Ja") food = 'Y';
   if (food === "Nei") food = 'N';
 
   let plastic = document.querySelector('.plastic').value;
-  const validPlastic = validateValuesNew('plastic', 'Ugylgig valg', true, plastic, 'Nei', 'Ja');
+  const validPlastic = validateValuesNew('plastic', 'Ugylgig valg',  plastic, 'Nei', 'Ja');
   if (plastic === "Ja") plastic = 'Y';
   if (plastic === "Nei") plastic = 'N';
 
   let christmasTree = document.querySelector('.christmasTree').value;
-  const validChristmasTree = validateValuesNew('christmasTree', 'Ugylgig valg', true, christmasTree, 'Nei', 'Ja');
+  const validChristmasTree = validateValuesNew('christmasTree', 'Ugylgig valg', christmasTree, 'Nei', 'Ja');
   if (christmasTree === "Ja") christmasTree = 'Y';
   if (christmasTree === "Nei") christmasTree = 'N';
 
@@ -324,10 +303,6 @@ async function updateEmptyingCalendarRow(emptyCalendarId) {
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterEmptyCalendarId', false);
     }
 
     // Show filter
@@ -407,38 +382,11 @@ function resetValues() {
   document.querySelector('.filterEmptyCalendarId').disabled = true;
 
   // Buttons
-  removeMessage();
   if (enableChanges) {
+
     disableButton('delete', true);
-    disableButton('insert', true);
-    //disableButton('cancel', false);
-    disableButton('filterEmptyCalendarId', true);
   }
 }
-
-/*
-// Delete a emptycalendars row
-async function deleteEmptyCalendarsRow(emptyCalendarId) {
-
-  // Check if emptycalendars row exist
-  const emptyEmptyCalendarsRowNumber = objEmptyCalendars.arrayEmptyCalendars.findIndex(emptycalendar => emptycalendar.emptyCalendarId === emptyCalendarId);
-  if (emptyEmptyCalendarsRowNumber !== -1) {
-
-    // delete emptycalendar row
-    await objEmptyCalendars.deleteEmptyCalendarTable(emptyCalendarId, objEmptyCalendars.user);
-    await objEmptyCalendars.getHighestEmptyCalendarId(objEmptyCalendars.condominiumId);
-    emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0].emptyCalendarId;
-  }
-
-  await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId);
-
-  // Show filter
-  showFilter(emptyCalendarId);
-
-  // Show emptycalendar
-  showEmptyCalendar(emptyCalendarId);
-}
-*/
 
 // Delete emptyCalendars row
 async function deleteEmptyCalendarsRow(emptyCalendarId) {
@@ -450,7 +398,17 @@ async function deleteEmptyCalendarsRow(emptyCalendarId) {
     // delete emptyCalendars row
     await objEmptyCalendars.deleteEmptyCalendarsTable(emptyCalendarId, objEmptyCalendars.user);
     await objEmptyCalendars.getHighestEmptyCalendarId(objEmptyCalendars.condominiumId);
-    emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0].emptyCalendarId;
+
+    //emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0].emptyCalendarId;
+    // Check for empty array
+    if (Array.isArray(objEmptyCalendars.arrayEmptyCalendars) && objEmptyCalendars.arrayEmptyCalendars.length === 0) {
+
+      // Empty array
+      emptyCalendarId = 0;
+    } else {
+
+      emptyCalendarId = objEmptyCalendars.arrayEmptyCalendars[0].userId;
+    }
   }
 
   await objEmptyCalendars.loadEmptyCalendarsTable(objEmptyCalendars.condominiumId);

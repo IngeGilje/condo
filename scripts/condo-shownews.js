@@ -2,7 +2,7 @@
 
 // Activate classes
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objNews = new News('news');
 
 const enableChanges = (objNews.securityLevel > 5);
@@ -16,13 +16,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objNews.condominiumId === 0) || (objNews.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -34,7 +34,7 @@ async function main() {
 
       // Load users and news tables
       const resident = 'Y';
-      await objUser.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);
+      await objUsers.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
       let newsId = 0;
@@ -93,13 +93,13 @@ function showNews() {
       date = formatNumberToNorDate(date);
 
       // user name
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === news.userId);
+      const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === news.userId);
       /*
       const userName = (rowNumberUser !== -1)
-        ? `${objUser.arrayUsers[rowNumberUser].firstName} ${objUser.arrayUsers[rowNumberUser].lastName}`
+        ? `${objUsers.arrayUsers[rowNumberUser].firstName} ${objUsers.arrayUsers[rowNumberUser].lastName}`
         : 'Ukjent';
       */
-     const userName = objUser.arrayUsers[rowNumberUser]?.userName ?? 'Ukjent';
+     const userName = objUsers.arrayUsers[rowNumberUser]?.userName ?? 'Ukjent';
 
       html += `
       <div 

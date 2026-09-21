@@ -3,10 +3,10 @@
 // Activate objects
 const today = new Date();
 const objCondo = new Condo('condo');
-const objCondominium = new Condominium('condominium');
-const objUser = new User('user');
+const objCondominiums = new Condominiums('condominiums');
+const objUsers = new Users('users');
 
-const enableChanges = (objUser.securityLevel > 5);
+const enableChanges = (objUsers.securityLevel > 5);
 const applicationName = "condo-user";
 
 // Exit application if no activity for 1 hour
@@ -17,41 +17,29 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    if ((objUser.condominiumId === 0) || (objUser.user === null)) {
+    if ((objUsers.condominiumId === 0) || (objUsers.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
       // Show menu
-      let html = objUser.showMenu(objUser.securityLevel);
+      let html = objUsers.showMenu(objUsers.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      if (enableChanges) {
-
-        const resident = 'A';
-        await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
-        await objCondominium.loadCondominiumsTable(objUser.condominiumId);
-        await objCondo.loadCondoTable(objUser.condominiumId, objUser.nineNine);
-      } else {
-
-        const resident = 'Y';
-        await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.userId);
-        await objCondominium.loadCondominiumsTable(objUser.condominiumId);
-        await objCondo.loadCondoTable(objUser.condominiumId, objUser.nineNine);
-      }
+      await loadAllTables(objUsers.condominiumId);
 
       // Show filter
-      showFilter(objUser.userId);
+      showFilter(objUsers.condominiumId, objUsers.userId);
 
       // Show user
-      showUser(objUser.userId);
+      showUser(objUsers.userId);
 
       // Events
       events();
@@ -65,11 +53,34 @@ async function main() {
 // Events for users
 async function events() {
 
+  // Filter condominium
+  document.addEventListener('change', async (event) => {
+    if (event.target.classList.contains('filterCondominiumId')) {
+
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+
+      await loadAllTables(condominiumId);
+
+      // Show filter
+      showFilter(condominiumId, 0);
+
+      // Show user
+      const userId = Number(document.querySelector('.filterUserId').value);
+      showUser(userId);
+    };
+  });
+
   // Filter user
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterUserId')) {
 
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       const userId = Number(document.querySelector('.filterUserId').value);
+
+      // Show filter
+      showFilter(condominiumId, userId)
+
+      // Show user
       showUser(userId);
     };
   });
@@ -79,7 +90,7 @@ async function events() {
     if (event.target.classList.contains('update')) {
 
       // Because of check of unique email
-      await objUser.loadAllUsersTable();
+      await objUsers.loadAllUsersTable();
 
       const userId = document.querySelector('.filterUserId').value;
       await updateUserRow(userId);
@@ -90,7 +101,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      const userId = Number(document.arrayUsers('.filterCondoId').value);
+      const userId = Number(document.querySelector('.filterUserId').value);
       await deleteUsersRow(userId);
     };
   });
@@ -103,31 +114,11 @@ async function events() {
     };
   });
 
-  /*
-  // Cancel
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('cancel')) {
-
-      // Reload users table
-      const resident = 'A';
-      const condominiumId = objUser.condominiumId;
-      await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
-
-      const userId = objUser.userId;
-      if (userId === 0) userId = objUser.arrayUsers.at(-1)?.userId ?? 0;
-
-      // Show filter
-      showFilter(userId);
-      showUser(userId);
-    };
-  });
-  */
-
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objUser.serverStatus === 1)
+      let url = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -137,29 +128,19 @@ async function events() {
 }
 
 // Show filter
-function showFilter(userId) {
+function showFilter(condominiumId, userId) {
 
-  /*
-  // Start frame
-  let html = startTableFilter("filter-frame");
-
-  // Show users
-  //html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
-  html += objUser.showSelectedUsersNew('Bruker', 'filterUserId', userId, '', '', true);
-
-  // End filter
-  html += "</div>";
-
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame", "Filter");
-  */
   // Start filter
   let html = startGridFilter("Bruker");
 
+  // Show condominiums
+  html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'Sameie', condominiumId, '', '', enableChanges);
+
+  // New line
+  html += " ";
+
   // Show users
-  html += objUser.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
+  html += objUsers.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
 
   // End filter
   html += endGridFilter();
@@ -170,77 +151,47 @@ function showFilter(userId) {
 function showUser(userId) {
 
   // row number user
-  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
 
   // Empty line
   html = emptyLine();
-
   html += startGrid('Bruker');
 
   // email
-  /*
-  const email = (rowNumberUser === -1)
-    ? ''
-    : objUser.arrayUsers[rowNumberUser].email.trim();
-  */
-  const email = objUser.arrayUsers[rowNumberUser]?.email ?? '';
-  html += inputText('email', 'E-mail', email, enableChanges);
+  const email = objUsers.arrayUsers[rowNumberUser]?.email ?? '';
+  html += inputText('email', 'E-mail', email, 45, enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // condoId
-  /*
-  const condoId = (rowNumberUser === -1)
-    ? ''
-    : objUser.arrayUsers[rowNumberUser].condoId;
-  */
-  const condoId = objUser.arrayUsers[rowNumberUser]?.condoId ?? 0;
+  const condoId = objUsers.arrayUsers[rowNumberUser]?.condoId ?? 0;
   html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, '', 'Velg leilighet', enableChanges);
 
-  html += "<div></div>";
-  //html += "<div></div>";
+  // Activ user?
+  let resident = objUsers.arrayUsers[rowNumberUser]?.resident ?? '';
+  resident = (resident === 'Y') ? 'Ja' : 'Nei';
+  html += inputValues('Beboer', 'resident', enableChanges, resident, 'Nei', 'Ja');
 
   // first Name
-  /*
-  const firstName = (rowNumberUser === -1)
-    ? ''
-    : objUser.arrayUsers[rowNumberUser].firstName.trim();
-  */
-  const firstName = objUser.arrayUsers[rowNumberUser]?.firstName ?? '';
-  html += inputText('firstName', 'Fornavn', firstName, enableChanges);
+  const firstName = objUsers.arrayUsers[rowNumberUser]?.firstName ?? '';
+  html += inputText('firstName', 'Fornavn', firstName, 45, enableChanges);
 
   // last Name
-  /*
-  const lastName = (rowNumberUser === -1)
-    ? ''
-    : objUser.arrayUsers[rowNumberUser].lastName.trim();
-  */
-  const lastName = objUser.arrayUsers[rowNumberUser]?.lastName ?? '';
-  html += inputText('lastName', 'Etternavn', lastName, enableChanges);
-  //html += "<div></div>";
+  const lastName = objUsers.arrayUsers[rowNumberUser]?.lastName ?? '';
+  html += inputText('lastName', 'Etternavn', lastName, 45, enableChanges);
 
   // phone
-  /*
-  const phone = (rowNumberUser === -1)
-    ? ''
-    : objUser.arrayUsers[rowNumberUser].phone.trim();
-  */
-  const phone = objUser.arrayUsers[rowNumberUser]?.phone ?? '';
-  html += inputText('phone', 'Telefonnummer', phone, enableChanges);
-  html += "<div></div>";
-  //html += "<div></div>";
+  const phone = objUsers.arrayUsers[rowNumberUser]?.phone ?? '';
+  html += inputText('phone', 'Telefonnummer', phone, 20, enableChanges);
 
-  // Activ user?
-  /*
-  let resident = (rowNumberUser === -1)
-    ? ''
-    : objUser.arrayUsers[rowNumberUser].resident.trim();
-  */
-  let resident = objUser.arrayUsers[rowNumberUser]?.resident ?? '';
-  resident = (objUser.arrayUsers[rowNumberUser].resident === 'Y') ? 'Ja' : 'Nei';
-  html += inputValues('Beboer', 'resident', enableChanges, resident, 'Nei', 'Ja');
+  // security level
+  const securityLevel = objUsers.arrayUsers[rowNumberUser]?.securityLevel ?? 0;
+  html += showSelectedNumbers('securityLevel', 'Sikkerhetsnivå', 1, 9, Number(securityLevel), enableChanges);
+
+
+  // password 
+  const password = objUsers.arrayUsers[rowNumberUser]?.password ?? '';
+  html += inputText('password', 'Passord', password, 45, enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   html += endGrid();
 
@@ -252,7 +203,6 @@ function showUser(userId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    //html += inputButton("cancel secondary", "Angre", "reset");
     html += inputButton("delete danger", "Slett", "button");
 
     // End buttons
@@ -260,18 +210,6 @@ function showUser(userId) {
   }
 
   document.querySelector('.showUser').innerHTML = html;
-
-  //if (enableChanges) document.querySelector('.cancel').disabled = true;
-
-  /*
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    //disableButton('cancel', true);
-    disableButton('filterUserId', false, 'white');
-  }
-  */
 }
 
 // Update a users row
@@ -280,34 +218,35 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1;
   userId = Number(userId);
-  const validUserId = validateIntervalNew('userId', 'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateIntervalNew('userId', 'Ugyldig Bruker',  userId, -1, objUsers.nineNine);
 
   // resident
   let resident = document.querySelector('.resident').value;
   if (resident === 'Ja') resident = 'Y';
   if (resident === 'Nei') resident = 'N';
-  const validResident = validateValuesNew('resident', 'Ugyldig beboertype', true, resident, 'Y', 'N')
+  const validResident = validateValuesNew('resident', 'Ugyldig beboertype', resident, 'Y', 'N')
 
   // email
   const email = document.querySelector('.email').value;
-  let validEmail = objUser.validateEmail('email', email, objUser, '', 'Ugyldig mail');
+  //let validEmail = validateEmail('email', email, objUser, 'Ugyldig mail');
+  let validEmail = validateEmail('email', email, 'Ugyldig mail');
 
   if (validEmail) {
 
     // Check for duplicate email
-    const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
     if (rowNumberUser === -1) {
 
       // user does not exist
-      // check if email exist
-      validEmail = objUser.checkUiqueEmail(email, objUser, '', 'Ugyldig e-mail. Finnes fra før.')
+      // check for unique email
+      validEmail = objUsers.checkUiqueEmail(email, 'E-mail finnes fra før.')
     } else {
 
       // user exist
-      // Check if email is changed
-      if (objUser.arrayUsers[rowNumberUser].email.toLowerCase() !== email.toLowerCase()) {
+      // check for unique email
+      if (objUsers.arrayUsers[rowNumberUser].email.toLowerCase() !== email.toLowerCase()) {
         // check if email exist
-        validEmail = objUser.checkUiqueEmail(email, objUser, '', 'Ugyldig e-mail. Finnes fra før.');
+        validEmail = objUsers.checkUiqueEmail(email, objUser, '', 'Ugyldig e-mail. Finnes fra før.');
       }
     }
   } else {
@@ -317,123 +256,68 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet', true, condoId, 0, objUser.nineNine);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet',  condoId, 0, objUsers.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
-  const validFirstName = validateTextNew('firstName', 'Ugyldig fornavn', true, firstName, 3, 45);
+  const validFirstName = validateTextNew('firstName', 'Ugyldig fornavn',  firstName, 3, 45);
 
   // validate lastName
   const lastName = document.querySelector('.lastName').value;
-  const validLastName = validateTextNew('lastName', 'Ugyldig etternavn', true, lastName, 3, 45);
+  const validLastName = validateTextNew('lastName', 'Ugyldig etternavn',  lastName, 3, 45);
 
   // validate phone
   const phone = document.querySelector('.phone').value;
-  const validPhone = objUser.validatePhone('phone', phone);
+  const validPhone = objUsers.validatePhone('phone', phone);
+
+  // security level
+  const securityLevel = Number(document.querySelector('.securityLevel').value);
+  const validSecurityLevel = validateIntervalNew('securityLevel', 'Ugyldig Sikkerhestnivå', securityLevel, 1, 9);
+
+  // validate password
+  const password = document.querySelector('.password').value;
+  const validPassword = validateTextNew('password', 'Ugyldig passord', password, 5, 45);
 
   if (validUserId && validEmail && validCondoId && validFirstName && validLastName
-    && validPhone) {
+    && validPhone && validSecurityLevel && validPassword) {
 
-    /*
     document.querySelector('.showMessage').style.display = "none";
-
-    const userId = Number(document.querySelector('.filterUserId').value);
+    const condominiumId = Number(document.querySelector(".filterCondominiumId").value)
 
     // Check if the userId exist
-    const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
     if (rowNumberUser !== -1) {
 
       // update the users row
-      await objUser.updateUsersTable(objUser.condominiumId, resident, objUser.user, email, userId, condoId, firstName, lastName, phone);
-      resident = 'A';
-      await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
-    } else {
-
-      // user does not exist
-      // Insert the user row in users table
-      const securityLevel = 1;
-      const password = "12345";
-      await objUser.insertUsersTable(resident, objUser.condominiumId, objUser.user, email, condoId, firstName, lastName, phone, securityLevel, password);
-      resident = 'A';
-      await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
-      userId = objUser.arrayUsers.at(-1)?.userId ?? 0;
-      document.querySelector('.filterUserId').value = userId;
-    }
-
-    removeMessage();
-
-    if (enableChanges) {
-      disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterUserId', false, 'white');
-    }
-
-    // show filter
-    showFilter(userId);
-
-    // Show transaction
-    showUser(userId);
-  }
-  */
-
-    document.querySelector('.showMessage').style.display = "none";
-
-    // Check if the userId exist
-    const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
-    if (rowNumberUser !== -1) {
-
-      // update the users row
-      await objUser.updateUsersTable(objUser.condominiumId, resident, objUser.user, email, userId, condoId, firstName, lastName, phone);
+      await objUsers.updateUsersTable(condominiumId, resident, objUsers.user, email, userId, condoId, firstName, lastName, phone);
     } else {
 
       // Insert a accounts row
-      await objUser.insertUsersTable(resident, objUser.condominiumId, objUser.user, email, condoId, firstName, lastName, phone, securityLevel, password);
-      await objUser.getHighestUserId(objUser.condominiumId);
-      userId = objUser.arrayUsers[0].userId;
-    }
+      await objUsers.insertUsersTable(resident, condominiumId, objUsers.user, email, condoId, firstName, lastName, phone, securityLevel, password);
+      await objUsers.getHighestUserId(condominiumId);
+      userId = objUsers.arrayUsers.at[-1].userId;
+     }
 
-    resident = 'A';
-    await objUser.loadUsersTable(objUser.condominiumId, resident, objUser.nineNine);
+    await objUsers.loadUsersTable(condominiumId, resident, objUsers.nineNine);
 
     removeMessage();
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterUserId', false);
     }
 
     // Show filter
-    showFilter(userId);
+    showFilter(condominiumId, userId);
 
     // Show user
     showUser(userId);
   }
 }
 
-/*
-// Delete a users row
-async function deleteUserRow() {
-
-  // userId
-  const userId = Number(document.querySelector('.filterUserId').value);
-
-  // Check if user exist
-  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
-  if (rowNumberUser !== -1) {
-
-    // delete a user row
-    await objUser.deleteUsersTable(userId, objUser.user);
-  }
-}
-*/
-
 // Delete users row
 async function deleteUsersRow(userId) {
+
+  const condominiumId = Number(document.querySelector(".filterCondominiumId").value)
 
   // Check if users row exist
   const rowNumberUsers = objUsers.arrayUsers.findIndex(user => user.userId === userId);
@@ -441,23 +325,32 @@ async function deleteUsersRow(userId) {
 
     // delete users row
     await objUsers.deleteUsersTable(userId, objUsers.user);
-    await objUsers.getHighestUserId(objUsers.condominiumId);
-    userId = objUsers.arrayUsers[0].userId;
+    await objUsers.getHighestUserId(condominiumId);
+
+    // Check for empty array
+    if (Array.isArray(objUsers.arrayUsers) && objUsers.arrayUsers.length === 0) {
+
+      // Empty array
+      userId = 0;
+    } else {
+
+      userId = objUsers.arrayUsers[0].userId;
+    }
   }
 
-  await objUsers.loadUsersTable(objUsers.condominiumId);
+  const resident = (enableChanges)
+    ? "A"
+    : "Y";
+  await objUsers.loadUsersTable(condominiumId, resident, objUsers.nineNine);
 
   // Show filter
-  showFilter(userId);
+  showFilter(condominiumId, userId);
 
   // Show user
   showUser(userId);
 }
 
 function resetValues() {
-
-  // conmdominium Id
-  //document.querySelector('.filterCondominiumId').value = 0;
 
   // user Id
   document.querySelector('.filterUserId').value = 0;
@@ -480,15 +373,27 @@ function resetValues() {
   // resident
   document.querySelector('.resident').value = '';
 
+  // securityLevel
+  document.querySelector('.securityLevel').value = 1;
 
-  document.querySelector('.filterUserId').disabled = true;
+  // password
+  document.querySelector('.password').value = "";
 
   // Buttons
-  removeMessage();
   if (enableChanges) {
+
     disableButton('delete', true);
-    disableButton('insert', true);
-    //disableButton('cancel', false);
-    disableButton('filterUserId', true);
   }
 }
+
+// load all tables 
+async function loadAllTables(condominiumId) {
+
+  const resident = (enableChanges)
+    ? "A"
+    : "Y";
+
+  await objUsers.loadUsersTable(condominiumId, resident, objUsers.nineNine);
+  await objCondominiums.loadCondominiumsTable(condominiumId);
+  await objCondo.loadCondoTable(condominiumId, objUsers.nineNine);
+};

@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
@@ -51,13 +51,13 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
+      await objUsers.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objTransactions.condominiumId, fixedCost);
       await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
       await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
       await objCondo.loadCondoTable(objTransactions.condominiumId, objTransactions.nineNine);
-      await objCondominium.loadCondominiumsTable();
+      await objCondominiums.loadCondominiumsTable();
       await objSupplier.loadSuppliersTable(objTransactions.condominiumId);
       await objProjects.loadProjectsTable(objTransactions.condominiumId);
       const orderBy = 'date DESC, income DESC';
@@ -294,7 +294,7 @@ function showTransaction(transactionId) {
   let income = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? '';
   income = formatNumberToNorAmount(income);
   //html += showTextNew('Inntekt', 'income', income, enableChanges, "Inntekt");
-  html += inputText('income', 'Inntekt', income, enableChanges);
+  html += inputText('income', 'Inntekt', income, 11, enableChanges);
 
   // payment
   /*
@@ -305,7 +305,7 @@ function showTransaction(transactionId) {
   let payment = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
   payment = formatNumberToNorAmount(payment);
   //html += showTextNew('Betaling', 'payment', payment, enableChanges, "Betaling");
-  html += inputText('payment', 'Betaling', payment, enableChanges);
+  html += inputText('payment', 'Betaling', payment, 11, enableChanges);
 
   // kilowattHour
   /*
@@ -316,7 +316,7 @@ function showTransaction(transactionId) {
   let kilowattHour = objTransactions.arrayTransactions[rowNumberTransaction]?.kilowattHour ?? '';
   kilowattHour = formatNumberToNorAmount(kilowattHour);
   //html += showTextNew('KilowatTimer', 'kilowattHour', kilowattHour, enableChanges, "KilowatTimer");
-  html += inputText('kilowattHour', 'KilowatTimer', kilowattHour, enableChanges);
+  html += inputText('kilowattHour', 'KilowatTimer', kilowattHour, 11, enableChanges);
 
   // Text
   /*
@@ -365,49 +365,49 @@ async function updateTransactionRow(transactionId) {
   let transactionDate = document.querySelector(className).value;
   transactionDate = formatISODateToNumber(transactionDate);
   className = "transactionDate";
-  const validDate = validateIntervalNew(className, 'Ugyldig Dato', true, transactionDate, 20150101, 20991231);
+  const validDate = validateIntervalNew(className, 'Ugyldig Dato',  transactionDate, 20150101, 20991231);
 
   // accountId
   className = '.accountId';
   let accountId = Number(document.querySelector(className).value);
   className = 'accountId';
-  const validAccountId = validateIntervalNew(className, 'Ugyldig konto', true, accountId, 1, objTransactions.nineNine);
+  const validAccountId = validateIntervalNew(className, 'Ugyldig konto',  accountId, 1, objTransactions.nineNine);
 
   // condoId
   className = `.condoId`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId`;
-  const validCondoId = validateIntervalNew(className, 'Ugyldig Leilighet', true, condoId, 0, objTransactions.nineNine);
+  const validCondoId = validateIntervalNew(className, 'Ugyldig Leilighet',  condoId, 0, objTransactions.nineNine);
 
   // projectId 
   className = `.projectId`;
   let projectId = Number(document.querySelector(className).value);
   className = `projectId`;
-  const validProjectId = validateIntervalNew(className, 'Ugyldig prosjekt', true, projectId, 0, objTransactions.nineNine);
+  const validProjectId = validateIntervalNew(className, 'Ugyldig prosjekt',  projectId, 0, objTransactions.nineNine);
 
   // income
   className = `.income`;
   let income = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `income`;
-  const validIncome = validateIntervalNew(className, 'Ugyldig inntekt', true, income, objTransactions.minusNineNine, objTransactions.nineNine);
+  const validIncome = validateIntervalNew(className, 'Ugyldig inntekt',  income, objTransactions.minusNineNine, objTransactions.nineNine);
 
   // payment
   className = `.payment`;
   let payment = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `payment`;
-  const validPayment = validateIntervalNew(className, 'Ugyldig utgift', true, payment, objTransactions.minusNineNine, objTransactions.nineNine);
+  const validPayment = validateIntervalNew(className, 'Ugyldig utgift', payment, objTransactions.minusNineNine, objTransactions.nineNine);
 
   // kilowattHour
   className = `.kilowattHour`;
   const kilowattHour = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `kilowattHour`;
-  const validNumberKWHour = validateIntervalNew(className, 'Ugyldig kilowattime', true, kilowattHour, 0, objTransactions.nineNine);
+  const validNumberKWHour = validateIntervalNew(className, 'Ugyldig kilowattime', kilowattHour, 0, objTransactions.nineNine);
 
   // text
   className = `.text`;
   const text = document.querySelector(className).value;
   className = `text`;
-  const validText = validateTextNew(className, 'Ugyldig tekst', true, text, 3, 255);
+  const validText = validateTextNew(className, 'Ugyldig tekst',  text, 3, 255);
 
   // Validate transactions columns
   if (validDate && validCondoId && validAccountId && validProjectId
@@ -432,15 +432,11 @@ async function updateTransactionRow(transactionId) {
     const orderBy = 'date DESC, income DESC';
     await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20291231);
 
-    removeMessage();
-
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton("filterTransactionId", false);
     }
+
+    removeMessage();
 
     // Show filter
     showFilter(transactionId);
@@ -481,42 +477,11 @@ function resetValues() {
   document.querySelector('.text').value = '';
 
   // Buttons
-  removeMessage();
   if (enableChanges) {
+
     disableButton('delete', true);
-    disableButton('insert', true);
-    //disableButton('cancel', false);
-    disableButton("filterTransactionId", true);
   }
 }
-
-/*
-// Delete transactions row
-async function deleteTransactionRow(transactionId) {
-
-  // Check if transactions row exist
-  const transactionsRowNumber = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
-  if (transactionsRowNumber !== -1) {
-
-    // delete transaction row
-    await objTransactions.deleteTransactionsTable(transactionId, objTransactions.user);
-    await objTransactions.getHighestTransactionId(objTransactions.condominiumId);
-    transactionId = objTransactions.arrayTransactions[0].transactionId;
-
-    const orderBy = 'date DESC, income DESC';
-    await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20291231);
-
-    // get last row in transactions table
-    //await objTransactions.loadLastRowTransactionsTable(objTransactions.condominiumId);
-  }
-
-  // Show filter
-  showFilter(transactionId);
-
-  // Show transaction
-  showTransaction(transactionId);
-}
-*/
 
 // Delete transactions row
 async function deleteTransactionsRow(transactionId) {
@@ -528,7 +493,17 @@ async function deleteTransactionsRow(transactionId) {
     // delete transactions row
     await objTransactions.deleteTransactionsTable(transactionId, objTransactions.user);
     await objTransactions.getHighestTransactionId(objTransactions.condominiumId);
-    transactionId = objTransactions.arrayTransactions[0].transactionId;
+
+    //transactionId = objTransactions.arrayTransactions[0].transactionId;
+    // Check for empty array
+      if (Array.isArray(objTransactions.arrayTransactions) && objTransactions.arrayTransactions.length === 0) {
+
+        // Empty array
+        transactionId = 0;
+      } else {
+
+       transactionId = objTransactions.arrayTransactions[0].transactionId;
+      }
   }
 
   await objTransactions.loadTransactionsTable(objTransactions.condominiumId);

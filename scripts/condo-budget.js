@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objAccounts = new Accounts('accounts');
 const objBudgets = new Budgets('budgets');
 
@@ -23,13 +23,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objBudgets.condominiumId === 0) || (objBudgets.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -40,7 +40,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
+      await objUsers.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
       const fixedCost = "A";
       await objAccounts.loadAccountsTable(objBudgets.condominiumId, fixedCost);
 
@@ -52,7 +52,17 @@ async function main() {
       } else {
 
         await objBudgets.getHighestBudgetId(objBudgets.condominiumId);
-        budgetId = objBudgets.arrayBudgets[0].budgetId;
+
+        //budgetId = objBudgets.arrayBudgets[0].budgetId;
+        // Check for empty array
+        if (Array.isArray(objBudgets.arrayBudgets) && objBudgets.arrayBudgets === 0) {
+
+          // Empty array
+          budgetId = 0;
+        } else {
+
+          budgetId = objBudgets.arrayBudgets[0].budgetId;
+        }
       }
 
       await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
@@ -265,7 +275,17 @@ async function deleteBudgetsRow(budgetId) {
     // delete budget row
     await objBudgets.deleteBudgetsTable(budgetId, objBudgets.user);
     await objBudgets.getHighestBudgetId(objBudgets.condominiumId);
-    budgetId = objBudgets.arrayBudgets[0].budgetId;
+    
+    //budgetId = objBudgets.arrayBudgets[0].budgetId;
+    // Check for empty array
+    if (Array.isArray(objBudgets.arrayBudgets) && objBudgets.arrayBudgets === 0) {
+
+      // Empty array
+      budgetId = 0;
+    } else {
+
+      budgetId = objBudgets.arrayBudgets[0].budgetId;
+    }
   }
 
   await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
@@ -285,16 +305,16 @@ async function updateBudgetsRow(budgetId) {
 
   // accountId
   let accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = validateIntervalNew('accountId', 'Ugyldig konto', true, accountId, 1, objBudgets.nineNine);
+  const validAccountId = validateIntervalNew('accountId', 'Ugyldig konto', accountId, 1, objBudgets.nineNine);
 
   // amount
   let amount = document.querySelector('.amount').value;
   amount = Number(formatNorAmountToNumber(amount));
-  let validAmount = validateIntervalNew('amount', 'Ugyldig budsjett', true, amount, objBudgets.minusNineNine, objBudgets.nineNine);
+  let validAmount = validateIntervalNew('amount', 'Ugyldig budsjett', amount, objBudgets.minusNineNine, objBudgets.nineNine);
 
   // year
   let year = Number(document.querySelector('.year').value);
-  const validYear = validateIntervalNew('year', 'Ugyldig budsjettår', true, year, 2020, 2029);
+  const validYear = validateIntervalNew('year', 'Ugyldig budsjettår', year, 2020, 2029);
 
   // text
   let text = document.querySelector('.text').value;
@@ -324,12 +344,6 @@ async function updateBudgetsRow(budgetId) {
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-
-      // Filter
-      disableButton('filterBudgetId', false);
     }
 
     // Show filter
@@ -359,15 +373,7 @@ function resetValues() {
   document.querySelector('.text').value = "";
 
   // Buttons
-  removeMessage();
-
   if (enableChanges) {
     disableButton('delete', true);
-    disableButton('insert', true);
-    //disableButton('cancel', false);
-    disableButton('update', false);
-
-    // Filter
-    disableButton('filterBudgetId', true);
   }
 }

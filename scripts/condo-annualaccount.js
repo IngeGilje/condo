@@ -2,8 +2,8 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
-const objCondominium = new Condominium('condominium');
+const objUsers = new Users('users');
+const objCondominiums = new Condominiums('condominiums');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
@@ -26,13 +26,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objAnnualAccount.condominiumId === 0) || (objAnnualAccount.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -43,8 +43,8 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objAnnualAccount.condominiumId, resident, objAnnualAccount.nineNine);
-      await objCondominium.loadCondominiumsTable();
+      await objUsers.loadUsersTable(objAnnualAccount.condominiumId, resident, objAnnualAccount.nineNine);
+      await objCondominiums.loadCondominiumsTable();
       await objCondo.loadCondoTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
       await objCommonCosts.loadCommonCostsTable(objAnnualAccount.condominiumId);
       await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
@@ -56,13 +56,13 @@ async function main() {
       const accountYear = today.getFullYear();
 
       // From date
-      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
-      let fromMonth = objCondominium.arrayCondominiums[rowNumberCondominium]?.fromMonth ?? '';
+      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
+      let fromMonth = objCondominiums.arrayCondominiums[rowNumberCondominium]?.fromMonth ?? '';
       if (fromMonth < 10) fromMonth = "0" + fromMonth;
       let fromDate = (accountYear-1) + fromMonth + "01";
 
       // To date
-      let toMonth = objCondominium.arrayCondominiums[rowNumberCondominium]?.toMonth ?? '';
+      let toMonth = objCondominiums.arrayCondominiums[rowNumberCondominium]?.toMonth ?? '';
       if (toMonth < 10) toMonth = "0" + toMonth;
       let toDate = accountYear + toMonth + "31";
 
@@ -77,7 +77,7 @@ async function main() {
 
       // Show remote Heating
       // Get row number for payment Remote Heating Account Id
-      //const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
+      //const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // Show annual accounts
@@ -131,7 +131,7 @@ async function events() {
 
     // Show remote Heating
     // Get row number for payment Remote Heating Account Id
-    const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
+    const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objAnnualAccount.condominiumId);
     if (rowNumberCondominium !== -1) {
 
       // Show annual accounts
@@ -233,8 +233,7 @@ function showFilter(accountYear, fromDate, toDate) {
   // price per square meter per month
   const commonCostSquareMeter = getpriceSquaremeter(accountYear);
   //html += showAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
-   html += inputText('filterCommonCostSquareMeter', 'Pris per m2', commonCostSquareMeter, true);
-
+   html += inputText('filterCommonCostSquareMeter', 'Pris per m2', 11,commonCostSquareMeter, true);
 
   // End filter
   html += endTableFilter();

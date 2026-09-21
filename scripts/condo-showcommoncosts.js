@@ -2,8 +2,8 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
-const objCondominium = new Condominium('condominium');
+const objUsers = new Users('users');
+const objCondominiums = new Condominiums('condominiums');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
 const objTransactions = new Transactions('bankTransactions');
@@ -31,13 +31,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objCommonCosts.condominiumId === 0) || (objCommonCosts.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -48,8 +48,8 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
-      await objCondominium.loadCondominiumsTable();
+      await objUsers.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
+      await objCondominiums.loadCondominiumsTable();
       await objCondo.loadCondoTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
@@ -61,7 +61,7 @@ async function main() {
       const year = today.getFullYear();
       showFilter(year);
 
-      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCommonCosts.condominiumId);
+      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCommonCosts.condominiumId);
       if (rowNumberCondominium !== -1) {
 
         // Show common costs

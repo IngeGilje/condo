@@ -2,7 +2,7 @@
 
 // Activate classes
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
 const objProjects = new Projects('projects');
@@ -26,13 +26,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objDues.condominiumId === 0) || (objDues.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -43,7 +43,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
+      await objUsers.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
       await objCondo.loadCondoTable(objDues.condominiumId, objDues.nineNine);
       await objAccounts.loadAccountsTable(objDues.condominiumId, objAccounts.nineNine);
       await objProjects.loadProjectsTable(objDues.condominiumId);
@@ -318,33 +318,33 @@ async function updateDueRow(dueId) {
   // date
   let dueDate = document.querySelector('.dueDate').value;
   dueDate = formatISODateToNumber(dueDate);
-  const validDate = validateIntervalNew('dueDate', 'Ugyldig Dato', true, dueDate, 20150101, 20291231);
+  const validDate = validateIntervalNew('dueDate', 'Ugyldig Dato', dueDate, 20150101, 20291231);
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet', true, condoId, 0, objDues.nineNine);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet',  condoId, 0, objDues.nineNine);
 
   // accountId
   const accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = validateIntervalNew('accountId', 'Ugyldig Konto', true, accountId, 1, objDues.nineNine);
+  const validAccountId = validateIntervalNew('accountId', 'Ugyldig Konto', accountId, 1, objDues.nineNine);
 
   // projectId
   const projectId = Number(document.querySelector('.projectId').value);
-  const validProjectId = validateIntervalNew('projectId', 'Ugyldig Prosjekt', true, projectId, 0, objDues.nineNine);
+  const validProjectId = validateIntervalNew('projectId', 'Ugyldig Prosjekt',  projectId, 0, objDues.nineNine);
 
   // kilowattHour
   let kilowattHour = document.querySelector('.kilowattHour').value;
   kilowattHour = formatNorAmountToNumber(kilowattHour);
-  const validkilowattHour = validateIntervalNew('kilowattHour', 'Ugyldig Kilowatttime', true, kilowattHour, 0, objDues.nineNine);
+  const validkilowattHour = validateIntervalNew('kilowattHour', 'Ugyldig Kilowatttime', kilowattHour, 0, objDues.nineNine);
 
   // amount
   let amount = document.querySelector('.amount').value;
   amount = formatNorAmountToNumber(amount);
-  const validAmount = validateIntervalNew('amount', 'Ugyldig beløp', true, amount, 0, objDues.nineNine);
+  const validAmount = validateIntervalNew('amount', 'Ugyldig beløp',  amount, 0, objDues.nineNine);
 
   // text
   const text = document.querySelector('.text').value;
-  const validText = validateTextNew('text', 'Ugyldig Tekst', true, text, 0, 45);
+  const validText = validateTextNew('text', 'Ugyldig Tekst', text, 0, 45);
 
   // Validate dues columns
   if (validDate && validCondoId && validkilowattHour && validAmount && validAccountId && validProjectId && validText) {
@@ -371,15 +371,6 @@ async function updateDueRow(dueId) {
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-
-      // Filter
-      disableButton('filterFromdate', false);
-      disableButton('filterToDate', false);
-      disableButton('filterCondoId', false);
-      disableButton('filterProjectId', false);
     }
 
     // Show filter
@@ -389,25 +380,6 @@ async function updateDueRow(dueId) {
     showDue(dueId);
   }
 }
-
-/*
-// Delete a dues row
-async function deleteDue(dueId) {
-
-  if (dueId > 0) {
-    await objDues.deleteDuesTable(dueId, objDues.user);
-    await objDues.loadDuesTable(objDues.condominiumId);
-  }
-
-  // Show last dueId
-  await objDues.getHighestDueId(objDues.condominiumId);
-  dueId = objDues.arrayDues.at(-1)?.dueId ?? 0;
-  await objDues.loadDuesTable(objDues.condominiumId);
-
-  showFilter(dueId);
-  showDue(dueId);
-}
-*/
 
 // Delete dues row
 async function deleteDuesRow(dueId) {
@@ -419,7 +391,17 @@ async function deleteDuesRow(dueId) {
     // delete dues row
     await objDues.deleteDuesTable(dueId, objDues.user);
     await objDues.getHighestDueId(objDues.condominiumId);
-    dueId = objDues.arrayDues[0].dueId;
+
+    //dueId = objDues.arrayDues[0].dueId;
+    // Check for empty array
+    if (Array.isArray(objDues.arrayDues) && objDues.arrayDues.length === 0) {
+
+      // Empty array
+      dueId = 0;
+    } else {
+
+      dueId = objDues.arrayDues[0].dueId;
+    }
   }
 
   await objDues.loadDuesTable(objDues.condominiumId);
@@ -462,18 +444,8 @@ function resetValues() {
   document.querySelector('.amount').value = "";
 
   // Buttons
-  removeMessage();
-
   if (enableChanges) {
-    disableButton('delete', true);
-    disableButton('insert', true);
-    //disableButton('cancel', false);
-    disableButton('update', false);
 
-    // Filter
-    disableButton('filterFromdate', true);
-    disableButton('filterToDate', true);
-    disableButton('filterCondoId', true);
-    disableButton('filterProjectId', true);
+    disableButton('delete', true);
   }
 }

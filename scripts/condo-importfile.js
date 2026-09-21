@@ -5,9 +5,9 @@ let arrayTransactions = [];
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
-const objCondominium = new Condominium('condominium');
+const objCondominiums = new Condominiums('condominiums');
 const objCondo = new Condo('condo');
 const objTransactions = new Transactions('transactions');
 const objAccounts = new Accounts('accounts');
@@ -29,13 +29,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objImportFile.condominiumId === 0) || (objImportFile.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -48,7 +48,7 @@ async function main() {
       let transactionFile = true;
 
       const resident = 'A';
-      await objUser.loadUsersTable(objImportFile.condominiumId, resident, objImportFile.nineNine);
+      await objUsers.loadUsersTable(objImportFile.condominiumId, resident, objImportFile.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objImportFile.condominiumId, fixedCost);
       await objBankAccounts.loadBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine);
@@ -66,7 +66,7 @@ async function main() {
       amount = 0;
       const orderBy = 'condoId ASC';
       await objTransactions.loadTransactionsTable(orderBy, objImportFile.condominiumId, deleted, condoId, accountId, objImportFile.nineNine, amount, fromDate, toDate);
-      await objCondominium.loadCondominiumsTable();
+      await objCondominiums.loadCondominiumsTable();
 
       // Name of importfile
       importFileName();
@@ -94,7 +94,7 @@ async function events() {
       await updateOpeningClosingBalance();
 
       // Start transactions
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-showtransactions.html'
         : 'http://localhost/condo-showtransactions.html';
       window.location.href = URL;
@@ -601,10 +601,10 @@ function importFileName() {
   html += objImportFile.startTableBody();
 
   let importFileName = "Ugyldig filnavn";
-  const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominium.condominiumId);
+  const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominiums.condominiumId);
   if (rowNumberCondominium !== -1) {
 
-    importFileName = objCondominium.arrayCondominiums[rowNumberCondominium].importPath;
+    importFileName = objCondominiums.arrayCondominiums[rowNumberCondominium].importPath;
   }
   html += `
     <td class="center no-border"></td>

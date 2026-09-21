@@ -2,8 +2,8 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
-const objCondominium = new Condominium('condominium');
+const objUsers = new Users('users');
+const objCondominiums = new Condominiums('condominiums');
 const objAccounts = new Accounts('accounts');
 const objCondo = new Condo('condo');
 const objTransactions = new Transactions('transactions');
@@ -32,25 +32,25 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objProjects.condominiumId === 0) || (objProjects.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
     } else {
 
-       // Show menu
+      // Show menu
       let html = objProjects.showMenu(objProjects.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
-      await objCondominium.loadCondominiumsTable();
+      await objUsers.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
+      await objCondominiums.loadCondominiumsTable();
       await objCondo.loadCondoTable(objProjects.condominiumId, objProjects.nineNine);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
       const fixedCost = 'A';
@@ -65,7 +65,7 @@ async function main() {
 
       // Show project
       // Get row number for condominium
-      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objProjects.condominiumId);
+      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objProjects.condominiumId);
       if (rowNumberCondominium !== -1) {
 
         const projectId = Number(document.querySelector('.filterProjectId').value);
@@ -103,7 +103,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-       const projectId = Number(document.querySelector('.filterProjectId').value);
+      const projectId = Number(document.querySelector('.filterProjectId').value);
       await updateProjectsRow(projectId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
 
@@ -122,10 +122,10 @@ async function events() {
   // Delete projects row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
-      
+
       const projectId = Number(document.querySelector('.filterProjectId').value);
       await deleteProjectsRow(projectId);
-     };
+    };
   });
 
   // return to bank account transactions
@@ -144,7 +144,7 @@ async function events() {
         prefix = arrayPrefixes.find(p => className.startsWith(p));
         accountId = Number(className.slice(prefix.length));
       }
-      
+
       let URL = (objProjects.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
@@ -193,14 +193,14 @@ function showProject(projectId) {
 
   // name
   const name = objProjects.arrayProjects[rowNumberProject]?.name.trim() ?? '';
-  html += inputText('name', 'Navn', name, enableChanges, "Navn");
+  html += inputText('name', 'Navn', name, 45, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 
   // amount
   let amount = objProjects.arrayProjects[rowNumberProject]?.amount ?? '';
   amount = formatNumberToNorAmount(amount);
-  html += inputText('amount', 'Beløp', amount, enableChanges);
+  html += inputText('amount', 'Beløp', amount, 11, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 
@@ -244,20 +244,14 @@ async function updateProjectsRow(projectId) {
 
   projectId = Number(projectId);
 
-  /*
-  // account
-  let accountId = Number(document.querySelector('.accountId').value);
-  const validAccountId = validateIntervalNew('accountId', 'Ugyldig konto', true, accountId, 1, objProjects.nineNine);
-  */
-
   // name
   let name = document.querySelector('.name').value;
-  const validName = validateTextNew('name',  'Ugyldig tekst', true, name, 3, 45);
+  const validName = validateTextNew('name', 'Ugyldig tekst', name, 3, 45);
 
   // amount
   let amount = document.querySelector('.amount').value;
   amount = formatNorAmountToNumber(amount);
-  const validAmount = validateNumberNew('amount', '', 'Ugyldig beløp', true, amount, objProjects.minusNineNine, objProjects.nineNine);
+  const validAmount = validateIntervalNew('amount', 'Ugyldig beløp', amount, objProjects.minusNineNine, objProjects.nineNine);
 
   // Validate projects columns
   //if (validName && validAmount && accountId) {
@@ -297,19 +291,16 @@ async function updateProjectsRow(projectId) {
       // Insert a projects row
       await objProjects.insertProjectsTable(objProjects.condominiumId, objProjects.user, name, 0, amount);
       await objProjects.getHighestpProjectId(objProjects.condominiumId);
-      projectIdId = objProjects.arrayProjects[0].projectId;
+      projectId = objProjects.arrayProjects[0].projectId;
     }
 
     await objProjects.loadProjectsTable(objProjects.condominiumId);
+
 
     removeMessage();
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterProjectId', false);
     }
 
     // Show filter
@@ -320,38 +311,21 @@ async function updateProjectsRow(projectId) {
   }
 }
 
-/*
-// Delete a projects row
-async function deleteProjectsRow(projectId) {
-
-  // Check if projects row exist
-  rowNumberProjects = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
-  if (rowNumberProjects !== -1) {
-
-    // delete projects row
-    await objProjects.deleteProjectsTable(projectId, objProjects.user);
-  }
-}
-*/
-
 // Reset values
 function resetValues() {
 
   // Bank name
   document.querySelector('.name').value = '';
 
-  // account id
-  //document.querySelector('.accountId').value = 0;
-
   // amount
   document.querySelector('.amount').value = "";
 
   document.querySelector('.filterProjectId').value = 0;
 
-  // Filter
-  document.querySelector('.filterProjectId').disabled = true;
-
-  removeMessage();
+  // Buttons
+  if (enableChanges) {
+    disableButton('delete', true);
+  }
 }
 
 // Delete one projects row
@@ -364,7 +338,17 @@ async function deleteProjectsRow(projectId) {
     // delete projects row
     await objProjects.deleteProjectsTable(projectId, objProjects.user);
     await objProjects.getHighestAccountId(objProjects.condominiumId);
-    projectId = objProjects.arrayProjects[0].projectId;
+
+    //projectId = objProjects.arrayProjects[0].projectId;
+    // Check for empty array
+    if (Array.isArray(objProjects.arrayProjects) && objProjects.arrayProjects.length === 0) {
+
+      // Empty array
+      projectId = 0;
+    } else {
+
+      projectId = objProjects.arrayProjects[0].projectId;
+    }
   }
 
   await objProjects.loadProjectsTable(objProjects.condominiumId);

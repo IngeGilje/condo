@@ -2,7 +2,7 @@
 
 // Activate classes
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objNews = new News('news');
 
 const enableChanges = (objNews.securityLevel > 5);
@@ -16,13 +16,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objNews.condominiumId === 0) || (objNews.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -33,7 +33,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);
+      await objUsers.loadUsersTable(objNews.condominiumId, resident, objNews.nineNine);
       await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
 
       let newsId = 0;
@@ -82,17 +82,6 @@ async function events() {
 
       let newsId = Number(document.querySelector('.filterNewsId').value);
       await deleteNewsRow(newsId);
-
-      // Show last row in news tabel
-      await objNews.getHighestNewsId(objNews.condominiumId);
-      newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;
-      await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
-
-      // Show filter
-      showFilter(newsId);
-
-      // Show news
-      showNews(newsId);
     };
   });
 
@@ -165,11 +154,11 @@ function showNews(newsId) {
   newsDate = formatNumberToISODate(newsDate);
   html += inputDate('newsDate', 'Dato', newsDate, enableChanges);
   html += "<div></div>";
- //html += "<div></div>";
+  //html += "<div></div>";
 
   // userId
   const userId = objNews.arrayNews[rowNumberNews]?.userId ?? 0;
-  html += objUser.showSelectedUsersNew('userId', 'Forfatter', userId, '', '', true);
+  html += objUsers.showSelectedUsersNew('userId', 'Forfatter', userId, '', '', true);
   html += "<div></div>";
   //html += "<div></div>";
 
@@ -207,64 +196,28 @@ async function updateNewsRow(newsId) {
 
   if (newsId === '') newsId = -1
   newsId = Number(newsId);
-  const validNewsId = validateIntervalNew('newsId', 'Ugyldig Leilighet', true, newsId, 0, objNews.nineNine);
+  const validNewsId = validateIntervalNew('newsId', 'Ugyldig Leilighet',  newsId, 0, objNews.nineNine);
 
   // validate title
   const title = document.querySelector('.title').value.trim();
-  const validTitle = validateTextNew('title', 'Ugyldig Tittel', true, title, 3, 45);
+  const validTitle = validateTextNew('title', 'Ugyldig Tittel',  title, 3, 45);
 
   // validate date
   let date = document.querySelector('.newsDate').value;
   date = Number(objNews.formatDateToNumber(date));
-  const validDate = validateIntervalNew('date', 'Ugyldig Dato', true, date, 20200101, 20291231);
+  const validDate = validateIntervalNew('date', 'Ugyldig Dato', date, 20200101, 20291231);
 
   // validate userId  
   const userId = Number(document.querySelector('.userId').value);
-  const validUserId = validateIntervalNew('userId', 'Ugyldig forfatter', true, userId, 1, objNews.nineNine);
+  const validUserId = validateIntervalNew('userId', 'Ugyldig forfatter', userId, 1, objNews.nineNine);
 
   // clean content
   let content = document.querySelector('.content').value.trim();
   //content = content.replace(/<[^>]*>?/gm, "");
-  const validContent = validateTextNew('content', 'Ugyldig innhold', true, content, 3, 512);
+  const validContent = validateTextNew('content', 'Ugyldig innhold',  content, 3, 512);
 
   if (validTitle && validDate && validUserId && validContent) {
 
-    /*
-    document.querySelector('.showMessage').style.display = "none";
-
-    // Check if the newsId exist
-    const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
-    if (rowNumberNews !== -1) {
-
-      // update the news row
-      await objNews.updateNewsTable(newsId, objNews.user, date, userId, title, content, '');
-      await objNews.loadNewsTable(objNews.condominiumId, newsId);
-    } else {
-
-      // Insert the news row in news table
-      await objNews.insertNewsTable(objNews.condominiumId, objNews.user, date, userId, title, content, '');
-      await objNews.getHighestNewsId(objNews.condominiumId);
-      newsId = objNews.arrayNews.at(-1)?.newsId ?? 0;
-      await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
-    }
-
-    removeMessage();
-
-    if (enableChanges) {
-      disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterNewsId', false, 'white');
-    }
-
-    // Show filter
-    showFilter(newsId);
-
-    // Show news
-    showNews(newsId);
-  }
-  */
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the news row exist
@@ -287,10 +240,6 @@ async function updateNewsRow(newsId) {
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterNewsId', false);
     }
 
     // Show filter
@@ -322,28 +271,12 @@ function resetValues() {
   document.querySelector('.filterNewsId').disabled = true;
 
   // Buttons
-  removeMessage();
   if (enableChanges) {
+
     disableButton('delete', true);
-    disableButton('insert', true);
-    //disableButton('cancel', false);
-    disableButton('filterNewsId', true);
   }
 }
 
-/*
-// Delete news row
-async function deleteNewsRow(newsId) {
-
-  // Check if news number exist
-  const rowNumberNews = objNews.arrayNews.findIndex(news => news.newsId === newsId);
-  if (rowNumberNews !== -1) {
-
-    // delete a news row
-    await objNews.deleteNewsTable(newsId, objNews.user);
-  }
-}
-  */
 // Delete a news row
 async function deleteNewsRow(newsId) {
 
@@ -354,7 +287,17 @@ async function deleteNewsRow(newsId) {
     // delete news row
     await objNews.deleteNewsTable(newsId, objNews.user);
     await objNews.getHighestNewsId(objNews.condominiumId);
-    newsId = objNews.arrayNews[0].newsId;
+
+    //newsId = objNews.arrayNews[0].newsId;
+    // Check for empty array
+    if (Array.isArray(objNews.arrayNews) && objNews.arrayNews.length === 0) {
+
+      // Empty array
+      newsId = 0;
+    } else {
+
+      newsId = objNews.arrayNews[0].newsId;
+    }
   }
 
   await objNews.loadNewsTable(objNews.condominiumId);

@@ -2,7 +2,7 @@
 
 // Activate classes
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objAccounts = new Accounts('accounts');
 
 // Fixed values
@@ -26,13 +26,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objAccounts.condominiumId === 0) || (objAccounts.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -43,7 +43,7 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
+      await objUsers.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
 
@@ -162,22 +162,6 @@ function showAccount(accountId) {
 
   html += endGrid();
 
-  /*
-  // Buttons
-  if (enableChanges) {
-
-    // Start buttons
-    html += startButtons();
-
-    html += inputButton("update secondary", "Oppdater", "submit");
-    html += inputButton("insert secondary", "Ny", "button");
-    //html += inputButton("cancel secondary", "Angre", "reset");
-    html += inputButton("delete danger", "Slett", "button");
-
-    // End buttons
-    html += endButtons();
-  }
-  */
   // Buttons
   if (enableChanges) {
 
@@ -198,17 +182,6 @@ function showAccount(accountId) {
     html += endButtons();
   }
   document.querySelector('.showAccount').innerHTML = html;
-
-  /*
-  // Buttons
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    disableButton('cancel', true);
-    disableButton('filterAccountId', false);
-  }
-  */
 }
 
 function resetValues() {
@@ -223,13 +196,11 @@ function resetValues() {
   document.querySelector('.select-accounts-fixedCost').value = '';
 
   // Buttons
-  removeMessage();
   if (enableChanges) {
     disableButton('delete', true);
-    disableButton('insert', true);
-    disableButton('update', true);
-    //disableButton('cancel', false);
-    disableButton('filterFixedCost', true);
+
+    // Filter
+    //disableButton('filterFixedCost', true);
   }
 }
 
@@ -243,7 +214,16 @@ async function deleteAccountRow(accountId) {
     // delete account row
     await objAccounts.deleteAccountsTable(accountId, objAccounts.user);
     await objAccounts.getHighestAccountId(objAccounts.condominiumId);
-    accountId = objAccounts.arrayAccounts[0].accountId;
+
+    // Check for empty array
+    if (Array.isArray(objAccounts.arrayAccounts) && objAccounts.arrayAccounts === 0) {
+
+      // Empty array
+      accountId = 0;
+    } else {
+
+      accountId = objAccounts.arrayAccounts[0].accountId;
+    }
   }
 
   const fixedCost = 'A';
@@ -263,14 +243,14 @@ async function updateAccountsRow(accountId) {
 
   // name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig kontonavn', true, name, 3, 50);
+  const validName = validateTextNew('name', 'Ugyldig kontonavn',  name, 3, 50);
 
   className = `.fixedCost`;
   let fixedCost = document.querySelector(className).value;
   className = `fixedCost`;
   if (fixedCost === constFixedCost) fixedCost = 'Y';
   if (fixedCost === constVariableCost) fixedCost = 'N';
-  const validFixedCost = validateValuesNew(className, 'Ugyldig kostnadstype', true, fixedCost, 'Y', 'N');
+  const validFixedCost = validateValuesNew(className, 'Ugyldig kostnadstype',  fixedCost, 'Y', 'N');
 
   // Validate accounts columns
   if (validName && validFixedCost) {
@@ -288,7 +268,7 @@ async function updateAccountsRow(accountId) {
       // Insert a accounts row
       await objAccounts.insertAccountsTable(objAccounts.condominiumId, objAccounts.user, year, priceKilowattHour);
       await objAccounts.getHighestAccountId(objAccounts.condominiumId);
-      accountId = objAccounts.arrayAccounts[0].accountId;
+      accountId = objAccounts.arrayAccounts.at(-1)?.accountId ?? 0;
     }
 
     fixedCost = 'A';
@@ -298,10 +278,6 @@ async function updateAccountsRow(accountId) {
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterAccountId', false);
     }
 
     // Show filter

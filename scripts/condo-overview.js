@@ -2,7 +2,7 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objDues = new Dues('dues');
 const objAccounts = new Accounts('accounts');
 const objCondo = new Condo('condo');
@@ -22,14 +22,14 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     securityLevel = sessionStorage.getItem("securityLevel");
     if ((objOverview.condominiumId === 0) || (objOverview.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -54,7 +54,7 @@ async function main() {
       */
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objOverview.condominiumId, resident, objOverview.nineNine);
+      await objUsers.loadUsersTable(objOverview.condominiumId, resident, objOverview.nineNine);
       await objCondo.loadCondoTable(objOverview.condominiumId, objOverview.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objOverview.condominiumId, fixedCost);
@@ -62,9 +62,9 @@ async function main() {
       // Show filter
       // get current condo id
       let condoId = 0;
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objOverview.userId);
+      const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objOverview.userId);
       if (rowNumberUser !== -1) {
-        condoId = objUser.arrayUsers[rowNumberUser].condoId;
+        condoId = objUsers.arrayUsers[rowNumberUser].condoId;
       }
       showFilter(condoId);
 
@@ -109,8 +109,7 @@ async function events() {
 
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
-      //const validCondoId = validateIntervalNew('filterCondoId', columnWidths, 'Ugyldig Leilighet', true, condoId, 1, objOverview.nineNine);
-
+ 
       const accountId = objOverview.nineNine;
       const deleted = 'N';
 
@@ -397,9 +396,9 @@ function showHowMuchToPay() {
 
   // get current condo id
   let condoId = 0;
-  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objOverview.userId);
+  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objOverview.userId);
   if (rowNumberUser !== -1) {
-    condoId = objUser.arrayUsers[rowNumberUser].condoId;
+    condoId = objUsers.arrayUsers[rowNumberUser].condoId;
   }
   let openingBalance = objTransactions.getTransactions(objOverview.condominiumId, condoId, toDate);
   openingBalance += objDues.getDues(objOverview.condominiumId, condoId, toDate);

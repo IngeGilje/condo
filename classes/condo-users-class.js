@@ -1,5 +1,5 @@
 // class for user
-class User extends Condos {
+class Users extends Condos {
 
   // users information
   arrayUsers = Array;
@@ -132,12 +132,12 @@ class User extends Condos {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          action: 'highestAccountId',
+          action: 'highestUserId',
           condominiumId: condominiumId
         })
       });
       if (!response.ok) throw new Error("Network error (users)");
-      this.arrayAccounts = await response.json();
+      this.arrayUsers = await response.json();
     } catch (error) {
       console.log("Error selecting users:", error);
     }
@@ -502,7 +502,7 @@ class User extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        Ingen leiligheter
+        Ingen Brukere
       </option>`;
       if (!selectedValue) selectedValue = true;
     }
@@ -542,19 +542,19 @@ class User extends Condos {
   }
 
   // Check for unique email
-  checkUiqueEmail(email, object, style, message) {
+  checkUiqueEmail(email, message) {
 
     // Check if email exist in users table
     const rowNumberUser = this.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
     if (rowNumberUser !== -1) {
 
-      // email exist
+      // not unique email
       showMessageNew(message);
 
       return false;
     } else {
 
-      // email does not exist for any user
+      // unique email
       return true;
     }
   }

@@ -1,5 +1,5 @@
 
-class Condominium extends Condos {
+class Condominiums extends Condos {
 
   // Condominiums informations
   arrayCondominiums = Array;
@@ -377,7 +377,7 @@ class Condominium extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        Ingen konti
+        Ingen Sameier
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

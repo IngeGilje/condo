@@ -1,7 +1,7 @@
 // Login
 
 // Activate classes
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objLogIn = new Login('login');
 
 sessionStorage.clear();
@@ -11,11 +11,11 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     const condominiumId = objLogIn.nineNine;
     const resident = 'Y';
-    await objUser.loadUsersTable(condominiumId, resident, objLogIn.nineNine);
+    await objUsers.loadUsersTable(condominiumId, resident, objLogIn.nineNine);
 
     // Show login
     showLogin();
@@ -106,22 +106,22 @@ async function checkLogin() {
   const password = document.querySelector('.password').value;
 
   // get userId
-  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
+  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.email.toLowerCase() === email.toLowerCase());
   if (rowNumberUser !== -1) {
 
     // Check user and password 
     //password = "12345";
     //userId = 2;
-    if (await objUser.validateUser(Number(objUser.arrayUsers[rowNumberUser].userId), password)) {
+    if (await objUsers.validateUser(Number(objUsers.arrayUsers[rowNumberUser].userId), password)) {
 
       // The sessionStorage object stores data for only one session
-       window.sessionStorage.setItem("condominiumId", objUser.arrayUsers[rowNumberUser].condominiumId);
-      window.sessionStorage.setItem("user", objUser.arrayUsers[rowNumberUser].user);
-      window.sessionStorage.setItem("securityLevel", objUser.arrayUsers[rowNumberUser].securityLevel);
-      window.sessionStorage.setItem("userId", objUser.arrayUsers[rowNumberUser].userId);
+       window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[rowNumberUser].condominiumId);
+      window.sessionStorage.setItem("user", objUsers.arrayUsers[rowNumberUser].user);
+      window.sessionStorage.setItem("securityLevel", objUsers.arrayUsers[rowNumberUser].securityLevel);
+      window.sessionStorage.setItem("userId", objUsers.arrayUsers[rowNumberUser].userId);
 
       // Start to show news
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-shownews.html'
         : 'http://localhost/condo-shownews.html';
       window.location.href = URL;

@@ -26,7 +26,7 @@ class UserBankAccounts extends Condos {
     if (this.arrayUserBankAccounts.length > 0) {
       this.arrayUserBankAccounts.forEach((userBankAccount) => {
 
-        const userName = objUser.getUserNameById(userBankAccount.userId);
+        const userName = objUsers.getUserNameById(userBankAccount.userId);
         const accountName = objAccounts.getAccountNameById(userBankAccount.accountId);
         html += `
         <option 
@@ -272,7 +272,7 @@ class UserBankAccounts extends Condos {
     if (this.arrayUserBankAccounts.length > 0) {
       this.arrayUserBankAccounts.forEach((userBankAccount) => {
 
-        const userName = objUser.getUserNameById(userBankAccount.userId);
+        const userName = objUsers.getUserNameById(userBankAccount.userId);
         const accountName = objAccounts.getAccountNameById(userBankAccount.accountId);
         html += `
         <option 
@@ -293,7 +293,7 @@ class UserBankAccounts extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        Ingen konti
+        Ingen Brukerkonti
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

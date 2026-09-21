@@ -93,7 +93,7 @@ class Condo extends Condos {
         value="0" 
         selected
       >
-        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
+        Ingen Brukere
       </option>`;
       selectedValue = true;
     }
@@ -130,165 +130,6 @@ class Condo extends Condos {
     return html;
   }
 
-  /*
-  // Show condos
-  showSelectedCondosNew(label, className, condoId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div 
-      class="field field-position"
-    >
-    <label>
-      ${label}
-    </label>
-    <select 
-      class="${className} center one-line"
-      ${(enableChanges) ? '' : 'readonly'}
-    >`;
-
-    // Check if condos array is empty
-    if (this.arrayCondo.length > 0) {
-      this.arrayCondo.forEach((condo) => {
-
-        html += `
-        <option 
-          value=${condo.condoId}
-          ${(condo.condoId === condoId) ? 'selected' : ''}
-        >
-          &nbsp;&nbsp;${condo.name.trim()}&nbsp;&nbsp;
-        </option>`;
-
-        if (condo.condoId === condoId) selectedValue = true;
-      });
-    } else {
-
-      // No condos
-      html += `
-      <option 
-        value="0" 
-         ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;Ingen leiligheter&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayCondo.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayCondo.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    html += `
-      </select >
-    </div>`;
-
-    return html;
-  }
-  */
-
-  /*
-  // Show condos
-  showSelectedCondosNew(className,label,  condoId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <!-- start showSelectedCondosNew -->
-    <div 
-      class="field"
-    >
-      <label for="${className}">
-        ${label}
-      </label>
-      <select 
-        id="${className}"
-        class="${className}"
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-    `;
-
-    // Check if condos array is empty
-    if (this.arrayCondo.length > 0) {
-      this.arrayCondo.forEach((condo) => {
-
-        html += `
-        <option 
-          value=${condo.condoId}
-          ${(condo.condoId === condoId) ? 'selected' : ''}
-        >
-          ${condo.name.trim()}
-        </option>`;
-        if (condo.condoId === condoId) selectedValue = true;
-      });
-    } else {
-
-      // No condos
-      html += `
-      <option 
-        value="0" 
-         ${(selectedValue) ? '' : 'selected'} 
-      >
-        Ingen leiligheter
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arrayCondo.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        ${selectAll}
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arrayCondo.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        ${selectNone}
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    html += `
-      </select >
-    </div>
-    <!-- end showSelectedCondosNew -->
-    `;
-
-    return html;
-  }
-  */
   // Show condos
   showSelectedCondosNew(className, label, condoId, selectNone, selectAll, enableChanges) {
 
@@ -330,7 +171,7 @@ class Condo extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        Ingen konti
+        Ingen Leiligheter
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

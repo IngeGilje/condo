@@ -2,7 +2,7 @@
 
 // Activate classes
 const today = new Date();
-const objUser = new User('user');
+const objUsers = new Users('users');
 const objCondo = new Condo('condo');
 
 const enableChanges = (objCondo.securityLevel > 5);
@@ -16,13 +16,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objCondo.condominiumId === 0) || (objCondo.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -33,15 +33,15 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);
+      await objUsers.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);
       await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
 
       let condoId = 0;
       if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo.at(-1)?.condoId;
 
       // get condoId
-      const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === objCondo.userId);
-      if (rowNumberUser !== -1) condoId = objUser.arrayUsers[rowNumberUser].condoId;
+      const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objCondo.userId);
+      if (rowNumberUser !== -1) condoId = objUsers.arrayUsers[rowNumberUser].condoId;
 
       // Show filter
       showFilter(condoId);
@@ -171,17 +171,17 @@ function showCondo(condoId) {
 
   // condo
   const name = objCondo.arrayCondo[rowNumberCondo]?.name ?? '';
-  html += inputText('name', 'Leilighet', name, enableChanges);
+  html += inputText('name', 'Leilighet', name, 45, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 
   // street
   const street = objCondo.arrayCondo[rowNumberCondo]?.street ?? '';
-  html += inputText('street', 'Gate', street, enableChanges);
+  html += inputText('street', 'Gate', street, 45, enableChanges);
 
   // address 2
   const address2 = objCondo.arrayCondo[rowNumberCondo]?.address2 ?? '';
-  html += inputText('address2', 'Addresse 2', address2, enableChanges);
+  html += inputText('address2', 'Addresse 2', address2, 45, enableChanges);
   //html += "<div></div>";
 
   // post code
@@ -191,17 +191,17 @@ function showCondo(condoId) {
     : objCondo.arrayCondo[rowNumberCondo].postalCode;
   */
   const postalCode = objCondo.arrayCondo[rowNumberCondo]?.postalCode ?? '';
-  html += inputText('postalCode', 'PostNummer', postalCode, enableChanges);
+  html += inputText('postalCode', 'PostNummer', postalCode, 4, enableChanges);
 
   // City
   const city = objCondo.arrayCondo[rowNumberCondo]?.city ?? '';
-  html += inputText('city', 'Poststed', city, enableChanges);
+  html += inputText('city', 'Poststed', city, 45, enableChanges);
   //html += "<div></div>";
 
   // squareMeters
   let squareMeters = objCondo.arrayCondo[rowNumberCondo]?.squareMeters ?? '';
   squareMeters = formatNumberToNorAmount(squareMeters);
-  html += inputText('squareMeters', 'Areal i m2', squareMeters, enableChanges);
+  html += inputText('squareMeters', 'Areal i m2', squareMeters, 11, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 
@@ -229,31 +229,31 @@ async function updateCondoRow(condoId) {
 
   if (condoId === '') condoId = -1
   condoId = Number(condoId);
-  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet', true, condoId, 0, objCondo.nineNine);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet',  condoId, 0, objCondo.nineNine);
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig Kontonavn', showMessage = true, name, 3, 45);
+  const validName = validateTextNew('name', 'Ugyldig Kontonavn',  name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateTextNew('street', 'Ugyldig Gatenavn', true, street, 3, 45);
+  const validStreet = validateTextNew('street', 'Ugyldig Gatenavn',  street, 3, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = validateTextNew('address2', 'Ugyldig Adresse', true, address2, 0, 45);
+  const validAddress2 = validateTextNew('address2', 'Ugyldig Adresse', address2, 0, 45);
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
-  const validPostalCode = validateIntervalNew('postalCode', 'Ugyldig postnummer', true, Number(postalCode), 1, 9999);
+  const validPostalCode = validateIntervalNew('postalCode', 'Ugyldig postnummer', Number(postalCode), 1, 9999);
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = validateTextNew('city', 'Ugyldig Poststed', true, city, 0, 45);
+  const validCity = validateTextNew('city', 'Ugyldig Poststed', city, 0, 45);
 
   // validate squaremeters
-  const squareMeters = Number(formatNorAmountToNumber(document.querySelector('.squareMeters').value));
-  const validSquareMeters = validateIntervalNew('squareMeters', 'Ugyldig Areal', true, squareMeters, 1, 9999);
+  let squareMeters = Number(formatNorAmountToNumber(document.querySelector('.squareMeters').value));
+  const validSquareMeters = validateIntervalNew('squareMeters', 'Ugyldig Areal', squareMeters, 1,objCondo.nineNine);
 
   if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 
@@ -279,10 +279,6 @@ async function updateCondoRow(condoId) {
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterCondoId', false);
     }
 
     // Show filter
@@ -318,12 +314,8 @@ function resetValues() {
   document.querySelector('.filterCondoId').disabled = true;
 
   // Buttons
-  removeMessage();
   if (enableChanges) {
     disableButton('delete', true);
-    disableButton('insert', true);
-    //disableButton('cancel', false);
-    disableButton('filterCondoId', true);
   }
 }
 
@@ -354,7 +346,17 @@ async function deleteCondosRow(condoId) {
     // delete condos row
     await objCondos.deleteCondosTable(condoId, objCondos.user);
     await objCondos.getHighestCondoId(objCondos.condominiumId);
-    condoId = objCondos.arrayCondos[0].condoId;
+
+    //condoId = objCondos.arrayCondos[0].condoId;
+    // Check for empty array
+    if (Array.isArray(objCondo.arrayCondos) && objCondo.arrayCondos.length === 0) {
+
+      // Empty array
+      condoId = 0;
+    } else {
+
+      condoId = objCondo.arrayCondos[0].condoId;
+    }
   }
 
   await objCondos.loadCondosTable(objCondos.condominiumId);

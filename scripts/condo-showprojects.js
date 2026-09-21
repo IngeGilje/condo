@@ -2,8 +2,8 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
-const objCondominium = new Condominium('condominium');
+const objUsers = new Users('users');
+const objCondominiums = new Condominiums('condominiums');
 const objAccounts = new Accounts('accounts');
 const objCondo = new Condo('condo');
 const objTransactions = new Transactions('transactions');
@@ -33,13 +33,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objProjects.condominiumId === 0) || (objProjects.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -50,8 +50,8 @@ async function main() {
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUser.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
-      await objCondominium.loadCondominiumsTable();
+      await objUsers.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
+      await objCondominiums.loadCondominiumsTable();
       await objCondo.loadCondoTable(objProjects.condominiumId, objProjects.nineNine);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
       const fixedCost = 'A';
@@ -69,7 +69,7 @@ async function main() {
 
       // Show project
       // Get row number for condominium
-      const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objProjects.condominiumId);
+      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objProjects.condominiumId);
       if (rowNumberCondominium !== -1) {
 
         const orderBy = 'date DESC';
@@ -167,7 +167,7 @@ function showFilter(projectId, amount, condoId) {
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true)
 
   // Amount
-  html += inputText('filterAmount', 'Beløp', amount, true);
+  html += inputText('filterAmount', 'Beløp', amount, 11,true);
 
   // End table filter
   html += endTableFilter();

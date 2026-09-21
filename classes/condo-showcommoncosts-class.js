@@ -331,7 +331,7 @@ class CommonCosts extends Condos {
         value="0" 
          ${(selectedValue) ? '' : 'selected'} 
       >
-        Ingen konti
+        Ingen Felleskostnader
       </option>`;
       if (!selectedValue) selectedValue = true;
     }

@@ -2,8 +2,8 @@
 
 // Activate objects
 const today = new Date();
-const objUser = new User('user');
-const objCondominium = new Condominium('condominium');
+const objUsers = new Users('users');
+const objCondominiums = new Condominiums('condominiums');
 const objBudgets = new Budgets('budgets');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
@@ -30,13 +30,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objCommonCosts.condominiumId === 0) || (objCommonCosts.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -46,23 +46,9 @@ async function main() {
       let html = objCommonCosts.showMenu(objCommonCosts.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objCommonCosts.showHorizontalMenu("filter-frame", objCommonCosts.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show due menu
-      html = objCommonCosts.showHorizontalMenu("filter-frame", objCommonCosts.arrayMenuDue);
-      document.querySelector('.menuDue').innerHTML = html;
-      objCommonCosts.markActivatedApplication(objCommonCosts.arrayMenuDue, applicationName);
-      */
-
       const resident = 'Y';
-      await objUser.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
-      await objCondominium.loadCondominiumsTable();
+      await objUsers.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
+      await objCondominiums.loadCondominiumsTable();
       await objCondo.loadCondoTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
@@ -203,7 +189,7 @@ function showCommonCost(year) {
   let commonCostSquareMeter = 0;
   if (rowNumberCommonCost !== -1) commonCostSquareMeter = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].commonCostSquareMeter;
   commonCostSquareMeter = formatNumberToNorAmount(commonCostSquareMeter);
-  html += inputText('commonCostSquareMeter', 'Felleskostnad/m2', commonCostSquareMeter, enableChanges);
+  html += inputText('commonCostSquareMeter', 'Felleskostnad/m2', commonCostSquareMeter, 11, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 
@@ -211,14 +197,14 @@ function showCommonCost(year) {
   let fixedCostCondo = 0;
   if (rowNumberCommonCost !== -1) fixedCostCondo = objCommonCosts.arrayCommonCosts[rowNumberCommonCost].fixedCostCondo;
   fixedCostCondo = formatNumberToNorAmount(fixedCostCondo);
-  html += inputText('fixedCostCondo', 'Fast kostnad', fixedCostCondo, enableChanges, 'Fast Kostnad');
+  html += inputText('fixedCostCondo', 'Fast kostnad', fixedCostCondo, 11, enableChanges);
 
   // calculated fixed cost
   // month
   let month = 0;
-  const rowNumberCondominium = objCondominium.arrayCondominiums.findIndex((condominium) => condominium.condominiumId === objCommonCosts.condominiumId);
+  const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex((condominium) => condominium.condominiumId === objCommonCosts.condominiumId);
   if (rowNumberCondominium !== -1) {
-    month = objCondominium.arrayCondominiums[rowNumberCondominium].fromMonth;
+    month = objCondominiums.arrayCondominiums[rowNumberCondominium].fromMonth;
   }
   if (month < 10) month = Number("0" + month);
 
@@ -234,7 +220,7 @@ function showCommonCost(year) {
   calculatedFixedCost = calculatedFixedCost / 12;
   calculatedFixedCost = calculatedFixedCost / 7;
   calculatedFixedCost = formatNumberToNorAmount(-calculatedFixedCost);
-  html += inputText('calculatedFixedCost', 'Beregnet Fast Kostnad', calculatedFixedCost, enableChanges, 'Fast Kostnad');
+  html += inputText('calculatedFixedCost', 'Beregnet Fast Kostnad', calculatedFixedCost, 11, enableChanges);
   //html += "<div></div>";
 
   html += endGrid();
@@ -316,7 +302,17 @@ async function deleteCommonCostsRow(year) {
     const commonCostId = objCommonCosts.arrayCommonCosts[rowNumberCommonCosts]?.commonCostId ?? 0;
     await objCommonCosts.deleteCommonCostsTable(commonCostId, objCommonCosts.user);
     await objCommonCosts.getHighestCommonCostId(objCommonCosts.condominiumId);
-    commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
+
+    //commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
+    // Check for empty array
+    if (Array.isArray(objCommonCosts.arrayCommonCosts) && objCommonCosts.arrayCommonCosts === 0) {
+
+      // Empty array
+      commonCostId = 0;
+    } else {
+
+      commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
+    }
   }
 
   await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
@@ -341,19 +337,19 @@ async function updateCommonCostsRow(year) {
     : objCommonCosts.arrayCommonCosts[rowNumberCommonCost].commonCostId;
   */
   const commonCostId = objCommonCosts.arrayCommonCosts[rowNumberCommonCost]?.commonCostId ?? 0;
-  
+
   // year
-  const validYear = validateIntervalNew('filterYear', 'Ugyldig årstall', true, year, 2020, 2030);
+  const validYear = validateIntervalNew('filterYear', 'Ugyldig årstall', year, 2020, 2030);
 
   // common cost per squaremeter 
   let commonCostSquareMeter = document.querySelector('.commonCostSquareMeter').value;
   commonCostSquareMeter = formatNorAmountToNumber(commonCostSquareMeter);
-  const validCommonCostSquareMeter = validateIntervalNew('commonCostSquareMeter', 'Ugyldig Felleskost/m2', true, commonCostSquareMeter, 0, objCommonCosts.nineNine);
+  const validCommonCostSquareMeter = validateIntervalNew('commonCostSquareMeter', 'Ugyldig Felleskost/m2', commonCostSquareMeter, 0, objCommonCosts.nineNine);
 
   // fix common cost per condo
   let fixedCostCondo = document.querySelector('.fixedCostCondo').value;
   fixedCostCondo = formatNorAmountToNumber(fixedCostCondo);
-  const validFixedCostCondo = validateIntervalNew('fixedCostCondo', 'Ugyldig fast kost per leilighet', true, fixedCostCondo, 0, objCommonCosts.nineNine);
+  const validFixedCostCondo = validateIntervalNew('fixedCostCondo', 'Ugyldig fast kost per leilighet', fixedCostCondo, 0, objCommonCosts.nineNine);
 
   // Validate commoncosts columns
   if (validYear && validCommonCostSquareMeter && validFixedCostCondo) {
@@ -371,7 +367,7 @@ async function updateCommonCostsRow(year) {
       await objCommonCosts.insertCommonCostsTable(objCommonCosts.condominiumId, objCommonCosts.user, year, commonCostSquareMeter, fixedCostCondo);
       await objCommonCosts.getHighestCommonCostId(objCommonCosts.condominiumId);
       commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
-    }
+     }
 
     await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
 
@@ -379,10 +375,6 @@ async function updateCommonCostsRow(year) {
 
     if (enableChanges) {
       disableButton('delete', false);
-      disableButton('insert', false);
-      disableButton('update', false);
-      //disableButton('cancel', true);
-      disableButton('filterYear', false);
     }
 
     // Show filter

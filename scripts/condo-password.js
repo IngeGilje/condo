@@ -3,8 +3,8 @@
 // Activate objects
 const today = new Date();
 const objCondo = new Condo('condo');
-const objCondominium = new Condominium('condominium');
-const objUser = new User('user');
+const objCondominiums = new Condominiums('condominiums');
+const objUsers = new Users('users');
 const objPassword = new Password('password');
 
 const enableChanges = (objPassword.securityLevel > 5);
@@ -18,13 +18,13 @@ main();
 async function main() {
 
   // Check if server is running
-  if (await objUser.checkServer()) {
+  if (await objUsers.checkServer()) {
 
     // Validate LogIn
     if ((objPassword.condominiumId === 0) || (objPassword.user === null)) {
 
       // LogIn is not valid
-      const URL = (objUser.serverStatus === 1)
+      const URL = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/condo-login.html'
         : 'http://localhost/condo-login.html';
       window.location.href = URL;
@@ -39,9 +39,9 @@ async function main() {
       // Verify whether the user has permission to change all passwords
       // or only their own password
       (enableChanges)
-        ? await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine)
-        : await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.userId);
-      await objCondominium.loadCondominiumsTable(objPassword.condominiumId);
+        ? await objUsers.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine)
+        : await objUsers.loadUsersTable(objPassword.condominiumId, resident, objPassword.userId);
+      await objCondominiums.loadCondominiumsTable(objPassword.condominiumId);
       await objCondo.loadCondoTable(objPassword.condominiumId, objPassword.nineNine);
 
       // Show header
@@ -85,7 +85,7 @@ async function events() {
 
       const resident = "A";
       //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
+      await objUsers.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
 
       const userId = Number(document.querySelector('.filterUserId').value);
 
@@ -107,7 +107,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objUser.serverStatus === 1)
+      let url = (objUsers.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -126,7 +126,7 @@ function showFilter(userId) {
   let html = startGridFilter("Tømmekalender");
 
   // Show users
-  html += objUser.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
+  html += objUsers.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
 
   // End filter
   html += endGridFilter();
@@ -138,7 +138,7 @@ function showFilter(userId) {
 function showUser(userId) {
 
   // row number user
-  const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
 
   let html = startGrid('Konto');
 
@@ -146,23 +146,17 @@ function showUser(userId) {
   /*
   const password = (rowNumberUser === -1)
     ? ''
-    : objUser.arrayUsers[rowNumberUser].password.trim();
+    : objUsers.arrayUsers[rowNumberUser].password.trim();
   */
-  const password = objUser.arrayUsers[rowNumberUser]?.password ?? '';
-  html += inputText('password','Passord',  password, enableChanges, "Passord");
+  const password = objUsers.arrayUsers[rowNumberUser]?.password ?? '';
+  html += inputText('password', 'Passord', password, 45, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 
   // security level
-  /*
-  const securityLevel = (rowNumberUser === -1)
-    ? ''
-    : objUser.arrayUsers[rowNumberUser].securityLevel;
-  */
-  const securityLevel = objUser.arrayUsers[rowNumberUser]?.securityLevel ?? 0;
+  const securityLevel = objUsers.arrayUsers[rowNumberUser]?.securityLevel ?? 0;
   html += showSelectedNumbers('securityLevel', 'Sikkerhetsnivå', 1, 9, 1, enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   html += endGrid();
 
@@ -189,85 +183,35 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1
   userId = Number(userId);
-  const validUserId = validateIntervalNew('userId', 'Ugyldig Bruker', true, userId, -1, objUser.nineNine);
+  const validUserId = validateIntervalNew('userId', 'Ugyldig Bruker', userId, -1, objUsers.nineNine);
 
   // securityLevel
   const securityLevel = Number(document.querySelector('.securityLevel').value);
-  const validSecurityLevel = validateIntervalNew('securityLevel', 'Ugyldig sikkerhetsnivå', true, securityLevel, 1, 9);
+  const validSecurityLevel = validateIntervalNew('securityLevel', 'Ugyldig sikkerhetsnivå',  securityLevel, 1, 9);
 
   // validate password
   let password = document.querySelector('.password').value;
-  /*
-  let password = (password === '')
-    ? objUser.arrayUsers[rowNumberUser].password
-    : document.querySelector('.password').value;
-  */
   const validPassword = ((password.length >= 5) || (password === ''));
-
 
   if (validUserId && validSecurityLevel && validPassword) {
 
-    /*
     document.querySelector('.showMessage').style.display = "none";
 
     // Check if the userId exist
-    const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
-    if (rowNumberUser !== -1) {
-
-      // update the users row
-      await objUser.updateUserPassword(objPassword.user, userId, securityLevel, password);
-
-      // Verify whether the user has permission to change all passwords
-      // or only personal password
-      const resident = 'A';
-
-       if (enableChanges) await objUser.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
-    }
-
-    // Show filter
-    //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-    showFilter(userId);
-    showUser(userId);
-
-    document.querySelector('.filterUserId').disabled = false;
-  } else {
-
-    showMessageNew('Ugyldig passord.');
-  }
-  */
-
-    document.querySelector('.showMessage').style.display = "none";
-
-    // Check if the userId exist
-    const rowNumberUser = objUser.arrayUsers.findIndex(user => user.userId === userId);
+    const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
     if (rowNumberUser !== -1) {
 
       // update a accounts row
       await objAccounts.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
-    } /*else {
+      await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
-      // Insert a accounts row
-      await objAccount.insertAccountsTable(objAccount.condominiumId, objAccount.user, year, priceKilowattHour);
-      await objAccount.getHighestAccountId(objAccount.condominiumId);
-      accountId = objAccount.arrayAccounts[0].accountId;
+      // Show filter
+      showFilter(accountId);
+
+      // Show account
+      showAccount(accountId);
     }
-    */
-    await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
 
     removeMessage();
-
-    if (enableChanges) {
-      disableButton('update', false);
-      //disableButton('delete', false);
-      //disableButton('insert', false);
-      //disableButton('cancel', true);
-      //disableButton('filterAccountId', false);
-    }
-
-    // Show filter
-    showFilter(accountId);
-
-    // Show account
-    showAccount(accountId);
   }
 }
