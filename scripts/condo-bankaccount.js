@@ -36,7 +36,7 @@ if ((objBankAccounts.condominiumId === 0) || (objBankAccounts.user === null)) {
       const resident = 'Y';
       await objUsers.loadUsersTable(objBankAccounts.condominiumId, resident, objBankAccounts.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objBankAccounts.loadBankAccountsTable(objBankAccounts.condominiumId, objBankAccounts.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objBankAccounts.condominiumId);
 
       // Show filter
       // Get last id in last object in condominiums array
@@ -103,20 +103,6 @@ async function events() {
     };
   });
 
-  /*
-  // Cancel
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('cancel')) {
-
-      // Show filter
-      const bankAccountId = objCondominiums.arrayCondominiums.at(-1)?.condominiumId ?? 0;
-      await objBankAccounts.loadBankAccountsTable(objBankAccounts.condominiumId, bankAccountId);
-      showFilter(bankAccountId);
-      showBankAccount(bankAccountId);
-    };
-  });
-  */
-
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -153,7 +139,7 @@ async function deleteBankAccount() {
 function showFilter(bankAccountId) {
 
   // Start filter
-  let html = startGridFilter("Sameie");
+  let html = startGridFilter("Bankkonto");
 
   // Show bankaccounts
   html += objBankAccounts.showSelectedBankAccountsNew('filterBankAccountId', 'Bankkonto', bankAccountId, '', '', true);
@@ -170,16 +156,10 @@ function showBankAccount(bankAccountId) {
   // row number bank account
   const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankaccount => bankaccount.bankAccountId === bankAccountId);
 
-  let html = startGrid('Sameie');
+  let html = startGrid('Bankkonto');
 
   // name
-  /*
-  const name = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name.trim();
-  */
   const name = objBankAccounts.arrayBankAccounts[rowNumberBankAccount]?.name ?? '';
-  //html += showTextNew('Navn', 'name', name, enableChanges, "Bankkonto navn");
   html += inputText('name', 'Navn', name, 45, enableChanges);
   html += "<div></div>";
 
@@ -199,29 +179,19 @@ function showBankAccount(bankAccountId) {
     ? ''
     : objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate.trim();
   */
-  let openingBalanceDate = objBankAccounts.arrayBankAccounts[rowNumberBankAccount]?.openingBalanceDate.trim() ?? '';
+  let openingBalanceDate = objBankAccounts.arrayBankAccounts[rowNumberBankAccount]?.openingBalanceDate ?? '';
+
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   openingBalanceDate = formatNumberToISODate(openingBalanceDate);
   html += inputDate('openingBalanceDate', 'Dato', openingBalanceDate, enableChanges);
 
   // opening balance
-  /*
-  let openingBalance = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance.trim();
-  */
-  let openingBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount]?.openingBalance.trim() ?? '';
+  let openingBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount]?.openingBalance ?? '';
   openingBalance = formatNumberToNorAmount(openingBalance);
   //html += showTextNew('Inngående saldo', 'openingBalance', openingBalance, enableChanges, "Inngående saldo");
   html += inputText('openingBalance', 'Inngående saldo', openingBalance, 11, enableChanges)
 
   // closing balance date
-
-  /*
-  let closingBalanceDate = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate;
-  */
   let closingBalanceDate = objBankAccounts.arrayBankAccounts[rowNumberBankAccount]?.closingBalanceDate ?? '';
   // Format date from yyyymmdd -> yyyy-mm-dd (ISO format)
   closingBalanceDate = formatNumberToISODate(closingBalanceDate);
@@ -229,11 +199,6 @@ function showBankAccount(bankAccountId) {
   html += inputDate('closingBalanceDate', 'Dato', closingBalanceDate, enableChanges);
 
   // closing balance
-  /*
-  let closingBalance = (rowNumberBankAccount === -1)
-    ? ''
-    : objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance;
-  */
   let closingBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount]?.closingBalance ?? '';
   closingBalance = formatNumberToNorAmount(closingBalance);
 
@@ -264,16 +229,16 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig navn',  name, 3, 45)
+  const validName = validateTextNew('name', 'Ugyldig navn', name, 3, 45)
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;
-  const validBankAccount = validateBankAccountNew('bankAccount', bankAccount,  'Ugyldig bankkonto');
+  const validBankAccount = validateBankAccountNew('bankAccount', bankAccount, 'Ugyldig bankkonto');
 
   // Opening balance date
   let openingBalanceDate = document.querySelector('.openingBalanceDate').value;
   openingBalanceDate = formatISODateToNumber(openingBalanceDate);
-  const validOpeningBalanceDate = validateIntervalNew('openingBalanceDate', 'Ugyldig Dato inngående saldo',  openingBalanceDate, 20200101, 20291231);
+  const validOpeningBalanceDate = validateIntervalNew('openingBalanceDate', 'Ugyldig Dato inngående saldo', openingBalanceDate, 20200101, 20291231);
 
   // Opening balance
   let openingBalance = document.querySelector('.openingBalance').value;
@@ -283,7 +248,7 @@ async function updateBankAccountRow(bankAccountId) {
   // Closing balance date
   let closingBalanceDate = document.querySelector('.closingBalanceDate').value;
   closingBalanceDate = formatISODateToNumber(closingBalanceDate)
-  const validClosingBalanceDate = validateIntervalNew('closingBalanceDate', 'Ugyldig Dato utgående saldo',  closingBalanceDate, 20200101, 20291231);
+  const validClosingBalanceDate = validateIntervalNew('closingBalanceDate', 'Ugyldig dato for utgående saldo', closingBalanceDate, 20200101, 20291231);
 
   // Closing balance
   let closingBalance = document.querySelector('.closingBalance').value;
@@ -309,7 +274,7 @@ async function updateBankAccountRow(bankAccountId) {
       bankAccountId = objBankAccounts.arrayBankAccounts[0].bankAccountId;
     }
 
-    await objBankAccounts.loadBankAccountsTable(objBankAccounts.condominiumId, objBankAccounts.nineNine);
+    await objBankAccounts.loadBankAccountsTable(objBankAccounts.condominiumId);
 
     removeMessage();
 
@@ -356,40 +321,20 @@ function resetValues() {
   }
 }
 
-/*
-// Delete one bankaccounts row
-async function deleteBankAccountRow(bankAccountId) {
-
-  // Check if bankaccount row exist
-  rowNumberBankAccounts = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
-  if (rowNumberBankAccounts !== -1) {
-
-    // delete bankaccount row
-    await objBankAccounts.deleteBankAccountsTable(bankAccountId, objBankAccounts.user);
-  }
-*/
-
 // Delete one bankAccounts row
-async function deleteBankAccountRow(bankAccountId) {
+async function deleteBankAccountsRow(bankAccountId) {
 
   // Check if bankaccount row exist
-  const rowNumberBankAccounts = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.accountId === accountId);
+  const rowNumberBankAccounts = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccountId === bankAccountId);
   if (rowNumberBankAccounts !== -1) {
 
     // delete bankaccounts row
-    await objBankAccounts.deleteAccountsTable(accountId, objBankAccounts.user);
-    await objBankAccounts.getHighestAccountId(objBankAccounts.condominiumId);
+    await objBankAccounts.deleteBankAccountsTable(bankAccountId, objBankAccounts.user);
+    await objBankAccounts.getHighestBankAccountId(objBankAccounts.condominiumId);
 
-    //bankAccountId = objBankAccounts.arrayBankAccounts[0].bankAccountId;
-    // Check for empty array
-    if (Array.isArray(objBankAccounts.arrayBankAccounts) && objBankAccounts.arrayBankAccounts === 0) {
-
-      // Empty array
-      bankAccountId = 0;
-    } else {
-
-      bankAccountId = objBankAccounts.arrayBankAccounts[0].bankAccountId;
-    }
+    // Check for empty array after deleting
+    bankAccountId = 0;
+    if (objBankAccounts.arrayBankAccounts.length > 0) bankAccountId = objBankAccounts.arrayBankAccounts[0].bankAccountId;
   }
 
   await objBankAccounts.loadBankAccountsTable(objBankAccounts.condominiumId);
@@ -398,5 +343,5 @@ async function deleteBankAccountRow(bankAccountId) {
   showFilter(bankAccountId);
 
   // Show bankAccount
-  showAccount(bankAccountId);
+  showBankAccount(bankAccountId);
 }

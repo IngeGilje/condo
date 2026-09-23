@@ -728,17 +728,19 @@ async function main() {
 
         case 'select': {
           const condominiumId = Number(req.body.condominiumId);
-          const bankAccountId = Number(req.body.bankAccountId);
+          //const bankAccountId = Number(req.body.bankAccountId);
 
           try {
 
             let SQLquery = `
             SELECT * FROM bankaccounts
             WHERE condominiumId = ${condominiumId}
-            AND deleted <> 'Y'`;
-            if (bankAccountId !== nineNine) SQLquery += `AND bankAccountId = ${bankAccountId} `;
-            SQLquery += `
-            ORDER BY bankAccountId;`;
+            AND deleted <> 'Y'
+            ORDER BY bankAccountId;
+            `;
+            //if (bankAccountId !== nineNine) SQLquery += `AND bankAccountId = ${bankAccountId} `;
+            //SQLquery += `
+            //ORDER BY bankAccountId;`;
 
             console.log('SQLquery :', SQLquery);
             const [rows] = await mySqlDB.query(SQLquery);
@@ -1524,13 +1526,13 @@ async function main() {
           try {
 
             const condominiumId = Number(req.body.condominiumId);
-            const condoId = Number(req.body.condoId);
+            //const condoId = Number(req.body.condoId);
 
             let SQLquery = `
             SELECT * FROM condo
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'`;
-            if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
+            //if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
             SQLquery += ` ORDER BY condoId;`;
 
             console.log('SQLquery: ', SQLquery);

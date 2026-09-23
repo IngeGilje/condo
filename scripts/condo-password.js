@@ -42,10 +42,7 @@ async function main() {
         ? await objUsers.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine)
         : await objUsers.loadUsersTable(objPassword.condominiumId, resident, objPassword.userId);
       await objCondominiums.loadCondominiumsTable(objPassword.condominiumId);
-      await objCondo.loadCondoTable(objPassword.condominiumId, objPassword.nineNine);
-
-      // Show header
-      //showHeader();
+      await objCondo.loadCondoTable(objPassword.condominiumId);
 
       // Show filter
       showFilter(objPassword.userId);
@@ -155,7 +152,7 @@ function showUser(userId) {
 
   // security level
   const securityLevel = objUsers.arrayUsers[rowNumberUser]?.securityLevel ?? 0;
-  html += showSelectedNumbers('securityLevel', 'Sikkerhetsnivå', 1, 9, 1, enableChanges);
+  html += showSelectedNumbers('securityLevel', 'Sikkerhetsnivå', securityLevel,1, 9, enableChanges);
   html += "<div></div>";
 
   html += endGrid();

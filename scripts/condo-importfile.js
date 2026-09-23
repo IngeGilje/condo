@@ -13,7 +13,7 @@ const objTransactions = new Transactions('transactions');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
 const objDues = new Dues('dues');
-const objSupplier = new Supplier('supplier');
+const objSuppliers = new Suppliers('suppliers');
 const objImportFile = new ImportFile('importfile');
 
 const enableChanges = (objImportFile.securityLevel > 5);
@@ -51,10 +51,10 @@ async function main() {
       await objUsers.loadUsersTable(objImportFile.condominiumId, resident, objImportFile.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objImportFile.condominiumId, fixedCost);
-      await objBankAccounts.loadBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objImportFile.condominiumId);
       await objUserBankAccounts.loadUserBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine, objImportFile.nineNine);
-      await objCondo.loadCondoTable(objImportFile.condominiumId, objImportFile.nineNine);
-      await objSupplier.loadSuppliersTable(objImportFile.condominiumId);
+      await objCondo.loadCondoTable(objImportFile.condominiumId);
+      await objSuppliers.loadSuppliersTable(objImportFile.condominiumId);
 
       const deleted = 'A';
       const accountId = objImportFile.nineNine;
@@ -357,7 +357,7 @@ async function updateOpeningClosingBalance() {
             const closingBalance = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalance);
             const closingBalanceDate = Number(objBankAccounts.arrayBankAccounts[rowNumberBankAccount].closingBalanceDate);
             await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccounts.loadBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine);
+            await objBankAccounts.loadBankAccountsTable(objImportFile.condominiumId);
           }
         }
       }
@@ -378,7 +378,7 @@ async function updateOpeningClosingBalance() {
             const openingBalance = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalance;
             const openingBalanceDate = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].openingBalanceDate;
             await objBankAccounts.updateBankAccountsTable(bankAccountId, user, bankAccount, name, openingBalance, openingBalanceDate, closingBalance, closingBalanceDate);
-            await objBankAccounts.loadBankAccountsTable(objImportFile.condominiumId, objImportFile.nineNine);
+            await objBankAccounts.loadBankAccountsTable(objImportFile.condominiumId);
           };
         };
       };

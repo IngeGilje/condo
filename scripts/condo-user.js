@@ -169,7 +169,7 @@ function showUser(userId) {
   // Activ user?
   let resident = objUsers.arrayUsers[rowNumberUser]?.resident ?? '';
   resident = (resident === 'Y') ? 'Ja' : 'Nei';
-  html += inputValues('Beboer', 'resident', enableChanges, resident, 'Nei', 'Ja');
+  html += inputValues('resident', 'Beboer', enableChanges, resident, 'Nei', 'Ja');
 
   // first Name
   const firstName = objUsers.arrayUsers[rowNumberUser]?.firstName ?? '';
@@ -185,7 +185,7 @@ function showUser(userId) {
 
   // security level
   const securityLevel = objUsers.arrayUsers[rowNumberUser]?.securityLevel ?? 0;
-  html += showSelectedNumbers('securityLevel', 'Sikkerhetsnivå', 1, 9, Number(securityLevel), enableChanges);
+  html += showSelectedNumbers('securityLevel', 'Sikkerhetsnivå', Number(securityLevel), 1, 9, enableChanges);
 
 
   // password 
@@ -218,7 +218,7 @@ async function updateUserRow(userId) {
   // UserId
   if (userId === '') userId = -1;
   userId = Number(userId);
-  const validUserId = validateIntervalNew('userId', 'Ugyldig Bruker',  userId, -1, objUsers.nineNine);
+  const validUserId = validateIntervalNew('userId', 'Ugyldig Bruker', userId, -1, objUsers.nineNine);
 
   // resident
   let resident = document.querySelector('.resident').value;
@@ -256,15 +256,15 @@ async function updateUserRow(userId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet',  condoId, 0, objUsers.nineNine);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet', condoId, 0, objUsers.nineNine);
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
-  const validFirstName = validateTextNew('firstName', 'Ugyldig fornavn',  firstName, 3, 45);
+  const validFirstName = validateTextNew('firstName', 'Ugyldig fornavn', firstName, 3, 45);
 
   // validate lastName
   const lastName = document.querySelector('.lastName').value;
-  const validLastName = validateTextNew('lastName', 'Ugyldig etternavn',  lastName, 3, 45);
+  const validLastName = validateTextNew('lastName', 'Ugyldig etternavn', lastName, 3, 45);
 
   // validate phone
   const phone = document.querySelector('.phone').value;
@@ -296,7 +296,7 @@ async function updateUserRow(userId) {
       await objUsers.insertUsersTable(resident, condominiumId, objUsers.user, email, condoId, firstName, lastName, phone, securityLevel, password);
       await objUsers.getHighestUserId(condominiumId);
       userId = objUsers.arrayUsers.at[-1].userId;
-     }
+    }
 
     await objUsers.loadUsersTable(condominiumId, resident, objUsers.nineNine);
 
@@ -328,14 +328,8 @@ async function deleteUsersRow(userId) {
     await objUsers.getHighestUserId(condominiumId);
 
     // Check for empty array
-    if (Array.isArray(objUsers.arrayUsers) && objUsers.arrayUsers.length === 0) {
-
-      // Empty array
-      userId = 0;
-    } else {
-
-      userId = objUsers.arrayUsers[0].userId;
-    }
+    userId = 0;
+    if (objUsers.arrayUsers.length > 0) userId = objUsers.arrayUsers[0].userId;
   }
 
   const resident = (enableChanges)
@@ -395,5 +389,5 @@ async function loadAllTables(condominiumId) {
 
   await objUsers.loadUsersTable(condominiumId, resident, objUsers.nineNine);
   await objCondominiums.loadCondominiumsTable(condominiumId);
-  await objCondo.loadCondoTable(condominiumId, objUsers.nineNine);
+  await objCondo.loadCondoTable(condominiumId);
 };

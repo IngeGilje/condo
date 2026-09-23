@@ -94,26 +94,6 @@ async function events() {
     };
   });
 
-  /*
-  // Cancel
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('cancel')) {
-
-      // Reload news table
-      await objNews.loadNewsTable(objNews.condominiumId, objNews.nineNine);
-
-      let newsId = Number(document.querySelector('.filterNewsId').value);
-      if (newsId === 0) newsId = objNews.arrayNews[0].newsId;
-
-      // Show filter
-      showFilter(newsId);
-
-      // show news
-      showNews(newsId);
-    };
-  });
-  */
-
   // Log out
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
@@ -158,9 +138,8 @@ function showNews(newsId) {
 
   // userId
   const userId = objNews.arrayNews[rowNumberNews]?.userId ?? 0;
-  html += objUsers.showSelectedUsersNew('userId', 'Forfatter', userId, '', '', true);
+  html += objUsers.showSelectedUsersNew('userId', 'Forfatter', userId, 'Velg Forfatter', '', true);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // title
   const title = objNews.arrayNews[rowNumberNews]?.title ?? '';
@@ -196,11 +175,11 @@ async function updateNewsRow(newsId) {
 
   if (newsId === '') newsId = -1
   newsId = Number(newsId);
-  const validNewsId = validateIntervalNew('newsId', 'Ugyldig Leilighet',  newsId, 0, objNews.nineNine);
+  const validNewsId = validateIntervalNew('newsId', 'Ugyldig Leilighet', newsId, 0, objNews.nineNine);
 
   // validate title
   const title = document.querySelector('.title').value.trim();
-  const validTitle = validateTextNew('title', 'Ugyldig Tittel',  title, 3, 45);
+  const validTitle = validateTextNew('title', 'Ugyldig Tittel', title, 3, 45);
 
   // validate date
   let date = document.querySelector('.newsDate').value;
@@ -214,7 +193,7 @@ async function updateNewsRow(newsId) {
   // clean content
   let content = document.querySelector('.content').value.trim();
   //content = content.replace(/<[^>]*>?/gm, "");
-  const validContent = validateTextNew('content', 'Ugyldig innhold',  content, 3, 512);
+  const validContent = validateTextNew('content', 'Ugyldig innhold', content, 3, 512);
 
   if (validTitle && validDate && validUserId && validContent) {
 
@@ -288,16 +267,9 @@ async function deleteNewsRow(newsId) {
     await objNews.deleteNewsTable(newsId, objNews.user);
     await objNews.getHighestNewsId(objNews.condominiumId);
 
-    //newsId = objNews.arrayNews[0].newsId;
     // Check for empty array
-    if (Array.isArray(objNews.arrayNews) && objNews.arrayNews.length === 0) {
-
-      // Empty array
-      newsId = 0;
-    } else {
-
-      newsId = objNews.arrayNews[0].newsId;
-    }
+    newsId = 0;
+    if (objNews.arrayNews.length > 0) newsId = objNews.arrayNews[0].newsId;
   }
 
   await objNews.loadNewsTable(objNews.condominiumId);

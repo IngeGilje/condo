@@ -6,8 +6,8 @@ const objUsers = new Users('users');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
-const objSupplier = new Supplier('supplier');
-const objCondominium = new Condominium('scondominium');
+const objSuppliers = new Suppliers('suppliers');
+const objCondominiums = new Condominiums('scondominiums');
 const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objTransactions = new Transactions('transactions');
 
@@ -55,11 +55,11 @@ async function main() {
       await objUsers.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objTransactions.condominiumId, fixedCost);
-      await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId);
       await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
-      await objCondo.loadCondoTable(objTransactions.condominiumId, objTransactions.nineNine);
+      await objCondo.loadCondoTable(objTransactions.condominiumId);
       await objCondominiums.loadCondominiumsTable();
-      await objSupplier.loadSuppliersTable(objTransactions.condominiumId);
+      await objSuppliers.loadSuppliersTable(objTransactions.condominiumId);
 
       if ((paramTransactionId === 0)
         && (paramCondoId === 0)

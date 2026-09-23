@@ -45,10 +45,10 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objAnnualAccount.condominiumId, resident, objAnnualAccount.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objCondo.loadCondoTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
+      await objCondo.loadCondoTable(objAnnualAccount.condominiumId);
       await objCommonCosts.loadCommonCostsTable(objAnnualAccount.condominiumId);
       await objBudgets.loadBudgetsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine, objAnnualAccount.nineNine);
-      await objBankAccounts.loadBankAccountsTable(objAnnualAccount.condominiumId, objAnnualAccount.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objAnnualAccount.condominiumId);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objAnnualAccount.condominiumId, fixedCost);
 
@@ -216,7 +216,7 @@ function showFilter(accountYear, fromDate, toDate) {
   let html = startTableFilter('filter-frame');
 
   // Show year
-  html += showSelectedNumbers('filterAccountYear', 'Regnskapsår', 2020, 2030, accountYear, true);
+  html += showSelectedNumbers('filterAccountYear', 'Regnskapsår', accountYear,2020, 2030,  true);
 
   // From date
   //html += inputDate('filterFromDate', 'Fra Dato', fromDate, true);
@@ -427,20 +427,6 @@ function showIncomeNextYear() {
 
 // Show Bank Deposit for next year
 function showBankDeposit() {
-
-  /*
-  // start table
-  let html = objAnnualAccount.initializeTable(columnWidths);
-
-  // Table header (<tr></tr>)
-  let nextBudgetYear = Number(document.querySelector('.filterAccountYear').value) + 1;
-
-
-  html += objAnnualAccount.showTableHeader('', '', `Budsjett ${nextBudgetYear}`, '', '');
-
-
-  html += objAnnualAccount.showTableHeader('', '', 'Konto', 'Dato', 'Budsjett');
-  */
 
   // Start table
   let budgetYear = Number(document.querySelector('.filterAccountYear').value) + 1;

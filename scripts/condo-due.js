@@ -44,7 +44,7 @@ async function main() {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
-      await objCondo.loadCondoTable(objDues.condominiumId, objDues.nineNine);
+      await objCondo.loadCondoTable(objDues.condominiumId);
       await objAccounts.loadAccountsTable(objDues.condominiumId, objAccounts.nineNine);
       await objProjects.loadProjectsTable(objDues.condominiumId);
 
@@ -117,7 +117,7 @@ async function events() {
 
       const dueId = Number(document.querySelector('.dueId').value);
 
-      deleteDue(dueId);
+      deleteDuesRow(dueId);
     };
   });
 
@@ -154,7 +154,6 @@ function showFilter(dueId) {
     : 0;
   */
   let fromDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
-  //html += showSelectedNumbers('filterFromdate', 'Fra dato', 2019, 2029, Number(year), enableChanges);
   fromDate = formatNumberToISODate(fromDate);
   html += inputDate('filterFromdate', 'Fra Dato', fromDate, true);
 
@@ -322,7 +321,7 @@ async function updateDueRow(dueId) {
 
   // condoId
   const condoId = Number(document.querySelector('.condoId').value);
-  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet',  condoId, 0, objDues.nineNine);
+  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet', condoId, 0, objDues.nineNine);
 
   // accountId
   const accountId = Number(document.querySelector('.accountId').value);
@@ -330,7 +329,7 @@ async function updateDueRow(dueId) {
 
   // projectId
   const projectId = Number(document.querySelector('.projectId').value);
-  const validProjectId = validateIntervalNew('projectId', 'Ugyldig Prosjekt',  projectId, 0, objDues.nineNine);
+  const validProjectId = validateIntervalNew('projectId', 'Ugyldig Prosjekt', projectId, 0, objDues.nineNine);
 
   // kilowattHour
   let kilowattHour = document.querySelector('.kilowattHour').value;
@@ -340,7 +339,7 @@ async function updateDueRow(dueId) {
   // amount
   let amount = document.querySelector('.amount').value;
   amount = formatNorAmountToNumber(amount);
-  const validAmount = validateIntervalNew('amount', 'Ugyldig beløp',  amount, 0, objDues.nineNine);
+  const validAmount = validateIntervalNew('amount', 'Ugyldig beløp', amount, 0, objDues.nineNine);
 
   // text
   const text = document.querySelector('.text').value;
@@ -394,14 +393,8 @@ async function deleteDuesRow(dueId) {
 
     //dueId = objDues.arrayDues[0].dueId;
     // Check for empty array
-    if (Array.isArray(objDues.arrayDues) && objDues.arrayDues.length === 0) {
-
-      // Empty array
-      dueId = 0;
-    } else {
-
-      dueId = objDues.arrayDues[0].dueId;
-    }
+    dueId = 0;
+    if (objDues.arrayDues.length > 0) dueId = objDues.arrayDues[0].dueId;
   }
 
   await objDues.loadDuesTable(objDues.condominiumId);

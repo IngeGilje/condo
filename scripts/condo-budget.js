@@ -53,16 +53,9 @@ async function main() {
 
         await objBudgets.getHighestBudgetId(objBudgets.condominiumId);
 
-        //budgetId = objBudgets.arrayBudgets[0].budgetId;
         // Check for empty array
-        if (Array.isArray(objBudgets.arrayBudgets) && objBudgets.arrayBudgets === 0) {
-
-          // Empty array
-          budgetId = 0;
-        } else {
-
-          budgetId = objBudgets.arrayBudgets[0].budgetId;
-        }
+        budgetId = 0;
+        if (objBudgets.arrayBudgets.length > 0) budgetId = objBudgets.arrayBudgets[0].budgetId;
       }
 
       await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
@@ -173,7 +166,7 @@ function showBudget(budgetId) {
 
   // Year
   const year = objBudgets.arrayBudgets[rowNumberBudget]?.year ?? "";
-  html += showSelectedNumbers('year', 'År', 2020, 2030, year, enableChanges);
+  html += showSelectedNumbers('year', 'År', year, 2020, 2030, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 
@@ -275,17 +268,11 @@ async function deleteBudgetsRow(budgetId) {
     // delete budget row
     await objBudgets.deleteBudgetsTable(budgetId, objBudgets.user);
     await objBudgets.getHighestBudgetId(objBudgets.condominiumId);
-    
+
     //budgetId = objBudgets.arrayBudgets[0].budgetId;
     // Check for empty array
-    if (Array.isArray(objBudgets.arrayBudgets) && objBudgets.arrayBudgets === 0) {
-
-      // Empty array
-      budgetId = 0;
-    } else {
-
-      budgetId = objBudgets.arrayBudgets[0].budgetId;
-    }
+    budgetId = 0;
+    if (objBudgets.arrayBudgets.length > 0) budgetId = objBudgets.arrayBudgets[0].budgetId;
   }
 
   await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);

@@ -184,16 +184,9 @@ async function deleteUserBankAccountsRow(userBankAccountId) {
     await objUserBankAccounts.deleteUserBankAccountsTable(userBankAccountId, objUserBankAccounts.user);
     await objUserBankAccounts.getHighestUserBankAccountId(objUserBankAccounts.condominiumId);
 
-    //userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[0].userBankAccountId;
     // Check for empty array
-    if (Array.isArray(objUserBankAccounts.arrayUserBankAccounts) && objUserBankAccounts.arrayUserBankAccounts.length === 0) {
-
-      // Empty array
-      userBankAccountId = 0;
-    } else {
-
-      userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[0].userId;
-    }
+    userBankAccountId = 0;
+    if (objUserBankAccounts.arrayUserBankAccounts.length > 0) userBankAccountId = objUserBankAccounts.arrayUserBankAccounts[0].userBankAccountId;
   }
 
   await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId);
@@ -219,12 +212,12 @@ async function updateUserBankAccountsRow(userBankAccountId) {
   // account Id
   className = 'accountId';
   let accountId = Number(document.querySelector(`.${className}`).value);
-  const validAccountId = validateIntervalNew(className, 'Ugyldig konto', accountId, 1, objUserBankAccounts.nineNine);
+  const validAccountId = validateIntervalNew(className, 'Ugyldig Konto', accountId, 1, objUserBankAccounts.nineNine);
 
   // bank account
   className = 'bankAccount';
   const bankAccount = document.querySelector(`.${className}`).value;
-  const validBankAccount = validateBankAccountNew(className,  bankAccount, 'Ugyldig bankkonto');
+  const validBankAccount = validateBankAccountNew(className, bankAccount, 'Ugyldig bankkonto');
 
   if (validUserId && validAccountId && validBankAccount) {
 

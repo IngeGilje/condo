@@ -51,7 +51,7 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objCondo.loadCondoTable(objProjects.condominiumId, objProjects.nineNine);
+      await objCondo.loadCondoTable(objProjects.condominiumId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objProjects.condominiumId, fixedCost);
@@ -181,7 +181,7 @@ function showProject(projectId) {
   // row number project
   const rowNumberProject = objProjects.arrayProjects.findIndex(project => project.projectId === projectId);
 
-  let html = startGrid('Konto');
+  let html = startGrid('Prosjekt');
 
   /*
   // account
@@ -290,7 +290,7 @@ async function updateProjectsRow(projectId) {
 
       // Insert a projects row
       await objProjects.insertProjectsTable(objProjects.condominiumId, objProjects.user, name, 0, amount);
-      await objProjects.getHighestpProjectId(objProjects.condominiumId);
+      await objProjects.getHighestProjectId(objProjects.condominiumId);
       projectId = objProjects.arrayProjects[0].projectId;
     }
 
@@ -337,18 +337,12 @@ async function deleteProjectsRow(projectId) {
 
     // delete projects row
     await objProjects.deleteProjectsTable(projectId, objProjects.user);
-    await objProjects.getHighestAccountId(objProjects.condominiumId);
+    await objProjects.getHighestProjectId(objProjects.condominiumId);
 
     //projectId = objProjects.arrayProjects[0].projectId;
     // Check for empty array
-    if (Array.isArray(objProjects.arrayProjects) && objProjects.arrayProjects.length === 0) {
-
-      // Empty array
-      projectId = 0;
-    } else {
-
-      projectId = objProjects.arrayProjects[0].projectId;
-    }
+    projectId = 0;
+    if (objProjects.arrayProjects.length > 0) projectId = objProjects.arrayProjects[0].projectId;
   }
 
   await objProjects.loadProjectsTable(objProjects.condominiumId);
@@ -357,5 +351,5 @@ async function deleteProjectsRow(projectId) {
   showFilter(projectId);
 
   // Show project
-  showAccount(projectId);
+  showProject(projectId);
 }

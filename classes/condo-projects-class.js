@@ -501,6 +501,7 @@ class Projects extends Condos {
     }
   }
 
+  /*
   // Get the highest ID in the table
   async getHighestProjectId(projectId) {
     const URL = (this.serverStatus === 1)
@@ -524,4 +525,5 @@ class Projects extends Condos {
       console.log("Error selecting projects:", error);
     }
   }
+  */
 }

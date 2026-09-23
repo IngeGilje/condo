@@ -221,7 +221,7 @@ function showFilter() {
 
   // Show years
   const year = today.getFullYear();
-  html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
+  html += showSelectedNumbers('filterYear', 'År', year,2020, 2030,  true);
 
   // End filter
   html += endTableFilter();

@@ -210,10 +210,10 @@ class Condo extends Condos {
     return html;
   }
 
-  // get condos
-  async loadCondoTable(condominiumId, condoId) {
+  // get condo
+  async loadCondoTable(condominiumId) {
 
-    // Get condos
+    // Get condo
     const URL = (this.serverStatus === 1)
       ? '/api/condo'
       : 'http://localhost:3000/condo';
@@ -226,8 +226,7 @@ class Condo extends Condos {
         },
         body: JSON.stringify({
           action: 'select',
-          condominiumId: condominiumId,
-          condoId: condoId
+          condominiumId: condominiumId
         })
       });
       if (!response.ok) throw new Error("Network error (condo)");

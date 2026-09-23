@@ -6,8 +6,8 @@ const objUsers = new Users('users');
 const objCondo = new Condo('condo');
 const objAccounts = new Accounts('accounts');
 const objBankAccounts = new BankAccounts('bankaccounts');
-const objSupplier = new Supplier('supplier');
-const objCondominium = new Condominium('scondominium');
+const objSuppliers = new Suppliers('suppliers');
+const objCondominiums = new Condominiums('scondominiums');
 const objUserBankAccounts = new UserBankAccounts('userbankaccounts');
 const objProjects = new Projects('projects');
 const objTransactions = new Transactions('transactions');
@@ -54,11 +54,11 @@ async function main() {
       await objUsers.loadUsersTable(objTransactions.condominiumId, resident, objTransactions.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objTransactions.condominiumId, fixedCost);
-      await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objTransactions.condominiumId);
       await objUserBankAccounts.loadUserBankAccountsTable(objTransactions.condominiumId, objTransactions.nineNine, objTransactions.nineNine);
-      await objCondo.loadCondoTable(objTransactions.condominiumId, objTransactions.nineNine);
+      await objCondo.loadCondoTable(objTransactions.condominiumId);
       await objCondominiums.loadCondominiumsTable();
-      await objSupplier.loadSuppliersTable(objTransactions.condominiumId);
+      await objSuppliers.loadSuppliersTable(objTransactions.condominiumId);
       await objProjects.loadProjectsTable(objTransactions.condominiumId);
       const orderBy = 'date DESC, income DESC';
       await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
@@ -151,22 +151,7 @@ async function events() {
       //if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
       let transactionId = Number(document.querySelector(".filterTransactionId").value);
-      await deleteTransactionRow(transactionId);
-
-      /*
-      const amount = 0;
-      const deleted = 'N';
-      condoId = Number(document.querySelector('.condoId').value);
-      accountId = Number(document.querySelector('.accountId').value);
-      let fromDate = document.querySelector('.transactionDate').value;
-      fromDate = Number(objTransactions.formatDateToNumber(fromDate));
-      let toDate = document.querySelector('.transactionDate').value;
-      toDate = Number(objTransactions.formatDateToNumber(toDate));
-      const orderBy = 'date DESC, income DESC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, accountId, objTransactions.nineNine, amount, 20190101, toDate);
-
-      showTransaction(transactionId);
-      */
+      await deleteTransactionsRow(transactionId);
     };
   });
 
@@ -339,7 +324,6 @@ function showTransaction(transactionId) {
 
     html += inputButton("update secondary", "Oppdater", "submit");
     html += inputButton("insert secondary", "Ny", "button");
-    //html += inputButton("cancel secondary", "Angre", "reset");
 
     // check for return back to an application
     if (paramBackApplication) {
@@ -365,31 +349,31 @@ async function updateTransactionRow(transactionId) {
   let transactionDate = document.querySelector(className).value;
   transactionDate = formatISODateToNumber(transactionDate);
   className = "transactionDate";
-  const validDate = validateIntervalNew(className, 'Ugyldig Dato',  transactionDate, 20150101, 20991231);
+  const validDate = validateIntervalNew(className, 'Ugyldig Dato', transactionDate, 20150101, 20991231);
 
   // accountId
   className = '.accountId';
   let accountId = Number(document.querySelector(className).value);
   className = 'accountId';
-  const validAccountId = validateIntervalNew(className, 'Ugyldig konto',  accountId, 1, objTransactions.nineNine);
+  const validAccountId = validateIntervalNew(className, 'Ugyldig konto', accountId, 1, objTransactions.nineNine);
 
   // condoId
   className = `.condoId`;
   let condoId = Number(document.querySelector(className).value);
   className = `condoId`;
-  const validCondoId = validateIntervalNew(className, 'Ugyldig Leilighet',  condoId, 0, objTransactions.nineNine);
+  const validCondoId = validateIntervalNew(className, 'Ugyldig Leilighet', condoId, 0, objTransactions.nineNine);
 
   // projectId 
   className = `.projectId`;
   let projectId = Number(document.querySelector(className).value);
   className = `projectId`;
-  const validProjectId = validateIntervalNew(className, 'Ugyldig prosjekt',  projectId, 0, objTransactions.nineNine);
+  const validProjectId = validateIntervalNew(className, 'Ugyldig prosjekt', projectId, 0, objTransactions.nineNine);
 
   // income
   className = `.income`;
   let income = Number(formatNorAmountToNumber(document.querySelector(className).value));
   className = `income`;
-  const validIncome = validateIntervalNew(className, 'Ugyldig inntekt',  income, objTransactions.minusNineNine, objTransactions.nineNine);
+  const validIncome = validateIntervalNew(className, 'Ugyldig inntekt', income, objTransactions.minusNineNine, objTransactions.nineNine);
 
   // payment
   className = `.payment`;
@@ -407,7 +391,7 @@ async function updateTransactionRow(transactionId) {
   className = `.text`;
   const text = document.querySelector(className).value;
   className = `text`;
-  const validText = validateTextNew(className, 'Ugyldig tekst',  text, 3, 255);
+  const validText = validateTextNew(className, 'Ugyldig tekst', text, 3, 255);
 
   // Validate transactions columns
   if (validDate && validCondoId && validAccountId && validProjectId
@@ -496,17 +480,12 @@ async function deleteTransactionsRow(transactionId) {
 
     //transactionId = objTransactions.arrayTransactions[0].transactionId;
     // Check for empty array
-      if (Array.isArray(objTransactions.arrayTransactions) && objTransactions.arrayTransactions.length === 0) {
-
-        // Empty array
-        transactionId = 0;
-      } else {
-
-       transactionId = objTransactions.arrayTransactions[0].transactionId;
-      }
+    transactionId = 0;
+    if (objTransactions.arrayTransactions.length > 0) transactionId = objTransactions.arrayTransactions[0].transactionId;
   }
 
-  await objTransactions.loadTransactionsTable(objTransactions.condominiumId);
+  const orderBy = 'date DESC, income DESC';
+  await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, 'N', objTransactions.nineNine, objTransactions.nineNine, objTransactions.nineNine, 0, 20190101, 20991231);
 
   // Show filter
   showFilter(transactionId);

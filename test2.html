@@ -15,77 +15,33 @@
 
   <main class="page">
 
-    <!-- show vertical menu -->
-    <div class="grid-layout">
 
-      <!-- start startGridFilter -->
-      <aside class="card filter-card">
-        <h1 class="card-title">
-          Filter
-        </h1>
-        <div class="grid grid-voucher">
-          <div class="field">
-            <label>
-              Bruker
-            </label>
-            <!-- end startGridFilter -->
-            <div></div>
-            <!-- start showSelectedCondominiumsNew -->
-            <div class="field">
-              <label for="filterCondominiumsId">
-                Sameie
-              </label>
-              <select id="filterCondominiumsId" class="filterCondominiumsId">
-                <option value=2 selected>
-                  Hinna Park B3-08
-                </option>
-                <option value=36>
-                  Sameie Test
-                </option>
-              </select>
-            </div>
-            <!-- end showSelectedCondominiumsNew -->
-             <br>
-            <!-- start showSelectedUsersNew -->
-            <div class="field">
-              <label for="apartment">
-                Bruker
-              </label>
-              <select id="apartment" class="filterUserId">
-                <option value=9>
-                  Åse
-                </option>
-                <option value=10>
-                  Birgit
-                </option>
-                <option value=3>
-                  Fabiana
-                </option>
-                <option value=2 selected>
-                  Inge
-                </option>
-                <option value=11>
-                  Johan
-                </option>
-                <option value=5>
-                  Kristine
-                </option>
-                <option value=7>
-                  Ladan
-                </option>
-                <option value=8>
-                  Oskar
-                </option>
-              </select>
-            </div>
-            <!-- end showSelectedUsersNew -->
-            <br>
-            <!-- start endGridFilter -->
-          </div>
+    <!-- start startGridFilter -->
+    <aside class="card filter-card">
+      <h2 class="card-title">
+        Filter
+      </h2>
+      <div class="grid grid-voucher">
+        <div class="field">
+          <label>
+            Nyheter
+          </label>
+          <!-- end startGridFilter -->
+
+          <!-- start showSelectedNewsNew -->
+          <select class="filterNewsId">
+            <option value="0" selected>
+              Ingen Nyheter
+            </option>
+          </select>
+          <!-- end showSelectedNewsNew -->
+
+          <!-- start endGridFilter -->
         </div>
-      </aside>
-      <!-- end endGridFilter -->
-    </div>
+      </div>
+    </aside>
+    <!-- end endGridFilter -->
+
   </main>
 </body>
 

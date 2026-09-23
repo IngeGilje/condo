@@ -49,10 +49,10 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objCondo.loadCondoTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
+      await objCondo.loadCondoTable(objCommonCosts.condominiumId);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
-      await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId);
       const orderBy = 'date DESC, income DESC';
       await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, 'N', objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, 20200101, 20291231, false);
 
@@ -170,7 +170,7 @@ function showFilter(year) {
   let html = startGridFilter("Felleskostnader");
 
   // Show year
-  html += showSelectedNumbers('filterYear', "Regnskapsår", 2020, 2030, year, true)
+  html += showSelectedNumbers('filterYear', "Regnskapsår", year, 2020, 2030, true)
 
   // End filter
   html += endGridFilter();
@@ -299,31 +299,24 @@ async function deleteCommonCostsRow(year) {
   if (rowNumberCommonCosts !== -1) {
 
     // delete commoncosts row
-    const commonCostId = objCommonCosts.arrayCommonCosts[rowNumberCommonCosts]?.commonCostId ?? 0;
+    let commonCostId = objCommonCosts.arrayCommonCosts[rowNumberCommonCosts]?.commonCostId ?? 0;
     await objCommonCosts.deleteCommonCostsTable(commonCostId, objCommonCosts.user);
     await objCommonCosts.getHighestCommonCostId(objCommonCosts.condominiumId);
 
     //commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
     // Check for empty array
-    if (Array.isArray(objCommonCosts.arrayCommonCosts) && objCommonCosts.arrayCommonCosts === 0) {
-
-      // Empty array
-      commonCostId = 0;
-    } else {
-
-      commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
-    }
+    commonCostId = 0;
+    if (objCommonCosts.arrayCommonCosts.length > 0) commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
   }
 
   await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
 
   // Show filter
-  showFilter(accountId);
+  showFilter(year);
 
   // Show account
-  showCommonCost(accountId);
+  showCommonCost(year);
 }
-
 
 // Update a commoncosts table row
 async function updateCommonCostsRow(year) {
@@ -367,7 +360,7 @@ async function updateCommonCostsRow(year) {
       await objCommonCosts.insertCommonCostsTable(objCommonCosts.condominiumId, objCommonCosts.user, year, commonCostSquareMeter, fixedCostCondo);
       await objCommonCosts.getHighestCommonCostId(objCommonCosts.condominiumId);
       commonCostId = objCommonCosts.arrayCommonCosts[0].commonCostId;
-     }
+    }
 
     await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
 

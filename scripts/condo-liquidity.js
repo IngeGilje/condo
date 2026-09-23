@@ -37,7 +37,7 @@ async function main() {
       let html = objLiquidity.showMenu(objLiquidity.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      await objBankAccounts.loadBankAccountsTable(objLiquidity.condominiumId, objLiquidity.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objLiquidity.condominiumId);
 
       const orderBy = 'condoId ASC';
       const fromDate = 20200101;
@@ -84,17 +84,7 @@ function showFilter() {
 
   // Show years
   const year = today.getFullYear();
-  html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
-
-  /*
-  // End filter
-  html += "</div>";
-
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame", "Filter");
-  */
+  html += showSelectedNumbers('filterYear', 'År', year, 2020, 2030, true);
 
   // End filter
   html += endGridFilter();

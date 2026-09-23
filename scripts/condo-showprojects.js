@@ -52,7 +52,7 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objCondo.loadCondoTable(objProjects.condominiumId, objProjects.nineNine);
+      await objCondo.loadCondoTable(objProjects.condominiumId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objProjects.condominiumId, fixedCost);

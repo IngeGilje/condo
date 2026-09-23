@@ -39,7 +39,7 @@ async function main() {
       await objUsers.loadUsersTable(objCondominiums.condominiumId, resident, objCondominiums.nineNine);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objCondominiums.condominiumId, fixedCost);
-      await objBankAccounts.loadBankAccountsTable(objCondominiums.condominiumId, objCondominiums.nineNine);
+      await objBankAccounts.loadBankAccountsTable(objCondominiums.condominiumId);
 
       // Show filter
       showFilter(objCondominiums.condominiumId);
@@ -266,11 +266,11 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateTextNew('street', 'Ugyldig Addresse',  street, 3, 45);
+  const validStreet = validateTextNew('street', 'Ugyldig Addresse', street, 3, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = validateTextNew('address2', 'Ugyldig addresse',  address2, 0, 45);
+  const validAddress2 = validateTextNew('address2', 'Ugyldig addresse', address2, 0, 45);
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
@@ -299,7 +299,7 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate commonCostAccountId
   const commonCostAccountId = Number(document.querySelector('.commonCostAccountId').value);
-  const validCommonCostAccountId = validateIntervalNew('commonCostAccountId', 'Ugyldig Konto',  commonCostAccountId, 0, objCondominiums.nineNine);
+  const validCommonCostAccountId = validateIntervalNew('commonCostAccountId', 'Ugyldig Konto', commonCostAccountId, 0, objCondominiums.nineNine);
 
   // validate organizationNumber
   const organizationNumber = Number(document.querySelector('.organizationNumber').value);
@@ -311,11 +311,11 @@ async function updateCondominiumRow(condominiumId) {
 
   // Valid from month
   const fromMonth = document.querySelector('.fromMonth').value;
-   const validFromMonth = validateIntervalNew('fromMonth', 'Ugyldig måned', fromMonth, 1, 12);
+  const validFromMonth = validateIntervalNew('fromMonth', 'Ugyldig måned', fromMonth, 1, 12);
 
   // Valid to month
   const toMonth = document.querySelector('.toMonth').value;
-  const validToMonth = validateIntervalNew('toMonth', 'Ugyldig måned',  toMonth, 1, 12);
+  const validToMonth = validateIntervalNew('toMonth', 'Ugyldig måned', toMonth, 1, 12);
 
   if (validName && validStreet && validAddress2 && validPostalCode && validCity && validPhone && validEmail
     && validIncomeRemoteHeatingAccountId && validPaymentRemoteHeatingAccountId
@@ -384,14 +384,8 @@ async function deleteCondominiumsRow(condominiumId) {
 
     //condominiumId = objCondominiums.arrayCondominiums[0].condominiumId;
     // Check for empty array
-    if (Array.isArray(objCondominiums.arrayCondominiums) && objCondominiums.arrayCondominiums.length === 0) {
-
-      // Empty array
-      condominiumId = 0;
-    } else {
-
-      condominiumId = objCondominiums.arrayCondominiums[0].condominiumId;
-    }
+    condominiumId = 0;
+    if (objCondominiums.arrayCondominiums.length > 0) condominiumId = objCondominiums.arrayCondominiums[0].condominiumId;
   }
 
   await objCondominiums.loadCondominiumsTable(objCondominiums.condominiumId);

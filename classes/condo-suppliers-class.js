@@ -1,5 +1,5 @@
 // class for supplier
-class Supplier extends Condos {
+class Suppliers extends Condos {
 
   // supplier information
   arraySuppliers;
@@ -73,85 +73,6 @@ class Supplier extends Condos {
 
     return html;
   }
-
-  /*
-  // Show selected suppliers
-  showSelectedSuppliersNew(className, label,  supplierId, selectNone, selectAll, enableChanges) {
-
-    let selectedValue = false;
-
-    let html = `
-    <div class="field status" style="width:250px">
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-    // Check if suppliers array is empty
-    if (this.arraySuppliers.length > 0) {
-      this.arraySuppliers.forEach((supplier) => {
-
-        html += `
-        <option 
-          value=${supplier.supplierId}
-          ${(supplier.supplierId === supplierId) ? 'selected' : ''}
-        >
-          &nbsp;&nbsp;${supplier.name.trim()}&nbsp;&nbsp;
-        </option>`;
-
-        if (supplier.supplierId === supplierId) selectedValue = true;
-      });
-    } else {
-
-      // No suppliers
-      html += `
-      <option 
-        value="0" 
-         ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;Ingen leverandører&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select all
-    if (selectAll && (this.arraySupplier.length > 0)) {
-
-      html += `
-      <option 
-        value=${this.nineNine}
-        ${(selectedValue) ? '' : 'selected'} 
-      >
-        &nbsp;&nbsp;${selectAll}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    // Select none
-    if (selectNone && (this.arraySupplier.length > 0)) {
-      html += `
-      <option 
-        value=0
-        ${(!selectedValue) ? 'selected' : ''}
-      >
-        &nbsp;&nbsp;${selectNone}&nbsp;&nbsp;
-      </option>`;
-      if (!selectedValue) selectedValue = true;
-    }
-
-    html += `
-      </select >
-      <label>
-        ${label}
-      </label>
-    </div>`;
-
-    return html;
-  }
-  */
 
   // Show suppliers
   showSelectedSuppliersNew(className, label, supplierId, selectNone, selectAll, enableChanges) {
@@ -275,6 +196,30 @@ class Supplier extends Condos {
       this.arraySuppliers = await response.json();
     } catch (error) {
       console.log("Error loading suppliers:", error);
+    }
+  }
+
+  // Get the highest ID in the table
+  async getHighestSupplierId(condominiumId) {
+    const URL = (this.serverStatus === 1)
+      ? '/api/suppliers'
+      : 'http://localhost:3000/suppliers';
+    try {
+
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'highestSupplierId',
+          condominiumId: condominiumId
+        })
+      });
+      if (!response.ok) throw new Error("Network error (suppliers)");
+      this.arraySuppliers = await response.json();
+    } catch (error) {
+      console.log("Error selecting suppliers:", error);
     }
   }
 

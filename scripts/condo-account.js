@@ -150,7 +150,7 @@ function showAccount(accountId) {
   if (selected !== constFixedCost && selected !== constVariableCost) selected = "Ukjent";
   //if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'N') selected = constVariableCost;
   //html += inputValues('Kostnadstype', 'fixedCost', '', enableChanges, selected, constFixedCost, constVariableCost)
-  html += inputValues('Kostnadstype', 'fixedCost', enableChanges, selected, constFixedCost, constVariableCost);
+  html += inputValues('fixedCost', 'Kostnadstype', enableChanges, selected, constFixedCost, constVariableCost);
   html += "<div></div>";
   //html += "<div></div>";
 
@@ -204,8 +204,8 @@ function resetValues() {
   }
 }
 
-// Delete one account row
-async function deleteAccountRow(accountId) {
+// Delete a accounts row
+async function deleteAccountsRow(accountId) {
 
   // Check if account row exist
   rowNumberAccounts = objAccounts.arrayAccounts.findIndex(account => account.accountId === accountId);
@@ -216,14 +216,8 @@ async function deleteAccountRow(accountId) {
     await objAccounts.getHighestAccountId(objAccounts.condominiumId);
 
     // Check for empty array
-    if (Array.isArray(objAccounts.arrayAccounts) && objAccounts.arrayAccounts === 0) {
-
-      // Empty array
-      accountId = 0;
-    } else {
-
-      accountId = objAccounts.arrayAccounts[0].accountId;
-    }
+    accountId = 0;
+    if (objAccounts.arrayAccounts.length > 0) accountId = objAccounts.arrayAccounts[0].accountId;
   }
 
   const fixedCost = 'A';
@@ -243,14 +237,14 @@ async function updateAccountsRow(accountId) {
 
   // name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig kontonavn',  name, 3, 50);
+  const validName = validateTextNew('name', 'Ugyldig Kontonavn', name, 3, 50);
 
   className = `.fixedCost`;
   let fixedCost = document.querySelector(className).value;
   className = `fixedCost`;
   if (fixedCost === constFixedCost) fixedCost = 'Y';
   if (fixedCost === constVariableCost) fixedCost = 'N';
-  const validFixedCost = validateValuesNew(className, 'Ugyldig kostnadstype',  fixedCost, 'Y', 'N');
+  const validFixedCost = validateValuesNew(className, 'Ugyldig kostnadstype', fixedCost, 'Y', 'N');
 
   // Validate accounts columns
   if (validName && validFixedCost) {
@@ -266,7 +260,7 @@ async function updateAccountsRow(accountId) {
     } else {
 
       // Insert a accounts row
-      await objAccounts.insertAccountsTable(objAccounts.condominiumId, objAccounts.user, year, priceKilowattHour);
+      await objAccounts.insertAccountsTable(objAccounts.condominiumId, objAccounts.user, name, fixedCost);
       await objAccounts.getHighestAccountId(objAccounts.condominiumId);
       accountId = objAccounts.arrayAccounts.at(-1)?.accountId ?? 0;
     }

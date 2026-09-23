@@ -356,7 +356,7 @@ class EmptyCalendars extends Condos {
   }
 
   // delete empty calendar row
-  async deleteEmptyCalendarTable(emptyCalendarId, user) {
+  async deleteEmptyCalendarsTable(emptyCalendarId, user) {
 
     const URL = (this.serverStatus === 1)
       ? '/api/emptycalendars'

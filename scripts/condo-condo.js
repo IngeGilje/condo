@@ -34,14 +34,15 @@ async function main() {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objCondo.condominiumId, resident, objCondo.nineNine);
-      await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
+      await objCondo.loadCondoTable(objCondo.condominiumId);
 
-      let condoId = 0;
-      if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo.at(-1)?.condoId;
+      //let condoId = 0;
+      //if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo.at(-1)?.condoId;
+      const condoId = objCondo.arrayCondo.at(-1)?.condoId ?? 0;
 
       // get condoId
-      const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objCondo.userId);
-      if (rowNumberUser !== -1) condoId = objUsers.arrayUsers[rowNumberUser].condoId;
+      //const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objCondo.userId);
+      //if (rowNumberUser !== -1) condoId = objUsers.arrayUsers[rowNumberUser].condoId;
 
       // Show filter
       showFilter(condoId);
@@ -79,22 +80,22 @@ async function events() {
     };
   });
 
-  // update/insert a condos row
+  // update/insert a condo row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
 
-      // Update a condos row
-      const condoId = document.querySelector('.filterCondoId').value;
+      // Update a condo row
+      const condoId = Number(document.querySelector(".filterCondoId").value);
       updateCondoRow(condoId);
     };
   });
 
-  // Delete condos row
+  // Delete condo row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
-      const condoId = Number(document.querySelector('.filterCindoId').value);
-      await deleteCondosRow(condoId);
+      const condoId = Number(document.querySelector('.filterCondoId').value);
+      await deleteCondoRow(condoId);
     };
   });
 
@@ -105,22 +106,6 @@ async function events() {
       resetValues();
     };
   });
-
-  /*
-  // Cancel
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('cancel')) {
-
-      // Reload condo table
-      await objCondo.loadCondoTable(condominiumId, objCondo.nineNine);
-
-      let condoId = Number(document.querySelector('.filterCondoId').value);
-      if (condoId === 0) condoId = objCondo.arrayCondo.at(-1)?.condoId ?? 0;
-
-      showCondo(condoId);
-    };
-  });
-  */
 
   // Log out
   document.addEventListener('click', async (event) => {
@@ -144,17 +129,8 @@ function showFilter(condoId) {
   // Start filter
   let html = startGridFilter("leilighet");
 
-  // Show condos
+  // Show condo
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', '', true);
-
-  /*
-  // End frame
-  html += "</div>";
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame", "Filter");
-  */
 
   // End filter
   html += endGridFilter();
@@ -227,17 +203,13 @@ function showCondo(condoId) {
 // Update a condo row
 async function updateCondoRow(condoId) {
 
-  if (condoId === '') condoId = -1
-  condoId = Number(condoId);
-  const validCondoId = validateIntervalNew('condoId', 'Ugyldig Leilighet',  condoId, 0, objCondo.nineNine);
-
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig Kontonavn',  name, 3, 45);
+  const validName = validateTextNew('name', 'Ugyldig Kontonavn', name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateTextNew('street', 'Ugyldig Gatenavn',  street, 3, 45);
+  const validStreet = validateTextNew('street', 'Ugyldig Gatenavn', street, 3, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
@@ -253,9 +225,9 @@ async function updateCondoRow(condoId) {
 
   // validate squaremeters
   let squareMeters = Number(formatNorAmountToNumber(document.querySelector('.squareMeters').value));
-  const validSquareMeters = validateIntervalNew('squareMeters', 'Ugyldig Areal', squareMeters, 1,objCondo.nineNine);
+  const validSquareMeters = validateIntervalNew('squareMeters', 'Ugyldig Areal', squareMeters, 1, objCondo.nineNine);
 
-  if (validCondoId && validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
+  if (validName && validStreet && validAddress2 && validPostalCode && validCity && validSquareMeters) {
 
     document.querySelector('.showMessage').style.display = "none";
 
@@ -270,10 +242,10 @@ async function updateCondoRow(condoId) {
       // Insert the condo row in condo table
       await objCondo.insertCondoTable(objCondo.condominiumId, objCondo.user, name, street, address2, postalCode, city, squareMeters);
       await objCondo.getHighestCondoId(objCondo.condominiumId);
-      condoId = objCondo.arrayCondos[0].condoId;
+      condoId = objCondo.arrayCondo[0].condoId;
     }
 
-    await objCondo.loadCondoTable(objCondo.condominiumId, objCondo.nineNine);
+    await objCondo.loadCondoTable(objCondo.condominiumId);
 
     removeMessage();
 
@@ -319,47 +291,23 @@ function resetValues() {
   }
 }
 
-/*
 // Delete condo row
-async function deleteCondoRow() {
+async function deleteCondoRow(condoId) {
 
-  // condoId
-  const condoId = Number(document.querySelector('.filterCondoId').value);
-
-  // Check if condo number exist
+  // Check if condo row exist
   const rowNumberCondo = objCondo.arrayCondo.findIndex(condo => condo.condoId === condoId);
   if (rowNumberCondo !== -1) {
 
-    // delete a condo row
+    // delete condo row
     await objCondo.deleteCondoTable(condoId, objCondo.user);
-  }
-}
-*/
+    await objCondo.getHighestCondoId(objCondo.condominiumId);
 
-// Delete condos row
-async function deleteCondosRow(condoId) {
-
-  // Check if condos row exist
-  const rowNumberCondos = objCondos.arrayCondos.findIndex(account => account.condoId === condoId);
-  if (rowNumberCondos !== -1) {
-
-    // delete condos row
-    await objCondos.deleteCondosTable(condoId, objCondos.user);
-    await objCondos.getHighestCondoId(objCondos.condominiumId);
-
-    //condoId = objCondos.arrayCondos[0].condoId;
     // Check for empty array
-    if (Array.isArray(objCondo.arrayCondos) && objCondo.arrayCondos.length === 0) {
-
-      // Empty array
-      condoId = 0;
-    } else {
-
-      condoId = objCondo.arrayCondos[0].condoId;
-    }
+    condoId = 0;
+    if (objCondo.arrayCondo.length > 0) condoId = objCondo.arrayCondo[0].condoId;
   }
 
-  await objCondos.loadCondosTable(objCondos.condominiumId);
+  await objCondo.loadCondoTable(objCondo.condominiumId);
 
   // Show filter
   showFilter(condoId);

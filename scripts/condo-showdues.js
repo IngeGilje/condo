@@ -42,7 +42,7 @@ async function main() {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
-      await objCondo.loadCondoTable(objDues.condominiumId, objDues.nineNine);
+      await objCondo.loadCondoTable(objDues.condominiumId);
 
       // Show filter
       const date = getCurrentDate();
@@ -127,7 +127,7 @@ function showFilter(year, month, condoId) {
   let html = startTableFilter('filter-frame');
 
   // year
-  html += showSelectedNumbers('filterYear', 'År', 2019, 2029, Number(year), enableChanges);
+  html += showSelectedNumbers('filterYear', 'År',Number(year), 2019, 2029,  enableChanges);
 
   // month
   html += showSelectedMonthsNew('filterMonth', 'Måned', Number(month), enableChanges);

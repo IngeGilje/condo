@@ -118,37 +118,6 @@ async function events() {
 // Show filter
 function showFilter(fixedCost) {
 
-  /*
-  // Start frame
-  let html = startTableFilter('filter-frame');
-
-  // Show types of account
-  if (fixedCost === 'Y') fixedCost = constFixedCost;
-  if (fixedCost === 'N') fixedCost = constVariableCost;
-  if (fixedCost === 'A') fixedCost = 'Alle';
-  html += inputValues('Kostnadstype', 'filterFixedCost', '', true, fixedCost, constFixedCost, constVariableCost, 'Alle')
-
-  // End filter
-  html += "</div>";
-
-  document.querySelector(".showFilter").innerHTML = html;
-
-  // Change frame title
-  //setFrameTitle("filter-frame", "Filter");
-  */
-
-  /*
-  let html = startHorizontalFilter();
-
-  // Show types of account
-  if (fixedCost === 'Y') fixedCost = constFixedCost;
-  if (fixedCost === 'N') fixedCost = constVariableCost;
-  if (fixedCost === 'A') fixedCost = 'Vis Alle';
-  html += inputValues('Kostnadstype', 'filterFixedCost', true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
-
-  html += endHorizontalFilter();
-  document.querySelector(".showFilter").innerHTML = html;
-  */
   // Start frame
   let html = startTableFilter('filter-frame');
 
@@ -156,7 +125,7 @@ function showFilter(fixedCost) {
   if (fixedCost === 'Y') fixedCost = constFixedCost;
   if (fixedCost === 'N') fixedCost = constVariableCost;
   if (fixedCost === 'A') fixedCost = 'Vis Alle';
-  html += inputValues('Kostnadstype', 'filterFixedCost', true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
+  html += inputValues('filterFixedCost','Kostnadstype',  true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
 
   // End filter
   html += endTableFilter();

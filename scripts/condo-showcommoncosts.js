@@ -50,10 +50,10 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objCommonCosts.condominiumId, resident, objCommonCosts.nineNine);
       await objCondominiums.loadCondominiumsTable();
-      await objCondo.loadCondoTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
+      await objCondo.loadCondoTable(objCommonCosts.condominiumId);
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
-      //await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine);
+      //await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId);
       const fixedCost = 'A';
       await objAccounts.loadAccountsTable(objCommonCosts.condominiumId, fixedCost);
 
@@ -129,7 +129,7 @@ function showFilter(year) {
   let html = startTableFilter('filter-frame');
 
   // Show years
-  html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
+  html += showSelectedNumbers('filterYear', 'År', year, 2020, 2030, true);
 
   // End frame
   html += endTableFilter();

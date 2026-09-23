@@ -446,10 +446,10 @@ class Condos {
     if (!bankAccountName) {
 
       // Bank account name from supplier table
-      const rowNumberSupplier = objSupplier.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
+      const rowNumberSupplier = objSuppliers.arraySuppliers.findIndex(supplier => supplier.bankAccount === bankAccountNumber);
       if (rowNumberSupplier !== -1) {
 
-        bankAccountName = objSupplier.arraySuppliers[rowNumberSupplier].name;
+        bankAccountName = objSuppliers.arraySuppliers[rowNumberSupplier].name;
       }
     }
 
@@ -530,7 +530,7 @@ class Condos {
   }
 
   // Validate values ('Yes','No','Ignore')
-  validateValues(className, columnWidths, style, errorMessage,  selectedValue, ...values) {
+  validateValues(className, columnWidths, style, errorMessage, selectedValue, ...values) {
 
     let isValid = false;
 
@@ -543,7 +543,7 @@ class Condos {
 
     // remove/ add 'input-error' class
     if (inputElement) inputElement.classList.toggle('input-error', !isValid);
-    if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
+    if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
 
     return isValid;
   }
@@ -1172,7 +1172,7 @@ function endButtons() {
 function showSelectedMonthsNew(className, label, selectedMonth, enableChanges) {
 
   let html = `
-    <!-- start showSelectedCondosNew -->
+    <!-- start showSelectedMonthsNew -->
     <div 
       class="field"
     >
@@ -1200,7 +1200,7 @@ function showSelectedMonthsNew(className, label, selectedMonth, enableChanges) {
   html += `
       </select >
     </div>
-    <!-- end showSelectedCondosNew -->
+    <!-- end showSelectedMonthsNew -->
   `;
 
   return html;
@@ -1297,7 +1297,7 @@ function showMessageNew(message) {
 }
 
 // Show selected numbers (from number - to number)
-function showSelectedNumbers(className, label, fromNumber, toNumber, selectedNumber, enableChanges) {
+function showSelectedNumbers(className, label, selectedNumber, fromNumber, toNumber, enableChanges) {
 
   let html = `
     <!-- start showSelectedNumbers -->
@@ -1452,46 +1452,8 @@ function showTextNew(className, label, value, enableChanges, placeholder = "") {
   `;
 }
 
-/*
 // Show selected values 
-function inputValues(label, className, style, enableChanges, selectedValue, ...values) {
-
-  let selected = false;
-
-  let html = `
-    <div 
-    class="field field-position" 
-    >
-      <label>
-        ${label}
-      </label>
-      <select 
-        class="${className} center one-line"
-        ${(enableChanges) ? '' : 'readonly'}
-      >`;
-
-  values.forEach((value) => {
-
-    html += `
-      <option 
-        value="${(value ?? '').trim()}"
-        ${value === selectedValue ? 'selected' : ''}
-      >
-        ${value}
-      </option>`;
-    if (value === selectedValue) selected = true;
-  });
-
-  html += `
-      </select >
-    </div>`;
-
-  return html;
-}
-*/
-
-// Show selected values 
-function inputValues(label, className, enableChanges, selectedValue, ...values) {
+function inputValues(className, label, enableChanges, selectedValue, ...values) {
 
   let html = `
     <!-- start inputValues -->
@@ -2251,7 +2213,7 @@ function validatePhoneNew(className, phone, errorMessage) {
 }
 
 // validate bank account
-function validateBankAccountNew(className,  bankAccount, errorMessage) {
+function validateBankAccountNew(className, bankAccount, errorMessage) {
 
   const bankAccountPattern = /^\d{11}$/;
   const isValid = bankAccountPattern.test(bankAccount);
@@ -2264,12 +2226,12 @@ function validateBankAccountNew(className,  bankAccount, errorMessage) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && showMessage && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
 // Validate values ('Yes','No','Ignore')
-function validateValuesNew(className, errorMessage,  selectedValue, ...values) {
+function validateValuesNew(className, errorMessage, selectedValue, ...values) {
 
   let isValid = false;
 
@@ -2286,7 +2248,7 @@ function validateValuesNew(className, errorMessage,  selectedValue, ...values) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -2324,7 +2286,7 @@ function validateISODate(className, date, errorMessage) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -2342,7 +2304,7 @@ function validateIntervalNew(className, errorMessage, number, minNumber, maxNumb
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }
 
@@ -2372,6 +2334,6 @@ function validateTextNew(className, errorMessage, value, minLength, maxLength) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
 }

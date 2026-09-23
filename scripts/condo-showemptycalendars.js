@@ -42,7 +42,7 @@ async function main() {
       let html = objEmptyCalendars.showMenu(objEmptyCalendars.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      await objCondo.loadCondoTable(objEmptyCalendars.condominiumId, objEmptyCalendars.nineNine);
+      await objCondo.loadCondoTable(objEmptyCalendars.condominiumId);
 
       // Show filter
       calendarDate = getCurrentDate();
@@ -119,7 +119,7 @@ function showFilter(year, month) {
   let html = startTableFilter('filter-frame');
 
   // Show years
-  html += showSelectedNumbers('filterYear', 'År', 2020, 2030, year, true);
+  html += showSelectedNumbers('filterYear', 'År',year, 2020, 2030,  true);
 
   // Show months
   html += showSelectedMonthsNew('filterMonth', 'Måned', month, true);
