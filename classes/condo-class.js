@@ -269,6 +269,22 @@ class Condos {
     },
   ];
 
+  // menu array for Log out
+  arrayLogIn = [
+    {
+      applicationName: 'condo-login.html',
+      className: "condo-login",
+      text: "Logg ut",
+      securityLevel: 1
+    },
+    {
+      applicationName: 'condo-login.html',
+      className: "condo-login",
+      text: "Menyvalg",
+      securityLevel: 1
+    },
+  ];
+
   // Login
 
   // Show input (<td></td>) with center text
@@ -438,7 +454,7 @@ class Condos {
     const rowNumberBankAccount = objBankAccounts.arrayBankAccounts.findIndex(bankAccount => bankAccount.bankAccount === bankAccountNumber);
     /*
     if (rowNumberBankAccount !== -1) {
-
+  
       bankAccountName = objBankAccounts.arrayBankAccounts[rowNumberBankAccount].name;
     }
     */
@@ -543,7 +559,7 @@ class Condos {
 
     // remove/ add 'input-error' class
     if (inputElement) inputElement.classList.toggle('input-error', !isValid);
-    if (!isValid  && errorMessage.length > 0) showMessageNew(errorMessage);
+    if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
 
     return isValid;
   }
@@ -826,44 +842,6 @@ class Condos {
     });
   }
 
-  /*
-  // Show horizontal menu
-  showHorizontalMenu(className, arrayMenu) {
-
-    const URL = (this.serverStatus === 1)
-      ? 'http://ingegilje.no/'
-      : 'http://localhost/';
-
-    let html = `
-    <nav class="navbar horizontalMenu">
-      <ul 
-        class="nav-links"
-      >
-    `;
-
-    arrayMenu.forEach((array) => {
-
-      const className = array.className;
-      html += `
-      <li>
-        <a 
-          class="${className}"
-          href="${URL}${array.applicationName}"
-        >
-          ${array.text.trim()}
-        </a>
-      </li>`;
-    });
-
-    html += `
-      </ul>
-    </nav>
-  </div>
-  `;
-    return html;
-  }
-  */
-
   // Show vertical menu
   showMenu(securityLevel) {
 
@@ -890,6 +868,7 @@ class Condos {
     html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", securityLevel);
     html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", securityLevel);
     html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt", securityLevel);
+    html += this.showVerticalMenu('project', this.arrayLogIn, "Logg Ut", securityLevel);
 
     html += `
       </div>

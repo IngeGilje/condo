@@ -138,9 +138,9 @@ function createTransactionsArray() {
   let textFile = objImportFile.strCSVTransaction.split(/\r?\n/);
   textFile.forEach((row) => {
 
-    //         Dato; Type;     Kontonummer;    Inn;      Ut; Valuta; Beskrivelse;Fra kontonummer;Til kontonummer;         Fra (navn);Til (navn)
-    [accountingDate, Type, fromBankAccount, income, payment, Valuta, text, fromBankAccount, toBankAccount, fromBankAccountName, toBankAccountName] =
-      row.split(',');
+    //[accountingDate, from, to, text, income, payment, fromBankAccount, toBankAccount, valuta] =
+    [accountingDate, Type, accountNumber, income, payment, Valuta, text, fromBankAccount, toBankAccount, fromName, toName, Referanse, Arkivreferanse, Melding, Interntnotat] =
+      row.split(';');
     // Check for valid date
     // validate the dd.mm.yyyy (Norwegian date format)
 
@@ -489,7 +489,7 @@ function showTransactions() {
   let html = objImportFile.initializeTable(columnWidths);
 
   // Table header (<tr></tr>)
-  html += objImportFile.showTableHeader( 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += objImportFile.showTableHeader('Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
 
   let sumIncomes = 0;
   let sumPayments = 0;
@@ -595,7 +595,7 @@ function importFileName() {
   let html = objImportFile.initializeTable(columnWidths);
 
   // Header filter (<tr></tr>)
-  html += objImportFile.showTableHeader( '', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
+  html += objImportFile.showTableHeader('', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
 
   // start table body
   html += objImportFile.startTableBody();

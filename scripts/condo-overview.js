@@ -109,7 +109,7 @@ async function events() {
 
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
- 
+
       const accountId = objOverview.nineNine;
       const deleted = 'N';
 
@@ -174,10 +174,12 @@ function showFilter(condoId) {
 // Show dues
 function showDues() {
 
+  /*
   let html = emptyLine();
 
   // Start table
   html += objOverview.initializeTable(columnWidths);
+  */
 
   let sumDue = 0;
   let sumKilowattHour = 0;
@@ -188,9 +190,15 @@ function showDues() {
   let filterToDate = document.querySelector('.filterToDate').value;
   filterToDate = formatISODateToNumber(filterToDate);
 
+  /*
   // Header
   html += objOverview.showTableHeader('', '', '', 'Forfall', '', '');
   html += objOverview.showTableHeader('Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  */
+
+  // Start table
+  let html = startTable("Forfall", "");
+  html += tableHeader(columnWidths, 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -258,6 +266,7 @@ function showDues() {
 // Transactions
 function showTransactions() {
 
+  /*
   // Start table
   let html = objOverview.initializeTable(columnWidths);
 
@@ -265,6 +274,7 @@ function showTransactions() {
 
   html += objOverview.showTableHeader('', '', '', 'Innbetalinger', '', '');
   html += objOverview.showTableHeader('', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  */
 
   const filterCondoId = Number(document.querySelector('.filterCondoId').value);
   let filterFromDate = document.querySelector('.filterFromDate').value;
@@ -274,6 +284,10 @@ function showTransactions() {
 
   let sumIncomes = 0;
   let sumPayments = 0;
+
+  // Start table
+  let html = startTable("Innbetalinger", "");
+  html += tableHeader(columnWidths, '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
     if ((bankTransaction.condoId === filterCondoId || filterCondoId === objDues.nineNine)
@@ -338,8 +352,10 @@ function showTransactions() {
 // show how much to pay
 function showHowMuchToPay() {
 
+  /*
   // Start table
   let html = objOverview.initializeTable(columnWidths);
+  */
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -372,17 +388,22 @@ function showHowMuchToPay() {
     }
   });
 
+  // Start table
+  let html = startTable("Betalinger", "");
+
   // show main header
   sumIncome += sumPayment;
   let overPay = sumIncome - sumToPay;
 
+  /*
   html += (overPay >= 0)
     ? objOverview.showTableHeader('', '', '', 'Til gode', '', '')
     : objOverview.showTableHeader('', '', '', 'Skyldig', '', '');
+  */
 
   html += (overPay >= 0)
-    ? objOverview.showTableHeader('', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : objOverview.showTableHeader('', '', '', 'Forfall', 'Betalt', 'Skyldig')
+    ? tableHeader(columnWidths, '', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : tableHeader(columnWidths, '', '', '', 'Forfall', 'Betalt', 'Skyldig')
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
@@ -402,7 +423,6 @@ function showHowMuchToPay() {
   }
   let openingBalance = objTransactions.getTransactions(objOverview.condominiumId, condoId, toDate);
   openingBalance += objDues.getDues(objOverview.condominiumId, condoId, toDate);
-
 
   openingBalance = formatNumberToNorAmount(openingBalance);
   html += objOverview.insertTableRow('font-weight: 600;', '', '', 'Sum', sumToPay, sumIncome, overPay);
