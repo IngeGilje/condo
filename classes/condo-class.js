@@ -851,11 +851,11 @@ class Condos {
     <section 
       class="card"
     >
-      <h2 
+      <h1 
         class="card-title"
       >
         Meny
-      </h2>
+      </h1>
       <div 
         class="grid grid-menu"
       >
@@ -868,7 +868,7 @@ class Condos {
     html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", securityLevel);
     html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", securityLevel);
     html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt", securityLevel);
-    html += this.showVerticalMenu('project', this.arrayLogIn, "Logg Ut", securityLevel);
+    html += this.showVerticalMenu('logIn', this.arrayLogIn, "Logg Ut", securityLevel);
 
     html += `
       </div>
@@ -1010,7 +1010,7 @@ function showTableIcon(className, color) {
   <!-- start showTableIcon -->
   <td>
     <span
-      class="waste-icon waste-icon--food"
+      class="phone-icon phone-icon--food"
       role="img"
       aria-label="Matavfall hentes"
     >
@@ -1120,10 +1120,7 @@ function primaryButton(text) {
 function inputButton(className, text, buttonType) {
 
   // Check for valid button type
-  //if (buttonType !== "submit" && buttonType !== "button" && buttonType !== "reset") {
-  if (buttonType !== "submit" && buttonType !== "button") {
-    buttonType = "button";
-  }
+  if (buttonType !== "submit" && buttonType !== "button") buttonType = "button";
 
   return `
   <!-- start inputButton -->
@@ -1210,30 +1207,6 @@ function editTableCell(className, value, maxlength, enableChanges, colspan = 1, 
 */
 
 /*
-// Show amount
-function showAmount(label, className, value, enableChanges) {
-
-  return `
-    <div 
-      class="field field-position"
-    >
-      <label>
-        ${label}
-      </label>
-      <input 
-        type="text"
-        style="height: 52px;"
-        inputmode="decimal" 
-        autocomplete="off"
-        class="${className} center one-line"
-        ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
-        ${(enableChanges) ? '' : 'readonly'}
-      >
-      <label>${label}</label>
-    </div>`;
-}
-*/
-
 // Show textarea
 function showTextArea(label, className, value, maxlength, enableChanges, rows = 1) {
 
@@ -1252,6 +1225,7 @@ function showTextArea(label, className, value, maxlength, enableChanges, rows = 
     >${value}</textarea>
   </div>`;
 }
+*/
 
 // Remove message
 function removeMessage() {
@@ -1264,13 +1238,13 @@ function showMessageNew(message) {
 
   let html = "<!-- start showMessageNew -->";
 
-  html += startTableFilter('message');
+  html += startLineFilter('message');
 
   // Show message
   html += showText(message);
 
   // End filter
-  html += endTableFilter();
+  html += endLineFilter();
   html += "<!-- end showMessageNew -->"
   document.querySelector('.showMessage').innerHTML = html;
 }
@@ -1342,29 +1316,6 @@ function formatNumberToISODate(date) {
 }
 
 /*
-// Show Date
-function showDate(label, className, value, enableChanges) {
-
-  const html = `
-  <div 
-    class="field field-position"
-  >
-    <label>
-      ${label}
-    </label>
-    <input 
-      type="date" 
-      style="height: 52px"
-      class="${className} center one-line input"
-      ${(typeof value) ? `value="${value}"` : `value="${value.trim()}"`}
-      ${(enableChanges) ? '' : 'readonly'}
-    >
-  </div>`;
-  return html;
-}
-*/
-
-/*
 // start line (<div>)
 function startLine() {
   return `
@@ -1410,10 +1361,11 @@ function showTextNew(className, label, value, enableChanges, placeholder = "") {
   value = (typeof value === 'string')
     ? value.trim()
     : value;
+    
   return `
   <!-- start showTextNew -->
   <div 
-    class="field field-position" 
+    class="field" 
    >
     <input 
       type="text"
@@ -1805,61 +1757,23 @@ function exitIfNoActivity() {
 });
 
 /*
-// Table handling
-function startTable(year, month, text) {
-
-  const monthName = findNameOfMonth(month);
-  return `
-  <!-- start startTable -->
-  <main class="waste-page">
-    <section
-      class="waste-card"
-      aria-labelledby="waste-title"
-    >
-
-      <header
-        class="waste-heading"
-      >
-        <h1
-          id="waste-title"
-        >
-          ${text}
-        </h1>
-        <p>
-          ${monthName} ${year}
-        </p>
-      </header>
-
-      <div
-        class="waste-scroll"
-        role="region"
-        aria-label="${text} for ${monthName} ${year}"
-        tabindex="0"
-      >
-        <table class="transaction-table">
-    <!-- end startTable -->
-  `;
-}
-*/
-
-/*
 // Show horizontal filter
 function startHorizontalFilter() {
 
   let html = `
-    <!-- start startTableFilter -->
+    <!-- start startLineFilter -->
     <section 
       class="card"
     >
-      <h2 
+      <h1 
         class="card-title"
       >
         Filter
-      </h2>
+      </h1>
       <div 
         class="grid grid-menu"
       >
-      <!-- end startTableFilter -->
+      <!-- end startLineFilter -->
       `;
   return html;
 }
@@ -1880,41 +1794,41 @@ function endHorizontalFilter() {
 }
 */
 
-// Grid
+// Edit tables
 
 // Start filter
-function startGridFilter(label) {
+function startBoxFilter(label) {
 
   return `
-  <!-- start startGridFilter -->
-  <aside 
-    class="card filter-card"
+    <!-- start startBoxFilter -->
+    <aside 
+      class="card filter-card"
     >
-    <h2 
+    <h1 
       class="card-title"
     >
       Filter
-    </h2>
+    </h1>
     <div 
-      class="grid grid-voucher"
+      class="grid"
     >
       <div 
         class="field">
         <label>
           ${label}
         </label>
-  <!-- end startGridFilter -->
+        <!-- end startBoxFilter -->
   `;
 }
 
-function endGridFilter() {
+function endBoxFilter() {
 
   return `
-    <!-- start endGridFilter -->
+        <!-- start endBoxFilter -->
         </div>
       </div>
     </aside>
-    <!-- end endGridFilter -->
+    <!-- end endBoxFilter -->
   `;
 }
 
@@ -1943,29 +1857,31 @@ function inputGridWideText(className, label, text, maxLength, rows) {
 function startGrid(text) {
 
   return `
-  <!-- start startGrid -->
-  <section class="card">
-    <h2 
-      class="card-title"
+    <!-- start startGrid -->
+    <section 
+      class="card"
     >
-      ${text}
-    </h2>
-    <form>
-      <div 
-        class="grid grid-form"
+      <h1 
+        class="card-title"
       >
-  <!-- end startGrid -->
+        ${text}
+      </h1>
+      <form>
+        <div 
+          class="grid grid-form"
+        >
+        <!-- end startGrid -->
   `;
 }
 
 function endGrid() {
 
   return `
-  <!-- start endGrid -->
-      </div>
-    </form>
-  </section>
-  <!-- end endGrid -->
+        <!-- start endGrid -->
+        </div>
+      </form>
+    </section>
+    <!-- end endGrid -->
   `;
 }
 
@@ -2022,17 +1938,19 @@ function startTable(header, underHeader) {
 
   return `
   <!-- start startTable -->
-  <main class="waste-page">
+  <main 
+    class="phone-page"
+  >
     <section
-      class="waste-card"
-      aria-labelledby="waste-title"
+      class="phone-card"
+      aria-labelledby="phone-title"
     >
 
       <header
-        class="waste-heading"
+        class="phone-heading"
       >
         <h1
-          id="waste-title"
+          id="phone-title"
         >
           ${header}
         </h1>
@@ -2042,7 +1960,7 @@ function startTable(header, underHeader) {
       </header>
 
       <div
-        class="waste-scroll"
+        class="phone-scroll"
         role="region"
         aria-label="${underHeader}"
         tabindex="0"
@@ -2053,19 +1971,19 @@ function startTable(header, underHeader) {
 }
 
 // Start table filter
-function startTableFilter(className) {
+function startLineFilter(className) {
 
   return `
-  <!-- start startTableFilter -->
+  <!-- start startLineFilter -->
   <div 
     class="${className}"
   >
-  <!-- end startTableFilter -->
+  <!-- end startLineFilter -->
   `;
 }
 
 // End table filter
-function endTableFilter() {
+function endLineFilter() {
 
   return "</div>";
 }
@@ -2098,6 +2016,40 @@ function inputDate(className, label, value, enableChanges) {
   return html;
 }
 
+// input grid date
+function inputLineFilterDate(className, label, value, enableChanges) {
+
+  const html = `
+    <!-- start inputLineFilterDate -->
+    <div 
+      class="filter-field"
+    >
+      <div 
+        class="grid"
+      >
+        <div
+          class="field"
+        >
+          <label
+            for="${className}"
+          >
+            ${label}
+          </label>
+          <input 
+            type="date"
+            class="${className}"
+            id="${className}" 
+            value="${value}"
+            ${(enableChanges) ? '' : 'readonly'}
+          >
+        </div>
+      </div>
+    </div>
+    <!-- end inputLineFilterDate -->
+  `;
+  return html;
+}
+
 // input text for grid and table
 function inputText(className, label, value, maxlenght, enableChanges) {
 
@@ -2126,6 +2078,37 @@ function inputText(className, label, value, maxlenght, enableChanges) {
   return html;
 }
 
+// input text using grid
+function inputLineFilterText(className, label, value, maxlenght, enableChanges) {
+
+  html = `
+    <!-- start inputLineFilterText --> 
+    <div 
+      class="filter-field"
+    >
+      <div class="grid">
+        <div class="field">
+          <label
+            for="${className}"
+          >
+            ${label}
+          </label>
+          <input 
+            type="text"
+            maxlength="${maxlenght}"
+            class="${className}"
+            id="${className}"
+            value="${value}"
+            ${(enableChanges) ? '' : 'readonly'}
+          >
+        </div>
+      </div>
+    </div>
+    <!-- end inputLineFilterText --> 
+    `;
+
+  return html;
+}
 
 // Validation
 
@@ -2315,4 +2298,26 @@ function validateTextNew(className, errorMessage, value, minLength, maxLength) {
 
   if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
   return isValid;
+}
+
+// Start line filter 
+function startLineFilter() {
+
+  return `
+    <!-- start startLineFilter -->
+    <div 
+      class="filter-grid"
+    >
+    <!-- end startLineFilter -->
+  `;
+}
+
+// End line filter 
+function endLineFilter() {
+
+  return `
+  <!-- start endLineFilter -->
+    </div>
+  <!-- end endLineFilter -->
+  `;
 }

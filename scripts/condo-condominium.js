@@ -137,13 +137,13 @@ async function events() {
 function showFilter(condominiumId) {
 
   // Start filter
-  let html = startGridFilter("Sameie");
+  let html = startBoxFilter("Sameie");
 
   // Show condominiums
   html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'Sameie', condominiumId, '', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

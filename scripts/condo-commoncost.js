@@ -164,16 +164,16 @@ async function events() {
 function showFilter(year) {
 
   // Start frame
-  //let html = startTableFilter('filter-frame');
+  //let html = startLineFilter('filter-frame');
 
   // Start filter
-  let html = startGridFilter("Felleskostnader");
+  let html = startBoxFilter("Felleskostnader");
 
   // Show year
   html += showSelectedNumbers('filterYear', "Regnskapsår", year, 2020, 2030, true)
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }

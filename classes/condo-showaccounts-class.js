@@ -243,6 +243,118 @@ class Accounts extends Condos {
     return html;
   }
 
+  // Show accounts
+  showLineFilterAccounts(className, label, accountId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+    /*
+    let html = `
+    <!-- start showLineFilterAccounts -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+    */
+    let html = `
+      <!-- start showLineFilterAccounts -->
+      <div 
+        class="filter-field"
+      >
+        <div
+          class="grid"
+        >
+          <div 
+            class="field"
+          >
+            <label 
+              for="${className}"
+            >
+              ${label}
+            </label>
+            <select 
+              id="${className}"
+              class="${className}"
+              ${(enableChanges) ? '' : 'readonly'}
+            >
+    `;
+
+    // Check if accounts array is empty
+    if (this.arrayAccounts.length > 0) {
+      this.arrayAccounts.forEach((account) => {
+
+        html += `
+        <option 
+          value=${account.accountId}
+          ${(account.accountId === accountId) ? 'selected' : ''}
+        >
+          ${account.name.trim()}
+        </option>`;
+        if (account.accountId === accountId) selectedValue = true;
+      });
+    } else {
+
+      // No accounts
+      html += `
+      <option 
+        value=0 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen konti
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayAccounts.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayAccounts.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    /*
+    html += `
+      </select >
+    </div>
+    <!-- end showLineFilterAccounts -->
+    `;
+    */
+    html += `
+            </select >
+          </div>
+        </div>
+      </div>
+      <!-- end showLineFilterAccounts -->
+    `;
+
+    return html;
+  }
+
   // get accounts from accounts table
   async loadAccountsTable(condominiumId, fixedCost) {
 

@@ -2,111 +2,154 @@
 <html lang="nb-NO">
 
 <head>
+  <title>Bankontotransaksjoner</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Bilag</title>
-
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/condo.css">
+  <link rel="stylesheet" href="styles/condo.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <!-- start startGrid -->
-  <section class="card">
-    <h2 class="card-title">
-      Transaksjonsdetaljer
-    </h2>
-    <form>
-      <div class="grid grid-form">
-        <!-- end startGrid -->
+  <!-- start startBoxFilter -->
+  <div class="filter-grid">
+    <!-- end startBoxFilter -->
 
-        <!-- start inputDate -->
+    <!-- start showGridCondos -->
+    <div class="filter-field">
+      <div class="grid">
         <div class="field">
-          <label for="date">
-            Dato
+          <label for="filterCondoId">
+            Leilighet
           </label>
-          <input class="newsDate" id="date" type="date" value="2026-08-20" readonly>
-        </div>
-        <!-- end inputDate -->
-        <div></div>
-        <!-- start showSelectedUsersNew -->
-        <div class="field">
-          <label for="apartment">
-            Forfatter
-          </label>
-          <select id="apartment" class="userId">
+          <select id="filterCondoId" class="filterCondoId">
 
-            <option value=9>
-              Åse
-            </option>
             <option value=3>
-              Fabiana
+              95A
             </option>
-            <option value=2>
-              Inge
+            <option value=4>
+              95B
             </option>
             <option value=5>
-              Kristine
+              97A
+            </option>
+            <option value=6>
+              97B
             </option>
             <option value=7>
-              Ladan
+              97C
             </option>
-            <option value=8 selected>
-              Oskar
+            <option value=8>
+              99A
+            </option>
+            <option value=9>
+              99B
+            </option>
+            <option value=999999998 selected>
+              Vis alle
             </option>
           </select>
         </div>
-        <!-- end showSelectedUsersNew -->
-
-        <!-- start inputWideText -->
-        <div class="field wide">
-          <label for="title">
-            Tittel
-          </label>
-          <input class="title" id="title" value="Programmering av fjernkontroll til garasje" readonly>
-        </div>
-        <!-- end inputWideText -->
-
-
-        <!-- start endGrid -->
       </div>
-    </form>
-  </section>
-  <!-- end endGrid -->
+    </div>
+    <!-- end showGridCondos -->
 
-  <!-- start startButtons -->
-  <div class="actions">
-    <!-- end startButtons -->
+    <!-- start showSelectedAccountsNew -->
+    <div class="field">
+      <label for="filterAccountId">
+        Konto
+      </label>
+      <select id="filterAccountId" class="filterAccountId">
 
-    <!-- start inputButton -->
-    <button class="update secondary" type="submit">
-      Oppdater
-    </button>
-    <!-- end inputButton -->
+        <option value=13>
+          1,2,3,4... transaksjoner
+        </option>
+        <option value=67>
+          Diverse
+        </option>
+        <option value=6>
+          Forsikring
+        </option>
+        <option value=10>
+          Gebyr - FAKT.TJ
+        </option>
+        <option value=56>
+          Inntekt drift
+        </option>
+        <option value=4>
+          Inntekt fjernvarme
+        </option>
+        <option value=2>
+          Inntekter husleie
+        </option>
+        <option value=5>
+          Nettleie Lyse
+        </option>
+        <option value=52>
+          Omkostninger BedriftsNett
+        </option>
+        <option value=8>
+          TV og bredbånd
+        </option>
+        <option value=9>
+          Ugift drift
+        </option>
+        <option value=3>
+          Utgift fjernvarme
+        </option>
+        <option value=22>
+          Velforening
+        </option>
+        <option value=999999998 selected>
+          Vis alle
+        </option>
+      </select>
+    </div>
+    <!-- end showSelectedAccountsNew -->
 
-    <!-- start inputButton -->
-    <button class="insert secondary" type="button">
-      Ny
-    </button>
-    <!-- end inputButton -->
+    <!-- start inputLineFilterDate -->
+    <div class="filter-field">
+      <div class="grid">
+        <div class="field">
+          <label for="filterFromDate">
+            Fra Dato
+          </label>
+          <input type="date" class="filterFromDate" id="filterFromDate" value="2026-08-01">
+        </div>
+      </div>
+    </div>
+    <!-- end inputLineFilterDate -->
 
-    <!-- start inputButton -->
-    <button class="back secondary" type="button">
-      Tilbake
-    </button>
-    <!-- end inputButton -->
+    <!-- start inputLineFilterDate -->
+    <div class="filter-field">
+      <div class="grid">
+        <div class="field">
+          <label for="filterToDate">
+            Til Dato
+          </label>
+          <input type="date" class="filterToDate" id="filterToDate" value="2026-09-25">
+        </div>
+      </div>
+    </div>
+    <!-- end inputLineFilterDate -->
 
-    <!-- start inputButton -->
-    <button class="delete danger" type="button">
-      Slett
-    </button>
-    <!-- end inputButton -->
+    <!-- start inputLineFilterText -->
+    <div class="filter-field">
+      <div class="grid">
+        <div class="field">
+          <label for="filterAmount">
+            Beløp
+          </label>
+          <input type="text" maxlength="11" class="filterAmount" id="filterAmount" value="0,00">
+        </div>
+      </div>
+    </div>
+    <!-- end inputLineFilterText -->
 
-    <!-- start endButtons -->
   </div>
-  <!-- end endButtons -->
+  <!-- end endBoxFilter -->
 </body>
 
 </html>

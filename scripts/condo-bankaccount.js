@@ -139,13 +139,13 @@ async function deleteBankAccount() {
 function showFilter(bankAccountId) {
 
   // Start filter
-  let html = startGridFilter("Bankkonto");
+  let html = startBoxFilter("Bankkonto");
 
   // Show bankaccounts
   html += objBankAccounts.showSelectedBankAccountsNew('filterBankAccountId', 'Bankkonto', bankAccountId, '', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }

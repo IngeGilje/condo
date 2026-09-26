@@ -143,7 +143,7 @@ async function events() {
 function showFilter(dueId) {
 
   // Start filter
-  let html = startGridFilter("Forfall");
+  let html = startBoxFilter("Forfall");
 
   const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
 
@@ -195,7 +195,7 @@ function showFilter(dueId) {
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg Prosjekt', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

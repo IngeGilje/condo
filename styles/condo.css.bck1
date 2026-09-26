@@ -1,6 +1,7 @@
+/* Shared colors, spacing, and surface styles. Change these to update the whole UI. */
 :root {
   --page: #f3f6fa;
-  --surface: #ffffff;
+  --surface: #fff;
   --text: #182230;
   --muted: #667085;
   --border: #d0d9e6;
@@ -8,13 +9,12 @@
   --primary-dark: #2445b7;
   --danger: #b42318;
   --radius: 12px;
-  --shadow: 0 8px 28px rgba(30, 50, 80, .08);
+  --shadow: 0 8px 28px rgb(30 50 80 / 8%);
 }
 
 * {
   box-sizing: border-box;
 }
-
 
 body {
   margin: 0;
@@ -24,7 +24,7 @@ body {
   background: var(--page);
 }
 
-
+/* Main page and reusable cards. */
 .page {
   width: min(1120px, calc(100% - 32px));
   margin: 32px auto 56px;
@@ -60,9 +60,9 @@ body {
   align-items: center;
   gap: 10px;
   margin: 0 0 20px;
+  color: #344054;
   font-size: 15px;
   font-weight: 700;
-  color: #344054;
 }
 
 .card-title::before {
@@ -73,7 +73,7 @@ body {
   background: var(--primary);
 }
 
-/* grid */
+/* Layout grids: minmax(0, 1fr) lets long content shrink inside a column. */
 .grid {
   display: grid;
   gap: 18px;
@@ -83,16 +83,15 @@ body {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.grid-voucher {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  max-width: 550px;
-}
-
+.grid-voucher,
 .grid-form {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-/* Grid */
+.grid-voucher {
+  max-width: 550px;
+}
+
 .grid-layout {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
@@ -102,15 +101,6 @@ body {
 
 .grid-layout .card {
   margin-bottom: 0;
-}
-
-.filter-card {
-  position: sticky;
-  top: 20px;
-}
-
-.filter-card .grid-voucher {
-  grid-template-columns: 1fr;
 }
 
 .field {
@@ -130,6 +120,7 @@ body {
   grid-column: span 3;
 }
 
+/* Labels sit across the top border of each control. */
 .field label {
   position: absolute;
   z-index: 1;
@@ -142,58 +133,41 @@ body {
   font-weight: 600;
 }
 
-/*
+/* Controls fill their grid cell; focus styling appears only while focused. */
 input,
-select {
-  width: 100%;
-  height: 50px;
-  padding: 0 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  outline: 0;
-  background: var(--surface);
-  color: var(--text);
+select,
+textarea {
   font: inherit;
-  font-size: 14px;
-  transition: border-color .18s, box-shadow .18s, background .18s;
 }
-*/
 
 input,
 select {
+  display: block;
   width: 100%;
-  height: 50px;
+  min-width: 0;
+  height: 52px;
   padding: 0 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  outline: 3px solid rgb(37 99 235 / 15%);
   background: var(--surface);
   color: var(--text);
-  font: inherit;
-  font-size: 14px;
-  transition: border-color .18s, box-shadow .18s, background .18s;
+  font-size: 16px;
+  transition: border-color .18s, box-shadow .18s;
 }
 
-/*
 input:hover,
-select:hover {
-  border-color: #98a8bd;
-}
-*/
-
-button:hover,
 select:hover,
-input:hover,
-.menu a:hover {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transform: translateY(-1px);
+textarea:hover {
   border-color: #98a8bd;
 }
 
-input:focus,
-select:focus {
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgb(49 87 213 / 22%);
+  outline-offset: 2px;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(49, 87, 213, .12);
 }
 
 input[readonly] {
@@ -206,6 +180,36 @@ input[readonly] {
   font-variant-numeric: tabular-nums;
 }
 
+/* Legacy field positions, used outside the responsive grids. */
+.field-position {
+  width: min(250px, 100%);
+  margin: 0 0 15px 35px;
+}
+
+.field-position-menu {
+  margin: 0 0 5px 15px;
+  text-align: center;
+}
+
+/* Full-width text field; padding leaves room for its border label. */
+.text-field {
+  grid-column: 1 / -1;
+}
+
+.text-field textarea {
+  display: block;
+  width: 100%;
+  min-height: 110px;
+  padding: 16px 12px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* Form actions and button variants. */
 .actions {
   display: flex;
   align-items: center;
@@ -216,7 +220,7 @@ input[readonly] {
 
 button {
   min-width: 112px;
-  height: 44px;
+  min-height: 44px;
   padding: 0 20px;
   border: 1px solid transparent;
   border-radius: 10px;
@@ -234,7 +238,7 @@ button:hover {
 .primary {
   color: #fff;
   background: var(--primary);
-  box-shadow: 0 5px 14px rgba(49, 87, 213, .24);
+  box-shadow: 0 5px 14px rgb(49 87 213 / 24%);
 }
 
 .primary:hover {
@@ -263,58 +267,40 @@ button:hover {
   background: #fff5f4;
 }
 
-@media (max-width: 850px) {
-
-  .grid-menu,
-  .grid-form {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .grid-layout {
-    grid-template-columns: 220px minmax(0, 1fr);
-  }
+/* Filter panel stays visible beside the content on wider screens. */
+.filter-card {
+  position: sticky;
+  top: 20px;
 }
 
-@media (max-width: 560px) {
-  .page {
-    width: min(100% - 20px, 1120px);
-    margin-top: 18px;
-  }
-
-  .card {
-    padding: 20px 16px;
-  }
-
-  .grid-menu,
-  .grid-voucher,
-  .grid-form {
-    grid-template-columns: 1fr;
-  }
-
-  .grid-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .filter-card {
-    position: static;
-  }
-
-  .actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  button {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .danger {
-    margin-left: 0;
-  }
+.filter-card .grid-voucher {
+  grid-template-columns: 1fr;
 }
 
-/* news */
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 720px;
+}
+
+.filter-field {
+  min-width: 0;
+}
+
+.filter-field label {
+  display: block;
+  margin-bottom: 6px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.filter-field input,
+.filter-field select {
+  height: 52px;
+}
+
+/* News card: the image remains in normal document flow. */
 .News-container {
   max-width: 900px;
   margin: 40px auto;
@@ -322,21 +308,16 @@ button:hover {
 }
 
 .news-card {
-  background: #fff;
-  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 10%);
 }
 
 .news-image img {
+  display: block;
   width: 100%;
   height: auto;
-  display: block;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  z-index: -1;
 }
 
 .news-content {
@@ -344,33 +325,24 @@ button:hover {
 }
 
 .news-title {
+  margin: 0 0 10px;
   font-size: 1.8rem;
-  margin-bottom: 10px;
 }
 
 .news-meta {
-  font-size: 0.9rem;
-  color: #888;
   margin-bottom: 15px;
+  color: var(--muted);
+  font-size: .9rem;
 }
 
 .news-text {
-  line-height: 1.6;
-  font-size: 1rem;
-  white-space: pre-line;
   width: 100%;
-  box-sizing: border-box;
+  line-height: 1.6;
+  white-space: pre-line;
 }
 
-body {
-  margin: 0;
-  background: #f3f6fb;
-  color: #334155;
-  font-family: "Segoe UI", Arial, sans-serif;
-}
-
+/* Waste collection table: horizontal scrolling keeps columns readable on phones. */
 .waste-page {
-  box-sizing: border-box;
   width: 100%;
   max-width: 1240px;
   margin: 32px auto;
@@ -379,9 +351,9 @@ body {
 
 .waste-card {
   overflow: hidden;
-  background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
+  background: var(--surface);
   box-shadow: 0 8px 30px rgb(15 23 42 / 5%);
 }
 
@@ -392,14 +364,13 @@ body {
 
 .waste-heading h1 {
   margin: 0;
-  color: #1e293b;
   font-size: 22px;
   font-weight: 650;
 }
 
 .waste-heading p {
   margin: 6px 0 0;
-  color: #64748b;
+  color: var(--muted);
   font-size: 14px;
 }
 
@@ -407,14 +378,8 @@ body {
   overflow-x: auto;
 }
 
-/*
 .waste-scroll:focus-visible {
-  outline: 3px solid #93c5fd;
-  outline-offset: -3px;
-}
-*/
-.waste-scroll:focus-visible {
-  outline: 3px solid rgb(37 99 235 / 15%);
+  outline: 3px solid rgb(49 87 213 / 22%);
   outline-offset: -3px;
 }
 
@@ -441,11 +406,11 @@ body {
 .waste-card .transaction-table thead th {
   padding-top: 15px;
   padding-bottom: 15px;
+  border-bottom: 1px solid #e2e8f0;
   background: #f8fafc;
-  color: #64748b;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 600;
-  border-bottom: 1px solid #e2e8f0;
 }
 
 .waste-card .transaction-table tbody td {
@@ -457,8 +422,8 @@ body {
 }
 
 .waste-card .transaction-table tbody tr {
-  background: #ffffff;
-  transition: background-color 150ms ease;
+  background: #fff;
+  transition: background-color .15s;
 }
 
 .waste-card .transaction-table tbody tr:focus-within {
@@ -471,10 +436,9 @@ body {
   }
 }
 
-/* Apartment and date controls */
+/* Table controls override the full-width form controls above. */
 .waste-card .transaction-table select,
 .waste-card .transaction-table input {
-  box-sizing: border-box;
   display: inline-block;
   width: 120px;
   height: 40px;
@@ -482,9 +446,8 @@ body {
   padding: 8px 10px;
   border: 1px solid #dce3ec;
   border-radius: 8px;
-  background: #ffffff;
+  background: #fff;
   color: #334155;
-  font: inherit;
   text-align: center;
   box-shadow: none;
 }
@@ -501,25 +464,7 @@ body {
   cursor: pointer;
 }
 
-/*
-.waste-card .transaction-table input:focus-visible,
-.waste-card .transaction-table select:focus-visible,
-.waste-card .transaction-table button:focus-visible {
-  outline: 3px solid #bfdbfe;
-  outline-offset: 2px;
-  border-color: #3b82f6;
-}
-*/
-
-.waste-card .transaction-table input:focus-visible,
-.waste-card .transaction-table select:focus-visible,
-.waste-card .transaction-table button:focus-visible {
-  outline: 3px solid rgb(37 99 235 / 15%);
-  outline-offset: 2px;
-  border-color: #3b82f6;
-}
-
-/* Waste icons */
+/* Waste category icons and row edit buttons. */
 .waste-icon {
   display: inline-flex;
   align-items: center;
@@ -555,7 +500,6 @@ body {
   color: #0f766e;
 }
 
-/* Edit buttons */
 .waste-card .transaction-table button {
   display: inline-flex;
   align-items: center;
@@ -570,12 +514,8 @@ body {
   border-radius: 8px;
   background: #eff6ff;
   color: #2563eb;
-  font: inherit;
   font-weight: 600;
   box-shadow: none;
-  cursor: pointer;
-  transition: background-color 150ms ease,
-    border-color 150ms ease;
 }
 
 .waste-card .transaction-table button:hover {
@@ -587,6 +527,28 @@ body {
   background: #bfdbfe;
 }
 
+.table-container {
+  margin-left: 25px;
+}
+
+/* At medium widths, reduce columns without shrinking fields into each other. */
+@media (max-width: 850px) {
+
+  .grid-menu,
+  .grid-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* On small screens, filter and form fields stack in one column. */
 @media (max-width: 700px) {
   .waste-page {
     margin: 16px auto;
@@ -602,82 +564,52 @@ body {
   }
 }
 
-/* table */
-.table-container {
+@media (max-width: 560px) {
+  .page {
+    width: calc(100% - 20px);
+    margin-top: 18px;
+  }
 
-  margin-left: 25px;
+  .card {
+    padding: 20px 16px;
+  }
+
+  .grid-menu,
+  .grid-voucher,
+  .grid-form,
+  .grid-layout,
+  .filter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .field.wide2,
+  .field.wide3 {
+    grid-column: 1 / -1;
+  }
+
+  .filter-card {
+    position: static;
+  }
+
+  .field-position {
+    margin-left: 0;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .actions button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .danger {
+    margin-left: 0;
+  }
+
+  .table-container {
+    margin-left: 0;
+  }
 }
-
-/*
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  max-width: 750px;
-}
-*/
-
-/* wide input text */
-.text-field {
-  grid-column: 1 / -1;
-}
-
-/*
-.text-field label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color:  #475467;
-}
-*/
-
-.text-field label {
-  z-index: 1;
-  top: -8px;
-  left: 12px;
-  padding: 0 6px;
-  color: #475467;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.text-field textarea {
-  width: 100%;
-  min-height: 110px;
-  padding: 12px;
-
-  font-family: inherit;
-  font-size: 16px;
-  line-height: 1.5;
-
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  box-sizing: border-box;
-  resize: vertical;
-}
-
-/*
-.text-field textarea:focus {
-  border-color: #2563eb;
-  outline: 3px solid rgb(37 99 235 / 15%);
-}
-*/
-
-.text-field textarea:focus {
-  border-color: #2563eb;
-  outline: 3px solid rgb(37 99 235 / 15%);
-}
-/*
-.character-counter {
-  display: block;
-  margin-top: 5px;
-  text-align: right;
-  font-size: 13px;
-  color: #64748b;
-}
-
-.character-counter.limit-reached {
-  color: #dc2626;
-  font-weight: 600;
-}
-*/

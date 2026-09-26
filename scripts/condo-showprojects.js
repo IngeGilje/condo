@@ -158,7 +158,7 @@ async function events() {
 function showFilter(projectId, amount, condoId) {
 
   // Start frame
-  let html = startTableFilter('filter-frame');
+  let html = startLineFilter('filter-frame');
 
   // Show projects
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg prosjekt', '', true);
@@ -170,7 +170,7 @@ function showFilter(projectId, amount, condoId) {
   html += inputText('filterAmount', 'Beløp', amount, 11,true);
 
   // End table filter
-  html += endTableFilter();
+  html += endLineFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

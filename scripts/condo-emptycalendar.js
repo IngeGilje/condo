@@ -130,13 +130,13 @@ async function events() {
 function showFilter(emptyCalendarId) {
 
   // Start filter
-  let html = startGridFilter("Tømmekalender");
+  let html = startBoxFilter("Tømmekalender");
 
   // Show date
   html += objEmptyCalendars.showSelectedEmptyCalendarsNew('filterEmptyCalendarId', 'Tømmedato', emptyCalendarId, 'Velg Dato', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }

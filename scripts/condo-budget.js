@@ -145,7 +145,7 @@ async function events() {
 function showFilter(budgetId) {
 
   // Start filter
-  let html = startGridFilter("Forfall");
+  let html = startBoxFilter("Forfall");
 
   //const rowNumberBudget = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
 
@@ -153,7 +153,7 @@ function showFilter(budgetId) {
   html += objBudgets.showSelectedBudgetsNew('filterBudgetId', 'Budsjett', budgetId, 'Velg Budsjett', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

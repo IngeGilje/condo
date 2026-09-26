@@ -77,17 +77,17 @@ async function events() {
 function showFilter() {
 
   // Start frame
-  //let html = startTableFilter("filter-frame");
+  //let html = startLineFilter("filter-frame");
 
   // Start filter
-  let html = startGridFilter("Tømmekalender");
+  let html = startBoxFilter("Tømmekalender");
 
   // Show years
   const year = today.getFullYear();
   html += showSelectedNumbers('filterYear', 'År', year, 2020, 2030, true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }

@@ -126,16 +126,6 @@ async function events() {
     };
   });
 
-  /*
-  // cancel
-  document.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('cancel')) {
-
-      resetValues();
-    };
-  });
-  */
-
   // update a bankaccounts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('update')) {
@@ -148,7 +138,6 @@ async function events() {
   // Delete a transactions row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
-      //if ([...event.target.classList].some(cls => cls.startsWith('delete'))) {
 
       let transactionId = Number(document.querySelector(".filterTransactionId").value);
       await deleteTransactionsRow(transactionId);
@@ -212,13 +201,13 @@ async function events() {
 function showFilter(transactionId) {
 
   // Start filter
-  let html = startGridFilter("Bilagsnummer");
+  let html = startBoxFilter("Bilagsnummer");
 
   // Show transactions
   html += objTransactions.showSelectedTransactionsNew("filterTransactionId", transactionId, '', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }

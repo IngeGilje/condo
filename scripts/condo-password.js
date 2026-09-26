@@ -117,16 +117,16 @@ async function events() {
 function showFilter(userId) {
 
   // Start frame
-  //let html = startTableFilter('filter-frame');
+  //let html = startLineFilter('filter-frame');
 
   // Start  frame
-  let html = startGridFilter("Tømmekalender");
+  let html = startBoxFilter("Tømmekalender");
 
   // Show users
   html += objUsers.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }

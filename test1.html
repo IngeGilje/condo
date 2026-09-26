@@ -1,95 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <title>Bankontotransaksjoner</title>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      max-width: 750px;
-    }
-
-    .text-field {
-      grid-column: 1 / -1;
-    }
-
-    .text-field label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #334155;
-    }
-
-    .text-field textarea {
-      width: 100%;
-      min-height: 110px;
-      padding: 12px;
-
-      font-family: inherit;
-      font-size: 16px;
-      line-height: 1.5;
-
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      box-sizing: border-box;
-      resize: vertical;
-    }
-
-    .text-field textarea:focus {
-      border-color: #2563eb;
-      outline: 3px solid rgb(37 99 235 / 15%);
-    }
-
-    .character-counter {
-      display: block;
-      margin-top: 5px;
-      text-align: right;
-      font-size: 13px;
-      color: #64748b;
-    }
-
-    .character-counter.limit-reached {
-      color: #dc2626;
-      font-weight: 600;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/condo.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <div class="form-grid">
-    <div class="text-field">
-      <label for="content">Text</label>
-
-      <textarea
-        id="content"
-        class="content"
-        name="content"
-        rows="4"
-        maxlength="250"></textarea>
+    <!-- start showMenu -->
+    <section 
+      class="card"
+    >
+      <h2 
+        class="card-title"
+      >
+        Meny
+      </h2>
+      <div 
+        class="grid grid-menu"
+      >
+    
+    <div 
+      class="field"
+    >
+      <label 
+        for="news-news"
+      >
+        Nyheter
+      </label>
+      <select 
+        id="news-news"
+        onchange="window.location.href=this.value"
+      >
+        <option 
+          value="http://localhost/condo-shownews.html"
+          
+        >
+          Vis Nyheter
+        </option>
+        <option 
+          value="http://localhost/condo-news.html"
+          
+        >
+          Rediger Nyheter
+        </option>
+        <option 
+          value="http://localhost/condo-news.html"
+          selected
+        >
+          Menyvalg
+        </option>
+      </select>
     </div>
-  </div>
-
-  <script>
-    const textArea = document.querySelector("#content");
-    const counter = document.querySelector("#characterCounter");
-    const maximumLength = 250;
-
-    function updateCharacterCounter() {
-      const currentLength = textArea.value.length;
-
-      counter.textContent =
-        `${currentLength} / ${maximumLength} characters`;
-
-      counter.classList.toggle(
-        "limit-reached",
-        currentLength >= maximumLength
-      );
-    }
-  </script>
-
+    
+    <div 
+      class="field"
+    >
+      <label 
+        for="emptycalendar-emptycalendar"
+      >
+        Tømmekalender
+      </label>
+      <select 
+        id="emptycalendar-emptycalendar"
+        onchange="window.location.href=this.value"
+      >
+        <option 
+          value="http://localhost/condo-showemptycalendars.html"
+          
+        >
+          Vis Tømmekalender
+        </option>
+        <option 
+          value="http://localhost/condo-emptycalendar.html"
+          
+        >
+          Rediger Tømmekalender
+        </option>
+        <option 
+          value="http://localhost/condo-emptycalendar.html"
+          selected
+        >
+          Menyvalg
+        </option>
+      </select>
+    </div>
+    
+    <div 
+      class="field"
+    >
+      <label 
+        for="condominium-condominium"
+      >
+        Sameie
+      </label>
+      <select 
+        id="condominium-condominium"
+        onchange="window.location.href=this.value"
+      >
+        <option 
+          value="http://localhost/condo-condominium.html"
+          
+        >
+          Rediger Sameie
+        </option>
+        <option 
+          value="http://localhost/condo-bankaccount.html"
+          
+        >
+          Rediger Bankkonto
+        </option>
+        <option 
+          value="http://localhost/condo-showaccounts.html"
+          
+        >
+          Vis Konti
+        </option>
+        <option 
+          value="http://localhost/condo-account.html"
+          
+        >
+          Rediger Konto
+        </option>
+        <option 
+          value="http://localhost/condo-condominium.html"
+          selected
+        >
+          Menyvalg
+        </option>
+      </select>
+    </div>
+    
+    <div 
+      class="field"
+    >
+      <label 
+        for="user-user"
+      >
+        Bruker
+      </label>
+      <select 
+        id="user-user"
+        onchange="window.location.href=this.value"
+      >
+        <option 
+          value="http://localhost/condo-user.html"
+          
+        >
+          Rediger Bruker
+        </option>
+        <option 
+          value="http://localhost/condo-password.html"
+          
+        >
+          Rediger Passord
+        </option>
+        <option 
+          value="http://localhost/condo-condo.html"
+          
+        >
+          Rediger Leilighet
+        </option>
+        <option 
+          value="http://localhost/condo-userbankaccount.html"
+          
+        >
+          Rediger Bankkonto
+        </option>
+        <option 
+          value="http://localhost/condo-user.html"
+          selected
+        >
+          Menyvalg
+        </option>
+      </select>
+    </div>
+    
+    <div 
+      class="field"
+    >
+      <label 
+        for="transaction-transaction"
+      >
+        Transaksjoner
+      </label>
+      <select 
+        id="transaction-transaction"
+        onchange="window.location.href=this.value"
+      >
+        <option 
+          value="http://localhost/condo-showtransactions.html"
+          
+        >
+          Vis Transaksjoner
+        </option>
+        <option 
+          value="http://localhost/condo-transaction.html"
+          
+        >
+          Rediger Transaksjon
+        </option>
+        <option 
+          value="http://localhost/condo-budget.html"
+          
+        >
+          Rediger Budsjett
+        </option>
+        <option 
+          value="http://localhost/condo-showbudgets.html"
+          
+        >
+          Vis Budsjett
+        </option>
+        <option 
+          value="http://localhost/condo-annualaccount.html"
+          
+        >
+          Vis Årsregnskap
+        </option>
+        <option 
+          value="http://localhost/condo-importfile.html"
+          
+        >
+          Hent transaksjoner
+        </option>
+        <option 
+          value="http://localhost/condo-liquidity.html"
+          
+        >
+          Vis Likviditet
+        </option>
+        <option 
+          value="http://localhost/condo-showtransactions.html"
+          selected
+        >
+          Menyvalg
+        </option>
+      </select>
+    </div>
+    
+    <div 
+      class="field"
+    >
+      <label 
+        for="due-due"
+      >
+        Forfall
+      </label>
+      <select 
+        id="due-due"
+        onchange="window.location.href=this.value"
+      >
+        <option 
+          value="http://localhost/condo-showdues.html"
+          
+        >
+          Vis Forfall
+        </option>
+        <option 
+          value="http://localhost/condo-due.html"
+          
+        >
+          Rediger Forfall
+        </option>
+        <option 
+          value="http://localhost/condo-supplier.html"
+          
+        >
+          Rediger Leverandør
+        </option>
+        <option 
+          value="http://localhost/condo-showcommoncosts.html"
+          
+        >
+          Vis Felleskostnader
+        </option>
+        <option 
+          value="http://localhost/condo-commoncost.html"
+          
+        >
+          Rediger Felleskostnad
+        </option>
+        <option 
+          value="http://localhost/condo-overview.html"
+          
+        >
+          Vis Betalingsoversikt
+        </option>
+        <option 
+          value="http://localhost/condo-showdues.html"
+          selected
+        >
+          Menyvalg
+        </option>
+      </select>
+    </div>
+    
+    <div 
+      class="field"
+    >
+      <label 
+        for="project-project"
+      >
+        Prosjekt
+      </label>
+      <select 
+        id="project-project"
+        onchange="window.location.href=this.value"
+      >
+        <option 
+          value="http://localhost/condo-project.html"
+          
+        >
+          Rediger Prosjekt
+        </option>
+        <option 
+          value="http://localhost/condo-showprojects.html"
+          
+        >
+          Vis Prosjekt
+        </option>
+        <option 
+          value="http://localhost/condo-project.html"
+          selected
+        >
+          Menyvalg
+        </option>
+      </select>
+    </div>
+    
+    <div 
+      class="field"
+    >
+      <label 
+        for="logIn-logIn"
+      >
+        Logg Ut
+      </label>
+      <select 
+        id="logIn-logIn"
+        onchange="window.location.href=this.value"
+      >
+        <option 
+          value="http://localhost/condo-login.html"
+          
+        >
+          Logg ut
+        </option>
+        <option 
+          value="http://localhost/condo-login.html"
+          selected
+        >
+          Menyvalg
+        </option>
+      </select>
+    </div>
+    
+      </div>
+    </section>
+    <!-- end showMenu -->
+    
+    
 </body>
+
 </html>

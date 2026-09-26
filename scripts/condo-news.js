@@ -111,13 +111,13 @@ async function events() {
 function showFilter(newsId) {
 
   // Start filter
-  let html = startGridFilter("Nyheter");
+  let html = startBoxFilter("Nyheter");
 
   // Show news
   html += objNews.showSelectedNewsNew('filterNewsId', newsId, '', '', enableChanges);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

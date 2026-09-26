@@ -187,16 +187,16 @@ function resetValues() {
 function showFilter(supplierId) {
 
   // Start frame
-  //let html = startTableFilter('filter-frame');
+  //let html = startLineFilter('filter-frame');
 
   // Start filter
-  let html = startGridFilter("Leverandør");
+  let html = startBoxFilter("Leverandør");
 
   // Show suppliers
   html += objSuppliers.showSelectedSuppliersNew('filterSupplierId', 'Leverandør', supplierId, '', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 }

@@ -119,7 +119,7 @@ async function events() {
 function showFilter(fixedCost) {
 
   // Start frame
-  let html = startTableFilter('filter-frame');
+  let html = startLineFilter('filter-frame');
 
   // Show types of account
   if (fixedCost === 'Y') fixedCost = constFixedCost;
@@ -128,7 +128,7 @@ function showFilter(fixedCost) {
   html += inputValues('filterFixedCost','Kostnadstype',  true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
 
   // End filter
-  html += endTableFilter();
+  html += endLineFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

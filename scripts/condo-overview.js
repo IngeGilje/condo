@@ -150,8 +150,8 @@ async function events() {
 // Show filter
 function showFilter(condoId) {
 
-  // Start frame
-  let html = startTableFilter('filter-frame');
+  // Start filter
+  let html = startLineFilter('filter-frame');
 
   // Show condos
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
@@ -163,11 +163,10 @@ function showFilter(condoId) {
   // To date
   // Current date
   let toDate = getCurrentISODate();
-  //html += showDate('Til Dato', 'filterToDate', toDate, true)
   html += inputDate('filterToDate', 'Til Dato', toDate, true);
 
   // End filter
-  html += endTableFilter();
+  html += endLineFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

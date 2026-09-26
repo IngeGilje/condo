@@ -157,7 +157,7 @@ async function events() {
   // change bank account transaction
   document.addEventListener('click', async (event) => {
     if ([...event.target.classList].some(cls => cls.startsWith('change'))) {
-      
+
       const arrayPrefixes = ['change'];
 
       // Find the first matching class
@@ -201,32 +201,35 @@ async function events() {
 // Show filter
 function showFilter(condoId, accountId, fromDate, toDate, amount) {
 
-    // Start frame
-  let html = startTableFilter('filter-frame');
+  // Start frame
+  //let html = startLineFilter('filter-frame');
+  html = startLineFilter();
 
   // Show condos
-  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
+  //html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
+  html += objCondo.showLineFilterCondos('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true);
 
   // Show accounts
-  html += objAccounts.showSelectedAccountsNew('filterAccountId', 'Konto', accountId, '', 'Vis alle', true);
+  html += objAccounts.showLineFilterAccounts('filterAccountId', 'Konto', accountId, '', 'Vis alle', true);
 
   // From date
   fromDate = formatNumberToISODate(fromDate);
   //html += showDate('Fra Dato', 'filterFromDate', fromDate, true)
-  html += inputDate('filterFromDate', 'Fra Dato', fromDate, true);
+  html += inputLineFilterDate('filterFromDate', 'Fra Dato', fromDate, true);
 
   // To date
   toDate = formatNumberToISODate(toDate);
   //html += showDate('Til Dato', 'filterToDate', toDate, true)
-  html += inputDate('filterToDate', 'Til Dato', toDate, true)
+  html += inputLineFilterDate('filterToDate', 'Til Dato', toDate, true)
 
   // Amount
   amount = formatNumberToNorAmount(amount);
   //html += showAmount('Beløp', 'filterAmount', amount, true);
-  html += inputText('filterAmount', 'Beløp', amount, 11, true);
+  html += inputLineFilterText('filterAmount', 'Beløp', amount, 11, true);
 
-   // End filter
-  html += endTableFilter();
+  // End filter
+  //html += endLineFilter();
+  html += endLineFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -265,7 +268,7 @@ function showTransactions() {
 
   // Start table
   let html = startTable("Kontobevegelser", "");
-  html += tableHeader(columnWidths, 'Dato', 'Konto', 'Leilighet', 'Innbetalinger', 'Utbetalinger',  '');
+  html += tableHeader(columnWidths, 'Dato', 'Konto', 'Leilighet', 'Innbetalinger', 'Utbetalinger', '');
 
   objTransactions.arrayTransactions.forEach(bankTransaction => {
 

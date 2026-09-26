@@ -213,7 +213,7 @@ function showFilter(accountYear, fromDate, toDate) {
 
   // Start frame
   //let html = startFrame('filter-frame');
-  let html = startTableFilter('filter-frame');
+  let html = startLineFilter('filter-frame');
 
   // Show year
   html += showSelectedNumbers('filterAccountYear', 'Regnskapsår', accountYear,2020, 2030,  true);
@@ -236,7 +236,7 @@ function showFilter(accountYear, fromDate, toDate) {
    html += inputText('filterCommonCostSquareMeter', 'Pris per m2', 11,commonCostSquareMeter, true);
 
   // End filter
-  html += endTableFilter();
+  html += endLineFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

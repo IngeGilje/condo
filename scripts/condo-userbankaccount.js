@@ -100,13 +100,13 @@ async function events() {
 function showFilter(userBankAccountId) {
 
   // Start filter
-  let html = startGridFilter("Bankkonto");
+  let html = startBoxFilter("Bankkonto");
 
   // Show user bank accounts filter
   html += objUserBankAccounts.showSelectedUserBankAccountsNew('filterUserBankAccountId', 'Brukerkonto', userBankAccountId, '', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

@@ -131,19 +131,16 @@ async function events() {
 function showFilter(condominiumId, userId) {
 
   // Start filter
-  let html = startGridFilter("Bruker");
+  let html = startBoxFilter("Bruker");
 
   // Show condominiums
   html += objCondominiums.showSelectedCondominiumsNew('filterCondominiumId', 'Sameie', condominiumId, '', '', enableChanges);
-
-  // New line
-  html += " ";
 
   // Show users
   html += objUsers.showSelectedUsersNew('filterUserId', 'Bruker', userId, '', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -153,18 +150,16 @@ function showUser(userId) {
   // row number user
   const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === userId);
 
-  // Empty line
-  html = emptyLine();
-  html += startGrid('Bruker');
+  let html = startGrid('Bruker');
+
+   // condoId
+  const condoId = objUsers.arrayUsers[rowNumberUser]?.condoId ?? 0;
+  html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, '', 'Velg leilighet', enableChanges);
+  html += "<div></div>";
 
   // email
   const email = objUsers.arrayUsers[rowNumberUser]?.email ?? '';
   html += inputText('email', 'E-mail', email, 45, enableChanges);
-  html += "<div></div>";
-
-  // condoId
-  const condoId = objUsers.arrayUsers[rowNumberUser]?.condoId ?? 0;
-  html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, '', 'Velg leilighet', enableChanges);
 
   // Activ user?
   let resident = objUsers.arrayUsers[rowNumberUser]?.resident ?? '';
@@ -186,7 +181,6 @@ function showUser(userId) {
   // security level
   const securityLevel = objUsers.arrayUsers[rowNumberUser]?.securityLevel ?? 0;
   html += showSelectedNumbers('securityLevel', 'Sikkerhetsnivå', Number(securityLevel), 1, 9, enableChanges);
-
 
   // password 
   const password = objUsers.arrayUsers[rowNumberUser]?.password ?? '';

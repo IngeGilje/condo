@@ -158,16 +158,16 @@ async function events() {
 function showFilter(projectId) {
 
   // Start frame
-  //let html = startTableFilter('filter-frame');
+  //let html = startLineFilter('filter-frame');
 
   // Start filter
-  let html = startGridFilter("Prosjekt");
+  let html = startBoxFilter("Prosjekt");
 
   // Show projects
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg prosjekt', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
 
   document.querySelector(".showFilter").innerHTML = html;
 

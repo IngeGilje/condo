@@ -210,6 +210,113 @@ class Condo extends Condos {
     return html;
   }
 
+  // Show condos 
+  showLineFilterCondos(className, label, condoId, selectNone, selectAll, enableChanges) {
+
+    let selectedValue = false;
+
+    /*
+    let html = `
+    <!-- start showLineFilterCondos -->
+    <div 
+      class="field"
+    >
+      <label for="${className}">
+        ${label}
+      </label>
+      <select 
+        id="${className}"
+        class="${className}"
+        ${(enableChanges) ? '' : 'readonly'}
+      >
+    `;
+    */
+   
+   let html = `
+    <!-- start showLineFilterCondos -->
+    <div 
+      class="filter-field"
+    >
+      <div
+        class="grid"
+      >
+        <div 
+          class="field"
+        >
+          <label 
+            for="${className}"
+          >
+            ${label}
+          </label>
+          <select 
+            id="${className}"
+            class="${className}"
+            ${(enableChanges) ? '' : 'readonly'}
+          >
+    `;
+
+    // Check if condos array is empty
+    if (this.arrayCondo.length > 0) {
+      this.arrayCondo.forEach((condo) => {
+
+        html += `
+        <option 
+          value=${condo.condoId}
+          ${(condo.condoId === condoId) ? 'selected' : ''}
+        >
+          ${condo.name.trim()}
+        </option>`;
+        if (condo.condoId === condoId) selectedValue = true;
+      });
+    } else {
+
+      // No condos
+      html += `
+      <option 
+        value="0" 
+         ${(selectedValue) ? '' : 'selected'} 
+      >
+        Ingen Leiligheter
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select all
+    if (selectAll && (this.arrayCondo.length > 0)) {
+
+      html += `
+      <option 
+        value=${this.nineNine}
+        ${(selectedValue) ? '' : 'selected'} 
+      >
+        ${selectAll}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    // Select none
+    if (selectNone && (this.arrayCondo.length > 0)) {
+      html += `
+      <option 
+        value=0
+        ${(!selectedValue) ? 'selected' : ''}
+      >
+        ${selectNone}
+      </option>`;
+      if (!selectedValue) selectedValue = true;
+    }
+
+    html += `
+          </select >
+        </div>
+      </div>
+    </div>
+    <!-- end showLineFilterCondos -->
+    `;
+
+    return html;
+  }
+
   // get condo
   async loadCondoTable(condominiumId) {
 

@@ -124,16 +124,16 @@ async function events() {
 function showFilter(condoId) {
 
   // Start frame
-  //let html = startTableFilter('filter-frame');
+  //let html = startLineFilter('filter-frame');
 
   // Start filter
-  let html = startGridFilter("leilighet");
+  let html = startBoxFilter("leilighet");
 
   // Show condo
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 

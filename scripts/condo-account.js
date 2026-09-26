@@ -125,13 +125,13 @@ async function events() {
 function showFilter(accountId) {
 
   // Start filter
-  let html = startGridFilter("Tømmekalender");
+  let html = startBoxFilter("Tømmekalender");
 
   // Show types of account
   html += objAccounts.showSelectedAccountsNew('filterAccountId', 'Konto', accountId, '', '', true);
 
   // End filter
-  html += endGridFilter();
+  html += endBoxFilter();
   document.querySelector(".showFilter").innerHTML = html;
 }
 
@@ -152,13 +152,11 @@ function showAccount(accountId) {
   //html += inputValues('Kostnadstype', 'fixedCost', '', enableChanges, selected, constFixedCost, constVariableCost)
   html += inputValues('fixedCost', 'Kostnadstype', enableChanges, selected, constFixedCost, constVariableCost);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // name
   const name = objAccounts.arrayAccounts[rowNumberAccount]?.name ?? '';
-  html += showTextNew('name', 'Kontonavn', name, enableChanges, 'Kontonavn');
+  html += showTextNew('name', 'Kontonavn',  name, enableChanges, 'Kontonavn');
   html += "<div></div>";
-  //html += "<div></div>";
 
   html += endGrid();
 

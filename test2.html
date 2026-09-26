@@ -7,42 +7,45 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/condo.css">
-  <link rel="stylesheet" href="styles/main.css">
+
+  <style>
+ 
+  
+   </style>
 </head>
 
 <body>
 
-  <main class="page">
+  <div class="filter-grid">
+    <div class="filter-field">
+      <label for="leilighet">Leilighet</label>
+      <select id="leilighet">
+        <option>Vis alle</option>
+      </select>
+    </div>
 
+    <div class="filter-field">
+      <label for="konto">Konto</label>
+      <select id="konto">
+        <option>Vis alle</option>
+      </select>
+    </div>
 
-    <!-- start startGridFilter -->
-    <aside class="card filter-card">
-      <h2 class="card-title">
-        Filter
-      </h2>
-      <div class="grid grid-voucher">
-        <div class="field">
-          <label>
-            Nyheter
-          </label>
-          <!-- end startGridFilter -->
+    <div class="filter-field">
+      <label for="fraDato">Fra dato</label>
+      <input id="fraDato" type="text" value="01.08.2026">
+    </div>
 
-          <!-- start showSelectedNewsNew -->
-          <select class="filterNewsId">
-            <option value="0" selected>
-              Ingen Nyheter
-            </option>
-          </select>
-          <!-- end showSelectedNewsNew -->
+    <div class="filter-field">
+      <label for="tilDato">Til dato</label>
+      <input id="tilDato" type="text" value="24.09.2026">
+    </div>
 
-          <!-- start endGridFilter -->
-        </div>
-      </div>
-    </aside>
-    <!-- end endGridFilter -->
-
-  </main>
+    <div class="filter-field">
+      <label for="belop">Beløp</label>
+      <input id="belop" type="text" value="0,00">
+    </div>
+  </div>
 </body>
 
 </html>
