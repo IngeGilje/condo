@@ -39,20 +39,6 @@ async function main() {
       let html = objOverview.showMenu(objOverview.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objOverview.showHorizontalMenu("filter-frame", objOverview.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show due menu
-      html = objOverview.showHorizontalMenu("filter-frame", objOverview.arrayMenuDue);
-      document.querySelector('.menuDue').innerHTML = html;
-      objOverview.markActivatedApplication(objOverview.arrayMenuNews, applicationName);
-      */
-
       const resident = 'Y';
       await objUsers.loadUsersTable(objOverview.condominiumId, resident, objOverview.nineNine);
       await objCondo.loadCondoTable(objOverview.condominiumId);

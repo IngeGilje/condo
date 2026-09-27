@@ -40,20 +40,6 @@ async function main() {
       let html = objBudgets.showMenu(objBudgets.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      // Change frame title
-      //setFrameTitle("menu-frame", "Meny");
-
-      /*
-      // Show main menu
-      let html = objBudgets.showHorizontalMenu("filter-frame", objBudgets.arrayMainMenu);
-      document.querySelector('.menuMain').innerHTML = html;
-
-      // Show transaction menu
-      html = objBudgets.showHorizontalMenu("filter-frame", objBudgets.arrayMenuTransaction);
-      document.querySelector('.menuTransaction').innerHTML = html;
-      objBudgets.markActivatedApplication(objBudgets.arrayMenuTransaction,applicationName);
-      */
-
       const resident = 'Y';
       await objUsers.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
       const fixedCost = 'A';
