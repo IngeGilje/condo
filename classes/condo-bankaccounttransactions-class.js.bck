@@ -1,4 +1,4 @@
-class BankAccountTransaction extends Condos {
+class BankAccountTransactions extends Condos {
 
   // Bank account transactions information
   arrayBankAccountTransactions = Array;;

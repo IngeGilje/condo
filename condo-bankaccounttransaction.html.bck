@@ -46,7 +46,7 @@
   <script src="classes/condo-suppliers-class.js"></script>
   <script src="classes/condo-userbankaccounts-class.js"></script>
   <script src="classes/condo-condominiums-class.js"></script>
-  <script src="classes/condo-bankaccounttransaction-class.js"></script>
+  <script src="classes/condo-bankaccounttransactions-class.js"></script>
   <script src="scripts/condo-bankaccounttransaction.js"></script>
 </body>
 
