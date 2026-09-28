@@ -10,8 +10,6 @@ const objDues = new Dues('dues');
 const enableChanges = (objDues.securityLevel > 5);
 const applicationName = "condo-showdues";
 
-const columnWidths = [150, 150, 175, 175, 100];
-
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramDueId = Number(queryParameters.get("dueId"));
@@ -146,17 +144,15 @@ function showDues() {
 
   let totalPriceYear = 0;
 
-  // start table
-  let html = emptyLine();
-  html += objDues.initializeTable(columnWidths);
 
-  // Table header (<tr></tr>)
   const filterYear = Number(document.querySelector(".filterYear").value);
   const filterMonth = Number(document.querySelector(".filterMonth").value);
   const filterCondoId = Number(document.querySelector(".filterCondoId").value);
 
-  html += objDues.showTableHeader('Dato', 'Leilighet', `K.timer`, 'Beløp', '');
+ let html = startTable("Forfall", "");
+  html += tableHeader( 'Dato', 'Leilighet', `K.timer`, 'Beløp', '');
 
+  //html += objDues.showTableHeader('Dato', 'Leilighet', `K.timer`, 'Beløp', '');
   objDues.arrayDues.forEach((due) => {
 
     // Filter

@@ -3,16 +3,13 @@
 // Activate objects
 const today = new Date();
 const objUsers = new Users('users');
-const objDues = new Dues('dues');
 const objAccounts = new Accounts('accounts');
 const objCondo = new Condo('condo');
 const objTransactions = new Transactions('transactions');
-const objOverview = new Overview('overview');
+const objDues = new Dues('dues');
 
-const enableChanges = (objOverview.securityLevel > 5);
+const enableChanges = (objDues.securityLevel > 5);
 const applicationName = "condo-overview";
-
-const columnWidths = [150, 100, 150, 175, 150, 175];
 
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
@@ -26,7 +23,7 @@ async function main() {
 
     // Validate LogIn
     securityLevel = sessionStorage.getItem("securityLevel");
-    if ((objOverview.condominiumId === 0) || (objOverview.user === null)) {
+    if ((objDues.condominiumId === 0) || (objDues.user === null)) {
 
       // LogIn is not valid
       const URL = (objUsers.serverStatus === 1)
@@ -36,34 +33,34 @@ async function main() {
     } else {
 
       // Show vertical menu
-      let html = objOverview.showMenu(objOverview.securityLevel);
+      let html = objDues.showMenu(objDues.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'Y';
-      await objUsers.loadUsersTable(objOverview.condominiumId, resident, objOverview.nineNine);
-      await objCondo.loadCondoTable(objOverview.condominiumId);
+      await objUsers.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
+      await objCondo.loadCondoTable(objDues.condominiumId);
       const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objOverview.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objDues.condominiumId, fixedCost);
 
       // Show filter
       // get current condo id
       let condoId = 0;
-      const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objOverview.userId);
+      const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objDues.userId);
       if (rowNumberUser !== -1) {
         condoId = objUsers.arrayUsers[rowNumberUser].condoId;
       }
       showFilter(condoId);
 
       condoId = Number(document.querySelector('.filterCondoId').value);
-      const accountId = objOverview.nineNine;
+      const accountId = objDues.nineNine;
       const deleted = 'N';
       let fromDate = document.querySelector('.filterFromDate').value;
-      fromDate = objOverview.formatDateToNumber(fromDate);
+      fromDate = objDues.formatDateToNumber(fromDate);
       let toDate = document.querySelector('.filterToDate').value;
-      toDate = objOverview.formatDateToNumber(toDate);
-      await objDues.loadDuesTable(objOverview.condominiumId);
+      toDate = objDues.formatDateToNumber(toDate);
+      await objDues.loadDuesTable(objDues.condominiumId);
       const orderBy = 'condoId ASC';
-      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, objDues.nineNine, objDues.nineNine, 0, fromDate, toDate);
 
       // Show dues
       showDues();
@@ -96,7 +93,7 @@ async function events() {
       // condo
       const condoId = Number(document.querySelector('.filterCondoId').value);
 
-      const accountId = objOverview.nineNine;
+      const accountId = objDues.nineNine;
       const deleted = 'N';
 
       let fromDate = document.querySelector('.filterFromDate').value;
@@ -105,9 +102,9 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = formatISODateToNumber(toDate);
 
-      await objDues.loadDuesTable(objOverview.condominiumId);
+      await objDues.loadDuesTable(objDues.condominiumId);
       const orderBy = 'condoId ASC';
-      await objTransactions.loadTransactionsTable(orderBy, objOverview.condominiumId, deleted, condoId, objOverview.nineNine, objOverview.nineNine, 0, fromDate, toDate);
+      await objTransactions.loadTransactionsTable(orderBy, objDues.condominiumId, deleted, condoId, objDues.nineNine, objDues.nineNine, 0, fromDate, toDate);
 
       // Show dues
       showDues();
@@ -124,7 +121,7 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
-      let url = (objOverview.serverStatus === 1)
+      let url = (objDues.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}condo-login.html`;
@@ -159,13 +156,6 @@ function showFilter(condoId) {
 // Show dues
 function showDues() {
 
-  /*
-  let html = emptyLine();
-
-  // Start table
-  html += objOverview.initializeTable(columnWidths);
-  */
-
   let sumDue = 0;
   let sumKilowattHour = 0;
 
@@ -175,15 +165,9 @@ function showDues() {
   let filterToDate = document.querySelector('.filterToDate').value;
   filterToDate = formatISODateToNumber(filterToDate);
 
-  /*
-  // Header
-  html += objOverview.showTableHeader('', '', '', 'Forfall', '', '');
-  html += objOverview.showTableHeader('Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
-  */
-
   // Start table
   let html = startTable("Forfall", "");
-  html += tableHeader(columnWidths, 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  html += tableHeader( 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
 
   objDues.arrayDues.forEach((due) => {
 
@@ -237,10 +221,10 @@ function showDues() {
   sumDue = formatNumberToNorAmount(sumDue);
   sumKilowattHour = formatNumberToNorAmount(sumKilowattHour);
 
-  html += objOverview.insertTableRow('font-weight: 600;', '', '', 'Sum', sumDue, '', '');
+  html += objDues.insertTableRow('font-weight: 600;', '', '', 'Sum', sumDue, '', '');
   html += "</tr>"
 
-  html += objOverview.insertTableRow('', '', '', '', '', '', '');
+  html += objDues.insertTableRow('', '', '', '', '', '', '');
   html += "</tr>"
 
   // The end of the table
@@ -250,16 +234,6 @@ function showDues() {
 
 // Transactions
 function showTransactions() {
-
-  /*
-  // Start table
-  let html = objOverview.initializeTable(columnWidths);
-
-  // Header
-
-  html += objOverview.showTableHeader('', '', '', 'Innbetalinger', '', '');
-  html += objOverview.showTableHeader('', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
-  */
 
   const filterCondoId = Number(document.querySelector('.filterCondoId').value);
   let filterFromDate = document.querySelector('.filterFromDate').value;
@@ -272,14 +246,14 @@ function showTransactions() {
 
   // Start table
   let html = startTable("Innbetalinger", "");
-  html += tableHeader(columnWidths, '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  html += tableHeader( '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
     if ((bankTransaction.condoId === filterCondoId || filterCondoId === objDues.nineNine)
       && (bankTransaction.date >= filterFromDate && bankTransaction.date <= filterToDate)) {
 
       // insert a table row (<tr></td>)
-      html += objOverview.insertTableRow('', '');
+      html += objDues.insertTableRow('', '');
 
       // condos
       className = `condo${bankTransaction.transactionId}`;
@@ -324,10 +298,10 @@ function showTransactions() {
   sumPayments = formatNumberToNorAmount(sumPayments);
 
 
-  html += objOverview.insertTableRow('font-weight: 600;', '', '', '', 'Sum', sumIncomes, '');
+  html += objDues.insertTableRow('font-weight: 600;', '', '', '', 'Sum', sumIncomes, '');
   html += "</tr>"
 
-  html += objOverview.insertTableRow('', '', '', '', '', '', '');
+  html += objDues.insertTableRow('', '', '', '', '', '', '');
 
   // The end of the table
   html += endTable();
@@ -336,11 +310,6 @@ function showTransactions() {
 
 // show how much to pay
 function showHowMuchToPay() {
-
-  /*
-  // Start table
-  let html = objOverview.initializeTable(columnWidths);
-  */
 
   let sumIncome = 0;
   let sumPayment = 0;
@@ -380,15 +349,9 @@ function showHowMuchToPay() {
   sumIncome += sumPayment;
   let overPay = sumIncome - sumToPay;
 
-  /*
   html += (overPay >= 0)
-    ? objOverview.showTableHeader('', '', '', 'Til gode', '', '')
-    : objOverview.showTableHeader('', '', '', 'Skyldig', '', '');
-  */
-
-  html += (overPay >= 0)
-    ? tableHeader(columnWidths, '', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : tableHeader(columnWidths, '', '', '', 'Forfall', 'Betalt', 'Skyldig')
+    ? tableHeader( '', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : tableHeader( '', '', '', 'Forfall', 'Betalt', 'Skyldig')
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
@@ -398,19 +361,19 @@ function showHowMuchToPay() {
 
   // Show sum
   let toDate = document.querySelector('.filterToDate').value;
-  toDate = objOverview.formatDateToNumber(toDate);
+  toDate = objDues.formatDateToNumber(toDate);
 
   // get current condo id
   let condoId = 0;
-  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objOverview.userId);
+  const rowNumberUser = objUsers.arrayUsers.findIndex(user => user.userId === objDues.userId);
   if (rowNumberUser !== -1) {
     condoId = objUsers.arrayUsers[rowNumberUser].condoId;
   }
-  let openingBalance = objTransactions.getTransactions(objOverview.condominiumId, condoId, toDate);
-  openingBalance += objDues.getDues(objOverview.condominiumId, condoId, toDate);
+  let openingBalance = objTransactions.getTransactions(objDues.condominiumId, condoId, toDate);
+  openingBalance += objDues.getDues(objDues.condominiumId, condoId, toDate);
 
   openingBalance = formatNumberToNorAmount(openingBalance);
-  html += objOverview.insertTableRow('font-weight: 600;', '', '', 'Sum', sumToPay, sumIncome, overPay);
+  html += objDues.insertTableRow('font-weight: 600;', '', '', 'Sum', sumToPay, sumIncome, overPay);
 
   // The end of the table
   html += endTable();

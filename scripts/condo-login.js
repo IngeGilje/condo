@@ -2,7 +2,6 @@
 
 // Activate classes
 const objUsers = new Users('users');
-const objLogIn = new Login('login');
 
 sessionStorage.clear();
 
@@ -13,9 +12,9 @@ async function main() {
   // Check if server is running
   if (await objUsers.checkServer()) {
 
-    const condominiumId = objLogIn.nineNine;
+    const condominiumId = objUsers.nineNine;
     const resident = 'Y';
-    await objUsers.loadUsersTable(condominiumId, resident, objLogIn.nineNine);
+    await objUsers.loadUsersTable(condominiumId, resident, objUsers.nineNine);
 
     // Show login
     showLogin();

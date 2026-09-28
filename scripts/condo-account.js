@@ -155,7 +155,8 @@ function showAccount(accountId) {
 
   // name
   const name = objAccounts.arrayAccounts[rowNumberAccount]?.name ?? '';
-  html += showTextNew('name', 'Kontonavn',  name, enableChanges, 'Kontonavn');
+  //html += showTextNew('name', 'Kontonavn', name, enableChanges, 'Kontonavn');
+  html += inputText('name', 'Kontonavn', name, 45, enableChanges);
   html += "<div></div>";
 
   html += endGrid();

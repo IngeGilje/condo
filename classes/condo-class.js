@@ -522,6 +522,7 @@ class Condos {
     return [...element.classList].find(cls => cls.startsWith(prefix));
   }
 
+  /*
   // Show table header including menu (<tr></tr>)
   showTableHeader(...texts) {
 
@@ -544,25 +545,7 @@ class Condos {
     `;
     return html;
   }
-
-  // Validate values ('Yes','No','Ignore')
-  validateValues(className, columnWidths, style, errorMessage, selectedValue, ...values) {
-
-    let isValid = false;
-
-    values.forEach((value) => {
-
-      if (value === selectedValue) isValid = true;
-    });
-
-    const inputElement = document.querySelector(`.${className}`);
-
-    // remove/ add 'input-error' class
-    if (inputElement) inputElement.classList.toggle('input-error', !isValid);
-    if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
-
-    return isValid;
-  }
+  */
 
   // validate the norwegian date format dd.mm.yyyy
   validateNorDate(className, date, errorMessage) {
@@ -646,7 +629,6 @@ class Condos {
     return isValid;
   }
 
-
   // Start of table
   startTable(style) {
 
@@ -656,6 +638,7 @@ class Condos {
     >`;
   }
 
+  /*
   // Initializing of a table
   initializeTable(columnWidths) {
 
@@ -685,6 +668,7 @@ class Condos {
     `;
     return html;
   }
+  */
 
   // end table header
   endTableHeader() {
@@ -692,11 +676,13 @@ class Condos {
     return `</th></tr></thead>`;
   }
 
+  /*
   // Start body table
   startTableBody() {
 
     return "<tbody>";
   }
+  */
 
   // insert a table row (<tr></td>)
   insertTableRow(style, ...texts) {
@@ -865,7 +851,7 @@ class Condos {
     html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender", securityLevel);
     html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", securityLevel);
     html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", securityLevel);
-    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Transaksjoner", securityLevel);
+    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Regnskap", securityLevel);
     html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", securityLevel);
     html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt", securityLevel);
     html += this.showVerticalMenu('logIn', this.arrayLogIn, "Logg Ut", securityLevel);
@@ -888,6 +874,7 @@ class Condos {
       : 'http://localhost/';
 
     let html = `
+    <!-- start showVerticalMenu -->
     <div 
       class="field"
     >
@@ -917,8 +904,9 @@ class Condos {
     });
 
     html += `
-      </select>
-    </div>
+        </select>
+      </div>
+      <!-- end showVerticalMenu -->
     `;
 
     return html;
@@ -1023,17 +1011,6 @@ function showTableIcon(className, color) {
     </span>
   </td>
   <!-- end showTableIcon -->
-  `;
-}
-
-function endTable() {
-  return `
-  <!-- start endtable -->
-        </table>
-      </div>
-    </section>
-  </main>
-  <!-- end endtable -->
   `;
 }
 
@@ -1353,34 +1330,6 @@ function showButtonNew(className, text) {
   >
     ${text}
   </button>`;
-}
-
-// Show text
-function showTextNew(className, label, value, enableChanges, placeholder = "") {
-
-  value = (typeof value === 'string')
-    ? value.trim()
-    : value;
-    
-  return `
-  <!-- start showTextNew -->
-  <div 
-    class="field" 
-   >
-    <input 
-      type="text"
-      autocomplete="off"
-      class="${className} center one-line"
-      value="${value}"
-      placeholder="${placeholder}"
-      ${(enableChanges ? '' : 'readonly')}
-    >
-    <label>
-      ${label.trim()}
-    </label>
-  </div>
-  <!-- end showTextNew -->
-  `;
 }
 
 // Show selected values 
@@ -1888,33 +1837,17 @@ function endGrid() {
 
 // Table
 
-function tableHeader(columnWidths, ...texts) {
-
-  // Calculate total table width
-  let tableWidth = 0;
-  columnWidths.forEach((columnWidth) => {
-    tableWidth += (columnWidth + 10);
-  });
+function tableHeader(...texts) {
 
   let html = `
     <!-- start tableHeader -->
-    <colgroup>
-  `;
-
-  // Colomn widths
-  columnWidths.forEach((columnWidth) => {
-    html += `<col style="width: ${columnWidth}px;">`;
-  });
-
-  html += '</colgroup>';
-
-  html += `
-      <thead>
-    <tr>
+    <thead>
+      <tr>
   `;
 
   texts.forEach((text) => {
 
+    /*
     html += `
       <th 
         scope="col"
@@ -1922,6 +1855,14 @@ function tableHeader(columnWidths, ...texts) {
         ${text.trim()}
       </th>
       `;
+    */
+
+    html += `
+      <th>
+        ${text}
+      </th>
+    `;
+
   });
 
   html += `
@@ -1936,40 +1877,55 @@ function tableHeader(columnWidths, ...texts) {
 // start table
 function startTable(header, underHeader) {
 
-  return `
-  <!-- start startTable -->
-  <main 
-    class="phone-page"
-  >
-    <section
-      class="phone-card"
-      aria-labelledby="phone-title"
+  const html = `
+    <!-- start startTable -->
+    <div 
+      class="phone-page"
     >
-
-      <header
-        class="phone-heading"
+      <section
+        class="phone-card"
+        aria-labelledby="phone-title"
       >
-        <h1
-          id="phone-title"
+
+        <header
+          class="phone-heading"
         >
-          ${header}
-        </h1>
-        <p>
-          ${underHeader}
-        </p>
-      </header>
+          <h1
+            id="phone-title"
+          >
+            ${header}
+          </h1>
+          <p>
+            ${underHeader}
+          </p>
+        </header>
 
-      <div
-        class="phone-scroll"
-        role="region"
-        aria-label="${underHeader}"
-        tabindex="0"
-      >
+        <div
+          class="phone-scroll"
+          role="region"
+          aria-label="${underHeader}"
+          tabindex="0"
+        >
         <table class="transaction-table">
     <!-- end startTable -->
   `;
+  return html;
 }
 
+function endTable() {
+
+  const html = `
+  <!-- start endtable -->
+        </table>
+      </div>
+    </section>
+  </main>
+  <!-- end endtable -->
+  `;
+  return html;
+}
+
+/*
 // Start table filter
 function startLineFilter(className) {
 
@@ -1987,6 +1943,7 @@ function endLineFilter() {
 
   return "</div>";
 }
+*/
 
 // Table and grid
 
@@ -2305,9 +2262,11 @@ function startLineFilter() {
 
   return `
     <!-- start startLineFilter -->
-    <div 
-      class="filter-grid"
-    >
+    <section class="card">
+    <h1 class="card-title">
+      Filter
+    </h1>
+    <div class="grid grid-menu">
     <!-- end startLineFilter -->
   `;
 }
@@ -2316,8 +2275,9 @@ function startLineFilter() {
 function endLineFilter() {
 
   return `
-  <!-- start endLineFilter -->
-    </div>
-  <!-- end endLineFilter -->
+      <!-- start endLineFilter -->
+      </div>
+    </section>
+    <!-- end endLineFilter -->
   `;
 }

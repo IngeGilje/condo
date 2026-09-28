@@ -19,8 +19,6 @@ const objImportFile = new ImportFile('importfile');
 const enableChanges = (objImportFile.securityLevel > 5);
 const applicationName = "condo-importfile";
 
-const columnWidths = [175, 175, 175, 175, 175, 175, 175, 200];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -106,14 +104,14 @@ async function events() {
     if (event.target.classList.contains('importTransacionFile')) {
 
       // check if file exist
-      let importFileName = document.querySelector('.nameImportFile').value;
+      let importFileName = document.querySelector('.importFileName').value;
       const bankAccountTransacionFileExist = await objImportFile.loadTextFile(importFileName);
       if (bankAccountTransacionFileExist) {
 
         // Sends a request to the server to get bank transaction file
         if (await objImportFile.loadTextFile(importFileName)) {
 
-          document.querySelector('.importFileName').style.display = "none";
+          document.querySelector('.showFilter').style.display = "none";
           document.querySelector('.showMessage').style.display = "none";
 
           // create array from imported csv-file
@@ -486,11 +484,10 @@ function checkTransaction(income, payment, date) {
 function showTransactions() {
 
   // start table
-  let html = objImportFile.initializeTable(columnWidths);
+  let html = startTable("Importer Banktransaksjoner", "");
 
-  // Table header (<tr></tr>)
-  html += objImportFile.showTableHeader('Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
-
+  //html += objImportFile.showTableHeader('Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += tableHeader( 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
   let sumIncomes = 0;
   let sumPayments = 0;
 
@@ -591,47 +588,31 @@ async function updateTransactions() {
 // Import fileName
 function importFileName() {
 
-  // Start table
-  let html = objImportFile.initializeTable(columnWidths);
-
-  // Header filter (<tr></tr>)
-  html += objImportFile.showTableHeader('', 'Navn på transaksjonsfil fra bank', '', '', '', '', '', '');
-
-  // start table body
-  html += objImportFile.startTableBody();
-
   let importFileName = "Ugyldig filnavn";
   const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objCondominiums.condominiumId);
   if (rowNumberCondominium !== -1) {
 
     importFileName = objCondominiums.arrayCondominiums[rowNumberCondominium].importPath;
   }
-  html += `
-    <td class="center no-border"></td>
-    <td class="center" colspan="3">
-      <input class="nameImportFile center one-line" type="text" maxlength="255" value="${importFileName}transaksjonsliste.csv" style="width:500px;">
-    </td>
-    <td></td><td></td><td></td><td></td></tr>`;
 
-  // insert a table row (<tr></td>)
-  html += objBankAccounts.insertTableRow('');
-  html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+  let html = startGrid('Importer Banktransaksjoner');
 
-  // insert a table row (<tr></td>)
-  html += objImportFile.insertTableRow('', '', '');
+  // name of importfile
+  html += inputGridWideText('importFileName', "Navn på Banktransaksjonsfil", `${importFileName}transaksjonsliste.csv`, 45, 1);
 
-  // Show button (<tr></td>)
-  html += showTableButton('importTransacionFile', 'Start import', 'Importer transaksjonsfil');
-  html += "<td></td><td></td><td></td><td></td><td></td></tr>";
+  html += endGrid();
 
-  // insert a table row (<tr></td>)
-  html += objBankAccounts.insertTableRow('');
-  html += "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+  // Buttons
+  if (enableChanges) {
 
-  // end table body
-  html += objImportFile.endTableBody();
+    // Start buttons
+    html += startButtons();
 
-  // The end of the table
-  html += endTable();
-  document.querySelector('.importFileName').innerHTML = html;
+    html += inputButton("importTransacionFile secondary", "Start Import", "submit");
+
+    // End buttons
+    html += endButtons();
+  }
+
+  document.querySelector('.showFilter').innerHTML = html;
 }

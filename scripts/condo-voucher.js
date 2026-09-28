@@ -10,8 +10,6 @@ const objVoucher = new Voucher('voucher');
 const enableChanges = (objVoucher.securityLevel > 5);
 const applicationName = "condo-voucher";
 
-const columnWidths = [175, 175, 175, 200, 100];
-
 const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
 const paramCondoId = Number(queryParameters.get("condoId"));
@@ -91,26 +89,28 @@ function showVoucher(transactionId) {
   let html = startGrid('Bilag');
 
   // transaction Id
-  html += showTextNew('transactionId', 'Bilagsnummer', transactionId, false, "Bilagsnummer");
+  //html += showTextNew('transactionId', 'Bilagsnummer', transactionId, false, "Bilagsnummer");
+  html += inputText('transactionId', 'Bilagsnummer', transactionId, 11, false);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // Date
   let date = objTransactions.arrayTransactions[rowNumberTransaction]?.date ?? '';
   date = formatNumberToISODate(date);
-  html += showTextNew('date', 'Dato', date, false);
+  //html += showTextNew('date', 'Dato', date, false);
+  html += inputText('date', 'Dato', date, 11, enableChanges);
 
   // amount
   const income = objTransactions.arrayTransactions[rowNumberTransaction]?.income ?? 0;
   const payment = objTransactions.arrayTransactions[rowNumberTransaction]?.payment ?? 0;
   const amount = formatNumberToNorAmount((income) ? income : payment);
-  html += showTextNew('amount', 'Beløp', amount, false, "Beløp");
-  //html += "<div></div>";
+  //html += showTextNew('amount', 'Beløp', amount, false, "Beløp");
+  html += inputText('amount', 'Beløp', amount, 11, false);
 
   // Account
   const accountId = objTransactions.arrayTransactions[rowNumberTransaction]?.accountId ?? 0;
   const accountName = objAccounts.getAccountNameById(accountId);
-  html += showTextNew('accountName', 'Konto', accountName, false);
+  //html += showTextNew('accountName', 'Konto', accountName, false);
+  html += inputText('accountName', 'Konto', accountName, 45, false);
   html += "<div></div>";
   //html += "<div></div>";
 
@@ -119,7 +119,8 @@ function showVoucher(transactionId) {
   voucherFileName = (voucherFileName)
     ? ''
     : `${transactionId}.pdf`;
-  html += showTextNew('voucherFileName', 'Filnavn', voucherFileName, false, "Filnavn");
+  //html += showTextNew('voucherFileName', 'Filnavn', voucherFileName, false, "Filnavn");
+  html += inputText('voucherFileName', 'Filnavn', voucherFileName, 45, false);
   html += "<div></div>";
   //html += "<div></div>";
 

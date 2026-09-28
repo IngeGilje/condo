@@ -12,9 +12,6 @@ const objProjects = new Projects('projects');
 const enableChanges = (objProjects.securityLevel > 5);
 const applicationName = "condo-showprojects";
 
-// column widths
-const columnWidths = [125, 125, 125, 100, 100];
-
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
@@ -178,7 +175,7 @@ function showFilter(projectId, amount, condoId) {
 function showProjectTransactions(projectId, condoId, amount) {
 
   let html = startTable("Prosjekt", "");
-  html += tableHeader(columnWidths, 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+  html += tableHeader( 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
 
   let sumAmount = 0;
 

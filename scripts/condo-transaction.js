@@ -293,14 +293,7 @@ function showTransaction(transactionId) {
   html += inputText('kilowattHour', 'KilowatTimer', kilowattHour, 11, enableChanges);
 
   // Text
-  /*
-  let text = (rowNumberTransaction === -1)
-    ? ''
-    : objTransactions.arrayTransactions[rowNumberTransaction].text;
-  */
   const text = objTransactions.arrayTransactions[rowNumberTransaction]?.text ?? '';
-  //html += showTextNew('Tekst', 'text', text, enableChanges, "Tekst");
-  //html += inputWideText(  'text','Tekst', text, 2, enableChanges);
   html += inputGridWideText('text', 'Tekst', text, 255, 2)
 
   html += endGrid();

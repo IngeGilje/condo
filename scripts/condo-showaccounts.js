@@ -12,9 +12,6 @@ const constFixedCost = 'Fast kostnad';
 const enableChanges = (objAccounts.securityLevel > 5);
 const applicationName = "condo-showaccounts";
 
-// column widths
-const columnWidths = [175, 175, 100];
-
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramAccountId = Number(queryParameters.get("accountId"));
@@ -61,7 +58,7 @@ async function main() {
     }
   } else {
 
-    objAccounts.showMessageNew(columnWidths, '', 'Server er ikke startet.');
+    showMessageNew('Server er ikke startet.');
   }
 }
 
@@ -135,17 +132,9 @@ function showFilter(fixedCost) {
 // Show accounts
 function showAccounts() {
 
-  //let html = emptyLine();
-
-  // Start table
-  //html += objAccounts.initializeTable(columnWidths);
-
-  // Table header (<tr></tr>)
-  //html += objAccounts.showTableHeader('Kostnadstype', 'Tekst', '');
-
   // Start table
   let html = startTable("Konti", "");
-  html += tableHeader(columnWidths, 'Kostnadstype', 'Tekst', '');
+  html += tableHeader( 'Kostnadstype', 'Tekst', '');
 
   objAccounts.arrayAccounts.forEach((account) => {
 

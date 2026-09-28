@@ -168,54 +168,25 @@ function showBudget(budgetId) {
   const year = objBudgets.arrayBudgets[rowNumberBudget]?.year ?? "";
   html += showSelectedNumbers('year', 'År', year, 2020, 2030, enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // Show accounts
   const accountId = objBudgets.arrayBudgets[rowNumberBudget]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg Konto', '', enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // Amount
   let amount = objBudgets.arrayBudgets[rowNumberBudget]?.amount ?? '0';
   amount = formatNumberToNorAmount(amount);
-  html += showTextNew('amount', 'Beløp', amount, enableChanges, 'Beløp');
+  //html += showTextNew('amount', 'Beløp', amount, enableChanges, 'Beløp');
+  html += inputText('amount', 'Beløp', amount, 11, enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // text
   const text = objBudgets.arrayBudgets[rowNumberBudget]?.text ?? '';
-  html += showTextNew('text', 'Tekst', text, enableChanges, "Tekst");
+  //html += showTextNew('text', 'Tekst', text, enableChanges, "Tekst");
+  html += inputText('text', 'Tekst', text, 45, enableChanges)
   html += "<div></div>";
-  //html += "<div></div>";
 
-  /*
-   // Buttons
-  if (enableChanges) {
- 
-    // Start buttons
-    html += startButtons();
- 
-    html += inputButton("update secondary", "Oppdater", "submit");
-    html += inputButton("insert secondary", "Ny", "button");
-    //html += inputButton("cancel secondary", "Angre", "reset");
-    html += inputButton("delete danger", "Slett", "button");
- 
-    // End buttons
-    html += endButtons();
-  }
- 
-  document.querySelector('.showBudget').innerHTML = html;
- 
-  // Buttons
-  if (enableChanges) {
-    disableButton('delete', false);
-    disableButton('insert', false);
-    disableButton('update', false);
-    //disableButton('cancel', true);
-    disableButton('filterBudgetId', false, 'white');
-  }
-  */
   html += endGrid();
 
   // Buttons
@@ -241,23 +212,6 @@ function showBudget(budgetId) {
   document.querySelector('.showBudget').innerHTML = html;
 }
 
-/*
-// Delete budgets row
-async function deleteBudgetRow(budgetId, className) {
-
-  // Check if budget row exist
-  const rowNumberBudgets = objBudgets.arrayBudgets.findIndex(budget => budget.budgetId === budgetId);
-  if (rowNumberBudgets !== -1) {
-
-    // delete budget row
-    await objBudgets.deleteBudgetsTable(budgetId, objBudgets.user);
-  }
-
-  const year = Number(document.querySelector('.filterYear').value);
-  await objBudgets.loadBudgetsTable(objBudgets.condominiumId, objBudgets.nineNine, objBudgets.nineNine);
-}
-*/
-
 // Delete budgets row
 async function deleteBudgetsRow(budgetId) {
 
@@ -269,8 +223,6 @@ async function deleteBudgetsRow(budgetId) {
     await objBudgets.deleteBudgetsTable(budgetId, objBudgets.user);
     await objBudgets.getHighestBudgetId(objBudgets.condominiumId);
 
-    //budgetId = objBudgets.arrayBudgets[0].budgetId;
-    // Check for empty array
     budgetId = 0;
     if (objBudgets.arrayBudgets.length > 0) budgetId = objBudgets.arrayBudgets[0].budgetId;
   }
@@ -283,7 +235,6 @@ async function deleteBudgetsRow(budgetId) {
   // Show budget
   showBudget(budgetId);
 }
-
 
 // Update a budgets row
 async function updateBudgetsRow(budgetId) {

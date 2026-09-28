@@ -248,6 +248,7 @@ function showCommonCost(year) {
   document.querySelector('.showCommonCost').innerHTML = html;
 }
 
+/*
 // get price per squaremeter
 function getpriceSquaremeter(budgetYear) {
 
@@ -261,7 +262,9 @@ function getpriceSquaremeter(budgetYear) {
   commonCostSquareMeter = formatNumberToNorAmount(commonCostSquareMeter);
   return commonCostSquareMeter;
 }
+*/
 
+/*
 // get price per squaremeter
 function getpriceSquaremeter(budgetYear) {
 
@@ -275,6 +278,7 @@ function getpriceSquaremeter(budgetYear) {
   commonCostSquareMeter = formatNumberToNorAmount(commonCostSquareMeter);
   return commonCostSquareMeter;
 }
+*/
 
 /*
 // Delete a commoncosts row

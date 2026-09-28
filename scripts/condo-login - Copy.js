@@ -4,8 +4,6 @@
 const objUsers = new Users('users');
 const objLogIn = new Login('login');
 
-const columnWidths = [175];
-
 sessionStorage.clear();
 
 // Call main when script loads
@@ -48,7 +46,8 @@ function showLogin() {
   let html = objLogIn.startTable('width:250px;margin: 0 auto;');
 
   // Header for value
-  html += objLogIn.showTableHeader('', 'Email');
+  //html += objLogIn.showTableHeader('', 'Email');
+  html += tableHeader( '', 'Email');
 
   // insert a table row (<tr></td>)
   html += objLogIn.insertTableRow('margin: 0 auto;');

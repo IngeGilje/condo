@@ -5,9 +5,9 @@ const today = new Date();
 const objCondo = new Condo('condo');
 const objCondominiums = new Condominiums('condominiums');
 const objUsers = new Users('users');
-const objPassword = new Password('password');
+//const objPassword = new Password('password');
 
-const enableChanges = (objPassword.securityLevel > 5);
+const enableChanges = (objUsers.securityLevel > 5);
 const applicationName = "condo-password";
 
 // Exit application if no activity for 1 hour
@@ -21,7 +21,7 @@ async function main() {
   if (await objUsers.checkServer()) {
 
     // Validate LogIn
-    if ((objPassword.condominiumId === 0) || (objPassword.user === null)) {
+    if ((objUsers.condominiumId === 0) || (objUsers.user === null)) {
 
       // LogIn is not valid
       const URL = (objUsers.serverStatus === 1)
@@ -31,7 +31,7 @@ async function main() {
     } else {
 
       // Show menu
-      let html = objPassword.showMenu(objPassword.securityLevel);
+      let html = objUsers.showMenu(objUsers.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
       const resident = 'A';
@@ -39,16 +39,16 @@ async function main() {
       // Verify whether the user has permission to change all passwords
       // or only their own password
       (enableChanges)
-        ? await objUsers.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine)
-        : await objUsers.loadUsersTable(objPassword.condominiumId, resident, objPassword.userId);
-      await objCondominiums.loadCondominiumsTable(objPassword.condominiumId);
-      await objCondo.loadCondoTable(objPassword.condominiumId);
+        ? await objUsers.loadUsersTable(objUsers.condominiumId, resident, objUsers.nineNine)
+        : await objUsers.loadUsersTable(objUsers.condominiumId, resident, objUsers.userId);
+      await objCondominiums.loadCondominiumsTable(objUsers.condominiumId);
+      await objCondo.loadCondoTable(objUsers.condominiumId);
 
       // Show filter
-      showFilter(objPassword.userId);
+      showFilter(objUsers.userId);
 
       // Show result
-      showUser(objPassword.userId);
+      showUser(objUsers.userId);
 
       // Events
       events();
@@ -82,7 +82,7 @@ async function events() {
 
       const resident = "A";
       //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      await objUsers.loadUsersTable(objPassword.condominiumId, resident, objPassword.nineNine);
+      await objUsers.loadUsersTable(objUsers.condominiumId, resident, objUsers.nineNine);
 
       const userId = Number(document.querySelector('.filterUserId').value);
 

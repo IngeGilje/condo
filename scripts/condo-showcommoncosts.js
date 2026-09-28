@@ -20,9 +20,6 @@ const paramYear = Number(queryParameters.get("year"));
 const paramCommonCostId = Number(queryParameters.get("commonCostId"));
 const paramBackApplication = queryParameters.get("backApplication");
 
-// column widths
-const columnWidths = [100, 125, 125, 125, 125];
-
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -144,7 +141,7 @@ function showCommonCosts() {
 
   // Start table
   let html = startTable("Felleskostnader", "");
-  html += tableHeader(columnWidths, 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
+  html += tableHeader( 'Leilighet', 'Areal', 'Fast beløp', 'Per måned', 'Årlig');
 
   let totalCommonCostsCondoMonth = 0;
   let totalCommonCostsCondoYear = 0;

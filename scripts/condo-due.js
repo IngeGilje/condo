@@ -207,7 +207,8 @@ function showDue(dueId) {
   let html = startGrid('Forfall');
 
   // due Id
-  html += showTextNew('dueId', 'Forfall Id', dueId, false);
+  //html += showTextNew('dueId', 'Forfall Id', dueId, false);
+  html += inputText('dueId', 'Forfall Id', dueId, 11, false)
   html += "<div></div>";
   //html += "<div></div>";
 
@@ -258,7 +259,8 @@ function showDue(dueId) {
   */
   let kilowattHour = objDues.arrayDues[rowNumberDue]?.kilowattHour ?? 0;
   kilowattHour = formatNumberToNorAmount(kilowattHour);
-  html += showTextNew('kilowattHour', 'K.timer', kilowattHour, enableChanges, 'Kontonavn');
+  //html += showTextNew('kilowattHour', 'K.timer', kilowattHour, enableChanges, 'Kontonavn');
+  html += inputText('kilowattHour', 'K.timer', kilowattHour, 11, enableChanges);
 
   // amount
   /*
@@ -268,7 +270,9 @@ function showDue(dueId) {
   */
   let amount = objDues.arrayDues[rowNumberDue]?.amount ?? 0;
   amount = formatNumberToNorAmount(amount);
-  html += showTextNew('amount', 'Beløp', amount, enableChanges, 'Beløp');
+  //html += showTextNew('amount', 'Beløp', amount, enableChanges, 'Beløp');
+  html += inputText('amount', 'Beløp', amount, 11, enableChanges);
+
   //html += "<div></div>";
 
   // text
@@ -278,7 +282,8 @@ function showDue(dueId) {
     : "";
   */
   const text = objDues.arrayDues[rowNumberDue]?.text ?? "";
-  html += showTextNew('text', 'Tekst', text, enableChanges, 'Tekst');
+  //html += showTextNew('text', 'Tekst', text, enableChanges, 'Tekst');
+  html += inputText('text', 'Tekst', text, 45, enableChanges);
   html += "<div></div>";
   //html += "<div></div>";
 

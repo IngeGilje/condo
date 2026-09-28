@@ -14,8 +14,6 @@ const objTransactions = new Transactions('transactions');
 const enableChanges = (objTransactions.securityLevel > 5);
 const applicationName = "condo-showtransactions";
 
-const columnWidths = [125, 175, 125, 125, 125, 100];
-
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramTransactionId = Number(queryParameters.get("transactionId"));
@@ -268,7 +266,7 @@ function showTransactions() {
 
   // Start table
   let html = startTable("Kontobevegelser", "");
-  html += tableHeader(columnWidths, 'Dato', 'Konto', 'Leilighet', 'Innbetalinger', 'Utbetalinger', '');
+  html += tableHeader( 'Dato', 'Konto', 'Leilighet', 'Innbetalinger', 'Utbetalinger', '');
 
   objTransactions.arrayTransactions.forEach(bankTransaction => {
 

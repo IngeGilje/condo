@@ -12,360 +12,164 @@
 
 <body>
 
-    <!-- start showMenu -->
-    <section 
-      class="card"
-    >
-      <h2 
-        class="card-title"
-      >
-        Meny
-      </h2>
-      <div 
-        class="grid grid-menu"
-      >
-    
-    <div 
-      class="field"
-    >
-      <label 
-        for="news-news"
-      >
-        Nyheter
-      </label>
-      <select 
-        id="news-news"
-        onchange="window.location.href=this.value"
-      >
-        <option 
-          value="http://localhost/condo-shownews.html"
-          
-        >
-          Vis Nyheter
-        </option>
-        <option 
-          value="http://localhost/condo-news.html"
-          
-        >
-          Rediger Nyheter
-        </option>
-        <option 
-          value="http://localhost/condo-news.html"
-          selected
-        >
-          Menyvalg
-        </option>
-      </select>
-    </div>
-    
-    <div 
-      class="field"
-    >
-      <label 
-        for="emptycalendar-emptycalendar"
-      >
-        Tømmekalender
-      </label>
-      <select 
-        id="emptycalendar-emptycalendar"
-        onchange="window.location.href=this.value"
-      >
-        <option 
-          value="http://localhost/condo-showemptycalendars.html"
-          
-        >
-          Vis Tømmekalender
-        </option>
-        <option 
-          value="http://localhost/condo-emptycalendar.html"
-          
-        >
-          Rediger Tømmekalender
-        </option>
-        <option 
-          value="http://localhost/condo-emptycalendar.html"
-          selected
-        >
-          Menyvalg
-        </option>
-      </select>
-    </div>
-    
-    <div 
-      class="field"
-    >
-      <label 
-        for="condominium-condominium"
-      >
-        Sameie
-      </label>
-      <select 
-        id="condominium-condominium"
-        onchange="window.location.href=this.value"
-      >
-        <option 
-          value="http://localhost/condo-condominium.html"
-          
-        >
-          Rediger Sameie
-        </option>
-        <option 
-          value="http://localhost/condo-bankaccount.html"
-          
-        >
-          Rediger Bankkonto
-        </option>
-        <option 
-          value="http://localhost/condo-showaccounts.html"
-          
-        >
-          Vis Konti
-        </option>
-        <option 
-          value="http://localhost/condo-account.html"
-          
-        >
-          Rediger Konto
-        </option>
-        <option 
-          value="http://localhost/condo-condominium.html"
-          selected
-        >
-          Menyvalg
-        </option>
-      </select>
-    </div>
-    
-    <div 
-      class="field"
-    >
-      <label 
-        for="user-user"
-      >
-        Bruker
-      </label>
-      <select 
-        id="user-user"
-        onchange="window.location.href=this.value"
-      >
-        <option 
-          value="http://localhost/condo-user.html"
-          
-        >
-          Rediger Bruker
-        </option>
-        <option 
-          value="http://localhost/condo-password.html"
-          
-        >
-          Rediger Passord
-        </option>
-        <option 
-          value="http://localhost/condo-condo.html"
-          
-        >
-          Rediger Leilighet
-        </option>
-        <option 
-          value="http://localhost/condo-userbankaccount.html"
-          
-        >
-          Rediger Bankkonto
-        </option>
-        <option 
-          value="http://localhost/condo-user.html"
-          selected
-        >
-          Menyvalg
-        </option>
-      </select>
-    </div>
-    
-    <div 
-      class="field"
-    >
-      <label 
-        for="transaction-transaction"
-      >
-        Transaksjoner
-      </label>
-      <select 
-        id="transaction-transaction"
-        onchange="window.location.href=this.value"
-      >
-        <option 
-          value="http://localhost/condo-showtransactions.html"
-          
-        >
-          Vis Transaksjoner
-        </option>
-        <option 
-          value="http://localhost/condo-transaction.html"
-          
-        >
-          Rediger Transaksjon
-        </option>
-        <option 
-          value="http://localhost/condo-budget.html"
-          
-        >
-          Rediger Budsjett
-        </option>
-        <option 
-          value="http://localhost/condo-showbudgets.html"
-          
-        >
-          Vis Budsjett
-        </option>
-        <option 
-          value="http://localhost/condo-annualaccount.html"
-          
-        >
-          Vis Årsregnskap
-        </option>
-        <option 
-          value="http://localhost/condo-importfile.html"
-          
-        >
-          Hent transaksjoner
-        </option>
-        <option 
-          value="http://localhost/condo-liquidity.html"
-          
-        >
-          Vis Likviditet
-        </option>
-        <option 
-          value="http://localhost/condo-showtransactions.html"
-          selected
-        >
-          Menyvalg
-        </option>
-      </select>
-    </div>
-    
-    <div 
-      class="field"
-    >
-      <label 
-        for="due-due"
-      >
-        Forfall
-      </label>
-      <select 
-        id="due-due"
-        onchange="window.location.href=this.value"
-      >
-        <option 
-          value="http://localhost/condo-showdues.html"
-          
-        >
-          Vis Forfall
-        </option>
-        <option 
-          value="http://localhost/condo-due.html"
-          
-        >
-          Rediger Forfall
-        </option>
-        <option 
-          value="http://localhost/condo-supplier.html"
-          
-        >
-          Rediger Leverandør
-        </option>
-        <option 
-          value="http://localhost/condo-showcommoncosts.html"
-          
-        >
-          Vis Felleskostnader
-        </option>
-        <option 
-          value="http://localhost/condo-commoncost.html"
-          
-        >
-          Rediger Felleskostnad
-        </option>
-        <option 
-          value="http://localhost/condo-overview.html"
-          
-        >
-          Vis Betalingsoversikt
-        </option>
-        <option 
-          value="http://localhost/condo-showdues.html"
-          selected
-        >
-          Menyvalg
-        </option>
-      </select>
-    </div>
-    
-    <div 
-      class="field"
-    >
-      <label 
-        for="project-project"
-      >
-        Prosjekt
-      </label>
-      <select 
-        id="project-project"
-        onchange="window.location.href=this.value"
-      >
-        <option 
-          value="http://localhost/condo-project.html"
-          
-        >
-          Rediger Prosjekt
-        </option>
-        <option 
-          value="http://localhost/condo-showprojects.html"
-          
-        >
-          Vis Prosjekt
-        </option>
-        <option 
-          value="http://localhost/condo-project.html"
-          selected
-        >
-          Menyvalg
-        </option>
-      </select>
-    </div>
-    
-    <div 
-      class="field"
-    >
-      <label 
-        for="logIn-logIn"
-      >
-        Logg Ut
-      </label>
-      <select 
-        id="logIn-logIn"
-        onchange="window.location.href=this.value"
-      >
-        <option 
-          value="http://localhost/condo-login.html"
-          
-        >
-          Logg ut
-        </option>
-        <option 
-          value="http://localhost/condo-login.html"
-          selected
-        >
-          Menyvalg
-        </option>
-      </select>
-    </div>
-    
+
+
+  <!-- start startGrid -->
+  <section class="card">
+    <h1 class="card-title">
+      Budsjett
+    </h1>
+    <form>
+      <div class="grid grid-form">
+        <!-- end startGrid -->
+
+        <!-- start showSelectedNumbers -->
+        <div class="field">
+          <label for="year">
+            År
+          </label>
+          <select id="year" class="year">
+
+            <option value=2020>
+              2020
+            </option>
+            <option value=2021>
+              2021
+            </option>
+            <option value=2022>
+              2022
+            </option>
+            <option value=2023>
+              2023
+            </option>
+            <option value=2024>
+              2024
+            </option>
+            <option value=2025>
+              2025
+            </option>
+            <option value=2026>
+              2026
+            </option>
+            <option value=2027 selected>
+              2027
+            </option>
+            <option value=2028>
+              2028
+            </option>
+            <option value=2029>
+              2029
+            </option>
+            <option value=2030>
+              2030
+            </option>
+          </select>
+        </div>
+        <!-- end showSelectedNumbers -->
+        <div></div>
+        <!-- start showSelectedAccountsNew -->
+        <div class="field">
+          <label for="accountId">
+            Konto
+          </label>
+          <select id="accountId" class="accountId">
+
+            <option value=13>
+              1,2,3,4... transaksjoner
+            </option>
+            <option value=67>
+              Diverse
+            </option>
+            <option value=6>
+              Forsikring
+            </option>
+            <option value=10>
+              Gebyr - FAKT.TJ
+            </option>
+            <option value=56>
+              Inntekt drift
+            </option>
+            <option value=4>
+              Inntekt fjernvarme
+            </option>
+            <option value=2>
+              Inntekter husleie
+            </option>
+            <option value=5>
+              Nettleie Lyse
+            </option>
+            <option value=52>
+              Omkostninger BedriftsNett
+            </option>
+            <option value=8>
+              TV og bredbånd
+            </option>
+            <option value=9>
+              Ugift drift
+            </option>
+            <option value=3>
+              Utgift fjernvarme
+            </option>
+            <option value=22 selected>
+              Velforening
+            </option>
+            <option value=0>
+              Velg Konto
+            </option>
+          </select>
+        </div>
+        <!-- end showSelectedAccountsNew -->
+        <div></div>
+        <!-- start showTextNew -->
+        <div class="field">
+          <input type="text" autocomplete="off" class="amount center one-line" value="-1 400,00" placeholder="Beløp">
+          <label>
+            Beløp
+          </label>
+        </div>
+        <!-- end showTextNew -->
+        <div></div>
+        <!-- start showTextNew -->
+        <div class="field">
+          <input type="text" autocomplete="off" class="text center one-line" value="" placeholder="Tekst">
+          <label>
+            Tekst
+          </label>
+        </div>
+        <!-- end showTextNew -->
+        <div></div>
+        <!-- start endGrid -->
       </div>
-    </section>
-    <!-- end showMenu -->
-    
-    
+    </form>
+  </section>
+  <!-- end endGrid -->
+
+  <!-- start startButtons -->
+  <div class="actions">
+    <!-- end startButtons -->
+
+    <!-- start inputButton -->
+    <button class="update secondary" type="submit">
+      Oppdater
+    </button>
+    <!-- end inputButton -->
+
+    <!-- start inputButton -->
+    <button class="insert secondary" type="button">
+      Ny
+    </button>
+    <!-- end inputButton -->
+
+    <!-- start inputButton -->
+    <button class="delete danger" type="button">
+      Slett
+    </button>
+    <!-- end inputButton -->
+
+    <!-- start endButtons -->
+  </div>
+  <!-- end endButtons -->
+
 </body>
 
 </html>

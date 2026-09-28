@@ -9,8 +9,6 @@ const objEmptyCalendars = new EmptyCalendars("emptycalendars");
 const enableChanges = (objEmptyCalendars.securityLevel > 5);
 const applicationName = "condo-showemptycalendars";
 
-const columnWidths = [100, 100, 50, 50, 50, 50, 50, 100];
-
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramEmptyCalendarId = Number(queryParameters.get("emptyCalendarId"));
@@ -136,7 +134,7 @@ function showEmptyCalendars(year, month) {
   const text = findNameOfMonth(month) + " " + String(year);
 
   let html = startTable("Tømmeplan", text);
-  html += tableHeader(columnWidths, "Ansvarlig", "Dato", "Restavfall", "Papiravfall", "Matavfall", "Plastavfall", "Juletre", " ");
+  html += tableHeader( "Ansvarlig", "Dato", "Restavfall", "Papiravfall", "Matavfall", "Plastavfall", "Juletre", " ");
 
   if (Number(document.querySelector('.filterMonth').value) < 10) month = "0" + month;
   const fromDate = Number(document.querySelector('.filterYear').value + month + "01");

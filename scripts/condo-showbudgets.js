@@ -9,8 +9,6 @@ const objBudgets = new Budgets('budgets');
 const enableChanges = (objBudgets.securityLevel > 5);
 const applicationName = "condo-showbudgets";
 
-const columnWidths = [100, 175, 175, 175, 100];
-
 // query parameters
 const queryParameters = new URLSearchParams(window.location.search);
 const paramProjectId = Number(queryParameters.get("projectId"));
@@ -207,7 +205,7 @@ function showFilter() {
 
   // Show years
   const year = today.getFullYear();
-  html += showSelectedNumbers('filterYear', 'År', year,2020, 2030,  true);
+  html += showSelectedNumbers('filterYear', 'År', year, 2020, 2030, true);
 
   // End filter
   html += endLineFilter();
@@ -217,13 +215,8 @@ function showFilter() {
 // Show budgets
 function showBudgets() {
 
-  // Start table
-  let html = emptyLine();
-
-  html += objBudgets.initializeTable(columnWidths);
-
-  // Table header (<tr></tr>)
-  html += objBudgets.showTableHeader('År', 'Konto', 'Budsjett', 'Tekst', '');
+  let html = startTable("Budsjett", "");
+  html += tableHeader('År', 'Konto', 'Budsjett', 'Tekst', '');
 
   let sumAmount = 0;
 

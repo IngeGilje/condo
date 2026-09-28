@@ -123,19 +123,17 @@ function showUserBankAccount(userBankAccountId) {
   //html += "</div>";
   html += objUsers.showSelectedUsersNew('userId', 'Bruker', userId, 'Velg bruker', '', true);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // account
   const accountId = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg konto', '', true);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // bank account
   const bankAccount = objUserBankAccounts.arrayUserBankAccounts[rowNumberUserBankAccount]?.bankAccount ?? '';
-  html += showTextNew('bankAccount', 'Bankkonto', bankAccount, enableChanges, 'Oppgi Bankkonto');
+  //html += showTextNew('bankAccount', 'Bankkonto', bankAccount, enableChanges, 'Oppgi Bankkonto');
+  html += inputText('bankAccount', 'Bankkonto', bankAccount, 11, enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   html += endGrid();
 
