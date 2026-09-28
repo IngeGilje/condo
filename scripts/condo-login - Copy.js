@@ -131,8 +131,8 @@ async function checkLogin() {
 
       // Start news display
       const URL = (objUsers.serverStatus === 1)
-        ? 'http://ingegilje.no/condo-shownews.html'
-        : 'http://localhost/condo-shownews.html';
+        ? 'http://ingegilje.no/shownews.html'
+        : 'http://localhost/shownews.html';
       window.location.href = URL;
       return true;
     }

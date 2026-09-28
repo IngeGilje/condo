@@ -1,0 +1,231 @@
+// Show projects for condominium
+
+// Activate objects
+const today = new Date();
+const objUsers = new Users('users');
+const objCondominiums = new Condominiums('condominiums');
+const objAccounts = new Accounts('accounts');
+const objCondo = new Condo('condo');
+const objTransactions = new Transactions('transactions');
+const objProjects = new Projects('projects');
+
+const enableChanges = (objProjects.securityLevel > 5);
+const applicationName = "showprojects";
+
+// query parameters
+const queryParameters = new URLSearchParams(window.location.search);
+const paramTransactionId = Number(queryParameters.get("transactionId"));
+const paramCondoId = Number(queryParameters.get("condoId"));
+const paramAccountId = Number(queryParameters.get("accountId"));
+const paramFromDate = Number(queryParameters.get("fromDate"));
+const paramToDate = Number(queryParameters.get("toDate"));
+const paramAmount = Number(queryParameters.get("amount"));
+const paramBackApplication = queryParameters.get("backApplication");
+
+// Exit application if no activity for 1 hour
+exitIfNoActivity();
+
+// Call main when script loads
+main();
+async function main() {
+
+  // Check if server is running
+  if (await objUsers.checkServer()) {
+
+    // Validate LogIn
+    if ((objProjects.condominiumId === 0) || (objProjects.user === null)) {
+
+      // LogIn is not valid
+      const URL = (objUsers.serverStatus === 1)
+        ? 'http://ingegilje.no/login.html'
+        : 'http://localhost/login.html';
+      window.location.href = URL;
+    } else {
+
+      // Show vertical menu
+      let html = objProjects.showMenu(objProjects.securityLevel);
+      document.querySelector('.menuVertical').innerHTML = html;
+
+      const resident = 'Y';
+      await objUsers.loadUsersTable(objProjects.condominiumId, resident, objProjects.nineNine);
+      await objCondominiums.loadCondominiumsTable();
+      await objCondo.loadCondoTable(objProjects.condominiumId);
+      await objProjects.loadProjectsTable(objProjects.condominiumId);
+      const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objProjects.condominiumId, fixedCost);
+      await objProjects.loadProjectsTable(objProjects.condominiumId);
+
+      // Show filter
+      const projectId = (objProjects.arrayProjects.length === 0)
+        ? 0
+        : objProjects.arrayProjects.at(-1)?.projectId ?? 0;
+
+      const condoId = 0;
+
+      showFilter(projectId, "", condoId);
+
+      // Show project
+      // Get row number for condominium
+      const rowNumberCondominium = objCondominiums.arrayCondominiums.findIndex(condominium => condominium.condominiumId === objProjects.condominiumId);
+      if (rowNumberCondominium !== -1) {
+
+        const orderBy = 'date DESC';
+        await objTransactions.loadTransactionsTable(orderBy, objProjects.condominiumId, 'N', objProjects.nineNine, objProjects.nineNine, objProjects.nineNine, 0, 2019010, 20991231);
+
+        // show bank account transactions this project
+        const projectId = Number(document.querySelector('.filterProjectId').value);
+        const condoId = Number(document.querySelector('.filterCondoId').value);
+
+        let amount = document.querySelector('.filterAmount').value;
+        amount = formatNorAmountToNumber(amount);
+        document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
+        showProjectTransactions(projectId, condoId, amount);
+
+        // Events
+        events();
+      }
+    }
+  } else {
+
+    showMessageNew('Server er ikke startet.');
+  }
+}
+
+// Make events
+async function events() {
+
+  // Filter
+  document.addEventListener('change', async (event) => {
+    if ((event.target.classList.contains('filterProjectId'))
+      || (event.target.classList.contains('filterCondoId'))
+      || (event.target.classList.contains('filterAmount')));
+
+    const projectId = Number(document.querySelector('.filterProjectId').value);
+    const condoId = Number(document.querySelector('.filterCondoId').value);
+
+    let amount = document.querySelector('.filterAmount').value;
+    amount = formatNorAmountToNumber(amount);
+    document.querySelector('.filterAmount').value = formatNumberToNorAmount(amount);
+    showProjectTransactions(projectId, condoId, amount);
+  });
+
+  // change bank account transaction
+  document.addEventListener('click', async (event) => {
+    if ([...event.target.classList].some(cls => cls.startsWith('change'))) {
+
+      const arrayPrefixes = ['change'];
+
+      // Find the first matching class
+      const className = arrayPrefixes
+        .map(prefix => objTransactions.getClassByPrefix(event.target, prefix))
+        .find(Boolean); // find the first non-null/undefined one
+
+      // Extract the number in the class name
+      let transactionId = 0;
+      let prefix = "";
+      if (className) {
+        prefix = arrayPrefixes.find(p => className.startsWith(p));
+        transactionId = Number(className.slice(prefix.length));
+      }
+
+      // Project id
+      const rowNumberTransaction = objTransactions.arrayTransactions.findIndex(transaction => transaction.transactionId === transactionId);
+      if (rowNumberTransaction !== -1) {
+
+        const condoId = objTransactions.arrayTransactions[rowNumberTransaction].condoId;
+        const projectId = objTransactions.arrayTransactions[rowNumberTransaction].projectId;
+        const accountId = objTransactions.arrayTransactions[rowNumberTransaction].accountId;
+        const fromDate = objTransactions.arrayTransactions[rowNumberTransaction].date;
+        const toDate = objTransactions.arrayTransactions[rowNumberTransaction].date;
+        const amount = (objTransactions.arrayTransactions[rowNumberTransaction].income)
+          ? (objTransactions.arrayTransactions[rowNumberTransaction].income)
+          : (objTransactions.arrayTransactions[rowNumberTransaction].payment);
+
+        let URL = (objTransactions.serverStatus === 1)
+          ? 'http://ingegilje.no/'
+          : 'http://localhost/';
+        URL = `${URL}transaction.html?transactionId=${transactionId}&condoId=${condoId}&accountId=${accountId}&fromDate=${fromDate}&toDate=${toDate}&amount=${amount}&projectId=${projectId}&backApplication=${applicationName}.html`;
+        window.location.href = URL;
+      }
+    };
+  });
+}
+
+// Show filter
+function showFilter(projectId, amount, condoId) {
+
+  // Start frame
+  let html = startLineFilter('filter-frame');
+
+  // Show projects
+  html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg prosjekt', '', true);
+
+  // Show condos
+  html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true)
+
+  // Amount
+  html += inputText('filterAmount', 'Beløp', amount, 11,true);
+
+  // End table filter
+  html += endLineFilter();
+  document.querySelector(".showFilter").innerHTML = html;
+}
+
+// show bank account transactions this project
+function showProjectTransactions(projectId, condoId, amount) {
+
+  let html = startTable("Prosjekt", "");
+  html += tableHeader( 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+
+  let sumAmount = 0;
+
+  for (const bankTransaction of objTransactions.arrayTransactions) {
+    if ((bankTransaction.projectId === projectId)
+      && ((bankTransaction.condoId === condoId) || (condoId === objProjects.nineNine))
+      && ((bankTransaction.income === amount) || (bankTransaction.payment === amount) || (amount === 0))) {
+
+      // Insert Table Row
+      html += objProjects.insertTableRow('');
+
+      // Date
+      const date = formatNumberToNorDate(bankTransaction.date);
+      let className = `date${bankTransaction.transactionId}`;
+      html += showTableText(className, date);
+
+      // account
+      className = `accountId${bankTransaction.transactionId}`;
+      //html += objAccounts.showSelectedAccounts(className, '', bankTransaction.accountId, 'Velg konto', '', false);
+      const accountName = objAccounts.getAccountNameById(bankTransaction.accountId)
+      html += showTableText(className, accountName);
+
+      // condo
+      className = `condoId${bankTransaction.transactionId}`;
+      //html += objCondo.showSelectedCondos(className, '', bankTransaction.condoId, '-', '', false);
+      const condoName = objCondo.getCondoNameById(bankTransaction.condoId)
+      html += showTableText(className, condoName);
+
+      // amount
+      let amount = bankTransaction.income + bankTransaction.payment;
+      amount = formatNumberToNorAmount(amount);
+      className = `amount${bankTransaction.transactionId}`;
+      html += showTableText(className, amount);
+
+      // Show button for change of bank account transaction
+      className = `change${bankTransaction.transactionId}`;
+      html += showTableButton(className, 'Rediger');
+      html += "</tr>";
+
+      // accumulate
+      sumAmount += Number(bankTransaction.income) + Number(bankTransaction.payment);
+    }
+  };
+
+  // Show table sum row
+  sumAmount = formatNumberToNorAmount(sumAmount);
+
+  html += objTransactions.insertTableRow('', '', '', 'Sum', sumAmount);
+
+  // The end of the table
+  html += endTable();
+  document.querySelector('.showProjectTransactions').innerHTML = html;
+}

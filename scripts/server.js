@@ -1,0 +1,3429 @@
+
+// Run with: node server.js
+
+// const serverStatus = 1;  // http://ingegilje.no on web server
+// const serverStatus = 2;  // http://localhost on development PC
+const serverStatus = 2;
+
+import express from "express";
+import session from "express-session";
+import cors from "cors";
+import mysql from "mysql2/promise";
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
+import bcrypt from "bcrypt";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const nineNine = 999999998;
+const minusNineNine = -999999998;
+
+// Middleware in an Express.js server.
+// Middleware = functions that run automatically for every request before your route handlers
+const app = express();
+// If the request body contains JSON, automatically parse it into a JavaScript object
+app.use(express.json());
+app.use(cors());
+
+// Turn ON the ability for server to remember users
+app.use(session({
+  secret: "secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,      // must be false on http
+    sameSite: "lax"     // or "none" if cross-site
+  }
+}));
+
+// Check if server (this server) is running
+//app.post('/health', (req, res) => {
+let routePath = "";
+if (serverStatus === 1) routePath = "/api/health";
+if (serverStatus === 2) routePath = "/health";
+app.post(routePath, async (req, res) => {
+  res.status(200).send('OK');
+});
+
+// Get information from the session
+//app.post("/profile", (req, res) => {
+routePath = "";
+if (serverStatus === 1) routePath = "/api/profile";
+if (serverStatus === 2) routePath = "/profile";
+app.post(routePath, async (req, res) => {
+
+  if (req.session.username) {
+    res.json({
+      username: req.session.username,
+      securityLevel: req.session.securityLevel,
+      userId: req.session.userId,
+      condominiumId: req.session.condominiumId
+    });
+  } else {
+    res.status(401).json({ error: "No session data found" });
+  }
+});
+
+// Start the server
+app.listen(3000, () => {
+  if (serverStatus === 1) console.log("🚀 Server running at /api/health");
+  if (serverStatus === 2) console.log("🚀 Server running at http://localhost:3000");
+});
+
+// Get current user info
+routePath = "";
+if (serverStatus === 1) routePath = "/api/me";
+if (serverStatus === 2) routePath = "/me";
+app.post(routePath, async (req, res) => {
+
+  if (req.session.user) {
+
+    res.send(req.session.user);
+  } else {
+
+    res.status(401).send("Not logged in");
+  }
+});
+
+// Destroy / clear session
+//app.post("/logout", (req, res) => {
+routePath = "";
+if (serverStatus === 1) routePath = "/api/logout";
+if (serverStatus === 2) routePath = "/logout";
+app.post(routePath, async (req, res) => {
+
+  req.session.destroy(() => {
+    res.send("Session destroyed");
+  });
+});
+
+let mySqlDB;
+const today = new Date();
+
+// Run main
+main();
+
+async function main() {
+
+  try {
+
+    // Connect mySQL
+    switch (serverStatus) {
+
+      case 1: {
+
+        // Connect to MySQL
+        mySqlDB = mysql.createPool({
+          host: 'localhost',
+          user: 'Inge',
+          password: 'Vinter-2025',
+          database: 'condos',
+          waitForConnections: true,
+          connectionLimit: 10,
+          queueLimit: 0
+        });
+
+        break;
+      };
+
+      case 2: {
+
+        // Connect to MySQL
+        mySqlDB = mysql.createPool({
+          host: 'localhost',
+          user: 'Inge',
+          password: 'Sommer--2025',
+          database: 'condos',
+          waitForConnections: true,
+          connectionLimit: 10,
+          queueLimit: 0
+        });
+        break;
+      }
+    }
+
+    console.log("✅ Connected to MySQL");
+
+    // validate user
+    //app.post("/login", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/login";
+    if (serverStatus === 2) routePath = "/login";
+    app.post(routePath, async (req, res) => {
+
+      try {
+
+        const userId = req.body.userId;
+        const password = req.body.password;
+
+        // get password
+        const SQLquery = `
+        SELECT password FROM users
+          WHERE 
+            deleted = 'N'
+          AND userId = ${userId};`;
+
+        console.log('SQLquery :', SQLquery);
+        const [rows] = await mySqlDB.query(SQLquery);
+        //if (rows.length === 1 && await bcrypt.compare(password, rows[0].password)) {
+        if (rows.length === 1 && (rows[0].password === password)) {
+
+          res.status(200).send('OK');
+        } else {
+
+          res.status(401).send("Not OK");
+        }
+
+      } catch (err) {
+        res.json({ success: false });
+      };
+    });
+
+    // Updte voucher file name
+    //app.post("/updateVoucherFileName", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/updateVoucherFileName";
+    if (serverStatus === 2) routePath = "/updateVoucherFileName";
+    app.post(routePath, async (req, res) => {
+
+      try {
+
+        const lastUpdate = today.toISOString();
+        const user = req.body.user;
+        const transactionId = req.body.transactionId;
+        const voucherFileName = req.body.voucherFileName;
+
+        // Update a row in transactions table
+        const SQLquery = `
+        UPDATE transactions
+        SET
+          user = '${user}',
+          lastUpdate = '${lastUpdate}',
+          voucherFileName = '${voucherFileName}'
+        WHERE transactionId = ${transactionId};`;
+
+        console.log('SQLquery :', SQLquery);
+        const [rows] = await mySqlDB.query(SQLquery);
+
+        // Send a JSON response to the client containing the data
+        res.json(rows);
+      } catch (err) {
+
+        console.log(`Database error in ${routePath}:`, err.message);
+        res.status(500).json({ error: err.message });
+      }
+    });
+
+    // Check if file exist
+    //app.post("/checkIfFileExist", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/checkIfFileExist";
+    if (serverStatus === 2) routePath = "/checkIfFileExist";
+    app.post(routePath, async (req, res) => {
+
+      let fileName;
+      if (path.isAbsolute(req.body.fileName)) {
+
+        fileName = req.body.fileName;
+      } else {
+
+        fileName = path.join(__dirname, "data", req.body.fileName);
+      }
+
+      try {
+
+        await fs.access(fileName);
+        res.sendStatus(200);
+      } catch (err) {
+
+        res.sendStatus(404);
+      }
+    });
+
+    // Requests for accounts
+    //app.post("/accounts", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/accounts";
+    if (serverStatus === 2) routePath = "/accounts";
+    app.post(routePath, async (req, res) => {
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+
+        case 'select': {
+
+          const condominiumId = Number(req.body.condominiumId);
+          const fixedCost = req.body.fixedCost;
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM accounts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'`;
+            if (fixedCost === 'Y' || fixedCost === 'N') SQLquery += ` AND fixedCost = '${fixedCost}'`;
+            SQLquery += ` ORDER BY name ASC, accountId ASC;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestAccountId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM accounts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY accountId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const accountId = req.body.accountId;
+            const user = req.body.user;
+            const fixedCost = req.body.fixedCost;
+            const accountName = req.body.accountName;
+
+            const SQLquery = `
+            UPDATE accounts
+            SET 
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              name = '${accountName}',
+              fixedCost = '${fixedCost}'
+            WHERE accountId = ${accountId};`;
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+            const accountName = req.body.accountName;
+            const fixedCost = req.body.fixedCost;
+
+            // Insert new row
+            const SQLquery =
+              `
+                INSERT INTO accounts (
+                  deleted,
+                  condominiumId,
+                  user,
+                  lastUpdate,
+                  name,
+                  fixedCost
+                ) 
+                VALUES (
+                  'N',
+                  ${condominiumId},
+                  '${user}',
+                  '${lastUpdate}',
+                  '${accountName}',
+                  '${fixedCost}'
+                  );
+              `;
+
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+
+        }
+
+        case 'delete': {
+
+          try {
+
+            const user = req.body.user;
+            const accountId = req.body.accountId;
+
+            // Delete table
+            const SQLquery = `
+            UPDATE accounts
+              SET 
+                deleted = 'Y',
+                lastUpdate = '${lastUpdate}',
+                user = '${user}'
+              WHERE accountId = ${accountId};`;
+
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+      }
+    });
+
+    // Requests for users tabel
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/users";
+    if (serverStatus === 2) routePath = "/users";
+    app.post(routePath, async (req, res) => {
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+
+        case 'select': {
+
+          const condominiumId = Number(req.body.condominiumId);
+          const resident = req.body.resident;
+          const userId = req.body.userId;
+          try {
+
+            let SQLquery = `
+            SELECT * FROM users
+              WHERE deleted <> 'Y'`;
+
+            if (Number(condominiumId) !== nineNine) SQLquery += ` AND condominiumId = ${condominiumId}`;
+            if (resident === 'Y' || resident === 'N') SQLquery += ` AND resident = '${resident}'`;
+            if (Number(userId) !== nineNine) SQLquery += ` AND userId = ${userId}`;
+            SQLquery += ` ORDER BY firstName`;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestUserId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM users
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY userId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'selectAll': {
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM users`;
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const resident = req.body.resident;
+            const userId = req.body.userId;
+            const user = req.body.user;
+            const condominiumId = req.body.condominiumId;
+            const email = req.body.email;
+            const condoId = Number(req.body.condoId);
+            const firstName = req.body.firstName;
+            const lastName = req.body.lastName;
+            const phone = req.body.phone;
+
+            const SQLquery = `
+            UPDATE users
+            SET
+              resident = '${resident}',
+              user = '${user}',
+              condominiumId = '${condominiumId}',
+              lastUpdate = '${lastUpdate}',
+              email = '${email}',
+              condoId = ${condoId},
+              firstName = '${firstName}',
+              lastName = '${lastName}',
+              phone = '${phone}'
+            WHERE userId = ${userId};
+            `;
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'updateUserPassword': {
+
+          try {
+
+            const userId = req.body.userId;
+            const user = req.body.user;
+
+            const securityLevel = req.body.securityLevel;
+            let password = req.body.password;
+
+            let SQLquery = '';
+            if (password !== '') {
+
+              // Hash the password
+              const saltRounds = 10;
+              //password = await bcrypt.hash(password, saltRounds);
+
+              SQLquery = `
+              UPDATE users
+              SET
+                user = '${user}',
+                lastUpdate = '${lastUpdate}',
+                password = '${password}',
+                securityLevel = ${securityLevel}
+              WHERE userId = ${userId};`;
+
+            } else {
+
+              SQLquery = `
+              UPDATE users
+              SET
+                user = '${user}',
+                lastUpdate = '${lastUpdate}',
+                securityLevel = ${securityLevel}
+              WHERE userId = ${userId};`;
+            }
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const resident = req.body.resident;
+            const user = req.body.user;
+
+            const email = req.body.email;
+            const condoId = Number(req.body.condoId);
+            const firstName = req.body.firstName;
+            const lastName = req.body.lastName;
+            const phone = req.body.phone;
+            const securityLevel = req.body.securityLevel;
+            const password = req.body.password;
+
+            // Insert new row
+            const SQLquery = `
+            INSERT INTO users(
+            deleted,
+            resident,
+            condominiumId,
+            user,
+            lastUpdate,
+            email,
+            condoId,
+            firstName,
+            lastName,
+            phone,
+            securityLevel,
+            password
+          )
+          VALUES(
+            'N',
+            '${resident}',
+            ${condominiumId},
+            '${user}',
+            '${lastUpdate}',
+            '${email}',
+            ${condoId},
+            '${firstName}',
+            '${lastName}',
+            '${phone}',
+            ${securityLevel},
+            '${password}'
+          ); `;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'delete': {
+
+          try {
+
+            const user = req.body.user;
+
+            const userId = req.body.userId;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE users
+          SET
+          deleted = 'Y',
+            lastUpdate = '${lastUpdate}',
+            user = '${user}'
+                  WHERE userId = ${userId};
+          `;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        // validate user
+        case 'validateUser': {
+
+          try {
+
+            let isValid = false;
+
+            const userId = req.body.userId;
+            const password = req.body.password;
+
+            // get password
+            const SQLquery = `
+            SELECT password FROM users
+          WHERE
+          deleted = 'N'
+              AND userId = ${userId}; `;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            if (rows.length === 1) isValid = true;
+            if (isValid) {
+
+              isValid = await bcrypt.compare(password, rows[0].password);
+              rows[0].password = (isValid) ? 'OK' : 'Not OK';
+
+              // Send a JSON response to the client containing the data
+              res.json(rows);
+            }
+
+          } catch (err) {
+
+          }
+          break;
+        }
+      }
+    });
+
+    // Requests for bank accounts
+    //app.post("/bankaccounts", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/bankaccounts";
+    if (serverStatus === 2) routePath = "/bankaccounts";
+    app.post(routePath, async (req, res) => {
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+
+        case 'select': {
+          const condominiumId = Number(req.body.condominiumId);
+          //const bankAccountId = Number(req.body.bankAccountId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM bankaccounts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY bankAccountId;
+            `;
+            //if (bankAccountId !== nineNine) SQLquery += `AND bankAccountId = ${bankAccountId} `;
+            //SQLquery += `
+            //ORDER BY bankAccountId;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestBankAccountId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM bankaccounts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY bankAccountId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const user = req.body.user;
+            const bankAccount = req.body.bankAccount;
+            const name = req.body.name;
+            const openingBalance = req.body.openingBalance;
+            const openingBalanceDate = req.body.openingBalanceDate;
+            const closingBalance = req.body.closingBalance;
+            const closingBalanceDate = req.body.closingBalanceDate;
+            const bankAccountId = req.body.bankAccountId;
+
+            const SQLquery = `
+            UPDATE bankaccounts
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              bankAccount = '${bankAccount}',
+              name = '${name}',
+              openingBalance = '${openingBalance}',
+              openingBalanceDate = '${openingBalanceDate}',
+              closingBalance = '${closingBalance}',
+              closingBalanceDate = '${closingBalanceDate}'
+            WHERE bankAccountId = ${bankAccountId};`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+
+            const bankAccount = req.body.bankAccount;
+            const name = req.body.name;
+            const openingBalanceDate = req.body.openingBalanceDate;
+            const openingBalance = req.body.openingBalance;
+            const closingBalanceDate = req.body.closingBalanceDate;
+            const closingBalance = req.body.closingBalance;
+
+            // Insert new row
+            const SQLquery = `
+            INSERT INTO bankaccounts(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              bankAccount,
+              name,
+              openingBalance,
+              openingBalanceDate,
+              closingBalance,
+              closingBalanceDate
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              '${bankAccount}',
+              '${name}',
+              '${openingBalance}',
+              '${openingBalanceDate}',
+              '${closingBalance}',
+              '${closingBalanceDate}'
+            );`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'delete': {
+
+          try {
+
+            const user = req.body.user;
+
+            const bankAccountId = req.body.bankAccountId;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE bankaccounts
+          SET
+          deleted = 'Y',
+            lastUpdate = '${lastUpdate}',
+            user = '${user}'
+                  WHERE bankAccountId = ${bankAccountId};
+          `;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+            console.log('SQLquery: ', SQLquery);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+      }
+    });
+
+    // Requests for condominiums table
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/condominiums";
+    if (serverStatus === 2) routePath = "/condominiums";
+    app.post(routePath, async (req, res) => {
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+
+        case 'select': {
+
+          try {
+
+            const SQLquery = `
+            SELECT * FROM condominiums
+            WHERE deleted <> 'Y'
+            ORDER BY condominiumId;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestCondominiumId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM condominiums
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY condominiumId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const phone = req.body.phone;
+            const email = req.body.email;
+            const incomeRemoteHeatingAccountId = req.body.incomeRemoteHeatingAccountId;
+            const paymentRemoteHeatingAccountId = req.body.paymentRemoteHeatingAccountId;
+            const commonCostAccountId = req.body.commonCostAccountId;
+            const organizationNumber = req.body.organizationNumber;
+            const importPath = req.body.importPath;
+            const fromMonth = req.body.fromMonth;
+            const toMonth = req.body.toMonth;
+
+            const SQLquery = `        
+            UPDATE condominiums
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              name = '${name}',
+              street = '${street}',
+              address2 = '${address2}',
+              postalCode = '${postalCode}',
+              city = '${city}',
+              phone = '${phone}',
+              email = '${email}',
+              incomeRemoteHeatingAccountId = ${incomeRemoteHeatingAccountId},
+              paymentRemoteHeatingAccountId = ${paymentRemoteHeatingAccountId},
+              commonCostAccountId = ${commonCostAccountId},
+              organizationNumber = '${organizationNumber}',
+              importPath = '${importPath}',
+              fromMonth = ${fromMonth},
+              toMonth = ${toMonth}
+            WHERE condominiumId = ${condominiumId};`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const user = req.body.user;
+
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const phone = req.body.phone;
+            const email = req.body.email;
+            const incomeRemoteHeatingAccountId = req.body.incomeRemoteHeatingAccountId;
+            const paymentRemoteHeatingAccountId = req.body.paymentRemoteHeatingAccountId;
+            const commonCostAccountId = req.body.commonCostAccountId;
+            const organizationNumber = req.body.organizationNumber;
+            const importPath = req.body.importPath;
+            const fromMonth = req.body.fromMonth;
+            const toMonth = req.body.toMonth;
+
+            // Insert new row
+            const SQLquery = `
+            INSERT INTO condominiums(
+              deleted,
+              user,
+              lastUpdate,
+              name,
+              street,
+              address2,
+              postalCode,
+              city,
+              phone,
+              email,
+              incomeRemoteHeatingAccountId,
+              paymentRemoteHeatingAccountId,
+              commonCostAccountId,
+              organizationNumber,
+              importPath,
+              fromMonth,
+              toMonth
+            ) VALUES(
+              'N',
+              '${user}',
+              '${lastUpdate}',
+              '${name}',
+              '${street}',
+              '${address2}',
+              '${postalCode}',
+              '${city}',
+              '${phone}',
+              '${email}',
+              ${incomeRemoteHeatingAccountId},
+              ${paymentRemoteHeatingAccountId},
+              ${commonCostAccountId},
+              '${organizationNumber}',
+              '${importPath}',
+              ${fromMonth},
+              ${toMonth});
+            `;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+            console.log('SQLquery :', SQLquery);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'delete': {
+
+          try {
+
+            const user = req.body.user;
+
+            const condominiumId = req.body.condominiumId;
+
+            // Delete table
+            const SQLquery = `
+            UPDATE condominiums
+            SET
+              deleted = 'Y',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}'
+            WHERE condominiumId = ${condominiumId};`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+            console.log('SQLquery: ', SQLquery);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+      }
+    });
+
+    // Requests for budgets table
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/budgets";
+    if (serverStatus === 2) routePath = "/budgets";
+    app.post(routePath, async (req, res) => {
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+        case 'select': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const year = Number(req.body.year);
+            const accountId = Number(req.body.accountId);
+
+            let SQLquery = `
+              SELECT * FROM budgets
+              WHERE condominiumId = ${condominiumId}
+              AND deleted <> 'Y'`;
+
+            if (year !== nineNine) {
+              SQLquery += `
+              AND year = ${year}`;
+            }
+            if (accountId !== nineNine) {
+              SQLquery += `
+              AND accountId = ${accountId}`;
+            }
+
+            SQLquery += `
+            ORDER BY year, accountId;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+            console.log('SQLquery: ', SQLquery);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestBudgetId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM budgets
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY budgetId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const budgetId = req.body.budgetId;
+            const user = req.body.user;
+            const accountId = req.body.accountId;
+            const amount = req.body.amount;
+            const year = req.body.year;
+            const text = req.body.text;
+
+            // Update row
+            const SQLquery = `
+              UPDATE budgets
+              SET
+                user = '${user}',
+                lastUpdate = '${lastUpdate}',
+                accountId = ${accountId},
+                amount = ${amount},
+                year = ${year},
+                text = '${text}'
+              WHERE budgetId = ${budgetId};
+            `;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+
+            const accountId = req.body.accountId;
+            const amount = req.body.amount;
+            const year = req.body.year;
+            const text = req.body.text;
+
+            // Insert new row
+            const SQLquery = `
+              INSERT INTO budgets(
+                deleted,
+                condominiumId,
+                user,
+                lastUpdate,
+                accountId,
+                amount,
+                year,
+                text
+              ) VALUES(
+                'N',
+                ${condominiumId},
+                '${user}',
+                '${lastUpdate}',
+                ${accountId},
+                ${amount},
+                ${year},
+                '${text}');
+              `;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'delete': {
+
+          try {
+
+            const budgetId = req.body.budgetId;
+            const user = req.body.user;
+
+            // Delete table
+            const SQLquery = `
+              UPDATE budgets
+              SET
+                deleted = 'Y',
+                user = '${user}',
+                lastUpdate = '${lastUpdate}'
+              WHERE budgetId = ${budgetId};
+            `;
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+      }
+    });
+
+    // Requests for dues table
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/dues";
+    if (serverStatus === 2) routePath = "/dues";
+    app.post(routePath, async (req, res) => {
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+
+        case 'select': {
+
+          try {
+            const condominiumId = req.body.condominiumId;
+
+            let SQLquery = `
+            SELECT * FROM dues
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY condoId, date DESC;
+            `;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestDueId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM dues
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY dueId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const dueId = req.body.dueId;
+            const user = req.body.user;
+            const condoId = Number(req.body.condoId);
+            const accountId = req.body.accountId;
+            const projectId = req.body.projectId;
+            const amount = req.body.amount;
+            const date = req.body.date;
+            const kilowattHour = req.body.kilowattHour;
+            const text = req.body.text;
+
+            // Update row
+            const SQLquery = `
+            UPDATE dues
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              condoId = ${condoId},
+              accountId = ${accountId},
+              projectId = ${projectId},
+              amount = ${amount},
+              date = ${date},
+              kilowattHour = ${kilowattHour},
+              text = '${text}'
+            WHERE dueId = ${dueId};`;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+            const condoId = Number(req.body.condoId);
+            const accountId = req.body.accountId;
+            const projectId = req.body.projectId;
+            const amount = req.body.amount;
+            const date = req.body.date;
+            const kilowattHour = req.body.kilowattHour;
+            const text = req.body.text;
+
+            // Insert new row
+            const SQLquery = `
+            INSERT INTO dues(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              condoId,
+              accountId,
+              projectId,
+              amount,
+              date,
+              kilowattHour,
+              text
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${condoId},
+              ${accountId},
+              ${projectId},
+              ${amount},
+              ${date},
+              ${kilowattHour},
+              '${text}');`;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'delete': {
+
+          try {
+
+            const dueId = req.body.dueId;
+            const user = req.body.user;
+
+            // Delete table
+            const SQLquery = `
+            UPDATE dues
+            SET
+              deleted = 'Y',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}'
+            WHERE dueId = ${dueId};`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+      }
+    });
+
+    // Requests for condo
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/condo";
+    if (serverStatus === 2) routePath = "/condo";
+    app.post(routePath, async (req, res) => {
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+
+        case 'select': {
+
+          try {
+
+            const condominiumId = Number(req.body.condominiumId);
+            //const condoId = Number(req.body.condoId);
+
+            let SQLquery = `
+            SELECT * FROM condo
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'`;
+            //if (condoId !== nineNine) SQLquery += ` AND condoId = ${condoId}`;
+            SQLquery += ` ORDER BY condoId;`;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestCondoId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM condo
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY condoId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const condoId = Number(req.body.condoId);
+            const user = req.body.user;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const squareMeters = req.body.squareMeters;
+
+            // Update condo table
+            const SQLquery = `
+            UPDATE condo
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              name = '${name}',
+              street = '${street}',
+              address2 = '${address2}',
+              postalCode = '${postalCode}',
+              city = '${city}',
+              squareMeters = '${squareMeters}'
+            WHERE condoId = ${condoId};`;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const squareMeters = req.body.squareMeters;
+
+            // Insert new row
+            const SQLquery = `
+            INSERT INTO condo(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              name,
+              street,
+              address2,
+              postalCode,
+              city,
+              squareMeters
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              '${name}',
+              '${street}',
+              '${address2}',
+              '${postalCode}',
+              '${city}',
+              '${squareMeters}');`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+
+        }
+
+        case 'delete': {
+
+          try {
+
+            const user = req.body.user;
+
+            const condoId = Number(req.body.condoId);
+
+            // Delete table
+            const SQLquery = `
+            UPDATE condo
+            SET
+              deleted = 'Y',
+              lastUpdate = '${lastUpdate}',
+              user = '${user}'
+            WHERE condoId = ${condoId};`;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+
+          break;
+        }
+      }
+    });
+
+    // Requests for user bank account
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/userbankaccounts";
+    if (serverStatus === 2) routePath = "/userbankaccounts";
+    app.post(routePath, async (req, res) => {
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+
+        case 'select': {
+
+          const condominiumId = Number(req.body.condominiumId);
+          const userId = Number(req.body.userId);
+          const accountId = Number(req.body.accountId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM userbankaccounts
+            WHERE condominiumId = ${condominiumId}
+              AND deleted <> 'Y'`;
+            if (userId !== nineNine) SQLquery += ` AND userId = ${userId} `;
+            if (accountId !== nineNine) SQLquery += ` AND accountId = ${accountId} `;
+            SQLquery += ' ORDER BY userId;';
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestUserBankAccountId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM userBankAccounts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY userBankAccountId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const user = req.body.user;
+            const userId = req.body.userId;
+            const accountId = req.body.accountId;
+            const bankAccount = req.body.bankAccount;
+            const userBankAccountId = req.body.userBankAccountId;
+
+            // Update user bank account table
+            const SQLquery = `
+            UPDATE userBankAccounts
+            SET
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              userId = ${userId},
+              accountId = ${accountId},
+              bankAccount = '${bankAccount}'
+            WHERE userBankAccountId = ${userBankAccountId};`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+            const userId = req.body.userId;
+            const accountId = req.body.accountId;
+            const bankAccount = req.body.bankAccount;
+
+            // Insert new row
+            // Insert new record
+            const SQLquery = `
+            INSERT INTO userBankAccounts(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              userId,
+              accountId,
+              bankAccount
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${userId},
+              ${accountId},
+              '${bankAccount}'
+            );`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+
+          break;
+        }
+
+        case 'delete': {
+
+          try {
+
+            const user = req.body.user;
+            const userBankAccountId = req.body.userBankAccountId;
+
+            // Delete table
+            const SQLquery = `
+            UPDATE userbankaccounts
+            SET
+              deleted = 'Y',
+              lastUpdate = '${lastUpdate}',
+              user = '${user}'
+            WHERE userBankAccountId = ${userBankAccountId};
+          `;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+
+          break;
+        }
+      }
+    });
+
+    // Requests for supplier
+    //app.post("/suppliers", async (req, res) => {
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/suppliers";
+    if (serverStatus === 2) routePath = "/suppliers";
+    app.post(routePath, async (req, res) => {
+
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+
+        case 'select': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            const SQLquery =
+              `
+          SELECT * FROM suppliers
+                WHERE condominiumId = ${condominiumId}
+                  AND deleted <> 'Y'
+                ORDER BY supplierId;
+          `;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestSupplierId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM suppliers
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY supplierId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const supplierId = req.body.supplierId;
+            const user = req.body.user;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const email = req.body.email;
+            const phone = req.body.phone;
+            const bankAccount = req.body.bankAccount;
+            const accountId = req.body.accountId;
+            const amountAccountId = req.body.amountAccountId;
+            const amount = req.body.amount;
+            const text = req.body.text;
+            const textAccountId = req.body.textAccountId;
+
+            // Update supplier table
+            const SQLquery =
+              `
+                UPDATE suppliers
+          SET
+          user = '${user}',
+            lastUpdate = '${lastUpdate}',
+            name = '${name}',
+            street = '${street}',
+            address2 = '${address2}',
+            postalcode = '${postalCode}',
+            city = '${city}',
+            email = '${email}',
+            phone = '${phone}',
+            bankAccount = '${bankAccount}',
+            accountId = ${accountId},
+          amount = ${amount},
+          amountAccountId = ${amountAccountId},
+          text = '${text}',
+            textAccountId = ${textAccountId}
+                WHERE supplierId = ${supplierId};
+          `;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+            const email = req.body.email;
+            const name = req.body.name;
+            const street = req.body.street;
+            const address2 = req.body.address2;
+            const postalCode = req.body.postalCode;
+            const city = req.body.city;
+            const phone = req.body.phone;
+            const bankAccount = req.body.bankAccount;
+            const accountId = req.body.accountId;
+            const amount = req.body.amount;
+            const amountAccountId = req.body.amountAccountId;
+            const text = req.body.text;
+            const textAccountId = req.body.textAccountId;
+
+            // Insert new supplier row
+            const SQLquery =
+              `
+                INSERT INTO suppliers(
+            deleted,
+            condominiumId,
+            user,
+            lastUpdate,
+            name,
+            street,
+            address2,
+            postalCode,
+            city,
+            email,
+            phone,
+            bankAccount,
+            accountId,
+            amount,
+            amountAccountId,
+            text,
+            textAccountId
+          ) VALUES(
+            'N',
+            ${condominiumId},
+            '${user}',
+            '${lastUpdate}',
+            '${name}',
+            '${street}',
+            '${address2}',
+            '${postalCode}',
+            '${city}',
+            '${email}',
+            '${phone}',
+            '${bankAccount}',
+            ${accountId},
+            ${amount},
+            ${amountAccountId},
+            '${text}',
+            ${textAccountId}
+          );
+          `;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+
+          break;
+        }
+
+        case 'delete': {
+          try {
+
+            const user = req.body.user;
+            const supplierId = req.body.supplierId;
+
+            // Delete table
+            const SQLquery =
+              `
+                UPDATE suppliers
+          SET
+          deleted = 'Y',
+            lastUpdate = '${lastUpdate}',
+            user = '${user}'
+                  WHERE supplierId = ${supplierId};
+          `;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+
+          break;
+        }
+      }
+    });
+
+    // Requests for transactions
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/transactions";
+    if (serverStatus === 2) routePath = "/transactions";
+    app.post(routePath, async (req, res) => {
+
+      const action = req.body.action;
+      const lastUpdate = today.toISOString();
+
+      switch (action) {
+
+        case 'select': {
+
+          const orderBy = req.body.orderBy;
+          const condominiumId = Number(req.body.condominiumId);
+          const deleted = req.body.deleted;
+          const condoId = Number(req.body.condoId);
+          const accountId = Number(req.body.accountId);
+          const projectId = Number(req.body.projectId);
+          const amount = Number(req.body.amount);
+          const fromDate = Number(req.body.fromDate);
+          const toDate = Number(req.body.toDate);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM transactions 
+            WHERE condominiumId = ${condominiumId}
+            `;
+            if (deleted === 'Y') SQLquery += ` AND deleted = 'Y'`;
+            if (deleted === 'N') SQLquery += ` AND deleted = 'N'`;
+            SQLquery += `
+             AND date BETWEEN ${fromDate} AND ${toDate}
+            `;
+            if (condoId !== nineNine) SQLquery += `
+              AND condoId = ${condoId}
+             `;
+            if (accountId !== nineNine) SQLquery += ` 
+              AND accountId = ${accountId}
+            `;
+            if (projectId !== nineNine) SQLquery += ` 
+              AND projectId = ${projectId}
+            `;
+            if (amount !== 0 && amount !== nineNine)
+              SQLquery += ` AND income = ${amount} OR payment = ${amount}
+            `;
+            if (orderBy) SQLquery += `
+            ORDER BY ${orderBy};
+            `;
+            if (!orderBy) SQLquery += `
+            ORDER BY date DESC, income DESC;
+            `;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'highestTransactionId': {
+
+          const condominiumId = Number(req.body.condominiumId);
+
+          try {
+
+            let SQLquery = `
+            SELECT * FROM transactions
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY transactionId DESC
+            LIMIT 1;`;
+
+            console.log('SQLquery :', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'update': {
+
+          try {
+
+            const user = req.body.user;
+            const condoId = Number(req.body.condoId);
+            const accountId = req.body.accountId;
+            const projectId = Number(req.body.projectId);
+            const income = req.body.income;
+            const payment = req.body.payment;
+            const kilowattHour = req.body.kilowattHour;
+            const date = req.body.date;
+            const text = req.body.text;
+            const transactionId = req.body.transactionId;
+
+            // Update transactions table
+            const SQLquery = `
+            UPDATE transactions
+            SET
+              deleted = 'N',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}',
+              condoId = ${condoId},
+              accountId = ${accountId},
+              projectId = ${projectId},
+              income = ${income},
+              payment = ${payment},
+              kilowattHour = ${kilowattHour},
+              date = ${date},
+              text = '${text}'
+            WHERE transactionId = ${transactionId};`;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+          break;
+        }
+
+        case 'insert': {
+
+          try {
+
+            const condominiumId = req.body.condominiumId;
+            const user = req.body.user;
+
+            const condoId = Number(req.body.condoId);
+            const accountId = Number(req.body.accountId);
+            const projectId = Number(req.body.projectId);
+            const income = req.body.income;
+            const payment = req.body.payment;
+            const kilowattHour = req.body.kilowattHour;
+            const date = req.body.date;
+            const text = req.body.text;
+
+            // Insert new transactions row
+            const SQLquery = `
+            INSERT INTO transactions(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              condoId,
+              accountId,
+              projectId,
+              income,
+              payment,
+              kilowattHour,
+              date,
+              text
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${condoId},
+              ${accountId},
+              ${projectId},
+              ${income},
+              ${payment},
+              ${kilowattHour},
+              ${date},
+              '${text}');`;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+
+          break;
+        }
+
+        case 'delete': {
+
+          try {
+
+            const user = req.body.user;
+            const transactionId = req.body.transactionId;
+
+            // Delete table
+            const SQLquery = `
+            UPDATE transactions
+            SET
+              deleted = 'Y',
+              lastUpdate = '${lastUpdate}',
+              user = '${user}'
+            WHERE transactionId = ${transactionId}; `;
+
+            console.log('SQLquery: ', SQLquery);
+            const [rows] = await mySqlDB.query(SQLquery);
+
+            // Send a JSON response to the client containing the data
+            res.json(rows);
+          } catch (err) {
+
+            console.log(`Database error in ${routePath}:`, err.message);
+            res.status(500).json({ error: err.message });
+          }
+
+          break;
+        }
+      }
+    });
+
+    // bank account transaction csv file
+    routePath = "";
+    if (serverStatus === 1) routePath = "/api/importFile";
+    if (serverStatus === 2) routePath = "/importFile";
+    app.post(routePath, async (req, res) => {
+
+      try {
+
+        const fileName = req.body.fileName;
+        const data = await fs.readFile(fileName, "utf8");
+        res.json({ content: data });
+      } catch (err) {
+
+        res.status(500).json({ error: err.message });
+      }
+    });
+
+  } catch (err) {
+    console.log("❌ Database connection failed:", err.message);
+    process.exit(1);
+  }
+
+  // Requests for remoteheatings table
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/remoteheatings";
+  if (serverStatus === 2) routePath = "/remoteheatings";
+  app.post(routePath, async (req, res) => {
+
+    const action = req.body.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+
+          let SQLquery = `
+          SELECT * FROM remoteheatings
+          WHERE condominiumId = ${condominiumId} 
+          AND deleted <> 'Y'
+          ORDER BY date DESC;
+          `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestRemoteHeatingId': {
+
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM remoteheatings
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY remoteHeatingId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+
+          const remoteHeatingId = req.body.remoteHeatingId;
+          const user = req.body.user;
+          const condoId = Number(req.body.condoId);
+          const date = req.body.date;
+          const kilowattHour = req.body.kilowattHour;
+          const amount = req.body.amount;
+          const text = req.body.text;
+
+          // Update row
+          const SQLquery = `
+          UPDATE remoteheatings
+          SET
+            user = '${user}',
+            lastUpdate = '${lastUpdate}',
+            condoId = ${condoId},
+            date = ${date},
+            kilowattHour = ${kilowattHour},
+            amount = ${amount},
+            text = '${text}'
+          WHERE remoteHeatingId = ${remoteHeatingId};
+          `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const user = req.body.user;
+          const condominiumId = req.body.condominiumId;
+          const condoId = Number(req.body.condoId);
+          const date = req.body.date;
+          const kilowattHour = req.body.kilowattHour;
+          const amount = req.body.amount;
+          const text = req.body.text;
+
+          // Insert new row
+          const SQLquery = `
+          INSERT INTO remoteheatings(
+            deleted,
+            condominiumId,
+            user,
+            lastUpdate,
+            condoId,
+            date,
+            kilowattHour,
+            amount,
+            text
+          ) VALUES(
+            'N',
+            ${condominiumId},
+            '${user}',
+            '${lastUpdate}',
+            ${condoId},
+            ${date},
+            ${kilowattHour},
+            ${amount},
+            '${text}'
+          );`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const remoteHeatingId = req.body.remoteHeatingId;
+          const user = req.body.user;
+
+          // Delete table
+          const SQLquery = `
+          UPDATE remoteheatings
+          SET
+            deleted = 'Y',
+            user = '${user}',
+            lastUpdate = '${lastUpdate}'
+          WHERE remoteHeatingId = ${remoteHeatingId};
+          `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+
+  // Requests for remoteheatingprices table
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/remoteheatingprices";
+  if (serverStatus === 2) routePath = "/remoteheatingprices";
+  app.post(routePath, async (req, res) => {
+
+    const action = req.body.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+
+          let SQLquery = `
+          SELECT * FROM remoteheatingprices
+          WHERE condominiumId = ${condominiumId} 
+          AND deleted <> 'Y'`;
+          SQLquery += ` ORDER BY year; `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestRemoteHeatingPriceId': {
+
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+          SELECT * FROM remoteheatingprices
+          WHERE condominiumId = ${condominiumId}
+          AND deleted <> 'Y'
+          ORDER BY remoteHeatingPriceId DESC
+          LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+
+          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
+          const user = req.body.user;
+          const year = req.body.year;
+          const priceKilowattHour = req.body.priceKilowattHour;
+
+          // Update row
+          const SQLquery = `
+          UPDATE remoteheatingprices
+          SET
+            user = '${user}',
+            lastUpdate = '${lastUpdate}',
+            year = ${year},
+            priceKilowattHour = ${priceKilowattHour}
+          WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+          `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const user = req.body.user;
+          const condominiumId = req.body.condominiumId;
+          const year = req.body.year;
+          const priceKilowattHour = req.body.priceKilowattHour;
+
+          // Insert new row
+          const SQLquery = `
+          INSERT INTO remoteheatingprices(
+            deleted,
+            condominiumId,
+            user,
+            lastUpdate,
+            year,
+            priceKilowattHour
+          ) VALUES(
+            'N',
+            ${condominiumId},
+            '${user}',
+            '${lastUpdate}',
+            ${year},
+            ${priceKilowattHour}
+          );`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const remoteHeatingPriceId = req.body.remoteHeatingPriceId;
+          const user = req.body.user;
+
+          // Delete table
+          const SQLquery = `
+          DELETE FROM remoteheatingprices
+          WHERE remoteHeatingPriceId = ${remoteHeatingPriceId};
+          `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+
+  // Requests for commoncosts table
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/commoncosts";
+  if (serverStatus === 2) routePath = "/commoncosts";
+  app.post(routePath, async (req, res) => {
+
+    const action = req.body.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+
+          let SQLquery = `
+          SELECT * FROM commoncosts
+          WHERE condominiumId = ${condominiumId}
+          AND deleted <> 'Y'`;
+          SQLquery += ` ORDER BY year; `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestCommonCostId': {
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM commoncosts
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY condominiumId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+
+          const commonCostId = req.body.commonCostId;
+          const user = req.body.user;
+          const year = req.body.year;
+          const commonCostSquareMeter = req.body.commonCostSquareMeter;
+          const fixedCostCondo = req.body.fixedCostCondo;
+
+          // Update row
+          const SQLquery = `
+          UPDATE commoncosts
+          SET
+            user = '${user}',
+            lastUpdate = '${lastUpdate}',
+            year = ${year},
+            commonCostSquareMeter = ${commonCostSquareMeter},
+            fixedCostCondo = ${fixedCostCondo}
+          WHERE commonCostId = ${commonCostId};
+          `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const user = req.body.user;
+          const condominiumId = req.body.condominiumId;
+          const year = req.body.year;
+          const commonCostSquareMeter = req.body.commonCostSquareMeter;
+          const fixedCostCondo = req.body.fixedCostCondo;
+
+          // Insert new row
+          const SQLquery = `
+          INSERT INTO commoncosts(
+            deleted,
+            condominiumId,
+            user,
+            lastUpdate,
+            year,
+            commonCostSquareMeter,
+            fixedCostCondo
+          ) VALUES(
+            'N',
+            ${condominiumId},
+            '${user}',
+            '${lastUpdate}',
+            ${year},
+            ${commonCostSquareMeter},
+            ${fixedCostCondo}); `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const commonCostId = req.body.commonCostId;
+          const user = req.body.user;
+
+          // Delete table
+          const SQLquery = `
+          UPDATE commoncosts
+          SET
+          deleted = 'Y',
+            user = '${user}',
+            lastUpdate = '${lastUpdate}'
+          WHERE commonCostId = ${commonCostId}; `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+
+  // Requests for news table
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/news";
+  if (serverStatus === 2) routePath = "/news";
+  app.post(routePath, async (req, res) => {
+
+    const action = req.body.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+
+          let SQLquery = `
+          SELECT * FROM news
+          WHERE condominiumId = ${condominiumId}
+          AND deleted <> 'Y'
+          ORDER BY date DESC;
+          `;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+          console.log('SQLquery: ', SQLquery);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestNewsId': {
+
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM news
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY newsId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+          const newsId = req.body.newsId;
+          const user = req.body.user;
+          const date = req.body.date;
+          const title = req.body.title;
+          const image = req.body.image;
+          const content = req.body.content;
+          const userId = req.body.userId;
+
+          // Update row
+          const SQLquery = `
+            UPDATE news
+            SET
+              user = '${user}',
+              deleted = 'N',
+              lastUpdate = '${lastUpdate}',
+              date = ${date},
+              userId = ${userId},
+              title = '${title}',
+              content = '${content}',
+              image = '${image}'
+            WHERE newsId = ${newsId};`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+          const user = req.body.user;
+
+          const date = req.body.date;
+          const userId = req.body.userId;
+          const title = req.body.title;
+          const content = req.body.content;
+          const image = req.body.image;
+
+          // Insert new row
+          const SQLquery = `
+            INSERT INTO news(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              date,
+              title,
+              userId,
+              content,
+              image
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${date},
+              '${title}',
+              ${userId},
+              '${content}',
+              '${image}');
+          `;
+
+          console.log('SQLquery:', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const newsId = req.body.newsId;
+          const user = req.body.user;
+
+          // Delete table
+          const SQLquery = `
+            UPDATE news
+            SET
+              deleted = 'Y',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}'
+            WHERE newsId = ${newsId};`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+
+  // Requests for emptying calendar table
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/emptycalendars";
+  if (serverStatus === 2) routePath = "/emptycalendars";
+  app.post(routePath, async (req, res) => {
+
+    const action = req.body.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+          const date = req.body.date;
+          const orderBy = req.body.orderBy;
+
+          let SQLquery = `
+          SELECT * FROM emptycalendars
+          WHERE condominiumId = ${condominiumId}
+          AND deleted <> 'Y'`;
+
+          if (orderBy) SQLquery += ` ORDER BY ${orderBy};`;
+          if (!orderBy) SQLquery += ` ORDER BY date ASC;`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestEmptyCalendarId': {
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+            SELECT * FROM emptycalendars
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY emptyCalendarId DESC
+            LIMIT 1;`;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+          const emptyCalendarId = req.body.emptyCalendarId;
+          const user = req.body.user;
+          const condoId = Number(req.body.condoId);
+          const date = req.body.date;
+          const residualWaste = req.body.residualWaste;
+          const paper = req.body.paper;
+          const food = req.body.food;
+          const plastic = req.body.plastic;
+          const christmasTree = req.body.christmasTree;
+
+          // Update row
+          const SQLquery = `
+            UPDATE emptycalendars
+            SET
+              user = '${user}',
+              deleted = 'N',
+              lastUpdate = '${lastUpdate}',
+              condoId = ${condoId},
+              date = ${date},
+              residualWaste = '${residualWaste}',
+              paper = '${paper}',
+              food = '${food}',
+              plastic = '${plastic}',
+              christmasTree = '${christmasTree}'
+            WHERE emptyCalendarId = ${emptyCalendarId};`;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+          const user = req.body.user;
+          const condoId = Number(req.body.condoId);
+          const date = req.body.date;
+          const residualWaste = req.body.residualWaste;
+          const paper = req.body.paper;
+          const food = req.body.food;
+          const plastic = req.body.plastic;
+          const christmasTree = req.body.christmasTree;
+
+          // Insert new row
+          const SQLquery = `
+            INSERT INTO emptycalendars(
+              deleted,
+              condominiumId,
+              user,
+              lastUpdate,
+              condoId,
+              date,
+              residualWaste,
+              paper,
+              food,
+              plastic,
+              christmasTree
+
+            ) VALUES(
+              'N',
+              ${condominiumId},
+              '${user}',
+              '${lastUpdate}',
+              ${condoId},
+              ${date},
+              '${residualWaste}',
+              '${paper}',
+              '${food}',
+              '${plastic}',
+              '${christmasTree}'
+            );
+          `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}:`, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const emptyCalendarId = req.body.emptyCalendarId;
+          const user = req.body.user;
+
+          /*
+          // Delete table
+          const SQLquery = `
+            UPDATE emptycalendars
+            SET
+              deleted = 'Y',
+              user = '${user}',
+              lastUpdate = '${lastUpdate}'
+            WHERE emptyCalendarId = ${emptyCalendarId};
+          `;
+          */
+          const SQLquery = `
+          DELETE FROM emptycalendars
+          WHERE emptyCalendarId = ${emptyCalendarId};
+          `;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}: `, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+
+  // Requests for projects table
+  routePath = "";
+  if (serverStatus === 1) routePath = "/api/projects";
+  if (serverStatus === 2) routePath = "/projects";
+  app.post(routePath, async (req, res) => {
+
+    const action = req.body.action;
+    const lastUpdate = today.toISOString();
+
+    switch (action) {
+
+      case 'select': {
+
+        try {
+
+          const condominiumId = req.body.condominiumId;
+
+          let SQLquery = `
+          SELECT * FROM projects
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY name ASC; `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}: `, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'highestProjectId': {
+        const condominiumId = Number(req.body.condominiumId);
+
+        try {
+
+          let SQLquery = `
+          SELECT * FROM projects
+            WHERE condominiumId = ${condominiumId}
+            AND deleted <> 'Y'
+            ORDER BY projectId DESC
+            LIMIT 1; `;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}: `, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'update': {
+
+        try {
+          const projectId = req.body.projectId;
+          const user = req.body.user;
+          const accountId = Number(req.body.accountId);
+          const name = req.body.name;
+          const amount = req.body.amount;
+
+          // Update row
+          const SQLquery = `
+            UPDATE projects
+          SET
+          user = '${user}',
+            deleted = 'N',
+            lastUpdate = '${lastUpdate}',
+            name = '${name}',
+            accountId = ${accountId},
+          amount = '${amount}'
+            WHERE projectId = ${projectId}; `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}: `, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'insert': {
+
+        try {
+
+          const projectId = req.body.projectId;
+          const user = req.body.user;
+          const condominiumId = req.body.condominiumId;
+          const accountId = Number(req.body.accountId);
+          const name = req.body.name;
+          const amount = req.body.amount;
+
+          // Insert new row
+          const SQLquery = `
+            INSERT INTO projects(
+            deleted,
+            condominiumId,
+            user,
+            lastUpdate,
+            name,
+            accountId,
+            amount
+          ) VALUES(
+            'N',
+            ${condominiumId},
+            '${user}',
+            '${lastUpdate}',
+            '${name}',
+            ${accountId},
+            '${amount}'); `;
+
+          console.log('SQLquery: ', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}: `, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+
+      case 'delete': {
+
+        try {
+
+          const projectId = req.body.projectId;
+          const user = req.body.user;
+
+          // Delete table
+          const SQLquery = `
+            UPDATE projects
+          SET
+          deleted = 'Y',
+            user = '${user}',
+            lastUpdate = '${lastUpdate}'
+            WHERE projectId = ${projectId}; `;
+
+          console.log('SQLquery :', SQLquery);
+          const [rows] = await mySqlDB.query(SQLquery);
+
+          // Send a JSON response to the client containing the data
+          res.json(rows);
+        } catch (err) {
+
+          console.log(`Database error in ${routePath}: `, err.message);
+          res.status(500).json({ error: err.message });
+        }
+        break;
+      }
+    }
+  });
+}
