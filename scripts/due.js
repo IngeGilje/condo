@@ -1,4 +1,4 @@
-// maintenance of dues
+// maintenance of due
 
 // Activate classes
 const today = new Date();
@@ -72,7 +72,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('Server er ikke startet.');
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -84,6 +84,7 @@ async function events() {
     if ((event.target.classList.contains('filterFromdate'))
       || (event.target.classList.contains('filterToDate'))
       || (event.target.classList.contains('filterCondoId'))
+      || (event.target.classList.contains('filterAccountId'))
       || (event.target.classList.contains('filterProjectId'))) {
 
       // get first dueId for fromDate, toDate, condoId,projectId
@@ -92,10 +93,13 @@ async function events() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = formatISODateToNumber(toDate);
       const condoId = Number(document.querySelector('.filterCondoId').value);
+      const accountId = Number(document.querySelector('.filterAccountId').value);
       const projectId = Number(document.querySelector('.filterProjectId').value);
 
-      const dueId = objDues.getFirstDueId(fromDate, toDate, condoId, projectId);
-      if (dueId > 0) showDue(dueId);
+      const dueId = objDues.getFirstDueId(fromDate, toDate, condoId, accountId, projectId);
+      (dueId > 0)
+        ? showDue(dueId)
+        : resetValues();
     };
   });
 
@@ -148,49 +152,24 @@ function showFilter(dueId) {
   const rowNumberDue = objDues.arrayDues.findIndex(due => due.dueId === dueId);
 
   // from date
-  /*
-  let fromDate = (objDues.arrayDues[rowNumberDue].date)
-    ? objDues.arrayDues[rowNumberDue].date
-    : 0;
-  */
   let fromDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
   fromDate = formatNumberToISODate(fromDate);
   html += inputDate('filterFromdate', 'Fra Dato', fromDate, true);
 
   // to date
-  /*
-  let toDate = (objDues.arrayDues[rowNumberDue].date)
-    ? objDues.arrayDues[rowNumberDue].date
-    : 0;
-  */
   let toDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
   toDate = formatNumberToISODate(toDate);
   html += inputDate('filterToDate', 'Til Dato', toDate, true);
 
   // condo
-  /*
-  const condoId = (objDues.arrayDues[rowNumberDue].condoId)
-    ? objDues.arrayDues[rowNumberDue].condoId
-    : 0;
-  */
   const condoId = objDues.arrayDues[rowNumberDue]?.condoId ?? 0;
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, 'Velg Leilighet', '', true);
 
   // account
-  /*
-  const accountId = (objDues.arrayDues[rowNumberDue].accountId)
-    ? objDues.arrayDues[rowNumberDue].accountId
-    : 0;
-  */
   const accountId = objDues.arrayDues[rowNumberDue]?.accountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('filterAccountd', 'Konto', accountId, 'Velg Konto', '', true);
+  html += objAccounts.showSelectedAccountsNew('filterAccountId', 'Konto', accountId, 'Velg Konto', '', true);
 
   // project
-  /*
-  const projectId = (objDues.arrayDues[rowNumberDue].projectId)
-    ? objDues.arrayDues[rowNumberDue].projectId
-    : 0;
-  */
   const projectId = objDues.arrayDues[rowNumberDue]?.projectId ?? 0;
   html += objProjects.showSelectedProjectsNew('filterProjectId', 'Prosjekt', projectId, 'Velg Prosjekt', '', true);
 
@@ -207,85 +186,42 @@ function showDue(dueId) {
   let html = startGrid('Forfall');
 
   // due Id
-  //html += showTextNew('dueId', 'Forfall Id', dueId, false);
   html += inputText('dueId', 'Forfall Id', dueId, 11, false)
   html += "<div></div>";
-  //html += "<div></div>";
 
   // date
-  /*
-  let dueDate = (objDues.arrayDues[rowNumberDue].date)
-    ? objDues.arrayDues[rowNumberDue].date
-    : 0;
-  */
   let dueDate = objDues.arrayDues[rowNumberDue]?.date ?? 0;
   dueDate = formatNumberToISODate(dueDate);
   html += inputDate('dueDate', 'Dato', dueDate, enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   // condo Id
-  /*
-  let condoId = (objDues.arrayDues[rowNumberDue].condoId)
-    ? objDues.arrayDues[rowNumberDue].condoId
-    : 0;
-  */
   let condoId = objDues.arrayDues[rowNumberDue]?.condoId ?? 0;
   html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, 'Velg Leilighet', '', enableChanges);
 
   // account Id
-  /*
-  let accountId = (objDues.arrayDues[rowNumberDue].accountId)
-    ? objDues.arrayDues[rowNumberDue].accountId
-    : 0;
-  */
   const accountId = objDues.arrayDues[rowNumberDue]?.accountId ?? 0;
   html += objAccounts.showSelectedAccountsNew('accountId', 'Konto', accountId, 'Velg konto', '', enableChanges);
 
   // project Id
-  /*
-  let projectId = (objDues.arrayDues[rowNumberDue].projectId)
-    ? objDues.arrayDues[rowNumberDue].projectId
-    : 0;
-  */
   const projectId = objDues.arrayDues[rowNumberDue]?.projectId ?? 0;
   html += objProjects.showSelectedProjectsNew('projectId', 'Prosjekt', projectId, 'Velg Prosjekt', '', enableChanges);
+  html += "<div></div>";
 
   // kilowattHour
-  /*
-  let kilowattHour = (objDues.arrayDues[rowNumberDue].kilowattHour)
-    ? objDues.arrayDues[rowNumberDue].kilowattHour
-    : 0;
-  */
   let kilowattHour = objDues.arrayDues[rowNumberDue]?.kilowattHour ?? 0;
   kilowattHour = formatNumberToNorAmount(kilowattHour);
-  //html += showTextNew('kilowattHour', 'K.timer', kilowattHour, enableChanges, 'Kontonavn');
   html += inputText('kilowattHour', 'K.timer', kilowattHour, 11, enableChanges);
 
   // amount
-  /*
-  let amount = (objDues.arrayDues[rowNumberDue].amount)
-    ? objDues.arrayDues[rowNumberDue].amount
-    : 0;
-  */
   let amount = objDues.arrayDues[rowNumberDue]?.amount ?? 0;
   amount = formatNumberToNorAmount(amount);
-  //html += showTextNew('amount', 'Beløp', amount, enableChanges, 'Beløp');
   html += inputText('amount', 'Beløp', amount, 11, enableChanges);
 
-  //html += "<div></div>";
-
   // text
-  /*
-  let text = (objDues.arrayDues[rowNumberDue].text)
-    ? objDues.arrayDues[rowNumberDue].text
-    : "";
-  */
   const text = objDues.arrayDues[rowNumberDue]?.text ?? "";
-  //html += showTextNew('text', 'Tekst', text, enableChanges, 'Tekst');
   html += inputText('text', 'Tekst', text, 45, enableChanges);
   html += "<div></div>";
-  //html += "<div></div>";
 
   html += endGrid();
 
@@ -312,6 +248,9 @@ function showDue(dueId) {
   html += endButtons();
 
   document.querySelector('.showDue').innerHTML = html;
+
+  // Hide dueId
+  document.querySelector(".dueId").style.display = "none";
 }
 
 // Update a dues table row
@@ -348,7 +287,7 @@ async function updateDueRow(dueId) {
 
   // text
   const text = document.querySelector('.text').value;
-  const validText = validateTextNew('text', 'Ugyldig Tekst', text, 0, 45);
+  const validText = validateText('text', 'Ugyldig Tekst', text, 0, 45);
 
   // Validate dues columns
   if (validDate && validCondoId && validkilowattHour && validAmount && validAccountId && validProjectId && validText) {
@@ -415,10 +354,13 @@ async function deleteDuesRow(dueId) {
 function resetValues() {
 
   // Filter
+  /*
   document.querySelector('.filterFromdate').value = 0;
   document.querySelector('.filterToDate').value = 0;
   document.querySelector('.filterCondoId').value = 0;
+  document.querySelector('.filterAccountId').value = 0;
   document.querySelector('.filterProjectId').value = 0;
+  */
 
   // dueId
   document.querySelector('.dueId').value = "";
@@ -440,6 +382,10 @@ function resetValues() {
 
   // amount
   document.querySelector('.amount').value = "";
+
+  // text
+  document.querySelector('.text').value = "";
+
 
   // Buttons
   if (enableChanges) {

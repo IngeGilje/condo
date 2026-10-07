@@ -61,7 +61,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('Server er ikke startet.');
+        showMessage('Server er ikke startet.'); 
   }
 }
 

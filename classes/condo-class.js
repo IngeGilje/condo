@@ -31,14 +31,7 @@ class Condo extends Condos {
 
     //let condoName;
     const rowNumberCondo = this.arrayCondo.findIndex(condo => condo.condoId === condoId);
-    /*
-    if (rowNumberCondo !== -1) {
-      condoName = this.arrayCondo[rowNumberCondo].name;
-    } else {
-      condoName = "";
-    }
-    */
-    const condoName = this.arrayCondo[rowNumberCondo]?.name ?? '';
+     const condoName = this.arrayCondo[rowNumberCondo]?.name ?? '';
     return condoName;
   }
 

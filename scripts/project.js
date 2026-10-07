@@ -81,7 +81,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('Server er ikke startet.');
+        showMessage('Server er ikke startet.'); 
   }
 }
 
@@ -246,7 +246,7 @@ async function updateProjectsRow(projectId) {
 
   // name
   let name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig tekst', name, 3, 45);
+  const validName = validateText('name', 'Ugyldig tekst', name, 3, 45);
 
   // amount
   let amount = document.querySelector('.amount').value;

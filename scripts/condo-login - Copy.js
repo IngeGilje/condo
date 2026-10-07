@@ -24,7 +24,7 @@ async function main() {
     events();
   } else {
 
-    showMessageNew('Server er ikke startet.');
+        showMessage('Server er ikke startet.'); 
   }
 }
 
@@ -139,7 +139,7 @@ async function checkLogin() {
   }
 
   // password/ user is not OK
-  showMessageNew( 'Ugyldig email/passord');
+  showMessage( 'Ugyldig email/passord');
 
   resetValues();
   return false;

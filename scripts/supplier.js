@@ -52,7 +52,7 @@ if ((objSuppliers.condominiumId === 0) || (objSuppliers.user === null)) {
       events();
     } else {
 
-      showMessageNew('Server er ikke startet.');
+          showMessage('Server er ikke startet.'); 
     }
   }
 }
@@ -359,15 +359,15 @@ async function updateSuppliersRow(supplierId) {
   const validSupplierId = validateIntervalNew('supplierId', 'Ugyldig Leverandør', supplierId, -1, objSuppliers.nineNine);
 
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig navn', name, 3, 45);
+  const validName = validateText('name', 'Ugyldig navn', name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateTextNew('street', 'Ugyldig adresse', street, 0, 45);
+  const validStreet = validateText('street', 'Ugyldig adresse', street, 0, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = validateTextNew('address2', 'Ugyldig adresse', address2, 0, 45);
+  const validAddress2 = validateText('address2', 'Ugyldig adresse', address2, 0, 45);
 
   // validate postalCode
   const postalCode = Number(document.querySelector('.postalCode').value);
@@ -375,7 +375,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate city
   const city = document.querySelector('.city').value.trim();
-  const validCity = validateTextNew('city', 'Ugyldig poststed', city, 0, 45, '',);
+  const validCity = validateText('city', 'Ugyldig poststed', city, 0, 45, '',);
 
   // validate email
   const email = document.querySelector('.email').value.trim();
@@ -412,7 +412,7 @@ async function updateSuppliersRow(supplierId) {
 
   // validate text
   const text = document.querySelector('.accountText').value;
-  const validText = validateTextNew('accountText', 'Ugyldig tekst', text, 0, 45);
+  const validText = validateText('accountText', 'Ugyldig tekst', text, 0, 45);
 
   if (validSupplierId && validName && validStreet && validAddress2
     && validPostalCode && validCity && validBankAccount && validAccountId

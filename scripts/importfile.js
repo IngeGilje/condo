@@ -74,7 +74,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('Server er ikke startet.');
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -122,7 +122,7 @@ async function events() {
         }
       } else {
 
-        showMessageNew('Ugyldig navn på transaksjonsfil');
+        showMessage('Ugyldig navn på transaksjonsfil');
       }
     }
   });
@@ -136,21 +136,20 @@ function createTransactionsArray() {
   let textFile = objImportFile.strCSVTransaction.split(/\r?\n/);
   textFile.forEach((row) => {
 
-    //[accountingDate, from, to, text, income, payment, fromBankAccount, toBankAccount, valuta] =
-    [accountingDate, Type, accountNumber, income, payment, Valuta, text, fromBankAccount, toBankAccount, fromName, toName, Referanse, Arkivreferanse, Melding, Interntnotat] =
+    [accountingDate, Type, accountNumber, income, payment, Valuta, text, bankAccountFrom, bankAccountTo, fromName, toName, Referanse, Arkivreferanse, Melding, Interntnotat] =
       row.split(';');
     // Check for valid date
     // validate the dd.mm.yyyy (Norwegian date format)
 
-    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, '')) {
+    if (validateNorDate('message', accountingDate, objImportFile, '')) {
 
       // text
       // remove first and last "
       text = text.replace(/^"|"$/g, '');
 
       // Condo id
-      fromBankAccount = fromBankAccount.slice(0, 11);
-      const condoId = objImportFile.getCondoId(fromBankAccount);
+      bankAccountFrom = bankAccountFrom.slice(0, 11);
+      const condoId = objCondo.getCondoId(bankAccountFrom);
       const condoName = objCondo.getCondoNameById(condoId);
 
       // Income
@@ -162,10 +161,10 @@ function createTransactionsArray() {
         : (-1) * (formatNorAmountToNumber(payment));
 
       // Account Id from bank account
-      let accountId = objAccounts.getAccountIdFromBankAccount(fromBankAccount, payment, text);
+      let accountId = objAccounts.getAccountIdFromBankAccount(bankAccountFrom, payment, text);
       if (accountId === 0) {
         // Account Id from to bank account
-        accountId = objAccounts.getAccountIdFromBankAccount(toBankAccount, payment, text);
+        accountId = objAccounts.getAccountIdFromBankAccount(bankAccountTo, payment, text);
       }
 
       // Account Name
@@ -197,11 +196,11 @@ function createTransactionsArray() {
         : text;
 
       // From bank account
-      fromBankAccountName = objImportFile.getBankAccountName(fromBankAccount);
+      fromBankAccountName = objImportFile.getBankAccountName(bankAccountFrom);
 
       // To bank account
-      toBankAccount = toBankAccount.slice(0, 11);
-      toBankAccountName = objImportFile.getBankAccountName(toBankAccount);
+      bankAccountTo = bankAccountTo.slice(0, 11);
+      toBankAccountName = objImportFile.getBankAccountName(bankAccountTo);
 
       date = objImportFile.formatDateToNumber(accountingDate);
 
@@ -218,9 +217,9 @@ function createTransactionsArray() {
           condoName: condoName,
           accountId: accountId,
           accountName: accountName,
-          fromBankAccount: fromBankAccount,
+          fromBankAccount: bankAccountFrom,
           fromBankAccountName: fromBankAccountName,
-          toBankAccount: toBankAccount,
+          toBankAccount: bankAccountTo,
           toBankAccountName: toBankAccountName,
           income: income,
           payment: payment,
@@ -255,7 +254,7 @@ async function updateOpeningClosingBalance() {
 
     [accountingDate, balance, text, income, payment, NumRef, arkivref, Type, Valuta, fromBankAccount, Fra, toBankAccount, toAccount] =
       row.split(';');
-    if (objImportFile.validateNorDate('message', accountingDate, objImportFile, 'Ugyldig Dato')) {
+    if (validateNorDate('message', accountingDate, objImportFile, 'Ugyldig Dato')) {
 
       totalIncome += Number(formatNorAmountToNumber(income));
       totalPayment += Number(formatNorAmountToNumber(payment));
@@ -487,7 +486,7 @@ function showTransactions() {
   let html = startTable("Importer Banktransaksjoner", "");
 
   //html += objImportFile.showTableHeader('Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
-  html += tableHeader( 'Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
+  html += tableHeader('Dato', 'Leilighet', 'Konto', 'Fra bankkonto', 'Til bankkonto', 'Inntekt', 'Utgift', 'Tekst');
   let sumIncomes = 0;
   let sumPayments = 0;
 
@@ -554,7 +553,7 @@ function showTransactions() {
   html += objImportFile.insertTableRow('font-weight: 600;', '', '', '', '', 'Sum', sumIncomes, sumPayments, '');
 
   // Show update button
-  html += objImportFile.insertTableRow('', '');
+  html += objImportFile.insertTableRow('');
 
   html += showTableButton('update', 'Oppdater');
   html += "<td></td><td></td><td></td><td></td><td></td><td></td></tr>";

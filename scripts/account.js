@@ -69,7 +69,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('Server er ikke startet.');
+        showMessage('Server er ikke startet.'); 
   }
 }
 
@@ -143,14 +143,11 @@ function showAccount(accountId) {
   let html = startGrid('Konto');
 
   // fixed cost
-  //let selected = "Ugyldig verdi";
   let selected = objAccounts.arrayAccounts[rowNumberAccount]?.fixedCost ?? '';
   if (selected === 'Y') selected = constFixedCost;
   if (selected === 'N') selected = constVariableCost;
   if (selected !== constFixedCost && selected !== constVariableCost) selected = "Ukjent";
-  //if (objAccounts.arrayAccounts[rowNumberAccount].fixedCost === 'N') selected = constVariableCost;
-  //html += inputValues('Kostnadstype', 'fixedCost', '', enableChanges, selected, constFixedCost, constVariableCost)
-  html += inputValues('fixedCost', 'Kostnadstype', enableChanges, selected, constFixedCost, constVariableCost);
+   html += inputValues('fixedCost', 'Kostnadstype', enableChanges, selected, constFixedCost, constVariableCost);
   html += "<div></div>";
 
   // name
@@ -236,7 +233,7 @@ async function updateAccountsRow(accountId) {
 
   // name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig Kontonavn', name, 3, 50);
+  const validName = validateText('name', 'Ugyldig Kontonavn', name, 3, 50);
 
   className = `.fixedCost`;
   let fixedCost = document.querySelector(className).value;

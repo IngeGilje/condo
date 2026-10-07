@@ -52,7 +52,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('Server er ikke startet.');
+        showMessage('Server er ikke startet.'); 
   }
 }
 
@@ -262,15 +262,15 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig Navn', name, 3, 45);
+  const validName = validateText('name', 'Ugyldig Navn', name, 3, 45);
 
   // validate street
   const street = document.querySelector('.street').value;
-  const validStreet = validateTextNew('street', 'Ugyldig Addresse', street, 3, 45);
+  const validStreet = validateText('street', 'Ugyldig Addresse', street, 3, 45);
 
   // validate address2
   const address2 = document.querySelector('.address2').value;
-  const validAddress2 = validateTextNew('address2', 'Ugyldig addresse', address2, 0, 45);
+  const validAddress2 = validateText('address2', 'Ugyldig addresse', address2, 0, 45);
 
   // validate postalCode
   const postalCode = document.querySelector('.postalCode').value;
@@ -278,7 +278,7 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate city
   const city = document.querySelector('.city').value;
-  const validCity = validateTextNew('city', 'Ugyldig Poststed', city, 0, 45);
+  const validCity = validateText('city', 'Ugyldig Poststed', city, 0, 45);
 
   // validate phone
   const phone = document.querySelector('.phone').value;

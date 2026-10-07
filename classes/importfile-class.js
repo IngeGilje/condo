@@ -122,7 +122,7 @@ class ImportFile extends Condos {
       this.strCSVTransaction = result.content;
       return true;
     } catch (error) {
-      showMessageNew('Ugyldig navn på transaksjonsfil.');
+      showMessage('Ugyldig navn på transaksjonsfil.');
       return false;
     }
   }

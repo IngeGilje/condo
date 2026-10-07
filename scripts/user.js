@@ -46,7 +46,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('server.js er ikke startet.');
+    showMessage('server.js er ikke startet.');
   }
 }
 
@@ -245,7 +245,7 @@ async function updateUserRow(userId) {
     }
   } else {
 
-    showMessageNew('Ugyldig email.');
+    showMessage('Ugyldig email.');
   }
 
   // condoId
@@ -254,11 +254,11 @@ async function updateUserRow(userId) {
 
   // validate firstName
   const firstName = document.querySelector('.firstName').value;
-  const validFirstName = validateTextNew('firstName', 'Ugyldig fornavn', firstName, 3, 45);
+  const validFirstName = validateText('firstName', 'Ugyldig fornavn', firstName, 3, 45);
 
   // validate lastName
   const lastName = document.querySelector('.lastName').value;
-  const validLastName = validateTextNew('lastName', 'Ugyldig etternavn', lastName, 3, 45);
+  const validLastName = validateText('lastName', 'Ugyldig etternavn', lastName, 3, 45);
 
   // validate phone
   const phone = document.querySelector('.phone').value;
@@ -270,7 +270,7 @@ async function updateUserRow(userId) {
 
   // validate password
   const password = document.querySelector('.password').value;
-  const validPassword = validateTextNew('password', 'Ugyldig passord', password, 5, 45);
+  const validPassword = validateText('password', 'Ugyldig passord', password, 5, 45);
 
   if (validUserId && validEmail && validCondoId && validFirstName && validLastName
     && validPhone && validSecurityLevel && validPassword) {

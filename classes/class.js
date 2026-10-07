@@ -149,8 +149,8 @@ class Condos {
     },
   ];
 
-  // menu array for transactions
-  arrayMenuTransaction = [
+  // menu array for accounting
+  arrayMenuAccounting = [
     {
       applicationName: 'showtransactions.html',
       className: "showtransactions",
@@ -162,18 +162,6 @@ class Condos {
       className: "transaction",
       text: "Rediger Transaksjon",
       securityLevel: 6
-    },
-    {
-      applicationName: 'budget.html',
-      className: "budget",
-      text: "Rediger Budsjett",
-      securityLevel: 6
-    },
-    {
-      applicationName: 'showbudgets.html',
-      className: "showbudgets",
-      text: "Vis Budsjett",
-      securityLevel: 1
     },
     {
       applicationName: 'annualaccount.html',
@@ -250,12 +238,6 @@ class Condos {
   // menu array for projects
   arrayMenuProject = [
     {
-      applicationName: 'project.html',
-      className: "project",
-      text: "Rediger Prosjekt",
-      securityLevel: 6
-    },
-    {
       applicationName: 'showprojects.html',
       className: "showprojects",
       text: "Vis Prosjekt",
@@ -264,6 +246,34 @@ class Condos {
     {
       applicationName: 'project.html',
       className: "project",
+      text: "Rediger Prosjekt",
+      securityLevel: 6
+    },
+    {
+      applicationName: 'project.html',
+      className: "project",
+      text: "Menyvalg",
+      securityLevel: 1
+    },
+  ];
+
+  // menu array for budget
+  arrayMenuBudget = [
+    {
+      applicationName: 'showbudgets.html',
+      className: "showbudgets",
+      text: "Vis Budsjett",
+      securityLevel: 1
+    },
+    {
+      applicationName: 'budget.html',
+      className: "budget",
+      text: "Rediger Budsjett",
+      securityLevel: 6
+    },
+    {
+      applicationName: 'budget.html',
+      className: "budget",
       text: "Menyvalg",
       securityLevel: 1
     },
@@ -547,49 +557,6 @@ class Condos {
   }
   */
 
-  // validate the norwegian date format dd.mm.yyyy
-  validateNorDate(className, date, errorMessage) {
-
-    let isValid = true;
-
-    // Check for isValid date String
-    if (date === '' || typeof date === 'undefined') isValid = false;
-    if (isValid) {
-
-      // Regular expression for valuating the dd.mm.yyyy format
-      const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
-      const match = date.match(regex);
-
-      if (!match) isValid = false;
-
-      if (isValid) {
-
-        // Extract day, month, and year
-        const day = parseInt(match[1], 10);
-        const month = parseInt(match[2], 10);
-        const year = parseInt(match[3], 10);
-
-        // Check if month is between 1 and 12
-        if (day < 1 || day > 31) isValid = false;
-        if (month < 1 || month > 12) isValid = false;
-        if (year < 1900 || year > 2099) isValid = false;
-      }
-    }
-
-    // Invalid/ isValid phone number
-    if (this.isClassDefined(className)) {
-
-      const inputElement = document.querySelector(`.${className}`);
-      if (inputElement) {
-
-        inputElement.classList.toggle('message', !isValid);
-      }
-    }
-
-    if ((!isValid) && (errorMessage.length > 0)) showMessageNew(errorMessage);
-    return isValid;
-  }
-
   // Validate phone number 
   validatePhone(className, phone) {
 
@@ -851,9 +818,10 @@ class Condos {
     html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender", securityLevel);
     html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", securityLevel);
     html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", securityLevel);
-    html += this.showVerticalMenu('transaction', this.arrayMenuTransaction, "Regnskap", securityLevel);
+    html += this.showVerticalMenu('transaction', this.arrayMenuAccounting, "Regnskap", securityLevel);
     html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", securityLevel);
     html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt", securityLevel);
+    html += this.showVerticalMenu('project', this.arrayMenuProject, "Budsjett", securityLevel);
     html += this.showVerticalMenu('logIn', this.arrayLogIn, "Logg Ut", securityLevel);
 
     html += `
@@ -976,6 +944,7 @@ function inputTextTabel(className, value, enableChanges) {
   return html
 }
 
+/*
 // Show text in table
 function showTableText(className, value) {
 
@@ -990,6 +959,22 @@ function showTableText(className, value) {
     >
   </td>
   <!-- end showTableText -->
+  `;
+}
+*/
+function showTableText(className, value) {
+
+  return `
+    <!-- start showTableText -->
+    <td>
+      <input
+        class="${className} one-line"
+        type="text"
+        value="${value}"
+        readonly
+      >
+    </td>
+    <!-- end showTableText -->
   `;
 }
 
@@ -1210,10 +1195,11 @@ function removeMessage() {
   document.querySelector(".showMessage").style.display = "none";
 }
 
+/*
 // Show message
-function showMessageNew(message) {
+function showMessage(message) {
 
-  let html = "<!-- start showMessageNew -->";
+  let html = "<!-- start showMessage -->";
 
   html += startLineFilter('message');
 
@@ -1222,9 +1208,10 @@ function showMessageNew(message) {
 
   // End filter
   html += endLineFilter();
-  html += "<!-- end showMessageNew -->"
+  html += "<!-- end showMessage -->"
   document.querySelector('.showMessage').innerHTML = html;
 }
+*/
 
 // Show selected numbers (from number - to number)
 function showSelectedNumbers(className, label, selectedNumber, fromNumber, toNumber, enableChanges) {
@@ -1448,38 +1435,6 @@ function findNameOfMonth(month) {
 
   return nameOfMonth;
 }
-
-/*
-// Validate phone number
-function checkPhone(phone, className, labelText) {
-
-  // Validate phone number
-  const phonePattern = /^\d{8}$/;
-  if (!(phonePattern.test(phone))) {
-
-    // Invalid phone number
-    if (this.isClassDefined(`label - ${className} `)) {
-
-      document.querySelector(`.label - ${className} `).outerHTML =
-        `< div class="label-${className}-red" >
-            * Ugyldig ${labelText}
-          </div > `;
-    }
-    return false;
-  } else {
-
-    // Valid isValid phone number
-    if (this.isClassDefined(`label - ${className} -red`)) {
-
-      document.querySelector(`.label - ${className} -red`).outerHTML =
-        `< div class="label-${className} label-${className}" >
-            * ${labelText}
-          </div > `;
-    }
-    return true;
-  }
-}
-*/
 
 // Get current date in  European date format (dd.mm.yyyy)
 function getCurrentDate() {
@@ -1705,44 +1660,6 @@ function exitIfNoActivity() {
   document.addEventListener(event, exitIfNoActivity);
 });
 
-/*
-// Show horizontal filter
-function startHorizontalFilter() {
-
-  let html = `
-    <!-- start startLineFilter -->
-    <section 
-      class="card"
-    >
-      <h1 
-        class="card-title"
-      >
-        Filter
-      </h1>
-      <div 
-        class="grid grid-menu"
-      >
-      <!-- end startLineFilter -->
-      `;
-  return html;
-}
-*/
-
-/*
-// Show horizontal filter
-function endHorizontalFilter() {
-
-  let html = `
-    <!-- end showTableFilter -->
-      </div>
-    </section>
-    <!-- end showTableFilter -->
-    `;
-
-  return html;
-}
-*/
-
 // Edit tables
 
 // Start filter
@@ -1847,22 +1764,11 @@ function tableHeader(...texts) {
 
   texts.forEach((text) => {
 
-    /*
-    html += `
-      <th 
-        scope="col"
-      >
-        ${text.trim()}
-      </th>
-      `;
-    */
-
     html += `
       <th>
         ${text}
       </th>
     `;
-
   });
 
   html += `
@@ -1874,6 +1780,7 @@ function tableHeader(...texts) {
   return html;
 }
 
+/*
 // start table
 function startTable(header, underHeader) {
 
@@ -1911,39 +1818,58 @@ function startTable(header, underHeader) {
   `;
   return html;
 }
+*/
 
-function endTable() {
+// start table
+function startTable(header, underHeader) {
 
   const html = `
-  <!-- start endtable -->
-        </table>
-      </div>
-    </section>
-  </main>
-  <!-- end endtable -->
+    <!-- start startTable -->
+    <div 
+      class="phone-page"
+    >
+      <section
+        class="phone-card"
+        aria-labelledby="phone-title"
+      >
+        <header
+          class="phone-heading"
+        >
+          <h1
+            class="card-title"
+            id="phone-title"
+          >
+            ${header}
+          </h1>
+          <p>
+            ${underHeader}
+          </p>
+        </header>
+
+        <div
+          class="phone-scroll"
+          role="region"
+          aria-label="${underHeader}"
+          tabindex="0"
+        >
+        <table class="transaction-table">
+    <!-- end startTable -->
   `;
   return html;
 }
 
-/*
-// Start table filter
-function startLineFilter(className) {
+function endTable() {
 
-  return `
-  <!-- start startLineFilter -->
-  <div 
-    class="${className}"
-  >
-  <!-- end startLineFilter -->
+  const html = `
+    <!-- start endtable -->
+          </table>
+        </div>
+      </section>
+    </div>
+    <!-- end endtable -->
   `;
+  return html;
 }
-
-// End table filter
-function endLineFilter() {
-
-  return "</div>";
-}
-*/
 
 // Table and grid
 
@@ -2086,7 +2012,7 @@ function validateEmail(className, emMail, message) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && message.length > 0) showMessageNew(message);
+  if (!isValid && message.length > 0) showMessage(message);
   return isValid;
 }
 
@@ -2108,7 +2034,7 @@ function validateOrganizationNumberNew(className, organizationNumber, message) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && message.length > 0) showMessageNew(message);
+  if (!isValid && message.length > 0) showMessage(message);
   return isValid;
 }
 
@@ -2127,7 +2053,7 @@ function validatePhoneNew(className, phone, errorMessage) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessage(errorMessage);
   return isValid;
 }
 
@@ -2145,7 +2071,7 @@ function validateBankAccountNew(className, bankAccount, errorMessage) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessage(errorMessage);
   return isValid;
 }
 
@@ -2167,7 +2093,7 @@ function validateValuesNew(className, errorMessage, selectedValue, ...values) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessage(errorMessage);
   return isValid;
 }
 
@@ -2205,7 +2131,7 @@ function validateISODate(className, date, errorMessage) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessage(errorMessage);
   return isValid;
 }
 
@@ -2223,12 +2149,55 @@ function validateIntervalNew(className, errorMessage, number, minNumber, maxNumb
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessage(errorMessage);
+  return isValid;
+}
+
+// validate the norwegian date format dd.mm.yyyy
+function validateNorDate(className, date, errorMessage) {
+
+  let isValid = true;
+
+  // Check for isValid date String
+  if (date === '' || typeof date === 'undefined') isValid = false;
+  if (isValid) {
+
+    // Regular expression for valuating the dd.mm.yyyy format
+    const regex = /^(\d{2})\.(\d{2})\.(\d{4})$/
+    const match = date.match(regex);
+
+    if (!match) isValid = false;
+
+    if (isValid) {
+
+      // Extract day, month, and year
+      const day = parseInt(match[1], 10);
+      const month = parseInt(match[2], 10);
+      const year = parseInt(match[3], 10);
+
+      // Check if month is between 1 and 12
+      if (day < 1 || day > 31) isValid = false;
+      if (month < 1 || month > 12) isValid = false;
+      if (year < 1900 || year > 2099) isValid = false;
+    }
+  }
+
+  // Invalid/ isValid phone number
+  if (this.isClassDefined(className)) {
+
+    const inputElement = document.querySelector(`.${className}`);
+    if (inputElement) {
+
+      inputElement.classList.toggle('message', !isValid);
+    }
+  }
+
+  if ((!isValid) && (errorMessage.length > 0)) showMessage(errorMessage);
   return isValid;
 }
 
 // Validate text
-function validateTextNew(className, errorMessage, value, minLength, maxLength) {
+function validateText(className, errorMessage, value, minLength, maxLength) {
 
   value = value.trim();
 
@@ -2242,7 +2211,7 @@ function validateTextNew(className, errorMessage, value, minLength, maxLength) {
 
   // Check allowed characters (letters, numbers, spaces)
   //const regex = /^[a-zA-ZæøåÆØÅ0-9.,\-+_%!:#"'\\/ ]*$/
-  const regex = /^[a-zA-ZæøåÆØÅ0-9.,+\-_%!:#"'*/\\\s]*$/;
+  const regex = /^[a-zA-ZæøåÆØÅ0-9.,+()=\-_%!:#"'*/\\\s]*$/;
   if (!regex.test(value)) isValid = false;
 
   const inputElement = document.querySelector(`.${className}`);
@@ -2253,7 +2222,7 @@ function validateTextNew(className, errorMessage, value, minLength, maxLength) {
       : inputElement.style.backgroundColor = " #ffe5e5";
   }
 
-  if (!isValid && errorMessage.length > 0) showMessageNew(errorMessage);
+  if (!isValid && errorMessage.length > 0) showMessage(errorMessage);
   return isValid;
 }
 
@@ -2281,3 +2250,61 @@ function endLineFilter() {
     <!-- end endLineFilter -->
   `;
 }
+
+/*
+// Show message
+function showMessage(message) {
+
+  let html = `
+    <!-- start showMessage -->
+    <br>
+    <h1 
+      class="error-message"
+    >
+      ${message}
+    </h1>
+    <!-- end showMessage -->
+  `;
+
+  return html;
+}
+*/
+
+// Show message
+function showMessage(message) {
+
+  // Start message
+  let html = `
+    <!-- start showMessage -->
+    <br>
+    <div 
+      class="grid"
+    >
+      <div 
+        class="field"
+      >
+        <label>
+          Feilmelding
+        </label>
+    `;
+
+  // Show message
+  html += inputText('message', 'Feilmelding', message, 45, false);
+
+  // End message
+  html += `
+      </div>
+    </div>
+     <!-- end showMessage -->
+  `;
+
+  document.querySelector(".showMessage").innerHTML = html;
+
+  // red back ground
+  const inputElement = document.querySelector(".message");
+  if (inputElement) {
+
+    inputElement.style.backgroundColor = " #ffe5e5";
+  }
+}
+

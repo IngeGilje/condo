@@ -50,7 +50,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('Server er ikke startet.');
+        showMessage('Server er ikke startet.'); 
   }
 }
 
@@ -179,7 +179,7 @@ async function updateNewsRow(newsId) {
 
   // validate title
   const title = document.querySelector('.title').value.trim();
-  const validTitle = validateTextNew('title', 'Ugyldig Tittel', title, 3, 45);
+  const validTitle = validateText('title', 'Ugyldig Tittel', title, 3, 45);
 
   // validate date
   let date = document.querySelector('.newsDate').value;
@@ -193,7 +193,7 @@ async function updateNewsRow(newsId) {
   // clean content
   let content = document.querySelector('.content').value.trim();
   //content = content.replace(/<[^>]*>?/gm, "");
-  const validContent = validateTextNew('content', 'Ugyldig innhold', content, 3, 512);
+  const validContent = validateText('content', 'Ugyldig innhold', content, 3, 512);
 
   if (validTitle && validDate && validUserId && validContent) {
 

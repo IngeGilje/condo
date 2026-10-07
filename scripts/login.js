@@ -23,7 +23,7 @@ async function main() {
     events();
   } else {
 
-    showMessageNew('Server er ikke startet.');
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -114,7 +114,7 @@ async function checkLogin() {
     if (await objUsers.validateUser(Number(objUsers.arrayUsers[rowNumberUser].userId), password)) {
 
       // The sessionStorage object stores data for only one session
-       window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[rowNumberUser].condominiumId);
+      window.sessionStorage.setItem("condominiumId", objUsers.arrayUsers[rowNumberUser].condominiumId);
       window.sessionStorage.setItem("user", objUsers.arrayUsers[rowNumberUser].user);
       window.sessionStorage.setItem("securityLevel", objUsers.arrayUsers[rowNumberUser].securityLevel);
       window.sessionStorage.setItem("userId", objUsers.arrayUsers[rowNumberUser].userId);
@@ -129,7 +129,7 @@ async function checkLogin() {
   }
 
   // password/ user is not OK
-  showMessageNew('Ugyldig brukernavn/passord');
+  document.querySelector('.showMessage').innerHTML = showMessage('Ugyldig brukernavn/passord');
 
   resetValues();
   return false;

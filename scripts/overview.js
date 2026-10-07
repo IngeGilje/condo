@@ -11,6 +11,9 @@ const objDues = new Dues('dues');
 const enableChanges = (objDues.securityLevel > 5);
 const applicationName = "overview";
 
+// Create array of paid dues
+const arrayPaid = [];
+
 // Exit application if no activity for 1 hour
 exitIfNoActivity();
 
@@ -59,7 +62,7 @@ async function main() {
       let toDate = document.querySelector('.filterToDate').value;
       toDate = objDues.formatDateToNumber(toDate);
       await objDues.loadDuesTable(objDues.condominiumId);
-      const orderBy = 'condoId ASC';
+      const orderBy = 'date DESC';
       await objTransactions.loadTransactionsTable(orderBy, objTransactions.condominiumId, deleted, condoId, objDues.nineNine, objDues.nineNine, 0, fromDate, toDate);
 
       // Show dues
@@ -76,7 +79,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('Server er ikke startet.');
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -167,12 +170,13 @@ function showDues() {
 
   // Start table
   let html = startTable("Forfall", "");
-  html += tableHeader( 'Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst');
+  html += tableHeader('Forfallsdato', 'Leilighet', 'Konto', 'Beløp', 'Kilowattimer', 'Tekst', 'Betalt');
 
   objDues.arrayDues.forEach((due) => {
 
     if ((due.condoId === filterCondoId || filterCondoId === objDues.nineNine)
-      && (due.date >= filterFromDate && due.date <= filterToDate)) {
+      && (due.date >= filterFromDate && due.date <= filterToDate)
+      && (due.condoId > 0)) {
 
       // insert a table row (<tr></td>)
       html += objDues.insertTableRow('');
@@ -208,6 +212,11 @@ function showDues() {
       const text = due.text;
       className = `text${due.dueId}`;
       html += showTableText(className, text);
+
+      // Paid
+      const paid = checkIfPaid(due.amount, due.date) ? 'Ja' : 'Nei';
+      className = `paid${due.dueId}`;
+      html += showTableText(className, paid);
 
       html += "</tr>";
 
@@ -246,11 +255,12 @@ function showTransactions() {
 
   // Start table
   let html = startTable("Innbetalinger", "");
-  html += tableHeader( '', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
+  html += tableHeader('', 'Leilighet', 'Betalingsdato', 'Konto', 'Betaling', 'Tekst');
 
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
     if ((bankTransaction.condoId === filterCondoId || filterCondoId === objDues.nineNine)
-      && (bankTransaction.date >= filterFromDate && bankTransaction.date <= filterToDate)) {
+      && (bankTransaction.date >= filterFromDate && bankTransaction.date <= filterToDate)
+      && (bankTransaction.condoId > 0)) {
 
       // insert a table row (<tr></td>)
       html += objDues.insertTableRow('', '');
@@ -334,7 +344,8 @@ function showHowMuchToPay() {
   objTransactions.arrayTransactions.forEach((bankTransaction) => {
 
     if ((bankTransaction.condoId === filterCondoId || filterCondoId === objDues.nineNine)
-      && (bankTransaction.date >= filterFromDate && bankTransaction.date <= filterToDate)) {
+      && (bankTransaction.date >= filterFromDate && bankTransaction.date <= filterToDate)
+      && (bankTransaction.condoId > 0)) {
 
       // Accomulate
       sumIncome += Number(bankTransaction.income);
@@ -350,8 +361,8 @@ function showHowMuchToPay() {
   let overPay = sumIncome - sumToPay;
 
   html += (overPay >= 0)
-    ? tableHeader( '', '', '', 'Forfall', 'Betalt', 'Til gode')
-    : tableHeader( '', '', '', 'Forfall', 'Betalt', 'Skyldig')
+    ? tableHeader('', '', '', 'Forfall', 'Betalt', 'Til gode')
+    : tableHeader('', '', '', 'Forfall', 'Betalt', 'Skyldig')
 
   // Sum line
   if (overPay < 0) overPay = (overPay * -1);
@@ -378,4 +389,24 @@ function showHowMuchToPay() {
   // The end of the table
   html += endTable();
   document.querySelector('.howMuchToPay').innerHTML = html;
+}
+
+// Check if due is payd this period
+function checkIfPaid(amount, date) {
+
+  let isPaid = false;
+
+  // checking if a due is paid
+  objTransactions.arrayTransactions.forEach((bankTransaction) => {
+    if ((bankTransaction.income === amount) || (bankTransaction.payment === amount)) {
+
+      // check if the due is already marked as paid
+      const index = arrayPaid.findIndex(paid => ((arrayPaid.amount === bankTransaction.income) || (arrayPaid.amount === bankTransaction.payment)) && arrayPaid.date === bankTransaction.date);
+      if (index === -1) {
+        arrayPaid.push({ amount, date: bankTransaction.date });
+        isPaid = true;
+      }
+    }
+  });
+  return isPaid;
 }

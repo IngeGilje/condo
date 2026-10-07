@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nb-NO">
 
 <head>
-  <title>Bankontotransaksjoner</title>
+  <title>Banktransaksjoner</title>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,162 +13,25 @@
 <body>
 
 
+  <!-- start showMessage -->
+  <div class="grid">
+    <div class="field">
+      <label>
+        Feilmelding
+      </label>
 
-  <!-- start startGrid -->
-  <section class="card">
-    <h1 class="card-title">
-      Budsjett
-    </h1>
-    <form>
-      <div class="grid grid-form">
-        <!-- end startGrid -->
-
-        <!-- start showSelectedNumbers -->
-        <div class="field">
-          <label for="year">
-            År
-          </label>
-          <select id="year" class="year">
-
-            <option value=2020>
-              2020
-            </option>
-            <option value=2021>
-              2021
-            </option>
-            <option value=2022>
-              2022
-            </option>
-            <option value=2023>
-              2023
-            </option>
-            <option value=2024>
-              2024
-            </option>
-            <option value=2025>
-              2025
-            </option>
-            <option value=2026>
-              2026
-            </option>
-            <option value=2027 selected>
-              2027
-            </option>
-            <option value=2028>
-              2028
-            </option>
-            <option value=2029>
-              2029
-            </option>
-            <option value=2030>
-              2030
-            </option>
-          </select>
-        </div>
-        <!-- end showSelectedNumbers -->
-        <div></div>
-        <!-- start showSelectedAccountsNew -->
-        <div class="field">
-          <label for="accountId">
-            Konto
-          </label>
-          <select id="accountId" class="accountId">
-
-            <option value=13>
-              1,2,3,4... transaksjoner
-            </option>
-            <option value=67>
-              Diverse
-            </option>
-            <option value=6>
-              Forsikring
-            </option>
-            <option value=10>
-              Gebyr - FAKT.TJ
-            </option>
-            <option value=56>
-              Inntekt drift
-            </option>
-            <option value=4>
-              Inntekt fjernvarme
-            </option>
-            <option value=2>
-              Inntekter husleie
-            </option>
-            <option value=5>
-              Nettleie Lyse
-            </option>
-            <option value=52>
-              Omkostninger BedriftsNett
-            </option>
-            <option value=8>
-              TV og bredbånd
-            </option>
-            <option value=9>
-              Ugift drift
-            </option>
-            <option value=3>
-              Utgift fjernvarme
-            </option>
-            <option value=22 selected>
-              Velforening
-            </option>
-            <option value=0>
-              Velg Konto
-            </option>
-          </select>
-        </div>
-        <!-- end showSelectedAccountsNew -->
-        <div></div>
-        <!-- start showTextNew -->
-        <div class="field">
-          <input type="text" autocomplete="off" class="amount center one-line" value="-1 400,00" placeholder="Beløp">
-          <label>
-            Beløp
-          </label>
-        </div>
-        <!-- end showTextNew -->
-        <div></div>
-        <!-- start showTextNew -->
-        <div class="field">
-          <input type="text" autocomplete="off" class="text center one-line" value="" placeholder="Tekst">
-          <label>
-            Tekst
-          </label>
-        </div>
-        <!-- end showTextNew -->
-        <div></div>
-        <!-- start endGrid -->
+      <!-- start inputText -->
+      <div class="field">
+        <label for="message">
+          Feilmelding
+        </label>
+        <input type="text" maxlength="45" class="message" id="message" value="Server er ikke startet." readonly>
       </div>
-    </form>
-  </section>
-  <!-- end endGrid -->
+      <!-- end inputText -->
 
-  <!-- start startButtons -->
-  <div class="actions">
-    <!-- end startButtons -->
-
-    <!-- start inputButton -->
-    <button class="update secondary" type="submit">
-      Oppdater
-    </button>
-    <!-- end inputButton -->
-
-    <!-- start inputButton -->
-    <button class="insert secondary" type="button">
-      Ny
-    </button>
-    <!-- end inputButton -->
-
-    <!-- start inputButton -->
-    <button class="delete danger" type="button">
-      Slett
-    </button>
-    <!-- end inputButton -->
-
-    <!-- start endButtons -->
+    </div>
   </div>
-  <!-- end endButtons -->
+  <!-- end showMessage -->
 
 </body>
 

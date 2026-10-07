@@ -54,7 +54,7 @@ if ((objBankAccounts.condominiumId === 0) || (objBankAccounts.user === null)) {
       events();
     } else {
 
-      showMessageNew('Server er ikke startet.');
+          showMessage('Server er ikke startet.'); 
     }
   }
 }
@@ -229,7 +229,7 @@ async function updateBankAccountRow(bankAccountId) {
 
   // validate name
   const name = document.querySelector('.name').value;
-  const validName = validateTextNew('name', 'Ugyldig navn', name, 3, 45)
+  const validName = validateText('name', 'Ugyldig navn', name, 3, 45)
 
   // validate bank account number
   const bankAccount = document.querySelector('.bankAccount').value;

@@ -89,7 +89,7 @@ async function main() {
     }
   } else {
 
-    showMessageNew('Server er ikke startet.');
+        showMessage('Server er ikke startet.'); 
   }
 }
 
@@ -373,7 +373,7 @@ async function updateTransactionRow(transactionId) {
   className = `.text`;
   const text = document.querySelector(className).value;
   className = `text`;
-  const validText = validateTextNew(className, 'Ugyldig tekst', text, 3, 255);
+  const validText = validateText(className, 'Ugyldig tekst', text, 3, 255);
 
   // Validate transactions columns
   if (validDate && validCondoId && validAccountId && validProjectId

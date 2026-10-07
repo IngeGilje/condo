@@ -361,7 +361,7 @@ class Accounts extends Condos {
     const URL = (this.serverStatus === 1)
       ? '/api/accounts'
       : 'http://localhost:3000/accounts';
-    try {
+    try {                                                                                                                                                                                                                                   
 
       // POST request
       const response = await fetch(URL, {
@@ -376,7 +376,7 @@ class Accounts extends Condos {
         })
       });
 
-      if (!response.ok) throw new Error("Network error (users)");
+      if (!response.ok) throw new Error("Network error (accounts)");
       this.arrayAccounts = await response.json();
     } catch (error) {
       console.log("Error loading accounts:", error);

@@ -735,3 +735,13 @@ iframe {
     font-size: 1.4rem;
   }
 }
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px;
+  color: #344054;
+  font-size: 15px;
+  font-weight: 700;
+}

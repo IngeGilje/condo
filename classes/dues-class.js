@@ -293,15 +293,16 @@ class Dues extends Condos {
     return html;
   }
 
-  // get first dueId for fromDate, toDate, condoId,projectId
-  getFirstDueId(fromDate, toDate, condoId, projectId) {
+  // get last dueId for fromDate, toDate, condoId, accountId, projectId
+  getFirstDueId(fromDate, toDate, condoId, accountId,projectId) {
 
     let dueId = 0;
     this.arrayDues.forEach((due) => {
 
       if (((due.date >= fromDate) && (due.date <= toDate))
-        && ((dueId.condoId === condoId) || (condoId === 0))
-        && ((dueId.projectId === projectId) || (projectId === 0))) {
+        && ((due.condoId === condoId) || (condoId === 0))
+      && ((due.accountId === accountId) || (accountId === 0))
+        && ((due.projectId === projectId) || (projectId === 0))) {
 
         dueId = due.dueId;
       }

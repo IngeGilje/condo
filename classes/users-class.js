@@ -469,7 +469,7 @@ class Users extends Condos {
     if (rowNumberUser !== -1) {
 
       // not unique email
-      showMessageNew(message);
+      showMessage(message);
 
       return false;
     } else {
