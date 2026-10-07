@@ -675,16 +675,6 @@ class Condos {
 
     return "</tbody>";
   }
-  /*
-  // End of the table
-  endTable() {
-
-    return `
-      </table>
-    </div>
-    `;
-  }
-  */
 
   // check if server is started
   async checkServer() {
@@ -818,7 +808,7 @@ class Condos {
     html += this.showVerticalMenu('emptycalendar', this.arrayMenuEmptyCalendar, "Tømmekalender", securityLevel);
     html += this.showVerticalMenu('condominium', this.arrayMenuCondominium, "Sameie", securityLevel);
     html += this.showVerticalMenu('user', this.arrayMenuUser, "Bruker", securityLevel);
-    html += this.showVerticalMenu('transaction', this.arrayMenuAccounting, "Regnskap", securityLevel);
+    html += this.showVerticalMenu('transaction', this.arrayMenuAccounting, "Transaksjoner", securityLevel);
     html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", securityLevel);
     html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt", securityLevel);
     html += this.showVerticalMenu('project', this.arrayMenuProject, "Budsjett", securityLevel);

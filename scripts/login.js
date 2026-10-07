@@ -109,8 +109,6 @@ async function checkLogin() {
   if (rowNumberUser !== -1) {
 
     // Check user and password 
-    //password = "12345";
-    //userId = 2;
     if (await objUsers.validateUser(Number(objUsers.arrayUsers[rowNumberUser].userId), password)) {
 
       // The sessionStorage object stores data for only one session
@@ -129,7 +127,7 @@ async function checkLogin() {
   }
 
   // password/ user is not OK
-  document.querySelector('.showMessage').innerHTML = showMessage('Ugyldig brukernavn/passord');
+  showMessage('Ugyldig brukernavn/passord');
 
   resetValues();
   return false;

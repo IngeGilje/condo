@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html>
-
 <body>
-  <h1>Test</h1>
-  <p class="demo"></p>
+<h1>JavaScript Fetch API</h1>
+<h2>Fetching a Text File</h2>
 
-  <script>
+<p id="demo"></p>
 
-    const html = `
-    height = ${window.innerHeight}
-    witdth = ${window.innerWidth}
-    `;
-    document.querySelector('.demo').innerHTML = html;
-  </script>
+<script>
+let file = "data/fetch.txt";
+
+// Fetch a file
+fetch(file)
+  .then(function(response) {
+    return response.text();
+  })
+  .then(function(data) {
+    myDisplayer(data);
+  });
+
+// Function to display any text
+function myDisplayer(text) {
+  document.getElementById("demo").innerHTML = text;
+}
+</script>
 
 </body>
-
-</html>
+</html> 
