@@ -284,7 +284,6 @@ class BankAccounts extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
       // POST request
-      //const response = await fetch(`${URL}:3000/bankaccounts?action=select&condominiumId=${condominiumId}&bankAccountId=${bankAccountId}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -395,7 +394,6 @@ class BankAccounts extends Condos {
     const URL = (this.serverStatus === 1) ? '/api/bankaccounts' : 'http://localhost:3000/bankaccounts';
     try {
       // POST request
-      //const response = await fetch(`${URL}:3000/bankaccounts?action=delete&bankAccountId=${bankAccountId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {

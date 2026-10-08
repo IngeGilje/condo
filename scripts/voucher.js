@@ -44,8 +44,8 @@ async function main() {
       let html = objVoucher.showMenu(objVoucher.securityLevel);
       document.querySelector('.menuVertical').innerHTML = html;
 
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objVoucher.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objVoucher.condominiumId);
 
       let fromDate = 20000101;
       let toDate = 20991231;

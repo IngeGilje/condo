@@ -53,8 +53,8 @@ async function main() {
       await objCondominiums.loadCondominiumsTable();
       await objCondo.loadCondoTable(objProjects.condominiumId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objProjects.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objProjects.condominiumId);
       await objProjects.loadProjectsTable(objProjects.condominiumId);
 
       // Show filter

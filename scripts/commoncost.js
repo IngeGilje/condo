@@ -56,8 +56,8 @@ async function main() {
       const orderBy = 'date DESC, income DESC';
       await objTransactions.loadTransactionsTable(orderBy, objCommonCosts.condominiumId, 'N', objCommonCosts.nineNine, objCommonCosts.nineNine, objCommonCosts.nineNine, 0, 20200101, 20291231, false);
 
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objCommonCosts.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objCommonCosts.condominiumId);
 
       let commonCostId = 0;
       if (paramCommonCostId === 0) {

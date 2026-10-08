@@ -200,7 +200,7 @@ async function updateUserRow(userId) {
 
       // update a accounts row
       await objAccounts.updateAccountsTable(objAccount.user, accountId, fixedCost, name);
-      await objAccounts.loadAccountsTable(objAccount.condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(objAccount.condominiumId);
 
       // Show filter
       showFilter(accountId);

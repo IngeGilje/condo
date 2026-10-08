@@ -355,6 +355,7 @@ class Accounts extends Condos {
     return html;
   }
 
+  /*
   // get accounts from accounts table
   async loadAccountsTable(condominiumId, fixedCost) {
 
@@ -373,6 +374,34 @@ class Accounts extends Condos {
           action: 'select',
           condominiumId: condominiumId,
           fixedCost: fixedCost
+        })
+      });
+
+      if (!response.ok) throw new Error("Network error (accounts)");
+      this.arrayAccounts = await response.json();
+    } catch (error) {
+      console.log("Error loading accounts:", error);
+    }
+  }
+  */
+
+  // get accounts from accounts table
+  async loadAccountsTable(condominiumId) {
+
+    const URL = (this.serverStatus === 1)
+      ? '/api/accounts'
+      : 'http://localhost:3000/accounts';
+    try {                                                                                                                                                                                                                                   
+
+      // POST request
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: 'select',
+          condominiumId: condominiumId
         })
       });
 
@@ -414,8 +443,6 @@ class Accounts extends Condos {
     try {
 
       // POST request
-      //const response = await fetch(`${URL}:3000/accounts?action=update&user=${user}&accountId=${accountId}&fixedCost=${fixedCost}&accountName=${accountName}`);
-
       const response = await fetch(URL, {
         method: "POST",
         headers: {
@@ -471,7 +498,6 @@ class Accounts extends Condos {
       : 'http://localhost:3000/accounts';
     try {
       // POST request
-      //const response = await fetch(`${URL}:3000/accounts?action=delete&accountId=${accountId}&user=${user}`);
       const response = await fetch(URL, {
         method: "POST",
         headers: {

@@ -42,8 +42,8 @@ async function main() {
       const resident = 'Y';
       await objUsers.loadUsersTable(objDues.condominiumId, resident, objDues.nineNine);
       await objCondo.loadCondoTable(objDues.condominiumId);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objDues.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objDues.condominiumId);
 
       // Show filter
       // get current condo id

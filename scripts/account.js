@@ -8,6 +8,7 @@ const objAccounts = new Accounts('accounts');
 // Fixed values
 const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
+const constAllCosts = 'Vis Alle';
 
 const enableChanges = (objAccounts.securityLevel > 5);
 const applicationName = "account";
@@ -44,15 +45,15 @@ async function main() {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objAccounts.condominiumId);
 
       let accountId = 0;
       if (paramAccountId === 0) {
 
         await objAccounts.getHighestAccountId(objAccounts.condominiumId);
         accountId = objAccounts.arrayAccounts.at(-1)?.accountId ?? 0;
-        await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
+        await objAccounts.loadAccountsTable(objAccounts.condominiumId);
       } else {
 
         accountId = paramAccountId;
@@ -69,7 +70,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -80,10 +81,12 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterFixedCost')) {
 
+      /*
       let fixedCost = document.querySelector('.filterFixedCost').value;
       if (fixedCost === constFixedCost) fixedCost = 'Y';
       if (fixedCost === constVariableCost) fixedCost = 'N';
-      await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
+      */
+      await objAccounts.loadAccountsTable(objAccounts.condominiumId);
 
       // Show account
       showAccount(accountId);
@@ -146,8 +149,8 @@ function showAccount(accountId) {
   let selected = objAccounts.arrayAccounts[rowNumberAccount]?.fixedCost ?? '';
   if (selected === 'Y') selected = constFixedCost;
   if (selected === 'N') selected = constVariableCost;
-  if (selected !== constFixedCost && selected !== constVariableCost) selected = "Ukjent";
-   html += inputValues('fixedCost', 'Kostnadstype', enableChanges, selected, constFixedCost, constVariableCost);
+  if (selected !== constFixedCost && selected !== constVariableCost) selected = "Ukjent kostnad";
+  html += inputValues('fixedCost', 'Kostnadstype', enableChanges, selected, constFixedCost, constVariableCost);
   html += "<div></div>";
 
   // name
@@ -216,8 +219,8 @@ async function deleteAccountsRow(accountId) {
     if (objAccounts.arrayAccounts.length > 0) accountId = objAccounts.arrayAccounts[0].accountId;
   }
 
-  const fixedCost = 'A';
-  await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
+  //const fixedCost = 'A';
+  await objAccounts.loadAccountsTable(objAccounts.condominiumId);
 
   // Show filter
   showFilter(accountId);
@@ -261,8 +264,8 @@ async function updateAccountsRow(accountId) {
       accountId = objAccounts.arrayAccounts.at(-1)?.accountId ?? 0;
     }
 
-    fixedCost = 'A';
-    await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
+    //const fixedCost = 'A';
+    await objAccounts.loadAccountsTable(objAccounts.condominiumId);
 
     removeMessage();
 

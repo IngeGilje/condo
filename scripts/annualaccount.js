@@ -45,8 +45,8 @@ async function main() {
       await objCommonCosts.loadCommonCostsTable(objCommonCosts.condominiumId);
       await objBudgets.loadBudgetsTable(objCommonCosts.condominiumId, objCommonCosts.nineNine, objCommonCosts.nineNine);
       await objBankAccounts.loadBankAccountsTable(objCommonCosts.condominiumId);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objCommonCosts.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objCommonCosts.condominiumId);
 
       // Show filter
       const accountYear = today.getFullYear();

@@ -8,6 +8,7 @@ const objAccounts = new Accounts('accounts');
 // Fixed values
 const constVariableCost = 'Variabel kostnad';
 const constFixedCost = 'Fast kostnad';
+const constAllCosts = 'Vis Alle';
 
 const enableChanges = (objAccounts.securityLevel > 5);
 const applicationName = "showaccounts";
@@ -44,8 +45,8 @@ async function main() {
 
       let resident = 'Y';
       await objUsers.loadUsersTable(objAccounts.condominiumId, resident, objAccounts.nineNine);
-      if (paramFixedCost !== 'Y' && paramFixedCost !== 'N') paramFixedCost = 'A';
-      await objAccounts.loadAccountsTable(objAccounts.condominiumId, paramFixedCost);
+      //if (paramFixedCost !== 'Y' && paramFixedCost !== 'N') paramFixedCost = 'A';
+      await objAccounts.loadAccountsTable(objAccounts.condominiumId);
 
       // Show filter
       showFilter(paramFixedCost);
@@ -58,7 +59,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -69,10 +70,12 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterFixedCost')) {
 
+      /*
       let fixedCost = document.querySelector('.filterFixedCost').value;
       if (fixedCost === constFixedCost) fixedCost = 'Y';
       if (fixedCost === constVariableCost) fixedCost = 'N';
-      await objAccounts.loadAccountsTable(objAccounts.condominiumId, fixedCost);
+      */
+      await objAccounts.loadAccountsTable(objAccounts.condominiumId);
 
       // Show account
       showAccounts();
@@ -101,7 +104,8 @@ async function events() {
       let fixedCost = document.querySelector('.filterFixedCost').value;
       if (fixedCost === constVariableCost) fixedCost = 'N';
       if (fixedCost === constFixedCost) fixedCost = 'Y';
-      if (fixedCost !== 'Y' && fixedCost !== 'N') fixedCost = 'A';
+      if (fixedCost === constAllCosts) fixedCost = 'A';
+      //if (fixedCost !== 'Y' && fixedCost !== 'N') fixedCost = 'A';
 
       let URL = (objAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
@@ -121,8 +125,8 @@ function showFilter(fixedCost) {
   // Show types of account
   if (fixedCost === 'Y') fixedCost = constFixedCost;
   if (fixedCost === 'N') fixedCost = constVariableCost;
-  if (fixedCost === 'A') fixedCost = 'Vis Alle';
-  html += inputValues('filterFixedCost','Kostnadstype',  true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
+  if (fixedCost === 'A') fixedCost = constAllCosts;
+  html += inputValues('filterFixedCost', 'Kostnadstype', true, fixedCost, constFixedCost, constVariableCost, 'Vis Alle')
 
   // End filter
   html += endLineFilter();
@@ -134,31 +138,39 @@ function showAccounts() {
 
   // Start table
   let html = startTable("Konti", "");
-  html += tableHeader( 'Kostnadstype', 'Tekst', '');
+  html += tableHeader('Kostnadstype', 'Tekst', '');
+
+  let fixedCost = document.querySelector('.filterFixedCost').value;
+  if (fixedCost === constFixedCost) fixedCost = 'Y';
+  if (fixedCost === constVariableCost) fixedCost = 'N';
+  if (fixedCost === constAllCosts) fixedCost = 'A';
 
   objAccounts.arrayAccounts.forEach((account) => {
+    if ((account.fixedCost === fixedCost)
+      || (fixedCost === "A")) {
 
-    html += objAccounts.insertTableRow('');
+      html += objAccounts.insertTableRow('');
 
-    // fixed cost
-    let selected = "Ugyldig verdi";
-    if (account.fixedCost === 'Y') selected = constFixedCost;
-    if (account.fixedCost === 'N') selected = constVariableCost;
+      // fixed cost
+      let selected = "Ugyldig verdi";
+      if (account.fixedCost === 'Y') selected = constFixedCost;
+      if (account.fixedCost === 'N') selected = constVariableCost;
 
-    let className = `fixedCost${account.accountId}`;
-    html += showTableText(className, selected);
+      let className = `fixedCost${account.accountId}`;
+      html += showTableText(className, selected);
 
-    // name
-    const name = account.name;
-    className = `name${account.accountId}`;
-    html += showTableText(className, name);
+      // name
+      const name = account.name;
+      className = `name${account.accountId}`;
+      html += showTableText(className, name);
 
-    // Show button for maintnance
-    className = `edit${account.accountId}`;
-    //html += objAccounts.showTableButton(className, 'Rediger');
-    html += showTableButton(className, 'Rediger');
+      // Show button for maintnance
+      className = `edit${account.accountId}`;
+      //html += objAccounts.showTableButton(className, 'Rediger');
+      html += showTableButton(className, 'Rediger');
 
-    html += "</tr>";
+      html += "</tr>";
+    }
   });
 
   // The end of the table

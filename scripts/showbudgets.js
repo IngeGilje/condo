@@ -40,8 +40,8 @@ async function main() {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objBudgets.condominiumId, resident, objBudgets.nineNine);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objBudgets.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objBudgets.condominiumId);
 
       // Show header
       //showHeader();

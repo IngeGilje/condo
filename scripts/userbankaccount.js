@@ -35,8 +35,8 @@ async function main() {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objUserBankAccounts.condominiumId, resident, objUserBankAccounts.nineNine);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objUserBankAccounts.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objUserBankAccounts.condominiumId);
       await objUserBankAccounts.loadUserBankAccountsTable(objUserBankAccounts.condominiumId, objUserBankAccounts.nineNine, objUserBankAccounts.nineNine);
 
       // Show filter

@@ -7,21 +7,26 @@
 <p id="demo"></p>
 
 <script>
-let file = "data/fetch.txt";
+// Async function to download a file
+async function loadText(jsonFile) {
 
-// Fetch a file
-fetch(file)
-  .then(function(response) {
-    return response.text();
-  })
-  .then(function(data) {
-    myDisplayer(data);
-  });
+  // get response object
+  const response = await fetch(jsonFile);
+  let textFile = "";
+
+  // Create person object of json file
+  if (response.ok) textFile = await response.text();
+  const person = await JSON.parse(textFile);
+  myDisplayer(person.age);
+}
+
+loadText("data/text.json");
 
 // Function to display any text
 function myDisplayer(text) {
   document.getElementById("demo").innerHTML = text;
 }
+
 </script>
 
 </body>

@@ -243,7 +243,6 @@ async function main() {
     });
 
     // Requests for accounts
-    //app.post("/accounts", async (req, res) => {
     routePath = "";
     if (serverStatus === 1) routePath = "/api/accounts";
     if (serverStatus === 2) routePath = "/accounts";
@@ -257,7 +256,7 @@ async function main() {
         case 'select': {
 
           const condominiumId = Number(req.body.condominiumId);
-          const fixedCost = req.body.fixedCost;
+          //const fixedCost = req.body.fixedCost;
 
           try {
 
@@ -265,7 +264,7 @@ async function main() {
             SELECT * FROM accounts
             WHERE condominiumId = ${condominiumId}
             AND deleted <> 'Y'`;
-            if (fixedCost === 'Y' || fixedCost === 'N') SQLquery += ` AND fixedCost = '${fixedCost}'`;
+            //if (fixedCost === 'Y' || fixedCost === 'N') SQLquery += ` AND fixedCost = '${fixedCost}'`;
             SQLquery += ` ORDER BY name ASC, accountId ASC;`;
 
             console.log('SQLquery :', SQLquery);

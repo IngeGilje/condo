@@ -35,8 +35,8 @@ if ((objSuppliers.condominiumId === 0) || (objSuppliers.user === null)) {
 
       const resident = 'Y';
       await objUsers.loadUsersTable(objSuppliers.condominiumId, resident, objSuppliers.nineNine);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objSuppliers.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objSuppliers.condominiumId);
       await objSuppliers.loadSuppliersTable(objSuppliers.condominiumId);
 
       // Find selected supplier id

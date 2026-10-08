@@ -37,8 +37,8 @@ async function main() {
       await objCondominiums.loadCondominiumsTable();
       const resident = 'Y';
       await objUsers.loadUsersTable(objCondominiums.condominiumId, resident, objCondominiums.nineNine);
-      const fixedCost = 'A';
-      await objAccounts.loadAccountsTable(objCondominiums.condominiumId, fixedCost);
+      //const fixedCost = 'A';
+      await objAccounts.loadAccountsTable(objCondominiums.condominiumId);
       await objBankAccounts.loadBankAccountsTable(objCondominiums.condominiumId);
 
       // Show filter
@@ -64,9 +64,9 @@ async function events() {
     if (event.target.classList.contains('filterCondominiumId')) {
 
       // Show condominium
-      const fixedCost = 'A';
+      //const fixedCost = 'A';
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
-      await objAccounts.loadAccountsTable(condominiumId, fixedCost);
+      await objAccounts.loadAccountsTable(condominiumId);
       showCondominium(condominiumId);
     };
   });
