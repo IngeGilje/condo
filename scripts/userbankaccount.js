@@ -50,7 +50,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -85,13 +85,41 @@ async function events() {
     };
   });
 
-  // Delete accounts row
+  /*
+  // Delete userbankaccounts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       // Delete user bank account
       let userBankAccountId = Number(document.querySelector('.filterUserBankAccountId').value);
       await deleteUserBankAccountsRow(userBankAccountId);
+    };
+  });
+  */
+ 
+  // Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette bankkontoen?");
+    };
+  });
+
+  // OK to delete a userbankaccounts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      const userBankAccountId = Number(document.querySelector('.filterUserBankAccountId').value);
+      await deleteUserBankAccountsRow(userBankAccountId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a userbankaccounts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 }

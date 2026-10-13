@@ -76,12 +76,39 @@ async function events() {
     };
   });
 
+  /*
   // Delete news row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       let newsId = Number(document.querySelector('.filterNewsId').value);
       await deleteNewsRow(newsId);
+    };
+  });
+  */
+// Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette nyhet?");
+    };
+  });
+
+  // OK to delete a news row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+       let newsId = Number(document.querySelector('.filterNewsId').value);
+      await deleteNewsRow(newsId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a news row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 

@@ -71,7 +71,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -93,11 +93,14 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('back')) {
 
+      /*
       let URL = (objBudgets.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showbudgets.html?budgetId=${paramBudgetId}&year=${paramYear}`;
       window.location.href = URL;
+      */
+      history.back();
     };
   });
 
@@ -111,12 +114,40 @@ async function events() {
     };
   });
 
+  /*
   // Delete budgets row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const budgetId = Number(document.querySelector('.filterBudgetId').value);
       await deleteBudgetsRow(budgetId);
+    };
+  });
+  */
+
+  // Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette kontoen?");
+    };
+  });
+
+  // OK to delete a budgets row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      const budgetId = Number(document.querySelector('.filterBudgetId').value);
+      await deleteBudgetsRow(budgetId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a budgets row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 

@@ -54,7 +54,7 @@ if ((objBankAccounts.condominiumId === 0) || (objBankAccounts.user === null)) {
       events();
     } else {
 
-          showMessage('Server er ikke startet.'); 
+      showMessage('Server er ikke startet.');
     }
   }
 }
@@ -85,6 +85,7 @@ async function events() {
     };
   });
 
+  /*
   // Delete bankaccounts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
@@ -92,6 +93,31 @@ async function events() {
       //const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       let bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
       await deleteBankAccountsRow(bankAccountId);
+    };
+  });
+  */
+  // Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette bankkontoen?");
+    };
+  });
+
+  // OK to delete a accounsts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      let bankAccountId = Number(document.querySelector('.filterBankAccountId').value);
+      await deleteBankAccountsRow(bankAccountId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a accounsts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 
@@ -107,11 +133,14 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
+      /*
       let url = (objBankAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}login.html`;
       window.location.href = url;
+      */
+      history.back();
     };
   });
 }

@@ -97,12 +97,40 @@ async function events() {
     };
   });
 
+  /*
   // Delete users row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const userId = Number(document.querySelector('.filterUserId').value);
       await deleteUsersRow(userId);
+    };
+  });
+  */
+
+  // Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette brukeren?");
+    };
+  });
+
+  // OK to delete a users row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      const userId = Number(document.querySelector('.filterUserId').value);
+      await deleteUsersRow(userId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a users row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 
@@ -152,7 +180,7 @@ function showUser(userId) {
 
   let html = startGrid('Bruker');
 
-   // condoId
+  // condoId
   const condoId = objUsers.arrayUsers[rowNumberUser]?.condoId ?? 0;
   html += objCondo.showSelectedCondosNew('condoId', 'Leilighet', condoId, '', 'Velg leilighet', enableChanges);
   html += "<div></div>";

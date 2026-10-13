@@ -81,12 +81,40 @@ async function events() {
     };
   });
 
+  /*
   // Delete suppliers row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const supplierId = Number(document.querySelector('.filterSupplierId').value);
       await deleteSuppliersRow(supplierId);
+    };
+  });
+  */
+
+  // Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette leverandøren?");
+    };
+  });
+
+  // OK to delete a suppliers row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      const supplierId = Number(document.querySelector('.filterSupplierId').value);
+      await deleteSuppliersRow(supplierId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a suppliers row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 

@@ -87,7 +87,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -164,7 +164,7 @@ function showFilter(projectId, amount, condoId) {
   html += objCondo.showSelectedCondosNew('filterCondoId', 'Leilighet', condoId, '', 'Vis alle', true)
 
   // Amount
-  html += inputText('filterAmount', 'Beløp', amount, 11,true);
+  html += inputText('filterAmount', 'Beløp', amount, 11, true);
 
   // End table filter
   html += endLineFilter();
@@ -175,9 +175,10 @@ function showFilter(projectId, amount, condoId) {
 function showProjectTransactions(projectId, condoId, amount) {
 
   let html = startTable("Prosjekt", "");
-  html += tableHeader( 'Dato', 'Konto', 'Leilighet', 'Beløp', '');
+  html += tableHeader('Dato', 'Konto', 'Leilighet', 'Innbetaling', 'Utbetaling', '');
 
-  let sumAmount = 0;
+  let sumIncome = 0;
+  let sumPayment = 0;
 
   for (const bankTransaction of objTransactions.arrayTransactions) {
     if ((bankTransaction.projectId === projectId)
@@ -204,11 +205,17 @@ function showProjectTransactions(projectId, condoId, amount) {
       const condoName = objCondo.getCondoNameById(bankTransaction.condoId)
       html += showTableText(className, condoName);
 
-      // amount
-      let amount = bankTransaction.income + bankTransaction.payment;
-      amount = formatNumberToNorAmount(amount);
-      className = `amount${bankTransaction.transactionId}`;
-      html += showTableText(className, amount);
+      // income
+      let income = bankTransaction.income;
+      income = formatNumberToNorAmount(income);
+      className = `income${bankTransaction.transactionId}`;
+      html += showTableText(className, income);
+
+      // payment
+      let payment = bankTransaction.payment;
+      payment = formatNumberToNorAmount(payment);
+      className = `payment${bankTransaction.transactionId}`;
+      html += showTableText(className, payment);
 
       // Show button for change of bank account transaction
       className = `change${bankTransaction.transactionId}`;
@@ -216,14 +223,17 @@ function showProjectTransactions(projectId, condoId, amount) {
       html += "</tr>";
 
       // accumulate
-      sumAmount += Number(bankTransaction.income) + Number(bankTransaction.payment);
+      sumIncome += Number(bankTransaction.income);
+      sumPayment += Number(bankTransaction.payment);
     }
   };
 
   // Show table sum row
-  sumAmount = formatNumberToNorAmount(sumAmount);
+  let sumTotal = formatNumberToNorAmount(sumIncome + sumPayment);
+  sumIncome = formatNumberToNorAmount(sumIncome);
+  sumPayment = formatNumberToNorAmount(sumPayment);
 
-  html += objTransactions.insertTableRow('', '', '', 'Sum', sumAmount);
+  html += objTransactions.insertTableRow('', '', '', 'Sum', sumIncome, sumPayment, sumTotal);
 
   // The end of the table
   html += endTable();

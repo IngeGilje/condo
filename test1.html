@@ -13,26 +13,40 @@
 <body>
 
 
-  <!-- start showMessage -->
-  <div class="grid">
-    <div class="field">
-      <label>
-        Feilmelding
-      </label>
 
-      <!-- start inputText -->
-      <div class="field">
-        <label for="message">
-          Feilmelding
-        </label>
-        <input type="text" maxlength="45" class="message" id="message" value="Server er ikke startet." readonly>
-      </div>
-      <!-- end inputText -->
-
+    <!-- start inputDialog -->
+    <div 
+      class="grid"
+    >
+    <dialog 
+      class="confimation card grid centered-dialog"
+    >
+      <p>
+        Vil du slette kontoen?
+      </p>
+  
+  <!-- start inputButton -->
+  <button
+    class="okButton secondary"
+    type="submit"
+  >
+    Ja
+  </button>
+  <!-- end inputButton -->
+  
+  <!-- start inputButton -->
+  <button
+    class="cancelButton secondary"
+    type="button"
+  >
+    Nei
+  </button>
+  <!-- end inputButton -->
+  
+      </dialog>
     </div>
-  </div>
-  <!-- end showMessage -->
-
+    <!-- end inputDialog -->
+  
 </body>
 
 </html>

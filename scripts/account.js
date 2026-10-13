@@ -81,15 +81,18 @@ async function events() {
   document.addEventListener('change', async (event) => {
     if (event.target.classList.contains('filterFixedCost')) {
 
-      /*
-      let fixedCost = document.querySelector('.filterFixedCost').value;
-      if (fixedCost === constFixedCost) fixedCost = 'Y';
-      if (fixedCost === constVariableCost) fixedCost = 'N';
-      */
       await objAccounts.loadAccountsTable(objAccounts.condominiumId);
 
       // Show account
       showAccount(accountId);
+    };
+  });
+
+  // Insert a bankaccounts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('insert')) {
+
+      resetValues();
     };
   });
 
@@ -104,22 +107,41 @@ async function events() {
 
   // return to accounts
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    if (event.target.classList.contains('back')) {
 
+      /*
       let URL = (objAccounts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showaccounts.html?accountId=${paramAccountId}&fixedCost=${paramFixedCost}`;
       window.location.href = URL;
+      */
+      history.back();
     };
   });
 
-  // Delete account row
+  // Show delete dialog
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
+      const confirmation = inputDialog("confimation", "Vil du slette kontoen?");
+    };
+  });
+
+  // OK to delete a accounsts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
       const accountId = Number(document.querySelector('.filterAccountId').value);
       await deleteAccountsRow(accountId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a accounsts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 }
@@ -185,21 +207,19 @@ function showAccount(accountId) {
 
 function resetValues() {
 
-  // account Id
-  document.querySelector('.select-accounts-accountId').value = '';
+  // fixed cost
+  document.querySelector('.fixedCost').value = '';
 
   // account Name
-  document.querySelector('.input-accounts-accountName').value = '';
-
-  // Fixed cost
-  document.querySelector('.select-accounts-fixedCost').value = '';
+  document.querySelector('.name').value = '';
 
   // Buttons
   if (enableChanges) {
+
     disableButton('delete', true);
 
     // Filter
-    //disableButton('filterFixedCost', true);
+    disableButton('filterAccountId', true);
   }
 }
 

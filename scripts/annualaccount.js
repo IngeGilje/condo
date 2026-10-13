@@ -153,11 +153,14 @@ async function events() {
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('logOut')) {
 
+      /*
       let url = (objCommonCosts.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       url = `${url}login.html`;
       window.location.href = url;
+      */
+     history.back();
     };
   });
 }
@@ -227,9 +230,9 @@ function showFilter(accountYear, fromDate, toDate) {
   html += inputDate('filterToDate', 'Til Dato', toDate, true)
 
   // price per square meter per month
-  const commonCostSquareMeter = getpriceSquaremeter(accountYear);
+  const commonCostSquareMeter = getpriceSquaremeter(accountYear+1);
   //html += showAmount('Pris per m2', 'filterCommonCostSquareMeter', commonCostSquareMeter, true);
-  html += inputText('filterCommonCostSquareMeter', 'Pris per m2', commonCostSquareMeter, 11, true);
+  html += inputText('filterCommonCostSquareMeter', 'Budsjett per m2', commonCostSquareMeter, 11, true);
 
   // End filter
   html += endLineFilter();
@@ -332,7 +335,7 @@ function showIncomeNextYear() {
   // Get fixed costs per month
   const year = Number(document.querySelector(".filterAccountYear").value);
   let fixedCostCondoMonth = 0;
-  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === year);
+  const rowNumberCommonCost = objCommonCosts.arrayCommonCosts.findIndex(commonCost => commonCost.year === (year + 1));
   if (rowNumberCommonCost !== -1) {
 
     // Fixed cost per month per condo
@@ -367,7 +370,7 @@ function showIncomeNextYear() {
     let commonCostSquareMeter = document.querySelector('.filterCommonCostSquareMeter').value;
     commonCostSquareMeter = formatNorAmountToNumber(commonCostSquareMeter);
     squareMeters = formatNorAmountToNumber(squareMeters);
-    let commonCostsMonth = (squareMeters * commonCostSquareMeter) / 100;
+    let commonCostsMonth = ((squareMeters * commonCostSquareMeter) / 100) + formatNorAmountToNumber(fixedCostCondoMonth);
     commonCostsMonth = formatNumberToNorAmount(commonCostsMonth);
     className = `commonCostsMonth${condo.condoId}`;
     html += showTableText(className, commonCostsMonth);
@@ -375,7 +378,8 @@ function showIncomeNextYear() {
     // Common cost per year per condo
     commonCostsMonth = formatNorAmountToNumber(commonCostsMonth);
     fixedCostCondoMonth = formatNorAmountToNumber(fixedCostCondoMonth);
-    let commonCostsCondoYear = (commonCostsMonth + fixedCostCondoMonth) * 12;
+    //let commonCostsCondoYear = (commonCostsMonth + fixedCostCondoMonth) * 12;
+    let commonCostsCondoYear = commonCostsMonth * 12;
     commonCostsCondoYear = formatNumberToNorAmount(commonCostsCondoYear);
     className = `commonCostsCondoYear${condo.condoId}`;
     html += showTableText(className, commonCostsCondoYear);

@@ -811,7 +811,7 @@ class Condos {
     html += this.showVerticalMenu('transaction', this.arrayMenuAccounting, "Transaksjoner", securityLevel);
     html += this.showVerticalMenu('due', this.arrayMenuDue, "Forfall", securityLevel);
     html += this.showVerticalMenu('project', this.arrayMenuProject, "Prosjekt", securityLevel);
-    html += this.showVerticalMenu('project', this.arrayMenuProject, "Budsjett", securityLevel);
+    html += this.showVerticalMenu('project', this.arrayMenuBudget, "Budsjett", securityLevel);
     html += this.showVerticalMenu('logIn', this.arrayLogIn, "Logg Ut", securityLevel);
 
     html += `
@@ -2298,3 +2298,31 @@ function showMessage(message) {
   }
 }
 
+function inputDialog(className, text) {
+
+  let html = `
+    <!-- start inputDialog -->
+    <div 
+      class="grid"
+    >
+    <dialog 
+      class="${className} card grid centered-dialog"
+    >
+      <p>
+        ${text}
+      </p>
+  `;
+  html += inputButton("okButton secondary", "Ja", "submit");
+  html += inputButton("cancelButton secondary", "Nei", "button");
+
+  html += `
+      </dialog>
+    </div>
+    <!-- end inputDialog -->
+  `;
+
+  document.querySelector(".showDialog").innerHTML = html;
+
+  const dialog = document.querySelector(`.${className}`);
+  dialog.showModal();
+ }

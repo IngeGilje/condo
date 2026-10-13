@@ -89,7 +89,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -110,11 +110,14 @@ async function events() {
     //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
     if (event.target.classList.contains("back")) {
 
+      /*
       let URL = (objTransactions.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}${paramBackApplication}?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
+      */
+      history.back();
     };
   });
 
@@ -135,12 +138,39 @@ async function events() {
     };
   });
 
+  /*
   // Delete a transactions row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       let transactionId = Number(document.querySelector(".filterTransactionId").value);
       await deleteTransactionsRow(transactionId);
+    };
+  });
+  */
+// Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette transaksjonen?");
+    };
+  });
+
+  // OK to delete a transactions row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      let transactionId = Number(document.querySelector(".filterTransactionId").value);
+      await deleteTransactionsRow(transactionId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a transactions row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 

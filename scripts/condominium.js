@@ -81,12 +81,38 @@ async function events() {
     };
   });
 
+  /*
   // Delete condominiums row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
       await deleteCondominiumsRow(condominiumId);
+    };
+  });
+  */
+ // Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette sameiet?");
+    };
+  });
+
+  // OK to delete a condominiums row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      const condominiumId = Number(document.querySelector('.filterCondominiumId').value);
+      await deleteCondominiumsRow(condominiumId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a condominiums row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 
@@ -200,11 +226,11 @@ function showCondominium(condominiumId) {
 
   // income Remote Heating AccountId
   const incomeRemoteHeatingAccountId = objCondominiums.arrayCondominiums[rowNumberCondominium]?.incomeRemoteHeatingAccountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('incomeRemoteHeatingAccountId', 'Inntekstkonto fjernvarme', incomeRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('incomeRemoteHeatingAccountId', 'Inntekstkonto Fjernvarme', incomeRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
 
   // payment Remote Heating AccountId
   const paymentRemoteHeatingAccountId = objCondominiums.arrayCondominiums[rowNumberCondominium]?.paymentRemoteHeatingAccountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('paymentRemoteHeatingAccountId', 'Ugiftskonto fjernvarme', paymentRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('paymentRemoteHeatingAccountId', 'Ugiftskonto Fjernvarme', paymentRemoteHeatingAccountId, 'Velg konto', '', enableChanges);
   //html += "<div></div>";
 
   // common Cost AccountId
@@ -214,7 +240,7 @@ function showCondominium(condominiumId) {
     : objCondominiums.arrayCondominiums[rowNumberCondominium].commonCostAccountId;
   */
   const commonCostAccountId = objCondominiums.arrayCondominiums[rowNumberCondominium]?.commonCostAccountId ?? 0;
-  html += objAccounts.showSelectedAccountsNew('commonCostAccountId', 'Inntektskonto husleie', commonCostAccountId, 'Velg konto', '', enableChanges);
+  html += objAccounts.showSelectedAccountsNew('commonCostAccountId', 'Inntektskonto Fellesskostnad', commonCostAccountId, 'Velg konto', '', enableChanges);
 
   // organizationNumber
   const organizationNumber = objCondominiums.arrayCondominiums[rowNumberCondominium]?.organizationNumber ?? '';
@@ -291,7 +317,7 @@ async function updateCondominiumRow(condominiumId) {
 
   // validate incomeRemoteHeatingAccountId
   const incomeRemoteHeatingAccountId = Number(document.querySelector('.incomeRemoteHeatingAccountId').value);
-  const validIncomeRemoteHeatingAccountId = validateIntervalNew('incomeRemoteHeatingAccountId', 'Ugyldig inntektskonto for husleie', incomeRemoteHeatingAccountId, 0, objCondominiums.nineNine);
+  const validIncomeRemoteHeatingAccountId = validateIntervalNew('incomeRemoteHeatingAccountId', 'Ugyldig inntektskonto for feleskotnad', incomeRemoteHeatingAccountId, 0, objCondominiums.nineNine);
 
   // validate paymentRemoteHeatingAccountId
   const paymentRemoteHeatingAccountId = Number(document.querySelector('.paymentRemoteHeatingAccountId').value);

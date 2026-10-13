@@ -106,16 +106,21 @@ async function events() {
 
   // return to bank account transactions
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    if (event.target.classList.contains("back")) {
 
+      /*
       let URL = (objDues.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showdues.html?dueId=${paramDueId}&year=${paramYear}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
+      */
+      history.back();
     };
   });
 
+  /*
   // Delete dues row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
@@ -123,6 +128,31 @@ async function events() {
       const dueId = Number(document.querySelector('.dueId').value);
 
       deleteDuesRow(dueId);
+    };
+  });
+  */
+  // Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette forfall?");
+    };
+  });
+
+  // OK to delete a dues row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      const dueId = Number(document.querySelector('.dueId').value);
+      deleteDuesRow(dueId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a dues row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 

@@ -81,7 +81,7 @@ async function main() {
     }
   } else {
 
-        showMessage('Server er ikke startet.'); 
+    showMessage('Server er ikke startet.');
   }
 }
 
@@ -119,6 +119,7 @@ async function events() {
     };
   });
 
+  /*
   // Delete projects row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
@@ -127,16 +128,45 @@ async function events() {
       await deleteProjectsRow(projectId);
     };
   });
+  */
+
+  // Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette prosjektet?");
+    };
+  });
+
+  // OK to delete a projects row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      const projectId = Number(document.querySelector('.filterProjectId').value);
+      await deleteProjectsRow(projectId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a projects row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
 
   // return to bank account transactions
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    if (event.target.classList.contains("back")) {
 
+      /*
       // Find the first matching class
       const className = arrayPrefixes
         .map(prefix => objAccounts.getClassByPrefix(event.target, prefix))
         .find(Boolean); // find the first non-null/undefined one
-
+ 
       // Extract the number in the class name
       let accountId = 0;
       let prefix = "";
@@ -144,12 +174,14 @@ async function events() {
         prefix = arrayPrefixes.find(p => className.startsWith(p));
         accountId = Number(className.slice(prefix.length));
       }
-
+ 
       let URL = (objProjects.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showtransactions.html?transactionId=${paramTransactionId}&condoId=${paramCondoId}&accountId=${paramAccountId}&projectId=${paramProjectId}&fromDate=${paramFromDate}&toDate=${paramToDate}&amount=${paramAmount}&backApplication=${paramBackApplication}`;
       window.location.href = URL;
+      */
+      history.back();
     };
   });
 }

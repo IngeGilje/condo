@@ -90,12 +90,38 @@ async function events() {
     };
   });
 
+  /*
   // Delete condo row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const condoId = Number(document.querySelector('.filterCondoId').value);
       await deleteCondoRow(condoId);
+    };
+  });
+  */
+// Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette kontoen?");
+    };
+  });
+
+  // OK to delete a condo row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+     const condoId = Number(document.querySelector('.filterCondoId').value);
+      await deleteCondoRow(condoId);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a condo row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 

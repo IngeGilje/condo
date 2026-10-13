@@ -138,12 +138,39 @@ async function events() {
   });
   */
 
+  /*
   // Delete commoncosts row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
 
       const year = Number(document.querySelector('.filterYear').value);
       await deleteCommonCostsRow(year);
+    };
+  });
+  */
+
+  // Show delete dialog
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete')) {
+
+      const confirmation = inputDialog("confimation", "Vil du slette felleskostnad?");
+    };
+  });
+
+  // OK to delete a commoncosts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('okButton')) {
+
+      const year = Number(document.querySelector('.filterYear').value);
+      await deleteCommonCostsRow(year);
+      document.querySelector('.showDialog').style.display = "none";
+    };
+  });
+
+  // Not OK to delete a commoncosts row
+  document.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('cancelButton')) {
+      document.querySelector('.showDialog').style.display = "none";
     };
   });
 

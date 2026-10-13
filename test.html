@@ -1,33 +1,16 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h1>JavaScript Fetch API</h1>
-<h2>Fetching a Text File</h2>
+
+<h2>JavaScript Window</h2>
 
 <p id="demo"></p>
 
 <script>
-// Async function to download a file
-async function loadText(jsonFile) {
-
-  // get response object
-  const response = await fetch(jsonFile);
-  let textFile = "";
-
-  // Create person object of json file
-  if (response.ok) textFile = await response.text();
-  const person = await JSON.parse(textFile);
-  myDisplayer(person.age);
-}
-
-loadText("data/text.json");
-
-// Function to display any text
-function myDisplayer(text) {
-  document.getElementById("demo").innerHTML = text;
-}
-
+document.getElementById("demo").innerHTML =
+"Browser inner window width: " + window.innerWidth + "px<br>" +
+"Browser inner window height: " + window.innerHeight + "px";
 </script>
 
 </body>
-</html> 
+</html>

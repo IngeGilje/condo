@@ -97,13 +97,16 @@ async function events() {
 
   // return to emptycalendars
   document.addEventListener('click', async (event) => {
-    if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
-
+    //if ([...event.target.classList].some(cls => cls.startsWith('back'))) {
+    if (event.target.classList.contains("back")) {
+      /*
       let URL = (objEmptyCalendars.serverStatus === 1)
         ? 'http://ingegilje.no/'
         : 'http://localhost/';
       URL = `${URL}showemptycalendars.html?emptyingCalendarsId=${paramemptyCalendarId}&year=${paramYear}&month=${paramMonth}`;
       window.location.href = URL;
+      */
+      history.back();
     }
   })
 
@@ -116,6 +119,7 @@ async function events() {
     };
   });
 
+  /*
   // Delete emptycalendars row
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('delete')) {
@@ -124,7 +128,34 @@ async function events() {
       await deleteEmptyCalendarsRow(emptyCalendarId);
     };
   });
+  */
 }
+
+// Show delete dialog
+document.addEventListener('click', async (event) => {
+  if (event.target.classList.contains('delete')) {
+
+    const confirmation = inputDialog("confimation", "Vil du slette kontoen?");
+  };
+});
+
+// OK to delete a emptycalendars row
+document.addEventListener('click', async (event) => {
+  if (event.target.classList.contains('okButton')) {
+
+    const emptyCalendarId = Number(document.querySelector('.filterEmptyCalendarId').value)
+    await deleteEmptyCalendarsRow(emptyCalendarId);
+    document.querySelector('.showDialog').style.display = "none";
+  };
+});
+
+// Not OK to delete a emptycalendars row
+document.addEventListener('click', async (event) => {
+  if (event.target.classList.contains('cancelButton')) {
+
+    document.querySelector('.showDialog').style.display = "none";
+  };
+});
 
 // Show filter
 function showFilter(emptyCalendarId) {
